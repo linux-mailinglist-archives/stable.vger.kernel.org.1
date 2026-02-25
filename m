@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-219447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMftGzCfnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219447-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:20 +0100
+	id qGliJ/RTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE27192E8E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB5E18FB02
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1A8DC3030480
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 907653008321
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AB83009CB;
-	Wed, 25 Feb 2026 06:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29A326B2D7;
+	Wed, 25 Feb 2026 01:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6SpslPf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMrhJQHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49B74C81;
-	Wed, 25 Feb 2026 06:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962161E2834;
+	Wed, 25 Feb 2026 01:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002721; cv=none; b=urhf6EaWLfgWFSX4ri2qnNdZdOjb21a4FBZ0eHdDHJjyzka7l2T8/9NnUJnu3oNjKGDv6DiaJ5FTXtlHBJVSg+otzpNeEwtRJGpFiY3+zTearmie4/eQ5Y3Qrl2fsP9wYv2ggCEIoexwxT767ELtbp1ibPllwX6eQb4VxiAXF7c=
+	t=1771983704; cv=none; b=sBl+mjEwh9CGPZkEwDQ/1eSxkVTBx4pW1I5yQFZRRqtWzadHpirM8cyrNDla9xPBtMMtBV000wT2ZHIXLB7ANFXrLAK2OkAa5nwTULwH1EVep21lfGUTYJbiuaWm0f4PDWUndUbUccan7XGaK3u3itvHrMpppF0z7rpTOkx+4/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002721; c=relaxed/simple;
-	bh=HNIafgQvO+44TNYTjz0LWHH9vmV4cJ/PEw6K2u2h++I=;
+	s=arc-20240116; t=1771983704; c=relaxed/simple;
+	bh=TD4VXvv+bibsqqR/t2EJkNdb3aeXrOBAsknScWhQ6eI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+QoFPdE+SEi3C03GJB+UqH8spXna26CjRrYSKUFGwxqQVphStFym9GoV2WMoEm/ndl2vHbS5zALJe7tEIZ5LMmXUmTrFZUAQ8Ih/GsnS85f+r/iKwqbXKK6rg4jFYxDc1ijWGw7rAx5HrEBdbgbK+AB2HdIpNxaU4bW86mInQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6SpslPf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883D9C116D0;
-	Wed, 25 Feb 2026 06:58:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Deuxb2e8CLryk2Rk1uLZJDphqIrcjovP4G3+o2o8Uo1yHSdnEDcZH8TbbKhNnJmtgde2J4LdUxUYbG6hr6D9Pd2LpfZv1Mp+vJFf4gNW7fUIIXRqKMBVKkS/88tWGh2juBZv51bgysnvQs1AUYs2h7b1/cZ3ZsaJvzs5/4KsOhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMrhJQHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA0CC116D0;
+	Wed, 25 Feb 2026 01:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002721;
-	bh=HNIafgQvO+44TNYTjz0LWHH9vmV4cJ/PEw6K2u2h++I=;
+	s=korg; t=1771983704;
+	bh=TD4VXvv+bibsqqR/t2EJkNdb3aeXrOBAsknScWhQ6eI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6SpslPfYM82mIfk5u1D94dOeQF8OeEQK5TPxOLyVX5NCZe9bzHp8udrNUvEjlHfr
-	 ItCG1bZLm6rUCOWI2v1jm0lPjm1XLRSc0opYs8Wi3PbCEIf0mBEssTSgOtDeXC+A2K
-	 H72llksD9KayEEXDAk2//J9SFGCKw6e8Z0eR2RFM=
+	b=NMrhJQHJx5rTjtt/loxSp2wXzI1yF+/PtgFgPdxkeswXSU67IVsmEqHDUq+887U4X
+	 UUilodyjckkmbvXAPhoCcDamQNKmQELC2RKLEV0ycoZvF5ZUfXPaAlc22lLc2XkuJi
+	 6WbmTQ11FhAi5huekCPpYZH6IWi+vPpDDwWiJ83A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Mauro Rossi <issor.oruam@gmail.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 531/641] eth: fbnic: set FBNIC_QUEUE_RDE_CTL0_EN_HDR_SPLIT on RDE_CTL0
+Subject: [PATCH 6.19 748/781] drm/amd/display: Set CRTC source for DAC using registers
 Date: Tue, 24 Feb 2026 17:24:17 -0800
-Message-ID: <20260225012401.394874033@linuxfoundation.org>
+Message-ID: <20260225012418.069080142@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,135 +65,309 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219447-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218824-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,meta.com,gmail.com,redhat.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.964];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,meta.com:email]
-X-Rspamd-Queue-Id: DAE27192E8E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 4CB5E18FB02
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit bbeb3bfbffe0279fa47c041658b037fb38a93965 ]
+[ Upstream commit cbced93894d145239c83881d7fd953b7392c23a8 ]
 
-Fix EN_HDR_SPLIT configuration by writing the field to RDE_CTL0 instead
-of RDE_CTL1.
+Apparently the VBIOS SelectCRTC_Source function overwrites
+a few registers (such as FMT_*) which DC writes in a different
+place, which can cause problems.
 
-Because drop mode configuration and header splitting enablement both use
-RDE_CTL0, we consolidate these configurations into the single function
-fbnic_config_drop_mode.
+Instead of using the SelectCRTC_Source function from the
+VBIOS, use the DAC_SOURCE_SELECT register directly, similarly
+to how it is done for digital link encoders.
 
-Fixes: 2b30fc01a6c7 ("eth: fbnic: Add support for HDS configuration")
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Acked-by: Mohsin Bashir <mohsin.bashr@gmail.com>
-Link: https://patch.msgid.link/20260211-fbnic-tcp-hds-fixes-v1-1-55d050e6f606@meta.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 3be26d81b150 ("drm/amd/display: Support DAC in dce110_hwseq")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Tested-by: Mauro Rossi <issor.oruam@gmail.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 25 +++++++++++---------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ .../amd/display/dc/dce/dce_stream_encoder.c   | 23 +++++++++++++---
+ .../amd/display/dc/dce/dce_stream_encoder.h   | 12 +++++++--
+ .../amd/display/dc/hwss/dce110/dce110_hwseq.c | 26 +------------------
+ .../dc/resource/dce100/dce100_resource.c      |  6 +++--
+ .../dc/resource/dce60/dce60_resource.c        |  7 +++--
+ .../dc/resource/dce80/dce80_resource.c        |  6 +++--
+ 6 files changed, 43 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index e99d17660230c..fbdf79b6ad2de 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -2573,7 +2573,8 @@ static void fbnic_enable_bdq(struct fbnic_ring *hpq, struct fbnic_ring *ppq)
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c
+index 574618d5d4a4e..87c19f17c799f 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c
+@@ -1498,7 +1498,10 @@ static void dig_connect_to_otg(
+ {
+ 	struct dce110_stream_encoder *enc110 = DCE110STRENC_FROM_STRENC(enc);
+ 
+-	REG_UPDATE(DIG_FE_CNTL, DIG_SOURCE_SELECT, tg_inst);
++	if (enc->id == ENGINE_ID_DACA || enc->id == ENGINE_ID_DACB)
++		REG_UPDATE(DAC_SOURCE_SELECT, DAC_SOURCE_SELECT, tg_inst);
++	else
++		REG_UPDATE(DIG_FE_CNTL, DIG_SOURCE_SELECT, tg_inst);
  }
  
- static void fbnic_config_drop_mode_rcq(struct fbnic_napi_vector *nv,
--				       struct fbnic_ring *rcq, bool tx_pause)
-+				       struct fbnic_ring *rcq, bool tx_pause,
-+				       bool hdr_split)
- {
- 	struct fbnic_net *fbn = netdev_priv(nv->napi.dev);
- 	u32 drop_mode, rcq_ctl;
-@@ -2586,22 +2587,26 @@ static void fbnic_config_drop_mode_rcq(struct fbnic_napi_vector *nv,
- 	/* Specify packet layout */
- 	rcq_ctl = FIELD_PREP(FBNIC_QUEUE_RDE_CTL0_DROP_MODE_MASK, drop_mode) |
- 	    FIELD_PREP(FBNIC_QUEUE_RDE_CTL0_MIN_HROOM_MASK, FBNIC_RX_HROOM) |
--	    FIELD_PREP(FBNIC_QUEUE_RDE_CTL0_MIN_TROOM_MASK, FBNIC_RX_TROOM);
-+	    FIELD_PREP(FBNIC_QUEUE_RDE_CTL0_MIN_TROOM_MASK, FBNIC_RX_TROOM) |
-+	    FIELD_PREP(FBNIC_QUEUE_RDE_CTL0_EN_HDR_SPLIT, hdr_split);
+ static unsigned int dig_source_otg(
+@@ -1507,7 +1510,10 @@ static unsigned int dig_source_otg(
+ 	uint32_t tg_inst = 0;
+ 	struct dce110_stream_encoder *enc110 = DCE110STRENC_FROM_STRENC(enc);
  
- 	fbnic_ring_wr32(rcq, FBNIC_QUEUE_RDE_CTL0, rcq_ctl);
+-	REG_GET(DIG_FE_CNTL, DIG_SOURCE_SELECT, &tg_inst);
++	if (enc->id == ENGINE_ID_DACA || enc->id == ENGINE_ID_DACB)
++		REG_GET(DAC_SOURCE_SELECT, DAC_SOURCE_SELECT, &tg_inst);
++	else
++		REG_GET(DIG_FE_CNTL, DIG_SOURCE_SELECT, &tg_inst);
+ 
+ 	return tg_inst;
+ }
+@@ -1568,16 +1574,25 @@ void dce110_stream_encoder_construct(
+ 	enc110->se_mask = se_mask;
  }
  
--void fbnic_config_drop_mode(struct fbnic_net *fbn, bool tx_pause)
-+void fbnic_config_drop_mode(struct fbnic_net *fbn, bool txp)
+-static const struct stream_encoder_funcs dce110_an_str_enc_funcs = {};
++static const struct stream_encoder_funcs dce110_an_str_enc_funcs = {
++	.dig_connect_to_otg  = dig_connect_to_otg,
++	.dig_source_otg = dig_source_otg,
++};
+ 
+ void dce110_analog_stream_encoder_construct(
+ 	struct dce110_stream_encoder *enc110,
+ 	struct dc_context *ctx,
+ 	struct dc_bios *bp,
+-	enum engine_id eng_id)
++	enum engine_id eng_id,
++	const struct dce110_stream_enc_registers *regs,
++	const struct dce_stream_encoder_shift *se_shift,
++	const struct dce_stream_encoder_mask *se_mask)
  {
-+	bool hds;
- 	int i, t;
- 
-+	hds = fbn->hds_thresh < FBNIC_HDR_BYTES_MIN;
-+
- 	for (i = 0; i < fbn->num_napi; i++) {
- 		struct fbnic_napi_vector *nv = fbn->napi[i];
- 
- 		for (t = 0; t < nv->rxt_count; t++) {
- 			struct fbnic_q_triad *qt = &nv->qt[nv->txt_count + t];
- 
--			fbnic_config_drop_mode_rcq(nv, &qt->cmpl, tx_pause);
-+			fbnic_config_drop_mode_rcq(nv, &qt->cmpl, txp, hds);
- 		}
- 	}
+ 	enc110->base.funcs = &dce110_an_str_enc_funcs;
+ 	enc110->base.ctx = ctx;
+ 	enc110->base.id = eng_id;
+ 	enc110->base.bp = bp;
++	enc110->regs = regs;
++	enc110->se_shift = se_shift;
++	enc110->se_mask = se_mask;
  }
-@@ -2652,20 +2657,18 @@ static void fbnic_enable_rcq(struct fbnic_napi_vector *nv,
- {
- 	struct fbnic_net *fbn = netdev_priv(nv->napi.dev);
- 	u32 log_size = fls(rcq->size_mask);
--	u32 hds_thresh = fbn->hds_thresh;
- 	u32 rcq_ctl = 0;
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.h b/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.h
+index 068de1392121e..342c0afe6a949 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.h
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.h
+@@ -65,6 +65,7 @@
+ 	SRI(AFMT_60958_1, DIG, id), \
+ 	SRI(AFMT_60958_2, DIG, id), \
+ 	SRI(DIG_FE_CNTL, DIG, id), \
++	SR(DAC_SOURCE_SELECT), \
+ 	SRI(HDMI_CONTROL, DIG, id), \
+ 	SRI(HDMI_GC, DIG, id), \
+ 	SRI(HDMI_GENERIC_PACKET_CONTROL0, DIG, id), \
+@@ -290,7 +291,8 @@
+ #define SE_COMMON_MASK_SH_LIST_DCE80_100(mask_sh)\
+ 	SE_COMMON_MASK_SH_LIST_DCE_COMMON(mask_sh),\
+ 	SE_SF(TMDS_CNTL, TMDS_PIXEL_ENCODING, mask_sh),\
+-	SE_SF(TMDS_CNTL, TMDS_COLOR_FORMAT, mask_sh)
++	SE_SF(TMDS_CNTL, TMDS_COLOR_FORMAT, mask_sh),\
++	SE_SF(DAC_SOURCE_SELECT, DAC_SOURCE_SELECT, mask_sh)
+ 
+ #define SE_COMMON_MASK_SH_LIST_DCE110(mask_sh)\
+ 	SE_COMMON_MASK_SH_LIST_DCE_COMMON(mask_sh),\
+@@ -494,6 +496,7 @@ struct dce_stream_encoder_shift {
+ 	uint8_t DP_VID_N_MUL;
+ 	uint8_t DP_VID_M_DOUBLE_VALUE_EN;
+ 	uint8_t DIG_SOURCE_SELECT;
++	uint8_t DAC_SOURCE_SELECT;
+ };
+ 
+ struct dce_stream_encoder_mask {
+@@ -626,6 +629,7 @@ struct dce_stream_encoder_mask {
+ 	uint32_t DP_VID_N_MUL;
+ 	uint32_t DP_VID_M_DOUBLE_VALUE_EN;
+ 	uint32_t DIG_SOURCE_SELECT;
++	uint32_t DAC_SOURCE_SELECT;
+ };
+ 
+ struct dce110_stream_enc_registers {
+@@ -653,6 +657,7 @@ struct dce110_stream_enc_registers {
+ 	uint32_t AFMT_60958_1;
+ 	uint32_t AFMT_60958_2;
+ 	uint32_t DIG_FE_CNTL;
++	uint32_t DAC_SOURCE_SELECT;
+ 	uint32_t DP_MSE_RATE_CNTL;
+ 	uint32_t DP_MSE_RATE_UPDATE;
+ 	uint32_t DP_PIXEL_FORMAT;
+@@ -712,7 +717,10 @@ void dce110_analog_stream_encoder_construct(
+ 	struct dce110_stream_encoder *enc110,
+ 	struct dc_context *ctx,
+ 	struct dc_bios *bp,
+-	enum engine_id eng_id);
++	enum engine_id eng_id,
++	const struct dce110_stream_enc_registers *regs,
++	const struct dce_stream_encoder_shift *se_shift,
++	const struct dce_stream_encoder_mask *se_mask);
+ 
+ void dce110_se_audio_mute_control(
+ 	struct stream_encoder *enc, bool mute);
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index fd41e52e4d2f1..c472303276672 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -1600,25 +1600,6 @@ static enum dc_status dce110_enable_stream_timing(
+ 	return DC_OK;
+ }
+ 
+-static void
+-dce110_select_crtc_source(struct pipe_ctx *pipe_ctx)
+-{
+-	struct dc_link *link = pipe_ctx->stream->link;
+-	struct dc_bios *bios = link->ctx->dc_bios;
+-	struct bp_crtc_source_select crtc_source_select = {0};
+-	enum engine_id engine_id = link->link_enc->preferred_engine;
 -
--	fbnic_config_drop_mode_rcq(nv, rcq, fbn->tx_pause);
-+	bool hdr_split;
-+	u32 hds_thresh;
+-	if (dc_is_rgb_signal(pipe_ctx->stream->signal))
+-		engine_id = link->link_enc->analog_engine;
+-
+-	crtc_source_select.controller_id = CONTROLLER_ID_D0 + pipe_ctx->stream_res.tg->inst;
+-	crtc_source_select.color_depth = pipe_ctx->stream->timing.display_color_depth;
+-	crtc_source_select.engine_id = engine_id;
+-	crtc_source_select.sink_signal = pipe_ctx->stream->signal;
+-
+-	bios->funcs->select_crtc_source(bios, &crtc_source_select);
+-}
+-
+ enum dc_status dce110_apply_single_controller_ctx_to_hw(
+ 		struct pipe_ctx *pipe_ctx,
+ 		struct dc_state *context,
+@@ -1638,10 +1619,6 @@ enum dc_status dce110_apply_single_controller_ctx_to_hw(
+ 		hws->funcs.disable_stream_gating(dc, pipe_ctx);
+ 	}
  
- 	/* Force lower bound on MAX_HEADER_BYTES. Below this, all frames should
- 	 * be split at L4. It would also result in the frames being split at
- 	 * L2/L3 depending on the frame size.
- 	 */
--	if (fbn->hds_thresh < FBNIC_HDR_BYTES_MIN) {
--		rcq_ctl = FBNIC_QUEUE_RDE_CTL0_EN_HDR_SPLIT;
--		hds_thresh = FBNIC_HDR_BYTES_MIN;
+-	if (pipe_ctx->stream->signal == SIGNAL_TYPE_RGB) {
+-		dce110_select_crtc_source(pipe_ctx);
 -	}
-+	hdr_split = fbn->hds_thresh < FBNIC_HDR_BYTES_MIN;
-+	fbnic_config_drop_mode_rcq(nv, rcq, fbn->tx_pause, hdr_split);
+-
+ 	if (pipe_ctx->stream_res.audio != NULL) {
+ 		struct audio_output audio_output = {0};
  
-+	hds_thresh = max(fbn->hds_thresh, FBNIC_HDR_BYTES_MIN);
- 	rcq_ctl |= FIELD_PREP(FBNIC_QUEUE_RDE_CTL1_PADLEN_MASK, FBNIC_RX_PAD) |
- 		   FIELD_PREP(FBNIC_QUEUE_RDE_CTL1_MAX_HDR_MASK, hds_thresh) |
- 		   FIELD_PREP(FBNIC_QUEUE_RDE_CTL1_PAYLD_OFF_MASK,
+@@ -1721,8 +1698,7 @@ enum dc_status dce110_apply_single_controller_ctx_to_hw(
+ 		pipe_ctx->stream_res.tg->funcs->set_static_screen_control(
+ 				pipe_ctx->stream_res.tg, event_triggers, 2);
+ 
+-	if (!dc_is_virtual_signal(pipe_ctx->stream->signal) &&
+-		!dc_is_rgb_signal(pipe_ctx->stream->signal))
++	if (!dc_is_virtual_signal(pipe_ctx->stream->signal))
+ 		pipe_ctx->stream_res.stream_enc->funcs->dig_connect_to_otg(
+ 			pipe_ctx->stream_res.stream_enc,
+ 			pipe_ctx->stream_res.tg->inst);
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
+index 83b9abb64bfcb..b78bb595d69ed 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
+@@ -242,7 +242,8 @@ static const struct dce110_stream_enc_registers stream_enc_regs[] = {
+ 	stream_enc_regs(3),
+ 	stream_enc_regs(4),
+ 	stream_enc_regs(5),
+-	stream_enc_regs(6)
++	stream_enc_regs(6),
++	{SR(DAC_SOURCE_SELECT),} /* DACA */
+ };
+ 
+ static const struct dce_stream_encoder_shift se_shift = {
+@@ -491,7 +492,8 @@ static struct stream_encoder *dce100_stream_encoder_create(
+ 		return NULL;
+ 
+ 	if (eng_id == ENGINE_ID_DACA || eng_id == ENGINE_ID_DACB) {
+-		dce110_analog_stream_encoder_construct(enc110, ctx, ctx->dc_bios, eng_id);
++		dce110_analog_stream_encoder_construct(enc110, ctx, ctx->dc_bios, eng_id,
++			&stream_enc_regs[eng_id], &se_shift, &se_mask);
+ 		return &enc110->base;
+ 	}
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+index 90d826237cf00..6cf2faffc961b 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+@@ -258,7 +258,9 @@ static const struct dce110_stream_enc_registers stream_enc_regs[] = {
+ 	stream_enc_regs(2),
+ 	stream_enc_regs(3),
+ 	stream_enc_regs(4),
+-	stream_enc_regs(5)
++	stream_enc_regs(5),
++	{0},
++	{SR(DAC_SOURCE_SELECT),} /* DACA */
+ };
+ 
+ static const struct dce_stream_encoder_shift se_shift = {
+@@ -607,7 +609,8 @@ static struct stream_encoder *dce60_stream_encoder_create(
+ 		return NULL;
+ 
+ 	if (eng_id == ENGINE_ID_DACA || eng_id == ENGINE_ID_DACB) {
+-		dce110_analog_stream_encoder_construct(enc110, ctx, ctx->dc_bios, eng_id);
++		dce110_analog_stream_encoder_construct(enc110, ctx, ctx->dc_bios, eng_id,
++			&stream_enc_regs[eng_id], &se_shift, &se_mask);
+ 		return &enc110->base;
+ 	}
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
+index cde2c2cba1dd6..066dbf8125a87 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
+@@ -258,7 +258,8 @@ static const struct dce110_stream_enc_registers stream_enc_regs[] = {
+ 	stream_enc_regs(3),
+ 	stream_enc_regs(4),
+ 	stream_enc_regs(5),
+-	stream_enc_regs(6)
++	stream_enc_regs(6),
++	{SR(DAC_SOURCE_SELECT),} /* DACA */
+ };
+ 
+ static const struct dce_stream_encoder_shift se_shift = {
+@@ -614,7 +615,8 @@ static struct stream_encoder *dce80_stream_encoder_create(
+ 		return NULL;
+ 
+ 	if (eng_id == ENGINE_ID_DACA || eng_id == ENGINE_ID_DACB) {
+-		dce110_analog_stream_encoder_construct(enc110, ctx, ctx->dc_bios, eng_id);
++		dce110_analog_stream_encoder_construct(enc110, ctx, ctx->dc_bios, eng_id,
++			&stream_enc_regs[eng_id], &se_shift, &se_mask);
+ 		return &enc110->base;
+ 	}
+ 
 -- 
 2.51.0
 
