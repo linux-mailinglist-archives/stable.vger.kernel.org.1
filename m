@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-219373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218736-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKuEJ2SinmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219373-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:19:00 +0100
+	id uMiEBOxUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218736-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9F7193327
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:18:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EFC118FE4A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E57A31AFBE2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5F45310A6FC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B4D2D3EEE;
-	Wed, 25 Feb 2026 06:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C44268690;
+	Wed, 25 Feb 2026 01:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRoW8XGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKZb7ebQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D123A30F951;
-	Wed, 25 Feb 2026 06:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DBB26E6F8;
+	Wed, 25 Feb 2026 01:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002672; cv=none; b=RKQwB4vCJZNgFHA8BG+RGLF7K5TKQBGZGIaj+2lJhVOcuXcrJ+53WFpQczH6KZIxqkLCYlagJOR71KDONL2UzMrhnzMi/f2OXetGCWr3GPO3+39Fy4atl5PCOHWpMm+m1X8P0kc7r+N1oWbQY0FhNDR7Wjw7PJ08pACEMMZziZk=
+	t=1771983602; cv=none; b=U0VwBkRo5KYk4Zdeahy/V/QW9G9MK1spbyqniQbTcNVKpU4oZqdsY1WrhebB/KXmRK60ZxzS3rEHC/lX7dJ/gbIe4IHxV8DmezP6Qn66xhNmaf3pPliHsS0FvgxItrthYZorYv9AXm1aklj1WV6mvsPwQvsx3yUp3Tsi85nmnaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002672; c=relaxed/simple;
-	bh=3S7vE2DMKD4iLEniuV42Bgyn2FcyGwRpWSRYW4brrGM=;
+	s=arc-20240116; t=1771983602; c=relaxed/simple;
+	bh=eXNfrQ6D0F3R/UC318r6tpj4HCNadCbLoap5pPUNjfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMEMNKGDSjfibPlBpDqxmrqKIJhpOU5G3nndIbVfpPcDLrrNlAuiv+6eEQIp1AMjqq1Ap9FwwXPrG/CV0vTJvYUIREhh5NeIJnONq2drzEMh26LRnM35ScXCjVH6iFltrJl3K4zn6wGR69GZJm098XTZk2KgrYvaZXVrpicbdlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRoW8XGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8554C116D0;
-	Wed, 25 Feb 2026 06:57:52 +0000 (UTC)
+	 MIME-Version; b=u8VzNh1mfQGWIHbg5kSjv4dl4TQl6Zt0FhCdEhYUVD/B4opLeYHMAm6f4oEiYE6EXvFNhq51Ce+CfnuPUAbXl0rMdaz0Cs+VfgAeZc+a2ZPK6dd0dyxJpzdFgLZD2ihtIxyK53xvS/Ssf9reR82FAUuqBRk6z6w1QHQBmoQoj1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKZb7ebQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05452C116D0;
+	Wed, 25 Feb 2026 01:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002672;
-	bh=3S7vE2DMKD4iLEniuV42Bgyn2FcyGwRpWSRYW4brrGM=;
+	s=korg; t=1771983602;
+	bh=eXNfrQ6D0F3R/UC318r6tpj4HCNadCbLoap5pPUNjfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QRoW8XGdyXvGoyu9SZXrz6kas3tfBnH9ahcgPMAuETLR8kndKCvUBZkzirP094xMt
-	 z5I2eAlN4Hi2F6jTQSXgQl1sUZ+4bCTQ30gmdrNvrPSdDcCKWs+B5mK6hBNw83PXwT
-	 MkInvarSS10Oaeby0mBzZeIRBP5poPs3oSe4KoYY=
+	b=HKZb7ebQXsZcVwv4GO65vVTpeKl0UiIWVY0Ade/EzXJNtRLdLsCN0T3+vlTCIq4yx
+	 phbRNrnCmjOQBSXQC42ts+GkF+bbgrpTjOLmePr7odJIVa5NqxsL+wE6/OgVe7c7Ad
+	 Fqk3lySjv3hbUZEki8eECvI3DvL6uOnn9XpLgIug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alper Ak <alperyasinak1@gmail.com>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 456/641] char: misc: Use IS_ERR() for filp_open() return value
-Date: Tue, 24 Feb 2026 17:23:02 -0800
-Message-ID: <20260225012359.565038853@linuxfoundation.org>
+Subject: [PATCH 6.19 674/781] ping: annotate data-races in ping_lookup()
+Date: Tue, 24 Feb 2026 17:23:03 -0800
+Message-ID: <20260225012416.312156029@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,72 +70,146 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,linaro.org,gmail.com,igalia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-219373-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218736-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linaro.org:email,igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: DF9F7193327
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5EFC118FE4A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alper Ak <alperyasinak1@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e849ada70c6b1ee22e9f4f5c0e38231dcee53f04 ]
+[ Upstream commit ad5dfde2a5733aaf652ea3e40c8c5e071e935901 ]
 
-filp_open() never returns NULL, it returns either a valid pointer or an
-error pointer. Using IS_ERR_OR_NULL() is unnecessary. Additionally, if
-filp were NULL, PTR_ERR(NULL) would return 0, leading to a misleading
-error message.
+isk->inet_num, isk->inet_rcv_saddr and sk->sk_bound_dev_if
+are read locklessly in ping_lookup().
 
-Fixes: 74d8361be344 ("char: misc: add test cases")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202506132058.thWZHlrb-lkp@intel.com/
-Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
-Acked-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Link: https://patch.msgid.link/20251226230248.113073-1-alperyasinak1@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add READ_ONCE()/WRITE_ONCE() annotations.
+
+The race on isk->inet_rcv_saddr is probably coming from IPv6 support,
+but does not deserve a specific backport.
+
+Fixes: dbca1596bbb0 ("ping: convert to RCU lookups, get rid of rwlock")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260216100149.3319315-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/misc_minor_kunit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/ping.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/char/misc_minor_kunit.c b/drivers/char/misc_minor_kunit.c
-index 6fc8b05169c57..e930c78e1ef97 100644
---- a/drivers/char/misc_minor_kunit.c
-+++ b/drivers/char/misc_minor_kunit.c
-@@ -166,7 +166,7 @@ static void __init miscdev_test_can_open(struct kunit *test, struct miscdevice *
- 		KUNIT_FAIL(test, "failed to create node\n");
+diff --git a/net/ipv4/ping.c b/net/ipv4/ping.c
+index cfbd563498e85..0fec4e5645667 100644
+--- a/net/ipv4/ping.c
++++ b/net/ipv4/ping.c
+@@ -148,7 +148,7 @@ void ping_unhash(struct sock *sk)
+ 	pr_debug("ping_unhash(isk=%p,isk->num=%u)\n", isk, isk->inet_num);
+ 	spin_lock(&ping_table.lock);
+ 	if (sk_del_node_init_rcu(sk)) {
+-		isk->inet_num = 0;
++		WRITE_ONCE(isk->inet_num, 0);
+ 		isk->inet_sport = 0;
+ 		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
+ 	}
+@@ -181,31 +181,35 @@ static struct sock *ping_lookup(struct net *net, struct sk_buff *skb, u16 ident)
+ 	}
  
- 	filp = filp_open(devname, O_RDONLY, 0);
--	if (IS_ERR_OR_NULL(filp))
-+	if (IS_ERR(filp))
- 		KUNIT_FAIL(test, "failed to open misc device: %ld\n", PTR_ERR(filp));
- 	else
- 		fput(filp);
+ 	sk_for_each_rcu(sk, hslot) {
++		int bound_dev_if;
++
+ 		if (!net_eq(sock_net(sk), net))
+ 			continue;
+ 		isk = inet_sk(sk);
+ 
+ 		pr_debug("iterate\n");
+-		if (isk->inet_num != ident)
++		if (READ_ONCE(isk->inet_num) != ident)
+ 			continue;
+ 
++		bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
+ 		if (skb->protocol == htons(ETH_P_IP) &&
+ 		    sk->sk_family == AF_INET) {
++			__be32 rcv_saddr = READ_ONCE(isk->inet_rcv_saddr);
++
+ 			pr_debug("found: %p: num=%d, daddr=%pI4, dif=%d\n", sk,
+-				 (int) isk->inet_num, &isk->inet_rcv_saddr,
+-				 sk->sk_bound_dev_if);
++				 ident, &rcv_saddr,
++				 bound_dev_if);
+ 
+-			if (isk->inet_rcv_saddr &&
+-			    isk->inet_rcv_saddr != ip_hdr(skb)->daddr)
++			if (rcv_saddr && rcv_saddr != ip_hdr(skb)->daddr)
+ 				continue;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 		} else if (skb->protocol == htons(ETH_P_IPV6) &&
+ 			   sk->sk_family == AF_INET6) {
+ 
+ 			pr_debug("found: %p: num=%d, daddr=%pI6c, dif=%d\n", sk,
+-				 (int) isk->inet_num,
++				 ident,
+ 				 &sk->sk_v6_rcv_saddr,
+-				 sk->sk_bound_dev_if);
++				 bound_dev_if);
+ 
+ 			if (!ipv6_addr_any(&sk->sk_v6_rcv_saddr) &&
+ 			    !ipv6_addr_equal(&sk->sk_v6_rcv_saddr,
+@@ -216,8 +220,8 @@ static struct sock *ping_lookup(struct net *net, struct sk_buff *skb, u16 ident)
+ 			continue;
+ 		}
+ 
+-		if (sk->sk_bound_dev_if && sk->sk_bound_dev_if != dif &&
+-		    sk->sk_bound_dev_if != sdif)
++		if (bound_dev_if && bound_dev_if != dif &&
++		    bound_dev_if != sdif)
+ 			continue;
+ 
+ 		goto exit;
+@@ -392,7 +396,9 @@ static void ping_set_saddr(struct sock *sk, struct sockaddr_unsized *saddr)
+ 	if (saddr->sa_family == AF_INET) {
+ 		struct inet_sock *isk = inet_sk(sk);
+ 		struct sockaddr_in *addr = (struct sockaddr_in *) saddr;
+-		isk->inet_rcv_saddr = isk->inet_saddr = addr->sin_addr.s_addr;
++
++		isk->inet_saddr = addr->sin_addr.s_addr;
++		WRITE_ONCE(isk->inet_rcv_saddr, addr->sin_addr.s_addr);
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	} else if (saddr->sa_family == AF_INET6) {
+ 		struct sockaddr_in6 *addr = (struct sockaddr_in6 *) saddr;
+@@ -849,7 +855,8 @@ int ping_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags,
+ 	struct sk_buff *skb;
+ 	int copied, err;
+ 
+-	pr_debug("ping_recvmsg(sk=%p,sk->num=%u)\n", isk, isk->inet_num);
++	pr_debug("ping_recvmsg(sk=%p,sk->num=%u)\n", isk,
++		 READ_ONCE(isk->inet_num));
+ 
+ 	err = -EOPNOTSUPP;
+ 	if (flags & MSG_OOB)
 -- 
 2.51.0
 
