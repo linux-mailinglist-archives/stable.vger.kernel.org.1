@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAXKC6NTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:59 +0100
+	id wEPsCjdYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B786E18F962
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5935E1906BA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EF45731BF558
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 289E330F8812
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9875D20C012;
-	Wed, 25 Feb 2026 01:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8284B27055D;
+	Wed, 25 Feb 2026 01:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExEmrN9I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRse0po3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1AF24677D;
-	Wed, 25 Feb 2026 01:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C41256C84;
+	Wed, 25 Feb 2026 01:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983209; cv=none; b=cdns1nklTI75h5SIPVAQY3NmdnoYy2n6K7VGWRQBzje27cms6IWRKXiUds6CMUccMn2UhKpCmtPaChccgEfr0+Zpum5x8BAnLhTLxIbJLjcPccjEHG/HeN+4AdlrVlMr2ccYdOlgyFfPV73SzQ/YjlZ1sl1QKYvTHlTk12CiKqw=
+	t=1771983865; cv=none; b=g1RVPN4SQge8Yp2tp6/yGU7PJtCAp0ajCaOYdnZvSqpGr69tIMp7/BsI5KhR1E2HF2ET9MneFck7BHnwzeFMWnvosIBtYhG/uU+Fg+JOVs48uZTHoOZPPK9fak6rjU+YxHfcq5/S7k3HtZwqM7Uih83kFNzuILqws5Z+7RSp/Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983209; c=relaxed/simple;
-	bh=wXbk5Nl7fvCfYxSecxYBUnkC8Jt4DMIYWpZRB/6ij0U=;
+	s=arc-20240116; t=1771983865; c=relaxed/simple;
+	bh=jl1grz7Xs4/GJ12i07Ou5YHOTsLL5VtKfM0T6Ut4drI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehWgAGncmL0n2AXoeViMT2MqkCNOlaVFXKxOB444IvauwaBgUMPAJFhFSPpbcHx2gQue/sIqO9XDLaOzs0cXIA66jsB0R1YgWni/Utq40Lpe3BKSjrRHj7FyJHEaQdc/auAa63/VKmuGkuNdbCOruHkC1x9Rj28+JEfLqkqd8b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExEmrN9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0CEC116D0;
-	Wed, 25 Feb 2026 01:33:29 +0000 (UTC)
+	 MIME-Version; b=pdVQ39kzXXDTFtilZSJ2YCxENEs58JUORfWILVHOXSD76BDfiDymFB/IcYqHBbcG9yyqpJJeWLejRMPPHA/CePzrV/7zgGWDxWzYzlut0/sf8WWZbXSLRceyOA8ywjlkaH17z8kv2vhxirjfqrq2fcS7vtYAzy2mzoVuDKJnM1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRse0po3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC18CC116D0;
+	Wed, 25 Feb 2026 01:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983209;
-	bh=wXbk5Nl7fvCfYxSecxYBUnkC8Jt4DMIYWpZRB/6ij0U=;
+	s=korg; t=1771983864;
+	bh=jl1grz7Xs4/GJ12i07Ou5YHOTsLL5VtKfM0T6Ut4drI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ExEmrN9IlMKKCIEdD0MYKkFZcCP7m+CWyzzhkZig0NV36QaDbGasO+bGhCA3SpMZZ
-	 kDnFW9HAVPJju8dynAAfmaGXl9N2KLUL3BLN2TTbuw4yV9Uceb93T+XltoVunqgZuH
-	 mpn+WeOY8HtV1L5xiLsig+xiwtwEOWoyFC8S7u4g=
+	b=fRse0po3hJnokdN9Ykk/ibo6ihhSJh/LN5VkC7UvlzRVjetiKtRFFSV/P4jpoHaOJ
+	 aJZPGins8W0uQVdX9mo8yclnc2Jt0IWi9DyC5ThMo8dO0zJ0ReLW7uuDEyGT/ioqJ3
+	 6uNh6BUWHwQ1YqKqOvZItYavyuXDjG2hVnFrzAEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 358/781] dm: use bio_clone_blkg_association
-Date: Tue, 24 Feb 2026 17:17:47 -0800
-Message-ID: <20260225012408.465935525@linuxfoundation.org>
+Subject: [PATCH 6.18 142/641] powerpc/uaccess: Move barrier_nospec() out of allow_read_{from/write}_user()
+Date: Tue, 24 Feb 2026 17:17:48 -0800
+Message-ID: <20260225012352.560063812@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218395-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218963-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,51 +90,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B786E18F962
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,csgroup.eu:email]
+X-Rspamd-Queue-Id: 5935E1906BA
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 2df8b310bcfe76827fd71092f58a2493ee6590b0 ]
+[ Upstream commit 5fbc09eb0b4f4b1a4b33abebacbeee0d29f195e9 ]
 
-The origin bio carries blk-cgroup information which could be set from
-foreground(task_css(css) - wbc->wb->blkcg_css), so the blkcg won't
-control buffer io since commit ca522482e3eaf ("dm: pass NULL bdev to
-bio_alloc_clone"). The synchronous io is still under control by blkcg,
-because 'bio->bi_blkg' is set by io submitting task which has been added
-into 'cgroup.procs'.
+Commit 74e19ef0ff80 ("uaccess: Add speculation barrier to
+copy_from_user()") added a redundant barrier_nospec() in
+copy_from_user(), because powerpc is already calling
+barrier_nospec() in allow_read_from_user() and
+allow_read_write_user(). But on other architectures that
+call to barrier_nospec() was missing. So change powerpc
+instead of reverting the above commit and having to fix
+other architectures one by one. This is now possible
+because barrier_nospec() has also been added in
+copy_from_user_iter().
 
-Fix it by using bio_clone_blkg_association when submitting a cloned bio.
+Move barrier_nospec() out of allow_read_from_user() and
+allow_read_write_user(). This will also allow reuse of those
+functions when implementing masked user access which doesn't
+require barrier_nospec().
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220985
-Fixes: ca522482e3eaf ("dm: pass NULL bdev to bio_alloc_clone")
-Reported-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Tested-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Don't add it back in raw_copy_from_user() as it is already called
+by copy_from_user() and copy_from_user_iter().
+
+Fixes: 74e19ef0ff80 ("uaccess: Add speculation barrier to copy_from_user()")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/f29612105c5fcbc8ceb7303808ddc1a781f0f6b5.1766574657.git.chleroy@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/include/asm/kup.h     | 2 --
+ arch/powerpc/include/asm/uaccess.h | 4 ++++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index b632792022601..8e029f6289c10 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -1364,6 +1364,8 @@ void dm_submit_bio_remap(struct bio *clone, struct bio *tgt_clone)
- 	if (!tgt_clone)
- 		tgt_clone = clone;
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index dab63b82a8d4f..f2009d7c8cfa7 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -134,7 +134,6 @@ static __always_inline void kuap_assert_locked(void)
  
-+	bio_clone_blkg_association(tgt_clone, io->orig_bio);
-+
- 	/*
- 	 * Account io->origin_bio to DM dev on behalf of target
- 	 * that took ownership of IO with DM_MAPIO_SUBMITTED.
+ static __always_inline void allow_read_from_user(const void __user *from, unsigned long size)
+ {
+-	barrier_nospec();
+ 	allow_user_access(NULL, from, size, KUAP_READ);
+ }
+ 
+@@ -146,7 +145,6 @@ static __always_inline void allow_write_to_user(void __user *to, unsigned long s
+ static __always_inline void allow_read_write_user(void __user *to, const void __user *from,
+ 						  unsigned long size)
+ {
+-	barrier_nospec();
+ 	allow_user_access(to, from, size, KUAP_READ_WRITE);
+ }
+ 
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 4f5a46a77fa2b..3987a5c33558b 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -301,6 +301,7 @@ do {								\
+ 	__typeof__(sizeof(*(ptr))) __gu_size = sizeof(*(ptr));	\
+ 								\
+ 	might_fault();					\
++	barrier_nospec();					\
+ 	allow_read_from_user(__gu_addr, __gu_size);		\
+ 	__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err);	\
+ 	prevent_read_from_user(__gu_addr, __gu_size);		\
+@@ -329,6 +330,7 @@ raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
+ {
+ 	unsigned long ret;
+ 
++	barrier_nospec();
+ 	allow_read_write_user(to, from, n);
+ 	ret = __copy_tofrom_user(to, from, n);
+ 	prevent_read_write_user(to, from, n);
+@@ -415,6 +417,7 @@ static __must_check __always_inline bool user_access_begin(const void __user *pt
+ 
+ 	might_fault();
+ 
++	barrier_nospec();
+ 	allow_read_write_user((void __user *)ptr, ptr, len);
+ 	return true;
+ }
+@@ -431,6 +434,7 @@ user_read_access_begin(const void __user *ptr, size_t len)
+ 
+ 	might_fault();
+ 
++	barrier_nospec();
+ 	allow_read_from_user(ptr, len);
+ 	return true;
+ }
 -- 
 2.51.0
 
