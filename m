@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-218793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBWFOV1WnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:37 +0100
+	id qAErOtiinmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:20:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616D319028F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 431F119340E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:20:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 96A4D30BD267
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D87831EA31C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AC027055D;
-	Wed, 25 Feb 2026 01:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA212D77FF;
+	Wed, 25 Feb 2026 06:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkm8YPYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSRc9VhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFD026B2D7;
-	Wed, 25 Feb 2026 01:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6024B301719;
+	Wed, 25 Feb 2026 06:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983669; cv=none; b=W+yBpPc3dJgaswP5ybVbEPGtJ+KcE1Zq7N7SMY+LDYQ0pmu4WIuLMbJa3/kow+Bbu/5usIHeKnd5N2ZDlEa5EGbW/TTtKKWOD+XAC8sy8Das6ZX7R0/3botSx26SyFnvjgvG5ZbQHBw6/2Zhv7nAfNV8dOAdyQC48yR460xiZkM=
+	t=1772002726; cv=none; b=nR6OkvTb6EdeRkxV1Cg+VY/8S5FTqdG+Zgpc0oKPztmQgVn09HtCO6GkkfOEfLzl9GHXJEHXrZQwalfsOjXM1H/kvNfL8ygmSomzoAmgG4Iegk0sVXt2eqnKekiHCdKp6ud68tYYtxR5h9ySi5gmgkvnZaaXJ8ZDP/8nD9Y8rVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983669; c=relaxed/simple;
-	bh=aDIbbFXz2FhjQGCkzjEfjPH96MFiFcP29vzWjCrM0r8=;
+	s=arc-20240116; t=1772002726; c=relaxed/simple;
+	bh=TG77CcUNz0AmwUxlQKSWXkrMSDd7oNnj2q0ExR8onVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGzlW7CkqTtsw1sVFhNA8PjQ8Rl6j+rtucG0/mCJjEl2ZxK+HgWlkZCPWsEVoJrvIObberfEDj/fJlJAkUV3KHAliK1LcnMdPxuqQ9g2ww7g1aaIZpjjhkANMJLTA4iV1r0YdlAJauA5wqbAynGYDF1CYXCpRJsvJ44SYRxgx2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkm8YPYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6080C116D0;
-	Wed, 25 Feb 2026 01:41:08 +0000 (UTC)
+	 MIME-Version; b=G0rC4ZzJ//8qVD0isikhuqRFy19umgvvDiW6WT95hBEuDhQWNso/sMgmtxwEqoE0byLYjKEg9D99RWH1KnundRrilr+PIvsresmik0r4Ytos1M565mPBDiuclRLoiMXto9TC5SzEbgBVxeugcedBvFoNUfDH/ntCI3z/k8ngXvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSRc9VhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D9CC116D0;
+	Wed, 25 Feb 2026 06:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983668;
-	bh=aDIbbFXz2FhjQGCkzjEfjPH96MFiFcP29vzWjCrM0r8=;
+	s=korg; t=1772002726;
+	bh=TG77CcUNz0AmwUxlQKSWXkrMSDd7oNnj2q0ExR8onVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkm8YPYBAUXD+hvSRjVnpHiBR34ak6ZzJzI3frBZdn1TNzIKdwKL2aF1Xwq1e8cVb
-	 LDHdfdsBoP+yYPKnIMyZR3CtLEn0nwy8L6xO+XD5TYDDE+q7wFxgCjZ9u0yk6ti09K
-	 CsLCVrDqRGw73LtvPHVerd655yxKliuYPjcoPGzE=
+	b=qSRc9VhXwqRFua0Un2d4VuuZ9jB4rM9n44i/MpwmKTEs/eqQKLXAzIWHoQCx7TE9Y
+	 Aw91GY22B4SXKo9IJCKg6OXzUxLabqqKWElbTppJVsOEHa87PHORTw/Cv8hGb/UQkV
+	 m9iAbqN1iubhwmJgQ2kOUF3aiQ3q2fcgyNd/TXnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.19 755/781] ext4: dont set EXT4_GET_BLOCKS_CONVERT when splitting before submitting I/O
+	syzbot+d5d1b7343531d17bd3c5@syzkaller.appspotmail.com,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <nikolay@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 538/641] net: bridge: mcast: always update mdb_n_entries for vlan contexts
 Date: Tue, 24 Feb 2026 17:24:24 -0800
-Message-ID: <20260225012418.237915762@linuxfoundation.org>
+Message-ID: <20260225012401.566893998@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,131 +67,228 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-219454-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218793-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huaweicloud.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,huawei.com:email]
-X-Rspamd-Queue-Id: 616D319028F
+	NEURAL_HAM(-0.00)[-0.995];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,d5d1b7343531d17bd3c5];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 431F119340E
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Nikolay Aleksandrov <nikolay@nvidia.com>
 
-commit feaf2a80e78f89ee8a3464126077ba8683b62791 upstream.
+[ Upstream commit 8b769e311a86bb9d15c5658ad283b86fc8f080a2 ]
 
-When allocating blocks during within-EOF DIO and writeback with
-dioread_nolock enabled, EXT4_GET_BLOCKS_PRE_IO was set to split an
-existing large unwritten extent. However, EXT4_GET_BLOCKS_CONVERT was
-set when calling ext4_split_convert_extents(), which may potentially
-result in stale data issues.
+syzbot triggered a warning[1] about the number of mdb entries in a context.
+It turned out that there are multiple ways to trigger that warning today
+(some got added during the years), the root cause of the problem is that
+the increase is done conditionally, and over the years these different
+conditions increased so there were new ways to trigger the warning, that is
+to do a decrease which wasn't paired with a previous increase.
 
-Assume we have an unwritten extent, and then DIO writes the second half.
+For example one way to trigger it is with flush:
+ $ ip l add br0 up type bridge vlan_filtering 1 mcast_snooping 1
+ $ ip l add dumdum up master br0 type dummy
+ $ bridge mdb add dev br0 port dumdum grp 239.0.0.1 permanent vid 1
+ $ ip link set dev br0 down
+ $ ip link set dev br0 type bridge mcast_vlan_snooping 1
+   ^^^^ this will enable snooping, but will not update mdb_n_entries
+        because in __br_multicast_enable_port_ctx() we check !netif_running
+ $ bridge mdb flush dev br0
+   ^^^ this will trigger the warning because it will delete the pg which
+       we added above, which will try to decrease mdb_n_entries
 
-   [UUUUUUUUUUUUUUUU] on-disk extent        U: unwritten extent
-   [UUUUUUUUUUUUUUUU] extent status tree
-            |<-   ->| ----> dio write this range
+Fix the problem by removing the conditional increase and always keep the
+count up-to-date while the vlan exists. In order to do that we have to
+first initialize it on port-vlan context creation, and then always increase
+or decrease the value regardless of mcast options. To keep the current
+behaviour we have to enforce the mdb limit only if the context is port's or
+if the port-vlan's mcast snooping is enabled.
 
-First, ext4_iomap_alloc() call ext4_map_blocks() with
-EXT4_GET_BLOCKS_PRE_IO, EXT4_GET_BLOCKS_UNWRIT_EXT and
-EXT4_GET_BLOCKS_CREATE flags set. ext4_map_blocks() find this extent and
-call ext4_split_convert_extents() with EXT4_GET_BLOCKS_CONVERT and the
-above flags set.
+[1]
+ ------------[ cut here ]------------
+ n == 0
+ WARNING: net/bridge/br_multicast.c:718 at br_multicast_port_ngroups_dec_one net/bridge/br_multicast.c:718 [inline], CPU#0: syz.4.4607/22043
+ WARNING: net/bridge/br_multicast.c:718 at br_multicast_port_ngroups_dec net/bridge/br_multicast.c:771 [inline], CPU#0: syz.4.4607/22043
+ WARNING: net/bridge/br_multicast.c:718 at br_multicast_del_pg+0x1bbe/0x1e20 net/bridge/br_multicast.c:825, CPU#0: syz.4.4607/22043
+ Modules linked in:
+ CPU: 0 UID: 0 PID: 22043 Comm: syz.4.4607 Not tainted syzkaller #0 PREEMPT(full)
+ Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
+ RIP: 0010:br_multicast_port_ngroups_dec_one net/bridge/br_multicast.c:718 [inline]
+ RIP: 0010:br_multicast_port_ngroups_dec net/bridge/br_multicast.c:771 [inline]
+ RIP: 0010:br_multicast_del_pg+0x1bbe/0x1e20 net/bridge/br_multicast.c:825
+ Code: 41 5f 5d e9 04 7a 48 f7 e8 3f 73 5c f7 90 0f 0b 90 e9 cf fd ff ff e8 31 73 5c f7 90 0f 0b 90 e9 16 fd ff ff e8 23 73 5c f7 90 <0f> 0b 90 e9 60 fd ff ff e8 15 73 5c f7 eb 05 e8 0e 73 5c f7 48 8b
+ RSP: 0018:ffffc9000c207220 EFLAGS: 00010293
+ RAX: ffffffff8a68042d RBX: ffff88807c6f1800 RCX: ffff888066e90000
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+ RBP: 0000000000000000 R08: ffff888066e90000 R09: 000000000000000c
+ R10: 000000000000000c R11: 0000000000000000 R12: ffff8880303ef800
+ R13: dffffc0000000000 R14: ffff888050eb11c4 R15: 1ffff1100a1d6238
+ FS:  00007fa45921b6c0(0000) GS:ffff8881256f5000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007fa4591f9ff8 CR3: 0000000081df2000 CR4: 00000000003526f0
+ Call Trace:
+  <TASK>
+  br_mdb_flush_pgs net/bridge/br_mdb.c:1525 [inline]
+  br_mdb_flush net/bridge/br_mdb.c:1544 [inline]
+  br_mdb_del_bulk+0x5e2/0xb20 net/bridge/br_mdb.c:1561
+  rtnl_mdb_del+0x48a/0x640 net/core/rtnetlink.c:-1
+  rtnetlink_rcv_msg+0x77e/0xbe0 net/core/rtnetlink.c:6967
+  netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
+  netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+  netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
+  netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
+  sock_sendmsg_nosec net/socket.c:727 [inline]
+  __sock_sendmsg net/socket.c:742 [inline]
+  ____sys_sendmsg+0xa68/0xad0 net/socket.c:2592
+  ___sys_sendmsg+0x2a5/0x360 net/socket.c:2646
+  __sys_sendmsg net/socket.c:2678 [inline]
+  __do_sys_sendmsg net/socket.c:2683 [inline]
+  __se_sys_sendmsg net/socket.c:2681 [inline]
+  __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2681
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ RIP: 0033:0x7fa45839aeb9
+ Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+ RSP: 002b:00007fa45921b028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 00007fa458615fa0 RCX: 00007fa45839aeb9
+ RDX: 0000000000000000 RSI: 00002000000000c0 RDI: 0000000000000004
+ RBP: 00007fa458408c1f R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+ R13: 00007fa458616038 R14: 00007fa458615fa0 R15: 00007fff0b59fae8
+ </TASK>
 
-Then, ext4_split_convert_extents() calls ext4_split_extent() with
-EXT4_EXT_MAY_ZEROOUT, EXT4_EXT_MARK_UNWRIT2 and EXT4_EXT_DATA_VALID2
-flags set, and it calls ext4_split_extent_at() to split the second half
-with EXT4_EXT_DATA_VALID2, EXT4_EXT_MARK_UNWRIT1, EXT4_EXT_MAY_ZEROOUT
-and EXT4_EXT_MARK_UNWRIT2 flags set. However, ext4_split_extent_at()
-failed to insert extent since a temporary lack -ENOSPC. It zeroes out
-the first half but convert the entire on-disk extent to written since
-the EXT4_EXT_DATA_VALID2 flag set, but left the second half as unwritten
-in the extent status tree.
-
-   [0000000000SSSSSS]  data                S: stale data, 0: zeroed
-   [WWWWWWWWWWWWWWWW]  on-disk extent      W: written extent
-   [WWWWWWWWWWUUUUUU]  extent status tree
-
-Finally, if the DIO failed to write data to the disk, the stale data in
-the second half will be exposed once the cached extent entry is gone.
-
-Fix this issue by not passing EXT4_GET_BLOCKS_CONVERT when splitting
-an unwritten extent before submitting I/O, and make
-ext4_split_convert_extents() to zero out the entire extent range
-to zero for this case, and also mark the extent in the extent status
-tree for consistency.
-
-Fixes: b8a8684502a0 ("ext4: Introduce FALLOC_FL_ZERO_RANGE flag for fallocate")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Cc: stable@kernel.org
-Message-ID: <20251129103247.686136-4-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b57e8d870d52 ("net: bridge: Maintain number of MDB entries in net_bridge_mcast_port")
+Reported-by: syzbot+d5d1b7343531d17bd3c5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/aYrWbRp83MQR1ife@debil/T/#t
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Nikolay Aleksandrov <nikolay@nvidia.com>
+Link: https://patch.msgid.link/20260213070031.1400003-2-nikolay@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/bridge/br_multicast.c | 45 ++++++++++++++++-----------------------
+ 1 file changed, 18 insertions(+), 27 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3735,15 +3735,19 @@ static struct ext4_ext_path *ext4_split_
- 	/* Convert to unwritten */
- 	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
- 		split_flag |= EXT4_EXT_DATA_ENTIRE_VALID1;
--	/* Convert to initialized */
--	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
-+	/* Split the existing unwritten extent */
-+	} else if (flags & (EXT4_GET_BLOCKS_UNWRIT_EXT |
-+			    EXT4_GET_BLOCKS_CONVERT)) {
- 		/*
- 		 * It is safe to convert extent to initialized via explicit
- 		 * zeroout only if extent is fully inside i_size or new_size.
- 		 */
- 		split_flag |= ee_block + ee_len <= eof_block ?
- 			      EXT4_EXT_MAY_ZEROOUT : 0;
--		split_flag |= (EXT4_EXT_MARK_UNWRIT2 | EXT4_EXT_DATA_VALID2);
-+		split_flag |= EXT4_EXT_MARK_UNWRIT2;
-+		/* Convert to initialized */
-+		if (flags & EXT4_GET_BLOCKS_CONVERT)
-+			split_flag |= EXT4_EXT_DATA_VALID2;
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 22d12e5459668..5855eb0502085 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -244,14 +244,11 @@ br_multicast_port_vid_to_port_ctx(struct net_bridge_port *port, u16 vid)
+ 
+ 	lockdep_assert_held_once(&port->br->multicast_lock);
+ 
+-	if (!br_opt_get(port->br, BROPT_MCAST_VLAN_SNOOPING_ENABLED))
+-		return NULL;
+-
+ 	/* Take RCU to access the vlan. */
+ 	rcu_read_lock();
+ 
+ 	vlan = br_vlan_find(nbp_vlan_group_rcu(port), vid);
+-	if (vlan && !br_multicast_port_ctx_vlan_disabled(&vlan->port_mcast_ctx))
++	if (vlan)
+ 		pmctx = &vlan->port_mcast_ctx;
+ 
+ 	rcu_read_unlock();
+@@ -701,7 +698,10 @@ br_multicast_port_ngroups_inc_one(struct net_bridge_mcast_port *pmctx,
+ 	u32 max = READ_ONCE(pmctx->mdb_max_entries);
+ 	u32 n = READ_ONCE(pmctx->mdb_n_entries);
+ 
+-	if (max && n >= max) {
++	/* enforce the max limit when it's a port pmctx or a port-vlan pmctx
++	 * with snooping enabled
++	 */
++	if (!br_multicast_port_ctx_vlan_disabled(pmctx) && max && n >= max) {
+ 		NL_SET_ERR_MSG_FMT_MOD(extack, "%s is already in %u groups, and mcast_max_groups=%u",
+ 				       what, n, max);
+ 		return -E2BIG;
+@@ -736,9 +736,7 @@ static int br_multicast_port_ngroups_inc(struct net_bridge_port *port,
+ 		return err;
  	}
- 	flags |= EXT4_GET_BLOCKS_SPLIT_NOMERGE;
- 	return ext4_split_extent(handle, inode, path, map, split_flag, flags,
-@@ -3919,7 +3923,7 @@ ext4_ext_handle_unwritten_extents(handle
- 	/* get_block() before submitting IO, split the extent */
- 	if (flags & EXT4_GET_BLOCKS_SPLIT_NOMERGE) {
- 		path = ext4_split_convert_extents(handle, inode, map, path,
--				flags | EXT4_GET_BLOCKS_CONVERT, allocated);
-+						  flags, allocated);
- 		if (IS_ERR(path))
- 			return path;
- 		/*
+ 
+-	/* Only count on the VLAN context if VID is given, and if snooping on
+-	 * that VLAN is enabled.
+-	 */
++	/* Only count on the VLAN context if VID is given */
+ 	if (!group->vid)
+ 		return 0;
+ 
+@@ -2011,6 +2009,18 @@ void br_multicast_port_ctx_init(struct net_bridge_port *port,
+ 	timer_setup(&pmctx->ip6_own_query.timer,
+ 		    br_ip6_multicast_port_query_expired, 0);
+ #endif
++	/* initialize mdb_n_entries if a new port vlan is being created */
++	if (vlan) {
++		struct net_bridge_port_group *pg;
++		u32 n = 0;
++
++		spin_lock_bh(&port->br->multicast_lock);
++		hlist_for_each_entry(pg, &port->mglist, mglist)
++			if (pg->key.addr.vid == vlan->vid)
++				n++;
++		WRITE_ONCE(pmctx->mdb_n_entries, n);
++		spin_unlock_bh(&port->br->multicast_lock);
++	}
+ }
+ 
+ void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pmctx)
+@@ -2094,25 +2104,6 @@ static void __br_multicast_enable_port_ctx(struct net_bridge_mcast_port *pmctx)
+ 		br_ip4_multicast_add_router(brmctx, pmctx);
+ 		br_ip6_multicast_add_router(brmctx, pmctx);
+ 	}
+-
+-	if (br_multicast_port_ctx_is_vlan(pmctx)) {
+-		struct net_bridge_port_group *pg;
+-		u32 n = 0;
+-
+-		/* The mcast_n_groups counter might be wrong. First,
+-		 * BR_VLFLAG_MCAST_ENABLED is toggled before temporary entries
+-		 * are flushed, thus mcast_n_groups after the toggle does not
+-		 * reflect the true values. And second, permanent entries added
+-		 * while BR_VLFLAG_MCAST_ENABLED was disabled, are not reflected
+-		 * either. Thus we have to refresh the counter.
+-		 */
+-
+-		hlist_for_each_entry(pg, &pmctx->port->mglist, mglist) {
+-			if (pg->key.addr.vid == pmctx->vlan->vid)
+-				n++;
+-		}
+-		WRITE_ONCE(pmctx->mdb_n_entries, n);
+-	}
+ }
+ 
+ static void br_multicast_enable_port_ctx(struct net_bridge_mcast_port *pmctx)
+-- 
+2.51.0
+
 
 
 
