@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-218053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eA/9AvVPnmlIUgQAu9opvQ
-	(envelope-from <stable+bounces-218053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:27:17 +0100
+	id IKsVLrdQnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71B818EA99
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:27:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3696518ECBA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 074E4307C9C3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0E957303A88B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A31D2517AC;
-	Wed, 25 Feb 2026 01:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4474D242D9B;
+	Wed, 25 Feb 2026 01:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ik4PHBcS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpAo/+Rf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6461D5ABA;
-	Wed, 25 Feb 2026 01:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086C34369A;
+	Wed, 25 Feb 2026 01:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982821; cv=none; b=H2grfBgak8DU55dNbIXjpZ3pWdFdrPTpcpS3avEkaFsvYTCdyYhnrxxJMgAmxpNQC0YW+dxolRiby98kB8A2bX74cJpEVxBA9YIzNL5Q/gkC4xl9nCeEjUu7szJhtrTC8mUA2IRVRut2xHd9bJz41u2S3BnYPwc1XnipTct7Lbs=
+	t=1771982887; cv=none; b=KJKyx6e4lVHv06MnIeqpch2jo6wYx7HschxJ+NAbY2pc+Ti+Hpr3ILTowpJQHFAJOpeLAbVbnIO/dcf1BGNIYznoQV/3+bDUcguRdbaXHijxzH0h+CVCsw3aFKxZlv5e8/XP5CvvRsMX0GNhKccMfBjzfM3l3i6xGbzDs96p6qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982821; c=relaxed/simple;
-	bh=qwtW7QOEeuPnaCow3yE9nRT5mcf4Ga91CEwcpHeoX4I=;
+	s=arc-20240116; t=1771982887; c=relaxed/simple;
+	bh=/k3ow8KVRtNJehrK55nV+YqBiEgK5ChaspB2Rz8XPyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WydcGDrpfkZQ70yjfVkzBerLjPn5KjwJ9CqF4rhjp6b/fSzOT+JeG6tPwy0BIFHMHIICoHK7X96ihLtHPiOBfPZFmGjRj8iMmyWLOSVo/DQDl7ITALG7eBm+EeOFMB4HXEBNMUSMvaIlj/j3lRRiyaGU4ypc8Ic6mUOQ8KygYkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ik4PHBcS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F81C116D0;
-	Wed, 25 Feb 2026 01:27:00 +0000 (UTC)
+	 MIME-Version; b=ETOdpvxzn4DaNnr3KejaYtkRNsGnvLVH+oFQtdabTjfGOgf+oFC7Cnr7tkW9ouEpkXfsrjjTXr4JyWOQvvwXEXLSBgrjN9/W+meYM1Py8vqbKrKKqWiz7K/aYzh2UHkyOzxoetzPOCjV/5vh0aTDmD26G2vpvl0FzqwI76bAbL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpAo/+Rf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B337C116D0;
+	Wed, 25 Feb 2026 01:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982821;
-	bh=qwtW7QOEeuPnaCow3yE9nRT5mcf4Ga91CEwcpHeoX4I=;
+	s=korg; t=1771982886;
+	bh=/k3ow8KVRtNJehrK55nV+YqBiEgK5ChaspB2Rz8XPyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ik4PHBcSbH6irUJefHt0Dk89vmzWNbfSHyxfaKEGG2qCrRkngnuub1Mo78Fh68+ot
-	 PR0F+kBms9AP4lLNuCy9AC5HsTQLF+xBADj0TYY4mg2GhnyA10+pJkGJCybEFXtfug
-	 EfrbG2eXF4hLnIeSMuQ1LieQmfudjHgQE/IHY2Mg=
+	b=dpAo/+Rfn8QQvZnhaVSVyAR4OZdxfsdV5yASJe2TTNQ1Pz81jdC7SB9j5xQX3eXM+
+	 Ql5f7Sopt1qZ5xIuKY4Pvj3GnQNaIi6OOAkPK+w5C+3gybNpUoKAJhVJxAjXhj0nkz
+	 8tmlmshrVKkZFU4JBMq2FKb9hh0SQ76m9zH4Td18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 016/781] gfs2: Retries missing in gfs2_{rename,exchange}
-Date: Tue, 24 Feb 2026 17:12:05 -0800
-Message-ID: <20260225012400.099137439@linuxfoundation.org>
+Subject: [PATCH 6.19 017/781] gfs2: Rename gfs2_log_submit_{bio -> write}
+Date: Tue, 24 Feb 2026 17:12:06 -0800
+Message-ID: <20260225012400.123337041@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218053-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218109-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,7 +90,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A71B818EA99
+X-Rspamd-Queue-Id: 3696518ECBA
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
@@ -99,174 +99,86 @@ X-Rspamd-Action: no action
 
 From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 11d763f0b0afc2cf5f92f4adae5dbbbbef712f8f ]
+[ Upstream commit 59d81037d32ff1e415dcaa359c238c9ca730932d ]
 
-Fix a bug in gfs2's asynchronous glock handling for rename and exchange
-operations.  The original async implementation from commit ad26967b9afa
-("gfs2: Use async glocks for rename") mentioned that retries were needed
-but never implemented them, causing operations to fail with -ESTALE
-instead of retrying on timeout.
+Rename gfs2_log_submit_bio() to gfs2_log_submit_write(): this function
+isn't used for submitting log reads.
 
-Also makes the waiting interruptible.
-
-In addition, the timeouts used were too high for situations in which
-timing out is a rare but expected scenario.  Switch to shorter timeouts
-with randomization and exponentional backoff.
-
-Fixes: ad26967b9afa ("gfs2: Use async glocks for rename")
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: 4a94f052e098 ("gfs2: Initialize bio->bi_opf early")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 36 +++++++++++++++++++++++++++---------
- fs/gfs2/glock.h |  3 ++-
- fs/gfs2/inode.c | 18 ++++++++++++++----
- 3 files changed, 43 insertions(+), 14 deletions(-)
+ fs/gfs2/log.c  | 4 ++--
+ fs/gfs2/lops.c | 6 +++---
+ fs/gfs2/lops.h | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 92e029104d8a4..289851d70130b 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -1284,31 +1284,45 @@ static int glocks_pending(unsigned int num_gh, struct gfs2_holder *ghs)
-  * gfs2_glock_async_wait - wait on multiple asynchronous glock acquisitions
-  * @num_gh: the number of holders in the array
-  * @ghs: the glock holder array
-+ * @retries: number of retries attempted so far
-  *
-  * Returns: 0 on success, meaning all glocks have been granted and are held.
-  *          -ESTALE if the request timed out, meaning all glocks were released,
-  *          and the caller should retry the operation.
-  */
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index 8312cd2cdae47..2a3b9d10eba78 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -889,7 +889,7 @@ void gfs2_write_log_header(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd,
+ 	lh->lh_crc = cpu_to_be32(crc);
  
--int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs)
-+int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs,
-+			  unsigned int retries)
- {
- 	struct gfs2_sbd *sdp = ghs[0].gh_gl->gl_name.ln_sbd;
--	int i, ret = 0, timeout = 0;
- 	unsigned long start_time = jiffies;
-+	int i, ret = 0;
-+	long timeout;
- 
- 	might_sleep();
--	/*
--	 * Total up the (minimum hold time * 2) of all glocks and use that to
--	 * determine the max amount of time we should wait.
--	 */
--	for (i = 0; i < num_gh; i++)
--		timeout += ghs[i].gh_gl->gl_hold_time << 1;
- 
--	if (!wait_event_timeout(sdp->sd_async_glock_wait,
-+	timeout = GL_GLOCK_MIN_HOLD;
-+	if (retries) {
-+		unsigned int max_shift;
-+		long incr;
-+
-+		/* Add a random delay and increase the timeout exponentially. */
-+		max_shift = BITS_PER_LONG - 2 - __fls(GL_GLOCK_HOLD_INCR);
-+		incr = min(GL_GLOCK_HOLD_INCR << min(retries - 1, max_shift),
-+			   10 * HZ - GL_GLOCK_MIN_HOLD);
-+		schedule_timeout_interruptible(get_random_long() % (incr / 3));
-+		if (signal_pending(current))
-+			goto interrupted;
-+		timeout += (incr / 3) + get_random_long() % (incr / 3);
-+	}
-+
-+	if (!wait_event_interruptible_timeout(sdp->sd_async_glock_wait,
- 				!glocks_pending(num_gh, ghs), timeout)) {
- 		ret = -ESTALE; /* request timed out. */
- 		goto out;
- 	}
-+	if (signal_pending(current))
-+		goto interrupted;
- 
- 	for (i = 0; i < num_gh; i++) {
- 		struct gfs2_holder *gh = &ghs[i];
-@@ -1332,6 +1346,10 @@ int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs)
- 		}
- 	}
- 	return ret;
-+
-+interrupted:
-+	ret = -EINTR;
-+	goto out;
+ 	gfs2_log_write(sdp, jd, page, sb->s_blocksize, 0, dblock);
+-	gfs2_log_submit_bio(&jd->jd_log_bio, REQ_OP_WRITE | op_flags);
++	gfs2_log_submit_write(&jd->jd_log_bio, REQ_OP_WRITE | op_flags);
  }
  
  /**
-diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
-index 55d5985f32a08..dccbf36b8cb10 100644
---- a/fs/gfs2/glock.h
-+++ b/fs/gfs2/glock.h
-@@ -204,7 +204,8 @@ int gfs2_glock_poll(struct gfs2_holder *gh);
- int gfs2_instantiate(struct gfs2_holder *gh);
- int gfs2_glock_holder_ready(struct gfs2_holder *gh);
- int gfs2_glock_wait(struct gfs2_holder *gh);
--int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs);
-+int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs,
-+			  unsigned int retries);
- void gfs2_glock_dq(struct gfs2_holder *gh);
- void gfs2_glock_dq_wait(struct gfs2_holder *gh);
- void gfs2_glock_dq_uninit(struct gfs2_holder *gh);
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 36618e3531996..b6ed069b34872 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1495,7 +1495,7 @@ static int gfs2_rename(struct inode *odir, struct dentry *odentry,
- 	unsigned int num_gh;
- 	int dir_rename = 0;
- 	struct gfs2_diradd da = { .nr_blocks = 0, .save_loc = 0, };
--	unsigned int x;
-+	unsigned int retries = 0, x;
- 	int error;
+@@ -1096,7 +1096,7 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
+ 	if (gfs2_withdrawn(sdp))
+ 		goto out_withdraw;
+ 	if (sdp->sd_jdesc)
+-		gfs2_log_submit_bio(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
++		gfs2_log_submit_write(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
+ 	if (gfs2_withdrawn(sdp))
+ 		goto out_withdraw;
  
- 	gfs2_holder_mark_uninitialized(&r_gh);
-@@ -1545,12 +1545,17 @@ static int gfs2_rename(struct inode *odir, struct dentry *odentry,
- 		num_gh++;
+diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
+index d27a0b1080a97..aa9e9fe25c2f7 100644
+--- a/fs/gfs2/lops.c
++++ b/fs/gfs2/lops.c
+@@ -229,7 +229,7 @@ static void gfs2_end_log_write(struct bio *bio)
+ }
+ 
+ /**
+- * gfs2_log_submit_bio - Submit any pending log bio
++ * gfs2_log_submit_write - Submit a pending log write bio
+  * @biop: Address of the bio pointer
+  * @opf: REQ_OP | op_flags
+  *
+@@ -237,7 +237,7 @@ static void gfs2_end_log_write(struct bio *bio)
+  * there is no pending bio, then this is a no-op.
+  */
+ 
+-void gfs2_log_submit_bio(struct bio **biop, blk_opf_t opf)
++void gfs2_log_submit_write(struct bio **biop, blk_opf_t opf)
+ {
+ 	struct bio *bio = *biop;
+ 	if (bio) {
+@@ -303,7 +303,7 @@ static struct bio *gfs2_log_get_bio(struct gfs2_sbd *sdp, u64 blkno,
+ 		nblk >>= sdp->sd_fsb2bb_shift;
+ 		if (blkno == nblk && !flush)
+ 			return bio;
+-		gfs2_log_submit_bio(biop, op);
++		gfs2_log_submit_write(biop, op);
  	}
  
-+again:
- 	for (x = 0; x < num_gh; x++) {
- 		error = gfs2_glock_nq(ghs + x);
- 		if (error)
- 			goto out_gunlock;
- 	}
--	error = gfs2_glock_async_wait(num_gh, ghs);
-+	error = gfs2_glock_async_wait(num_gh, ghs, retries);
-+	if (error == -ESTALE) {
-+		retries++;
-+		goto again;
-+	}
- 	if (error)
- 		goto out_gunlock;
- 
-@@ -1739,7 +1744,7 @@ static int gfs2_exchange(struct inode *odir, struct dentry *odentry,
- 	struct gfs2_sbd *sdp = GFS2_SB(odir);
- 	struct gfs2_holder ghs[4], r_gh;
- 	unsigned int num_gh;
--	unsigned int x;
-+	unsigned int retries = 0, x;
- 	umode_t old_mode = oip->i_inode.i_mode;
- 	umode_t new_mode = nip->i_inode.i_mode;
- 	int error;
-@@ -1783,13 +1788,18 @@ static int gfs2_exchange(struct inode *odir, struct dentry *odentry,
- 	gfs2_holder_init(nip->i_gl, LM_ST_EXCLUSIVE, GL_ASYNC, ghs + num_gh);
- 	num_gh++;
- 
-+again:
- 	for (x = 0; x < num_gh; x++) {
- 		error = gfs2_glock_nq(ghs + x);
- 		if (error)
- 			goto out_gunlock;
- 	}
- 
--	error = gfs2_glock_async_wait(num_gh, ghs);
-+	error = gfs2_glock_async_wait(num_gh, ghs, retries);
-+	if (error == -ESTALE) {
-+		retries++;
-+		goto again;
-+	}
- 	if (error)
- 		goto out_gunlock;
- 
+ 	*biop = gfs2_log_alloc_bio(sdp, blkno, end_io);
+diff --git a/fs/gfs2/lops.h b/fs/gfs2/lops.h
+index be740bf336664..010a4696406bb 100644
+--- a/fs/gfs2/lops.h
++++ b/fs/gfs2/lops.h
+@@ -17,7 +17,7 @@ u64 gfs2_log_bmap(struct gfs2_jdesc *jd, unsigned int lbn);
+ void gfs2_log_write(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd,
+ 		    struct page *page, unsigned size, unsigned offset,
+ 		    u64 blkno);
+-void gfs2_log_submit_bio(struct bio **biop, blk_opf_t opf);
++void gfs2_log_submit_write(struct bio **biop, blk_opf_t opf);
+ void gfs2_pin(struct gfs2_sbd *sdp, struct buffer_head *bh);
+ int gfs2_find_jhead(struct gfs2_jdesc *jd,
+ 		    struct gfs2_log_header_host *head);
 -- 
 2.51.0
 
