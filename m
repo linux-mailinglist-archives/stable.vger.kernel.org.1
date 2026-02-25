@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-218621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJjPKhBUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:48 +0100
+	id sLUhMgefnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD2F18FB77
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48922192E1B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C8033193020
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D89F3157F34
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F12262FE7;
-	Wed, 25 Feb 2026 01:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67BC2D3EEE;
+	Wed, 25 Feb 2026 06:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zjs9riNE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bP60CAuz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E7A2550D7;
-	Wed, 25 Feb 2026 01:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5132D1F40;
+	Wed, 25 Feb 2026 06:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983469; cv=none; b=ALVNtulQpU/lLvB6HVutN5FZIJIPu69LlYu33YmdwOA3EdMqoSw8ieTDmKlZbTjOZCrTFaBf2f8lXH3VpIxMIeYwfVOpCOtjQqoEILXCEjOgH3EsC8ILyg9AxgjYby/MllGtF5rQntATfvp0G56mpBDgma3vvfBWgC1xDI/0NzU=
+	t=1772002615; cv=none; b=aL2EIyfMTR3vrST+SfdmFy3FJm9lZ7kCHeLLADzMqOMyIoS+36VP7Z2VWzVzAAH41zgUJ5xy389GpQ1CpgJVRZk8zqayY1NB6XJGa5/yO+fo898ol2rcEV2ciQzho0yO20Vss7/hZGvptW70VYtxt/cbuVqsV9o3wXOhAC6xoWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983469; c=relaxed/simple;
-	bh=i5Mgv4d62U8FjC61UqFJXkmYcM9hvABaqzTnQ9LjA/E=;
+	s=arc-20240116; t=1772002615; c=relaxed/simple;
+	bh=0Pfqev4kUzHVppD6ULVAbNEo/F51y2/cGqAhqbSrUBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sDy899aFy8hgFr1DBjcuGT791ZrnCBYhdeHhSB4pskpzEWcLNu1KZ9bQ689h28KCiTgBXr+yqMoZXPhpmgY2vMwoNMhHZtS9ZZY5GZVLY/o1/O+B/8dQa0at8gTieEwjOMxHDFgIXJ8VyB8ngCWDofySus70pB7a6++OpOwU/00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zjs9riNE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AF2C116D0;
-	Wed, 25 Feb 2026 01:37:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H2miXKkwXmnDZ34UEUickx8RIwmHHss74nMOcXRVPQ4Ily2zVfoe3wMiu3qpmNsVUuPhQDIOTXvYuW80wbYlMsTqdu/UuS6UVeLV8xo21d8gbGNsOE2Skzno714tSDm09x+pXoK5TsDXNA9DkfAwXh4L6dBI6rXygBNCLQwBv+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bP60CAuz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7A5C19425;
+	Wed, 25 Feb 2026 06:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983468;
-	bh=i5Mgv4d62U8FjC61UqFJXkmYcM9hvABaqzTnQ9LjA/E=;
+	s=korg; t=1772002615;
+	bh=0Pfqev4kUzHVppD6ULVAbNEo/F51y2/cGqAhqbSrUBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zjs9riNEudQxf6qw/lfYMET9jLQdl+ohL+dCgnqBQCDDLaYWQBgEVqRzRe1CHWsFR
-	 rAJLTPIUp9i1UmRZgP2zrxsV2gyMfy6mkrf84AfU0l/4cAgIOJBn9hni94dSSMH2PE
-	 wZQSIaFYz15NExFejtXEHfXlHzyoX95PH8eSO8LA=
+	b=bP60CAuzhr86NYGbNS592Wr2Y4bdlTrJ05F1+szdSMCpk9zR9TKvzsbQ/PL+LdiZx
+	 F1R06S9vTipLYN4o4DSJos7oAo0zR961VKvltfMKs0jWiG5pnbxBqpjatX5ZKi6TzJ
+	 O4X59UYidJHdROQK3GzStH06E6OLbhuzT6wxd6r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Junjie Cao <junjie.cao@intel.com>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Lars Francke <lars.francke@gmail.com>,
+	Yijun Shen <Yijun.Shen@Dell.com>,
+	Patil Rajesh Reddy <Patil.Reddy@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 584/781] backlight: aw99706: Fix build errors caused by wrong gpio header
+Subject: [PATCH 6.18 367/641] platform/x86/amd/pmf: Prevent TEE errors after hibernate
 Date: Tue, 24 Feb 2026 17:21:33 -0800
-Message-ID: <20260225012414.123635540@linuxfoundation.org>
+Message-ID: <20260225012357.502098176@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +67,226 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218621-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,Dell.com,amd.com,kernel.org,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-219284-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3FD2F18FB77
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 48922192E1B
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junjie Cao <junjie.cao@intel.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit b7db7d9c4ffc04210fe631f73a81746d6e2ef24b ]
+[ Upstream commit 48d229c7047128dd52eaf863881bb3e62b5896e5 ]
 
-The driver uses GPIO descriptor API (devm_gpiod_get,
-gpiod_set_value_cansleep, GPIOD_OUT_LOW) but includes the legacy
-<linux/gpio.h> header instead of <linux/gpio/consumer.h>.
+After resuming from hibernate, TEE commands can time out and cause PSP
+disables. Fix this by reinitializing the Trusted Application (TA) and
+cancelling the pb workqueue in the hibernate callbacks to avoid these
+errors.
 
-When CONFIG_GPIOLIB is not set, <linux/gpio.h> does not include
-<linux/gpio/consumer.h>, causing build errors:
+ccp 0000:c4:00.2: tee: command 0x5 timed out, disabling PSP
+amd-pmf AMDI0107:00: TEE enact cmd failed. err: ffff000e, ret:0
+amd-pmf AMDI0107:00: TEE enact cmd failed. err: ffff000e, ret:0
+amd-pmf AMDI0107:00: TEE enact cmd failed. err: ffff000e, ret:0
 
-  error: implicit declaration of function 'gpiod_set_value_cansleep'
-  error: implicit declaration of function 'devm_gpiod_get'
-  error: 'GPIOD_OUT_LOW' undeclared
-
-Fix by including the correct header <linux/gpio/consumer.h>.
-
-Fixes: 147b38a5ad06 ("backlight: aw99706: Add support for Awinic AW99706 backlight")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512171631.uKXlYwqu-lkp@intel.com/
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Link: https://patch.msgid.link/20260111130117.5041-1-junjie.cao@intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: ae82cef7d9c5 ("platform/x86/amd/pmf: Add support for PMF-TA interaction")
+Reported-by: Lars Francke <lars.francke@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/CAD-Ua_gfJnQSo8ucS_7ZwzuhoBRJ14zXP7s8b-zX3ZcxcyWePw@mail.gmail.com/
+Tested-by: Yijun Shen <Yijun.Shen@Dell.com>
+Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+[ML: Add more tags]
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/20260116041132.153674-2-superm1@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/aw99706.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmf/core.c   | 62 ++++++++++++++++++++++++++-
+ drivers/platform/x86/amd/pmf/pmf.h    | 10 +++++
+ drivers/platform/x86/amd/pmf/tee-if.c | 12 ++----
+ 3 files changed, 74 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/video/backlight/aw99706.c b/drivers/video/backlight/aw99706.c
-index df5b23b2f7534..938f352aaab7f 100644
---- a/drivers/video/backlight/aw99706.c
-+++ b/drivers/video/backlight/aw99706.c
-@@ -12,7 +12,7 @@
- #include <linux/backlight.h>
- #include <linux/bitfield.h>
- #include <linux/delay.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/i2c.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
+diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
+index bc544a4a5266e..e787480f4df26 100644
+--- a/drivers/platform/x86/amd/pmf/core.c
++++ b/drivers/platform/x86/amd/pmf/core.c
+@@ -314,6 +314,61 @@ int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
+ 	return 0;
+ }
+ 
++static int amd_pmf_reinit_ta(struct amd_pmf_dev *pdev)
++{
++	bool status;
++	int ret, i;
++
++	for (i = 0; i < ARRAY_SIZE(amd_pmf_ta_uuid); i++) {
++		ret = amd_pmf_tee_init(pdev, &amd_pmf_ta_uuid[i]);
++		if (ret) {
++			dev_err(pdev->dev, "TEE init failed for UUID[%d] ret: %d\n", i, ret);
++			return ret;
++		}
++
++		ret = amd_pmf_start_policy_engine(pdev);
++		dev_dbg(pdev->dev, "start policy engine ret: %d (UUID idx: %d)\n", ret, i);
++		status = ret == TA_PMF_TYPE_SUCCESS;
++		if (status)
++			break;
++		amd_pmf_tee_deinit(pdev);
++	}
++
++	return 0;
++}
++
++static int amd_pmf_restore_handler(struct device *dev)
++{
++	struct amd_pmf_dev *pdev = dev_get_drvdata(dev);
++	int ret;
++
++	if (pdev->buf) {
++		ret = amd_pmf_set_dram_addr(pdev, false);
++		if (ret)
++			return ret;
++	}
++
++	if (pdev->smart_pc_enabled)
++		amd_pmf_reinit_ta(pdev);
++
++	return 0;
++}
++
++static int amd_pmf_freeze_handler(struct device *dev)
++{
++	struct amd_pmf_dev *pdev = dev_get_drvdata(dev);
++
++	if (!pdev->smart_pc_enabled)
++		return 0;
++
++	cancel_delayed_work_sync(&pdev->pb_work);
++	/* Clear all TEE resources */
++	amd_pmf_tee_deinit(pdev);
++	pdev->session_id = 0;
++
++	return 0;
++}
++
+ static int amd_pmf_suspend_handler(struct device *dev)
+ {
+ 	struct amd_pmf_dev *pdev = dev_get_drvdata(dev);
+@@ -347,7 +402,12 @@ static int amd_pmf_resume_handler(struct device *dev)
+ 	return 0;
+ }
+ 
+-static DEFINE_SIMPLE_DEV_PM_OPS(amd_pmf_pm, amd_pmf_suspend_handler, amd_pmf_resume_handler);
++static const struct dev_pm_ops amd_pmf_pm = {
++	.suspend = amd_pmf_suspend_handler,
++	.resume = amd_pmf_resume_handler,
++	.freeze = amd_pmf_freeze_handler,
++	.restore = amd_pmf_restore_handler,
++};
+ 
+ static void amd_pmf_init_features(struct amd_pmf_dev *dev)
+ {
+diff --git a/drivers/platform/x86/amd/pmf/pmf.h b/drivers/platform/x86/amd/pmf/pmf.h
+index bd19f2a6bc786..2da1885d87915 100644
+--- a/drivers/platform/x86/amd/pmf/pmf.h
++++ b/drivers/platform/x86/amd/pmf/pmf.h
+@@ -122,6 +122,12 @@ struct cookie_header {
+ 
+ typedef void (*apmf_event_handler_t)(acpi_handle handle, u32 event, void *data);
+ 
++static const uuid_t amd_pmf_ta_uuid[] __used = { UUID_INIT(0xd9b39bf2, 0x66bd, 0x4154, 0xaf, 0xb8,
++							   0x8a, 0xcc, 0x2b, 0x2b, 0x60, 0xd6),
++						 UUID_INIT(0x6fd93b77, 0x3fb8, 0x524d, 0xb1, 0x2d,
++							   0xc5, 0x29, 0xb1, 0x3d, 0x85, 0x43),
++					       };
++
+ /* APTS PMF BIOS Interface */
+ struct amd_pmf_apts_output {
+ 	u16 table_version;
+@@ -888,4 +894,8 @@ void amd_pmf_populate_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_tab
+ void amd_pmf_dump_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_table *in);
+ int amd_pmf_invoke_cmd_enact(struct amd_pmf_dev *dev);
+ 
++int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid);
++void amd_pmf_tee_deinit(struct amd_pmf_dev *dev);
++int amd_pmf_start_policy_engine(struct amd_pmf_dev *dev);
++
+ #endif /* PMF_H */
+diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
+index 6e8116bef4f6a..9030459352375 100644
+--- a/drivers/platform/x86/amd/pmf/tee-if.c
++++ b/drivers/platform/x86/amd/pmf/tee-if.c
+@@ -27,12 +27,6 @@ module_param(pb_side_load, bool, 0444);
+ MODULE_PARM_DESC(pb_side_load, "Sideload policy binaries debug policy failures");
+ #endif
+ 
+-static const uuid_t amd_pmf_ta_uuid[] = { UUID_INIT(0xd9b39bf2, 0x66bd, 0x4154, 0xaf, 0xb8, 0x8a,
+-						    0xcc, 0x2b, 0x2b, 0x60, 0xd6),
+-					  UUID_INIT(0x6fd93b77, 0x3fb8, 0x524d, 0xb1, 0x2d, 0xc5,
+-						    0x29, 0xb1, 0x3d, 0x85, 0x43),
+-					};
+-
+ static const char *amd_pmf_uevent_as_str(unsigned int state)
+ {
+ 	switch (state) {
+@@ -312,7 +306,7 @@ static void amd_pmf_invoke_cmd(struct work_struct *work)
+ 	schedule_delayed_work(&dev->pb_work, msecs_to_jiffies(pb_actions_ms));
+ }
+ 
+-static int amd_pmf_start_policy_engine(struct amd_pmf_dev *dev)
++int amd_pmf_start_policy_engine(struct amd_pmf_dev *dev)
+ {
+ 	struct cookie_header *header;
+ 	int res;
+@@ -468,7 +462,7 @@ static int amd_pmf_register_input_device(struct amd_pmf_dev *dev)
+ 	return 0;
+ }
+ 
+-static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
++int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
+ {
+ 	u32 size;
+ 	int ret;
+@@ -516,7 +510,7 @@ static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
+ 	return ret;
+ }
+ 
+-static void amd_pmf_tee_deinit(struct amd_pmf_dev *dev)
++void amd_pmf_tee_deinit(struct amd_pmf_dev *dev)
+ {
+ 	if (!dev->tee_ctx)
+ 		return;
 -- 
 2.51.0
 
