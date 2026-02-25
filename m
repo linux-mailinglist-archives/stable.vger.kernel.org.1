@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-219209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPz3FwGdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:56:01 +0100
+	id 2AZiLYpTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29C9192903
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:56:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C7E18F8DC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5D3473012526
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BC2831419C8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D1F2C21C4;
-	Wed, 25 Feb 2026 06:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49484248881;
+	Wed, 25 Feb 2026 01:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbHVkXet"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oApK3VW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8A2C0263;
-	Wed, 25 Feb 2026 06:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E31218B0A;
+	Wed, 25 Feb 2026 01:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002559; cv=none; b=fFcmNWJOqk3uNWb1cDEEmdIFb01+aTQsHyg4D4IIs/+sgPxNeEPuTbQJnM5rR05c7PGKoxtg/I1iDjUsas7X9RmytXrH4Xuk9z9U7v/C2ZhChE28dhuRAh6xult8QsaHykaZrAL55kd0n2uRLY/WJj43wGvfah+YZ1rZ6lF2/xo=
+	t=1771983391; cv=none; b=bs1orbDF0fvMN1i5NHdwihOOM2qqYi22/UPszGipKVrlsAzrpgG7iRsyqUyLF0mZrUc/705KZB7mKxLhf3VJKYXs2ixrvTPJoXHwBgHo1Ua5C5nWVEczLixgmkq2PjVOoy08MyW0iJ14P9ZhoIcwl5yqRlwAq8ORFB0FSD/nkvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002559; c=relaxed/simple;
-	bh=ex5XOkKaotlqLiq5YhBSirSmC+rRMJFMDaba7UwsKcY=;
+	s=arc-20240116; t=1771983391; c=relaxed/simple;
+	bh=tMsk0Q4n86xSyLL2wlBsS1pfDYGVQTiXvj/imQ6LslE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbYply9y9phJwgPc6EOIcZ/bef1w3em71jQ1DY5EbUalS5npLV4lPrBtR1siiMQr0uDfy/KVDh3jXcQUxgDQoliSLzNN3QwClDmvsJqFun7FkjWG6KfUgXDbMs5xtb4wBRiBtFbH4T2COa8BlnKJgASEHsgf+G7N5MABmf3ChOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbHVkXet; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C56C116D0;
-	Wed, 25 Feb 2026 06:55:58 +0000 (UTC)
+	 MIME-Version; b=YEUbZ67WlMAwSPI8C4B91EvBri2fVO0khwwOMRQ/Ab+mbZoLVb0aIIR15MTum0PlPRSN6vSB8XxgQmab1D6lcoTOveACgg7qDR6CfXBb0lN2OjqAR7EvlQf153tPkbhawLi2fvWc9UorKUsXP8hx2iLLqLJnzCAjiCACWQuJCyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oApK3VW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EE5C116D0;
+	Wed, 25 Feb 2026 01:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002559;
-	bh=ex5XOkKaotlqLiq5YhBSirSmC+rRMJFMDaba7UwsKcY=;
+	s=korg; t=1771983390;
+	bh=tMsk0Q4n86xSyLL2wlBsS1pfDYGVQTiXvj/imQ6LslE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tbHVkXetaBomc6X4noZMqEh0/och5s5WeZ00k+f4P+9UkCTfTRq/Gj07nsxrjWX0H
-	 jeybfY5cUeyClQCjLXV+8c1udK4NW+zb50aDa9TB+9AUGDgYUv6EwxlMHoxNszH9lk
-	 F9mbBNJQ0nq6MJ+fVJd80gmPSV1emTTdVbfhJqho=
+	b=2oApK3VWn6/mH8Rs1oyPFn7/Kyp37GNsraaehxTajFb1YwnjRrXAIhrSAuNXay3P/
+	 ooQrQE0RBE5u6ML+dDPfww+lK2P5D/GYYxBeefFXHG0zUlm+QdOTyEAHi+T/7en6PN
+	 neyc7mEB1oVBvZo75sfsP1ZJ6fWgXKJIQU+2CSpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 296/641] tcp: accecn: handle unexpected AccECN negotiation feedback
+Subject: [PATCH 6.19 513/781] clk: qcom: gcc-sm8550: Use floor ops for SDCC RCGs
 Date: Tue, 24 Feb 2026 17:20:22 -0800
-Message-ID: <20260225012355.921230857@linuxfoundation.org>
+Message-ID: <20260225012412.387410861@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219209-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218552-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,128 +88,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nokia-bell-labs.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F29C9192903
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 30C7E18F8DC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit c5ff6b83715919767f181f13e992b5055812a194 ]
+[ Upstream commit 1c06e3956054fb5a0930f07b02726b1774b6c700 ]
 
-According to Sections 3.1.2 and 3.1.3 of AccECN spec (RFC9768).
+In line with commit a27ac3806b0a ("clk: qcom: gcc-sm8450: Use floor ops
+for SDCC RCGs") done to fix issues with overclocked SD cards on SM8450
+powered boards set floor clock operations for SDCC RCGs on SM8550.
 
-In Section 3.1.2, it says an AccECN implementation has no need to
-recognize or support the Server response labelled 'Nonce' or ECN-nonce
-feedback more generally, as RFC 3540 has been reclassified as Historic.
-AccECN is compatible with alternative ECN feedback integrity approaches
-to the nonce. The SYN/ACK labelled 'Nonce' with (AE,CWR,ECE) = (1,0,1)
-is reserved for future use. A TCP Client (A) that receives such a SYN/ACK
-follows the procedure for forward compatibility given in Section 3.1.3.
+This change fixes initialization of some SD cards, where the problem
+is manifested by the SDHC driver:
 
-Then in Section 3.1.3, it says if a TCP Client has sent a SYN requesting
-AccECN feedback with (AE,CWR,ECE) = (1,1,1) then receives a SYN/ACK with
-the currently reserved combination (AE,CWR,ECE) = (1,0,1) but it does not
-have logic specific to such a combination, the Client MUST enable AccECN
-mode as if the SYN/ACK onfirmed that the Server supported AccECN and as
-if it fed back that the IP-ECN field on the SYN had arrived unchanged.
+    mmc0: Card appears overclocked; req 50000000 Hz, actual 100000000 Hz
+    mmc0: error -110 whilst initialising SD card
 
-Fixes: 3cae34274c79 ("tcp: accecn: AccECN negotiation").
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260131222515.8485-7-chia-yu.chang@nokia-bell-labs.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 955f2ea3b9e9 ("clk: qcom: Add GCC driver for SM8550")
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251124212012.3660189-2-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp_ecn.h | 44 ++++++++++++++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 13 deletions(-)
+ drivers/clk/qcom/gcc-sm8550.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
-index 2e1637edf1d3c..a709fb1756eb7 100644
---- a/include/net/tcp_ecn.h
-+++ b/include/net/tcp_ecn.h
-@@ -473,6 +473,26 @@ static inline u8 tcp_accecn_option_init(const struct sk_buff *skb,
- 	return TCP_ACCECN_OPT_COUNTER_SEEN;
- }
+diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
+index 862a9bf73bcb5..36a5b7de5b55d 100644
+--- a/drivers/clk/qcom/gcc-sm8550.c
++++ b/drivers/clk/qcom/gcc-sm8550.c
+@@ -1025,7 +1025,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_9,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_9),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
-+static inline void tcp_ecn_rcv_synack_accecn(struct sock *sk,
-+					     const struct sk_buff *skb, u8 dsf)
-+{
-+	struct tcp_sock *tp = tcp_sk(sk);
-+
-+	tcp_ecn_mode_set(tp, TCP_ECN_MODE_ACCECN);
-+	tp->syn_ect_rcv = dsf & INET_ECN_MASK;
-+	/* Demand Accurate ECN option in response to the SYN on the SYN/ACK
-+	 * and the TCP server will try to send one more packet with an AccECN
-+	 * Option at a later point during the connection.
-+	 */
-+	if (tp->rx_opt.accecn &&
-+	    tp->saw_accecn_opt < TCP_ACCECN_OPT_COUNTER_SEEN) {
-+		u8 saw_opt = tcp_accecn_option_init(skb, tp->rx_opt.accecn);
-+
-+		tcp_accecn_saw_opt_fail_recv(tp, saw_opt);
-+		tp->accecn_opt_demand = 2;
-+	}
-+}
-+
- /* See Table 2 of the AccECN draft */
- static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb,
- 				      const struct tcphdr *th, u8 ip_dsfield)
-@@ -495,13 +515,11 @@ static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb
- 		tcp_ecn_mode_set(tp, TCP_ECN_DISABLED);
- 		break;
- 	case 0x1:
--	case 0x5:
- 		/* +========+========+============+=============+
- 		 * | A      | B      |  SYN/ACK   |  Feedback   |
- 		 * |        |        |    B->A    |  Mode of A  |
- 		 * |        |        | AE CWR ECE |             |
- 		 * +========+========+============+=============+
--		 * | AccECN | Nonce  | 1   0   1  | (Reserved)  |
- 		 * | AccECN | ECN    | 0   0   1  | Classic ECN |
- 		 * | Nonce  | AccECN | 0   0   1  | Classic ECN |
- 		 * | ECN    | AccECN | 0   0   1  | Classic ECN |
-@@ -509,20 +527,20 @@ static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb
- 		 */
- 		if (tcp_ca_no_fallback_rfc3168(sk))
- 			tcp_ecn_mode_set(tp, TCP_ECN_DISABLED);
--		else if (tcp_ecn_mode_pending(tp))
--			/* Downgrade from AccECN, or requested initially */
-+		else
- 			tcp_ecn_mode_set(tp, TCP_ECN_MODE_RFC3168);
- 		break;
--	default:
--		tcp_ecn_mode_set(tp, TCP_ECN_MODE_ACCECN);
--		tp->syn_ect_rcv = ip_dsfield & INET_ECN_MASK;
--		if (tp->rx_opt.accecn &&
--		    tp->saw_accecn_opt < TCP_ACCECN_OPT_COUNTER_SEEN) {
--			u8 saw_opt = tcp_accecn_option_init(skb, tp->rx_opt.accecn);
--
--			tcp_accecn_saw_opt_fail_recv(tp, saw_opt);
--			tp->accecn_opt_demand = 2;
-+	case 0x5:
-+		if (tcp_ecn_mode_pending(tp)) {
-+			tcp_ecn_rcv_synack_accecn(sk, skb, ip_dsfield);
-+			if (INET_ECN_is_ce(ip_dsfield)) {
-+				tp->received_ce++;
-+				tp->received_ce_pending++;
-+			}
- 		}
-+		break;
-+	default:
-+		tcp_ecn_rcv_synack_accecn(sk, skb, ip_dsfield);
- 		if (INET_ECN_is_ce(ip_dsfield) &&
- 		    tcp_accecn_validate_syn_feedback(sk, ace,
- 						     tp->syn_ect_snt)) {
+@@ -1048,7 +1048,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
+ 
 -- 
 2.51.0
 
