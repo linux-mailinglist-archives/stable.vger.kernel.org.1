@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EQNGThVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218656-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:44 +0100
+	id UJQDJ0efnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E3518FF4B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C66A7192EE0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 748673130596
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2C543179584
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAEF25A642;
-	Wed, 25 Feb 2026 01:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74D13081C2;
+	Wed, 25 Feb 2026 06:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qE/g3CkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDEpXRvW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0FE25A655;
-	Wed, 25 Feb 2026 01:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE99305E28;
+	Wed, 25 Feb 2026 06:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983508; cv=none; b=VVyVPhq8djDYDn5Mpw64uR7mc/SQvLLUQ2NJvuffEv+mtLzyJYPDKXEiHqUM3mj98VF1OYV6a2k0hXsChWygHtwARTsciVxr1KjaU+rOzvMlUjuJXhhU7mM1H2nMNHKHP4PJjPDQHoRpuccV7hoP187LEHLqs4jFykA5nqBGPp0=
+	t=1772002634; cv=none; b=IFopE1jlAO9ibPyxR7nYcGRXMvqJNFf6AMZgpCLguKYkRzUjEWnuCLRNeYemDLnniFSG8VABHIHzmhH6sQR94OeYnoDrzFvaZmwe+BZhx3OKyQCVHrE7OwXWXo+DPe4/v+cFgPppzIIxNTVIXhDfWK/NMSrwgzPsRd+SHwVoGRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983508; c=relaxed/simple;
-	bh=gRsRo9cSfuayeqRbBwRiepIgPgUHELEMkAQr0TAr//k=;
+	s=arc-20240116; t=1772002634; c=relaxed/simple;
+	bh=hjlBz/iTZzsnZIaxFNT+Nl1gl2EJ32VXJyEzyDJjFeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eyshFWWKd56QByYg9ckUHkXEIVr0b4105zWc2ZApYnsnKXwlL7KUB8Ja1xBFIgOv1+8CcZ7bRZ7P5hwYUiepZOn4kU6HtZ/G9DDjyo3Uu0hbaqLa1augDo5rJ047DpmbSAC2sYYS0UNHLwh77VBUVuRQTgGmWtvKMADcC6iczT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qE/g3CkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132D3C116D0;
-	Wed, 25 Feb 2026 01:38:28 +0000 (UTC)
+	 MIME-Version; b=QXxDr6QDyl2yOUN8mBfNdJAtsFiMTU8FPVPx2h2LhE9TeM8nMkiUoeilZ69NiObUHbLw3283FWDEbMI1kLf0igqB74oFqz+onoiha0veC7mIpYzZaBh5+K66RdpkNRJWQaIYsvxOBXgruMBcXlgeVsdcNytHTQ6I8Z89OkR41Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDEpXRvW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF7AC116D0;
+	Wed, 25 Feb 2026 06:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983508;
-	bh=gRsRo9cSfuayeqRbBwRiepIgPgUHELEMkAQr0TAr//k=;
+	s=korg; t=1772002634;
+	bh=hjlBz/iTZzsnZIaxFNT+Nl1gl2EJ32VXJyEzyDJjFeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qE/g3CkYr0dN0XUYU+SoZucN9pG0RtnX70jdqUKzUUMZFHW/GnjXaFipDzi1czoec
-	 L5GG/GoQkBlVAeI6njhTei5A0VdWql14UiPs7TGsUbS5+xwxiuM2y0mBeyuIToZ3ct
-	 2CbkzOGwVwVYvGa1yUZiIjzTqFfVu288E9980NR8=
+	b=sDEpXRvWcSge5ud1hI/aT3xTLx//FfDiEnthM8WuoB3+CNER/RGrhmef2Hcl5V+cR
+	 GahEzJNd1OzuWAsxDsUAYFJl92KydDgoz+IIXq/J0TDgCtyMHaO4OoBpBjPmROFqFE
+	 kw7JjWDZaFZYZhvFCtP6P6vHLM9j/SwSW1Lo7hCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+08d8956768c96a2c52cf@syzkaller.appspotmail.com,
-	Bartlomiej Kubik <kubik.bartlomiej@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 615/781] fs/ntfs3: Initialize new folios before use
+Subject: [PATCH 6.18 398/641] remoteproc: imx_dsp_rproc: Only reset carveout memory at RPROC_OFFLINE state
 Date: Tue, 24 Feb 2026 17:22:04 -0800
-Message-ID: <20260225012414.884577790@linuxfoundation.org>
+Message-ID: <20260225012358.216244080@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +67,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218656-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,paragon-software.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.965];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,08d8956768c96a2c52cf];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219314-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[paragon-software.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 85E3518FF4B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C66A7192EE0
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit f223ebffa185cc8da934333c5a31ff2d4f992dc9 ]
+[ Upstream commit b490ddf27be28e64a39c08ae643d7b22561beaf6 ]
 
-KMSAN reports an uninitialized value in longest_match_std(), invoked
-from ntfs_compress_write(). When new folios are allocated without being
-marked uptodate and ni_read_frame() is skipped because the caller expects
-the frame to be completely overwritten, some reserved folios may remain
-only partially filled, leaving the rest memory uninitialized.
+Do not reset memory at suspend and resume stage, because some
+memory is used to save the software state for resume, if it is cleared,
+the resume operation can fail.
 
-Fixes: 584f60ba22f7 ("ntfs3: Convert ntfs_get_frame_pages() to use a folio")
-Tested-by: syzbot+08d8956768c96a2c52cf@syzkaller.appspotmail.com
-Reported-by: syzbot+08d8956768c96a2c52cf@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=08d8956768c96a2c52cf
-
-Signed-off-by: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: c4c432dfb00f ("remoteproc: imx_dsp_rproc: Add support of recovery and coredump process")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Link: https://lore.kernel.org/r/20251218071750.2692132-1-shengjiu.wang@nxp.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/imx_dsp_rproc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index 2e7b2e566ebe1..732260087066d 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -995,7 +995,7 @@ static int ntfs_get_frame_pages(struct address_space *mapping, pgoff_t index,
+diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+index 6e78a01755c7b..e61a08df113e4 100644
+--- a/drivers/remoteproc/imx_dsp_rproc.c
++++ b/drivers/remoteproc/imx_dsp_rproc.c
+@@ -1026,9 +1026,11 @@ static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
+ 	 * Clear buffers after pm rumtime for internal ocram is not
+ 	 * accessible if power and clock are not enabled.
+ 	 */
+-	list_for_each_entry(carveout, &rproc->carveouts, node) {
+-		if (carveout->va)
+-			memset(carveout->va, 0, carveout->len);
++	if (rproc->state == RPROC_OFFLINE) {
++		list_for_each_entry(carveout, &rproc->carveouts, node) {
++			if (carveout->va)
++				memset(carveout->va, 0, carveout->len);
++		}
+ 	}
  
- 		folio = __filemap_get_folio(mapping, index,
- 					    FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
--					    gfp_mask);
-+					    gfp_mask | __GFP_ZERO);
- 		if (IS_ERR(folio)) {
- 			while (npages--) {
- 				folio = page_folio(pages[npages]);
+ 	ret = imx_dsp_rproc_elf_load_segments(rproc, fw);
 -- 
 2.51.0
 
