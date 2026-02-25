@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218535-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAQoB6ZWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:50 +0100
+	id oCZcMvtSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218535-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB5019038E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3562118F63F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 14B6530B50BE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4306B3105616
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B1727FD72;
-	Wed, 25 Feb 2026 01:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8E9242D9B;
+	Wed, 25 Feb 2026 01:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lI3Movaf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V339VKSO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0720F27B34F;
-	Wed, 25 Feb 2026 01:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D260F1EB5E1;
+	Wed, 25 Feb 2026 01:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984037; cv=none; b=Z6slhFaZIg3AyAVC9DbcciZ7W5bjwpCD+qiOgQoIm/7/9mb42/dm4FnSSoOqOS6hsoHZhsBTZZfh3XgbODHAWPbgTzyL4WczgRMBbVnUNY7QzgwmUjajud9DmWkZtctYeCxsbMAeIFBbbUuQDTT4A+2Yv8iwFnvveOYCl6PvZDo=
+	t=1771983372; cv=none; b=rCIbwIijITKX44ck9u8wpaVCjiWjLKcKa7aGzgBbjv2Qqm5bdtQyPkcx14abEuXHhvMjoSQAHhUdLiRVBp6TC7EFutMBM1SnOAuEKNEC6G+QJRhiEfuqMY36K5E7Ffl10YWWfcqA2KDyPSugpu2cjLI/dKojv7Ac9MjrJ6ERyjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984037; c=relaxed/simple;
-	bh=XKfqUH6jzYKjDNoOfORSf6/82Xf5RFMRzs/2CM8MXXM=;
+	s=arc-20240116; t=1771983372; c=relaxed/simple;
+	bh=f9C/d4mo/GSdTxN9fTAtnwCqW7HCtQ2ZXMU48avg9uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JjDMQsKf7JYWccppB8t8GnjYKKdE5zY6n1jRzDTFTSHUq7g06tM7UXmEVlFOD8tz5ETEIzWVQDVt9X2VXP7kYXzlgfv7qPIuk7pSd5ybtBk4oiZyqxS+/tsAbAYNiyNPH83vbW5JPa6bCawo/GpHIH7NALbT+ynQc5tOMWJercY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lI3Movaf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF619C116D0;
-	Wed, 25 Feb 2026 01:47:16 +0000 (UTC)
+	 MIME-Version; b=m/IZj3ja6MyYU2pg/xleztA+64j9BkiJijjXaOSlnq+BwJt9ByhtfTwR3UjZwSs5+8p9rxLGfrVx/7s4AVJ+zIEfZqHFqtS0nqBh8eBD30JxqKye6Q+sTIeeE3A5ZK0+Tvo8wOaiMR3u+AYJdmLRXzI0QOqa6/YPpbuo9t1AJKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V339VKSO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8743DC19423;
+	Wed, 25 Feb 2026 01:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984036;
-	bh=XKfqUH6jzYKjDNoOfORSf6/82Xf5RFMRzs/2CM8MXXM=;
+	s=korg; t=1771983372;
+	bh=f9C/d4mo/GSdTxN9fTAtnwCqW7HCtQ2ZXMU48avg9uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lI3Movaf7huo8JA+wMbQMXbsPJIyO+pW3VpgxI3Ez7dHxJNe/X+ygmeO3tqcVSKZj
-	 Te1Ct1mglUNAiPIijCwOH702D/DGH3otlFutKLlu3Wyh9u5QWSxG60IPE3iATy0lJN
-	 2AJhDFVSE26BqnmQYnzT542zkYnjoJ7ptaTtT6D4=
+	b=V339VKSOmyL2BlhYc9pIkS2qkoqeBLP7+ywA3ZnaNSU2GI41YxbBi2m5ebtHsjpLA
+	 3c6ki3k+3nn3LvJNtji9PGlOmeBywcDDmM6vOOhJf0QVZsXET02sbkt6FS6ClgrK1u
+	 URXE6o5h6bTM47LLwmNOPLiaeUgzd1k8f/YpiTQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Richter <Simon.Richter@hogyros.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 280/641] PCI: Remove old_size limit from bridge window sizing
-Date: Tue, 24 Feb 2026 17:20:06 -0800
-Message-ID: <20260225012355.564036800@linuxfoundation.org>
+Subject: [PATCH 6.19 498/781] scsi: smartpqi: Fix memory leak in pqi_report_phys_luns()
+Date: Tue, 24 Feb 2026 17:20:07 -0800
+Message-ID: <20260225012412.017241961@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,148 +64,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219104-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218535-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,hogyros.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: DBB5019038E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3562118F63F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit f909e3ee3ed1a44202f09ac7e637a0f9ec372225 ]
+[ Upstream commit 41b37312bd9722af77ec7817ccf22d7a4880c289 ]
 
-calculate_memsize() applies lower bound to the resource size before
-aligning the resource size making it impossible to shrink bridge window
-resources. I've not found any justification for this lower bound and
-nothing indicated it was to work around some HW issue.
+pqi_report_phys_luns() fails to release the rpl_list buffer when
+encountering an unsupported data format or when the allocation for
+rpl_16byte_wwid_list fails. These early returns bypass the cleanup logic,
+leading to memory leaks.
 
-Prior to the commit 3baeae36039a ("PCI: Use pci_release_resource() instead
-of release_resource()"), releasing a bridge window during BAR resize
-resulted in clearing start and end address of the resource.  Clearing
-addresses destroys the resource size as a side-effect, therefore nullifying
-the effect of the old size lower bound.
+Consolidate the error handling by adding an out_free_rpl_list label and use
+goto statements to ensure rpl_list is consistently freed on failure.
 
-After the commit 3baeae36039a ("PCI: Use pci_release_resource() instead of
-release_resource()"), BAR resize uses the aligned old size, which results
-in exceeding what fits into the parent window in some cases:
+Compile tested only. Issue found using a prototype static analysis tool and
+code review.
 
-  xe 0030:03:00.0: [drm] Attempting to resize bar from 256MiB -> 16384MiB
-  xe 0030:03:00.0: BAR 0 [mem 0x620c000000000-0x620c000ffffff 64bit]: releasing
-  xe 0030:03:00.0: BAR 2 [mem 0x6200000000000-0x620000fffffff 64bit pref]: releasing
-  pci 0030:02:01.0: bridge window [mem 0x6200000000000-0x620001fffffff 64bit pref]: releasing
-  pci 0030:01:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref]: releasing
-  pci 0030:00:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref]: was not released (still contains assigned resources)
-  pci 0030:00:00.0: Assigned bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref] to [bus 01-04] free space at [mem 0x6200400000000-0x62007ffffffff 64bit pref]
-  pci 0030:00:00.0: Assigned bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref] to [bus 01-04] cannot fit 0x4000000000 required for 0030:01:00.0 bridging to [bus 02-04]
-
-The old size of 0x6200000000000-0x6203fbff0ffff resource was used as the
-lower bound which results in 0x4000000000 size request due to alignment.
-That exceeds what can fit into the parent window.
-
-Since the lower bound never even was enforced fully because the resource
-addresses were cleared when the bridge window is released, remove the
-old_size lower bound entirely and trust the calculated bridge window size
-is enough.
-
-This same problem may occur on io window side but seems less likely to
-cause issues due to general difference in alignment. Removing the lower
-bound may have other unforeseen consequences in case of io window so it's
-better to leave it as -next material if no problem is reported related to
-io window sizing (BAR resize shouldn't touch io windows anyway).
-
-Fixes: 3baeae36039a ("PCI: Use pci_release_resource() instead of release_resource()")
-Reported-by: Simon Richter <Simon.Richter@hogyros.de>
-Link: https://lore.kernel.org/r/f9a8c975-f5d3-4dd2-988e-4371a1433a60@hogyros.de/
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20251219174036.16738-6-ilpo.jarvinen@linux.intel.com
+Fixes: 28ca6d876c5a ("scsi: smartpqi: Add extended report physical LUNs")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Tested-by: Don Brace <don.brace@microchip.com>
+Acked-by: Don Brace <don.brace@microchip.com>
+Link: https://patch.msgid.link/20260131093641.1008117-1-zilin@seu.edu.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 25d6d4d3afc14..4f4890196e63e 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -1066,16 +1066,13 @@ static resource_size_t calculate_memsize(resource_size_t size,
- 					 resource_size_t min_size,
- 					 resource_size_t add_size,
- 					 resource_size_t children_add_size,
--					 resource_size_t old_size,
- 					 resource_size_t align)
- {
- 	if (size < min_size)
- 		size = min_size;
--	if (old_size == 1)
--		old_size = 0;
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index fe549e2b7c940..c829d9590558d 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -1241,7 +1241,8 @@ static inline int pqi_report_phys_luns(struct pqi_ctrl_info *ctrl_info, void **b
+ 			dev_err(&ctrl_info->pci_dev->dev,
+ 				"RPL returned unsupported data format %u\n",
+ 				rpl_response_format);
+-			return -EINVAL;
++			rc = -EINVAL;
++			goto out_free_rpl_list;
+ 		} else {
+ 			dev_warn(&ctrl_info->pci_dev->dev,
+ 				"RPL returned extended format 2 instead of 4\n");
+@@ -1253,8 +1254,10 @@ static inline int pqi_report_phys_luns(struct pqi_ctrl_info *ctrl_info, void **b
  
- 	size = max(size, add_size) + children_add_size;
--	return ALIGN(max(size, old_size), align);
-+	return ALIGN(size, align);
+ 	rpl_16byte_wwid_list = kmalloc(struct_size(rpl_16byte_wwid_list, lun_entries,
+ 						   num_physicals), GFP_KERNEL);
+-	if (!rpl_16byte_wwid_list)
+-		return -ENOMEM;
++	if (!rpl_16byte_wwid_list) {
++		rc = -ENOMEM;
++		goto out_free_rpl_list;
++	}
+ 
+ 	put_unaligned_be32(num_physicals * sizeof(struct report_phys_lun_16byte_wwid),
+ 		&rpl_16byte_wwid_list->header.list_length);
+@@ -1275,6 +1278,10 @@ static inline int pqi_report_phys_luns(struct pqi_ctrl_info *ctrl_info, void **b
+ 	*buffer = rpl_16byte_wwid_list;
+ 
+ 	return 0;
++
++out_free_rpl_list:
++	kfree(rpl_list);
++	return rc;
  }
  
- resource_size_t __weak pcibios_window_alignment(struct pci_bus *bus,
-@@ -1293,7 +1290,6 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 	resource_size_t children_add_size = 0;
- 	resource_size_t children_add_align = 0;
- 	resource_size_t add_align = 0;
--	resource_size_t old_size;
- 
- 	if (!b_res)
- 		return;
-@@ -1359,11 +1355,10 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 		}
- 	}
- 
--	old_size = resource_size(b_res);
- 	win_align = window_alignment(bus, b_res->flags);
- 	min_align = calculate_head_align(aligns, max_order);
- 	min_align = max(min_align, win_align);
--	size0 = calculate_memsize(size, min_size, 0, 0, old_size, win_align);
-+	size0 = calculate_memsize(size, min_size, 0, 0, win_align);
- 
- 	if (size0) {
- 		resource_set_range(b_res, min_align, size0);
-@@ -1373,7 +1368,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 	if (realloc_head && (add_size > 0 || children_add_size > 0)) {
- 		add_align = max(min_align, add_align);
- 		size1 = calculate_memsize(size, min_size, add_size, children_add_size,
--					  old_size, win_align);
-+					  win_align);
- 	}
- 
- 	if (!size0 && !size1) {
+ static inline int pqi_report_logical_luns(struct pqi_ctrl_info *ctrl_info, void **buffer)
 -- 
 2.51.0
 
