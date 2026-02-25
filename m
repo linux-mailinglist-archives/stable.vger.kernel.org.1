@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-219003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLsTMhZanmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219003-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:30 +0100
+	id 6LexHNpTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE09190A51
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FB918FA74
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7AA43214877
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1004530D43FB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5AD2690EC;
-	Wed, 25 Feb 2026 01:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951DE22579E;
+	Wed, 25 Feb 2026 01:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHhSDMAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W16JqE5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E34D1E2834;
-	Wed, 25 Feb 2026 01:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E2618B0A;
+	Wed, 25 Feb 2026 01:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983913; cv=none; b=EChUmkw32ETH3A0zuLNAsG3CMDVNbVWDGmih8XF7V2+pnKTI2w738+uRX+wom4xPvsbcsJBy26CRmddQaJxL1rAIHlZjbrHqBTXmL38BpCNRodKT8OU/ynjkHyIQsYhJmoOqe5xrO6JhDtCstnq9+GjSuOIC9AAI/mQ3mugVoGg=
+	t=1771983255; cv=none; b=AZ3/VCGnU/fKMYW9b4IitPai/5ZOYWBORylyEKe0SC4ef2uxsCdJLiX35Tk6ptJMaNbHWuZgj+I08O+1z+waDz4ebOhAnPa6nA/JrrplxyOLBxdkrj/RKSVn0MFF7h2rVKebEvQEImnDAHDOT5EJy3mEf/HJcbxrMb/ObJwPtl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983913; c=relaxed/simple;
-	bh=GfPUpKntGUuvRa+a+mk+KDvHAFIVECAVyqx8odsqtb8=;
+	s=arc-20240116; t=1771983255; c=relaxed/simple;
+	bh=Fo6pmeA5rCJXyG8lFijFY+p9H3Pe/VE1uS/Xwu52qPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXeM7n+pbsLP4TKhHkcYr6kqHpX9IW/A7JXe6918fU9ySb1V0Qa1mtC5Mpz60QkYxT73ybMI8wNj0eDnAgDHnPORwNN0vwWn4gRfaX1Pl8wPz+BjwvwJ8HykGNB8so8KkeWfiBCJu/IfGnOO6fUXzNSzc7HOrksiw2Rv0BctVqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHhSDMAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5C3C116D0;
-	Wed, 25 Feb 2026 01:45:13 +0000 (UTC)
+	 MIME-Version; b=InohxbkZjvcrVINSdlJ+d3xz/STFOQXEb1OZcMJcUcEa7+s4DKiSbWLft/MBCYZtO5r80adZ8+YzlDRTXx35Wt6jB5HdtU8K4darnP5b0Z1vxNv6iZ5j/e7RLArARMb78LJ28r1SLfrzpwbjnLIJreXQBfO4P6Ny8CZAG06u1Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W16JqE5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13725C116D0;
+	Wed, 25 Feb 2026 01:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983913;
-	bh=GfPUpKntGUuvRa+a+mk+KDvHAFIVECAVyqx8odsqtb8=;
+	s=korg; t=1771983255;
+	bh=Fo6pmeA5rCJXyG8lFijFY+p9H3Pe/VE1uS/Xwu52qPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FHhSDMAPbnJkRRkOaxMjfwPivURPomURAh/rX5782RLOb00UtWkcR+89q8aG+ROhJ
-	 o2YL3OG1aj7yzlCUjv4CkDv8GlkW7mTmbFjd1r+rqieeKCf5M5yu4SoHaPpIj+BQXV
-	 q9yLEiSPvqrtDENquz6tN7NBi9bb8tPAHcaDhVAs=
+	b=W16JqE5JVg+dmjmZIb4HEv23c1xaijfEOFDB41w3gEm6eMbMC9QdLajPclxXldFM3
+	 5WLnnjLHDPMJVlPMFcMNXFICwpuzniGsLDJOjxA+Qs2QnyGNblCG/OoIsqBsBkiudU
+	 a2DsHiHJr21+0IsD5MkC0Kp1N3kpEKXkRWgdWWwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Casey Connolly <casey.connolly@linaro.org>,
-	David Heidelberg <david@ixit.cz>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Dmytro Maluka <dmaluka@chromium.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 137/641] arm64: dts: qcom: sdm845-oneplus: Mark l14a regulator as boot-on
+Subject: [PATCH 6.19 354/781] iommu/vt-d: Flush cache for PASID table before using it
 Date: Tue, 24 Feb 2026 17:17:43 -0800
-Message-ID: <20260225012352.453303935@linuxfoundation.org>
+Message-ID: <20260225012408.369271282@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219003-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218434-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,49 +88,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 3BE09190A51
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email,chromium.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: B2FB918FA74
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Casey Connolly <casey.connolly@linaro.org>
+From: Dmytro Maluka <dmaluka@chromium.org>
 
-[ Upstream commit ad33ee060be46794a03d033894c9db3a9d6c1a0f ]
+[ Upstream commit 22d169bdd2849fe6bd18c2643742e1c02be6451c ]
 
-This regulator is used only for the display, which is enabled by the
-bootloader and left on for continuous splash. Mark it as such.
+When writing the address of a freshly allocated zero-initialized PASID
+table to a PASID directory entry, do that after the CPU cache flush for
+this PASID table, not before it, to avoid the time window when this
+PASID table may be already used by non-coherent IOMMU hardware while
+its contents in RAM is still some random old data, not zero-initialized.
 
-Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
-Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
-Signed-off-by: David Heidelberg <david@ixit.cz>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251118-dts-oneplus-regulators-v2-3-3e67cea1e4e7@ixit.cz
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 194b3348bdbb ("iommu/vt-d: Fix PASID directory pointer coherency")
+Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20251221123508.37495-1-dmaluka@chromium.org
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/intel/pasid.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-index 7169da658dcd0..1036305231b20 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-@@ -256,6 +256,7 @@ vreg_l14a_1p88: ldo14 {
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-boot-on;
- 		};
+diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
+index 3e2255057079c..77b9b147ab50e 100644
+--- a/drivers/iommu/intel/pasid.c
++++ b/drivers/iommu/intel/pasid.c
+@@ -153,6 +153,9 @@ static struct pasid_entry *intel_pasid_get_entry(struct device *dev, u32 pasid)
+ 		if (!entries)
+ 			return NULL;
  
- 		vreg_l17a_1p3: ldo17 {
++		if (!ecap_coherent(info->iommu->ecap))
++			clflush_cache_range(entries, VTD_PAGE_SIZE);
++
+ 		/*
+ 		 * The pasid directory table entry won't be freed after
+ 		 * allocation. No worry about the race with free and
+@@ -165,10 +168,8 @@ static struct pasid_entry *intel_pasid_get_entry(struct device *dev, u32 pasid)
+ 			iommu_free_pages(entries);
+ 			goto retry;
+ 		}
+-		if (!ecap_coherent(info->iommu->ecap)) {
+-			clflush_cache_range(entries, VTD_PAGE_SIZE);
++		if (!ecap_coherent(info->iommu->ecap))
+ 			clflush_cache_range(&dir[dir_index].val, sizeof(*dir));
+-		}
+ 	}
+ 
+ 	return &entries[index];
 -- 
 2.51.0
 
