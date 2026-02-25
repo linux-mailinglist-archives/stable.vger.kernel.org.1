@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIJCAURTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:24 +0100
+	id wOu8N79XnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:00:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB7E18F757
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F791905C9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:00:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A501E30DA636
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DD60530DB18E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A368A243376;
-	Wed, 25 Feb 2026 01:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5C023D7CF;
+	Wed, 25 Feb 2026 01:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rg9sWz37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVHGw7ac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668851D5ABA;
-	Wed, 25 Feb 2026 01:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706DD26E6F4;
+	Wed, 25 Feb 2026 01:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983122; cv=none; b=qglj2hKWiki/sinZvprTElVT3AWYINDftvhOGcEN15RpPCTDTcMPseh+NI/CIZ+4tx2F4/DBrkEF6tHzLpyr9HerUzqnpjz2DaCiGGv6GhamTyHGOxLywhYMtqIkDLzYBYDeLhxi/78mduK2wOYgDmXZKXK3cQRBOA7UnQ9HD58=
+	t=1771983775; cv=none; b=VyOW2AMWRCuLPRqWZOogb6icEFKWKX+BgKhM5EFzjkDNLbN5D+hJD/2sErMDlyGcHrKzvT4WEWf1ZmxEQKxQkT3eu8cEyH7Pao0Kbq+RJrOs5dasu31OgMLzGa0RYNZSeo9caSOJH4fArXJ/1BovW0+nvZ+JpebSfk/5HM0YCJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983122; c=relaxed/simple;
-	bh=nGIQU+nqE8ywW9irk2CdMeFTpwUOI3E8LVxg5XJsJLY=;
+	s=arc-20240116; t=1771983775; c=relaxed/simple;
+	bh=B1oi9+tCvxcLQ81cWgvFak73rYRzzMn8+pB4rhkdd40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQ/iH2qbW6LyWqbnTHpOYKxlp7m6y8iT7gcMC2XM+RLpKv87j1fTaXGPZX6Jnd7KHl2ooqWrVDulgkJleFuPnyKMsYEqhkBbT8RLIb4mychO7NxaHz2qC6dwLeG4IR3bB+QTny862zqVpKu5Zj0uz9i37KjjRrT7IcY/6TC7Ps0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rg9sWz37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE2BC116D0;
-	Wed, 25 Feb 2026 01:32:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OrUb/Yd+abuXPQg+SOHAbI9cfWvXK7pl9OEUfBx8Rv0VZf/ks8Ps49i760uyRJdjlvnAouqGBPLy4T4jL1pK3vvgxuHXaihcd7S8ViQLR2NTjSbI3iA6aspAR2GcQhlfDFFtlUThx7JU0xJwcPADtstvrGje2zZVxFILSty2LiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVHGw7ac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27811C19423;
+	Wed, 25 Feb 2026 01:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983122;
-	bh=nGIQU+nqE8ywW9irk2CdMeFTpwUOI3E8LVxg5XJsJLY=;
+	s=korg; t=1771983775;
+	bh=B1oi9+tCvxcLQ81cWgvFak73rYRzzMn8+pB4rhkdd40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rg9sWz37uQVDI+87txoOSib73WjCtKbv/tPhFpwNTr1BhzRTmaJd122nyYjKCcHzh
-	 4CCZFIt8ATpG1b+Jvzt2euHkWmNOlgezpUzIWeCs87aP5pD5fqq1YLgInrMJN5Di5F
-	 IRAQHS8oDP/P1vTEPvGi6/icNA9EN1nv+W8nulfc=
+	b=DVHGw7acBCpmC9Yps+yJqQDkgb9IMaRWa6j3PBCbIUK8xENgOXRhU5YS2VofZxt7W
+	 5+cIzNSJKZeBXodRq5CDtqx+/rUjW6r92Npwy8yunB47Wt5XIY6hX2XAh8jq9vT37d
+	 B2oxLdkwk+n+vwMiU+mlGKn2nHwQ7STtPSuInzqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Val Packett <val@packett.cool>
-Subject: [PATCH 6.19 281/781] drm/msm/dpu: fix SSPP_UBWC_STATIC_CTRL programming on UBWC 5.x+
-Date: Tue, 24 Feb 2026 17:16:30 -0800
-Message-ID: <20260225012406.593571166@linuxfoundation.org>
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 065/641] crypto: qat - fix warning on adf_pfvf_pf_proto.c
+Date: Tue, 24 Feb 2026 17:16:31 -0800
+Message-ID: <20260225012350.630535580@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218319-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218887-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,packett.cool:email]
-X-Rspamd-Queue-Id: ACB7E18F757
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,req.data:url,intel.com:email,apana.org.au:email,resp.data:url]
+X-Rspamd-Queue-Id: 11F791905C9
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit 258b080dc280e927d200af51992048ec818d0491 ]
+[ Upstream commit 994689b8f91b02fdb5f64cba2412cde5ef3084b5 ]
 
-Code in dpu_hw_sspp_setup_format() doesn't handle UBWC versions bigger
-than 4.0. Replace switch-case with if-else checks, making sure that the
-register is initialized on UBWC 5.x (and later) hosts.
+Building the QAT driver with -Wmaybe-uninitialized triggers warnings in
+qat_common/adf_pfvf_pf_proto.c. Specifically, the variables blk_type,
+blk_byte, and byte_max may be used uninitialized in handle_blkmsg_req():
 
-Fixes: c2577fc1740d ("drm/msm/dpu: Add support for SM8750")
-Tested-by: Val Packett <val@packett.cool> # x1e80100-dell-latitude-7455
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/699280/
-Link: https://lore.kernel.org/r/20260119-msm-ubwc-fixes-v4-4-0987acc0427f@oss.qualcomm.com
+  make M=drivers/crypto/intel/qat W=1 C=2 "KCFLAGS=-Werror" \
+       KBUILD_CFLAGS_KERNEL=-Wmaybe-uninitialized           \
+       CFLAGS_MODULE=-Wmaybe-uninitialized
+
+  ...
+  warning: ‘byte_max’ may be used uninitialized [-Wmaybe-uninitialized]
+  warning: ‘blk_type’ may be used uninitialized [-Wmaybe-uninitialized]
+  warning: ‘blk_byte’ may be used uninitialized [-Wmaybe-uninitialized]
+
+Although the caller of handle_blkmsg_req() always provides a req.type
+that is handled by the switch, the compiler cannot guarantee this.
+
+Add a default case to the switch statement to handle an invalid req.type.
+
+Fixes: 673184a2a58f ("crypto: qat - introduce support for PFVF block messages")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c | 45 +++++++++++----------
- 1 file changed, 24 insertions(+), 21 deletions(-)
+ .../crypto/intel/qat/qat_common/adf_pfvf_pf_proto.c    | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c
-index 6ff4902fce08e..f275b14da4ffd 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c
-@@ -284,6 +284,7 @@ static void dpu_hw_sspp_setup_format(struct dpu_sw_pipe *pipe,
- 
- 	if (fmt->fetch_mode != MDP_FETCH_LINEAR) {
- 		u32 hbb = ctx->ubwc->highest_bank_bit - 13;
-+		u32 ctrl_val;
- 
- 		if (MSM_FORMAT_IS_UBWC(fmt))
- 			opmode |= MDSS_MDP_OP_BWC_EN;
-@@ -291,30 +292,32 @@ static void dpu_hw_sspp_setup_format(struct dpu_sw_pipe *pipe,
- 		DPU_REG_WRITE(c, SSPP_FETCH_CONFIG,
- 			DPU_FETCH_CONFIG_RESET_VALUE |
- 			hbb << 18);
--		switch (ctx->ubwc->ubwc_enc_version) {
--		case UBWC_1_0:
-+
-+		if (ctx->ubwc->ubwc_enc_version == UBWC_1_0) {
- 			fast_clear = fmt->alpha_enable ? BIT(31) : 0;
--			DPU_REG_WRITE(c, ubwc_ctrl_off,
--					fast_clear | (ctx->ubwc->ubwc_swizzle & 0x1) |
--					BIT(8) |
--					(hbb << 4));
--			break;
--		case UBWC_2_0:
-+			ctrl_val = fast_clear | (ctx->ubwc->ubwc_swizzle & 0x1) |
-+				BIT(8) | (hbb << 4);
-+		} else if (ctx->ubwc->ubwc_enc_version == UBWC_2_0) {
- 			fast_clear = fmt->alpha_enable ? BIT(31) : 0;
--			DPU_REG_WRITE(c, ubwc_ctrl_off,
--					fast_clear | (ctx->ubwc->ubwc_swizzle) |
--					(hbb << 4));
--			break;
--		case UBWC_3_0:
--			DPU_REG_WRITE(c, ubwc_ctrl_off,
--					BIT(30) | (ctx->ubwc->ubwc_swizzle) |
--					(hbb << 4));
--			break;
--		case UBWC_4_0:
--			DPU_REG_WRITE(c, ubwc_ctrl_off,
--					MSM_FORMAT_IS_YUV(fmt) ? 0 : BIT(30));
--			break;
-+			ctrl_val = fast_clear | ctx->ubwc->ubwc_swizzle | (hbb << 4);
-+		} else if (ctx->ubwc->ubwc_enc_version == UBWC_3_0) {
-+			ctrl_val = BIT(30) | (ctx->ubwc->ubwc_swizzle) | (hbb << 4);
-+		} else if (ctx->ubwc->ubwc_enc_version == UBWC_4_0) {
-+			ctrl_val = MSM_FORMAT_IS_YUV(fmt) ? 0 : BIT(30);
-+		} else if (ctx->ubwc->ubwc_enc_version <= UBWC_6_0) {
-+			if (MSM_FORMAT_IS_YUV(fmt))
-+				ctrl_val = 0;
-+			else if (MSM_FORMAT_IS_DX(fmt)) /* or FP16, but it's unsupported */
-+				ctrl_val = BIT(30);
-+			else
-+				ctrl_val = BIT(30) | BIT(31);
-+			/* SDE also sets bits for lossy formats, but we don't support them yet */
-+		} else {
-+			DRM_WARN_ONCE("Unsupported UBWC version %x\n", ctx->ubwc->ubwc_enc_version);
-+			ctrl_val = 0;
- 		}
-+
-+		DPU_REG_WRITE(c, ubwc_ctrl_off, ctrl_val);
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_pfvf_pf_proto.c b/drivers/crypto/intel/qat/qat_common/adf_pfvf_pf_proto.c
+index b9b5e744a3f16..af8dbc7517cf8 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_pfvf_pf_proto.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_pfvf_pf_proto.c
+@@ -148,6 +148,16 @@ static struct pfvf_message handle_blkmsg_req(struct adf_accel_vf_info *vf_info,
+ 		blk_byte = FIELD_GET(ADF_VF2PF_SMALL_BLOCK_BYTE_MASK, req.data);
+ 		byte_max = ADF_VF2PF_SMALL_BLOCK_BYTE_MAX;
+ 		break;
++	default:
++		dev_err(&GET_DEV(vf_info->accel_dev),
++			"Invalid BlockMsg type 0x%.4x received from VF%u\n",
++			req.type, vf_info->vf_nr);
++		resp.type = ADF_PF2VF_MSGTYPE_BLKMSG_RESP;
++		resp.data = FIELD_PREP(ADF_PF2VF_BLKMSG_RESP_TYPE_MASK,
++				       ADF_PF2VF_BLKMSG_RESP_TYPE_ERROR) |
++			    FIELD_PREP(ADF_PF2VF_BLKMSG_RESP_DATA_MASK,
++				       ADF_PF2VF_UNSPECIFIED_ERROR);
++		return resp;
  	}
  
- 	opmode |= MDSS_MDP_OP_PE_OVERRIDE;
+ 	/* Is this a request for CRC or data? */
 -- 
 2.51.0
 
