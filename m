@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOCSNBBXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:36 +0100
+	id cBE6NbpTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A74190471
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D51618F9D2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF67631B71C6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9DCA030EBE55
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17682820A0;
-	Wed, 25 Feb 2026 01:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D467243376;
+	Wed, 25 Feb 2026 01:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qrewv/C7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjKKTkI8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6385D25A655;
-	Wed, 25 Feb 2026 01:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313E418B0A;
+	Wed, 25 Feb 2026 01:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983878; cv=none; b=fjwn4gR/W5Y9IessK2xhAW/72sYuKzrJpqz8j7hPckSvPE+AQlMtBaeM8iivfxIODjjYlNL7tqXkjVraFGreStqAKR5lhW6BfoUnCSalA7tJuU+p7sW/URS1olWD3na7bKvsn/Nl5qh5UYtzaaXDosamx/PXmdHBvPdZR7heNn0=
+	t=1771983227; cv=none; b=US6794S4LlcI1AHTLlefxjH/gifqOYUR2QfsMzDGmmYSkxACsjicKYfSV5XyiBqw1f3yD/yf3kU9XYqNjO6oxhPk3W6HfNfOrwYLLJADYMwmIHbGWaXVXgHqkxClKS9WkZxY5Clmk1HIdroQ9MjhEUV6iiIWCaQ1Uoo7NzuyM6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983878; c=relaxed/simple;
-	bh=vZGF+P4f6cUt5ZIaRUN/GtlFpTilclWaSzAaaR4z30E=;
+	s=arc-20240116; t=1771983227; c=relaxed/simple;
+	bh=PwKtIreEysPNatSvuoUgJXa9W0A1BwNZHMwpAsWTogM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=He+u6SaXn1yQyjBmMftTf0ZpePJa5goSjoMMwuKxsKYt2s7oMri588t1E+ueZN1IviaanwSPCZQ/nlwX1FZYwxrstqLK40bM0aX0P3L4wTc0TUxkuVFJyjdiaUbYEUnJnQpL8sCoy9F2KXu8xNymiddm+789yMY31ODwETOP7a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qrewv/C7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA51C116D0;
-	Wed, 25 Feb 2026 01:44:38 +0000 (UTC)
+	 MIME-Version; b=bwI4+70udq+JJy2C/J4ZtbdJ4bs+ap1Id8Q5gGxrvPulE/TuN4+p0wRQbQ8Ep2HRHb8oG1jad7LmYNh7drhlMC6tqzVm30xGgW3APD7ZGNtqASd6VjCUoFlbzDVxIU52ced90wUmw5Q0IMgXY4JTwRw1xqme2PGhnUqcOVE+bcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjKKTkI8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A05C116D0;
+	Wed, 25 Feb 2026 01:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983878;
-	bh=vZGF+P4f6cUt5ZIaRUN/GtlFpTilclWaSzAaaR4z30E=;
+	s=korg; t=1771983227;
+	bh=PwKtIreEysPNatSvuoUgJXa9W0A1BwNZHMwpAsWTogM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qrewv/C7g5Zo8Xw8sluipR0q/W4/kh5LCyKGtmeNy1sB7+YULNU492Kr4zcr5DK6s
-	 sBSX8M8UTvp199uBYD3TY2zx9zl7fGuuMBoxfxsXhiIRWU9HrgAKQziLuic5PRJwLQ
-	 SpSjudVdWPi185b+jxHZlRGSDyZO9uXJdmOXn7ZM=
+	b=MjKKTkI8GWVCRgwV+xN7+Qx+WCZjAyG6crixQ0tAZDXqZeoXLFHDMsAT9ukkLbGfk
+	 flrWywnTXAXOjO82Irqg9fiDO6DNkjtR4mR3gRM6XxSdGFSHHo5r54tYcNGFNm7d3d
+	 P29435x2+X9TcXQxGFed61F4XU7u4xXtt1VuybpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 153/641] soc: qcom: ubwc: add missing include
-Date: Tue, 24 Feb 2026 17:17:59 -0800
-Message-ID: <20260225012352.796730030@linuxfoundation.org>
+Subject: [PATCH 6.19 371/781] tcp: tcp_tx_timestamp() must look at the rtx queue
+Date: Tue, 24 Feb 2026 17:18:00 -0800
+Message-ID: <20260225012408.788367736@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,65 +70,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218409-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218975-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 74A74190471
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8D51618F9D2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ccef4b2703ff5b0de0b1bda30a0de3026d52eb19 ]
+[ Upstream commit 838eb9687691d29915797a885b861fd09353386e ]
 
-The header has a function which calls pr_err(). Don't require users of
-the header to include <linux/printk.h> and include it here.
+tcp_tx_timestamp() is only called at the end of tcp_sendmsg_locked()
+before the final tcp_push().
 
-Fixes: 87cfc79dcd60 ("drm/msm/a6xx: Resolve the meaning of UBWC_MODE")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20260110-iris-ubwc-v1-1-dd70494dcd7b@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+By the time it is called, it is possible all the copied data
+has been sent already (transmit queue is empty).
+
+If this is the case, use the last skb in the rtx queue.
+
+Fixes: 75c119afe14f ("tcp: implement rb-tree based retransmit queue")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Link: https://patch.msgid.link/20260127123828.4098577-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/soc/qcom/ubwc.h | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/soc/qcom/ubwc.h b/include/linux/soc/qcom/ubwc.h
-index 1ed8b1b16bc90..d9dfc9edc1b2f 100644
---- a/include/linux/soc/qcom/ubwc.h
-+++ b/include/linux/soc/qcom/ubwc.h
-@@ -8,6 +8,7 @@
- #define __QCOM_UBWC_H__
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index d5319ebe24525..81666571ecfb5 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -501,6 +501,9 @@ static void tcp_tx_timestamp(struct sock *sk, struct sockcm_cookie *sockc)
+ 	struct sk_buff *skb = tcp_write_queue_tail(sk);
+ 	u32 tsflags = sockc->tsflags;
  
- #include <linux/bits.h>
-+#include <linux/printk.h>
- #include <linux/types.h>
- 
- struct qcom_ubwc_cfg_data {
++	if (unlikely(!skb))
++		skb = skb_rb_last(&sk->tcp_rtx_queue);
++
+ 	if (tsflags && skb) {
+ 		struct skb_shared_info *shinfo = skb_shinfo(skb);
+ 		struct tcp_skb_cb *tcb = TCP_SKB_CB(skb);
 -- 
 2.51.0
 
