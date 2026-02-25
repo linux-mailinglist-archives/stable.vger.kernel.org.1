@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218861-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMMqAplSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:33 +0100
+	id yHpdLfJVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218861-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9A318F443
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2553719017A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9908C31287FA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D91032902F7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7EA248881;
-	Wed, 25 Feb 2026 01:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18CF251795;
+	Wed, 25 Feb 2026 01:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18KORUnL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEz7KxBj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCD41D5ABA;
-	Wed, 25 Feb 2026 01:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF3F283FC9;
+	Wed, 25 Feb 2026 01:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983123; cv=none; b=A4S9yG/6RUCuarNW9e4Tbhsb7EF569jkLBq/2waUEmE1JIIkiQbZzcqbQJWp3E81IppQ0SWhpOuii7MGhokhykSr52ab9dmU1xGCP+1M455xX8WwWLAZWbwVgryzV8ClYnIkFuEZ3hwM1GPCdMJQKXIHAduSW5veqM1hDUJdBIk=
+	t=1771983745; cv=none; b=V7zhsQruiDH/m2kqlwThkhoMCBy5QX2PDa1EOk7TRI1GcmFsrIy3w5PdFpvTtdDt2Ub2vMp7KLpjD9FDdHLMBvdpL3U05F7i5mMpq8BEpVHEbwuawIyDHsMlxTRpddSKehoDV8wUVTZTdBumO6buPFK4DlG0rzypjhI+pbX5i2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983123; c=relaxed/simple;
-	bh=0f2hww6WPrRIor2dlI45mZl1z+6/m7bIqhF3i3pPoko=;
+	s=arc-20240116; t=1771983745; c=relaxed/simple;
+	bh=eUwJozb/7vFlPv3KFbdoX61B7NzeWNOAxxd5MEoZfng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AtbdZrXYUh+Gqj5H/1jdC9fnHaLrD7US5U+Y0r+Rcv/zMQe65A9CHlPBc0MJW6L9WnLEaeO4Owoo1Wz1oIPKmbEQlsdtj3MmxOfs8azp9mp465TAVSzPzw7gxBl0uhAtn29PHmZSkw3fIRI5vak5tUKlCv/9d9/eD4S9VXA4xfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18KORUnL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C15C116D0;
-	Wed, 25 Feb 2026 01:32:03 +0000 (UTC)
+	 MIME-Version; b=mfzXdCqzBmmi3MA6EqIDiR2N81PqlSr1XGPpHPafvaLGaxhpqCCiYjato5nQl1B8gHascDONtE6QwggmKkKJ2z4VxWXurK3ecF2oPbpYCV5ulGz6OWbQz72++xZtSr+kyEb3HwBH/U/f/IR7/G2WNvdizGU7ZpRgsw8HyYS5eZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEz7KxBj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A942C116D0;
+	Wed, 25 Feb 2026 01:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983123;
-	bh=0f2hww6WPrRIor2dlI45mZl1z+6/m7bIqhF3i3pPoko=;
+	s=korg; t=1771983745;
+	bh=eUwJozb/7vFlPv3KFbdoX61B7NzeWNOAxxd5MEoZfng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18KORUnLgKkkxZoMp7ntjO1++bRfL4ATSUh6389HlabA4TdopjlhCZuLfsvvpPmNz
-	 kEZQa0t+c0yDwNDj8AYw827o8XolWypfNJaU9THJ28RypTFUYZ4l5A0nIqqKQ7B55v
-	 z4GuytKqVKfNWTkYCJlkjSkMsCZD8TIeUPehuKCg=
+	b=VEz7KxBjcHZ5vscsC5/AsX3uWadtMRQaIrsQVTqrOi4aGsdJeggnGw0M8JRrra6kR
+	 CY9rncuCfqsd1ohUxErbtqXvQxFdj3FcvpJp/QmvzjJAD5t3WpalRqE610XHJVc1gj
+	 ucTSUh29ntKW87oHFkVfGSNOMpE1tAnqLDWlSk9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Alexey Simakov <bigalex934@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 255/781] regulator: core: move supply check earlier in set_machine_constraints()
+Subject: [PATCH 6.18 038/641] ACPICA: Fix NULL pointer dereference in acpi_ev_address_space_dispatch()
 Date: Tue, 24 Feb 2026 17:16:04 -0800
-Message-ID: <20260225012405.961082000@linuxfoundation.org>
+Message-ID: <20260225012349.941435825@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,151 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218320-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218861-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: 8B9A318F443
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 2553719017A
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-[ Upstream commit 86a8eeb0e913f4b6a55dabba5122098d4e805e55 ]
+[ Upstream commit f851e03bce968ff9b3faad1b616062e1244fd38d ]
 
-Since commit 98e48cd9283d ("regulator: core: resolve supply for
-boot-on/always-on regulators"), set_machine_constraints() can return
--EPROBE_DEFER very late, after it has done a lot of work and
-configuration of the regulator.
+Cover a missed execution path with a new check.
 
-This means that configuration will happen multiple times for no
-benefit in that case. Furthermore, this can lead to timing-dependent
-voltage glitches as mentioned e.g. in commit 8a866d527ac0 ("regulator:
-core: Resolve supply name earlier to prevent double-init").
-
-We can know that it's going to fail very early, in particular before
-going through the complete regulator configuration by moving some code
-around a little.
-
-Do so to avoid re-configuring the regulator multiple times, also
-avoiding the voltage glitches if we can.
-
-Fixes: 98e48cd9283d ("regulator: core: resolve supply for boot-on/always-on regulators")
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://patch.msgid.link/20260109-regulators-defer-v2-3-1a25dc968e60@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0acf24ad7e10 ("ACPICA: Add support for PCC Opregion special context data")
+Link: https://github.com/acpica/acpica/commit/f421dd9dd897
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/3030574.e9J7NaK4W3@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 55 ++++++++++++++++++++++------------------
- 1 file changed, 30 insertions(+), 25 deletions(-)
+ drivers/acpi/acpica/evregion.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index b2dcd1acd0ece..d0140227fcbdb 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1444,6 +1444,33 @@ static int set_machine_constraints(struct regulator_dev *rdev)
- 	int ret = 0;
- 	const struct regulator_ops *ops = rdev->desc->ops;
- 
-+	/*
-+	 * If there is no mechanism for controlling the regulator then
-+	 * flag it as always_on so we don't end up duplicating checks
-+	 * for this so much.  Note that we could control the state of
-+	 * a supply to control the output on a regulator that has no
-+	 * direct control.
-+	 */
-+	if (!rdev->ena_pin && !ops->enable) {
-+		if (rdev->supply_name && !rdev->supply)
-+			return -EPROBE_DEFER;
-+
-+		if (rdev->supply)
-+			rdev->constraints->always_on =
-+				rdev->supply->rdev->constraints->always_on;
-+		else
-+			rdev->constraints->always_on = true;
-+	}
-+
-+	/*
-+	 * If we want to enable this regulator, make sure that we know the
-+	 * supplying regulator.
-+	 */
-+	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
-+		if (rdev->supply_name && !rdev->supply)
-+			return -EPROBE_DEFER;
-+	}
-+
- 	ret = machine_constraints_voltage(rdev, rdev->constraints);
- 	if (ret != 0)
- 		return ret;
-@@ -1609,37 +1636,15 @@ static int set_machine_constraints(struct regulator_dev *rdev)
+diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
+index fa3475da7ea9b..b6198f73c81df 100644
+--- a/drivers/acpi/acpica/evregion.c
++++ b/drivers/acpi/acpica/evregion.c
+@@ -163,7 +163,9 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
+ 			return_ACPI_STATUS(AE_NOT_EXIST);
  		}
- 	}
  
--	/*
--	 * If there is no mechanism for controlling the regulator then
--	 * flag it as always_on so we don't end up duplicating checks
--	 * for this so much.  Note that we could control the state of
--	 * a supply to control the output on a regulator that has no
--	 * direct control.
--	 */
--	if (!rdev->ena_pin && !ops->enable) {
--		if (rdev->supply_name && !rdev->supply)
--			return -EPROBE_DEFER;
--
--		if (rdev->supply)
--			rdev->constraints->always_on =
--				rdev->supply->rdev->constraints->always_on;
--		else
--			rdev->constraints->always_on = true;
--	}
--
- 	/* If the constraints say the regulator should be on at this point
- 	 * and we have control then make sure it is enabled.
- 	 */
- 	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
- 		bool supply_enabled = false;
+-		if (region_obj->region.space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
++		if (field_obj
++		    && region_obj->region.space_id ==
++		    ACPI_ADR_SPACE_PLATFORM_COMM) {
+ 			struct acpi_pcc_info *ctx =
+ 			    handler_desc->address_space.context;
  
--		/* If we want to enable this regulator, make sure that we know
--		 * the supplying regulator.
--		 */
--		if (rdev->supply_name && !rdev->supply)
--			return -EPROBE_DEFER;
--
--		/* If supplying regulator has already been enabled,
-+		/* We have ensured a potential supply has been resolved above.
-+		 *
-+		 * If supplying regulator has already been enabled,
- 		 * it's not intended to have use_count increment
- 		 * when rdev is only boot-on.
- 		 */
 -- 
 2.51.0
 
