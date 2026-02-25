@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-219479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMFtCj6enmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:18 +0100
+	id sAinHYBWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDAAB192BE1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2A119030A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0E73A3012D22
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A541030C096E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1A93033E7;
-	Wed, 25 Feb 2026 06:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF0227BF6C;
+	Wed, 25 Feb 2026 01:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8URnOT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epoy5u9L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514702D7810;
-	Wed, 25 Feb 2026 06:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E4426F46F;
+	Wed, 25 Feb 2026 01:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002743; cv=none; b=Da3VIGJldQy252zFmR2QXbKeROMiSmyVPW9JEfrsjo+Qh/LR5g08291GzZ0npbVdpBptAyCLaxC36gA2liIVOUauKSgZ+l9ZpJyTeRtg/ZmQBpKB45Ci62m6bDbEY4MqwDYC/78ATH3c/hMJcbNYFGF2oZvvunfXKdrudDE22TY=
+	t=1771983692; cv=none; b=J5OZmMcq6f/io2dj523Haq+TSTOJLq5coc8MdatTFsBlALDmS640uOaix7EwkVkiLnF7rbdndNjmB4qL8YdLTgl59o/10mxO/EshquznS/EYHrK2UR+4tcc7nlJzXcoesOX2pVk2n6y1o5x2p4UZTeCp4zSjeROc0pG7PrufE5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002743; c=relaxed/simple;
-	bh=jex9Ei0nmfFGAOLhld1BIMidnuNgVddqgRna7BwLQcc=;
+	s=arc-20240116; t=1771983692; c=relaxed/simple;
+	bh=d6WbYNR1qkK3gR7egc7VHu9yXS/qyWkRFH+Kz8X1EFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skoW3EuGVOm650SIeMPbILkh/zlWd/W37ut/DeSvBucBGGo0N1Xg8N/uvchMjlWKcDgBb2Y5vaF6PX9yt5yy3nTQavhutCUneEIhMoPpGnhM10gVEfqbhX7gj5EGzJhHzmAbqauYacManlI1aKpFilif1roOsj71dve/O3VGqXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8URnOT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2792EC116D0;
-	Wed, 25 Feb 2026 06:59:03 +0000 (UTC)
+	 MIME-Version; b=cKEwxtCqD0+4jvHdIYvaaIwW1s4nl9/Q3K2bNzQ211FLcAz/J9/dFS/ntNUUJnnAUvIG2QQNMZguCYvpQMQYaG9qPGePLrQDD2PsVqTdh5S5HieZUn82cj+ULGf/ZZgtzt7R85CO8CiGruNrxdO4tukO7072XDvFx8sBPKzpj+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epoy5u9L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF58C116D0;
+	Wed, 25 Feb 2026 01:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002743;
-	bh=jex9Ei0nmfFGAOLhld1BIMidnuNgVddqgRna7BwLQcc=;
+	s=korg; t=1771983692;
+	bh=d6WbYNR1qkK3gR7egc7VHu9yXS/qyWkRFH+Kz8X1EFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8URnOT6AsXad/SzAGcXIGF769ZTYIi55q1WGSG+UMiRC9AGp3p8sIjXnwAT6/y7a
-	 QceFM/waA2dOafpDGf+1HWEDURgSHP7IUX8Ii/1IJYWab9aJCQ/3FC2XVHtu1VSlV1
-	 doNL/MwsiUXvBjFbiU4HTOeqJnVLrLEJEoUlSB88=
+	b=epoy5u9LE+EPrSUPExN1LJB7QGORKg6/ZwBganb485Qz8vJdFzh+9iIc3BiMLi12h
+	 3by0tTaxfrF7UbDDZIP2UNijVMavXarK+p+VL3ZOKYfIerRxcNY+5f/SbdM4xQYz0u
+	 fVen8ZbVSNLusDVBY6jmh6A9z9grZi2LJJbiNivQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 556/641] eth: fbnic: Advertise supported XDP features.
-Date: Tue, 24 Feb 2026 17:24:42 -0800
-Message-ID: <20260225012401.995429508@linuxfoundation.org>
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.19 774/781] ASoC: dt-bindings: asahi-kasei,ak5558: Fix the supply names
+Date: Tue, 24 Feb 2026 17:24:43 -0800
+Message-ID: <20260225012418.700376069@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219479-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,redhat.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218814-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.961];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DDAAB192BE1
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nxp.com:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: BF2A119030A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit e977fcb3a318b53b47f23b44ac237fceb1b731fe ]
+commit 80ca113671a005430207d351cb403c1637106212 upstream.
 
-Drivers are supposed to advertise the XDP features they support. This was
-missed while adding XDP support.
+In the original txt format binding document ak4458.txt, the supply names
+are 'AVDD-supply', 'DVDD-supply', and they are also used in driver. But in
+the commit converting to yaml format, they are changed to 'avdd-supply',
+'dvdd-supply'. After search all the dts file, these names 'AVDD-supply',
+'DVDD-supply', 'avdd-supply', 'dvdd-supply' are not used in any dts
+file. So it is safe to fix the yaml binding document.
 
-Before:
-$ ynl --family netdev --dump dev-get
-...
- {'ifindex': 3,
-  'xdp-features': set(),
-  'xdp-rx-metadata-features': set(),
-  'xsk-features': set()},
-...
-
-After:
-$ ynl --family netdev --dump dev-get
-...
- {'ifindex': 3,
-  'xdp-features': {'basic', 'rx-sg'},
-  'xdp-rx-metadata-features': set(),
-  'xsk-features': set()},
-...
-
-Fixes: 168deb7b31b2 ("eth: fbnic: Add support for XDP_TX action")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260218030620.3329608-1-dimitri.daskalakis1@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 829d78e3ea32 ("ASoC: dt-bindings: ak5558: Convert to dtschema")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260212021829.3244736-4-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_netdev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/devicetree/bindings/sound/asahi-kasei,ak5558.yaml |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-index 5cbf3ad175a54..cbedaa037cfa8 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-@@ -808,6 +808,8 @@ struct net_device *fbnic_netdev_alloc(struct fbnic_dev *fbd)
- 	netdev->hw_enc_features |= netdev->features;
- 	netdev->features |= NETIF_F_NTUPLE;
+--- a/Documentation/devicetree/bindings/sound/asahi-kasei,ak5558.yaml
++++ b/Documentation/devicetree/bindings/sound/asahi-kasei,ak5558.yaml
+@@ -19,10 +19,10 @@ properties:
+   reg:
+     maxItems: 1
  
-+	netdev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_RX_SG;
-+
- 	netdev->min_mtu = IPV6_MIN_MTU;
- 	netdev->max_mtu = FBNIC_MAX_JUMBO_FRAME_SIZE - ETH_HLEN;
+-  avdd-supply:
++  AVDD-supply:
+     description: A 1.8V supply that powers up the AVDD pin.
  
--- 
-2.51.0
-
+-  dvdd-supply:
++  DVDD-supply:
+     description: A 1.2V supply that powers up the DVDD pin.
+ 
+   reset-gpios:
 
 
 
