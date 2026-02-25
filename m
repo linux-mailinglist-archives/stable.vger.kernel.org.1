@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-219086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEVkEXFanmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219086-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:01 +0100
+	id wK8EBPpYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-219088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D8E190B14
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37218190867
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFA6F3253A95
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 104EF31020DF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C65277026;
-	Wed, 25 Feb 2026 01:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72882765DF;
+	Wed, 25 Feb 2026 01:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbeVbIsC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEQy7iiX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F34276049;
-	Wed, 25 Feb 2026 01:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8031E2834;
+	Wed, 25 Feb 2026 01:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984016; cv=none; b=GQ3dXcY8aESEzk9CysNM+UoH5IJSXfwFh4wbcEqWE1rRTRwy2VapS7jmxJVmnXMi9vvByuD+mR4tL6RNhjjJi+S7uIHpjopi14b3NJ/zUrIk3PjNd1KE/dVqPLLPU+D2+VkG/cpjKIxVbeec3+xP7o4zgGy0obM56GxfJDq4Wlw=
+	t=1771984018; cv=none; b=RwQ5c/T9iBO1bMHk1XJHNO5irBKLrM1WJY8ANI5hr2QDauI4aZV3aL091y0L7ciWxTQLcQKIwqfEN++fzji0s9CkZOjSwqdDyQfgcZYUOLZeI5/KKCPxqbUHN6onCT1ZfcO58N9ALyQ7lQZ+pEcISxiN2LIPPlMoqMsPCd0yXrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984016; c=relaxed/simple;
-	bh=orZBVrloHmYTjv4zYzKcDkeTjE+fTZfVPGdoJ1D7M1Q=;
+	s=arc-20240116; t=1771984018; c=relaxed/simple;
+	bh=G4fWBRfDK1B+RVGu5zB44ILtEGop6lFI56FjfRLFBUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XDsiHvBzJCqlXYvcSxUGzUX4yPsTx7N8XktWbujkRryHJO9QCCuXbvR5noeeCHxYU36ZzHh783dnQEijKWN4gdzmWoL2hokDBTK2qgB9Dzy00y1QYgxWzz0c4ZLPmQ1GxBVx4IqxS/F2trCueJ6loDqR8vmblMOpDvLxJcUQlDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbeVbIsC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF8BC116D0;
-	Wed, 25 Feb 2026 01:46:55 +0000 (UTC)
+	 MIME-Version; b=SEraAx+ClmabU3Rtk5fV4myj8gQNDhsXWORuA+ite1AozPfSlXHXnKmPREmRknozvkf3BlIUBTBdxS1DCy9+KH032J4hj3nkBlQ2KJ2YT/78IsAhbak2v0kTSk6NDXtQNeSBKsGCaKBuaqKHp6KkHxlGrKZ0KSB9p+9CrF1QwKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEQy7iiX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417DBC116D0;
+	Wed, 25 Feb 2026 01:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984016;
-	bh=orZBVrloHmYTjv4zYzKcDkeTjE+fTZfVPGdoJ1D7M1Q=;
+	s=korg; t=1771984018;
+	bh=G4fWBRfDK1B+RVGu5zB44ILtEGop6lFI56FjfRLFBUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbeVbIsCX6/w1cq1RbTXGENvCeb7zCXkMMWNAPnlwgkA8617RCePI5s6c0sIYNdPA
-	 L7BecLFSw8K35Zx/lz9JnLPoLTVLVN/N4JrIjbv/Nm0ktxrokkjG97ZkPVjAlJx1DI
-	 eyGRUBMgR1WOX0mY8wiqeSKSMkCq1vbCSfhIRQfU=
+	b=tEQy7iiX4ViiiJ+/PZkt3tvRMzPEwVumnJkQK8ZGGo0b2BwgAoQjIS7z4HJ63jG4e
+	 2AVdBcj227CpOnWMrWw1UReyRtVg06hEzxsD6SZkofWwYYOBYNK/iJWzQe4QAmI/fU
+	 Q+aeehMcLcxZqCnDfx1+1Lll9pSfvHz7sB4oklkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?J=C3=B6rg=20Wedekind?= <joerg@wedekind.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 264/641] PCI: Mark 3ware-9650SA Root Port Extended Tags as broken
-Date: Tue, 24 Feb 2026 17:19:50 -0800
-Message-ID: <20260225012355.211145528@linuxfoundation.org>
+Subject: [PATCH 6.18 265/641] wifi: rtw89: debug: Fix memory leak in __print_txpwr_map()
+Date: Tue, 24 Feb 2026 17:19:51 -0800
+Message-ID: <20260225012355.232397058@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -63,87 +64,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219086-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219088-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: C7D8E190B14
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,seu.edu.cn:email,msgid.link:url,realtek.com:email]
+X-Rspamd-Queue-Id: 37218190867
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jörg Wedekind <joerg@wedekind.de>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 959ac08a2c2811305be8c2779779e8b0932e5a99 ]
+[ Upstream commit 6070a44051b1c35714fa130de7726cfe91ca5559 ]
 
-Per PCIe r7.0, sec 2.2.6.2.1 and 7.5.3.4, a Requester may not use 8-bit Tags
-unless its Extended Tag Field Enable is set, but all Receivers/Completers
-must handle 8-bit Tags correctly regardless of their Extended Tag Field
-Enable.
+In __print_txpwr_map(), memory is allocated to bufp via vzalloc().
+If max_valid_addr is 0, the function returns -EOPNOTSUPP immediately
+without freeing bufp, leading to a memory leak.
 
-Some devices do not handle 8-bit Tags as Completers, so add a quirk for
-them.  If we find such a device, we disable Extended Tags for the entire
-hierarchy to make peer-to-peer DMA possible.
+Since the validation of max_valid_addr does not depend on the allocated
+memory, fix this by moving the vzalloc() call after the check.
 
-The 3ware 9650SA seems to have issues with handling 8-bit tags. Mark it as
-broken.
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
 
-This fixes PCI Parity Errors like :
-
-  3w-9xxx: scsi0: ERROR: (0x06:0x000C): PCI Parity Error: clearing.
-  3w-9xxx: scsi0: ERROR: (0x06:0x000D): PCI Abort: clearing.
-  3w-9xxx: scsi0: ERROR: (0x06:0x000E): Controller Queue Error: clearing.
-  3w-9xxx: scsi0: ERROR: (0x06:0x0010): Microcontroller Error: clearing.
-
-Fixes: 60db3a4d8cc9 ("PCI: Enable PCIe Extended Tags if supported")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=202425
-Signed-off-by: Jörg Wedekind <joerg@wedekind.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20260119143114.21948-1-joerg@wedekind.de
+Fixes: 036042e15770 ("wifi: rtw89: debug: txpwr table supports Wi-Fi 7 chips")
+Suggested-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260116130834.1413924-1-zilin@seu.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw89/debug.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index b9c252aa6fe08..c7e733beaab03 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5581,6 +5581,7 @@ static void quirk_no_ext_tags(struct pci_dev *pdev)
- 	pci_walk_bus(bridge->bus, pci_configure_extended_tags, NULL);
- }
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_3WARE, 0x1004, quirk_no_ext_tags);
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_3WARE, 0x1005, quirk_no_ext_tags);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0132, quirk_no_ext_tags);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0140, quirk_no_ext_tags);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0141, quirk_no_ext_tags);
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index 3dc7981c510fd..a82df3814069c 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -824,10 +824,6 @@ static ssize_t __print_txpwr_map(struct rtw89_dev *rtwdev, char *buf, size_t buf
+ 	s8 *bufp, tmp;
+ 	int ret;
+ 
+-	bufp = vzalloc(map->addr_to - map->addr_from + 4);
+-	if (!bufp)
+-		return -ENOMEM;
+-
+ 	if (path_num == 1)
+ 		max_valid_addr = map->addr_to_1ss;
+ 	else
+@@ -836,6 +832,10 @@ static ssize_t __print_txpwr_map(struct rtw89_dev *rtwdev, char *buf, size_t buf
+ 	if (max_valid_addr == 0)
+ 		return -EOPNOTSUPP;
+ 
++	bufp = vzalloc(map->addr_to - map->addr_from + 4);
++	if (!bufp)
++		return -ENOMEM;
++
+ 	for (addr = map->addr_from; addr <= max_valid_addr; addr += 4) {
+ 		ret = rtw89_mac_txpwr_read32(rtwdev, RTW89_PHY_0, addr, &val);
+ 		if (ret)
 -- 
 2.51.0
 
