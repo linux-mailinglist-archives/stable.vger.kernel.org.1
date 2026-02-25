@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-219359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAzuGLCfnmlnWgQAu9opvQ
-	(envelope-from <stable+bounces-219359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:28 +0100
+	id yAQMIpBYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C70192FAF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16923190767
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68A3330AF5AB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68D5C304E726
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021BC30EF87;
-	Wed, 25 Feb 2026 06:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB99526B742;
+	Wed, 25 Feb 2026 01:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLCP1ZMf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FaJjSCxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EE030E85C;
-	Wed, 25 Feb 2026 06:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBB226463A;
+	Wed, 25 Feb 2026 01:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002663; cv=none; b=TM1DHSOyOyFreU50bMh3ZGOlUJ7OlVQb/2j1VpbJDN71J+s318fXRJYnyyhzfgEcwyEufMUjSe4HGaYzTzN5t864ZnbxSgpP2PK3szxmnp8oYoxOSXUI80GXcteCeXONXIcWdsP2m+bpZds9eSyZ8GBo+DAQr8dwaZurelUCd38=
+	t=1771983562; cv=none; b=MXeMgSKtgNb7+PkXh8WaYF/D8LTPGelSjA9Bum+0lvbAsJasTLm9kj8zxOWQwn2en98SRZoC+QmxQm+gr70P3TiwNgyjaxxFBzpGr1SYXBzdQPPe8KbqJUONK5TxIzogUIsZ3Uq+/ZIXzwehGSelgz8ZfYeDHFl8x9B1+aK/xoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002663; c=relaxed/simple;
-	bh=3azyQwgygXlD/U+XDCmgt7RRnR39XUGr9q4PFEq0O/4=;
+	s=arc-20240116; t=1771983562; c=relaxed/simple;
+	bh=GTMmBs4sIMKZtKl9wNWc8bIzwqkxIGPqPFUfUFfEQ4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HCWyTfLvYCdhu2py2VCHJXLLZx621yIdsyOFS2u+138lWAIv4ezZW+qmu1XklwDv737rsljsBhUf2qzkYnMTpcq364OoyuBkLX1s9yCdgw5XFIK9tbVUJuim1Al6S5qT8rnJKSN37Srf6wVGP+Vyqkisf8+YKdYqyKx3UkfvjWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLCP1ZMf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910C7C116D0;
-	Wed, 25 Feb 2026 06:57:43 +0000 (UTC)
+	 MIME-Version; b=uzpXNA8RnqOw9qioDS0RDF95uCExa9zJqoHSQ+yn3BrhbMh5XfvawGg0+Il2M4EU/SIAtue7D3eV1xYlgtmN2Is3CIq3dtvVWVMCgSvGFDrdwBXWC9CSVPI0bXAAte7Qk7EYHt2TtbRst/pvOHsiBrjZRkJXcX11h2M9rtBYLE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FaJjSCxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E914C19423;
+	Wed, 25 Feb 2026 01:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002663;
-	bh=3azyQwgygXlD/U+XDCmgt7RRnR39XUGr9q4PFEq0O/4=;
+	s=korg; t=1771983562;
+	bh=GTMmBs4sIMKZtKl9wNWc8bIzwqkxIGPqPFUfUFfEQ4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLCP1ZMf4g8xLA3mKXgj90675R9FYHXgAa3jLNDsqBbd4iO5XFJEq+BarKY4BwFR1
-	 hSxKIb5r5fmqIoHeDU2b4sdOkEZjP8E88NDqDJWDQtC/02LGIqKpCgc5n7OCwaLaUm
-	 23PSsi85TF37TF6HUySNsAQwGUkpKz8E6844lbBM=
+	b=FaJjSCxM6fjNSxrt9ylzWjhKOQtW6UiJ5fVDH1aYq2kcStuerdfUwGiPawXYRLWk5
+	 CyJWcZNzx3tR6hbMFPAkaO4up49rsCmOEl/VVVRAGRP07zyWNYPwKpXb+J2JFzsbCg
+	 dmBM/TwmHe4yb0Mn0CBG2QOKQzI+RfTFD8tMRYgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Brian Witte <brianwitte@mailfence.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 443/641] clk: x86: cgu: convert from divider_round_rate() to divider_determine_rate()
-Date: Tue, 24 Feb 2026 17:22:49 -0800
-Message-ID: <20260225012359.261395706@linuxfoundation.org>
+Subject: [PATCH 6.19 661/781] netfilter: nft_counter: serialize reset with spinlock
+Date: Tue, 24 Feb 2026 17:22:50 -0800
+Message-ID: <20260225012415.999884754@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219359-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218702-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,57 +88,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B8C70192FAF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mailfence.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email]
+X-Rspamd-Queue-Id: 16923190767
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Brian Witte <brianwitte@mailfence.com>
 
-[ Upstream commit bb1b0e63dbbd7150324cb4d6aef7854dbe26a617 ]
+[ Upstream commit 779c60a5190c42689534172f4b49e927c9959e4e ]
 
-The divider_round_rate() function is now deprecated, so let's migrate
-to divider_determine_rate() instead so that this deprecated API can be
-removed.
+Add a global static spinlock to serialize counter fetch+reset
+operations, preventing concurrent dump-and-reset from underrunning
+values.
 
-Note that when the main function itself was migrated to use
-determine_rate, this was mistakenly converted to:
+The lock is taken before fetching the total so that two parallel
+resets cannot both read the same counter values and then both
+subtract them.
 
-    req->rate = divider_round_rate(...)
+A global lock is used for simplicity since resets are infrequent.
+If this becomes a bottleneck, it can be replaced with a per-net
+lock later.
 
-This is invalid in the case when an error occurs since it can set the
-rate to a negative value.
-
-Fixes: f7a6bed91a19 ("clk: x86: cgu: convert from round_rate() to determine_rate()")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+Fixes: bd662c4218f9 ("netfilter: nf_tables: Add locking for NFT_MSG_GETOBJ_RESET requests")
+Fixes: 3d483faa6663 ("netfilter: nf_tables: Add locking for NFT_MSG_GETSETELEM_RESET requests")
+Fixes: 3cb03edb4de3 ("netfilter: nf_tables: Add locking for NFT_MSG_GETRULE_RESET requests")
+Suggested-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Brian Witte <brianwitte@mailfence.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/x86/clk-cgu.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/netfilter/nft_counter.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/x86/clk-cgu.c b/drivers/clk/x86/clk-cgu.c
-index d099667355f8d..92ee05d75af2b 100644
---- a/drivers/clk/x86/clk-cgu.c
-+++ b/drivers/clk/x86/clk-cgu.c
-@@ -137,10 +137,8 @@ static int lgm_clk_divider_determine_rate(struct clk_hw *hw,
- {
- 	struct lgm_clk_divider *divider = to_lgm_clk_divider(hw);
+diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
+index 0d70325280cc5..169ae93688bcc 100644
+--- a/net/netfilter/nft_counter.c
++++ b/net/netfilter/nft_counter.c
+@@ -32,6 +32,9 @@ struct nft_counter_percpu_priv {
  
--	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate, divider->table,
--				       divider->width, divider->flags);
--
--	return 0;
-+	return divider_determine_rate(hw, req, divider->table, divider->width,
-+				      divider->flags);
+ static DEFINE_PER_CPU(struct u64_stats_sync, nft_counter_sync);
+ 
++/* control plane only: sync fetch+reset */
++static DEFINE_SPINLOCK(nft_counter_lock);
++
+ static inline void nft_counter_do_eval(struct nft_counter_percpu_priv *priv,
+ 				       struct nft_regs *regs,
+ 				       const struct nft_pktinfo *pkt)
+@@ -148,13 +151,25 @@ static void nft_counter_fetch(struct nft_counter_percpu_priv *priv,
+ 	}
  }
  
- static int
++static void nft_counter_fetch_and_reset(struct nft_counter_percpu_priv *priv,
++					struct nft_counter_tot *total)
++{
++	spin_lock(&nft_counter_lock);
++	nft_counter_fetch(priv, total);
++	nft_counter_reset(priv, total);
++	spin_unlock(&nft_counter_lock);
++}
++
+ static int nft_counter_do_dump(struct sk_buff *skb,
+ 			       struct nft_counter_percpu_priv *priv,
+ 			       bool reset)
+ {
+ 	struct nft_counter_tot total;
+ 
+-	nft_counter_fetch(priv, &total);
++	if (unlikely(reset))
++		nft_counter_fetch_and_reset(priv, &total);
++	else
++		nft_counter_fetch(priv, &total);
+ 
+ 	if (nla_put_be64(skb, NFTA_COUNTER_BYTES, cpu_to_be64(total.bytes),
+ 			 NFTA_COUNTER_PAD) ||
+@@ -162,9 +177,6 @@ static int nft_counter_do_dump(struct sk_buff *skb,
+ 			 NFTA_COUNTER_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (reset)
+-		nft_counter_reset(priv, &total);
+-
+ 	return 0;
+ 
+ nla_put_failure:
 -- 
 2.51.0
 
