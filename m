@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-218977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218410-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFkDDCRanmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:44 +0100
+	id 4D2OHJ9Tnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218410-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A53190A59
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D3218F945
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0F2193097D46
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A7AD030C8E26
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2B4284B26;
-	Wed, 25 Feb 2026 01:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7928C18B0A;
+	Wed, 25 Feb 2026 01:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGqFJdgN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ao6btOE/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBF5284884;
-	Wed, 25 Feb 2026 01:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0C224677D;
+	Wed, 25 Feb 2026 01:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983881; cv=none; b=OwfeX03c/plM9Tn48bJ8igADGG3+P35Hv1VaPYXno8Jg0tCQNDwkLBxzc28WKZ5WyOtwElkFncUm/sT7b47DAXrQaf0aTxKcNHQVFq4dafBtRfPKa36OawlMclreQzJZwZL11iqveS2eSopWa91gkddZgGf8aMwK9iOH4MLLLVY=
+	t=1771983228; cv=none; b=DNfrFD0KKCENplMO3UgvrT4vruIL0jvh0+QA1lkUAuW2Pc8DcGPBFAotBmMs0V/RByVQ6BZ07dYmnEYA10pI6k8g8RZjy4BdZuIxNMC17cetNBdZCrpicqs9ARnN01G00nc4BRktN5dlglOw7ToXPiyGdIRfKrus511ZbwtJb9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983881; c=relaxed/simple;
-	bh=rnwuYltwt4AoKnFmNXNkdknbGIClw0+j07FQRzfjn+0=;
+	s=arc-20240116; t=1771983228; c=relaxed/simple;
+	bh=Bk9SJQPoi79DqxwvGZnyQgyHOAaJXc/jJTW1skZN7kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHQUpHnUZwCHvxspt9xTI3mieUzLhhNGHdeBgXfU+TXGhxVPQSO5RpJdwXJfVNY2qs7Qgy86Sodogf165vNQBxF9Dyhv+IIdiC3/gqTMyeMDpVM9p/uoGQ/6+f1rIDp9H/tPZDkbQ/MAYHaRU7O2+RcnB4yu4Of+Uq4cSQwo0/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGqFJdgN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBAF8C19423;
-	Wed, 25 Feb 2026 01:44:40 +0000 (UTC)
+	 MIME-Version; b=DA05ET6YiAHcbwfLhN8D/UKd5lIrU80rPkPIa00F4xeNxQHsxae2uZGYx3WHSDi837b1MzU9Y2x/QJiKmWP7GsolrioxHV3e3dCtQRXRSeEwMGPQBqadd1NaVdFszUnUKyo+pLLgouSZ0MFzri6vRVo0k6AHXrxz4Ej7FAaCYQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ao6btOE/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FB1C116D0;
+	Wed, 25 Feb 2026 01:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983880;
-	bh=rnwuYltwt4AoKnFmNXNkdknbGIClw0+j07FQRzfjn+0=;
+	s=korg; t=1771983228;
+	bh=Bk9SJQPoi79DqxwvGZnyQgyHOAaJXc/jJTW1skZN7kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGqFJdgNRcCjwILKj6D9Mgw8hlsHWJMFbb2ey+Yh6S11nxCH5DdE7xUxtoYwnk+2u
-	 uLCYRTJ+R3NTtoSlhJosQMPbQC5O10q3B5N8crFfKkoELLXAAE+qyEiV6MQr5s33wl
-	 l4qbI3ZC95LgTmgmylypWx9eIMDgLqClajXevSVs=
+	b=Ao6btOE/qH0Ur3xVcUCuGT9JSATNcteCVLR/xH2hg8LHx2xR8bsG5W45t+Up7a8gx
+	 QEe8AO9HjUKPQjLjnaI4PSvLyZ3xdX9HczJ9+KFzQU4tVsX7TXKx/mqkaf0eqzEmTR
+	 DuQn/a3GGfwIQfdpYzUxfS+CES2QtUgR6IM/ElOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 155/641] arm64: dts: amlogic: c3: assign the MMC signal clocks
+Subject: [PATCH 6.19 372/781] Bluetooth: hci_conn: Fix using conn->le_{tx,rx}_phy as supported PHYs
 Date: Tue, 24 Feb 2026 17:18:01 -0800
-Message-ID: <20260225012352.841213510@linuxfoundation.org>
+Message-ID: <20260225012408.812718125@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +68,163 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218977-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	DBL_PROHIBIT(0.00)[0.1.87.192:email];
+	TAGGED_FROM(0.00)[bounces-218410-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,8a000:email,8d000:email]
-X-Rspamd-Queue-Id: 61A53190A59
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 93D3218F945
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 69330fd2368371c4eb47d60ace6bca09763d24a0 ]
+[ Upstream commit 129d1ef3c5e60d51678e6359beaba85771a49e46 ]
 
-The amlogic MMC driver operate with the assumption that MMC clock
-is configured to provide 24MHz. It uses this path for low
-rates such as 400kHz.
+conn->le_{tx,rx}_phy is not actually a bitfield as it set by
+HCI_EV_LE_PHY_UPDATE_COMPLETE it is actually correspond to the current
+PHY in use not what is supported by the controller, so this introduces
+different fields (conn->le_{tx,rx}_def_phys) to track what PHYs are
+supported by the connection.
 
-Assign the clocks to make sure they are properly configured
-
-Fixes: 520b792e8317 ("arm64: dts: amlogic: add some device nodes for C3")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260114-amlogic-mmc-clocks-followup-v1-1-a999fafbe0aa@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: eab2404ba798 ("Bluetooth: Add BT_PHY socket option")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/net/bluetooth/hci_core.h |  2 ++
+ net/bluetooth/hci_conn.c         | 17 +++++++++++------
+ net/bluetooth/hci_event.c        | 30 +++++++++++++++++++++++++++---
+ 3 files changed, 40 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi
-index 07aaaf71ea9ae..f226df3ce153b 100644
---- a/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi
-@@ -969,6 +969,10 @@ sdio: mmc@88000 {
- 				no-sd;
- 				resets = <&reset RESET_SD_EMMC_A>;
- 				status = "disabled";
-+
-+				assigned-clocks = <&clkc_periphs CLKID_SD_EMMC_A>;
-+				assigned-clock-rates = <24000000>;
-+
- 			};
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 4263e71a23efb..8aadf4cdead2b 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -730,6 +730,8 @@ struct hci_conn {
+ 	__u16		le_per_adv_data_offset;
+ 	__u8		le_adv_phy;
+ 	__u8		le_adv_sec_phy;
++	__u8		le_tx_def_phys;
++	__u8		le_rx_def_phys;
+ 	__u8		le_tx_phy;
+ 	__u8		le_rx_phy;
+ 	__s8		rssi;
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index c3f7828bf9d54..5a4374ccf8e84 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1008,6 +1008,11 @@ static struct hci_conn *__hci_conn_add(struct hci_dev *hdev, int type,
+ 		/* conn->src should reflect the local identity address */
+ 		hci_copy_identity_address(hdev, &conn->src, &conn->src_type);
+ 		conn->mtu = hdev->le_mtu ? hdev->le_mtu : hdev->acl_mtu;
++		/* Use the controller supported PHYS as default until the
++		 * remote features are resolved.
++		 */
++		conn->le_tx_def_phys = hdev->le_tx_def_phys;
++		conn->le_rx_def_phys = hdev->le_tx_def_phys;
+ 		break;
+ 	case CIS_LINK:
+ 		/* conn->src should reflect the local identity address */
+@@ -2928,22 +2933,22 @@ u32 hci_conn_get_phy(struct hci_conn *conn)
+ 		break;
  
- 			sd: mmc@8a000 {
-@@ -984,6 +988,9 @@ sd: mmc@8a000 {
- 				no-sdio;
- 				resets = <&reset RESET_SD_EMMC_B>;
- 				status = "disabled";
-+
-+				assigned-clocks = <&clkc_periphs CLKID_SD_EMMC_B>;
-+				assigned-clock-rates = <24000000>;
- 			};
+ 	case LE_LINK:
+-		if (conn->le_tx_phy & HCI_LE_SET_PHY_1M)
++		if (conn->le_tx_def_phys & HCI_LE_SET_PHY_1M)
+ 			phys |= BT_PHY_LE_1M_TX;
  
- 			nand: nand-controller@8d000 {
+-		if (conn->le_rx_phy & HCI_LE_SET_PHY_1M)
++		if (conn->le_rx_def_phys & HCI_LE_SET_PHY_1M)
+ 			phys |= BT_PHY_LE_1M_RX;
+ 
+-		if (conn->le_tx_phy & HCI_LE_SET_PHY_2M)
++		if (conn->le_tx_def_phys & HCI_LE_SET_PHY_2M)
+ 			phys |= BT_PHY_LE_2M_TX;
+ 
+-		if (conn->le_rx_phy & HCI_LE_SET_PHY_2M)
++		if (conn->le_rx_def_phys & HCI_LE_SET_PHY_2M)
+ 			phys |= BT_PHY_LE_2M_RX;
+ 
+-		if (conn->le_tx_phy & HCI_LE_SET_PHY_CODED)
++		if (conn->le_tx_def_phys & HCI_LE_SET_PHY_CODED)
+ 			phys |= BT_PHY_LE_CODED_TX;
+ 
+-		if (conn->le_rx_phy & HCI_LE_SET_PHY_CODED)
++		if (conn->le_rx_def_phys & HCI_LE_SET_PHY_CODED)
+ 			phys |= BT_PHY_LE_CODED_RX;
+ 
+ 		break;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index a9868f17ef40f..58075bf720554 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6607,8 +6607,20 @@ static void hci_le_remote_feat_complete_evt(struct hci_dev *hdev, void *data,
+ 
+ 	conn = hci_conn_hash_lookup_handle(hdev, __le16_to_cpu(ev->handle));
+ 	if (conn) {
+-		if (!ev->status)
+-			memcpy(conn->features[0], ev->features, 8);
++		if (!ev->status) {
++			memcpy(conn->le_features, ev->features, 8);
++
++			/* Update supported PHYs */
++			if (!(conn->le_features[1] & HCI_LE_PHY_2M)) {
++				conn->le_tx_def_phys &= ~HCI_LE_SET_PHY_2M;
++				conn->le_rx_def_phys &= ~HCI_LE_SET_PHY_2M;
++			}
++
++			if (!(conn->le_features[1] & HCI_LE_PHY_CODED)) {
++				conn->le_tx_def_phys &= ~HCI_LE_SET_PHY_CODED;
++				conn->le_rx_def_phys &= ~HCI_LE_SET_PHY_CODED;
++			}
++		}
+ 
+ 		if (conn->state == BT_CONFIG) {
+ 			__u8 status;
+@@ -7221,9 +7233,21 @@ static void hci_le_read_all_remote_features_evt(struct hci_dev *hdev,
+ 	if (!conn)
+ 		goto unlock;
+ 
+-	if (!ev->status)
++	if (!ev->status) {
+ 		memcpy(conn->le_features, ev->features, 248);
+ 
++		/* Update supported PHYs */
++		if (!(conn->le_features[1] & HCI_LE_PHY_2M)) {
++			conn->le_tx_def_phys &= ~HCI_LE_SET_PHY_2M;
++			conn->le_rx_def_phys &= ~HCI_LE_SET_PHY_2M;
++		}
++
++		if (!(conn->le_features[1] & HCI_LE_PHY_CODED)) {
++			conn->le_tx_def_phys &= ~HCI_LE_SET_PHY_CODED;
++			conn->le_rx_def_phys &= ~HCI_LE_SET_PHY_CODED;
++		}
++	}
++
+ 	if (conn->state == BT_CONFIG) {
+ 		__u8 status;
+ 
 -- 
 2.51.0
 
