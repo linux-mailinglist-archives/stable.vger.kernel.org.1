@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-218560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMCDFe5XnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:18 +0100
+	id WOH2ELlSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F62190639
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA18718F4D9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DABC314B1D3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D159730066AE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FAE256C84;
-	Wed, 25 Feb 2026 01:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C607254B03;
+	Wed, 25 Feb 2026 01:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NovfjsbV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWuiAson"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664CC18B0A;
-	Wed, 25 Feb 2026 01:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404261D5141;
+	Wed, 25 Feb 2026 01:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983399; cv=none; b=sQiyu45o8KB6EEGPZDKIcicRFmmLlYI4iQZAIaXETSEqU3SJkrqSQU0BZ4VezJ592T8Vi4Igsr3ihUrV4U/HGscRx5ZK083IAHd3veJGyHIWEouMoTpt+F5WyeLSwG2LTK1qB6r3+mK6tDBPxJKixhBMwqJHgkZhiordV8PiGVE=
+	t=1771983409; cv=none; b=Epq9aEvcptWdpOfXNObRtNhkxddtC9IA6LazEfe0To1tSMBUKEGxhdk6Cb0mLkhKXMVMfNtBzWtN4sYdm6o/jdG1PJ9CrT4EW7Km4hFjM5WMKUW1dB9A/5gCW6f3nZJoBSEl1tNPeF96aEiPHOq+nXoa5oz3T/bwXPA9MUazVeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983399; c=relaxed/simple;
-	bh=CtcTGdfArZpyiqvxi2NIZBX6xxU7i4JrjfJR0+tU64s=;
+	s=arc-20240116; t=1771983409; c=relaxed/simple;
+	bh=NPm/E0oKk9pdANF3js/YGdDzpmeyQzO7zjZmBEd5ots=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLBDmSFR+2n5uZH4qNi81/q2uKoGdDP3040fmDGrtPsI7z/Qw+/AZ0YjkkC8kBqUXvKJKDGQmQLIDkBCykW+MxiFtDG0taJcCRZvVKbfjzHi+SxCJeP+EbfLPtOQCaL1MKXVZdRZrRVDZaDtr1/w0zyir0sqFUKPs+UIF1juuBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NovfjsbV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABB2C116D0;
-	Wed, 25 Feb 2026 01:36:39 +0000 (UTC)
+	 MIME-Version; b=pneVfwT8/91Rs8bv557xBE9rNgFUqpP+SeWYVHSNM7j017Sf1qXjhNHyQqwKGM9+8D4dqgMfJzbXCsj5D8IDG2QPzP4Jkun1TnbB7oADBlcjwozjd7R9TfBz5Yyt5UOl4GokJ2jJzXb6PGK28olpxnaBJXwrQlEDsSyqUMR3GMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWuiAson; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B639C116D0;
+	Wed, 25 Feb 2026 01:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983399;
-	bh=CtcTGdfArZpyiqvxi2NIZBX6xxU7i4JrjfJR0+tU64s=;
+	s=korg; t=1771983408;
+	bh=NPm/E0oKk9pdANF3js/YGdDzpmeyQzO7zjZmBEd5ots=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NovfjsbVTVHRerAyX6kZ4JH1Mp73aFee4Ei8L5QprVNhPp5ILfAkw7sjcTwfGDip4
-	 yJXMOullgCJWMv0EQZQdOSifnZgyyQPvuJtNPCTFC2yzGNf6yN0mVTJ4jD4KyCEjP2
-	 UixjMNDEaLqKzzQaGcibldSXm/qUsu03jzrZ9bIc=
+	b=LWuiAsonKKM4iCXPocHi4FHznpwwSKs1ZHyTNnd76m3osI8kGZi2rL0mR9JmBYp9N
+	 5bfp5e5c0PdY0+Ixj36EsGeKhKudWjtbwidVKae/5rggYb1AQhN8bE06ytUZa2vmBX
+	 iT4gWglsCi1dKfZdmQZN5sn7lDLtUP1Hshtyqgvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Yi Liu <liuy22@mails.tsinghua.edu.cn>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 485/781] ata: libata-core: Quirk INTEL SSDSC2KG480G8 max_sectors
-Date: Tue, 24 Feb 2026 17:19:54 -0800
-Message-ID: <20260225012411.708242893@linuxfoundation.org>
+Subject: [PATCH 6.19 486/781] RDMA/uverbs: Validate wqe_size before using it in ib_uverbs_post_send
+Date: Tue, 24 Feb 2026 17:19:55 -0800
+Message-ID: <20260225012411.732015066@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -70,82 +69,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218560-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218567-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: D9F62190639
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,tsinghua.edu.cn:email]
+X-Rspamd-Queue-Id: EA18718F4D9
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Yi Liu <liuy22@mails.tsinghua.edu.cn>
 
-[ Upstream commit 5f64ae1ef639a2bab7e39497c55f76cc0682f108 ]
+[ Upstream commit 1956f0a74ccf5dc9c3ef717f2985c3ed3400aab0 ]
 
-Commit 9b8b84879d4a ("block: Increase BLK_DEF_MAX_SECTORS_CAP") increased
-the default max_sectors_kb from 1280 KiB to 4096 KiB.
+ib_uverbs_post_send() uses cmd.wqe_size from userspace without any
+validation before passing it to kmalloc() and using the allocated
+buffer as struct ib_uverbs_send_wr.
 
-INTEL SSDSC2KG480G8 with FW rev XCV10120 times out when sending I/Os of
-size 4096 KiB.
+If a user provides a small wqe_size value (e.g., 1), kmalloc() will
+succeed, but subsequent accesses to user_wr->opcode, user_wr->num_sge,
+and other fields will read beyond the allocated buffer, resulting in
+an out-of-bounds read from kernel heap memory. This could potentially
+leak sensitive kernel information to userspace.
 
-Enable ATA_QUIRK_MAX_SEC, with value 8191 (sectors) for this device,
-since any I/O with more sectors than that lead to I/O timeouts.
+Additionally, providing an excessively large wqe_size can trigger a
+WARNING in the memory allocation path, as reported by syzkaller.
 
-With this, the INTEL SSDSC2KG480G8 is usable again.
+This is inconsistent with ib_uverbs_unmarshall_recv() which properly
+validates that wqe_size >= sizeof(struct ib_uverbs_recv_wr) before
+proceeding.
 
-Link: https://lore.kernel.org/linux-ide/176839089913.2398366.61500945766820256@eldamar.lan/
-Fixes: 9b8b84879d4a ("block: Increase BLK_DEF_MAX_SECTORS_CAP")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Add the same validation for ib_uverbs_post_send() to ensure wqe_size
+is at least sizeof(struct ib_uverbs_send_wr).
+
+Fixes: c3bea3d2dc53 ("RDMA/uverbs: Use the iterator for ib_uverbs_unmarshall_recv()")
+Signed-off-by: Yi Liu <liuy22@mails.tsinghua.edu.cn>
+Link: https://patch.msgid.link/20260122142900.2356276-2-liuy22@mails.tsinghua.edu.cn
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/core/uverbs_cmd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index d5151b9ca9141..fb148b1c3bdbf 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4067,6 +4067,7 @@ static const struct ata_dev_quirk_value __ata_dev_max_sec_quirks[] = {
- 	{ "LITEON CX1-JB*-HP",		NULL,		1024 },
- 	{ "LITEON EP1-*",		NULL,		1024 },
- 	{ "DELLBOSS VD",		"MV.R00-0",	8191 },
-+	{ "INTEL SSDSC2KG480G8",	"XCV10120",	8191 },
- 	{ },
- };
+diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
+index ce16404cdfb8c..3259e9848cc79 100644
+--- a/drivers/infiniband/core/uverbs_cmd.c
++++ b/drivers/infiniband/core/uverbs_cmd.c
+@@ -2049,7 +2049,10 @@ static int ib_uverbs_post_send(struct uverbs_attr_bundle *attrs)
+ 	if (ret)
+ 		return ret;
  
-@@ -4324,6 +4325,8 @@ static const struct ata_dev_quirks_entry __ata_dev_quirks[] = {
+-	user_wr = kmalloc(cmd.wqe_size, GFP_KERNEL);
++	if (cmd.wqe_size < sizeof(struct ib_uverbs_send_wr))
++		return -EINVAL;
++
++	user_wr = kmalloc(cmd.wqe_size, GFP_KERNEL | __GFP_NOWARN);
+ 	if (!user_wr)
+ 		return -ENOMEM;
  
- 	{ "Micron*",			NULL,	ATA_QUIRK_ZERO_AFTER_TRIM },
- 	{ "Crucial*",			NULL,	ATA_QUIRK_ZERO_AFTER_TRIM },
-+	{ "INTEL SSDSC2KG480G8", "XCV10120",	ATA_QUIRK_ZERO_AFTER_TRIM |
-+						ATA_QUIRK_MAX_SEC },
- 	{ "INTEL*SSD*",			NULL,	ATA_QUIRK_ZERO_AFTER_TRIM },
- 	{ "SSD*INTEL*",			NULL,	ATA_QUIRK_ZERO_AFTER_TRIM },
- 	{ "Samsung*SSD*",		NULL,	ATA_QUIRK_ZERO_AFTER_TRIM },
 -- 
 2.51.0
 
