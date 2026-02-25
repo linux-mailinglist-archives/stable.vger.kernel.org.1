@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-218226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SO4pDkRSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:08 +0100
+	id yCb2ASBSnmm6UgQAu9opvQ
+	(envelope-from <stable+bounces-218228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE6918F2C4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F13118F1FC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E8F53177F38
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:30:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05E703178664
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F7722579E;
-	Wed, 25 Feb 2026 01:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBE523EAA5;
+	Wed, 25 Feb 2026 01:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uy09GJVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nE5EO9/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4562E1E2834;
-	Wed, 25 Feb 2026 01:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705FB1D5ABA;
+	Wed, 25 Feb 2026 01:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983021; cv=none; b=UHrh7xUH0byBnsEF/iHJ62GeRYW2M8AJ5ikqs5wCfGjQ+4+7xHFGIEqwgX7Qd7R/llFKtBRAGfJZPQrlBMSIRMRGh6VrWTVmvVcYCuDUeXOXMRQPvqugRvzvDQKM/aMl7FeK21goCbbesuSHKjsTvROz0UM/YZ0VBZUts3zSVeU=
+	t=1771983023; cv=none; b=ozUYqPWdal+tq1h0yi7OYYKR1sQy7y0QTBYKoIia+vdy/WJIDKBH09WXKR8CNsYVzWjckiZkVfg0dPsTreg6huolHsfgTOCc4WZ6vRqNzH0PjkWtf1beKxqcDh/D827zqJb3dMuhlzOaz8BHSfx35iA3iu1rRQeB4qQCzEo2Lno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983021; c=relaxed/simple;
-	bh=n3TH0KiCiEOzRbi8qtjvhc6kvfCuKfy4H70D/5dr368=;
+	s=arc-20240116; t=1771983023; c=relaxed/simple;
+	bh=0/g1iV2Id1M1y2DBz4YYaftrZd5KZheYwCBZfAk9jpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyqGTwRoEaLJ79hasWnhEmLZAzl/Ejv4UeFToUGMD3Ekd8M3rtRooR7/jcPFi/wxJXAWQMGgG2v/lpaBre49h7vVyUDzjdbS6hf2FLnuP+rJ4iQZQi3j2sBDDb5sSXS5Mi+EzCT3M4ayWL9O+DXgwGGnBBOxcTbbCsYfT99WJHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uy09GJVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D0FC116D0;
-	Wed, 25 Feb 2026 01:30:20 +0000 (UTC)
+	 MIME-Version; b=hIOEqYjzeunlnfrUsv4xoDUi+oW1FKdpkr3EsmLp3DzE/HYma7U3+Rwbp5eyjrBOiAr9t1N05EKE3sFlEc+03wfVcs1c9Tl/p+bautYHXk8D6EVBM1Xnmn5ETA/lPkMDuEMvwAx2lqf7ubaMoh9pASXJuZmDX43xvXyGwYX48+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nE5EO9/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7DAC19423;
+	Wed, 25 Feb 2026 01:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983021;
-	bh=n3TH0KiCiEOzRbi8qtjvhc6kvfCuKfy4H70D/5dr368=;
+	s=korg; t=1771983023;
+	bh=0/g1iV2Id1M1y2DBz4YYaftrZd5KZheYwCBZfAk9jpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uy09GJVeSGaW420/TmjWmONJu8Yasuqv0umuxQtM9CDu7mLgdqeF0Fz+fsENp5FIT
-	 dcMHfYaYMA9EbgEz2+a1qAbGJ8WB5DMq1mEUZHFTq2CXMkXyTnHmRUvJW7cWd1Ugov
-	 klAvbkd+C01VbLDZvvybNFf2BRnsWlMRY6eaHr+Y=
+	b=nE5EO9/NHGWa/MykerRe2qHBqxfquzQiw/Ojbvm/RKWMakb1TEr6IdXIcvA0U7hk7
+	 TQ3svcN1FtmPZmpN/PvyKa1jCnuWKObAue4f2nQyT8yMWOpxKd41bRATv1JTeUxYuJ
+	 VEoaEsqjMvdbpS2DH+SlzQHik3pecagXnZQKKviA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Neulight <Eric.Neulight@linuxdev.slmail.me>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Viacheslav Bocharov <v@baodeep.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Ricardo Pardini <ricardo@pardini.net>
-Subject: [PATCH 6.19 188/781] arm64: dts: amlogic: meson-sm1-odroid: Eliminate Odroid HC4 power glitches during boot.
-Date: Tue, 24 Feb 2026 17:14:57 -0800
-Message-ID: <20260225012404.258387934@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 189/781] arm64: dts: qcom: agatti: Add CX_MEM/DBGC GPU regions
+Date: Tue, 24 Feb 2026 17:14:58 -0800
+Message-ID: <20260225012404.285236408@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -71,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218226-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218228-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,119 +89,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,baodeep.com:email,pardini.net:email,slmail.me:email,msgid.link:url]
-X-Rspamd-Queue-Id: BAE6918F2C4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.90.6.224:email]
+X-Rspamd-Queue-Id: 6F13118F1FC
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Neulight <Eric.Neulight@linuxdev.slmail.me>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 436418ef5baa024b7b15dd730c36d651c6aaaf47 ]
+[ Upstream commit 0fdcc948929a6d673bd0f90631dd6e42090c3dbd ]
 
-Fix issue with Odroid HC4 (and all meson-sm1-odroid) DTS that causes
-regulator power to momentarily glitch OFF-ON during boot.  Add
-regulator-boot-on to all regulator-fixed and regulator-gpio entries
-that (1) define a gpio AND (2) define regulator-always-on.
+Describe the GPU register regions, with the former existing but not
+being used much if at all on this silicon, and the latter containing
+various debugging levers generally related to dumping the state of
+the IP upon a crash.
 
-U-boot powers on devices necessary for boot then hands off the DTB to
-the kernel.  During probe, linux drivers/regulator/fixed.c and
-gpio-regulator.c both first set the regulator control gpio (that U-boot
-already turned ON) to default OFF before then setting it to the defined
-(ON) state. This glitches the power to the affected devices, unless
-regulator-boot-on is specified with it.  In fact, U-boot has the same
-behavior.  So, during reboot, a power glitch can actually happen twice:
-once when U-boot reads the DTB and probes the gpio and again when the
-kernel reads the DTB and probes the gpio.
-
-Problem this fixes: On the Odroid HC4, power to the SATA ports glitches
-during boot and causes some HDDs to do emergency head retract, which
-should be avoided.  On the HC4, power glitches to the SD card, USB,
-SATA, and HDMI interfaces during boot.  These are all boot devices.
-A power glitch can potentially cause a problem for any sensitive devices
-during boot.
-
-NOTE: This is not limited to just the HC4, likely an issue with ALL DTS
-with regulator-fixed or regulator-gpio entries that (1) define a gpio
-AND (2) define regulator-always-on.  All such entries should also
-include regulator-boot-on in order to avoid potential power glitches.
-At worst, adding regulator-boot-on in such cases is harmless because of
-regulator-always-on, and, at best, it eliminates detrimental power
-glitches during boot.  So, this is best-practice.
-
-Fixes: 164147f094ec5d0fc2c2098a888f4b50cf3096a7 ("arm64: dts: meson-sm1-odroid-hc4: add regulators controlled by GPIOH_8")
-Fixes: 45d736ab17b44257e15e75e0dba364139fdb0983 ("arm64: dts: meson-sm1-odroid: add 5v regulator gpio")
-Fixes: 1f80a5cf74a60997b92d2cde772edec093bec4d9 ("arm64: dts: meson-sm1-odroid: add missing enable gpio and supply for tf_io regulator")
-Fixes: 88d537bc92ca035e2a9920b0abc750dd62146520 ("arm64: dts: meson: convert meson-sm1-odroid-c4 to dtsi")
-
-Signed-off-by: Eric Neulight <Eric.Neulight@linuxdev.slmail.me>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Acked-by: Viacheslav Bocharov <v@baodeep.com>
-Tested-by: Ricardo Pardini <ricardo@pardini.net> # on Odroid-HC4 5V HDD
-Link: https://patch.msgid.link/20260116-odroid-hc4-dts-v1-1-459b601cd5cf@linuxdev.slmail.me
-[narmstrong: fixed subject prefix]
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 4faeef52c8e6 ("arm64: dts: qcom: qcm2290: Add GPU nodes")
+Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Closes: https://lore.kernel.org/linux-arm-msm/8a64f70b-8034-45e7-86a3-0015cf357132@oss.qualcomm.com/T/#m404f1425c36b61467760f058b696b8910340a063
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251229-topic-6115_2290_gpu_dbgc-v1-2-4a24d196389c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-sm1-odroid-hc4.dts | 2 ++
- arch/arm64/boot/dts/amlogic/meson-sm1-odroid.dtsi    | 3 +++
- 2 files changed, 5 insertions(+)
+ arch/arm64/boot/dts/qcom/agatti.dtsi | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-sm1-odroid-hc4.dts b/arch/arm64/boot/dts/amlogic/meson-sm1-odroid-hc4.dts
-index 0170139b8d32f..3ece30a0a1fff 100644
---- a/arch/arm64/boot/dts/amlogic/meson-sm1-odroid-hc4.dts
-+++ b/arch/arm64/boot/dts/amlogic/meson-sm1-odroid-hc4.dts
-@@ -52,6 +52,7 @@ p12v_0: regulator-p12v-0 {
+diff --git a/arch/arm64/boot/dts/qcom/agatti.dtsi b/arch/arm64/boot/dts/qcom/agatti.dtsi
+index 8bf5c5583fc22..969ae1378db2c 100644
+--- a/arch/arm64/boot/dts/qcom/agatti.dtsi
++++ b/arch/arm64/boot/dts/qcom/agatti.dtsi
+@@ -1591,8 +1591,12 @@ usb_dwc3_ss: endpoint {
  
- 		gpio = <&gpio GPIOH_8 GPIO_OPEN_DRAIN>;
- 		enable-active-high;
-+		regulator-boot-on;
- 		regulator-always-on;
- 	};
+ 		gpu: gpu@5900000 {
+ 			compatible = "qcom,adreno-07000200", "qcom,adreno";
+-			reg = <0x0 0x05900000 0x0 0x40000>;
+-			reg-names = "kgsl_3d0_reg_memory";
++			reg = <0x0 0x05900000 0x0 0x40000>,
++			      <0x0 0x0599e000 0x0 0x1000>,
++			      <0x0 0x05961000 0x0 0x800>;
++			reg-names = "kgsl_3d0_reg_memory",
++				    "cx_mem",
++				    "cx_dbgc";
  
-@@ -65,6 +66,7 @@ p12v_1: regulator-p12v-1 {
+ 			interrupts = <GIC_SPI 177 IRQ_TYPE_LEVEL_HIGH>;
  
- 		gpio = <&gpio GPIOH_8 GPIO_OPEN_DRAIN>;
- 		enable-active-high;
-+		regulator-boot-on;
- 		regulator-always-on;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-sm1-odroid.dtsi b/arch/arm64/boot/dts/amlogic/meson-sm1-odroid.dtsi
-index c4524eb4f0996..0bce4e8d965f2 100644
---- a/arch/arm64/boot/dts/amlogic/meson-sm1-odroid.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-sm1-odroid.dtsi
-@@ -37,6 +37,7 @@ tflash_vdd: regulator-tflash-vdd {
- 
- 		gpio = <&gpio_ao GPIOAO_3 GPIO_OPEN_DRAIN>;
- 		enable-active-high;
-+		regulator-boot-on;
- 		regulator-always-on;
- 	};
- 
-@@ -50,6 +51,7 @@ tf_io: gpio-regulator-tf-io {
- 
- 		enable-gpios = <&gpio_ao GPIOE_2 GPIO_OPEN_DRAIN>;
- 		enable-active-high;
-+		regulator-boot-on;
- 		regulator-always-on;
- 
- 		gpios = <&gpio_ao GPIOAO_6 GPIO_OPEN_SOURCE>;
-@@ -81,6 +83,7 @@ vcc_5v: regulator-vcc-5v {
- 		regulator-name = "5V";
- 		regulator-min-microvolt = <5000000>;
- 		regulator-max-microvolt = <5000000>;
-+		regulator-boot-on;
- 		regulator-always-on;
- 		vin-supply = <&main_12v>;
- 		gpio = <&gpio GPIOH_8 GPIO_OPEN_DRAIN>;
 -- 
 2.51.0
 
