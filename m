@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-218131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UF1LINdQnmlIUgQAu9opvQ
-	(envelope-from <stable+bounces-218131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:03 +0100
+	id AIO9CtlQnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:05 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5899218ED66
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FEC218ED7B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 567B5306F4F4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:28:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EC3B2303D0DC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDECB24A06D;
-	Wed, 25 Feb 2026 01:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F100242D9B;
+	Wed, 25 Feb 2026 01:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5fHbGjq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GG0mLNb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19941EB5E1;
-	Wed, 25 Feb 2026 01:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522454369A;
+	Wed, 25 Feb 2026 01:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982911; cv=none; b=P9Z9jk6gpU9iwR1PgxrZVvLwrCLdxldcf8sp5qvbHwMhw5IJFXQWinFWaRCMSnY8+klp5GXYXP5JyzaBuad7c/T646axXbco9TmU1P3BRzck2eOeHOXEckQsT/lqkK72iKSLgOi/ygNO58Iq1vwPYOCCxrzKPJxq2QLQKGOBWiQ=
+	t=1771982914; cv=none; b=jaXpRZDWRQFyyaT+gt3/nbpzXGtkiIcv20dxaQSSXMDLpPyQ0zmsKTtINuninCNlarQAb1/8BJw37ZlAgKuYKTZkK8lTYtT8OeRzcjm8inWNMqEpovesYkuPqFloRxvO1/JerkI9eHRNXwBeExFgdRr8QXP1vi7WO68/xVwmWPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982911; c=relaxed/simple;
-	bh=/tnjhTptpjw8ugyqMvjUbfXivJlt2x3rwbfhgo7cNRE=;
+	s=arc-20240116; t=1771982914; c=relaxed/simple;
+	bh=b9vgqYUM+0IEvzXTqpvyB2NvadbFtWQFuNW1UuGr+yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHaLjV8Ij6wcQAt1kCTiUA1n+dXWcv/ZNx7gxwcJ1CkhrYFjQtghXRSlzy+qIPxB5kxqeU/rRTm6c8A6fb41sBiRJ7vLWa3GzzmPPzWGM4hjWfQ4urdRiG2dg5GTGQUEyxblBCEvqXXUhDRFZf5ftyDBqcDt2Wu/M+gOptsukoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5fHbGjq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4C5C116D0;
-	Wed, 25 Feb 2026 01:28:31 +0000 (UTC)
+	 MIME-Version; b=GgLKVXVBuGc/jKmxdyOTZhiH+VZ/zlHIaotMQb85x2PfywsguaxTkpUT2pFyEZyhtpqVj0bAa+qVlgFnQ/mplsBB6Enxdupi1Sk6cZ/BqRp4J2i5Mm/ZjANoRrwO5kC9wJ+YU9LFKScFOIZdAKdRzHPVYbHS+ozuZppyAHGGCeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GG0mLNb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11862C116D0;
+	Wed, 25 Feb 2026 01:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982911;
-	bh=/tnjhTptpjw8ugyqMvjUbfXivJlt2x3rwbfhgo7cNRE=;
+	s=korg; t=1771982914;
+	bh=b9vgqYUM+0IEvzXTqpvyB2NvadbFtWQFuNW1UuGr+yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y5fHbGjqeL+drEDB3F8UL5IYVpcpak7ShQVltPZwi3VSgvpKOcjPkIyiNdnxiur5J
-	 Et2wcjaf/WEu1DbS5wCPNVnTqHy7+PiqjSXFgEXqeB/psKblG5u3/g/Repp7jID1jm
-	 0jud5Xi/ggjZsWAy/r0Am3YJjr32MILG+VHSEZYA=
+	b=GG0mLNb6/SJUS35x8B4QiwG452k5UXKRmmvlPwdMcseELbDShq/8U5pajy37FCX+l
+	 Jf75Y4Ayf1FmBs7bXM4bBjIRmPMi0JdetDINSjI9EFNHG6B4n84ZTl3uceEz5nQvSo
+	 RYONl5oSig+bYkE1amlOsKbuE4LagJwnX3kwriu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Stephen Eta Zhou <stephen.eta.zhou@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Shuran Liu <electronlsr@gmail.com>,
+	Peili Gao <gplhust955@gmail.com>,
+	Haoran Ni <haoran.ni.cs@gmail.com>,
+	Zesen Liu <ftyghome@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 093/781] clocksource/drivers/timer-sp804: Fix an Oops when read_current_timer is called on ARM32 platforms where the SP804 is not registered as the sched_clock.
-Date: Tue, 24 Feb 2026 17:13:22 -0800
-Message-ID: <20260225012401.972609551@linuxfoundation.org>
+Subject: [PATCH 6.19 094/781] bpf: Fix memory access flags in helper prototypes
+Date: Tue, 24 Feb 2026 17:13:23 -0800
+Message-ID: <20260225012401.995436632@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -77,110 +80,201 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,linaro.org,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218131-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218133-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	NEURAL_HAM(-0.00)[-0.964];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5899218ED66
+X-Rspamd-Queue-Id: 8FEC218ED7B
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Eta Zhou <stephen.eta.zhou@gmail.com>
+From: Zesen Liu <ftyghome@gmail.com>
 
-[ Upstream commit 694921a93f3e3621e067afc545cedf6fe3b234a9 ]
+[ Upstream commit 802eef5afb1865bc5536a5302c068ba2215a1f72 ]
 
-On SP804, the delay timer shares the same clkevt instance with
-sched_clock. On some platforms, when
-sp804_clocksource_and_sched_clock_init is called with use_sched_clock
-not set to 1, sched_clkevt is not properly initialized. However,
-sp804_register_delay_timer is invoked unconditionally, and
-read_current_timer() subsequently calls sp804_read on an uninitialized
-sched_clkevt, leading to a kernel Oops when accessing
-sched_clkevt->value.
+After commit 37cce22dbd51 ("bpf: verifier: Refactor helper access type tracking"),
+the verifier started relying on the access type flags in helper
+function prototypes to perform memory access optimizations.
 
-Declare a dedicated clkevt instance exclusively for delay timer,
-instead of sharing the same clkevt with sched_clock.  This ensures
-that read_current_timer continues to work correctly regardless of
-whether SP804 is selected as the sched_clock.
+Currently, several helper functions utilizing ARG_PTR_TO_MEM lack the
+corresponding MEM_RDONLY or MEM_WRITE flags. This omission causes the
+verifier to incorrectly assume that the buffer contents are unchanged
+across the helper call. Consequently, the verifier may optimize away
+subsequent reads based on this wrong assumption, leading to correctness
+issues.
 
-Fixes: 640594a04f11 ("clocksource/drivers/timer-sp804: Fix read_current_timer() issue when clock source is not registered")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512250520.APOMkYRQ-lkp@intel.com/
-Signed-off-by: Stephen Eta Zhou <stephen.eta.zhou@gmail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://patch.msgid.link/20251225-fix_timersp804-v2-1-a366d7157f58@gmail.com
+For bpf_get_stack_proto_raw_tp, the original MEM_RDONLY was incorrect
+since the helper writes to the buffer. Change it to ARG_PTR_TO_UNINIT_MEM
+which correctly indicates write access to potentially uninitialized memory.
+
+Similar issues were recently addressed for specific helpers in commit
+ac44dcc788b9 ("bpf: Fix verifier assumptions of bpf_d_path's output buffer")
+and commit 2eb7648558a7 ("bpf: Specify access type of bpf_sysctl_get_name args").
+
+Fix these prototypes by adding the correct memory access flags.
+
+Fixes: 37cce22dbd51 ("bpf: verifier: Refactor helper access type tracking")
+Co-developed-by: Shuran Liu <electronlsr@gmail.com>
+Signed-off-by: Shuran Liu <electronlsr@gmail.com>
+Co-developed-by: Peili Gao <gplhust955@gmail.com>
+Signed-off-by: Peili Gao <gplhust955@gmail.com>
+Co-developed-by: Haoran Ni <haoran.ni.cs@gmail.com>
+Signed-off-by: Haoran Ni <haoran.ni.cs@gmail.com>
+Signed-off-by: Zesen Liu <ftyghome@gmail.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20260120-helper_proto-v3-1-27b0180b4e77@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-sp804.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ kernel/bpf/helpers.c     |  2 +-
+ kernel/bpf/syscall.c     |  2 +-
+ kernel/trace/bpf_trace.c |  6 +++---
+ net/core/filter.c        | 20 ++++++++++----------
+ 4 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/clocksource/timer-sp804.c b/drivers/clocksource/timer-sp804.c
-index e82a95ea47247..d698584273596 100644
---- a/drivers/clocksource/timer-sp804.c
-+++ b/drivers/clocksource/timer-sp804.c
-@@ -106,21 +106,25 @@ static u64 notrace sp804_read(void)
- 	return ~readl_relaxed(sched_clkevt->value);
- }
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index db72b96f9c8c8..f66284f8ec2cc 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -1077,7 +1077,7 @@ const struct bpf_func_proto bpf_snprintf_proto = {
+ 	.func		= bpf_snprintf,
+ 	.gpl_only	= true,
+ 	.ret_type	= RET_INTEGER,
+-	.arg1_type	= ARG_PTR_TO_MEM_OR_NULL,
++	.arg1_type	= ARG_PTR_TO_MEM_OR_NULL | MEM_WRITE,
+ 	.arg2_type	= ARG_CONST_SIZE_OR_ZERO,
+ 	.arg3_type	= ARG_PTR_TO_CONST_STR,
+ 	.arg4_type	= ARG_PTR_TO_MEM | PTR_MAYBE_NULL | MEM_RDONLY,
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 4ff82144f8853..ee116a3b7baf7 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -6407,7 +6407,7 @@ static const struct bpf_func_proto bpf_kallsyms_lookup_name_proto = {
+ 	.func		= bpf_kallsyms_lookup_name,
+ 	.gpl_only	= false,
+ 	.ret_type	= RET_INTEGER,
+-	.arg1_type	= ARG_PTR_TO_MEM,
++	.arg1_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
+ 	.arg2_type	= ARG_CONST_SIZE_OR_ZERO,
+ 	.arg3_type	= ARG_ANYTHING,
+ 	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index fe28d86f7c357..59c2394981c72 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -1022,7 +1022,7 @@ const struct bpf_func_proto bpf_snprintf_btf_proto = {
+ 	.func		= bpf_snprintf_btf,
+ 	.gpl_only	= false,
+ 	.ret_type	= RET_INTEGER,
+-	.arg1_type	= ARG_PTR_TO_MEM,
++	.arg1_type	= ARG_PTR_TO_MEM | MEM_WRITE,
+ 	.arg2_type	= ARG_CONST_SIZE,
+ 	.arg3_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
+ 	.arg4_type	= ARG_CONST_SIZE,
+@@ -1526,7 +1526,7 @@ static const struct bpf_func_proto bpf_read_branch_records_proto = {
+ 	.gpl_only       = true,
+ 	.ret_type       = RET_INTEGER,
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+-	.arg2_type      = ARG_PTR_TO_MEM_OR_NULL,
++	.arg2_type      = ARG_PTR_TO_MEM_OR_NULL | MEM_WRITE,
+ 	.arg3_type      = ARG_CONST_SIZE_OR_ZERO,
+ 	.arg4_type      = ARG_ANYTHING,
+ };
+@@ -1661,7 +1661,7 @@ static const struct bpf_func_proto bpf_get_stack_proto_raw_tp = {
+ 	.gpl_only	= true,
+ 	.ret_type	= RET_INTEGER,
+ 	.arg1_type	= ARG_PTR_TO_CTX,
+-	.arg2_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
++	.arg2_type	= ARG_PTR_TO_UNINIT_MEM,
+ 	.arg3_type	= ARG_CONST_SIZE_OR_ZERO,
+ 	.arg4_type	= ARG_ANYTHING,
+ };
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 029e560e32ce3..b1f8e2930e1c4 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -6401,7 +6401,7 @@ static const struct bpf_func_proto bpf_xdp_fib_lookup_proto = {
+ 	.gpl_only	= true,
+ 	.ret_type	= RET_INTEGER,
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+-	.arg2_type      = ARG_PTR_TO_MEM,
++	.arg2_type      = ARG_PTR_TO_MEM | MEM_WRITE,
+ 	.arg3_type      = ARG_CONST_SIZE,
+ 	.arg4_type	= ARG_ANYTHING,
+ };
+@@ -6456,7 +6456,7 @@ static const struct bpf_func_proto bpf_skb_fib_lookup_proto = {
+ 	.gpl_only	= true,
+ 	.ret_type	= RET_INTEGER,
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+-	.arg2_type      = ARG_PTR_TO_MEM,
++	.arg2_type      = ARG_PTR_TO_MEM | MEM_WRITE,
+ 	.arg3_type      = ARG_CONST_SIZE,
+ 	.arg4_type	= ARG_ANYTHING,
+ };
+@@ -8010,9 +8010,9 @@ static const struct bpf_func_proto bpf_tcp_raw_gen_syncookie_ipv4_proto = {
+ 	.gpl_only	= true, /* __cookie_v4_init_sequence() is GPL */
+ 	.pkt_access	= true,
+ 	.ret_type	= RET_INTEGER,
+-	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
++	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
+ 	.arg1_size	= sizeof(struct iphdr),
+-	.arg2_type	= ARG_PTR_TO_MEM,
++	.arg2_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
+ 	.arg3_type	= ARG_CONST_SIZE_OR_ZERO,
+ };
  
-+/* Register delay timer backed by the hardware counter */
- #ifdef CONFIG_ARM
- static struct delay_timer delay;
-+static struct sp804_clkevt *delay_clkevt;
-+
- static unsigned long sp804_read_delay_timer_read(void)
- {
--	return sp804_read();
-+	return ~readl_relaxed(delay_clkevt->value);
- }
+@@ -8042,9 +8042,9 @@ static const struct bpf_func_proto bpf_tcp_raw_gen_syncookie_ipv6_proto = {
+ 	.gpl_only	= true, /* __cookie_v6_init_sequence() is GPL */
+ 	.pkt_access	= true,
+ 	.ret_type	= RET_INTEGER,
+-	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
++	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
+ 	.arg1_size	= sizeof(struct ipv6hdr),
+-	.arg2_type	= ARG_PTR_TO_MEM,
++	.arg2_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
+ 	.arg3_type	= ARG_CONST_SIZE_OR_ZERO,
+ };
  
--static void sp804_register_delay_timer(int freq)
-+static void sp804_register_delay_timer(struct sp804_clkevt *clk, int freq)
- {
-+	delay_clkevt = clk;
- 	delay.freq = freq;
- 	delay.read_current_timer = sp804_read_delay_timer_read;
- 	register_current_timer_delay(&delay);
- }
- #else
--static inline void sp804_register_delay_timer(int freq) {}
-+static inline void sp804_register_delay_timer(struct sp804_clkevt *clk, int freq) {}
- #endif
+@@ -8062,9 +8062,9 @@ static const struct bpf_func_proto bpf_tcp_raw_check_syncookie_ipv4_proto = {
+ 	.gpl_only	= true, /* __cookie_v4_check is GPL */
+ 	.pkt_access	= true,
+ 	.ret_type	= RET_INTEGER,
+-	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
++	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
+ 	.arg1_size	= sizeof(struct iphdr),
+-	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
++	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
+ 	.arg2_size	= sizeof(struct tcphdr),
+ };
  
- static int __init sp804_clocksource_and_sched_clock_init(void __iomem *base,
-@@ -135,8 +139,6 @@ static int __init sp804_clocksource_and_sched_clock_init(void __iomem *base,
- 	if (rate < 0)
- 		return -EINVAL;
- 
--	sp804_register_delay_timer(rate);
--
- 	clkevt = sp804_clkevt_get(base);
- 
- 	writel(0, clkevt->ctrl);
-@@ -152,6 +154,8 @@ static int __init sp804_clocksource_and_sched_clock_init(void __iomem *base,
- 	clocksource_mmio_init(clkevt->value, name,
- 		rate, 200, 32, clocksource_mmio_readl_down);
- 
-+	sp804_register_delay_timer(clkevt, rate);
-+
- 	if (use_sched_clock) {
- 		sched_clkevt = clkevt;
- 		sched_clock_register(sp804_read, 32, rate);
+@@ -8086,9 +8086,9 @@ static const struct bpf_func_proto bpf_tcp_raw_check_syncookie_ipv6_proto = {
+ 	.gpl_only	= true, /* __cookie_v6_check is GPL */
+ 	.pkt_access	= true,
+ 	.ret_type	= RET_INTEGER,
+-	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
++	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
+ 	.arg1_size	= sizeof(struct ipv6hdr),
+-	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
++	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
+ 	.arg2_size	= sizeof(struct tcphdr),
+ };
+ #endif /* CONFIG_SYN_COOKIES */
 -- 
 2.51.0
 
