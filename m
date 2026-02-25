@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Bg7ACBZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:24 +0100
+	id aAf/J1hRnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6654E1908B5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5207218EFAA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07EC7324CCB4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 669C43093DC5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEE826AA91;
-	Wed, 25 Feb 2026 01:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80469248886;
+	Wed, 25 Feb 2026 01:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCbJWCUR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9G6+ipB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF887248886;
-	Wed, 25 Feb 2026 01:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441472BAF7;
+	Wed, 25 Feb 2026 01:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983712; cv=none; b=UQOSmvVAK63QCnrRbhPEmMVjyLL0UccW4hZ6Ww6VncA1nnNHOHBg1BANS27+iWENb8GNEXbe7o/GEkbfL/W9vcn9skmOC++GZ3BFnMypxDGZ6XgYk3742yQPyrFQDJukEcdQ9PzAwcVbbgSPHmYByPnwvPdHpcu/i6YauE+k6p0=
+	t=1771983065; cv=none; b=gHodCotjCRXoa6U32Qz+uW0HGg+xIUZZo570J7vAsyJKDsQu82z6KyXQRbROuihJu4aAYb3za7hKzGc7gQCtWHusoXrJTIS+OwnsxJeT/8R9G+3gt7YztA8rVOoZm//z+CN1+Y/l6JKEekDsN5lDjmSCyCz5va+JjePVTPXb/zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983712; c=relaxed/simple;
-	bh=e0fhrkZWtvEdea8e3S2freFTjFSIKKhLXW2HnzFPJmE=;
+	s=arc-20240116; t=1771983065; c=relaxed/simple;
+	bh=AGvB3vNSRCzCx5nmhBw5sc4ueK9Ff1PsQ1+PvwqpeDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=is/rR6UDHySDPoJjbpomK3uHM+fm0iYohXktrHT96ihm7e+I2E1XXXDqKMe0v/vE/0NdxuIImJWNTokC22Q6+3cNe1HP+mmMoFQ4eCbQi19mD/W/N89JblWiNJL4tW3I550huNfcDbMK8UwIajhH+ItS21xossZBBbpCDajvJe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCbJWCUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9F5C116D0;
-	Wed, 25 Feb 2026 01:41:52 +0000 (UTC)
+	 MIME-Version; b=Mx9ps23aDCcGOlasA9J7/IuYTax7qNU32nrYT0lZp8RAnZt+7Mv2rAzxNKrgdo6Ytsu4elvhF/2oFKTAW1nbo6PT1PtiLv7dYCSdq55wmB9X7peKna+RrUWHG7YSl9QRCTLG7UwRPiY7O0RdE/6e8fZLgA8o4siYsZepZ8gBWiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9G6+ipB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001DFC116D0;
+	Wed, 25 Feb 2026 01:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983712;
-	bh=e0fhrkZWtvEdea8e3S2freFTjFSIKKhLXW2HnzFPJmE=;
+	s=korg; t=1771983065;
+	bh=AGvB3vNSRCzCx5nmhBw5sc4ueK9Ff1PsQ1+PvwqpeDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YCbJWCUROeaMRGwAnKOKCwGH5v183Na6q2AXy5KZreXBkbRJUq5/pcuk7ZW9mgRLu
-	 flqlcGPUU1hso0jPeGikVenHxfs7L3ho77jK6xoXwiySpvQc08C29Bx3fA+yn2tjzt
-	 hI3dGyyqn8eFgAHQ/8kq4FR5cw7ztwjcUbZ6TYm4=
+	b=Q9G6+ipB1uCjUZ7Mxo0ulzXjwu2wxv3H7Oy2u0b0Lz0RaScIgSoD3ksJB7jWpzFjK
+	 dG83Xq1nLcBbi1IxP6KZviPvFdL3r0Ah3QoHmSfJpOqTyrri7IA3F66s6zY9MJQavx
+	 DAOL5aqegfMar+Ht4sWDv2I+h0X3LYdOGR+FLKxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Lyude Paul <lyude@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 011/641] fs: add <linux/init_task.h> for init_fs
+Subject: [PATCH 6.19 228/781] drm/display/dp_mst: Add protection against 0 vcpi
 Date: Tue, 24 Feb 2026 17:15:37 -0800
-Message-ID: <20260225012349.216549582@linuxfoundation.org>
+Message-ID: <20260225012405.305009441@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,68 +70,124 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218266-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218831-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.cz:email]
-X-Rspamd-Queue-Id: 6654E1908B5
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5207218EFAA
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Suraj Kandpal <suraj.kandpal@intel.com>
 
-[ Upstream commit 589cff4975afe1a4eaaa1d961652f50b1628d78d ]
+[ Upstream commit 342ccffd9f77fc29fe1c05fd145e4d842bd2feaa ]
 
-The init_fs symbol is defined in <linux/init_task.h> but was
-not included in fs/fs_struct.c so fix by adding the include.
+When releasing a timeslot there is a slight chance we may end up
+with the wrong payload mask due to overflow if the delayed_destroy_work
+ends up coming into play after a DP 2.1 monitor gets disconnected
+which causes vcpi to become 0 then we try to make the payload =
+~BIT(vcpi - 1) which is a negative shift. VCPI id should never
+really be 0 hence skip changing the payload mask if VCPI is 0.
 
-Fixes the following sparse warning:
-fs/fs_struct.c:150:18: warning: symbol 'init_fs' was not declared. Should it be static?
+Otherwise it leads to
+<7> [515.287237] xe 0000:03:00.0: [drm:drm_dp_mst_get_port_malloc
+[drm_display_helper]] port ffff888126ce9000 (3)
+<4> [515.287267] -----------[ cut here ]-----------
+<3> [515.287268] UBSAN: shift-out-of-bounds in
+../drivers/gpu/drm/display/drm_dp_mst_topology.c:4575:36
+<3> [515.287271] shift exponent -1 is negative
+<4> [515.287275] CPU: 7 UID: 0 PID: 3108 Comm: kworker/u64:33 Tainted: G
+S U 6.17.0-rc6-lgci-xe-xe-3795-3e79699fa1b216e92+ #1 PREEMPT(voluntary)
+<4> [515.287279] Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
+<4> [515.287279] Hardware name: ASUS System Product Name/PRIME Z790-P
+WIFI, BIOS 1645 03/15/2024
+<4> [515.287281] Workqueue: drm_dp_mst_wq drm_dp_delayed_destroy_work
+[drm_display_helper]
+<4> [515.287303] Call Trace:
+<4> [515.287304] <TASK>
+<4> [515.287306] dump_stack_lvl+0xc1/0xf0
+<4> [515.287313] dump_stack+0x10/0x20
+<4> [515.287316] __ubsan_handle_shift_out_of_bounds+0x133/0x2e0
+<4> [515.287324] ? drm_atomic_get_private_obj_state+0x186/0x1d0
+<4> [515.287333] drm_dp_atomic_release_time_slots.cold+0x17/0x3d
+[drm_display_helper]
+<4> [515.287355] mst_connector_atomic_check+0x159/0x180 [xe]
+<4> [515.287546] drm_atomic_helper_check_modeset+0x4d9/0xfa0
+<4> [515.287550] ? __ww_mutex_lock.constprop.0+0x6f/0x1a60
+<4> [515.287562] intel_atomic_check+0x119/0x2b80 [xe]
+<4> [515.287740] ? find_held_lock+0x31/0x90
+<4> [515.287747] ? lock_release+0xce/0x2a0
+<4> [515.287754] drm_atomic_check_only+0x6a2/0xb40
+<4> [515.287758] ? drm_atomic_add_affected_connectors+0x12b/0x140
+<4> [515.287765] drm_atomic_commit+0x6e/0xf0
+<4> [515.287766] ? _pfx__drm_printfn_info+0x10/0x10
+<4> [515.287774] drm_client_modeset_commit_atomic+0x25c/0x2b0
+<4> [515.287794] drm_client_modeset_commit_locked+0x60/0x1b0
+<4> [515.287795] ? mutex_lock_nested+0x1b/0x30
+<4> [515.287801] drm_client_modeset_commit+0x26/0x50
+<4> [515.287804] __drm_fb_helper_restore_fbdev_mode_unlocked+0xdc/0x110
+<4> [515.287810] drm_fb_helper_hotplug_event+0x120/0x140
+<4> [515.287814] drm_fbdev_client_hotplug+0x28/0xd0
+<4> [515.287819] drm_client_hotplug+0x6c/0xf0
+<4> [515.287824] drm_client_dev_hotplug+0x9e/0xd0
+<4> [515.287829] drm_kms_helper_hotplug_event+0x1a/0x30
+<4> [515.287834] drm_dp_delayed_destroy_work+0x3df/0x410
+[drm_display_helper]
+<4> [515.287861] process_one_work+0x22b/0x6f0
+<4> [515.287874] worker_thread+0x1e8/0x3d0
+<4> [515.287879] ? __pfx_worker_thread+0x10/0x10
+<4> [515.287882] kthread+0x11c/0x250
+<4> [515.287886] ? __pfx_kthread+0x10/0x10
+<4> [515.287890] ret_from_fork+0x2d7/0x310
+<4> [515.287894] ? __pfx_kthread+0x10/0x10
+<4> [515.287897] ret_from_fork_asm+0x1a/0x30
 
-Fixes: 3e93cd671813e ("Take fs_struct handling to new file")
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Link: https://patch.msgid.link/20260108115856.238027-1-ben.dooks@codethink.co.uk
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6303
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Link: https://patch.msgid.link/20251119094650.799135-1-suraj.kandpal@intel.com
+Stable-dep-of: e05b08d7d016 ("drm/atomic: convert drm_atomic_get_{old, new}_colorop_state() into proper functions")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fs_struct.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/fs_struct.c b/fs/fs_struct.c
-index 28be762ac1c63..a0b40ad5e7423 100644
---- a/fs/fs_struct.c
-+++ b/fs/fs_struct.c
-@@ -6,6 +6,7 @@
- #include <linux/path.h>
- #include <linux/slab.h>
- #include <linux/fs_struct.h>
-+#include <linux/init_task.h>
- #include "internal.h"
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index 64e5c176d5cce..be749dcad3b58 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -4572,7 +4572,8 @@ int drm_dp_atomic_release_time_slots(struct drm_atomic_state *state,
+ 	if (!payload->delete) {
+ 		payload->pbn = 0;
+ 		payload->delete = true;
+-		topology_state->payload_mask &= ~BIT(payload->vcpi - 1);
++		if (payload->vcpi > 0)
++			topology_state->payload_mask &= ~BIT(payload->vcpi - 1);
+ 	}
  
- /*
+ 	return 0;
 -- 
 2.51.0
 
