@@ -1,191 +1,153 @@
-Return-Path: <stable+bounces-218638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iG/qDkxYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218638-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:52 +0100
+	id iF8bKu9VnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:47 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCEA1906D8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D6519016C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A35B031A22CB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05116328F160
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8778F265CA6;
-	Wed, 25 Feb 2026 01:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25362848B2;
+	Wed, 25 Feb 2026 01:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="a3jgbfYb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ObPThA8y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m104.netease.com (mail-m104.netease.com [154.81.10.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9616D24A05D;
-	Wed, 25 Feb 2026 01:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=154.81.10.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915272741B6
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 01:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983488; cv=none; b=cw83IVKNLTxykAaivbU0kzgVRn5dWN73iaqGrBZl/AVcJOsWrwgRHmkJYTz+UKe4ZvV/sTippYQHC2I5HsPnEN9S4LNTKDqdiYRE7Bipdtl5zexD/SadhIXQNnmhnjeSYmIbLcQwH1oD4gUi+avI3JymcW6aGhaiSmzQMh4vfr8=
+	t=1771983745; cv=none; b=UDW4akPvk9aqx1Dm0VAeKVszGflIFncOWdiKWPRGToWjxc9Np/ijA0jU/TB3C1OdAsLHCHJNsAsykfPqJ8YDvoPnSlmUyTR1lIoIX2o/AJCHH2HpWWfuQBOoEjinrxBrjcaVLmWAsot+a5hmtxxbz7TmkL729yF+akXT/17uTHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983488; c=relaxed/simple;
-	bh=Xhvz82KuGXWOeALClfJbI5e3pUSDttjluv+EbYbhArY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P/GeOJ04pAZIebtadczKeAx0vfGSRYXqY46D7BY1m0u+jkL2i8bIka2f3M1wsDY9uQ1EMDnF3K4plqQZV836aulzxllwfSv1xIGwKSuLtFQ+O2Di2sXHV0dwQeOVVyZnnGy7n0B+XmqJioHNp6cjS9O07ummeIwnOZZAphT+RBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=a3jgbfYb; arc=none smtp.client-ip=154.81.10.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from [172.16.12.51] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 34dae9247;
-	Wed, 25 Feb 2026 09:37:56 +0800 (GMT+08:00)
-Message-ID: <612e44b1-7747-4b47-820c-2262186e6e97@rock-chips.com>
-Date: Wed, 25 Feb 2026 09:37:55 +0800
+	s=arc-20240116; t=1771983745; c=relaxed/simple;
+	bh=R1GxnxBAq9BLjZ1c5K6TFLjX8vN3LYKcB1tpJ7YQdq8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mF89h9KKvFY/5k4PG9g/90daOTpn0+qTE9OQ89dSQparPDdkMxCRwMYQQHJgHRJPM9mRDQTXEb9QMbkdEVM+ororAFSF6b0695y0pHR+Z2DVT0KvU6lZQUZ/8MOkYfC4gOWwj1EFFpB7OseHik32KHPlPOM50hVSAMFvpqWIrCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ObPThA8y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AEDC19424
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 01:42:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771983745;
+	bh=R1GxnxBAq9BLjZ1c5K6TFLjX8vN3LYKcB1tpJ7YQdq8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ObPThA8y6QCn+jRFDSGLUouW9QoXW439TgnqkQbwHFyJaDiXGHITs5b24KlEu0Euj
+	 9vY1SZuJpVqpXuxsFhuaDVocJQewQJwe+MN6NzEYLMEJsLaaHbb2DAz1BEWKtrzc2B
+	 hXYGyffmkIQfoS8IZCho87tKNSb/WL5xiz9Eu/jElnU+n1SluI6fabY/jNGYCG4nW0
+	 35S+ZY77aQiFMUu/1gLzQ1XoKEhN2wQK+wxbD4sGwiI9OXQasfnutlh8HAmZzLGEuN
+	 kO8FG2qBviCIGCsMjiHWV9JAakAYPYHlWCM9Wm1AX71dimTf2VWA8hXB6XsN6OYI6E
+	 div5tfY3eOtzA==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-65a2fea1a1eso601230a12.0
+        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 17:42:25 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWLiZ9KVw616aRP9AGdiy3t2k+O0wVE7kTXv9OtN+NNJYj5MqEdEohkWI3ruCYoTfxsRNKBpgg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTS813vLhrmpmWkyYLwASkXloohLFcjPZ+n0r2Ya7i+wXJPAMD
+	FYWpIqJQ6Jgl/N9ywCiXBHFeMZXQ6Do5qSzj+dsKkCOygiQJe2Xp6pCWBWVUq5wEJi/3feBHthk
+	YnGosHa8FeM8fl/WZb5sze4CYkGxr4vs=
+X-Received: by 2002:a17:907:3c8f:b0:b76:d8cc:dfd9 with SMTP id
+ a640c23a62f3a-b933cd85c52mr133517266b.18.1771983744284; Tue, 24 Feb 2026
+ 17:42:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] pmdomain: rockchip: Fix rkvdec0/1 and venc0/1 for
- RK3588
-To: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
- Finley Xiao <finley.xiao@rock-chips.com>, Frank Zhang <rmxpzlb@gmail.com>,
- linux-pm@vger.kernel.org, Sebastian Reichel
- <sebastian.reichel@collabora.com>,
- Detlev Casanova <detlev.casanova@collabora.com>,
- Heiko Stuebner <heiko@sntech.de>, linux-rockchip@lists.infradead.org,
- stable@vger.kernel.org
-References: <1771904879-243163-1-git-send-email-shawn.lin@rock-chips.com>
-Content-Language: en-US
-From: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-In-Reply-To: <1771904879-243163-1-git-send-email-shawn.lin@rock-chips.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a9c9272153603abkunm013e53b3fa2024
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGR0aSVZPGhoYS09NSx4aSx1WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=a3jgbfYbcgq9nzGrEfsmDpAoK143uGrOroM2FZuYhxQgEJOUZ8plknuMdkrK2Kn1c9L489wdzs3W8FAnYaMOgcww4A+CW18/4nPTavOzaf8kQw+MRLG5nGBbkSYyQPZM8oDBxfHkfo3s4Cbhit1VulfnEXh77Aj0GbSljmuKZS4=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=ZooWjJGThdRe881/8hoL4AfsxTeuU6UCGQsPBmxDADY=;
-	h=date:mime-version:subject:message-id:from;
+References: <20260223154636.116671-1-yosry@kernel.org> <20260223154636.116671-3-yosry@kernel.org>
+ <CAO9r8zPsAMaiU794xoXDso3sdAM0_EN2PyE13vR4NqqEh9e2=g@mail.gmail.com>
+ <aZ5ItfEUtIlVbzuQ@google.com> <CAO9r8zPbu1BsOsPU02YcCLDbRXZoDmVd8XiMHssSDnkjdDPC4g@mail.gmail.com>
+ <aZ5MF8_RK56C8B9Q@google.com> <CAO9r8zO+Eej0AjzQt6dnELKLKHZ33DGLbDv=_sP1J1qLMVWpvw@mail.gmail.com>
+ <aZ5Pnvb4OAVWWtuR@google.com>
+In-Reply-To: <aZ5Pnvb4OAVWWtuR@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 24 Feb 2026 17:42:12 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zO0tmJvddCknSM++jU8LBrRecByzzsSf3=J9LrGO2pmdQ@mail.gmail.com>
+X-Gm-Features: AaiRm53duMnuTyyD9bUO3MnZl3Mm0qAcWFLxL-WcJ3_D86On5FISLdFuFwbGZfI
+Message-ID: <CAO9r8zO0tmJvddCknSM++jU8LBrRecByzzsSf3=J9LrGO2pmdQ@mail.gmail.com>
+Subject: Re: [PATCH v1 2/4] KVM: nSVM: Delay stuffing L2's current RIP into
+ NextRIP until vCPU run
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rock-chips.com,none];
-	R_DKIM_ALLOW(-0.20)[rock-chips.com:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linaro.org,rock-chips.com,gmail.com,vger.kernel.org,collabora.com,sntech.de,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-218638-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218860-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[rock-chips.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chaoyi.chen@rock-chips.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sntech.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rock-chips.com:mid,rock-chips.com:dkim,rock-chips.com:email,collabora.com:email]
-X-Rspamd-Queue-Id: DCCEA1906D8
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cs.base:url,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 23D6519016C
 X-Rspamd-Action: no action
 
-Hi Shawn,
+> > We discussed a helper before and you didn't like it, but that was in a
+> > different context (a helper that combined normal and special cases).
+> > WDYT?
+>
+> A helper would work.  svm_fixup_nested_rips() is good, the only flaw is the CS.base
+> chunk, but I'm not sure I care enough about 32-bit to reject the name just because
+> of that :-)
+>
+> That would make it easier to reduce indentation, e.g.
+>
+> static void svm_fixup_nested_rips(struct kvm_vcpu *vcpu)
+> {
+>         struct vcpu_svm *svm = to_svm(vcpu);
+>
+>         /*
+>          * If nrips is supported in hardware but not exposed to L1, stuff the
+>          * actual L2 RIP to emulate what a nrips=0 CPU would do (L1 is
+>          * responsible for advancing RIP prior to injecting the event). Once L2
+>          * runs after L1 executes VMRUN, NextRIP is updated by the CPU and/or
+>          * KVM, and this is no longer needed.
+>          *
+>          * This is done here (as opposed to when preparing vmcb02) to use the
+>          * most up-to-date value of RIP regardless of the order of restoring
+>          * registers and nested state in the vCPU save+restore path.
+>          *
+>          * Simiarly, initialize svm->soft_int_* fields here to use the most
+>          * up-to-date values of RIP and CS base, regardless of restore order.
+>          */
+>         if (!is_guest_mode(vcpu) || !svm->nested.nested_run_pending)
+>                 return;
+>
+>         if (boot_cpu_has(X86_FEATURE_NRIPS) &&
+>             !guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+>                 svm->vmcb->control.next_rip = kvm_rip_read(vcpu);
+>
+>         if (svm->soft_int_injected) {
+>                 svm->soft_int_csbase = svm->vmcb->save.cs.base;
+>                 svm->soft_int_old_rip = kvm_rip_read(vcpu);
+>                 if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+>                         svm->soft_int_next_rip = kvm_rip_read(vcpu);
+>         }
+> }
 
-On 2/24/2026 11:47 AM, Shawn Lin wrote:
-> Per the RK3588 TRM Table 7-1 RK3588 Voltage Domain and Power Domain Summary,
-> PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltages to
-> be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support landed[1].
-> The panic looks like below:
-> 
->   rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec0' on, val=0
->   rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec1' on, val=0
->   ...
->   Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
->   Workqueue: pm genpd_power_off_work_fn
->   Call trace:
->   show_stack+0x18/0x24 (C)
->   dump_stack_lvl+0x40/0x84
->   dump_stack+0x18/0x24
->   vpanic+0x1ec/0x4fc
->   vpanic+0x0/0x4fc
->   check_panic_on_warn+0x0/0x94
->   arm64_serror_panic+0x6c/0x78
->   do_serror+0xc4/0xcc
->   el1h_64_error_handler+0x3c/0x5c
->   el1h_64_error+0x6c/0x70
->   regmap_mmio_read32le+0x18/0x24 (P)
->   regmap_bus_reg_read+0xfc/0x130
->   regmap_read+0x188/0x1ac
->   regmap_read+0x54/0x78
->   rockchip_pd_power+0xcc/0x5f0
->   rockchip_pd_power_off+0x1c/0x4c
->   genpd_power_off+0x84/0x120
->   genpd_power_off+0x1b4/0x260
->   genpd_power_off_work_fn+0x38/0x58
->   process_scheduled_works+0x194/0x2c4
->   worker_thread+0x2ac/0x3d8
->   kthread+0x104/0x124
->   ret_from_fork+0x10/0x20
->   SMP: stopping secondary CPUs
->   Kernel Offset: disabled
->   CPU features: 0x3000000,000e0005,40230521,0400720b
->   Memory Limit: none
->   ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
-> 
-> [1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.casanova@collabora.com/
-> Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-> Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-> ---
-> 
-> Changes in v2:
-> - collect tags
-> - correct TRM section(Sebastian)
-> 
->  drivers/pmdomain/rockchip/pm-domains.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
-> index 997e93c..040aa5f 100644
-> --- a/drivers/pmdomain/rockchip/pm-domains.c
-> +++ b/drivers/pmdomain/rockchip/pm-domains.c
-> @@ -1315,10 +1315,10 @@ static const struct rockchip_domain_info rk3588_pm_domains[] = {
->  	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
->  	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
->  	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
-> -	[RK3588_PD_VENC0]	= DOMAIN_RK3588("venc0",   0x0, BIT(6),  0,       0x0, BIT(14), BIT(5),  0x0, BIT(4),  BIT(4),  false, false),
-> -	[RK3588_PD_VENC1]	= DOMAIN_RK3588("venc1",   0x0, BIT(7),  0,       0x0, BIT(15), BIT(6),  0x0, BIT(5),  BIT(5),  false, false),
-> -	[RK3588_PD_RKVDEC0]	= DOMAIN_RK3588("rkvdec0", 0x0, BIT(8),  0,       0x0, BIT(16), BIT(7),  0x0, BIT(6),  BIT(6),  false, false),
-> -	[RK3588_PD_RKVDEC1]	= DOMAIN_RK3588("rkvdec1", 0x0, BIT(9),  0,       0x0, BIT(17), BIT(8),  0x0, BIT(7),  BIT(7),  false, false),
-> +	[RK3588_PD_VENC0]	= DOMAIN_RK3588("venc0",   0x0, BIT(6),  0,       0x0, BIT(14), BIT(5),  0x0, BIT(4),  BIT(4),  false, true),
-> +	[RK3588_PD_VENC1]	= DOMAIN_RK3588("venc1",   0x0, BIT(7),  0,       0x0, BIT(15), BIT(6),  0x0, BIT(5),  BIT(5),  false, true),
-> +	[RK3588_PD_RKVDEC0]	= DOMAIN_RK3588("rkvdec0", 0x0, BIT(8),  0,       0x0, BIT(16), BIT(7),  0x0, BIT(6),  BIT(6),  false, true),
-> +	[RK3588_PD_RKVDEC1]	= DOMAIN_RK3588("rkvdec1", 0x0, BIT(9),  0,       0x0, BIT(17), BIT(8),  0x0, BIT(7),  BIT(7),  false, true),
->  	[RK3588_PD_VDPU]	= DOMAIN_RK3588("vdpu",    0x0, BIT(10), 0,       0x0, BIT(18), BIT(9),  0x0, BIT(8),  BIT(8),  false, false),
->  	[RK3588_PD_RGA30]	= DOMAIN_RK3588("rga30",   0x0, BIT(11), 0,       0x0, BIT(19), BIT(10), 0x0, 0,       0,       false, false),
->  	[RK3588_PD_AV1]		= DOMAIN_RK3588("av1",     0x0, BIT(12), 0,       0x0, BIT(20), BIT(11), 0x0, BIT(9),  BIT(9),  false, false),
-
-Perhaps you could try modifying only RK3588_PD_VCODEC. 
-VCODEC is the parent of these PDs, so you won't need to modify too
-much code and devicetree. BTW I have tried it before, but with an 
-internal MPP driver. Maybe you can give it another try :)
-
--- 
-Best, 
-Chaoyi
+Looks good, thanks Sean!
 
