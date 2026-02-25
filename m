@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-219033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id VOy0I/hVnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:56 +0100
+	id EK9UCiVUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E00190197
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C30518FBCD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E1974312E2D2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B6C79308E669
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA5927B34F;
-	Wed, 25 Feb 2026 01:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC13248F54;
+	Wed, 25 Feb 2026 01:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5SKUsbs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrZo0Hq/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30867280CFC;
-	Wed, 25 Feb 2026 01:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7E318B0A;
+	Wed, 25 Feb 2026 01:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983951; cv=none; b=poxTDOSkO2fnQUVsDxqQRz2dy5aPxcWQAIoVBxdTBkKmsy2PFhraRVfpfW7fy5fTR7wYCv8x6o416zwVx+n2T8P9lSiTGCCkJ9D6jMBETibDBn3OHcnW8P8tJu7OPIAikLh3uUlq3Y3OZcQ9bVxQMh5tEOK7Yz7/ddQ0wySZfKI=
+	t=1771983293; cv=none; b=lN2objda002iyPCAoANuDDPl5xC5wijqzU9Kq+qg+OHeb+cR9Jp1lQUuTOc+SU/ng3re4xmngMXR5HuuoImRemg0rNG4HYw9YCPlzDlRuWwlQheA1j7uDV3WcmnSDfRb60Z0g/v4hQFRfSc5Hk6T/YzJClzOpJB4quAAMR068Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983951; c=relaxed/simple;
-	bh=kffXL4XAyMKK5ofJ9wQTe91EPvgGAbiaowP1Wr0VL1Y=;
+	s=arc-20240116; t=1771983293; c=relaxed/simple;
+	bh=0JM3g76itItSZcuTgviLI0+yvWUzlMpDIrUZBWxJAeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBTwHx4kisQH3wb221Z1/aKB34ScV9xgrZlsQkqVmowNzaStUMjjRFbfDa5KLMtXaGbKPzBKD7HtF/d95wuZlDQebZMZS5UHhBA/qq7BDwS3ifk9S3d7bfrKqLdAVUZIUTGmqLQKkCgvkeBVRCLdmHvZw8IADcsFsXHPgWCMkYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5SKUsbs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63C7C116D0;
-	Wed, 25 Feb 2026 01:45:50 +0000 (UTC)
+	 MIME-Version; b=YzT4UAGYnbobKmyYz8hPkRsEbFf+A97CaDuW9vlhKMKyxOkYjWDHAyt8uGfWQO99c8YQPwtqzmybqtgCoiwWQxMUiIS5KL/b+YykgJi5Ro+MheaXk1Xe6Yj8vHM9RjzV3DzUL+UfakfaNvzaJtzucfSOts/wS+5k8UDOcEs7+qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrZo0Hq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D7BC116D0;
+	Wed, 25 Feb 2026 01:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983951;
-	bh=kffXL4XAyMKK5ofJ9wQTe91EPvgGAbiaowP1Wr0VL1Y=;
+	s=korg; t=1771983292;
+	bh=0JM3g76itItSZcuTgviLI0+yvWUzlMpDIrUZBWxJAeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5SKUsbssRGuXI9ZiIi9+XxF+i3MpBB4jz/WCf4MZ89x4ET3sCoqWuerDWVheqXcJ
-	 lXpzX0C66nVyUVmrAXDOB+idmfhiPQF5+deejn/17ZqVcY3FPjXzN4I9zUwugWJ7Sq
-	 RCOV0KpfYvsq3xWlcUmwdI4+jy5qn2kKG8OZF7lI=
+	b=BrZo0Hq/GkYouxfrqqaO0a1oq6Y89nS+1b002JJw9iY9zNi5eX/7cg2SclGlx7R1G
+	 ImyEqBxJPMeV3ZiYOdPTNf2789lvkjTlnysT1VHrfhO2zSgmYt7cHRaxAeYMcNc9GB
+	 1RHYVBuSZ6Y/cLa+1Yd6EKCXEOitrQGdkuhepe6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Val Packett <val@packett.cool>
-Subject: [PATCH 6.18 210/641] drm/msm/mdss: correct HBB programmed on UBWC 5.x and 6.x devices
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 427/781] smb: client: correct value for smbd_max_fragmented_recv_size
 Date: Tue, 24 Feb 2026 17:18:56 -0800
-Message-ID: <20260225012354.037433961@linuxfoundation.org>
+Message-ID: <20260225012410.174214663@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,71 +73,109 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218466-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219033-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,patchwork.freedesktop.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,packett.cool:email]
-X-Rspamd-Queue-Id: 25E00190197
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,samba.org:email,talpey.com:email]
+X-Rspamd-Queue-Id: 6C30518FBCD
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit e6177c7a2401b87b016728b75992926971d871fc ]
+[ Upstream commit 4a93d1ee2d0206970b6eb13fbffe07938cd95948 ]
 
-As in the previous generations, on UBWC 5.x and 6.x devices the Highest
-Bank Bit value should be programmed into the hardware with the offset of
--13.  Correct the value written into the register to prevent
-unpredictable results.
+When we download a file without rdma offload or get
+a large directly enumeration from the server,
+the server might want to send up to smbd_max_fragmented_recv_size
+bytes, but if it is too large all our recv buffers
+might already be moved to the recv_io.reassembly.list
+and we're no longer able to grant recv credits.
 
-Fixes: 227d4ce0b09e ("drm/msm: Offset MDSS HBB value by 13")
-Tested-by: Val Packett <val@packett.cool> # x1e80100-dell-latitude-7455
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/699274/
-Link: https://lore.kernel.org/r/20260119-msm-ubwc-fixes-v4-1-0987acc0427f@oss.qualcomm.com
+The maximum fragmented upper-layer payload receive size supported
+
+Assume max_payload_per_credit is
+smbd_max_receive_size - 24 = 1340
+
+The maximum number would be
+smbd_receive_credit_max * max_payload_per_credit
+
+                      1340 * 255 = 341700 (0x536C4)
+
+The minimum value from the spec is 131072 (0x20000)
+
+For now we use the logic we used in ksmbd before:
+                (1364 * 255) / 2 = 173910 (0x2A756)
+
+Fixes: 03bee01d6215 ("CIFS: SMBD: Add SMB Direct protocol initial values and constants")
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_mdss.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/smbdirect.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_mdss.c b/drivers/gpu/drm/msm/msm_mdss.c
-index 2d0e3e784c044..4dbb1b1d879f1 100644
---- a/drivers/gpu/drm/msm/msm_mdss.c
-+++ b/drivers/gpu/drm/msm/msm_mdss.c
-@@ -229,7 +229,7 @@ static void msm_mdss_setup_ubwc_dec_50(struct msm_mdss *msm_mdss)
- {
- 	const struct qcom_ubwc_cfg_data *data = msm_mdss->mdss_data;
- 	u32 value = MDSS_UBWC_STATIC_UBWC_SWIZZLE(data->ubwc_swizzle) |
--		    MDSS_UBWC_STATIC_HIGHEST_BANK_BIT(data->highest_bank_bit);
-+		    MDSS_UBWC_STATIC_HIGHEST_BANK_BIT(data->highest_bank_bit - 13);
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 01d55bcc6d0f9..c8cef098d4806 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -101,8 +101,23 @@ int smbd_send_credit_target = 255;
+ /* The maximum single message size can be sent to remote peer */
+ int smbd_max_send_size = 1364;
  
- 	if (data->ubwc_bank_spread)
- 		value |= MDSS_UBWC_STATIC_UBWC_BANK_SPREAD;
+-/*  The maximum fragmented upper-layer payload receive size supported */
+-int smbd_max_fragmented_recv_size = 1024 * 1024;
++/*
++ * The maximum fragmented upper-layer payload receive size supported
++ *
++ * Assume max_payload_per_credit is
++ * smbd_max_receive_size - 24 = 1340
++ *
++ * The maximum number would be
++ * smbd_receive_credit_max * max_payload_per_credit
++ *
++ *                       1340 * 255 = 341700 (0x536C4)
++ *
++ * The minimum value from the spec is 131072 (0x20000)
++ *
++ * For now we use the logic we used in ksmbd before:
++ *                 (1364 * 255) / 2 = 173910 (0x2A756)
++ */
++int smbd_max_fragmented_recv_size = (1364 * 255) / 2;
+ 
+ /*  The maximum single-message size which can be received */
+ int smbd_max_receive_size = 1364;
 -- 
 2.51.0
 
