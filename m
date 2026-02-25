@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-218697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219356-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBa7JZ9Unmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:11 +0100
+	id 2GgkBJufnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219356-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0527A18FD50
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACDC192F7F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4ECF831CEDEA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92D1330B07B7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC9026CE1A;
-	Wed, 25 Feb 2026 01:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144F630E821;
+	Wed, 25 Feb 2026 06:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJbbo06k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKe4eDbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7274A262FE7;
-	Wed, 25 Feb 2026 01:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD06130ACFF;
+	Wed, 25 Feb 2026 06:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983556; cv=none; b=C35i0ip3sdI5yfm9AqUiPIE5qpJcd+DO5BVCKCvFrg+hp/yNr/7vBBvkrMo/T0IKB/z4ZMBGqzsKYQOA4/DR/5xONOmcas7XURlfyPPqFpyNZfbVzObnw+q5bvf80G2wsJweuQWMS2v962ULMXz7kPJLj9zFz6XBfY8HvohE1NY=
+	t=1772002661; cv=none; b=M1PLdWpATQBvtVdsMWK5BzDqif3Rdc83mHkGGOMB1pSMF1R8yaF655ZdXfQ+AO+q8Q0ZVmag1SAwCNkfEeOvpVb6pm177Gbb9eV4tC2hFvqKUiGKyhlPFcTuGO2jLCqZPpjegfuCjkR5Uod2YQGDgnr/PLHOTGWH+g/Jv9IlUqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983556; c=relaxed/simple;
-	bh=4MEbwdfWi9kkvpGpy2x2ioLfVIIybVwX/Yfazzlyb90=;
+	s=arc-20240116; t=1772002661; c=relaxed/simple;
+	bh=50Kk3+LlnZKasbhmXryJaT4ZNsuhW/k16VDTWOdTsH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nweOoB1gSp0SChPWbvXgaa2E+3t7FRKgZxMCCjLWToWGs6M1QW7MzOgR9zgS0qOJlW6ymPDl8t9qmTzawlAuU01eaSQDN8YsJ7frPVIH3Tk1EckqtHx1ssqia1ZHvnLHNwAdMvpakFaggXS/2UqLeymB+XE7QPMY+5Xp3bR5yA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJbbo06k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B079C116D0;
-	Wed, 25 Feb 2026 01:39:16 +0000 (UTC)
+	 MIME-Version; b=NJeJq1S7nUkzTPTkPsJ7Qo7tN1FJOBSWIxGxAcbzM/acfTnK2KU3VGhpbnDn/CMxCcIlNHHazrGT/+0YBjdInBy/TJJPkY/stF9Ia6FP0Nra5pckDEQAoed/Wp44/kxjAa34LJBt/LFWfIBesunsrp2NEMusNWO5xsAS7clQ8SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKe4eDbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BE9C19425;
+	Wed, 25 Feb 2026 06:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983556;
-	bh=4MEbwdfWi9kkvpGpy2x2ioLfVIIybVwX/Yfazzlyb90=;
+	s=korg; t=1772002661;
+	bh=50Kk3+LlnZKasbhmXryJaT4ZNsuhW/k16VDTWOdTsH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJbbo06kXt8M5O6s89tzYAeUtSEbBkUySaDDId8qoe+yJZJJIWfeAW1vD+DM4OQZw
-	 LSh3ggf0GJ+jhajrYpPzymK2vHn/8UF46H9B6Ovv+Ekmplh5piKCT5NKDggOSJCEo/
-	 V61lOB5XN+K1WMooirFFs5P7MeI+lFcUPI6jyuUg=
+	b=yKe4eDbT4A6ctgfJM65jGFmIMHyMQO9mVkSlVvFScEReBJZsXlQ3XnUdqP3HqbWRT
+	 aa9a3qjXMMIsELBzfC+HGhVLd7bml28MSaQe3Yo1exZ2NNlLI1TRRVQ4LLwmVgUTHv
+	 NMLmKrbnA5brWzjgRb/WZWNUBHBUNXHlkEG+4Qjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d5d1b7343531d17bd3c5@syzkaller.appspotmail.com,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <nikolay@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Brian Masney <bmasney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 657/781] net: bridge: mcast: always update mdb_n_entries for vlan contexts
+Subject: [PATCH 6.18 440/641] clk: stm32: stm32-core: convert from divider_ro_round_rate() to divider_ro_determine_rate()
 Date: Tue, 24 Feb 2026 17:22:46 -0800
-Message-ID: <20260225012415.903015108@linuxfoundation.org>
+Message-ID: <20260225012359.192381367@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,225 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218697-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d5d1b7343531d17bd3c5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219356-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 0527A18FD50
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8ACDC192F7F
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <nikolay@nvidia.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 8b769e311a86bb9d15c5658ad283b86fc8f080a2 ]
+[ Upstream commit 6587c9dacc89ad7014bf601fe851955429f13230 ]
 
-syzbot triggered a warning[1] about the number of mdb entries in a context.
-It turned out that there are multiple ways to trigger that warning today
-(some got added during the years), the root cause of the problem is that
-the increase is done conditionally, and over the years these different
-conditions increased so there were new ways to trigger the warning, that is
-to do a decrease which wasn't paired with a previous increase.
+The divider_ro_round_rate() function is now deprecated, so let's migrate
+to divider_ro_determine_rate() instead so that this deprecated API can
+be removed.
 
-For example one way to trigger it is with flush:
- $ ip l add br0 up type bridge vlan_filtering 1 mcast_snooping 1
- $ ip l add dumdum up master br0 type dummy
- $ bridge mdb add dev br0 port dumdum grp 239.0.0.1 permanent vid 1
- $ ip link set dev br0 down
- $ ip link set dev br0 type bridge mcast_vlan_snooping 1
-   ^^^^ this will enable snooping, but will not update mdb_n_entries
-        because in __br_multicast_enable_port_ctx() we check !netif_running
- $ bridge mdb flush dev br0
-   ^^^ this will trigger the warning because it will delete the pg which
-       we added above, which will try to decrease mdb_n_entries
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
 
-Fix the problem by removing the conditional increase and always keep the
-count up-to-date while the vlan exists. In order to do that we have to
-first initialize it on port-vlan context creation, and then always increase
-or decrease the value regardless of mcast options. To keep the current
-behaviour we have to enforce the mdb limit only if the context is port's or
-if the port-vlan's mcast snooping is enabled.
+    req->rate = divider_round_rate(...)
 
-[1]
- ------------[ cut here ]------------
- n == 0
- WARNING: net/bridge/br_multicast.c:718 at br_multicast_port_ngroups_dec_one net/bridge/br_multicast.c:718 [inline], CPU#0: syz.4.4607/22043
- WARNING: net/bridge/br_multicast.c:718 at br_multicast_port_ngroups_dec net/bridge/br_multicast.c:771 [inline], CPU#0: syz.4.4607/22043
- WARNING: net/bridge/br_multicast.c:718 at br_multicast_del_pg+0x1bbe/0x1e20 net/bridge/br_multicast.c:825, CPU#0: syz.4.4607/22043
- Modules linked in:
- CPU: 0 UID: 0 PID: 22043 Comm: syz.4.4607 Not tainted syzkaller #0 PREEMPT(full)
- Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
- RIP: 0010:br_multicast_port_ngroups_dec_one net/bridge/br_multicast.c:718 [inline]
- RIP: 0010:br_multicast_port_ngroups_dec net/bridge/br_multicast.c:771 [inline]
- RIP: 0010:br_multicast_del_pg+0x1bbe/0x1e20 net/bridge/br_multicast.c:825
- Code: 41 5f 5d e9 04 7a 48 f7 e8 3f 73 5c f7 90 0f 0b 90 e9 cf fd ff ff e8 31 73 5c f7 90 0f 0b 90 e9 16 fd ff ff e8 23 73 5c f7 90 <0f> 0b 90 e9 60 fd ff ff e8 15 73 5c f7 eb 05 e8 0e 73 5c f7 48 8b
- RSP: 0018:ffffc9000c207220 EFLAGS: 00010293
- RAX: ffffffff8a68042d RBX: ffff88807c6f1800 RCX: ffff888066e90000
- RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
- RBP: 0000000000000000 R08: ffff888066e90000 R09: 000000000000000c
- R10: 000000000000000c R11: 0000000000000000 R12: ffff8880303ef800
- R13: dffffc0000000000 R14: ffff888050eb11c4 R15: 1ffff1100a1d6238
- FS:  00007fa45921b6c0(0000) GS:ffff8881256f5000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fa4591f9ff8 CR3: 0000000081df2000 CR4: 00000000003526f0
- Call Trace:
-  <TASK>
-  br_mdb_flush_pgs net/bridge/br_mdb.c:1525 [inline]
-  br_mdb_flush net/bridge/br_mdb.c:1544 [inline]
-  br_mdb_del_bulk+0x5e2/0xb20 net/bridge/br_mdb.c:1561
-  rtnl_mdb_del+0x48a/0x640 net/core/rtnetlink.c:-1
-  rtnetlink_rcv_msg+0x77e/0xbe0 net/core/rtnetlink.c:6967
-  netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
-  netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
-  netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
-  netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
-  sock_sendmsg_nosec net/socket.c:727 [inline]
-  __sock_sendmsg net/socket.c:742 [inline]
-  ____sys_sendmsg+0xa68/0xad0 net/socket.c:2592
-  ___sys_sendmsg+0x2a5/0x360 net/socket.c:2646
-  __sys_sendmsg net/socket.c:2678 [inline]
-  __do_sys_sendmsg net/socket.c:2683 [inline]
-  __se_sys_sendmsg net/socket.c:2681 [inline]
-  __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2681
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7fa45839aeb9
- Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
- RSP: 002b:00007fa45921b028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 00007fa458615fa0 RCX: 00007fa45839aeb9
- RDX: 0000000000000000 RSI: 00002000000000c0 RDI: 0000000000000004
- RBP: 00007fa458408c1f R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
- R13: 00007fa458616038 R14: 00007fa458615fa0 R15: 00007fff0b59fae8
- </TASK>
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
 
-Fixes: b57e8d870d52 ("net: bridge: Maintain number of MDB entries in net_bridge_mcast_port")
-Reported-by: syzbot+d5d1b7343531d17bd3c5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/aYrWbRp83MQR1ife@debil/T/#t
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Link: https://patch.msgid.link/20260213070031.1400003-2-nikolay@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: cd1cb38836c0 ("clk: stm32: stm32-core: convert from round_rate() to determine_rate()")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_multicast.c | 45 ++++++++++++++++-----------------------
- 1 file changed, 18 insertions(+), 27 deletions(-)
+ drivers/clk/stm32/clk-stm32-core.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index d55a4ab87837f..e9a7e65304017 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -244,14 +244,11 @@ br_multicast_port_vid_to_port_ctx(struct net_bridge_port *port, u16 vid)
+diff --git a/drivers/clk/stm32/clk-stm32-core.c b/drivers/clk/stm32/clk-stm32-core.c
+index 72825b9c36a4d..b95b9c591fda7 100644
+--- a/drivers/clk/stm32/clk-stm32-core.c
++++ b/drivers/clk/stm32/clk-stm32-core.c
+@@ -369,13 +369,10 @@ static int clk_stm32_divider_determine_rate(struct clk_hw *hw,
+ 		val =  readl(div->base + divider->offset) >> divider->shift;
+ 		val &= clk_div_mask(divider->width);
  
- 	lockdep_assert_held_once(&port->br->multicast_lock);
- 
--	if (!br_opt_get(port->br, BROPT_MCAST_VLAN_SNOOPING_ENABLED))
--		return NULL;
+-		req->rate = divider_ro_round_rate(hw, req->rate,
+-						  &req->best_parent_rate,
+-						  divider->table,
+-						  divider->width,
+-						  divider->flags, val);
 -
- 	/* Take RCU to access the vlan. */
- 	rcu_read_lock();
- 
- 	vlan = br_vlan_find(nbp_vlan_group_rcu(port), vid);
--	if (vlan && !br_multicast_port_ctx_vlan_disabled(&vlan->port_mcast_ctx))
-+	if (vlan)
- 		pmctx = &vlan->port_mcast_ctx;
- 
- 	rcu_read_unlock();
-@@ -701,7 +698,10 @@ br_multicast_port_ngroups_inc_one(struct net_bridge_mcast_port *pmctx,
- 	u32 max = READ_ONCE(pmctx->mdb_max_entries);
- 	u32 n = READ_ONCE(pmctx->mdb_n_entries);
- 
--	if (max && n >= max) {
-+	/* enforce the max limit when it's a port pmctx or a port-vlan pmctx
-+	 * with snooping enabled
-+	 */
-+	if (!br_multicast_port_ctx_vlan_disabled(pmctx) && max && n >= max) {
- 		NL_SET_ERR_MSG_FMT_MOD(extack, "%s is already in %u groups, and mcast_max_groups=%u",
- 				       what, n, max);
- 		return -E2BIG;
-@@ -736,9 +736,7 @@ static int br_multicast_port_ngroups_inc(struct net_bridge_port *port,
- 		return err;
+-		return 0;
++		return divider_ro_determine_rate(hw, req,
++						 divider->table,
++						 divider->width,
++						 divider->flags, val);
  	}
  
--	/* Only count on the VLAN context if VID is given, and if snooping on
--	 * that VLAN is enabled.
--	 */
-+	/* Only count on the VLAN context if VID is given */
- 	if (!group->vid)
- 		return 0;
+ 	req->rate = divider_round_rate_parent(hw, clk_hw_get_parent(hw),
+@@ -455,14 +452,9 @@ static int clk_stm32_composite_determine_rate(struct clk_hw *hw,
+ 		val =  readl(composite->base + divider->offset) >> divider->shift;
+ 		val &= clk_div_mask(divider->width);
  
-@@ -2011,6 +2009,18 @@ void br_multicast_port_ctx_init(struct net_bridge_port *port,
- 	timer_setup(&pmctx->ip6_own_query.timer,
- 		    br_ip6_multicast_port_query_expired, 0);
- #endif
-+	/* initialize mdb_n_entries if a new port vlan is being created */
-+	if (vlan) {
-+		struct net_bridge_port_group *pg;
-+		u32 n = 0;
-+
-+		spin_lock_bh(&port->br->multicast_lock);
-+		hlist_for_each_entry(pg, &port->mglist, mglist)
-+			if (pg->key.addr.vid == vlan->vid)
-+				n++;
-+		WRITE_ONCE(pmctx->mdb_n_entries, n);
-+		spin_unlock_bh(&port->br->multicast_lock);
-+	}
- }
- 
- void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pmctx)
-@@ -2094,25 +2104,6 @@ static void __br_multicast_enable_port_ctx(struct net_bridge_mcast_port *pmctx)
- 		br_ip4_multicast_add_router(brmctx, pmctx);
- 		br_ip6_multicast_add_router(brmctx, pmctx);
+-		rate = divider_ro_round_rate(hw, req->rate, &req->best_parent_rate,
+-					     divider->table, divider->width, divider->flags,
+-					     val);
+-		if (rate < 0)
+-			return rate;
+-
+-		req->rate = rate;
+-		return 0;
++		return divider_ro_determine_rate(hw, req, divider->table,
++						 divider->width, divider->flags,
++						 val);
  	}
--
--	if (br_multicast_port_ctx_is_vlan(pmctx)) {
--		struct net_bridge_port_group *pg;
--		u32 n = 0;
--
--		/* The mcast_n_groups counter might be wrong. First,
--		 * BR_VLFLAG_MCAST_ENABLED is toggled before temporary entries
--		 * are flushed, thus mcast_n_groups after the toggle does not
--		 * reflect the true values. And second, permanent entries added
--		 * while BR_VLFLAG_MCAST_ENABLED was disabled, are not reflected
--		 * either. Thus we have to refresh the counter.
--		 */
--
--		hlist_for_each_entry(pg, &pmctx->port->mglist, mglist) {
--			if (pg->key.addr.vid == pmctx->vlan->vid)
--				n++;
--		}
--		WRITE_ONCE(pmctx->mdb_n_entries, n);
--	}
- }
  
- static void br_multicast_enable_port_ctx(struct net_bridge_mcast_port *pmctx)
+ 	rate = divider_round_rate_parent(hw, clk_hw_get_parent(hw),
 -- 
 2.51.0
 
