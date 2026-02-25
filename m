@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YL3fJVKfnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:54 +0100
+	id YO4dAr5Unmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B26192F0C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6393618FDA7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F2A0317DDF3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFE3A30FAC36
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1D730B501;
-	Wed, 25 Feb 2026 06:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F1B26CE1A;
+	Wed, 25 Feb 2026 01:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0LGo1Tw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0n9f0hlc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F136A2D23A4;
-	Wed, 25 Feb 2026 06:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2868C258ED5;
+	Wed, 25 Feb 2026 01:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002637; cv=none; b=Rz7AHYOS2Mp73P7mQw0a0Kg+kK7/QrYa6PZVuTPUCPRPWs1mlauDmqCNx+59AZP1hIQY0VmRp+SZqGvN3jyT8Dul5uxcnIZ3cZXIYkc//j6id+UnoN/1PQQdrBTzLNNGmGOuKzgg7wr7OG4hoi7kaSO3v5855Rgldh2XcPNSHqU=
+	t=1771983572; cv=none; b=syLPI2s1KRSPGWLl5WFqCoMKkgSHZ7x9HJuDzqi46sNXBNDGVGbu1C/qVq4L6iWEc6NnuzrBGTaoMDnvbK1dvf4ng0zZWQx12uKgZqzo79h91u7ZVKcQzkiYd0HCXaId8W8Z8KFchFu4DJx2aCA5vnpeXkTDLqdSNmWyKULpgLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002637; c=relaxed/simple;
-	bh=0CSTudLpDI2k8itO7NpWKCKsJDQfD2W66CpHGFiM5PQ=;
+	s=arc-20240116; t=1771983572; c=relaxed/simple;
+	bh=eATotnli9qFImWOVaoYMFR4/ges2PgmP8XjWzAsym/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4cbmUDBSOnXGYIpoLrIC1HBBWXB8Ambv52AXcIwYGQef/jp34ziSHcV8v8G9/NZE7zsFdA32+BT/rXugs+1Bhww5xRt0nvx2SMKwyxiHNXrvSTE/zH/bzu4I8Zctlvs2ezuTKq6klZApc+Tg8giACR9GRldndwnUCSMujq15aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0LGo1Tw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA80C116D0;
-	Wed, 25 Feb 2026 06:57:16 +0000 (UTC)
+	 MIME-Version; b=dcnDGfmwo1YrEOokmql+ZHCvFZcYzUCBuxlSHwnNG/cRzJve/fu7cGHV+BaovuLKTa2xVGGrXFbQnxjz9RtXXSP8dvIuQfbh5XAZ4nbmILgOZHocnxmRgqjGfz48I1Epr+zRLlYMgk5fcfTPMtuSCVqZUoQatrl2mJpc+VJpRk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0n9f0hlc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C2FC116D0;
+	Wed, 25 Feb 2026 01:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002636;
-	bh=0CSTudLpDI2k8itO7NpWKCKsJDQfD2W66CpHGFiM5PQ=;
+	s=korg; t=1771983572;
+	bh=eATotnli9qFImWOVaoYMFR4/ges2PgmP8XjWzAsym/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0LGo1TwvKjZztBDNC4uKvV5Pu3DZpxopERQ9ffBvZuUIE4/ynxLQ95DTBO5ARxuP
-	 oB3ochuaZHS2EtYx/bJkboO50Tj2Y/uZmpkXx0VG2QoR/G3zEQaNamXtH7lRVM17RW
-	 blpikEYidFE9MMCqt4WZkA38Y+Rq9dJlZxZoQy+s=
+	b=0n9f0hlcs8MpAqGVWQ9mQprkSI96MFpuco3SdgVDkKMwVfzp6JIKGiO4YrWwcnW4Y
+	 uwP1pWKGnz3fzV4b7LxDFhW4ls/VlgsYO8qyi8sLRy6iXY0xOzOHLCGOpfnATH/nas
+	 Zka6eWiYoeHKfv/Rr0W0pNmF4rgQGde8cIzy8wlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Drew Fustini <fustini@kernel.org>,
-	Yao Zi <ziyao@disroot.org>,
+	syzbot+bcf9e1868c1a0c7e04f1@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 402/641] clk: thead: th1520-ap: Poll for PLL lock and wait for stability
+Subject: [PATCH 6.19 619/781] fs/ntfs3: prevent infinite loops caused by the next valid being the same
 Date: Tue, 24 Feb 2026 17:22:08 -0800
-Message-ID: <20260225012358.309485329@linuxfoundation.org>
+Message-ID: <20260225012414.989058046@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,182 +66,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219318-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218711-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,paragon-software.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.962];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,bcf9e1868c1a0c7e04f1];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 02B26192F0C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,paragon-software.com:email,syzkaller.appspot.com:url,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6393618FDA7
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 892abfbed71e8e0fc5d6ccee1e975904805c6327 ]
+[ Upstream commit 27b75ca4e51e3e4554dc85dbf1a0246c66106fd3 ]
 
-All PLLs found on TH1520 SoC take 21250ns at maximum to lock, and their
-lock status is indicated by register PLL_STS (offset 0x80 inside AP
-clock controller). We should poll the register to ensure the PLL
-actually locks after enabling it.
+When processing valid within the range [valid : pos), if valid cannot
+be retrieved correctly, for example, if the retrieved valid value is
+always the same, this can trigger a potential infinite loop, similar
+to the hung problem reported by syzbot [1].
 
-Furthermore, a 30us delay is added after enabling the PLL, after which
-the PLL could be considered stable as stated by vendor clock code.
+Adding a check for the valid value within the loop body, and terminating
+the loop and returning -EINVAL if the value is the same as the current
+value, can prevent this.
 
-Fixes: 56a48c1833aa ("clk: thead: add support for enabling/disabling PLLs")
-Reviewed-by: Drew Fustini <fustini@kernel.org>
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Signed-off-by: Drew Fustini <fustini@kernel.org>
+[1]
+INFO: task syz.4.21:6056 blocked for more than 143 seconds.
+Call Trace:
+ rwbase_write_lock+0x14f/0x750 kernel/locking/rwbase_rt.c:244
+ inode_lock include/linux/fs.h:1027 [inline]
+ ntfs_file_write_iter+0xe6/0x870 fs/ntfs3/file.c:1284
+
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Reported-by: syzbot+bcf9e1868c1a0c7e04f1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bcf9e1868c1a0c7e04f1
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/thead/clk-th1520-ap.c | 34 +++++++++++++++++++++++++++++--
- 1 file changed, 32 insertions(+), 2 deletions(-)
+ fs/ntfs3/file.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
-index 71ad03a998e8e..d870f0c665f8a 100644
---- a/drivers/clk/thead/clk-th1520-ap.c
-+++ b/drivers/clk/thead/clk-th1520-ap.c
-@@ -8,11 +8,14 @@
- #include <dt-bindings/clock/thead,th1520-clk-ap.h>
- #include <linux/bitfield.h>
- #include <linux/clk-provider.h>
-+#include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 732260087066d..5120bd7851694 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -1077,8 +1077,12 @@ static ssize_t ntfs_compress_write(struct kiocb *iocb, struct iov_iter *from)
+ 			goto out;
  
-+#define TH1520_PLL_STS		0x80
-+
- #define TH1520_PLL_POSTDIV2	GENMASK(26, 24)
- #define TH1520_PLL_POSTDIV1	GENMASK(22, 20)
- #define TH1520_PLL_FBDIV	GENMASK(19, 8)
-@@ -23,6 +26,13 @@
- #define TH1520_PLL_FRAC		GENMASK(23, 0)
- #define TH1520_PLL_FRAC_BITS    24
+ 		if (lcn == SPARSE_LCN) {
+-			ni->i_valid = valid =
+-				frame_vbo + ((u64)clen << sbi->cluster_bits);
++			valid = frame_vbo + ((u64)clen << sbi->cluster_bits);
++			if (ni->i_valid == valid) {
++				err = -EINVAL;
++				goto out;
++			}
++			ni->i_valid = valid;
+ 			continue;
+ 		}
  
-+/*
-+ * All PLLs in TH1520 take 21250ns at maximum to lock, let's take its double
-+ * for safety.
-+ */
-+#define TH1520_PLL_LOCK_TIMEOUT_US	44
-+#define TH1520_PLL_STABLE_DELAY_US	30
-+
- struct ccu_internal {
- 	u8	shift;
- 	u8	width;
-@@ -64,6 +74,7 @@ struct ccu_div {
- 
- struct ccu_pll {
- 	struct ccu_common	common;
-+	u32			lock_sts_mask;
- };
- 
- #define TH_CCU_ARG(_shift, _width)					\
-@@ -299,9 +310,21 @@ static void ccu_pll_disable(struct clk_hw *hw)
- static int ccu_pll_enable(struct clk_hw *hw)
- {
- 	struct ccu_pll *pll = hw_to_ccu_pll(hw);
-+	u32 reg;
-+	int ret;
- 
--	return regmap_clear_bits(pll->common.map, pll->common.cfg1,
--				 TH1520_PLL_VCO_RST);
-+	regmap_clear_bits(pll->common.map, pll->common.cfg1,
-+			  TH1520_PLL_VCO_RST);
-+
-+	ret = regmap_read_poll_timeout_atomic(pll->common.map, TH1520_PLL_STS,
-+					      reg, reg & pll->lock_sts_mask,
-+					      5, TH1520_PLL_LOCK_TIMEOUT_US);
-+	if (ret)
-+		return ret;
-+
-+	udelay(TH1520_PLL_STABLE_DELAY_US);
-+
-+	return 0;
- }
- 
- static int ccu_pll_is_enabled(struct clk_hw *hw)
-@@ -389,6 +412,7 @@ static struct ccu_pll cpu_pll0_clk = {
- 					      &clk_pll_ops,
- 					      CLK_IS_CRITICAL),
- 	},
-+	.lock_sts_mask		= BIT(1),
- };
- 
- static struct ccu_pll cpu_pll1_clk = {
-@@ -401,6 +425,7 @@ static struct ccu_pll cpu_pll1_clk = {
- 					      &clk_pll_ops,
- 					      CLK_IS_CRITICAL),
- 	},
-+	.lock_sts_mask		= BIT(4),
- };
- 
- static struct ccu_pll gmac_pll_clk = {
-@@ -413,6 +438,7 @@ static struct ccu_pll gmac_pll_clk = {
- 					      &clk_pll_ops,
- 					      CLK_IS_CRITICAL),
- 	},
-+	.lock_sts_mask		= BIT(3),
- };
- 
- static const struct clk_hw *gmac_pll_clk_parent[] = {
-@@ -433,6 +459,7 @@ static struct ccu_pll video_pll_clk = {
- 					      &clk_pll_ops,
- 					      CLK_IS_CRITICAL),
- 	},
-+	.lock_sts_mask		= BIT(7),
- };
- 
- static const struct clk_hw *video_pll_clk_parent[] = {
-@@ -453,6 +480,7 @@ static struct ccu_pll dpu0_pll_clk = {
- 					      &clk_pll_ops,
- 					      0),
- 	},
-+	.lock_sts_mask		= BIT(8),
- };
- 
- static const struct clk_hw *dpu0_pll_clk_parent[] = {
-@@ -469,6 +497,7 @@ static struct ccu_pll dpu1_pll_clk = {
- 					      &clk_pll_ops,
- 					      0),
- 	},
-+	.lock_sts_mask		= BIT(9),
- };
- 
- static const struct clk_hw *dpu1_pll_clk_parent[] = {
-@@ -485,6 +514,7 @@ static struct ccu_pll tee_pll_clk = {
- 					      &clk_pll_ops,
- 					      CLK_IS_CRITICAL),
- 	},
-+	.lock_sts_mask		= BIT(10),
- };
- 
- static const struct clk_parent_data c910_i0_parents[] = {
 -- 
 2.51.0
 
