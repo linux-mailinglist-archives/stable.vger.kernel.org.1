@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MECSORlTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:41 +0100
+	id AGvFM+yhnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:17:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF7618F6C6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B5D193299
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:17:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ED14030765EE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F9863067595
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC6F26A1A4;
-	Wed, 25 Feb 2026 01:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFD42D6E58;
+	Wed, 25 Feb 2026 06:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjzDueKe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+4Aql/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301EB2550D7;
-	Wed, 25 Feb 2026 01:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521CE2C21DF;
+	Wed, 25 Feb 2026 06:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983515; cv=none; b=fgTV7/rq2d4zqZgylDLjWQabndZJgQeBu784X6iwodAIXqO1ok7bZJQa0EZ9hknRicQPznEiEqMF1xhcnSn1gSCn8q6cigQAhse1yF4Uji1YJukl+s/B8XGOwwywom3xIIAHFh2a1LJRT475VxhmaCBtKvkAlTqykj/w75zDJHw=
+	t=1772002612; cv=none; b=QrooqgDtMW+JcxCUziFZ1IEgYKmIuK/PCkZQJ9peqskjEzIPbc87bBerZ8dnzIgHyDeT0DHXCAoHlBSW/VqJG7GEP4dxixGLpHhArWS89bRVGZhbmguiuZFETQYLzyuLVctefQWiz9zd2r6AYQy015oWlKyO24EuaDt7958Ole4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983515; c=relaxed/simple;
-	bh=RXDCvXS8tJXeGFgqpAHa3olv21NKTjMYDAlVSlWgrWU=;
+	s=arc-20240116; t=1772002612; c=relaxed/simple;
+	bh=xdL7xJBK5Vx/5AHw/vq9ZKSDtqyhJTuaEu16UJKsomM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHHj7NLyAaS8Ct8qL7Ez1S9HUb6BYvqJc62woqx85n1Oa64GK9MUSstadMoyfobgMSH4nFV92pnfWiPnu2NNCi4V0x2TxmL4corf5Hf8hDn3oQdj8s+Enz2ePsgJaW1m1mT4NNkWpRYr2UHEJsyEQhHt5jpGty/gLdnirj1dbIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjzDueKe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAABFC116D0;
-	Wed, 25 Feb 2026 01:38:34 +0000 (UTC)
+	 MIME-Version; b=d7u3Xmn7+EUh5l4YvqdzeNgNQOVcAFA4PKwmS4SmytIu7c7M3hO2t22aBu15KrHC8xXEpSLnlvQS73vc+Sa2wVrTPXWOT/tk968Keqqs2QPZe+KiUg/0KkvWlWaxkJRRVHYxWEHn1xYHJjsN303df0CYD59k1Mr9pCtb04wF+dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+4Aql/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7A7C116D0;
+	Wed, 25 Feb 2026 06:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983515;
-	bh=RXDCvXS8tJXeGFgqpAHa3olv21NKTjMYDAlVSlWgrWU=;
+	s=korg; t=1772002612;
+	bh=xdL7xJBK5Vx/5AHw/vq9ZKSDtqyhJTuaEu16UJKsomM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LjzDueKeQ6iKvdR1tdR/Rd4YYFN05URhhQSwp7xv+92LVrPr+u/FeMJaejcrdUXbq
-	 DvMGvnPRqvnXsaXk9A9O1DAeoEqy68oTG7o/G4uGmEOBLOLMcpv6Dy5s+ZIgpR6sLs
-	 2WWu97AtT/4NyhA0qM4Iiwvl+tnF8UtjsR1F03I4=
+	b=E+4Aql/O9G/VO0uPxnr8Dqfe2i5m7Rxdy2aaJFbnuqtS1IhF0ZJhqxs7HKdiXcioN
+	 /ACHhqnAano+v1Ff8Ly6bQ8fESiEb5OPLwHwkdGHYV1VwGT7+KGCzJvFQtLC+CQpan
+	 Wq0ZH3O4mpv5kqVexImsujdyk6H9LfcGhOqMc4V4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petre Rodan <petre.rodan@subdimension.ro>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 580/781] iio: pressure: mprls0025pa: fix scan_type struct
+Subject: [PATCH 6.18 363/641] IB/mlx5: Fix port speed query for representors
 Date: Tue, 24 Feb 2026 17:21:29 -0800
-Message-ID: <20260225012414.024241689@linuxfoundation.org>
+Message-ID: <20260225012357.411099741@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218662-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219279-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,58 +88,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 8AF7618F6C6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 18B5D193299
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petre Rodan <petre.rodan@subdimension.ro>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit 8a228e036926f7e57421d750c3724e63f11b808a ]
+[ Upstream commit 18ea78e2ae83d1d86a72d21d9511927e57e2c0e1 ]
 
-Fix the scan_type sign and realbits assignment.
+When querying speed information for a representor in switchdev mode,
+the code previously used the first device in the eswitch, which may not
+match the device that actually owns the representor. In setups such as
+multi-port eswitch or LAG, this led to incorrect port attributes being
+reported.
 
-The pressure is a 24bit unsigned int between output_min and output_max.
+Fix this by retrieving the correct core device from the representor's
+eswitch before querying its port attributes.
 
- transfer function A: 10%   to 90%   of 2^24
- transfer function B:  2.5% to 22.5% of 2^24
- transfer function C: 20%   to 80%   of 2^24
-[MPR_FUNCTION_A] = { .output_min = 1677722, .output_max = 15099494 }
-[MPR_FUNCTION_B] = { .output_min =  419430, .output_max =  3774874 }
-[MPR_FUNCTION_C] = { .output_min = 3355443, .output_max = 13421773 }
-
-Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 27f9e0ccb6da ("net/mlx5: Lag, Add single RDMA device in multiport mode")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20260115-port-speed-query-fix-v2-1-3bde6a3c78e7@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/mprls0025pa.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/main.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-index 4b23f87a822b1..6ba45d4c16b30 100644
---- a/drivers/iio/pressure/mprls0025pa.c
-+++ b/drivers/iio/pressure/mprls0025pa.c
-@@ -160,8 +160,8 @@ static const struct iio_chan_spec mpr_channels[] = {
- 					BIT(IIO_CHAN_INFO_OFFSET),
- 		.scan_index = 0,
- 		.scan_type = {
--			.sign = 's',
--			.realbits = 32,
-+			.sign = 'u',
-+			.realbits = 24,
- 			.storagebits = 32,
- 			.endianness = IIO_CPU,
- 		},
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index b6096f9126858..5899bd5cb1623 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -557,12 +557,20 @@ static int mlx5_query_port_roce(struct ib_device *device, u32 port_num,
+ 	 * of an error it will still be zeroed out.
+ 	 * Use native port in case of reps
+ 	 */
+-	if (dev->is_rep)
+-		err = mlx5_query_port_ptys(mdev, out, sizeof(out), MLX5_PTYS_EN,
+-					   1, 0);
+-	else
+-		err = mlx5_query_port_ptys(mdev, out, sizeof(out), MLX5_PTYS_EN,
+-					   mdev_port_num, 0);
++	if (dev->is_rep) {
++		struct mlx5_eswitch_rep *rep;
++
++		rep = dev->port[port_num - 1].rep;
++		if (rep) {
++			mdev = mlx5_eswitch_get_core_dev(rep->esw);
++			WARN_ON(!mdev);
++		}
++		mdev_port_num = 1;
++	}
++
++	err = mlx5_query_port_ptys(mdev, out, sizeof(out), MLX5_PTYS_EN,
++				   mdev_port_num, 0);
++
+ 	if (err)
+ 		goto out;
+ 	ext = !!MLX5_GET_ETH_PROTO(ptys_reg, out, true, eth_proto_capability);
 -- 
 2.51.0
 
