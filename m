@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPwmDt2dnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:41 +0100
+	id kNkaMCxUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6AA7192AEA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D7718FBEF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E56C305B4B9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67B4531A0BAE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0C730171A;
-	Wed, 25 Feb 2026 06:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86313256C6C;
+	Wed, 25 Feb 2026 01:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oem0mruU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKy2hKO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50902F5A2C;
-	Wed, 25 Feb 2026 06:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4A0248881;
+	Wed, 25 Feb 2026 01:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002650; cv=none; b=RGkQDuksPd/Fa9fMPGMqvc4bdwUASnIH5WQ43Y3SQ6e9A7yeDyu/aadV5YNmcvn67Zrivb25Bls2Y7ZIeWzNLCdN9UIZO78w94spiUE/KaEBv2TuH7gOviWfIn2MjocD6kwj3dA7spx3U1g4pxyA1+beKasG1EFvZ5sAeZCFsns=
+	t=1771983487; cv=none; b=lMOcFavCWWhuPZHOQH0ttU/tThafP6Mn51wpTNQ4phtOsH7XQZ35QyZ+Oh2pgX89vvnjY8rsfIwCjFPAWttJH/6HjSp7H+jnoxxRE2o8ydCEgowFvij7nL99K4ZDr/NRp+dC2BeRXRXKCVuk2rcpzkeLGtKtsZ67iufmtsDdSNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002650; c=relaxed/simple;
-	bh=871ATZPN+AXVfxoPTHUI4GuFzxRYPQo+amS0qt1fmIU=;
+	s=arc-20240116; t=1771983487; c=relaxed/simple;
+	bh=AKVO/4gVHTMjI5iUJ15tgM7ij4Y9vnvM3PcAoc3AhT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0YZaGHV6YspwfYDz2wRsDcJuk9suErNEsO3vdAeEuNBqiBaNuPD16Xy+z3xCJSRrBWrGfxpefooztDbHQEhOXDwuXfVjhzQblQmnU4pozmLgyfZ74KVA94lpP5E/fV0aKd/SYl6fdML50GlK12m+0YahQ+/NvM2TucWX5yf1Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oem0mruU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFE1C116D0;
-	Wed, 25 Feb 2026 06:57:30 +0000 (UTC)
+	 MIME-Version; b=qYs2+ZTIS4GFPjotiR4/88pfqiWOb79OvkfmE25qq58TN4sAIPKI5FD052qmM9nXR8rr16+b4xwslh2NNTkSQg5VpscvlvkjpY702fULRPXrOTgb9b9kQkCOC2JDAeqLBAycmPrs2PYYZ+HVbaxA2PsoWWPKySH75WHKjwC9aj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKy2hKO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4075C116D0;
+	Wed, 25 Feb 2026 01:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002650;
-	bh=871ATZPN+AXVfxoPTHUI4GuFzxRYPQo+amS0qt1fmIU=;
+	s=korg; t=1771983486;
+	bh=AKVO/4gVHTMjI5iUJ15tgM7ij4Y9vnvM3PcAoc3AhT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oem0mruUEK+ncMKMDrS+32MurmsPZ7cJUX9MgrJXXLpZGO7y7FMrCISvJoUNu6Mw6
-	 mnmDlCtggJA8jFx7W0QZwjO6MtkyPQVWSOPY6dr4kE/SoQlmpXFdTAmXEDi9pEblY7
-	 xBkLd5JeC1Vb/1KsAUfY5ExaRUECYCuw2MtogK08=
+	b=gKy2hKO84znq2hPU7K0qwzIZEONP5Ri34801tlVVZtRjSCVnoTDdbDMR1/thYMyBg
+	 oYqmiwXl+V3meypxA+hQeSzLcAwXQ1GwilScOs29fLA+88tPY1nyTltDgOpA5gJ0jb
+	 kR0xgDwBC3IvQW/9kaA3Yk/WxJ1cQlpLDMFFNoCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 381/641] RDMA/rxe: Fix race condition in QP timer handlers
-Date: Tue, 24 Feb 2026 17:21:47 -0800
-Message-ID: <20260225012357.825716502@linuxfoundation.org>
+Subject: [PATCH 6.19 599/781] iio: sca3000: Fix a resource leak in sca3000_probe()
+Date: Tue, 24 Feb 2026 17:21:48 -0800
+Message-ID: <20260225012414.488646798@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219339-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218637-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,127 +87,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: A6AA7192AEA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 50D7718FBEF
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit 87bf646921430e303176edc4eb07c30160361b73 ]
+[ Upstream commit 62b44ebc1f2c71db3ca2d4737c52e433f6f03038 ]
 
-I encontered the following warning:
- WARNING: drivers/infiniband/sw/rxe/rxe_task.c:249 at rxe_sched_task+0x1c8/0x238 [rdma_rxe], CPU#0: swapper/0/0
-...
-  libsha1 [last unloaded: ip6_udp_tunnel]
- CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G         C          6.19.0-rc5-64k-v8+ #37 PREEMPT
- Tainted: [C]=CRAP
- Hardware name: Raspberry Pi 4 Model B Rev 1.2
- Call trace:
-  rxe_sched_task+0x1c8/0x238 [rdma_rxe] (P)
-  retransmit_timer+0x130/0x188 [rdma_rxe]
-  call_timer_fn+0x68/0x4d0
-  __run_timers+0x630/0x888
-...
- WARNING: drivers/infiniband/sw/rxe/rxe_task.c:38 at rxe_sched_task+0x1c0/0x238 [rdma_rxe], CPU#0: swapper/0/0
-...
- WARNING: drivers/infiniband/sw/rxe/rxe_task.c:111 at do_work+0x488/0x5c8 [rdma_rxe], CPU#3: kworker/u17:4/93400
-...
- refcount_t: underflow; use-after-free.
- WARNING: lib/refcount.c:28 at refcount_warn_saturate+0x138/0x1a0, CPU#3: kworker/u17:4/93400
+spi->irq from request_threaded_irq() not released when
+iio_device_register() fails. Add an return value check and jump to a
+common error handler when iio_device_register() fails.
 
-The issue is caused by a race condition between retransmit_timer() and
-rxe_destroy_qp, leading to the Queue Pair's (QP) reference count dropping
-to zero during timer handler execution.
-
-It seems this warning is harmless because rxe_qp_do_cleanup() will flush
-all pending timers and requests.
-
-Example of flow causing the issue:
-
-CPU0                                   CPU1
-retransmit_timer() {
-    spin_lock_irqsave
-                           rxe_destroy_qp()
-                            __rxe_cleanup()
-                              __rxe_put() // qp->ref_count decrease to 0
-                            rxe_qp_do_cleanup() {
-    if (qp->valid) {
-        rxe_sched_task() {
-            WARN_ON(rxe_read(task->qp) <= 0);
-        }
-    }
-    spin_unlock_irqrestore
-}
-                              spin_lock_irqsave
-                              qp->valid = 0
-                              spin_unlock_irqrestore
-                            }
-
-Ensure the QP's reference count is maintained and its validity is checked
-within the timer callbacks by adding calls to rxe_get(qp) and corresponding
-rxe_put(qp) after use.
-
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Fixes: d94671632572 ("RDMA/rxe: Rewrite rxe_task.c")
-Link: https://patch.msgid.link/20260120074437.623018-1-lizhijian@fujitsu.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 9a4936dc89a3 ("staging:iio:accel:sca3000 Tidy up probe order to avoid a race.")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_comp.c | 3 +++
- drivers/infiniband/sw/rxe/rxe_req.c  | 3 +++
- 2 files changed, 6 insertions(+)
+ drivers/iio/accel/sca3000.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_comp.c b/drivers/infiniband/sw/rxe/rxe_comp.c
-index a5b2b62f596b0..1390e861bd1d7 100644
---- a/drivers/infiniband/sw/rxe/rxe_comp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_comp.c
-@@ -119,12 +119,15 @@ void retransmit_timer(struct timer_list *t)
+diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
+index bfa8a3f5a92f4..9ef4d6e274669 100644
+--- a/drivers/iio/accel/sca3000.c
++++ b/drivers/iio/accel/sca3000.c
+@@ -1489,7 +1489,11 @@ static int sca3000_probe(struct spi_device *spi)
+ 	if (ret)
+ 		goto error_free_irq;
  
- 	rxe_dbg_qp(qp, "retransmit timer fired\n");
+-	return iio_device_register(indio_dev);
++	ret = iio_device_register(indio_dev);
++	if (ret)
++		goto error_free_irq;
++
++	return 0;
  
-+	if (!rxe_get(qp))
-+		return;
- 	spin_lock_irqsave(&qp->state_lock, flags);
- 	if (qp->valid) {
- 		qp->comp.timeout = 1;
- 		rxe_sched_task(&qp->send_task);
- 	}
- 	spin_unlock_irqrestore(&qp->state_lock, flags);
-+	rxe_put(qp);
- }
- 
- void rxe_comp_queue_pkt(struct rxe_qp *qp, struct sk_buff *skb)
-diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
-index 373b03f223beb..12d03f390b097 100644
---- a/drivers/infiniband/sw/rxe/rxe_req.c
-+++ b/drivers/infiniband/sw/rxe/rxe_req.c
-@@ -102,6 +102,8 @@ void rnr_nak_timer(struct timer_list *t)
- 
- 	rxe_dbg_qp(qp, "nak timer fired\n");
- 
-+	if (!rxe_get(qp))
-+		return;
- 	spin_lock_irqsave(&qp->state_lock, flags);
- 	if (qp->valid) {
- 		/* request a send queue retry */
-@@ -110,6 +112,7 @@ void rnr_nak_timer(struct timer_list *t)
- 		rxe_sched_task(&qp->send_task);
- 	}
- 	spin_unlock_irqrestore(&qp->state_lock, flags);
-+	rxe_put(qp);
- }
- 
- static void req_check_sq_drain_done(struct rxe_qp *qp)
+ error_free_irq:
+ 	if (spi->irq)
 -- 
 2.51.0
 
