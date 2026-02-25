@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBBAOqxYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:28 +0100
+	id WJQ7GW2inmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:19:09 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702D11907AE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B93F719333C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65CBC31E5554
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B34E231AB2E2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5D82652A2;
-	Wed, 25 Feb 2026 01:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7C73009CB;
+	Wed, 25 Feb 2026 06:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEDMgJTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUBuBaQm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA8E1E2834;
-	Wed, 25 Feb 2026 01:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EEC2D6E58;
+	Wed, 25 Feb 2026 06:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983596; cv=none; b=OzQq9riWmCjxVK0KtG4uWXbL5prt9kyCBMpEv3xmTjGAhWLW+S7kysSOxg+65IV+T2CV0+4dfWyheD/ENd6SA8ZR0GPgPOXCzyrwbySLv/AWmCYfS8NHBOEMXmwGeaDbyqIfHByuTxdE+0qtWSgx72GqVUx/rSAt8/s3PGZtitU=
+	t=1772002670; cv=none; b=jckpZx6AXP+l1R8R4x86EWyhfKz2DKqHeg3mVF8Ut3LZj6iDxRleQHll6B4u46SZrGzt/a02nYLBPObXEKAssIPp8GzOlUHemYEWqjiQc+jAN6Uxp6Wx/iLCuSDKUEyUqw/n8R7mh1OMCRCez2ZIPCDj1D0HMkpPRdbMoGTO4Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983596; c=relaxed/simple;
-	bh=OHMeOpJ12LTDZ0nXuf+fxEPQ7wME1Ny1SZfra1qTmfQ=;
+	s=arc-20240116; t=1772002670; c=relaxed/simple;
+	bh=dcRtYtzlqgJwAS1IKFICwl9bFFl0Epifn/Qsf/gIs9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dOGV1OAnfsleQ90KZishy+JOIIHm0im+YcGN+EN0wT6OdxSviWDkkWzLragO2N6/1I9hUP/RuzIbRnjle2tMRmhjEkhGCk+v9X5dK0r0R0xz4lxD5Zy7QW0Pq2xRtvr+N9RmfIUPOicCRtZCmNfFpYeel1AdYyiSbGoXZimPp24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEDMgJTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B86C116D0;
-	Wed, 25 Feb 2026 01:39:56 +0000 (UTC)
+	 MIME-Version; b=mA3HicYpWRKedI4ss1Xm0e5GMZes2zZRAu8n+rvHCtvX9n6KyBDp9BcCw/yRiGT9N4UX3NIPl898r1+kUgiNXgOY3pxIlxJ2Of1/WCEbejKe98MRRJNb6GfWLrkTO8lX1HqmslEtFGRGerzABes4jFI/YlouhHrUBOqa/NULVG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUBuBaQm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EF5C116D0;
+	Wed, 25 Feb 2026 06:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983596;
-	bh=OHMeOpJ12LTDZ0nXuf+fxEPQ7wME1Ny1SZfra1qTmfQ=;
+	s=korg; t=1772002670;
+	bh=dcRtYtzlqgJwAS1IKFICwl9bFFl0Epifn/Qsf/gIs9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tEDMgJTB1q/PY8NLM3pM/mJ6ZI8w25GLg2Zt0YYdowl3F97eWeG6tgLfcwkTDb4Fl
-	 Lp+AVfbTmeocIhoos9f8tSGafA73adSI6VE7lQsWFdKeG/5TPHvGJD+lcTBJKHFMdg
-	 GImf+qMApH2wz6tG1zn2zP34tkAHOBCUGeaPRCew=
+	b=xUBuBaQmOIfKKVEphyX3DbZGYMlHfWa+u39nR0WiiwM65DHVOarS5gxKrWC8uyvz6
+	 og+UVVO5XK7c04UR579/6S+CUMwDMvgtxHPjW191/hS1lA64pAWGiiFdg4B4LSDz54
+	 giDRvIYObzY09hj3J/7e5TI0i0jvDXaxkz0tPeaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 669/781] ipv6: fix a race in ip6_sock_set_v6only()
+Subject: [PATCH 6.18 452/641] dmaengine: mediatek: uart-apdma: Fix above 4G addressing TX/RX
 Date: Tue, 24 Feb 2026 17:22:58 -0800
-Message-ID: <20260225012416.192849925@linuxfoundation.org>
+Message-ID: <20260225012359.468050477@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,76 +74,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218731-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219369-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: 702D11907AE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B93F719333C
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 452a3eee22c57a5786ae6db5c97f3b0ec13bb3b7 ]
+[ Upstream commit 58ab9d7b6651d21e1cff1777529f2d3dd0b4e851 ]
 
-It is unlikely that this function will be ever called
-with isk->inet_num being not zero.
+The VFF_4G_SUPPORT register is named differently in datasheets,
+and its name is "VFF_ADDR2"; was this named correctly from the
+beginning it would've been clearer that there was a mistake in
+the programming sequence.
 
-Perform the check on isk->inet_num inside the locked section
-for complete safety.
+This register is supposed to hold the high bits to support the
+DMA addressing above 4G (so, more than 32 bits) and not a bit
+to "enable" the support for VFF 4G.
 
-Fixes: 9b115749acb24 ("ipv6: add ip6_sock_set_v6only")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Link: https://patch.msgid.link/20260216102202.3343588-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix the name of this register, and also fix its usage by writing
+the upper 32 bits of the dma_addr_t on it when the SoC supports
+such feature.
+
+Fixes: 9135408c3ace ("dmaengine: mediatek: Add MediaTek UART APDMA support")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20251113122229.23998-6-angelogioacchino.delregno@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ipv6.h | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/dma/mediatek/mtk-uart-apdma.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-index 74fbf1ad8065a..6a933690e0ff5 100644
---- a/include/net/ipv6.h
-+++ b/include/net/ipv6.h
-@@ -1280,12 +1280,15 @@ int ipv6_sock_mc_drop(struct sock *sk, int ifindex,
+diff --git a/drivers/dma/mediatek/mtk-uart-apdma.c b/drivers/dma/mediatek/mtk-uart-apdma.c
+index 08e15177427b9..96c18c815f1df 100644
+--- a/drivers/dma/mediatek/mtk-uart-apdma.c
++++ b/drivers/dma/mediatek/mtk-uart-apdma.c
+@@ -41,7 +41,7 @@
+ #define VFF_STOP_CLR_B		0
+ #define VFF_EN_CLR_B		0
+ #define VFF_INT_EN_CLR_B	0
+-#define VFF_4G_SUPPORT_CLR_B	0
++#define VFF_ADDR2_CLR_B		0
  
- static inline int ip6_sock_set_v6only(struct sock *sk)
- {
--	if (inet_sk(sk)->inet_num)
--		return -EINVAL;
-+	int ret = 0;
-+
- 	lock_sock(sk);
--	sk->sk_ipv6only = true;
-+	if (inet_sk(sk)->inet_num)
-+		ret = -EINVAL;
-+	else
-+		sk->sk_ipv6only = true;
- 	release_sock(sk);
--	return 0;
-+	return ret;
- }
+ /*
+  * interrupt trigger level for tx
+@@ -72,7 +72,7 @@
+ /* TX: the buffer size SW can write. RX: the buffer size HW can write. */
+ #define VFF_LEFT_SIZE		0x40
+ #define VFF_DEBUG_STATUS	0x50
+-#define VFF_4G_SUPPORT		0x54
++#define VFF_ADDR2		0x54
  
- static inline void ip6_sock_set_recverr(struct sock *sk)
+ struct mtk_uart_apdmadev {
+ 	struct dma_device ddev;
+@@ -149,7 +149,7 @@ static void mtk_uart_apdma_start_tx(struct mtk_chan *c)
+ 		mtk_uart_apdma_write(c, VFF_INT_FLAG, VFF_TX_INT_CLR_B);
+ 
+ 		if (mtkd->support_33bits)
+-			mtk_uart_apdma_write(c, VFF_4G_SUPPORT, VFF_4G_EN_B);
++			mtk_uart_apdma_write(c, VFF_ADDR2, upper_32_bits(d->addr));
+ 	}
+ 
+ 	mtk_uart_apdma_write(c, VFF_EN, VFF_EN_B);
+@@ -192,7 +192,7 @@ static void mtk_uart_apdma_start_rx(struct mtk_chan *c)
+ 		mtk_uart_apdma_write(c, VFF_INT_FLAG, VFF_RX_INT_CLR_B);
+ 
+ 		if (mtkd->support_33bits)
+-			mtk_uart_apdma_write(c, VFF_4G_SUPPORT, VFF_4G_EN_B);
++			mtk_uart_apdma_write(c, VFF_ADDR2, upper_32_bits(d->addr));
+ 	}
+ 
+ 	mtk_uart_apdma_write(c, VFF_INT_EN, VFF_RX_INT_EN_B);
+@@ -298,7 +298,7 @@ static int mtk_uart_apdma_alloc_chan_resources(struct dma_chan *chan)
+ 	}
+ 
+ 	if (mtkd->support_33bits)
+-		mtk_uart_apdma_write(c, VFF_4G_SUPPORT, VFF_4G_SUPPORT_CLR_B);
++		mtk_uart_apdma_write(c, VFF_ADDR2, VFF_ADDR2_CLR_B);
+ 
+ err_pm:
+ 	pm_runtime_put_noidle(mtkd->ddev.dev);
 -- 
 2.51.0
 
