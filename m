@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GI4QHPNSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:03 +0100
+	id MJT9EKRWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B910818F603
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED240190385
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C1383101621
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 003AA30ADCA0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138E723D7CF;
-	Wed, 25 Feb 2026 01:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF7827FB2A;
+	Wed, 25 Feb 2026 01:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYemiOaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+ZDNn+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5B318B0A;
-	Wed, 25 Feb 2026 01:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E7B27B34F;
+	Wed, 25 Feb 2026 01:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983370; cv=none; b=oPIzz1ZhII6zbySc0T5e7lxi1UQyZkdGHETlXQkTTX/LVf4tv4yXFzN634EuCV/Fyqv6uZeeDmAJaD3uqTLO0S+jA91G5T86Sn1f9XSjNAxUyz0TOvPgvmUQIdkZaxClEmFbBvFML2ScHEADiWDt2bshj1dqpWTI/FGH7XdVLwY=
+	t=1771984036; cv=none; b=tntbKRdsl9IsmyU2tZCB9mHP9dYa4YgaVassc8Av6A4b1wSWBo5O/f0OlfzpAj5nj9yHRkqbFlq191ale7NbYAudQzRJW6sM87Dfr/aFtULH8lxPv2fMZGAkcO9LfOuNpV2/f2CL86yRMnNggjf05femCusuXMESlO/nXpBlwbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983370; c=relaxed/simple;
-	bh=/irB2zTh8Fyoh4pKux0EzKBISt1T7HbH9Mk7zmJ+qg0=;
+	s=arc-20240116; t=1771984036; c=relaxed/simple;
+	bh=CTy5av0Dp1/D2qEcW164u0P71sXmsEqF+pxaGDqv8mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NadA+v92oHjlfhTDQ9YnKZqFl/MWYcQUsFeoA/daQxPrv/SthvMg1XR9O+XRkENI0roh5yl+cUQXUbAwHCq8G2/rQDWqqeO5OyDV1NQlJUREVNYp6zWrPsKn8t/nBtSKs/GnwgB+dqrgn1Gv+khNNhDtBYBTNnhsAQTk5eIMj/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYemiOaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C966C116D0;
-	Wed, 25 Feb 2026 01:36:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LW5z0T1CaIigWm9Hh9NqhXIk7vBhIWEaT3/TrgSrLhkS3RKv/T3xwAAV0BXhjAAicTYs2NfmV+9TKj3lbjBYzz1TJ0cNr+PY3JkNUh931f0ruvMDIwnCogJLO7TaJESgfG0BLkpJT+4lF4f3Cu2EvZkgaUt4YwMZb2ttVSAzHE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+ZDNn+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21DAC116D0;
+	Wed, 25 Feb 2026 01:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983370;
-	bh=/irB2zTh8Fyoh4pKux0EzKBISt1T7HbH9Mk7zmJ+qg0=;
+	s=korg; t=1771984036;
+	bh=CTy5av0Dp1/D2qEcW164u0P71sXmsEqF+pxaGDqv8mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYemiOaF0mgnjEs/IdNphy89cxZ57EQ6Ofl/8VlRUjb8GK/aHcDfdIXm36dG0slLU
-	 oP/CxAavOvL8UyeeSOtZXpmBDUZooudHGlqC1gFafPBMN6QOjGgUQu+FgShI+i/U+G
-	 T2NyQUaX5Dd8j7cEz9p3X54Y0AW+Lr+Xz2k0/+Pc=
+	b=D+ZDNn+PNC6D489PwCp34RURaN0Pr1t6SdJeEDdnEUx4M+TbPQat2Yih7h+cce5xP
+	 /hZqyq+zQjmsuTTL/WNR6ICw6YoQfOaD3V/EMBbLZa/uameK5MPHsLu4+hJ5Qii+wj
+	 u9iYpuw707bmdLnj29czxCzX0AH6mkWecW8Q/TZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Liu <liuy22@mails.tsinghua.edu.cn>,
-	Leon Romanovsky <leon@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Malte=20Schr=C3=B6der?= <malte+lkml@tnxip.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 496/781] RDMA/uverbs: Add __GFP_NOWARN to ib_uverbs_unmarshall_recv() kmalloc
+Subject: [PATCH 6.18 279/641] PCI: Stop over-estimating bridge window size
 Date: Tue, 24 Feb 2026 17:20:05 -0800
-Message-ID: <20260225012411.972164830@linuxfoundation.org>
+Message-ID: <20260225012355.542904001@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,205 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218533-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219103-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,lkml];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tsinghua.edu.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B910818F603
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tnxip.de:email]
+X-Rspamd-Queue-Id: ED240190385
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <liuy22@mails.tsinghua.edu.cn>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 58b604dfc7bb753f91bc0ccd3fa705e14e6edfb4 ]
+[ Upstream commit 3958bf16e2fe1b1c95467e58694102122c951a31 ]
 
-Since wqe_size in ib_uverbs_unmarshall_recv() is user-provided and already
-validated, but can still be large, add __GFP_NOWARN to suppress memory
-allocation warnings for large sizes, consistent with the similar fix in
-ib_uverbs_post_send().
+New way to calculate the bridge window head alignment produces tight-fit,
+that is, it does not leave any gaps between the resources.  Similarly,
+relaxed tail alignment does not leave extra tail room.
 
-Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
-Signed-off-by: Yi Liu <liuy22@mails.tsinghua.edu.cn>
-Link: https://patch.msgid.link/20260129094900.3517706-1-liuy22@mails.tsinghua.edu.cn
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Start to use bridge window calculation that does not over-estimate the size
+of the required window.
+
+pbus_upstream_space_available() can be removed.
+
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Malte Schröder <malte+lkml@tnxip.de>
+Link: https://patch.msgid.link/20251219174036.16738-4-ilpo.jarvinen@linux.intel.com
+Stable-dep-of: f909e3ee3ed1 ("PCI: Remove old_size limit from bridge window sizing")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/setup-bus.c | 97 +++--------------------------------------
+ 1 file changed, 5 insertions(+), 92 deletions(-)
 
-diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
-index 3259e9848cc79..f4616deeca545 100644
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -2242,7 +2242,7 @@ ib_uverbs_unmarshall_recv(struct uverbs_req_iter *iter, u32 wr_count,
- 	if (ret)
- 		return ERR_PTR(ret);
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index cd12926a72af7..25d6d4d3afc14 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -1262,68 +1262,6 @@ static resource_size_t calculate_head_align(resource_size_t *aligns,
+ 	return head_align;
+ }
  
--	user_wr = kmalloc(wqe_size, GFP_KERNEL);
-+	user_wr = kmalloc(wqe_size, GFP_KERNEL | __GFP_NOWARN);
- 	if (!user_wr)
- 		return ERR_PTR(-ENOMEM);
+-/**
+- * pbus_upstream_space_available - Check no upstream resource limits allocation
+- * @bus:	The bus
+- * @res:	The resource to help select the correct bridge window
+- * @size:	The size required from the bridge window
+- * @align:	Required alignment for the resource
+- *
+- * Check that @size can fit inside the upstream bridge resources that are
+- * already assigned. Select the upstream bridge window based on the type of
+- * @res.
+- *
+- * Return: %true if enough space is available on all assigned upstream
+- * resources.
+- */
+-static bool pbus_upstream_space_available(struct pci_bus *bus,
+-					  struct resource *res,
+-					  resource_size_t size,
+-					  resource_size_t align)
+-{
+-	struct resource_constraint constraint = {
+-		.max = RESOURCE_SIZE_MAX,
+-		.align = align,
+-	};
+-	struct pci_bus *downstream = bus;
+-
+-	while ((bus = bus->parent)) {
+-		if (pci_is_root_bus(bus))
+-			break;
+-
+-		res = pbus_select_window(bus, res);
+-		if (!res)
+-			return false;
+-		if (!res->parent)
+-			continue;
+-
+-		if (resource_size(res) >= size) {
+-			struct resource gap = {};
+-
+-			if (find_resource_space(res, &gap, size, &constraint) == 0) {
+-				gap.flags = res->flags;
+-				pci_dbg(bus->self,
+-					"Assigned bridge window %pR to %pR free space at %pR\n",
+-					res, &bus->busn_res, &gap);
+-				return true;
+-			}
+-		}
+-
+-		if (bus->self) {
+-			pci_info(bus->self,
+-				 "Assigned bridge window %pR to %pR cannot fit 0x%llx required for %s bridging to %pR\n",
+-				 res, &bus->busn_res,
+-				 (unsigned long long)size,
+-				 pci_name(downstream->self),
+-				 &downstream->busn_res);
+-		}
+-
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+ /**
+  * pbus_size_mem() - Size the memory window of a given bus
+  *
+@@ -1350,7 +1288,6 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+ 	struct pci_dev *dev;
+ 	resource_size_t min_align, win_align, align, size, size0, size1 = 0;
+ 	resource_size_t aligns[28] = {}; /* Alignments from 1MB to 128TB */
+-	resource_size_t aligns2[28] = {};/* Alignments from 1MB to 128TB */
+ 	int order, max_order;
+ 	struct resource *b_res = pbus_select_window_for_type(bus, type);
+ 	resource_size_t children_add_size = 0;
+@@ -1409,13 +1346,8 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+ 				continue;
+ 			}
+ 			size += max(r_size, align);
+-			/*
+-			 * Exclude ranges with size > align from calculation of
+-			 * the alignment.
+-			 */
+-			if (r_size <= align)
+-				aligns[order] += align;
+-			aligns2[order] += align;
++
++			aligns[order] += align;
+ 			if (order > max_order)
+ 				max_order = order;
  
+@@ -1429,38 +1361,19 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+ 
+ 	old_size = resource_size(b_res);
+ 	win_align = window_alignment(bus, b_res->flags);
+-	min_align = calculate_mem_align(aligns, max_order);
++	min_align = calculate_head_align(aligns, max_order);
+ 	min_align = max(min_align, win_align);
+-	size0 = calculate_memsize(size, min_size, 0, 0, old_size, min_align);
++	size0 = calculate_memsize(size, min_size, 0, 0, old_size, win_align);
+ 
+ 	if (size0) {
+ 		resource_set_range(b_res, min_align, size0);
+ 		b_res->flags &= ~IORESOURCE_DISABLED;
+ 	}
+ 
+-	if (bus->self && size0 &&
+-	    !pbus_upstream_space_available(bus, b_res, size0, min_align)) {
+-		min_align = calculate_head_align(aligns2, max_order);
+-		size0 = calculate_memsize(size, min_size, 0, 0, old_size, win_align);
+-		resource_set_range(b_res, min_align, size0);
+-		pci_info(bus->self, "bridge window %pR to %pR requires relaxed alignment rules\n",
+-			 b_res, &bus->busn_res);
+-	}
+-
+ 	if (realloc_head && (add_size > 0 || children_add_size > 0)) {
+ 		add_align = max(min_align, add_align);
+ 		size1 = calculate_memsize(size, min_size, add_size, children_add_size,
+-					  old_size, add_align);
+-
+-		if (bus->self && size1 &&
+-		    !pbus_upstream_space_available(bus, b_res, size1, add_align)) {
+-			min_align = calculate_head_align(aligns2, max_order);
+-			size1 = calculate_memsize(size, min_size, add_size, children_add_size,
+-						  old_size, win_align);
+-			pci_info(bus->self,
+-				 "bridge window %pR to %pR requires relaxed alignment rules\n",
+-				 b_res, &bus->busn_res);
+-		}
++					  old_size, win_align);
+ 	}
+ 
+ 	if (!size0 && !size1) {
 -- 
 2.51.0
 
