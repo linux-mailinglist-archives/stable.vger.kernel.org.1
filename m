@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219000-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wIpyCxBTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218447-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:32 +0100
+	id 4HYbOHNYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-219000-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A42A18F69A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C79A19071F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA2DB3159908
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9CDC030748ED
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657831EB5E1;
-	Wed, 25 Feb 2026 01:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC31C2652A2;
+	Wed, 25 Feb 2026 01:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqyKvb1O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwMusFv1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C9B18DB2A;
-	Wed, 25 Feb 2026 01:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F28720C012;
+	Wed, 25 Feb 2026 01:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983269; cv=none; b=nLJjHAEtcwJXtQdHcuVzoFvMySb0KKkfZfDSyIXcfeNRmJxniKLgxQOTKkr5O5kX2QkBBUgfhzTK+1avW/a9dGhF6TxrWcHjz1DDd5N3iVCAGqcRGIK3ZSxADRua/RfErtnwQ+eY6jAkr5k3Kg18hgKKn56f9M88yZTRy+cjIa4=
+	t=1771983909; cv=none; b=r1BHdLYTlPpSj8mofPL/etTyPfYHL5DnDoVv1Z60y+RJq+aNAAYtUmmWzOnBuM/8A8GAdI8zyNTuxEeE15+LPPodm33DjzLDT6pwEMQJYje0LTYTsZs0z8dzSdB4XLTUDQ9daR/3BI8Q4hnJkVzgGLSkplvs+8C6lIt/G9aLZL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983269; c=relaxed/simple;
-	bh=nRvxRFONJGF455313GBLGA8zR7MnUN3oTLIs2OaeRuw=;
+	s=arc-20240116; t=1771983909; c=relaxed/simple;
+	bh=YLdaV5S6+gTLlGvT9WN2aGN1bzQlarH6F0a/F5XoFg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlnJBS2sD1tWvenAluy7F1IlNDc+4GN81F7XGtpCCqUCJwr4fmnbJh2EdVAmz5my6kDX2ul33Hcq1GvsDD6iWGIid2kZ1CJrQSqrcCl9TAVvS5JhVx63cuiZMWY/IXMK9/fRVvalntfixHxu5A4mxPn3v//MX7+Q9QquMTfcrWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqyKvb1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37C3C116D0;
-	Wed, 25 Feb 2026 01:34:28 +0000 (UTC)
+	 MIME-Version; b=rFU5F1c6BuKSUBg4zy/vGnkq9/4IuzW4E+HlUNfbuMDFaz4U1X2godDlYmVGogu2rhWAP5HZBk1v4huIi7WFA0ix+Xjb4VsJvCPP6wU2KPOhVUVeTHGO4psMQ7/tbBWp3jEaIjbKFmsfs0jL+abVCDQOgei/0SnNJV76fwduIDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwMusFv1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EB5C116D0;
+	Wed, 25 Feb 2026 01:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983269;
-	bh=nRvxRFONJGF455313GBLGA8zR7MnUN3oTLIs2OaeRuw=;
+	s=korg; t=1771983909;
+	bh=YLdaV5S6+gTLlGvT9WN2aGN1bzQlarH6F0a/F5XoFg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zqyKvb1O1PuJItYwQHZQ4MsbOf/SRS73P2xOVhjAk8sF0kdxizDnOVng6nML2DULP
-	 EYY1MT+vt9NeU+T3hB7rs89EdQu66E08gEO+Uxa2O81khIxL6yTmh7MKEvUs/ImKA6
-	 jUQIz8wD+P4Nt0uAb4LJLC4Lg0TtkS0Ms6J7D7g8=
+	b=WwMusFv12BxtAAYy8S4uarlh2kTqDqu+X2jXYUfrv61CXHLtNgAcGxEEgDcKVZNI1
+	 tLClF/SuoFzje3KbW6AimcZXgkbks9pY8PzB9bgAMafVdNBDbtf4l4HYQaz6MBtBxR
+	 HstVUU9Ov0rZ5IiDJs2fe8V+O02Wro4Mm6h7JOYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	ying chen <yc1082463@gmail.com>,
+	Lai Jiangshan <jiangshan.ljs@antgroup.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 392/781] PCI: dwc: ep: Cache MSI outbound iATU mapping
-Date: Tue, 24 Feb 2026 17:18:21 -0800
-Message-ID: <20260225012409.314839089@linuxfoundation.org>
+Subject: [PATCH 6.18 176/641] workqueue: Process rescuer work items one-by-one using a cursor
+Date: Tue, 24 Feb 2026 17:18:22 -0800
+Message-ID: <20260225012353.298551794@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,179 +70,231 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,antgroup.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-219000-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218447-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,valinux.co.jp:email]
-X-Rspamd-Queue-Id: 9A42A18F69A
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,antgroup.com:email]
+X-Rspamd-Queue-Id: 2C79A19071F
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Lai Jiangshan <jiangshan.ljs@antgroup.com>
 
-[ Upstream commit 8719c64e76bf258cc8f44109740c854f2e2ead2e ]
+[ Upstream commit e5a30c303b07a4d6083e0f7f051b53add6d93c5d ]
 
-dw_pcie_ep_raise_msi_irq() currently programs an outbound iATU window
-for the MSI target address on every interrupt and tears it down again
-via dw_pcie_ep_unmap_addr().
+Previously, the rescuer scanned for all matching work items at once and
+processed them within a single rescuer thread, which could cause one
+blocking work item to stall all others.
 
-On systems that heavily use the AXI bridge interface (for example when
-the integrated eDMA engine is active), this means the outbound iATU
-registers are updated while traffic is in flight. The DesignWare
-endpoint databook 5.40a - "3.10.6.1 iATU Outbound Programming Overview"
-warns that updating iATU registers in this situation is not supported,
-and the behavior is undefined.
+Make the rescuer process work items one-by-one instead of slurping all
+matches in a single pass.
 
-Under high MSI and eDMA load this pattern results in occasional bogus
-outbound transactions and IOMMU faults, on the RC side, such as:
+Break the rescuer loop after finding and processing the first matching
+work item, then restart the search to pick up the next. This gives
+normal worker threads a chance to process other items which gives them
+the opportunity to be processed instead of waiting on the rescuer's
+queue and prevents a blocking work item from stalling the rest once
+memory pressure is relieved.
 
-  ipmmu-vmsa eed40000.iommu: Unhandled fault: status 0x00001502 iova 0xfe000000
+Introduce a dummy cursor work item to avoid potentially O(N^2)
+rescans of the work list.  The marker records the resume position for
+the next scan, eliminating redundant traversals.
 
-followed by the system becoming unresponsive. This is the actual output
-observed on Renesas R-Car S4, with its ipmmu_hc used with PCIe ch0.
+Also introduce RESCUER_BATCH to control the maximum number of work items
+the rescuer processes in each turn, and move on to other PWQs when the
+limit is reached.
 
-There is no need to reprogram the iATU region used for MSI on every
-interrupt. The host-provided MSI address is stable while MSI is enabled,
-and the endpoint driver already dedicates a scratch buffer for MSI
-generation.
-
-Cache the aligned MSI address and map size, program the outbound iATU
-once, and keep the window enabled. Subsequent interrupts only perform a
-write to the MSI scratch buffer, avoiding dynamic iATU reprogramming in
-the hot path and fixing the lockups seen under load.
-
-dw_pcie_ep_raise_msix_irq() is not modified, as each vector can have a
-different msg_addr, and because the msg_addr is allowed to be changed
-while the vector is masked. Neither problem is easy to solve with the
-current design. Instead, the plan is for the DWC vendor drivers to
-transition to dw_pcie_ep_raise_msix_irq_doorbell(), which does not rely
-on the iATU.
-
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-[cassel: improve commit message]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20251222110144.3299523-2-cassel@kernel.org
-Stable-dep-of: 72cb5ed2a5c6 ("PCI: dwc: ep: Add per-PF BAR and inbound ATU mapping support")
+Cc: ying chen <yc1082463@gmail.com>
+Reported-by: ying chen <yc1082463@gmail.com>
+Fixes: e22bee782b3b ("workqueue: implement concurrency managed dynamic worker pool")
+Signed-off-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../pci/controller/dwc/pcie-designware-ep.c   | 48 ++++++++++++++++---
- drivers/pci/controller/dwc/pcie-designware.h  |  5 ++
- 2 files changed, 47 insertions(+), 6 deletions(-)
+ kernel/workqueue.c | 75 ++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 59 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index f6c54625486e2..1195d401df19e 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -601,6 +601,16 @@ static void dw_pcie_ep_stop(struct pci_epc *epc)
- 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index f678200ce8692..885a8b31f855b 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -117,6 +117,8 @@ enum wq_internal_consts {
+ 	MAYDAY_INTERVAL		= HZ / 10,	/* and then every 100ms */
+ 	CREATE_COOLDOWN		= HZ,		/* time to breath after fail */
  
-+	/*
-+	 * Tear down the dedicated outbound window used for MSI
-+	 * generation. This avoids leaking an iATU window across
-+	 * endpoint stop/start cycles.
-+	 */
-+	if (ep->msi_iatu_mapped) {
-+		dw_pcie_ep_unmap_addr(epc, 0, 0, ep->msi_mem_phys);
-+		ep->msi_iatu_mapped = false;
-+	}
++	RESCUER_BATCH		= 16,		/* process items per turn */
 +
- 	dw_pcie_stop_link(pci);
+ 	/*
+ 	 * Rescue workers are used only on emergencies and shared by
+ 	 * all cpus.  Give MIN_NICE.
+@@ -286,6 +288,7 @@ struct pool_workqueue {
+ 	struct list_head	pending_node;	/* LN: node on wq_node_nr_active->pending_pwqs */
+ 	struct list_head	pwqs_node;	/* WR: node on wq->pwqs */
+ 	struct list_head	mayday_node;	/* MD: node on wq->maydays */
++	struct work_struct	mayday_cursor;	/* L: cursor on pool->worklist */
+ 
+ 	u64			stats[PWQ_NR_STATS];
+ 
+@@ -1126,6 +1129,12 @@ static struct worker *find_worker_executing_work(struct worker_pool *pool,
+ 	return NULL;
  }
  
-@@ -702,14 +712,37 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
- 	msg_addr = ((u64)msg_addr_upper) << 32 | msg_addr_lower;
++static void mayday_cursor_func(struct work_struct *work)
++{
++	/* should not be processed, only for marking position */
++	BUG();
++}
++
+ /**
+  * move_linked_works - move linked works to a list
+  * @work: start of series of works to be scheduled
+@@ -1188,6 +1197,16 @@ static bool assign_work(struct work_struct *work, struct worker *worker,
  
- 	msg_addr = dw_pcie_ep_align_addr(epc, msg_addr, &map_size, &offset);
--	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
--				  map_size);
--	if (ret)
--		return ret;
+ 	lockdep_assert_held(&pool->lock);
  
--	writel(msg_data | (interrupt_num - 1), ep->msi_mem + offset);
++	/* The cursor work should not be processed */
++	if (unlikely(work->func == mayday_cursor_func)) {
++		/* only worker_thread() can possibly take this branch */
++		WARN_ON_ONCE(worker->rescue_wq);
++		if (nextp)
++			*nextp = list_next_entry(work, entry);
++		list_del_init(&work->entry);
++		return false;
++	}
++
+ 	/*
+ 	 * A single work shouldn't be executed concurrently by multiple workers.
+ 	 * __queue_work() ensures that @work doesn't jump to a different pool
+@@ -3446,22 +3465,30 @@ static int worker_thread(void *__worker)
+ static bool assign_rescuer_work(struct pool_workqueue *pwq, struct worker *rescuer)
+ {
+ 	struct worker_pool *pool = pwq->pool;
++	struct work_struct *cursor = &pwq->mayday_cursor;
+ 	struct work_struct *work, *n;
+ 
+ 	/* need rescue? */
+ 	if (!pwq->nr_active || !need_to_create_worker(pool))
+ 		return false;
+ 
+-	/*
+-	 * Slurp in all works issued via this workqueue and
+-	 * process'em.
+-	 */
+-	list_for_each_entry_safe(work, n, &pool->worklist, entry) {
+-		if (get_work_pwq(work) == pwq && assign_work(work, rescuer, &n))
++	/* search from the start or cursor if available */
++	if (list_empty(&cursor->entry))
++		work = list_first_entry(&pool->worklist, struct work_struct, entry);
++	else
++		work = list_next_entry(cursor, entry);
++
++	/* find the next work item to rescue */
++	list_for_each_entry_safe_from(work, n, &pool->worklist, entry) {
++		if (get_work_pwq(work) == pwq && assign_work(work, rescuer, &n)) {
+ 			pwq->stats[PWQ_STAT_RESCUED]++;
++			/* put the cursor for next search */
++			list_move_tail(&cursor->entry, &n->entry);
++			return true;
++		}
+ 	}
+ 
+-	return !list_empty(&rescuer->scheduled);
++	return false;
+ }
+ 
+ /**
+@@ -3518,6 +3545,7 @@ static int rescuer_thread(void *__rescuer)
+ 		struct pool_workqueue *pwq = list_first_entry(&wq->maydays,
+ 					struct pool_workqueue, mayday_node);
+ 		struct worker_pool *pool = pwq->pool;
++		unsigned int count = 0;
+ 
+ 		__set_current_state(TASK_RUNNING);
+ 		list_del_init(&pwq->mayday_node);
+@@ -3530,19 +3558,16 @@ static int rescuer_thread(void *__rescuer)
+ 
+ 		WARN_ON_ONCE(!list_empty(&rescuer->scheduled));
+ 
+-		if (assign_rescuer_work(pwq, rescuer)) {
++		while (assign_rescuer_work(pwq, rescuer)) {
+ 			process_scheduled_works(rescuer);
+ 
+ 			/*
+-			 * The above execution of rescued work items could
+-			 * have created more to rescue through
+-			 * pwq_activate_first_inactive() or chained
+-			 * queueing.  Let's put @pwq back on mayday list so
+-			 * that such back-to-back work items, which may be
+-			 * being used to relieve memory pressure, don't
+-			 * incur MAYDAY_INTERVAL delay inbetween.
++			 * If the per-turn work item limit is reached and other
++			 * PWQs are in mayday, requeue mayday for this PWQ and
++			 * let the rescuer handle the other PWQs first.
+ 			 */
+-			if (pwq->nr_active && need_to_create_worker(pool)) {
++			if (++count > RESCUER_BATCH && !list_empty(&pwq->wq->maydays) &&
++			    pwq->nr_active && need_to_create_worker(pool)) {
+ 				raw_spin_lock(&wq_mayday_lock);
+ 				/*
+ 				 * Queue iff we aren't racing destruction
+@@ -3553,9 +3578,14 @@ static int rescuer_thread(void *__rescuer)
+ 					list_add_tail(&pwq->mayday_node, &wq->maydays);
+ 				}
+ 				raw_spin_unlock(&wq_mayday_lock);
++				break;
+ 			}
+ 		}
+ 
++		/* The cursor can not be left behind without the rescuer watching it. */
++		if (!list_empty(&pwq->mayday_cursor.entry) && list_empty(&pwq->mayday_node))
++			list_del_init(&pwq->mayday_cursor.entry);
++
+ 		/*
+ 		 * Leave this pool. Notify regular workers; otherwise, we end up
+ 		 * with 0 concurrency and stalling the execution.
+@@ -5174,6 +5204,19 @@ static void init_pwq(struct pool_workqueue *pwq, struct workqueue_struct *wq,
+ 	INIT_LIST_HEAD(&pwq->pwqs_node);
+ 	INIT_LIST_HEAD(&pwq->mayday_node);
+ 	kthread_init_work(&pwq->release_work, pwq_release_workfn);
++
 +	/*
-+	 * Program the outbound iATU once and keep it enabled.
++	 * Set the dummy cursor work with valid function and get_work_pwq().
 +	 *
-+	 * The spec warns that updating iATU registers while there are
-+	 * operations in flight on the AXI bridge interface is not
-+	 * supported, so we avoid reprogramming the region on every MSI,
-+	 * specifically unmapping immediately after writel().
++	 * The cursor work should only be in the pwq->pool->worklist, and
++	 * should not be treated as a processable work item.
++	 *
++	 * WORK_STRUCT_PENDING and WORK_STRUCT_INACTIVE just make it less
++	 * surprise for kernel debugging tools and reviewers.
 +	 */
-+	if (!ep->msi_iatu_mapped) {
-+		ret = dw_pcie_ep_map_addr(epc, func_no, 0,
-+					  ep->msi_mem_phys, msg_addr,
-+					  map_size);
-+		if (ret)
-+			return ret;
-+
-+		ep->msi_iatu_mapped = true;
-+		ep->msi_msg_addr = msg_addr;
-+		ep->msi_map_size = map_size;
-+	} else if (WARN_ON_ONCE(ep->msi_msg_addr != msg_addr ||
-+				ep->msi_map_size != map_size)) {
-+		/*
-+		 * The host changed the MSI target address or the required
-+		 * mapping size changed. Reprogramming the iATU at runtime is
-+		 * unsafe on this controller, so bail out instead of trying to
-+		 * update the existing region.
-+		 */
-+		return -EINVAL;
-+	}
- 
--	dw_pcie_ep_unmap_addr(epc, func_no, 0, ep->msi_mem_phys);
-+	writel(msg_data | (interrupt_num - 1), ep->msi_mem + offset);
- 
- 	return 0;
++	INIT_WORK(&pwq->mayday_cursor, mayday_cursor_func);
++	atomic_long_set(&pwq->mayday_cursor.data, (unsigned long)pwq |
++			WORK_STRUCT_PENDING | WORK_STRUCT_PWQ | WORK_STRUCT_INACTIVE);
  }
-@@ -1087,6 +1120,9 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
- 	struct device *dev = pci->dev;
  
- 	INIT_LIST_HEAD(&ep->func_list);
-+	ep->msi_iatu_mapped = false;
-+	ep->msi_msg_addr = 0;
-+	ep->msi_map_size = 0;
- 
- 	epc = devm_pci_epc_create(dev, &epc_ops);
- 	if (IS_ERR(epc)) {
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index aec4af5194b51..f9e2eaa3571e0 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -479,6 +479,11 @@ struct dw_pcie_ep {
- 	void __iomem		*msi_mem;
- 	phys_addr_t		msi_mem_phys;
- 	struct pci_epf_bar	*epf_bar[PCI_STD_NUM_BARS];
-+
-+	/* MSI outbound iATU state */
-+	bool			msi_iatu_mapped;
-+	u64			msi_msg_addr;
-+	size_t			msi_map_size;
- };
- 
- struct dw_pcie_ops {
+ /* sync @pwq with the current state of its associated wq and link it */
 -- 
 2.51.0
 
