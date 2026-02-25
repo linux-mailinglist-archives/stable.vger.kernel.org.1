@@ -1,71 +1,60 @@
-Return-Path: <stable+bounces-219085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218572-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DCuAYZWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:18 +0100
+	id AAOFCaNUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218572-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B807E190318
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED0C18FD66
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 17D833090113
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0215230091FF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078BA263C7F;
-	Wed, 25 Feb 2026 01:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E084C256C6C;
+	Wed, 25 Feb 2026 01:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeYZuvfG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqlxL6mH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1A5274B39;
-	Wed, 25 Feb 2026 01:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4346248881;
+	Wed, 25 Feb 2026 01:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984014; cv=none; b=p5LgvyIPZ28Tc/d0cuJqTqpVKDfxNr21sFMdZqtCBnLcynNouGV/0Ld7AAXEVMrxHsbRjtu4hqBeH6M1Bvm27M1Lpl1qVQa0Xt4RQJpP6lrFwqv4gUd2kFBMX0IGgIxmhtaCKaAyYBFFVcBozhQSegIhkj/JqDuOBWpmDXdcnOc=
+	t=1771983414; cv=none; b=MnYulyIGqV3ZDbfKgN5HvU5Om/ucN7W4O+tKfafoQGNOxSUI0ppv6vLNb+swOGenoKltr77aVIQ4UCp+iwVhH0jO6kauT9USY/veluGpMrfS0eQ5qK5aAvVMva11O0Z+/VJvJAwJOoeqWPVwxsyU8rEICzRclR3khjQg1zesBwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984014; c=relaxed/simple;
-	bh=D8MAjrxtgj7LEbxBlBhbUSgORKJ86HPm9GMjT4pK6G8=;
+	s=arc-20240116; t=1771983414; c=relaxed/simple;
+	bh=Fzk6gJfh3yJFYN9psbF3HcqW+1G61Q+r2h6BvbOni+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyNhuO1iRfxMP41NleMimTkWV+QHrgkpwh0HeIJWMow3LM1ux4y2Nr3V0kwc530Zrtb8MTE+wSCQz/E/1/yUplFK03jYXbg2qaH4OLr5De/DUwTo1WN9OIvvXZnpDN6tfWSdTpzchs9NUUAmZfvCBpk/Zv7wYpCJOQeVle9Es9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GeYZuvfG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792C4C116D0;
-	Wed, 25 Feb 2026 01:46:54 +0000 (UTC)
+	 MIME-Version; b=sroidfDuvtrz2SqEGkkpdJzDWkKA8THU4EbQeWcuiPMh+MBVYs36hzaMJtnVp7vDi+QZmW4ee1saEvGcGhP+VMnaAQ9asjeIvwM8kUvtJmlO0xzxlo3Yb3lAyAgESS4F+5jzRPMZ/+wHCK/jlFQdkb8awXOuP8Ypgxra//iSgS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqlxL6mH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C2AC116D0;
+	Wed, 25 Feb 2026 01:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984014;
-	bh=D8MAjrxtgj7LEbxBlBhbUSgORKJ86HPm9GMjT4pK6G8=;
+	s=korg; t=1771983414;
+	bh=Fzk6gJfh3yJFYN9psbF3HcqW+1G61Q+r2h6BvbOni+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GeYZuvfGVVkP43KxSzmApiOfpGHsLz7qW4WiOUko/UX4o3r8P40MjWYzWADRgiSwy
-	 D/0wtHw+lu4+2kObHdE6Zfc6PPJXPpXlYEYY6O3MhKSCBczi37kGcT0SWl9o9PVRRC
-	 djpqrN1v+yXpsOamSeFMjuzpzACXGYelV+WDLrh4=
+	b=FqlxL6mHnnEZxKrU1F76LFz9osdcRDOsODmIjakfmciUXlWGuy1DINx70fXB5SXjK
+	 kfY/kTw6HWZSryAhJ33MuD3T/vaRE5i1ljqXW9FCUEFSg1l3kjlO3eK2lvQqRCD/15
+	 vnyEEE5KZEyfINFVeBv7TuBaa8Ps4eo6nIiu4f8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Mladek <pmladek@suse.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkman <daniel@iogearbox.net>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Luis Chamberalin <mcgrof@kernel.org>,
-	Marc Rutland <mark.rutland@arm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Robert Richter <rrichter@amd.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 263/641] kallsyms/ftrace: set module buildid in ftrace_mod_address_lookup()
-Date: Tue, 24 Feb 2026 17:19:49 -0800
-Message-ID: <20260225012355.188658017@linuxfoundation.org>
+Subject: [PATCH 6.19 481/781] cxl/hdm: Fix newline character in dev_err() messages
+Date: Tue, 24 Feb 2026 17:19:50 -0800
+Message-ID: <20260225012411.611477729@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,134 +66,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-219085-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,atomlin.com,goodmis.org,kernel.org,iogearbox.net,samsung.com,gmail.com,arm.com,google.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218572-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.953];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B807E190318
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 6ED0C18FD66
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Mladek <pmladek@suse.com>
+From: Robert Richter <rrichter@amd.com>
 
-[ Upstream commit e8a1e7eaa19d0b757b06a2f913e3eeb4b1c002c6 ]
+[ Upstream commit e5b1887619403c2da25a5899cad3e1ab34e7717f ]
 
-__sprint_symbol() might access an invalid pointer when
-kallsyms_lookup_buildid() returns a symbol found by
-ftrace_mod_address_lookup().
+The newline character is not placed at the end of the string. This
+causes unintended line wraps, broken log level and unterminated log
+messages. Fix that for all messages.
 
-The ftrace lookup function must set both @modname and @modbuildid the same
-way as module_address_lookup().
+Note that the messages are changed to use colons now instead of
+parentheses, which is more common use.
 
-Link: https://lkml.kernel.org/r/20251128135920.217303-7-pmladek@suse.com
-Fixes: 9294523e3768 ("module: add printk formats to add module build ID to stacktraces")
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkman <daniel@iogearbox.net>
-Cc: Daniel Gomez <da.gomez@samsung.com>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Luis Chamberalin <mcgrof@kernel.org>
-Cc: Marc Rutland <mark.rutland@arm.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 24b18197184a ("cxl/hdm: Extend DVSEC range register emulation for region enumeration")
+Fixes: 9c57cde0dcbd ("cxl/hdm: Enumerate allocated DPA")
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20260109122952.639231-1-rrichter@amd.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ftrace.h | 6 ++++--
- kernel/kallsyms.c      | 4 ++--
- kernel/trace/ftrace.c  | 5 ++++-
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/cxl/core/hdm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
-index 07f8c309e4327..9cc60e2506af1 100644
---- a/include/linux/ftrace.h
-+++ b/include/linux/ftrace.h
-@@ -87,11 +87,13 @@ struct ftrace_hash;
- 	defined(CONFIG_DYNAMIC_FTRACE)
- int
- ftrace_mod_address_lookup(unsigned long addr, unsigned long *size,
--		   unsigned long *off, char **modname, char *sym);
-+			  unsigned long *off, char **modname,
-+			  const unsigned char **modbuildid, char *sym);
- #else
- static inline int
- ftrace_mod_address_lookup(unsigned long addr, unsigned long *size,
--		   unsigned long *off, char **modname, char *sym)
-+			  unsigned long *off, char **modname,
-+			  const unsigned char **modbuildid, char *sym)
- {
- 	return 0;
- }
-diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
-index 7417dd5f8a796..cdd6e025935d3 100644
---- a/kernel/kallsyms.c
-+++ b/kernel/kallsyms.c
-@@ -380,8 +380,8 @@ static int kallsyms_lookup_buildid(unsigned long addr,
- 		ret = bpf_address_lookup(addr, symbolsize, offset, namebuf);
- 
- 	if (!ret)
--		ret = ftrace_mod_address_lookup(addr, symbolsize,
--						offset, modname, namebuf);
-+		ret = ftrace_mod_address_lookup(addr, symbolsize, offset,
-+						modname, modbuildid, namebuf);
- 
- 	return ret;
- }
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index e95408a47c1d0..905f4d1679559 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -7709,7 +7709,8 @@ ftrace_func_address_lookup(struct ftrace_mod_map *mod_map,
- 
- int
- ftrace_mod_address_lookup(unsigned long addr, unsigned long *size,
--		   unsigned long *off, char **modname, char *sym)
-+			  unsigned long *off, char **modname,
-+			  const unsigned char **modbuildid, char *sym)
- {
- 	struct ftrace_mod_map *mod_map;
- 	int ret = 0;
-@@ -7721,6 +7722,8 @@ ftrace_mod_address_lookup(unsigned long addr, unsigned long *size,
- 		if (ret) {
- 			if (modname)
- 				*modname = mod_map->mod->name;
-+			if (modbuildid)
-+				*modbuildid = module_buildid(mod_map->mod);
- 			break;
- 		}
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index eb5a3a7640c60..a7ad730763e85 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -966,7 +966,7 @@ static int cxl_setup_hdm_decoder_from_dvsec(
+ 	rc = devm_cxl_dpa_reserve(cxled, *dpa_base, len, 0);
+ 	if (rc) {
+ 		dev_err(&port->dev,
+-			"decoder%d.%d: Failed to reserve DPA range %#llx - %#llx\n (%d)",
++			"decoder%d.%d: Failed to reserve DPA range %#llx - %#llx: %d\n",
+ 			port->id, cxld->id, *dpa_base, *dpa_base + len - 1, rc);
+ 		return rc;
  	}
+@@ -1117,7 +1117,7 @@ static int init_hdm_decoder(struct cxl_port *port, struct cxl_decoder *cxld,
+ 	rc = devm_cxl_dpa_reserve(cxled, *dpa_base + skip, dpa_size, skip);
+ 	if (rc) {
+ 		dev_err(&port->dev,
+-			"decoder%d.%d: Failed to reserve DPA range %#llx - %#llx\n (%d)",
++			"decoder%d.%d: Failed to reserve DPA range %#llx - %#llx: %d\n",
+ 			port->id, cxld->id, *dpa_base,
+ 			*dpa_base + dpa_size + skip - 1, rc);
+ 		return rc;
 -- 
 2.51.0
 
