@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-218252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EhFIl9SnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:35 +0100
+	id kBYKBPtRnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5CA18F339
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220CE18F162
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43563318245B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:30:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E6CE530980DE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532AA25A655;
-	Wed, 25 Feb 2026 01:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5909C231A41;
+	Wed, 25 Feb 2026 01:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nm4TJ3sv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXkigoeJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CBB22579E;
-	Wed, 25 Feb 2026 01:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D30F2BAF7;
+	Wed, 25 Feb 2026 01:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983050; cv=none; b=XKGAldat9Jy2FM278UbeRBlo7mscM5Tm4y0ny6kJPt2jx6kV25PfQ+4MwLmmLtnWoIu6dGFknd3AEGmNFB/xlBo5QBn50A3XnTcJnyguqWFdKTSJ04BD5ueqgRihW2CS5gqZYtgSkl1LGWUCipYcnqpXkmjnIUNczrgG7YXpsPI=
+	t=1771983062; cv=none; b=Lt8mPZ/zCQkPKdXpEMN+lPmHoAW8MbCfXmvopoyJaIQs16eyXFltOz8AOKqfILQ1WzTgqWhqTXvswWWWSbmkma0VoGVj4OonYOIEFQgemtDjvW67c9hSphu22A0o3PJbBI5EdOXtpoaOs9XAri6b1oeYYNTfGauPN+iRtS3PGO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983050; c=relaxed/simple;
-	bh=oSNGAD5pZtxoKHVpnbEji5FfKOmvPW9rccNis2cIjN0=;
+	s=arc-20240116; t=1771983062; c=relaxed/simple;
+	bh=FcbP9avNqIts48pxlw3t7/2c24iGo7YeZudnFhZUY7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZFphbISXfxEzhYEcxpKeO+k6bxyLMMsH+nAxJZOK6H3rJSB3iEUrIH1/+WAAUu8Bo83lyV0/kS56GTTEV15sv05Y5nPAev3JnmblyN/mePq4/+7esxy8tUpS3YW+Aa2kmwVbB3iL5CTUH0DRuhxAvywA/YczZ4KTTcGA7XtERQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nm4TJ3sv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E1BC116D0;
-	Wed, 25 Feb 2026 01:30:49 +0000 (UTC)
+	 MIME-Version; b=FMsg8ugyM7L0jnfDdjbt7uNDRB+irkGcRKbCNVCuaNzxPyr5u2TA75ankFsH4FyrVuL8/+j5tn2MTSrnMlt2Goa0aBT7qAb80N3Ahoyq2cv6e6HH6d9GGo+UEytgePjPPEJUuSzUPpZUdELmYVZadL15ZwuBzNBhHIwitwxKZpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXkigoeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4EEC116D0;
+	Wed, 25 Feb 2026 01:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983050;
-	bh=oSNGAD5pZtxoKHVpnbEji5FfKOmvPW9rccNis2cIjN0=;
+	s=korg; t=1771983062;
+	bh=FcbP9avNqIts48pxlw3t7/2c24iGo7YeZudnFhZUY7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nm4TJ3sv78lXdk3CiH7rF2ymC+2lfQzS0ul8V7Mso9/qNhcWBHvZx1MMFydeHU+Kd
-	 mhql1BE8dSlrvtN3RZ1v6aHVywLtkjaBJEG5iXcGMALP7o1LtAQJL8E5zs7zk/+eVz
-	 IvYuGwmj/IEKeheHQiSIuMkxlvyGC1MsE/vvHIkg=
+	b=RXkigoeJi29XXmXm1w8Q6xRGZhd9xhh6hXiOSGEsmCNxxRXC+k/RZNzIyj29otnZp
+	 yECugxcBi2qaZORBdZ6Fe12+GY0f/fEMcZBMRD0QPeP1aUG6mQATFChJVXY1b4SVZv
+	 unlZ98LdaZC0vqvIZxi3bzDsFrUB3Y2kI/NzUu10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 207/781] accel/amdxdna: Fix race where send ring appears full due to delayed head update
-Date: Tue, 24 Feb 2026 17:15:16 -0800
-Message-ID: <20260225012404.792801155@linuxfoundation.org>
+Subject: [PATCH 6.19 208/781] firmware: cs_dsp: Remove __free() from cs_dsp_debugfs_string_read()
+Date: Tue, 24 Feb 2026 17:15:17 -0800
+Message-ID: <20260225012404.817411563@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,109 +79,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218252-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218263-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 0B5CA18F339
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 220CE18F162
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 343f5683cfa443000904c88ce2e23656375fc51c ]
+[ Upstream commit 7a9fa7fda93b7b3ae515f40f67bbf8e1d16337e8 ]
 
-The firmware sends a response and interrupts the driver before advancing
-the mailbox send ring head pointer. As a result, the driver may observe
-the response and attempt to send a new request before the firmware has
-updated the head pointer. In this window, the send ring still appears
-full, causing the driver to incorrectly fail the send operation.
+Don't use __free(kfree) in cs_dsp_debugfs_string_read. Instead use
+normal kfree() to cleanup.
 
-This race can be triggered more easily in a multithreaded environment,
-leading to unexpected and spurious "send ring full" failures.
+The use of __free() can create new cleanup bugs that are difficult to spot
+because the defective code is idiomatically correct regular C. This
+function used the suspect declaration __free(kfree) = NULL;.
 
-To address this, poll the send ring head pointer for up to 100us before
-returning a full-ring condition. This allows the firmware time to update
-the head pointer.
+The __free(kfree) didn't really do anything here. The function can be
+rearranged to avoid any need to return or goto within the code.
 
-Fixes: b87f920b9344 ("accel/amdxdna: Support hardware mailbox")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20251211045125.1724604-1-lizhi.hou@amd.com
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 3045e29d248b ("firmware: cs_dsp: Append \n to debugfs string during read")
+Link: https://patch.msgid.link/20251202113425.413700-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/amdxdna_mailbox.c | 27 +++++++++++++++----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ drivers/firmware/cirrus/cs_dsp.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/amdxdna_mailbox.c b/drivers/accel/amdxdna/amdxdna_mailbox.c
-index 858df97cd3fbd..8b72cf6bd6e4d 100644
---- a/drivers/accel/amdxdna/amdxdna_mailbox.c
-+++ b/drivers/accel/amdxdna/amdxdna_mailbox.c
-@@ -207,26 +207,34 @@ mailbox_send_msg(struct mailbox_channel *mb_chann, struct mailbox_msg *mb_msg)
- 	u32 head, tail;
- 	u32 start_addr;
- 	u32 tmp_tail;
-+	int ret;
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index 73d201e7d9927..57296f48dad0a 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -412,18 +412,23 @@ static ssize_t cs_dsp_debugfs_string_read(struct cs_dsp *dsp,
+ 					  size_t count, loff_t *ppos,
+ 					  const char **pstr)
+ {
+-	const char *str __free(kfree) = NULL;
++	const char *str;
++	ssize_t ret = 0;
  
- 	head = mailbox_get_headptr(mb_chann, CHAN_RES_X2I);
- 	tail = mb_chann->x2i_tail;
--	ringbuf_size = mailbox_get_ringbuf_size(mb_chann, CHAN_RES_X2I);
-+	ringbuf_size = mailbox_get_ringbuf_size(mb_chann, CHAN_RES_X2I) - sizeof(u32);
- 	start_addr = mb_chann->res[CHAN_RES_X2I].rb_start_addr;
- 	tmp_tail = tail + mb_msg->pkg_size;
- 
--	if (tail < head && tmp_tail >= head)
--		goto no_space;
+ 	scoped_guard(mutex, &dsp->pwr_lock) {
+-		if (!*pstr)
+-			return 0;
 -
--	if (tail >= head && (tmp_tail > ringbuf_size - sizeof(u32) &&
--			     mb_msg->pkg_size >= head))
--		goto no_space;
- 
--	if (tail >= head && tmp_tail > ringbuf_size - sizeof(u32)) {
-+check_again:
-+	if (tail >= head && tmp_tail > ringbuf_size) {
- 		write_addr = mb_chann->mb->res.ringbuf_base + start_addr + tail;
- 		writel(TOMBSTONE, write_addr);
- 
- 		/* tombstone is set. Write from the start of the ringbuf */
- 		tail = 0;
-+		tmp_tail = tail + mb_msg->pkg_size;
-+	}
-+
-+	if (tail < head && tmp_tail >= head) {
-+		ret = read_poll_timeout(mailbox_get_headptr, head,
-+					tmp_tail < head || tail >= head,
-+					1, 100, false, mb_chann, CHAN_RES_X2I);
-+		if (ret)
-+			return ret;
-+
-+		if (tail >= head)
-+			goto check_again;
+-		str = kasprintf(GFP_KERNEL, "%s\n", *pstr);
+-		if (!str)
+-			return -ENOMEM;
+-
+-		return simple_read_from_buffer(user_buf, count, ppos, str, strlen(str));
++		if (*pstr) {
++			str = kasprintf(GFP_KERNEL, "%s\n", *pstr);
++			if (str) {
++				ret = simple_read_from_buffer(user_buf, count,
++							      ppos, str, strlen(str));
++				kfree(str);
++			} else {
++				ret = -ENOMEM;
++			}
++		}
  	}
- 
- 	write_addr = mb_chann->mb->res.ringbuf_base + start_addr + tail;
-@@ -238,9 +246,6 @@ mailbox_send_msg(struct mailbox_channel *mb_chann, struct mailbox_msg *mb_msg)
- 			    mb_msg->pkg.header.id);
- 
- 	return 0;
--
--no_space:
--	return -ENOSPC;
++
++	return ret;
  }
  
- static int
+ static ssize_t cs_dsp_debugfs_wmfw_read(struct file *file,
 -- 
 2.51.0
 
