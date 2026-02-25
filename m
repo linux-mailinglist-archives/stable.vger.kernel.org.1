@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-219384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ED+cD+GfnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:17 +0100
+	id 0FaVIINUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930B3193000
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DEE18FD06
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 156EE31B6BA8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78F6431C2F27
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7D12D7810;
-	Wed, 25 Feb 2026 06:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86565262FC0;
+	Wed, 25 Feb 2026 01:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNqAXX+A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBt0itTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9250D2D4805;
-	Wed, 25 Feb 2026 06:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6E71E2834;
+	Wed, 25 Feb 2026 01:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002680; cv=none; b=lG4lDD7plCjgVmCGnSmlc3oVSSLSg3+M9RPbpOzGbpKws1Hz3xya+3u0OWpGM/fTcXTOBAhzIv/8TUc7w7g6UppEHybqNzkdApKRdHmwP2iPtBA8axTWU7N5YyjuMjnDRlUGFcqE1lsRVPU3DNuCz37+8MUlK3UOUKuI4/pwBIU=
+	t=1771983538; cv=none; b=hVxcejI9Ub7TwhNJz3+qhu+wKXvSikpq+2Ht0FCBXtthRmFpsY6qV0tG/3YH1rg+0iWFIJT5bWTOw7bSGfw6fuY1b6o1nI0mBQhaEb1xX1DLIzM2dTMxHRqwhFKsNaIIj6FTWk7MwNnhDfZmQXdqPWey4WaPaf9WaoZeO5d4jmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002680; c=relaxed/simple;
-	bh=SZYui6kSxZhDs3JICCVCRCOOwEuyaFA/2CfCyZ5MxqM=;
+	s=arc-20240116; t=1771983538; c=relaxed/simple;
+	bh=4b2XzWZ9pz/PvmZw/yEslev6Q3jbSdZxeFnf5DtJ0SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aqmf7jqBbtq46/4poqVQxmiEhGRzmxk3mMsunaB0Q+1nzIBFm5LyZXpeLK2UzUtu5pflI6iV4Fh3sIIFaPQf3aaZcR6CKrdQ7o0AF9efVOgwAcewtyM0Gvkr6ta00KAQVUBhnVSssYbaoktieNX5L4LHGW/dLNM9lTHHoBIP9YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNqAXX+A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6F3C116D0;
-	Wed, 25 Feb 2026 06:58:00 +0000 (UTC)
+	 MIME-Version; b=K90ZeiXutHhIFYvtxnFoAGQdNmxWJlD3/8rVkIs00ynVolXxmrbm9UNilMMWO1+I6GtVNJopZh3R6L79h+cr65MxtuUdc+cLk8dRTa8IDa+lJOcWq8ViYcSYkKy4XhrsF28ay8MOcgBWl3c2MdvCzNF7GyywUWdOwEqszYGKwJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBt0itTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFDFC116D0;
+	Wed, 25 Feb 2026 01:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002680;
-	bh=SZYui6kSxZhDs3JICCVCRCOOwEuyaFA/2CfCyZ5MxqM=;
+	s=korg; t=1771983538;
+	bh=4b2XzWZ9pz/PvmZw/yEslev6Q3jbSdZxeFnf5DtJ0SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XNqAXX+A/qQ+PS+4fWzRkUtro6m5ZLBvl5chi2iPCfzn+uJUEUsaOno31qAMBuTM2
-	 KbJgyvos6+1mmgVNI8/J+JiHJxZePpjJuyo5qyNLTJ5uupbWMKRuNJ2ZTOVL8b6qmw
-	 Q+95LvyKdXVPWLztRNd5gSe9uSAuD07tKQ58Fs4M=
+	b=sBt0itTlDNsSzxWloJ4TGyk1LQPX/HFFclXNvKkG/mGBn/MCnX4Tz5OAkJpBTyenf
+	 lRBOJYDHj8yJ7d6jyGIL7dtpX8LA30/G8Sd+3qBe0rKfh4/BkxLQT0ha14Ku2aPW5q
+	 JrUIHiqh/j+2Jxym3bw5iNN1LBua8y92GjVBTIpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 425/641] clk: qcom: regmap-divider: convert from divider_ro_round_rate() to divider_ro_determine_rate()
+Subject: [PATCH 6.19 642/781] net: mscc: ocelot: add missing lock protection in ocelot_port_xmit_inj()
 Date: Tue, 24 Feb 2026 17:22:31 -0800
-Message-ID: <20260225012358.846261282@linuxfoundation.org>
+Message-ID: <20260225012415.549240482@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219384-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218681-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,63 +89,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 930B3193000
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: E2DEE18FD06
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-[ Upstream commit 349f02c0f5d4ee147c582b89cadd553bd534028a ]
+[ Upstream commit 026f6513c5880c2c89e38ad66bbec2868f978605 ]
 
-The divider_ro_round_rate() function is now deprecated, so let's migrate
-to divider_ro_determine_rate() instead so that this deprecated API can
-be removed.
+ocelot_port_xmit_inj() calls ocelot_can_inject() and
+ocelot_port_inject_frame() without holding the injection group lock.
+Both functions contain lockdep_assert_held() for the injection lock,
+and the correct caller felix_port_deferred_xmit() properly acquires
+the lock using ocelot_lock_inj_grp() before calling these functions.
 
-Note that when the main function itself was migrated to use
-determine_rate, this was mistakenly converted to:
+Add ocelot_lock_inj_grp()/ocelot_unlock_inj_grp() around the register
+injection path to fix the missing lock protection. The FDMA path is not
+affected as it uses its own locking mechanism.
 
-    req->rate = divider_round_rate(...)
-
-This is invalid in the case when an error occurs since it can set the
-rate to a negative value.
-
-Fixes: b6f90511c165 ("clk: qcom: regmap-divider: convert from round_rate() to determine_rate()")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260108-clk-divider-round-rate-v1-15-535a3ed73bf3@redhat.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: c5e12ac3beb0 ("net: mscc: ocelot: serialize access to the injection/extraction groups")
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20260208225602.1339325-4-n7l8m4@u.northwestern.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-regmap-divider.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mscc/ocelot_net.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/clk-regmap-divider.c b/drivers/clk/qcom/clk-regmap-divider.c
-index 4f5395f0ab6d0..af9c01dd78537 100644
---- a/drivers/clk/qcom/clk-regmap-divider.c
-+++ b/drivers/clk/qcom/clk-regmap-divider.c
-@@ -26,12 +26,8 @@ static int div_ro_determine_rate(struct clk_hw *hw,
- 	val >>= divider->shift;
- 	val &= BIT(divider->width) - 1;
+diff --git a/drivers/net/ethernet/mscc/ocelot_net.c b/drivers/net/ethernet/mscc/ocelot_net.c
+index a7966c174b2e2..1b82693204640 100644
+--- a/drivers/net/ethernet/mscc/ocelot_net.c
++++ b/drivers/net/ethernet/mscc/ocelot_net.c
+@@ -597,14 +597,22 @@ static netdev_tx_t ocelot_port_xmit_inj(struct sk_buff *skb,
+ 	int port = priv->port.index;
+ 	u32 rew_op = 0;
  
--	req->rate = divider_ro_round_rate(hw, req->rate,
--					  &req->best_parent_rate, NULL,
--					  divider->width,
--					  CLK_DIVIDER_ROUND_CLOSEST, val);
--
--	return 0;
-+	return divider_ro_determine_rate(hw, req, NULL, divider->width,
-+					 CLK_DIVIDER_ROUND_CLOSEST, val);
- }
+-	if (!ocelot_can_inject(ocelot, 0))
++	ocelot_lock_inj_grp(ocelot, 0);
++
++	if (!ocelot_can_inject(ocelot, 0)) {
++		ocelot_unlock_inj_grp(ocelot, 0);
+ 		return NETDEV_TX_BUSY;
++	}
  
- static int div_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
+-	if (!ocelot_xmit_timestamp(ocelot, port, skb, &rew_op))
++	if (!ocelot_xmit_timestamp(ocelot, port, skb, &rew_op)) {
++		ocelot_unlock_inj_grp(ocelot, 0);
+ 		return NETDEV_TX_OK;
++	}
+ 
+ 	ocelot_port_inject_frame(ocelot, port, 0, rew_op, skb);
+ 
++	ocelot_unlock_inj_grp(ocelot, 0);
++
+ 	consume_skb(skb);
+ 
+ 	return NETDEV_TX_OK;
 -- 
 2.51.0
 
