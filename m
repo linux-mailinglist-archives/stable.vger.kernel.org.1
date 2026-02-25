@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-219445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219456-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAPYC8minmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:20:41 +0100
+	id kFEnAWOfnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219456-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F281933F7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:20:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E24192F28
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F212C31E045C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CDD023121659
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAFE2FF161;
-	Wed, 25 Feb 2026 06:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAC7314D05;
+	Wed, 25 Feb 2026 06:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1/XY7H7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfIO8UOd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF9F2D77F5;
-	Wed, 25 Feb 2026 06:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B100B2D3EEE;
+	Wed, 25 Feb 2026 06:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002720; cv=none; b=UO6+7q34h7U9ekezEWA1NOcp5urHKqCTg2L/LPXgmJNO0nNkTPlrCm26RU7wd2gBoxeiir+EQygTaHfeyGAlLEDBn/XRgQP1q9ZcPQlWzBAcn+In0T1nz5XR9+9DagBi3L23Q08joAZC6y3103glNm9ksP9vdY4/Vqa2dP3m51A=
+	t=1772002727; cv=none; b=NkkQp/y5VPZsXSljA09pMk+waXReJxr+PqveCrdnda7H8CEtQJXg1J6q+aYrSFEJCq5N3DNLmsRJB/JuTkjiDWnoiWWU2pLLLdq1zUpSTloQqg4x//J0sM/cgaoEEGWjnMICgAuMkGFvXfSREzBFwq2dW8KfdyzgINyTjXcutPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002720; c=relaxed/simple;
-	bh=E6+gq3WrAVQ9CSKeb3ZH6T1P4bZTzUV23JQeXsK97U4=;
+	s=arc-20240116; t=1772002727; c=relaxed/simple;
+	bh=2rXXK7t/3szA1ceMePhJF2M9oeAlkRBlvIo5BFsaU20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlLe8ID4xQFFWjBsgH+e3Zpx/YNnoiwTcIgMlv2auUA2RbqD7ODZYhMLH+zIDUTDMMiginijUaZXigV/7hzt1uDq/N6EFF34DVnXvtHbiJIFzcrd+HR1/+QjTHDfXW7435+a6zvupmcDwEEh4Ag4AxVl2RdaRjP2slcPzn4abmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1/XY7H7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D0CC116D0;
-	Wed, 25 Feb 2026 06:58:40 +0000 (UTC)
+	 MIME-Version; b=kHU5EKJ/aIZAWKACkj4Jr/1IRGex19QBZ7IGG4zgXBtv0J2nhvFL1GVuKQqye8yOHqNuo0NT0Swh0bfagZag4cf+ERkljPRxtBZlMFUTj7xlMnj50GiDFnuNswNQT6IM4lPhORr+xTTbocxk8uW90m06+rSvI2AZRqalqaGVJdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfIO8UOd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CA1C116D0;
+	Wed, 25 Feb 2026 06:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002720;
-	bh=E6+gq3WrAVQ9CSKeb3ZH6T1P4bZTzUV23JQeXsK97U4=;
+	s=korg; t=1772002727;
+	bh=2rXXK7t/3szA1ceMePhJF2M9oeAlkRBlvIo5BFsaU20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1/XY7H7gr1UkYlKQh0s/lgjelWbv6e/CwVL43pKMkM9XqkdDbOSkLhiyeV3Ddr3C
-	 DPtrd+24byVpsaGSM5Y25rYivsDtI3rT/8J+TSvW04bywwTtbJ47fi+m1BF6DODApF
-	 DssJNdMwnfMCiTzJj/OXBPrqALIueTGdM0AJJuTI=
+	b=IfIO8UOdyOyTYYQKGkcMxkrS5S/+3OvJ3sunz4khpICmpW0W4t9hr6XYOebSsrW8y
+	 Dk3/sxz9BIKe7CaRVBfSOQScTZUyLefAXFz0GLP4KBiyTXSjE0/uFsdMo0aVGiwFoF
+	 VgpaYNklUj/ECbmhX9z6Kfznp9bVdqeZcHw9eKAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Antonio Quartulli <antonio@openvpn.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 512/641] ovpn: fix VPN TX bytes counting
-Date: Tue, 24 Feb 2026 17:23:58 -0800
-Message-ID: <20260225012400.928559741@linuxfoundation.org>
+Subject: [PATCH 6.18 513/641] selftests: mlxsw: tc_restrictions: Fix test failure with new iproute2
+Date: Tue, 24 Feb 2026 17:23:59 -0800
+Message-ID: <20260225012400.953336372@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219445-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219456-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,71 +88,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,queasysnail.net:email,openvpn.net:email]
-X-Rspamd-Queue-Id: 54F281933F7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 51E24192F28
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralf Lici <ralf@mandelbit.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit b660b13d4c6379ca6360f24aaef8c5807fefd237 ]
+[ Upstream commit a2646773a005b59fd1dc7ff3ba15df84889ca5d2 ]
 
-In ovpn_net_xmit, after GSO segmentation and segment processing, the
-first segment on the list is used to increment VPN TX statistics, which
-fails to account for any subsequent segments in the chain.
+As explained in [1], iproute2 started rejecting tc-police burst sizes
+that result in an overflow. This can happen when the burst size is high
+enough and the rate is low enough.
 
-Fix this by accumulating the length of every segment that successfully
-passes skb_share_check into a tx_bytes variable. This ensures the peer
-statistics accurately reflect the total data volume sent, regardless of
-whether the original packet was segmented.
+A couple of test cases specify such configurations, resulting in
+iproute2 errors and test failure.
 
-Fixes: 04ca14955f9a ("ovpn: store tunnel and transport statistics")
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Fix by reducing the burst size so that the test will pass with both new
+and old iproute2 versions.
+
+[1] https://lore.kernel.org/netdev/20250916215731.3431465-1-jay.vosburgh@canonical.com/
+
+Fixes: cb12d1763267 ("selftests: mlxsw: tc_restrictions: Test tc-police restrictions")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/88b00c6e85188aa6a065dc240206119b328c46e1.1770643998.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/io.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
-index f70c58b10599b..955c9a37e1f8d 100644
---- a/drivers/net/ovpn/io.c
-+++ b/drivers/net/ovpn/io.c
-@@ -355,6 +355,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct ovpn_priv *ovpn = netdev_priv(dev);
- 	struct sk_buff *segments, *curr, *next;
- 	struct sk_buff_head skb_list;
-+	unsigned int tx_bytes = 0;
- 	struct ovpn_peer *peer;
- 	__be16 proto;
- 	int ret;
-@@ -414,6 +415,8 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 			continue;
- 		}
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh b/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh
+index 0441a18f098b1..aac8ef490feb8 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh
+@@ -317,7 +317,7 @@ police_limits_test()
  
-+		/* only count what we actually send */
-+		tx_bytes += curr->len;
- 		__skb_queue_tail(&skb_list, curr);
- 	}
+ 	tc filter add dev $swp1 ingress pref 1 proto ip handle 101 \
+ 		flower skip_sw \
+-		action police rate 0.5kbit burst 1m conform-exceed drop/ok
++		action police rate 0.5kbit burst 2k conform-exceed drop/ok
+ 	check_fail $? "Incorrect success to add police action with too low rate"
  
-@@ -426,7 +429,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 	skb_list.prev->next = NULL;
+ 	tc filter add dev $swp1 ingress pref 1 proto ip handle 101 \
+@@ -327,7 +327,7 @@ police_limits_test()
  
--	ovpn_peer_stats_increment_tx(&peer->vpn_stats, skb_list.next->len);
-+	ovpn_peer_stats_increment_tx(&peer->vpn_stats, tx_bytes);
- 	ovpn_send(ovpn, skb_list.next, peer);
+ 	tc filter add dev $swp1 ingress pref 1 proto ip handle 101 \
+ 		flower skip_sw \
+-		action police rate 1.5kbit burst 1m conform-exceed drop/ok
++		action police rate 1.5kbit burst 2k conform-exceed drop/ok
+ 	check_err $? "Failed to add police action with low rate"
  
- 	return NETDEV_TX_OK;
+ 	tc filter del dev $swp1 ingress protocol ip pref 1 handle 101 flower
 -- 
 2.51.0
 
