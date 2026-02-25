@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-219027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UI58EzFanmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:57 +0100
+	id yF9eOB9UnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D4F190A85
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 391B818FBA1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26C9D31CDC16
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5985F308D7BB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C200727FD44;
-	Wed, 25 Feb 2026 01:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CBC20C012;
+	Wed, 25 Feb 2026 01:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Tn7U9lY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/dmTDbz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8567626F46F;
-	Wed, 25 Feb 2026 01:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B509C18B0A;
+	Wed, 25 Feb 2026 01:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983941; cv=none; b=nh3E5vlQHkA2Sknj2qvKQcSwbDA3ofwN67qfDuonDKKYwlaElpQJaEJjc4wC9TuEcG0nvWZT6JUb1ZOkSYuyYOlwOeiNfj5doGOsGJEN3w15qgBQJsRloeJ+ny8ckzjdDb7MWvBxgrYoCyeaQJm7YTk8i9qMDParPuSQU7tVSO8=
+	t=1771983285; cv=none; b=kRTH8g/BuszJ/CNouax4PcJt1wRtNcJ0ie3NZVpamQHn2gGlenahVP7VtQKVV4K6//zKXVSQDilfQoss+LlEDckLxr98XLYxyorOhU9QfW27fp/p9EIbLOkwP5bB8zg6Azw1P6xXxwVoxTH8n2kyM2Ti68NPQwuHs5DC7c3OIa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983941; c=relaxed/simple;
-	bh=q/wdyiqZX6DbOZ1+mb2YAgSrPmGPNx3lvczpWTXiItI=;
+	s=arc-20240116; t=1771983285; c=relaxed/simple;
+	bh=mxfB2HfyCdloaKzN6BXjsA7y8AWlzRUMX8Ii20US1oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6IEmAq+AUc8IYyLuioH4KJk2YMqaCr8aOmGkgOzD+riPKvkjpK+mMcJZWZf2tPj0V1PKTzy/jvABm4ikyUDV+2Gy+NyhJmBV9t4bcuZbGZ/blCCFYM3vYRwiEgt3rkkCofpA8Aa9Qf/aJ/REU/5iaf2N0wBYzHYAuy5sAwaSf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Tn7U9lY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4177FC116D0;
-	Wed, 25 Feb 2026 01:45:41 +0000 (UTC)
+	 MIME-Version; b=SqCtYMfJ2flOZ2nBbHfDj1cVHR2gDNrW36jhJv1GSszkSOSmFkRX+YyOxPkMjF0GIiahv2/x1QFsXQQHRqh4aI18dKrKIsqxUwptJ4tLLm7aSp+4I6voNri1ZEe1fsdjtzFHpur0i8eR6TX8cTgj2CpIRi3ZY/vpH8EQy7tSADE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/dmTDbz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694B6C116D0;
+	Wed, 25 Feb 2026 01:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983941;
-	bh=q/wdyiqZX6DbOZ1+mb2YAgSrPmGPNx3lvczpWTXiItI=;
+	s=korg; t=1771983285;
+	bh=mxfB2HfyCdloaKzN6BXjsA7y8AWlzRUMX8Ii20US1oY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Tn7U9lYTvAIX8EZnKyLj5zSZrL0CQDBW/DsVsLvFLH3uNBdBwmBBBKPJHphsJiUD
-	 hx2O5RB9eeFEMydpRJPxaVBqdDqCaUyd1rm+HpDv2YlGWO5tkceFcgapyyqG6MhWDv
-	 2NEkSHySqEORMQGPyFvAQ/a03ZdP+IgwRmU5yUoM=
+	b=Q/dmTDbzqDUbPZBk45FiGBtCau0hfB9npxScTaiZWzsiaacd36yIfU5kIJGxkvjHJ
+	 q2EkMz2Zsvnv18os/slwfQmRc7O0Lfq2Fp7gFReNKhPk7Gk150iwdeMGhDaRLPrx4F
+	 T46qDGLqpQ315956e7PmcD1BfPxXiut/f7NzPwU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Tao Tian <tiantao6@hisilicon.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 205/641] drm/hisilicon/hibmc: fix dp probabilistical detect errors after HPD irq
+Subject: [PATCH 6.19 422/781] rust: driver-core: use "kernel vertical" style for imports
 Date: Tue, 24 Feb 2026 17:18:51 -0800
-Message-ID: <20260225012353.930184915@linuxfoundation.org>
+Message-ID: <20260225012410.052655058@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,246 +68,147 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219027-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218461-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hisilicon.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,huawei.com:email,qualcomm.com:email]
-X-Rspamd-Queue-Id: D6D4F190A85
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 391B818FBA1
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 3906e7a3b26d683868704fe262db443207f392fe ]
+[ Upstream commit 52563c665b0b0b39f319bee40ecc5e8f25b9050a ]
 
-The issue is that drm_connector_helper_detect_from_ddc() returns wrong
-status when plugging or unplugging the monitor, which may cause the link
-failed err.[0] Use HPD pin status in DP's detect_ctx() for real physical
-monitor in/out, and implement a complete DP detection including read DPCD,
-check if it's a branch device and its sink count for different situations.
+Convert all imports to use "kernel vertical" style.
 
-[0]:
-	hibme-drm 0000:83:00.0: [drm] *ERROR* channel equalization failed 5 times
-	hibme-drm 0000:83:00.0: [drm] *ERROR* channel equalization failed 5 times
-	hibme-drm 0000:83:00.0: [drm] *ERROR* dp link training failed, ret: -16
-	hibmc-drm 0000:83:00.0: [drm] *ERROR* hibme dp mode set failed: -16
+With this, subsequent patches neither introduce unrelated changes nor
+leave an inconsistent import pattern.
 
-Fixes: 3c7623fb5bb6 ("drm/hisilicon/hibmc: Enable this hot plug detect of irq feature")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Tao Tian <tiantao6@hisilicon.com>
-Link: https://patch.msgid.link/20251210023759.3944834-2-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+While at it, drop unnecessary imports covered by prelude::*.
+
+Link: https://docs.kernel.org/rust/coding-guidelines.html#imports
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260105142123.95030-3-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Stable-dep-of: ba268514ea14 ("rust: devres: fix race condition due to nesting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_comm.h  |  4 ++
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c    | 19 +++++++
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h    |  6 +++
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_reg.h   |  3 ++
- .../gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c    | 52 +++++++++++++++++--
- 5 files changed, 80 insertions(+), 4 deletions(-)
+ rust/kernel/device.rs | 14 +++++++++++---
+ rust/kernel/devres.rs | 25 +++++++++++++++++++------
+ rust/kernel/driver.rs | 12 ++++++++----
+ 3 files changed, 38 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_comm.h b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_comm.h
-index 4add05c7f161a..f9ee7ebfec55c 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_comm.h
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_comm.h
-@@ -40,6 +40,10 @@ struct hibmc_dp_dev {
- 	struct mutex lock; /* protects concurrent RW in hibmc_dp_reg_write_field() */
- 	struct hibmc_dp_link link;
- 	u8 dpcd[DP_RECEIVER_CAP_SIZE];
-+	u8 downstream_ports[DP_MAX_DOWNSTREAM_PORTS];
-+	struct drm_dp_desc desc;
-+	bool is_branch;
-+	int hpd_status;
- 	void __iomem *serdes_base;
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index 031720bf5d8ca..7b950b01f16d4 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -5,12 +5,20 @@
+ //! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
+ 
+ use crate::{
+-    bindings, fmt,
++    bindings,
++    fmt,
+     prelude::*,
+     sync::aref::ARef,
+-    types::{ForeignOwnable, Opaque},
++    types::{
++        ForeignOwnable,
++        Opaque, //
++    }, //
++};
++use core::{
++    any::TypeId,
++    marker::PhantomData,
++    ptr, //
+ };
+-use core::{any::TypeId, marker::PhantomData, ptr};
+ 
+ #[cfg(CONFIG_PRINTK)]
+ use crate::c_str;
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 835d9c11948e7..db02f8b1788d4 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -8,13 +8,26 @@
+ use crate::{
+     alloc::Flags,
+     bindings,
+-    device::{Bound, Device},
+-    error::{to_result, Error, Result},
+-    ffi::c_void,
++    device::{
++        Bound,
++        Device, //
++    },
++    error::to_result,
+     prelude::*,
+-    revocable::{Revocable, RevocableGuard},
+-    sync::{aref::ARef, rcu, Completion},
+-    types::{ForeignOwnable, Opaque, ScopeGuard},
++    revocable::{
++        Revocable,
++        RevocableGuard, //
++    },
++    sync::{
++        aref::ARef,
++        rcu,
++        Completion, //
++    },
++    types::{
++        ForeignOwnable,
++        Opaque,
++        ScopeGuard, //
++    },
  };
  
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-index 8f0daec7d1749..0ec6ace2d0822 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-@@ -2,6 +2,7 @@
- // Copyright (c) 2024 Hisilicon Limited.
+ use pin_init::Wrapper;
+diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+index bee3ae21a27b2..36de8098754d0 100644
+--- a/rust/kernel/driver.rs
++++ b/rust/kernel/driver.rs
+@@ -94,10 +94,14 @@
+ //! [`device_id`]: kernel::device_id
+ //! [`module_driver`]: kernel::module_driver
  
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/delay.h>
- #include "dp_config.h"
- #include "dp_comm.h"
-@@ -305,3 +306,21 @@ void hibmc_dp_set_cbar(struct hibmc_dp *dp, const struct hibmc_dp_cbar_cfg *cfg)
- 	hibmc_dp_reg_write_field(dp_dev, HIBMC_DP_COLOR_BAR_CTRL, BIT(0), cfg->enable);
- 	writel(HIBMC_DP_SYNC_EN_MASK, dp_dev->base + HIBMC_DP_TIMING_SYNC_CTRL);
- }
-+
-+bool hibmc_dp_check_hpd_status(struct hibmc_dp *dp, int exp_status)
-+{
-+	u32 status;
-+	int ret;
-+
-+	ret = readl_poll_timeout(dp->dp_dev->base + HIBMC_DP_HPD_STATUS, status,
-+				 FIELD_GET(HIBMC_DP_HPD_CUR_STATE, status) == exp_status,
-+				 1000, 100000); /* DP spec says 100ms */
-+	if (ret) {
-+		drm_dbg_dp(dp->drm_dev, "wait hpd status timeout");
-+		return false;
-+	}
-+
-+	dp->dp_dev->hpd_status = exp_status;
-+
-+	return true;
-+}
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h
-index 665f5b166dfb5..59c1eae153c55 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h
-@@ -14,6 +14,11 @@
- 
- struct hibmc_dp_dev;
- 
-+enum hibmc_hpd_status {
-+	HIBMC_HPD_OUT,
-+	HIBMC_HPD_IN,
+-use crate::error::{Error, Result};
+-use crate::{acpi, device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
+-use core::pin::Pin;
+-use pin_init::{pin_data, pinned_drop, PinInit};
++use crate::{
++    acpi,
++    device,
++    of,
++    prelude::*,
++    types::Opaque,
++    ThisModule, //
 +};
-+
- enum hibmc_dp_cbar_pattern {
- 	CBAR_COLOR_BAR,
- 	CBAR_WHITE,
-@@ -60,5 +65,6 @@ void hibmc_dp_reset_link(struct hibmc_dp *dp);
- void hibmc_dp_hpd_cfg(struct hibmc_dp *dp);
- void hibmc_dp_enable_int(struct hibmc_dp *dp);
- void hibmc_dp_disable_int(struct hibmc_dp *dp);
-+bool hibmc_dp_check_hpd_status(struct hibmc_dp *dp, int exp_status);
  
- #endif
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_reg.h b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_reg.h
-index 394b1e933c3ae..64306abcd9866 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_reg.h
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_reg.h
-@@ -24,6 +24,9 @@
- #define HIBMC_DP_CFG_AUX_READY_DATA_BYTE	GENMASK(16, 12)
- #define HIBMC_DP_CFG_AUX			GENMASK(24, 17)
- 
-+#define HIBMC_DP_HPD_STATUS			0x98
-+#define HIBMC_DP_HPD_CUR_STATE		GENMASK(7, 4)
-+
- #define HIBMC_DP_PHYIF_CTRL0			0xa0
- #define HIBMC_DP_CFG_SCRAMBLE_EN		BIT(0)
- #define HIBMC_DP_CFG_PAT_SEL			GENMASK(7, 4)
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c
-index d06832e62e966..4a66a107900a1 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c
-@@ -12,6 +12,7 @@
- 
- #include "hibmc_drm_drv.h"
- #include "dp/dp_hw.h"
-+#include "dp/dp_comm.h"
- 
- #define DP_MASKED_SINK_HPD_PLUG_INT	BIT(2)
- 
-@@ -31,12 +32,53 @@ static int hibmc_dp_connector_get_modes(struct drm_connector *connector)
- 	return count;
- }
- 
-+static bool hibmc_dp_get_dpcd(struct hibmc_dp_dev *dp_dev)
-+{
-+	int ret;
-+
-+	ret = drm_dp_read_dpcd_caps(dp_dev->aux, dp_dev->dpcd);
-+	if (ret)
-+		return false;
-+
-+	dp_dev->is_branch = drm_dp_is_branch(dp_dev->dpcd);
-+
-+	ret = drm_dp_read_desc(dp_dev->aux, &dp_dev->desc, dp_dev->is_branch);
-+	if (ret)
-+		return false;
-+
-+	ret = drm_dp_read_downstream_info(dp_dev->aux, dp_dev->dpcd, dp_dev->downstream_ports);
-+	if (ret)
-+		return false;
-+
-+	return true;
-+}
-+
- static int hibmc_dp_detect(struct drm_connector *connector,
- 			   struct drm_modeset_acquire_ctx *ctx, bool force)
- {
--	mdelay(200);
-+	struct hibmc_dp *dp = to_hibmc_dp(connector);
-+	struct hibmc_dp_dev *dp_dev = dp->dp_dev;
-+	int ret;
-+
-+	if (dp->irq_status) {
-+		if (dp_dev->hpd_status != HIBMC_HPD_IN)
-+			return connector_status_disconnected;
-+	}
-+
-+	if (!hibmc_dp_get_dpcd(dp_dev))
-+		return connector_status_disconnected;
-+
-+	if (!dp_dev->is_branch)
-+		return connector_status_connected;
-+
-+	if (drm_dp_read_sink_count_cap(connector, dp_dev->dpcd, &dp_dev->desc) &&
-+	    dp_dev->downstream_ports[0] & DP_DS_PORT_HPD) {
-+		ret = drm_dp_read_sink_count(dp_dev->aux);
-+		if (ret > 0)
-+			return connector_status_connected;
-+	}
- 
--	return drm_connector_helper_detect_from_ddc(connector, ctx, force);
-+	return connector_status_disconnected;
- }
- 
- static const struct drm_connector_helper_funcs hibmc_dp_conn_helper_funcs = {
-@@ -115,7 +157,7 @@ irqreturn_t hibmc_dp_hpd_isr(int irq, void *arg)
- {
- 	struct drm_device *dev = (struct drm_device *)arg;
- 	struct hibmc_drm_private *priv = to_hibmc_drm_private(dev);
--	int idx;
-+	int idx, exp_status;
- 
- 	if (!drm_dev_enter(dev, &idx))
- 		return -ENODEV;
-@@ -123,12 +165,14 @@ irqreturn_t hibmc_dp_hpd_isr(int irq, void *arg)
- 	if (priv->dp.irq_status & DP_MASKED_SINK_HPD_PLUG_INT) {
- 		drm_dbg_dp(&priv->dev, "HPD IN isr occur!\n");
- 		hibmc_dp_hpd_cfg(&priv->dp);
-+		exp_status = HIBMC_HPD_IN;
- 	} else {
- 		drm_dbg_dp(&priv->dev, "HPD OUT isr occur!\n");
- 		hibmc_dp_reset_link(&priv->dp);
-+		exp_status = HIBMC_HPD_OUT;
- 	}
- 
--	if (dev->registered)
-+	if (hibmc_dp_check_hpd_status(&priv->dp, exp_status))
- 		drm_connector_helper_hpd_irq_event(&priv->dp.connector);
- 
- 	drm_dev_exit(idx);
+ /// Trait describing the layout of a specific device driver.
+ ///
 -- 
 2.51.0
 
