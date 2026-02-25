@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-219323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Gp6NCminmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219323-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:18:01 +0100
+	id SM2tLY5YnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAE71932DC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:18:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA0D190760
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7D2A3181DEF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 881E831CFEA4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C192D77F5;
-	Wed, 25 Feb 2026 06:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE642641FC;
+	Wed, 25 Feb 2026 01:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INnkvAlh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKUDda5g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7DE2FFFBE;
-	Wed, 25 Feb 2026 06:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23131D5141;
+	Wed, 25 Feb 2026 01:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002640; cv=none; b=QcYxC12fwy9l1rADuoUOb4w1oBeSwMbmT3MmVS0QF2OvWNyMwfmmA6z83VvxWWdVSo+E6TPbB6Tgtd9db1bJmoMPuRgaDnjwXiCaR5Pgb7awFDqhGDVnvvfHgNpNYFMaGhd9QF6srJSgG2161nYP4t920+Vf3kDEKBmon90R43c=
+	t=1771983559; cv=none; b=rx+x4/FKKjoedre3ySbRtC5bT2GeG6oUMAa6qFSXq/WfU1fNfXTgD/69qMbslcd+zz5koEsWn5oqkQ43vXqOMvhZU6HaZPF8OezC+gt58QSoGlgHdkdFQa/jhqC+rpar6h7sdZPAlsxb7f6VVRTugRzOW4XWA3DkZuqHylQ9vdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002640; c=relaxed/simple;
-	bh=F64gDmhycfLxl2rGA76ZyIc+GIU0OIpE2Q6YE+yHW2s=;
+	s=arc-20240116; t=1771983559; c=relaxed/simple;
+	bh=eBZFCHV9IjMYVtwCsf8s35rdhq/hQf6iIjkS/okB6LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=naQ4Epbs1FFi+AptsBo5ppDYcHN2euwGNvJx46x5+7rNkPFKZXcpkd4brMri9T1GFJEC9/ajUP5O1qhHQlgMDBawaSSDpbfvIGTeUCEAosTdwbuMm/WP8FXCPJKzwCNJsiZVG8q0ZJzvy2hbkrJ4vi4kpl38qjpLkxArWHj5brQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INnkvAlh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F259DC116D0;
-	Wed, 25 Feb 2026 06:57:19 +0000 (UTC)
+	 MIME-Version; b=ViE/AQJl21Ayn2yYz+bOJ9ayQTG/H8kh9o+MdXWQ41qa30rWO78UZd4XYdJq4r5x1wICLxGVp0iWW/SGyW734yUqznLcw4uvk4LnMML03uEeFYTbFCKc+WumAL3Ud62eEIaBkiAavL0f/M6mUcI8VzhP8omSlVe2HuHBNST0+7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKUDda5g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A616DC2BC86;
+	Wed, 25 Feb 2026 01:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002640;
-	bh=F64gDmhycfLxl2rGA76ZyIc+GIU0OIpE2Q6YE+yHW2s=;
+	s=korg; t=1771983558;
+	bh=eBZFCHV9IjMYVtwCsf8s35rdhq/hQf6iIjkS/okB6LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INnkvAlhM4FUSF1k24gS4RVYRRORqN1Xe1+ZR/kq7/UTllUiec16kMTfmpGJ2MrSA
-	 +5UyiArLD1mUGm0mnbrDllMJ5TgWA7CCogF6SyGEWnGBSw32BWck9p23XWCa5M2ZQI
-	 QoXtaxPxGXBpnlsg3mXiAhiyqgAqIow+TpVjNBIo=
+	b=cKUDda5gKa1CzZLKt82UiAaKXJIGO0nbG6J7bpb587besQ9TpB4UWNFrAQ/a07Soy
+	 nUB5NQR/sU3b2ASz5AYnnOf0f7r0orR9A5hK3snwHY3ESXcbpCsRTMxlhVw/c0KtV7
+	 OREj+ebvSML3WIGFAUd0aVMSyGnE51R4SooJi46c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Furquim Ulisses <ulisses.furquim@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 406/641] clk: qcom: rcg2: compute 2d using duty fraction directly
+Subject: [PATCH 6.19 623/781] powercap: intel_rapl: Remove incorrect CPU check in PMU context
 Date: Tue, 24 Feb 2026 17:22:12 -0800
-Message-ID: <20260225012358.402530673@linuxfoundation.org>
+Message-ID: <20260225012415.093984728@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +65,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219323-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,sea.lore.kernel.org:server fail,qualcomm.com:server fail];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218699-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2DAE71932DC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 3CA0D190760
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <taniya.das@oss.qualcomm.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-[ Upstream commit d6205a1878dd4cc9664c4b4829b68a29c0426efc ]
+[ Upstream commit 7537bae8b6eb635583e0e6260f61d13ddbd52087 ]
 
-The duty-cycle calculation in clk_rcg2_set_duty_cycle() currently
-derives an intermediate percentage `duty_per = (num * 100) / den` and
-then computes:
+The RAPL MSR read path incorrectly validates CPU context when called
+from the PMU subsystem:
 
-    d = DIV_ROUND_CLOSEST(n * duty_per * 2, 100);
+    if (atomic) {
+        if (unlikely(smp_processor_id() != cpu))
+            return -EIO;
+        rdmsrq(ra->reg.msr, ra->value);
+    }
 
-This introduces integer truncation at the percentage step (division by
-`den`) and a redundant scaling by 100, which can reduce precision for
-large `den` and skew the final rounding.
+This check fails for package-scoped MSRs like RAPL energy counters,
+which are readable from any CPU within the package.
 
-Compute `2d` directly from the duty fraction to preserve precision and
-avoid the unnecessary scaling:
+The perf tool avoids hitting this check by validating against
+/sys/bus/event_source/devices/power/cpumask before opening events.
+However, turbostat does not perform this validation and may attempt
+reads from non-lead CPUs, causing the check to fail and return zero
+power values.
 
-    d = DIV_ROUND_CLOSEST(n * duty->num * 2, duty->den);
+Since package-scoped MSRs are architecturally accessible from any CPU
+in the package, remove the CPU matching check.
 
-This keeps the intended formula `d ≈ n * 2 * (num/den)` while performing
-a single, final rounded division, improving accuracy especially for small
-duty cycles or large denominators. It also removes the unused `duty_per`
-variable, simplifying the code.
+Also rename 'atomic' to 'pmu_ctx' to clarify this indicates PMU context
+where rdmsrq() can be used directly instead of rdmsrl_safe_on_cpu().
 
-There is no functional changes beyond improved numerical accuracy.
-
-Fixes: 7f891faf596ed ("clk: qcom: clk-rcg2: Add support for duty-cycle for RCG")
-Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260105-duty_cycle_precision-v2-1-d1d466a6330a@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 748d6ba43afd ("powercap: intel_rapl: Enable MSR-based RAPL PMU support")
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Tested-by: Furquim Ulisses <ulisses.furquim@intel.com>
+Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20260209234310.1440722-2-sathyanarayanan.kuppuswamy@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-rcg2.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/powercap/intel_rapl_common.c |  6 +++---
+ drivers/powercap/intel_rapl_msr.c    | 12 +++++-------
+ include/linux/intel_rapl.h           |  2 +-
+ 3 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
-index e18cb8807d735..2838d4cb2d58e 100644
---- a/drivers/clk/qcom/clk-rcg2.c
-+++ b/drivers/clk/qcom/clk-rcg2.c
-@@ -755,7 +755,7 @@ static int clk_rcg2_get_duty_cycle(struct clk_hw *hw, struct clk_duty *duty)
- static int clk_rcg2_set_duty_cycle(struct clk_hw *hw, struct clk_duty *duty)
+diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
+index 3ff6da3bf4e63..3705d0608a0fb 100644
+--- a/drivers/powercap/intel_rapl_common.c
++++ b/drivers/powercap/intel_rapl_common.c
+@@ -254,7 +254,7 @@ static void rapl_init_domains(struct rapl_package *rp);
+ static int rapl_read_data_raw(struct rapl_domain *rd,
+ 			      enum rapl_primitives prim,
+ 			      bool xlate, u64 *data,
+-			      bool atomic);
++			      bool pmu_ctx);
+ static int rapl_write_data_raw(struct rapl_domain *rd,
+ 			       enum rapl_primitives prim,
+ 			       unsigned long long value);
+@@ -832,7 +832,7 @@ prim_fixups(struct rapl_domain *rd, enum rapl_primitives prim)
+  */
+ static int rapl_read_data_raw(struct rapl_domain *rd,
+ 			      enum rapl_primitives prim, bool xlate, u64 *data,
+-			      bool atomic)
++			      bool pmu_ctx)
  {
- 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
--	u32 notn_m, n, m, d, not2d, mask, duty_per, cfg;
-+	u32 notn_m, n, m, d, not2d, mask, cfg;
- 	int ret;
+ 	u64 value;
+ 	enum rapl_primitives prim_fixed = prim_fixups(rd, prim);
+@@ -854,7 +854,7 @@ static int rapl_read_data_raw(struct rapl_domain *rd,
  
- 	/* Duty-cycle cannot be modified for non-MND RCGs */
-@@ -774,10 +774,8 @@ static int clk_rcg2_set_duty_cycle(struct clk_hw *hw, struct clk_duty *duty)
+ 	ra.mask = rpi->mask;
  
- 	n = (~(notn_m) + m) & mask;
+-	if (rd->rp->priv->read_raw(get_rid(rd->rp), &ra, atomic)) {
++	if (rd->rp->priv->read_raw(get_rid(rd->rp), &ra, pmu_ctx)) {
+ 		pr_debug("failed to read reg 0x%llx for %s:%s\n", ra.reg.val, rd->rp->name, rd->name);
+ 		return -EIO;
+ 	}
+diff --git a/drivers/powercap/intel_rapl_msr.c b/drivers/powercap/intel_rapl_msr.c
+index 9a7e150b3536b..152893dca5653 100644
+--- a/drivers/powercap/intel_rapl_msr.c
++++ b/drivers/powercap/intel_rapl_msr.c
+@@ -110,16 +110,14 @@ static int rapl_cpu_down_prep(unsigned int cpu)
+ 	return 0;
+ }
  
--	duty_per = (duty->num * 100) / duty->den;
--
- 	/* Calculate 2d value */
--	d = DIV_ROUND_CLOSEST(n * duty_per * 2, 100);
-+	d = DIV_ROUND_CLOSEST(n * duty->num * 2, duty->den);
- 
+-static int rapl_msr_read_raw(int cpu, struct reg_action *ra, bool atomic)
++static int rapl_msr_read_raw(int cpu, struct reg_action *ra, bool pmu_ctx)
+ {
  	/*
- 	 * Check bit widths of 2d. If D is too big reduce duty cycle.
+-	 * When called from atomic-context (eg PMU event handler)
+-	 * perform MSR read directly using rdmsrq().
++	 * When called from PMU context, perform MSR read directly using
++	 * rdmsrq() without IPI overhead. Package-scoped MSRs are readable
++	 * from any CPU in the package.
+ 	 */
+-	if (atomic) {
+-		if (unlikely(smp_processor_id() != cpu))
+-			return -EIO;
+-
++	if (pmu_ctx) {
+ 		rdmsrq(ra->reg.msr, ra->value);
+ 		goto out;
+ 	}
+diff --git a/include/linux/intel_rapl.h b/include/linux/intel_rapl.h
+index f479ef5b3341c..fa1f328d67120 100644
+--- a/include/linux/intel_rapl.h
++++ b/include/linux/intel_rapl.h
+@@ -152,7 +152,7 @@ struct rapl_if_priv {
+ 	union rapl_reg reg_unit;
+ 	union rapl_reg regs[RAPL_DOMAIN_MAX][RAPL_DOMAIN_REG_MAX];
+ 	int limits[RAPL_DOMAIN_MAX];
+-	int (*read_raw)(int id, struct reg_action *ra, bool atomic);
++	int (*read_raw)(int id, struct reg_action *ra, bool pmu_ctx);
+ 	int (*write_raw)(int id, struct reg_action *ra);
+ 	void *defaults;
+ 	void *rpi;
 -- 
 2.51.0
 
