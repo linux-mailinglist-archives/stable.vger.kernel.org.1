@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-218311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KKFIL5NSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:27 +0100
+	id aA9dJjdTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7505618F418
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CFF18F72C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25EA530B00E5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F7FE3124BA6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C449F2550D7;
-	Wed, 25 Feb 2026 01:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20D525228D;
+	Wed, 25 Feb 2026 01:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BycyypXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHlWNW0l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BE0243376;
-	Wed, 25 Feb 2026 01:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F71243376;
+	Wed, 25 Feb 2026 01:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983113; cv=none; b=kHF2pW/nbtqJA10yQuOhzyi32krQQUSqyEoq5hDc0WxQ5+1lacCeOyZmCurX8bQzgxmRsmBr7eQqJFINJJ1CcL6QX2YXKP3zMIskRYQaYqYVqvHM78CK87aYSJrU2KjD3IjDYn6Eyib5/OrPUcEmEJrPaUafYAQ8vZC9vNpCFWc=
+	t=1771983114; cv=none; b=HLfQ3qj8GVdqLR+FWSsRbAIyu1zGg2El6ZKcWu37E0WTdN1MGrq8YpwoCU1QcmPgJHN2vhOWTvI7gxyC0nwkv4cEu6JQVtQoR5krfIzEevRO+AT7qcymxNHspC0bne8t2R6iCUq6lyV0gjrPl3svuRLlxIpYKBy1WYrG9NgJ1wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983113; c=relaxed/simple;
-	bh=/QJ1ShtkSCjQ9d10CSIWnp1s+FP8NAd0cTDCTFB+erE=;
+	s=arc-20240116; t=1771983114; c=relaxed/simple;
+	bh=om+0vS2UhU1lqMCdzQZQ6ZIWITVV1Bhm/xaNnOk7x4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2ueYsuXNqTGQk8NezRXUGJ4me69KGBRaNhamXgmMUlsjcRp2q3wtTO0p/Hv5w81fYHfkL/R4niiEPxUc1NULZHJCoWP9Q7RiIdxgQ6ZFcja8pZIBwS3+fafXrD95YHCxKK/LWcqZD8GQQTbvMoXt5zcO8J8A3k68DkBoHNzH1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BycyypXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CC8C116D0;
-	Wed, 25 Feb 2026 01:31:53 +0000 (UTC)
+	 MIME-Version; b=fxZ9JfkYFfhik5FW92urVafuO86hilphwzbQ0jMvTIgf6tDm0pM77mLf2E9rP8rzAiDoEwLNBMRYLtUboiR0mr42EPMFraLkT4NDh46BFHhC/LGQJuWljG+FZZQ3qMzrw3CtiPfY7xNpWXwnwUwb+Qg12Il/msxEX48unEW5jq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHlWNW0l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44774C116D0;
+	Wed, 25 Feb 2026 01:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983113;
-	bh=/QJ1ShtkSCjQ9d10CSIWnp1s+FP8NAd0cTDCTFB+erE=;
+	s=korg; t=1771983114;
+	bh=om+0vS2UhU1lqMCdzQZQ6ZIWITVV1Bhm/xaNnOk7x4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BycyypXWaMfLL1c+Ki3rVnZvwlBM4Jfx7aAs0R4B62Af42Ty871rEPZfxxvrAiUQb
-	 PGtlm4qSKAj8jAdojpBlzGhPU3CiWb0qxYzV2niHP4oZTSPZS8MDjiJWZ1fY+/5QCO
-	 KZCtXSlgOZ72nKe6dIPKpck/ph7ZXVBG9eLki/M8=
+	b=vHlWNW0lWSYxn1IvZ0nqKZBdZK8ESJuFbjdSuTNVvonYRrzvmkvxjqK0fXwgRktFQ
+	 TEpsDasT4hmwhT/MZbJWHrQVjgXcZhogPm+e96VmpCNsPZk/4v4FplL/+Q+rfGDfae
+	 eg+kxjqcgsVv699gu3lOJ5BoLbpXPe5iHExj2b7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Tao Tian <tiantao6@hisilicon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 273/781] drm/hisilicon/hibmc: fix no showing problem with loading hibmc manually
-Date: Tue, 24 Feb 2026 17:16:22 -0800
-Message-ID: <20260225012406.392841036@linuxfoundation.org>
+Subject: [PATCH 6.19 274/781] drm/hisilicon/hibmc: Adding reset colorbar cfg in dp init.
+Date: Tue, 24 Feb 2026 17:16:23 -0800
+Message-ID: <20260225012406.418151953@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218311-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218312-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,13 +88,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7505618F418
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 32CFF18F72C
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
@@ -103,51 +103,38 @@ X-Rspamd-Action: no action
 
 From: Baihan Li <libaihan@huawei.com>
 
-[ Upstream commit 0607052a6aee1e3d218a99fae70ba9f14b3b47ed ]
+[ Upstream commit 6dad7fa8581e96321ec8a6a4f8160762466f539a ]
 
-When using command rmmod and insmod, there is no showing in second time
-insmoding. Because DP controller won't send HPD signals, if connection
-doesn't change or controller isn't reset. So add reset before unreset
-in hibmc_dp_hw_init().
-
-And also need to move the HDCP cfg after DP controller de-resets, so
-that HDCP configuration takes effect.
+Add colorbar disable operation before reset chontroller, to make sure
+colorbar status is clear in the DP init, so if rmmod the driver and the
+previous colorbar configuration will not affect the next time insmod the
+driver.
 
 Fixes: 3c7623fb5bb6 ("drm/hisilicon/hibmc: Enable this hot plug detect of irq feature")
 Signed-off-by: Baihan Li <libaihan@huawei.com>
 Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Reviewed-by: Tao Tian <tiantao6@hisilicon.com>
-Link: https://patch.msgid.link/20251210023759.3944834-4-shiyongbang@huawei.com
+Link: https://patch.msgid.link/20251210023759.3944834-5-shiyongbang@huawei.com
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-index 37549dafa06ca..8f8ca940b6b26 100644
+index 8f8ca940b6b26..d5bd3c45649b2 100644
 --- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
 +++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-@@ -177,13 +177,16 @@ int hibmc_dp_hw_init(struct hibmc_dp *dp)
- 	dp_dev->link.cap.lanes = 0x2;
- 	dp_dev->link.cap.link_rate = DP_LINK_BW_8_1;
- 
--	/* hdcp data */
--	writel(HIBMC_DP_HDCP, dp_dev->base + HIBMC_DP_HDCP_CFG);
+@@ -180,6 +180,8 @@ int hibmc_dp_hw_init(struct hibmc_dp *dp)
  	/* int init */
  	writel(0, dp_dev->base + HIBMC_DP_INTR_ENABLE);
  	writel(HIBMC_DP_INT_RST, dp_dev->base + HIBMC_DP_INTR_ORIGINAL_STATUS);
++	/* clr colorbar */
++	writel(0, dp_dev->base + HIBMC_DP_COLOR_BAR_CTRL);
  	/* rst */
-+	writel(0, dp_dev->base + HIBMC_DP_DPTX_RST_CTRL);
-+	usleep_range(30, 50);
-+	/* de-rst */
- 	writel(HIBMC_DP_DPTX_RST, dp_dev->base + HIBMC_DP_DPTX_RST_CTRL);
-+	/* hdcp data */
-+	writel(HIBMC_DP_HDCP, dp_dev->base + HIBMC_DP_HDCP_CFG);
- 	/* clock enable */
- 	writel(HIBMC_DP_CLK_EN, dp_dev->base + HIBMC_DP_DPTX_CLK_CTRL);
- 
+ 	writel(0, dp_dev->base + HIBMC_DP_DPTX_RST_CTRL);
+ 	usleep_range(30, 50);
 -- 
 2.51.0
 
