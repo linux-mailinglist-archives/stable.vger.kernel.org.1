@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAb5KQyinmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:17:32 +0100
+	id oGcVARBTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034A81932BD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:17:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9973918F699
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC61E317018F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DEB89308BAF5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697E92D5926;
-	Wed, 25 Feb 2026 06:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074A5248881;
+	Wed, 25 Feb 2026 01:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pu0rf1xi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5DSEdsS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D00D2D7810;
-	Wed, 25 Feb 2026 06:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA5C26560B;
+	Wed, 25 Feb 2026 01:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002631; cv=none; b=dutY+kueqW+1d/ueWmR3NbWLdDm47kJph96hF3SCt1twvWDQf8SDByBX2g41IXoluakpnY0cos53uqHRd9wm35d1RikP26JFVI/rtcS+jfxwpWVIftohdM0bAC5Oz8AhFSLbBxuVtieyPFiB7uUoIlf9p4WRtHRPxUNghcBe4cY=
+	t=1771983501; cv=none; b=BbKYrlpjUYSvxslErcb18z0OPtlMw08lJ0qPk0TLJTWMGjt3R3H+2EJMD4XSNY4FrWqu7PI4u7JFNPUSxnjlbdiTfthwPOwwO/AKt76gaNOk2K3QeTWdsckU9xo1hgJmZyqOZkHMc/qEAIWpngPs1R8IoOp5JLzHNTDnfCYzclc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002631; c=relaxed/simple;
-	bh=CjUSKwflgaRtygOlzDTP90hX1YCBXuce4idtO5Tzq9o=;
+	s=arc-20240116; t=1771983501; c=relaxed/simple;
+	bh=XHtD13x39PgmmrIne7hgFe3+Wnme8NtsfVM0CsR3p74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ma1ew8ygZmYYS8JfZiD+fL5zNnMxJwKVZLrF6En3dbT0WryBI1c3KrrEhRXWJB35n/RNBmjsvea45VxM8SqieVLzZHaftSUQGM1UsLNxv85kUM+HtfroUIrIdj1Y0TKIrDORJBE0zOJ196kvxKf/Vdipxu18CrMA9rLIJ5oPZU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pu0rf1xi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10A3C116D0;
-	Wed, 25 Feb 2026 06:57:10 +0000 (UTC)
+	 MIME-Version; b=Txlx4vC6tVZiitztgYsFP55g9Dp9gPIh4iuA+GYligwHlLAYnkQqN4Pr8WnNUq5WHSdHUHBAAjrf+Ezqx+4utzpRQ6JUib38eOd1fvcZ9tlOSGSuk5KNMEBdmDQw0RhQuI/5OGSccsVc6KF+OhPbFuz0POe1cwSO2pdCeZ2KM4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5DSEdsS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7578DC116D0;
+	Wed, 25 Feb 2026 01:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002631;
-	bh=CjUSKwflgaRtygOlzDTP90hX1YCBXuce4idtO5Tzq9o=;
+	s=korg; t=1771983501;
+	bh=XHtD13x39PgmmrIne7hgFe3+Wnme8NtsfVM0CsR3p74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pu0rf1xispj8RUygtax+ER06xqtRMbbOp593A6VlLoBGZZIHYCrEbO/BYeIuou268
-	 lyi7fUnSuXYJ3KdvUfzWN/4+49IMjDhMys15rMSSpI5xtpsMtHANrOzf3S+lRL5I5K
-	 RJWkUSi7T07NyLpHAb5zMPJkXj3oZI1+TxKBv9iU=
+	b=Q5DSEdsSgmexPqQ6oG5RqcVezPQdJMlJFNi6rZjZL7xjpbyU80kebyh0gHqXDYX4S
+	 d/JpP1bTAn1XbDTrVNUwQqfEHHAmmVinv7OaCE118GwKeHBAcCI61qrNiU3QTss/16
+	 R/qVVW6/prIO+jCgvKtLx4AhAwOaTvgQ2gQWvSKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jared Kangas <jkangas@redhat.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 393/641] scsi: csiostor: Fix dereference of null pointer rn
+Subject: [PATCH 6.19 610/781] dmaengine: fsl-edma: dont explicitly disable clocks in .remove()
 Date: Tue, 24 Feb 2026 17:21:59 -0800
-Message-ID: <20260225012358.098002986@linuxfoundation.org>
+Message-ID: <20260225012414.757240771@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +66,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219309-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218650-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.963];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 034A81932BD
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 9973918F699
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Jared Kangas <jkangas@redhat.com>
 
-[ Upstream commit 1982257570b84dc33753d536dd969fd357a014e9 ]
+[ Upstream commit 666c53e94c1d0bf0bdf14c49505ece9ddbe725bc ]
 
-The error exit path when rn is NULL ends up deferencing the null pointer rn
-via the use of the macro CSIO_INC_STATS. Fix this by adding a new error
-return path label after the use of the macro to avoid the deference.
+The clocks in fsl_edma_engine::muxclk are allocated and enabled with
+devm_clk_get_enabled(), which automatically cleans these resources up,
+but these clocks are also manually disabled in fsl_edma_remove(). This
+causes warnings on driver removal for each clock:
 
-Fixes: a3667aaed569 ("[SCSI] csiostor: Chelsio FCoE offload driver")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://patch.msgid.link/20260129155332.196338-1-colin.i.king@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+        edma_module already disabled
+        WARNING: CPU: 0 PID: 418 at drivers/clk/clk.c:1200 clk_core_disable+0x198/0x1c8
+        [...]
+        Call trace:
+         clk_core_disable+0x198/0x1c8 (P)
+         clk_disable+0x34/0x58
+         fsl_edma_remove+0x74/0xe8 [fsl_edma]
+         [...]
+        ---[ end trace 0000000000000000 ]---
+        edma_module already unprepared
+        WARNING: CPU: 0 PID: 418 at drivers/clk/clk.c:1059 clk_core_unprepare+0x1f8/0x220
+        [...]
+        Call trace:
+         clk_core_unprepare+0x1f8/0x220 (P)
+         clk_unprepare+0x34/0x58
+         fsl_edma_remove+0x7c/0xe8 [fsl_edma]
+         [...]
+        ---[ end trace 0000000000000000 ]---
+
+Fix these warnings by removing the unnecessary fsl_disable_clocks() call
+in fsl_edma_remove().
+
+Fixes: a9903de3aa16 ("dmaengine: fsl-edma: refactor using devm_clk_get_enabled")
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260113-fsl-edma-clock-removal-v1-1-2025b49e7bcc@redhat.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/csiostor/csio_scsi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/dma/fsl-edma-main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/csiostor/csio_scsi.c b/drivers/scsi/csiostor/csio_scsi.c
-index 34bde6650fae0..356a7c577ec3e 100644
---- a/drivers/scsi/csiostor/csio_scsi.c
-+++ b/drivers/scsi/csiostor/csio_scsi.c
-@@ -2074,7 +2074,7 @@ csio_eh_lun_reset_handler(struct scsi_cmnd *cmnd)
- 	struct csio_scsi_level_data sld;
- 
- 	if (!rn)
--		goto fail;
-+		goto fail_ret;
- 
- 	csio_dbg(hw, "Request to reset LUN:%llu (ssni:0x%x tgtid:%d)\n",
- 		      cmnd->device->lun, rn->flowid, rn->scsi_id);
-@@ -2220,6 +2220,7 @@ csio_eh_lun_reset_handler(struct scsi_cmnd *cmnd)
- 	csio_put_scsi_ioreq_lock(hw, scsim, ioreq);
- fail:
- 	CSIO_INC_STATS(rn, n_lun_rst_fail);
-+fail_ret:
- 	return FAILED;
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index a753b7cbfa7a3..dbcdd1e683190 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -915,7 +915,6 @@ static void fsl_edma_remove(struct platform_device *pdev)
+ 	of_dma_controller_free(np);
+ 	dma_async_device_unregister(&fsl_edma->dma_dev);
+ 	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+-	fsl_disable_clocks(fsl_edma, fsl_edma->drvdata->dmamuxs);
  }
  
+ static int fsl_edma_suspend_late(struct device *dev)
 -- 
 2.51.0
 
