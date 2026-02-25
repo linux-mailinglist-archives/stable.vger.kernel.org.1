@@ -1,189 +1,158 @@
-Return-Path: <stable+bounces-219622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEkrIdz9nmlAYgQAu9opvQ
-	(envelope-from <stable+bounces-219622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:49:16 +0100
+	id cKj1I3z+nmlAYgQAu9opvQ
+	(envelope-from <stable+bounces-219623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:51:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249E31985C7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:49:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08843198624
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:51:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79C7B314B6C1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 13:44:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D0173022553
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 13:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F45B3B95EE;
-	Wed, 25 Feb 2026 13:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA41F3D3001;
+	Wed, 25 Feb 2026 13:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UrHVDWFm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aID5Th/L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C9F3B8BA3
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 13:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C253AEF34
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 13:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772027091; cv=none; b=CGGsUUsHgEqdvoDt2l8PsUNzqqHBoxl/NLN0+5MuwQ5kQ3RZ6DijlZtyOP6XUSqSV6RAnZ43ftVv9Yzy5sbpULXfKp8T6P0BSdw/7wS3imkYo5s7Ip8IradisUXPBIhsyot8Yb7R4Iwq7NLpD5luaV0g5sRg0bHTP36gilJeYLs=
+	t=1772027219; cv=none; b=IeSIE0Ve81mpJBNlrRgQhwSYm5AlZmVb7o+OUdv43suKr4pp/c2DzfcgZXuQGN0YJYXpQkPe2s1efcP0gg9T1HnXNkD0a20NKfr6V1JdJV+WyixA21ljV2cRWHgYOW1tp5BPTObBNQv/32bsBD8TqGMO98ODAkzEpYxTPFr5xno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772027091; c=relaxed/simple;
-	bh=6v6wuvvkaOMZPxFsbsFhYzmCxDxNP46HRitUFytWHIY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M9lsKHEa8MOL4BlUYlB7GZZozSAzDwmMdFPsrP0tDYtivXG30DaNfwfJBFuXIjC7RVzXaf/xJZNl7beeUx+v/dRWo8BwnbDwjTG016owLyQx5anMfc7ikBCuvvFsjD3hBSiDQlYGn+jNev7sWXLWVZtxW5hSbdzYDR/rWCjfKYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UrHVDWFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD533C4AF0B
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 13:44:50 +0000 (UTC)
+	s=arc-20240116; t=1772027219; c=relaxed/simple;
+	bh=Qj5apVDtw0K3bVWdedzOk8xY5qcNUSkKm8wAKY4Fezc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XQ/NTfznUAalIhrguuLFKOXNi76GbGcgDfeW8OlRlFk7+WntFDSo7Lahy2w+pDLoBvyJefh/1K2/36sm+2YgEYhf0iRvjeRBH0ITT36GGkS2Q/WZNWpKc55zdiJ1u5eqvXNNWF8ZZ7YTvCtQi7ME6OrbnSpt6ctHFh499dj2kNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aID5Th/L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76A5C116D0;
+	Wed, 25 Feb 2026 13:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772027090;
-	bh=6v6wuvvkaOMZPxFsbsFhYzmCxDxNP46HRitUFytWHIY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UrHVDWFmnEGA1FYKTqw4QN3SrEBdnzI+38Hc5aMYvSaGQQfLu4bkNHe5ozCMbRxXq
-	 2VbPHy/t8mO1YyBS6uoj9uC3XFjtfoeGWYdUeydnnOqeJofx1IYfKqVEE6zpDua/9g
-	 USqfnTXkly+gd156Gd8G9mWRAHXqlMvM8wFHCcwGLngViTnVw5Ao7urPO5cfaUcWbg
-	 efkXe7i3GmqGAOgR6jqdy4VMtwU7TtTUF/GV4MxtrCRYrKWNh8+Co8G4yi4qz0I306
-	 usgW+PNro2lCh8x7eHSw9b7NkgH1FR/0581Pf89D/HqDkiP+HBEo7YVxp+zsl8gSp3
-	 2i2k+axRFSRhQ==
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-66ee7b9af94so2780216eaf.0
-        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 05:44:50 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUEvVkIqkdhK+NLI/A0hq3j6ttUqRcYUeqaSXbm+4BngK9VTe+vWoEw9B3le+7BBP3RQpEZfP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyoJ8OxeYURw6XgeK1mgDRZ6pPAXdhvdpXlln61yTwaz4InEXk
-	TIU3wYzU+YvwSOrnCOyMbMiUDGbmokkihxUxhLM9F1n/p/t6cqXoAyUlBwvj5ip2XNG4yC2Kj5E
-	oW7ItBZ9jfUH9wHQOMFrM7nYURt+eUfo=
-X-Received: by 2002:a05:6820:6af0:b0:679:e524:84cc with SMTP id
- 006d021491bc7-679e524854bmr1860758eaf.8.1772027089710; Wed, 25 Feb 2026
- 05:44:49 -0800 (PST)
+	s=k20201202; t=1772027219;
+	bh=Qj5apVDtw0K3bVWdedzOk8xY5qcNUSkKm8wAKY4Fezc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aID5Th/LAsrRB4G58AnkV8FEc11Cvvb5OLuNK5m0RmC3cKvgVH3Yz6/C8wrmjtSsu
+	 rfN8LD8moCOKiiT/iCjZVlZMhEZdWg01PuwZ8b/QIz08yXNpsv5qrjomsfMO6iEThq
+	 W3tHyqlxSK2NpE7GpN805ABDXTXkfIHMjp1Q0mvF26Hfchn8i0lTYIfh7nU/uCYW2P
+	 FxOrkuT4OJpdPlHKPTTIT7cwQwDpX+WLrbb3EZplxJhHO14TTi0oQm2kZY6cUwUNbC
+	 giKHHZeMqAkVdUUeJDFLPLwX2+4j72zNlcUWlimpH1UohQNTPLbGfc/gT/s6i+ltcW
+	 EBidPF/2gwTyw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Zhang Yi <yi.zhang@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	stable@kernel.org,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] ext4: drop extent cache when splitting extent fails
+Date: Wed, 25 Feb 2026 08:46:56 -0500
+Message-ID: <20260225134656.309822-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026022429-decline-tucking-14ad@gregkh>
+References: <2026022429-decline-tucking-14ad@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260225001752.890164-1-srinivas.pandruvada@linux.intel.com>
-In-Reply-To: <20260225001752.890164-1-srinivas.pandruvada@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 25 Feb 2026 14:44:38 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0j11H-V4KOf4dMT_YnBa4CAVwka2EMqZh95dJ+E+pT=Bw@mail.gmail.com>
-X-Gm-Features: AaiRm51--WW4ttqoEdgd-a_LCEFZ_xrXlR684bnDdW7wNh6sHV1QOznvloR-Pmw
-Message-ID: <CAJZ5v0j11H-V4KOf4dMT_YnBa4CAVwka2EMqZh95dJ+E+pT=Bw@mail.gmail.com>
-Subject: Re: [PATCH] cpufreq: intel_pstate: Fix crash during turbo disable
-To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: rafael@kernel.org, viresh.kumar@linaro.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219622-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219623-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,intel.com:email]
-X-Rspamd-Queue-Id: 249E31985C7
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,huaweicloud.com:email]
+X-Rspamd-Queue-Id: 08843198624
 X-Rspamd-Action: no action
 
-On Wed, Feb 25, 2026 at 1:17=E2=80=AFAM Srinivas Pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
->
-> When the system is booted with kernel command line argument "nosmt" or
-> "maxcpus" to limit the number of CPUs, disabling turbo via:
-> echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
-> results in a crash:
-> PF: supervisor read access in kernel mode
-> PF: error_code(0x0000) - not-present page
-> PGD 0 P4D 0
-> Oops: Oops: 0000 [#1] SMP PTI
-> ...
-> RIP: 0010:store_no_turbo+0x100/0x1f0
->  ...
->
-> This occurs because for_each_possible_cpu() returns CPUs even if they are
-> not online. For those CPUs, all_cpu_data[] will be NULL. Since
-> commit 973207ae3d7c ("cpufreq: intel_pstate: Rearrange max frequency
-> updates handling code"), all_cpu_data[] is dereferenced even for CPUs
-> which are not online, causing the NULL pointer dereference.
->
-> To fix that pass CPU number to intel_pstate_update_max_freq() and use
-> all_cpu_data[] for those CPUs for which there is a valid cpufreq policy.
->
-> Fixes: 973207ae3d7c ("cpufreq: intel_pstate: Rearrange max frequency upda=
-tes handling code")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D221068
-> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # 6.16+
-> ---
->  drivers/cpufreq/intel_pstate.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstat=
-e.c
-> index a48af3540c74..3ecfa921f9b9 100644
-> --- a/drivers/cpufreq/intel_pstate.c
-> +++ b/drivers/cpufreq/intel_pstate.c
-> @@ -1476,13 +1476,13 @@ static void __intel_pstate_update_max_freq(struct=
- cpufreq_policy *policy,
->         refresh_frequency_limits(policy);
->  }
->
-> -static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
-> +static bool intel_pstate_update_max_freq(int cpu)
->  {
-> -       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpudata->cpu);
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpu);
->         if (!policy)
->                 return false;
->
-> -       __intel_pstate_update_max_freq(policy, cpudata);
-> +       __intel_pstate_update_max_freq(policy, all_cpu_data[cpu]);
->
->         return true;
->  }
-> @@ -1501,7 +1501,7 @@ static void intel_pstate_update_limits_for_all(void=
-)
->         int cpu;
->
->         for_each_possible_cpu(cpu)
-> -               intel_pstate_update_max_freq(all_cpu_data[cpu]);
-> +               intel_pstate_update_max_freq(cpu);
->
->         mutex_lock(&hybrid_capacity_lock);
->
-> @@ -1908,7 +1908,7 @@ static void intel_pstate_notify_work(struct work_st=
-ruct *work)
->         struct cpudata *cpudata =3D
->                 container_of(to_delayed_work(work), struct cpudata, hwp_n=
-otify_work);
->
-> -       if (intel_pstate_update_max_freq(cpudata)) {
-> +       if (intel_pstate_update_max_freq(cpudata->cpu)) {
->                 /*
->                  * The driver will not be unregistered while this functio=
-n is
->                  * running, so update the capacity without acquiring the =
-driver
-> --
+From: Zhang Yi <yi.zhang@huawei.com>
 
-Applied as 7.0-rc material, thanks!
+[ Upstream commit 79b592e8f1b435796cbc2722190368e3e8ffd7a1 ]
+
+When the split extent fails, we might leave some extents still being
+processed and return an error directly, which will result in stale
+extent entries remaining in the extent status tree. So drop all of the
+remaining potentially stale extents if the splitting fails.
+
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Cc: stable@kernel.org
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Message-ID: <20251129103247.686136-8-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ bring error handling pattern closer to upstream ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/ext4/extents.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 35bc58a26f7f4..4da75cd7fcfda 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3233,7 +3233,9 @@ static int ext4_split_extent_at(handle_t *handle,
+ 		ext4_ext_mark_unwritten(ex2);
+ 
+ 	err = ext4_ext_insert_extent(handle, inode, ppath, &newex, flags);
+-	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
++	if (err && err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
++		goto out_err;
++	if (!err)
+ 		goto out;
+ 
+ 	/*
+@@ -3249,7 +3251,8 @@ static int ext4_split_extent_at(handle_t *handle,
+ 	if (IS_ERR(path)) {
+ 		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
+ 				 split, PTR_ERR(path));
+-		return PTR_ERR(path);
++		err = PTR_ERR(path);
++		goto out_err;
+ 	}
+ 	depth = ext_depth(inode);
+ 	ex = path[depth].p_ext;
+@@ -3305,6 +3308,9 @@ static int ext4_split_extent_at(handle_t *handle,
+ 	 */
+ 	ext4_ext_dirty(handle, inode, path + path->p_depth);
+ 	return err;
++out_err:
++	/* Remove all remaining potentially stale extents. */
++	ext4_es_remove_extent(inode, ee_block, ee_len);
+ out:
+ 	ext4_ext_show_leaf(inode, *ppath);
+ 	return err;
+-- 
+2.51.0
+
 
