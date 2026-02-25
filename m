@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-219056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJ9oGVBWnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-219056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:24 +0100
+	id 2F3aITZUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2687A19024D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB14918FC29
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4E38330F88F0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 08A05306BEE5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27714285041;
-	Wed, 25 Feb 2026 01:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6B51EB5E1;
+	Wed, 25 Feb 2026 01:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9kAann1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knpaZWaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD9D1F03DE;
-	Wed, 25 Feb 2026 01:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8E91E2834;
+	Wed, 25 Feb 2026 01:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983978; cv=none; b=COt6OknTW6gfKnhbOUBz0RfprbzPu6Ul+3GrJXRxegU5JmhtHIyma9k3ik4NDbAJV6yjQ7MoqDsKZqS/oIa8EG1iRirKK0JbK6rfypW8dsL0rfGS26K0ZeP5aj3AwmxVj2q27DlS3y2MDzaV3Yqtn+SrRTkhwOEfr17RqTj3izc=
+	t=1771983314; cv=none; b=Ki4xE4t4Wp67pvasDqk4mo5NrPWiXVd3U/glXaxVzaBtiwFep0zSHd3eE0SlpRPBIS3ko8JEv6CUbyrDNMV4LYjcO2TqP30dvU/UFh+9b2AzFcKugFQxVlb/ReJEAXgXH27PlOC5PwYVuINeszR96lobE1LKww8zoxzxFAESFxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983978; c=relaxed/simple;
-	bh=CX5HWE5psYBNMlvIF9VUEuuPcpIm+zgtxzcKLgbNdfE=;
+	s=arc-20240116; t=1771983314; c=relaxed/simple;
+	bh=mSU+mFbe821aqa/tnRJ7zbaYd5EgnFZyBQMSdcRekSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yeap6+TqoJAK9k/V5fpaRwrydixzQR9HH6wchA1Uua6adeu/a0uKRRbqsGZH4BRSX6xfj/J+skReE8Vi5ZnUwlDoFXhgq6c3IMartmwqpCcqFAZKRkQ/biREH1I0C51Bgpi3rltdy3A59lQleiXWmpMmSDwQMX1Uei5Vp215WiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9kAann1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0732C116D0;
-	Wed, 25 Feb 2026 01:46:18 +0000 (UTC)
+	 MIME-Version; b=fKLm/2gYVTH1EYqhrurQmN7krvA58qujPFS2xBtYwnNJdqQ3JNDdGcVKYmH91++FQ5wbzRnp4T/YeL3p+igTxkuS9pSqoB+vYJB+4vNkbMQetPdssTtAyVNF1XdBvas8WhmGmy0k7R57MvSB4YjnXswB7MsxloCB0rXH35YRmo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knpaZWaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD7DC116D0;
+	Wed, 25 Feb 2026 01:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983978;
-	bh=CX5HWE5psYBNMlvIF9VUEuuPcpIm+zgtxzcKLgbNdfE=;
+	s=korg; t=1771983314;
+	bh=mSU+mFbe821aqa/tnRJ7zbaYd5EgnFZyBQMSdcRekSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9kAann1XIt3TM1tsl7PcoQNzkU2oYjuUFv4AwMjLtCBbGFFPCj78Y2S4aT8QJT26
-	 TWh8n5lb2kpmlDJNM+mtgzEAaOR0Y0O4lumkkTF1LqBMi7TSArr/eLIsDd+zSRjHKW
-	 5SGvrhyf+0QYZE8cq/zdPdIgoLmMx9wKCYU/q9q8=
+	b=knpaZWaPAvJo1UOgefxM3cfV54b2YmhksGKz0xQslKXQXv84CRmqZsyqEwRVCFigE
+	 xR9DB9jMiIC2F/cnlEvM544z2SfxRo0Mf4qYpFw1UYbrIei4izv0CBjgUZOE8CZjCp
+	 vKm3TewBFY1z0IZPAgv8x2rIf6xqA4g8G3CnJwMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Lavra <flavra@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Waqar Hameed <waqar.hameed@axis.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 231/641] spi: tools: Add include folder to .gitignore
+Subject: [PATCH 6.19 448/781] power: supply: act8945a: Fix use-after-free in power_supply_changed()
 Date: Tue, 24 Feb 2026 17:19:17 -0800
-Message-ID: <20260225012354.493601564@linuxfoundation.org>
+Message-ID: <20260225012410.698383836@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,53 +79,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219056-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218485-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2687A19024D
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,axis.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CB14918FC29
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Lavra <flavra@baylibre.com>
+From: Waqar Hameed <waqar.hameed@axis.com>
 
-[ Upstream commit 5af56f30c4fcbade4a92f94dadfea517d1db9703 ]
+[ Upstream commit 3291c51d4684d048dd2eb91b5b65fcfdaf72141f ]
 
-The Makefile for the SPI tools creates an include/linux/spi folder and some
-symlinks inside it. After running `make -C spi/tools`, this folder shows up
-as untracked in the git status.
-Add the above folder to the .gitignore file.
+Using the `devm_` variant for requesting IRQ _before_ the `devm_`
+variant for allocating/registering the `power_supply` handle, means that
+the `power_supply` handle will be deallocated/unregistered _before_ the
+interrupt handler (since `devm_` naturally deallocates in reverse
+allocation order). This means that during removal, there is a race
+condition where an interrupt can fire just _after_ the `power_supply`
+handle has been freed, *but* just _before_ the corresponding
+unregistration of the IRQ handler has run.
 
-Fixes: f325b73dc4db ("spi: tools: move to tools buildsystem")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-Link: https://patch.msgid.link/20260209095001.556495-1-flavra@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This will lead to the IRQ handler calling `power_supply_changed()` with
+a freed `power_supply` handle. Which usually crashes the system or
+otherwise silently corrupts the memory...
+
+Note that there is a similar situation which can also happen during
+`probe()`; the possibility of an interrupt firing _before_ registering
+the `power_supply` handle. This would then lead to the nasty situation
+of using the `power_supply` handle *uninitialized* in
+`power_supply_changed()`.
+
+Fix this racy use-after-free by making sure the IRQ is requested _after_
+the registration of the `power_supply` handle.
+
+Fixes: a09209acd6a8 ("power: supply: act8945a_charger: Add status change update support")
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+Link: https://patch.msgid.link/bcf3a23b5187df0bba54a8c8fe09f8b8a0031dee.1766268280.git.waqar.hameed@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/spi/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/power/supply/act8945a_charger.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tools/spi/.gitignore b/tools/spi/.gitignore
-index 14ddba3d21957..038261b34ed83 100644
---- a/tools/spi/.gitignore
-+++ b/tools/spi/.gitignore
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
- spidev_fdx
- spidev_test
-+include/
+diff --git a/drivers/power/supply/act8945a_charger.c b/drivers/power/supply/act8945a_charger.c
+index 3901a02f326a5..9dec4486b1439 100644
+--- a/drivers/power/supply/act8945a_charger.c
++++ b/drivers/power/supply/act8945a_charger.c
+@@ -597,14 +597,6 @@ static int act8945a_charger_probe(struct platform_device *pdev)
+ 		return irq ?: -ENXIO;
+ 	}
+ 
+-	ret = devm_request_irq(&pdev->dev, irq, act8945a_status_changed,
+-			       IRQF_TRIGGER_FALLING, "act8945a_interrupt",
+-			       charger);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to request nIRQ pin IRQ\n");
+-		return ret;
+-	}
+-
+ 	charger->desc.name = "act8945a-charger";
+ 	charger->desc.get_property = act8945a_charger_get_property;
+ 	charger->desc.properties = act8945a_charger_props;
+@@ -625,6 +617,14 @@ static int act8945a_charger_probe(struct platform_device *pdev)
+ 		return PTR_ERR(charger->psy);
+ 	}
+ 
++	ret = devm_request_irq(&pdev->dev, irq, act8945a_status_changed,
++			       IRQF_TRIGGER_FALLING, "act8945a_interrupt",
++			       charger);
++	if (ret) {
++		dev_err(&pdev->dev, "failed to request nIRQ pin IRQ\n");
++		return ret;
++	}
++
+ 	platform_set_drvdata(pdev, charger);
+ 
+ 	INIT_WORK(&charger->work, act8945a_work);
 -- 
 2.51.0
 
