@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-219072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAYMJaJanmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:50 +0100
+	id oCdJCI9SnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AAF190B64
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8F218F3E7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1DC7A3137A91
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 237C630C864C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D05C24337B;
-	Wed, 25 Feb 2026 01:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814C6248881;
+	Wed, 25 Feb 2026 01:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7Cnr3Ob"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQnuPkL9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BC813D51E;
-	Wed, 25 Feb 2026 01:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BA018B0A;
+	Wed, 25 Feb 2026 01:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983997; cv=none; b=K81PX6QOO/jdhLaCd6E3DZimCgnpmWCFbPy+tpmxCO12xi6m5ks1SEtycWvKbe4YOsMp6+BuqooSJoIVKXC69xEEVjNkWKyAiRStlLdmmYntv4GtOkiDv02X9aGyUEZAOkvU03GqNnweOcnSwGn+WXK7Msm/5kc9qcNXmaZ5fwg=
+	t=1771983340; cv=none; b=Px8DZ7rDAg2JhPvOMkguWpP7WcHZnfFGxb8x8FZZSkP1K+iTUoqlXCUH+0yxtvXZWGdpP3hrl9tJ5PE4p628eCDsKE+gNmAiJkF9tw3TDukHleW3nVNfUfRYRmEz7EJQfYIQsn+DWQmC/d0aXe3+29ZvSfFnxN2XHvz3ZoIHWGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983997; c=relaxed/simple;
-	bh=zwvB+AZjghFxvN8uspH4jrtFdu3RJaPzl0Ts7A4EQK4=;
+	s=arc-20240116; t=1771983340; c=relaxed/simple;
+	bh=+sCBBlUVKPO9w99KSTTPAwhFmFjgan1j6w82oNYIBs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uiwjWLsZJzGuuEkkrJ5pK0Bh/BEugBU3Aln/5Cvo3oF645MWvVtvf9+dpXBYTC9/8wk2OI4uD9LMCtCKUZI7UtHPmL93wQhJmOoVx77Ih2B5OmWsVMg5QqZexSzie61kK8BM0xsuqAFcJyIEs7l0jbT5Uv/L0SQZaJ6bYpQCjyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7Cnr3Ob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914E8C116D0;
-	Wed, 25 Feb 2026 01:46:37 +0000 (UTC)
+	 MIME-Version; b=Is0emx4fTwi/eOo8KSMmy3HI+QX0vaDrB+9ETBjwEMJyffKhDyaKx2/2UFV6gWSGouaKK5i+Tx5SCVKtkgCwTh/y++8KEzBRmVsTxKmepCqm5L+vJdueHpzwAQ5QSb68MFdtNkhUJHWNmP2jYTTREikAUyhoAsHqXrWT8T4pgnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQnuPkL9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F242FC116D0;
+	Wed, 25 Feb 2026 01:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983997;
-	bh=zwvB+AZjghFxvN8uspH4jrtFdu3RJaPzl0Ts7A4EQK4=;
+	s=korg; t=1771983340;
+	bh=+sCBBlUVKPO9w99KSTTPAwhFmFjgan1j6w82oNYIBs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G7Cnr3ObIjaWUkf2pXu/oFkOWAq0aK/MrNZCY23jAEYVm23fxbyAw+zDKIKn/KzYG
-	 HpsIXDFNn4u0oWfZwLllUqK4mMihfKbUVhuIFc0IsCW8THgQ/1A0whEHRkGmz8IFHj
-	 D6+PWE13B5p3byknXb8VyjpOGQ0dY3bVYZi/BnJY=
+	b=ZQnuPkL96nq1JObaSX2Wlj5RlBoONbVv60SFiHQyn50RzhodH2W0AipgwZFCsN/8j
+	 lTon1ZryPm48JOnRA/+6yKgbCnk5987A+XklzT9+a1fJqpc4AeB37Nod0ZLJ2cxfxH
+	 7+Fa0/C89MQzfEO1XaG1bC/1W0zsu1Cu/EfGK2Gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhishek Bapat <abhishekbapat@google.com>,
-	Jan Kara <jack@suse.cz>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Jani Partanen <jiipee@sotapeli.fi>,
+	Lucas De Marchi <demarchi@kernel.org>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 251/641] quota: fix livelock between quotactl and freeze_super
-Date: Tue, 24 Feb 2026 17:19:37 -0800
-Message-ID: <20260225012354.929959023@linuxfoundation.org>
+Subject: [PATCH 6.19 469/781] mtd: intel-dg: Fix accessing regions before setting nregions
+Date: Tue, 24 Feb 2026 17:19:38 -0800
+Message-ID: <20260225012411.323268329@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,101 +73,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218508-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219072-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.cz:email]
-X-Rspamd-Queue-Id: C2AAF190B64
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sotapeli.fi:email]
+X-Rspamd-Queue-Id: 7F8F218F3E7
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Bapat <abhishekbapat@google.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 77449e453dfc006ad738dec55374c4cbc056fd39 ]
+[ Upstream commit 779c59274d03cc5c07237a2c845dfb71cff77705 ]
 
-When a filesystem is frozen, quotactl_block() enters a retry loop
-waiting for the filesystem to thaw. It acquires s_umount, checks the
-freeze state, drops s_umount and uses sb_start_write() - sb_end_write()
-pair to wait for the unfreeze.
+The regions array is counted by nregions, but it's set only after
+accessing it:
 
-However, this retry loop can trigger a livelock issue, specifically on
-kernels with preemption disabled.
+[] UBSAN: array-index-out-of-bounds in drivers/mtd/devices/mtd_intel_dg.c:750:15
+[] index 0 is out of range for type '<unknown> [*]'
 
-The mechanism is as follows:
-1. freeze_super() sets SB_FREEZE_WRITE and calls sb_wait_write().
-2. sb_wait_write() calls percpu_down_write(), which initiates
-   synchronize_rcu().
-3. Simultaneously, quotactl_block() spins in its retry loop, immediately
-   executing the sb_start_write() - sb_end_write() pair.
-4. Because the kernel is non-preemptible and the loop contains no
-   scheduling points, quotactl_block() never yields the CPU. This
-   prevents that CPU from reaching an RCU quiescent state.
-5. synchronize_rcu() in the freezer thread waits indefinitely for the
-   quotactl_block() CPU to report a quiescent state.
-6. quotactl_block() spins indefinitely waiting for the freezer to
-   advance, which it cannot do as it is blocked on the RCU sync.
+Fix it by also fixing an undesired behavior: the loop silently ignores
+ENOMEM and continues setting the other entries.
 
-This results in a hang of the freezer process and 100% CPU usage by the
-quota process.
-
-While this can occur intermittently on multi-core systems, it is
-reliably reproducing on a node with the following script, running both
-the freezer and the quota toggle on the same CPU:
-
-  # mkfs.ext4 -O quota /dev/sda 2g && mkdir a_mount
-  # mount /dev/sda -o quota,usrquota,grpquota a_mount
-  # taskset -c 3 bash -c "while true; do xfs_freeze -f a_mount; \
-    xfs_freeze -u a_mount; done" &
-  # taskset -c 3 bash -c "while true; do quotaon a_mount; \
-    quotaoff a_mount; done" &
-
-Adding cond_resched() to the retry loop fixes the issue. It acts as an
-RCU quiescent state, allowing synchronize_rcu() in percpu_down_write()
-to complete.
-
-Fixes: 576215cffdef ("fs: Drop wait_unfrozen wait queue")
-Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-Link: https://patch.msgid.link/20260115213103.1089129-1-abhishekbapat@google.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+CC: Gustavo A. R. Silva <gustavoars@kernel.org>
+CC: Raag Jadav <raag.jadav@intel.com>
+Reported-by: Jani Partanen <jiipee@sotapeli.fi>
+Closes: https://lore.kernel.org/all/caca6c67-4f1d-49f1-948f-e63b6b937b29@sotapeli.fi
+Fixes: ceb5ab3cb646 ("mtd: add driver for intel graphics non-volatile memory device")
+Signed-off-by: Lucas De Marchi <demarchi@kernel.org>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Reviewed-by: Raag Jadav <raag.jadav@intel.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/quota.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/devices/mtd_intel_dg.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/quota/quota.c b/fs/quota/quota.c
-index 7c2b75a444852..de4379a9c7920 100644
---- a/fs/quota/quota.c
-+++ b/fs/quota/quota.c
-@@ -899,6 +899,7 @@ static struct super_block *quotactl_block(const char __user *special, int cmd)
- 		sb_start_write(sb);
- 		sb_end_write(sb);
- 		put_super(sb);
-+		cond_resched();
- 		goto retry;
+diff --git a/drivers/mtd/devices/mtd_intel_dg.c b/drivers/mtd/devices/mtd_intel_dg.c
+index 2bab30dcd35fd..7f751c48a76d4 100644
+--- a/drivers/mtd/devices/mtd_intel_dg.c
++++ b/drivers/mtd/devices/mtd_intel_dg.c
+@@ -770,6 +770,7 @@ static int intel_dg_mtd_probe(struct auxiliary_device *aux_dev,
+ 
+ 	kref_init(&nvm->refcnt);
+ 	mutex_init(&nvm->lock);
++	nvm->nregions = nregions;
+ 
+ 	for (n = 0, i = 0; i < INTEL_DG_NVM_REGIONS; i++) {
+ 		if (!invm->regions[i].name)
+@@ -777,13 +778,15 @@ static int intel_dg_mtd_probe(struct auxiliary_device *aux_dev,
+ 
+ 		char *name = kasprintf(GFP_KERNEL, "%s.%s",
+ 				       dev_name(&aux_dev->dev), invm->regions[i].name);
+-		if (!name)
+-			continue;
++		if (!name) {
++			ret = -ENOMEM;
++			goto err;
++		}
++
+ 		nvm->regions[n].name = name;
+ 		nvm->regions[n].id = i;
+ 		n++;
  	}
- 	return sb;
+-	nvm->nregions = n; /* in case where kasprintf fail */
+ 
+ 	ret = devm_pm_runtime_enable(device);
+ 	if (ret < 0) {
 -- 
 2.51.0
 
