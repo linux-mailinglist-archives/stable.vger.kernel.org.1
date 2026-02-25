@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-219028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBeeD21anmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:57 +0100
+	id aPaZICJUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62EFE190AF8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B344618FBAE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2D1B6312C008
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 11C71302FAB1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D515B280331;
-	Wed, 25 Feb 2026 01:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DB2243376;
+	Wed, 25 Feb 2026 01:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPDSyNuQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nONYuKbH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983B226F46F;
-	Wed, 25 Feb 2026 01:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD67218DB2A;
+	Wed, 25 Feb 2026 01:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983942; cv=none; b=pph71wyvuod/IK2QppRLrQy2mro/m9rKYcPCpcG/hgH2A/eOVfTUte3XzfL/6T6BQCpXVyfMkIpIoXrDN/knvA3muqMWUbmnttwhPecfhAmRtCVfEZs/a/JWLi4emmPuCVlp3KlrQdJd3L14elsqvoz0Xfbi40NLpoBEnaskHy8=
+	t=1771983288; cv=none; b=FuKfATA6h21HKBPFX0JYN00DWL82wlgB+CN4+z+XDxe1V3v38V/X2tcihveL6vCBes2KiSyPAtd/tpVBV2Cr445wm5oTP6h71wgJXYLpyd+xNdyVAN2nBnyQkrsJ5+/TdA5NG8RAKPr4SB4uR4grwOnNpWniZmh61oLHQmXkaa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983942; c=relaxed/simple;
-	bh=gMXob7u3ke+uQgs3glbPp2kh/0H+ucA/mUfrUUjvI7g=;
+	s=arc-20240116; t=1771983288; c=relaxed/simple;
+	bh=isiufB0vqG3Wl2XX2GcFO19M+CzFSggoUoAiQVtt0Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKunYFlAYR2WzAXeDUuSq/qYvPne3Si+YozNjqe0Z/qhOp3AvrIM4lbsWXpwp98Un3BAoIN5CjhXMCDcx7kFAH65kRfyQjSs/RHdOGbf+skEsg0ECBdEurKgX4OQtRaezjSXgMR54u11z95P7KZlFnITJBXAqc4cirx+VgdIQuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPDSyNuQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E27C116D0;
-	Wed, 25 Feb 2026 01:45:42 +0000 (UTC)
+	 MIME-Version; b=P0c9VAF9n0am+bnzHFO7R/0pwFP0Xa57DhoL8/cNMYN0MrKZj4YSDbe64QEuPE0k04E8D0QpWOc4g5NGcrEax8Ng/hAvg/uJf/XW+b+N+Idr920Vm8Rta6tbcEKEHBP/w3AWUZK/qTVjga+wKxyLOYLk2QfsnVde8rz7AE420X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nONYuKbH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774A7C116D0;
+	Wed, 25 Feb 2026 01:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983942;
-	bh=gMXob7u3ke+uQgs3glbPp2kh/0H+ucA/mUfrUUjvI7g=;
+	s=korg; t=1771983288;
+	bh=isiufB0vqG3Wl2XX2GcFO19M+CzFSggoUoAiQVtt0Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPDSyNuQF0Zqkk4CWsNQT1lRedbHI5JLHAXJYwkAwbLA1ESKJAG/Mz0oHKGQL0pMS
-	 Vb+/nT/+VnlWfMHtLEkSibxHKGVS6noAjElyjR7bydahQIoNHaVM1xrlK79W4sDqCg
-	 wCGafkp74i5ZIe9uL18C0Yg3c/1ihCTZQXbd+UQc=
+	b=nONYuKbH3UplP2fklTI7Tgpf+h22eOtiMoskHzFWyk/BwA+iYk0rYYwsUFi6094eb
+	 KTTTIRFsnMakwOUe2nLQgWnkbRgtJOZnG7GgELc6EPmP+nl8jdNrc4JBv97ICPHYA2
+	 GhgnhoOXNz+weFrQCSKA62mzUz3Ys9je44XI7Rrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Tao Tian <tiantao6@hisilicon.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 206/641] drm/hisilicon/hibmc: add dp mode valid check
-Date: Tue, 24 Feb 2026 17:18:52 -0800
-Message-ID: <20260225012353.952126268@linuxfoundation.org>
+Subject: [PATCH 6.19 424/781] dpll: zl3073x: Fix output pin phase adjustment sign
+Date: Tue, 24 Feb 2026 17:18:53 -0800
+Message-ID: <20260225012410.102134708@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219028-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218463-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,125 +88,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,hisilicon.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,huawei.com:email]
-X-Rspamd-Queue-Id: 62EFE190AF8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email]
+X-Rspamd-Queue-Id: B344618FBAE
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit 607805abfb747b98f43aa57d6d9ba4caed4d106f ]
+[ Upstream commit 5d41f95f5d0bd9db02f3f16a649d0631f71e9fdb ]
 
-If DP is connected, check the DP BW in mode_valid_ctx() to ensure
-that DP's link rate supports high-resolution data transmission.
+The output pin phase adjustment functions incorrectly negate the phase
+compensation value.
 
-Fixes: 0ab6ea261c1f ("drm/hisilicon/hibmc: add dp module in hibmc")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Tao Tian <tiantao6@hisilicon.com>
-Link: https://patch.msgid.link/20251210023759.3944834-3-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Per the ZL3073x datasheet, the output phase compensation register is
+simply a signed two's complement integer where:
+ - Positive values move the phase later in time
+ - Negative values move the phase earlier in time
+
+No negation is required. The erroneous negation caused phase adjustments
+to be applied in the wrong direction.
+
+Note that input pin phase adjustment correctly uses negation because the
+hardware has an inverted convention for input references (positive moves
+phase earlier, negative moves phase later).
+
+Fixes: 6287262f761e ("dpll: zl3073x: Add support to adjust phase")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20260205181055.129768-1-ivecera@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/hisilicon/hibmc/dp/dp_config.h    |  2 ++
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c    | 10 ++++++++++
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h    |  2 ++
- .../gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c    | 19 +++++++++++++++++++
- 4 files changed, 33 insertions(+)
+ drivers/dpll/zl3073x/dpll.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_config.h b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_config.h
-index 08f9e1caf7fcb..efb30a7584758 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_config.h
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_config.h
-@@ -17,5 +17,7 @@
- #define HIBMC_DP_LINK_RATE_CAL		27
- #define HIBMC_DP_SYNC_DELAY(lanes)	((lanes) == 0x2 ? 86 : 46)
- #define HIBMC_DP_INT_ENABLE		0xc
-+/* HIBMC_DP_LINK_RATE_CAL * 10000 * 80% = 216000 */
-+#define DP_MODE_VALI_CAL		216000
+diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+index 9879d85d29af0..a8001c9760382 100644
+--- a/drivers/dpll/zl3073x/dpll.c
++++ b/drivers/dpll/zl3073x/dpll.c
+@@ -1039,10 +1039,8 @@ zl3073x_dpll_output_pin_phase_adjust_get(const struct dpll_pin *dpll_pin,
+ 	out_id = zl3073x_output_pin_out_get(pin->id);
+ 	out = zl3073x_out_state_get(zldev, out_id);
  
- #endif
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-index 0ec6ace2d0822..37549dafa06ca 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-@@ -264,6 +264,16 @@ void hibmc_dp_reset_link(struct hibmc_dp *dp)
- 	dp->dp_dev->link.status.channel_equalized = false;
+-	/* Convert value to ps and reverse two's complement negation applied
+-	 * during 'set'
+-	 */
+-	*phase_adjust = -out->phase_comp * pin->phase_gran;
++	/* The value in the register is expressed in half synth clock cycles. */
++	*phase_adjust = out->phase_comp * pin->phase_gran;
+ 
+ 	return 0;
  }
+@@ -1064,10 +1062,8 @@ zl3073x_dpll_output_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
+ 	out_id = zl3073x_output_pin_out_get(pin->id);
+ 	out = *zl3073x_out_state_get(zldev, out_id);
  
-+u8 hibmc_dp_get_link_rate(struct hibmc_dp *dp)
-+{
-+	return dp->dp_dev->link.cap.link_rate;
-+}
-+
-+u8 hibmc_dp_get_lanes(struct hibmc_dp *dp)
-+{
-+	return dp->dp_dev->link.cap.lanes;
-+}
-+
- static const struct hibmc_dp_color_raw g_rgb_raw[] = {
- 	{CBAR_COLOR_BAR, 0x000, 0x000, 0x000},
- 	{CBAR_WHITE,     0xfff, 0xfff, 0xfff},
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h
-index 59c1eae153c55..31316fe1ea8db 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h
-@@ -66,5 +66,7 @@ void hibmc_dp_hpd_cfg(struct hibmc_dp *dp);
- void hibmc_dp_enable_int(struct hibmc_dp *dp);
- void hibmc_dp_disable_int(struct hibmc_dp *dp);
- bool hibmc_dp_check_hpd_status(struct hibmc_dp *dp, int exp_status);
-+u8 hibmc_dp_get_link_rate(struct hibmc_dp *dp);
-+u8 hibmc_dp_get_lanes(struct hibmc_dp *dp);
+-	/* The value in the register is stored as two's complement negation
+-	 * of requested value and expressed in half synth clock cycles.
+-	 */
+-	out.phase_comp = -phase_adjust / pin->phase_gran;
++	/* The value in the register is expressed in half synth clock cycles. */
++	out.phase_comp = phase_adjust / pin->phase_gran;
  
- #endif
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c
-index 4a66a107900a1..616821e3c933b 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c
-@@ -13,6 +13,7 @@
- #include "hibmc_drm_drv.h"
- #include "dp/dp_hw.h"
- #include "dp/dp_comm.h"
-+#include "dp/dp_config.h"
- 
- #define DP_MASKED_SINK_HPD_PLUG_INT	BIT(2)
- 
-@@ -81,9 +82,27 @@ static int hibmc_dp_detect(struct drm_connector *connector,
- 	return connector_status_disconnected;
- }
- 
-+static int hibmc_dp_mode_valid(struct drm_connector *connector,
-+			       const struct drm_display_mode *mode,
-+			       struct drm_modeset_acquire_ctx *ctx,
-+			       enum drm_mode_status *status)
-+{
-+	struct hibmc_dp *dp = to_hibmc_dp(connector);
-+	u64 cur_val, max_val;
-+
-+	/* check DP link BW */
-+	cur_val = (u64)mode->clock * HIBMC_DP_BPP;
-+	max_val = (u64)hibmc_dp_get_link_rate(dp) * DP_MODE_VALI_CAL * hibmc_dp_get_lanes(dp);
-+
-+	*status = cur_val > max_val ? MODE_CLOCK_HIGH : MODE_OK;
-+
-+	return 0;
-+}
-+
- static const struct drm_connector_helper_funcs hibmc_dp_conn_helper_funcs = {
- 	.get_modes = hibmc_dp_connector_get_modes,
- 	.detect_ctx = hibmc_dp_detect,
-+	.mode_valid_ctx = hibmc_dp_mode_valid,
- };
- 
- static int hibmc_dp_late_register(struct drm_connector *connector)
+ 	/* Update output configuration from mailbox */
+ 	return zl3073x_out_state_set(zldev, out_id, &out);
 -- 
 2.51.0
 
