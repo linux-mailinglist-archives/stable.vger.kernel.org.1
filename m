@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218838-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OF87AGVRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:25 +0100
+	id YLlYCypXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218838-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B6118EFD5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E1719049E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4D6DF3097555
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 54E123085833
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3077F251793;
-	Wed, 25 Feb 2026 01:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2984326F476;
+	Wed, 25 Feb 2026 01:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBzW7Uok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBjHV50O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E3A1D5ABA;
-	Wed, 25 Feb 2026 01:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E199E26056D;
+	Wed, 25 Feb 2026 01:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983073; cv=none; b=DVQJgq5ANrPkk67Y/tN8TtDWu7My4oeeTFtiG9fOt3oaKsBKCcXBFJLb9jyDfKMKyqk5jg7S/3D1o1GDG6qbpLtIYsN55K/SBmBdHnAdeqJZ67O+qUFNAx3D7WoFl6QzQM1HHLbWthzpEU0UtMVfE1PoZQg8GSaWJ/POlmnb5IE=
+	t=1771983721; cv=none; b=NesqM9reVmCtidnypMk7qkB1fJiFsFVpIkhoze8UB0PSzqDQvf+i+UX74LjSUz6wFMHV3VkL95ky2/wM/s28x6TU11KZacoQylhdLT82iqlg0rWV6kWXNpYxNUj0pZ2ZxbnIGE/2DyOWAXjFo4foAeLdlbx6BaflEU0qeSwQukI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983073; c=relaxed/simple;
-	bh=7myCAk+HLaMcVNdM8GHqX+4R/g1r2YVfr2yuKPJs+JU=;
+	s=arc-20240116; t=1771983721; c=relaxed/simple;
+	bh=RcwfHM6GCxalZjzYoDNec0tFZckhIl3oNN+fpH3FJiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsD1VvU84NIUs0P9rEKuAzeIv1nkdrV0zaSYJhY1CUY/BJ2MAXS0zV5ZeCSeZp+Soq0DV40izNXcNJ8ZJDqs/QmsaRNXnIQ7GdukbMAmQcz/aDXwq4w9e07SYIAl8nfLPRD3B7WRfJ7leRK/5Q1EuuEZIOezwCapKxKr8H9xtK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBzW7Uok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8711C116D0;
-	Wed, 25 Feb 2026 01:31:12 +0000 (UTC)
+	 MIME-Version; b=rlZ115Gs6rg3YxZvoYuvU0gUC9LOMyNajVoT2a8fimsHR4nyQ/3toPsEnh1lhwHK0cizjw+M5hV8HgjFWym1a3jCVDtyCOSWsOY7UCVTCTuMhi2d2lOBJ6YYqYGWjyv8wdX2Sj6sy2uEX0CfIQTAKwEm0hla8v+6bsLDMoZkzJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBjHV50O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C1CC116D0;
+	Wed, 25 Feb 2026 01:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983072;
-	bh=7myCAk+HLaMcVNdM8GHqX+4R/g1r2YVfr2yuKPJs+JU=;
+	s=korg; t=1771983720;
+	bh=RcwfHM6GCxalZjzYoDNec0tFZckhIl3oNN+fpH3FJiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBzW7UokuBybNkow9t6ba/2W1HUGEBD8NwPbz9ivjwhBs3d5hZW3KWGSq7rVECOwI
-	 cN3H4aUuBvdns1Rc1BjePn/JJj83G/nRvIYY6T/XQA0jWbR/pJQtGVaAkjTM7gUhhb
-	 1eIm418IQ7vvhZyVlMw0TrFMcwGWUQA6Nk3IW/Ro=
+	b=nBjHV50OZouC1R47smUluFAL73vYE2TbaOWDyB48U8snF6v+IO2sMMZxBd7nBWG7t
+	 7nLNRQz6V53fCh5JozwqZHl1dKhIHn3zfmVdRiSPvP8qiRnutbS2j+OW6eD9N4Avfd
+	 c51hAB3p0LoV/WSOm1QA31tWf96NfU5LFywy0nXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alper Ak <alperyasinak1@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 235/781] ASoC: nau8821: Cancel pending work before suspend
+Subject: [PATCH 6.18 018/641] tpm: tpm_i2c_infineon: Fix locality leak on get_burstcount() failure
 Date: Tue, 24 Feb 2026 17:15:44 -0800
-Message-ID: <20260225012405.473910363@linuxfoundation.org>
+Message-ID: <20260225012349.408880733@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,72 +70,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218273-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218838-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D4B6118EFD5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 45E1719049E
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Alper Ak <alperyasinak1@gmail.com>
 
-[ Upstream commit 7786b10688ac0ebeaff655923cbb2c7d34a98995 ]
+[ Upstream commit bbd6e97c836cbeb9606d7b7e5dcf8a1d89525713 ]
 
-A jack detection work that is unscheduled or in progress while executing
-the suspend handler could trigger a race condition.
+get_burstcount() can return -EBUSY on timeout. When this happens, the
+function returns directly without releasing the locality that was
+acquired at the beginning of tpm_tis_i2c_send().
 
-Ensure state consistency by cancelling any pending work or wait for its
-execution to complete before processing the suspend.  Since driver
-(re)enables both insert and eject interrupts on resume, there is no risk
-to miss the related jack events.  Therefore, flush_delayed_work() is not
-required here.
+Use goto out_err to ensure proper cleanup when get_burstcount() fails.
 
-Fixes: aab1ad11d69f ("ASoC: nau8821: new driver")
-Fixes: ee70bacef1c6 ("ASoC: nau8821: Avoid unnecessary blocking in IRQ handler")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20251231-nau8821-cleanup-v1-3-6b0b76cbbb64@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: aad628c1d91a ("char/tpm: Add new driver for Infineon I2C TIS TPM")
+Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/nau8821.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/char/tpm/tpm_i2c_infineon.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/nau8821.c b/sound/soc/codecs/nau8821.c
-index 2e2714b475012..58d2d5e77c8f4 100644
---- a/sound/soc/codecs/nau8821.c
-+++ b/sound/soc/codecs/nau8821.c
-@@ -1605,6 +1605,10 @@ static int __maybe_unused nau8821_suspend(struct snd_soc_component *component)
+diff --git a/drivers/char/tpm/tpm_i2c_infineon.c b/drivers/char/tpm/tpm_i2c_infineon.c
+index bdf1f329a6794..8b7d32de0b2ef 100644
+--- a/drivers/char/tpm/tpm_i2c_infineon.c
++++ b/drivers/char/tpm/tpm_i2c_infineon.c
+@@ -544,8 +544,10 @@ static int tpm_tis_i2c_send(struct tpm_chip *chip, u8 *buf, size_t bufsiz,
+ 		burstcnt = get_burstcount(chip);
  
- 	if (nau8821->irq)
- 		disable_irq(nau8821->irq);
-+
-+	if (nau8821->jdet_active)
-+		cancel_delayed_work_sync(&nau8821->jdet_work);
-+
- 	snd_soc_dapm_force_bias_level(nau8821->dapm, SND_SOC_BIAS_OFF);
- 	/* Power down codec power; don't support button wakeup */
- 	snd_soc_dapm_disable_pin(nau8821->dapm, "MICBIAS");
+ 		/* burstcnt < 0 = TPM is busy */
+-		if (burstcnt < 0)
+-			return burstcnt;
++		if (burstcnt < 0) {
++			rc = burstcnt;
++			goto out_err;
++		}
+ 
+ 		if (burstcnt > (len - 1 - count))
+ 			burstcnt = len - 1 - count;
 -- 
 2.51.0
 
