@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218929-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAtxDBBTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218361-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:32 +0100
+	id SOgqDuRUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218929-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FDA18F694
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E720318FE2E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EF6BC30AFD89
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 996F130D5E5E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4336420C012;
-	Wed, 25 Feb 2026 01:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8A426ED2A;
+	Wed, 25 Feb 2026 01:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8gbkcsr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ictnhAfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062B518DB2A;
-	Wed, 25 Feb 2026 01:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC1A24677D;
+	Wed, 25 Feb 2026 01:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983171; cv=none; b=i6mrCZ2w9mO9VTe8+FX/CuEulVob7t2hFVQjNkCc33fc9mnG/3DJiGk/yc1+NMSuMfbkZoInlT2cscPiBzJsKyRLats+90Cr8mQpugvaCiwOs738kSICEQ3OS3Rmjcf74fe+ZJnob7Vh0hsqP4dC3oEEyFb2Nt8Rh/AR5U2P/5Q=
+	t=1771983826; cv=none; b=jZmbUP3xlDw7Xm1KM43S6IQxuiXRq7CKQV9HVA1jGRgH1THM4U8IWm1zYUKTo95BqMWOYbCGvjFXaMQWn8O++x09fHRkJInBtGC+kviWv4pcg2tO52rEMwqQ0/Nr2yrs0+Gdyy4JLIrvlPVCJh+YnjYz107UGDPDALgFqaNfbJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983171; c=relaxed/simple;
-	bh=0fbi8Q6r1bZHmPbrqz9AbHnZI4a7D0L/9L0JjrpbpRs=;
+	s=arc-20240116; t=1771983826; c=relaxed/simple;
+	bh=x/SB3Xp7PLgqPMyExswdJ2jPTpIVjSoRLvMvIK08+Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ew+/UOmSP3SaVhecSZOKFYas1mEZOY72ccKvBxEGBsfRljlLmqGBB6pQWgYNyf/QvOv1ylhWTWHEjBOeIrqnKYc/9fFfh9QskAhIlYZg2u1qCKbHea023l07Ld61Ei+pHk5HWDfNByDkD3DOTCdgYLsrGZig2DIfTImdmmrMv9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8gbkcsr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FB2C116D0;
-	Wed, 25 Feb 2026 01:32:50 +0000 (UTC)
+	 MIME-Version; b=VSahRIZuyD/avejsBvzhY9bZ3iFR8cXJayvR9yMaqkZiFrhjE6p0OArpZZ58sb/LTpy85oAHfcSk2DWVRkA5TbBD4BDNb45nPun8MYsxzP6x9oTS4Qk5CZh0rCrm46X+uzYIBmGLP2TwpZSnTO7vb8qkCuEc9Fig/o9IMQMALrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ictnhAfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30928C116D0;
+	Wed, 25 Feb 2026 01:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983170;
-	bh=0fbi8Q6r1bZHmPbrqz9AbHnZI4a7D0L/9L0JjrpbpRs=;
+	s=korg; t=1771983826;
+	bh=x/SB3Xp7PLgqPMyExswdJ2jPTpIVjSoRLvMvIK08+Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q8gbkcsrPp3EcgGkEdW9364X1LXHtUNV8oZ3rrz8HPII4e1uhjksHOp3Bk5DsGP5N
-	 QWn2eNpWQT6/U95QoCu98iSX5S8uewDcrDSxiZUgPudqZYg7+j6LElQXiCSH+Z3CsX
-	 M0ZCWKMJVIHHFxDpZ5F6OIg8lGNPgnKAkRl14ypw=
+	b=ictnhAfU2kYD0xBEVRHw7biy2buxvXWQBiA4j3HD4tTiEDO2PrB/4NtQtofDQCFjf
+	 GzLKCZF/gAjTKkrJVmz3xkBe4jXytl/13/Mer1hifAxrejql+FXqhvO4mC7JbVSQv2
+	 deyKhOrGQgrqeEt4UVfXuLH7lwOgclQM82LDorgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huang Chenming <chenming.huang@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 323/781] wifi: cfg80211: Fix use_for flag update on BSS refresh
-Date: Tue, 24 Feb 2026 17:17:12 -0800
-Message-ID: <20260225012407.625552045@linuxfoundation.org>
+Subject: [PATCH 6.18 107/641] iommu/amd: Use cores primary handler and set IRQF_ONESHOT
+Date: Tue, 24 Feb 2026 17:17:13 -0800
+Message-ID: <20260225012351.711700470@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218361-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218929-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,qualcomm.com:email]
-X-Rspamd-Queue-Id: 57FDA18F694
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E720318FE2E
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Chenming <chenming.huang@oss.qualcomm.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 4073ea516106e5f98ed0476f89cdede8baa98d37 ]
+[ Upstream commit 5bfcdccb4d18d3909b7f87942be67fd6bdc00c1d ]
 
-Userspace may fail to connect to certain BSS that were initially
-marked as unusable due to regulatory restrictions (use_for = 0,
-e.g., 6 GHz power type mismatch). Even after these restrictions
-are removed and the BSS becomes usable, connection attempts still
-fail.
+request_threaded_irq() is invoked with a primary and a secondary handler
+and no flags are passed. The primary handler is the same as
+irq_default_primary_handler() so there is no need to have an identical
+copy.
 
-The issue occurs in cfg80211_update_known_bss() where the use_for
-flag is updated using bitwise AND (&=) instead of direct assignment.
-Once a BSS is marked with use_for = 0, the AND operation masks out
-any subsequent non-zero values, permanently keeping the flag at 0.
-This causes __cfg80211_get_bss(), invoked by nl80211_assoc_bss(), to
-fail the check "(bss->pub.use_for & use_for) != use_for", thereby
-blocking association.
+The lack of the IRQF_ONESHOT can be dangerous because the interrupt
+source is not masked while the threaded handler is active. This means,
+especially on LEVEL typed interrupt lines, the interrupt can fire again
+before the threaded handler had a chance to run.
 
-Replace the bitwise AND operation with direct assignment so the use_for
-flag accurately reflects the current BSS state.
+Use the default primary interrupt handler by specifying NULL and set
+IRQF_ONESHOT so the interrupt source is masked until the secondary
+handler is done.
 
-Fixes: d02a12b8e4bb ("wifi: cfg80211: add BSS usage reporting")
-Signed-off-by: Huang Chenming <chenming.huang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251209025733.2098456-1-chenming.huang@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 72fe00f01f9a3 ("x86/amd-iommu: Use threaded interupt handler")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260128095540.863589-4-bigeasy@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/amd_iommu.h |  1 -
+ drivers/iommu/amd/init.c      | 12 ++++--------
+ drivers/iommu/amd/iommu.c     |  5 -----
+ 3 files changed, 4 insertions(+), 14 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 7546647752fd8..eb0e77813d466 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1959,7 +1959,7 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
- 	ether_addr_copy(known->parent_bssid, new->parent_bssid);
- 	known->pub.max_bssid_indicator = new->pub.max_bssid_indicator;
- 	known->pub.bssid_index = new->pub.bssid_index;
--	known->pub.use_for &= new->pub.use_for;
-+	known->pub.use_for = new->pub.use_for;
- 	known->pub.cannot_use_reasons = new->pub.cannot_use_reasons;
- 	known->bss_source = new->bss_source;
+diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
+index 9b4b589a54b57..bf77fdf5529f4 100644
+--- a/drivers/iommu/amd/amd_iommu.h
++++ b/drivers/iommu/amd/amd_iommu.h
+@@ -15,7 +15,6 @@ irqreturn_t amd_iommu_int_thread(int irq, void *data);
+ irqreturn_t amd_iommu_int_thread_evtlog(int irq, void *data);
+ irqreturn_t amd_iommu_int_thread_pprlog(int irq, void *data);
+ irqreturn_t amd_iommu_int_thread_galog(int irq, void *data);
+-irqreturn_t amd_iommu_int_handler(int irq, void *data);
+ void amd_iommu_restart_log(struct amd_iommu *iommu, const char *evt_type,
+ 			   u8 cntrl_intr, u8 cntrl_log,
+ 			   u32 status_run_mask, u32 status_overflow_mask);
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index 034edce816d01..53afb1cb0a6fc 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -2355,12 +2355,8 @@ static int iommu_setup_msi(struct amd_iommu *iommu)
+ 	if (r)
+ 		return r;
  
+-	r = request_threaded_irq(iommu->dev->irq,
+-				 amd_iommu_int_handler,
+-				 amd_iommu_int_thread,
+-				 0, "AMD-Vi",
+-				 iommu);
+-
++	r = request_threaded_irq(iommu->dev->irq, NULL, amd_iommu_int_thread,
++				 IRQF_ONESHOT, "AMD-Vi", iommu);
+ 	if (r) {
+ 		pci_disable_msi(iommu->dev);
+ 		return r;
+@@ -2534,8 +2530,8 @@ static int __iommu_setup_intcapxt(struct amd_iommu *iommu, const char *devname,
+ 		return irq;
+ 	}
+ 
+-	ret = request_threaded_irq(irq, amd_iommu_int_handler,
+-				   thread_fn, 0, devname, iommu);
++	ret = request_threaded_irq(irq, NULL, thread_fn, IRQF_ONESHOT, devname,
++				   iommu);
+ 	if (ret) {
+ 		irq_domain_free_irqs(irq, 1);
+ 		irq_domain_remove(domain);
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 5914bef0c8c19..30dd482fe0953 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -1146,11 +1146,6 @@ irqreturn_t amd_iommu_int_thread(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
+ 
+-irqreturn_t amd_iommu_int_handler(int irq, void *data)
+-{
+-	return IRQ_WAKE_THREAD;
+-}
+-
+ /****************************************************************************
+  *
+  * IOMMU command queuing functions
 -- 
 2.51.0
 
