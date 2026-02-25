@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-218427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OIiuBEFSnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:05 +0100
+	id gE71MT5anmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9C718F2A9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F108D190AAD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F3957309EAB3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D13DE309887A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D17D18B0A;
-	Wed, 25 Feb 2026 01:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2FC2857C7;
+	Wed, 25 Feb 2026 01:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9JdZCay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxNufQtk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6052F18DB2A;
-	Wed, 25 Feb 2026 01:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9086A28640C;
+	Wed, 25 Feb 2026 01:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983247; cv=none; b=cj+Ew+m2lSKMgBwCaprMXnU4dUQJhQ+zK3QLLThKoLP3jXUvNS4OvrWNPLiOydPfsAgWTyH6aSDQq7Wz2agGRnMilAYk8WsbjABFQfUXp2EmGZtMwHzIaL6lJuaLcr7h33GAIAW+SNW1nngZfF3wzLfHLZC2Zyv8Zpp0W6vpF0A=
+	t=1771983902; cv=none; b=TosOOdwpNMb93J/1HFoZYwJTfzEXJHzk9bhZ2uaMrrHd8YeqBTDOwBuM7xi2TUXbxd4Z5OgxWRh/uRY2fYoJrQ4M6w5f+7OcruP0q7y/Qf1EKZCIjKV68y6dYe2P7l1VHYMFLd+00fiYrjxvEU2WTnazUKQRO65uh11HzfxUH9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983247; c=relaxed/simple;
-	bh=Jzs4cyf8IXPc/csyQHkVF5a027s5wbXZ4ZkBvG1GNTI=;
+	s=arc-20240116; t=1771983902; c=relaxed/simple;
+	bh=XLwgo6jg8kcgQuOktrWm0o1l2YPMxHQRoBA6h2hS5yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AP5fJrxzblosUaaOeyVG9f6sRUkoI6lh412ulhj4ZMvZEiq6gxcHT3nHbCQqYu/ePZqFiUikBhYX21eyzcg69axvMcFP8oZfVueiChYPr6occq9HKPhNiHisWSClpWPrf5vu71ruoOndrAO06zFYEWADR7XilwfzNTo3L3mUs6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9JdZCay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2537BC116D0;
-	Wed, 25 Feb 2026 01:34:07 +0000 (UTC)
+	 MIME-Version; b=NStdTKeiMDpVBiAEwnr59wAvQAjjj1oNJvst/FKJMHpTSPDo7ue4RCGIIHgu/XwiTvmMIwEAWSu7Y4VdT4wgTspqREcnM/I3gc1dvjqzM0skiUGp8m1Tu5a7S1iXXawioGIlZSAM9GIimN4uywYKtRAAL9scIcSKHsNs2KHYkhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxNufQtk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F646C116D0;
+	Wed, 25 Feb 2026 01:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983247;
-	bh=Jzs4cyf8IXPc/csyQHkVF5a027s5wbXZ4ZkBvG1GNTI=;
+	s=korg; t=1771983902;
+	bh=XLwgo6jg8kcgQuOktrWm0o1l2YPMxHQRoBA6h2hS5yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9JdZCayvrjkXnIfYaTSjnljhJTGe8eV4Dad+enwq0NArIqXfM61RsF2YJDY5gBXw
-	 ugV8VhAnd4lyi2ugA7wkZ17/lMVBNIlK1DlkXnB146Q/sFw2hlytBR1oFoeokXhgxU
-	 u6vrXMMxh5pKRASl7oCACCxRmgSI8jR9dbAyDLE4=
+	b=WxNufQtkXpaNJ0oC5ek8CuuMiOCJzDbWhSKdi7C/eIRb2bqnpcxBBInI4hmzHInWp
+	 IJUrI/SrXFS8x3nYYKQq3dvYy7na9iia/omrr/6CrdI1CpppyvpqSBlyIpjDNBg1hH
+	 woqdR4BTy4M+BA+EvPhQ+zIJ5GptHJSwXPqQdNRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Tilmans <olivier.tilmans@nokia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ij@kernel.org>,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Steven Price <steven.price@arm.com>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 387/781] tcp: ECT_1_NEGOTIATION and NEEDS_ACCECN identifiers
-Date: Tue, 24 Feb 2026 17:18:16 -0800
-Message-ID: <20260225012409.187392839@linuxfoundation.org>
+Subject: [PATCH 6.18 171/641] drm/panthor: Fix immediate ticking on a disabled tick
+Date: Tue, 24 Feb 2026 17:18:17 -0800
+Message-ID: <20260225012353.189508734@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,238 +64,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218427-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,gmail.com,collabora.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218994-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nokia-bell-labs.com:email,nokia.com:email]
-X-Rspamd-Queue-Id: AD9C718F2A9
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,arm.com:email,collabora.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F108D190AAD
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit 100f946b8d44b64bc0b8a8c30d283105031c0a77 ]
+[ Upstream commit 4356d21994f4ff5c87305b874939b359f16f6677 ]
 
-Two flags for congestion control (CC) module are added in this patch
-related to AccECN negotiation. First, a new flag (TCP_CONG_NEEDS_ACCECN)
-defines that the CC expects to negotiate AccECN functionality using the
-ECE, CWR and AE flags in the TCP header.
+We have a few paths where we schedule the tick work immediately without
+changing the resched_target. If the tick was stopped, this would lead
+to a remaining_jiffies that's always > 0, and it wouldn't force a full
+tick in that case. Add extra checks to cover that case properly.
 
-Second, during ECN negotiation, ECT(0) in the IP header is used. This
-patch enables CC to control whether ECT(0) or ECT(1) should be used on
-a per-segment basis. A new flag (TCP_CONG_ECT_1_NEGOTIATION) defines the
-expected ECT value in the IP header by the CA when not-yet initialized
-for the connection.
+v2:
+- Fix typo
+- Simplify the code as suggested by Steve
 
-The detailed AccECN negotiaotn can be found in IETF RFC9768.
+v3:
+- Collect R-b
 
-Co-developed-by: Olivier Tilmans <olivier.tilmans@nokia.com>
-Signed-off-by: Olivier Tilmans <olivier.tilmans@nokia.com>
-Signed-off-by: Ilpo Järvinen <ij@kernel.org>
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260131222515.8485-5-chia-yu.chang@nokia-bell-labs.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: c5ff6b837159 ("tcp: accecn: handle unexpected AccECN negotiation feedback")
+Fixes: de8548813824 ("drm/panthor: Add the scheduler logical block")
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Chia-I Wu <olvaffe@gmail.com>
+Link: https://patch.msgid.link/20251128094839.3856402-6-boris.brezillon@collabora.com
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet_ecn.h | 20 +++++++++++++++++---
- include/net/tcp.h      | 21 ++++++++++++++++++++-
- include/net/tcp_ecn.h  | 13 ++++++++++---
- net/ipv4/tcp_cong.c    |  5 +++--
- net/ipv4/tcp_input.c   |  3 ++-
- 5 files changed, 52 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/panthor/panthor_sched.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/inet_ecn.h b/include/net/inet_ecn.h
-index ea32393464a29..827b87a95dab3 100644
---- a/include/net/inet_ecn.h
-+++ b/include/net/inet_ecn.h
-@@ -51,11 +51,25 @@ static inline __u8 INET_ECN_encapsulate(__u8 outer, __u8 inner)
- 	return outer;
- }
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index 03062169b8d33..3d4ac73999825 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -2374,6 +2374,7 @@ static void tick_work(struct work_struct *work)
+ 						      tick_work.work);
+ 	struct panthor_device *ptdev = sched->ptdev;
+ 	struct panthor_sched_tick_ctx ctx;
++	u64 resched_target = sched->resched_target;
+ 	u64 remaining_jiffies = 0, resched_delay;
+ 	u64 now = get_jiffies_64();
+ 	int prio, ret, cookie;
+@@ -2386,8 +2387,12 @@ static void tick_work(struct work_struct *work)
+ 	if (drm_WARN_ON(&ptdev->base, ret))
+ 		goto out_dev_exit;
  
-+/* Apply either ECT(0) or ECT(1) */
-+static inline void __INET_ECN_xmit(struct sock *sk, bool use_ect_1)
-+{
-+	__u8 ect = use_ect_1 ? INET_ECN_ECT_1 : INET_ECN_ECT_0;
+-	if (time_before64(now, sched->resched_target))
+-		remaining_jiffies = sched->resched_target - now;
++	/* If the tick is stopped, calculate when the next tick would be */
++	if (resched_target == U64_MAX)
++		resched_target = sched->last_tick + sched->tick_period;
 +
-+	/* Mask the complete byte in case the connection alternates between
-+	 * ECT(0) and ECT(1).
-+	 */
-+	inet_sk(sk)->tos &= ~INET_ECN_MASK;
-+	inet_sk(sk)->tos |= ect;
-+	if (inet6_sk(sk)) {
-+		inet6_sk(sk)->tclass &= ~INET_ECN_MASK;
-+		inet6_sk(sk)->tclass |= ect;
-+	}
-+}
-+
- static inline void INET_ECN_xmit(struct sock *sk)
- {
--	inet_sk(sk)->tos |= INET_ECN_ECT_0;
--	if (inet6_sk(sk) != NULL)
--		inet6_sk(sk)->tclass |= INET_ECN_ECT_0;
-+	__INET_ECN_xmit(sk, false);
- }
++	if (time_before64(now, resched_target))
++		remaining_jiffies = resched_target - now;
  
- static inline void INET_ECN_dontxmit(struct sock *sk)
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 0deb5e9dd9114..c4c25f2e0c0dd 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1203,7 +1203,12 @@ enum tcp_ca_ack_event_flags {
- #define TCP_CONG_NON_RESTRICTED		BIT(0)
- /* Requires ECN/ECT set on all packets */
- #define TCP_CONG_NEEDS_ECN		BIT(1)
--#define TCP_CONG_MASK	(TCP_CONG_NON_RESTRICTED | TCP_CONG_NEEDS_ECN)
-+/* Require successfully negotiated AccECN capability */
-+#define TCP_CONG_NEEDS_ACCECN		BIT(2)
-+/* Use ECT(1) instead of ECT(0) while the CA is uninitialized */
-+#define TCP_CONG_ECT_1_NEGOTIATION	BIT(3)
-+#define TCP_CONG_MASK  (TCP_CONG_NON_RESTRICTED | TCP_CONG_NEEDS_ECN | \
-+			TCP_CONG_NEEDS_ACCECN | TCP_CONG_ECT_1_NEGOTIATION)
+ 	full_tick = remaining_jiffies == 0;
  
- union tcp_cc_info;
- 
-@@ -1335,6 +1340,20 @@ static inline bool tcp_ca_needs_ecn(const struct sock *sk)
- 	return icsk->icsk_ca_ops->flags & TCP_CONG_NEEDS_ECN;
- }
- 
-+static inline bool tcp_ca_needs_accecn(const struct sock *sk)
-+{
-+	const struct inet_connection_sock *icsk = inet_csk(sk);
-+
-+	return icsk->icsk_ca_ops->flags & TCP_CONG_NEEDS_ACCECN;
-+}
-+
-+static inline bool tcp_ca_ect_1_negotiation(const struct sock *sk)
-+{
-+	const struct inet_connection_sock *icsk = inet_csk(sk);
-+
-+	return icsk->icsk_ca_ops->flags & TCP_CONG_ECT_1_NEGOTIATION;
-+}
-+
- static inline void tcp_ca_event(struct sock *sk, const enum tcp_ca_event event)
- {
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
-diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
-index f13e5cd2b1ac3..fdde1c342b35c 100644
---- a/include/net/tcp_ecn.h
-+++ b/include/net/tcp_ecn.h
-@@ -31,6 +31,12 @@ enum tcp_accecn_option {
- 	TCP_ACCECN_OPTION_FULL = 2,
- };
- 
-+/* Apply either ECT(0) or ECT(1) based on TCP_CONG_ECT_1_NEGOTIATION flag */
-+static inline void INET_ECN_xmit_ect_1_negotiation(struct sock *sk)
-+{
-+	__INET_ECN_xmit(sk, tcp_ca_ect_1_negotiation(sk));
-+}
-+
- static inline void tcp_ecn_queue_cwr(struct tcp_sock *tp)
- {
- 	/* Do not set CWR if in AccECN mode! */
-@@ -561,7 +567,7 @@ static inline void tcp_ecn_send_synack(struct sock *sk, struct sk_buff *skb)
- 		TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_ECE;
- 	else if (tcp_ca_needs_ecn(sk) ||
- 		 tcp_bpf_ca_needs_ecn(sk))
--		INET_ECN_xmit(sk);
-+		INET_ECN_xmit_ect_1_negotiation(sk);
- 
- 	if (tp->ecn_flags & TCP_ECN_MODE_ACCECN) {
- 		TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_ACE;
-@@ -579,7 +585,8 @@ static inline void tcp_ecn_send_syn(struct sock *sk, struct sk_buff *skb)
- 	bool use_ecn, use_accecn;
- 	u8 tcp_ecn = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_ecn);
- 
--	use_accecn = tcp_ecn == TCP_ECN_IN_ACCECN_OUT_ACCECN;
-+	use_accecn = tcp_ecn == TCP_ECN_IN_ACCECN_OUT_ACCECN ||
-+		     tcp_ca_needs_accecn(sk);
- 	use_ecn = tcp_ecn == TCP_ECN_IN_ECN_OUT_ECN ||
- 		  tcp_ecn == TCP_ECN_IN_ACCECN_OUT_ECN ||
- 		  tcp_ca_needs_ecn(sk) || bpf_needs_ecn || use_accecn;
-@@ -595,7 +602,7 @@ static inline void tcp_ecn_send_syn(struct sock *sk, struct sk_buff *skb)
- 
- 	if (use_ecn) {
- 		if (tcp_ca_needs_ecn(sk) || bpf_needs_ecn)
--			INET_ECN_xmit(sk);
-+			INET_ECN_xmit_ect_1_negotiation(sk);
- 
- 		TCP_SKB_CB(skb)->tcp_flags |= TCPHDR_ECE | TCPHDR_CWR;
- 		if (use_accecn) {
-diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
-index df758adbb445f..e9f6c77e06316 100644
---- a/net/ipv4/tcp_cong.c
-+++ b/net/ipv4/tcp_cong.c
-@@ -16,6 +16,7 @@
- #include <linux/gfp.h>
- #include <linux/jhash.h>
- #include <net/tcp.h>
-+#include <net/tcp_ecn.h>
- #include <trace/events/tcp.h>
- 
- static DEFINE_SPINLOCK(tcp_cong_list_lock);
-@@ -227,7 +228,7 @@ void tcp_assign_congestion_control(struct sock *sk)
- 
- 	memset(icsk->icsk_ca_priv, 0, sizeof(icsk->icsk_ca_priv));
- 	if (ca->flags & TCP_CONG_NEEDS_ECN)
--		INET_ECN_xmit(sk);
-+		INET_ECN_xmit_ect_1_negotiation(sk);
- 	else
- 		INET_ECN_dontxmit(sk);
- }
-@@ -257,7 +258,7 @@ static void tcp_reinit_congestion_control(struct sock *sk,
- 	memset(icsk->icsk_ca_priv, 0, sizeof(icsk->icsk_ca_priv));
- 
- 	if (ca->flags & TCP_CONG_NEEDS_ECN)
--		INET_ECN_xmit(sk);
-+		INET_ECN_xmit_ect_1_negotiation(sk);
- 	else
- 		INET_ECN_dontxmit(sk);
- 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 198f8a0d37be0..736f8f55ab5a6 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -7248,7 +7248,8 @@ static void tcp_ecn_create_request(struct request_sock *req,
- 	u32 ecn_ok_dst;
- 
- 	if (tcp_accecn_syn_requested(th) &&
--	    READ_ONCE(net->ipv4.sysctl_tcp_ecn) >= 3) {
-+	    (READ_ONCE(net->ipv4.sysctl_tcp_ecn) >= 3 ||
-+	     tcp_ca_needs_accecn(listen_sk))) {
- 		inet_rsk(req)->ecn_ok = 1;
- 		tcp_rsk(req)->accecn_ok = 1;
- 		tcp_rsk(req)->syn_ect_rcv = TCP_SKB_CB(skb)->ip_dsfield &
 -- 
 2.51.0
 
