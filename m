@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aAosFr+fnmloWgQAu9opvQ
-	(envelope-from <stable+bounces-219362-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:43 +0100
+	id kProLKxUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3AA192FD4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF1618FD7B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17EE430B3D00
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E81B31D2C77
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D5E2C21DF;
-	Wed, 25 Feb 2026 06:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6E9268690;
+	Wed, 25 Feb 2026 01:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoZYbsnd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFu8IBbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD1527FB37;
-	Wed, 25 Feb 2026 06:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CC2248881;
+	Wed, 25 Feb 2026 01:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002665; cv=none; b=i1lKU57jmkeYDipufmMqWQPU4Umuy5DSZTLvI2RlUlgzt/iXIeRgxwygcgK7JI8L+r0puXDzGz/r1O7ssKmF0Y7gtUkuw8IQtBBeycQuBPNoxKcToH5LZA2vVfcMk3vjp943YqUqLd0IsqYK9balefnkIlHvcfap8lQW9z9ZPuU=
+	t=1771983564; cv=none; b=MlbjKECn6hGRa/1RbpqNw9UHYnC58tYu5s4J12CwNQsz5+qYCpvt4TwT3/bb7RZGpJgValcNHg5XbNZQWyBvp2h4Ariy8C3f8SeaWn6vO/6fjyZ+f1oK3TPcakaYFSLSf62h2TWIpM1cRGCsyfCtwwkjlOFLY5S46nQzKQO5NDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002665; c=relaxed/simple;
-	bh=VNstu/6+BLFXu/xcSwQSRQA5PyV3oh8Qs8CvuWfO1MA=;
+	s=arc-20240116; t=1771983564; c=relaxed/simple;
+	bh=GBVPaWdyQMjqV7lJr/UEOAcH50QQ1GhQUJ7sFG+f3ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oeybJgfb0HoaXHZcRZ1wANY+A2YLm6EqgZbPqKtyTwWbMwylOSOMp5ElKUWH0opfNqyraVzHmCBWHY0BIYi/z0P2P/2Mo+61E04NHwlV/ju/11pnNG4AT567ZSsI+jbBpEBEcP3T2KKxN6mvllLIwQ9HHhQANrG4joK0/zeLeeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoZYbsnd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942B2C116D0;
-	Wed, 25 Feb 2026 06:57:45 +0000 (UTC)
+	 MIME-Version; b=K+/AeHlqtnJMB0G2uydt2q8qQJt+9J4/WKoFD0+UV6SX11CJB0wjhOWbPxL9xQhY9RTVCFmBlGZxGHZ1Pocc+evmQ2AH6722l/kL1ycq87VT2fgKBWfxKl8Mla+ua0+VFHYgAMdjZmRGpA0jZZwklI2A2eej/s57dqM7JP/zeLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFu8IBbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637EEC116D0;
+	Wed, 25 Feb 2026 01:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002665;
-	bh=VNstu/6+BLFXu/xcSwQSRQA5PyV3oh8Qs8CvuWfO1MA=;
+	s=korg; t=1771983564;
+	bh=GBVPaWdyQMjqV7lJr/UEOAcH50QQ1GhQUJ7sFG+f3ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GoZYbsndr53JSnb4r462Cp2Ku5P+EgQNBwZaL4i2GCAZGOyaeSP0B/UHqsZP67FBk
-	 EUK9R8NYOqmghIwtv/TXXy2hhTHkV7fAB3u1Z6yc0QZ+t0eScMHZ5zDFyQLT7wurxX
-	 AXsywX21LIhtA1P0cTgZOfnC6sYPzzWSu9S63et0=
+	b=YFu8IBbBUZycmQdAnGzZtkw62ukTKxhZCengFqEWiX2oyB+gaPYCjc3JSckyQHLLl
+	 ZsZQ8qXLp6BZCp2lvcdmvQDWYm5wYW+d9ELZo9zO0Ee5YocKfXsEBpJ89AGlxRO0xC
+	 tCMvU+7cbq8HmLgih6G1LvasA6qY08zQLf390ytQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	syzbot+ff16b505ec9152e5f448@syzkaller.appspotmail.com,
+	Brian Witte <brianwitte@mailfence.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 446/641] clk: mediatek: Add mfg_eb as parent to mt8196 mfgpll clocks
+Subject: [PATCH 6.19 663/781] netfilter: nf_tables: revert commit_mutex usage in reset path
 Date: Tue, 24 Feb 2026 17:22:52 -0800
-Message-ID: <20260225012359.330569144@linuxfoundation.org>
+Message-ID: <20260225012416.050505401@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,133 +66,457 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218704-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219362-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email]
-X-Rspamd-Queue-Id: AD3AA192FD4
+	NEURAL_HAM(-0.00)[-0.994];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,ff16b505ec9152e5f448];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailfence.com:email,appspotmail.com:email,syzkaller.appspot.com:url,strlen.de:email]
+X-Rspamd-Queue-Id: EDF1618FD7B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+From: Brian Witte <brianwitte@mailfence.com>
 
-[ Upstream commit 19024c9980c331908de0680283d572b80308654e ]
+[ Upstream commit 7f261bb906bf527c4a6e2a646e2d5f3679f2a8bc ]
 
-All the MFGPLL require MFG_EB to be on for any operation on them, and
-they only tick when MFG_EB is on as well, therefore making this a
-parent-child relationship.
+It causes circular lock dependency between commit_mutex, nfnl_subsys_ipset
+and nlk_cb_mutex when nft reset, ipset list, and iptables-nft with '-m set'
+rule run at the same time.
 
-This dependency wasn't clear during the initial upstreaming of these
-clock controllers, as it only made itself known when I could observe
-the effects of the clock by bringing up a different piece of hardware.
+Previous patches made it safe to run individual reset handlers concurrently
+so commit_mutex is no longer required to prevent this.
 
-Add a new PLL_PARENT_EN flag to mediatek's clk-pll.h, and check for it
-when initialising the pll to then translate it into the actual
-CLK_OPS_PARENT_ENABLE flag.
-
-Then add the mfg_eb parent to the mfgpll clocks, and set the new
-PLL_PARENT_EN flag.
-
-Fixes: 03dc02f8c7dc ("clk: mediatek: Add MT8196 mfg clock support")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: bd662c4218f9 ("netfilter: nf_tables: Add locking for NFT_MSG_GETOBJ_RESET requests")
+Fixes: 3d483faa6663 ("netfilter: nf_tables: Add locking for NFT_MSG_GETSETELEM_RESET requests")
+Fixes: 3cb03edb4de3 ("netfilter: nf_tables: Add locking for NFT_MSG_GETRULE_RESET requests")
+Link: https://lore.kernel.org/all/aUh_3mVRV8OrGsVo@strlen.de/
+Reported-by: <syzbot+ff16b505ec9152e5f448@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=ff16b505ec9152e5f448
+Signed-off-by: Brian Witte <brianwitte@mailfence.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt8196-mfg.c | 13 +++++++------
- drivers/clk/mediatek/clk-pll.c        |  3 +++
- drivers/clk/mediatek/clk-pll.h        |  1 +
- 3 files changed, 11 insertions(+), 6 deletions(-)
+ net/netfilter/nf_tables_api.c | 248 ++++++----------------------------
+ 1 file changed, 42 insertions(+), 206 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt8196-mfg.c b/drivers/clk/mediatek/clk-mt8196-mfg.c
-index ae1eb9de79ae2..f40795b47ff1f 100644
---- a/drivers/clk/mediatek/clk-mt8196-mfg.c
-+++ b/drivers/clk/mediatek/clk-mt8196-mfg.c
-@@ -58,24 +58,25 @@
- 		.pcw_shift = _pcw_shift,			\
- 		.pcwbits = _pcwbits,				\
- 		.pcwibits = MT8196_INTEGER_BITS,		\
-+		.parent_name = "mfg_eb",			\
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index daef07ee09427..f807183235e79 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3900,23 +3900,6 @@ static int nf_tables_dump_rules(struct sk_buff *skb,
+ 	return skb->len;
+ }
+ 
+-static int nf_tables_dumpreset_rules(struct sk_buff *skb,
+-				     struct netlink_callback *cb)
+-{
+-	struct nftables_pernet *nft_net = nft_pernet(sock_net(skb->sk));
+-	int ret;
+-
+-	/* Mutex is held is to prevent that two concurrent dump-and-reset calls
+-	 * do not underrun counters and quotas. The commit_mutex is used for
+-	 * the lack a better lock, this is not transaction path.
+-	 */
+-	mutex_lock(&nft_net->commit_mutex);
+-	ret = nf_tables_dump_rules(skb, cb);
+-	mutex_unlock(&nft_net->commit_mutex);
+-
+-	return ret;
+-}
+-
+ static int nf_tables_dump_rules_start(struct netlink_callback *cb)
+ {
+ 	struct nft_rule_dump_ctx *ctx = (void *)cb->ctx;
+@@ -3936,16 +3919,10 @@ static int nf_tables_dump_rules_start(struct netlink_callback *cb)
+ 			return -ENOMEM;
+ 		}
+ 	}
+-	return 0;
+-}
+-
+-static int nf_tables_dumpreset_rules_start(struct netlink_callback *cb)
+-{
+-	struct nft_rule_dump_ctx *ctx = (void *)cb->ctx;
+-
+-	ctx->reset = true;
++	if (NFNL_MSG_TYPE(cb->nlh->nlmsg_type) == NFT_MSG_GETRULE_RESET)
++		ctx->reset = true;
+ 
+-	return nf_tables_dump_rules_start(cb);
++	return 0;
+ }
+ 
+ static int nf_tables_dump_rules_done(struct netlink_callback *cb)
+@@ -4011,6 +3988,8 @@ static int nf_tables_getrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 	u32 portid = NETLINK_CB(skb).portid;
+ 	struct net *net = info->net;
+ 	struct sk_buff *skb2;
++	bool reset = false;
++	char *buf;
+ 
+ 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
+ 		struct netlink_dump_control c = {
+@@ -4024,47 +4003,16 @@ static int nf_tables_getrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 		return nft_netlink_dump_start_rcu(info->sk, skb, info->nlh, &c);
  	}
  
- static const struct mtk_pll_data mfg_ao_plls[] = {
--	PLL(CLK_MFG_AO_MFGPLL, "mfgpll", MFGPLL_CON0, MFGPLL_CON0, 0, 0, 0,
--	    BIT(0), MFGPLL_CON1, 24, 0, 0, 0,
-+	PLL(CLK_MFG_AO_MFGPLL, "mfgpll", MFGPLL_CON0, MFGPLL_CON0, 0, 0,
-+	    PLL_PARENT_EN, BIT(0), MFGPLL_CON1, 24, 0, 0, 0,
- 	    MFGPLL_CON1, 0, 22),
- };
+-	skb2 = nf_tables_getrule_single(portid, info, nla, false);
+-	if (IS_ERR(skb2))
+-		return PTR_ERR(skb2);
+-
+-	return nfnetlink_unicast(skb2, net, portid);
+-}
+-
+-static int nf_tables_getrule_reset(struct sk_buff *skb,
+-				   const struct nfnl_info *info,
+-				   const struct nlattr * const nla[])
+-{
+-	struct nftables_pernet *nft_net = nft_pernet(info->net);
+-	u32 portid = NETLINK_CB(skb).portid;
+-	struct net *net = info->net;
+-	struct sk_buff *skb2;
+-	char *buf;
+-
+-	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
+-		struct netlink_dump_control c = {
+-			.start= nf_tables_dumpreset_rules_start,
+-			.dump = nf_tables_dumpreset_rules,
+-			.done = nf_tables_dump_rules_done,
+-			.module = THIS_MODULE,
+-			.data = (void *)nla,
+-		};
+-
+-		return nft_netlink_dump_start_rcu(info->sk, skb, info->nlh, &c);
+-	}
+-
+-	if (!try_module_get(THIS_MODULE))
+-		return -EINVAL;
+-	rcu_read_unlock();
+-	mutex_lock(&nft_net->commit_mutex);
+-	skb2 = nf_tables_getrule_single(portid, info, nla, true);
+-	mutex_unlock(&nft_net->commit_mutex);
+-	rcu_read_lock();
+-	module_put(THIS_MODULE);
++	if (NFNL_MSG_TYPE(info->nlh->nlmsg_type) == NFT_MSG_GETRULE_RESET)
++		reset = true;
  
- static const struct mtk_pll_data mfgsc0_ao_plls[] = {
- 	PLL(CLK_MFGSC0_AO_MFGPLL_SC0, "mfgpll-sc0", MFGPLL_SC0_CON0,
--	    MFGPLL_SC0_CON0, 0, 0, 0, BIT(0), MFGPLL_SC0_CON1, 24, 0, 0, 0,
--	    MFGPLL_SC0_CON1, 0, 22),
-+	    MFGPLL_SC0_CON0, 0, 0, PLL_PARENT_EN, BIT(0), MFGPLL_SC0_CON1, 24,
-+	    0, 0, 0, MFGPLL_SC0_CON1, 0, 22),
- };
++	skb2 = nf_tables_getrule_single(portid, info, nla, reset);
+ 	if (IS_ERR(skb2))
+ 		return PTR_ERR(skb2);
  
- static const struct mtk_pll_data mfgsc1_ao_plls[] = {
- 	PLL(CLK_MFGSC1_AO_MFGPLL_SC1, "mfgpll-sc1", MFGPLL_SC1_CON0,
--	    MFGPLL_SC1_CON0, 0, 0, 0, BIT(0), MFGPLL_SC1_CON1, 24, 0, 0, 0,
--	    MFGPLL_SC1_CON1, 0, 22),
-+	    MFGPLL_SC1_CON0, 0, 0, PLL_PARENT_EN, BIT(0), MFGPLL_SC1_CON1, 24,
-+	    0, 0, 0, MFGPLL_SC1_CON1, 0, 22),
- };
- 
- static const struct of_device_id of_match_clk_mt8196_mfg[] = {
-diff --git a/drivers/clk/mediatek/clk-pll.c b/drivers/clk/mediatek/clk-pll.c
-index cd2b6ce551c6b..de3eb02670554 100644
---- a/drivers/clk/mediatek/clk-pll.c
-+++ b/drivers/clk/mediatek/clk-pll.c
-@@ -358,6 +358,9 @@ struct clk_hw *mtk_clk_register_pll_ops(struct mtk_clk_pll *pll,
- 
- 	init.name = data->name;
- 	init.flags = (data->flags & PLL_AO) ? CLK_IS_CRITICAL : 0;
-+	if (data->flags & PLL_PARENT_EN)
-+		init.flags |= CLK_OPS_PARENT_ENABLE;
++	if (!reset)
++		return nfnetlink_unicast(skb2, net, portid);
 +
- 	init.ops = pll_ops;
- 	if (data->parent_name)
- 		init.parent_names = &data->parent_name;
-diff --git a/drivers/clk/mediatek/clk-pll.h b/drivers/clk/mediatek/clk-pll.h
-index d71c150ce83e4..de5a8fb7cbcfe 100644
---- a/drivers/clk/mediatek/clk-pll.h
-+++ b/drivers/clk/mediatek/clk-pll.h
-@@ -21,6 +21,7 @@ struct mtk_pll_div_table {
+ 	buf = kasprintf(GFP_ATOMIC, "%.*s:%u",
+ 			nla_len(nla[NFTA_RULE_TABLE]),
+ 			(char *)nla_data(nla[NFTA_RULE_TABLE]),
+@@ -6323,6 +6271,10 @@ static int nf_tables_dump_set(struct sk_buff *skb, struct netlink_callback *cb)
+ 	nla_nest_end(skb, nest);
+ 	nlmsg_end(skb, nlh);
  
- #define HAVE_RST_BAR	BIT(0)
- #define PLL_AO		BIT(1)
-+#define PLL_PARENT_EN	BIT(2)
- #define POSTDIV_MASK	GENMASK(2, 0)
++	if (dump_ctx->reset && args.iter.count > args.iter.skip)
++		audit_log_nft_set_reset(table, cb->seq,
++					args.iter.count - args.iter.skip);
++
+ 	rcu_read_unlock();
  
- struct mtk_pll_data {
+ 	if (args.iter.err && args.iter.err != -EMSGSIZE)
+@@ -6338,26 +6290,6 @@ static int nf_tables_dump_set(struct sk_buff *skb, struct netlink_callback *cb)
+ 	return -ENOSPC;
+ }
+ 
+-static int nf_tables_dumpreset_set(struct sk_buff *skb,
+-				   struct netlink_callback *cb)
+-{
+-	struct nftables_pernet *nft_net = nft_pernet(sock_net(skb->sk));
+-	struct nft_set_dump_ctx *dump_ctx = cb->data;
+-	int ret, skip = cb->args[0];
+-
+-	mutex_lock(&nft_net->commit_mutex);
+-
+-	ret = nf_tables_dump_set(skb, cb);
+-
+-	if (cb->args[0] > skip)
+-		audit_log_nft_set_reset(dump_ctx->ctx.table, cb->seq,
+-					cb->args[0] - skip);
+-
+-	mutex_unlock(&nft_net->commit_mutex);
+-
+-	return ret;
+-}
+-
+ static int nf_tables_dump_set_start(struct netlink_callback *cb)
+ {
+ 	struct nft_set_dump_ctx *dump_ctx = cb->data;
+@@ -6601,8 +6533,13 @@ static int nf_tables_getsetelem(struct sk_buff *skb,
+ {
+ 	struct netlink_ext_ack *extack = info->extack;
+ 	struct nft_set_dump_ctx dump_ctx;
++	int rem, err = 0, nelems = 0;
++	struct net *net = info->net;
+ 	struct nlattr *attr;
+-	int rem, err = 0;
++	bool reset = false;
++
++	if (NFNL_MSG_TYPE(info->nlh->nlmsg_type) == NFT_MSG_GETSETELEM_RESET)
++		reset = true;
+ 
+ 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
+ 		struct netlink_dump_control c = {
+@@ -6612,7 +6549,7 @@ static int nf_tables_getsetelem(struct sk_buff *skb,
+ 			.module = THIS_MODULE,
+ 		};
+ 
+-		err = nft_set_dump_ctx_init(&dump_ctx, skb, info, nla, false);
++		err = nft_set_dump_ctx_init(&dump_ctx, skb, info, nla, reset);
+ 		if (err)
+ 			return err;
+ 
+@@ -6623,75 +6560,21 @@ static int nf_tables_getsetelem(struct sk_buff *skb,
+ 	if (!nla[NFTA_SET_ELEM_LIST_ELEMENTS])
+ 		return -EINVAL;
+ 
+-	err = nft_set_dump_ctx_init(&dump_ctx, skb, info, nla, false);
++	err = nft_set_dump_ctx_init(&dump_ctx, skb, info, nla, reset);
+ 	if (err)
+ 		return err;
+ 
+ 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
+-		err = nft_get_set_elem(&dump_ctx.ctx, dump_ctx.set, attr, false);
+-		if (err < 0) {
+-			NL_SET_BAD_ATTR(extack, attr);
+-			break;
+-		}
+-	}
+-
+-	return err;
+-}
+-
+-static int nf_tables_getsetelem_reset(struct sk_buff *skb,
+-				      const struct nfnl_info *info,
+-				      const struct nlattr * const nla[])
+-{
+-	struct nftables_pernet *nft_net = nft_pernet(info->net);
+-	struct netlink_ext_ack *extack = info->extack;
+-	struct nft_set_dump_ctx dump_ctx;
+-	int rem, err = 0, nelems = 0;
+-	struct nlattr *attr;
+-
+-	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
+-		struct netlink_dump_control c = {
+-			.start = nf_tables_dump_set_start,
+-			.dump = nf_tables_dumpreset_set,
+-			.done = nf_tables_dump_set_done,
+-			.module = THIS_MODULE,
+-		};
+-
+-		err = nft_set_dump_ctx_init(&dump_ctx, skb, info, nla, true);
+-		if (err)
+-			return err;
+-
+-		c.data = &dump_ctx;
+-		return nft_netlink_dump_start_rcu(info->sk, skb, info->nlh, &c);
+-	}
+-
+-	if (!nla[NFTA_SET_ELEM_LIST_ELEMENTS])
+-		return -EINVAL;
+-
+-	if (!try_module_get(THIS_MODULE))
+-		return -EINVAL;
+-	rcu_read_unlock();
+-	mutex_lock(&nft_net->commit_mutex);
+-	rcu_read_lock();
+-
+-	err = nft_set_dump_ctx_init(&dump_ctx, skb, info, nla, true);
+-	if (err)
+-		goto out_unlock;
+-
+-	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
+-		err = nft_get_set_elem(&dump_ctx.ctx, dump_ctx.set, attr, true);
++		err = nft_get_set_elem(&dump_ctx.ctx, dump_ctx.set, attr, reset);
+ 		if (err < 0) {
+ 			NL_SET_BAD_ATTR(extack, attr);
+ 			break;
+ 		}
+ 		nelems++;
+ 	}
+-	audit_log_nft_set_reset(dump_ctx.ctx.table, nft_base_seq(info->net), nelems);
+-
+-out_unlock:
+-	rcu_read_unlock();
+-	mutex_unlock(&nft_net->commit_mutex);
+-	rcu_read_lock();
+-	module_put(THIS_MODULE);
++	if (reset)
++		audit_log_nft_set_reset(dump_ctx.ctx.table, nft_base_seq(net),
++					nelems);
+ 
+ 	return err;
+ }
+@@ -8562,19 +8445,6 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
+ 	return skb->len;
+ }
+ 
+-static int nf_tables_dumpreset_obj(struct sk_buff *skb,
+-				   struct netlink_callback *cb)
+-{
+-	struct nftables_pernet *nft_net = nft_pernet(sock_net(skb->sk));
+-	int ret;
+-
+-	mutex_lock(&nft_net->commit_mutex);
+-	ret = nf_tables_dump_obj(skb, cb);
+-	mutex_unlock(&nft_net->commit_mutex);
+-
+-	return ret;
+-}
+-
+ static int nf_tables_dump_obj_start(struct netlink_callback *cb)
+ {
+ 	struct nft_obj_dump_ctx *ctx = (void *)cb->ctx;
+@@ -8591,16 +8461,10 @@ static int nf_tables_dump_obj_start(struct netlink_callback *cb)
+ 	if (nla[NFTA_OBJ_TYPE])
+ 		ctx->type = ntohl(nla_get_be32(nla[NFTA_OBJ_TYPE]));
+ 
+-	return 0;
+-}
+-
+-static int nf_tables_dumpreset_obj_start(struct netlink_callback *cb)
+-{
+-	struct nft_obj_dump_ctx *ctx = (void *)cb->ctx;
+-
+-	ctx->reset = true;
++	if (NFNL_MSG_TYPE(cb->nlh->nlmsg_type) == NFT_MSG_GETOBJ_RESET)
++		ctx->reset = true;
+ 
+-	return nf_tables_dump_obj_start(cb);
++	return 0;
+ }
+ 
+ static int nf_tables_dump_obj_done(struct netlink_callback *cb)
+@@ -8662,42 +8526,16 @@ nf_tables_getobj_single(u32 portid, const struct nfnl_info *info,
+ static int nf_tables_getobj(struct sk_buff *skb, const struct nfnl_info *info,
+ 			    const struct nlattr * const nla[])
+ {
+-	u32 portid = NETLINK_CB(skb).portid;
+-	struct sk_buff *skb2;
+-
+-	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
+-		struct netlink_dump_control c = {
+-			.start = nf_tables_dump_obj_start,
+-			.dump = nf_tables_dump_obj,
+-			.done = nf_tables_dump_obj_done,
+-			.module = THIS_MODULE,
+-			.data = (void *)nla,
+-		};
+-
+-		return nft_netlink_dump_start_rcu(info->sk, skb, info->nlh, &c);
+-	}
+-
+-	skb2 = nf_tables_getobj_single(portid, info, nla, false);
+-	if (IS_ERR(skb2))
+-		return PTR_ERR(skb2);
+-
+-	return nfnetlink_unicast(skb2, info->net, portid);
+-}
+-
+-static int nf_tables_getobj_reset(struct sk_buff *skb,
+-				  const struct nfnl_info *info,
+-				  const struct nlattr * const nla[])
+-{
+-	struct nftables_pernet *nft_net = nft_pernet(info->net);
+ 	u32 portid = NETLINK_CB(skb).portid;
+ 	struct net *net = info->net;
+ 	struct sk_buff *skb2;
++	bool reset = false;
+ 	char *buf;
+ 
+ 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
+ 		struct netlink_dump_control c = {
+-			.start = nf_tables_dumpreset_obj_start,
+-			.dump = nf_tables_dumpreset_obj,
++			.start = nf_tables_dump_obj_start,
++			.dump = nf_tables_dump_obj,
+ 			.done = nf_tables_dump_obj_done,
+ 			.module = THIS_MODULE,
+ 			.data = (void *)nla,
+@@ -8706,18 +8544,16 @@ static int nf_tables_getobj_reset(struct sk_buff *skb,
+ 		return nft_netlink_dump_start_rcu(info->sk, skb, info->nlh, &c);
+ 	}
+ 
+-	if (!try_module_get(THIS_MODULE))
+-		return -EINVAL;
+-	rcu_read_unlock();
+-	mutex_lock(&nft_net->commit_mutex);
+-	skb2 = nf_tables_getobj_single(portid, info, nla, true);
+-	mutex_unlock(&nft_net->commit_mutex);
+-	rcu_read_lock();
+-	module_put(THIS_MODULE);
++	if (NFNL_MSG_TYPE(info->nlh->nlmsg_type) == NFT_MSG_GETOBJ_RESET)
++		reset = true;
+ 
++	skb2 = nf_tables_getobj_single(portid, info, nla, reset);
+ 	if (IS_ERR(skb2))
+ 		return PTR_ERR(skb2);
+ 
++	if (!reset)
++		return nfnetlink_unicast(skb2, net, NETLINK_CB(skb).portid);
++
+ 	buf = kasprintf(GFP_ATOMIC, "%.*s:%u",
+ 			nla_len(nla[NFTA_OBJ_TABLE]),
+ 			(char *)nla_data(nla[NFTA_OBJ_TABLE]),
+@@ -10035,7 +9871,7 @@ static const struct nfnl_callback nf_tables_cb[NFT_MSG_MAX] = {
+ 		.policy		= nft_rule_policy,
+ 	},
+ 	[NFT_MSG_GETRULE_RESET] = {
+-		.call		= nf_tables_getrule_reset,
++		.call		= nf_tables_getrule,
+ 		.type		= NFNL_CB_RCU,
+ 		.attr_count	= NFTA_RULE_MAX,
+ 		.policy		= nft_rule_policy,
+@@ -10089,7 +9925,7 @@ static const struct nfnl_callback nf_tables_cb[NFT_MSG_MAX] = {
+ 		.policy		= nft_set_elem_list_policy,
+ 	},
+ 	[NFT_MSG_GETSETELEM_RESET] = {
+-		.call		= nf_tables_getsetelem_reset,
++		.call		= nf_tables_getsetelem,
+ 		.type		= NFNL_CB_RCU,
+ 		.attr_count	= NFTA_SET_ELEM_LIST_MAX,
+ 		.policy		= nft_set_elem_list_policy,
+@@ -10135,7 +9971,7 @@ static const struct nfnl_callback nf_tables_cb[NFT_MSG_MAX] = {
+ 		.policy		= nft_obj_policy,
+ 	},
+ 	[NFT_MSG_GETOBJ_RESET] = {
+-		.call		= nf_tables_getobj_reset,
++		.call		= nf_tables_getobj,
+ 		.type		= NFNL_CB_RCU,
+ 		.attr_count	= NFTA_OBJ_MAX,
+ 		.policy		= nft_obj_policy,
 -- 
 2.51.0
 
