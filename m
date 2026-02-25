@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHa/MLudnmk5WgQAu9opvQ
-	(envelope-from <stable+bounces-219224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:07 +0100
+	id yFBmA/tUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BC5192A97
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D5518FE7D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15C4330CBDC8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 659F0310FFCC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B436A2C17A0;
-	Wed, 25 Feb 2026 06:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD51D262FC0;
+	Wed, 25 Feb 2026 01:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cs1s8pEv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0bMpgj1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789642C11CD;
-	Wed, 25 Feb 2026 06:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A66254B03;
+	Wed, 25 Feb 2026 01:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002575; cv=none; b=CekkRNj4iYgoHuKcQMTlQAXqKVsvnt9DjE+EVia1uqDgMkJnoXc0L4WTOBsfzVApJP2GiRa5h5eU8USm+pt7D6dvm3xr+uAuoP6h00meGlgeGeJM77mM/dZPACTN3Guqijg1SkFajsEeTrkgLaArq/HS6hQb1HR26r3ACBtw+b0=
+	t=1771983465; cv=none; b=OKlB7FMUrz6BC5xsVZDHRvf6pGsGI3vXyDhRLEIlbE8lXTPSqnXd1QqZktc8kZIMGYqCX0RPvJv4irq0bg1TClcFUDml/IO+YY3zFQlycWavxHPVA/lkhp9xM5Rjh6XLXVSV9uel9AJbyaoRryj8QUZZsm8G5VEweu3mG6aB92A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002575; c=relaxed/simple;
-	bh=tW0Z4/Lp6GFLNOj++1I0XhjIKBeffNypBKQAGowHrK4=;
+	s=arc-20240116; t=1771983465; c=relaxed/simple;
+	bh=vexnOwa4r5tOalQj4urIL7/vnHF7XGitqV403dALA30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJpnUaAJg0dnLtYLAxWeLzo1Ltk5KYGX4hIHKmoL4zd0o0g9nLHx0Pt8Ge2UvluRa+wc6oCuLKnkLv383RO9B9k8SwAg3dcPYxQX3pxsWJm4/raAqLfhZjUaFBTjPW3MdXDu0Vlrp0peV4ZZNHbZnv9GutYsYF5zJhLJIjgr4hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cs1s8pEv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A218C116D0;
-	Wed, 25 Feb 2026 06:56:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xl2k7Hbv/RV85MFz92thquRu+a51MZT2j3gLyWAXMtMiZ4kMTdZv3XTtv4hDsr/EeyyYg5KA0iBPLkN6cxq0L/evXgIT16uWBlCiQDAJ9dRY45RktLV9+hSgEplX4BtaC4jIZfZ3G9/6Dtiwy9xIiY+hm6ow3SMpjVsbK59HrDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0bMpgj1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616BCC116D0;
+	Wed, 25 Feb 2026 01:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002575;
-	bh=tW0Z4/Lp6GFLNOj++1I0XhjIKBeffNypBKQAGowHrK4=;
+	s=korg; t=1771983465;
+	bh=vexnOwa4r5tOalQj4urIL7/vnHF7XGitqV403dALA30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cs1s8pEvENT8Mk/ZFOOyYMEqfhBFvJxSvRf1V4dwp7tFUBmlRz59b6UYApBFQAi40
-	 FvGUy6nHH2GmPh0+lK/Hbc1d9KtP1zWAJZvXw7KLcFNp9RaKkTsKKFLBsKKsW2K1U1
-	 cQc8HDPQG4zH00jLsPCds/IUSgHA7YpZLCU6uxyU=
+	b=E0bMpgj1IX29mw0LPTZ6S100pCUsQrrQ1fhdDLjfxteFtlZ1S0gRmjG/i8j07PMQD
+	 LLzghi4ujnArJv3FckvriPNMsnTcKzwxuVUz7pQe+QtyhS8XXW1oYMWYzb/Mmmf5sv
+	 j+v8EEjI9MXf1HQeLXcpsxPyr2EPOCCuQ1pPpgss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 309/641] netfilter: nft_set_rbtree: check for partial overlaps in anonymous sets
-Date: Tue, 24 Feb 2026 17:20:35 -0800
-Message-ID: <20260225012356.217493731@linuxfoundation.org>
+Subject: [PATCH 6.19 527/781] clk: qcom: gcc-msm8917: Remove ALWAYS_ON flag from cpp_gdsc
+Date: Tue, 24 Feb 2026 17:20:36 -0800
+Message-ID: <20260225012412.723589662@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +64,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218618-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219224-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: 45BC5192A97
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mainlining.org:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: 44D5518FE7D
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 4780ec142cbb24b794129d3080eee5cac2943ffc ]
+[ Upstream commit e4eb42f290aecac0ba355b1f8d7243be6de11f32 ]
 
-Userspace provides an optimized representation in case intervals are
-adjacent, where the end element is omitted.
+cpp_gdsc should not be always on, ALWAYS_ON flag was set accidentally.
 
-The existing partial overlap detection logic skips anonymous set checks
-on start elements for this reason.
-
-However, it is possible to add intervals that overlap to this anonymous
-where two start elements with the same, eg. A-B, A-C where C < B.
-
-      start     end
-	A        B
-      start  end
-        A     C
-
-Restore the check on overlapping start elements to report an overlap.
-
-Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 33cc27a47d3a ("clk: qcom: Add global clock controller driver for MSM8917")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251117-fix-gdsc-cpp-msm8917-msm8953-v1-2-db33adcff28a@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/gcc-msm8917.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index eacb3acc2b957..f2a1aa8860184 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -309,11 +309,23 @@ static bool nft_rbtree_update_first(const struct nft_set *set,
- 	return false;
- }
+diff --git a/drivers/clk/qcom/gcc-msm8917.c b/drivers/clk/qcom/gcc-msm8917.c
+index 0a1aa623cd49a..9d1c5a9953e2c 100644
+--- a/drivers/clk/qcom/gcc-msm8917.c
++++ b/drivers/clk/qcom/gcc-msm8917.c
+@@ -3409,7 +3409,6 @@ static struct gdsc cpp_gdsc = {
+ 	.pd = {
+ 		.name = "cpp_gdsc",
+ 	},
+-	.flags = ALWAYS_ON,
+ 	.pwrsts = PWRSTS_OFF_ON,
+ };
  
-+/* Only for anonymous sets which do not allow updates, all element are active. */
-+static struct nft_rbtree_elem *nft_rbtree_prev_active(struct nft_rbtree_elem *rbe)
-+{
-+	struct rb_node *node;
-+
-+	node = rb_prev(&rbe->node);
-+	if (!node)
-+		return NULL;
-+
-+	return rb_entry(node, struct nft_rbtree_elem, node);
-+}
-+
- static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 			       struct nft_rbtree_elem *new,
- 			       struct nft_elem_priv **elem_priv)
- {
--	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL;
-+	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL, *rbe_prev;
- 	struct rb_node *node, *next, *parent, **p, *first = NULL;
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	u8 cur_genmask = nft_genmask_cur(net);
-@@ -451,11 +463,19 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	/* - new start element with existing closest, less or equal key value
- 	 *   being a start element: partial overlap, reported as -ENOTEMPTY.
- 	 *   Anonymous sets allow for two consecutive start element since they
--	 *   are constant, skip them to avoid bogus overlap reports.
-+	 *   are constant, but validate that this new start element does not
-+	 *   sit in between an existing start and end elements: partial overlap,
-+	 *   reported as -ENOTEMPTY.
- 	 */
--	if (!nft_set_is_anonymous(set) && rbe_le &&
--	    nft_rbtree_interval_start(rbe_le) && nft_rbtree_interval_start(new))
--		return -ENOTEMPTY;
-+	if (rbe_le &&
-+	    nft_rbtree_interval_start(rbe_le) && nft_rbtree_interval_start(new)) {
-+		if (!nft_set_is_anonymous(set))
-+			return -ENOTEMPTY;
-+
-+		rbe_prev = nft_rbtree_prev_active(rbe_le);
-+		if (rbe_prev && nft_rbtree_interval_end(rbe_prev))
-+			return -ENOTEMPTY;
-+	}
- 
- 	/* - new end element with existing closest, less or equal key value
- 	 *   being a end element: partial overlap, reported as -ENOTEMPTY.
 -- 
 2.51.0
 
