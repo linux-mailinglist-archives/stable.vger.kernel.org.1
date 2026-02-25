@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAnAMSNUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:07 +0100
+	id iL74BnWdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3968B18FBBC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC89E1929F1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3E95319BECA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DCB0C30175E3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638D61D5141;
-	Wed, 25 Feb 2026 01:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170ED3002D1;
+	Wed, 25 Feb 2026 06:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lf5jUtNM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9xsLQkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2540B26056D;
-	Wed, 25 Feb 2026 01:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7E72C17A0;
+	Wed, 25 Feb 2026 06:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983481; cv=none; b=OW3pTeBwAn79Ij5oXY09aLvd6mgsFI0ho/HZbeLWoEUhvOkik8FlZVgrXC1R5OaOO+2Bepye2PJUFMH9RqMlf+fF6p5NyJaCUzJIsTuXTX2VuvW51IisFFaSBmagReKPoGci+vRSdD9zvwku5axCrA+AGvwON3gZsthz28ltQb0=
+	t=1772002644; cv=none; b=N+pIrHLxOgyzngOY+yZYapOWH8SbXCkV936ydrkDxNzeMr49de4HbVafMSKEctIL/HLYnGNjTu3hrBdE7zBXMOAyXFmc3YL9x0GY7fb5mW9/apvuWboaYOj1+2tmYDJDpYzIkp/i7fO+sqUjBKAeGw5LfJk77cVTFLixZEe7jzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983481; c=relaxed/simple;
-	bh=5aCXIE5ANmaBvu5Q0JtmezK7dxkrFa/uLpTmlVYphMU=;
+	s=arc-20240116; t=1772002644; c=relaxed/simple;
+	bh=hhbliT3yuURcYFpV2N9dwG/8CEWBQMbZ2IAQ2vfVCr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cWlB2u+cv76o0CeXWzSOyshCx3axeWGzhEgMI16MTsRN1DgwaR1gEuYOSh5HexB6L2f91L1uZp+lEep7uN3bTwOyOoIPL4n6elf4EFhbEDzT29Dhq3AyFfHQIlBrTQJOrhXEitUezeDyO17YTtT10EUc294UCoDw8BkOP9A+XIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lf5jUtNM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F297DC116D0;
-	Wed, 25 Feb 2026 01:38:00 +0000 (UTC)
+	 MIME-Version; b=Kzsd+XDQwCccsVd4RT4xqHreop1UpwpWUytr97QMiXaXGJth+0WhwFEafIsb49qdHmZ6KORrByVXAdKbTRYs9jCa3rSDSIfESIkd8z9JNnicQp+SIglNha5Cf8dku6sc+GU6al4EegZMBIR03bjnQNc2jTPCU3Xz+nbktgUmBgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9xsLQkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD81C19425;
+	Wed, 25 Feb 2026 06:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983481;
-	bh=5aCXIE5ANmaBvu5Q0JtmezK7dxkrFa/uLpTmlVYphMU=;
+	s=korg; t=1772002644;
+	bh=hhbliT3yuURcYFpV2N9dwG/8CEWBQMbZ2IAQ2vfVCr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lf5jUtNMaLd76lHS0JU+B6YKnFBqiSnpH9u4z1A6IEktoPN1bBTw/y/qQWQfB7oxs
-	 aupXSncfSRahIrWnTHdd9OvYaZwcmMnBlPhTo38/tOMbtIEdMfR/HIsvh4nqgm+h0P
-	 EoNJszD7AycqB1quU6OPWGk2wPr7jnIz3RKLwdpM=
+	b=G9xsLQkqFVLtQ8YfysrdBwCg8z9OZBDfCJ7/I0olBX6cHXk4/dUn+4N46IB8DQIao
+	 p1Tz46yvrkAqd1txs4iiShyRxGlR+cHYjIm1l7Ka1okdN/Eec+lfSVBiKuRd4XVpju
+	 EhnFprVUw055GjqPnGt9YXjld3iTs+fO7oUeNQUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
+	Ben Cheatham <Benjamin.Cheatham@amd.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 594/781] nvmem: an8855: drop an unused Kconfig symbol
+Subject: [PATCH 6.18 377/641] cxl/core: Fix cxl_dport debugfs EINJ entries
 Date: Tue, 24 Feb 2026 17:21:43 -0800
-Message-ID: <20260225012414.368213944@linuxfoundation.org>
+Message-ID: <20260225012357.732648598@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,66 +71,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219330-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218632-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3968B18FBBC
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,huawei.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DC89E1929F1
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Cheatham, Benjamin <benjamin.cheatham@amd.com>
 
-[ Upstream commit 4796eaafd6a170db012395a40385d2baf4f4d118 ]
+[ Upstream commit 4ed7952b9e87cf731ebc8251874416e60eb15230 ]
 
-MFD_AIROHA_AN8855 is referenced here but never defined, so drop it
-from the Kconfig file.
+Protocol error injection is only valid for CXL 2.0+ root ports and CXL
+1.1 memory-mapped downstream ports as per the ACPI v6.5 spec (Table
+8-31). The core code currently creates an 'einj_inject' file in CXL debugfs
+for all CXL 1.1 downstream ports and all PCI CXL 2.0+ downstream ports.
+This results in debugfs EINJ files that won't work due to platform/spec
+restrictions.
 
-Fixes: e2258cfd9b98 ("nvmem: an8855: Add support for Airoha AN8855 Switch EFUSE")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260116170846.733558-4-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by limiting 'einj_inject' file creation to only CXL 1.1 dports and
+CXL 2.0+ root ports. Update the comment above the check to more accurately
+represent the requirements expected by the EINJ module and ACPI spec.
+
+Fixes: 8039804cfa73 ("cxl/core: Add CXL EINJ debugfs files")
+Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/6e9fb657-8264-4028-92e2-5428e2695bf1@amd.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cxl/core/port.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-index bf47a982cf629..74ddbd0f79b0e 100644
---- a/drivers/nvmem/Kconfig
-+++ b/drivers/nvmem/Kconfig
-@@ -30,7 +30,7 @@ source "drivers/nvmem/layouts/Kconfig"
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 804e4a48540f6..85131872d7f6e 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -823,16 +823,18 @@ DEFINE_DEBUGFS_ATTRIBUTE(cxl_einj_inject_fops, NULL, cxl_einj_inject,
  
- config NVMEM_AN8855_EFUSE
- 	tristate "Airoha AN8855 eFuse support"
--	depends on MFD_AIROHA_AN8855 || COMPILE_TEST
-+	depends on COMPILE_TEST
- 	help
- 	  Say y here to enable support for reading eFuses on Airoha AN8855
- 	  Switch. These are e.g. used to store factory programmed
+ static void cxl_debugfs_create_dport_dir(struct cxl_dport *dport)
+ {
++	struct cxl_port *parent = parent_port_of(dport->port);
+ 	struct dentry *dir;
+ 
+ 	if (!einj_cxl_is_initialized())
+ 		return;
+ 
+ 	/*
+-	 * dport_dev needs to be a PCIe port for CXL 2.0+ ports because
+-	 * EINJ expects a dport SBDF to be specified for 2.0 error injection.
++	 * Protocol error injection is only available for CXL 2.0+ root ports
++	 * and CXL 1.1 downstream ports
+ 	 */
+-	if (!dport->rch && !dev_is_pci(dport->dport_dev))
++	if (!dport->rch &&
++	    !(dev_is_pci(dport->dport_dev) && parent && is_cxl_root(parent)))
+ 		return;
+ 
+ 	dir = cxl_debugfs_create_dir(dev_name(dport->dport_dev));
 -- 
 2.51.0
 
