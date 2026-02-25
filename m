@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Mk0AsyenmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:40 +0100
+	id iG+/KiBVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7030F192D71
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D2C18FEF3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DD03303B5DC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79BCB312062D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75A8312834;
-	Wed, 25 Feb 2026 06:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA9126E708;
+	Wed, 25 Feb 2026 01:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnWMvzcQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2MYmZe1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA42B2D839C;
-	Wed, 25 Feb 2026 06:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04331E2834;
+	Wed, 25 Feb 2026 01:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002700; cv=none; b=SiWnKfkquD5nf7ROPb/uoqTx+SqWyARjnftuxKIjDJoCOCoLIWdXmhlvl1KHRuxQBiafioXwSImXZivq/2CeWVhr2xMyinkbVtKDMkZDLuUohPx6zWHeM04MNXkrpwT2BD4Wt55SWANKCrihdwnH1f/pR/iUKlYRc/gsMLW4nWk=
+	t=1771983624; cv=none; b=W5cC31zbpUbCLMBgwZaYdgZVpnweHcJ8I8xwgPQZhV1ta9XgIpvmNV1yNLvYv9s/+TYt4IFWJJ4vGfNS317UVJP6CWGfEAnqM6URpSqU5K+ayc5mjT6Fl7f6v/3NevgDU5DTD16kI6NMgOncOMxGBibfonw9o3sIj3nD1EuJ4iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002700; c=relaxed/simple;
-	bh=1guSb50ERy9+YY/DGIiMXrm2FmcZ1FK7HhaThzEkWAE=;
+	s=arc-20240116; t=1771983624; c=relaxed/simple;
+	bh=oB1ODCXSyKNn5rHlj0E4FeqYnSZC8+jeUm1qcGn4tjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kN7ljFNLPnWZ020SEUn4+H18C3mE77BO0YG1ZTSic+q4CWO4nh8FzBPmfCuKd+9RIyjFaF29nzMgeFUZnVNIEDqdAN+wunUt6oY7wIhRYzp4SKst4ySL+uwFu5m2gPM7OlCMLsye61E4XZEi/w674y/KP4IuMp971T0kwJzqKzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnWMvzcQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B9DC116D0;
-	Wed, 25 Feb 2026 06:58:20 +0000 (UTC)
+	 MIME-Version; b=V2ilSurm4LO/JiyZg6VfDwW2z8LymhOP6xA0mKX546lt+HgfLt1BTSr2hwEeVArhmq3W46lB+asAFrB1pE6oI/IhRP7BmIBD10M5pmt18EMRKDWm4jZHvdSaEdBytZ/vB6Z7/7X1Luk7Rgr/I4LwjfII8dmZH3XptSIzuYwOrK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2MYmZe1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C58C116D0;
+	Wed, 25 Feb 2026 01:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002700;
-	bh=1guSb50ERy9+YY/DGIiMXrm2FmcZ1FK7HhaThzEkWAE=;
+	s=korg; t=1771983624;
+	bh=oB1ODCXSyKNn5rHlj0E4FeqYnSZC8+jeUm1qcGn4tjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SnWMvzcQybIL9RX1J8hhbtr5iDK3QJ04ig23ixvbKRdojlDobh07IdQLZKAVf33Mm
-	 Al9e6Mztel6n6P2qSV50/A2XCZipPGPgllWy8DZjQzG/bP+uyu9kai4IQX+uyRGRUC
-	 cWdC2BfzK0Ec3K1A+RoLp6UqdXquj2q43+wDKRqI=
+	b=w2MYmZe1+rtBwZxDW0UaB10HfmZ2HDGpak6wzSvb9rkkSlc5wPQG1++9+qlbKnnKM
+	 N+K7nB2ukWVjbcROBfqsLxcKRU/mkw4i4uzq2JeAQhcgL+cEFL2Ac7tFYTO5PQ8BiQ
+	 L+AUABAjx/Cj+gxPrJcUc0tsM2PbtqMT7wVoCRrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 498/641] io_uring: delay sqarray static branch disablement
-Date: Tue, 24 Feb 2026 17:23:44 -0800
-Message-ID: <20260225012400.586455113@linuxfoundation.org>
+Subject: [PATCH 6.19 716/781] drm/i915/acpi: free _DSM package when no connectors
+Date: Tue, 24 Feb 2026 17:23:45 -0800
+Message-ID: <20260225012417.302473272@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +66,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219415-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218755-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.986];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7030F192D71
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D2D2C18FEF3
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 56112578c71213a10c995a56835bddb5e9ab1ed0 ]
+[ Upstream commit 57b85fd53fccfdf14ce7b36d919c31aa752255f8 ]
 
-io_key_has_sqarray static branch can be easily switched on/off by the
-user every time patching the kernel. That can be very disruptive as it
-might require heavy synchronisation across all CPUs. Use deferred static
-keys, which can rate-limit it by deferring, batching and potentially
-effectively eliminating dec+inc pairs.
+acpi_evaluate_dsm_typed() returns an ACPI package in pkg.
+When pkg->package.count == 0, we returned without freeing pkg,
+leaking memory. Free pkg before returning on the empty case.
 
-Fixes: 9b296c625ac1d ("io_uring: static_key for !IORING_SETUP_NO_SQARRAY")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Fixes: 337d7a1621c7 ("drm/i915: Fix invalid access to ACPI _DSM objects")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patch.msgid.link/20260109032549.1826303-1-kaushlendra.kumar@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit c0a27a0ca8a34e96d08bb05a2c5d5ccf63fb8dc0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_acpi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index d8a35a49dd1ac..65af47b9135b8 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -148,7 +148,7 @@ static bool io_uring_try_cancel_requests(struct io_ring_ctx *ctx,
- static void io_queue_sqe(struct io_kiocb *req, unsigned int extra_flags);
- static void __io_req_caches_free(struct io_ring_ctx *ctx);
+diff --git a/drivers/gpu/drm/i915/display/intel_acpi.c b/drivers/gpu/drm/i915/display/intel_acpi.c
+index 68c01932f7b4f..e06f324027bec 100644
+--- a/drivers/gpu/drm/i915/display/intel_acpi.c
++++ b/drivers/gpu/drm/i915/display/intel_acpi.c
+@@ -96,6 +96,7 @@ static void intel_dsm_platform_mux_info(acpi_handle dhandle)
  
--static __read_mostly DEFINE_STATIC_KEY_FALSE(io_key_has_sqarray);
-+static __read_mostly DEFINE_STATIC_KEY_DEFERRED_FALSE(io_key_has_sqarray, HZ);
+ 	if (!pkg->package.count) {
+ 		DRM_DEBUG_DRIVER("no connection in _DSM\n");
++		ACPI_FREE(pkg);
+ 		return;
+ 	}
  
- struct kmem_cache *req_cachep;
- static struct workqueue_struct *iou_wq __ro_after_init;
-@@ -2390,7 +2390,7 @@ static bool io_get_sqe(struct io_ring_ctx *ctx, const struct io_uring_sqe **sqe)
- 	unsigned mask = ctx->sq_entries - 1;
- 	unsigned head = ctx->cached_sq_head++ & mask;
- 
--	if (static_branch_unlikely(&io_key_has_sqarray) &&
-+	if (static_branch_unlikely(&io_key_has_sqarray.key) &&
- 	    (!(ctx->flags & IORING_SETUP_NO_SQARRAY))) {
- 		head = READ_ONCE(ctx->sq_array[head]);
- 		if (unlikely(head >= ctx->sq_entries)) {
-@@ -2869,7 +2869,7 @@ static __cold void io_ring_ctx_free(struct io_ring_ctx *ctx)
- 	io_rings_free(ctx);
- 
- 	if (!(ctx->flags & IORING_SETUP_NO_SQARRAY))
--		static_branch_dec(&io_key_has_sqarray);
-+		static_branch_slow_dec_deferred(&io_key_has_sqarray);
- 
- 	percpu_ref_exit(&ctx->refs);
- 	free_uid(ctx->user);
-@@ -3817,7 +3817,7 @@ static __cold int io_uring_create(unsigned entries, struct io_uring_params *p,
- 	ctx->clock_offset = 0;
- 
- 	if (!(ctx->flags & IORING_SETUP_NO_SQARRAY))
--		static_branch_inc(&io_key_has_sqarray);
-+		static_branch_deferred_inc(&io_key_has_sqarray);
- 
- 	if ((ctx->flags & IORING_SETUP_DEFER_TASKRUN) &&
- 	    !(ctx->flags & IORING_SETUP_IOPOLL) &&
 -- 
 2.51.0
 
