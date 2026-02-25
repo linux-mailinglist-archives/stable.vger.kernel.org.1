@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-219040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHTpKylWnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-219040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:45 +0100
+	id ePYDBupRnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746011901E3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8AB18F122
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DBABD30B096C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC36F30642DE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563BD24A05D;
-	Wed, 25 Feb 2026 01:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D4922579E;
+	Wed, 25 Feb 2026 01:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDYYmbIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEqD3C+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195361D5ABA;
-	Wed, 25 Feb 2026 01:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0B118B0A;
+	Wed, 25 Feb 2026 01:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983960; cv=none; b=WBsD9HEnai2CWAdcbEHs7iUydayu8poKHwmKwiHWsaA+3mdhG3SS8vq94Iy3CgMUFCwOpQyf3WDQp34ikBuOcCkuQQX7FR4RIj685TorT4z10VecyFVv0LXDg0XJlI9m7OgnINhoCpnmaAjYPvVJcGviSfzPqyvcZT5KX1bIl48=
+	t=1771983302; cv=none; b=M34Dehu69amlOvmDZ6K5gVwFHnrDwntUzh5lg9VkOpyjgp/DLOQBiEnnLrAkl9jqlRR+/Iq4tL7/b9yT52TNx+E9/XjUMYtLBNtksN/l1MEmPFsLL5AUBMjfq8eKGCV9FPDaXH/qnpMfrbohga7JKBQ0+g5OiTSrIipq4MJyAW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983960; c=relaxed/simple;
-	bh=62pbhEh/RnBq8XpDxyb1Gw542gkQOe6hm54xhwOboQg=;
+	s=arc-20240116; t=1771983302; c=relaxed/simple;
+	bh=7K+1EztAT9KwBKRgUm21lYv+a5Iawz58D2cG+QJqcjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sr9Mz56bgtPSMofLMtXBHg9riLeql+CZTHiGHDxag/BqqnnnCcEQnlHdJs3iDa9N8CiCE02PcZls61r0byIvM3+DsJ0740RLFJd2O9v4HtHn3EmM7qOJ0D8S1ceGJLU5N+ySEu5F4N/OvEGez/0lgR++gEHIcrl1F1RXsnQysL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDYYmbIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CDFC116D0;
-	Wed, 25 Feb 2026 01:45:59 +0000 (UTC)
+	 MIME-Version; b=pJoosxRLhdwnT0Ofhn0XKSlIZlN3SYWr5bEnCCDwpblrFqsDLYzEgkBnNXk+vhsj3ZYJtxov56w/e6DGomRZdBNo3zygzJ+Z5EmWZV+8K+UqilVKAYX07K8F7z8eJWnedPNtvz3sV4cT2ELDYVi3/fxrRGh2ijBBL/4DXVoV4sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEqD3C+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783E9C116D0;
+	Wed, 25 Feb 2026 01:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983960;
-	bh=62pbhEh/RnBq8XpDxyb1Gw542gkQOe6hm54xhwOboQg=;
+	s=korg; t=1771983301;
+	bh=7K+1EztAT9KwBKRgUm21lYv+a5Iawz58D2cG+QJqcjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDYYmbIuBfquXSgR0VA8S3wIlxOVCKO7kHDqprHY0KHovFro/WYpEzEYCeIaiEU2T
-	 v7GQ5T0F0MVHYT+QXLl9iekFFWtJ+/6OmuB7mt48LC7EDUqU3Flq3Nnmc0NSi9ksNi
-	 zhQrzbks7DmoDtwn4Gmp/7W5rWywc1KklVlItKP8=
+	b=qEqD3C+qv5AArG24N39aulI++fEZuvvlCxTo+WS9dpNVeOqYmX+y8NIkSg60xQ81V
+	 ToFlA9Y/6OG0QoyYHzlDO6bqgDm8oK5ehlD5LnzgoBihkTrU+i6PGwNgG3r60K+mJ8
+	 J5hz20Wlc5ugxviMkjxqM0ubh1pgj4YPg35oF3yA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+	Sathesh Edara <sedara@marvell.com>,
+	Shinas Rasheed <srasheed@marvell.com>,
+	Vimlesh Kumar <vimleshk@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 217/641] evm: Use ordered xattrs list to calculate HMAC in evm_init_hmac()
+Subject: [PATCH 6.19 434/781] octeon_ep_vf: ensure dbell BADDR updation
 Date: Tue, 24 Feb 2026 17:19:03 -0800
-Message-ID: <20260225012354.190425027@linuxfoundation.org>
+Message-ID: <20260225012410.347490794@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,98 +71,202 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218474-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219040-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 746011901E3
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,marvell.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8E8AB18F122
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Vimlesh Kumar <vimleshk@marvell.com>
 
-[ Upstream commit 0496fc9cdc384f67be4413b1c6156eb64fccd5c4 ]
+[ Upstream commit 484e834d53cffa91c311631271f83130cf6e9e7c ]
 
-Commit 8e5d9f916a96 ("smack: deduplicate xattr setting in
-smack_inode_init_security()") introduced xattr_dupval() to simplify setting
-the xattrs to be provided by the SMACK LSM on inode creation, in the
-smack_inode_init_security().
+Make sure the OUT DBELL base address reflects the
+latest values written to it.
 
-Unfortunately, moving lsm_get_xattr_slot() caused the SMACK64TRANSMUTE
-xattr be added in the array of new xattrs before SMACK64. This causes the
-HMAC of xattrs calculated by evm_init_hmac() for new files to diverge from
-the one calculated by both evm_calc_hmac_or_hash() and evmctl.
+Fix:
+Add a wait until the OUT DBELL base address register
+is updated with the DMA ring descriptor address,
+and modify the setup_oq function to properly
+handle failures.
 
-evm_init_hmac() calculates the HMAC of the xattrs of new files based on the
-order LSMs provide them, while evm_calc_hmac_or_hash() and evmctl calculate
-the HMAC based on an ordered xattrs list.
-
-Fix the issue by making evm_init_hmac() calculate the HMAC of new files
-based on the ordered xattrs list too.
-
-Fixes: 8e5d9f916a96 ("smack: deduplicate xattr setting in smack_inode_init_security()")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fixes: 2c0c32c72be29 ("octeon_ep_vf: add hardware configuration APIs")
+Signed-off-by: Sathesh Edara <sedara@marvell.com>
+Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+Signed-off-by: Vimlesh Kumar <vimleshk@marvell.com>
+Link: https://patch.msgid.link/20260206111510.1045092-4-vimleshk@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/evm/evm_crypto.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ .../marvell/octeon_ep_vf/octep_vf_cn9k.c      |  3 +-
+ .../marvell/octeon_ep_vf/octep_vf_cnxk.c      | 39 +++++++++++++++++--
+ .../marvell/octeon_ep_vf/octep_vf_main.h      |  2 +-
+ .../marvell/octeon_ep_vf/octep_vf_rx.c        |  8 +++-
+ 4 files changed, 46 insertions(+), 6 deletions(-)
 
-diff --git a/security/integrity/evm/evm_crypto.c b/security/integrity/evm/evm_crypto.c
-index a5e730ffda57f..5a8cef45bacf0 100644
---- a/security/integrity/evm/evm_crypto.c
-+++ b/security/integrity/evm/evm_crypto.c
-@@ -401,6 +401,7 @@ int evm_init_hmac(struct inode *inode, const struct xattr *xattrs,
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cn9k.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cn9k.c
+index 88937fce75f14..4c769b27c2789 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cn9k.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cn9k.c
+@@ -196,7 +196,7 @@ static void octep_vf_setup_iq_regs_cn93(struct octep_vf_device *oct, int iq_no)
+ }
+ 
+ /* Setup registers for a hardware Rx Queue  */
+-static void octep_vf_setup_oq_regs_cn93(struct octep_vf_device *oct, int oq_no)
++static int octep_vf_setup_oq_regs_cn93(struct octep_vf_device *oct, int oq_no)
  {
- 	struct shash_desc *desc;
- 	const struct xattr *xattr;
-+	struct xattr_list *xattr_entry;
+ 	struct octep_vf_oq *oq = oct->oq[oq_no];
+ 	u32 time_threshold = 0;
+@@ -239,6 +239,7 @@ static void octep_vf_setup_oq_regs_cn93(struct octep_vf_device *oct, int oq_no)
+ 	time_threshold = CFG_GET_OQ_INTR_TIME(oct->conf);
+ 	reg_val = ((u64)time_threshold << 32) | CFG_GET_OQ_INTR_PKT(oct->conf);
+ 	octep_vf_write_csr64(oct, CN93_VF_SDP_R_OUT_INT_LEVELS(oq_no), reg_val);
++	return 0;
+ }
  
- 	desc = init_desc(EVM_XATTR_HMAC, HASH_ALGO_SHA1);
- 	if (IS_ERR(desc)) {
-@@ -408,11 +409,16 @@ int evm_init_hmac(struct inode *inode, const struct xattr *xattrs,
- 		return PTR_ERR(desc);
+ /* Setup registers for a VF mailbox */
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cnxk.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cnxk.c
+index 1f79dfad42c62..a968b93a67943 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cnxk.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cnxk.c
+@@ -199,11 +199,13 @@ static void octep_vf_setup_iq_regs_cnxk(struct octep_vf_device *oct, int iq_no)
+ }
+ 
+ /* Setup registers for a hardware Rx Queue  */
+-static void octep_vf_setup_oq_regs_cnxk(struct octep_vf_device *oct, int oq_no)
++static int octep_vf_setup_oq_regs_cnxk(struct octep_vf_device *oct, int oq_no)
+ {
+ 	struct octep_vf_oq *oq = oct->oq[oq_no];
++	unsigned long t_out_jiffies;
+ 	u32 time_threshold = 0;
+ 	u64 oq_ctl = ULL(0);
++	u64 reg_ba_val;
+ 	u64 reg_val;
+ 
+ 	reg_val = octep_vf_read_csr64(oct, CNXK_VF_SDP_R_OUT_CONTROL(oq_no));
+@@ -214,6 +216,38 @@ static void octep_vf_setup_oq_regs_cnxk(struct octep_vf_device *oct, int oq_no)
+ 			reg_val = octep_vf_read_csr64(oct, CNXK_VF_SDP_R_OUT_CONTROL(oq_no));
+ 		} while (!(reg_val & CNXK_VF_R_OUT_CTL_IDLE));
  	}
++	octep_vf_write_csr64(oct, CNXK_VF_SDP_R_OUT_WMARK(oq_no),
++			     oq->max_count);
++	/* Wait for WMARK to get applied */
++	usleep_range(10, 15);
++
++	octep_vf_write_csr64(oct, CNXK_VF_SDP_R_OUT_SLIST_BADDR(oq_no),
++			     oq->desc_ring_dma);
++	octep_vf_write_csr64(oct, CNXK_VF_SDP_R_OUT_SLIST_RSIZE(oq_no),
++			     oq->max_count);
++	reg_ba_val = octep_vf_read_csr64(oct,
++					 CNXK_VF_SDP_R_OUT_SLIST_BADDR(oq_no));
++	if (reg_ba_val != oq->desc_ring_dma) {
++		t_out_jiffies = jiffies + 10 * HZ;
++		do {
++			if (reg_ba_val == ULLONG_MAX)
++				return -EFAULT;
++			octep_vf_write_csr64(oct,
++					     CNXK_VF_SDP_R_OUT_SLIST_BADDR
++					     (oq_no), oq->desc_ring_dma);
++			octep_vf_write_csr64(oct,
++					     CNXK_VF_SDP_R_OUT_SLIST_RSIZE
++					     (oq_no), oq->max_count);
++			reg_ba_val =
++			octep_vf_read_csr64(oct,
++					    CNXK_VF_SDP_R_OUT_SLIST_BADDR
++					    (oq_no));
++		} while ((reg_ba_val != oq->desc_ring_dma) &&
++			  time_before(jiffies, t_out_jiffies));
++
++		if (reg_ba_val != oq->desc_ring_dma)
++			return -EAGAIN;
++	}
  
--	for (xattr = xattrs; xattr->name; xattr++) {
--		if (!evm_protected_xattr(xattr->name))
--			continue;
-+	list_for_each_entry_lockless(xattr_entry, &evm_config_xattrnames,
-+				     list) {
-+		for (xattr = xattrs; xattr->name; xattr++) {
-+			if (strcmp(xattr_entry->name +
-+				   XATTR_SECURITY_PREFIX_LEN, xattr->name) != 0)
-+				continue;
+ 	reg_val &= ~(CNXK_VF_R_OUT_CTL_IMODE);
+ 	reg_val &= ~(CNXK_VF_R_OUT_CTL_ROR_P);
+@@ -227,8 +261,6 @@ static void octep_vf_setup_oq_regs_cnxk(struct octep_vf_device *oct, int oq_no)
+ 	reg_val |= (CNXK_VF_R_OUT_CTL_ES_P);
  
--		crypto_shash_update(desc, xattr->value, xattr->value_len);
-+			crypto_shash_update(desc, xattr->value,
-+					    xattr->value_len);
-+		}
- 	}
+ 	octep_vf_write_csr64(oct, CNXK_VF_SDP_R_OUT_CONTROL(oq_no), reg_val);
+-	octep_vf_write_csr64(oct, CNXK_VF_SDP_R_OUT_SLIST_BADDR(oq_no), oq->desc_ring_dma);
+-	octep_vf_write_csr64(oct, CNXK_VF_SDP_R_OUT_SLIST_RSIZE(oq_no), oq->max_count);
  
- 	hmac_add_misc(desc, inode, EVM_XATTR_HMAC, hmac_val);
+ 	oq_ctl = octep_vf_read_csr64(oct, CNXK_VF_SDP_R_OUT_CONTROL(oq_no));
+ 	/* Clear the ISIZE and BSIZE (22-0) */
+@@ -250,6 +282,7 @@ static void octep_vf_setup_oq_regs_cnxk(struct octep_vf_device *oct, int oq_no)
+ 	reg_val &= ~GENMASK_ULL(31, 0);
+ 	reg_val |= CFG_GET_OQ_WMARK(oct->conf);
+ 	octep_vf_write_csr64(oct, CNXK_VF_SDP_R_OUT_WMARK(oq_no), reg_val);
++	return 0;
+ }
+ 
+ /* Setup registers for a VF mailbox */
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h
+index b9f13506f4620..c74cd2369e90d 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h
+@@ -55,7 +55,7 @@ struct octep_vf_mmio {
+ 
+ struct octep_vf_hw_ops {
+ 	void (*setup_iq_regs)(struct octep_vf_device *oct, int q);
+-	void (*setup_oq_regs)(struct octep_vf_device *oct, int q);
++	int (*setup_oq_regs)(struct octep_vf_device *oct, int q);
+ 	void (*setup_mbox_regs)(struct octep_vf_device *oct, int mbox);
+ 
+ 	irqreturn_t (*non_ioq_intr_handler)(void *ioq_vector);
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+index d70c8be3cfc40..6f865dbbba6c6 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+@@ -12,6 +12,8 @@
+ #include "octep_vf_config.h"
+ #include "octep_vf_main.h"
+ 
++static void octep_vf_oq_free_ring_buffers(struct octep_vf_oq *oq);
++
+ static void octep_vf_oq_reset_indices(struct octep_vf_oq *oq)
+ {
+ 	oq->host_read_idx = 0;
+@@ -171,11 +173,15 @@ static int octep_vf_setup_oq(struct octep_vf_device *oct, int q_no)
+ 		goto oq_fill_buff_err;
+ 
+ 	octep_vf_oq_reset_indices(oq);
+-	oct->hw_ops.setup_oq_regs(oct, q_no);
++	if (oct->hw_ops.setup_oq_regs(oct, q_no))
++		goto oq_setup_err;
++
+ 	oct->num_oqs++;
+ 
+ 	return 0;
+ 
++oq_setup_err:
++	octep_vf_oq_free_ring_buffers(oq);
+ oq_fill_buff_err:
+ 	vfree(oq->buff_info);
+ 	oq->buff_info = NULL;
 -- 
 2.51.0
 
