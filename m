@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-219456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218770-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFEnAWOfnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:11 +0100
+	id GPwDKeFYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218770-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E24192F28
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 424F5190829
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CDD023121659
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1DFE3203314
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAC7314D05;
-	Wed, 25 Feb 2026 06:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F2A274B3B;
+	Wed, 25 Feb 2026 01:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfIO8UOd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFa7+fiv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B100B2D3EEE;
-	Wed, 25 Feb 2026 06:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0840D258ED5;
+	Wed, 25 Feb 2026 01:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002727; cv=none; b=NkkQp/y5VPZsXSljA09pMk+waXReJxr+PqveCrdnda7H8CEtQJXg1J6q+aYrSFEJCq5N3DNLmsRJB/JuTkjiDWnoiWWU2pLLLdq1zUpSTloQqg4x//J0sM/cgaoEEGWjnMICgAuMkGFvXfSREzBFwq2dW8KfdyzgINyTjXcutPw=
+	t=1771983642; cv=none; b=NK41DRhx5MyGvnWrybs1zeKrFbMn1aoIdVCEBfVOHgdIAWhC3XMH3aPO0voAzUGPl45uv2mbz6fY1hJDZRh+i8i22YFqezTDiwt+Ef+ssSrC6O9m3LHONeWDWc+WXdutiQAWRVPMxMG/oLnS/tyiOAkpldlbZcuvE3VmLeUREig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002727; c=relaxed/simple;
-	bh=2rXXK7t/3szA1ceMePhJF2M9oeAlkRBlvIo5BFsaU20=;
+	s=arc-20240116; t=1771983642; c=relaxed/simple;
+	bh=ZAI/Kdki0czgfxuhfuLxo+aLSRlhSnilSI9I8WvgvMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHU5EKJ/aIZAWKACkj4Jr/1IRGex19QBZ7IGG4zgXBtv0J2nhvFL1GVuKQqye8yOHqNuo0NT0Swh0bfagZag4cf+ERkljPRxtBZlMFUTj7xlMnj50GiDFnuNswNQT6IM4lPhORr+xTTbocxk8uW90m06+rSvI2AZRqalqaGVJdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfIO8UOd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CA1C116D0;
-	Wed, 25 Feb 2026 06:58:47 +0000 (UTC)
+	 MIME-Version; b=XLFs+0f+EG7EujcpMaQMF+sK0+zX6oG/8q0Jct6r58MuEgWyd7qKAXA8R3eW1v2nRjG0XiRuYkEhl8vN9gkjEYbHzbehRfb8nu+7DjJDeOW07t2SfGHknf0lxWvwyaOm8uTZ7P23fbM60yM7z7xJq+pOAFEa+LjQ/pWzBL2U0D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFa7+fiv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FEBC116D0;
+	Wed, 25 Feb 2026 01:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002727;
-	bh=2rXXK7t/3szA1ceMePhJF2M9oeAlkRBlvIo5BFsaU20=;
+	s=korg; t=1771983641;
+	bh=ZAI/Kdki0czgfxuhfuLxo+aLSRlhSnilSI9I8WvgvMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfIO8UOdyOyTYYQKGkcMxkrS5S/+3OvJ3sunz4khpICmpW0W4t9hr6XYOebSsrW8y
-	 Dk3/sxz9BIKe7CaRVBfSOQScTZUyLefAXFz0GLP4KBiyTXSjE0/uFsdMo0aVGiwFoF
-	 VgpaYNklUj/ECbmhX9z6Kfznp9bVdqeZcHw9eKAs=
+	b=lFa7+fivqbh78p9PnCMK6vyLhnp02DAubPLqLHb0UGfM1HolQ6QAQYaf5OMsSLQe9
+	 mct6Bp41khK6IuyJK3wspbf4gXfSqOikODZfwy1wocU8KENFDF3LNmmk6NaXWfN8pq
+	 ZQRLotNEDvxyIJ1Mvr+DphylS9Eq/6I/VzNK+94U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shekhar Chauhan <shekhar.chauhan@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 513/641] selftests: mlxsw: tc_restrictions: Fix test failure with new iproute2
+Subject: [PATCH 6.19 730/781] drm/xe/xe2_hpg: Fix handling of Wa_14019988906 & Wa_14019877138
 Date: Tue, 24 Feb 2026 17:23:59 -0800
-Message-ID: <20260225012400.953336372@linuxfoundation.org>
+Message-ID: <20260225012417.638526218@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219456-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218770-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,68 +87,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 51E24192F28
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 424F5190829
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Matt Roper <matthew.d.roper@intel.com>
 
-[ Upstream commit a2646773a005b59fd1dc7ff3ba15df84889ca5d2 ]
+[ Upstream commit bc6387a2e0c1562faa56ce2a98cef50cab809e08 ]
 
-As explained in [1], iproute2 started rejecting tc-police burst sizes
-that result in an overflow. This can happen when the burst size is high
-enough and the rate is low enough.
+The PSS_CHICKEN register has been part of the RCS engine's LRC since it
+was first introduced in Xe_LP.  That means that any workarounds that
+adjust its value (such as Wa_14019988906 and Wa_14019877138) need to be
+implemented in the lrc_was[] table so that they become part of the
+default LRC from which all subsequent LRCs are copied.  Although these
+workarounds were implemented correctly on most platforms, they were
+incorrectly placed on the engine_was[] table for Xe2_HPG.
 
-A couple of test cases specify such configurations, resulting in
-iproute2 errors and test failure.
+Move the workarounds to the proper lrc_was[] table and switch the
+'xe_rtp_match_first_render_or_compute' rule to specifically match the
+RCS since that's the engine whose LRC manages the register.
 
-Fix by reducing the burst size so that the test will pass with both new
-and old iproute2 versions.
-
-[1] https://lore.kernel.org/netdev/20250916215731.3431465-1-jay.vosburgh@canonical.com/
-
-Fixes: cb12d1763267 ("selftests: mlxsw: tc_restrictions: Test tc-police restrictions")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/88b00c6e85188aa6a065dc240206119b328c46e1.1770643998.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Bspec: 65182
+Fixes: 7f3ee7d88058 ("drm/xe/xe2hpg: Add initial GT workarounds")
+Reviewed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Link: https://patch.msgid.link/20260205220508.51905-2-matthew.d.roper@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit e04c609eedf4d6748ac0bcada4de1275b034fed6)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_wa.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh b/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh
-index 0441a18f098b1..aac8ef490feb8 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh
-@@ -317,7 +317,7 @@ police_limits_test()
- 
- 	tc filter add dev $swp1 ingress pref 1 proto ip handle 101 \
- 		flower skip_sw \
--		action police rate 0.5kbit burst 1m conform-exceed drop/ok
-+		action police rate 0.5kbit burst 2k conform-exceed drop/ok
- 	check_fail $? "Incorrect success to add police action with too low rate"
- 
- 	tc filter add dev $swp1 ingress pref 1 proto ip handle 101 \
-@@ -327,7 +327,7 @@ police_limits_test()
- 
- 	tc filter add dev $swp1 ingress pref 1 proto ip handle 101 \
- 		flower skip_sw \
--		action police rate 1.5kbit burst 1m conform-exceed drop/ok
-+		action police rate 1.5kbit burst 2k conform-exceed drop/ok
- 	check_err $? "Failed to add police action with low rate"
- 
- 	tc filter del dev $swp1 ingress protocol ip pref 1 handle 101 flower
+diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
+index e32dd2fde6f1c..c7eab0c4af7a8 100644
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -567,16 +567,6 @@ static const struct xe_rtp_entry_sr engine_was[] = {
+ 		       FUNC(xe_rtp_match_first_render_or_compute)),
+ 	  XE_RTP_ACTIONS(SET(ROW_CHICKEN, EARLY_EOT_DIS))
+ 	},
+-	{ XE_RTP_NAME("14019988906"),
+-	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002),
+-		       FUNC(xe_rtp_match_first_render_or_compute)),
+-	  XE_RTP_ACTIONS(SET(XEHP_PSS_CHICKEN, FLSH_IGNORES_PSD))
+-	},
+-	{ XE_RTP_NAME("14019877138"),
+-	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002),
+-		       FUNC(xe_rtp_match_first_render_or_compute)),
+-	  XE_RTP_ACTIONS(SET(XEHP_PSS_CHICKEN, FD_END_COLLECT))
+-	},
+ 	{ XE_RTP_NAME("14020338487"),
+ 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002),
+ 		       FUNC(xe_rtp_match_first_render_or_compute)),
+@@ -873,6 +863,14 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
+ 	  XE_RTP_RULES(GRAPHICS_VERSION(2001), ENGINE_CLASS(RENDER)),
+ 	  XE_RTP_ACTIONS(SET(WM_CHICKEN3, HIZ_PLANE_COMPRESSION_DIS))
+ 	},
++	{ XE_RTP_NAME("14019988906"),
++	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002), ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(SET(XEHP_PSS_CHICKEN, FLSH_IGNORES_PSD))
++	},
++	{ XE_RTP_NAME("14019877138"),
++	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002), ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(SET(XEHP_PSS_CHICKEN, FD_END_COLLECT))
++	},
+ 	{ XE_RTP_NAME("14021490052"),
+ 	  XE_RTP_RULES(GRAPHICS_VERSION(2001), ENGINE_CLASS(RENDER)),
+ 	  XE_RTP_ACTIONS(SET(FF_MODE,
 -- 
 2.51.0
 
