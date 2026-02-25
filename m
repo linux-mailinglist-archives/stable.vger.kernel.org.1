@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCZcMvtSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218535-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:11 +0100
+	id sClcM6VWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3562118F63F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE0B819038C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4306B3105616
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF08C30A458B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8E9242D9B;
-	Wed, 25 Feb 2026 01:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551AF280331;
+	Wed, 25 Feb 2026 01:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V339VKSO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vf2U4al0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D260F1EB5E1;
-	Wed, 25 Feb 2026 01:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1800226FA60;
+	Wed, 25 Feb 2026 01:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983372; cv=none; b=rCIbwIijITKX44ck9u8wpaVCjiWjLKcKa7aGzgBbjv2Qqm5bdtQyPkcx14abEuXHhvMjoSQAHhUdLiRVBp6TC7EFutMBM1SnOAuEKNEC6G+QJRhiEfuqMY36K5E7Ffl10YWWfcqA2KDyPSugpu2cjLI/dKojv7Ac9MjrJ6ERyjE=
+	t=1771984038; cv=none; b=lFvIR+SP3rpio46qWEJAnTz8onIpXERUTIMM35/VfUHvusRgZVbbStvdTWW9OGEsAhas1QIYRFgafBhmmMfWTdkWnc7g/2JCdZpcvvFmg/vM+lHh1tRwtKc4XB/TXpgzXmgXpEEGKbAo0LOpipLufF3hlXm3rgGKUkvCOWy+hsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983372; c=relaxed/simple;
-	bh=f9C/d4mo/GSdTxN9fTAtnwCqW7HCtQ2ZXMU48avg9uE=;
+	s=arc-20240116; t=1771984038; c=relaxed/simple;
+	bh=paEhbyEoSzARe4Xm717NCxdO1t2+GY/oiVwQp0THhIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/IZj3ja6MyYU2pg/xleztA+64j9BkiJijjXaOSlnq+BwJt9ByhtfTwR3UjZwSs5+8p9rxLGfrVx/7s4AVJ+zIEfZqHFqtS0nqBh8eBD30JxqKye6Q+sTIeeE3A5ZK0+Tvo8wOaiMR3u+AYJdmLRXzI0QOqa6/YPpbuo9t1AJKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V339VKSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8743DC19423;
-	Wed, 25 Feb 2026 01:36:12 +0000 (UTC)
+	 MIME-Version; b=JDVr+J9m8iVmQkRMehSkh9HZEUqNehArrTWNIyYgMYu+kujxcTDX35KW9/rOQruusoD3vlb7F4FLarZXz1Zl6lIrf+56WktNXwTLOx+rOmokO0AroqTpMSOs7fu0LWQcxXwWvAmsax6YY73Rpgx4TqpHQp2RZAQZeI90EQAcFQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vf2U4al0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB65C116D0;
+	Wed, 25 Feb 2026 01:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983372;
-	bh=f9C/d4mo/GSdTxN9fTAtnwCqW7HCtQ2ZXMU48avg9uE=;
+	s=korg; t=1771984038;
+	bh=paEhbyEoSzARe4Xm717NCxdO1t2+GY/oiVwQp0THhIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V339VKSOmyL2BlhYc9pIkS2qkoqeBLP7+ywA3ZnaNSU2GI41YxbBi2m5ebtHsjpLA
-	 3c6ki3k+3nn3LvJNtji9PGlOmeBywcDDmM6vOOhJf0QVZsXET02sbkt6FS6ClgrK1u
-	 URXE6o5h6bTM47LLwmNOPLiaeUgzd1k8f/YpiTQc=
+	b=Vf2U4al0QUOvabnvJyBFOSvdDJXPPQSnmIBSsSl1RYckpBt+df/KSbOIXF0QI78Ys
+	 RV0JPGs/k4ncD0JLmzYEmrnAmx9761f7nKyHWWORk7qX5mVkE7xCft4m7QXlBmlE92
+	 /rIm7L4vX5iFi7TlAMqTuqtxFY684ZBiu83e3x/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Don Brace <don.brace@microchip.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 498/781] scsi: smartpqi: Fix memory leak in pqi_report_phys_luns()
+Subject: [PATCH 6.18 281/641] tcp: tcp_tx_timestamp() must look at the rtx queue
 Date: Tue, 24 Feb 2026 17:20:07 -0800
-Message-ID: <20260225012412.017241961@linuxfoundation.org>
+Message-ID: <20260225012355.584611567@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,100 +70,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-219105-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218535-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3562118F63F
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AE0B819038C
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 41b37312bd9722af77ec7817ccf22d7a4880c289 ]
+[ Upstream commit 838eb9687691d29915797a885b861fd09353386e ]
 
-pqi_report_phys_luns() fails to release the rpl_list buffer when
-encountering an unsupported data format or when the allocation for
-rpl_16byte_wwid_list fails. These early returns bypass the cleanup logic,
-leading to memory leaks.
+tcp_tx_timestamp() is only called at the end of tcp_sendmsg_locked()
+before the final tcp_push().
 
-Consolidate the error handling by adding an out_free_rpl_list label and use
-goto statements to ensure rpl_list is consistently freed on failure.
+By the time it is called, it is possible all the copied data
+has been sent already (transmit queue is empty).
 
-Compile tested only. Issue found using a prototype static analysis tool and
-code review.
+If this is the case, use the last skb in the rtx queue.
 
-Fixes: 28ca6d876c5a ("scsi: smartpqi: Add extended report physical LUNs")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Tested-by: Don Brace <don.brace@microchip.com>
-Acked-by: Don Brace <don.brace@microchip.com>
-Link: https://patch.msgid.link/20260131093641.1008117-1-zilin@seu.edu.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 75c119afe14f ("tcp: implement rb-tree based retransmit queue")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Link: https://patch.msgid.link/20260127123828.4098577-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi_init.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ net/ipv4/tcp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index fe549e2b7c940..c829d9590558d 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -1241,7 +1241,8 @@ static inline int pqi_report_phys_luns(struct pqi_ctrl_info *ctrl_info, void **b
- 			dev_err(&ctrl_info->pci_dev->dev,
- 				"RPL returned unsupported data format %u\n",
- 				rpl_response_format);
--			return -EINVAL;
-+			rc = -EINVAL;
-+			goto out_free_rpl_list;
- 		} else {
- 			dev_warn(&ctrl_info->pci_dev->dev,
- 				"RPL returned extended format 2 instead of 4\n");
-@@ -1253,8 +1254,10 @@ static inline int pqi_report_phys_luns(struct pqi_ctrl_info *ctrl_info, void **b
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 74079eab89804..e35825656e6ea 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -503,6 +503,9 @@ static void tcp_tx_timestamp(struct sock *sk, struct sockcm_cookie *sockc)
+ 	struct sk_buff *skb = tcp_write_queue_tail(sk);
+ 	u32 tsflags = sockc->tsflags;
  
- 	rpl_16byte_wwid_list = kmalloc(struct_size(rpl_16byte_wwid_list, lun_entries,
- 						   num_physicals), GFP_KERNEL);
--	if (!rpl_16byte_wwid_list)
--		return -ENOMEM;
-+	if (!rpl_16byte_wwid_list) {
-+		rc = -ENOMEM;
-+		goto out_free_rpl_list;
-+	}
- 
- 	put_unaligned_be32(num_physicals * sizeof(struct report_phys_lun_16byte_wwid),
- 		&rpl_16byte_wwid_list->header.list_length);
-@@ -1275,6 +1278,10 @@ static inline int pqi_report_phys_luns(struct pqi_ctrl_info *ctrl_info, void **b
- 	*buffer = rpl_16byte_wwid_list;
- 
- 	return 0;
++	if (unlikely(!skb))
++		skb = skb_rb_last(&sk->tcp_rtx_queue);
 +
-+out_free_rpl_list:
-+	kfree(rpl_list);
-+	return rc;
- }
- 
- static inline int pqi_report_logical_luns(struct pqi_ctrl_info *ctrl_info, void **buffer)
+ 	if (tsflags && skb) {
+ 		struct skb_shared_info *shinfo = skb_shinfo(skb);
+ 		struct tcp_skb_cb *tcb = TCP_SKB_CB(skb);
 -- 
 2.51.0
 
