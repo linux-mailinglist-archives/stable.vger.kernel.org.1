@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-218711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218666-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YO4dAr5Unmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218711-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:42 +0100
+	id AIBzDGtUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218666-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6393618FDA7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DFD18FCAE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFE3A30FAC36
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB56731BB2CE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F1B26CE1A;
-	Wed, 25 Feb 2026 01:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F643265CA6;
+	Wed, 25 Feb 2026 01:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0n9f0hlc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuTVqQim"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2868C258ED5;
-	Wed, 25 Feb 2026 01:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435D91D5141;
+	Wed, 25 Feb 2026 01:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983572; cv=none; b=syLPI2s1KRSPGWLl5WFqCoMKkgSHZ7x9HJuDzqi46sNXBNDGVGbu1C/qVq4L6iWEc6NnuzrBGTaoMDnvbK1dvf4ng0zZWQx12uKgZqzo79h91u7ZVKcQzkiYd0HCXaId8W8Z8KFchFu4DJx2aCA5vnpeXkTDLqdSNmWyKULpgLQ=
+	t=1771983520; cv=none; b=nqhWHp2BY7x5ZgfuBl1pIlsSoUEIuyFiK7gniv2JML6hgyhgiLTofUDX5j3/uIOXiPPrXUqnyWeNtEKng21xuJg2CP7hO/c4uIAMFfqQmQzOIRJBZjgpkyU4FXySLNmn4HWMTZm+5HnlPDRr/XKev4I841vR2Ma9UGQsIDJ+sHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983572; c=relaxed/simple;
-	bh=eATotnli9qFImWOVaoYMFR4/ges2PgmP8XjWzAsym/c=;
+	s=arc-20240116; t=1771983520; c=relaxed/simple;
+	bh=sB+I6BBpZRtA1mAk30fNHuCqdb3IAHGlafK8WVohLGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcnDGfmwo1YrEOokmql+ZHCvFZcYzUCBuxlSHwnNG/cRzJve/fu7cGHV+BaovuLKTa2xVGGrXFbQnxjz9RtXXSP8dvIuQfbh5XAZ4nbmILgOZHocnxmRgqjGfz48I1Epr+zRLlYMgk5fcfTPMtuSCVqZUoQatrl2mJpc+VJpRk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0n9f0hlc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C2FC116D0;
-	Wed, 25 Feb 2026 01:39:31 +0000 (UTC)
+	 MIME-Version; b=UK31j3K3jG2ZWgPhJG9Od99xF034ruXhHlXNXgxSp+gFiDvmVR3e7jsmRuKQt0vLMtstXHB1N+5ms5awoEc6evlwb5Vx8uFmv7rl6AnDSpEKmv1XCLw9jSgLr+5I0CH+UfGbuYDTMej+NAv0gysvBoWNvyYAR9lX6K9yatsM2x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuTVqQim; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EE5C116D0;
+	Wed, 25 Feb 2026 01:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983572;
-	bh=eATotnli9qFImWOVaoYMFR4/ges2PgmP8XjWzAsym/c=;
+	s=korg; t=1771983519;
+	bh=sB+I6BBpZRtA1mAk30fNHuCqdb3IAHGlafK8WVohLGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0n9f0hlcs8MpAqGVWQ9mQprkSI96MFpuco3SdgVDkKMwVfzp6JIKGiO4YrWwcnW4Y
-	 uwP1pWKGnz3fzV4b7LxDFhW4ls/VlgsYO8qyi8sLRy6iXY0xOzOHLCGOpfnATH/nas
-	 Zka6eWiYoeHKfv/Rr0W0pNmF4rgQGde8cIzy8wlM=
+	b=TuTVqQimJ5AM5SEERv/z2VFlvlKM2nHayqPOpudUOJc6XwZXuzHTrcNAiEE/K1jh4
+	 d01ifk+d9F7iK9WCGprC4DPvN3WjCSzBQ1qVu2Rt/p4bLlqsouEfN35Y+rW0mMY/i2
+	 ZvrdWvyn/Y9W0qbDzs0FEh9HJFy2OBPTa9bXs5AY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bcf9e1868c1a0c7e04f1@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 619/781] fs/ntfs3: prevent infinite loops caused by the next valid being the same
-Date: Tue, 24 Feb 2026 17:22:08 -0800
-Message-ID: <20260225012414.989058046@linuxfoundation.org>
+Subject: [PATCH 6.19 620/781] fs/ntfs3: Fix slab-out-of-bounds read in DeleteIndexEntryRoot
+Date: Tue, 24 Feb 2026 17:22:09 -0800
+Message-ID: <20260225012415.018758421@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -66,91 +65,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218666-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paragon-software.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218711-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,paragon-software.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.962];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,bcf9e1868c1a0c7e04f1];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,paragon-software.com:email,syzkaller.appspot.com:url,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6393618FDA7
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 96DFD18FCAE
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 27b75ca4e51e3e4554dc85dbf1a0246c66106fd3 ]
+[ Upstream commit b2bc7c44ed1779fc9eaab9a186db0f0d01439622 ]
 
-When processing valid within the range [valid : pos), if valid cannot
-be retrieved correctly, for example, if the retrieved valid value is
-always the same, this can trigger a potential infinite loop, similar
-to the hung problem reported by syzbot [1].
+In the 'DeleteIndexEntryRoot' case of the 'do_action' function, the
+entry size ('esize') is retrieved from the log record without adequate
+bounds checking.
 
-Adding a check for the valid value within the loop body, and terminating
-the loop and returning -EINVAL if the value is the same as the current
-value, can prevent this.
+Specifically, the code calculates the end of the entry ('e2') using:
+    e2 = Add2Ptr(e1, esize);
 
-[1]
-INFO: task syz.4.21:6056 blocked for more than 143 seconds.
-Call Trace:
- rwbase_write_lock+0x14f/0x750 kernel/locking/rwbase_rt.c:244
- inode_lock include/linux/fs.h:1027 [inline]
- ntfs_file_write_iter+0xe6/0x870 fs/ntfs3/file.c:1284
+It then calculates the size for memmove using 'PtrOffset(e2, ...)',
+which subtracts the end pointer from the buffer limit. If 'esize' is
+maliciously large, 'e2' exceeds the used buffer size. This results in
+a negative offset which, when cast to size_t for memmove, interprets
+as a massive unsigned integer, leading to a heap buffer overflow.
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Reported-by: syzbot+bcf9e1868c1a0c7e04f1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bcf9e1868c1a0c7e04f1
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+This commit adds a check to ensure that the entry size ('esize') strictly
+fits within the remaining used space of the index header before performing
+memory operations.
+
+Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/file.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/ntfs3/fslog.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index 732260087066d..5120bd7851694 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -1077,8 +1077,12 @@ static ssize_t ntfs_compress_write(struct kiocb *iocb, struct iov_iter *from)
- 			goto out;
+diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+index 38934e6978ece..28bd611f580d9 100644
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -3429,6 +3429,9 @@ static int do_action(struct ntfs_log *log, struct OPEN_ATTR_ENRTY *oe,
  
- 		if (lcn == SPARSE_LCN) {
--			ni->i_valid = valid =
--				frame_vbo + ((u64)clen << sbi->cluster_bits);
-+			valid = frame_vbo + ((u64)clen << sbi->cluster_bits);
-+			if (ni->i_valid == valid) {
-+				err = -EINVAL;
-+				goto out;
-+			}
-+			ni->i_valid = valid;
- 			continue;
- 		}
+ 		e1 = Add2Ptr(attr, le16_to_cpu(lrh->attr_off));
+ 		esize = le16_to_cpu(e1->size);
++		if (PtrOffset(e1, Add2Ptr(hdr, used)) < esize)
++			goto dirty_vol;
++
+ 		e2 = Add2Ptr(e1, esize);
  
+ 		memmove(e1, e2, PtrOffset(e2, Add2Ptr(hdr, used)));
 -- 
 2.51.0
 
