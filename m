@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-218677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ClsMFtVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:19 +0100
+	id AGBsFbCdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA6B18FFA9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7134192A81
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B3EF230A3EE8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C8F6F30387DD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62F1268690;
-	Wed, 25 Feb 2026 01:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2775330C606;
+	Wed, 25 Feb 2026 06:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gkjv7EyF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUnrO4hs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A987924A05D;
-	Wed, 25 Feb 2026 01:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44F42F290B;
+	Wed, 25 Feb 2026 06:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983533; cv=none; b=rC3o7cdQP9joBUZGm3p/81N4oFzezyr7t6ZK+2AYciiX7ziS1ZJpkjolbZ5WWm08d+nGBNuDkEFDU+o6BqUE0CYAkNr3mKcohUghOBi1QHQ1RjvcUWvOKpW596HOSFli8Zn3T6fbI34woGHDyeK7/YUX0Sf9u4aKXGhjj7Cj9rY=
+	t=1772002638; cv=none; b=f405XX2vmWjM1XcDdp3NqmKNvrp7KXUH8D5w8IUaRVsFdurPLPhjuDL5B6JdJCyL1Su5waJ+z9m1AwJGBfAcNqOj3Ub8w9R0e62j0DbkmjbIYUasT/EpGD0CLXHM2A57rRRPTJ/zFQKYqGhLjIzJmYN1J4fmjU8lSfeATwrRHUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983533; c=relaxed/simple;
-	bh=8y8INJeTcsz6hIkgvMlTAKvT7/dDMIGFl2bHmhrf/Tc=;
+	s=arc-20240116; t=1772002638; c=relaxed/simple;
+	bh=ap9KLUYjn2BuZ5RPclKXfx/W2e5YFqhzPUqvZk2mHd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwsiiSWEjR2Lte1+zAT4y3DvB3C6C7jxksiw6T5CnMqKfIWLbKGk5x1nKcxzpS2EeAQ7J1b/UztNGbmztEximL1zGGtnksGY495rW/gvlWDsv8n+wnNQP7OXM4H3MJXBHwR/wjTZS77lM8i74aYbZGXdw5mKoeM1F++A1gOs5a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkjv7EyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25AB5C116D0;
-	Wed, 25 Feb 2026 01:38:53 +0000 (UTC)
+	 MIME-Version; b=Vs+efQXBcLo3oNtBtUjOF4Wt+E2DGUULJymIcnN2fDh3Ij6zw+qJ9Xf3kvS8pIQOqtMgYoydkqYaps0GrkxNBRFNLoKrygEOSApY9x7QdjS6MkGbcwkt19kr8gtq1dJaOtMODD6fmug+KgIsj5JdNsvGBuxHTJFX/nethOC96Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUnrO4hs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABEA9C116D0;
+	Wed, 25 Feb 2026 06:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983533;
-	bh=8y8INJeTcsz6hIkgvMlTAKvT7/dDMIGFl2bHmhrf/Tc=;
+	s=korg; t=1772002638;
+	bh=ap9KLUYjn2BuZ5RPclKXfx/W2e5YFqhzPUqvZk2mHd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gkjv7EyF5BeUEALtLFCB/FF/0FCXxwM5uchgvoNY55hmzMhBmwHnpr8rGx8PxMGAG
-	 XDwZBHMaqZEL8CQ/6GVf3HspPLPiC0wzDoZete6QYFj9nFbdGJEEAL87I91e0reoDy
-	 A2Ojfr85vCTns9ZnGLOy+HwEsWBxbLbl3f4dj/w8=
+	b=LUnrO4hsv6zw5PxU8i7WGPigM87Q8qxvOiZ2oiiyMdYIeXDtgcOkhi8peml8KcOcg
+	 xxqvbLYzv1xXdAjVvX23MRtEhPVKpdyfvy9OZECX0WyQvTK3hXsHYQDhapcd7BD2mL
+	 UttVGOEvlx7Oa22yMkMLvxta22WXumsqxbai30SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 621/781] tools/power turbostat: AMD: msr offset 0x611 read failed: Input/output error
+Subject: [PATCH 6.18 404/641] clk: qcom: gcc-sm8550: Use floor ops for SDCC RCGs
 Date: Tue, 24 Feb 2026 17:22:10 -0800
-Message-ID: <20260225012415.042050924@linuxfoundation.org>
+Message-ID: <20260225012358.356908570@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +71,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219321-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218677-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 1BA6B18FFA9
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,linaro.org:email]
+X-Rspamd-Queue-Id: C7134192A81
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 16cc8f249c702b7cbb4c2c2be7cd8f4fdd5d1d0c ]
+[ Upstream commit 1c06e3956054fb5a0930f07b02726b1774b6c700 ]
 
-Turbostat exits during RAPL probe with:
+In line with commit a27ac3806b0a ("clk: qcom: gcc-sm8450: Use floor ops
+for SDCC RCGs") done to fix issues with overclocked SD cards on SM8450
+powered boards set floor clock operations for SDCC RCGs on SM8550.
 
-turbostat: cpu0: msr offset 0x611 read failed: Input/output error
+This change fixes initialization of some SD cards, where the problem
+is manifested by the SDHC driver:
 
-A binary with this bug can be used successfully with
-the option "--no-msr"
+    mmc0: Card appears overclocked; req 50000000 Hz, actual 100000000 Hz
+    mmc0: error -110 whilst initialising SD card
 
-Fix this regression by trusting the static AMD RAPL MSR offset.
-
-Fixes: 19476a592bf2 ("tools/power turbostat: Validate RAPL MSRs for AWS Nitro Hypervisor")
-Signed-off-by: Len Brown <len.brown@intel.com>
+Fixes: 955f2ea3b9e9 ("clk: qcom: Add GCC driver for SM8550")
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251124212012.3660189-2-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sm8550.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 5ad45c2ac5bd8..c4c8b6315fd26 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -2135,7 +2135,7 @@ off_t idx_to_offset(int idx)
+diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
+index 862a9bf73bcb5..36a5b7de5b55d 100644
+--- a/drivers/clk/qcom/gcc-sm8550.c
++++ b/drivers/clk/qcom/gcc-sm8550.c
+@@ -1025,7 +1025,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_9,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_9),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
- 	switch (idx) {
- 	case IDX_PKG_ENERGY:
--		if (valid_rapl_msrs & RAPL_AMD_F17H)
-+		if (platform->plat_rapl_msrs & RAPL_AMD_F17H)
- 			offset = MSR_PKG_ENERGY_STAT;
- 		else
- 			offset = MSR_PKG_ENERGY_STATUS;
+@@ -1048,7 +1048,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
+ 
 -- 
 2.51.0
 
