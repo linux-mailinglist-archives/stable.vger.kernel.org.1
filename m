@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-219363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218705-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHoQL7+fnmloWgQAu9opvQ
-	(envelope-from <stable+bounces-219363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:43 +0100
+	id yIyFEa9Unmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218705-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164BE192FD5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AECE018FD82
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3046F31A587D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4611831D35DB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA0430F7EF;
-	Wed, 25 Feb 2026 06:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019522550D7;
+	Wed, 25 Feb 2026 01:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpc9Q6GJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnKH8291"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D7030BF69;
-	Wed, 25 Feb 2026 06:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7612243376;
+	Wed, 25 Feb 2026 01:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002666; cv=none; b=UoTFYHAdUrWPJPaPSUTnvsMf6a3iqzerqOMocogHdaS6bXdF+dFJz/6l0oOcqMvua/JDDyzQoe7phdaNEP9YBB93j3Go7nr78rUSqSNd8M3OtrixzhxEQMh0EzuBiu4GNz4L2yKXgDqIxzetl5Pl0+6z+YlLTxNg6yC14sNeK3I=
+	t=1771983565; cv=none; b=e8ZH36ZFIEmYdIrh9RFL2sxI7iIU9RCBEJ4f3rRPiveCxc5G69lGjVCqoYIVvD1mM1OjbbXIEMdSahncaMz2wYdnfP1ZnRS5Iq4ulvgQx9nHVFbPTQjxxwASdRE00L+UEPyWPL4RSaXffWDu7w4/lI/TgFUHRcKSylY9sqk0+a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002666; c=relaxed/simple;
-	bh=ZZdFfpldocfyrRFQyM3t/5jNT5pxAYdSYGwruxw8Icg=;
+	s=arc-20240116; t=1771983565; c=relaxed/simple;
+	bh=4Zs/iBww1gSJYWBRkAyWceyGkdpqzJXgd52bzRADhic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NqlQWp6+Ph+/Q48ZgqfIG45vgkfJOiTmdw5HR8NmCkKQvLaDylDcklaT3op4K5mDcU8Dnk1o/vWz822EKuqXjo7OcjfP2RnFAvMLGz1gnKnQHaYx5fwIiPeeOn8t2w0LhCXeeJf0gnPjN15R4spELARZ8anxKi2jfeUY/cVHSiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpc9Q6GJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2E7C116D0;
-	Wed, 25 Feb 2026 06:57:46 +0000 (UTC)
+	 MIME-Version; b=BnZfUXgpQhYMYWMjvWMXn/KfDAKVKKTkXSSyQXVqkOVGTPbiRiuzUvJ2m+sJ+qsLvOpz5YXLU8J9E0998EKUTZDMBTEHbCiLN6v8s7sGO1ps3Qbinki8zKLY3O92TX0yQ3j+rmlOKdvjBBBUaeJaqr4c6e0rjlR2FVACIQRj9mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnKH8291; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BE6C116D0;
+	Wed, 25 Feb 2026 01:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002666;
-	bh=ZZdFfpldocfyrRFQyM3t/5jNT5pxAYdSYGwruxw8Icg=;
+	s=korg; t=1771983565;
+	bh=4Zs/iBww1gSJYWBRkAyWceyGkdpqzJXgd52bzRADhic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpc9Q6GJmvN74zg4EP1qmqoHp9FFAiXUhQfOSxYb0FQC1nZbDCOE3PiIW25jiO7ls
-	 u50IzX36EErm5pqTGboOutgwYx2CcgCLOUaKoK7OYgEQKFgD5j7+c39GFrF1PDEdpl
-	 mEPSVvO+YzthypAVXR2gBMj/O+DMv5ZxtCOVR4Xo=
+	b=GnKH8291EKw3rSyyxWdqRsiUubI/FRXTVXCAc9uTe2Dt5obFgqtTbD7ucLfKF7s4c
+	 5s71AFQadCf/pggTfrf2Kt3lXTHNS6EyCjqWCQIgQ/QExZt3DAlnmP9OnM3KT7sBOF
+	 uQRa17LspkTHhvA2KXFcnW7NCjP9isiFHWKguq4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 447/641] clk: mediatek: Fix error handling in runtime PM setup
+Subject: [PATCH 6.19 664/781] netfilter: nf_conntrack_h323: dont pass uninitialised l3num value
 Date: Tue, 24 Feb 2026 17:22:53 -0800
-Message-ID: <20260225012359.353081589@linuxfoundation.org>
+Message-ID: <20260225012416.073715980@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +68,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219363-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218705-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 164BE192FD5
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email]
+X-Rspamd-Queue-Id: AECE018FD82
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit aa2ad19210a6a444111bce55e8b69579f29318fb ]
+[ Upstream commit a6d28eb8efe96b3e35c92efdf1bfacb0cccf541f ]
 
-devm_pm_runtime_enable() can fail due to memory allocation. The current
-code ignores its return value, and when pm_runtime_resume_and_get() fails,
-it returns directly without unmapping the shared_io region.
+Mihail Milev reports: Error: UNINIT (CWE-457):
+ net/netfilter/nf_conntrack_h323_main.c:1189:2: var_decl:
+	Declaring variable "tuple" without initializer.
+ net/netfilter/nf_conntrack_h323_main.c:1197:2:
+	uninit_use_in_call: Using uninitialized value "tuple.src.l3num" when calling "__nf_ct_expect_find".
+ net/netfilter/nf_conntrack_expect.c:142:2:
+	read_value: Reading value "tuple->src.l3num" when calling "nf_ct_expect_dst_hash".
 
-Add error handling for devm_pm_runtime_enable(). Reorder cleanup labels
-to properly unmap shared_io on pm_runtime_resume_and_get() failure.
+  1195|   	tuple.dst.protonum = IPPROTO_TCP;
+  1196|
+  1197|-> 	exp = __nf_ct_expect_find(net, nf_ct_zone(ct), &tuple);
+  1198|   	if (exp && exp->master == ct)
+  1199|   		return exp;
 
-Fixes: 2f7b1d8b5505 ("clk: mediatek: Do a runtime PM get on controllers during probe")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Switch this to a C99 initialiser and set the l3num value.
+
+Fixes: f587de0e2feb ("[NETFILTER]: nf_conntrack/nf_nat: add H.323 helper port")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mtk.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/netfilter/nf_conntrack_h323_main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
-index 19cd27941747a..deafe55a96cb1 100644
---- a/drivers/clk/mediatek/clk-mtk.c
-+++ b/drivers/clk/mediatek/clk-mtk.c
-@@ -497,14 +497,16 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+diff --git a/net/netfilter/nf_conntrack_h323_main.c b/net/netfilter/nf_conntrack_h323_main.c
+index 14f73872f6477..e35814d68ce30 100644
+--- a/net/netfilter/nf_conntrack_h323_main.c
++++ b/net/netfilter/nf_conntrack_h323_main.c
+@@ -1186,13 +1186,13 @@ static struct nf_conntrack_expect *find_expect(struct nf_conn *ct,
+ {
+ 	struct net *net = nf_ct_net(ct);
+ 	struct nf_conntrack_expect *exp;
+-	struct nf_conntrack_tuple tuple;
++	struct nf_conntrack_tuple tuple = {
++		.src.l3num = nf_ct_l3num(ct),
++		.dst.protonum = IPPROTO_TCP,
++		.dst.u.tcp.port = port,
++	};
  
+-	memset(&tuple.src.u3, 0, sizeof(tuple.src.u3));
+-	tuple.src.u.tcp.port = 0;
+ 	memcpy(&tuple.dst.u3, addr, sizeof(tuple.dst.u3));
+-	tuple.dst.u.tcp.port = port;
+-	tuple.dst.protonum = IPPROTO_TCP;
  
- 	if (mcd->need_runtime_pm) {
--		devm_pm_runtime_enable(&pdev->dev);
-+		r = devm_pm_runtime_enable(&pdev->dev);
-+		if (r)
-+			goto unmap_io;
- 		/*
- 		 * Do a pm_runtime_resume_and_get() to workaround a possible
- 		 * deadlock between clk_register() and the genpd framework.
- 		 */
- 		r = pm_runtime_resume_and_get(&pdev->dev);
- 		if (r)
--			return r;
-+			goto unmap_io;
- 	}
- 
- 	/* Calculate how many clk_hw_onecell_data entries to allocate */
-@@ -618,11 +620,11 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
- free_data:
- 	mtk_free_clk_data(clk_data);
- free_base:
--	if (mcd->shared_io && base)
--		iounmap(base);
--
- 	if (mcd->need_runtime_pm)
- 		pm_runtime_put(&pdev->dev);
-+unmap_io:
-+	if (mcd->shared_io && base)
-+		iounmap(base);
- 	return r;
- }
- 
+ 	exp = __nf_ct_expect_find(net, nf_ct_zone(ct), &tuple);
+ 	if (exp && exp->master == ct)
 -- 
 2.51.0
 
