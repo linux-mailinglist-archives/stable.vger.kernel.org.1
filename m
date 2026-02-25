@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-219024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kI76LJZYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:06 +0100
+	id aH5PBmRSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BF3190776
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BDF18F348
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 71C5F30E1DD4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DF56E306A66B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C1E18DF80;
-	Wed, 25 Feb 2026 01:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142AB22579E;
+	Wed, 25 Feb 2026 01:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqMSFFZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8+0Yp2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A48826FA60;
-	Wed, 25 Feb 2026 01:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB84C18B0A;
+	Wed, 25 Feb 2026 01:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983938; cv=none; b=ZKqVSOhWBgGgo00Gm0j2vfMV2bnTm7It1pINtxh3bPkYN4UqPvfOORpfbgUcPgvZLHx1XokuMzZvzF/aW22Neqw497/aJpHqeK+gM+x0yxPEGyBQRJQhtMDN6fNBTsfIdW1CYCGVIOzTW85ND1DWUkf+1hlpfsHjbGFj2Xjtjeg=
+	t=1771983282; cv=none; b=b2nN+91beJrh2o2BR5BXl/8Z3jKTBV9Va7ts1vp3CqBQsGYoJ2CmPgnEH+eEyIwnhWqWQblSpKmmc/5vk3Pb4pTOyCdJCA/QqwQZ+gbrNGjRFXNSIGeSmxxfI2zYRXCBzdJ0s7rcX4nZ5WjeZURkTClywlcWRPLiG7gy6olx5Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983938; c=relaxed/simple;
-	bh=0Wn5D2OB+QUkznVNi2MrXquSfrkML41h9dhc8tKljiM=;
+	s=arc-20240116; t=1771983282; c=relaxed/simple;
+	bh=gUcfE9QGTc31Y7Lw3OFI4W1PwI6Z9Mo7HpMgWazU4UA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JScsK+5WOltql7BUE4zWdpmuZuaaJ3mfpIatunnA96SseXw5c60S6SZa6zd0D96BLia++fUXVWZchRy9qVOBDgpANx6fVe/NXsz0imTnykoX+Mfbf32bb2KYbs9EDwTRYcPpCsI8il8TiPjyOP01sJf3Wp3AWU9+SYfFbI7Q/F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqMSFFZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49F7C116D0;
-	Wed, 25 Feb 2026 01:45:37 +0000 (UTC)
+	 MIME-Version; b=rADIgVhLx6vBeIF16rnN/TA7c0ErOyZoBTUYC0+lqW+W4FlaoAZ004prHtjdYZYDMM+/1MztY5I0Gk1Lq7KrZGzPNj213i08zDMRKJGh1YNdBOT6jW0Zvvxy764Fu/Vbpq9RdEaaisQotBaoSXzFMg7LV6s/xBFyaoVc/TJdnLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8+0Yp2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B831C116D0;
+	Wed, 25 Feb 2026 01:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983937;
-	bh=0Wn5D2OB+QUkznVNi2MrXquSfrkML41h9dhc8tKljiM=;
+	s=korg; t=1771983282;
+	bh=gUcfE9QGTc31Y7Lw3OFI4W1PwI6Z9Mo7HpMgWazU4UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqMSFFZyncl3iyL43x6U22NwdOhMwWrCZt/72JFiMZ3+KJCXKlY0ENaex0Xiy7OKW
-	 zqxYRF7ShFtZeuDKKHZudi5ZVcJUSFBJp5frwL7++8S/o7jPLohyezbEZm8Jg5EGMn
-	 1grzt+6BLNSF5uxyAmtBV4B3zxjNy/W48XbV38to=
+	b=E8+0Yp2UHlCwQ43L8QdPkp7vP2QbxkvaRVzsLKOvifd6OhvfStjGt4cQ1XtSMcbO9
+	 l5lMFp7Jd9QM0RL9yaYG5P5RjXNqQPy1Dvf2qpstUSSmM6wwIV+nOXKBi2PwuZAiR6
+	 oOqSzee9ZomLxeb/pG7HuO2MN7KnZu9pJ0FyEWf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	David Heidelberg <david@ixit.cz>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 202/641] media: ccs: Accommodate C-PHY into the calculation
-Date: Tue, 24 Feb 2026 17:18:48 -0800
-Message-ID: <20260225012353.865333259@linuxfoundation.org>
+Subject: [PATCH 6.19 420/781] PCI: rzg3s-host: Fix device node reference leak in rzg3s_pcie_host_parse_port()
+Date: Tue, 24 Feb 2026 17:18:49 -0800
+Message-ID: <20260225012410.000182219@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,80 +73,74 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219024-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218459-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,bp.renesas.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.987];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ixit.cz:email]
-X-Rspamd-Queue-Id: D0BF3190776
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A5BDF18F348
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Heidelberg <david@ixit.cz>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 3085977e734dab74adebb1dda195befce25addff ]
+[ Upstream commit e43e2aa557040bbcc5de0eaa1c59ee3ae9e31793 ]
 
-We need to set correct mode for PLL to calculate correct frequency.
-Signalling mode is known at this point, so use it for that.
+In rzg3s_pcie_host_parse_port(), of_get_next_child() returns a device node
+with an incremented reference count that must be released with
+of_node_put(). The current code fails to call of_node_put() which causes a
+reference leak.
 
-Fixes: 47b6eaf36eba ("media: ccs-pll: Differentiate between CSI-2 D-PHY and C-PHY")
-Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
-[Sakari Ailus: Drop extra newline.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Use the __free(device_node) attribute to ensure automatic cleanup when the
+variable goes out of scope.
+
+Fixes: 7ef502fb35b2 ("PCI: Add Renesas RZ/G3S host controller driver")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20260204-rzg3s-v1-1-142bc81c3312@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs/ccs-core.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pcie-rzg3s-host.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ccs/ccs-core.c b/drivers/media/i2c/ccs/ccs-core.c
-index 1c889c878abd3..08e78f0bf2528 100644
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3425,7 +3425,21 @@ static int ccs_probe(struct i2c_client *client)
- 	sensor->scale_m = CCS_LIM(sensor, SCALER_N_MIN);
+diff --git a/drivers/pci/controller/pcie-rzg3s-host.c b/drivers/pci/controller/pcie-rzg3s-host.c
+index ae6d9c7dc2c12..1bea8360f8944 100644
+--- a/drivers/pci/controller/pcie-rzg3s-host.c
++++ b/drivers/pci/controller/pcie-rzg3s-host.c
+@@ -1143,7 +1143,8 @@ static int rzg3s_pcie_resets_prepare_and_get(struct rzg3s_pcie_host *host)
  
- 	/* prepare PLL configuration input values */
--	sensor->pll.bus_type = CCS_PLL_BUS_TYPE_CSI2_DPHY;
-+	switch (sensor->hwcfg.csi_signalling_mode) {
-+	case CCS_CSI_SIGNALING_MODE_CSI_2_CPHY:
-+		sensor->pll.bus_type = CCS_PLL_BUS_TYPE_CSI2_CPHY;
-+		break;
-+	case CCS_CSI_SIGNALING_MODE_CSI_2_DPHY:
-+	case SMIAPP_CSI_SIGNALLING_MODE_CCP2_DATA_CLOCK:
-+	case SMIAPP_CSI_SIGNALLING_MODE_CCP2_DATA_STROBE:
-+		sensor->pll.bus_type = CCS_PLL_BUS_TYPE_CSI2_DPHY;
-+		break;
-+	default:
-+		dev_err(&client->dev, "unsupported signalling mode %u\n",
-+			sensor->hwcfg.csi_signalling_mode);
-+		rval = -EINVAL;
-+		goto out_cleanup;
-+	}
- 	sensor->pll.csi2.lanes = sensor->hwcfg.lanes;
- 	if (CCS_LIM(sensor, CLOCK_CALCULATION) &
- 	    CCS_CLOCK_CALCULATION_LANE_SPEED) {
+ static int rzg3s_pcie_host_parse_port(struct rzg3s_pcie_host *host)
+ {
+-	struct device_node *of_port = of_get_next_child(host->dev->of_node, NULL);
++	struct device_node *of_port __free(device_node) =
++		of_get_next_child(host->dev->of_node, NULL);
+ 	struct rzg3s_pcie_port *port = &host->port;
+ 	int ret;
+ 
 -- 
 2.51.0
 
