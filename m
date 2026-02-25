@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-219233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8K7gL/WdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:05 +0100
+	id kAWYE+xSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C59C192B38
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F75A18F5E5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E4E130E6449
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A1D37306C00D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E8A2C21F1;
-	Wed, 25 Feb 2026 06:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F0D25A642;
+	Wed, 25 Feb 2026 01:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJthcdeF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDU/N5ms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7362C0F97;
-	Wed, 25 Feb 2026 06:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF93C1D5141;
+	Wed, 25 Feb 2026 01:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002581; cv=none; b=qjbz0GxMnN/WU6ydTuPtER6nC+V3nFIYxai+MXs4lR1bS5Cva2inmNLAXPLxtEv5kENrbiKdk1DopwHLIXxG62k9hxq0pRG9weC9dXHv8dGakenX10QJGgAd1YfZxlgRH7SN6rdAogc2D7gjHoc2QmzSMbOEzfl05eTU4r7bd4g=
+	t=1771983461; cv=none; b=a8rV4cXHWHOkQAVBdU9ikfDpwteRKRal7AJ7ezR/0S5h69jbJqL69AhjybNBhPvluZNQ43uQ3ibU3vrVX6giwrzillGFn/AYzF4Yuad73qJ4lSDvRmZuQMr6pVUkqMq+MZahuL19yjzlp3deJagWxfbvZPblgufA6tF1eXXJ+Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002581; c=relaxed/simple;
-	bh=TKx4/pbR5+Kdeu1jrU3ju3f9Xx1OQm1uAHAhrebwYXA=;
+	s=arc-20240116; t=1771983461; c=relaxed/simple;
+	bh=+paGgzIAyzeOrXROiGuzivurgDxdoCjqJBMNIFPJW5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDdhmzCH2KlozhWQXnsWdIBUigYk5yMeq6N2kgXbV7BCh3pZd0qItEhqjOpdlYv0/DkNIaZLtLOkTUpPU6WK9SWk/43DJwKkgzRVK6flXbO6nWj354dbMe4dNhj4DTEMK7+mXXgFisTdeTUvZUI807uIIm+YfwUgefeWrEOyLl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJthcdeF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35E9C116D0;
-	Wed, 25 Feb 2026 06:56:21 +0000 (UTC)
+	 MIME-Version; b=lKtyz1N+G7AR43A3U5GYX1vXKAl43MPFMgzcxEbd2x3AquHZy8zSyZiDkMQebwXhFMXkDgxY5tragIO3i+p6sxofLhCH7CeXSk+Md1AFyguqznzVfLADSNOw5k1wRUKyAOrLcj5xRVMjlpYG8MrdhE9nwxerYjg4QLxAjQz6Hnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDU/N5ms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F77BC19424;
+	Wed, 25 Feb 2026 01:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002581;
-	bh=TKx4/pbR5+Kdeu1jrU3ju3f9Xx1OQm1uAHAhrebwYXA=;
+	s=korg; t=1771983461;
+	bh=+paGgzIAyzeOrXROiGuzivurgDxdoCjqJBMNIFPJW5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJthcdeF/h9yV7JeQ1YNdCFI/SfqGWqPdSuFK6tVkLsbCbL8NgpdPRTEuEVYMzv6w
-	 Lv0mS2Eb3S0V3kxzh5zlleTTQINVUiX826gP9VOs+BYfrQ2Ov2bc8WgTToVb0p60uQ
-	 SfwKtLA4DhOupasnTSmqasoFEqEzc7kjR/7FfvSs=
+	b=gDU/N5ms1c10hmuyrcFvQ3k326in2MXz153FLu/KxwbaH/XPso7iiWnMFnVdJSAlV
+	 90o+uAbE7oto0qsQo5JABJRmehdM6aOAUZCN7mG39+nTEQe8YcjHnqkgYXJpg6OVXC
+	 ToUF2RYnEWAbnpb6ElWOWDlxsSfmpYdPu3xNjkiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Petr Oros <poros@redhat.com>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 317/641] dpll: add phase-adjust-gran pin attribute
+Subject: [PATCH 6.19 534/781] clk: qcom: regmap-divider: convert from divider_ro_round_rate() to divider_ro_determine_rate()
 Date: Tue, 24 Feb 2026 17:20:43 -0800
-Message-ID: <20260225012356.397083938@linuxfoundation.org>
+Message-ID: <20260225012412.895429157@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -82,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219233-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218615-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,186 +88,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 4C59C192B38
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 1F75A18F5E5
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 30176bf7c871681df506f3165ffe76ec462db991 ]
+[ Upstream commit 349f02c0f5d4ee147c582b89cadd553bd534028a ]
 
-Phase-adjust values are currently limited by a min-max range. Some
-hardware requires, for certain pin types, that values be multiples of
-a specific granularity, as in the zl3073x driver.
+The divider_ro_round_rate() function is now deprecated, so let's migrate
+to divider_ro_determine_rate() instead so that this deprecated API can
+be removed.
 
-Add a `phase-adjust-gran` pin attribute and an appropriate field in
-dpll_pin_properties. If set by the driver, use its value to validate
-user-provided phase-adjust values.
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
 
-Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Petr Oros <poros@redhat.com>
-Tested-by: Prathosh Satish <Prathosh.Satish@microchip.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Link: https://patch.msgid.link/20251029153207.178448-2-ivecera@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 5d41f95f5d0b ("dpll: zl3073x: Fix output pin phase adjustment sign")
+    req->rate = divider_round_rate(...)
+
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
+
+Fixes: b6f90511c165 ("clk: qcom: regmap-divider: convert from round_rate() to determine_rate()")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260108-clk-divider-round-rate-v1-15-535a3ed73bf3@redhat.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/driver-api/dpll.rst     | 36 +++++++++++++++------------
- Documentation/netlink/specs/dpll.yaml |  7 ++++++
- drivers/dpll/dpll_netlink.c           | 12 ++++++++-
- include/linux/dpll.h                  |  1 +
- include/uapi/linux/dpll.h             |  1 +
- 5 files changed, 40 insertions(+), 17 deletions(-)
+ drivers/clk/qcom/clk-regmap-divider.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/driver-api/dpll.rst b/Documentation/driver-api/dpll.rst
-index be1fc643b645e..83118c728ed90 100644
---- a/Documentation/driver-api/dpll.rst
-+++ b/Documentation/driver-api/dpll.rst
-@@ -198,26 +198,28 @@ be requested with the same attribute with ``DPLL_CMD_DEVICE_SET`` command.
-   ================================== ======================================
+diff --git a/drivers/clk/qcom/clk-regmap-divider.c b/drivers/clk/qcom/clk-regmap-divider.c
+index 4f5395f0ab6d0..af9c01dd78537 100644
+--- a/drivers/clk/qcom/clk-regmap-divider.c
++++ b/drivers/clk/qcom/clk-regmap-divider.c
+@@ -26,12 +26,8 @@ static int div_ro_determine_rate(struct clk_hw *hw,
+ 	val >>= divider->shift;
+ 	val &= BIT(divider->width) - 1;
  
- Device may also provide ability to adjust a signal phase on a pin.
--If pin phase adjustment is supported, minimal and maximal values that pin
--handle shall be provide to the user on ``DPLL_CMD_PIN_GET`` respond
--with ``DPLL_A_PIN_PHASE_ADJUST_MIN`` and ``DPLL_A_PIN_PHASE_ADJUST_MAX``
-+If pin phase adjustment is supported, minimal and maximal values and
-+granularity that pin handle shall be provided to the user on
-+``DPLL_CMD_PIN_GET`` respond with ``DPLL_A_PIN_PHASE_ADJUST_MIN``,
-+``DPLL_A_PIN_PHASE_ADJUST_MAX`` and ``DPLL_A_PIN_PHASE_ADJUST_GRAN``
- attributes. Configured phase adjust value is provided with
- ``DPLL_A_PIN_PHASE_ADJUST`` attribute of a pin, and value change can be
- requested with the same attribute with ``DPLL_CMD_PIN_SET`` command.
+-	req->rate = divider_ro_round_rate(hw, req->rate,
+-					  &req->best_parent_rate, NULL,
+-					  divider->width,
+-					  CLK_DIVIDER_ROUND_CLOSEST, val);
+-
+-	return 0;
++	return divider_ro_determine_rate(hw, req, NULL, divider->width,
++					 CLK_DIVIDER_ROUND_CLOSEST, val);
+ }
  
--  =============================== ======================================
--  ``DPLL_A_PIN_ID``               configured pin id
--  ``DPLL_A_PIN_PHASE_ADJUST_MIN`` attr minimum value of phase adjustment
--  ``DPLL_A_PIN_PHASE_ADJUST_MAX`` attr maximum value of phase adjustment
--  ``DPLL_A_PIN_PHASE_ADJUST``     attr configured value of phase
--                                  adjustment on parent dpll device
--  ``DPLL_A_PIN_PARENT_DEVICE``    nested attribute for requesting
--                                  configuration on given parent dpll
--                                  device
--    ``DPLL_A_PIN_PARENT_ID``      parent dpll device id
--    ``DPLL_A_PIN_PHASE_OFFSET``   attr measured phase difference
--                                  between a pin and parent dpll device
--  =============================== ======================================
-+  ================================ ==========================================
-+  ``DPLL_A_PIN_ID``                configured pin id
-+  ``DPLL_A_PIN_PHASE_ADJUST_GRAN`` attr granularity of phase adjustment value
-+  ``DPLL_A_PIN_PHASE_ADJUST_MIN``  attr minimum value of phase adjustment
-+  ``DPLL_A_PIN_PHASE_ADJUST_MAX``  attr maximum value of phase adjustment
-+  ``DPLL_A_PIN_PHASE_ADJUST``      attr configured value of phase
-+                                   adjustment on parent dpll device
-+  ``DPLL_A_PIN_PARENT_DEVICE``     nested attribute for requesting
-+                                   configuration on given parent dpll
-+                                   device
-+    ``DPLL_A_PIN_PARENT_ID``       parent dpll device id
-+    ``DPLL_A_PIN_PHASE_OFFSET``    attr measured phase difference
-+                                   between a pin and parent dpll device
-+  ================================ ==========================================
- 
- All phase related values are provided in pico seconds, which represents
- time difference between signals phase. The negative value means that
-@@ -384,6 +386,8 @@ according to attribute purpose.
-                                        frequencies
-       ``DPLL_A_PIN_ANY_FREQUENCY_MIN`` attr minimum value of frequency
-       ``DPLL_A_PIN_ANY_FREQUENCY_MAX`` attr maximum value of frequency
-+    ``DPLL_A_PIN_PHASE_ADJUST_GRAN``   attr granularity of phase
-+                                       adjustment value
-     ``DPLL_A_PIN_PHASE_ADJUST_MIN``    attr minimum value of phase
-                                        adjustment
-     ``DPLL_A_PIN_PHASE_ADJUST_MAX``    attr maximum value of phase
-diff --git a/Documentation/netlink/specs/dpll.yaml b/Documentation/netlink/specs/dpll.yaml
-index 80728f6f9bc87..78d0724d7e12c 100644
---- a/Documentation/netlink/specs/dpll.yaml
-+++ b/Documentation/netlink/specs/dpll.yaml
-@@ -440,6 +440,12 @@ attribute-sets:
-         doc: |
-           Capable pin provides list of pins that can be bound to create a
-           reference-sync pin pair.
-+      -
-+        name: phase-adjust-gran
-+        type: u32
-+        doc: |
-+          Granularity of phase adjustment, in picoseconds. The value of
-+          phase adjustment must be a multiple of this granularity.
- 
-   -
-     name: pin-parent-device
-@@ -616,6 +622,7 @@ operations:
-             - capabilities
-             - parent-device
-             - parent-pin
-+            - phase-adjust-gran
-             - phase-adjust-min
-             - phase-adjust-max
-             - phase-adjust
-diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-index a4153bcb6dcfe..64944f601ee5a 100644
---- a/drivers/dpll/dpll_netlink.c
-+++ b/drivers/dpll/dpll_netlink.c
-@@ -637,6 +637,10 @@ dpll_cmd_pin_get_one(struct sk_buff *msg, struct dpll_pin *pin,
- 	ret = dpll_msg_add_pin_freq(msg, pin, ref, extack);
- 	if (ret)
- 		return ret;
-+	if (prop->phase_gran &&
-+	    nla_put_u32(msg, DPLL_A_PIN_PHASE_ADJUST_GRAN,
-+			prop->phase_gran))
-+		return -EMSGSIZE;
- 	if (nla_put_s32(msg, DPLL_A_PIN_PHASE_ADJUST_MIN,
- 			prop->phase_range.min))
- 		return -EMSGSIZE;
-@@ -1261,7 +1265,13 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 	if (phase_adj > pin->prop.phase_range.max ||
- 	    phase_adj < pin->prop.phase_range.min) {
- 		NL_SET_ERR_MSG_ATTR(extack, phase_adj_attr,
--				    "phase adjust value not supported");
-+				    "phase adjust value of out range");
-+		return -EINVAL;
-+	}
-+	if (pin->prop.phase_gran && phase_adj % (s32)pin->prop.phase_gran) {
-+		NL_SET_ERR_MSG_ATTR_FMT(extack, phase_adj_attr,
-+					"phase adjust value not multiple of %u",
-+					pin->prop.phase_gran);
- 		return -EINVAL;
- 	}
- 
-diff --git a/include/linux/dpll.h b/include/linux/dpll.h
-index 25be745bf41f1..562f520b23c27 100644
---- a/include/linux/dpll.h
-+++ b/include/linux/dpll.h
-@@ -163,6 +163,7 @@ struct dpll_pin_properties {
- 	u32 freq_supported_num;
- 	struct dpll_pin_frequency *freq_supported;
- 	struct dpll_pin_phase_adjust_range phase_range;
-+	u32 phase_gran;
- };
- 
- #if IS_ENABLED(CONFIG_DPLL)
-diff --git a/include/uapi/linux/dpll.h b/include/uapi/linux/dpll.h
-index ab1725a954d74..69d35570ac4f1 100644
---- a/include/uapi/linux/dpll.h
-+++ b/include/uapi/linux/dpll.h
-@@ -251,6 +251,7 @@ enum dpll_a_pin {
- 	DPLL_A_PIN_ESYNC_FREQUENCY_SUPPORTED,
- 	DPLL_A_PIN_ESYNC_PULSE,
- 	DPLL_A_PIN_REFERENCE_SYNC,
-+	DPLL_A_PIN_PHASE_ADJUST_GRAN,
- 
- 	__DPLL_A_PIN_MAX,
- 	DPLL_A_PIN_MAX = (__DPLL_A_PIN_MAX - 1)
+ static int div_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
 -- 
 2.51.0
 
