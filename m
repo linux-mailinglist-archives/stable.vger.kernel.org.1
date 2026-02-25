@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-219267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218610-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +OU9AsienmlVWgQAu9opvQ
-	(envelope-from <stable+bounces-219267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:36 +0100
+	id CAcnBvxTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218610-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948AF192D6A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6B118FB2D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3527B313BAFA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA50230A92DD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFFB2C21DF;
-	Wed, 25 Feb 2026 06:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6455F26561A;
+	Wed, 25 Feb 2026 01:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HB1JcF8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZCRfyin"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BB62D063E;
-	Wed, 25 Feb 2026 06:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283C6243376;
+	Wed, 25 Feb 2026 01:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002603; cv=none; b=N6iRpGgebIIAaWodLjzVFTACGDlgXJndPs0ddwVKaPHtQ3rKFRQ9vlzUtSUvMQiX12nttZdYEM3YdjIBJOxdOsE967NmC0ndUJTHOzSm4B6rqMjuzrYMba/79oZmCD/UdUNYMNquTnXUBg9hD45JrXkQwsJYOyVu67JauYBuCVM=
+	t=1771983456; cv=none; b=p81tKdHXR6NSuLvRFZlQKN3rTi1ShEtnQ5mYCP0Ssupg7tt3FaQZMh8sG+BI/OhKTtjvhrhdAGSPyNK4xyclM99S22yx/+NbBd98ThZi2GmGa0HdF6XRutU2fQlHTdHofbwGwcU/a2d/6UtKVPHPyoVJEqpRPHHor7EqRgSxLLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002603; c=relaxed/simple;
-	bh=WkG7q7p8LjSlyRMVDUU0n9iPqBVvGi/wUeUCFrCdi88=;
+	s=arc-20240116; t=1771983456; c=relaxed/simple;
+	bh=uG04RXhtvDqeMJOttUatcDPude4UadiuIj/QxIyANsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cgc+E2DujFMHeEhvfWkNrixlpHEx7+dFrTmUGDVxRXajYQgdUSjUrgD7V1gJlFsejay1U6MdJwBlCo6V9RfJXbckF+Sro4rPUaGZi/XE5j6PM3O45kIQjpSsMeDPNCTo3C7ETkqXdzFQexhCzB8QFRa0Qw/4lLkjE4p/bXXVnx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HB1JcF8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C65C116D0;
-	Wed, 25 Feb 2026 06:56:43 +0000 (UTC)
+	 MIME-Version; b=RKgutk1lol8Mtz4gZR/jKK4qr2povPwGX2f7CkAKpnLkskyaave62f6a+DHeuJ4PN6YQXxxblYRiM5ublMD5IbxO54A8t2Wjmh7jA3hGzNt0wyKKk15W2cX2sfUkPtLmm0BseeBceXDq1TLmNCigSbWdTtvjlZEJXxst1t/3PFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZCRfyin; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E471CC116D0;
+	Wed, 25 Feb 2026 01:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002603;
-	bh=WkG7q7p8LjSlyRMVDUU0n9iPqBVvGi/wUeUCFrCdi88=;
+	s=korg; t=1771983456;
+	bh=uG04RXhtvDqeMJOttUatcDPude4UadiuIj/QxIyANsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HB1JcF8PUJtKvXttOI9CWaR+9aRFHeyDYoybH7KGMAK3nbda9rnyiL+5BVYWkPa2u
-	 opHAUvbk7XJL5xhO5b58j+Qgmnftalnh5KwrhJyCqfVLIrIx72tlt7+YOkca6q9qOJ
-	 5vszGLp3IeYb4nxo7CLXBKpCuseaaYwwaE+oAXMc=
+	b=KZCRfyin2nsVKrwf9Hjrf025P+dpQke0exPj71SN7m3mYq82odjOMXhsINWlZ9KMu
+	 ak5gZbymj5UMnWibSzoRkztVShmMrEdP1e+GRm29lEi9BDWp4U0K4TuimvY9axDvHD
+	 cj2lrv3JUC6hLnEDtfFSXqm+aME2cQW3MEYLIcwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 352/641] power: supply: rt9455: Fix use-after-free in power_supply_changed()
-Date: Tue, 24 Feb 2026 17:21:18 -0800
-Message-ID: <20260225012357.171826206@linuxfoundation.org>
+Subject: [PATCH 6.19 570/781] serial: imx: change SERIAL_IMX_CONSOLE to bool
+Date: Tue, 24 Feb 2026 17:21:19 -0800
+Message-ID: <20260225012413.784053931@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,96 +78,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219267-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218610-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,axis.com:email,collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 948AF192D6A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9B6B118FB2D
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waqar Hameed <waqar.hameed@axis.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit e2febe375e5ea5afed92f4cd9711bde8f24ee6d2 ]
+[ Upstream commit 79527d86ba91c2d9354832d19fd12b3baa66bd10 ]
 
-Using the `devm_` variant for requesting IRQ _before_ the `devm_`
-variant for allocating/registering the `power_supply` handle, means that
-the `power_supply` handle will be deallocated/unregistered _before_ the
-interrupt handler (since `devm_` naturally deallocates in reverse
-allocation order). This means that during removal, there is a race
-condition where an interrupt can fire just _after_ the `power_supply`
-handle has been freed, *but* just _before_ the corresponding
-unregistration of the IRQ handler has run.
+SERIAL_IMX_CONSOLE is a build option for the imx driver (SERIAL_IMX).
+It does not build a separate console driver file, so it can't be built
+as a module since it isn't built at all.
 
-This will lead to the IRQ handler calling `power_supply_changed()` with
-a freed `power_supply` handle. Which usually crashes the system or
-otherwise silently corrupts the memory...
+Change the Kconfig symbol from tristate to bool and update the help
+text accordingly.
 
-Note that there is a similar situation which can also happen during
-`probe()`; the possibility of an interrupt firing _before_ registering
-the `power_supply` handle. This would then lead to the nasty situation
-of using the `power_supply` handle *uninitialized* in
-`power_supply_changed()`.
-
-Fix this racy use-after-free by making sure the IRQ is requested _after_
-the registration of the `power_supply` handle.
-
-Fixes: e86d69dd786e ("power_supply: Add support for Richtek RT9455 battery charger")
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-Link: https://patch.msgid.link/1567d831e04c3e2fcb9e18dd36b7bcba4634581a.1766268280.git.waqar.hameed@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 0db4f9b91c86 ("tty: serial: imx: enable imx serial console port as module")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260110232643.3533351-2-rdunlap@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/rt9455_charger.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/tty/serial/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/power/supply/rt9455_charger.c b/drivers/power/supply/rt9455_charger.c
-index 1ffe7f02932f6..5130d2395e88f 100644
---- a/drivers/power/supply/rt9455_charger.c
-+++ b/drivers/power/supply/rt9455_charger.c
-@@ -1663,6 +1663,15 @@ static int rt9455_probe(struct i2c_client *client)
- 	rt9455_charger_config.supplied_to	= rt9455_charger_supplied_to;
- 	rt9455_charger_config.num_supplicants	=
- 					ARRAY_SIZE(rt9455_charger_supplied_to);
-+
-+	info->charger = devm_power_supply_register(dev, &rt9455_charger_desc,
-+						   &rt9455_charger_config);
-+	if (IS_ERR(info->charger)) {
-+		dev_err(dev, "Failed to register charger\n");
-+		ret = PTR_ERR(info->charger);
-+		goto put_usb_notifier;
-+	}
-+
- 	ret = devm_request_threaded_irq(dev, client->irq, NULL,
- 					rt9455_irq_handler_thread,
- 					IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-@@ -1678,14 +1687,6 @@ static int rt9455_probe(struct i2c_client *client)
- 		goto put_usb_notifier;
- 	}
+diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+index 59221cce0028f..98a946096be3c 100644
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -486,14 +486,14 @@ config SERIAL_IMX
+ 	  can enable its onboard serial port by enabling this option.
  
--	info->charger = devm_power_supply_register(dev, &rt9455_charger_desc,
--						   &rt9455_charger_config);
--	if (IS_ERR(info->charger)) {
--		dev_err(dev, "Failed to register charger\n");
--		ret = PTR_ERR(info->charger);
--		goto put_usb_notifier;
--	}
--
- 	return 0;
+ config SERIAL_IMX_CONSOLE
+-	tristate "Console on IMX serial port"
++	bool "Console on IMX serial port"
+ 	depends on SERIAL_IMX
+ 	select SERIAL_CORE_CONSOLE
+ 	help
+ 	  If you have enabled the serial port on the Freescale IMX
+-	  CPU you can make it the console by answering Y/M to this option.
++	  CPU you can make it the console by answering Y to this option.
  
- put_usb_notifier:
+-	  Even if you say Y/M here, the currently visible virtual console
++	  Even if you say Y here, the currently visible virtual console
+ 	  (/dev/tty0) will still be used as the system console by default, but
+ 	  you can alter that using a kernel command line option such as
+ 	  "console=ttymxc0". (Try "man bootparam" or see the documentation of
 -- 
 2.51.0
 
