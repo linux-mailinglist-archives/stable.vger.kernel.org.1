@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-219273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DhtDuienmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:08 +0100
+	id AFJRDB9UnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A30192DD8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B13EE18FBA0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24B4731499A0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 82C9430BC948
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B4A2D23A4;
-	Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9DB2641FC;
+	Wed, 25 Feb 2026 01:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkYbWJCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOTNIDEn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DA92D063E;
-	Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114F42550D7;
+	Wed, 25 Feb 2026 01:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002607; cv=none; b=rYz8STGHzzue5nHmEyZidscVJJhJWJUEffldJdrUdsbSkF9jUKofocwF73+xc1sEUcI4ShZILkv0qbjcilrIpxi4CLgqRkBgdm/2s9pERsK5nABI/1T3nZXiXvLrbfaWmMLT8ceP/0B9wcjeR/1RVsuwcdA60AKOkNttoaDdIqU=
+	t=1771983479; cv=none; b=Lf6StQq3T5OBHSuHqWJ3Yr9BMJzaK4qCFbSyiYQ3OW0KWXc6e6UA4kkrvJVpP62Bt0TLfOF/Uuprkz5QoA2elQmfgWvDhRbH/Pwac0Q8s8L87eLHg9zR8wF6IYj23JIQq3T7Mf26Vq0ymy5S2URqkkOvcH472zPpAcz1VKlVrXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002607; c=relaxed/simple;
-	bh=YSrRqS3iYuIxU9Rw6Y5znOb6Gq3RzcDr8w+982bUEfc=;
+	s=arc-20240116; t=1771983479; c=relaxed/simple;
+	bh=BqG6YdlFcCYCzom1hIoRdj/DKpRtIBwIu0YTqh6l8ZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+ACjOFnUQLTb28coqTJKjiJY5JemULqRMUrDpjP5cmzMikcXtMji7jO0qdTGrpeJU5dom/R8O08GQr7I8oEgxZFkvPmRMF/TAEzgeEN+bzODeqSJekAUmkABwYF9UqwmIHbqYF0zvfNBZVSWNXVAzXqI4/Zr8MxInVL7K25eQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkYbWJCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFABC19425;
-	Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
+	 MIME-Version; b=NuJwNjfUbeEYTunbKpkLe4GxpFVRbUwbzJKhrWTlEaFtW+E04I1VX5VDIZZXFbpzHauZO7Sn4AaNzaOkzjH9iItbtXulMOsXzUMLWNB7JytuZZtLPHaTKYEbxkYyvPZyX9DF5sDNZS1wf/W5sTFLXEgt6xgEzuKBT/Re6eZbDUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOTNIDEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36C7C116D0;
+	Wed, 25 Feb 2026 01:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002607;
-	bh=YSrRqS3iYuIxU9Rw6Y5znOb6Gq3RzcDr8w+982bUEfc=;
+	s=korg; t=1771983479;
+	bh=BqG6YdlFcCYCzom1hIoRdj/DKpRtIBwIu0YTqh6l8ZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkYbWJCufH/PODTLng/NjthoX3+OPYprUOo+CqEeN9sO+z5GhCeaIgJO1y4OaROtr
-	 nAl1b9m9A/+uPXWUcoxb7CWxgUwWX3NFViHWCJIc065ZtwTe0VETDOp1KRkWs0qAOX
-	 8aqOBF6wDp2pDgSNfMJlC+Tx6EGtjDCu1kdwrq5s=
+	b=uOTNIDEnDQTW2/969/j/CRq/LKlXxMU1Lz9mHfnAcZIpWo6Lo2Hd9R8XcCdwBXQjs
+	 owzAPlPhCL9R9cnaqBIZrD7mJEeRVmHO4uNbChuF7fK0lhFI7OX5lKHs8RxijdTP1K
+	 sd2BZvk7REyRFlgz8uI2aFcVjBSzZqJraKhquIPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Penyaev <r.peniaev@gmail.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 357/641] RDMA/rtrs-srv: fix SG mapping
-Date: Tue, 24 Feb 2026 17:21:23 -0800
-Message-ID: <20260225012357.278012616@linuxfoundation.org>
+Subject: [PATCH 6.19 575/781] stm class: Kconfig: correct symbol name
+Date: Tue, 24 Feb 2026 17:21:24 -0800
+Message-ID: <20260225012413.903533381@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219273-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ionos.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218630-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.984];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ionos.com:email]
-X-Rspamd-Queue-Id: 93A30192DD8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B13EE18FBA0
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Penyaev <r.peniaev@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 83835f7c07b523c7ca2a5ad0a511670b5810539e ]
+[ Upstream commit ed1613fc18834b5ec38d3534e96e4bc990289aa2 ]
 
-This fixes the following error on the server side:
+Drop the leading "CONFIG_" when referring to Kconfig symbols--
+it is supplied by the kconfig software.
+This make the default values work as (apparently) expected.
 
-   RTRS server session allocation failed: -EINVAL
-
-caused by the caller of the `ib_dma_map_sg()`, which does not expect
-less mapped entries, than requested, which is in the order of things
-and can be easily reproduced on the machine with enabled IOMMU.
-
-The fix is to treat any positive number of mapped sg entries as a
-successful mapping and cache DMA addresses by traversing modified
-SG table.
-
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://patch.msgid.link/20260107161517.56357-2-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: a02509f301c6 ("stm class: Factor out default framing protocol")
+Fixes: d69d5e83110f ("stm class: Add MIPI SyS-T protocol support")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20251228190502.2480758-1-rdunlap@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ drivers/hwtracing/stm/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 7a402eb8e0bf0..adb798e2a54ae 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -595,7 +595,7 @@ static int map_cont_bufs(struct rtrs_srv_path *srv_path)
- 	     srv_path->mrs_num++) {
- 		struct rtrs_srv_mr *srv_mr = &srv_path->mrs[srv_path->mrs_num];
- 		struct scatterlist *s;
--		int nr, nr_sgt, chunks;
-+		int nr, nr_sgt, chunks, ind;
+diff --git a/drivers/hwtracing/stm/Kconfig b/drivers/hwtracing/stm/Kconfig
+index eda6b11d40a1f..cd7f0b0f3fbeb 100644
+--- a/drivers/hwtracing/stm/Kconfig
++++ b/drivers/hwtracing/stm/Kconfig
+@@ -13,7 +13,7 @@ if STM
  
- 		sgt = &srv_mr->sgt;
- 		chunks = chunks_per_mr * srv_path->mrs_num;
-@@ -625,7 +625,7 @@ static int map_cont_bufs(struct rtrs_srv_path *srv_path)
- 		}
- 		nr = ib_map_mr_sg(mr, sgt->sgl, nr_sgt,
- 				  NULL, max_chunk_size);
--		if (nr != nr_sgt) {
-+		if (nr < nr_sgt) {
- 			err = nr < 0 ? nr : -EINVAL;
- 			goto dereg_mr;
- 		}
-@@ -641,9 +641,24 @@ static int map_cont_bufs(struct rtrs_srv_path *srv_path)
- 				goto dereg_mr;
- 			}
- 		}
--		/* Eventually dma addr for each chunk can be cached */
--		for_each_sg(sgt->sgl, s, nr_sgt, i)
--			srv_path->dma_addr[chunks + i] = sg_dma_address(s);
-+
-+		/*
-+		 * Cache DMA addresses by traversing sg entries.  If
-+		 * regions were merged, an inner loop is required to
-+		 * populate the DMA address array by traversing larger
-+		 * regions.
-+		 */
-+		ind = chunks;
-+		for_each_sg(sgt->sgl, s, nr_sgt, i) {
-+			unsigned int dma_len = sg_dma_len(s);
-+			u64 dma_addr = sg_dma_address(s);
-+			u64 dma_addr_end = dma_addr + dma_len;
-+
-+			do {
-+				srv_path->dma_addr[ind++] = dma_addr;
-+				dma_addr += max_chunk_size;
-+			} while (dma_addr < dma_addr_end);
-+		}
+ config STM_PROTO_BASIC
+ 	tristate "Basic STM framing protocol driver"
+-	default CONFIG_STM
++	default STM
+ 	help
+ 	  This is a simple framing protocol for sending data over STM
+ 	  devices. This was the protocol that the STM framework used
+@@ -28,7 +28,7 @@ config STM_PROTO_BASIC
  
- 		ib_update_fast_reg_key(mr, ib_inc_rkey(mr->rkey));
- 		srv_mr->mr = mr;
+ config STM_PROTO_SYS_T
+ 	tristate "MIPI SyS-T STM framing protocol driver"
+-	default CONFIG_STM
++	default STM
+ 	help
+ 	  This is an implementation of MIPI SyS-T protocol to be used
+ 	  over the STP transport. In addition to the data payload, it
 -- 
 2.51.0
 
