@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-218046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IreNd9PnmleUgQAu9opvQ
-	(envelope-from <stable+bounces-218046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:26:55 +0100
+	id 4GkcEvhPnmleUgQAu9opvQ
+	(envelope-from <stable+bounces-218054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:27:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB5718EA58
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:26:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B564D18EAA9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:27:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B0F27300830D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:26:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8A41D30A8E66
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0DF02505B2;
-	Wed, 25 Feb 2026 01:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681E12505B2;
+	Wed, 25 Feb 2026 01:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMbwLs2L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgVgM6uJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB732494FE;
-	Wed, 25 Feb 2026 01:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA021D5ABA;
+	Wed, 25 Feb 2026 01:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982811; cv=none; b=Ci23bjSk3TkUtJep19Z4TyCBXoUUfg6WxBleikQZgWaoY1DLG14Dz8i1gL70MDQDbGnE/tnMlEO/tGRQ6ZeNAFI3JDP/4BCg2gj2kj0gGpQtOl+IQSBTwVeyXMGkctDLkE/Tzpezl/9O2QK0Q4928u/SrV6Q/KC/Nm6OSmuHBDM=
+	t=1771982822; cv=none; b=o+xGkHeidnj4uJXby95ReKgusr6eVw57b3jH593iunXXJzozJTvYDsYWft4jAGqEOTxabkrSD/wcBhqsu9u7R2MH0wcx5HRM1EiXpX8qqqmld0tSbc2QA7JhUXzYGCjt95G6JKeSrBrRMiRWKBoSHbdEzy+FV93nm9EUsozbKts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982811; c=relaxed/simple;
-	bh=3veGEpr9IWV/uQRVKmwYZGzwiiArIpJAgnsOB4LUuig=;
+	s=arc-20240116; t=1771982822; c=relaxed/simple;
+	bh=SVhGy/VI90+n0zZYEM97z3NeY/2hbtciRZMwUKlzHjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MagXy7wQsDPNac0/9VLlvTLVRIAb/tZaCw4DA9g2WNLIt20t9Vom/OiNnglTvq7bgIvYFkPHHI6QEeMXoC/eHwhiEFkFCTxZka/DpbBdAGTK8WWVTzbjYFVL2H099tcWoLgbCw4pflLrRwKGjna0iQ3rEHn8S651IkkvCncJGTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMbwLs2L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEB5C116D0;
-	Wed, 25 Feb 2026 01:26:50 +0000 (UTC)
+	 MIME-Version; b=hdW4dYbm8bycbJDxWiVWCVBCbF9xUlhTaRY/GDPoQ1qU9HatFGI5mMRW3+iy28QJ1poohmsHfr1u80OrF9QNO7cHIeR6zYglyan5EDLFGinN58AVaxzZwVWUMT9BMhoRoOZIAJ26JpJoJlPvrZ5sHEbj4Yb1j34lk1WSel3yxTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgVgM6uJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD54C116D0;
+	Wed, 25 Feb 2026 01:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982811;
-	bh=3veGEpr9IWV/uQRVKmwYZGzwiiArIpJAgnsOB4LUuig=;
+	s=korg; t=1771982822;
+	bh=SVhGy/VI90+n0zZYEM97z3NeY/2hbtciRZMwUKlzHjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vMbwLs2L2LGLlHiaEmMfbBYEukoOYLCZ0Qp31FSs3nLu/2vWjaOsvJ0N0cpX7yhS+
-	 g79OT+j65WlLzGEUpZiJTJyCnTVYXv/u5Sq1Asyidy01Ai9sIyBcWNgKHCkzOxxqBu
-	 SjjlsvbUjtgvrGyhXYP940CY58gQZSaDwMMKosXg=
+	b=WgVgM6uJe6mV8lWys+t7ZrrEp6dL3eSURzNVuZd41o1cn2AoMGOiKzw/RomQS4yZN
+	 dmVW/9jIkpsreF6AGPdMGqEYLYeUMhadoLXgrF71meoqnAKCtKmJwuPm3iyAimqktf
+	 P2YqQtC+lVSCCOjC8Nm6WPv1ZcBVTaP1GTtW3wn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	YunJe Shin <ioerts@kookmin.ac.kr>,
-	Bernard Metzler <bernard.metzler@linux.dev>,
 	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.19 001/781] RDMA/siw: Fix potential NULL pointer dereference in header processing
-Date: Tue, 24 Feb 2026 17:11:50 -0800
-Message-ID: <20260225012359.735763472@linuxfoundation.org>
+Subject: [PATCH 6.19 002/781] RDMA/umad: Reject negative data_len in ib_umad_write
+Date: Tue, 24 Feb 2026 17:11:51 -0800
+Message-ID: <20260225012359.758413644@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -70,19 +69,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218046-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218054-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,7 +90,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7AB5718EA58
+X-Rspamd-Queue-Id: B564D18EAA9
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
@@ -100,40 +99,56 @@ X-Rspamd-Action: no action
 
 From: YunJe Shin <yjshin0438@gmail.com>
 
-commit 14ab3da122bd18920ad57428f6cf4fade8385142 upstream.
+commit 5551b02fdbfd85a325bb857f3a8f9c9f33397ed2 upstream.
 
-If siw_get_hdr() returns -EINVAL before set_rx_fpdu_context(),
-qp->rx_fpdu can be NULL. The error path in siw_tcp_rx_data()
-dereferences qp->rx_fpdu->more_ddp_segs without checking, which
-may lead to a NULL pointer deref. Only check more_ddp_segs when
-rx_fpdu is present.
+ib_umad_write computes data_len from user-controlled count and the
+MAD header sizes. With a mismatched user MAD header size and RMPP
+header length, data_len can become negative and reach ib_create_send_mad().
+This can make the padding calculation exceed the segment size and trigger
+an out-of-bounds memset in alloc_send_rmpp_list().
+
+Add an explicit check to reject negative data_len before creating the
+send buffer.
 
 KASAN splat:
-[  101.384271] KASAN: null-ptr-deref in range [0x00000000000000c0-0x00000000000000c7]
-[  101.385869] RIP: 0010:siw_tcp_rx_data+0x13ad/0x1e50
+[  211.363464] BUG: KASAN: slab-out-of-bounds in ib_create_send_mad+0xa01/0x11b0
+[  211.364077] Write of size 220 at addr ffff88800c3fa1f8 by task spray_thread/102
+[  211.365867] ib_create_send_mad+0xa01/0x11b0
+[  211.365887] ib_umad_write+0x853/0x1c80
 
-Fixes: 8b6a361b8c48 ("rdma/siw: receive path")
+Fixes: 2be8e3ee8efd ("IB/umad: Add P_Key index support")
 Signed-off-by: YunJe Shin <ioerts@kookmin.ac.kr>
-Link: https://patch.msgid.link/20260204092546.489842-1-ioerts@kookmin.ac.kr
-Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
+Link: https://patch.msgid.link/20260203100628.1215408-1-ioerts@kookmin.ac.kr
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/siw/siw_qp_rx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/user_mad.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/infiniband/sw/siw/siw_qp_rx.c
-+++ b/drivers/infiniband/sw/siw/siw_qp_rx.c
-@@ -1435,7 +1435,8 @@ int siw_tcp_rx_data(read_descriptor_t *r
- 		}
- 		if (unlikely(rv != 0 && rv != -EAGAIN)) {
- 			if ((srx->state > SIW_GET_HDR ||
--			     qp->rx_fpdu->more_ddp_segs) && run_completion)
-+			     (qp->rx_fpdu && qp->rx_fpdu->more_ddp_segs)) &&
-+			    run_completion)
- 				siw_rdmap_complete(qp, rv);
+--- a/drivers/infiniband/core/user_mad.c
++++ b/drivers/infiniband/core/user_mad.c
+@@ -514,7 +514,8 @@ static ssize_t ib_umad_write(struct file
+ 	struct rdma_ah_attr ah_attr;
+ 	struct ib_ah *ah;
+ 	__be64 *tid;
+-	int ret, data_len, hdr_len, copy_offset, rmpp_active;
++	int ret, hdr_len, copy_offset, rmpp_active;
++	size_t data_len;
+ 	u8 base_version;
  
- 			siw_dbg_qp(qp, "rx error %d, rx state %d\n", rv,
+ 	if (count < hdr_size(file) + IB_MGMT_RMPP_HDR)
+@@ -588,7 +589,10 @@ static ssize_t ib_umad_write(struct file
+ 	}
+ 
+ 	base_version = ((struct ib_mad_hdr *)&packet->mad.data)->base_version;
+-	data_len = count - hdr_size(file) - hdr_len;
++	if (check_sub_overflow(count, hdr_size(file) + hdr_len, &data_len)) {
++		ret = -EINVAL;
++		goto err_ah;
++	}
+ 	packet->msg = ib_create_send_mad(agent,
+ 					 be32_to_cpu(packet->mad.hdr.qpn),
+ 					 packet->mad.hdr.pkey_index, rmpp_active,
 
 
 
