@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGlWIESinmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:18:28 +0100
+	id GIpZCYFYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46201932FA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:18:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7AA19073C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C65F531924B3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3999330EA5FB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6740030CD94;
-	Wed, 25 Feb 2026 06:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8186626560A;
+	Wed, 25 Feb 2026 01:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0BDIxra"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tzt5IFeI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC37304BB4;
-	Wed, 25 Feb 2026 06:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454E726056D;
+	Wed, 25 Feb 2026 01:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002655; cv=none; b=ZAsqHLMJbjXi49eugwoSAsTrIBK+0LrLgd7jBNr80CQdVI9onqulowi4+YHeTzoKkz3VgvINjHL+ZaF3eGcLGg5UlZksbjZqcCgtp3Vn1tVyqQlq2tEyN3w1u5BqsJlRwhI/ld10nBuFsjObmIPz+bzPcy/P0X9Jxth6FYRxxKA=
+	t=1771983545; cv=none; b=frryWIf95tOHMMjAe3N1iup6bkwKn8hgndd8ONtwOUsc9sVZNiotOvklNGeHFg51mlFdl1+LyQB62mXi/r4za49je2RqkS8QjeOlew8+iIndgw3Rflf2sizXsnB4OlHLhNfJaWcwqbi4hialFJ63TqSRP6Kx2bWvR1wTcxjpdAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002655; c=relaxed/simple;
-	bh=N5IOQGxSJ6kRwgswntdafO0yP7Lu7nhOUotfYOJaSQ4=;
+	s=arc-20240116; t=1771983545; c=relaxed/simple;
+	bh=RRZs6rbwyKD5SGrl7rGVgVw/ghsCHqn+dy1+4kcCPuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+PJMd0BPhsBdetE7WU2CpukeIVyzIQc5cyrwlZGzlyrrdtPS4ipeOSKoliLsT60lpTLB/Ah5oSPyrjkKWo32wlKzpPHUQk9+zMEqGgAE1QEoi6S5oOuOwNzqQOUQpBfqJXh3smjeqMf9RoBT84q9raL9ABYIx1ZT4hxQEmCd0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0BDIxra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CFCC116D0;
-	Wed, 25 Feb 2026 06:57:34 +0000 (UTC)
+	 MIME-Version; b=Ky5Ba7O34TfbAK90esCgvpU1UhTFv85sJAVzUgWDRydJH80aVhm8/BuzmfBsNlotIe2bQTsSoqOciKFnJ/TB89tffTQ0VFhdWZiE8cgbVFsr80tpmEdtKiJARjfg/4fuRi5fZGCWQkwgSbqSRlYbfrCB55idMsMPAlfBa8Qd/Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tzt5IFeI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0242DC116D0;
+	Wed, 25 Feb 2026 01:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002655;
-	bh=N5IOQGxSJ6kRwgswntdafO0yP7Lu7nhOUotfYOJaSQ4=;
+	s=korg; t=1771983545;
+	bh=RRZs6rbwyKD5SGrl7rGVgVw/ghsCHqn+dy1+4kcCPuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0BDIxra928MDpT35dZqzsCB0fBua9leYMzYNr7SMNM5Z7uciHOxrFLWT+GMBfHoa
-	 ckUDyMKIchM+4k6flO/ARxh5+1HybgzVtgg1A1+raAxL6ChsRFrSAZQzUekA8cP/rm
-	 iWfXLKfqtzpMfhkInpCf3g4nkZKsMtn0iH9k/0nc=
+	b=Tzt5IFeIj85CK+NDJKaL8ZIt9zpL4Zh0JKUXNIP2BYU/KpGqnskhdqMEFU0Q8L1II
+	 VzStXXmNZZRd7ZwB1tt3/llgTK0dgN6VrCKouy5uv2qp3TtCLbP5sD9xv1hCdBXgF7
+	 tXtKP1Y0Gxgr3O/UPluGE+YjbSLwjK2IChjn0zCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Brian Masney <bmasney@redhat.com>,
+	syzbot+5a0f1995634f7c1dadbf@syzkaller.appspotmail.com,
+	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 431/641] clk: actions: owl-divider: convert from divider_round_rate() to divider_determine_rate()
+Subject: [PATCH 6.19 648/781] bpf: Fix a potential use-after-free of BTF object
 Date: Tue, 24 Feb 2026 17:22:37 -0800
-Message-ID: <20260225012358.985455892@linuxfoundation.org>
+Message-ID: <20260225012415.688919512@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,116 +66,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219346-lists,stable=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,linuxfoundation.org:server fail];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218687-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.973];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,5a0f1995634f7c1dadbf];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E46201932FA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 8A7AA19073C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Anton Protopopov <a.s.protopopov@gmail.com>
 
-[ Upstream commit 3ff3360440fa8cc7ef5a4da628d3b770b46a4f73 ]
+[ Upstream commit ccd2d799ed4467c07f5ee18c2f5c59bcc990822c ]
 
-The divider_round_rate() function is now deprecated, so let's migrate
-to divider_determine_rate() instead so that this deprecated API can be
-removed. Additionally, owl_divider_helper_round_rate() is no longer used,
-so let's drop that from the header file as well.
+Refcounting in the check_pseudo_btf_id() function is incorrect:
+the __check_pseudo_btf_id() function might get called with a zero
+refcounted btf. Fix this, and patch related code accordingly.
 
-Note that when the main function itself was migrated to use
-determine_rate, this was mistakenly converted to:
+v3: rephrase a comment (AI)
+v2: fix a refcount leak introduced in v1 (AI)
 
-    req->rate = divider_round_rate(...)
-
-This is invalid in the case when an error occurs since it can set the
-rate to a negative value.
-
-Fixes: 1b04e12a8bcc ("clk: actions: owl-divider: convert from round_rate() to determine_rate()")
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+Reported-by: syzbot+5a0f1995634f7c1dadbf@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5a0f1995634f7c1dadbf
+Fixes: 76145f725532 ("bpf: Refactor check_pseudo_btf_id")
+Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
+Link: https://lore.kernel.org/r/20260209132904.63908-1-a.s.protopopov@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/actions/owl-divider.c | 17 ++---------------
- drivers/clk/actions/owl-divider.h |  5 -----
- 2 files changed, 2 insertions(+), 20 deletions(-)
+ kernel/bpf/verifier.c | 52 +++++++++++++++++++++----------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/clk/actions/owl-divider.c b/drivers/clk/actions/owl-divider.c
-index 118f1393c6780..316ace80e87e3 100644
---- a/drivers/clk/actions/owl-divider.c
-+++ b/drivers/clk/actions/owl-divider.c
-@@ -13,26 +13,13 @@
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index c9e2e22da3309..a16aca34f5834 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -20685,29 +20685,29 @@ static int find_btf_percpu_datasec(struct btf *btf)
+ }
  
- #include "owl-divider.h"
- 
--long owl_divider_helper_round_rate(struct owl_clk_common *common,
--				const struct owl_divider_hw *div_hw,
--				unsigned long rate,
--				unsigned long *parent_rate)
--{
--	return divider_round_rate(&common->hw, rate, parent_rate,
--				  div_hw->table, div_hw->width,
--				  div_hw->div_flags);
--}
--
- static int owl_divider_determine_rate(struct clk_hw *hw,
- 				      struct clk_rate_request *req)
+ /*
+- * Add btf to the used_btfs array and return the index. (If the btf was
+- * already added, then just return the index.) Upon successful insertion
+- * increase btf refcnt, and, if present, also refcount the corresponding
+- * kernel module.
++ * Add btf to the env->used_btfs array. If needed, refcount the
++ * corresponding kernel module. To simplify caller's logic
++ * in case of error or if btf was added before the function
++ * decreases the btf refcount.
+  */
+ static int __add_used_btf(struct bpf_verifier_env *env, struct btf *btf)
  {
- 	struct owl_divider *div = hw_to_owl_divider(hw);
+ 	struct btf_mod_pair *btf_mod;
++	int ret = 0;
+ 	int i;
  
--	req->rate = owl_divider_helper_round_rate(&div->common, &div->div_hw,
--						  req->rate,
--						  &req->best_parent_rate);
+ 	/* check whether we recorded this BTF (and maybe module) already */
+ 	for (i = 0; i < env->used_btf_cnt; i++)
+ 		if (env->used_btfs[i].btf == btf)
+-			return i;
++			goto ret_put;
+ 
+ 	if (env->used_btf_cnt >= MAX_USED_BTFS) {
+ 		verbose(env, "The total number of btfs per program has reached the limit of %u\n",
+ 			MAX_USED_BTFS);
+-		return -E2BIG;
++		ret = -E2BIG;
++		goto ret_put;
+ 	}
+ 
+-	btf_get(btf);
 -
+ 	btf_mod = &env->used_btfs[env->used_btf_cnt];
+ 	btf_mod->btf = btf;
+ 	btf_mod->module = NULL;
+@@ -20716,12 +20716,18 @@ static int __add_used_btf(struct bpf_verifier_env *env, struct btf *btf)
+ 	if (btf_is_module(btf)) {
+ 		btf_mod->module = btf_try_get_module(btf);
+ 		if (!btf_mod->module) {
+-			btf_put(btf);
+-			return -ENXIO;
++			ret = -ENXIO;
++			goto ret_put;
+ 		}
+ 	}
+ 
+-	return env->used_btf_cnt++;
++	env->used_btf_cnt++;
++	return 0;
++
++ret_put:
++	/* Either error or this BTF was already added */
++	btf_put(btf);
++	return ret;
+ }
+ 
+ /* replace pseudo btf_id with kernel symbol address */
+@@ -20818,9 +20824,7 @@ static int check_pseudo_btf_id(struct bpf_verifier_env *env,
+ 
+ 	btf_fd = insn[1].imm;
+ 	if (btf_fd) {
+-		CLASS(fd, f)(btf_fd);
+-
+-		btf = __btf_get_by_fd(f);
++		btf = btf_get_by_fd(btf_fd);
+ 		if (IS_ERR(btf)) {
+ 			verbose(env, "invalid module BTF object FD specified.\n");
+ 			return -EINVAL;
+@@ -20830,17 +20834,17 @@ static int check_pseudo_btf_id(struct bpf_verifier_env *env,
+ 			verbose(env, "kernel is missing BTF, make sure CONFIG_DEBUG_INFO_BTF=y is specified in Kconfig.\n");
+ 			return -EINVAL;
+ 		}
++		btf_get(btf_vmlinux);
+ 		btf = btf_vmlinux;
+ 	}
+ 
+ 	err = __check_pseudo_btf_id(env, insn, aux, btf);
+-	if (err)
++	if (err) {
++		btf_put(btf);
+ 		return err;
++	}
+ 
+-	err = __add_used_btf(env, btf);
+-	if (err < 0)
+-		return err;
 -	return 0;
-+	return divider_determine_rate(hw, req, div->div_hw.table,
-+				      div->div_hw.width, div->div_hw.div_flags);
++	return __add_used_btf(env, btf);
  }
  
- unsigned long owl_divider_helper_recalc_rate(struct owl_clk_common *common,
-diff --git a/drivers/clk/actions/owl-divider.h b/drivers/clk/actions/owl-divider.h
-index 083be6d80954d..2ba957740c381 100644
---- a/drivers/clk/actions/owl-divider.h
-+++ b/drivers/clk/actions/owl-divider.h
-@@ -56,11 +56,6 @@ static inline struct owl_divider *hw_to_owl_divider(const struct clk_hw *hw)
- 	return container_of(common, struct owl_divider, common);
- }
+ static bool is_tracing_prog_type(enum bpf_prog_type type)
+@@ -24654,13 +24658,9 @@ static int add_fd_from_fd_array(struct bpf_verifier_env *env, int fd)
+ 		return 0;
+ 	}
  
--long owl_divider_helper_round_rate(struct owl_clk_common *common,
--				const struct owl_divider_hw *div_hw,
--				unsigned long rate,
--				unsigned long *parent_rate);
--
- unsigned long owl_divider_helper_recalc_rate(struct owl_clk_common *common,
- 					 const struct owl_divider_hw *div_hw,
- 					 unsigned long parent_rate);
+-	btf = __btf_get_by_fd(f);
+-	if (!IS_ERR(btf)) {
+-		err = __add_used_btf(env, btf);
+-		if (err < 0)
+-			return err;
+-		return 0;
+-	}
++	btf = btf_get_by_fd(fd);
++	if (!IS_ERR(btf))
++		return __add_used_btf(env, btf);
+ 
+ 	verbose(env, "fd %d is not pointing to valid bpf_map or btf\n", fd);
+ 	return PTR_ERR(map);
 -- 
 2.51.0
 
