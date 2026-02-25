@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNUpMM1VnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-219019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:13 +0100
+	id gMIdNhFTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61CD11900F6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DD7D18F6A8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 03065310D5B1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 965C231DD26B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D658B28689B;
-	Wed, 25 Feb 2026 01:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09469243376;
+	Wed, 25 Feb 2026 01:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lu0BBioe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jesPt021"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B50D28640C;
-	Wed, 25 Feb 2026 01:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AB518B0A;
+	Wed, 25 Feb 2026 01:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983932; cv=none; b=WEzbwGenUeofLosslgamdBQYQZ8gJ/iaJn7Piw+0FlLX8w5w5CD8sJ4AL1HwI5NpNq99QxqN6GsMiQyzOlhrehS4PpeLfZ4TZaomF24YpNC6YGcXyd2iu6BqpT2nf1rEl9dpldBHqWS5Lnfxzl1tGQkkvm3/Hhoky4VhghhbEIs=
+	t=1771983275; cv=none; b=ebfpeN+kWH6DTYDLwL6k5tNi/YfjsqOAaE/Vj8vr28DDekjPUvzZeCgh1scoOlB2KN1wgXZIs282Fo8/K0PyuefMR1tJywfnuvTzulIVk0Gp1RVbhHQ5T694pdVfbCSbFauFMr+Dd5mVPTH/xMB2/xm8g2w3/FK8QAvfeycD3Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983932; c=relaxed/simple;
-	bh=ruYe3W/FnP6B29Rh5qy6Jg3QwttutZefAaIaOHhZfkI=;
+	s=arc-20240116; t=1771983275; c=relaxed/simple;
+	bh=Q77OxJAjrnqYU/e2aV8iIbiKjIwtKJvjsxNyl8kDhIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KohJ1SWDE2NlN+If/N3vAi4S+jiFkqKCJSkQWtH3uDLD+ZvZpVuRLXGXsFrLE4pBLOYSXroBybAsLxCM1j52J5QGWNSewlrwRGkBMNKcDNR3Lpwm0Y5ODLzlVXptT17/Oc/L30jU2I/6lJGqv2QB9dEezVH/oyXvIkILeC25WJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lu0BBioe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1E6C116D0;
-	Wed, 25 Feb 2026 01:45:32 +0000 (UTC)
+	 MIME-Version; b=ufFXZdfU7sUa2rSDFs40z4nu+bnJAPWk/ra1la7oLyJICWOZZUvL0daDsP2ciAI4vUt4vigCKcXmwHt7kow06lisaTGoPo44QZeznHcsROT+JrDs6nOipy0Lvx+vq+WVrCemTc5X905azJYNu1OiFe2PXYPP+BSeC7PcgAcZem8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jesPt021; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D0DC116D0;
+	Wed, 25 Feb 2026 01:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983932;
-	bh=ruYe3W/FnP6B29Rh5qy6Jg3QwttutZefAaIaOHhZfkI=;
+	s=korg; t=1771983275;
+	bh=Q77OxJAjrnqYU/e2aV8iIbiKjIwtKJvjsxNyl8kDhIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lu0BBioeQWxQj7FFYm7IwAr0vypMgAtyG1+qpIFsYurhDP1gn2ENtdusFrq7vPR7Q
-	 j7ab73G1uinqG1xqlRzDT3EmkZi2KEKUc9JKaQICDqQ0etCWQgbvbGEabcLpQC7eMU
-	 TdnExq/fD/1EGBHRrP66Z9ulWpRD9tbDwcpSKf0g=
+	b=jesPt021vRl18rXdNzj9538lrbcvEMEsP7CR05HilDhbEjW+wzuTxnMMEAImFNH92
+	 2SN9GbwCbwuXqY09yAOt8ldkKLAC57RKu7XpbhwVXUGeKJV4Ky4TJoHalyZQY84MYv
+	 27HdyL+4IXE5QlDro+jxXV+4aCola8lttAdzBscA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 6.18 198/641] drm/msm/disp: set num_planes to 1 for interleaved YUV formats
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 415/781] netfilter: nft_set_rbtree: use binary search array in get command
 Date: Tue, 24 Feb 2026 17:18:44 -0800
-Message-ID: <20260225012353.779455660@linuxfoundation.org>
+Message-ID: <20260225012409.877958913@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,89 +69,226 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219019-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218453-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 61CD11900F6
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7DD7D18F6A8
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 6421e1c5075b7e1536a8fcbe6b4086db07103048 ]
+[ Upstream commit 2aa34191f06fc5af4f70241518a8554370d86054 ]
 
-Interleaved YUV formats use only one plane for all pixel data. Specify
-num_planes = 1 for those formats. This was left unnoticed since
-_dpu_format_populate_plane_sizes_linear() overrides layout->num_planes.
+Rework .get interface to use the binary search array, this needs a specific
+lookup function to match on end intervals (<=). Packet path lookup is slight
+different because match is on lesser value, not equal (ie. <).
 
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Reviewed-by: Jessica Zhang <jessica.zhang@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/688162/
-Link: https://lore.kernel.org/r/20251114-dpu-formats-v3-1-cae312379d49@oss.qualcomm.com
-Tested-by: Luca Weiss <luca.weiss@fairphone.com> # qcm6490-fairphone-fp5
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+After this patch, seqcount can be removed in a follow up patch.
+
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: 782f2688128e ("netfilter: nft_set_rbtree: validate element belonging to interval")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp_format.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 154 ++++++++++++++-------------------
+ 1 file changed, 64 insertions(+), 90 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp_format.c b/drivers/gpu/drm/msm/disp/mdp_format.c
-index 426782d50cb49..eebedb1a2636e 100644
---- a/drivers/gpu/drm/msm/disp/mdp_format.c
-+++ b/drivers/gpu/drm/msm/disp/mdp_format.c
-@@ -479,25 +479,25 @@ static const struct msm_format mdp_formats[] = {
- 		0, BPC8, BPC8, BPC8,
- 		C2_R_Cr, C0_G_Y, C1_B_Cb, C0_G_Y,
- 		false, CHROMA_H2V1, 4, 2, MSM_FORMAT_FLAG_YUV,
--		MDP_FETCH_LINEAR, 2),
-+		MDP_FETCH_LINEAR, 1),
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 04e696c87f4a0..1b0502cc87301 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -69,96 +69,6 @@ static int nft_rbtree_cmp(const struct nft_set *set,
+ 		      set->klen);
+ }
  
- 	INTERLEAVED_YUV_FMT(UYVY,
- 		0, BPC8, BPC8, BPC8,
- 		C1_B_Cb, C0_G_Y, C2_R_Cr, C0_G_Y,
- 		false, CHROMA_H2V1, 4, 2, MSM_FORMAT_FLAG_YUV,
--		MDP_FETCH_LINEAR, 2),
-+		MDP_FETCH_LINEAR, 1),
+-static bool __nft_rbtree_get(const struct net *net, const struct nft_set *set,
+-			     const u32 *key, struct nft_rbtree_elem **elem,
+-			     unsigned int seq, unsigned int flags, u8 genmask)
+-{
+-	struct nft_rbtree_elem *rbe, *interval = NULL;
+-	struct nft_rbtree *priv = nft_set_priv(set);
+-	const struct rb_node *parent;
+-	const void *this;
+-	int d;
+-
+-	parent = rcu_dereference_raw(priv->root.rb_node);
+-	while (parent != NULL) {
+-		if (read_seqcount_retry(&priv->count, seq))
+-			return false;
+-
+-		rbe = rb_entry(parent, struct nft_rbtree_elem, node);
+-
+-		this = nft_set_ext_key(&rbe->ext);
+-		d = memcmp(this, key, set->klen);
+-		if (d < 0) {
+-			parent = rcu_dereference_raw(parent->rb_left);
+-			if (!(flags & NFT_SET_ELEM_INTERVAL_END))
+-				interval = rbe;
+-		} else if (d > 0) {
+-			parent = rcu_dereference_raw(parent->rb_right);
+-			if (flags & NFT_SET_ELEM_INTERVAL_END)
+-				interval = rbe;
+-		} else {
+-			if (!nft_set_elem_active(&rbe->ext, genmask)) {
+-				parent = rcu_dereference_raw(parent->rb_left);
+-				continue;
+-			}
+-
+-			if (nft_set_elem_expired(&rbe->ext))
+-				return false;
+-
+-			if (!nft_set_ext_exists(&rbe->ext, NFT_SET_EXT_FLAGS) ||
+-			    (*nft_set_ext_flags(&rbe->ext) & NFT_SET_ELEM_INTERVAL_END) ==
+-			    (flags & NFT_SET_ELEM_INTERVAL_END)) {
+-				*elem = rbe;
+-				return true;
+-			}
+-
+-			if (nft_rbtree_interval_end(rbe))
+-				interval = NULL;
+-
+-			parent = rcu_dereference_raw(parent->rb_left);
+-		}
+-	}
+-
+-	if (set->flags & NFT_SET_INTERVAL && interval != NULL &&
+-	    nft_set_elem_active(&interval->ext, genmask) &&
+-	    !nft_set_elem_expired(&interval->ext) &&
+-	    ((!nft_rbtree_interval_end(interval) &&
+-	      !(flags & NFT_SET_ELEM_INTERVAL_END)) ||
+-	     (nft_rbtree_interval_end(interval) &&
+-	      (flags & NFT_SET_ELEM_INTERVAL_END)))) {
+-		*elem = interval;
+-		return true;
+-	}
+-
+-	return false;
+-}
+-
+-static struct nft_elem_priv *
+-nft_rbtree_get(const struct net *net, const struct nft_set *set,
+-	       const struct nft_set_elem *elem, unsigned int flags)
+-{
+-	struct nft_rbtree *priv = nft_set_priv(set);
+-	unsigned int seq = read_seqcount_begin(&priv->count);
+-	struct nft_rbtree_elem *rbe = ERR_PTR(-ENOENT);
+-	const u32 *key = (const u32 *)&elem->key.val;
+-	u8 genmask = nft_genmask_cur(net);
+-	bool ret;
+-
+-	ret = __nft_rbtree_get(net, set, key, &rbe, seq, flags, genmask);
+-	if (ret || !read_seqcount_retry(&priv->count, seq))
+-		return &rbe->priv;
+-
+-	read_lock_bh(&priv->lock);
+-	seq = read_seqcount_begin(&priv->count);
+-	ret = __nft_rbtree_get(net, set, key, &rbe, seq, flags, genmask);
+-	read_unlock_bh(&priv->lock);
+-
+-	if (!ret)
+-		return ERR_PTR(-ENOENT);
+-
+-	return &rbe->priv;
+-}
+-
+ struct nft_array_lookup_ctx {
+ 	const u32	*key;
+ 	u32		klen;
+@@ -213,6 +123,70 @@ nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
+ 	return interval->from;
+ }
  
- 	INTERLEAVED_YUV_FMT(YUYV,
- 		0, BPC8, BPC8, BPC8,
- 		C0_G_Y, C1_B_Cb, C0_G_Y, C2_R_Cr,
- 		false, CHROMA_H2V1, 4, 2, MSM_FORMAT_FLAG_YUV,
--		MDP_FETCH_LINEAR, 2),
-+		MDP_FETCH_LINEAR, 1),
- 
- 	INTERLEAVED_YUV_FMT(YVYU,
- 		0, BPC8, BPC8, BPC8,
- 		C0_G_Y, C2_R_Cr, C0_G_Y, C1_B_Cb,
- 		false, CHROMA_H2V1, 4, 2, MSM_FORMAT_FLAG_YUV,
--		MDP_FETCH_LINEAR, 2),
-+		MDP_FETCH_LINEAR, 1),
- 
- 	/* 3 plane YUV */
- 	PLANAR_YUV_FMT(YUV420,
++struct nft_array_get_ctx {
++	const u32	*key;
++	unsigned int	flags;
++	u32		klen;
++};
++
++static int nft_array_get_cmp(const void *pkey, const void *entry)
++{
++	const struct nft_array_interval *interval = entry;
++	const struct nft_array_get_ctx *ctx = pkey;
++	int a, b;
++
++	if (!interval->from)
++		return 1;
++
++	a = memcmp(ctx->key, nft_set_ext_key(interval->from), ctx->klen);
++	if (!interval->to)
++		b = -1;
++	else
++		b = memcmp(ctx->key, nft_set_ext_key(interval->to), ctx->klen);
++
++	if (a >= 0) {
++		if (ctx->flags & NFT_SET_ELEM_INTERVAL_END && b <= 0)
++			return 0;
++		else if (b < 0)
++			return 0;
++	}
++
++	if (a < 0)
++		return -1;
++
++	return 1;
++}
++
++static struct nft_elem_priv *
++nft_rbtree_get(const struct net *net, const struct nft_set *set,
++	       const struct nft_set_elem *elem, unsigned int flags)
++{
++	struct nft_rbtree *priv = nft_set_priv(set);
++	struct nft_array *array = rcu_dereference(priv->array);
++	const struct nft_array_interval *interval;
++	struct nft_array_get_ctx ctx = {
++		.key	= (const u32 *)&elem->key.val,
++		.flags	= flags,
++		.klen	= set->klen,
++	};
++	struct nft_rbtree_elem *rbe;
++
++	if (!array)
++		return ERR_PTR(-ENOENT);
++
++	interval = bsearch(&ctx, array->intervals, array->num_intervals,
++			   sizeof(struct nft_array_interval), nft_array_get_cmp);
++	if (!interval || nft_set_elem_expired(interval->from))
++		return ERR_PTR(-ENOENT);
++
++	if (flags & NFT_SET_ELEM_INTERVAL_END)
++		rbe = container_of(interval->to, struct nft_rbtree_elem, ext);
++	else
++		rbe = container_of(interval->from, struct nft_rbtree_elem, ext);
++
++	return &rbe->priv;
++}
++
+ static void nft_rbtree_gc_elem_remove(struct net *net, struct nft_set *set,
+ 				      struct nft_rbtree *priv,
+ 				      struct nft_rbtree_elem *rbe)
 -- 
 2.51.0
 
