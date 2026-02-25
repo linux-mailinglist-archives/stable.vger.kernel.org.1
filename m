@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-219214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOD2NhKdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:56:18 +0100
+	id sOznDIBUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7DE192911
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:56:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5386618FCF1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64544303479B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C49B63073ECF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D63F2C11CF;
-	Wed, 25 Feb 2026 06:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FF0254B03;
+	Wed, 25 Feb 2026 01:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YLOvtEJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTN0HpGO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52382C0263;
-	Wed, 25 Feb 2026 06:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390EF18B0A;
+	Wed, 25 Feb 2026 01:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002567; cv=none; b=NhmVADxU4duQUE/2C1nwOOkwzT72RveNIeEhEr0BmGAy+ULkV6YxilsJ9JxLhi6hE6VfkvFjbTr7feXKFcNygEPq1mtU8pjA55sktzd9q4FQFtTaeoXzs1jkRN/xA5k2TMCa9ltFQI4RNQTnokJaTCN0Z0IKeLGED1wpkgUA/P4=
+	t=1771983396; cv=none; b=RbxRCF/wQW6ZbkJq/xHLNsiA7jw3AMw8IhbCpEvxQHCrcgvFDsw2VBw/wEGimyNhUMW03GJ5KNQMzh4CWY/tjbGnez4GgNSdOOs7JW9OtR/BqhH3zpUvQ8gE8lWYejWw1l98Cc6W8M4e52SHGxy3gqAXcdbYJPCYWVOS9rwSq4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002567; c=relaxed/simple;
-	bh=5aa3CU9PWB6KKQUWiSRMLV+Rp25e9/3938yzBu0MaYw=;
+	s=arc-20240116; t=1771983396; c=relaxed/simple;
+	bh=HmAzyjmUWBADW1SjQM3BoIFVR3c1CkRlZG4mIAhPGC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8ezLYJTmq1sSrWaM/Gp6cxjlLUBYDof4dxiD0cmFNcdfX2CF/bBbBRQcUDOOgT41yJiAzgQJD3Iq2Mc0q3UkZHBX+g7b6iZZH0snmjmDHZO4FusjEQZdC+sjqsfqkVQcqy3X7Mg4JCH+8u0s2DIGy1NPPtN70Ri6zM+EqcI0AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YLOvtEJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCAFC19422;
-	Wed, 25 Feb 2026 06:56:06 +0000 (UTC)
+	 MIME-Version; b=aA5psBKIcCW6f7PhQJldvgbs91GY2rUzixNr0JCj1gLzFANFHg3P3txR9ZvplpmN/w1d2OyvYmyJ2xnJ8BKsf4PakKxzUlPVhXsaP8SybdzK6d6fTvOB184bNTpSZOcvnAlbKOi3+IHVl3IJCc5LkFVPoyHo1Q/K2Y/TG9XnPz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VTN0HpGO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10906C116D0;
+	Wed, 25 Feb 2026 01:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002566;
-	bh=5aa3CU9PWB6KKQUWiSRMLV+Rp25e9/3938yzBu0MaYw=;
+	s=korg; t=1771983396;
+	bh=HmAzyjmUWBADW1SjQM3BoIFVR3c1CkRlZG4mIAhPGC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2YLOvtEJuppxagMxidtWSeroxRgRo+F+7jw98vNWBeRERkukB9FwoVwtg0yIfRLKI
-	 BTi0fzL7D2NmM5QJ9CKP3KMELvYEUMRJi6a+XsOvm9IYxhVhYiOQTywuYnxlD4RH3W
-	 GW8NxgJDL3QuwZpneARMR3GTFri26b+mS7LhaYqM=
+	b=VTN0HpGOsBcK9a/1Ww7nwALL2QquoGlfT7bhU3cXyQh1rLfIkeNhNv7oLO2udO8kb
+	 iPOK20SyyfFBWhq0tH0HPy2+Nj8L/BeKmQ+/UpnIlQtaAhSjAn9qnx58eUk9RE6uTf
+	 s1Er5KErd0UgFnV0bfNBR64U242Wb1VpF/i1yp8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshumali Gaur <agaur@marvell.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 300/641] octeontx2-af: Fix PF driver crash with kexec kernel booting
-Date: Tue, 24 Feb 2026 17:20:26 -0800
-Message-ID: <20260225012356.013480709@linuxfoundation.org>
+Subject: [PATCH 6.19 518/781] clk: qcom: gcc-sm8450: Update the SDCC RCGs to use shared_floor_ops
+Date: Tue, 24 Feb 2026 17:20:27 -0800
+Message-ID: <20260225012412.508434992@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219214-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218557-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,73 +90,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,marvell.com:email,intel.com:email]
-X-Rspamd-Queue-Id: 4A7DE192911
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,linaro.org:email]
+X-Rspamd-Queue-Id: 5386618FCF1
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshumali Gaur <agaur@marvell.com>
+From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
 
-[ Upstream commit 2d2d574309e3ae84ee794869a5da8b4c38753a94 ]
+[ Upstream commit 89428516f99572a9c37ebbb7859595881e7025a0 ]
 
-During a kexec reboot the hardware is not power-cycled, so AF state from
-the old kernel can persist into the new kernel. When AF and PF drivers
-are built as modules, the PF driver may probe before AF reinitializes
-the hardware.
+Use shared_floor_ops for the SDCC RCGs so the RCG is safely parked
+during disable and the new parent configuration is programmed in
+hardware only when the new parent is enabled, avoiding cases where
+the RCG configuration fails to update.
 
-The PF driver treats the RVUM block revision as an indication that AF
-initialization is complete. If this value is left uncleared at shutdown,
-PF may incorrectly assume AF is ready and access stale hardware state,
-leading to a crash.
-
-Clear the RVUM block revision during AF shutdown to avoid PF
-mis-detecting AF readiness after kexec.
-
-Fixes: 54494aa5d1e6 ("octeontx2-af: Add Marvell OcteonTX2 RVU AF driver")
-Signed-off-by: Anshumali Gaur <agaur@marvell.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260203050701.2616685-1-agaur@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a27ac3806b0a ("clk: qcom: gcc-sm8450: Use floor ops for SDCC RCGs")
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-1-473afc86589c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/clk/qcom/gcc-sm8450.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 747fbdf2a908f..8530df8b3fdaf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -3632,11 +3632,22 @@ static void rvu_remove(struct pci_dev *pdev)
- 	devm_kfree(&pdev->dev, rvu);
- }
- 
-+static void rvu_shutdown(struct pci_dev *pdev)
-+{
-+	struct rvu *rvu = pci_get_drvdata(pdev);
-+
-+	if (!rvu)
-+		return;
-+
-+	rvu_clear_rvum_blk_revid(rvu);
-+}
-+
- static struct pci_driver rvu_driver = {
- 	.name = DRV_NAME,
- 	.id_table = rvu_id_table,
- 	.probe = rvu_probe,
- 	.remove = rvu_remove,
-+	.shutdown = rvu_shutdown,
+diff --git a/drivers/clk/qcom/gcc-sm8450.c b/drivers/clk/qcom/gcc-sm8450.c
+index 65d7d52bce034..b18bb34889ab2 100644
+--- a/drivers/clk/qcom/gcc-sm8450.c
++++ b/drivers/clk/qcom/gcc-sm8450.c
+@@ -1034,7 +1034,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_7,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_7),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
  };
  
- static int __init rvu_init_module(void)
+@@ -1057,7 +1057,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
+ 
 -- 
 2.51.0
 
