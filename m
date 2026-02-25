@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-219272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LNkMOOenmlVWgQAu9opvQ
-	(envelope-from <stable+bounces-219272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:03 +0100
+	id 2J5gN8tTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396C5192DC4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DC818FA15
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 750A63146AAA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F56D316D9BC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5168F2D1F44;
-	Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D14256C84;
+	Wed, 25 Feb 2026 01:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkzGGFZp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFwfHWvP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154F12C17A0;
-	Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761F81FE45D;
+	Wed, 25 Feb 2026 01:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002607; cv=none; b=lrEz2J8nPE8BUF1U3NXrivRUWgaSPa8bE0LVXc5MoYBGbcUV2xWq+YaBFZKFgvo0QawIXzS6JupEEX42pICSYqG8Gg3hdTYTnTpuoYP+oIrXhlP+RvnBNT4Lz3oYAQgLgMXwWYrYOinCq2K27qLnZI5KAuLVjgs2HmMPqsVFp7A=
+	t=1771983428; cv=none; b=YguZrhRGMF8vmEVBpqT02UeCDIe4KJ2t1DvlYfSlWXnVy3aKpNchsLhgNohXJVFoWkiQZJXG/yk8DfoCexZFSdPGK2z6FTAg9gxOeZYEKq+OSegiRQ6Z3dEnaJgbrdvDknYpI8wLKQ54tDKgrXernaDDQiGYuOGbGMCiugO07ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002607; c=relaxed/simple;
-	bh=vB9J3tnDQtzFKtogYctvgHb9KSXr+9uybd/9XMkf9aE=;
+	s=arc-20240116; t=1771983428; c=relaxed/simple;
+	bh=gi7hL/S7zWpq6iE1VMyB9Wai+FJsbP5PpZ9ZXbG/pFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjyH3yoPKypiyTRcAR5oqqC8ly+LN3KqDmpgxvv4n90Gu4eCNAkrF0tmZ0/G57IMEti6hvp6eZKT+8Eu3Pwp3xW7gHMGCJd27zGmF6jqxun0ALSFBYq5JVTJn/AUr7qvIHFba8I4lpIrN8RvnVj5fN+K9eEBxfJoqoTvBNZHn+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkzGGFZp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA37EC116D0;
-	Wed, 25 Feb 2026 06:56:46 +0000 (UTC)
+	 MIME-Version; b=ekV2q40wm1HLSWPJlV5pXohnj3T4ueGPcJvkw/4cOz07O07skJoFdUlCWp2htDTcWrXmmPaV6Al4RI/ktRnvgO41cI51i67ZskoulKhvxoIFPr9XaKIfxycKIYlEGVforEkVcbrlhBmiLwyeW7wjkOx3SgclB7In5yUYxNf+bE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFwfHWvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F258FC116D0;
+	Wed, 25 Feb 2026 01:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002606;
-	bh=vB9J3tnDQtzFKtogYctvgHb9KSXr+9uybd/9XMkf9aE=;
+	s=korg; t=1771983428;
+	bh=gi7hL/S7zWpq6iE1VMyB9Wai+FJsbP5PpZ9ZXbG/pFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NkzGGFZpPEedKruq7N0vNAObxUeyfUiV1uSmR1p17RhgTJhurv2NjNY/tyIamw4xz
-	 BZ0W9y0gXAH1jYQdherXaOARrxjVNVmF1oMGpDc1qXYi6k5H8TiFGI6b4SNGO/mDME
-	 6PHTJLkudtuHlxHzc5yv36ezl65SwrcK/tQbAzG0=
+	b=dFwfHWvPblcGk/MoDKOhuFGVk8LH8iV5KGtUl6UI19g1fsPsp/AMsubKq8c1Yhw0Z
+	 N3kIKBmpTja8RDxeUyy6lUopHnLeFEHYHKN4K6Bzto9MGOPX7YZTwYNw+9G7VjFMkP
+	 17dgFXe0+YHa/waey/MVErtiaEL09Q2Z88PuBuiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathesh Edara <sedara@marvell.com>,
-	Shinas Rasheed <srasheed@marvell.com>,
-	Vimlesh Kumar <vimleshk@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Brian Masney <bmasney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 330/641] octeon_ep: disable per ring interrupts
+Subject: [PATCH 6.19 547/781] clk: sophgo: sg2042-clkgen: convert from divider_round_rate() to divider_determine_rate()
 Date: Tue, 24 Feb 2026 17:20:56 -0800
-Message-ID: <20260225012356.685361014@linuxfoundation.org>
+Message-ID: <20260225012413.216592142@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,149 +67,102 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218585-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,redhat.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219272-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,marvell.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 396C5192DC4
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email]
+X-Rspamd-Queue-Id: 44DC818FA15
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vimlesh Kumar <vimleshk@marvell.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 73e6ffa37cebee152c07c5f2b8bc70fd2899ea6e ]
+[ Upstream commit 77b04dc19693510ce8ed1c6eda5f5b833e208816 ]
 
-Disable the MSI-X per ring interrupt for every PF ring when PF
-netdev goes down.
+The divider_round_rate() function is now deprecated, so let's migrate
+to divider_determine_rate() instead so that this deprecated API can be
+removed.
 
-Fixes: 1f2c2d0cee023 ("octeon_ep: add hardware configuration APIs")
-Signed-off-by: Sathesh Edara <sedara@marvell.com>
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
-Signed-off-by: Vimlesh Kumar <vimleshk@marvell.com>
-Link: https://patch.msgid.link/20260206111510.1045092-2-vimleshk@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
+
+    req->rate = divider_round_rate(...)
+
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
+
+Note that this commit also removes a debugging message that's not really
+needed.
+
+Fixes: 9a3b6993613d ("clk: sophgo: sg2042-clkgen: convert from round_rate() to determine_rate()")
+Tested-by: Chen Wang <unicorn_wang@outlook.com>
+Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeon_ep/octep_cn9k_pf.c | 18 +++++++++++++++---
- .../ethernet/marvell/octeon_ep/octep_cnxk_pf.c | 18 +++++++++++++++---
- .../marvell/octeon_ep/octep_regs_cn9k_pf.h     |  1 +
- .../marvell/octeon_ep/octep_regs_cnxk_pf.h     |  1 +
- 4 files changed, 32 insertions(+), 6 deletions(-)
+ drivers/clk/sophgo/clk-sg2042-clkgen.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_cn9k_pf.c b/drivers/net/ethernet/marvell/octeon_ep/octep_cn9k_pf.c
-index b5805969404fa..f0bcb5f3c1474 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_cn9k_pf.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_cn9k_pf.c
-@@ -696,14 +696,26 @@ static void octep_enable_interrupts_cn93_pf(struct octep_device *oct)
- /* Disable all interrupts */
- static void octep_disable_interrupts_cn93_pf(struct octep_device *oct)
+diff --git a/drivers/clk/sophgo/clk-sg2042-clkgen.c b/drivers/clk/sophgo/clk-sg2042-clkgen.c
+index 683661b71787c..9725ac4e050a4 100644
+--- a/drivers/clk/sophgo/clk-sg2042-clkgen.c
++++ b/drivers/clk/sophgo/clk-sg2042-clkgen.c
+@@ -180,7 +180,6 @@ static int sg2042_clk_divider_determine_rate(struct clk_hw *hw,
+ 					     struct clk_rate_request *req)
  {
--	u64 intr_mask = 0ULL;
-+	u64 reg_val, intr_mask = 0ULL;
- 	int srn, num_rings, i;
+ 	struct sg2042_divider_clock *divider = to_sg2042_clk_divider(hw);
+-	unsigned long ret_rate;
+ 	u32 bestdiv;
  
- 	srn = CFG_GET_PORTS_PF_SRN(oct->conf);
- 	num_rings = CFG_GET_PORTS_ACTIVE_IO_RINGS(oct->conf);
+ 	/* if read only, just return current value */
+@@ -191,17 +190,13 @@ static int sg2042_clk_divider_determine_rate(struct clk_hw *hw,
+ 			bestdiv = readl(divider->reg) >> divider->shift;
+ 			bestdiv &= clk_div_mask(divider->width);
+ 		}
+-		ret_rate = DIV_ROUND_UP_ULL((u64)req->best_parent_rate, bestdiv);
+-	} else {
+-		ret_rate = divider_round_rate(hw, req->rate, &req->best_parent_rate, NULL,
+-					      divider->width, divider->div_flags);
+-	}
++		req->rate = DIV_ROUND_UP_ULL((u64)req->best_parent_rate, bestdiv);
  
--	for (i = 0; i < num_rings; i++)
--		intr_mask |= (0x1ULL << (srn + i));
-+	for (i = 0; i < num_rings; i++) {
-+		intr_mask |= BIT_ULL(srn + i);
-+		reg_val = octep_read_csr64(oct,
-+					   CN93_SDP_R_IN_INT_LEVELS(srn + i));
-+		reg_val &= ~CN93_INT_ENA_BIT;
-+		octep_write_csr64(oct,
-+				  CN93_SDP_R_IN_INT_LEVELS(srn + i), reg_val);
-+
-+		reg_val = octep_read_csr64(oct,
-+					   CN93_SDP_R_OUT_INT_LEVELS(srn + i));
-+		reg_val &= ~CN93_INT_ENA_BIT;
-+		octep_write_csr64(oct,
-+				  CN93_SDP_R_OUT_INT_LEVELS(srn + i), reg_val);
+-	pr_debug("--> %s: divider_round_rate: val = %ld\n",
+-		 clk_hw_get_name(hw), ret_rate);
+-	req->rate = ret_rate;
++		return 0;
 +	}
  
- 	octep_write_csr64(oct, CN93_SDP_EPF_IRERR_RINT_ENA_W1C, intr_mask);
- 	octep_write_csr64(oct, CN93_SDP_EPF_ORERR_RINT_ENA_W1C, intr_mask);
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_cnxk_pf.c b/drivers/net/ethernet/marvell/octeon_ep/octep_cnxk_pf.c
-index 5de0b5ecbc5fd..07e00887c6940 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_cnxk_pf.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_cnxk_pf.c
-@@ -720,14 +720,26 @@ static void octep_enable_interrupts_cnxk_pf(struct octep_device *oct)
- /* Disable all interrupts */
- static void octep_disable_interrupts_cnxk_pf(struct octep_device *oct)
- {
--	u64 intr_mask = 0ULL;
-+	u64 reg_val, intr_mask = 0ULL;
- 	int srn, num_rings, i;
+-	return 0;
++	return divider_determine_rate(hw, req, NULL, divider->width,
++				      divider->div_flags);
+ }
  
- 	srn = CFG_GET_PORTS_PF_SRN(oct->conf);
- 	num_rings = CFG_GET_PORTS_ACTIVE_IO_RINGS(oct->conf);
- 
--	for (i = 0; i < num_rings; i++)
--		intr_mask |= (0x1ULL << (srn + i));
-+	for (i = 0; i < num_rings; i++) {
-+		intr_mask |= BIT_ULL(srn + i);
-+		reg_val = octep_read_csr64(oct,
-+					   CNXK_SDP_R_IN_INT_LEVELS(srn + i));
-+		reg_val &= ~CNXK_INT_ENA_BIT;
-+		octep_write_csr64(oct,
-+				  CNXK_SDP_R_IN_INT_LEVELS(srn + i), reg_val);
-+
-+		reg_val = octep_read_csr64(oct,
-+					   CNXK_SDP_R_OUT_INT_LEVELS(srn + i));
-+		reg_val &= ~CNXK_INT_ENA_BIT;
-+		octep_write_csr64(oct,
-+				  CNXK_SDP_R_OUT_INT_LEVELS(srn + i), reg_val);
-+	}
- 
- 	octep_write_csr64(oct, CNXK_SDP_EPF_IRERR_RINT_ENA_W1C, intr_mask);
- 	octep_write_csr64(oct, CNXK_SDP_EPF_ORERR_RINT_ENA_W1C, intr_mask);
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cn9k_pf.h b/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cn9k_pf.h
-index ca473502d7a02..95f1dfff90cce 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cn9k_pf.h
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cn9k_pf.h
-@@ -386,5 +386,6 @@
- #define CN93_PEM_BAR4_INDEX            7
- #define CN93_PEM_BAR4_INDEX_SIZE       0x400000ULL
- #define CN93_PEM_BAR4_INDEX_OFFSET     (CN93_PEM_BAR4_INDEX * CN93_PEM_BAR4_INDEX_SIZE)
-+#define CN93_INT_ENA_BIT	BIT_ULL(62)
- 
- #endif /* _OCTEP_REGS_CN9K_PF_H_ */
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cnxk_pf.h b/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cnxk_pf.h
-index e637d7c8224d4..4d172a552f80c 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cnxk_pf.h
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cnxk_pf.h
-@@ -412,5 +412,6 @@
- #define CNXK_PEM_BAR4_INDEX		7
- #define CNXK_PEM_BAR4_INDEX_SIZE	0x400000ULL
- #define CNXK_PEM_BAR4_INDEX_OFFSET	(CNXK_PEM_BAR4_INDEX * CNXK_PEM_BAR4_INDEX_SIZE)
-+#define CNXK_INT_ENA_BIT	BIT_ULL(62)
- 
- #endif /* _OCTEP_REGS_CNXK_PF_H_ */
+ static int sg2042_clk_divider_set_rate(struct clk_hw *hw,
 -- 
 2.51.0
 
