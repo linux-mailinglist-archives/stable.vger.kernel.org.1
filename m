@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIDNLxBUnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:48 +0100
+	id gOccCO6hnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:17:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36DA718FB76
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A0F1932A0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8BFC331927EF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BE853155A51
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C942652AF;
-	Wed, 25 Feb 2026 01:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BB42D7393;
+	Wed, 25 Feb 2026 06:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bT30Xt8d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahCLqm/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0259262FE7;
-	Wed, 25 Feb 2026 01:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0772D1F40;
+	Wed, 25 Feb 2026 06:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983467; cv=none; b=XCoURz502QILioJFnbOkASZuSafimAfdT7+wQrjiPBCEAgPV+vgYVFU3VDvgWaoZIFemwGi0FMCkP4RObQyc3EDKrcnTkp8SYGscdeHy4bGu6s8dFHeLhsAQFcfq+CI8bhsaea0PsyXdXis2MuLpy24n/mWOeL2FjhugXye++Wg=
+	t=1772002614; cv=none; b=M+mfewGJvZN6zjV+sKyK5rI9Zjl6lJy5MpRbmy7eG5PIqG8cuJBVBauRwqFZfynuruYlfdMO5Yp3O/K0mmOtBgXIMLfUjyrvsXRGP465Uy/mrVJe9uItf4H208cdw1bU3DQyRVObBdN5SSGW4kuaTMAIZLQsqmeE9wrGqO6Yq9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983467; c=relaxed/simple;
-	bh=xkk9T24dW7k9AFJPuGFDNYzrsOkOFAuQQRO1qhOuVJY=;
+	s=arc-20240116; t=1772002614; c=relaxed/simple;
+	bh=gle3zd2/OrTTEg4ZHFyLBVwQZr9XQnjYWsJce34frUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdG1xQ7ajwAjC9TSYqHnuT35CJSqxQ5QwKx6j4UW+Q7aiIBiha9k+l6NNVChsC6ZAm80ok8IBKZ6vo8v2W+z5sWLaoo8CQ4i/colXHAGk8alpMJm44wT5353HSqGDpH+HCgC7sE2c/2jF/kHeYD+UyvWDA9oTCGoyUZKxMdteYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bT30Xt8d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AD3C116D0;
-	Wed, 25 Feb 2026 01:37:47 +0000 (UTC)
+	 MIME-Version; b=aJy6B6iUGZMYusH4ojuH+LgaQPgC5viNy8iWocliXK7zbdJYF5c0NcBThHZD1M/VqCjkRVNTYpg0lCYJP6vXdOA/3kaWvtXcIfrY5nxpSE8utu4rhLGA2QN72VwN7Z7EN85Wr3SfnInrRdcHcYHPmK+nj89QyHsa6tt40Z4r7fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahCLqm/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ECEC116D0;
+	Wed, 25 Feb 2026 06:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983467;
-	bh=xkk9T24dW7k9AFJPuGFDNYzrsOkOFAuQQRO1qhOuVJY=;
+	s=korg; t=1772002614;
+	bh=gle3zd2/OrTTEg4ZHFyLBVwQZr9XQnjYWsJce34frUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bT30Xt8dQ7kngmGG0r2k0W/Pcxi3N/Y4WbR0zNBSdp5/hmfGU5glWrYdXwy89m+6o
-	 cfGDSS5IcxnOmhApr3vuaCKRNVnwjta1XkiYS5ekl2Q3+beAQ2UwT8JW1S4Siqi086
-	 FqKiAZg9EePY9EzoZNVqZxhwU7a+0okyyL+fC/1Q=
+	b=ahCLqm/OqTOkOtYMx7XtVss3dcmH1U2Be46j8D8yfEOSObIKtpnv1bqEbCP47Ot18
+	 i4L9erI4b4pmqKbtyF3bRBUT5pQfGpFUMrBE1KsbwXqgEo9NoYGQtnVMzxf3cZi3cW
+	 wFVhttCTy1au6pPS3YI3qfFc/22nUwcquEIeWFYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Anthony Pighin <anthony.pighin@nokia.com>,
+	Alex Williamson <alex@shazbot.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 583/781] coresight: etm3x: Fix cpulocked warning on cpuhp
+Subject: [PATCH 6.18 366/641] vfio/pci: Lock upstream bridge for vfio_pci_core_disable()
 Date: Tue, 24 Feb 2026 17:21:32 -0800
-Message-ID: <20260225012414.099939355@linuxfoundation.org>
+Message-ID: <20260225012357.477809526@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,85 +79,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218620-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219282-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,st.com:email]
-X-Rspamd-Queue-Id: 36DA718FB76
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,shazbot.org:email,nokia.com:email]
+X-Rspamd-Queue-Id: 93A0F1932A0
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Borneo <antonio.borneo@foss.st.com>
+From: Anthony Pighin (Nokia) <anthony.pighin@nokia.com>
 
-[ Upstream commit 1feb0377b9b816f89a04fc381eb19fc6bac9f4a4 ]
+[ Upstream commit 962ae6892d8bd208b2d1e2b358f07551ddc8d32f ]
 
-When changes [1] and [2] have been applied to the driver etm4x, the
-same modifications have been also collapsed in [3] and applied in
-one shot to the driver etm3x.
-While doing this, the driver etm3x has not been aligned to etm4x on
-the use of non cpuslocked version of cpuhp callback setup APIs.
+The commit 7e89efc6e9e4 ("Lock upstream bridge for pci_reset_function()")
+added locking of the upstream bridge to the reset function. To catch
+paths that are not properly locked, the commit 920f6468924f ("Warn on
+missing cfg_access_lock during secondary bus reset") added a warning
+if the PCI configuration space was not locked during a secondary bus reset
+request.
 
-The current code triggers two run-time warnings when the kernel is
-compiled with CONFIG_PROVE_LOCKING=y.
+When a VFIO PCI device is released from userspace ownership, an attempt
+to reset the PCI device function may be made. If so, and the upstream bridge
+is not locked, the release request results in a warning:
 
-Use non cpuslocked version of cpuhp callback setup APIs in driver
-etm3x, aligning it to the driver etm4x.
+   pcieport 0000:00:00.0: unlocked secondary bus reset via:
+   pci_reset_bus_function+0x188/0x1b8
 
-[1] commit 2d1a8bfb61ec ("coresight: etm4x: Fix etm4_count race by
-                          moving cpuhp callbacks to init")
-[2] commit 22a550a306ad ("coresight: etm4x: Allow etm4x to be built
-                          as a module")
-[3] commit 97fe626ce64c ("coresight: etm3x: Allow etm3x to be built
-                          as a module")
+Add missing upstream bridge locking to vfio_pci_core_disable().
 
-Fixes: 97fe626ce64c ("coresight: etm3x: Allow etm3x to be built as a module")
-Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20260108152427.357379-1-antonio.borneo@foss.st.com
+Fixes: 7e89efc6e9e4 ("PCI: Lock upstream bridge for pci_reset_function()")
+Signed-off-by: Anthony Pighin <anthony.pighin@nokia.com>
+Link: https://lore.kernel.org/r/BN0PR08MB695171D3AB759C65B6438B5D838DA@BN0PR08MB6951.namprd08.prod.outlook.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm3x-core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/vfio/pci/vfio_pci_core.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm3x-core.c b/drivers/hwtracing/coresight/coresight-etm3x-core.c
-index a5e809589d3e3..0c011b7041696 100644
---- a/drivers/hwtracing/coresight/coresight-etm3x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm3x-core.c
-@@ -795,16 +795,16 @@ static int __init etm_hp_setup(void)
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 5efe7535f41ed..085373d71e9c2 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -589,6 +589,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_enable);
+ 
+ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
  {
- 	int ret;
++	struct pci_dev *bridge;
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	struct vfio_pci_dummy_resource *dummy_res, *tmp;
+ 	struct vfio_pci_ioeventfd *ioeventfd, *ioeventfd_tmp;
+@@ -695,12 +696,20 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+ 	 * We can not use the "try" reset interface here, which will
+ 	 * overwrite the previously restored configuration information.
+ 	 */
+-	if (vdev->reset_works && pci_dev_trylock(pdev)) {
+-		if (!__pci_reset_function_locked(pdev))
+-			vdev->needs_reset = false;
+-		pci_dev_unlock(pdev);
++	if (vdev->reset_works) {
++		bridge = pci_upstream_bridge(pdev);
++		if (bridge && !pci_dev_trylock(bridge))
++			goto out_restore_state;
++		if (pci_dev_trylock(pdev)) {
++			if (!__pci_reset_function_locked(pdev))
++				vdev->needs_reset = false;
++			pci_dev_unlock(pdev);
++		}
++		if (bridge)
++			pci_dev_unlock(bridge);
+ 	}
  
--	ret = cpuhp_setup_state_nocalls_cpuslocked(CPUHP_AP_ARM_CORESIGHT_STARTING,
--						   "arm/coresight:starting",
--						   etm_starting_cpu, etm_dying_cpu);
-+	ret = cpuhp_setup_state_nocalls(CPUHP_AP_ARM_CORESIGHT_STARTING,
-+					"arm/coresight:starting",
-+					etm_starting_cpu, etm_dying_cpu);
- 
- 	if (ret)
- 		return ret;
- 
--	ret = cpuhp_setup_state_nocalls_cpuslocked(CPUHP_AP_ONLINE_DYN,
--						   "arm/coresight:online",
--						   etm_online_cpu, NULL);
-+	ret = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
-+					"arm/coresight:online",
-+					etm_online_cpu, NULL);
- 
- 	/* HP dyn state ID returned in ret on success */
- 	if (ret > 0) {
++out_restore_state:
+ 	pci_restore_state(pdev);
+ out:
+ 	pci_disable_device(pdev);
 -- 
 2.51.0
 
