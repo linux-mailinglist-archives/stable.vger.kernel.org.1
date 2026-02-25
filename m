@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-219307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AvqOgqinmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:17:30 +0100
+	id mNXvAS1Vnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561561932B6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:17:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D31D18FF2D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8DBEF316F09D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4956430782A9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F882301717;
-	Wed, 25 Feb 2026 06:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9402652B7;
+	Wed, 25 Feb 2026 01:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNMQVbOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/6KkENU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7513002D1;
-	Wed, 25 Feb 2026 06:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E406265CA6;
+	Wed, 25 Feb 2026 01:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002630; cv=none; b=JrrT+nMUDqQxR2eYTowCJafmfht/wx7j+pmDT0sRVzS9ChVVKQxwZcJDpnplqr0gbDF8IPPtlIkv2P73BTnRxWw+k/rxxb8/tNcScOb25gXEoVpOfVhguqg7R56YtTCN7JH3atX958y+l9AC1TLLnL9WUDl/cgW8ZEor3Rk+Upo=
+	t=1771983500; cv=none; b=O1wnHbBsNb498fIVCSKwIo5CwG7EEG6twnx/IZgYDDODNvMTdM/1CFJMrZ1JfalzdD1x29ZvQdx03avWlGGa/kVky6R+olins7VpdCPLeqOkBGgKAHke+NgT1e1WAYLQ7jFv+qmMlQNdTnzlmM3rME/a/Vrf5IDcjD7y0LODkdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002630; c=relaxed/simple;
-	bh=Q91rFZmI/VlO0qr3+kn4FWYrmPOFafWyv5YqJc3Z6uY=;
+	s=arc-20240116; t=1771983500; c=relaxed/simple;
+	bh=9TzZolh4V+eUAok4iAyNYJWIGnrsdKqjIiz9+Wa6Shs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftF43TsYn2q4wFyZ9I87tm24A1nmn2oN3ha9nQFikacm6XJSo4KIAzfCo8NOZ1HHWZWL82PgaXfbEujsXk57d76BGSCMhNW5u8gfXvSfcpoG3fsUS+9y5ICcB9fDbSkXEco8xg09EoXb2nIMo12NdsYXKKuLzqX3/KEzKVh9XxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNMQVbOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B95C116D0;
-	Wed, 25 Feb 2026 06:57:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rinWdZrIInhkC/gitcVcjG1vlnjwjykfeqeRyJXJdRJFgzau+MVkha6pgRls2sjTWO+2rZqxE/+pyJMypzbn2NCXsCL8lzyIM/xpBoQVyFsHVW6I3lgNO0S/IElyHt84AAs06dYsfIAoHjqFAa+ow6gazjSdVmr2RUtSa+2GIxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/6KkENU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BCEC116D0;
+	Wed, 25 Feb 2026 01:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002629;
-	bh=Q91rFZmI/VlO0qr3+kn4FWYrmPOFafWyv5YqJc3Z6uY=;
+	s=korg; t=1771983500;
+	bh=9TzZolh4V+eUAok4iAyNYJWIGnrsdKqjIiz9+Wa6Shs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oNMQVbOwkiS/SEAZ7KST2M1QRuaexfCCwZNIqzq+PbxPbsfOS/4dqWDJEDwtjlxKI
-	 tT++YvrOd1jabxxnIegKwCTtO2R8wjV0eVM/a1zXGeK5AbXdHPJjCuLCTt3QMBlI7W
-	 o7PoWkX9X5kZhdQcskJZcmjL1Z11fd6qA32wCBSY=
+	b=i/6KkENUv37fo9YBEDEsj9noPXQBPFdqXI3xaVrBPSJ2MNsKmRmyunlLLqcsTbdkt
+	 UrKGJ1JHXdmjr2HVeXMCk4w4NYeSlGmKIgFRnERUSIkwObTkZftKA4T44igBI6UQLe
+	 QbfdBiaoxRbHHRZKoBRa8uCImuSkyc5IZK1JiYsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 392/641] scsi: ufs: host: mediatek: Require CONFIG_PM
+Subject: [PATCH 6.19 609/781] backlight: qcom-wled: Change PM8950 WLED configurations
 Date: Tue, 24 Feb 2026 17:21:58 -0800
-Message-ID: <20260225012358.074275931@linuxfoundation.org>
+Message-ID: <20260225012414.732371530@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,150 +65,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219307-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218649-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,collabora.com:email]
-X-Rspamd-Queue-Id: 561561932B6
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mainlining.org:email]
+X-Rspamd-Queue-Id: 2D31D18FF2D
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit bbb8d98fb4536594cb104fd630ea0f7dce3771d6 ]
+[ Upstream commit 83333aa97441ba7ce32b91e8a007c72d316a1c67 ]
 
-The added print statement from a recent fix causes the driver to fail
-building when CONFIG_PM is disabled:
+PMI8950 WLED needs same configurations as PMI8994 WLED.
 
-drivers/ufs/host/ufs-mediatek.c: In function 'ufs_mtk_resume':
-drivers/ufs/host/ufs-mediatek.c:1890:40: error: 'struct dev_pm_info' has no member named 'request'
- 1890 |                         hba->dev->power.request,
-
-It seems unlikely that the driver can work at all without CONFIG_PM, so
-just add a dependency and remove the existing ifdef checks, rather than
-adding another ifdef.
-
-Fixes: 15ef3f5aa822 ("scsi: ufs: host: mediatek: Enhance recovery on resume failure")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20260202095052.1232703-1-arnd@kernel.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 10258bf4534b ("backlight: qcom-wled: Add PMI8950 compatible")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Link: https://patch.msgid.link/20260116-pmi8950-wled-v3-4-e6c93de84079@mainlining.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/Kconfig        |  1 +
- drivers/ufs/host/ufs-mediatek.c | 12 +++---------
- include/ufs/ufshcd.h            |  4 ----
- 3 files changed, 4 insertions(+), 13 deletions(-)
+ drivers/video/backlight/qcom-wled.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/Kconfig b/drivers/ufs/host/Kconfig
-index 191fbd799ec5b..48ee7e9b665ef 100644
---- a/drivers/ufs/host/Kconfig
-+++ b/drivers/ufs/host/Kconfig
-@@ -72,6 +72,7 @@ config SCSI_UFS_QCOM
- config SCSI_UFS_MEDIATEK
- 	tristate "Mediatek specific hooks to UFS controller platform driver"
- 	depends on SCSI_UFSHCD_PLATFORM && ARCH_MEDIATEK
-+	depends on PM
- 	depends on RESET_CONTROLLER
- 	select PHY_MTK_UFS
- 	select RESET_TI_SYSCON
-diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index d0cbd96ad29dc..3c63adca561d2 100644
---- a/drivers/ufs/host/ufs-mediatek.c
-+++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -2366,7 +2366,6 @@ static void ufs_mtk_remove(struct platform_device *pdev)
- 	ufshcd_pltfrm_remove(pdev);
- }
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index 5decbd39b7899..8054e4787725e 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -1455,7 +1455,8 @@ static int wled_configure(struct wled *wled)
+ 		break;
  
--#ifdef CONFIG_PM_SLEEP
- static int ufs_mtk_system_suspend(struct device *dev)
- {
- 	struct ufs_hba *hba = dev_get_drvdata(dev);
-@@ -2413,9 +2412,7 @@ static int ufs_mtk_system_resume(struct device *dev)
- 
- 	return ret;
- }
--#endif
- 
--#ifdef CONFIG_PM
- static int ufs_mtk_runtime_suspend(struct device *dev)
- {
- 	struct ufs_hba *hba = dev_get_drvdata(dev);
-@@ -2454,13 +2451,10 @@ static int ufs_mtk_runtime_resume(struct device *dev)
- 
- 	return ufshcd_runtime_resume(dev);
- }
--#endif
- 
- static const struct dev_pm_ops ufs_mtk_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(ufs_mtk_system_suspend,
--				ufs_mtk_system_resume)
--	SET_RUNTIME_PM_OPS(ufs_mtk_runtime_suspend,
--			   ufs_mtk_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(ufs_mtk_system_suspend, ufs_mtk_system_resume)
-+	RUNTIME_PM_OPS(ufs_mtk_runtime_suspend, ufs_mtk_runtime_resume, NULL)
- 	.prepare	 = ufshcd_suspend_prepare,
- 	.complete	 = ufshcd_resume_complete,
- };
-@@ -2470,7 +2464,7 @@ static struct platform_driver ufs_mtk_pltform = {
- 	.remove = ufs_mtk_remove,
- 	.driver = {
- 		.name   = "ufshcd-mtk",
--		.pm     = &ufs_mtk_pm_ops,
-+		.pm     = pm_ptr(&ufs_mtk_pm_ops),
- 		.of_match_table = ufs_mtk_of_match,
- 	},
- };
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index d949db3a46759..17fe07dac6a7e 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -1350,17 +1350,13 @@ static inline void *ufshcd_get_variant(struct ufs_hba *hba)
- 	return hba->priv;
- }
- 
--#ifdef CONFIG_PM
- extern int ufshcd_runtime_suspend(struct device *dev);
- extern int ufshcd_runtime_resume(struct device *dev);
--#endif
--#ifdef CONFIG_PM_SLEEP
- extern int ufshcd_system_suspend(struct device *dev);
- extern int ufshcd_system_resume(struct device *dev);
- extern int ufshcd_system_freeze(struct device *dev);
- extern int ufshcd_system_thaw(struct device *dev);
- extern int ufshcd_system_restore(struct device *dev);
--#endif
- 
- extern int ufshcd_dme_reset(struct ufs_hba *hba);
- extern int ufshcd_dme_enable(struct ufs_hba *hba);
+ 	case 4:
+-		if (of_device_is_compatible(dev->of_node, "qcom,pmi8994-wled")) {
++		if (of_device_is_compatible(dev->of_node, "qcom,pmi8950-wled") ||
++		    of_device_is_compatible(dev->of_node, "qcom,pmi8994-wled")) {
+ 			u32_opts = pmi8994_wled_opts;
+ 			size = ARRAY_SIZE(pmi8994_wled_opts);
+ 		} else {
 -- 
 2.51.0
 
