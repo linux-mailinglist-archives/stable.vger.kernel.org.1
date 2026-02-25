@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-218904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gB5FJtNXnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218904-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:00:51 +0100
+	id wFSNCK1ZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:08:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD93D1905FE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:00:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAC8190978
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:08:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3641B30DDB8D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2069D30D7EE4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9220B283FC9;
-	Wed, 25 Feb 2026 01:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF632BE056;
+	Wed, 25 Feb 2026 01:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bf8zjNUd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="semEweTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AD8243376;
-	Wed, 25 Feb 2026 01:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FE82BD5BF;
+	Wed, 25 Feb 2026 01:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983796; cv=none; b=EeVX77EKyNor56ApxXKpKSyCAdgyae0MW632gsOeyW/MVRjGv3v0sDV+HalRWyKEavld81g+IxEv5niVBGckLdJ5cMcQRL/lXB0tErpvWcTeIcFS4nHCmSkh3TrNHT/uV+1saOwYfpdB9SrlGBX7hLTDD06EFda/yi1JuzapA4o=
+	t=1771983803; cv=none; b=gzIyZGHhMf8C0acE/uJWkGo8ADMZumoPUoZ6LpkDuWqZsrdTy81G91+ipQclW9PQw9ed4OQzBCTUL7Vfl/1MNksYlJla1Lf+uzk8ZnFODx0oSsF2+aGhgs18tyFatkGt6znx3tqi7wRv5QtZWL4EWO9d09fHIZwThpsFcOMLNRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983796; c=relaxed/simple;
-	bh=lfNPBaGSuvuWKjY+PyHfOfXScMTN2+C1O03p7BqNU7I=;
+	s=arc-20240116; t=1771983803; c=relaxed/simple;
+	bh=0WARkBJQlVK/6i/bHHa9v8CtiaIdCUoMa6yf/2jFsO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JffJzNbN95OcTJlTRlHY1XD3bmIXYTLffNpKLbsGjQaFPhc6X4Jo547NqSLgx59GWdVq6bOL5pgOEMEfHx3D44QmUiyYXKl2H5UKr7pqMBKgGJI1n9YNDopJOdtxddaIEyEdImDRbK6jfQFJLtR6LMU2jSHRARkByo/GNgvTOGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bf8zjNUd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12662C116D0;
-	Wed, 25 Feb 2026 01:43:16 +0000 (UTC)
+	 MIME-Version; b=FZFaZlxNAtDOxioyxKwEQohxdNYqsy1dJ+YwtoLg7aC2aaRknK93+fuSxdUZ/817RQIgRYEdkhMnHN5wHXgmaK5bszqXAUYk7ydstkQhGt81n3MQSgXamYl4q5QLT5RZuH0Zafp33dcUySdCUvnk/qRxStQnl7HU6VE/HQ2emtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=semEweTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D694AC116D0;
+	Wed, 25 Feb 2026 01:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983796;
-	bh=lfNPBaGSuvuWKjY+PyHfOfXScMTN2+C1O03p7BqNU7I=;
+	s=korg; t=1771983803;
+	bh=0WARkBJQlVK/6i/bHHa9v8CtiaIdCUoMa6yf/2jFsO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bf8zjNUd8jYDbzYnYKFsHEpjjR4qKb+tLeDRmv3AZGZDKsLV4kr8i9mgGi23KImFx
-	 eQH5lvuZlmeu3YaV/tyj8MFSLbvbrjAyFfXr42ruhMrGWn+F+fn8gTadDXbgipzm2W
-	 jqFixWhZi8J1rCc107snFW2sCZGNZKZIkoHaxpE0=
+	b=semEweTU+CHR+7358GYB20o+NwK5gqm5IeELBUyLbHFUFjX0n5ClK62s1/DWaMtGv
+	 6ynFWMa6kXNSOBG75zIuJzBmTUvvKEVi0zgp1YLQ+Nh/NTYmVz9HpeEtFquKdrAeaf
+	 notyns4oAJ5vJ4/3a0VabjWGKsSt2PP7p0hfquVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yu Kuai <yukuai@fnnas.com>,
 	Li Nan <linan122@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 045/641] md/raid5: fix IO hang with degraded array with llbitmap
-Date: Tue, 24 Feb 2026 17:16:11 -0800
-Message-ID: <20260225012350.120166425@linuxfoundation.org>
+Subject: [PATCH 6.18 046/641] md/md-llbitmap: fix percpu_ref not resurrected on suspend timeout
+Date: Tue, 24 Feb 2026 17:16:12 -0800
+Message-ID: <20260225012350.145166269@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218904-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218910-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,9 +90,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fnnas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: DD93D1905FE
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,fnnas.com:email]
+X-Rspamd-Queue-Id: 9AAC8190978
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
@@ -101,44 +101,43 @@ X-Rspamd-Action: no action
 
 From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit cd1635d844d26471c56c0a432abdee12fc9ad735 ]
+[ Upstream commit d119bd2e1643cc023210ff3c6f0657e4f914e71d ]
 
-When llbitmap bit state is still unwritten, any new write should force
-rcw, as bitmap_ops->blocks_synced() is checked in handle_stripe_dirtying().
-However, later the same check is missing in need_this_block(), causing
-stripe to deadloop during handling because handle_stripe() will decide
-to go to handle_stripe_fill(), meanwhile need_this_block() always return
-0 and nothing is handled.
+When llbitmap_suspend_timeout() times out waiting for percpu_ref to
+become zero, it returns -ETIMEDOUT without resurrecting the percpu_ref.
+The caller (md_llbitmap_daemon_fn) then continues to the next page
+without calling llbitmap_resume(), leaving the percpu_ref in a killed
+state permanently.
 
-Link: https://lore.kernel.org/linux-raid/20260123182623.3718551-2-yukuai@fnnas.com
+Fix this by resurrecting the percpu_ref before returning the error,
+ensuring the page control structure remains usable for subsequent
+operations.
+
+Link: https://lore.kernel.org/linux-raid/20260123182623.3718551-3-yukuai@fnnas.com
 Fixes: 5ab829f1971d ("md/md-llbitmap: introduce new lockless bitmap")
 Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Reviewed-by: Li Nan <linan122@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/md/md-llbitmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 1041788a54c20..3b711a1198adb 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -3751,9 +3751,14 @@ static int need_this_block(struct stripe_head *sh, struct stripe_head_state *s,
- 	struct r5dev *dev = &sh->dev[disk_idx];
- 	struct r5dev *fdev[2] = { &sh->dev[s->failed_num[0]],
- 				  &sh->dev[s->failed_num[1]] };
-+	struct mddev *mddev = sh->raid_conf->mddev;
-+	bool force_rcw = false;
- 	int i;
--	bool force_rcw = (sh->raid_conf->rmw_level == PARITY_DISABLE_RMW);
+diff --git a/drivers/md/md-llbitmap.c b/drivers/md/md-llbitmap.c
+index 1eb434306162a..bcb6eae1c711f 100644
+--- a/drivers/md/md-llbitmap.c
++++ b/drivers/md/md-llbitmap.c
+@@ -712,8 +712,10 @@ static int llbitmap_suspend_timeout(struct llbitmap *llbitmap, int page_idx)
+ 	percpu_ref_kill(&pctl->active);
  
-+	if (sh->raid_conf->rmw_level == PARITY_DISABLE_RMW ||
-+	    (mddev->bitmap_ops && mddev->bitmap_ops->blocks_synced &&
-+	     !mddev->bitmap_ops->blocks_synced(mddev, sh->sector)))
-+		force_rcw = true;
+ 	if (!wait_event_timeout(pctl->wait, percpu_ref_is_zero(&pctl->active),
+-			llbitmap->mddev->bitmap_info.daemon_sleep * HZ))
++			llbitmap->mddev->bitmap_info.daemon_sleep * HZ)) {
++		percpu_ref_resurrect(&pctl->active);
+ 		return -ETIMEDOUT;
++	}
  
- 	if (test_bit(R5_LOCKED, &dev->flags) ||
- 	    test_bit(R5_UPTODATE, &dev->flags))
+ 	return 0;
+ }
 -- 
 2.51.0
 
