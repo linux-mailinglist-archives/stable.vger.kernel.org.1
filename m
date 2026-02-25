@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-218121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOvzI8hQnmlIUgQAu9opvQ
-	(envelope-from <stable+bounces-218121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:48 +0100
+	id kJluCNhQnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B5C18ED09
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5484218ED68
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D6BF1306BCC2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:28:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DE0313030DD8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7881D1D5ABA;
-	Wed, 25 Feb 2026 01:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8217A242D9B;
+	Wed, 25 Feb 2026 01:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjwobDym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Np8di75S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCBC21D596;
-	Wed, 25 Feb 2026 01:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459A34369A;
+	Wed, 25 Feb 2026 01:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982900; cv=none; b=K//nACPKsWt8hH0ZQF5TY6Nizbtcc0WSzzOfhMdhydqE+yLXOLrC3UYg0eSsDYXCtn4xyD1+9BdS/3sBAo7HYt5bxzLk0cAX/jfsp4EAGXguRTV4EEDxiJjOcqWX8ZRmA9N9Knpuxrp/IOEDWMTOMHvwYHZbSDcb2rxrcKFtmSM=
+	t=1771982913; cv=none; b=H9HwwbzJcZ3gn/NzjnGOeRejG9cX1eGqyR/SlccsvDA2dhuhFO1HI8rBMn/9G20Ry9HTyClfA3QNuIbo1Z5OXQ0vZZkY1JL4Qgj1UCObbzW4YLZayy7zB36fs9R4TlqCVpPRUc4BLjmogpEQt1cRSE1hwV3ZYqbMVmvPu/lYOCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982900; c=relaxed/simple;
-	bh=xBh2HZiUWuHGCLXiqY/Dq/RuF3ertNRVsFDEcc5VQYM=;
+	s=arc-20240116; t=1771982913; c=relaxed/simple;
+	bh=2dMskO09mWJqMZP9IwXVO8kMXTnTCM3V8sbd0wb/qI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqvQq/g22sAA4izPh77HJ9eea5fkj4z4kcx+kGZKIEFF2TA1ZLm37nU9s0nwXqFLskU0xwQGykKYdDepTAthNpJg6HzmCsIRHWlf4d+tbMJu8pDJ5TZZxF+7+YLQTdJcFx/85En0eMRbzkze1Ru5PtENKW7/R0l7LYqoUKIuA1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjwobDym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11CDC116D0;
-	Wed, 25 Feb 2026 01:28:19 +0000 (UTC)
+	 MIME-Version; b=pnhUlQu02IxmBWv+SGzxRC7B2br4YNS0E1fCA4cy6aZK/PqUt1a/Fzg1XyyS2F2PuO2breHSkZVxYPzvXIcIEL0SMKTp/2l/WbSOJScxCQq2ttWrpm1yoCbnhHuyPDSNnTNYClKRwc0JQ286tAp4yHWC9zPE/wLlXNfShuhdCzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Np8di75S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8862C116D0;
+	Wed, 25 Feb 2026 01:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982900;
-	bh=xBh2HZiUWuHGCLXiqY/Dq/RuF3ertNRVsFDEcc5VQYM=;
+	s=korg; t=1771982913;
+	bh=2dMskO09mWJqMZP9IwXVO8kMXTnTCM3V8sbd0wb/qI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjwobDymjlj/o641GXc9aOcWdIE35wDPkx7DbUB/j5d9bt27CGGn0gtKjCEa5WMCa
-	 p1gsZpImNQBHav7NePJ9TxIy/ulHMJBfqXFbFiHdyxR8bhUkgTLLQGWO4iBSK744GX
-	 F6DW16CVQOYhUf2bgGWDRwnRQIy3pxfeoHU95PDg=
+	b=Np8di75SHy4BGb85ILFpawoLpPihJuRSlqxGD/ITk1XoAfzDb9FFoFsMzeQnPjWR6
+	 JupMkhr5eV2FEGsm6mLiqkwDZM5R0KVe+k4Zd98rHmi56ObsPn4WMziwEGq9YXo+QL
+	 LCfDXSrQmimh0HL1/hK3x9T0VWDrxLJxpSUm7t4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 066/781] s390/cio: Fix device lifecycle handling in css_alloc_subchannel()
-Date: Tue, 24 Feb 2026 17:12:55 -0800
-Message-ID: <20260225012401.323144332@linuxfoundation.org>
+Subject: [PATCH 6.19 067/781] io_uring/kbuf: fix memory leak if io_buffer_add_list fails
+Date: Tue, 24 Feb 2026 17:12:56 -0800
+Message-ID: <20260225012401.347584957@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -66,82 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218121-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-218132-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C6B5C18ED09
+X-Rspamd-Queue-Id: 5484218ED68
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit f65c75b0b9b5a390bc3beadcde0a6fbc3ad118f7 ]
+[ Upstream commit 442ae406603a94f1a263654494f425302ceb0445 ]
 
-`css_alloc_subchannel()` calls `device_initialize()` before setting up
-the DMA masks. If `dma_set_coherent_mask()` or `dma_set_mask()` fails,
-the error path frees the subchannel structure directly, bypassing
-the device model reference counting.
+io_register_pbuf_ring() ignores the return value of io_buffer_add_list(),
+which can fail if xa_store() returns an error (e.g., -ENOMEM). When this
+happens, the function returns 0 (success) to the caller, but the
+io_buffer_list structure is neither added to the xarray nor freed.
 
-Once `device_initialize()` has been called, the embedded struct device
-must be released via `put_device()`, allowing the release callback to
-free the container structure.
+In practice this requires failure injection to hit, hence not a real
+issue. But it should get fixed up none the less.
 
-Fix the error path by dropping the initial device reference with
-`put_device()` instead of calling `kfree()` directly.
-
-This ensures correct device lifetime handling and avoids potential
-use-after-free or double-free issues.
-
-Fixes: e5dcf0025d7af ("s390/css: move subchannel lock allocation")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: c7fb19428d67 ("io_uring: add support for ring mapped supplied buffers")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/css.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/kbuf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
-index 4c85df7a548ef..ac24e019020e8 100644
---- a/drivers/s390/cio/css.c
-+++ b/drivers/s390/cio/css.c
-@@ -235,7 +235,7 @@ struct subchannel *css_alloc_subchannel(struct subchannel_id schid,
- 	return sch;
- 
- err:
--	kfree(sch);
-+	put_device(&sch->dev);
- 	return ERR_PTR(ret);
- }
- 
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index 796d131107ddb..67d4fe576473a 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -669,8 +669,9 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
+ 	bl->buf_ring = br;
+ 	if (reg.flags & IOU_PBUF_RING_INC)
+ 		bl->flags |= IOBL_INC;
+-	io_buffer_add_list(ctx, bl, reg.bgid);
+-	return 0;
++	ret = io_buffer_add_list(ctx, bl, reg.bgid);
++	if (!ret)
++		return 0;
+ fail:
+ 	io_free_region(ctx->user, &bl->region);
+ 	kfree(bl);
 -- 
 2.51.0
 
