@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-219088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wK8EBPpYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219088-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:46 +0100
+	id iNkGONZSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37218190867
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4738A18F55A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 104EF31020DF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0322930F3AB1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72882765DF;
-	Wed, 25 Feb 2026 01:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF3924677D;
+	Wed, 25 Feb 2026 01:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEQy7iiX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltwvMBZb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8031E2834;
-	Wed, 25 Feb 2026 01:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936AC242D9B;
+	Wed, 25 Feb 2026 01:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984018; cv=none; b=RwQ5c/T9iBO1bMHk1XJHNO5irBKLrM1WJY8ANI5hr2QDauI4aZV3aL091y0L7ciWxTQLcQKIwqfEN++fzji0s9CkZOjSwqdDyQfgcZYUOLZeI5/KKCPxqbUHN6onCT1ZfcO58N9ALyQ7lQZ+pEcISxiN2LIPPlMoqMsPCd0yXrs=
+	t=1771983363; cv=none; b=FWGQwNI7U05Hci9PSgPLlBqSG9KczbjiJr2N48rnitubjQNTq+602U0bHx+c8xCKOeo8+QUBT2d92+Ng+918oxL5HoicibhjWPsItG4FLLGvRGFTWWURd8KuZfr7YIpuLY2VOkIONGkAts7d/96na09rkV/byTBINpZOz/R/v5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984018; c=relaxed/simple;
-	bh=G4fWBRfDK1B+RVGu5zB44ILtEGop6lFI56FjfRLFBUM=;
+	s=arc-20240116; t=1771983363; c=relaxed/simple;
+	bh=oSbFuhzIUPgjI229+V4YTeLFi7zfHOjAtNdp/KDwDA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEraAx+ClmabU3Rtk5fV4myj8gQNDhsXWORuA+ite1AozPfSlXHXnKmPREmRknozvkf3BlIUBTBdxS1DCy9+KH032J4hj3nkBlQ2KJ2YT/78IsAhbak2v0kTSk6NDXtQNeSBKsGCaKBuaqKHp6KkHxlGrKZ0KSB9p+9CrF1QwKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEQy7iiX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417DBC116D0;
-	Wed, 25 Feb 2026 01:46:58 +0000 (UTC)
+	 MIME-Version; b=Z+n5kbcNpGKP3h7Y9mSuRokG+q94tiK0fwgcmZ9PbTykD/ZPqyZSh+j0/j/wg/wtKRyPCCyL1EtZr9TrditYDn2glZrlKQbF+epgycxT6D7XF3uaW7JoZYewE8J+7lUBdNiG3G7+eTUCsOpVcKpj4jYen+1PwRjhAlZbJ7J0ls8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltwvMBZb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E486C116D0;
+	Wed, 25 Feb 2026 01:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984018;
-	bh=G4fWBRfDK1B+RVGu5zB44ILtEGop6lFI56FjfRLFBUM=;
+	s=korg; t=1771983363;
+	bh=oSbFuhzIUPgjI229+V4YTeLFi7zfHOjAtNdp/KDwDA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tEQy7iiX4ViiiJ+/PZkt3tvRMzPEwVumnJkQK8ZGGo0b2BwgAoQjIS7z4HJ63jG4e
-	 2AVdBcj227CpOnWMrWw1UReyRtVg06hEzxsD6SZkofWwYYOBYNK/iJWzQe4QAmI/fU
-	 Q+aeehMcLcxZqCnDfx1+1Lll9pSfvHz7sB4oklkc=
+	b=ltwvMBZbj4NRTxNN9+z91BQW9ZR2MvMbYAkfLP7YWd705ItHCAKfI9hXD9Py5Yd2T
+	 osnvCpCWxKO9GVpfu2YrgI66xpvvpWak9PN5gMsore67phMvURDf5ET2xsVyK/B4Nf
+	 se0J80Quvo/4RqgKhGWwNOVG3IM2IawzcOHrsggU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Ben Cheatham <Benjamin.Cheatham@amd.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 265/641] wifi: rtw89: debug: Fix memory leak in __print_txpwr_map()
+Subject: [PATCH 6.19 482/781] cxl/core: Fix cxl_dport debugfs EINJ entries
 Date: Tue, 24 Feb 2026 17:19:51 -0800
-Message-ID: <20260225012355.232397058@linuxfoundation.org>
+Message-ID: <20260225012411.634073285@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219088-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218527-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,70 +88,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,seu.edu.cn:email,msgid.link:url,realtek.com:email]
-X-Rspamd-Queue-Id: 37218190867
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4738A18F55A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Cheatham, Benjamin <benjamin.cheatham@amd.com>
 
-[ Upstream commit 6070a44051b1c35714fa130de7726cfe91ca5559 ]
+[ Upstream commit 4ed7952b9e87cf731ebc8251874416e60eb15230 ]
 
-In __print_txpwr_map(), memory is allocated to bufp via vzalloc().
-If max_valid_addr is 0, the function returns -EOPNOTSUPP immediately
-without freeing bufp, leading to a memory leak.
+Protocol error injection is only valid for CXL 2.0+ root ports and CXL
+1.1 memory-mapped downstream ports as per the ACPI v6.5 spec (Table
+8-31). The core code currently creates an 'einj_inject' file in CXL debugfs
+for all CXL 1.1 downstream ports and all PCI CXL 2.0+ downstream ports.
+This results in debugfs EINJ files that won't work due to platform/spec
+restrictions.
 
-Since the validation of max_valid_addr does not depend on the allocated
-memory, fix this by moving the vzalloc() call after the check.
+Fix by limiting 'einj_inject' file creation to only CXL 1.1 dports and
+CXL 2.0+ root ports. Update the comment above the check to more accurately
+represent the requirements expected by the EINJ module and ACPI spec.
 
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
-
-Fixes: 036042e15770 ("wifi: rtw89: debug: txpwr table supports Wi-Fi 7 chips")
-Suggested-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260116130834.1413924-1-zilin@seu.edu.cn
+Fixes: 8039804cfa73 ("cxl/core: Add CXL EINJ debugfs files")
+Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/6e9fb657-8264-4028-92e2-5428e2695bf1@amd.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/debug.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/cxl/core/port.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index 3dc7981c510fd..a82df3814069c 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -824,10 +824,6 @@ static ssize_t __print_txpwr_map(struct rtw89_dev *rtwdev, char *buf, size_t buf
- 	s8 *bufp, tmp;
- 	int ret;
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 3310dbfae9d66..4717dcff264be 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -822,16 +822,18 @@ DEFINE_DEBUGFS_ATTRIBUTE(cxl_einj_inject_fops, NULL, cxl_einj_inject,
  
--	bufp = vzalloc(map->addr_to - map->addr_from + 4);
--	if (!bufp)
--		return -ENOMEM;
--
- 	if (path_num == 1)
- 		max_valid_addr = map->addr_to_1ss;
- 	else
-@@ -836,6 +832,10 @@ static ssize_t __print_txpwr_map(struct rtw89_dev *rtwdev, char *buf, size_t buf
- 	if (max_valid_addr == 0)
- 		return -EOPNOTSUPP;
+ static void cxl_debugfs_create_dport_dir(struct cxl_dport *dport)
+ {
++	struct cxl_port *parent = parent_port_of(dport->port);
+ 	struct dentry *dir;
  
-+	bufp = vzalloc(map->addr_to - map->addr_from + 4);
-+	if (!bufp)
-+		return -ENOMEM;
-+
- 	for (addr = map->addr_from; addr <= max_valid_addr; addr += 4) {
- 		ret = rtw89_mac_txpwr_read32(rtwdev, RTW89_PHY_0, addr, &val);
- 		if (ret)
+ 	if (!einj_cxl_is_initialized())
+ 		return;
+ 
+ 	/*
+-	 * dport_dev needs to be a PCIe port for CXL 2.0+ ports because
+-	 * EINJ expects a dport SBDF to be specified for 2.0 error injection.
++	 * Protocol error injection is only available for CXL 2.0+ root ports
++	 * and CXL 1.1 downstream ports
+ 	 */
+-	if (!dport->rch && !dev_is_pci(dport->dport_dev))
++	if (!dport->rch &&
++	    !(dev_is_pci(dport->dport_dev) && parent && is_cxl_root(parent)))
+ 		return;
+ 
+ 	dir = cxl_debugfs_create_dir(dev_name(dport->dport_dev));
 -- 
 2.51.0
 
