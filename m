@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-218510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMtQOJhSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:32 +0100
+	id CDawG6VanmlSUwQAu9opvQ
+	(envelope-from <stable+bounces-219075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE3118F43C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFEA190B72
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5D3430CF011
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 17F813137FBF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32061EB5E1;
-	Wed, 25 Feb 2026 01:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944D0256C6C;
+	Wed, 25 Feb 2026 01:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGL1cvA0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM4aC+u8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763EC18B0A;
-	Wed, 25 Feb 2026 01:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C2324A06D;
+	Wed, 25 Feb 2026 01:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983342; cv=none; b=CcoeKoY1/W7nlXts/lPYSQcghK+XmV/QW6M1lg+b2GhafgPZgxzJ3c4NWIvzQmz8JcLIVyIcdR/QYlkaXobt16qZ4t+Tvpx6sc33PDngGl/gK7Vxn3fDSK8s4P/WO5EGBn/lC3LcrlVjjwkI9cjqS40vDeExkDSHg6smVSCtjqs=
+	t=1771984001; cv=none; b=uTjewV7VBjst4ELye0kZj9k9mZzecxo9m69mlahxV/oSrFQtQDewpD80P6bCo/tj7PntSpibiqe6wHsl2fIYO5y0p3jhacsMzmQl7qjOVwfE37r67ft8xPZi5JRUDSCaVLGBs1ad9mA+/Lqiv9+i884Jb4FCtkZhb4l65FE8Unw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983342; c=relaxed/simple;
-	bh=TiAFw/L9JITqQbtS7hFl5X/6as4yavRiD9PjXTm+cws=;
+	s=arc-20240116; t=1771984001; c=relaxed/simple;
+	bh=jSHU2DuDWlAhAuLcOSdD3QbrX37rt7w15BasxLWXjr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uLOcMwjKdK1P8W9bGbjPHAFcK7TdOFZcZZid9LUIDwJqySG72mmCf5K1RqrFnsidmR0rxmh6VLvbHycIb5SQJi+nCo6T1tZTVSNhJppYLhFCMIzjrnuhIEp47eBHXRBN848CAw8Su1r7jM3BTTzSFm5U0nZn6B0xR4qhZjR3UQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGL1cvA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306F7C116D0;
-	Wed, 25 Feb 2026 01:35:42 +0000 (UTC)
+	 MIME-Version; b=SPFkWvf2mN8RA/n9gCcY7UyKbw3EpHClRv47PPkmejtaI7AX6Bq8Jn197CJvdi7jHNkAqWzrKTQhE0WRCqQ5jDX9BZysxMiTQctEPp3udZkIHdUvvchJGa52lrpnTeOIatF36+JIgmg3ciwGcnaWXP58h/6yjEgxuL73nFg0+m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM4aC+u8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193F2C116D0;
+	Wed, 25 Feb 2026 01:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983342;
-	bh=TiAFw/L9JITqQbtS7hFl5X/6as4yavRiD9PjXTm+cws=;
+	s=korg; t=1771984001;
+	bh=jSHU2DuDWlAhAuLcOSdD3QbrX37rt7w15BasxLWXjr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YGL1cvA0Y/Ov16s4hYC11cS0Ebq0s4JsqYyOVmYJ2Zcj4aOELH+XeMUkFXN8Yuwy5
-	 Sm+OWEKRCyzMu14M2THssBr+EvwLeCh98G+xeEkMheNdeImqAFUf2D5Rv/XbXqX5B7
-	 8N+YJW/Ntmfj5kdE3EJHE0bg4KSLCXJovDeRkLRg=
+	b=CM4aC+u8KqhIy1zPtgxrpOM1bcu1cXj77G1FOAuHlETkS7rZ8M6KIjGxC6ySktgoY
+	 guhagBd2A/8PZZPS0X6QJyigY6lQZjZqCw6dbCI6dHnI0F9ZNGyGk//UniaPKfMP6S
+	 FlmwxN/LrIEFy3mpLyRjU7NfMKAQdUHLu+eeECSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lars Francke <lars.francke@gmail.com>,
-	Yijun Shen <Yijun.Shen@Dell.com>,
-	Patil Rajesh Reddy <Patil.Reddy@amd.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 471/781] platform/x86/amd/pmf: Prevent TEE errors after hibernate
+Subject: [PATCH 6.18 254/641] wifi: cfg80211: stop NAN and P2P in cfg80211_leave
 Date: Tue, 24 Feb 2026 17:19:40 -0800
-Message-ID: <20260225012411.371661597@linuxfoundation.org>
+Message-ID: <20260225012354.997711260@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,226 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,Dell.com,amd.com,kernel.org,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-218510-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.989];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219075-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 4AE3118F43C
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CAFEA190B72
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 48d229c7047128dd52eaf863881bb3e62b5896e5 ]
+[ Upstream commit e1696c8bd0056bc1a5f7766f58ac333adc203e8a ]
 
-After resuming from hibernate, TEE commands can time out and cause PSP
-disables. Fix this by reinitializing the Trusted Application (TA) and
-cancelling the pb workqueue in the hibernate callbacks to avoid these
-errors.
+Seems that there is an assumption that this function should be called
+only for netdev interfaces, but it can also be called in suspend, or
+from nl80211_netlink_notify (indirectly).
+Note that the documentation of NL80211_ATTR_SOCKET_OWNER explicitly
+says that NAN interfaces would be destroyed as well in the
+nl80211_netlink_notify case.
 
-ccp 0000:c4:00.2: tee: command 0x5 timed out, disabling PSP
-amd-pmf AMDI0107:00: TEE enact cmd failed. err: ffff000e, ret:0
-amd-pmf AMDI0107:00: TEE enact cmd failed. err: ffff000e, ret:0
-amd-pmf AMDI0107:00: TEE enact cmd failed. err: ffff000e, ret:0
+Fix this by also stopping P2P and NAN.
 
-Fixes: ae82cef7d9c5 ("platform/x86/amd/pmf: Add support for PMF-TA interaction")
-Reported-by: Lars Francke <lars.francke@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/CAD-Ua_gfJnQSo8ucS_7ZwzuhoBRJ14zXP7s8b-zX3ZcxcyWePw@mail.gmail.com/
-Tested-by: Yijun Shen <Yijun.Shen@Dell.com>
-Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
-Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-[ML: Add more tags]
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20260116041132.153674-2-superm1@kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: cb3b7d87652a ("cfg80211: add start / stop NAN commands")
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260107140430.dab142cbef0b.I290cc47836d56dd7e35012ce06bec36c6da688cd@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/core.c   | 62 ++++++++++++++++++++++++++-
- drivers/platform/x86/amd/pmf/pmf.h    | 10 +++++
- drivers/platform/x86/amd/pmf/tee-if.c | 12 ++----
- 3 files changed, 74 insertions(+), 10 deletions(-)
+ net/wireless/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
-index 8fc293c9c5380..15c27edfb6d85 100644
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -314,6 +314,61 @@ int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
- 	return 0;
- }
- 
-+static int amd_pmf_reinit_ta(struct amd_pmf_dev *pdev)
-+{
-+	bool status;
-+	int ret, i;
-+
-+	for (i = 0; i < ARRAY_SIZE(amd_pmf_ta_uuid); i++) {
-+		ret = amd_pmf_tee_init(pdev, &amd_pmf_ta_uuid[i]);
-+		if (ret) {
-+			dev_err(pdev->dev, "TEE init failed for UUID[%d] ret: %d\n", i, ret);
-+			return ret;
-+		}
-+
-+		ret = amd_pmf_start_policy_engine(pdev);
-+		dev_dbg(pdev->dev, "start policy engine ret: %d (UUID idx: %d)\n", ret, i);
-+		status = ret == TA_PMF_TYPE_SUCCESS;
-+		if (status)
-+			break;
-+		amd_pmf_tee_deinit(pdev);
-+	}
-+
-+	return 0;
-+}
-+
-+static int amd_pmf_restore_handler(struct device *dev)
-+{
-+	struct amd_pmf_dev *pdev = dev_get_drvdata(dev);
-+	int ret;
-+
-+	if (pdev->buf) {
-+		ret = amd_pmf_set_dram_addr(pdev, false);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (pdev->smart_pc_enabled)
-+		amd_pmf_reinit_ta(pdev);
-+
-+	return 0;
-+}
-+
-+static int amd_pmf_freeze_handler(struct device *dev)
-+{
-+	struct amd_pmf_dev *pdev = dev_get_drvdata(dev);
-+
-+	if (!pdev->smart_pc_enabled)
-+		return 0;
-+
-+	cancel_delayed_work_sync(&pdev->pb_work);
-+	/* Clear all TEE resources */
-+	amd_pmf_tee_deinit(pdev);
-+	pdev->session_id = 0;
-+
-+	return 0;
-+}
-+
- static int amd_pmf_suspend_handler(struct device *dev)
- {
- 	struct amd_pmf_dev *pdev = dev_get_drvdata(dev);
-@@ -347,7 +402,12 @@ static int amd_pmf_resume_handler(struct device *dev)
- 	return 0;
- }
- 
--static DEFINE_SIMPLE_DEV_PM_OPS(amd_pmf_pm, amd_pmf_suspend_handler, amd_pmf_resume_handler);
-+static const struct dev_pm_ops amd_pmf_pm = {
-+	.suspend = amd_pmf_suspend_handler,
-+	.resume = amd_pmf_resume_handler,
-+	.freeze = amd_pmf_freeze_handler,
-+	.restore = amd_pmf_restore_handler,
-+};
- 
- static void amd_pmf_init_features(struct amd_pmf_dev *dev)
- {
-diff --git a/drivers/platform/x86/amd/pmf/pmf.h b/drivers/platform/x86/amd/pmf/pmf.h
-index 9144c8c3bbaf2..513a6309ce130 100644
---- a/drivers/platform/x86/amd/pmf/pmf.h
-+++ b/drivers/platform/x86/amd/pmf/pmf.h
-@@ -129,6 +129,12 @@ struct cookie_header {
- 
- typedef void (*apmf_event_handler_t)(acpi_handle handle, u32 event, void *data);
- 
-+static const uuid_t amd_pmf_ta_uuid[] __used = { UUID_INIT(0xd9b39bf2, 0x66bd, 0x4154, 0xaf, 0xb8,
-+							   0x8a, 0xcc, 0x2b, 0x2b, 0x60, 0xd6),
-+						 UUID_INIT(0x6fd93b77, 0x3fb8, 0x524d, 0xb1, 0x2d,
-+							   0xc5, 0x29, 0xb1, 0x3d, 0x85, 0x43),
-+					       };
-+
- /* APTS PMF BIOS Interface */
- struct amd_pmf_apts_output {
- 	u16 table_version;
-@@ -895,4 +901,8 @@ void amd_pmf_populate_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_tab
- void amd_pmf_dump_ta_inputs(struct amd_pmf_dev *dev, struct ta_pmf_enact_table *in);
- int amd_pmf_invoke_cmd_enact(struct amd_pmf_dev *dev);
- 
-+int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid);
-+void amd_pmf_tee_deinit(struct amd_pmf_dev *dev);
-+int amd_pmf_start_policy_engine(struct amd_pmf_dev *dev);
-+
- #endif /* PMF_H */
-diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
-index 0abce76f89ffe..95ceb906a5f39 100644
---- a/drivers/platform/x86/amd/pmf/tee-if.c
-+++ b/drivers/platform/x86/amd/pmf/tee-if.c
-@@ -27,12 +27,6 @@ module_param(pb_side_load, bool, 0444);
- MODULE_PARM_DESC(pb_side_load, "Sideload policy binaries debug policy failures");
- #endif
- 
--static const uuid_t amd_pmf_ta_uuid[] = { UUID_INIT(0xd9b39bf2, 0x66bd, 0x4154, 0xaf, 0xb8, 0x8a,
--						    0xcc, 0x2b, 0x2b, 0x60, 0xd6),
--					  UUID_INIT(0x6fd93b77, 0x3fb8, 0x524d, 0xb1, 0x2d, 0xc5,
--						    0x29, 0xb1, 0x3d, 0x85, 0x43),
--					};
--
- static const char *amd_pmf_uevent_as_str(unsigned int state)
- {
- 	switch (state) {
-@@ -324,7 +318,7 @@ static void amd_pmf_invoke_cmd(struct work_struct *work)
- 	schedule_delayed_work(&dev->pb_work, msecs_to_jiffies(pb_actions_ms));
- }
- 
--static int amd_pmf_start_policy_engine(struct amd_pmf_dev *dev)
-+int amd_pmf_start_policy_engine(struct amd_pmf_dev *dev)
- {
- 	struct cookie_header *header;
- 	int res;
-@@ -480,7 +474,7 @@ static int amd_pmf_register_input_device(struct amd_pmf_dev *dev)
- 	return 0;
- }
- 
--static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
-+int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
- {
- 	u32 size;
- 	int ret;
-@@ -528,7 +522,7 @@ static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
- 	return ret;
- }
- 
--static void amd_pmf_tee_deinit(struct amd_pmf_dev *dev)
-+void amd_pmf_tee_deinit(struct amd_pmf_dev *dev)
- {
- 	if (!dev->tee_ctx)
- 		return;
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 5e5c1bc380a89..87f083d9247a4 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1400,8 +1400,10 @@ void cfg80211_leave(struct cfg80211_registered_device *rdev,
+ 		cfg80211_leave_ocb(rdev, dev);
+ 		break;
+ 	case NL80211_IFTYPE_P2P_DEVICE:
++		cfg80211_stop_p2p_device(rdev, wdev);
++		break;
+ 	case NL80211_IFTYPE_NAN:
+-		/* cannot happen, has no netdev */
++		cfg80211_stop_nan(rdev, wdev);
+ 		break;
+ 	case NL80211_IFTYPE_AP_VLAN:
+ 	case NL80211_IFTYPE_MONITOR:
 -- 
 2.51.0
 
