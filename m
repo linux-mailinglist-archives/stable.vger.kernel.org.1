@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-219552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBkTNIOhnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:15:15 +0100
+	id mBRSJJ6hnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:15:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B5B19323D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E67BC193264
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:15:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AAEF4307AA3B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:02:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43A7E3236F6E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4609331234;
-	Wed, 25 Feb 2026 06:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7199F332EC9;
+	Wed, 25 Feb 2026 06:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLMUtJ09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuFaPVDO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8830433121D;
-	Wed, 25 Feb 2026 06:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340B83328EC;
+	Wed, 25 Feb 2026 06:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002791; cv=none; b=i6zP8iUKMxbsXKBzsiR4fLlC4k17ok/tl6IogE7jRmTUhpK+aw3mTXR8aaNAhkGJa22P+vlNMv2FgaA3lcbLpioHy1J4F/o656otloQstc8UOF9Mxd53oEoqUEHbxXosCh7XdP/uiT5zTUVQvZE5BBbj4ZrNKvxFySLpa+YIDUs=
+	t=1772002796; cv=none; b=EC3KyzcjuJ62hDBKkh9JxFzVchBWA+L6XJsnFufL3dofGZy0xQA36R3mNW8puMD0yaovaKqKpM2FYdDPatl6T7qwohgLzZzi2b4YamyNpbmMSkmt7r2uWfglpeytyrVdWwVXsNdTCS4nPDxtZJgu/CuR8PvZVFPs818cfhYIDmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002791; c=relaxed/simple;
-	bh=vEsuXKLqV851mivOVCGioJbITGRoa2dgNpvIa5akwAE=;
+	s=arc-20240116; t=1772002796; c=relaxed/simple;
+	bh=drm9G7B8hvxTUkO5fAzq2QbjrlscOUedfCk18v4ehcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yn6DuKERsI9gCzMvJnJ6sSK8sHsdfz3MFah/5qEWsIAVfMIYUIrrfuaWqlwrH+JhGg2M4blijE4FSbu0b4SNkTwsk4qQA32NhaPomwlBWAgVe8Lx/uO6OEHSMSm+Jf67+gpnNiXwnJFSxMnaOcsOhzljsNXR6IoV14MTWAPAAVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLMUtJ09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60803C116D0;
-	Wed, 25 Feb 2026 06:59:51 +0000 (UTC)
+	 MIME-Version; b=cgbpiKGukEbF9Njccn5UnYGnwewypMXk0mEn0CveViW1Fh5HiWYLlX+9a1cmYW15+RwkFoJuLE21tZZdEEtBAhnR9ItJrIN9Y/9QLDchkTRX0IYa8jXfiv7Sq7JJDmlsg8L4hyBrFul99hbAxKkx9ERR3VOVAET9IINM+qsREy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuFaPVDO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095C5C116D0;
+	Wed, 25 Feb 2026 06:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002791;
-	bh=vEsuXKLqV851mivOVCGioJbITGRoa2dgNpvIa5akwAE=;
+	s=korg; t=1772002796;
+	bh=drm9G7B8hvxTUkO5fAzq2QbjrlscOUedfCk18v4ehcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLMUtJ090d+/JFYNbfi/G4oaio/Dcz7dfuu7NLE5seU3lYNgHSa0qb+k7fZqqHVhE
-	 tjn23C4EMLRXFu0whAywXGUnA42CAJoEH8pAyTKU/S7dj85oX0ujLiMKQQqwbYUxBO
-	 GT/7TkU2+8pt+pwZdQd83fU6iQgP2e+oVcXFqtPI=
+	b=PuFaPVDOAGmKQ89mKGmped0kz53pZOiHhquPa31hj+W8R5PuyOWQnnR8p6+jFEbJd
+	 bBqkT2UidQYXpNBpbZHr8P0IFqrqS6y3hCS3QmnHAsf1onn3my8f8jvkoWT9Rrjj65
+	 2wB2DPHMpEwACsH8I9YXGKpTL5BMCkx+OGTgyrfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raag Jadav <raag.jadav@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 599/641] drm/xe/bo: Redirect faults to dummy page for wedged device
-Date: Tue, 24 Feb 2026 17:25:25 -0800
-Message-ID: <20260225012403.030984168@linuxfoundation.org>
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Tj <tj.iam.tj@proton.me>
+Subject: [PATCH 6.18 600/641] gpio: amd-fch: ionly return allowed values from amd_fch_gpio_get()
+Date: Tue, 24 Feb 2026 17:25:26 -0800
+Message-ID: <20260225012403.055414106@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -67,76 +66,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219552-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-219559-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org,proton.me];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.956];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 25B5B19323D
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qualcomm.com:email,proton.me:email]
+X-Rspamd-Queue-Id: E67BC193264
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raag Jadav <raag.jadav@intel.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 4e83a8d58e1c721a89b3ffe15f549007080272e2 ]
+[ Upstream commit fbd03587ba732c612b8a569d1cf5bed72bd3a27c ]
 
-As per uapi documentation[1], the prerequisite for wedged device is to
-redirected page faults to a dummy page. Follow it.
+As of 86ef402d805d ("gpiolib: sanitize the return value of
+gpio_chip::get()") gpiolib requires drivers implementing GPIOs to only
+return 0, 1 or negative error for the get() callbacks. Ensure that
+amd-fch complies with this requirement.
 
-[1] Documentation/gpu/drm-uapi.rst
-
-v2: Add uapi reference and fixes tag (Matthew Brost)
-
-Fixes: 7bc00751f877 ("drm/xe: Use device wedged event")
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260212055622.2054991-1-raag.jadav@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit c020fff70d757612933711dd3cc3751d7d782d3c)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 86ef402d805d ("gpiolib: sanitize the return value of gpio_chip::get()")
+Reported-and-tested-by: Tj <tj.iam.tj@proton.me>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://patch.msgid.link/aZTlwnvHt2Gho4yN@google.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-amd-fch.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index e2e28ff73925b..a270aef7c4980 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -1895,7 +1895,7 @@ static vm_fault_t xe_bo_cpu_fault(struct vm_fault *vmf)
- 	int err = 0;
- 	int idx;
+diff --git a/drivers/gpio/gpio-amd-fch.c b/drivers/gpio/gpio-amd-fch.c
+index e6c6c3ec7656e..9f329938202bf 100644
+--- a/drivers/gpio/gpio-amd-fch.c
++++ b/drivers/gpio/gpio-amd-fch.c
+@@ -8,6 +8,7 @@
+  *
+  */
  
--	if (!drm_dev_enter(&xe->drm, &idx))
-+	if (xe_device_wedged(xe) || !drm_dev_enter(&xe->drm, &idx))
- 		return ttm_bo_vm_dummy_page(vmf, vmf->vma->vm_page_prot);
++#include <linux/bitfield.h>
+ #include <linux/err.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -120,15 +121,15 @@ static int amd_fch_gpio_get(struct gpio_chip *gc,
+ 			    unsigned int offset)
+ {
+ 	unsigned long flags;
+-	int ret;
++	u32 val;
+ 	struct amd_fch_gpio_priv *priv = gpiochip_get_data(gc);
+ 	void __iomem *ptr = amd_fch_gpio_addr(priv, offset);
  
- 	ret = xe_bo_cpu_fault_fastpath(vmf, xe, bo, needs_rpm);
+ 	spin_lock_irqsave(&priv->lock, flags);
+-	ret = (readl_relaxed(ptr) & AMD_FCH_GPIO_FLAG_READ);
++	val = readl_relaxed(ptr);
+ 	spin_unlock_irqrestore(&priv->lock, flags);
+ 
+-	return ret;
++	return FIELD_GET(AMD_FCH_GPIO_FLAG_READ, val);
+ }
+ 
+ static int amd_fch_gpio_request(struct gpio_chip *chip,
 -- 
 2.51.0
 
