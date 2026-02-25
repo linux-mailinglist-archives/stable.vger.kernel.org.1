@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-218346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218958-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yByFIulSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:53 +0100
+	id 2HyAAgVanmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218958-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2A2B18F5C2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C719190A0D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4D0D13056B3C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4266A30EAFE6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0252520C012;
-	Wed, 25 Feb 2026 01:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8CD281341;
+	Wed, 25 Feb 2026 01:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0d9LFagd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnQT4l7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC3518DB2A;
-	Wed, 25 Feb 2026 01:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAE8256C84;
+	Wed, 25 Feb 2026 01:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983155; cv=none; b=EYI6HuanzVp9yroEepztaLcDKZikJkNyJmzhF/Mmb3cBiKBGxmIlTgbFyYsgQg/0wG5+4UTfnYqVPAsY9ivDirFI8gnpX6df+wGSnsxtDNsuDUA7uk64xY8nLi45jRPgH2k04vvap91s7fDI8X8IFkakX+flhlquGEknZmzrrBY=
+	t=1771983859; cv=none; b=Gge+KTVwoIZHqZPvPy5a29sJDLae6aUVdbVInHCWlWIzmTAJ7tfgCCr5qb3hlJeFYJWaRNEYY1k3SgGtm3hecFQv9r9zeQe9nSqiy+oG5oOXIPT76zaZiu/uLx4MSrX8DmRZlKLi6TlnwM/u0FCnW4WcE89ymPTBd3XM/z5wMgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983155; c=relaxed/simple;
-	bh=2gGFIjn0RBVcjQcAR8CNoxu6TixVvlxYG5pvUkrtgQI=;
+	s=arc-20240116; t=1771983859; c=relaxed/simple;
+	bh=wbq6iNPhKZC5cljK/7taG8GX4ZZng1sO9Oc6Yw8WHKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNRJQxVqjod0sxCt2H86jO8Sf5aIKqPhAQnjAomeNYHXG/9vwUT6hkmSusufzGt7lTom/hJAf6TgCxM+QQLaOhGpWwJMqTwuUbfot0K9yrTTVzSVHONycJkXiVeUcwLyem/np19mYY60OqTWddkDtixwVjG8I2nswtEkQvcWeAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0d9LFagd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94EAAC116D0;
-	Wed, 25 Feb 2026 01:32:35 +0000 (UTC)
+	 MIME-Version; b=WG/gZJhNtgNMhjdOlMcD4XGf6FJR55ZgM7dDGsfFdLcv4h6QRg3XMXg6y898eBFlUE/izgsvjjtX9VFLcSM2cJ/j0MGwVBaYwLM7jrVsJ3JctBPxjJFOI5KZdzrIU7WiETTt1VzQ+Kqmz1Ya23y05heYjqFfCQybJa1QdD1cLe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnQT4l7J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C200EC116D0;
+	Wed, 25 Feb 2026 01:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983155;
-	bh=2gGFIjn0RBVcjQcAR8CNoxu6TixVvlxYG5pvUkrtgQI=;
+	s=korg; t=1771983858;
+	bh=wbq6iNPhKZC5cljK/7taG8GX4ZZng1sO9Oc6Yw8WHKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0d9LFagdhqQB3iGwz8y2XiTH/f5cpVQRf93tA+Is1UaCNq6DtyzksQPFGyKFegpUZ
-	 xORQ2cFfTq/NRAK/eKwfX9oVi0LgkTH63gYKKCq6R2JDrUM0AjezQX5txhDx4mE5dS
-	 TqDU+WXafJmv/ovkKnCgyW7alx+LKpFw/UkvzyVE=
+	b=RnQT4l7J+sbaS0A22tvE3czsFQCpwA1iZtcgp/Gtsi6EPZTfsxlsOT9R3Y2mOJcje
+	 tykHJ3bGlW+3+lMpNAHfotr/SV+TDcI7hlLI+WhReb2dy/Sr+ryZ7bFBMZIMCTtvXx
+	 pqp5tRr8qYPesA8i8xie6jPkOoflNhx9G7QksrsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 309/781] ASoC: cs4271: Fix resource leak in cs4271_soc_resume()
-Date: Tue, 24 Feb 2026 17:16:58 -0800
-Message-ID: <20260225012407.284599101@linuxfoundation.org>
+Subject: [PATCH 6.18 093/641] bpf, sockmap: Fix incorrect copied_seq calculation
+Date: Tue, 24 Feb 2026 17:16:59 -0800
+Message-ID: <20260225012351.354329506@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,98 +73,206 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218346-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218958-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oracle.com,opensource.cirrus.com,bootlin.com,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,cloudflare.com,gmail.com,linux.dev,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.980];
+	NEURAL_HAM(-0.00)[-0.958];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,cirrus.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email]
-X-Rspamd-Queue-Id: B2A2B18F5C2
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,cloudflare.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3C719190A0D
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit fef1f756155c30511397bbcd9d55640ab2e44d99 ]
+[ Upstream commit b40cc5adaa80e1471095a62d78233b611d7a558c ]
 
-Smatch detects this resource leak:
+A socket using sockmap has its own independent receive queue: ingress_msg.
+This queue may contain data from its own protocol stack or from other
+sockets.
 
-sound/soc/codecs/cs4271.c:548 cs4271_soc_resume() warn:
- 'cs4271->clk' from clk_prepare_enable() not released on lines: 540,546.
+The issue is that when reading from ingress_msg, we update tp->copied_seq
+by default. However, if the data is not from its own protocol stack,
+tcp->rcv_nxt is not increased. Later, if we convert this socket to a
+native socket, reading from this socket may fail because copied_seq might
+be significantly larger than rcv_nxt.
 
-Instead of direct returns, unprepare the clock and disable regulators on
-the error paths.
+This fix also addresses the syzkaller-reported bug referenced in the
+Closes tag.
 
-Fixes: cf6bf51b5325 ("ASoC: cs4271: Add support for the external mclk")
-Fixes: 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Acked-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://patch.msgid.link/20260110195337.2522347-1-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This patch marks the skmsg objects in ingress_msg. When reading, we update
+copied_seq only if the data is from its own protocol stack.
+
+                                                     FD1:read()
+                                                     --  FD1->copied_seq++
+                                                         |  [read data]
+                                                         |
+                                [enqueue data]           v
+                  [sockmap]     -> ingress to self ->  ingress_msg queue
+FD1 native stack  ------>                                 ^
+-- FD1->rcv_nxt++               -> redirect to other      | [enqueue data]
+                                       |                  |
+                                       |             ingress to FD1
+                                       v                  ^
+                                      ...                 |  [sockmap]
+                                                     FD2 native stack
+
+Closes: https://syzkaller.appspot.com/bug?extid=06dbd397158ec0ea4983
+Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://lore.kernel.org/r/20260124113314.113584-2-jiayuan.chen@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs4271.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ include/linux/skmsg.h |  2 ++
+ net/core/skmsg.c      | 27 ++++++++++++++++++++++++---
+ net/ipv4/tcp_bpf.c    |  5 +++--
+ 3 files changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
-index 77dfc83a3c013..d8cdd37e9112b 100644
---- a/sound/soc/codecs/cs4271.c
-+++ b/sound/soc/codecs/cs4271.c
-@@ -528,7 +528,7 @@ static int cs4271_soc_resume(struct snd_soc_component *component)
- 	ret = clk_prepare_enable(cs4271->clk);
- 	if (ret) {
- 		dev_err(component->dev, "Failed to enable clk: %d\n", ret);
--		return ret;
-+		goto err_disable_regulators;
+diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
+index 49847888c287a..dfdc158ab88c8 100644
+--- a/include/linux/skmsg.h
++++ b/include/linux/skmsg.h
+@@ -141,6 +141,8 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
+ 			     struct sk_msg *msg, u32 bytes);
+ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+ 		   int len, int flags);
++int __sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
++		     int len, int flags, int *copied_from_self);
+ bool sk_msg_is_readable(struct sock *sk);
+ 
+ static inline void sk_msg_check_to_free(struct sk_msg *msg, u32 i, u32 bytes)
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 2ac7731e1e0a7..d402da5caadd6 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -409,22 +409,26 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
+ }
+ EXPORT_SYMBOL_GPL(sk_msg_memcopy_from_iter);
+ 
+-/* Receive sk_msg from psock->ingress_msg to @msg. */
+-int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+-		   int len, int flags)
++int __sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
++		     int len, int flags, int *copied_from_self)
+ {
+ 	struct iov_iter *iter = &msg->msg_iter;
+ 	int peek = flags & MSG_PEEK;
+ 	struct sk_msg *msg_rx;
+ 	int i, copied = 0;
++	bool from_self;
+ 
+ 	msg_rx = sk_psock_peek_msg(psock);
++	if (copied_from_self)
++		*copied_from_self = 0;
++
+ 	while (copied != len) {
+ 		struct scatterlist *sge;
+ 
+ 		if (unlikely(!msg_rx))
+ 			break;
+ 
++		from_self = msg_rx->sk == sk;
+ 		i = msg_rx->sg.start;
+ 		do {
+ 			struct page *page;
+@@ -443,6 +447,9 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+ 			}
+ 
+ 			copied += copy;
++			if (from_self && copied_from_self)
++				*copied_from_self += copy;
++
+ 			if (likely(!peek)) {
+ 				sge->offset += copy;
+ 				sge->length -= copy;
+@@ -487,6 +494,13 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+ out:
+ 	return copied;
+ }
++
++/* Receive sk_msg from psock->ingress_msg to @msg. */
++int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
++		   int len, int flags)
++{
++	return __sk_msg_recvmsg(sk, psock, msg, len, flags, NULL);
++}
+ EXPORT_SYMBOL_GPL(sk_msg_recvmsg);
+ 
+ bool sk_msg_is_readable(struct sock *sk)
+@@ -616,6 +630,12 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
+ 	if (unlikely(!msg))
+ 		return -EAGAIN;
+ 	skb_set_owner_r(skb, sk);
++
++	/* This is used in tcp_bpf_recvmsg_parser() to determine whether the
++	 * data originates from the socket's own protocol stack. No need to
++	 * refcount sk because msg's lifetime is bound to sk via the ingress_msg.
++	 */
++	msg->sk = sk;
+ 	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, take_ref);
+ 	if (err < 0)
+ 		kfree(msg);
+@@ -909,6 +929,7 @@ int sk_psock_msg_verdict(struct sock *sk, struct sk_psock *psock,
+ 	sk_msg_compute_data_pointers(msg);
+ 	msg->sk = sk;
+ 	ret = bpf_prog_run_pin_on_cpu(prog, msg);
++	msg->sk = NULL;
+ 	ret = sk_psock_map_verd(ret, msg->sk_redir);
+ 	psock->apply_bytes = msg->apply_bytes;
+ 	if (ret == __SK_REDIRECT) {
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index a268e1595b22a..5c698fd7fbf81 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -226,6 +226,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 	int peek = flags & MSG_PEEK;
+ 	struct sk_psock *psock;
+ 	struct tcp_sock *tcp;
++	int copied_from_self = 0;
+ 	int copied = 0;
+ 	u32 seq;
+ 
+@@ -262,7 +263,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
  	}
  
- 	/* Do a proper reset after power up */
-@@ -537,15 +537,21 @@ static int cs4271_soc_resume(struct snd_soc_component *component)
- 	/* Restore codec state */
- 	ret = regcache_sync(cs4271->regmap);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_clk;
- 
- 	/* then disable the power-down bit */
- 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
- 				 CS4271_MODE2_PDN, 0);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_clk;
- 
- 	return 0;
-+
-+err_disable_clk:
-+	clk_disable_unprepare(cs4271->clk);
-+err_disable_regulators:
-+	regulator_bulk_disable(ARRAY_SIZE(cs4271->supplies), cs4271->supplies);
-+	return ret;
- }
- #else
- #define cs4271_soc_suspend	NULL
+ msg_bytes_ready:
+-	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
++	copied = __sk_msg_recvmsg(sk, psock, msg, len, flags, &copied_from_self);
+ 	/* The typical case for EFAULT is the socket was gracefully
+ 	 * shutdown with a FIN pkt. So check here the other case is
+ 	 * some error on copy_page_to_iter which would be unexpected.
+@@ -277,7 +278,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 			goto out;
+ 		}
+ 	}
+-	seq += copied;
++	seq += copied_from_self;
+ 	if (!copied) {
+ 		long timeo;
+ 		int data;
 -- 
 2.51.0
 
