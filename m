@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-218267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEQLFVpRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:14 +0100
+	id 2Ka6DCBZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 011D618EFB2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A169A1908B6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 530953094394
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD658324DBF0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866791E2834;
-	Wed, 25 Feb 2026 01:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAC0258ED5;
+	Wed, 25 Feb 2026 01:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maPVpqeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hZg4xb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C4E2BAF7;
-	Wed, 25 Feb 2026 01:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111881E2834;
+	Wed, 25 Feb 2026 01:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983066; cv=none; b=C+o5r+ixmFtldwi8DNLLmtdrpyg3T6Hpv52b87OktCyXcWdQ5XD/cWKDeju4OAgGIa3pq/Szu83VAn0RXs2a1vwiJFEL6dKV33Xco4fziRAk2B2/oCMsrRCGe7mLjHOgDsW8lkExHQ/i+oR3VQkxhwF8Ls8Vt5udjRhLwVhojbg=
+	t=1771983714; cv=none; b=kbYNs+lw8n5yS2Uf/7dqv7/z6amBJhZ8A5DvxmxUpNdqMJjt8kH2JeWetcplNmBgTz9rs0TX6WMRKMUZZJ28Pc+04ntj9axa/8yhEuzuVcRylnra14SOQM8Pg/BLkMJ9pSjdn1pzOAWX88mtOvlH6IujElQQfsKUXRGPV/h7RC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983066; c=relaxed/simple;
-	bh=g6cKZZLGmyH0iRqPCR6lfX+i8VavCR3Y+28n2TvZhvs=;
+	s=arc-20240116; t=1771983714; c=relaxed/simple;
+	bh=Ibp3cLrBtCZb0HCPfd8LhvNiQX+W6XMi4l918L/pO+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0FwlGDBPnoSEhtQqLIfOFF840HaCHkpk14gBecnAQo0RKTlWRC2X36nee1i14sojzNuLGDJUZReO32P+oPzpXWWSj1NRekVCSu6TCI9Stf8IvzGmRoJqtvnRV0gP8QVcti6gilkjSMVtSdMfVRP5yLG71SyYu8Gb+BaXH3PtNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maPVpqeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14112C116D0;
-	Wed, 25 Feb 2026 01:31:06 +0000 (UTC)
+	 MIME-Version; b=Q5dc8qlEzevmfvLI/k7LPPWalaGXW5TWr5/jYamrGdnlZEqADqiY81G9G24AhB77uiVFmmZdvlH9sGh/JVUs5zgxban9pek5galGTpUsXknsCO9Oly685v2wHhk1V+kfsqmEb2h/0oxTMOeZYrHODPnGUXjnZpSA0Dx9qhP0uBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hZg4xb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF15AC116D0;
+	Wed, 25 Feb 2026 01:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983066;
-	bh=g6cKZZLGmyH0iRqPCR6lfX+i8VavCR3Y+28n2TvZhvs=;
+	s=korg; t=1771983714;
+	bh=Ibp3cLrBtCZb0HCPfd8LhvNiQX+W6XMi4l918L/pO+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=maPVpqeY0KWEugCxxNZbaEmE/C01iM5gqGTyBAnOaeYEYRgBmPIePCPPi38x2+BNG
-	 Cbw1guaIgXae/N2mzszgkhiYGujuaE3Sul7NGcuCnUt/2uktIv4ygO3tX3yqCrdTUN
-	 1nOZdu6266O6iXCS7JK6ZkRiJD240En1nYyLAMBo=
+	b=0hZg4xb+b4BG/9QnOq9FCsjMd+xa2T2/+cFEfkOy1SLTvfF8TPKBye6Rr9kYddRUm
+	 oj+fB21GK1orBDFR9VP2/HCMYMqShpiG+dkOLV96U7bCU4zsYdLvcwcgX13j3gdBQH
+	 APtIsfcx7V/V3cEVZ3BPPiaAccoa39dkKB8P+js4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Ser <contact@emersion.fr>,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Daniel Stone <daniels@collabora.com>,
-	Melissa Wen <mwen@igalia.com>,
-	Sebastian Wick <sebastian.wick@redhat.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 229/781] drm/atomic: convert drm_atomic_get_{old, new}_colorop_state() into proper functions
+Subject: [PATCH 6.18 012/641] i3c: master: Update hot-join flag only on success
 Date: Tue, 24 Feb 2026 17:15:38 -0800
-Message-ID: <20260225012405.329276720@linuxfoundation.org>
+Message-ID: <20260225012349.240934403@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,239 +70,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218267-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218832-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 011D618EFB2
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,nxp.com:email,bootlin.com:email]
+X-Rspamd-Queue-Id: A169A1908B6
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit e05b08d7d0162cf77fff119367fb1a2d5ab3e669 ]
+[ Upstream commit f0775157b9f9a28ae3eabc8d05b0bc52e8056c80 ]
 
-There is no real reason to include drm_colorop.h from drm_atomic.h, as
-drm_atomic_get_{old,new}_colorop_state() have no real reason to be
-static inline.
+To prevent inconsistent state when an error occurs, ensure the hot-join
+flag is updated only when enabling or disabling hot-join succeeds.
 
-Convert the static inlines to proper functions, and drop the include to
-reduce the include dependencies and improve data hiding.
-
-v2: Fix vkms build failures (Alex)
-
-Fixes: cfc27680ee20 ("drm/colorop: Introduce new drm_colorop mode object")
-Cc: Simon Ser <contact@emersion.fr>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Daniel Stone <daniels@collabora.com>
-Cc: Melissa Wen <mwen@igalia.com>
-Cc: Sebastian Wick <sebastian.wick@redhat.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Link: https://patch.msgid.link/20251219114939.1069851-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: 317bacf960a48 ("i3c: master: add enable(disable) hot join in sys entry")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260113072702.16268-4-adrian.hunter@intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/amdgpu_dm/amdgpu_dm_color.c   |  3 ++
- drivers/gpu/drm/drm_atomic.c                  | 32 +++++++++++++++
- drivers/gpu/drm/drm_atomic_helper.c           |  1 +
- .../drm/i915/display/intel_display_types.h    |  1 +
- drivers/gpu/drm/vkms/vkms_composer.c          |  1 +
- drivers/gpu/drm/vkms/vkms_drv.c               |  1 +
- include/drm/drm_atomic.h                      | 39 ++++---------------
- 7 files changed, 47 insertions(+), 31 deletions(-)
+ drivers/i3c/master.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
-index 1dcc79b35225f..20a76d81d532d 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
-@@ -23,6 +23,9 @@
-  * Authors: AMD
-  *
-  */
-+
-+#include <drm/drm_colorop.h>
-+
- #include "amdgpu.h"
- #include "amdgpu_mode.h"
- #include "amdgpu_dm.h"
-diff --git a/drivers/gpu/drm/drm_atomic.c b/drivers/gpu/drm/drm_atomic.c
-index 67e095e398a34..06f0205664fc5 100644
---- a/drivers/gpu/drm/drm_atomic.c
-+++ b/drivers/gpu/drm/drm_atomic.c
-@@ -641,6 +641,38 @@ drm_atomic_get_colorop_state(struct drm_atomic_state *state,
- }
- EXPORT_SYMBOL(drm_atomic_get_colorop_state);
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index bc68a5e7455be..425e36b36009b 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -620,7 +620,8 @@ static int i3c_set_hotjoin(struct i3c_master_controller *master, bool enable)
+ 	else
+ 		ret = master->ops->disable_hotjoin(master);
  
-+/**
-+ * drm_atomic_get_old_colorop_state - get colorop state, if it exists
-+ * @state: global atomic state object
-+ * @colorop: colorop to grab
-+ *
-+ * This function returns the old colorop state for the given colorop, or
-+ * NULL if the colorop is not part of the global atomic state.
-+ */
-+struct drm_colorop_state *
-+drm_atomic_get_old_colorop_state(struct drm_atomic_state *state,
-+				 struct drm_colorop *colorop)
-+{
-+	return state->colorops[drm_colorop_index(colorop)].old_state;
-+}
-+EXPORT_SYMBOL(drm_atomic_get_old_colorop_state);
-+
-+/**
-+ * drm_atomic_get_new_colorop_state - get colorop state, if it exists
-+ * @state: global atomic state object
-+ * @colorop: colorop to grab
-+ *
-+ * This function returns the new colorop state for the given colorop, or
-+ * NULL if the colorop is not part of the global atomic state.
-+ */
-+struct drm_colorop_state *
-+drm_atomic_get_new_colorop_state(struct drm_atomic_state *state,
-+				 struct drm_colorop *colorop)
-+{
-+	return state->colorops[drm_colorop_index(colorop)].new_state;
-+}
-+EXPORT_SYMBOL(drm_atomic_get_new_colorop_state);
-+
- static bool
- plane_switching_crtc(const struct drm_plane_state *old_plane_state,
- 		     const struct drm_plane_state *new_plane_state)
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index 5beea645035f2..cc1f0c102414f 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -34,6 +34,7 @@
- #include <drm/drm_atomic_uapi.h>
- #include <drm/drm_blend.h>
- #include <drm/drm_bridge.h>
-+#include <drm/drm_colorop.h>
- #include <drm/drm_damage_helper.h>
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
-diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
-index 06bf8f7c0989b..6e26751e8d0e3 100644
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -34,6 +34,7 @@
- #include <drm/display/drm_dp_tunnel.h>
- #include <drm/display/drm_dsc.h>
- #include <drm/drm_atomic.h>
-+#include <drm/drm_colorop.h>
- #include <drm/drm_crtc.h>
- #include <drm/drm_encoder.h>
- #include <drm/drm_framebuffer.h>
-diff --git a/drivers/gpu/drm/vkms/vkms_composer.c b/drivers/gpu/drm/vkms/vkms_composer.c
-index 3cf3f26e0d8ea..cd85de4ffd03d 100644
---- a/drivers/gpu/drm/vkms/vkms_composer.c
-+++ b/drivers/gpu/drm/vkms/vkms_composer.c
-@@ -5,6 +5,7 @@
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_blend.h>
-+#include <drm/drm_colorop.h>
- #include <drm/drm_fourcc.h>
- #include <drm/drm_fixed.h>
- #include <drm/drm_gem_framebuffer_helper.h>
-diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
-index dd1402f437736..434c295f44ba6 100644
---- a/drivers/gpu/drm/vkms/vkms_drv.c
-+++ b/drivers/gpu/drm/vkms/vkms_drv.c
-@@ -17,6 +17,7 @@
- #include <drm/drm_gem.h>
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
-+#include <drm/drm_colorop.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_fbdev_shmem.h>
- #include <drm/drm_file.h>
-diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
-index 43783891d3594..ff1fecd30478a 100644
---- a/include/drm/drm_atomic.h
-+++ b/include/drm/drm_atomic.h
-@@ -30,7 +30,6 @@
+-	master->hotjoin = enable;
++	if (!ret)
++		master->hotjoin = enable;
  
- #include <drm/drm_crtc.h>
- #include <drm/drm_util.h>
--#include <drm/drm_colorop.h>
+ 	i3c_bus_normaluse_unlock(&master->bus);
  
- /**
-  * struct drm_crtc_commit - track modeset commits on a CRTC
-@@ -707,6 +706,14 @@ drm_atomic_get_plane_state(struct drm_atomic_state *state,
- struct drm_colorop_state *
- drm_atomic_get_colorop_state(struct drm_atomic_state *state,
- 			     struct drm_colorop *colorop);
-+
-+struct drm_colorop_state *
-+drm_atomic_get_old_colorop_state(struct drm_atomic_state *state,
-+				 struct drm_colorop *colorop);
-+struct drm_colorop_state *
-+drm_atomic_get_new_colorop_state(struct drm_atomic_state *state,
-+				 struct drm_colorop *colorop);
-+
- struct drm_connector_state * __must_check
- drm_atomic_get_connector_state(struct drm_atomic_state *state,
- 			       struct drm_connector *connector);
-@@ -803,36 +810,6 @@ drm_atomic_get_new_plane_state(const struct drm_atomic_state *state,
- 	return state->planes[drm_plane_index(plane)].new_state;
- }
- 
--/**
-- * drm_atomic_get_old_colorop_state - get colorop state, if it exists
-- * @state: global atomic state object
-- * @colorop: colorop to grab
-- *
-- * This function returns the old colorop state for the given colorop, or
-- * NULL if the colorop is not part of the global atomic state.
-- */
--static inline struct drm_colorop_state *
--drm_atomic_get_old_colorop_state(struct drm_atomic_state *state,
--				 struct drm_colorop *colorop)
--{
--	return state->colorops[drm_colorop_index(colorop)].old_state;
--}
--
--/**
-- * drm_atomic_get_new_colorop_state - get colorop state, if it exists
-- * @state: global atomic state object
-- * @colorop: colorop to grab
-- *
-- * This function returns the new colorop state for the given colorop, or
-- * NULL if the colorop is not part of the global atomic state.
-- */
--static inline struct drm_colorop_state *
--drm_atomic_get_new_colorop_state(struct drm_atomic_state *state,
--				 struct drm_colorop *colorop)
--{
--	return state->colorops[drm_colorop_index(colorop)].new_state;
--}
--
- /**
-  * drm_atomic_get_old_connector_state - get connector state, if it exists
-  * @state: global atomic state object
 -- 
 2.51.0
 
