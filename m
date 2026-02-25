@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-218816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OG1QCptVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218816-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:51:23 +0100
+	id 4OPpJPOinmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 143C619007B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:51:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E221019344E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 906B33236CFB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18DF830FC156
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B94C253932;
-	Wed, 25 Feb 2026 01:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5E6316905;
+	Wed, 25 Feb 2026 06:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We6TVv4k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pc54VI0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34E8256C84;
-	Wed, 25 Feb 2026 01:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1FF2D4805;
+	Wed, 25 Feb 2026 06:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983694; cv=none; b=u2aOm52dFhbnxsCdCb4pHxybg669SLOmAILY76HJ2JbgcJK6qnDGJ55rNK1uXd9CEUfXt2fIw+sw8iKLivTN22TRXnvTsNzc6YClc3p6kz2u0f2FymUU8uCuaDKEexIGLFTeyMgDOlTR7Y1+Hl5Zc7U5PTImBLkwvwafh1TLmkU=
+	t=1772002745; cv=none; b=KcjOpd6J/FfoZHtG7qhzIyTQA8dvnfCOv9vDurGRpQmtgbrbLR57vz3/newcBtpwe7za5PdzzTkgLm77KHEKb8L9stAYA1V2fZrzX8aCEymBjhcqezc8sZZk/85PTNzrzQkLi3YRi4fAxsSjilQRPTUXZPyMJO9OYw8oiC0wzVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983694; c=relaxed/simple;
-	bh=yXZZlKz4FMIHEgeLKz5ll8FXv+hlClY7eLg5vQTioOw=;
+	s=arc-20240116; t=1772002745; c=relaxed/simple;
+	bh=vDbVvDxkzDlceBLjdORisHQSr2Jl2XCEzmZl1bm5lQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nlch0kmEgG3oUF2iYFVSetQ7a6ghdoRokMMUGeXjDDEpnaZUVPQdABQ5+Sgz2AfbM8KR3qq/PnTeaFXEoBtEY8ikKDCxhylZi6drg+HXAkfX9ixIguQWH5TjPCXyvu/5tUAOfXujCOLNCAxfIKDyzHJ3XB0l6Ko2DXaK+S1O9Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We6TVv4k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C846C19423;
-	Wed, 25 Feb 2026 01:41:34 +0000 (UTC)
+	 MIME-Version; b=KubtKQkLUTWkezGGQji78PT9d724o3SgHit+18Cm0Wa2ZjqHI6qEPQx+dRWjuFq07SUw9KrOS7pe+RmhV2V3Ob99cwBFmB/UonG5Ee7zo3O3PuFrZCcf8kTgCm04I8EvSVJB+euQrKnvQ+0IW/JbgqtuXScyfQec3kA7rZrH4vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pc54VI0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38233C116D0;
+	Wed, 25 Feb 2026 06:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983694;
-	bh=yXZZlKz4FMIHEgeLKz5ll8FXv+hlClY7eLg5vQTioOw=;
+	s=korg; t=1772002745;
+	bh=vDbVvDxkzDlceBLjdORisHQSr2Jl2XCEzmZl1bm5lQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=We6TVv4kVM/IpQWxh6HCr94mtggCB8gZHHQQ81/JjJbwfS5DCdv1r5Sa2Sk+iVc2c
-	 5yKXAdOwighbP6+u7CuiBH5mR9OtA6FAAFhTb8THz+nGpDZyWgqBLpqAmOLRHmFWQi
-	 pd17DtIF5hlkQQ+S08pUKVdlZKElivqf09+0M8Yw=
+	b=pc54VI0ehNZl2XiV9ENVFUPQprtYOFmX7wyZWM5ft7x1bNI3nQDikpXRJXSplxmyq
+	 ymARS7b1Oet7q/lDHrkdw9dX7L86+0z/frOMJb/aX8VByldtTuIO1Gt3Ysa0eInC9A
+	 eeUGUg6DsDm4ERhveFgKqpZc2IxzWM+sqWctDBU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.19 776/781] ALSA: hda/conexant: Fix headphone jack handling on Acer Swift SF314
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jacob Keller <Jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 559/641] net/mlx5: Fix multiport device check over light SFs
 Date: Tue, 24 Feb 2026 17:24:45 -0800
-Message-ID: <20260225012418.747788624@linuxfoundation.org>
+Message-ID: <20260225012402.068511546@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,87 +72,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218816-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219482-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,suse.de:email]
-X-Rspamd-Queue-Id: 143C619007B
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: E221019344E
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Shay Drory <shayd@nvidia.com>
 
-commit 7bc0df86c2384bc1e2012a2c946f82305054da64 upstream.
+[ Upstream commit 47bf2e813817159f4d195be83a9b5a640ee6baec ]
 
-Acer Swift SF314 (SSID 1025:136d) needs a bit of tweaks of the pin
-configurations for NID 0x16 and 0x19 to make the headphone / headset
-jack working.  NID 0x17 can remain as is for the working speaker, and
-the built-in mic is supported via SOF.
+Driver is using num_vhca_ports capability to distinguish between
+multiport master device and multiport slave device. num_vhca_ports is a
+capability the driver sets according to the MAX num_vhca_ports
+capability reported by FW. On the other hand, light SFs doesn't set the
+above capbility.
 
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221086
-Link: https://patch.msgid.link/20260217104414.62911-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This leads to wrong results whenever light SFs is checking whether he is
+a multiport master or slave.
+
+Therefore, use the MAX capability to distinguish between master and
+slave devices.
+
+Fixes: e71383fb9cd1 ("net/mlx5: Light probe local SFs")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Jacob Keller <Jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260218072904.1764634-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/conexant.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/linux/mlx5/driver.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/hda/codecs/conexant.c
-+++ b/sound/hda/codecs/conexant.c
-@@ -299,6 +299,7 @@ enum {
- 	CXT_PINCFG_SWS_JS201D,
- 	CXT_PINCFG_TOP_SPEAKER,
- 	CXT_FIXUP_HP_A_U,
-+	CXT_FIXUP_ACER_SWIFT_HP,
- };
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index 5405ca1038f9e..85c2b3d358ec1 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -1274,12 +1274,12 @@ static inline bool mlx5_rl_is_supported(struct mlx5_core_dev *dev)
+ static inline int mlx5_core_is_mp_slave(struct mlx5_core_dev *dev)
+ {
+ 	return MLX5_CAP_GEN(dev, affiliate_nic_vport_criteria) &&
+-	       MLX5_CAP_GEN(dev, num_vhca_ports) <= 1;
++	       MLX5_CAP_GEN_MAX(dev, num_vhca_ports) <= 1;
+ }
  
- /* for hda_fixup_thinkpad_acpi() */
-@@ -1024,6 +1025,14 @@ static const struct hda_fixup cxt_fixups
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cxt_fixup_hp_a_u,
- 	},
-+	[CXT_FIXUP_ACER_SWIFT_HP] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x16, 0x0321403f }, /* Headphone */
-+			{ 0x19, 0x40f001f0 }, /* Mic */
-+			{ }
-+		},
-+	},
- };
+ static inline int mlx5_core_is_mp_master(struct mlx5_core_dev *dev)
+ {
+-	return MLX5_CAP_GEN(dev, num_vhca_ports) > 1;
++	return MLX5_CAP_GEN_MAX(dev, num_vhca_ports) > 1;
+ }
  
- static const struct hda_quirk cxt5045_fixups[] = {
-@@ -1073,6 +1082,7 @@ static const struct hda_quirk cxt5066_fi
- 	SND_PCI_QUIRK(0x1025, 0x0543, "Acer Aspire One 522", CXT_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x054c, "Acer Aspire 3830TG", CXT_FIXUP_ASPIRE_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x054f, "Acer Aspire 4830T", CXT_FIXUP_ASPIRE_DMIC),
-+	SND_PCI_QUIRK(0x1025, 0x136d, "Acer Swift SF314", CXT_FIXUP_ACER_SWIFT_HP),
- 	SND_PCI_QUIRK(0x103c, 0x8079, "HP EliteBook 840 G3", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x807C, "HP EliteBook 820 G3", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x80FD, "HP ProBook 640 G2", CXT_FIXUP_HP_DOCK),
+ static inline int mlx5_core_mp_enabled(struct mlx5_core_dev *dev)
+-- 
+2.51.0
+
 
 
 
