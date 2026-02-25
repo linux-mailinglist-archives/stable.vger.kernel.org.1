@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qD2ZJjlSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:57 +0100
+	id GFMXGYJXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0517318F294
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBC5190557
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C3CD308DB9A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C128831EA314
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC3D24677D;
-	Wed, 25 Feb 2026 01:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE0B280CFC;
+	Wed, 25 Feb 2026 01:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqoL/fXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rt0OG5fY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39722505B2;
-	Wed, 25 Feb 2026 01:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F4A26FA60;
+	Wed, 25 Feb 2026 01:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983324; cv=none; b=NA9wvV8uw6FfODi6ETIakv2KiS+Hjt+uoNULI4oaaE2AQh9PggO5aYkr1IxoCqhN/c+XFnOAFp3/a2sKe4OBP36iBpwlKi4B4GxfOKMiHZs09K46u56GHKoEtVgr91hz1/To0wmZfsz2f8dY/sEalyypyNaqarZgtz8WiCNOoDA=
+	t=1771984039; cv=none; b=W2/nu1gZoqJbINLo5OJ8OCACgx21canVOpAZ5U0ElHEeObvWC3YG+rsA9NeRYJV6Ekeno044EBHG/AQhva+YAHR3MZuSxopQ4g2PdjQKF9w2PclZLUJDAi1Yy5bG7ewP5u0jhthG8WnUDLduuI00m6mGx0C5+IWX5nUgCw+w5Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983324; c=relaxed/simple;
-	bh=CHabqQr8pW7MosvqDQFJAJ+7WyOuJAbha/D8b4CHxQo=;
+	s=arc-20240116; t=1771984039; c=relaxed/simple;
+	bh=OQ8KfNjiw+qcAtG8lj/ZnoLx+Di9bwW1B3Xd6kjV/Tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gULs+nukOg875vKnHavhz7A5Bp7DPg6t87wxQyBBKtcAl6Aalh3lBC9ptQkGO/E3fiBkpwgEniszpsq/KJtAwWlO2N4HTlu/xo/lxYBbeM/zrAO6Dx8rg+LJUk54EXG513VuwTYG1Zp1P/LczJpC0AZ8497fPwP94uUUecE981A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqoL/fXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFF7C116D0;
-	Wed, 25 Feb 2026 01:35:24 +0000 (UTC)
+	 MIME-Version; b=ODpATw8bYgBctLiMNaUr1KosCiksxzNKz45JR4H+fl+TF6wd6BSPTE71K2KZ+tNWsbDc8rF0J2+uK6Ufo73LwSyIVtRW6F/iH9s+F+3XTuAeaTmYu2Crh6g+5TL4svbEIpBgbTKJpKMr4nsF2kOK14Z0G1FPAElcQzthFa67MTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rt0OG5fY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EEDC116D0;
+	Wed, 25 Feb 2026 01:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983324;
-	bh=CHabqQr8pW7MosvqDQFJAJ+7WyOuJAbha/D8b4CHxQo=;
+	s=korg; t=1771984039;
+	bh=OQ8KfNjiw+qcAtG8lj/ZnoLx+Di9bwW1B3Xd6kjV/Tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TqoL/fXk+nK6TowBVuwp0CiQbnEGb3r5hdo1m12hCNMxrkGqqa3v2wIQ/OY8wht2m
-	 MugWN0B/CGQuEtHEaknxmhrwLbP0P+8Cl87DAugR3UAjecqOXkNwICXFBOkUMT6FwO
-	 DN4vBSc4up/0G41h05bHssiSZdMXwUkfLHZymo9Q=
+	b=Rt0OG5fYgIt8lgVBMokqq+nZw2kSPKVmqc9xuBIxM7BEraoy39VrG+mfKcRmL3OV6
+	 j7ikOipsiFgt7lqkXuPYz/azoa4+YLBIXoaZ714kfJA0xV5bOuxEIqIc2qsQ31/O8A
+	 KPxt2eXCNGZjQGWfa9Z+IoUkVM41iH/OeQI8Q6GU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Alistair Popple <apopple@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 456/781] power: supply: rt9455: Fix use-after-free in power_supply_changed()
-Date: Tue, 24 Feb 2026 17:19:25 -0800
-Message-ID: <20260225012410.903331265@linuxfoundation.org>
+Subject: [PATCH 6.18 240/641] PCI/P2PDMA: Fix p2pmem_alloc_mmap() warning condition
+Date: Tue, 24 Feb 2026 17:19:26 -0800
+Message-ID: <20260225012354.690759101@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,106 +71,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219106-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218494-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,axis.com:email]
-X-Rspamd-Queue-Id: 0517318F294
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,huawei.com:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,deltatee.com:email]
+X-Rspamd-Queue-Id: BDBC5190557
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waqar Hameed <waqar.hameed@axis.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit e2febe375e5ea5afed92f4cd9711bde8f24ee6d2 ]
+[ Upstream commit cb500023a75246f60b79af9f7321d6e75330c5b5 ]
 
-Using the `devm_` variant for requesting IRQ _before_ the `devm_`
-variant for allocating/registering the `power_supply` handle, means that
-the `power_supply` handle will be deallocated/unregistered _before_ the
-interrupt handler (since `devm_` naturally deallocates in reverse
-allocation order). This means that during removal, there is a race
-condition where an interrupt can fire just _after_ the `power_supply`
-handle has been freed, *but* just _before_ the corresponding
-unregistration of the IRQ handler has run.
+Commit b7e282378773 has already changed the initial page refcount of
+p2pdma page from one to zero, however, in p2pmem_alloc_mmap() it uses
+"VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))" to assert the initial page
+refcount should not be zero and the following will be reported when
+CONFIG_DEBUG_VM is enabled:
 
-This will lead to the IRQ handler calling `power_supply_changed()` with
-a freed `power_supply` handle. Which usually crashes the system or
-otherwise silently corrupts the memory...
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x380400000
+  flags: 0x20000000002000(reserved|node=0|zone=4)
+  raw: 0020000000002000 ff1100015e3ab440 0000000000000000 0000000000000000
+  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+  page dumped because: VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))
+  ------------[ cut here ]------------
+  WARNING: CPU: 5 PID: 449 at drivers/pci/p2pdma.c:240 p2pmem_alloc_mmap+0x83a/0xa60
 
-Note that there is a similar situation which can also happen during
-`probe()`; the possibility of an interrupt firing _before_ registering
-the `power_supply` handle. This would then lead to the nasty situation
-of using the `power_supply` handle *uninitialized* in
-`power_supply_changed()`.
+Fix by using "page_ref_count(page)" as the assertion condition.
 
-Fix this racy use-after-free by making sure the IRQ is requested _after_
-the registration of the `power_supply` handle.
-
-Fixes: e86d69dd786e ("power_supply: Add support for Richtek RT9455 battery charger")
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-Link: https://patch.msgid.link/1567d831e04c3e2fcb9e18dd36b7bcba4634581a.1766268280.git.waqar.hameed@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: b7e282378773 ("mm/mm_init: move p2pdma page refcount initialisation to p2pdma")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Link: https://patch.msgid.link/20251220040446.274991-3-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/rt9455_charger.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/pci/p2pdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/rt9455_charger.c b/drivers/power/supply/rt9455_charger.c
-index 1ffe7f02932f6..5130d2395e88f 100644
---- a/drivers/power/supply/rt9455_charger.c
-+++ b/drivers/power/supply/rt9455_charger.c
-@@ -1663,6 +1663,15 @@ static int rt9455_probe(struct i2c_client *client)
- 	rt9455_charger_config.supplied_to	= rt9455_charger_supplied_to;
- 	rt9455_charger_config.num_supplicants	=
- 					ARRAY_SIZE(rt9455_charger_supplied_to);
-+
-+	info->charger = devm_power_supply_register(dev, &rt9455_charger_desc,
-+						   &rt9455_charger_config);
-+	if (IS_ERR(info->charger)) {
-+		dev_err(dev, "Failed to register charger\n");
-+		ret = PTR_ERR(info->charger);
-+		goto put_usb_notifier;
-+	}
-+
- 	ret = devm_request_threaded_irq(dev, client->irq, NULL,
- 					rt9455_irq_handler_thread,
- 					IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-@@ -1678,14 +1687,6 @@ static int rt9455_probe(struct i2c_client *client)
- 		goto put_usb_notifier;
- 	}
- 
--	info->charger = devm_power_supply_register(dev, &rt9455_charger_desc,
--						   &rt9455_charger_config);
--	if (IS_ERR(info->charger)) {
--		dev_err(dev, "Failed to register charger\n");
--		ret = PTR_ERR(info->charger);
--		goto put_usb_notifier;
--	}
--
- 	return 0;
- 
- put_usb_notifier:
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 5497ce0be7c5c..12c69bb2b2326 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -147,7 +147,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+ 		 * we have just allocated the page no one else should be
+ 		 * using it.
+ 		 */
+-		VM_WARN_ON_ONCE_PAGE(!page_ref_count(page), page);
++		VM_WARN_ON_ONCE_PAGE(page_ref_count(page), page);
+ 		set_page_count(page, 1);
+ 		ret = vm_insert_page(vma, vaddr, page);
+ 		if (ret) {
 -- 
 2.51.0
 
