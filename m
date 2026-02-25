@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Oh/ORafnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:54 +0100
+	id GGKJEKNTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE81192E4E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0EE18F968
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D2B8E3111033
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B9F4C3092229
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436BF30E834;
-	Wed, 25 Feb 2026 06:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E96627603A;
+	Wed, 25 Feb 2026 01:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehzxdXNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwsKyoqs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075702C21DF;
-	Wed, 25 Feb 2026 06:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AB02701B8;
+	Wed, 25 Feb 2026 01:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002717; cv=none; b=LAD1PsXjnFafNG2tkNttHlLtJjAPW2z5QPdCtaRX6IhGdqfUVGdib8nYQqYWtsMxdsY1TO7bxkpQNXoUQxxLPImUs5prLt30n0lokCQZJCq2/OhRHqgGGqZ58xrM9LVnlcSQXqK3UiRu785NF5UpdKtWjfdFeKDDpE609T8TqBM=
+	t=1771983664; cv=none; b=Aa1SQsnICcUIrOsYRoaTIf+O5LEBlWqvXcRm6eB5G1JOS0v3lMyiicQfSAHQjcaCvyiU5q2qTj2mFSgHbLzrImLzavx4v5Iu4/gUcfqw/Mur8x/FGE2FhxBrBcskJ07XLRFQ3/W1lQO4Cz3ZY9lMLOpZ7SKyNlmXlS8xOH7MCac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002717; c=relaxed/simple;
-	bh=HHZHvozvaIUdbhE+PtkdzpkAnTfU5+2ge3tO+8AfiBg=;
+	s=arc-20240116; t=1771983664; c=relaxed/simple;
+	bh=p7qo+K8iRIKq4ocrvzPIllFQIGVqNYnuBk2tIjJmfUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6QBCG98BzCfqEsjvcJ5gW9dG/kuMNCAnoCtRIUCECrh4jD8cW4R+rpfamMG3NvU8Ht5f8gk7JmBit/Vxh7exvygrFg8eRuU0Xmyai43bYBU1X0Uzzyi7mqTyaQrJ2ZpyHBatJcCkkqZq4EuZPZqElji68Id/p38x2JhNuEBUGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehzxdXNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F3AC19422;
-	Wed, 25 Feb 2026 06:58:36 +0000 (UTC)
+	 MIME-Version; b=jCmRyHplU8EC4M57c+vtPSVlTGliFlgctuLdg19xTaVFk2HCjdzxHgNdk5Klotaz/NmwcMvRpGAD1IlAMQ05pOijMC6Z4NAUPC5ShBROJlXD3guhpivT/f2pVEGflGnQn87J06FsqbJz2j2eFO4khoZPYAkJ7m/voKHwN92b+/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwsKyoqs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE17CC116D0;
+	Wed, 25 Feb 2026 01:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002716;
-	bh=HHZHvozvaIUdbhE+PtkdzpkAnTfU5+2ge3tO+8AfiBg=;
+	s=korg; t=1771983664;
+	bh=p7qo+K8iRIKq4ocrvzPIllFQIGVqNYnuBk2tIjJmfUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ehzxdXNItH8zzZXQDXQ34eehEUHlAyNlIcIhgItAv5S7RsgCbKgdHkbCDu2zMwuiz
-	 KddLW1C4GImqCND24aGHZcxAqO1Sza1xT/cOXb3b79wrhQYzLBVQ4VHPFIVy1SD03F
-	 xuPtIi35xn3jHDwasgvQn6XpBh5GnTGhRtMtfsI0=
+	b=EwsKyoqssUCsB4XYoZXkHCjswYcK4gqf2dJhK2Jpbp/DsNVeHGfNT6YhsePYsU5sq
+	 K/vefRZFjE2jN5aUmBa0EyULJm7AHtcdQgXL/bWOcQfqb4d6bP/kSDag2UosWPsheT
+	 vDbmu4ht4uf5d2A0bgcHwuZnaaqu3itXt0SdppwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 525/641] net: sparx5/lan969x: fix PTP clock max_adj value
-Date: Tue, 24 Feb 2026 17:24:11 -0800
-Message-ID: <20260225012401.251459749@linuxfoundation.org>
+Subject: [PATCH 6.19 743/781] ASoC: rockchip: i2s-tdm: Use param rate if not provided by set_sysclk
+Date: Tue, 24 Feb 2026 17:24:12 -0800
+Message-ID: <20260225012417.949531828@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219440-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218789-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,64 +87,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5DE81192E4E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email]
+X-Rspamd-Queue-Id: 0D0EE18F968
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Detlev Casanova <detlev.casanova@collabora.com>
 
-[ Upstream commit a49d2a2c37a6252c41cbdd505f9d1c58d5a3817a ]
+[ Upstream commit 0783052534f547f8f201dd4554b1df9f1f8615b5 ]
 
-The max_adj field in ptp_clock_info tells userspace how much the PHC
-clock frequency can be adjusted. ptp4l reads this and will never request
-a correction larger than max_adj.
+Drivers will not always call set_sysclk() for all clocks, especially when
+default mclk-fs can be used.
+When that is the case, use the clock rate set in the params multiplied by the
+default mclk-fs.
 
-On both sparx5 and lan969x the clock offset may never converge because
-the servo needs a frequency correction larger than the current max_adj
-of 200000 (200 ppm) allows. The servo rails at the max and the offset
-stays in the tens of microseconds.
-
-The hardware has no inherent max adjustment limit; frequency correction
-is done by writing a 64-bit clock period increment to CLK_PER_CFG, and
-the register has plenty of range. The 200000 value was just an overly
-conservative software limit. The max_adj is shared between sparx5 and
-lan969x, and the increased value is safe for both.
-
-Fix this by increasing max_adj to 10000000 (10000 ppm), giving the
-servo sufficient headroom.
-
-Fixes: 0933bd04047c ("net: sparx5: Add support for ptp clocks")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20260212-sparx5-ptp-max-adj-v2-v1-1-06b200e50ce3@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5323186e2e8d ("ASoC: rockchip: i2s_tdm: Re-add the set_sysclk callback")
+Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20260218201834.924358-1-detlev.casanova@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/rockchip/rockchip_i2s_tdm.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
-index 2f168700f63c1..8b2e07821a950 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
-@@ -576,7 +576,7 @@ static int sparx5_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
- static struct ptp_clock_info sparx5_ptp_clock_info = {
- 	.owner		= THIS_MODULE,
- 	.name		= "sparx5 ptp",
--	.max_adj	= 200000,
-+	.max_adj	= 10000000,
- 	.gettime64	= sparx5_ptp_gettime64,
- 	.settime64	= sparx5_ptp_settime64,
- 	.adjtime	= sparx5_ptp_adjtime,
+diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
+index 770b9bfbb384a..fc52149ed6ae3 100644
+--- a/sound/soc/rockchip/rockchip_i2s_tdm.c
++++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
+@@ -22,6 +22,7 @@
+ 
+ #define DRV_NAME "rockchip-i2s-tdm"
+ 
++#define DEFAULT_MCLK_FS				256
+ #define CH_GRP_MAX				4  /* The max channel 8 / 2 */
+ #define MULTIPLEX_CH_MAX			10
+ 
+@@ -665,6 +666,15 @@ static int rockchip_i2s_tdm_hw_params(struct snd_pcm_substream *substream,
+ 			mclk_rate = i2s_tdm->mclk_rx_freq;
+ 		}
+ 
++		/*
++		 * When the dai/component driver doesn't need to set mclk-fs for a specific
++		 * clock, it can skip the call to set_sysclk() for that clock.
++		 * In that case, simply use the clock rate from the params and multiply it by
++		 * the default mclk-fs value.
++		 */
++		if (!mclk_rate)
++			mclk_rate = DEFAULT_MCLK_FS * params_rate(params);
++
+ 		err = clk_set_rate(mclk, mclk_rate);
+ 		if (err)
+ 			return err;
 -- 
 2.51.0
 
