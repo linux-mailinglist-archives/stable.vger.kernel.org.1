@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AMqLM2enmlVWgQAu9opvQ
-	(envelope-from <stable+bounces-219268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:41 +0100
+	id wOzXLwBUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F687192D78
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2520D18FB3B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCE2D313D6DE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 167BA3095226
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D4F2D238F;
-	Wed, 25 Feb 2026 06:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8374D26158C;
+	Wed, 25 Feb 2026 01:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEXXobfV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JATUCx3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D29C2C17A0;
-	Wed, 25 Feb 2026 06:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4736B248881;
+	Wed, 25 Feb 2026 01:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002604; cv=none; b=bQOovhZJ9RQB9W0xLZwRo9ZZvu8sefRZQW70QKmgj3rr9epOH1QN8ZQTWvli/v/BrlXt4ursPjmsXQD3h9Cva5JrmAZHeoKBNfV1z2s8iWs6VIyIW7JgXfUe47pHZnZadD2o5bq+J70M1bS0dNje7Hs5p+B5v36Pnf77CuUs5mM=
+	t=1771983457; cv=none; b=kadnCbVO0yTAZNb1QEPVjt3ZdnLVykDQFIinCoqZCkQn5BDQe9a5lCAYZUSvlH/sqjffM3mrxcsfcaN3t03GcvPNAAd+cQwnQLkkQO+9khuLdt2fNwKvBBJ9uftIeekn05kvT9PJPKvMn27nKm2fkORlFI7fuN8N0unVSwwcCeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002604; c=relaxed/simple;
-	bh=if9xJ43Aeaks6Fw1IUIIudW43fziNa36uPHUPlr/XvY=;
+	s=arc-20240116; t=1771983457; c=relaxed/simple;
+	bh=5tdvi6AmnkSWj+wG7cmnUHVi3SkCL+fdzmJH/SLPai0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZvQUrBUJ8MdYGL8rHWuDDxRyIw2XEk9VXX0Sg485xd9ygpuWhxGK1yaz+LoN76wqlMM1TVVIkEIG6yGtEzmG1P+1oEd5kZXlFxft8JiG/Nyit7IMgEYJdPkjJ5pex8i2U1mNoygeXe+JEoVuCOKrTL+ujE8JPcqx17ehmO7htjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEXXobfV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EF1C116D0;
-	Wed, 25 Feb 2026 06:56:44 +0000 (UTC)
+	 MIME-Version; b=uhRAuOCZ66rlDzv12Ar2hLz9Iz1g+f383mAIwLpKZWgGv9x/xuWQ7dEVk6B28Z0Lmnvs1f4j+SzxFA9RUqCcv+b6uABqbINOuVV9BvAX8c9J8Oilz66sHi0/7LX8uGESUqtQcaxNSN+9yyygzV19NLH1QNaCQEfNy2y2yPvdC7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JATUCx3q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083BBC116D0;
+	Wed, 25 Feb 2026 01:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002604;
-	bh=if9xJ43Aeaks6Fw1IUIIudW43fziNa36uPHUPlr/XvY=;
+	s=korg; t=1771983457;
+	bh=5tdvi6AmnkSWj+wG7cmnUHVi3SkCL+fdzmJH/SLPai0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEXXobfV/9iR7Hn53UWI3seuVKhk75cWKRRGCRw25pCahvROZOrq6yYkB+nv87OjW
-	 pYt89XDA8FXaIAmODWfbyZR4e8o+2cNKKOUy1jouM5uFLprneSXkcMEfox9ZWY2BI8
-	 z+zAG5vE17Rcx9qPzfGlPhFfC9yErFaaJcq8B4os=
+	b=JATUCx3qZZrGtVkKr+I1y/a4Mg24eRWHKKr1e8yAI7uX2qsYFd6+eQq/eMwRp6vrL
+	 toh8Ct0wpCs0V0znajUikG4vKLacmXm2RGs4PuL3PmdsOO1a6lsQbaKP0nnHc7B89y
+	 +SLv7r2G6GA5NQhv7bCV1rqua8MFxMQVKx+kUEag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Phil Reid <preid@electromag.com.au>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 353/641] power: supply: sbs-battery: Fix use-after-free in power_supply_changed()
-Date: Tue, 24 Feb 2026 17:21:19 -0800
-Message-ID: <20260225012357.192774973@linuxfoundation.org>
+Subject: [PATCH 6.19 571/781] serial: SH_SCI: improve "DMA support" prompt
+Date: Tue, 24 Feb 2026 17:21:20 -0800
+Message-ID: <20260225012413.808948105@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,131 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218611-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219268-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,axis.com:email,collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,electromag.com.au:email]
-X-Rspamd-Queue-Id: 0F687192D78
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[glider.be:email,msgid.link:url,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2520D18FB3B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waqar Hameed <waqar.hameed@axis.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 8d59cf3887fbabacef53bfba473e33e8a8d9d07b ]
+[ Upstream commit 93bb95a11238d66a4c9aa6eabf9774b073a5895c ]
 
-Using the `devm_` variant for requesting IRQ _before_ the `devm_`
-variant for allocating/registering the `power_supply` handle, means that
-the `power_supply` handle will be deallocated/unregistered _before_ the
-interrupt handler (since `devm_` naturally deallocates in reverse
-allocation order). This means that during removal, there is a race
-condition where an interrupt can fire just _after_ the `power_supply`
-handle has been freed, *but* just _before_ the corresponding
-unregistration of the IRQ handler has run.
+Having a prompt of "DMA support" suddenly appear during a
+"make oldconfig" can be confusing. Add a little helpful text to
+the prompt message.
 
-This will lead to the IRQ handler calling `power_supply_changed()` with
-a freed `power_supply` handle. Which usually crashes the system or
-otherwise silently corrupts the memory...
-
-Note that there is a similar situation which can also happen during
-`probe()`; the possibility of an interrupt firing _before_ registering
-the `power_supply` handle. This would then lead to the nasty situation
-of using the `power_supply` handle *uninitialized* in
-`power_supply_changed()`.
-
-Fix this racy use-after-free by making sure the IRQ is requested _after_
-the registration of the `power_supply` handle. Keep the old behavior of
-just printing a warning in case of any failures during the IRQ request
-and finishing the probe successfully.
-
-Fixes: d2cec82c2880 ("power: sbs-battery: Request threaded irq and fix dev callback cookie")
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-Reviewed-by: Phil Reid <preid@electromag.com.au>
-Link: https://patch.msgid.link/0ef896e002495e615157b482d18a437af19ddcd0.1766268280.git.waqar.hameed@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20260110232643.3533351-5-rdunlap@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/sbs-battery.c | 36 +++++++++++++++---------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/tty/serial/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/sbs-battery.c b/drivers/power/supply/sbs-battery.c
-index 943c82ee978f4..43c48196c1674 100644
---- a/drivers/power/supply/sbs-battery.c
-+++ b/drivers/power/supply/sbs-battery.c
-@@ -1174,24 +1174,6 @@ static int sbs_probe(struct i2c_client *client)
+diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+index 98a946096be3c..3d06c65c2f491 100644
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -671,7 +671,7 @@ config SERIAL_SH_SCI_EARLYCON
+ 	default ARCH_RENESAS
  
- 	i2c_set_clientdata(client, chip);
- 
--	if (!chip->gpio_detect)
--		goto skip_gpio;
--
--	irq = gpiod_to_irq(chip->gpio_detect);
--	if (irq <= 0) {
--		dev_warn(&client->dev, "Failed to get gpio as irq: %d\n", irq);
--		goto skip_gpio;
--	}
--
--	rc = devm_request_threaded_irq(&client->dev, irq, NULL, sbs_irq,
--		IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
--		dev_name(&client->dev), chip);
--	if (rc) {
--		dev_warn(&client->dev, "Failed to request irq: %d\n", rc);
--		goto skip_gpio;
--	}
--
--skip_gpio:
- 	/*
- 	 * Before we register, we might need to make sure we can actually talk
- 	 * to the battery.
-@@ -1217,6 +1199,24 @@ static int sbs_probe(struct i2c_client *client)
- 		return dev_err_probe(&client->dev, PTR_ERR(chip->power_supply),
- 				     "Failed to register power supply\n");
- 
-+	if (!chip->gpio_detect)
-+		goto out;
-+
-+	irq = gpiod_to_irq(chip->gpio_detect);
-+	if (irq <= 0) {
-+		dev_warn(&client->dev, "Failed to get gpio as irq: %d\n", irq);
-+		goto out;
-+	}
-+
-+	rc = devm_request_threaded_irq(&client->dev, irq, NULL, sbs_irq,
-+		IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-+		dev_name(&client->dev), chip);
-+	if (rc) {
-+		dev_warn(&client->dev, "Failed to request irq: %d\n", rc);
-+		goto out;
-+	}
-+
-+out:
- 	dev_info(&client->dev,
- 		"%s: battery gas gauge device registered\n", client->name);
+ config SERIAL_SH_SCI_DMA
+-	bool "DMA support" if EXPERT
++	bool "Support for DMA on SuperH SCI(F)" if EXPERT
+ 	depends on SERIAL_SH_SCI && DMA_ENGINE
+ 	default ARCH_RENESAS
  
 -- 
 2.51.0
