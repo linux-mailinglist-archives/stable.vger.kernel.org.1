@@ -1,187 +1,297 @@
-Return-Path: <stable+bounces-219296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKxHBP+hnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:17:19 +0100
+	id aH10LVudnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB1B1932AF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:17:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BA219298C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9BF333163BD3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 865AF308F8CB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAE52D4805;
-	Wed, 25 Feb 2026 06:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AD42C3252;
+	Wed, 25 Feb 2026 06:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="hV1fxuBl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkEd7g1M"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m4921.qiye.163.com (mail-m4921.qiye.163.com [45.254.49.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0712D248B;
-	Wed, 25 Feb 2026 06:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EAC2C11CF;
+	Wed, 25 Feb 2026 06:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002623; cv=none; b=iBeAapTRz6TLHr7praOEEktymcQz9UCUNIVKD8phA0Uas7KdJQ+5mE3yc7V70I5H9X1g6cJeVadwDe+q+hT46265YTzDCV8wr0YRczuHXE20LB1XP+/uprL1+Wxv7rXThqh49lajSgkCTqrkYt0CPGcDL4IJwD50zVjfjBB/9U0=
+	t=1772002563; cv=none; b=EiNoE64Pvc17tekPqBPqAp1DCZIVw+Gnxx09jtDGzFCGoFJmhGXFro/Wcnc+HLoR6KdnxBWLL3Lf1fNbGyLpSmC0xEsMlhEFsQ65uCoBWSgSwydg+W521swnT7cNLOIMOtZ2O3SX/t9iDyWASGEM+oqbj9SFUs7QVZor9MuAz3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002623; c=relaxed/simple;
-	bh=sOvtq8C9c+XL22JKGN7abT0Cm5rWWtboB62+qVnpPlY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NHHT6JgPaUmApYpQjRkI/dYs4jSmoPuAkR1fFCl21pQXBm9by79qqNIRDA0Ywec/RhPdBkReQfGCRCcngPIIRVNnC4+4+Dk9dJoH+vd3QgByJPJCtFL8LCHaQCTSRJY0bwyPKf7VfEquaL5I24hHHqHavCY9izKPgP9VnAYy/+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=hV1fxuBl; arc=none smtp.client-ip=45.254.49.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from [172.16.12.51] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 34e3ed4ec;
-	Wed, 25 Feb 2026 14:51:40 +0800 (GMT+08:00)
-Message-ID: <cab6d03b-ac80-427e-ad9a-b810843bd799@rock-chips.com>
-Date: Wed, 25 Feb 2026 14:51:39 +0800
+	s=arc-20240116; t=1772002563; c=relaxed/simple;
+	bh=c8mFbnM9U8FHHhGL8ssz28X5TtDgBLCNoO42oAAqqbQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NKZf7bvkY80kSeVm4YAQ0fbEPE3JKH1qC7IpbOWqUEKVLhjdzjTSSamafGifVacvxcbsEQk38boon7DqSfGXbytOrwKSJOqEJP6yn7bydDrE8hbzsRuJYzRFVHjPPvj+HfPXKANYHtEV6I78977yGD3cNLZVLnQ3uteCF2nVVas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkEd7g1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFC9C19425;
+	Wed, 25 Feb 2026 06:55:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772002562;
+	bh=c8mFbnM9U8FHHhGL8ssz28X5TtDgBLCNoO42oAAqqbQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SkEd7g1Mj5AaEydDMbFzILf8tBoIZJKGMp96yd43Y0MJCHTwM82ONmBCoNFtVZzHi
+	 D3P290d01ENWEEEIIG6mu7AwkXcz2oytKekOZWQu+dD0ft0PXI3sQeWyIrx5I3NJwI
+	 +ya5o+VP/DOq4cKJXsWxRf8sLm0ErJfFl0OB0gJ9TG3gfDFJy/QCpT2vHH6v4p+5tk
+	 EjT2EPxH2vgE83Fk9bQ9nw6rQIXSrKgBhSSX4KXH+t6VOlPKfKQwLimrlDwFH6ZDSZ
+	 bvZ/+w8VMNsmA9i9k2V2OryXWT4BtuDHTkp5B/HzSOdkm1DTUNIjY8tpr+kn7v9XrR
+	 Ik6t3ZZdPL5fw==
+From: Mike Rapoport <rppt@kernel.org>
+To: x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	linux-efi@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] x86/efi: defer freeing of boot services memory
+Date: Wed, 25 Feb 2026 08:55:55 +0200
+Message-ID: <20260225065555.2471844-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] pmdomain: rockchip: Fix PD_VCODEC for RK3588
-To: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
- Finley Xiao <finley.xiao@rock-chips.com>, Frank Zhang <rmxpzlb@gmail.com>,
- linux-pm@vger.kernel.org, Sebastian Reichel
- <sebastian.reichel@collabora.com>,
- Detlev Casanova <detlev.casanova@collabora.com>,
- Heiko Stuebner <heiko@sntech.de>, linux-rockchip@lists.infradead.org,
- stable@vger.kernel.org
-References: <1771988101-49877-1-git-send-email-shawn.lin@rock-chips.com>
-Content-Language: en-US
-From: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-In-Reply-To: <1771988101-49877-1-git-send-email-shawn.lin@rock-chips.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a9c939152ae03abkunm10db2a44ff4e3b
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUMaS1YdHxoYSE9NTx9PTUJWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=hV1fxuBl5PKXPMBDCx3/0yAxIU51Xl1kJ0Ou4qWnXfOBkWTKSQyTeaJO6dNYHV8zOb667myoCloTiluAYjX7hzax3LBU/FqQyiS8mBGTMGRIXVbyY49Np7zOWGnmjgH4yKPX8QpP7+G4ESnVjlV7WBH6IwTAK3GG9GE0TX8pwZQ=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=B2G6fQQyc1a7ftJ4+MnugTUyTCSAbk2IAEWneviu7SE=;
-	h=date:mime-version:subject:message-id:from;
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rock-chips.com,none];
-	R_DKIM_ALLOW(-0.20)[rock-chips.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linaro.org,rock-chips.com,gmail.com,vger.kernel.org,collabora.com,sntech.de,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-219296-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[rock-chips.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chaoyi.chen@rock-chips.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-219212-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rock-chips.com:mid,rock-chips.com:dkim,rock-chips.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CDB1B1932AF
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E0BA219298C
 X-Rspamd-Action: no action
 
-On 2/25/2026 10:55 AM, Shawn Lin wrote:
-> From the RK3588 TRM Table 7-1 RK3588 Voltage Domain and Power Domain Summary,
-> PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltages to
-> be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support landed[1].
-> The panic looks like below:
-> 
->   rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec0' on, val=0
->   rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec1' on, val=0
->   ...
->   Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
->   Workqueue: pm genpd_power_off_work_fn
->   Call trace:
->   show_stack+0x18/0x24 (C)
->   dump_stack_lvl+0x40/0x84
->   dump_stack+0x18/0x24
->   vpanic+0x1ec/0x4fc
->   vpanic+0x0/0x4fc
->   check_panic_on_warn+0x0/0x94
->   arm64_serror_panic+0x6c/0x78
->   do_serror+0xc4/0xcc
->   el1h_64_error_handler+0x3c/0x5c
->   el1h_64_error+0x6c/0x70
->   regmap_mmio_read32le+0x18/0x24 (P)
->   regmap_bus_reg_read+0xfc/0x130
->   regmap_read+0x188/0x1ac
->   regmap_read+0x54/0x78
->   rockchip_pd_power+0xcc/0x5f0
->   rockchip_pd_power_off+0x1c/0x4c
->   genpd_power_off+0x84/0x120
->   genpd_power_off+0x1b4/0x260
->   genpd_power_off_work_fn+0x38/0x58
->   process_scheduled_works+0x194/0x2c4
->   worker_thread+0x2ac/0x3d8
->   kthread+0x104/0x124
->   ret_from_fork+0x10/0x20
->   SMP: stopping secondary CPUs
->   Kernel Offset: disabled
->   CPU features: 0x3000000,000e0005,40230521,0400720b
->   Memory Limit: none
->   ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
-> 
-> Chaoyi pointed out the PD_VCODEC is the parent of PD_RKVDEC0/1 and PD_VENC0/1, so checking
-> the PD_VCODEC is enough.
-> 
-> [1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.casanova@collabora.com/
-> Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-> 
-> ---
-> 
-> Changes in v3:
-> - drop tags
-> - rework it for just changing PD_VCODEC(chaoyi)
-> 
-> Changes in v2:
-> - collect tags
-> - correct TRM section(Sebastian)
-> 
->  drivers/pmdomain/rockchip/pm-domains.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Reviewed-by: Chaoyi Chen <chaoyi.chen@rock-chips.com> 
+efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
+and EFI_BOOT_SERVICES_DATA using memblock_free_late().
 
-> diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
-> index 997e93c..44d3484 100644
-> --- a/drivers/pmdomain/rockchip/pm-domains.c
-> +++ b/drivers/pmdomain/rockchip/pm-domains.c
-> @@ -1311,7 +1311,7 @@ static const struct rockchip_domain_info rk3576_pm_domains[] = {
->  static const struct rockchip_domain_info rk3588_pm_domains[] = {
->  	[RK3588_PD_GPU]		= DOMAIN_RK3588("gpu",     0x0, BIT(0),  0,       0x0, 0,       BIT(1),  0x0, BIT(0),  BIT(0),  false, true),
->  	[RK3588_PD_NPU]		= DOMAIN_RK3588("npu",     0x0, BIT(1),  BIT(1),  0x0, 0,       0,       0x0, 0,       0,       false, true),
-> -	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, false),
-> +	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, true),
->  	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
->  	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
->  	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
+There are two issue with that: memblock_free_late() should be used for
+memory allocated with memblock_alloc() while the memory reserved with
+memblock_reserve() should be freed with free_reserved_area().
 
+More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+efi_free_boot_services() is called before deferred initialization of the
+memory map is complete.
+
+Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
+RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+
+If the freed memory resides in the areas that memory map for them is
+still uninitialized, they won't be actually freed because
+memblock_free_late() calls memblock_free_pages() and the latter skips
+uninitialized pages.
+
+Using free_reserved_area() at this point is also problematic because
+__free_page() accesses the buddy of the freed page and that again might
+end up in uninitialized part of the memory map.
+
+Delaying the entire efi_free_boot_services() could be problematic
+because in addition to freeing boot services memory it updates
+efi.memmap without any synchronization and that's undesirable late in
+boot when there is concurrency.
+
+More robust approach is to only defer freeing of the EFI boot services
+memory.
+
+Split efi_free_boot_services() in two. First efi_unmap_boot_services()
+collects ranges that should be freed into an array then
+efi_free_boot_services() later frees them after deferred init is complete.
+
+Link: https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
+Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after switching to virtual mode")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+---
+
+v1: https://lore.kernel.org/all/20260223075219.2348035-1-rppt@kernel.org
+* update the commit message with correct function names (Ben)
+
+ arch/x86/include/asm/efi.h          |  2 +-
+ arch/x86/platform/efi/efi.c         |  2 +-
+ arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
+ drivers/firmware/efi/mokvar-table.c |  2 +-
+ 4 files changed, 55 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index f227a70ac91f..51b4cdbea061 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
+ extern int __init efi_reuse_config(u64 tables, int nr_tables);
+ extern void efi_delete_dummy_variable(void);
+ extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
+-extern void efi_free_boot_services(void);
++extern void efi_unmap_boot_services(void);
+ 
+ void arch_efi_call_virt_setup(void);
+ void arch_efi_call_virt_teardown(void);
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index d00c6de7f3b7..d84c6020dda1 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
+ 	}
+ 
+ 	efi_check_for_embedded_firmwares();
+-	efi_free_boot_services();
++	efi_unmap_boot_services();
+ 
+ 	if (!efi_is_mixed())
+ 		efi_native_runtime_setup();
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index 553f330198f2..35caa5746115 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
+ 
+ 		/*
+ 		 * Because the following memblock_reserve() is paired
+-		 * with memblock_free_late() for this region in
++		 * with free_reserved_area() for this region in
+ 		 * efi_free_boot_services(), we must be extremely
+ 		 * careful not to reserve, and subsequently free,
+ 		 * critical regions of memory (like the kernel image) or
+@@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
+ 		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
+ }
+ 
+-void __init efi_free_boot_services(void)
++struct efi_freeable_range {
++	u64 start;
++	u64 end;
++};
++
++static struct efi_freeable_range *ranges_to_free;
++
++void __init efi_unmap_boot_services(void)
+ {
+ 	struct efi_memory_map_data data = { 0 };
+ 	efi_memory_desc_t *md;
+ 	int num_entries = 0;
++	int idx = 0;
++	size_t sz;
+ 	void *new, *new_md;
+ 
+ 	/* Keep all regions for /sys/kernel/debug/efi */
+ 	if (efi_enabled(EFI_DBG))
+ 		return;
+ 
++	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
++	ranges_to_free = kzalloc(sz, GFP_KERNEL);
++	if (!ranges_to_free) {
++		pr_err("Failed to allocate storage for freeable EFI regions\n");
++		return;
++	}
++
+ 	for_each_efi_memory_desc(md) {
+ 		unsigned long long start = md->phys_addr;
+ 		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
+@@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
+ 			start = SZ_1M;
+ 		}
+ 
+-		memblock_free_late(start, size);
++		/*
++		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
++		 * map are still not initialized and we can't reliably free
++		 * memory here.
++		 * Queue the ranges to free at a later point.
++		 */
++		ranges_to_free[idx].start = start;
++		ranges_to_free[idx].end = start + size;
++		idx++;
+ 	}
+ 
+ 	if (!num_entries)
+@@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
+ 	}
+ }
+ 
++static int __init efi_free_boot_services(void)
++{
++	struct efi_freeable_range *range = ranges_to_free;
++	unsigned long freed = 0;
++
++	if (!ranges_to_free)
++		return 0;
++
++	while (range->start) {
++		void *start = phys_to_virt(range->start);
++		void *end = phys_to_virt(range->end);
++
++		free_reserved_area(start, end, -1, NULL);
++		freed += (end - start);
++		range++;
++	}
++	kfree(ranges_to_free);
++
++	if (freed)
++		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
++
++	return 0;
++}
++arch_initcall(efi_free_boot_services);
++
+ /*
+  * A number of config table entries get remapped to virtual addresses
+  * after entering EFI virtual mode. However, the kexec kernel requires
+diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
+index 4ff0c2926097..6842aa96d704 100644
+--- a/drivers/firmware/efi/mokvar-table.c
++++ b/drivers/firmware/efi/mokvar-table.c
+@@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
+  * as an alternative to ordinary EFI variables, due to platform-dependent
+  * limitations. The memory occupied by this table is marked as reserved.
+  *
+- * This routine must be called before efi_free_boot_services() in order
++ * This routine must be called before efi_unmap_boot_services() in order
+  * to guarantee that it can mark the table as reserved.
+  *
+  * Implicit inputs:
+
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
 -- 
-Best, 
-Chaoyi
+2.51.0
+
 
