@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id RMIcKRZSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:22 +0100
+	id WGTAGdZWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F3C18F1CA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41801903EA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4902730B214E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC5FD323D3F8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199E922579E;
-	Wed, 25 Feb 2026 01:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B3A26FA60;
+	Wed, 25 Feb 2026 01:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vh6Z0Psz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xk0EPhMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10BA1D5ABA;
-	Wed, 25 Feb 2026 01:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897A82701B6;
+	Wed, 25 Feb 2026 01:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983201; cv=none; b=oBZdqiEzIUU/NxKn5DF/4+nr3xGpglKYWhyGcRENsITW1dBXuexT6OMyHHSnMBkaJaLT01xPPdCv8fbOmvbS1U0s+t31z7Z8MJ69XrJZlbbKLk02y06nKUSY4wFgjwIoCtGt2zxLch330iyqb3g/lM3y/kmP/p/UEbfeDLspk58=
+	t=1771983849; cv=none; b=rae4woIbMJL/gSqqe7U9STy9vTJu1DSLn5HGWGZgESHr7lbxmSGBFUkaXbpaYp0imtvSP0nrEncWFKTSIMRK5e/2HmkTsj+GMROvmqcOu16sCz0ZC2UMBWkWX251ONQe4NaQBkGGlmqwFbO4DGrvidDdXt405lqDR4cOYKr7yFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983201; c=relaxed/simple;
-	bh=l9uJwCHH54fRNWA2UWKuEtKPxE6cX7b82kmO36m2q6Q=;
+	s=arc-20240116; t=1771983849; c=relaxed/simple;
+	bh=neOmN+GH3w1/7ZNHe2obiIp+ak9Jj63YetSLeE2arxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hws6RSYfYKWZjDI1NuN8loY9oKVxTvQaLZG1k63ymiYwHOkQKHmfQS2Re7oDDIpnFUO8QKHSflsc7YxH7t0E24S6dWJxoYQvw0uhaTkZiNzGN8pueWGYEwrBEoaG7649URw/8ObE4tklyFECtDNtOiJimHlSZqzSzCxOPXokB4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vh6Z0Psz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9552DC116D0;
-	Wed, 25 Feb 2026 01:33:21 +0000 (UTC)
+	 MIME-Version; b=jPd3RBp9j5hTIXU+oqy6SBoXTnH8mjqyFa3wBQt7NCnA8yaWzhiMZlgW8iDT6iAybW8gvPiQqUbRVMmWZwND5aqxNWmDme8VLYOZyvpcma9+wF+R39ORry6iiVSwenRFac1RZHYG0EyDhkjL7JOu/cp2Ivlh4zNi966XOuDoUWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xk0EPhMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B9FC116D0;
+	Wed, 25 Feb 2026 01:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983201;
-	bh=l9uJwCHH54fRNWA2UWKuEtKPxE6cX7b82kmO36m2q6Q=;
+	s=korg; t=1771983849;
+	bh=neOmN+GH3w1/7ZNHe2obiIp+ak9Jj63YetSLeE2arxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vh6Z0Psz+EeHWCB63H5LVyj23T1PQbJUoHA4fKD+RRdziOesUgyFX/vl2Mw0ENKtB
-	 rrz/yV/e0BR/weKoTmFxHeJyMjUACob1hPSNRPPKXxSKJFTf9wk7GEN7Fc1s2S5qAt
-	 XMd2x8cC24DLAqQJ7J/sT2iP3pIL6URXi7GvAaPQ=
+	b=xk0EPhMRAktTWr+9bCfHPphqR5o6oep1sIjhkpssMId/tze6Kulb0SgFWTVWpUKa6
+	 1jgFxgKOreOirBKieVGxsGmurMWp3lngdf8L82IBj4IdJDNe542rHu1lANdgHcQ7XF
+	 n9ccYeQCX67akqSo04G3F72eHVMV+1vj100W5Thc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	"Tycho Andersen (AMD)" <tycho@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 307/781] accel/amdxdna: Fix incorrect DPM level after suspend/resume
+Subject: [PATCH 6.18 090/641] crypto: ccp - narrow scope of snp_range_list
 Date: Tue, 24 Feb 2026 17:16:56 -0800
-Message-ID: <20260225012407.238103143@linuxfoundation.org>
+Message-ID: <20260225012351.281241531@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,97 +71,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218949-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218388-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 34F3C18F1CA
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C41801903EA
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Tycho Andersen (AMD) <tycho@kernel.org>
 
-[ Upstream commit d19d963d2a4acb5bbf03e25733ba565a7f6e1422 ]
+[ Upstream commit dc8ccab15081efc4f2c5a9fc7b209cd641d29177 ]
 
-The suspend routine sets the DPM level to 0, which unintentionally
-overwrites the previously saved DPM level. As a result, the device always
-resumes with DPM level 0 instead of restoring the original value.
+snp_range_list is only used in __sev_snp_init_locked() in the SNP_INIT_EX
+case, move the declaration there and add a __free() cleanup helper for it
+instead of waiting until shutdown.
 
-Fix this by ensuring the suspend path does not overwrite the saved DPM
-level, allowing the correct DPM level to be restored during resume.
-
-Fixes: f4d7b8a6bc8c ("accel/amdxdna: Enhance power management settings")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20260204171048.3165580-1-lizhi.hou@amd.com
+Fixes: 1ca5614b84ee ("crypto: ccp: Add support to initialize the AMD-SP for SEV-SNP")
+Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
+Signed-off-by: Tycho Andersen (AMD) <tycho@kernel.org>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_pm.c  | 3 +++
- drivers/accel/amdxdna/aie2_smu.c | 2 --
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/crypto/ccp/sev-dev.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/aie2_pm.c b/drivers/accel/amdxdna/aie2_pm.c
-index afcd6d4683e56..579b8be13b180 100644
---- a/drivers/accel/amdxdna/aie2_pm.c
-+++ b/drivers/accel/amdxdna/aie2_pm.c
-@@ -36,6 +36,8 @@ int aie2_pm_set_dpm(struct amdxdna_dev_hdl *ndev, u32 dpm_level)
- 		return ret;
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index 3c6ee8b4e4487..5fdba0fe4acce 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -119,13 +119,6 @@ static size_t sev_es_tmr_size = SEV_TMR_SIZE;
+ #define NV_LENGTH (32 * 1024)
+ static void *sev_init_ex_buffer;
  
- 	ret = ndev->priv->hw_ops.set_dpm(ndev, dpm_level);
-+	if (!ret)
-+		ndev->dpm_level = dpm_level;
- 	amdxdna_pm_suspend_put(ndev->xdna);
+-/*
+- * SEV_DATA_RANGE_LIST:
+- *   Array containing range of pages that firmware transitions to HV-fixed
+- *   page state.
+- */
+-static struct sev_data_range_list *snp_range_list;
+-
+ static void __sev_firmware_shutdown(struct sev_device *sev, bool panic);
  
- 	return ret;
-@@ -65,6 +67,7 @@ int aie2_pm_init(struct amdxdna_dev_hdl *ndev)
- 	ret = ndev->priv->hw_ops.set_dpm(ndev, ndev->max_dpm_level);
- 	if (ret)
- 		return ret;
-+	ndev->dpm_level = ndev->max_dpm_level;
+ static int snp_shutdown_on_panic(struct notifier_block *nb,
+@@ -1365,6 +1358,7 @@ static int snp_filter_reserved_mem_regions(struct resource *rs, void *arg)
  
- 	ret = aie2_pm_set_clk_gating(ndev, AIE2_CLK_GATING_ENABLE);
- 	if (ret)
-diff --git a/drivers/accel/amdxdna/aie2_smu.c b/drivers/accel/amdxdna/aie2_smu.c
-index 2d195e41f83dd..d8c31924e501b 100644
---- a/drivers/accel/amdxdna/aie2_smu.c
-+++ b/drivers/accel/amdxdna/aie2_smu.c
-@@ -84,7 +84,6 @@ int npu1_set_dpm(struct amdxdna_dev_hdl *ndev, u32 dpm_level)
+ static int __sev_snp_init_locked(int *error, unsigned int max_snp_asid)
+ {
++	struct sev_data_range_list *snp_range_list __free(kfree) = NULL;
+ 	struct psp_device *psp = psp_master;
+ 	struct sev_data_snp_init_ex data;
+ 	struct sev_device *sev;
+@@ -2753,11 +2747,6 @@ static void __sev_firmware_shutdown(struct sev_device *sev, bool panic)
+ 		sev_init_ex_buffer = NULL;
  	}
  
- 	ndev->hclk_freq = freq;
--	ndev->dpm_level = dpm_level;
- 	ndev->max_tops = 2 * ndev->total_col;
- 	ndev->curr_tops = ndev->max_tops * freq / 1028;
- 
-@@ -114,7 +113,6 @@ int npu4_set_dpm(struct amdxdna_dev_hdl *ndev, u32 dpm_level)
- 
- 	ndev->npuclk_freq = ndev->priv->dpm_clk_tbl[dpm_level].npuclk;
- 	ndev->hclk_freq = ndev->priv->dpm_clk_tbl[dpm_level].hclk;
--	ndev->dpm_level = dpm_level;
- 	ndev->max_tops = NPU4_DPM_TOPS(ndev, ndev->max_dpm_level);
- 	ndev->curr_tops = NPU4_DPM_TOPS(ndev, dpm_level);
+-	if (snp_range_list) {
+-		kfree(snp_range_list);
+-		snp_range_list = NULL;
+-	}
+-
+ 	__sev_snp_shutdown_locked(&error, panic);
+ }
  
 -- 
 2.51.0
