@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIxzFG1YnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218996-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:25 +0100
+	id uFTBBNFTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE382190711
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6FB18FA48
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B1E4631182C3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 789F031D1A67
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D113286D7E;
-	Wed, 25 Feb 2026 01:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF9D242D9B;
+	Wed, 25 Feb 2026 01:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IU8KU9QN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKcc1hbc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C6724337B;
-	Wed, 25 Feb 2026 01:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35F61EB5E1;
+	Wed, 25 Feb 2026 01:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983905; cv=none; b=AbgMdvN6uRjps9JmiTk6/yyeOYKXxY0jc5fuyjRj16FrnWV7K/Qkv0ZO7VOSlFjvvJtehXeFtxqLF1y4E0ntMmqO2ZO3T8/CnyZOcHieFQ+BrzaOuQ+r3tnNSdyObJ0NBPnTi5s/1Y3cwfIhhHR8aywLKDiqHiih5MBTjbjE1MQ=
+	t=1771983249; cv=none; b=R7YNqDwx/txxr1hkwE+R+1MJUCDmCqc6gwgKNlEpMTgC8kqRDUkcJrz1rlKlIgrvA5hNZ8SlC0OcqZim3LoT+iGfzDaP1Ria2/gyvSgfqHaknWcD7hEYORwatDHO2hebImuJovkID36cN0CRrQigoW1aJNdg4CZnsC6J8dpDI8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983905; c=relaxed/simple;
-	bh=3J1tHiYjRPOWPC6DGnqgO2/lTIDIkAB114urZKgIEoA=;
+	s=arc-20240116; t=1771983249; c=relaxed/simple;
+	bh=UVXqPfrAuRglfxJNmDKPMabbqVDURUVZhtpdDMVuxfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHDlO6Pk985EV18ziGvMgwshQsJj2EgyzGmv8PrEhzYWjKz6cePZr/9tMjHRtrWdwgcFEOPpAXVk5VRexy2VOfT4Kn8ZNcuznOFMtVOI4+fhJHPww7cdYn8INVdUATKqg+5RT1PgfNt2Tf58SWYv3JTDK+pVFxbkIwfVZGpLobQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IU8KU9QN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B437AC116D0;
-	Wed, 25 Feb 2026 01:45:04 +0000 (UTC)
+	 MIME-Version; b=Fu1+u/Zf6bFla4S7OLdJO3orF5pKpIguFDVAITcBtUgD4yBrpFLJnhytgn6wiJGpgBECHGLmueYM8jJWXW8wdn+Av5AkkLL8R8j0O3hsLhgAsviUr7rEGeASpHspe+IYz6envbltFUx8rMSZBPI/j+edJ7ppQEvQi4IGhf7IZj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKcc1hbc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA80C116D0;
+	Wed, 25 Feb 2026 01:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983904;
-	bh=3J1tHiYjRPOWPC6DGnqgO2/lTIDIkAB114urZKgIEoA=;
+	s=korg; t=1771983249;
+	bh=UVXqPfrAuRglfxJNmDKPMabbqVDURUVZhtpdDMVuxfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IU8KU9QN5Qfcywye9I0UmYmMMiXtpJ0Dyfbyps8CDHfTjI1YbM6Kv7WPZ/pjLizy/
-	 aVrR4vI72qhjwtCtlfWzgfKgcVIuIpMj73YuRwEWlAskKv6HXsDl0P+Me6TiAlyh/P
-	 ebsms42+0GkB/OjWf4b6aFQ1xbldwUylq8KLs5Ek=
+	b=WKcc1hbcO3C5BnKLmqut/2OqXdlwG5r2usT100nHZxUOYQ8zYks3QnqYb5soqb/e4
+	 HtrOhhxP3apY9bilZDgrnyk/K6aF5j5+lByyRhvGe83THFgHWWVWB/16tu6HdQgrXp
+	 iKvhCKVfeRUiK/iN7eMM+YShBrsByg9CTs83XN4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Price <steven.price@arm.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 172/641] drm/panthor: Fix the logic that decides when to stop ticking
+Subject: [PATCH 6.19 389/781] tcp: accecn: handle unexpected AccECN negotiation feedback
 Date: Tue, 24 Feb 2026 17:18:18 -0800
-Message-ID: <20260225012353.210183235@linuxfoundation.org>
+Message-ID: <20260225012409.235415668@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,159 +70,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,gmail.com,collabora.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218996-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218429-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,collabora.com:email,msgid.link:url,arm.com:email]
-X-Rspamd-Queue-Id: AE382190711
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nokia-bell-labs.com:email]
+X-Rspamd-Queue-Id: AC6FB18FA48
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-[ Upstream commit 61d9a43d70dc3e1709ecd14a34f6d5f01e21dfc9 ]
+[ Upstream commit c5ff6b83715919767f181f13e992b5055812a194 ]
 
-When we have multiple active groups with the same priority, we need to
-keep ticking for the priority rotation to take place. If we don't do
-that, we might starve slots with lower priorities.
+According to Sections 3.1.2 and 3.1.3 of AccECN spec (RFC9768).
 
-It's annoying to deal with that in tick_ctx_update_resched_target(),
-so let's add a ::stop_tick field to the tick context which is
-initialized to true, and downgraded to false as soon as we detect
-something that requires to tick to happen. This way we can complement
-the current logic with extra conditions if needed.
+In Section 3.1.2, it says an AccECN implementation has no need to
+recognize or support the Server response labelled 'Nonce' or ECN-nonce
+feedback more generally, as RFC 3540 has been reclassified as Historic.
+AccECN is compatible with alternative ECN feedback integrity approaches
+to the nonce. The SYN/ACK labelled 'Nonce' with (AE,CWR,ECE) = (1,0,1)
+is reserved for future use. A TCP Client (A) that receives such a SYN/ACK
+follows the procedure for forward compatibility given in Section 3.1.3.
 
-v2:
-- Add R-b
+Then in Section 3.1.3, it says if a TCP Client has sent a SYN requesting
+AccECN feedback with (AE,CWR,ECE) = (1,1,1) then receives a SYN/ACK with
+the currently reserved combination (AE,CWR,ECE) = (1,0,1) but it does not
+have logic specific to such a combination, the Client MUST enable AccECN
+mode as if the SYN/ACK onfirmed that the Server supported AccECN and as
+if it fed back that the IP-ECN field on the SYN had arrived unchanged.
 
-v3:
-- Drop panthor_sched_tick_ctx::min_priority (no longer relevant)
-- Collect R-b
-
-Fixes: de8548813824 ("drm/panthor: Add the scheduler logical block")
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Chia-I Wu <olvaffe@gmail.com>
-Link: https://patch.msgid.link/20251128094839.3856402-7-boris.brezillon@collabora.com
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Fixes: 3cae34274c79 ("tcp: accecn: AccECN negotiation").
+Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260131222515.8485-7-chia-yu.chang@nokia-bell-labs.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 44 ++++++++++---------------
- 1 file changed, 17 insertions(+), 27 deletions(-)
+ include/net/tcp_ecn.h | 44 ++++++++++++++++++++++++++++++-------------
+ 1 file changed, 31 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 3d4ac73999825..368e7f3449105 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -1902,10 +1902,10 @@ struct panthor_sched_tick_ctx {
- 	struct list_head groups[PANTHOR_CSG_PRIORITY_COUNT];
- 	u32 idle_group_count;
- 	u32 group_count;
--	enum panthor_csg_priority min_priority;
- 	struct panthor_vm *vms[MAX_CS_PER_CSG];
- 	u32 as_count;
- 	bool immediate_tick;
-+	bool stop_tick;
- 	u32 csg_upd_failed_mask;
- };
+diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
+index 2e1637edf1d3c..a709fb1756eb7 100644
+--- a/include/net/tcp_ecn.h
++++ b/include/net/tcp_ecn.h
+@@ -473,6 +473,26 @@ static inline u8 tcp_accecn_option_init(const struct sk_buff *skb,
+ 	return TCP_ACCECN_OPT_COUNTER_SEEN;
+ }
  
-@@ -1970,17 +1970,21 @@ tick_ctx_pick_groups_from_list(const struct panthor_scheduler *sched,
- 		if (!owned_by_tick_ctx)
- 			group_get(group);
- 
--		list_move_tail(&group->run_node, &ctx->groups[group->priority]);
- 		ctx->group_count++;
++static inline void tcp_ecn_rcv_synack_accecn(struct sock *sk,
++					     const struct sk_buff *skb, u8 dsf)
++{
++	struct tcp_sock *tp = tcp_sk(sk);
 +
-+		/* If we have more than one active group with the same priority,
-+		 * we need to keep ticking to rotate the CSG priority.
-+		 */
- 		if (group_is_idle(group))
- 			ctx->idle_group_count++;
-+		else if (!list_empty(&ctx->groups[group->priority]))
-+			ctx->stop_tick = false;
++	tcp_ecn_mode_set(tp, TCP_ECN_MODE_ACCECN);
++	tp->syn_ect_rcv = dsf & INET_ECN_MASK;
++	/* Demand Accurate ECN option in response to the SYN on the SYN/ACK
++	 * and the TCP server will try to send one more packet with an AccECN
++	 * Option at a later point during the connection.
++	 */
++	if (tp->rx_opt.accecn &&
++	    tp->saw_accecn_opt < TCP_ACCECN_OPT_COUNTER_SEEN) {
++		u8 saw_opt = tcp_accecn_option_init(skb, tp->rx_opt.accecn);
 +
-+		list_move_tail(&group->run_node, &ctx->groups[group->priority]);
- 
- 		if (i == ctx->as_count)
- 			ctx->vms[ctx->as_count++] = group->vm;
- 
--		if (ctx->min_priority > group->priority)
--			ctx->min_priority = group->priority;
++		tcp_accecn_saw_opt_fail_recv(tp, saw_opt);
++		tp->accecn_opt_demand = 2;
++	}
++}
++
+ /* See Table 2 of the AccECN draft */
+ static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb,
+ 				      const struct tcphdr *th, u8 ip_dsfield)
+@@ -495,13 +515,11 @@ static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb
+ 		tcp_ecn_mode_set(tp, TCP_ECN_DISABLED);
+ 		break;
+ 	case 0x1:
+-	case 0x5:
+ 		/* +========+========+============+=============+
+ 		 * | A      | B      |  SYN/ACK   |  Feedback   |
+ 		 * |        |        |    B->A    |  Mode of A  |
+ 		 * |        |        | AE CWR ECE |             |
+ 		 * +========+========+============+=============+
+-		 * | AccECN | Nonce  | 1   0   1  | (Reserved)  |
+ 		 * | AccECN | ECN    | 0   0   1  | Classic ECN |
+ 		 * | Nonce  | AccECN | 0   0   1  | Classic ECN |
+ 		 * | ECN    | AccECN | 0   0   1  | Classic ECN |
+@@ -509,20 +527,20 @@ static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb
+ 		 */
+ 		if (tcp_ca_no_fallback_rfc3168(sk))
+ 			tcp_ecn_mode_set(tp, TCP_ECN_DISABLED);
+-		else if (tcp_ecn_mode_pending(tp))
+-			/* Downgrade from AccECN, or requested initially */
++		else
+ 			tcp_ecn_mode_set(tp, TCP_ECN_MODE_RFC3168);
+ 		break;
+-	default:
+-		tcp_ecn_mode_set(tp, TCP_ECN_MODE_ACCECN);
+-		tp->syn_ect_rcv = ip_dsfield & INET_ECN_MASK;
+-		if (tp->rx_opt.accecn &&
+-		    tp->saw_accecn_opt < TCP_ACCECN_OPT_COUNTER_SEEN) {
+-			u8 saw_opt = tcp_accecn_option_init(skb, tp->rx_opt.accecn);
 -
- 		if (tick_ctx_is_full(sched, ctx))
- 			return;
- 	}
-@@ -2024,7 +2028,7 @@ tick_ctx_init(struct panthor_scheduler *sched,
- 	memset(ctx, 0, sizeof(*ctx));
- 	csgs_upd_ctx_init(&upd_ctx);
- 
--	ctx->min_priority = PANTHOR_CSG_PRIORITY_COUNT;
-+	ctx->stop_tick = true;
- 	for (i = 0; i < ARRAY_SIZE(ctx->groups); i++) {
- 		INIT_LIST_HEAD(&ctx->groups[i]);
- 		INIT_LIST_HEAD(&ctx->old_groups[i]);
-@@ -2336,32 +2340,18 @@ static u64
- tick_ctx_update_resched_target(struct panthor_scheduler *sched,
- 			       const struct panthor_sched_tick_ctx *ctx)
- {
--	/* We had space left, no need to reschedule until some external event happens. */
--	if (!tick_ctx_is_full(sched, ctx))
--		goto no_tick;
--
--	/* If idle groups were scheduled, no need to wake up until some external
--	 * event happens (group unblocked, new job submitted, ...).
--	 */
--	if (ctx->idle_group_count)
--		goto no_tick;
-+	u64 resched_target;
- 
--	if (drm_WARN_ON(&sched->ptdev->base, ctx->min_priority >= PANTHOR_CSG_PRIORITY_COUNT))
-+	if (ctx->stop_tick)
- 		goto no_tick;
- 
--	/* If there are groups of the same priority waiting, we need to
--	 * keep the scheduler ticking, otherwise, we'll just wait for
--	 * new groups with higher priority to be queued.
--	 */
--	if (!list_empty(&sched->groups.runnable[ctx->min_priority])) {
--		u64 resched_target = sched->last_tick + sched->tick_period;
-+	resched_target = sched->last_tick + sched->tick_period;
- 
--		if (time_before64(sched->resched_target, sched->last_tick) ||
--		    time_before64(resched_target, sched->resched_target))
--			sched->resched_target = resched_target;
-+	if (time_before64(sched->resched_target, sched->last_tick) ||
-+	    time_before64(resched_target, sched->resched_target))
-+		sched->resched_target = resched_target;
- 
--		return sched->resched_target - sched->last_tick;
--	}
-+	return sched->resched_target - sched->last_tick;
- 
- no_tick:
- 	sched->resched_target = U64_MAX;
+-			tcp_accecn_saw_opt_fail_recv(tp, saw_opt);
+-			tp->accecn_opt_demand = 2;
++	case 0x5:
++		if (tcp_ecn_mode_pending(tp)) {
++			tcp_ecn_rcv_synack_accecn(sk, skb, ip_dsfield);
++			if (INET_ECN_is_ce(ip_dsfield)) {
++				tp->received_ce++;
++				tp->received_ce_pending++;
++			}
+ 		}
++		break;
++	default:
++		tcp_ecn_rcv_synack_accecn(sk, skb, ip_dsfield);
+ 		if (INET_ECN_is_ce(ip_dsfield) &&
+ 		    tcp_accecn_validate_syn_feedback(sk, ace,
+ 						     tp->syn_ect_snt)) {
 -- 
 2.51.0
 
