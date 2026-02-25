@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GB9bHeBYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218769-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:20 +0100
+	id UAPYC8minmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:20:41 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04DD419081B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F281933F7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:20:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B082D3202E82
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F212C31E045C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8202741C9;
-	Wed, 25 Feb 2026 01:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAFE2FF161;
+	Wed, 25 Feb 2026 06:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="px8Sn9kg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1/XY7H7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E663D26560A;
-	Wed, 25 Feb 2026 01:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF9F2D77F5;
+	Wed, 25 Feb 2026 06:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983641; cv=none; b=lrNT/27I+/LzyHYx4XD9/DSw031oXUQOjE9k501aR8uUcPXCXU84Yy7+BmZlYQ3Eh9ZY30twE7oFE8u/deHG0QjYTd6NZF66LHzZkEt1tSnFVp8NkeNpjIobTelcbVmGELk1bt471Stmwvxpx4PnH/U1V90ofeCMW7ww3H2bu84=
+	t=1772002720; cv=none; b=UO6+7q34h7U9ekezEWA1NOcp5urHKqCTg2L/LPXgmJNO0nNkTPlrCm26RU7wd2gBoxeiir+EQygTaHfeyGAlLEDBn/XRgQP1q9ZcPQlWzBAcn+In0T1nz5XR9+9DagBi3L23Q08joAZC6y3103glNm9ksP9vdY4/Vqa2dP3m51A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983641; c=relaxed/simple;
-	bh=qiqsdTmyQwU5G4YSFaHL/wB1SM0xM536phsWPuTLaos=;
+	s=arc-20240116; t=1772002720; c=relaxed/simple;
+	bh=E6+gq3WrAVQ9CSKeb3ZH6T1P4bZTzUV23JQeXsK97U4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lD5xaMR7djfCWf640NekBryGjAX6v+C9Ax2LOn3SjjCBxseB/G2fkxbg/Kv5VlZSzcwRMK+ROYR+4znRPl+uTejTDNYQZyD55ckQpwwPTp28B88007y2zvYmuA1puh1+rDiLbQzAZ9keBGbF7zYR08U1b3J8WY63Bx9LkWFRZgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=px8Sn9kg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7ACC116D0;
-	Wed, 25 Feb 2026 01:40:40 +0000 (UTC)
+	 MIME-Version; b=hlLe8ID4xQFFWjBsgH+e3Zpx/YNnoiwTcIgMlv2auUA2RbqD7ODZYhMLH+zIDUTDMMiginijUaZXigV/7hzt1uDq/N6EFF34DVnXvtHbiJIFzcrd+HR1/+QjTHDfXW7435+a6zvupmcDwEEh4Ag4AxVl2RdaRjP2slcPzn4abmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1/XY7H7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D0CC116D0;
+	Wed, 25 Feb 2026 06:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983640;
-	bh=qiqsdTmyQwU5G4YSFaHL/wB1SM0xM536phsWPuTLaos=;
+	s=korg; t=1772002720;
+	bh=E6+gq3WrAVQ9CSKeb3ZH6T1P4bZTzUV23JQeXsK97U4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=px8Sn9kgqgs5/jkdSrjRtRWxz4VXbQ+BAUnyYWEK6DUTEKIj0nUZ1IgtuKBuzj51x
-	 3nSLnBFpoxQUBHik2ZJ9H7weHBCxg/Z9G5jvJSBsyDB42T81ivzL9IkWo2KFAKOQQd
-	 tr+ijfsLDNVuG6z0Rw3/lWlQY+D0/bEMz/1bNjhc=
+	b=c1/XY7H7gr1UkYlKQh0s/lgjelWbv6e/CwVL43pKMkM9XqkdDbOSkLhiyeV3Ddr3C
+	 DPtrd+24byVpsaGSM5Y25rYivsDtI3rT/8J+TSvW04bywwTtbJ47fi+m1BF6DODApF
+	 DssJNdMwnfMCiTzJj/OXBPrqALIueTGdM0AJJuTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Ralf Lici <ralf@mandelbit.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Antonio Quartulli <antonio@openvpn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 729/781] drm/xe/mmio: Avoid double-adjust in 64-bit reads
+Subject: [PATCH 6.18 512/641] ovpn: fix VPN TX bytes counting
 Date: Tue, 24 Feb 2026 17:23:58 -0800
-Message-ID: <20260225012417.614296933@linuxfoundation.org>
+Message-ID: <20260225012400.928559741@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218769-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219445-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,71 +88,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 04DD419081B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,queasysnail.net:email,openvpn.net:email]
+X-Rspamd-Queue-Id: 54F281933F7
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Ralf Lici <ralf@mandelbit.com>
 
-[ Upstream commit 4a9b4e1fa52a6aaa1adbb7f759048df14afed54c ]
+[ Upstream commit b660b13d4c6379ca6360f24aaef8c5807fefd237 ]
 
-xe_mmio_read64_2x32() was adjusting register addresses and then
-calling xe_mmio_read32(), which applies the adjustment again.
-This may shift accesses twice if adj_offset < adj_limit. There is
-no issue currently, as for media gt, adj_offset > adj_limit, so
-the 2nd adjust will be a no-op. But it may not work in future.
+In ovpn_net_xmit, after GSO segmentation and segment processing, the
+first segment on the list is used to increment VPN TX statistics, which
+fails to account for any subsequent segments in the chain.
 
-To fix it, replace the adjusted-address comparison with a direct
-sanity check that ensures the MMIO address adjustment cutoff never
-falls within the 8-byte range of a 64-bit register. And let
-xe_mmio_read32() handle address translation.
+Fix this by accumulating the length of every segment that successfully
+passes skb_share_check into a tx_bytes variable. This ensures the peer
+statistics accurately reflect the total data volume sent, regardless of
+whether the original packet was segmented.
 
-v2: rewrite the sanity check in a more natural way. (Matt)
-v3: Add Fixes tag. (Jani)
-
-Fixes: 07431945d8ae ("drm/xe: Avoid 64-bit register reads")
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Link: https://patch.msgid.link/20260130165621.471408-2-shuicheng.lin@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit a30f999681126b128a43137793ac84b6a5b7443f)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 04ca14955f9a ("ovpn: store tunnel and transport statistics")
+Signed-off-by: Ralf Lici <ralf@mandelbit.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_mmio.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ovpn/io.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_mmio.c b/drivers/gpu/drm/xe/xe_mmio.c
-index 350dca1f09259..3d59440ec44dd 100644
---- a/drivers/gpu/drm/xe/xe_mmio.c
-+++ b/drivers/gpu/drm/xe/xe_mmio.c
-@@ -260,11 +260,11 @@ u64 xe_mmio_read64_2x32(struct xe_mmio *mmio, struct xe_reg reg)
- 	struct xe_reg reg_udw = { .addr = reg.addr + 0x4 };
- 	u32 ldw, udw, oldudw, retries;
+diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
+index f70c58b10599b..955c9a37e1f8d 100644
+--- a/drivers/net/ovpn/io.c
++++ b/drivers/net/ovpn/io.c
+@@ -355,6 +355,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	struct ovpn_priv *ovpn = netdev_priv(dev);
+ 	struct sk_buff *segments, *curr, *next;
+ 	struct sk_buff_head skb_list;
++	unsigned int tx_bytes = 0;
+ 	struct ovpn_peer *peer;
+ 	__be16 proto;
+ 	int ret;
+@@ -414,6 +415,8 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			continue;
+ 		}
  
--	reg.addr = xe_mmio_adjusted_addr(mmio, reg.addr);
--	reg_udw.addr = xe_mmio_adjusted_addr(mmio, reg_udw.addr);
--
--	/* we shouldn't adjust just one register address */
--	xe_tile_assert(mmio->tile, reg_udw.addr == reg.addr + 0x4);
-+	/*
-+	 * The two dwords of a 64-bit register can never straddle the offset
-+	 * adjustment cutoff.
-+	 */
-+	xe_tile_assert(mmio->tile, !in_range(mmio->adj_limit, reg.addr + 1, 7));
++		/* only count what we actually send */
++		tx_bytes += curr->len;
+ 		__skb_queue_tail(&skb_list, curr);
+ 	}
  
- 	oldudw = xe_mmio_read32(mmio, reg_udw);
- 	for (retries = 5; retries; --retries) {
+@@ -426,7 +429,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	}
+ 	skb_list.prev->next = NULL;
+ 
+-	ovpn_peer_stats_increment_tx(&peer->vpn_stats, skb_list.next->len);
++	ovpn_peer_stats_increment_tx(&peer->vpn_stats, tx_bytes);
+ 	ovpn_send(ovpn, skb_list.next, peer);
+ 
+ 	return NETDEV_TX_OK;
 -- 
 2.51.0
 
