@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BeCJg1TnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:29 +0100
+	id uNk1KS6fnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A93318F682
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058B4192E81
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F294A3070BD3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79084316E16A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884CB26561A;
-	Wed, 25 Feb 2026 01:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743562D3EEE;
+	Wed, 25 Feb 2026 06:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mufNaIF6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpV5sfbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C345248881;
-	Wed, 25 Feb 2026 01:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3535F2D77FF;
+	Wed, 25 Feb 2026 06:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983499; cv=none; b=DBWI/IB3Fj0B7FTVs0aIcMye39bzj4fyxPhLv6/qb1+zXyKsm9WDVT7vYuiaAJJZ1s9V5k8hNlpKQeCldHVP/V7kH+a2CL0X1WNDSsKTnaWuzPIKAfG6U0Fxq4HNosqYkf4IvhcEVC3JP8hFQBHL/pizlsQ+8kpq1OP2XrT0uoU=
+	t=1772002629; cv=none; b=sdzgBXI0XQyagJu5NthbSMDzrwYVaFvnqQ6z3PKJgjJEAx+hX9AQB25EjQWITdsTwvig0aHN2ZCumfFP2fvYcAZLzO42QlYq/S16mRGB+EoxzA5NZ9kEWOiWoCozYmdHOru3DljF6kOrl5gc2gviwJBZn8BQ7L8KJA0DiBRwS+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983499; c=relaxed/simple;
-	bh=PwIU2QL4nCLuXkww2/5ivuk0n/6oQyFgDMxM8ZS7DUQ=;
+	s=arc-20240116; t=1772002629; c=relaxed/simple;
+	bh=r7OjbhwFDjx2QAyb8042xX89N5/RH4NO74gAy0hoXVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HS77t3AYBRYx7il8RREsrI4l31YSAKzrqyZMzqE21d3osTkqmd1Bdh/hnhZsOSJXyyYcX8hS4643ELxOZjjUGvo+qSOYzMDz2QOPMYPJZbCMg5DdWTYIl8PaSz9T3C9bncm6WvAqs1a/eylmgiTYfLHpCunzVlrfcHEfDxrB894=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mufNaIF6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE8CC116D0;
-	Wed, 25 Feb 2026 01:38:19 +0000 (UTC)
+	 MIME-Version; b=Dn9Vf1h/lLXq8/2yW/1xN1r5Bzjk4/J8qey+HxsHvPK8O3+iSWIU3l37RqIxWydM5t4wtWvUb5p0SorLcOAC9A1JB3/RuomaaYrtJJrbdMYkdsiOUdcZS+JuFjDg/30vWPCEuW8C9wEsxwq/jonDKCMxi9j2nH0nOaMfk4QjQN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpV5sfbm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F96DC116D0;
+	Wed, 25 Feb 2026 06:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983499;
-	bh=PwIU2QL4nCLuXkww2/5ivuk0n/6oQyFgDMxM8ZS7DUQ=;
+	s=korg; t=1772002629;
+	bh=r7OjbhwFDjx2QAyb8042xX89N5/RH4NO74gAy0hoXVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mufNaIF6FkdHDJ2cfyejJ50HjT1trDFr1dOvOcF7eLXVd8KqVgQ/7qXdM5iXkUC9g
-	 NmrnJQlAC/6U0SZXLUrjwhVleTi0QxpAU43vpf5aKPKtm0J9twpXiP5QlFdTdmNzbK
-	 e6aYalUTBVn6l9wJeE+IDxAneydmZgIJtZqp7iHs=
+	b=PpV5sfbmWAWvz/8eqZOr4caaEln6FJqWV5SZmmkLWoEkgCFOWK3+SsELeiZaOfc1o
+	 tMMegfkveWeW9NrxbxkZ7joyFgp/PX7sf0NWJitXWOBTNtItu6S7S6WFEuQCKKH+TN
+	 vTZYuUKRWcVpHNQsqEJdqqWKv1AR5n/asaQCc8qA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 608/781] backlight: qcom-wled: Support ovp values for PMI8994
+Subject: [PATCH 6.18 391/641] scsi: smartpqi: Fix memory leak in pqi_report_phys_luns()
 Date: Tue, 24 Feb 2026 17:21:57 -0800
-Message-ID: <20260225012414.707385934@linuxfoundation.org>
+Message-ID: <20260225012358.051613886@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,125 +64,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218648-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219306-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mainlining.org:email]
-X-Rspamd-Queue-Id: 4A93318F682
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,msgid.link:url,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 058B4192E81
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit f29f972a6e7e3f187ea4d89b98a76c1981ca4d53 ]
+[ Upstream commit 41b37312bd9722af77ec7817ccf22d7a4880c289 ]
 
-WLED4 found in PMI8994 supports different ovp values.
+pqi_report_phys_luns() fails to release the rpl_list buffer when
+encountering an unsupported data format or when the allocation for
+rpl_16byte_wwid_list fails. These early returns bypass the cleanup logic,
+leading to memory leaks.
 
-Fixes: 6fc632d3e3e0 ("video: backlight: qcom-wled: Add PMI8994 compatible")
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Link: https://patch.msgid.link/20260116-pmi8950-wled-v3-2-e6c93de84079@mainlining.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Consolidate the error handling by adding an out_free_rpl_list label and use
+goto statements to ensure rpl_list is consistently freed on failure.
+
+Compile tested only. Issue found using a prototype static analysis tool and
+code review.
+
+Fixes: 28ca6d876c5a ("scsi: smartpqi: Add extended report physical LUNs")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Tested-by: Don Brace <don.brace@microchip.com>
+Acked-by: Don Brace <don.brace@microchip.com>
+Link: https://patch.msgid.link/20260131093641.1008117-1-zilin@seu.edu.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/qcom-wled.c | 41 +++++++++++++++++++++++++++--
- 1 file changed, 39 insertions(+), 2 deletions(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-index a63bb42c8f8b0..5decbd39b7899 100644
---- a/drivers/video/backlight/qcom-wled.c
-+++ b/drivers/video/backlight/qcom-wled.c
-@@ -1244,6 +1244,15 @@ static const struct wled_var_cfg wled4_ovp_cfg = {
- 	.size = ARRAY_SIZE(wled4_ovp_values),
- };
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 98e93900254cb..5a6e1bb57e7c8 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -1241,7 +1241,8 @@ static inline int pqi_report_phys_luns(struct pqi_ctrl_info *ctrl_info, void **b
+ 			dev_err(&ctrl_info->pci_dev->dev,
+ 				"RPL returned unsupported data format %u\n",
+ 				rpl_response_format);
+-			return -EINVAL;
++			rc = -EINVAL;
++			goto out_free_rpl_list;
+ 		} else {
+ 			dev_warn(&ctrl_info->pci_dev->dev,
+ 				"RPL returned extended format 2 instead of 4\n");
+@@ -1253,8 +1254,10 @@ static inline int pqi_report_phys_luns(struct pqi_ctrl_info *ctrl_info, void **b
  
-+static const u32 pmi8994_wled_ovp_values[] = {
-+	31000, 29500, 19400, 17800,
-+};
-+
-+static const struct wled_var_cfg pmi8994_wled_ovp_cfg = {
-+	.values = pmi8994_wled_ovp_values,
-+	.size = ARRAY_SIZE(pmi8994_wled_ovp_values),
-+};
-+
- static inline u32 wled5_ovp_values_fn(u32 idx)
- {
- 	/*
-@@ -1357,6 +1366,29 @@ static int wled_configure(struct wled *wled)
- 		},
- 	};
+ 	rpl_16byte_wwid_list = kmalloc(struct_size(rpl_16byte_wwid_list, lun_entries,
+ 						   num_physicals), GFP_KERNEL);
+-	if (!rpl_16byte_wwid_list)
+-		return -ENOMEM;
++	if (!rpl_16byte_wwid_list) {
++		rc = -ENOMEM;
++		goto out_free_rpl_list;
++	}
  
-+	const struct wled_u32_opts pmi8994_wled_opts[] = {
-+		{
-+			.name = "qcom,current-boost-limit",
-+			.val_ptr = &cfg->boost_i_limit,
-+			.cfg = &wled4_boost_i_limit_cfg,
-+		},
-+		{
-+			.name = "qcom,current-limit-microamp",
-+			.val_ptr = &cfg->string_i_limit,
-+			.cfg = &wled4_string_i_limit_cfg,
-+		},
-+		{
-+			.name = "qcom,ovp-millivolt",
-+			.val_ptr = &cfg->ovp,
-+			.cfg = &pmi8994_wled_ovp_cfg,
-+		},
-+		{
-+			.name = "qcom,switching-freq",
-+			.val_ptr = &cfg->switch_freq,
-+			.cfg = &wled3_switch_freq_cfg,
-+		},
-+	};
-+
- 	const struct wled_u32_opts wled5_opts[] = {
- 		{
- 			.name = "qcom,current-boost-limit",
-@@ -1423,8 +1455,13 @@ static int wled_configure(struct wled *wled)
- 		break;
+ 	put_unaligned_be32(num_physicals * sizeof(struct report_phys_lun_16byte_wwid),
+ 		&rpl_16byte_wwid_list->header.list_length);
+@@ -1275,6 +1278,10 @@ static inline int pqi_report_phys_luns(struct pqi_ctrl_info *ctrl_info, void **b
+ 	*buffer = rpl_16byte_wwid_list;
  
- 	case 4:
--		u32_opts = wled4_opts;
--		size = ARRAY_SIZE(wled4_opts);
-+		if (of_device_is_compatible(dev->of_node, "qcom,pmi8994-wled")) {
-+			u32_opts = pmi8994_wled_opts;
-+			size = ARRAY_SIZE(pmi8994_wled_opts);
-+		} else {
-+			u32_opts = wled4_opts;
-+			size = ARRAY_SIZE(wled4_opts);
-+		}
- 		*cfg = wled4_config_defaults;
- 		wled->wled_set_brightness = wled4_set_brightness;
- 		wled->wled_sync_toggle = wled3_sync_toggle;
+ 	return 0;
++
++out_free_rpl_list:
++	kfree(rpl_list);
++	return rc;
+ }
+ 
+ static inline int pqi_report_logical_luns(struct pqi_ctrl_info *ctrl_info, void **buffer)
 -- 
 2.51.0
 
