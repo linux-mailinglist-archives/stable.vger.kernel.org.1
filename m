@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-219393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAZGN4+inmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:19:43 +0100
+	id ID+2K21Tnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2AD193380
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:19:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7214718F846
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6FE330CA81A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AB050302CE89
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87183101DA;
-	Wed, 25 Feb 2026 06:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4540D26B2D7;
+	Wed, 25 Feb 2026 01:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pt0UVSap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OumA6HOk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF082D7393;
-	Wed, 25 Feb 2026 06:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095492741C9;
+	Wed, 25 Feb 2026 01:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002686; cv=none; b=KFkbNHKkCw8yGQEFE0Z2XLSNteE6aIVBQ5AbSPxTYeMxbY8D/99xJ/NkdpIbnDtPFBo5vaCc3LCMqhnf4zmzrE2QCMjdnxu/OvvrUc7FLGkDLiopC+22uq9L67hNAJbILeS4bhPqYFw/C6nBWVAsmj7LYz7Ph7nTFijxGYRiaRk=
+	t=1771983608; cv=none; b=oKHdEiaF9B5mzt84NDRyMaQuJ3fyfEhjP1a9h4UNGHcpM+2U6IdihrITjeCCiIJ6px0vvbqulgj3e0OijuLxM77otCqN1J4dzGFU9h2LphRCRNLA4el0F3YM/peUUQlXceaz41uaRVB+nZO4xj3mxYLEyxSFW1Ozoh8v7QB26pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002686; c=relaxed/simple;
-	bh=lWcjIVpaStuDZ55oJB+z/8ckS1+41InEr415H3HTiCU=;
+	s=arc-20240116; t=1771983608; c=relaxed/simple;
+	bh=P747ClMhdzPabwDoQA+SdXZisGkzxVOpqGgn6cO2vn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osiKLW6wacUrcRASvqmORyUXa/82dKTe/69ROtWYZ89SeTWQqhEvTZjskgMUy1y05hYdz5SjMOJjTGvo2Sds/VGI4DSlRyxdb0CfHyItTlUMR08S5tif304NKJqW0aveGmHvwy2rPnahJdpUN3rXy8GBG5NZjVyWW6Pn2pI34QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pt0UVSap; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C2BC116D0;
-	Wed, 25 Feb 2026 06:58:06 +0000 (UTC)
+	 MIME-Version; b=XxPLZlpju0sy9K4c9DMXy+ugwrvwZSmymv437fyZdM/wbExqIzITufXurHwR1boHeubGsSNRZLCBcl75JRIrMcrL+ucFLXuhQfJSpgskC30WBK4swLOWP9hnDuu4o/5oiwTKX55fXTCDyyAwOCCeWd38dAS1fE5TCzoveZBnTQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OumA6HOk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8849C116D0;
+	Wed, 25 Feb 2026 01:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002686;
-	bh=lWcjIVpaStuDZ55oJB+z/8ckS1+41InEr415H3HTiCU=;
+	s=korg; t=1771983607;
+	bh=P747ClMhdzPabwDoQA+SdXZisGkzxVOpqGgn6cO2vn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pt0UVSaplLA/NXfLH5dyX022NoI0GocKuUEz/AApjrHsmM2ioeVYHcqKwL2v5y8Xo
-	 9KgRF+xR/CAYV/7xhQWhzbVLvKYzRgAmAS8W1wfrJlSQND2KiHorlKvMJ2g3SVugco
-	 VQxLZSESJmZah0Drisouc0rTbsp02fYFhed3xZDo=
+	b=OumA6HOk/MXw/uzdMrUfyK8VK58+rrCHZLSflVC9CdKeytfuJlQlrc2GM+BeSFUaZ
+	 ZkYZMoaX1NxEvkdWpfWREOQZt3q4nxO6oRMPglSPDg9s0gDsKiwmMOXEMa6GP3JOZU
+	 F0NbKmswJnzWuQREMt2P8iEPAHifzET/0C66LFx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Marko <robert.marko@sartura.hr>,
-	Linus Walleij <linusw@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>,
+	Tyler Hicks <code@tyhicks.com>,
+	Ryan Lee <ryan.lee@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 478/641] mfd: simple-mfd-i2c: Add Delta TN48M CPLD support
+Subject: [PATCH 6.19 695/781] apparmor: return -ENOMEM in unpack_perms_table upon alloc failure
 Date: Tue, 24 Feb 2026 17:23:24 -0800
-Message-ID: <20260225012400.099554182@linuxfoundation.org>
+Message-ID: <20260225012416.803073605@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219393-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218741-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,78 +88,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1F2AD193380
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,tyhicks.com:email]
+X-Rspamd-Queue-Id: 7214718F846
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Marko <robert.marko@sartura.hr>
+From: Ryan Lee <ryan.lee@canonical.com>
 
-[ Upstream commit 8f34c1a64c5394d2b51d3fba197947dc4b0b48a0 ]
+[ Upstream commit 74b7105e53e80a4072bd3e1a50be7aa15e3f0a01 ]
 
-Delta TN48M switches have a Lattice CPLD that serves
-multiple purposes including being a GPIO expander.
+In policy_unpack.c:unpack_perms_table, the perms struct is allocated via
+kcalloc, with the position being reset if the allocation fails. However,
+the error path results in -EPROTO being retured instead of -ENOMEM. Fix
+this to return the correct error code.
 
-So, lets use the simple I2C MFD driver to provide the MFD core.
-
-Also add a virtual symbol which pulls in the simple-mfd-i2c driver and
-provide a common symbol on which the subdevice drivers can depend on.
-
-Fixes: b3dcb5de6209 ("gpio: Add Delta TN48M CPLD GPIO driver")
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Link: https://lore.kernel.org/20220131133049.77780-2-robert.marko@sartura.hr
-Link: https://lore.kernel.org/linux-gpio/20260112064950.3837737-1-rdunlap@infradead.org/
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260112-mfd-tn48m-v11-1-00c798d8cd2a@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reported-by: Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Fixes: fd1b2b95a2117 ("apparmor: add the ability for policy to specify a permission table")
+Reviewed-by: Tyler Hicks <code@tyhicks.com>
+Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/Kconfig          | 11 +++++++++++
- drivers/mfd/simple-mfd-i2c.c |  1 +
- 2 files changed, 12 insertions(+)
+ security/apparmor/policy_unpack.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 6cec1858947bf..55a9fea95195b 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -406,6 +406,17 @@ config MFD_CS47L92
- 	help
- 	  Support for Cirrus Logic CS42L92, CS47L92 and CS47L93 Smart Codecs
- 
-+config MFD_TN48M_CPLD
-+	tristate "Delta Networks TN48M switch CPLD driver"
-+	depends on I2C
-+	depends on ARCH_MVEBU || COMPILE_TEST
-+	select MFD_SIMPLE_MFD_I2C
-+	help
-+	  Select this option to enable support for Delta Networks TN48M switch
-+	  CPLD. It consists of reset and GPIO drivers. CPLD provides GPIOS-s
-+	  for the SFP slots as well as power supply related information.
-+	  SFP support depends on the GPIO driver being selected.
-+
- config PMIC_DA903X
- 	bool "Dialog Semiconductor DA9030/DA9034 PMIC Support"
- 	depends on I2C=y
-diff --git a/drivers/mfd/simple-mfd-i2c.c b/drivers/mfd/simple-mfd-i2c.c
-index 0a607a1e3ca1d..9f911afafc25e 100644
---- a/drivers/mfd/simple-mfd-i2c.c
-+++ b/drivers/mfd/simple-mfd-i2c.c
-@@ -110,6 +110,7 @@ static const struct simple_mfd_data spacemit_p1 = {
- };
- 
- static const struct of_device_id simple_mfd_i2c_of_match[] = {
-+	{ .compatible = "delta,tn48m-cpld" },
- 	{ .compatible = "fsl,ls1028aqds-fpga" },
- 	{ .compatible = "fsl,lx2160aqds-fpga" },
- 	{ .compatible = "fsl,lx2160ardb-fpga" },
+diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
+index 7523971e37d9c..dd602bd5fca99 100644
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -687,8 +687,10 @@ static ssize_t unpack_perms_table(struct aa_ext *e, struct aa_perms **perms)
+ 		if (!aa_unpack_array(e, NULL, &size))
+ 			goto fail_reset;
+ 		*perms = kcalloc(size, sizeof(struct aa_perms), GFP_KERNEL);
+-		if (!*perms)
+-			goto fail_reset;
++		if (!*perms) {
++			e->pos = pos;
++			return -ENOMEM;
++		}
+ 		for (i = 0; i < size; i++) {
+ 			if (!unpack_perm(e, version, &(*perms)[i]))
+ 				goto fail;
 -- 
 2.51.0
 
