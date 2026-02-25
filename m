@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wLyMKOxVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-219031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:44 +0100
+	id sAl0IgZTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E88F19015E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3C318F65C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0126B300646B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56E9D31D49ED
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B6128C864;
-	Wed, 25 Feb 2026 01:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A2F20C012;
+	Wed, 25 Feb 2026 01:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9MaWz0/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lH+9h3YH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E6628B4FD;
-	Wed, 25 Feb 2026 01:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA6918B0A;
+	Wed, 25 Feb 2026 01:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983946; cv=none; b=Us/0od1e6+u5fzi54H+omqcEqNlMGr98xcibqTTaPRaj5a7XRO98t4ZPqlqU/3fO4PnsLIN4aiST7uRFrneb9JdKHJcJRf1GFj61P9w8NRD7o80hFb5v7pr8IX0fLTlvkZoZIzUO0M8/XJDOHWyfjhcrrmqDFF/pnx7SsRJ2ecg=
+	t=1771983258; cv=none; b=U7z/GHUbWl7Q8Yi5orcuaVFbLTkoD5KeodIK0G+FIwSU7SKZVSzxgearMv/w+8T+vyw0EDVt4Y5FcPNsV7ifmE4lxoeKZI2eS6tCjB+69DlocijxPh8ubfAQJpIrdarQsUAUvBCPHFtow8g8Y9jLU7Wj2jZ47uwXerhpqdpnpOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983946; c=relaxed/simple;
-	bh=UOIwvfSlFhX3+hdsBbl0HW8J6qmM8YhYG2LQEStEY4c=;
+	s=arc-20240116; t=1771983258; c=relaxed/simple;
+	bh=dLOC8WtdoLCIqT4czpy/2SKgBCUBAF9t0uc7zTlO8uQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQ4Doz8C4qYJFRE6M5DJKTZw5RiQIzBjpIY39mTgkWLjROo7D2TZpK7+AdexAV262H25MwPkyOyB42rUZa8zNZNeXC8OfTxe59oPz6wqJzn7TZgN4ogTY+2UKmP7DIYXEUDILbSrocfTZdQn++feMMk0ExaaLDxhc93a4A6pBK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9MaWz0/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1564C116D0;
-	Wed, 25 Feb 2026 01:45:45 +0000 (UTC)
+	 MIME-Version; b=q9Nl/6I9sawp8CuuzETzvpNVq9eeDS+GtllWlc2hsFwS4nWa46Z/tUTpbdNsceqtIWZjVBpMv+TE4W9yFCQtIclnn1t2oEeB0YJ4/O8i5SQh660VofC6q8ajrdLlwWqL256pONgD7Xp3Yi1x2yv0m5/vfy1KTmPJCz+bRZ/n/24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lH+9h3YH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C34C116D0;
+	Wed, 25 Feb 2026 01:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983946;
-	bh=UOIwvfSlFhX3+hdsBbl0HW8J6qmM8YhYG2LQEStEY4c=;
+	s=korg; t=1771983258;
+	bh=dLOC8WtdoLCIqT4czpy/2SKgBCUBAF9t0uc7zTlO8uQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9MaWz0/zleVnvMYzVvy+uDt0PAqiIPz4bQvoJHv4cixY1ZlLfIZ04RRArr97ruhi
-	 Nnsdo0c9/iAOAVVKl38uosKrTfkaOEnxDxtEhMW4kTdiLyitOZGhp4I/TlFNZNE+re
-	 D8d9pqY+fVZKnf04v1cVNbqdJio2j0Otw3QH6Iug=
+	b=lH+9h3YHbh9+ZsMYKD0WycjZC/kkyQTNhhx7nvtziFD/sSAtvY1dWzjo+fP7DPI/b
+	 bYFwvBU5jaJm6BxCJUSBP0jOVsybl4l0HjIkCeaIoLo8AHWoBVZsAALPFasnbq6OHx
+	 Q2XgwAppXf43xhCsKjdre4BRsGNm+Tpx+bxdd074=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tuo Li <islituo@gmail.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 182/641] ASoC: SDCA: Allow sample width wild cards in set_usage()
-Date: Tue, 24 Feb 2026 17:18:28 -0800
-Message-ID: <20260225012353.431555808@linuxfoundation.org>
+Subject: [PATCH 6.19 400/781] of: unittest: fix possible null-pointer dereferences in of_unittest_property_copy()
+Date: Tue, 24 Feb 2026 17:18:29 -0800
+Message-ID: <20260225012409.516957176@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +67,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218437-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219031-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,cirrus.com:email]
-X-Rspamd-Queue-Id: 3E88F19015E
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 3F3C318F65C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Tuo Li <islituo@gmail.com>
 
-[ Upstream commit 87783532d34050e2bff6749a4fe9860e624a0540 ]
+[ Upstream commit d289cb7fcefe41a54d8f9c6d0e0947f5f82b15c6 ]
 
-The SDCA spec allows the sample rate and width to be wild cards, but the
-current implementation of set_usage() only checked for a wild card of
-the sample rate.
+This function first duplicates p1 and p2 into new, and then checks whether
+the duplication succeeds. However, if the duplication fails (e.g.,
+kzalloc() returns NULL in __of_prop_dup()), new will be NULL but is still
+dereferenced in __of_prop_free(). To ensure that the unit test continues to
+run even when duplication fails, add a NULL check before calling
+__of_prop_free().
 
-Fixes: 4ed357f72a0e ("ASoC: SDCA: Add hw_params() helper function")
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251216142204.183958-1-simont@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 1c5e3d9bf33b ("of: Add a helper to free property struct")
+Signed-off-by: Tuo Li <islituo@gmail.com>
+Link: https://patch.msgid.link/20260105071438.156186-1-islituo@gmail.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sdca/sdca_asoc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/unittest.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sdca/sdca_asoc.c b/sound/soc/sdca/sdca_asoc.c
-index 892b7c028faea..7e986870d48c5 100644
---- a/sound/soc/sdca/sdca_asoc.c
-+++ b/sound/soc/sdca/sdca_asoc.c
-@@ -1519,7 +1519,7 @@ static int set_usage(struct device *dev, struct regmap *regmap,
- 		unsigned int rate = sdca_range(range, SDCA_USAGE_SAMPLE_RATE, i);
- 		unsigned int width = sdca_range(range, SDCA_USAGE_SAMPLE_WIDTH, i);
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index 3b773aaf9d050..9c184e93f50c6 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -804,11 +804,13 @@ static void __init of_unittest_property_copy(void)
  
--		if ((!rate || rate == target_rate) && width == target_width) {
-+		if ((!rate || rate == target_rate) && (!width || width == target_width)) {
- 			unsigned int usage = sdca_range(range, SDCA_USAGE_NUMBER, i);
- 			unsigned int reg = SDW_SDCA_CTL(function->desc->adr,
- 							entity->id, sel, 0);
+ 	new = __of_prop_dup(&p1, GFP_KERNEL);
+ 	unittest(new && propcmp(&p1, new), "empty property didn't copy correctly\n");
+-	__of_prop_free(new);
++	if (new)
++		__of_prop_free(new);
+ 
+ 	new = __of_prop_dup(&p2, GFP_KERNEL);
+ 	unittest(new && propcmp(&p2, new), "non-empty property didn't copy correctly\n");
+-	__of_prop_free(new);
++	if (new)
++		__of_prop_free(new);
+ #endif
+ }
+ 
 -- 
 2.51.0
 
