@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218766-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HnrKeGenmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:01 +0100
+	id 2PG7Kd1YnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218766-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF53192DBC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A22019080E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54A0A3104B8E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 510833200A09
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C344830E85D;
-	Wed, 25 Feb 2026 06:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313BC26F293;
+	Wed, 25 Feb 2026 01:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/pO1rBS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAcSueXU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8769230E855;
-	Wed, 25 Feb 2026 06:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DA6243376;
+	Wed, 25 Feb 2026 01:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002708; cv=none; b=HbgNKZH996mYoGUqY5FUPm9vMXdLxZdICDXVJ+bQgbvm6ORybS+4nY4KpBT+XOTUNH+muJ51jCuFjwee5bXUU068JlDI8WHja0g3dGNv9qnyfum5LSGa8OCwFhuwwt9QK+wLdW9KhQ1oQVKJwBLHIg3dmXP0bWRqcoRPZyO891M=
+	t=1771983638; cv=none; b=IYPgoi/7zqr5dCpUPOpNEnK21wiPcKD6qJeHNDtSKPpzDo1Wph6XpIrtFwens/paewor1szf/NXD2M2egaed4AXz+K8+k5Nn6y6H6ci6mZwu6yWJuFr+jWXsuw2fjGmPVkSQm37FMXkA0e+9JQLfhoy8KB8VJfts1qEBrWOXT8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002708; c=relaxed/simple;
-	bh=XnsbEzyKI+ZDxhwR3IraOGN3FPULirJxZ8q/vFaJ/vY=;
+	s=arc-20240116; t=1771983638; c=relaxed/simple;
+	bh=wHNcfAXhMFRn/J6a5//eeDv4UfKL9qHvwG81aC0DzHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CeoZul0oGwwhMBq/XW5f9U80H3Cp0dgvkx36WCxOV9ZawJO/XBJruc63DXPHcORk/2+7u2S3hHYswSKXTnzw6vrPYuwnteLLY3+cF57cG9U9iA52l51UPW6l+xzNJusHCKd52UHN76B0EdiwH7eKkYDdk8AWdcC5Gn5zYgeOMT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/pO1rBS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E28C116D0;
-	Wed, 25 Feb 2026 06:58:28 +0000 (UTC)
+	 MIME-Version; b=CSME9IqApwNPLW9kqOjV3aUtTutkdBYMikYRVupUgsezDQbZWARxTQXx+YAtlYxILEuhqDfu5Exc4KVZXdjV3jBCqn0o6M23l4F9mXWtj1kxFP0Tuz2X6WxgSk7YXB4eAmpIC5/Oz8gi7r5IxGaMpGcmwvHmpJwAONMnH+vuXXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAcSueXU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66849C116D0;
+	Wed, 25 Feb 2026 01:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002708;
-	bh=XnsbEzyKI+ZDxhwR3IraOGN3FPULirJxZ8q/vFaJ/vY=;
+	s=korg; t=1771983637;
+	bh=wHNcfAXhMFRn/J6a5//eeDv4UfKL9qHvwG81aC0DzHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/pO1rBSIbgEagKdrKELO34VxNz8a5RIu618uH20HPyovKDznK5eYjGBU58GfG9A2
-	 PwcWbD+6zCvmTQ3Q9lnslB8j+/VleVwOfQ/KXMShmB+P+aaPg7V7cIRaO42xONTyRO
-	 Tck2389OblgOIgUnu8dB1ZPqGpVrWBobAKFIggLw=
+	b=sAcSueXU7EdfksYNqntAIeYJE86kNiOjrXuVya3V08mPvZLEyewpQZYV2zX5Tz5Oq
+	 LOLqcO8360j+ZMWnONcIk4lICGtzvgXfHTy2qFkFze9qF8JUMs8xIrHRhAubOAbVFs
+	 QLticck9IjRG3qUoNNHq+ky36N9IYljHM+GGLImM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 509/641] cpuidle: Skip governor when only one idle state is available
+Subject: [PATCH 6.19 726/781] s390/kexec: Make KEXEC_SIG available when CONFIG_MODULES=n
 Date: Tue, 24 Feb 2026 17:23:55 -0800
-Message-ID: <20260225012400.858957687@linuxfoundation.org>
+Message-ID: <20260225012417.542555360@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,87 +69,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219427-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218766-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3DF53192DBC
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1A22019080E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
+From: Alexander Egorenkov <egorenar@linux.ibm.com>
 
-[ Upstream commit e5c9ffc6ae1bcdb1062527d611043681ac301aca ]
+[ Upstream commit dd3411959b57df6e05a3ccbac67b0a836871c0c4 ]
 
-On certain platforms (PowerNV systems without a power-mgt DT node),
-cpuidle may register only a single idle state. In cases where that
-single state is a polling state (state 0), the ladder governor may
-incorrectly treat state 1 as the first usable state and pass an
-out-of-bounds index. This can lead to a NULL enter callback being
-invoked, ultimately resulting in a system crash.
+The commit c8424e776b09 ("MODSIGN: Export module signature definitions")
+replaced the dependency of KEXEC_SIG on SYSTEM_DATA_VERIFICATION with the
+dependency on MODULE_SIG_FORMAT. This change disables KEXEC_SIG in s390
+kernels built with MODULES=n if nothing else selects MODULE_SIG_FORMAT.
 
-[   13.342636] cpuidle-powernv : Only Snooze is available
-[   13.351854] Faulting instruction address: 0x00000000
-[   13.376489] NIP [0000000000000000] 0x0
-[   13.378351] LR  [c000000001e01974] cpuidle_enter_state+0x2c4/0x668
+Furthermore, the signature verification in s390 kexec does not require
+MODULE_SIG_FORMAT because it requires only the struct module_signature and,
+therefore, does not depend on code in kernel/module_signature.c.
 
-Fix this by adding a bail-out in cpuidle_select() that returns state 0
-directly when state_count <= 1, bypassing the governor and keeping the
-tick running.
+But making ARCH_SUPPORTS_KEXEC_SIG depend on SYSTEM_DATA_VERIFICATION is
+also incorrect because it makes KEXEC_SIG available on s390 only if some
+other arbitrary option (for instance a file system or device driver)
+selects it directly or indirectly.
 
-Fixes: dc2251bf98c6 ("cpuidle: Eliminate the CPUIDLE_DRIVER_STATE_START symbol")
-Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/20260216185005.1131593-2-aboorvad@linux.ibm.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+To properly make KEXEC_SIG available for s390 kernels built with MODULES=y
+as well as MODULES=n _and_ also not depend on arbitrary options selecting
+SYSTEM_DATA_VERIFICATION, set ARCH_SUPPORTS_KEXEC_SIG=y for s390 and select
+SYSTEM_DATA_VERIFICATION when KEXEC_SIG=y.
+
+Fixes: c8424e776b09 ("MODSIGN: Export module signature definitions")
+Suggested-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/s390/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 56132e843c991..8950796a493de 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -357,6 +357,16 @@ noinstr int cpuidle_enter_state(struct cpuidle_device *dev,
- int cpuidle_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 		   bool *stop_tick)
- {
-+	/*
-+	 * If there is only a single idle state (or none), there is nothing
-+	 * meaningful for the governor to choose. Skip the governor and
-+	 * always use state 0 with the tick running.
-+	 */
-+	if (drv->state_count <= 1) {
-+		*stop_tick = false;
-+		return 0;
-+	}
-+
- 	return cpuidle_curr_governor->select(drv, dev, stop_tick);
- }
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 0e5fad5f06ca1..783be50f38f2b 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -275,6 +275,7 @@ config S390
+ 	select SPARSE_IRQ
+ 	select SWIOTLB
+ 	select SYSCTL_EXCEPTION_TRACE
++	select SYSTEM_DATA_VERIFICATION if KEXEC_SIG
+ 	select THREAD_INFO_IN_TASK
+ 	select TRACE_IRQFLAGS_SUPPORT
+ 	select TTY
+@@ -301,7 +302,7 @@ config ARCH_SUPPORTS_KEXEC_FILE
+ 	def_bool y
  
+ config ARCH_SUPPORTS_KEXEC_SIG
+-	def_bool MODULE_SIG_FORMAT
++	def_bool y
+ 
+ config ARCH_SUPPORTS_KEXEC_PURGATORY
+ 	def_bool y
 -- 
 2.51.0
 
