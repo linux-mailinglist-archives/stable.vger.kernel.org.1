@@ -1,138 +1,191 @@
-Return-Path: <stable+bounces-219565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAxpIwOfnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219565-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:35 +0100
+	id iG/qDkxYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C539192E0C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCEA1906D8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 56AE8308C079
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:02:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A35B031A22CB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B27633A70E;
-	Wed, 25 Feb 2026 07:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8778F265CA6;
+	Wed, 25 Feb 2026 01:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8Cj0kKO"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="a3jgbfYb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m104.netease.com (mail-m104.netease.com [154.81.10.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7F62D7D59;
-	Wed, 25 Feb 2026 07:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9616D24A05D;
+	Wed, 25 Feb 2026 01:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=154.81.10.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002800; cv=none; b=k4raM65x6c+aLLWiPXlEiEYuUboqeoiCqWAdWO+QZnu9yd6pb4gy+C/Pg1TW0WcOA1SdGqtcwN/xZGX/EandAuFvk265ErNNS4x9AOT0CZB0ivnbXBkHzeQtCpb2m96hhQaq3dSJD3EiIsMLNYAtFAWmbxmTBLhRjIc0IT0pHUs=
+	t=1771983488; cv=none; b=cw83IVKNLTxykAaivbU0kzgVRn5dWN73iaqGrBZl/AVcJOsWrwgRHmkJYTz+UKe4ZvV/sTippYQHC2I5HsPnEN9S4LNTKDqdiYRE7Bipdtl5zexD/SadhIXQNnmhnjeSYmIbLcQwH1oD4gUi+avI3JymcW6aGhaiSmzQMh4vfr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002800; c=relaxed/simple;
-	bh=wtf9XbNa/HNW4G0ox8nS3eLQP0E1ioruvPogU5FzYdg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eW8ymrIa3m17EC9zjIa0Eo9rQ7cz3fKCBolKPH/7ooO6vWsBf7BxfbMjLgat2a2gNrae0wcdn7bClD4JzwdJi3XLToLSkVr3jOve8AUhXecph8yCvSG/Vpsrz2bDZ6O+gAn4AA3qsLaM2kaXvvCKmOhlWy7v+81MIhSwZb77UCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8Cj0kKO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E8FC19422;
-	Wed, 25 Feb 2026 06:59:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002800;
-	bh=wtf9XbNa/HNW4G0ox8nS3eLQP0E1ioruvPogU5FzYdg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f8Cj0kKO4265NQsqn0RNRmPuElsmd5HMG9l0BbLVulOJoaufYoAkl5IKPD6osghmg
-	 Y4mCR8C0nDOMCGFIQjcGdzrXoe47w1/3Sy5ep44Y+m7xCm4x4P3SGYSaj3D/Qil9VY
-	 ee6wkm8CBi7P3YBNRL2NxEqzItLMIJO1E/jmVl2o=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Hongliang Wang <wanghongliang@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 641/641] net: stmmac: dwmac-loongson: Set clk_csr_i to 100-150MHz
-Date: Tue, 24 Feb 2026 17:26:07 -0800
-Message-ID: <20260225012404.035482553@linuxfoundation.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1771983488; c=relaxed/simple;
+	bh=Xhvz82KuGXWOeALClfJbI5e3pUSDttjluv+EbYbhArY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P/GeOJ04pAZIebtadczKeAx0vfGSRYXqY46D7BY1m0u+jkL2i8bIka2f3M1wsDY9uQ1EMDnF3K4plqQZV836aulzxllwfSv1xIGwKSuLtFQ+O2Di2sXHV0dwQeOVVyZnnGy7n0B+XmqJioHNp6cjS9O07ummeIwnOZZAphT+RBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=a3jgbfYb; arc=none smtp.client-ip=154.81.10.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from [172.16.12.51] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 34dae9247;
+	Wed, 25 Feb 2026 09:37:56 +0800 (GMT+08:00)
+Message-ID: <612e44b1-7747-4b47-820c-2262186e6e97@rock-chips.com>
+Date: Wed, 25 Feb 2026 09:37:55 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] pmdomain: rockchip: Fix rkvdec0/1 and venc0/1 for
+ RK3588
+To: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+ Finley Xiao <finley.xiao@rock-chips.com>, Frank Zhang <rmxpzlb@gmail.com>,
+ linux-pm@vger.kernel.org, Sebastian Reichel
+ <sebastian.reichel@collabora.com>,
+ Detlev Casanova <detlev.casanova@collabora.com>,
+ Heiko Stuebner <heiko@sntech.de>, linux-rockchip@lists.infradead.org,
+ stable@vger.kernel.org
+References: <1771904879-243163-1-git-send-email-shawn.lin@rock-chips.com>
+Content-Language: en-US
+From: Chaoyi Chen <chaoyi.chen@rock-chips.com>
+In-Reply-To: <1771904879-243163-1-git-send-email-shawn.lin@rock-chips.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-HM-Tid: 0a9c9272153603abkunm013e53b3fa2024
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGR0aSVZPGhoYS09NSx4aSx1WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=a3jgbfYbcgq9nzGrEfsmDpAoK143uGrOroM2FZuYhxQgEJOUZ8plknuMdkrK2Kn1c9L489wdzs3W8FAnYaMOgcww4A+CW18/4nPTavOzaf8kQw+MRLG5nGBbkSYyQPZM8oDBxfHkfo3s4Cbhit1VulfnEXh77Aj0GbSljmuKZS4=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=ZooWjJGThdRe881/8hoL4AfsxTeuU6UCGQsPBmxDADY=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[rock-chips.com,none];
+	R_DKIM_ALLOW(-0.20)[rock-chips.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linaro.org,rock-chips.com,gmail.com,vger.kernel.org,collabora.com,sntech.de,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-218638-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219565-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[rock-chips.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chaoyi.chen@rock-chips.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2C539192E0C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sntech.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rock-chips.com:mid,rock-chips.com:dkim,rock-chips.com:email,collabora.com:email]
+X-Rspamd-Queue-Id: DCCEA1906D8
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+Hi Shawn,
 
-------------------
+On 2/24/2026 11:47 AM, Shawn Lin wrote:
+> Per the RK3588 TRM Table 7-1 RK3588 Voltage Domain and Power Domain Summary,
+> PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltages to
+> be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support landed[1].
+> The panic looks like below:
+> 
+>   rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec0' on, val=0
+>   rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec1' on, val=0
+>   ...
+>   Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
+>   Workqueue: pm genpd_power_off_work_fn
+>   Call trace:
+>   show_stack+0x18/0x24 (C)
+>   dump_stack_lvl+0x40/0x84
+>   dump_stack+0x18/0x24
+>   vpanic+0x1ec/0x4fc
+>   vpanic+0x0/0x4fc
+>   check_panic_on_warn+0x0/0x94
+>   arm64_serror_panic+0x6c/0x78
+>   do_serror+0xc4/0xcc
+>   el1h_64_error_handler+0x3c/0x5c
+>   el1h_64_error+0x6c/0x70
+>   regmap_mmio_read32le+0x18/0x24 (P)
+>   regmap_bus_reg_read+0xfc/0x130
+>   regmap_read+0x188/0x1ac
+>   regmap_read+0x54/0x78
+>   rockchip_pd_power+0xcc/0x5f0
+>   rockchip_pd_power_off+0x1c/0x4c
+>   genpd_power_off+0x84/0x120
+>   genpd_power_off+0x1b4/0x260
+>   genpd_power_off_work_fn+0x38/0x58
+>   process_scheduled_works+0x194/0x2c4
+>   worker_thread+0x2ac/0x3d8
+>   kthread+0x104/0x124
+>   ret_from_fork+0x10/0x20
+>   SMP: stopping secondary CPUs
+>   Kernel Offset: disabled
+>   CPU features: 0x3000000,000e0005,40230521,0400720b
+>   Memory Limit: none
+>   ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
+> 
+> [1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.casanova@collabora.com/
+> Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+> Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+> ---
+> 
+> Changes in v2:
+> - collect tags
+> - correct TRM section(Sebastian)
+> 
+>  drivers/pmdomain/rockchip/pm-domains.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
+> index 997e93c..040aa5f 100644
+> --- a/drivers/pmdomain/rockchip/pm-domains.c
+> +++ b/drivers/pmdomain/rockchip/pm-domains.c
+> @@ -1315,10 +1315,10 @@ static const struct rockchip_domain_info rk3588_pm_domains[] = {
+>  	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
+>  	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
+>  	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
+> -	[RK3588_PD_VENC0]	= DOMAIN_RK3588("venc0",   0x0, BIT(6),  0,       0x0, BIT(14), BIT(5),  0x0, BIT(4),  BIT(4),  false, false),
+> -	[RK3588_PD_VENC1]	= DOMAIN_RK3588("venc1",   0x0, BIT(7),  0,       0x0, BIT(15), BIT(6),  0x0, BIT(5),  BIT(5),  false, false),
+> -	[RK3588_PD_RKVDEC0]	= DOMAIN_RK3588("rkvdec0", 0x0, BIT(8),  0,       0x0, BIT(16), BIT(7),  0x0, BIT(6),  BIT(6),  false, false),
+> -	[RK3588_PD_RKVDEC1]	= DOMAIN_RK3588("rkvdec1", 0x0, BIT(9),  0,       0x0, BIT(17), BIT(8),  0x0, BIT(7),  BIT(7),  false, false),
+> +	[RK3588_PD_VENC0]	= DOMAIN_RK3588("venc0",   0x0, BIT(6),  0,       0x0, BIT(14), BIT(5),  0x0, BIT(4),  BIT(4),  false, true),
+> +	[RK3588_PD_VENC1]	= DOMAIN_RK3588("venc1",   0x0, BIT(7),  0,       0x0, BIT(15), BIT(6),  0x0, BIT(5),  BIT(5),  false, true),
+> +	[RK3588_PD_RKVDEC0]	= DOMAIN_RK3588("rkvdec0", 0x0, BIT(8),  0,       0x0, BIT(16), BIT(7),  0x0, BIT(6),  BIT(6),  false, true),
+> +	[RK3588_PD_RKVDEC1]	= DOMAIN_RK3588("rkvdec1", 0x0, BIT(9),  0,       0x0, BIT(17), BIT(8),  0x0, BIT(7),  BIT(7),  false, true),
+>  	[RK3588_PD_VDPU]	= DOMAIN_RK3588("vdpu",    0x0, BIT(10), 0,       0x0, BIT(18), BIT(9),  0x0, BIT(8),  BIT(8),  false, false),
+>  	[RK3588_PD_RGA30]	= DOMAIN_RK3588("rga30",   0x0, BIT(11), 0,       0x0, BIT(19), BIT(10), 0x0, 0,       0,       false, false),
+>  	[RK3588_PD_AV1]		= DOMAIN_RK3588("av1",     0x0, BIT(12), 0,       0x0, BIT(20), BIT(11), 0x0, BIT(9),  BIT(9),  false, false),
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+Perhaps you could try modifying only RK3588_PD_VCODEC. 
+VCODEC is the parent of these PDs, so you won't need to modify too
+much code and devicetree. BTW I have tried it before, but with an 
+internal MPP driver. Maybe you can give it another try :)
 
-commit e1aa5ef892fb4fa9014a25e87b64b97347919d37 upstream.
-
-Current clk_csr_i setting of Loongson STMMAC (including LS7A1000/2000
-and LS2K1000/2000/3000) are copy & paste from other drivers. In fact,
-Loongson STMMAC use 125MHz clocks and need 62 freq division to within
-2.5MHz, meeting most PHY MDC requirement. So fix by setting clk_csr_i
-to 100-150MHz, otherwise some PHYs may link fail.
-
-Cc: stable@vger.kernel.org
-Fixes: 30bba69d7db40e7 ("stmmac: pci: Add dwmac support for Loongson")
-Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://patch.msgid.link/20260203062901.2158236-1-chenhuacai@loongson.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -90,8 +90,8 @@ static void loongson_default_data(struct
- 	/* Get bus_id, this can be overwritten later */
- 	plat->bus_id = pci_dev_id(pdev);
- 
--	/* clk_csr_i = 20-35MHz & MDC = clk_csr_i/16 */
--	plat->clk_csr = STMMAC_CSR_20_35M;
-+	/* clk_csr_i = 100-150MHz & MDC = clk_csr_i/62 */
-+	plat->clk_csr = STMMAC_CSR_100_150M;
- 	plat->core_type = DWMAC_CORE_GMAC;
- 	plat->force_sf_dma_mode = 1;
- 
-
-
+-- 
+Best, 
+Chaoyi
 
