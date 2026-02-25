@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNNMId1Tnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:57 +0100
+	id oP++LW+enmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16BE18FA84
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBF6192C7F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7FD4630988A4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D47F93115AC5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DB825EF9C;
-	Wed, 25 Feb 2026 01:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95F32C0263;
+	Wed, 25 Feb 2026 06:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAPA7wu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LO9ZiCPC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CAB1FE45D;
-	Wed, 25 Feb 2026 01:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D41A2D063E;
+	Wed, 25 Feb 2026 06:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983437; cv=none; b=WhIhjQ3nUazMN4LPfRgDUUGfmKqs3NO2sseSAOFP1tjP4CJ+DLGgK1ew9JW6CADJIw2FzLrYiK0pM6kNw+8tHXkKVnY2nNvZRTOPNXh7q0nEJHSz7/hdZW0Ii7OlV9cziMcXTLHXN4RvvWpvLYQTDJABcdE65/87MhFTgLVlHf4=
+	t=1772002594; cv=none; b=G0OcYtYECvC2fmkassOXr3fGiiVCY2kc8lUILgLgDB69ymJmMjbxS6WXqYonHdO/d+oGfdnvgimMSI9yJTotRaJPzSZ9ip547kM4ZctptdkvNVj4S/MRAsyD7cRRnqh4kLFkMPbFhv8CnVHXAhdke3QWOXuv8pNfun4EsEC3JRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983437; c=relaxed/simple;
-	bh=ntfBFtC09jTVRwhWK+99CZzS/CKTg4CnwlFBouMQEtk=;
+	s=arc-20240116; t=1772002594; c=relaxed/simple;
+	bh=KoLJW4xzoxX92nWwzid2W2v9tBV0XUJ+MYDKKuxU5+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvfWGlary34YP1+RU5FSOpJliu6zJUqM0G+3hzdc8d+hdh7TdD0dny3STPYgxyQyoHR/DB9iv4HHuDMMDFQDXaUcNMdWk1RD2KPcbB5Am9y3Cepx0GSJRWktysWbx9nKLCQLR0HoZqN9XnP08v3h0QZbzqmvQjJMUy5GyHl5wwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAPA7wu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CB1C116D0;
-	Wed, 25 Feb 2026 01:37:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XT/n6SL6lsQj58nKrREeuTfP0CKIcrK6pJi7P4C3B4aUEn4l+uy6xAxjLRHQ66slMZ/VeojS+Rn78CCavwxdr+a+/lJmqAZPwRKy72nmOJp+oxsJn4yBD4HMPbiDHy51ySHQKYjE7+HJjDkwTWFKmNT0WStiDqmKpWzkO5V47Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LO9ZiCPC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 238DBC116D0;
+	Wed, 25 Feb 2026 06:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983437;
-	bh=ntfBFtC09jTVRwhWK+99CZzS/CKTg4CnwlFBouMQEtk=;
+	s=korg; t=1772002594;
+	bh=KoLJW4xzoxX92nWwzid2W2v9tBV0XUJ+MYDKKuxU5+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAPA7wu1S3TY6+MhiH5evACRQgPoxUnASFGcgQxsMb7imhTxWC7Kbt/45lq9Gn18g
-	 0AZDNsRVq58o5nrxfDxhFyJCJ63GSzDIstOx+9T4oAAxA9jgZ8oKeyIwXc1t0ZecTH
-	 R+aD75pz1hOm6ZNYxtGnK1KlMDuBbVJpk7ii5qfg=
+	b=LO9ZiCPCmUSzS9aZ+EqdNEAZFOAxNEOJzqG9B1K0QqsnKnNsGkb2vfLpIWCFY1YwG
+	 gOH8/SvDOUutUTBt346mo8S4ZtFSUVNbtU5vYUHwrM5NuYtEqL/unvyv0r6Mgc7H0u
+	 CzhNBOmdmfAS0yM69OMqvyiMU6S8CwzMuci000RM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Etienne AUJAMES <eaujames@ddn.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 555/781] clk: mediatek: Add mfg_eb as parent to mt8196 mfgpll clocks
+Subject: [PATCH 6.18 338/641] IB/cache: update gid cache on client reregister event
 Date: Tue, 24 Feb 2026 17:21:04 -0800
-Message-ID: <20260225012413.414002574@linuxfoundation.org>
+Message-ID: <20260225012356.862038768@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,135 +64,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218593-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-219252-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F16BE18FA84
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ddn.com:email]
+X-Rspamd-Queue-Id: 3CBF6192C7F
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+From: Etienne AUJAMES <eaujames@ddn.com>
 
-[ Upstream commit 19024c9980c331908de0680283d572b80308654e ]
+[ Upstream commit ddd6c8c873e912cb1ead79def54de5e24ff71c80 ]
 
-All the MFGPLL require MFG_EB to be on for any operation on them, and
-they only tick when MFG_EB is on as well, therefore making this a
-parent-child relationship.
+Some HCAs (e.g: ConnectX4) do not trigger a IB_EVENT_GID_CHANGE on
+subnet prefix update from SM (PortInfo).
 
-This dependency wasn't clear during the initial upstreaming of these
-clock controllers, as it only made itself known when I could observe
-the effects of the clock by bringing up a different piece of hardware.
+Since the commit d58c23c92548 ("IB/core: Only update PKEY and GID caches
+on respective events"), the GID cache is updated exclusively on
+IB_EVENT_GID_CHANGE. If this event is not emitted, the subnet prefix in the
+IPoIB interface’s hardware address remains set to its default value
+(0xfe80000000000000).
 
-Add a new PLL_PARENT_EN flag to mediatek's clk-pll.h, and check for it
-when initialising the pll to then translate it into the actual
-CLK_OPS_PARENT_ENABLE flag.
+Then rdma_bind_addr() failed because it relies on hardware address to
+find the port GID (subnet_prefix + port GUID).
 
-Then add the mfg_eb parent to the mfgpll clocks, and set the new
-PLL_PARENT_EN flag.
+This patch fixes this issue by updating the GID cache on
+IB_EVENT_CLIENT_REREGISTER event (emitted on PortInfo::ClientReregister=1).
 
-Fixes: 03dc02f8c7dc ("clk: mediatek: Add MT8196 mfg clock support")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: d58c23c92548 ("IB/core: Only update PKEY and GID caches on respective events")
+Signed-off-by: Etienne AUJAMES <eaujames@ddn.com>
+Link: https://patch.msgid.link/aVUfsO58QIDn5bGX@eaujamesFR0130
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt8196-mfg.c | 13 +++++++------
- drivers/clk/mediatek/clk-pll.c        |  3 +++
- drivers/clk/mediatek/clk-pll.h        |  1 +
- 3 files changed, 11 insertions(+), 6 deletions(-)
+ drivers/infiniband/core/cache.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt8196-mfg.c b/drivers/clk/mediatek/clk-mt8196-mfg.c
-index ae1eb9de79ae2..f40795b47ff1f 100644
---- a/drivers/clk/mediatek/clk-mt8196-mfg.c
-+++ b/drivers/clk/mediatek/clk-mt8196-mfg.c
-@@ -58,24 +58,25 @@
- 		.pcw_shift = _pcw_shift,			\
- 		.pcwbits = _pcwbits,				\
- 		.pcwibits = MT8196_INTEGER_BITS,		\
-+		.parent_name = "mfg_eb",			\
- 	}
+diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
+index 81cf3c902e819..0fc1c5bce2f0d 100644
+--- a/drivers/infiniband/core/cache.c
++++ b/drivers/infiniband/core/cache.c
+@@ -1537,7 +1537,8 @@ static void ib_cache_event_task(struct work_struct *_work)
+ 	 * the cache.
+ 	 */
+ 	ret = ib_cache_update(work->event.device, work->event.element.port_num,
+-			      work->event.event == IB_EVENT_GID_CHANGE,
++			      work->event.event == IB_EVENT_GID_CHANGE ||
++			      work->event.event == IB_EVENT_CLIENT_REREGISTER,
+ 			      work->event.event == IB_EVENT_PKEY_CHANGE,
+ 			      work->enforce_security);
  
- static const struct mtk_pll_data mfg_ao_plls[] = {
--	PLL(CLK_MFG_AO_MFGPLL, "mfgpll", MFGPLL_CON0, MFGPLL_CON0, 0, 0, 0,
--	    BIT(0), MFGPLL_CON1, 24, 0, 0, 0,
-+	PLL(CLK_MFG_AO_MFGPLL, "mfgpll", MFGPLL_CON0, MFGPLL_CON0, 0, 0,
-+	    PLL_PARENT_EN, BIT(0), MFGPLL_CON1, 24, 0, 0, 0,
- 	    MFGPLL_CON1, 0, 22),
- };
- 
- static const struct mtk_pll_data mfgsc0_ao_plls[] = {
- 	PLL(CLK_MFGSC0_AO_MFGPLL_SC0, "mfgpll-sc0", MFGPLL_SC0_CON0,
--	    MFGPLL_SC0_CON0, 0, 0, 0, BIT(0), MFGPLL_SC0_CON1, 24, 0, 0, 0,
--	    MFGPLL_SC0_CON1, 0, 22),
-+	    MFGPLL_SC0_CON0, 0, 0, PLL_PARENT_EN, BIT(0), MFGPLL_SC0_CON1, 24,
-+	    0, 0, 0, MFGPLL_SC0_CON1, 0, 22),
- };
- 
- static const struct mtk_pll_data mfgsc1_ao_plls[] = {
- 	PLL(CLK_MFGSC1_AO_MFGPLL_SC1, "mfgpll-sc1", MFGPLL_SC1_CON0,
--	    MFGPLL_SC1_CON0, 0, 0, 0, BIT(0), MFGPLL_SC1_CON1, 24, 0, 0, 0,
--	    MFGPLL_SC1_CON1, 0, 22),
-+	    MFGPLL_SC1_CON0, 0, 0, PLL_PARENT_EN, BIT(0), MFGPLL_SC1_CON1, 24,
-+	    0, 0, 0, MFGPLL_SC1_CON1, 0, 22),
- };
- 
- static const struct of_device_id of_match_clk_mt8196_mfg[] = {
-diff --git a/drivers/clk/mediatek/clk-pll.c b/drivers/clk/mediatek/clk-pll.c
-index cd2b6ce551c6b..de3eb02670554 100644
---- a/drivers/clk/mediatek/clk-pll.c
-+++ b/drivers/clk/mediatek/clk-pll.c
-@@ -358,6 +358,9 @@ struct clk_hw *mtk_clk_register_pll_ops(struct mtk_clk_pll *pll,
- 
- 	init.name = data->name;
- 	init.flags = (data->flags & PLL_AO) ? CLK_IS_CRITICAL : 0;
-+	if (data->flags & PLL_PARENT_EN)
-+		init.flags |= CLK_OPS_PARENT_ENABLE;
-+
- 	init.ops = pll_ops;
- 	if (data->parent_name)
- 		init.parent_names = &data->parent_name;
-diff --git a/drivers/clk/mediatek/clk-pll.h b/drivers/clk/mediatek/clk-pll.h
-index d71c150ce83e4..de5a8fb7cbcfe 100644
---- a/drivers/clk/mediatek/clk-pll.h
-+++ b/drivers/clk/mediatek/clk-pll.h
-@@ -21,6 +21,7 @@ struct mtk_pll_div_table {
- 
- #define HAVE_RST_BAR	BIT(0)
- #define PLL_AO		BIT(1)
-+#define PLL_PARENT_EN	BIT(2)
- #define POSTDIV_MASK	GENMASK(2, 0)
- 
- struct mtk_pll_data {
 -- 
 2.51.0
 
