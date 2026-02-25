@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SP+2OLJSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:58 +0100
+	id 2D85E21anmlSUwQAu9opvQ
+	(envelope-from <stable+bounces-219081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4DC18F4AD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C339B190AF9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73D1C30DE3FC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72839324D13D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B551248F54;
-	Wed, 25 Feb 2026 01:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F35526CE1A;
+	Wed, 25 Feb 2026 01:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPRj4UhN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpM9q3H4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D503248886;
-	Wed, 25 Feb 2026 01:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3365D20C012;
+	Wed, 25 Feb 2026 01:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983349; cv=none; b=Ue7VZLeDzmQyCKA4C/SA3Du+kgKVrhhoAnUk8U2ZAJ+PBBiKreSEqhyDjZvj1H/XsWBRxInkGATYJ4fA2tdOpBTMNxKIowVoepjIPUt75IspUSKbaamN5ex49def1TLLAsIxCeknsPbB0eAMU3S4jr2F8FkeCeWipp307cKdOxE=
+	t=1771984008; cv=none; b=hZNNe7Ue+6hzyb0XzITG5jfFggKtz1NFwiSK4vdMSGw+jaR9TFYeWu/GLsrLpKBshU2tak0eSnUrg1FFanP3lQR1WNUtantibsQW1TbMVzdzuK5XDqBSqRo7Fou2ptBTSO3ifTa4cofgeRrlXuv0gSyf1Qe+LD62kazyfXyeTWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983349; c=relaxed/simple;
-	bh=0cyLp9iaQmDNcv77rnPqUKjXCuKCc+g1mDc7gwhoHc0=;
+	s=arc-20240116; t=1771984008; c=relaxed/simple;
+	bh=wrJ5kRupEg7811yJ8+3RAzV2bLPuzUDyyS6LkK4L7JY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h4XEyjgbmTOmHAlN9hLcUKk8qhqd5nJJJWyGraHu4DaDP483xPzgBUtMm9t4Rny1mUJwcoPHb4cB6/FSc3mG5imVncAlLsoCBEiF+UFQAEivviqmSlYzQ8kNLQyYMPzFy+cBXnZxQ/567Duo5bAWjD9NlcMQCW7pPU49iTA4Zmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPRj4UhN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16E5C116D0;
-	Wed, 25 Feb 2026 01:35:48 +0000 (UTC)
+	 MIME-Version; b=iU3cTNjOEZRsRjrk6jyctO5bV3L+2my97C04YaHABtkI2iJ7hLpQ2ZXrux9tWy8G9Mh1Fi+4GjLeM8+3TWbMyqA54RJJ9QtVBpFR10mZ61sMQz54eSQEhWgif4PDH/lJw6ABgzMpCweh3/y3oxrHzUcnO7pEFxuTcR615ZrHU2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpM9q3H4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2ED4C116D0;
+	Wed, 25 Feb 2026 01:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983348;
-	bh=0cyLp9iaQmDNcv77rnPqUKjXCuKCc+g1mDc7gwhoHc0=;
+	s=korg; t=1771984008;
+	bh=wrJ5kRupEg7811yJ8+3RAzV2bLPuzUDyyS6LkK4L7JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPRj4UhNraA4x87KbXZmH6Df+oRzSgn2ABjSwm3YfwcpC0il4v+iI2CWLRdGqtvYj
-	 IuxowywO6mzr3j4GuX6eadi0Y5t8GHTnmbO/BjsJ5+xOGbrwJFgnsJWt1fjkd/A9QT
-	 O8o0IhZHZ1I/tdvRuHzKujpVlISNRVUH3S105rRE=
+	b=OpM9q3H40SJRM2/3UCMfKV1R4aaYmou20qvGNlKGheM//BDIXuujKPp+Qe0uR8RFu
+	 Zke6z1IlslBfqRvI/diSyd4e1/Aomk2SR/naTLkcZ2zX+475SgmY0e64nSumaPI5rw
+	 3xpDIau0lK3QArPphAR0WOsncGYs+4fHj/1JgzQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 476/781] mtd: parsers: Fix memory leak in mtd_parser_tplink_safeloader_parse()
+Subject: [PATCH 6.18 259/641] netfilter: nft_compat: add more restrictions on netlink attributes
 Date: Tue, 24 Feb 2026 17:19:45 -0800
-Message-ID: <20260225012411.489425394@linuxfoundation.org>
+Message-ID: <20260225012355.103448869@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218516-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219081-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,49 +90,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,seu.edu.cn:email]
-X-Rspamd-Queue-Id: 3D4DC18F4AD
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C339B190AF9
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 980ce2b02dd06a4fdf5fee38b2e14becf9cf7b8b ]
+[ Upstream commit cda26c645946b08f070f20c166d4736767e4a805 ]
 
-The function mtd_parser_tplink_safeloader_parse() allocates buf via
-mtd_parser_tplink_safeloader_read_table(). If the allocation for
-parts[idx].name fails inside the loop, the code jumps to the err_free
-label without freeing buf, leading to a memory leak.
+As far as I can see nothing bad can happen when NFTA_TARGET/MATCH_NAME
+are too large because this calls x_tables helpers which check for the
+length, but it seems better to already reject it during netlink parsing.
 
-Fix this by freeing the temporary buffer buf in the err_free label.
+Rest of the changes avoid silent u8/u16 truncations.
 
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
+For _TYPE, its expected to be only 1 or 0. In x_tables world, this
+variable is set by kernel, for IPT_SO_GET_REVISION_TARGET its 1, for
+all others its set to 0.
 
-Fixes: 00a3588084be ("mtd: parsers: add TP-Link SafeLoader partitions table parser")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+As older versions of nf_tables permitted any value except 1 to mean 'match',
+keep this as-is but sanitize the value for consistency.
+
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/parsers/tplink_safeloader.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_compat.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/parsers/tplink_safeloader.c b/drivers/mtd/parsers/tplink_safeloader.c
-index e358a029dc70c..4fcaf92d22e4f 100644
---- a/drivers/mtd/parsers/tplink_safeloader.c
-+++ b/drivers/mtd/parsers/tplink_safeloader.c
-@@ -116,6 +116,7 @@ static int mtd_parser_tplink_safeloader_parse(struct mtd_info *mtd,
- 	return idx;
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 72711d62fddfa..08f620311b03f 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -134,7 +134,8 @@ static void nft_target_eval_bridge(const struct nft_expr *expr,
+ }
  
- err_free:
-+	kfree(buf);
- 	for (idx -= 1; idx >= 0; idx--)
- 		kfree(parts[idx].name);
- err_free_parts:
+ static const struct nla_policy nft_target_policy[NFTA_TARGET_MAX + 1] = {
+-	[NFTA_TARGET_NAME]	= { .type = NLA_NUL_STRING },
++	[NFTA_TARGET_NAME]	= { .type = NLA_NUL_STRING,
++				    .len = XT_EXTENSION_MAXNAMELEN, },
+ 	[NFTA_TARGET_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_TARGET_INFO]	= { .type = NLA_BINARY },
+ };
+@@ -434,7 +435,8 @@ static void nft_match_eval(const struct nft_expr *expr,
+ }
+ 
+ static const struct nla_policy nft_match_policy[NFTA_MATCH_MAX + 1] = {
+-	[NFTA_MATCH_NAME]	= { .type = NLA_NUL_STRING },
++	[NFTA_MATCH_NAME]	= { .type = NLA_NUL_STRING,
++				    .len = XT_EXTENSION_MAXNAMELEN },
+ 	[NFTA_MATCH_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_MATCH_INFO]	= { .type = NLA_BINARY },
+ };
+@@ -693,7 +695,12 @@ static int nfnl_compat_get_rcu(struct sk_buff *skb,
+ 
+ 	name = nla_data(tb[NFTA_COMPAT_NAME]);
+ 	rev = ntohl(nla_get_be32(tb[NFTA_COMPAT_REV]));
+-	target = ntohl(nla_get_be32(tb[NFTA_COMPAT_TYPE]));
++	/* x_tables api checks for 'target == 1' to mean target,
++	 * everything else means 'match'.
++	 * In x_tables world, the number is set by kernel, not
++	 * userspace.
++	 */
++	target = nla_get_be32(tb[NFTA_COMPAT_TYPE]) == htonl(1);
+ 
+ 	switch(family) {
+ 	case AF_INET:
 -- 
 2.51.0
 
