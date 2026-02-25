@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218856-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eLIMN4dRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:59 +0100
+	id YDHANeNVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218856-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C8D18F010
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEF1190134
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E4899309D465
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7FD4314F16C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2172417E0;
-	Wed, 25 Feb 2026 01:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D405026ED33;
+	Wed, 25 Feb 2026 01:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYcos7V3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAXdvm5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2A02BAF7;
-	Wed, 25 Feb 2026 01:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C8E19FA93;
+	Wed, 25 Feb 2026 01:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983092; cv=none; b=p4kEAKK09c6R4SBkCojjGDECflSBdDpmkOO8umNoMZNwh00Vo/2o9nIb/WaN5XJTn03oQjOEDrovscXNDTOPxdxNKI7C3F87AUGxs0uUujWwEtVtWVVGSnTAn8qOm9hK7BqwAJPpV7fnN6qJDdskHvkoK27z9AEpLY5xAt9lSfQ=
+	t=1771983741; cv=none; b=qjKLm9XWHTxAIQSfcBz4LLl7X5fI+RvkwHdqUtaViUjPNnYC8MRizFFYwPMovkIF0tg6g03KxeSa2M1lp9rbJI24duHfqko4PA2R46XbPW9XvU+YQS86GAcC9aInOV28FZjmbtw32Fn96rivI2lT2nRTzx/MBh4qoicTfIPOKRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983092; c=relaxed/simple;
-	bh=srBqElJWZIXoknxESi8Ii+zfqfWFI/zpnMywVt8rjvo=;
+	s=arc-20240116; t=1771983741; c=relaxed/simple;
+	bh=9hpmITP2Q7TxEKlmEvSS79dI7+ixpEHWZtkTsiTb1sk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hy7dN8lLsgOiNiL/+GIUOW/TW2VCN4JMk8HwFLOQD+HTm4Yjaf9sqGaWUB8/6WA5W0pNchyrvIpHM4odioPYft0aB1DKpND5fZRveNI8L/6CYF9O3PBrPBEMG2eRK2WcfFEGNeJbiiTnfFoEv3M9DVRIA1Qyj3OF4Ca97PXCVms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYcos7V3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E32AC116D0;
-	Wed, 25 Feb 2026 01:31:32 +0000 (UTC)
+	 MIME-Version; b=FHl0723U/M4o80pYsRQLGu0iunFU4N3/g9+smcO9kOBOYdD+uzYY8JxZ6hzzbEgBSkSwBHLcIyrQQGyqeVbN79x79HmcB4t9vSD9HKZ20PhNwIbyhnuREgUNWWg4Ue8fUTakwBV+JnscGe0MceyYNVLROPiDgLOE9hy8mSFv84Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAXdvm5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E40BC116D0;
+	Wed, 25 Feb 2026 01:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983092;
-	bh=srBqElJWZIXoknxESi8Ii+zfqfWFI/zpnMywVt8rjvo=;
+	s=korg; t=1771983741;
+	bh=9hpmITP2Q7TxEKlmEvSS79dI7+ixpEHWZtkTsiTb1sk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYcos7V3ayCKH060LNxOI2ixSqSDIDwY2kKmhhG352nPOca1TWUPJARQzuBwHu3HL
-	 4EUe901VY7ir52cGLrRFTZzyRyGifTO42XynIbQ1Y1bUmb64aKYRHZmlX4WYS7wRBW
-	 AsbzV+//ZXgy4slU2mISuQXuZbtjW5hnQSiByFOk=
+	b=mAXdvm5q99nBMptgecPToOwin06uXdKELHSCbYQNq9Db4XEjFLuvaWHm/w505KbQA
+	 s6CMTWmJam1iEpsX6mDJJuDx1F65JxSi1TMwB3Ve5ox+7wRqgv5vPDs545nCkVf6/g
+	 Q43OYrrXQEpGYeaXbTgXWOWGcRtGG8F9g+MUdYUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>,
+	Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 251/781] ALSA: hda - fix function names & missing function parameter
+Subject: [PATCH 6.18 034/641] rnbd-srv: Fix server side setting of bi_size for special IOs
 Date: Tue, 24 Feb 2026 17:16:00 -0800
-Message-ID: <20260225012405.866296070@linuxfoundation.org>
+Message-ID: <20260225012349.822947773@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,92 +69,110 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218291-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218856-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 80C8D18F010
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,ionos.com:email,kernel.dk:email]
+X-Rspamd-Queue-Id: 4FEF1190134
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>
 
-[ Upstream commit b47ce586300b3c2b6650f4c7ac5c0f59c6bf6f4b ]
+[ Upstream commit 4ac9690d4b9456ca1d5276d86547fa2e7cd47684 ]
 
-Use the correct function names and add a function parameter description
-to avoid kernel-doc warnings:
+On rnbd-srv, the bi_size of the bio is set during the bio_add_page
+function, to which datalen is passed. But for special IOs like DISCARD
+and WRITE_ZEROES, datalen is 0, since there is no data to write. For
+these special IOs, use the bi_size of the rnbd_msg_io.
 
-hda_jack.h:97: warning: Function parameter or struct member 'cb' not
- described in 'snd_hda_jack_detect_enable_callback'
-hda_jack.h:97: warning: expecting prototype for snd_hda_jack_detect_enable().
- Prototype was for snd_hda_jack_detect_enable_callback() instead
-hda_local.h:441: warning: expecting prototype for _snd_hda_set_pin_ctl().
- Prototype was for snd_hda_set_pin_ctl() instead
-
-Fixes: cdd03cedc5b5 ("ALSA: hda - Introduce snd_hda_set_pin_ctl*() helper functions")
-Fixes: 5204a05d70d9 ("ALSA: hda - Add DP-MST jack support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20260106185951.2179242-1-rdunlap@infradead.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: f6f84be089c9 ("block/rnbd-srv: Add sanity check and remove redundant assignment")
+Signed-off-by: Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>
+Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/common/hda_jack.h  | 4 ++--
- sound/hda/common/hda_local.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/block/rnbd/rnbd-srv.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/sound/hda/common/hda_jack.h b/sound/hda/common/hda_jack.h
-index ff7d289c034bf..e9b9970c59ed4 100644
---- a/sound/hda/common/hda_jack.h
-+++ b/sound/hda/common/hda_jack.h
-@@ -82,10 +82,10 @@ snd_hda_jack_detect_enable_callback_mst(struct hda_codec *codec, hda_nid_t nid,
- 					int dev_id, hda_jack_callback_fn func);
+diff --git a/drivers/block/rnbd/rnbd-srv.c b/drivers/block/rnbd/rnbd-srv.c
+index 2df8941a6b146..9b3fdc202e152 100644
+--- a/drivers/block/rnbd/rnbd-srv.c
++++ b/drivers/block/rnbd/rnbd-srv.c
+@@ -145,18 +145,30 @@ static int process_rdma(struct rnbd_srv_session *srv_sess,
+ 	priv->sess_dev = sess_dev;
+ 	priv->id = id;
  
- /**
-- * snd_hda_jack_detect_enable - enable the jack-detection
-+ * snd_hda_jack_detect_enable_callback - enable the jack-detection
-  * @codec: the HDA codec
-  * @nid: pin NID to enable
-- * @func: callback function to register
-+ * @cb: callback function to register
-  *
-  * In the case of error, the return value will be a pointer embedded with
-  * errno.  Check and handle the return value appropriately with standard
-diff --git a/sound/hda/common/hda_local.h b/sound/hda/common/hda_local.h
-index a7e53277a0fea..ab423f1cef549 100644
---- a/sound/hda/common/hda_local.h
-+++ b/sound/hda/common/hda_local.h
-@@ -424,7 +424,7 @@ int _snd_hda_set_pin_ctl(struct hda_codec *codec, hda_nid_t pin,
- 			 unsigned int val, bool cached);
+-	bio = bio_alloc(file_bdev(sess_dev->bdev_file), 1,
++	bio = bio_alloc(file_bdev(sess_dev->bdev_file), !!datalen,
+ 			rnbd_to_bio_flags(le32_to_cpu(msg->rw)), GFP_KERNEL);
+-	bio_add_virt_nofail(bio, data, datalen);
+-
+-	bio->bi_opf = rnbd_to_bio_flags(le32_to_cpu(msg->rw));
+-	if (bio_has_data(bio) &&
+-	    bio->bi_iter.bi_size != le32_to_cpu(msg->bi_size)) {
+-		rnbd_srv_err_rl(sess_dev, "Datalen mismatch:  bio bi_size (%u), bi_size (%u)\n",
+-				bio->bi_iter.bi_size, msg->bi_size);
+-		err = -EINVAL;
+-		goto bio_put;
++	if (unlikely(!bio)) {
++		err = -ENOMEM;
++		goto put_sess_dev;
+ 	}
++
++	if (!datalen) {
++		/*
++		 * For special requests like DISCARD and WRITE_ZEROES, the datalen is zero.
++		 */
++		bio->bi_iter.bi_size = le32_to_cpu(msg->bi_size);
++	} else {
++		bio_add_virt_nofail(bio, data, datalen);
++		bio->bi_opf = rnbd_to_bio_flags(le32_to_cpu(msg->rw));
++		if (bio->bi_iter.bi_size != le32_to_cpu(msg->bi_size)) {
++			rnbd_srv_err_rl(sess_dev,
++					"Datalen mismatch:  bio bi_size (%u), bi_size (%u)\n",
++					bio->bi_iter.bi_size, msg->bi_size);
++			err = -EINVAL;
++			goto bio_put;
++		}
++	}
++
+ 	bio->bi_end_io = rnbd_dev_bi_end_io;
+ 	bio->bi_private = priv;
+ 	bio->bi_iter.bi_sector = le64_to_cpu(msg->sector);
+@@ -170,6 +182,7 @@ static int process_rdma(struct rnbd_srv_session *srv_sess,
  
- /**
-- * _snd_hda_set_pin_ctl - Set a pin-control value safely
-+ * snd_hda_set_pin_ctl - Set a pin-control value safely
-  * @codec: the codec instance
-  * @pin: the pin NID to set the control
-  * @val: the pin-control value (AC_PINCTL_* bits)
+ bio_put:
+ 	bio_put(bio);
++put_sess_dev:
+ 	rnbd_put_sess_dev(sess_dev);
+ err:
+ 	kfree(priv);
 -- 
 2.51.0
 
