@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-219096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cL2oEI5WnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:26 +0100
+	id YFx2E6BUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB56190330
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:26 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DE718FD51
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C617530D7072
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 44ACD3001187
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB6927603A;
-	Wed, 25 Feb 2026 01:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78361256C8B;
+	Wed, 25 Feb 2026 01:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBO+nveI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAKRmXhw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313371E2834;
-	Wed, 25 Feb 2026 01:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5081D5141;
+	Wed, 25 Feb 2026 01:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984028; cv=none; b=AITjiwdgJdrvQ6J4bBQ+jvJMDqbNnKbspCU77l3icYry0QH7GIsqPTUblxj/5TY4MAMfArJ35h+oWavSBo31H7bYuuXq2rfrNoXW5p/zMnI6z4rsqPRxIbJavOGXksCmJ0wqf+8xhffBIX43Ke4dlaXa8wQncbeT45drLMFpfE4=
+	t=1771983413; cv=none; b=lxGlCe/mXLaF+hd8ndzuGk7hNf0iyC03uod/zyzFbqsQIR3uZswS/qOkimss81qahbjJDiLe10YTkEEizshRiflqp7RbA66pmdVqPU/Ywz83v8ajG+Q4XgaVbvAAC02yJ0NIlza9y2+7hX1fJmgTAJ56a696JYR59mAQbGaVE2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984028; c=relaxed/simple;
-	bh=dAc9vW2w6/1XhEeA0d35nLcPf4rS+frMGQl18pO7sac=;
+	s=arc-20240116; t=1771983413; c=relaxed/simple;
+	bh=/yKTmPzjxhs9pj/KUyMvpDPymtdk5Xxv2kt3aeuxUEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNbUyLBdro2mt+Q2LnCHRo/azDlMzjP3dZWPVeqKXF2xRv3T/dLtZMT9ebBCIPWYF8f9+Tgx+siCS4ppC1ZHUrmy744dKtPBbuakFWKIajnmZlnZ7naPVQeFivtBaYHbxUV83lVlHXowK9ftL0+GIL8Dgbm1UesJczvBDDZmlTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBO+nveI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F59C116D0;
-	Wed, 25 Feb 2026 01:47:07 +0000 (UTC)
+	 MIME-Version; b=jdTxUjNr9Tdp55NkDenHD9NIf/Xlqwv8NP8KsgP0+TJ5Yjkokfdc4ASKfVeNjBNiLN+My+b5GiStgiOYjTHgsYcAPkT6EQ1l0vJgGm2Rxrl77QxEhB/khjT+pfgM9lfmrmPweoLB7zNVzNAiOsX3v2bujtt97s1tMyvERaFP67M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAKRmXhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FC0C116D0;
+	Wed, 25 Feb 2026 01:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984028;
-	bh=dAc9vW2w6/1XhEeA0d35nLcPf4rS+frMGQl18pO7sac=;
+	s=korg; t=1771983413;
+	bh=/yKTmPzjxhs9pj/KUyMvpDPymtdk5Xxv2kt3aeuxUEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBO+nveI+ILzPidg8qxJMZZeL9pl5m4sUjwBMKu9TOIUVTLzYj1LHlL/iZQO2fQeK
-	 FNyZKETqjvG+SnI9ivH3aJ2w/rqSE2zgAzcczh7bSrrdE4pPSf4kjuDDF1ZGpUrdsh
-	 4f1s8sYgclvWExSh/3G1F6g3BWKooiRPFvh/wnP0=
+	b=UAKRmXhwfIprcJDoNllCDRxVF86hO9K/EK8ZV5ObZqiCQThZDmU36lV8AP4ODn3ws
+	 bvDXyvbp7vHRWqAv61kbPZGC4SwhUB41QHIs8sS7b2OgbHG8ZIPVWFz4Gx9hskzwle
+	 F7/7MTthdmn04exAOdxnHSmG5TIWAt/+zVG0lQMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Yuxiong Wang <yuxiong.wang@linux.alibaba.com>,
+	Huang Ying <ying.huang@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 273/641] xdrgen: Remove inclusion of nlm4.h header
+Subject: [PATCH 6.19 490/781] cxl: Fix premature commit_end increment on decoder commit failure
 Date: Tue, 24 Feb 2026 17:19:59 -0800
-Message-ID: <20260225012355.413480892@linuxfoundation.org>
+Message-ID: <20260225012411.825909331@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,63 +71,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218571-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219096-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0FB56190330
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email]
+X-Rspamd-Queue-Id: 66DE718FD51
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Yuxiong Wang <yuxiong.wang@linux.alibaba.com>
 
-[ Upstream commit eb1f3b55ac6202a013daf14ed508066947cdafa8 ]
+[ Upstream commit 7b6f9d9b1ea05c9c22570126547c780e8c6c3f62 ]
 
-The client-side source code template mistakenly includes the
-nlm4.h header file, which is specific to the NLM protocol and
-should not be present in the generic template that generates
-client stubs for all XDR-based protocols.
+In cxl_decoder_commit(), commit_end is incremented before verifying
+whether the commit succeeded, and the CXL_DECODER_F_ENABLE bit in
+cxld->flags is only set after a successful commit. As a result, if the
+commit fails, commit_end has been incremented and cxld->reset() has no
+effect since the flag is not set, so commit_end remains incorrectly
+incremented. The inconsistency between commit_end and CXL_DECODER_F_ENABLE
+causes failure during subsequent either commit or reset operations.
 
-Fixes: 903a7d37d9ea ("xdrgen: Update the files included in client-side source code")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fix this by incrementing commit_end only after confirming the commit
+succeeded. Also, remove the ineffective cxld->reset() call. According to
+CXL Spec r4.0 8.2.4.20.12 Committing Decoder Programming, since
+cxld_await_commit() has cleared the decoder commit bit on failure, no
+additional reset is required.
+
+[dj: Fixed commit log 80 char wrapping. ]
+[dj: Fix "Fixes" tag to correct hash length. ]
+[dj: Change spec to r4.0. ]
+
+Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
+Signed-off-by: Yuxiong Wang <yuxiong.wang@linux.alibaba.com>
+Acked-by: Huang Ying <ying.huang@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Link: https://patch.msgid.link/20260129064552.31180-1-yuxiong.wang@linux.alibaba.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/sunrpc/xdrgen/templates/C/source_top/client.j2 | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/cxl/core/hdm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/net/sunrpc/xdrgen/templates/C/source_top/client.j2 b/tools/net/sunrpc/xdrgen/templates/C/source_top/client.j2
-index c5518c519854a..df3598c38b2c2 100644
---- a/tools/net/sunrpc/xdrgen/templates/C/source_top/client.j2
-+++ b/tools/net/sunrpc/xdrgen/templates/C/source_top/client.j2
-@@ -8,6 +8,5 @@
- #include <linux/sunrpc/xdr.h>
- #include <linux/sunrpc/xdrgen/_defs.h>
- #include <linux/sunrpc/xdrgen/_builtins.h>
--#include <linux/sunrpc/xdrgen/nlm4.h>
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index a7ad730763e85..bc4b0c8607258 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -844,14 +844,13 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
+ 	scoped_guard(rwsem_read, &cxl_rwsem.dpa)
+ 		setup_hw_decoder(cxld, hdm);
  
- #include <linux/sunrpc/clnt.h>
+-	port->commit_end++;
+ 	rc = cxld_await_commit(hdm, cxld->id);
+ 	if (rc) {
+ 		dev_dbg(&port->dev, "%s: error %d committing decoder\n",
+ 			dev_name(&cxld->dev), rc);
+-		cxld->reset(cxld);
+ 		return rc;
+ 	}
++	port->commit_end++;
+ 	cxld->flags |= CXL_DECODER_F_ENABLE;
+ 
+ 	return 0;
 -- 
 2.51.0
 
