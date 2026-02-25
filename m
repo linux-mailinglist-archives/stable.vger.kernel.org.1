@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219310-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OcjN0xUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:48 +0100
+	id oLIJNTWfnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219310-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:25 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE1C18FC58
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04493192EA5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A00231AED8F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2DB6317061D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0CB2690EC;
-	Wed, 25 Feb 2026 01:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA002D73AD;
+	Wed, 25 Feb 2026 06:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BhcdAqFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4qMSsr3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4933243376;
-	Wed, 25 Feb 2026 01:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39BA2D29C2;
+	Wed, 25 Feb 2026 06:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983502; cv=none; b=g2zlvuQgAYnodDg4h2PDXxI4//VdqzbRap2Cs1ci+Vc5HSkIzLxTv/fOeXI/TXdurI+oOgMRPFPynI0DvVtChEZ7qr40U5JLqmqpe7gQg5QSp8LS62C5exRVK0jJkKx2czBSsJCoxnuu7XqXKblN8WtCbTPScSMwwvrXjmfzIjY=
+	t=1772002631; cv=none; b=qqFD1hAQfetJkjv+aQomYQkJseP3OhbDjiBqEhubT+mkdP3+3M78p0EJtvCSpy1ndaGU7VMSrAmhSXWAKOr8JaicHqeL+if8ZOGsC14amqx3nLn1eFN+9FEqsCPe/2QhbWP8YOca/Ei2hmXr2iEZFtqdV7B12hWeRdFSdSg7MLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983502; c=relaxed/simple;
-	bh=gKjr1AF50NVATfxHilq+KhWH/MDcp16wmOPTMCkWV/M=;
+	s=arc-20240116; t=1772002631; c=relaxed/simple;
+	bh=tLk7mMCq7sir67GEulzq4kdBRHXuXyZezOKUUCnTS40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WAliaEwBV6WVm+AqXFnm00sIMHxHA2kIwYnWNJh1YzAm/TABvDJms8izP2wePmA3Q8gXmLUYKFgDPMx7lj68ZI+A1Ma4hSourOlTIxvVW/5xLGWyi1vflwJlQOhEGa8dPfI+PEaI+uAVyulHXa+vc3OsChCJHiCAGwFk0/7VeSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BhcdAqFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931ACC116D0;
-	Wed, 25 Feb 2026 01:38:22 +0000 (UTC)
+	 MIME-Version; b=Cm+jIra7oL8W+MiuKxjwuTt85kj1u3rJgVKtbU+tcnLMmz1JRrwtJTQG3VwatZOcSx85IdMos+npzjbdA7jYNkz6tZ6ExIetQdoxneymye/rK4fdgdm6jsrlepfCfmD7Uah6m8RNv8pGIB3aUv+JhrO3NBnGPY3+Z2XcilPMliw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4qMSsr3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C855C116D0;
+	Wed, 25 Feb 2026 06:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983502;
-	bh=gKjr1AF50NVATfxHilq+KhWH/MDcp16wmOPTMCkWV/M=;
+	s=korg; t=1772002631;
+	bh=tLk7mMCq7sir67GEulzq4kdBRHXuXyZezOKUUCnTS40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BhcdAqFFZ7r78i2RcDQhjuKWavS9hh57Hpkbm0a9fMXJ55ybNVEBTPQr1oDMA/GFQ
-	 TYpHaYXkFVO9+ppnVSNzGgHV6EPZkCGwk8rgJZnXQCqKQ6KJPiQfK2Ly1ywqHAz5p8
-	 rhNcECLCFXOBsJk/Et262esX3vegGF/nI910TdWM=
+	b=w4qMSsr34IW87fwr2fp/Lmd3qu6FmMJd5DxWAk4lp0qzp5GuQS++LgByINC9QwboS
+	 eedt9EuHgUSRa3OE+JwfZyh8Xxmx7iBrebZUEbdYGJSv2a6Z8O0oZpXV09kpv/wD8/
+	 qh2o0WD68hPUy3zwaOxURCbjYmZXwZkwxymWrJfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Li Chen <me@linux.beauty>,
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 611/781] drbd: always set BLK_FEAT_STABLE_WRITES
+Subject: [PATCH 6.18 394/641] nvdimm: virtio_pmem: serialize flush requests
 Date: Tue, 24 Feb 2026 17:22:00 -0800
-Message-ID: <20260225012414.781437998@linuxfoundation.org>
+Message-ID: <20260225012358.122987395@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +65,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218651-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219310-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.beauty,gmail.com,redhat.com,intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.956];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linbit.com:email,lst.de:email]
-X-Rspamd-Queue-Id: 3AE1C18FC58
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linux.beauty:email]
+X-Rspamd-Queue-Id: 04493192EA5
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+From: Li Chen <me@linux.beauty>
 
-[ Upstream commit 2ebc8d600fb907fa6b1e7095c0b6d84fc47e91ea ]
+[ Upstream commit a9ba6733c7f1096c4506bf4e34a546e07242df74 ]
 
-DRBD requires stable pages because it may read the same bio data
-multiple times for local disk I/O and network transmission, and in
-some cases for calculating checksums.
+Under heavy concurrent flush traffic, virtio-pmem can overflow its request
+virtqueue (req_vq): virtqueue_add_sgs() starts returning -ENOSPC and the
+driver logs "no free slots in the virtqueue". Shortly after that the
+device enters VIRTIO_CONFIG_S_NEEDS_RESET and flush requests fail with
+"virtio pmem device needs a reset".
 
-The BLK_FEAT_STABLE_WRITES flag is set when the device is first
-created, but blk_set_stacking_limits() clears it whenever a
-backing device is attached. In some cases the flag may be
-inherited from the backing device, but we want it to be enabled
-at all times.
+Serialize virtio_pmem_flush() with a per-device mutex so only one flush
+request is in-flight at a time. This prevents req_vq descriptor overflow
+under high concurrency.
 
-Unconditionally re-enable BLK_FEAT_STABLE_WRITES in
-drbd_reconsider_queue_parameters() after the queue parameter
-negotiations.
+Reproducer (guest with virtio-pmem):
+  - mkfs.ext4 -F /dev/pmem0
+  - mount -t ext4 -o dax,noatime /dev/pmem0 /mnt/bench
+  - fio: ioengine=io_uring rw=randwrite bs=4k iodepth=64 numjobs=64
+        direct=1 fsync=1 runtime=30s time_based=1
+  - dmesg: "no free slots in the virtqueue"
+           "virtio pmem device needs a reset"
 
-Also, document why we want this flag enabled in the first place.
-
-Fixes: 1a02f3a73f8c ("block: move the stable_writes flag to queue_limits")
-Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 6e84200c0a29 ("virtio-pmem: Add virtio pmem driver")
+Signed-off-by: Li Chen <me@linux.beauty>
+Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20260203021353.121091-1-me@linux.beauty
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/drbd/drbd_main.c |  3 ---
- drivers/block/drbd/drbd_nl.c   | 20 +++++++++++++++++++-
- 2 files changed, 19 insertions(+), 4 deletions(-)
+ drivers/nvdimm/nd_virtio.c   | 3 ++-
+ drivers/nvdimm/virtio_pmem.c | 1 +
+ drivers/nvdimm/virtio_pmem.h | 4 ++++
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_main.c
-index c73376886e7a5..1f6ac9202b66a 100644
---- a/drivers/block/drbd/drbd_main.c
-+++ b/drivers/block/drbd/drbd_main.c
-@@ -2659,9 +2659,6 @@ enum drbd_ret_code drbd_create_device(struct drbd_config_context *adm_ctx, unsig
- 		 * connect.
- 		 */
- 		.max_hw_sectors		= DRBD_MAX_BIO_SIZE_SAFE >> 8,
--		.features		= BLK_FEAT_WRITE_CACHE | BLK_FEAT_FUA |
--					  BLK_FEAT_ROTATIONAL |
--					  BLK_FEAT_STABLE_WRITES,
- 	};
+diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+index c3f07be4aa22a..af82385be7c6a 100644
+--- a/drivers/nvdimm/nd_virtio.c
++++ b/drivers/nvdimm/nd_virtio.c
+@@ -44,6 +44,8 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 	unsigned long flags;
+ 	int err, err1;
  
- 	device = minor_to_device(minor);
-diff --git a/drivers/block/drbd/drbd_nl.c b/drivers/block/drbd/drbd_nl.c
-index 91f3b8afb63ce..b502038be0a92 100644
---- a/drivers/block/drbd/drbd_nl.c
-+++ b/drivers/block/drbd/drbd_nl.c
-@@ -1296,6 +1296,8 @@ void drbd_reconsider_queue_parameters(struct drbd_device *device,
- 		lim.max_segments = drbd_backing_dev_max_segments(device);
- 	} else {
- 		lim.max_segments = BLK_MAX_SEGMENTS;
-+		lim.features = BLK_FEAT_WRITE_CACHE | BLK_FEAT_FUA |
-+			       BLK_FEAT_ROTATIONAL | BLK_FEAT_STABLE_WRITES;
- 	}
- 
- 	lim.max_hw_sectors = new >> SECTOR_SHIFT;
-@@ -1318,8 +1320,24 @@ void drbd_reconsider_queue_parameters(struct drbd_device *device,
- 		lim.max_hw_discard_sectors = 0;
- 	}
- 
--	if (bdev)
-+	if (bdev) {
- 		blk_stack_limits(&lim, &b->limits, 0);
-+		/*
-+		 * blk_set_stacking_limits() cleared the features, and
-+		 * blk_stack_limits() may or may not have inherited
-+		 * BLK_FEAT_STABLE_WRITES from the backing device.
-+		 *
-+		 * DRBD always requires stable writes because:
-+		 * 1. The same bio data is read for both local disk I/O and
-+		 *    network transmission. If the page changes mid-flight,
-+		 *    the local and remote copies could diverge.
-+		 * 2. When data integrity is enabled, DRBD calculates a
-+		 *    checksum before sending the data. If the page changes
-+		 *    between checksum calculation and transmission, the
-+		 *    receiver will detect a checksum mismatch.
-+		 */
-+		lim.features |= BLK_FEAT_STABLE_WRITES;
-+	}
- 
++	guard(mutex)(&vpmem->flush_lock);
++
  	/*
- 	 * If we can handle "zeroes" efficiently on the protocol, we want to do
+ 	 * Don't bother to submit the request to the device if the device is
+ 	 * not activated.
+@@ -53,7 +55,6 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 		return -EIO;
+ 	}
+ 
+-	might_sleep();
+ 	req_data = kmalloc(sizeof(*req_data), GFP_KERNEL);
+ 	if (!req_data)
+ 		return -ENOMEM;
+diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
+index 2396d19ce5496..77b1966619059 100644
+--- a/drivers/nvdimm/virtio_pmem.c
++++ b/drivers/nvdimm/virtio_pmem.c
+@@ -64,6 +64,7 @@ static int virtio_pmem_probe(struct virtio_device *vdev)
+ 		goto out_err;
+ 	}
+ 
++	mutex_init(&vpmem->flush_lock);
+ 	vpmem->vdev = vdev;
+ 	vdev->priv = vpmem;
+ 	err = init_vq(vpmem);
+diff --git a/drivers/nvdimm/virtio_pmem.h b/drivers/nvdimm/virtio_pmem.h
+index 0dddefe594c46..f72cf17f9518f 100644
+--- a/drivers/nvdimm/virtio_pmem.h
++++ b/drivers/nvdimm/virtio_pmem.h
+@@ -13,6 +13,7 @@
+ #include <linux/module.h>
+ #include <uapi/linux/virtio_pmem.h>
+ #include <linux/libnvdimm.h>
++#include <linux/mutex.h>
+ #include <linux/spinlock.h>
+ 
+ struct virtio_pmem_request {
+@@ -35,6 +36,9 @@ struct virtio_pmem {
+ 	/* Virtio pmem request queue */
+ 	struct virtqueue *req_vq;
+ 
++	/* Serialize flush requests to the device. */
++	struct mutex flush_lock;
++
+ 	/* nvdimm bus registers virtio pmem device */
+ 	struct nvdimm_bus *nvdimm_bus;
+ 	struct nvdimm_bus_descriptor nd_desc;
 -- 
 2.51.0
 
