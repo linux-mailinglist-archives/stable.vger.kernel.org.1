@@ -1,200 +1,167 @@
-Return-Path: <stable+bounces-219573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219574-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKVMBBS7nmnwWwQAu9opvQ
-	(envelope-from <stable+bounces-219573-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 10:04:20 +0100
+	id WDlmA+e/nmnsXAQAu9opvQ
+	(envelope-from <stable+bounces-219574-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 10:24:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD0619496B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 10:04:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 808F3194E48
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 10:24:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 981AB3155CC8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:58:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3A0CA3028F5B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 09:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BF932E727;
-	Wed, 25 Feb 2026 08:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144FC38E107;
+	Wed, 25 Feb 2026 09:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1HwktCW"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="ak+MYosH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF6C32AADC;
-	Wed, 25 Feb 2026 08:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E2438B7CE
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 09:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772009920; cv=none; b=H1X/i0GS907VeD11LZ4/WPnP890KrL34WeSHe8Zz4EMbMeOuD1jTrVgwlEz+ZnFjwiYTClvtdmyLdj33yHRDXTFfe0Hb2hRIOvVX95TGSbRrlhTDYhLHXoG60IEQ51TdX8hhOIeg+xhsVRyEs+iO3ataKTfuHxiO8JQDDVeZ7Z0=
+	t=1772011097; cv=none; b=aS4mmxOUH8dtreH7dx8o2DG6MnCRUYbwXZQTaTBppYeMPhIdzBkT3qT+a/uzItC0cAH8qNEUwJqG5YH7655YaFUFevTymLyZbd2b69jER5jDVG0sk32Hbd2p+bS1YhH57ee2Dd02p3w3mSEo6PXD4BuJhaBFWifVS+yP3x5UPWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772009920; c=relaxed/simple;
-	bh=++lJa34FIQd0srk6H91XdQrYCvf1kKADzH8XRl7vWR4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NUWBHiewFqeK3lRKMhhN5MYL1JbiWUv5LFY2/XaBcJX1OeX2m/DOmDFYN2UsJS9K/b2yyjOLHxy/3jigBRtEnPHBAYBDZzb9lYYHLiq+NqYgLR+NRLDZDpT1lXe7SbNlR6R3kXz8l2L4VxSEGpUJWsBcwUKZXjdpkidOA3L4av4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1HwktCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C4AC116D0;
-	Wed, 25 Feb 2026 08:58:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772009920;
-	bh=++lJa34FIQd0srk6H91XdQrYCvf1kKADzH8XRl7vWR4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D1HwktCWBfBnn+mWoG4xVpdg937txzThq5+AUBBINYW1g0lW/MV/s+4VwR7J4yHqG
-	 A4ipDqQa/TBbV4j/DbbFZDZTpIwEqxWq1T0C5kN/SyiT8qmNjXFt4vIDwgtj+cg7gQ
-	 h7qjztYt9jQmo5oRNpqm/nNJzH9Nldlizjw7NSZq0kwlkcpvcGkZsp4gsDzQsukMS9
-	 8kl/P5Yd29AW583M1C7kJT+meOcy/shZy9SVmdMoOGxb13CiO4FqBJv2sOFjUTy+Ns
-	 +c8ESgT0u+cQ3Al1BLMS4UxeLYcNwq7DxJbftIJBOqBx6ahnt3Kl+p+Ht/mz5yR7xA
-	 uDKVrFXDj4seg==
-Date: Wed, 25 Feb 2026 10:58:34 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm: memfd_luo: always dirty all folios
-Message-ID: <aZ65uvOrTDndpic6@kernel.org>
-References: <20260223173931.2221759-1-pratyush@kernel.org>
- <20260223173931.2221759-3-pratyush@kernel.org>
+	s=arc-20240116; t=1772011097; c=relaxed/simple;
+	bh=MMwGGEEnyaKWyggym/xwedompx1+jdn/7ihSagtsb0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m4EnOaoUaYfDrHbcAjkwEhYuVMonBRQf1ipzHE1KYMp8nO6LEncc+0/vAryBn4TUjcQhgyW69sTKe0r9bHjasujM4UykHkMnIMw5xm95mDCit/jfDgkFUgdLFVP81iQ5+2cVzQIYo4OmKr2ymFRnEV/rvqy+6B4fYtwsaQHE9uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=ak+MYosH; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6001b.ext.cloudfilter.net ([10.0.30.143])
+	by cmsmtp with ESMTPS
+	id v0RmvRh9LKXDJvB20vTfaS; Wed, 25 Feb 2026 09:18:08 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id vB1zvOlMIcu11vB1zvaLTy; Wed, 25 Feb 2026 09:18:07 +0000
+X-Authority-Analysis: v=2.4 cv=bKYWIO+Z c=1 sm=1 tr=0 ts=699ebe50
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=AKe3ooYFs9pqdXT75enX0rjg6PXGXFTaUMMp2vQInlI=; b=ak+MYosHJfCL5W2msp+qs9TvNx
+	1sNN1fNGMHFTvcHhOEf9ZZ1mOmf/plCxYj9bSKJ+kHk0AWf6c5iQjrxriLLh2JQ4cERC9176Vazic
+	+o20nmzNOHkxgG3aO45IS+i7Kxx2itAd/Hxfk7VAGvI/kOL0chviIt6ptxjuamOIxVwwDpR2+yJW3
+	IhFkb1Z49pDHhX9B+I9nAwptBIOWf8qXtP+ISBJQx23Oc4CBliLDQfwC6kMXzJZ49Pi0PTuvNRXIo
+	02WAMzvzsXXzhzIHJesV5l+TxaNrD+wQo8Yt8+xb8J2kM7cgOnFfr4Fp9ZDBgGz21Jlt4bjMDSt6X
+	1ueCREng==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:34348 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vvB1y-00000001Mad-3ieZ;
+	Wed, 25 Feb 2026 02:18:06 -0700
+Message-ID: <765c8a31-8408-42b6-9d07-fa59b0c99fe9@w6rz.net>
+Date: Wed, 25 Feb 2026 01:18:05 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260223173931.2221759-3-pratyush@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 000/781] 6.19.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260225012359.695468795@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1vvB1y-00000001Mad-3ieZ
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:34348
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfDV1A6wVquD7Z0GIKGMD1fT4DGmt3z+C579G+DemT8W7yYwmXBr+MAObbyqbFdddRm90SJsmG+XIpc36yYojtAZYlRo6nrC4KaI9qYL9Mt4+EDGud7r+
+ GFSMZaP7BfqsJCSypgIfQGVe6PtZ3NnjzB6xddowyQIhBUyRcQazkUWtcSPQu1xRWGrSM1EYitZvZQ==
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219573-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219574-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[w6rz.net];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_X_SOURCE(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	NEURAL_HAM(-0.00)[-0.705];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1FD0619496B
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,w6rz.net:mid,w6rz.net:email]
+X-Rspamd-Queue-Id: 808F3194E48
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 06:39:29PM +0100, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> A dirty folio is one which has been written to. A clean folio is its
-> opposite. Since a clean folio has no user data, it can be freed under
-> memory pressure.
-> 
-> memfd preservation with LUO saves the flag at preserve(). This is
-> problematic. The folio might get dirtied later. Saving it at freeze()
-> also doesn't work, since the dirty bit from PTE is normally synced at
-> unmap and there might still be mappings of the file at freeze().
-> 
-> To see why this is a problem, say a folio is clean at preserve, but gets
-> dirtied later. The serialized state of the folio will mark it as clean.
-> After retrieve, the next kernel will see the folio as clean and might
-> try to reclaim it under memory pressure. This will result in losing user
-> data.
-> 
-> Mark all folios of the file as dirty, and always set the
-> MEMFD_LUO_FOLIO_DIRTY flag. This comes with the side effect of making
-> all clean folios un-reclaimable. This is a cost that has to be paid for
-> participants of live update. It is not expected to be a common use case
-> to preserve a lot of clean folios anyway.
-> 
-> Since the value of pfolio->flags is a constant now, drop the flags
-> variable and set it directly.
-> 
-> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+On 2/24/26 17:11, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.19.4 release.
+> There are 781 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 27 Feb 2026 01:22:34 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.19.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-> ---
->  mm/memfd_luo.c | 26 +++++++++++++++++++++-----
->  1 file changed, 21 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> index ccbf1337f650..9eac02d06b5a 100644
-> --- a/mm/memfd_luo.c
-> +++ b/mm/memfd_luo.c
-> @@ -146,7 +146,6 @@ static int memfd_luo_preserve_folios(struct file *file,
->  	for (i = 0; i < nr_folios; i++) {
->  		struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
->  		struct folio *folio = folios[i];
-> -		unsigned int flags = 0;
->  
->  		err = kho_preserve_folio(folio);
->  		if (err)
-> @@ -154,8 +153,26 @@ static int memfd_luo_preserve_folios(struct file *file,
->  
->  		folio_lock(folio);
->  
-> -		if (folio_test_dirty(folio))
-> -			flags |= MEMFD_LUO_FOLIO_DIRTY;
-> +		/*
-> +		 * A dirty folio is one which has been written to. A clean folio
-> +		 * is its opposite. Since a clean folio does not carry user
-> +		 * data, it can be freed by page reclaim under memory pressure.
-> +		 *
-> +		 * Saving the dirty flag at prepare() time doesn't work since it
-> +		 * can change later. Saving it at freeze() also won't work
-> +		 * because the dirty bit is normally synced at unmap and there
-> +		 * might still be a mapping of the file at freeze().
-> +		 *
-> +		 * To see why this is a problem, say a folio is clean at
-> +		 * preserve, but gets dirtied later. The pfolio flags will mark
-> +		 * it as clean. After retrieve, the next kernel might try to
-> +		 * reclaim this folio under memory pressure, losing user data.
-> +		 *
-> +		 * Unconditionally mark it dirty to avoid this problem. This
-> +		 * comes at the cost of making clean folios un-reclaimable after
-> +		 * live update.
-> +		 */
+Tested-by: Ron Economos <re@w6rz.net>
 
-Can we make the comment here shorter to only contain the gist of the issue?
-
-> +		folio_mark_dirty(folio);
->  
->  		/*
->  		 * If the folio is not uptodate, it was fallocated but never
-> @@ -174,12 +191,11 @@ static int memfd_luo_preserve_folios(struct file *file,
->  			flush_dcache_folio(folio);
->  			folio_mark_uptodate(folio);
->  		}
-> -		flags |= MEMFD_LUO_FOLIO_UPTODATE;
->  
->  		folio_unlock(folio);
->  
->  		pfolio->pfn = folio_pfn(folio);
-> -		pfolio->flags = flags;
-> +		pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
->  		pfolio->index = folio->index;
->  	}
->  
-> -- 
-> 2.53.0.371.g1d285c8824-goog
-> 
-
--- 
-Sincerely yours,
-Mike.
 
