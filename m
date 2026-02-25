@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cE4iH7ZSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:02 +0100
+	id 0JACKW9anmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-219082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3A118F4BB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0727A190B06
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F40B30E1CCF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83A57324E0F2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69CC922579E;
-	Wed, 25 Feb 2026 01:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B96E26F476;
+	Wed, 25 Feb 2026 01:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OT9nHcFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgwUUoIA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E14918B0A;
-	Wed, 25 Feb 2026 01:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F79F254B03;
+	Wed, 25 Feb 2026 01:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983350; cv=none; b=WZVaQOZY3hrLx4QLVR9qrmUzsc5tRwDlL1fCcftk18ygFeMh/CvVBLDhWWRQ4ZUtMHOZkalC3QyDDPv6tOHFrtp9AccmxunG2yY+XZr72HMzJiW55CrLxPRKNShfBrtc+V/MHtNwUCgTxgasBQeMGs55XnGR8QeWFZIOev5HxdA=
+	t=1771984009; cv=none; b=WTWNeKKsrOILz57/kmf8KX5Rb8S+6fPYwXFkoBCGIsb4S2EnvNaN/d9wlT6W5t8u8/ydiosrcF3/5o5brrZe7kqNE20lOMaDmJXeNYLFIZpKHmFU4XcHkZg0NlPSYXbBEn7QwVHeLeOecepM8asE9VnVKGLHG+Y4dEq7X5y2ndE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983350; c=relaxed/simple;
-	bh=4GzRTBINmHtpN/cWDWKJVwoh120xq9BiFkh3PBnsxfs=;
+	s=arc-20240116; t=1771984009; c=relaxed/simple;
+	bh=A1AMkFjAQcwWmRqHwV39JSf3Ri4YDQsqCCZHA5YCoVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+aumNxs3FN9hjIbgHYeZ4uZUqkxK+80gfG0Js1Qc50fujgyz9OqeigIEDyBWyP4oAUKX/tpF5zbndPGhTq+AybW3av+ZgAV8e2dhb5C3A5FzxowuGVU+ZE+kqtMDsgKwQDhXclmV+luFTmc7S84hjdwimWSYBSD36KpHcgeP8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OT9nHcFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8FBC116D0;
-	Wed, 25 Feb 2026 01:35:49 +0000 (UTC)
+	 MIME-Version; b=KvdUl10TMtENMVOutJKmg8j62pEdDk9kvGjFvWnEbvBSQMfyaIFR6OgxeUZ8U4Vu9EfVTNc3oNbonqdHCx2exG5KEST7Enpu4JR9tz5shgllUKiRwO1C2+JfmkQb2Va+tbzU4Z90J00Bc7LUTYgkOqxH7ZZywSgxXIfKmy0ltW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgwUUoIA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DA0C116D0;
+	Wed, 25 Feb 2026 01:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983350;
-	bh=4GzRTBINmHtpN/cWDWKJVwoh120xq9BiFkh3PBnsxfs=;
+	s=korg; t=1771984009;
+	bh=A1AMkFjAQcwWmRqHwV39JSf3Ri4YDQsqCCZHA5YCoVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OT9nHcFI4pG5q+qVuXlOH9gQzGb4Qpytt6pO4WQJUw0B9eEcHfK3DNuw0ShrDx4Kw
-	 ZSl9RPMEp8fDJOH72z6ijBM3V0fiEzlKia9i6OU+9oyBP2aw4wxiDOuON/d+T7cwO+
-	 H2q21T9TNSecDi42sfCFt2tD0A5Dr4V4NdzubDMo=
+	b=BgwUUoIAEAiGLh/NMGzv+8+u6rqbmZzSRinzBTvhc4QzdtroaCpzL9eFE0D8gyLFq
+	 Qmxc2vimuY+T9AYU7qMJ4tkwpXze3u5ETJz9qTQBMZYtGdz7e2ybCDZ4q6iefPNjCY
+	 gHZM3GwgnQJEuN1+CGB1ArRe+4L1noarqwYnuHJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Michal Slabihoudek <michal.slabihoudek@gooddata.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 477/781] NFS/localio: Handle short writes by retrying
+Subject: [PATCH 6.18 260/641] netfilter: nf_conncount: fix tracking of connections from localhost
 Date: Tue, 24 Feb 2026 17:19:46 -0800
-Message-ID: <20260225012411.513020659@linuxfoundation.org>
+Message-ID: <20260225012355.125156323@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218517-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219082-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,132 +87,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,hammerspace.com:email]
-X-Rspamd-Queue-Id: EE3A118F4BB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,gooddata.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0727A190B06
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 615762059d284b863f9163b53679d95b3dcdd495 ]
+[ Upstream commit de8a70cefcb26cdceaafdc5ac144712681419c29 ]
 
-The current code for handling short writes in localio just truncates the
-I/O and then sets an error. While that is close to how the ordinary NFS
-code behaves, it does mean there is a chance the data that got written
-is lost because it isn't persisted.
-To fix this, change localio so that the upper layers can direct the
-behaviour to persist any unstable data by rewriting it, and then
-continuing writing until an ENOSPC is hit.
+Since commit be102eb6a0e7 ("netfilter: nf_conncount: rework API to use
+sk_buff directly"), we skip the adding and trigger a GC when the ct is
+confirmed. For connections originated from local to local it doesn't
+work because the connection is confirmed on POSTROUTING, therefore
+tracking on the INPUT hook is always skipped.
 
-Fixes: 70ba381e1a43 ("nfs: add LOCALIO support")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+In order to fix this, we check whether skb input ifindex is set to
+loopback ifindex. If it is then we fallback on a GC plus track operation
+skipping the optimization. This fallback is necessary to avoid
+duplicated tracking of a packet train e.g 10 UDP datagrams sent on a
+burst when initiating the connection.
+
+Tested with xt_connlimit/nft_connlimit and OVS limit and with a HTTP
+server and iperf3 on UDP mode.
+
+Fixes: be102eb6a0e7 ("netfilter: nf_conncount: rework API to use sk_buff directly")
+Reported-by: Michal Slabihoudek <michal.slabihoudek@gooddata.com>
+Closes: https://lore.kernel.org/netfilter/6989BD9F-8C24-4397-9AD7-4613B28BF0DB@gooddata.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/localio.c | 64 +++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 47 insertions(+), 17 deletions(-)
+ net/netfilter/nf_conncount.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
-index 41fbcb3f9167e..00bbac6c9fe40 100644
---- a/fs/nfs/localio.c
-+++ b/fs/nfs/localio.c
-@@ -58,6 +58,11 @@ struct nfs_local_fsync_ctx {
- static bool localio_enabled __read_mostly = true;
- module_param(localio_enabled, bool, 0644);
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 288936f5c1bf9..14e62b3263cd9 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -179,14 +179,25 @@ static int __nf_conncount_add(struct net *net,
+ 		return -ENOENT;
  
-+static int nfs_local_do_read(struct nfs_local_kiocb *iocb,
-+			     const struct rpc_call_ops *call_ops);
-+static int nfs_local_do_write(struct nfs_local_kiocb *iocb,
-+			      const struct rpc_call_ops *call_ops);
+ 	if (ct && nf_ct_is_confirmed(ct)) {
+-		err = -EEXIST;
+-		goto out_put;
++		/* local connections are confirmed in postrouting so confirmation
++		 * might have happened before hitting connlimit
++		 */
++		if (skb->skb_iif != LOOPBACK_IFINDEX) {
++			err = -EEXIST;
++			goto out_put;
++		}
 +
- static inline bool nfs_client_is_local(const struct nfs_client *clp)
- {
- 	return !!rcu_access_pointer(clp->cl_uuid.net);
-@@ -542,13 +547,50 @@ nfs_local_iocb_release(struct nfs_local_kiocb *iocb)
- 	nfs_local_iocb_free(iocb);
- }
- 
--static void
--nfs_local_pgio_release(struct nfs_local_kiocb *iocb)
-+static void nfs_local_pgio_restart(struct nfs_local_kiocb *iocb,
-+				   struct nfs_pgio_header *hdr)
-+{
-+	int status = 0;
-+
-+	iocb->kiocb.ki_pos = hdr->args.offset;
-+	iocb->kiocb.ki_flags &= ~(IOCB_DSYNC | IOCB_SYNC | IOCB_DIRECT);
-+	iocb->kiocb.ki_complete = NULL;
-+	iocb->aio_complete_work = NULL;
-+	iocb->end_iter_index = -1;
-+
-+	switch (hdr->rw_mode) {
-+	case FMODE_READ:
-+		nfs_local_iters_init(iocb, ITER_DEST);
-+		status = nfs_local_do_read(iocb, hdr->task.tk_ops);
-+		break;
-+	case FMODE_WRITE:
-+		nfs_local_iters_init(iocb, ITER_SOURCE);
-+		status = nfs_local_do_write(iocb, hdr->task.tk_ops);
-+		break;
-+	default:
-+		status = -EOPNOTSUPP;
-+	}
-+
-+	if (status != 0) {
-+		nfs_local_iocb_release(iocb);
-+		hdr->task.tk_status = status;
-+		nfs_local_hdr_release(hdr, hdr->task.tk_ops);
-+	}
-+}
-+
-+static void nfs_local_pgio_release(struct nfs_local_kiocb *iocb)
- {
- 	struct nfs_pgio_header *hdr = iocb->hdr;
-+	struct rpc_task *task = &hdr->task;
-+
-+	task->tk_action = NULL;
-+	task->tk_ops->rpc_call_done(task, hdr);
- 
--	nfs_local_iocb_release(iocb);
--	nfs_local_hdr_release(hdr, hdr->task.tk_ops);
-+	if (task->tk_action == NULL) {
-+		nfs_local_iocb_release(iocb);
-+		task->tk_ops->rpc_release(hdr);
-+	} else
-+		nfs_local_pgio_restart(iocb, hdr);
- }
- 
- /*
-@@ -773,19 +815,7 @@ static void nfs_local_write_done(struct nfs_local_kiocb *iocb)
- 		pr_info_ratelimited("nfs: Unexpected direct I/O write alignment failure\n");
++		/* this is likely a local connection, skip optimization to avoid
++		 * adding duplicates from a 'packet train'
++		 */
++		goto check_connections;
  	}
  
--	/* Handle short writes as if they are ENOSPC */
--	status = hdr->res.count;
--	if (status > 0 && status < hdr->args.count) {
--		hdr->mds_offset += status;
--		hdr->args.offset += status;
--		hdr->args.pgbase += status;
--		hdr->args.count -= status;
--		nfs_set_pgio_error(hdr, -ENOSPC, hdr->args.offset);
--		status = -ENOSPC;
--		/* record -ENOSPC in terms of nfs_local_pgio_done */
--		(void) nfs_local_pgio_done(iocb, status, true);
--	}
--	if (hdr->task.tk_status < 0)
-+	if (status < 0)
- 		nfs_reset_boot_verifier(hdr->inode);
- }
+ 	if ((u32)jiffies == list->last_gc &&
+ 	    (list->count - list->last_gc_count) < CONNCOUNT_GC_MAX_COLLECT)
+ 		goto add_new_node;
  
++check_connections:
+ 	/* check the saved connections */
+ 	list_for_each_entry_safe(conn, conn_n, &list->head, node) {
+ 		if (collect > CONNCOUNT_GC_MAX_COLLECT)
 -- 
 2.51.0
 
