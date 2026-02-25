@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218920-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKu2I7JSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:58 +0100
+	id OGHrL9hUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218920-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051E918F4AC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9124E18FE04
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8984031A78FB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 96AB8308E8FC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDA62417E0;
-	Wed, 25 Feb 2026 01:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091932877E5;
+	Wed, 25 Feb 2026 01:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wUt0jDF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQfm/+n3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39611E2834;
-	Wed, 25 Feb 2026 01:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20BE24A06D;
+	Wed, 25 Feb 2026 01:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983163; cv=none; b=O4xRPYwKASiWAeqcvSDRC+7IpytbndmdKDqzE7h6XVpQLWXENoETBP0zqUWlcVyOEIR6dBNub0lIlg0QV8I13IYJjB/LZASiuaVFchLJ7431C4pOeOR5z7LsHeItljH0QBOY0k5MSCWK35VAVxWiIaO+fSXqLhleapgxX6+v+Y4=
+	t=1771983814; cv=none; b=qME6Y6bP2Ssh3m9/BLUTFHWmZ8knM/gvSYiw7yUgy4rwCfAGx2IG1YxLSfF9SSVTSFhEhBCej52fvxgYxImRXQDazppO0WFvsRpkmLErGYabhSkdVXW+viVadd6F0F2iH6xEKDF3ekJ/vDP9mvzlk+Q6ngRX7h3kSwlPdZDxdtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983163; c=relaxed/simple;
-	bh=SKPPD2L5fx4DooGxqksmF1Ftvg2M0WhF7Hnlw2sF46I=;
+	s=arc-20240116; t=1771983814; c=relaxed/simple;
+	bh=SzMfllMWqY3bLf5AdGJ7zDZP/NmF/s8hbQk/KGSgDMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9Mh3FBhn4McoBPN0L+Y3S/HvHdMZoU4djznFf+g97ugU9SjahpX78YpZgz3QOqNxLJ5YwC4Ng3070/N3/k6GGliBaergbnGN5iDQ8qEX7eVOQnUTD4Vw3/Jl592IxYMt6tdrLoMEyTx4lSTmZZG/Bf1BfGtA4yU9QCPY+12KE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wUt0jDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B03C116D0;
-	Wed, 25 Feb 2026 01:32:42 +0000 (UTC)
+	 MIME-Version; b=rv9r7ihc017KMsJX4hMPuXFFi0ZaKf13HnQLXBtM0YZePXPBc/Bkn0A8xQTnfYg2fv6Z0YAgekU0UqkB0G6X3wJmjjPaGEG6/aADO4sBu/QhfU8fjtVcVRtoqq1kdJnzmoz7u/8aJvf4EPeN3I8ubfi0NsP+86Qvr4HJ+LXDynw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQfm/+n3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83048C19423;
+	Wed, 25 Feb 2026 01:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983162;
-	bh=SKPPD2L5fx4DooGxqksmF1Ftvg2M0WhF7Hnlw2sF46I=;
+	s=korg; t=1771983814;
+	bh=SzMfllMWqY3bLf5AdGJ7zDZP/NmF/s8hbQk/KGSgDMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0wUt0jDF0/PmWQjBySKtXY6T5T6LPyOOm66VlauF6LHq2Qmi88A6L3P6FA0VigmAf
-	 RKzRsMOG6ERXsJdbbp1myuRe/U79lxvZaQRV4b1XC/F0TzKJbzVXvodMun1kVTopyM
-	 VSpV0MYz03dTXXDk3UJUkNwPo+c3LIeXdxodFDOg=
+	b=gQfm/+n3h27VCIEJluPOZrNIkBeJqMemUGv0q0lreK4XrvnOymY4mNOf8WKM7MHUd
+	 oZdNAj+5Uu0eMZpWI3gbSNxct1VSNqnEC/wRsNHz2ETWUnTUTQyCoshlHLD1t8EMjI
+	 /og9WX53i2bRKLNkKR8ZMFvKQGkIRX7UhpvjzjJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 316/781] wifi: rtw89: correct use sequence of driver_data in skb->info
+Subject: [PATCH 6.18 099/641] x86/fgraph: Fix return_to_handler regs.rsp value
 Date: Tue, 24 Feb 2026 17:17:05 -0800
-Message-ID: <20260225012407.451822363@linuxfoundation.org>
+Message-ID: <20260225012351.508799951@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,103 +70,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218920-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218353-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,ispras.ru:email]
-X-Rspamd-Queue-Id: 051E918F4AC
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,goodmis.org:email]
+X-Rspamd-Queue-Id: 9124E18FE04
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit d3a9e132a4c6273a5254e743da14887502e928c8 ]
+[ Upstream commit 8bc11700e0d23d4fdb7d8d5a73b2e95de427cabc ]
 
-As ieee80211_tx_info is used to assist filling TX descriptor, and layout of
-IEEE80211_SKB_CB(skb)->driver_data (accessing by RTW89_TX_SKB_CB()) is
-union, so driver_data must be used by/after rtw89_hci_tx_write() or just
-before calling rtw89_hci_tx_write(). Otherwise, ieee80211_tx_info::control
-data is overwritten.
+The previous change (Fixes commit) messed up the rsp register value,
+which is wrong because it's already adjusted with FRAME_SIZE, we need
+the original rsp value.
 
-Found this by using injected packets which uses ieee80211_tx_info::control,
-but always sending incorrect data rate.
+This change does not affect fprobe current kernel unwind, the !perf_hw_regs
+path perf_callchain_kernel:
 
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>
-Fixes: d5da3d9fb05f ("wifi: rtw89: process TX wait skbs for USB via C2H handler")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Tested-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20251217072646.43209-1-pkshih@realtek.com
+        if (perf_hw_regs(regs)) {
+                if (perf_callchain_store(entry, regs->ip))
+                        return;
+                unwind_start(&state, current, regs, NULL);
+        } else {
+                unwind_start(&state, current, NULL, (void *)regs->sp);
+        }
+
+which uses pt_regs.sp as first_frame boundary (FRAME_SIZE shift makes
+no difference, unwind stil stops at the right frame).
+
+This change fixes the other path when we want to unwind directly from
+pt_regs sp/fp/ip state, which is coming in following change.
+
+Fixes: 20a0bc10272f ("x86/fgraph,bpf: Fix stack ORC unwind from kprobe_multi return probe")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/bpf/20260126211837.472802-2-jolsa@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 6 ++++--
- drivers/net/wireless/realtek/rtw89/core.h | 2 ++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/kernel/ftrace_64.S | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 0824940c91aee..53d32f3137ebe 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1207,7 +1207,7 @@ rtw89_core_tx_update_desc_info(struct rtw89_dev *rtwdev,
- 	if (addr_cam->valid && desc_info->mlo)
- 		upd_wlan_hdr = true;
+diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
+index 823dbdd0eb410..ae94f7b0fdf16 100644
+--- a/arch/x86/kernel/ftrace_64.S
++++ b/arch/x86/kernel/ftrace_64.S
+@@ -354,6 +354,9 @@ SYM_CODE_START(return_to_handler)
+ 	UNWIND_HINT_UNDEFINED
+ 	ANNOTATE_NOENDBR
  
--	if (rtw89_is_tx_rpt_skb(rtwdev, tx_req->skb))
-+	if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS || tx_req->with_wait)
- 		rtw89_tx_rpt_init(rtwdev, tx_req);
- 
- 	is_bmc = (is_broadcast_ether_addr(hdr->addr1) ||
-@@ -1342,13 +1342,15 @@ static int rtw89_core_tx_write_link(struct rtw89_dev *rtwdev,
- 	tx_req.rtwvif_link = rtwvif_link;
- 	tx_req.rtwsta_link = rtwsta_link;
- 	tx_req.desc_info.sw_mld = sw_mld;
--	rcu_assign_pointer(skb_data->wait, wait);
-+	tx_req.with_wait = !!wait;
- 
- 	rtw89_traffic_stats_accu(rtwdev, rtwvif, skb, true, true);
- 	rtw89_wow_parse_akm(rtwdev, skb);
- 	rtw89_core_tx_update_desc_info(rtwdev, &tx_req);
- 	rtw89_core_tx_wake(rtwdev, &tx_req);
- 
-+	rcu_assign_pointer(skb_data->wait, wait);
++	/* Store original rsp for pt_regs.sp value. */
++	movq %rsp, %rdi
 +
- 	ret = rtw89_hci_tx_write(rtwdev, &tx_req);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to transmit skb to HCI\n");
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index a9cb47ea0b935..92636cfc5ca58 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -1211,6 +1211,8 @@ struct rtw89_core_tx_request {
- 	struct rtw89_vif_link *rtwvif_link;
- 	struct rtw89_sta_link *rtwsta_link;
- 	struct rtw89_tx_desc_info desc_info;
-+
-+	bool with_wait;
- };
+ 	/* Restore return_to_handler value that got eaten by previous ret instruction. */
+ 	subq $8, %rsp
+ 	UNWIND_HINT_FUNC
+@@ -364,7 +367,7 @@ SYM_CODE_START(return_to_handler)
+ 	movq %rax, RAX(%rsp)
+ 	movq %rdx, RDX(%rsp)
+ 	movq %rbp, RBP(%rsp)
+-	movq %rsp, RSP(%rsp)
++	movq %rdi, RSP(%rsp)
+ 	movq %rsp, %rdi
  
- struct rtw89_txq {
+ 	call ftrace_return_to_handler
 -- 
 2.51.0
 
