@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-219463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MzZNOKinmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:06 +0100
+	id uFnUGfhVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4213B193424
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9495619018F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6107131EECEF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 40F9B30BDFE6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8181D315D30;
-	Wed, 25 Feb 2026 06:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C496A248886;
+	Wed, 25 Feb 2026 01:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnYpXEct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8iFgBhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DB23016F7;
-	Wed, 25 Feb 2026 06:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B36248F54;
+	Wed, 25 Feb 2026 01:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002732; cv=none; b=nQ7/Wso2ibC9tXmOJyTVwRr3CNH8MB2GqsHilsrfc0Ur7EWVnFcFy+epVBZ5FLjpnMwpuxFxTyNRSderqj7kgUCZq6JhUSMIZrstYo/QXDOtRKFQrDmGpPXTWJR7XMTWlUJ2EkLiur+4Da5Ph3ixRPNCF04hugWzIYY15aRiSfY=
+	t=1771983679; cv=none; b=SORfFPcI6yIjjBVkphWcDTJshBHujVxAWP5q5LuYxJtJby+Tq0zB+LgwYQO1E0AXa7zpK6pLfkysJzBJAtpsGGi/bc8DiMBV8tyk8soyqWxkfj8MCTThemSb1H/C2MjD+rmbz/DG3xBR1mWhnPknOZlwH2Kr4eXblOdLCgMAPEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002732; c=relaxed/simple;
-	bh=1Sl4FKXGEdQHrr9v8XtQORlx2iYDHFXLEkSsmzmVQnc=;
+	s=arc-20240116; t=1771983679; c=relaxed/simple;
+	bh=NFHAuuzROCilNZFhPTO9hJJleZRn+dvjZXy94kub9+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oovdGRr6cikluVPu45LOXrEpbuOmoJg3Gr7HlJRHYf923ByYBF5NK58JVX2a3zhZiER/fj2xOkUPo0nEuWybIFgIfeFIFhpDH1qHMU4PT0jqU/oc0E2bdgjE7Br0vlW4AaCpcoDh5bZeY/OBHI6whSMwJfQSLEtMRfk1RyDqQhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnYpXEct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE09C19422;
-	Wed, 25 Feb 2026 06:58:52 +0000 (UTC)
+	 MIME-Version; b=h2ROZjjs1BRlU9ScTFAy5sthI/NBNgMK2nbzgWIGAPkomdYL8lrDDxAMOc/SvDE/XITKgWUKEA3Obn7P+jTsPjP+q2rR80mmprfoIQl3NZBgECyXPO+KKGa2byUpqNmGmJAzjQPGjlTeGfCUZYbXAA+CzWP+mPi3xASSMCoaGaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8iFgBhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E448C116D0;
+	Wed, 25 Feb 2026 01:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002732;
-	bh=1Sl4FKXGEdQHrr9v8XtQORlx2iYDHFXLEkSsmzmVQnc=;
+	s=korg; t=1771983679;
+	bh=NFHAuuzROCilNZFhPTO9hJJleZRn+dvjZXy94kub9+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vnYpXEctfEl/Ybz8IAfL7vvusIZmG5kPd9MiKThfMnLWkjcDm7Kmwq+Q/SeRzlrDc
-	 szWYBiPG6DN1pFU3ITfUDfDXNqYlMgz5KUpCdq1QN1vhtOLj6TMIMoxAxIlqwaxZk3
-	 pVQ5YDxPR19aE4/Pf3tGgjmDUsZ5zDbIc6E/72ko=
+	b=l8iFgBhGnBYR1dLcACGhdx+sf2awzeNr4dsH5aEu7IDXfqu8TqS/xO7aLXF7WLEW9
+	 QEB50fFI6jc3n9viGMtpvaDkQfjmQr88Dw0+DE394BVMa7ktMOB5fO1SI8Enb4+gfS
+	 zwmfMlAp1Ri93oODf/HSKZqqpBwvTarhHTWpZgdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Monnet <qmo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 546/641] bpftool: Fix truncated netlink dumps
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Pedro Falcato <pfalcato@suse.de>,
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.19 763/781] ext4: always allocate blocks only from groups inode can use
 Date: Tue, 24 Feb 2026 17:24:32 -0800
-Message-ID: <20260225012401.758848775@linuxfoundation.org>
+Message-ID: <20260225012418.433455005@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219463-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218802-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,87 +89,117 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4213B193424
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,suse.cz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 9495619018F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 3b39d73cc3379360a33eb583b17f21fe55e1288e ]
+commit 4865c768b563deff1b6a6384e74a62f143427b42 upstream.
 
-Netlink requires that the recv buffer used during dumps is at least
-min(PAGE_SIZE, 8k) (see the man page). Otherwise the messages will
-get truncated. Make sure bpftool follows this requirement, avoid
-missing information on systems with large pages.
+For filesystems with more than 2^32 blocks inodes using indirect block
+based format cannot use blocks beyond the 32-bit limit.
+ext4_mb_scan_groups_linear() takes care to not select these unsupported
+groups for such inodes however other functions selecting groups for
+allocation don't. So far this is harmless because the other selection
+functions are used only with mb_optimize_scan and this is currently
+disabled for inodes with indirect blocks however in the following patch
+we want to enable mb_optimize_scan regardless of inode format.
 
-Acked-by: Quentin Monnet <qmo@kernel.org>
-Fixes: 7084566a236f ("tools/bpftool: Remove libbpf_internal.h usage in bpftool")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/r/20260217194150.734701-1-kuba@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20260114182836.14120-3-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/bpf/bpftool/net.c | 5 ++++-
- tools/lib/bpf/netlink.c | 4 +++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c |   29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
-index cfc6f944f7c33..1a06b0b5eef35 100644
---- a/tools/bpf/bpftool/net.c
-+++ b/tools/bpf/bpftool/net.c
-@@ -156,7 +156,7 @@ static int netlink_recv(int sock, __u32 nl_pid, __u32 seq,
- 	bool multipart = true;
- 	struct nlmsgerr *err;
- 	struct nlmsghdr *nh;
--	char buf[4096];
-+	char buf[8192];
- 	int len, ret;
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -892,6 +892,21 @@ mb_update_avg_fragment_size(struct super
+ 	}
+ }
  
- 	while (multipart) {
-@@ -201,6 +201,9 @@ static int netlink_recv(int sock, __u32 nl_pid, __u32 seq,
- 					return ret;
- 			}
- 		}
++static ext4_group_t ext4_get_allocation_groups_count(
++				struct ext4_allocation_context *ac)
++{
++	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
 +
-+		if (len)
-+			p_err("Invalid message or trailing data in Netlink response: %d bytes left", len);
- 	}
- 	ret = 0;
- done:
-diff --git a/tools/lib/bpf/netlink.c b/tools/lib/bpf/netlink.c
-index c997e69d507fe..c9a78fb16f115 100644
---- a/tools/lib/bpf/netlink.c
-+++ b/tools/lib/bpf/netlink.c
-@@ -143,7 +143,7 @@ static int libbpf_netlink_recv(int sock, __u32 nl_pid, int seq,
- 	struct nlmsghdr *nh;
- 	int len, ret;
++	/* non-extent files are limited to low blocks/groups */
++	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
++		ngroups = EXT4_SB(ac->ac_sb)->s_blockfile_groups;
++
++	/* Pairs with smp_wmb() in ext4_update_super() */
++	smp_rmb();
++
++	return ngroups;
++}
++
+ static int ext4_mb_scan_groups_xa_range(struct ext4_allocation_context *ac,
+ 					struct xarray *xa,
+ 					ext4_group_t start, ext4_group_t end)
+@@ -899,7 +914,7 @@ static int ext4_mb_scan_groups_xa_range(
+ 	struct super_block *sb = ac->ac_sb;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	enum criteria cr = ac->ac_criteria;
+-	ext4_group_t ngroups = ext4_get_groups_count(sb);
++	ext4_group_t ngroups = ext4_get_allocation_groups_count(ac);
+ 	unsigned long group = start;
+ 	struct ext4_group_info *grp;
  
--	ret = alloc_iov(&iov, 4096);
-+	ret = alloc_iov(&iov, 8192);
- 	if (ret)
- 		goto done;
+@@ -951,7 +966,7 @@ static int ext4_mb_scan_groups_p2_aligne
+ 	ext4_group_t start, end;
  
-@@ -212,6 +212,8 @@ static int libbpf_netlink_recv(int sock, __u32 nl_pid, int seq,
- 				}
- 			}
- 		}
-+		if (len)
-+			pr_warn("Invalid message or trailing data in Netlink response: %d bytes left\n", len);
- 	}
- 	ret = 0;
- done:
--- 
-2.51.0
-
+ 	start = group;
+-	end = ext4_get_groups_count(ac->ac_sb);
++	end = ext4_get_allocation_groups_count(ac);
+ wrap_around:
+ 	for (i = ac->ac_2order; i < MB_NUM_ORDERS(ac->ac_sb); i++) {
+ 		ret = ext4_mb_scan_groups_largest_free_order_range(ac, i,
+@@ -1001,7 +1016,7 @@ static int ext4_mb_scan_groups_goal_fast
+ 	ext4_group_t start, end;
+ 
+ 	start = group;
+-	end = ext4_get_groups_count(ac->ac_sb);
++	end = ext4_get_allocation_groups_count(ac);
+ wrap_around:
+ 	i = mb_avg_fragment_size_order(ac->ac_sb, ac->ac_g_ex.fe_len);
+ 	for (; i < MB_NUM_ORDERS(ac->ac_sb); i++) {
+@@ -1083,7 +1098,7 @@ static int ext4_mb_scan_groups_best_avai
+ 		min_order = fls(ac->ac_o_ex.fe_len);
+ 
+ 	start = group;
+-	end = ext4_get_groups_count(ac->ac_sb);
++	end = ext4_get_allocation_groups_count(ac);
+ wrap_around:
+ 	for (i = order; i >= min_order; i--) {
+ 		int frag_order;
+@@ -1182,11 +1197,7 @@ static int ext4_mb_scan_groups(struct ex
+ 	int ret = 0;
+ 	ext4_group_t start;
+ 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
+-	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
+-
+-	/* non-extent files are limited to low blocks/groups */
+-	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
+-		ngroups = sbi->s_blockfile_groups;
++	ext4_group_t ngroups = ext4_get_allocation_groups_count(ac);
+ 
+ 	/* searching for the right group start from the goal value specified */
+ 	start = ac->ac_g_ex.fe_group;
 
 
 
