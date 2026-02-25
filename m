@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-218654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCWPKVFUnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:53 +0100
+	id SPNNNTqfnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F59A18FC75
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4E4192EB3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 792B931B110E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E860C3052601
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619C626560B;
-	Wed, 25 Feb 2026 01:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BAB3033EA;
+	Wed, 25 Feb 2026 06:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzpTP9Q0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bS+yubzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A7725EF9C;
-	Wed, 25 Feb 2026 01:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148193019C5;
+	Wed, 25 Feb 2026 06:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983506; cv=none; b=lTIrokO3SiNLZJMUBkvJm55y6rTBSd4liFT54duADFMU+z5Qx5juY3lq9J2sj4JxSTLEkd8GK0EOHQb4swKJIvxsOvFJ8as8H/YB7HTH8BNif/nkuCbJBfnbJcmYnrcadZ/UvpI5ZdGo9mreNH0W2XkugMWajICGzwPHmxKj0co=
+	t=1772002633; cv=none; b=LP8jGacP8w6ccKWLJYYGEtRAcAh1RMnAFrFR9psm+baF925XiUqimdpPf8cVXekvTejPq0ENKykpPoqOYjC4pj1FSSHHHs/19nY8l/4juVOBzo+Ztnr16gEJRpSzDf1Nd7+NUAsznAEfJRZ0oKoN0DZ7jlDy3WAQb6ZMXdHaNQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983506; c=relaxed/simple;
-	bh=jL45FUOoFl/pQMaqFxPJOkJyw48fCkAo1y6NkXwW1rQ=;
+	s=arc-20240116; t=1772002633; c=relaxed/simple;
+	bh=y/SPgauuzbI0MN7YmWfkFzG7lsFqZ8tCYJCIkqfdx8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dhcg032LSSP2vDf+f2ec1Wiw2581qUxZNRhhmgjQqne3NRHD6C/N/XNhENpWcAQFjD6aEYj8a3MvdUEg3L07dcGYqeRT0MhSkrPkPGD2j0fePttEzEPcVVMFhBK5EwlMRoIhwFnLxecP5G2+jR7qPd2PoksldIBWornxty3R7qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzpTP9Q0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7253C116D0;
-	Wed, 25 Feb 2026 01:38:25 +0000 (UTC)
+	 MIME-Version; b=GBhio7YOeUmey9KpUymDH+Oi5jBznUfrv5Z5FsN7+LKUOvhcROcwuXtiFrUHyVeNRGqY3FO/qp7/llW9Ptlv06JcZ0u3YyEvCiky1r8mRjIRVFsDZOkJlMupmp+Z8WYu5JvgU6u7JOr0WveSPNlodbAflb1sLz2m2fIRdKPJH7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bS+yubzv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1578C19422;
+	Wed, 25 Feb 2026 06:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983506;
-	bh=jL45FUOoFl/pQMaqFxPJOkJyw48fCkAo1y6NkXwW1rQ=;
+	s=korg; t=1772002633;
+	bh=y/SPgauuzbI0MN7YmWfkFzG7lsFqZ8tCYJCIkqfdx8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DzpTP9Q06aigZv+XY+u+DkAjG6f5obrUjHU96Oxbh/WnYgy6al8KL34ZqkpEjGGrU
-	 E1YEROk2w8AvQdqrFwBsE45Wb0XPGgS9yd0354K4Ohwem/sfXV1Xyu/Tf2dQa4Ga8N
-	 fncC0Cyzl+HatzSPJueqVwsHOUoy6V3ZZtBO2pvE=
+	b=bS+yubzvUyW2XeRtcHeHj1eZ+LZJnxmvESCD4tsrp05nOjX5csaRqAERhKU0GP6My
+	 p0xREsfK1YZ1sqmH8L61pDbbcuKNe48yj3Y2+nzb/Sw9KGYnbxJny5f3y2WLqRIWR9
+	 K6hQqLO4dknAc93lr15StEF+hiXhxbb7ZqTW2ito=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 613/781] io_uring: delay sqarray static branch disablement
+Subject: [PATCH 6.18 396/641] tracing: Properly process error handling in event_hist_trigger_parse()
 Date: Tue, 24 Feb 2026 17:22:02 -0800
-Message-ID: <20260225012414.834868991@linuxfoundation.org>
+Message-ID: <20260225012358.168971626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +68,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218654-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,efficios.com,gmail.com,goodmis.org];
+	TAGGED_FROM(0.00)[bounces-219312-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.988];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4F59A18FC75
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CC4E4192EB3
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 56112578c71213a10c995a56835bddb5e9ab1ed0 ]
+[ Upstream commit 0550069cc25f513ce1f109c88f7c1f01d63297db ]
 
-io_key_has_sqarray static branch can be easily switched on/off by the
-user every time patching the kernel. That can be very disruptive as it
-might require heavy synchronisation across all CPUs. Use deferred static
-keys, which can rate-limit it by deferring, batching and potentially
-effectively eliminating dec+inc pairs.
+Memory allocated with trigger_data_alloc() requires trigger_data_free()
+for proper cleanup.
 
-Fixes: 9b296c625ac1d ("io_uring: static_key for !IORING_SETUP_NO_SQARRAY")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Replace kfree() with trigger_data_free() to fix this.
+
+Found via static analysis and code review.
+
+This isn't a real bug due to the current code basically being an open
+coded version of trigger_data_free() without the synchronization. The
+synchronization isn't needed as this is the error path of creation and
+there's nothing to synchronize against yet. Replace the kfree() to be
+consistent with the allocation.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Link: https://patch.msgid.link/20251211100058.2381268-1-linmq006@gmail.com
+Fixes: e1f187d09e11 ("tracing: Have existing event_command.parse() implementations use helpers")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/trace/trace_events_hist.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 8aa671ba43474..63efd60829f37 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -138,7 +138,7 @@
- static void io_queue_sqe(struct io_kiocb *req, unsigned int extra_flags);
- static void __io_req_caches_free(struct io_ring_ctx *ctx);
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 425ae26064bab..45727c4cf9545 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -6909,7 +6909,7 @@ static int event_hist_trigger_parse(struct event_command *cmd_ops,
  
--static __read_mostly DEFINE_STATIC_KEY_FALSE(io_key_has_sqarray);
-+static __read_mostly DEFINE_STATIC_KEY_DEFERRED_FALSE(io_key_has_sqarray, HZ);
+ 	remove_hist_vars(hist_data);
  
- struct kmem_cache *req_cachep;
- static struct workqueue_struct *iou_wq __ro_after_init;
-@@ -2375,7 +2375,7 @@ static bool io_get_sqe(struct io_ring_ctx *ctx, const struct io_uring_sqe **sqe)
- 	unsigned mask = ctx->sq_entries - 1;
- 	unsigned head = ctx->cached_sq_head++ & mask;
+-	kfree(trigger_data);
++	trigger_data_free(trigger_data);
  
--	if (static_branch_unlikely(&io_key_has_sqarray) &&
-+	if (static_branch_unlikely(&io_key_has_sqarray.key) &&
- 	    (!(ctx->flags & IORING_SETUP_NO_SQARRAY))) {
- 		head = READ_ONCE(ctx->sq_array[head]);
- 		if (unlikely(head >= ctx->sq_entries)) {
-@@ -2867,7 +2867,7 @@ static __cold void io_ring_ctx_free(struct io_ring_ctx *ctx)
- 	io_rings_free(ctx);
- 
- 	if (!(ctx->flags & IORING_SETUP_NO_SQARRAY))
--		static_branch_dec(&io_key_has_sqarray);
-+		static_branch_slow_dec_deferred(&io_key_has_sqarray);
- 
- 	percpu_ref_exit(&ctx->refs);
- 	free_uid(ctx->user);
-@@ -3600,7 +3600,7 @@ static __cold int io_uring_create(struct io_ctx_config *config)
- 	ctx->clock_offset = 0;
- 
- 	if (!(ctx->flags & IORING_SETUP_NO_SQARRAY))
--		static_branch_inc(&io_key_has_sqarray);
-+		static_branch_deferred_inc(&io_key_has_sqarray);
- 
- 	if ((ctx->flags & IORING_SETUP_DEFER_TASKRUN) &&
- 	    !(ctx->flags & IORING_SETUP_IOPOLL) &&
+ 	destroy_hist_data(hist_data);
+ 	goto out;
 -- 
 2.51.0
 
