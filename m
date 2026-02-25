@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-218120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAkiEMZQnmmNUgQAu9opvQ
-	(envelope-from <stable+bounces-218120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:46 +0100
+	id AIzUOspQnmmNUgQAu9opvQ
+	(envelope-from <stable+bounces-218122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E4D18ED02
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F96B18ED17
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BEFEA306B458
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:28:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F0E9C306BCFB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612DF24A06D;
-	Wed, 25 Feb 2026 01:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939E7251793;
+	Wed, 25 Feb 2026 01:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkaPTaIZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liS03Fcp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2456F21D596;
-	Wed, 25 Feb 2026 01:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561341D5ABA;
+	Wed, 25 Feb 2026 01:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982899; cv=none; b=g0+qeszvMtRxnzFkXNs2fEwixV5OFgWVz1SVHsoP1b2EPVn+dMYzwAG4VL51B+umM3cq3TVtA3UYa7LknvdUK6mXZStW9b7fhCClynNJAs6upFGpMVRt6guxnZD8tjRH8xpr5sUkZ+0aVMPTtn+tH5YMr302eA65DbXnaZFj578=
+	t=1771982901; cv=none; b=H+NXKoWf8dmIw8NrTE7jLcz+QBbpjB5cxHYoULKv/b3KkSXubpK/+ARBqirH87gMjn7K2S4Jvy6QABVHBZZq6Uz4a6+HuwLdcQplihqPz9OsZWTVOB59zpSKQ9COrmz7tjxk9qW5BIARSykhQdVSIPGAXi9yP6TTEc4iD9KfWYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982899; c=relaxed/simple;
-	bh=iNvuwvC/F9WxJVDfSzzHN5qozaG0Yeg6RlzlUo9EXOA=;
+	s=arc-20240116; t=1771982901; c=relaxed/simple;
+	bh=Ol2OuEZZdvUk/CQlrcNTnek7jNEAmqqrYw2Qjj9/f3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLM6nAUuElbGl881r3xJbz5ApOMe6H8GYWBpGldHebYKVbUFBn5myP7fSLYTqKBmsMpBGW0caqc3k0luwH5ISnsqKl+p+5HPqFefOkqnx2Jc5Knpa6iF8mDS9C/mbacy7xwZMhR4Qw0mxBC57uliFlxcIAA7FcLOd7z/HBAzb7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkaPTaIZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C51C116D0;
-	Wed, 25 Feb 2026 01:28:18 +0000 (UTC)
+	 MIME-Version; b=i1JtcMWq5HdSur+tBrH0/hXiZGfaWjG5AdliUwOXWk5j3d/MGU4M0f8kF8ywIaIly+bwVjySl/eIRVkLt+cevns/2WVgC0W/OAUa9UPR03IalOe4tbO0PTJ9kOoa7wlL3ITvQWiGrxn1fS0ncuz6YedpIZ2kwioGguik4HotsDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liS03Fcp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C37C116D0;
+	Wed, 25 Feb 2026 01:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982899;
-	bh=iNvuwvC/F9WxJVDfSzzHN5qozaG0Yeg6RlzlUo9EXOA=;
+	s=korg; t=1771982901;
+	bh=Ol2OuEZZdvUk/CQlrcNTnek7jNEAmqqrYw2Qjj9/f3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkaPTaIZixQb6bmHwLEpmidRIVqmfo7wk1GcA8UnbLzVVRa3Q1gtT+nkb/whMyl37
-	 6BGYSxOqsZfnvmr4byJe2qqBWwdm2Rts0ZUytX8NwBjopvYStCaT0/RTM0QaG77X5t
-	 /eRt0b9HznH4Ij+Yi+5x44qjhaFto2bcL82h1kxM=
+	b=liS03FcpZEfdxgwOuS9FHrN0Pg66I65KZ+mAFGAQ2oX62CKfMtbAuM60eNQk/tsAG
+	 Sb4b16qtcRgmEXb1tGll19xUcnSuPNCmwelPb5nC1UWpLKDNrJzMTvz0syecKP0q6i
+	 k6lobtIwuvChe1EFPiULqT6+XMWBPT5pGy028MH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
+	lizhi <lizhi206@huawei.com>,
 	Weili Qian <qianweili@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 083/781] crypto: hisilicon/sec - move backlog management to qp and store sqe in qp for callback
-Date: Tue, 24 Feb 2026 17:13:12 -0800
-Message-ID: <20260225012401.734745344@linuxfoundation.org>
+Subject: [PATCH 6.19 084/781] crypto: hisilicon/hpre: extend tag field to 64 bits for better performance
+Date: Tue, 24 Feb 2026 17:13:13 -0800
+Message-ID: <20260225012401.758859461@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -71,390 +72,365 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218120-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218122-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 79E4D18ED02
+X-Rspamd-Queue-Id: 5F96B18ED17
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: lizhi <lizhi206@huawei.com>
 
-[ Upstream commit 08eb67d23e5172a5d1e60f1f0acccee569fe10ba ]
+[ Upstream commit 3a1984758197f7fd4c557dd98090e8e0cf9f498e ]
 
-When multiple tfm use a same qp, the backlog data should be managed
-centrally by the qp, rather than in the qp_ctx of each req.
+This commit expands the tag field in hpre_sqe structure from 16-bit
+to 64-bit. The change enables storing request addresses directly
+in the tag field, allowing callback functions to access request messages
+without the previous indirection mechanism.
 
-Additionally, since SEC_BD_TYPE1 and SEC_BD_TYPE2 cannot use the
-tag of the sqe to carry the virtual address of the req, the sent
-sqe is stored in the qp. This allows the callback function to get
-the req address. To handle the differences between hardware types,
-the callback functions are split into two separate implementations.
+By eliminating the need for lookup tables, this modification reduces lock
+contention and associated overhead, leading to improved efficiency and
+simplified code.
 
-Fixes: f0ae287c5045 ("crypto: hisilicon/sec2 - implement full backlog mode for sec")
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Fixes: c8b4b477079d ("crypto: hisilicon - add HiSilicon HPRE accelerator")
+Signed-off-by: lizhi <lizhi206@huawei.com>
 Signed-off-by: Weili Qian <qianweili@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/qm.c              | 20 ++++-
- drivers/crypto/hisilicon/sec2/sec.h        |  7 --
- drivers/crypto/hisilicon/sec2/sec_crypto.c | 88 +++++++++++-----------
- include/linux/hisi_acc_qm.h                |  8 ++
- 4 files changed, 69 insertions(+), 54 deletions(-)
+ drivers/crypto/hisilicon/hpre/hpre.h        |   5 +-
+ drivers/crypto/hisilicon/hpre/hpre_crypto.c | 142 ++++----------------
+ 2 files changed, 25 insertions(+), 122 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index d47bf06a90f7d..71071ac559d4b 100644
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -2219,6 +2219,7 @@ static void qp_stop_fail_cb(struct hisi_qp *qp)
- 	for (i = 0; i < qp_used; i++) {
- 		pos = (i + cur_head) % sq_depth;
- 		qp->req_cb(qp, qp->sqe + (u32)(qm->sqe_size * pos));
-+		qm_cq_head_update(qp);
- 		atomic_dec(&qp->qp_status.used);
- 	}
- }
-@@ -2383,6 +2384,7 @@ int hisi_qp_send(struct hisi_qp *qp, const void *msg)
- 		return -EBUSY;
- 
- 	memcpy(sqe, msg, qp->qm->sqe_size);
-+	qp->msg[sq_tail] = msg;
- 
- 	qm_db(qp->qm, qp->qp_id, QM_DOORBELL_CMD_SQ, sq_tail_next, 0);
- 	atomic_inc(&qp->qp_status.used);
-@@ -2919,12 +2921,13 @@ EXPORT_SYMBOL_GPL(hisi_qm_wait_task_finish);
- static void hisi_qp_memory_uninit(struct hisi_qm *qm, int num)
- {
- 	struct device *dev = &qm->pdev->dev;
--	struct qm_dma *qdma;
-+	struct hisi_qp *qp;
- 	int i;
- 
- 	for (i = num - 1; i >= 0; i--) {
--		qdma = &qm->qp_array[i].qdma;
--		dma_free_coherent(dev, qdma->size, qdma->va, qdma->dma);
-+		qp = &qm->qp_array[i];
-+		dma_free_coherent(dev, qp->qdma.size, qp->qdma.va, qp->qdma.dma);
-+		kfree(qp->msg);
- 		kfree(qm->poll_data[i].qp_finish_id);
- 	}
- 
-@@ -2946,10 +2949,14 @@ static int hisi_qp_memory_init(struct hisi_qm *qm, size_t dma_size, int id,
- 		return -ENOMEM;
- 
- 	qp = &qm->qp_array[id];
-+	qp->msg = kmalloc_array(sq_depth, sizeof(void *), GFP_KERNEL);
-+	if (!qp->msg)
-+		goto err_free_qp_finish_id;
-+
- 	qp->qdma.va = dma_alloc_coherent(dev, dma_size, &qp->qdma.dma,
- 					 GFP_KERNEL);
- 	if (!qp->qdma.va)
--		goto err_free_qp_finish_id;
-+		goto err_free_qp_msg;
- 
- 	qp->sqe = qp->qdma.va;
- 	qp->sqe_dma = qp->qdma.dma;
-@@ -2961,8 +2968,13 @@ static int hisi_qp_memory_init(struct hisi_qm *qm, size_t dma_size, int id,
- 	qp->qm = qm;
- 	qp->qp_id = id;
- 
-+	spin_lock_init(&qp->backlog.lock);
-+	INIT_LIST_HEAD(&qp->backlog.list);
-+
- 	return 0;
- 
-+err_free_qp_msg:
-+	kfree(qp->msg);
- err_free_qp_finish_id:
- 	kfree(qm->poll_data[id].qp_finish_id);
- 	return ret;
-diff --git a/drivers/crypto/hisilicon/sec2/sec.h b/drivers/crypto/hisilicon/sec2/sec.h
-index 81d0beda93b2b..0710977861f32 100644
---- a/drivers/crypto/hisilicon/sec2/sec.h
-+++ b/drivers/crypto/hisilicon/sec2/sec.h
-@@ -82,11 +82,6 @@ struct sec_aead_req {
- 	__u8 out_mac_buf[SEC_MAX_MAC_LEN];
+diff --git a/drivers/crypto/hisilicon/hpre/hpre.h b/drivers/crypto/hisilicon/hpre/hpre.h
+index 0f3ddbadbcf99..021dbd9a1d48f 100644
+--- a/drivers/crypto/hisilicon/hpre/hpre.h
++++ b/drivers/crypto/hisilicon/hpre/hpre.h
+@@ -94,9 +94,8 @@ struct hpre_sqe {
+ 	__le64 key;
+ 	__le64 in;
+ 	__le64 out;
+-	__le16 tag;
+-	__le16 resv2;
+-#define _HPRE_SQE_ALIGN_EXT	7
++	__le64 tag;
++#define _HPRE_SQE_ALIGN_EXT	6
+ 	__le32 rsvd1[_HPRE_SQE_ALIGN_EXT];
  };
  
--struct sec_instance_backlog {
--	struct list_head list;
--	spinlock_t lock;
--};
--
- /* SEC request of Crypto */
- struct sec_req {
+diff --git a/drivers/crypto/hisilicon/hpre/hpre_crypto.c b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
+index 21ccf879f70c5..4197281c8dff5 100644
+--- a/drivers/crypto/hisilicon/hpre/hpre_crypto.c
++++ b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
+@@ -108,12 +108,10 @@ struct hpre_ecdh_ctx {
+ struct hpre_ctx {
+ 	struct hisi_qp *qp;
+ 	struct device *dev;
+-	struct hpre_asym_request **req_list;
+ 	struct hpre *hpre;
+ 	spinlock_t req_lock;
+ 	unsigned int key_sz;
+ 	bool crt_g2_mode;
+-	struct idr req_idr;
  	union {
-@@ -112,7 +107,6 @@ struct sec_req {
- 	bool use_pbuf;
- 
- 	struct list_head list;
--	struct sec_instance_backlog *backlog;
- 	struct sec_request_buf buf;
+ 		struct hpre_rsa_ctx rsa;
+ 		struct hpre_dh_ctx dh;
+@@ -136,7 +134,6 @@ struct hpre_asym_request {
+ 		struct kpp_request *ecdh;
+ 	} areq;
+ 	int err;
+-	int req_id;
+ 	hpre_cb cb;
+ 	struct timespec64 req_time;
  };
- 
-@@ -172,7 +166,6 @@ struct sec_qp_ctx {
- 	spinlock_t id_lock;
- 	struct hisi_acc_sgl_pool *c_in_pool;
- 	struct hisi_acc_sgl_pool *c_out_pool;
--	struct sec_instance_backlog backlog;
- 	u16 send_head;
- };
- 
-diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-index 31590d01139a3..4e41235116e15 100644
---- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-@@ -54,7 +54,6 @@
- #define SEC_AUTH_CIPHER_V3	0x40
- #define SEC_FLAG_OFFSET		7
- #define SEC_FLAG_MASK		0x0780
--#define SEC_TYPE_MASK		0x0F
- #define SEC_DONE_MASK		0x0001
- #define SEC_ICV_MASK		0x000E
- 
-@@ -148,7 +147,7 @@ static void sec_free_req_id(struct sec_req *req)
- 	spin_unlock_bh(&qp_ctx->id_lock);
+@@ -151,58 +148,13 @@ static inline unsigned int hpre_align_pd(void)
+ 	return (hpre_align_sz() - 1) & ~(crypto_tfm_ctx_alignment() - 1);
  }
  
--static u8 pre_parse_finished_bd(struct bd_status *status, void *resp)
-+static void pre_parse_finished_bd(struct bd_status *status, void *resp)
+-static int hpre_alloc_req_id(struct hpre_ctx *ctx)
++static void hpre_dfx_add_req_time(struct hpre_asym_request *hpre_req)
  {
- 	struct sec_sqe *bd = resp;
- 
-@@ -158,11 +157,9 @@ static u8 pre_parse_finished_bd(struct bd_status *status, void *resp)
- 					SEC_FLAG_MASK) >> SEC_FLAG_OFFSET;
- 	status->tag = le16_to_cpu(bd->type2.tag);
- 	status->err_type = bd->type2.error_type;
+-	unsigned long flags;
+-	int id;
 -
--	return bd->type_cipher_auth & SEC_TYPE_MASK;
- }
- 
--static u8 pre_parse_finished_bd3(struct bd_status *status, void *resp)
-+static void pre_parse_finished_bd3(struct bd_status *status, void *resp)
- {
- 	struct sec_sqe3 *bd3 = resp;
- 
-@@ -172,8 +169,6 @@ static u8 pre_parse_finished_bd3(struct bd_status *status, void *resp)
- 					SEC_FLAG_MASK) >> SEC_FLAG_OFFSET;
- 	status->tag = le64_to_cpu(bd3->tag);
- 	status->err_type = bd3->error_type;
+-	spin_lock_irqsave(&ctx->req_lock, flags);
+-	id = idr_alloc(&ctx->req_idr, NULL, 0, ctx->qp->sq_depth, GFP_ATOMIC);
+-	spin_unlock_irqrestore(&ctx->req_lock, flags);
 -
--	return le32_to_cpu(bd3->bd_param) & SEC_TYPE_MASK;
+-	return id;
+-}
+-
+-static void hpre_free_req_id(struct hpre_ctx *ctx, int req_id)
+-{
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&ctx->req_lock, flags);
+-	idr_remove(&ctx->req_idr, req_id);
+-	spin_unlock_irqrestore(&ctx->req_lock, flags);
+-}
+-
+-static int hpre_add_req_to_ctx(struct hpre_asym_request *hpre_req)
+-{
+-	struct hpre_ctx *ctx;
+-	struct hpre_dfx *dfx;
+-	int id;
+-
+-	ctx = hpre_req->ctx;
+-	id = hpre_alloc_req_id(ctx);
+-	if (unlikely(id < 0))
+-		return -EINVAL;
+-
+-	ctx->req_list[id] = hpre_req;
+-	hpre_req->req_id = id;
++	struct hpre_ctx *ctx = hpre_req->ctx;
++	struct hpre_dfx *dfx = ctx->hpre->debug.dfx;
+ 
+-	dfx = ctx->hpre->debug.dfx;
+ 	if (atomic64_read(&dfx[HPRE_OVERTIME_THRHLD].value))
+ 		ktime_get_ts64(&hpre_req->req_time);
+-
+-	return id;
+-}
+-
+-static void hpre_rm_req_from_ctx(struct hpre_asym_request *hpre_req)
+-{
+-	struct hpre_ctx *ctx = hpre_req->ctx;
+-	int id = hpre_req->req_id;
+-
+-	if (hpre_req->req_id >= 0) {
+-		hpre_req->req_id = HPRE_INVLD_REQ_ID;
+-		ctx->req_list[id] = NULL;
+-		hpre_free_req_id(ctx, id);
+-	}
  }
  
- static int sec_cb_status_check(struct sec_req *req,
-@@ -244,7 +239,7 @@ static void sec_alg_send_backlog_soft(struct sec_ctx *ctx, struct sec_qp_ctx *qp
- 	struct sec_req *req, *tmp;
- 	int ret;
- 
--	list_for_each_entry_safe(req, tmp, &qp_ctx->backlog.list, list) {
-+	list_for_each_entry_safe(req, tmp, &qp_ctx->qp->backlog.list, list) {
- 		list_del(&req->list);
- 		ctx->req_op->buf_unmap(ctx, req);
- 		if (req->req_id >= 0)
-@@ -265,11 +260,12 @@ static void sec_alg_send_backlog_soft(struct sec_ctx *ctx, struct sec_qp_ctx *qp
- 
- static void sec_alg_send_backlog(struct sec_ctx *ctx, struct sec_qp_ctx *qp_ctx)
+ static struct hisi_qp *hpre_get_qp_and_start(u8 type)
+@@ -340,26 +292,19 @@ static void hpre_hw_data_clr_all(struct hpre_ctx *ctx,
+ static int hpre_alg_res_post_hf(struct hpre_ctx *ctx, struct hpre_sqe *sqe,
+ 				void **kreq)
  {
-+	struct hisi_qp *qp = qp_ctx->qp;
- 	struct sec_req *req, *tmp;
- 	int ret;
+-	struct hpre_asym_request *req;
+ 	unsigned int err, done, alg;
+-	int id;
  
--	spin_lock_bh(&qp_ctx->backlog.lock);
--	list_for_each_entry_safe(req, tmp, &qp_ctx->backlog.list, list) {
-+	spin_lock_bh(&qp->backlog.lock);
-+	list_for_each_entry_safe(req, tmp, &qp->backlog.list, list) {
- 		ret = qp_send_message(req);
- 		switch (ret) {
- 		case -EINPROGRESS:
-@@ -287,42 +283,46 @@ static void sec_alg_send_backlog(struct sec_ctx *ctx, struct sec_qp_ctx *qp_ctx)
+ #define HPRE_NO_HW_ERR		0
+ #define HPRE_HW_TASK_DONE	3
+ #define HREE_HW_ERR_MASK	GENMASK(10, 0)
+ #define HREE_SQE_DONE_MASK	GENMASK(1, 0)
+ #define HREE_ALG_TYPE_MASK	GENMASK(4, 0)
+-	id = (int)le16_to_cpu(sqe->tag);
+-	req = ctx->req_list[id];
+-	hpre_rm_req_from_ctx(req);
+-	*kreq = req;
++	*kreq = (void *)le64_to_cpu(sqe->tag);
+ 
+ 	err = (le32_to_cpu(sqe->dw0) >> HPRE_SQE_ALG_BITS) &
+ 		HREE_HW_ERR_MASK;
+-
+ 	done = (le32_to_cpu(sqe->dw0) >> HPRE_SQE_DONE_SHIFT) &
+ 		HREE_SQE_DONE_MASK;
+-
+ 	if (likely(err == HPRE_NO_HW_ERR && done == HPRE_HW_TASK_DONE))
+ 		return 0;
+ 
+@@ -370,34 +315,9 @@ static int hpre_alg_res_post_hf(struct hpre_ctx *ctx, struct hpre_sqe *sqe,
+ 	return -EINVAL;
+ }
+ 
+-static int hpre_ctx_set(struct hpre_ctx *ctx, struct hisi_qp *qp, int qlen)
+-{
+-	struct hpre *hpre;
+-
+-	if (!ctx || !qp || qlen < 0)
+-		return -EINVAL;
+-
+-	spin_lock_init(&ctx->req_lock);
+-	ctx->qp = qp;
+-	ctx->dev = &qp->qm->pdev->dev;
+-
+-	hpre = container_of(ctx->qp->qm, struct hpre, qm);
+-	ctx->hpre = hpre;
+-	ctx->req_list = kcalloc(qlen, sizeof(void *), GFP_KERNEL);
+-	if (!ctx->req_list)
+-		return -ENOMEM;
+-	ctx->key_sz = 0;
+-	ctx->crt_g2_mode = false;
+-	idr_init(&ctx->req_idr);
+-
+-	return 0;
+-}
+-
+ static void hpre_ctx_clear(struct hpre_ctx *ctx, bool is_clear_all)
+ {
+ 	if (is_clear_all) {
+-		idr_destroy(&ctx->req_idr);
+-		kfree(ctx->req_list);
+ 		hisi_qm_free_qps(&ctx->qp, 1);
  	}
  
- unlock:
--	spin_unlock_bh(&qp_ctx->backlog.lock);
-+	spin_unlock_bh(&qp->backlog.lock);
- }
+@@ -467,29 +387,22 @@ static void hpre_rsa_cb(struct hpre_ctx *ctx, void *resp)
  
- static void sec_req_cb(struct hisi_qp *qp, void *resp)
+ static void hpre_alg_cb(struct hisi_qp *qp, void *resp)
  {
--	struct sec_qp_ctx *qp_ctx = qp->qp_ctx;
--	struct sec_dfx *dfx = &qp_ctx->ctx->sec->debug.dfx;
--	u8 type_supported = qp_ctx->ctx->type_supported;
-+	const struct sec_sqe *sqe = qp->msg[qp->qp_status.cq_head];
-+	struct sec_req *req = container_of(sqe, struct sec_req, sec_sqe);
-+	struct sec_ctx *ctx = req->ctx;
-+	struct sec_dfx *dfx = &ctx->sec->debug.dfx;
- 	struct bd_status status;
--	struct sec_ctx *ctx;
--	struct sec_req *req;
- 	int err;
--	u8 type;
- 
--	if (type_supported == SEC_BD_TYPE2) {
--		type = pre_parse_finished_bd(&status, resp);
--		req = qp_ctx->req_list[status.tag];
--	} else {
--		type = pre_parse_finished_bd3(&status, resp);
--		req = (void *)(uintptr_t)status.tag;
--	}
-+	pre_parse_finished_bd(&status, resp);
- 
--	if (unlikely(type != type_supported)) {
--		atomic64_inc(&dfx->err_bd_cnt);
--		pr_err("err bd type [%u]\n", type);
--		return;
--	}
-+	req->err_type = status.err_type;
-+	err = sec_cb_status_check(req, &status);
-+	if (err)
-+		atomic64_inc(&dfx->done_flag_cnt);
+-	struct hpre_ctx *ctx = qp->qp_ctx;
+-	struct hpre_dfx *dfx = ctx->hpre->debug.dfx;
++	struct hpre_asym_request *h_req;
+ 	struct hpre_sqe *sqe = resp;
+-	struct hpre_asym_request *req = ctx->req_list[le16_to_cpu(sqe->tag)];
  
 -	if (unlikely(!req)) {
--		atomic64_inc(&dfx->invalid_req_cnt);
--		atomic_inc(&qp->qp_status.used);
--		return;
--	}
-+	atomic64_inc(&dfx->recv_cnt);
+-		atomic64_inc(&dfx[HPRE_INVALID_REQ_CNT].value);
++	h_req = (struct hpre_asym_request *)le64_to_cpu(sqe->tag);
++	if (unlikely(!h_req)) {
++		pr_err("Failed to get request, and qp_id is %u\n", qp->qp_id);
+ 		return;
+ 	}
  
-+	ctx->req_op->buf_unmap(ctx, req);
-+	ctx->req_op->callback(ctx, req, err);
-+}
-+
-+static void sec_req_cb3(struct hisi_qp *qp, void *resp)
-+{
-+	struct bd_status status;
-+	struct sec_ctx *ctx;
-+	struct sec_dfx *dfx;
-+	struct sec_req *req;
-+	int err;
-+
-+	pre_parse_finished_bd3(&status, resp);
-+
-+	req = (void *)(uintptr_t)status.tag;
- 	req->err_type = status.err_type;
- 	ctx = req->ctx;
-+	dfx = &ctx->sec->debug.dfx;
-+
- 	err = sec_cb_status_check(req, &status);
- 	if (err)
- 		atomic64_inc(&dfx->done_flag_cnt);
-@@ -330,7 +330,6 @@ static void sec_req_cb(struct hisi_qp *qp, void *resp)
- 	atomic64_inc(&dfx->recv_cnt);
- 
- 	ctx->req_op->buf_unmap(ctx, req);
+-	req->cb(ctx, resp);
+-}
 -
- 	ctx->req_op->callback(ctx, req, err);
+-static void hpre_stop_qp_and_put(struct hisi_qp *qp)
+-{
+-	hisi_qm_stop_qp(qp);
+-	hisi_qm_free_qps(&qp, 1);
++	h_req->cb(h_req->ctx, resp);
  }
  
-@@ -348,8 +347,10 @@ static int sec_alg_send_message_retry(struct sec_req *req)
- 
- static int sec_alg_try_enqueue(struct sec_req *req)
+ static int hpre_ctx_init(struct hpre_ctx *ctx, u8 type)
  {
-+	struct hisi_qp *qp = req->qp_ctx->qp;
-+
- 	/* Check if any request is already backlogged */
--	if (!list_empty(&req->backlog->list))
-+	if (!list_empty(&qp->backlog.list))
- 		return -EBUSY;
+ 	struct hisi_qp *qp;
+-	int ret;
++	struct hpre *hpre;
  
- 	/* Try to enqueue to HW ring */
-@@ -359,17 +360,18 @@ static int sec_alg_try_enqueue(struct sec_req *req)
+ 	qp = hpre_get_qp_and_start(type);
+ 	if (IS_ERR(qp))
+@@ -497,19 +410,21 @@ static int hpre_ctx_init(struct hpre_ctx *ctx, u8 type)
  
- static int sec_alg_send_message_maybacklog(struct sec_req *req)
- {
-+	struct hisi_qp *qp = req->qp_ctx->qp;
- 	int ret;
+ 	qp->qp_ctx = ctx;
+ 	qp->req_cb = hpre_alg_cb;
++	spin_lock_init(&ctx->req_lock);
++	ctx->qp = qp;
++	ctx->dev = &qp->qm->pdev->dev;
++	hpre = container_of(ctx->qp->qm, struct hpre, qm);
++	ctx->hpre = hpre;
++	ctx->key_sz = 0;
++	ctx->crt_g2_mode = false;
  
- 	ret = sec_alg_try_enqueue(req);
- 	if (ret != -EBUSY)
- 		return ret;
- 
--	spin_lock_bh(&req->backlog->lock);
-+	spin_lock_bh(&qp->backlog.lock);
- 	ret = sec_alg_try_enqueue(req);
- 	if (ret == -EBUSY)
--		list_add_tail(&req->list, &req->backlog->list);
--	spin_unlock_bh(&req->backlog->lock);
-+		list_add_tail(&req->list, &qp->backlog.list);
-+	spin_unlock_bh(&qp->backlog.lock);
- 
- 	return ret;
+-	ret = hpre_ctx_set(ctx, qp, qp->sq_depth);
+-	if (ret)
+-		hpre_stop_qp_and_put(qp);
+-
+-	return ret;
++	return 0;
  }
-@@ -629,13 +631,14 @@ static int sec_create_qp_ctx(struct sec_ctx *ctx, int qp_ctx_id)
- 	qp_ctx->qp = qp;
- 	qp_ctx->ctx = ctx;
  
--	qp->req_cb = sec_req_cb;
-+	if (ctx->type_supported == SEC_BD_TYPE3)
-+		qp->req_cb = sec_req_cb3;
-+	else
-+		qp->req_cb = sec_req_cb;
+ static int hpre_msg_request_set(struct hpre_ctx *ctx, void *req, bool is_rsa)
+ {
+ 	struct hpre_asym_request *h_req;
+ 	struct hpre_sqe *msg;
+-	int req_id;
+ 	void *tmp;
  
- 	spin_lock_init(&qp_ctx->req_lock);
- 	idr_init(&qp_ctx->req_idr);
--	spin_lock_init(&qp_ctx->backlog.lock);
- 	spin_lock_init(&qp_ctx->id_lock);
--	INIT_LIST_HEAD(&qp_ctx->backlog.list);
- 	qp_ctx->send_head = 0;
+ 	if (is_rsa) {
+@@ -549,11 +464,8 @@ static int hpre_msg_request_set(struct hpre_ctx *ctx, void *req, bool is_rsa)
+ 	msg->task_len1 = (ctx->key_sz >> HPRE_BITS_2_BYTES_SHIFT) - 1;
+ 	h_req->ctx = ctx;
  
- 	ret = sec_alloc_qp_ctx_resource(ctx, qp_ctx);
-@@ -1952,7 +1955,6 @@ static int sec_request_init(struct sec_ctx *ctx, struct sec_req *req)
- 	} while (req->req_id < 0 && ++i < ctx->sec->ctx_q_num);
- 
- 	req->qp_ctx = qp_ctx;
--	req->backlog = &qp_ctx->backlog;
+-	req_id = hpre_add_req_to_ctx(h_req);
+-	if (req_id < 0)
+-		return -EBUSY;
+-
+-	msg->tag = cpu_to_le16((u16)req_id);
++	hpre_dfx_add_req_time(h_req);
++	msg->tag = cpu_to_le64((uintptr_t)h_req);
  
  	return 0;
  }
-diff --git a/include/linux/hisi_acc_qm.h b/include/linux/hisi_acc_qm.h
-index ca1ec437a3ca3..9485896d5dc08 100644
---- a/include/linux/hisi_acc_qm.h
-+++ b/include/linux/hisi_acc_qm.h
-@@ -447,6 +447,11 @@ struct hisi_qp_ops {
- 	int (*fill_sqe)(void *sqe, void *q_parm, void *d_parm);
- };
+@@ -619,7 +531,6 @@ static int hpre_dh_compute_value(struct kpp_request *req)
+ 		return -EINPROGRESS;
  
-+struct instance_backlog {
-+	struct list_head list;
-+	spinlock_t lock;
-+};
-+
- struct hisi_qp {
- 	u32 qp_id;
- 	u16 sq_depth;
-@@ -471,6 +476,9 @@ struct hisi_qp {
- 	bool is_in_kernel;
- 	u16 pasid;
- 	struct uacce_queue *uacce_q;
-+
-+	struct instance_backlog backlog;
-+	const void **msg;
- };
+ clear_all:
+-	hpre_rm_req_from_ctx(hpre_req);
+ 	hpre_hw_data_clr_all(ctx, hpre_req, req->dst, req->src);
  
- static inline int vfs_num_set(const char *val, const struct kernel_param *kp)
+ 	return ret;
+@@ -828,7 +739,6 @@ static int hpre_rsa_enc(struct akcipher_request *req)
+ 		return -EINPROGRESS;
+ 
+ clear_all:
+-	hpre_rm_req_from_ctx(hpre_req);
+ 	hpre_hw_data_clr_all(ctx, hpre_req, req->dst, req->src);
+ 
+ 	return ret;
+@@ -883,7 +793,6 @@ static int hpre_rsa_dec(struct akcipher_request *req)
+ 		return -EINPROGRESS;
+ 
+ clear_all:
+-	hpre_rm_req_from_ctx(hpre_req);
+ 	hpre_hw_data_clr_all(ctx, hpre_req, req->dst, req->src);
+ 
+ 	return ret;
+@@ -1346,7 +1255,7 @@ static int hpre_ecdh_set_param(struct hpre_ctx *ctx, struct ecdh *params)
+ 	return 0;
+ }
+ 
+-static bool hpre_key_is_zero(char *key, unsigned short key_sz)
++static bool hpre_key_is_zero(const char *key, unsigned short key_sz)
+ {
+ 	int i;
+ 
+@@ -1488,7 +1397,6 @@ static int hpre_ecdh_msg_request_set(struct hpre_ctx *ctx,
+ {
+ 	struct hpre_asym_request *h_req;
+ 	struct hpre_sqe *msg;
+-	int req_id;
+ 	void *tmp;
+ 
+ 	if (req->dst_len < ctx->key_sz << 1) {
+@@ -1510,11 +1418,8 @@ static int hpre_ecdh_msg_request_set(struct hpre_ctx *ctx,
+ 	msg->task_len1 = (ctx->key_sz >> HPRE_BITS_2_BYTES_SHIFT) - 1;
+ 	h_req->ctx = ctx;
+ 
+-	req_id = hpre_add_req_to_ctx(h_req);
+-	if (req_id < 0)
+-		return -EBUSY;
+-
+-	msg->tag = cpu_to_le16((u16)req_id);
++	hpre_dfx_add_req_time(h_req);
++	msg->tag = cpu_to_le64((uintptr_t)h_req);
+ 	return 0;
+ }
+ 
+@@ -1612,7 +1517,6 @@ static int hpre_ecdh_compute_value(struct kpp_request *req)
+ 		return -EINPROGRESS;
+ 
+ clear_all:
+-	hpre_rm_req_from_ctx(hpre_req);
+ 	hpre_ecdh_hw_data_clr_all(ctx, hpre_req, req->dst, req->src);
+ 	return ret;
+ }
 -- 
 2.51.0
 
