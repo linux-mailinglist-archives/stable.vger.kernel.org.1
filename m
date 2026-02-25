@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-218169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNknLBNRnmmNUgQAu9opvQ
-	(envelope-from <stable+bounces-218169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:03 +0100
+	id SExWCydRnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83C118EE9E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A4A18EED7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BFE5C3049CA6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:29:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 987203052AFC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D0521D596;
-	Wed, 25 Feb 2026 01:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EE12505B2;
+	Wed, 25 Feb 2026 01:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgkJVmVM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2p4Yk0Wi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2801724A06D;
-	Wed, 25 Feb 2026 01:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E0221D596;
+	Wed, 25 Feb 2026 01:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982954; cv=none; b=PdfR9WaoW9METNtJv4nlfxWcuSQnKwvaIj4C+lt6s/i48nwDapXz4VHxfVhV4Y9GQ5RoGTmB1L18DLuyeex/xdeJ3x/r+HlsZ3zAq8LEW6WsDkrL5r5J3ZWn0RYIsAGc4fjvuwxi64X74lF6jpyitsHyWkq8oaIMwX8SjsVHuY0=
+	t=1771982967; cv=none; b=M3aodCHcJhAIbNettPOma0rCg1Q4xxpHOVOjsPtWXWqU4XVQsF+zPIWVQIijQq5CBASrD4dUcQFXRQ2iVDhjDMmdy50g0wzmwwhbEZ4iHlpM2+8+bV9eJxIt+VaqOGDoEAG8HX38icJqgXCApOHjRdgmFI6ZNoPpuW6h9s86v3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982954; c=relaxed/simple;
-	bh=GOVD60ZXAo6bwRpz+sY4fhlxkXyNzEQJHvsQfcw9G4E=;
+	s=arc-20240116; t=1771982967; c=relaxed/simple;
+	bh=F4wibqX3GDgFQbEdlc5XSIzJ4G8ef8eYAl0S2hIQIW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5Uy4NEE4bPISNVcnG5eABmPL1Kcv8OnO1oVsXEzfTpDGDVSVKagRjXKOPAkH3ThuJxk4iY2jmppX4jaAPjOhOWCQ7sjDpSf/KUPfoXgmtvV/ggr+IUuA5isovzVg+1YE+0WV2GXuEy+fCEm8EQ9NK3nEjf6LQuAukcn6ECmVOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgkJVmVM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4B4C116D0;
-	Wed, 25 Feb 2026 01:29:13 +0000 (UTC)
+	 MIME-Version; b=DpJ1Wo2PMKRUbCALfci5Nu8yzdOXQNtvgMHxn3xQIWd4zzfFmGA92mf5aN9tcKA/8dH54J89JuTCPxKcgksTrCqxpkdG9jbPCWqSnXN/CCbg6BJfQEfUGbdh6xoEwD7oUy12kBy5219UHCt3FVXwimST0c71GGQGOWyT147ez3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2p4Yk0Wi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693F0C116D0;
+	Wed, 25 Feb 2026 01:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982954;
-	bh=GOVD60ZXAo6bwRpz+sY4fhlxkXyNzEQJHvsQfcw9G4E=;
+	s=korg; t=1771982966;
+	bh=F4wibqX3GDgFQbEdlc5XSIzJ4G8ef8eYAl0S2hIQIW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgkJVmVM4QKbmm0LVRb7BFVyqQNgZawfYlo+6jnmTvRV0FcUySjgXMxfJcVSfHzCB
-	 dna1JTXCDchodyTcTNsTCW4/Psg4IlnyZEaaas7Yd1i42KMFpAwRfBoqNKpthDTRht
-	 lpfZVdlMThEtYv/fCkhyMybA182RpxYZXF1wuz2I=
+	b=2p4Yk0WiukR6FxrZbSjQ0vUhc6sJ9iWsZ8rVTG2JngmCorgwjuQ6/fH9TJN+e2qVB
+	 c2mfZH1SBoLvcr/SOhklzbr7YacD0AEzGGLoTEDsGTSCHew+YOavquYTu+U6Qo9pFs
+	 j8C3YeV8+ZckU1GkFnb7+PxQTGnwxYtDzT+KkK+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weili Qian <qianweili@huawei.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
+	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
+	Breno Leitao <leitao@debian.org>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 114/781] crypto: hisilicon/trng - support tfms sharing the device
-Date: Tue, 24 Feb 2026 17:13:43 -0800
-Message-ID: <20260225012402.473908902@linuxfoundation.org>
+Subject: [PATCH 6.19 115/781] crypto: caam - fix netdev memory leak in dpaa2_caam_probe
+Date: Tue, 24 Feb 2026 17:13:44 -0800
+Message-ID: <20260225012402.496498521@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218169-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218180-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -92,263 +92,150 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E83C118EE9E
+X-Rspamd-Queue-Id: 62A4A18EED7
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weili Qian <qianweili@huawei.com>
+From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
 
-[ Upstream commit 3d3135057ff567d5c09fff4c9ef6391a684e8042 ]
+[ Upstream commit 7d43252b3060b0ba4a192dce5dba85a3f39ffe39 ]
 
-Since the number of devices is limited, and the number
-of tfms may exceed the number of devices, to ensure that
-tfms can be successfully allocated, support tfms
-sharing the same device.
+When commit 0e1a4d427f58 ("crypto: caam: Unembed net_dev structure in
+dpaa2") converted embedded net_device to dynamically allocated pointers,
+it added cleanup in dpaa2_dpseci_disable() but missed adding cleanup in
+dpaa2_dpseci_free() for error paths.
 
-Fixes: e4d9d10ef4be ("crypto: hisilicon/trng - add support for PRNG")
-Signed-off-by: Weili Qian <qianweili@huawei.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+This causes memory leaks when dpaa2_dpseci_dpio_setup() fails during probe
+due to DPIO devices not being ready yet. The kernel's deferred probe
+mechanism handles the retry successfully, but the netdevs allocated during
+the failed probe attempt are never freed, resulting in kmemleak reports
+showing multiple leaked netdev-related allocations all traced back to
+dpaa2_caam_probe().
+
+Fix this by preserving the CPU mask of allocated netdevs during setup and
+using it for cleanup in dpaa2_dpseci_free(). This approach ensures that
+only the CPUs that actually had netdevs allocated will be cleaned up,
+avoiding potential issues with CPU hotplug scenarios.
+
+Fixes: 0e1a4d427f58 ("crypto: caam: Unembed net_dev structure in dpaa2")
+Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/trng/trng.c | 121 +++++++++++++++++++--------
- 1 file changed, 86 insertions(+), 35 deletions(-)
+ drivers/crypto/caam/caamalg_qi2.c | 27 +++++++++++++++------------
+ drivers/crypto/caam/caamalg_qi2.h |  2 ++
+ 2 files changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/trng/trng.c b/drivers/crypto/hisilicon/trng/trng.c
-index ac74df4a94712..5ca0b90859a81 100644
---- a/drivers/crypto/hisilicon/trng/trng.c
-+++ b/drivers/crypto/hisilicon/trng/trng.c
-@@ -40,6 +40,7 @@
- #define SEED_SHIFT_24		24
- #define SEED_SHIFT_16		16
- #define SEED_SHIFT_8		8
-+#define SW_MAX_RANDOM_BYTES	65520
+diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
+index 107ccb2ade420..c6117c23eb25b 100644
+--- a/drivers/crypto/caam/caamalg_qi2.c
++++ b/drivers/crypto/caam/caamalg_qi2.c
+@@ -4814,7 +4814,8 @@ static void dpaa2_dpseci_free(struct dpaa2_caam_priv *priv)
+ {
+ 	struct device *dev = priv->dev;
+ 	struct fsl_mc_device *ls_dev = to_fsl_mc_device(dev);
+-	int err;
++	struct dpaa2_caam_priv_per_cpu *ppriv;
++	int i, err;
  
- struct hisi_trng_list {
- 	struct mutex lock;
-@@ -53,8 +54,10 @@ struct hisi_trng {
- 	struct list_head list;
- 	struct hwrng rng;
- 	u32 ver;
--	bool is_used;
--	struct mutex mutex;
-+	u32 ctx_num;
-+	/* The bytes of the random number generated since the last seeding. */
-+	u32 random_bytes;
-+	struct mutex lock;
+ 	if (DPSECI_VER(priv->major_ver, priv->minor_ver) > DPSECI_VER(5, 3)) {
+ 		err = dpseci_reset(priv->mc_io, 0, ls_dev->mc_handle);
+@@ -4822,6 +4823,12 @@ static void dpaa2_dpseci_free(struct dpaa2_caam_priv *priv)
+ 			dev_err(dev, "dpseci_reset() failed\n");
+ 	}
+ 
++	for_each_cpu(i, priv->clean_mask) {
++		ppriv = per_cpu_ptr(priv->ppriv, i);
++		free_netdev(ppriv->net_dev);
++	}
++	free_cpumask_var(priv->clean_mask);
++
+ 	dpaa2_dpseci_congestion_free(priv);
+ 	dpseci_close(priv->mc_io, 0, ls_dev->mc_handle);
+ }
+@@ -5007,16 +5014,15 @@ static int __cold dpaa2_dpseci_setup(struct fsl_mc_device *ls_dev)
+ 	struct device *dev = &ls_dev->dev;
+ 	struct dpaa2_caam_priv *priv;
+ 	struct dpaa2_caam_priv_per_cpu *ppriv;
+-	cpumask_var_t clean_mask;
+ 	int err, cpu;
+ 	u8 i;
+ 
+ 	err = -ENOMEM;
+-	if (!zalloc_cpumask_var(&clean_mask, GFP_KERNEL))
+-		goto err_cpumask;
+-
+ 	priv = dev_get_drvdata(dev);
+ 
++	if (!zalloc_cpumask_var(&priv->clean_mask, GFP_KERNEL))
++		goto err_cpumask;
++
+ 	priv->dev = dev;
+ 	priv->dpsec_id = ls_dev->obj_desc.id;
+ 
+@@ -5118,7 +5124,7 @@ static int __cold dpaa2_dpseci_setup(struct fsl_mc_device *ls_dev)
+ 			err = -ENOMEM;
+ 			goto err_alloc_netdev;
+ 		}
+-		cpumask_set_cpu(cpu, clean_mask);
++		cpumask_set_cpu(cpu, priv->clean_mask);
+ 		ppriv->net_dev->dev = *dev;
+ 
+ 		netif_napi_add_tx_weight(ppriv->net_dev, &ppriv->napi,
+@@ -5126,18 +5132,16 @@ static int __cold dpaa2_dpseci_setup(struct fsl_mc_device *ls_dev)
+ 					 DPAA2_CAAM_NAPI_WEIGHT);
+ 	}
+ 
+-	err = 0;
+-	goto free_cpumask;
++	return 0;
+ 
+ err_alloc_netdev:
+-	free_dpaa2_pcpu_netdev(priv, clean_mask);
++	free_dpaa2_pcpu_netdev(priv, priv->clean_mask);
+ err_get_rx_queue:
+ 	dpaa2_dpseci_congestion_free(priv);
+ err_get_vers:
+ 	dpseci_close(priv->mc_io, 0, ls_dev->mc_handle);
+ err_open:
+-free_cpumask:
+-	free_cpumask_var(clean_mask);
++	free_cpumask_var(priv->clean_mask);
+ err_cpumask:
+ 	return err;
+ }
+@@ -5182,7 +5186,6 @@ static int __cold dpaa2_dpseci_disable(struct dpaa2_caam_priv *priv)
+ 		ppriv = per_cpu_ptr(priv->ppriv, i);
+ 		napi_disable(&ppriv->napi);
+ 		netif_napi_del(&ppriv->napi);
+-		free_netdev(ppriv->net_dev);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/crypto/caam/caamalg_qi2.h b/drivers/crypto/caam/caamalg_qi2.h
+index 61d1219a202fc..8e65b4b28c7ba 100644
+--- a/drivers/crypto/caam/caamalg_qi2.h
++++ b/drivers/crypto/caam/caamalg_qi2.h
+@@ -42,6 +42,7 @@
+  * @mc_io: pointer to MC portal's I/O object
+  * @domain: IOMMU domain
+  * @ppriv: per CPU pointers to privata data
++ * @clean_mask: CPU mask of CPUs that have allocated netdevs
+  */
+ struct dpaa2_caam_priv {
+ 	int dpsec_id;
+@@ -65,6 +66,7 @@ struct dpaa2_caam_priv {
+ 
+ 	struct dpaa2_caam_priv_per_cpu __percpu *ppriv;
+ 	struct dentry *dfs_root;
++	cpumask_var_t clean_mask;
  };
  
- struct hisi_trng_ctx {
-@@ -63,10 +66,14 @@ struct hisi_trng_ctx {
- 
- static atomic_t trng_active_devs;
- static struct hisi_trng_list trng_devices;
-+static int hisi_trng_read(struct hwrng *rng, void *buf, size_t max, bool wait);
- 
--static void hisi_trng_set_seed(struct hisi_trng *trng, const u8 *seed)
-+static int hisi_trng_set_seed(struct hisi_trng *trng, const u8 *seed)
- {
- 	u32 val, seed_reg, i;
-+	int ret;
-+
-+	writel(0x0, trng->base + SW_DRBG_BLOCKS);
- 
- 	for (i = 0; i < SW_DRBG_SEED_SIZE;
- 	     i += SW_DRBG_SEED_SIZE / SW_DRBG_SEED_REGS_NUM) {
-@@ -78,6 +85,20 @@ static void hisi_trng_set_seed(struct hisi_trng *trng, const u8 *seed)
- 		seed_reg = (i >> SW_DRBG_NUM_SHIFT) % SW_DRBG_SEED_REGS_NUM;
- 		writel(val, trng->base + SW_DRBG_SEED(seed_reg));
- 	}
-+
-+	writel(SW_DRBG_BLOCKS_NUM | (0x1 << SW_DRBG_ENABLE_SHIFT),
-+	       trng->base + SW_DRBG_BLOCKS);
-+	writel(0x1, trng->base + SW_DRBG_INIT);
-+	ret = readl_relaxed_poll_timeout(trng->base + SW_DRBG_STATUS,
-+					 val, val & BIT(0), SLEEP_US, TIMEOUT_US);
-+	if (ret) {
-+		pr_err("failed to init trng(%d)\n", ret);
-+		return -EIO;
-+	}
-+
-+	trng->random_bytes = 0;
-+
-+	return 0;
- }
- 
- static int hisi_trng_seed(struct crypto_rng *tfm, const u8 *seed,
-@@ -85,8 +106,7 @@ static int hisi_trng_seed(struct crypto_rng *tfm, const u8 *seed,
- {
- 	struct hisi_trng_ctx *ctx = crypto_rng_ctx(tfm);
- 	struct hisi_trng *trng = ctx->trng;
--	u32 val = 0;
--	int ret = 0;
-+	int ret;
- 
- 	if (slen < SW_DRBG_SEED_SIZE) {
- 		pr_err("slen(%u) is not matched with trng(%d)\n", slen,
-@@ -94,43 +114,45 @@ static int hisi_trng_seed(struct crypto_rng *tfm, const u8 *seed,
- 		return -EINVAL;
- 	}
- 
--	writel(0x0, trng->base + SW_DRBG_BLOCKS);
--	hisi_trng_set_seed(trng, seed);
-+	mutex_lock(&trng->lock);
-+	ret = hisi_trng_set_seed(trng, seed);
-+	mutex_unlock(&trng->lock);
- 
--	writel(SW_DRBG_BLOCKS_NUM | (0x1 << SW_DRBG_ENABLE_SHIFT),
--	       trng->base + SW_DRBG_BLOCKS);
--	writel(0x1, trng->base + SW_DRBG_INIT);
-+	return ret;
-+}
- 
--	ret = readl_relaxed_poll_timeout(trng->base + SW_DRBG_STATUS,
--					val, val & BIT(0), SLEEP_US, TIMEOUT_US);
--	if (ret)
--		pr_err("fail to init trng(%d)\n", ret);
-+static int hisi_trng_reseed(struct hisi_trng *trng)
-+{
-+	u8 seed[SW_DRBG_SEED_SIZE];
-+	int size;
- 
--	return ret;
-+	if (!trng->random_bytes)
-+		return 0;
-+
-+	size = hisi_trng_read(&trng->rng, seed, SW_DRBG_SEED_SIZE, false);
-+	if (size != SW_DRBG_SEED_SIZE)
-+		return -EIO;
-+
-+	return hisi_trng_set_seed(trng, seed);
- }
- 
--static int hisi_trng_generate(struct crypto_rng *tfm, const u8 *src,
--			      unsigned int slen, u8 *dstn, unsigned int dlen)
-+static int hisi_trng_get_bytes(struct hisi_trng *trng, u8 *dstn, unsigned int dlen)
- {
--	struct hisi_trng_ctx *ctx = crypto_rng_ctx(tfm);
--	struct hisi_trng *trng = ctx->trng;
- 	u32 data[SW_DRBG_DATA_NUM];
- 	u32 currsize = 0;
- 	u32 val = 0;
- 	int ret;
- 	u32 i;
- 
--	if (dlen > SW_DRBG_BLOCKS_NUM * SW_DRBG_BYTES || dlen == 0) {
--		pr_err("dlen(%u) exceeds limit(%d)!\n", dlen,
--			SW_DRBG_BLOCKS_NUM * SW_DRBG_BYTES);
--		return -EINVAL;
--	}
-+	ret = hisi_trng_reseed(trng);
-+	if (ret)
-+		return ret;
- 
- 	do {
- 		ret = readl_relaxed_poll_timeout(trng->base + SW_DRBG_STATUS,
--		     val, val & BIT(1), SLEEP_US, TIMEOUT_US);
-+						 val, val & BIT(1), SLEEP_US, TIMEOUT_US);
- 		if (ret) {
--			pr_err("fail to generate random number(%d)!\n", ret);
-+			pr_err("failed to generate random number(%d)!\n", ret);
- 			break;
- 		}
- 
-@@ -145,30 +167,57 @@ static int hisi_trng_generate(struct crypto_rng *tfm, const u8 *src,
- 			currsize = dlen;
- 		}
- 
-+		trng->random_bytes += SW_DRBG_BYTES;
- 		writel(0x1, trng->base + SW_DRBG_GEN);
- 	} while (currsize < dlen);
- 
- 	return ret;
- }
- 
-+static int hisi_trng_generate(struct crypto_rng *tfm, const u8 *src,
-+			      unsigned int slen, u8 *dstn, unsigned int dlen)
-+{
-+	struct hisi_trng_ctx *ctx = crypto_rng_ctx(tfm);
-+	struct hisi_trng *trng = ctx->trng;
-+	unsigned int currsize = 0;
-+	unsigned int block_size;
-+	int ret;
-+
-+	if (!dstn || !dlen) {
-+		pr_err("output is error, dlen %u!\n", dlen);
-+		return -EINVAL;
-+	}
-+
-+	do {
-+		block_size = min_t(unsigned int, dlen - currsize, SW_MAX_RANDOM_BYTES);
-+		mutex_lock(&trng->lock);
-+		ret = hisi_trng_get_bytes(trng, dstn + currsize, block_size);
-+		mutex_unlock(&trng->lock);
-+		if (ret)
-+			return ret;
-+		currsize += block_size;
-+	} while (currsize < dlen);
-+
-+	return 0;
-+}
-+
- static int hisi_trng_init(struct crypto_tfm *tfm)
- {
- 	struct hisi_trng_ctx *ctx = crypto_tfm_ctx(tfm);
- 	struct hisi_trng *trng;
--	int ret = -EBUSY;
-+	u32 ctx_num = ~0;
- 
- 	mutex_lock(&trng_devices.lock);
- 	list_for_each_entry(trng, &trng_devices.list, list) {
--		if (!trng->is_used) {
--			trng->is_used = true;
-+		if (trng->ctx_num < ctx_num) {
-+			ctx_num = trng->ctx_num;
- 			ctx->trng = trng;
--			ret = 0;
--			break;
- 		}
- 	}
-+	ctx->trng->ctx_num++;
- 	mutex_unlock(&trng_devices.lock);
- 
--	return ret;
-+	return 0;
- }
- 
- static void hisi_trng_exit(struct crypto_tfm *tfm)
-@@ -176,7 +225,7 @@ static void hisi_trng_exit(struct crypto_tfm *tfm)
- 	struct hisi_trng_ctx *ctx = crypto_tfm_ctx(tfm);
- 
- 	mutex_lock(&trng_devices.lock);
--	ctx->trng->is_used = false;
-+	ctx->trng->ctx_num--;
- 	mutex_unlock(&trng_devices.lock);
- }
- 
-@@ -238,7 +287,7 @@ static int hisi_trng_del_from_list(struct hisi_trng *trng)
- 	int ret = -EBUSY;
- 
- 	mutex_lock(&trng_devices.lock);
--	if (!trng->is_used) {
-+	if (!trng->ctx_num) {
- 		list_del(&trng->list);
- 		ret = 0;
- 	}
-@@ -262,7 +311,9 @@ static int hisi_trng_probe(struct platform_device *pdev)
- 	if (IS_ERR(trng->base))
- 		return PTR_ERR(trng->base);
- 
--	trng->is_used = false;
-+	trng->ctx_num = 0;
-+	trng->random_bytes = SW_MAX_RANDOM_BYTES;
-+	mutex_init(&trng->lock);
- 	trng->ver = readl(trng->base + HISI_TRNG_VERSION);
- 	if (!trng_devices.is_init) {
- 		INIT_LIST_HEAD(&trng_devices.list);
+ /**
 -- 
 2.51.0
 
