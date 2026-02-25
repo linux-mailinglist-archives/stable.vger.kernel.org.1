@@ -1,66 +1,63 @@
-Return-Path: <stable+bounces-218762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGYJCTZWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218762-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:58 +0100
+	id 4GM5N0SgnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EA21901FF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CCF1930BB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 34FC630B47FC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34DF231D176B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2231427280F;
-	Wed, 25 Feb 2026 01:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3481313264;
+	Wed, 25 Feb 2026 06:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+YDP2S6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwkv8BWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D5326ED3D;
-	Wed, 25 Feb 2026 01:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9729530E855;
+	Wed, 25 Feb 2026 06:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983632; cv=none; b=NaHq+xYt145wArSM+vHlSWQf12b/xlbI6w4rwDSK/ZZCB/psLUzaHbX4uu5PbpZIKgZKca7ELmX81D3ipr2RBWhCWmJduLO1l4xYGP9JxTS3D5mI+JYqXr2E9MTKQXHbrTQDFNCHBok5xWfewoLjWkCRoyvo3LOE9FcikiGnQP0=
+	t=1772002706; cv=none; b=jXDfU7pTYjOQbA/wTpDeZV8XWiwQcOXgdRRPRvdmBQCwp+dJIXZqyJ6T/eN7oBe0rx6lp0ArIj3kWuc3YlEXQ+3QnEPyJTIFVGIOSx40EckAdt/B4PjxC8F/0/wOPCBmR4QpFN/0+7izK7D3qERSeQUpwA4CJdKaJyvHQKOSetw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983632; c=relaxed/simple;
-	bh=lB0fb+LvSzvfRm30zY1TTCzP57ILI9gbcy6/h4265Yc=;
+	s=arc-20240116; t=1772002706; c=relaxed/simple;
+	bh=m4vU6dP/sNeV8TYbAPk/RcP3+EHNKLSZJKW9sftm0io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+K+J+4sHKQQ7UgdK+5SjjSAmhCCcD7MU1f6LMt48jru5Dz6S6wZPrxgynD7UkAKjLS6uxodNKEQCjDaQAMosSpdbv+hk/DNSEgT2LN7beEm1rohmSG7XAIXhOUda6AVcx4xUr6+D/yLkOjZRXbGSA2MuQT7uNhx08TOcap7D04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+YDP2S6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B919C116D0;
-	Wed, 25 Feb 2026 01:40:32 +0000 (UTC)
+	 MIME-Version; b=l9HDw3GX0aRNrWzeNKstuvGG+1VqzvPoleg4jwSLX1NHTazcd+WcZXgK9NSd+cncdl7xg3iluIwbZV/H6BSwI6ZDcCC0t6xlqKYaKJyMqW0sAh34N+HvjKDzuI2UIs6f8HDREdghoZVSq1MrE5pH9zH4I9QrkO2C5g8VpWe1WuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwkv8BWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAA0C116D0;
+	Wed, 25 Feb 2026 06:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983632;
-	bh=lB0fb+LvSzvfRm30zY1TTCzP57ILI9gbcy6/h4265Yc=;
+	s=korg; t=1772002706;
+	bh=m4vU6dP/sNeV8TYbAPk/RcP3+EHNKLSZJKW9sftm0io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+YDP2S6TcowS7/bifTks7WbR+mAn2M09ehjNW0UcBDMGcGWhS5umUzSNFzZT/hCq
-	 FXdN9mgx8pQmA6FGwMqC0h7U6XgEHLZALW0uVvek5KLgYXcCpEGaI1ezd07OQQSwD/
-	 zrMtlJUH98Nvsx4dcP1f9q0vTYo7GeGo/Im6yF1w=
+	b=vwkv8BWXtfpBcHl3J0MV7X4K34TzcPCDn/YOf1yF4XXZP9NythMRqJpkdXMiYa6Oh
+	 7+KOP6ad/iOWj5PwspcjrEGzcX/2kNk+PLs0jAk0HlPC7Tch+YrfUDHAja1OrP8tKa
+	 T6xURRGzxeM5qY4OIXqICk0mjFOzW3LAtOLntAMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Mario Limonciello <superm1@kernel.org>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	ChiaHsuan Chung <chiahsuan.chung@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Aristeu Rozanski <aris@redhat.com>,
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Shuah Khan <shuah@kernel.org>,
+	liuye <liuye@kylinos.cn>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 723/781] drm/amd/display: Fix out-of-bounds stream encoder index v3
+Subject: [PATCH 6.18 506/641] selftests/memfd: use IPC semaphore instead of SIGSTOP/SIGCONT
 Date: Tue, 24 Feb 2026 17:23:52 -0800
-Message-ID: <20260225012417.470025417@linuxfoundation.org>
+Message-ID: <20260225012400.785580010@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,244 +73,269 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219424-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218762-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: 49EA21901FF
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,cyphar.com:email]
+X-Rspamd-Queue-Id: 48CCF1930BB
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Aristeu Rozanski <aris@redhat.com>
 
-[ Upstream commit abde491143e4e12eecc41337910aace4e8d59603 ]
+[ Upstream commit b24335521de92fd2ee22460072b75367ca8860b0 ]
 
-eng_id can be negative and that stream_enc_regs[]
-can be indexed out of bounds.
+selftests/memfd: use IPC semaphore instead of SIGSTOP/SIGCONT
 
-eng_id is used directly as an index into stream_enc_regs[], which has
-only 5 entries. When eng_id is 5 (ENGINE_ID_DIGF) or negative, this can
-access memory past the end of the array.
+In order to synchronize new processes to test inheritance of memfd_noexec
+sysctl, memfd_test sets up the sysctl with a value before creating the new
+process.  The new process then sends itself a SIGSTOP in order to wait for
+the parent to flip the sysctl value and send a SIGCONT signal.
 
-Add a bounds check using ARRAY_SIZE() before using eng_id as an index.
-The unsigned cast also rejects negative values.
+This would work as intended if it wasn't the fact that the new process is
+being created with CLONE_NEWPID, which creates a new PID namespace and the
+new process has PID 1 in this namespace.  There're restrictions on sending
+signals to PID 1 and, although it's relaxed for other than root PID
+namespace, it's biting us here.  In this specific case the SIGSTOP sent by
+the new process is ignored (no error to kill() is returned) and it never
+stops its execution.  This is usually not noticiable as the parent usually
+manages to set the new sysctl value before the child has a chance to run
+and the test succeeds.  But if you run the test in a loop, it eventually
+reproduces:
 
-This avoids out-of-bounds access.
+	while [ 1 ]; do ./memfd_test >log 2>&1 || break; done; cat log
 
-Fixes the below smatch error:
-dcn*_resource.c: stream_encoder_create() may index
-stream_enc_regs[eng_id] out of bounds (size 5).
+So this patch replaces the SIGSTOP/SIGCONT synchronization with IPC
+semaphore.
 
-drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn351/dcn351_resource.c
-    1246 static struct stream_encoder *dcn35_stream_encoder_create(
-    1247         enum engine_id eng_id,
-    1248         struct dc_context *ctx)
-    1249 {
-
-    ...
-
-    1255
-    1256         /* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
-    1257         if (eng_id <= ENGINE_ID_DIGF) {
-
-ENGINE_ID_DIGF is 5.  should <= be <?
-
-Unrelated but, ugh, why is Smatch saying that "eng_id" can be negative?
-end_id is type signed long, but there are checks in the caller which prevent it from being negative.
-
-    1258                 vpg_inst = eng_id;
-    1259                 afmt_inst = eng_id;
-    1260         } else
-    1261                 return NULL;
-    1262
-
-    ...
-
-    1281
-    1282         dcn35_dio_stream_encoder_construct(enc1, ctx, ctx->dc_bios,
-    1283                                         eng_id, vpg, afmt,
---> 1284                                         &stream_enc_regs[eng_id],
-                                                  ^^^^^^^^^^^^^^^^^^^^^^^ This stream_enc_regs[] array has 5 elements so we are one element beyond the end of the array.
-
-    ...
-
-    1287         return &enc1->base;
-    1288 }
-
-v2: use explicit bounds check as suggested by Roman/Dan; avoid unsigned int cast
-
-v3: The compiler already knows how to compare the two values, so the
-    cast (int) is not needed. (Roman)
-
-Fixes: 2728e9c7c842 ("drm/amd/display: add DC changes for DCN351")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Mario Limonciello <superm1@kernel.org>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: ChiaHsuan Chung <chiahsuan.chung@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lkml.kernel.org/r/a7776389-b3d6-4b18-b438-0b0e3ed1fd3b@work
+Fixes: 6469b66e3f5a ("selftests: improve vm.memfd_noexec sysctl tests")
+Signed-off-by: Aristeu Rozanski <aris@redhat.com>
+Cc: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: liuye <liuye@kylinos.cn>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/resource/dcn315/dcn315_resource.c  | 8 ++++----
- .../drm/amd/display/dc/resource/dcn316/dcn316_resource.c  | 8 ++++----
- .../drm/amd/display/dc/resource/dcn32/dcn32_resource.c    | 8 ++++----
- .../drm/amd/display/dc/resource/dcn321/dcn321_resource.c  | 8 ++++----
- .../drm/amd/display/dc/resource/dcn35/dcn35_resource.c    | 8 ++++----
- .../drm/amd/display/dc/resource/dcn351/dcn351_resource.c  | 8 ++++----
- 6 files changed, 24 insertions(+), 24 deletions(-)
+ tools/testing/selftests/memfd/memfd_test.c | 113 +++++++++++++++++++--
+ 1 file changed, 105 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-index 4e962f522f1be..228ae665c7893 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-@@ -1230,12 +1230,12 @@ static struct stream_encoder *dcn315_stream_encoder_create(
- 	/*PHYB is wired off in HW, allow front end to remapping, otherwise needs more changes*/
+diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/selftests/memfd/memfd_test.c
+index 5b993924cc3f5..2ca07ea7202a5 100644
+--- a/tools/testing/selftests/memfd/memfd_test.c
++++ b/tools/testing/selftests/memfd/memfd_test.c
+@@ -18,6 +18,9 @@
+ #include <sys/stat.h>
+ #include <sys/syscall.h>
+ #include <sys/wait.h>
++#include <sys/types.h>
++#include <sys/ipc.h>
++#include <sys/sem.h>
+ #include <unistd.h>
+ #include <ctype.h>
  
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
+@@ -39,6 +42,20 @@
+ 		    F_SEAL_EXEC)
  
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
+ #define MFD_NOEXEC_SEAL	0x0008U
++union semun {
++	int val;
++	struct semid_ds *buf;
++	unsigned short int *array;
++	struct seminfo *__buf;
++};
 +
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn31_vpg_create(ctx, vpg_inst);
- 	afmt = dcn31_afmt_create(ctx, afmt_inst);
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
-index 5a95dd54cb429..45abf3b2eb2c4 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
-@@ -1223,12 +1223,12 @@ static struct stream_encoder *dcn316_stream_encoder_create(
- 	int afmt_inst;
++/*
++ * we use semaphores on nested wait tasks due the use of CLONE_NEWPID: the
++ * child will be PID 1 and can't send SIGSTOP to themselves due special
++ * treatment of the init task, so the SIGSTOP/SIGCONT synchronization
++ * approach can't be used here.
++ */
++#define SEM_KEY 0xdeadbeef
  
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
+ /*
+  * Default is not to test hugetlbfs
+@@ -1333,8 +1350,22 @@ static int sysctl_nested(void *arg)
  
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
+ static int sysctl_nested_wait(void *arg)
+ {
+-	/* Wait for a SIGCONT. */
+-	kill(getpid(), SIGSTOP);
++	int sem = semget(SEM_KEY, 1, 0600);
++	struct sembuf sembuf;
 +
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn31_vpg_create(ctx, vpg_inst);
- 	afmt = dcn31_afmt_create(ctx, afmt_inst);
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-index b276fec3e479a..d39a0f9c78c92 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-@@ -1211,12 +1211,12 @@ static struct stream_encoder *dcn32_stream_encoder_create(
- 	int afmt_inst;
- 
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
- 
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
++	if (sem < 0) {
++		perror("semget:");
++		abort();
++	}
++	sembuf.sem_num = 0;
++	sembuf.sem_flg = 0;
++	sembuf.sem_op = 0;
 +
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn32_vpg_create(ctx, vpg_inst);
- 	afmt = dcn32_afmt_create(ctx, afmt_inst);
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
-index 3466ca34c93fe..c72c6dbc0cb4d 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
-@@ -1192,12 +1192,12 @@ static struct stream_encoder *dcn321_stream_encoder_create(
- 	int afmt_inst;
- 
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
- 
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		abort();
++	}
 +
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn321_vpg_create(ctx, vpg_inst);
- 	afmt = dcn321_afmt_create(ctx, afmt_inst);
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-index d056e5fd54587..9edabd8ceca9b 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-@@ -1274,12 +1274,12 @@ static struct stream_encoder *dcn35_stream_encoder_create(
- 	int afmt_inst;
+ 	return sysctl_nested(arg);
+ }
  
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
+@@ -1355,7 +1386,9 @@ static void test_sysctl_sysctl2_failset(void)
  
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
+ static int sysctl_nested_child(void *arg)
+ {
+-	int pid;
++	int pid, sem;
++	union semun semun;
++	struct sembuf sembuf;
+ 
+ 	printf("%s nested sysctl 0\n", memfd_str);
+ 	sysctl_assert_write("0");
+@@ -1389,23 +1422,53 @@ static int sysctl_nested_child(void *arg)
+ 			   test_sysctl_sysctl2_failset);
+ 	join_thread(pid);
+ 
++	sem = semget(SEM_KEY, 1, IPC_CREAT | 0600);
++	if (sem < 0) {
++		perror("semget:");
++		return 1;
++	}
++	semun.val = 1;
++	sembuf.sem_op = -1;
++	sembuf.sem_flg = 0;
++	sembuf.sem_num = 0;
 +
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn31_vpg_create(ctx, vpg_inst);
- 	afmt = dcn31_afmt_create(ctx, afmt_inst);
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-index 9fab3169069c4..43ece2bbcd64f 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-@@ -1254,12 +1254,12 @@ static struct stream_encoder *dcn35_stream_encoder_create(
- 	int afmt_inst;
+ 	/* Verify that the rules are actually inherited after fork. */
+ 	printf("%s nested sysctl 0 -> 1 after fork\n", memfd_str);
+ 	sysctl_assert_write("0");
  
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
- 
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
++	if (semctl(sem, 0, SETVAL, semun) < 0) {
++		perror("semctl:");
++		return 1;
++	}
 +
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn31_vpg_create(ctx, vpg_inst);
- 	afmt = dcn31_afmt_create(ctx, afmt_inst);
+ 	pid = spawn_thread(CLONE_NEWPID, sysctl_nested_wait,
+ 			   test_sysctl_sysctl1_failset);
+ 	sysctl_assert_write("1");
+-	kill(pid, SIGCONT);
++
++	/* Allow child to continue */
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		return 1;
++	}
+ 	join_thread(pid);
+ 
+ 	printf("%s nested sysctl 0 -> 2 after fork\n", memfd_str);
+ 	sysctl_assert_write("0");
+ 
++	if (semctl(sem, 0, SETVAL, semun) < 0) {
++		perror("semctl:");
++		return 1;
++	}
++
+ 	pid = spawn_thread(CLONE_NEWPID, sysctl_nested_wait,
+ 			   test_sysctl_sysctl2_failset);
+ 	sysctl_assert_write("2");
+-	kill(pid, SIGCONT);
++
++	/* Allow child to continue */
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		return 1;
++	}
+ 	join_thread(pid);
+ 
+ 	/*
+@@ -1415,28 +1478,62 @@ static int sysctl_nested_child(void *arg)
+ 	 */
+ 	printf("%s nested sysctl 2 -> 1 after fork\n", memfd_str);
+ 	sysctl_assert_write("2");
++
++	if (semctl(sem, 0, SETVAL, semun) < 0) {
++		perror("semctl:");
++		return 1;
++	}
++
+ 	pid = spawn_thread(CLONE_NEWPID, sysctl_nested_wait,
+ 			   test_sysctl_sysctl2);
+ 	sysctl_assert_write("1");
+-	kill(pid, SIGCONT);
++
++	/* Allow child to continue */
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		return 1;
++	}
+ 	join_thread(pid);
+ 
+ 	printf("%s nested sysctl 2 -> 0 after fork\n", memfd_str);
+ 	sysctl_assert_write("2");
++
++	if (semctl(sem, 0, SETVAL, semun) < 0) {
++		perror("semctl:");
++		return 1;
++	}
++
+ 	pid = spawn_thread(CLONE_NEWPID, sysctl_nested_wait,
+ 			   test_sysctl_sysctl2);
+ 	sysctl_assert_write("0");
+-	kill(pid, SIGCONT);
++
++	/* Allow child to continue */
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		return 1;
++	}
+ 	join_thread(pid);
+ 
+ 	printf("%s nested sysctl 1 -> 0 after fork\n", memfd_str);
+ 	sysctl_assert_write("1");
++
++	if (semctl(sem, 0, SETVAL, semun) < 0) {
++		perror("semctl:");
++		return 1;
++	}
++
+ 	pid = spawn_thread(CLONE_NEWPID, sysctl_nested_wait,
+ 			   test_sysctl_sysctl1);
+ 	sysctl_assert_write("0");
+-	kill(pid, SIGCONT);
++	/* Allow child to continue */
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		return 1;
++	}
+ 	join_thread(pid);
+ 
++	semctl(sem, 0, IPC_RMID);
++
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
