@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-219590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDdYMYfgnmmCXgQAu9opvQ
-	(envelope-from <stable+bounces-219590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 12:44:07 +0100
+	id SJ70H9PgnmmCXgQAu9opvQ
+	(envelope-from <stable+bounces-219593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 12:45:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29005196C42
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 12:44:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CA3196CE7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 12:45:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22A463016EC4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 11:43:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFCBE302494E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 11:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764AD395253;
-	Wed, 25 Feb 2026 11:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66DF396B65;
+	Wed, 25 Feb 2026 11:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHxiAtBr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="txGgfxua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14E732825B;
-	Wed, 25 Feb 2026 11:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC539396B7C;
+	Wed, 25 Feb 2026 11:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772019778; cv=none; b=gC7nHd2rrK8b0JSgs42HxUN/FBu4rQN/GZqJdC3KJz7guRMtlywp6BY6zfbN20lo58PcZPfwPu0GvdFghfwh9JzA2CuaGZExfSc66shhu9JJa5j8Ai81XVq0D2qa89hpejbKDjZL+f3zXsOL0Bx+u/0h+jLMmVhfZVzBpqausnk=
+	t=1772019798; cv=none; b=QEoPJUesS8dqT4cfkqMPLcCyer3vi1iIStL2j4LzcRzbZef5zORIaln7aUS3JbPcbkXaRL3WyjFcAo1LqmDFsExbqVqGTDQsXv50hfbNEaMqCP9g3cbQtyp6RH6kephetM6WksJRRhjoovABI/qK8yLTUeTEYI9D0rECO0FU278=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772019778; c=relaxed/simple;
-	bh=dr1FetCGiElnKqwOLK/nzeBzn45UqrtNZC+0wne7FS8=;
+	s=arc-20240116; t=1772019798; c=relaxed/simple;
+	bh=zz8EydAPl3MV3Fr68dgL9OzVrvHxLae1+94Mq6XnURg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jDBjERJAZFQLXCo8zSFHfgCw2WknvSUjBV01zJmWwGjwR+fIpp7EL+G1Tq2fOTFRRbdfu/Ir4Y7DFbTvYtGiSfwCOILO+AEmPSn7iaazlcPchg/GwzIrDEcwJMcI8cAccDZzghxJpJSz6XxGCE+hNRtpjrTMhYV+mOuVKEGiSiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHxiAtBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B328C19421;
-	Wed, 25 Feb 2026 11:42:53 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OK8GSOf65sxYV6XG1oH+PAL881UzdCOefmjFMA+84l8hLVbiBm88I24K9JWdk1TnVLnTBMc7iEWWY0qOfkz/Anyjp8RgYXPf8/ZpFmcDDLhxjppzaRFBa4DXvR7NEX4KrN6KI0+pp2MiTU/1fHf4ia41pt8IQvHDxxBUYC87qv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=txGgfxua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D47C116D0;
+	Wed, 25 Feb 2026 11:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772019777;
-	bh=dr1FetCGiElnKqwOLK/nzeBzn45UqrtNZC+0wne7FS8=;
+	s=k20201202; t=1772019798;
+	bh=zz8EydAPl3MV3Fr68dgL9OzVrvHxLae1+94Mq6XnURg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QHxiAtBrEEqV74/oOfpilYx4PeLL6pFRWwH1rcAEyw+lhiGUr+vFkBjHRbop9QCqc
-	 OA7ui9dDmnXVnNNDXRc6b2iuxe5BTyy7k2z2sAz6p21GKdrOd1qdYkiHen3ZHjIXGa
-	 wDadO5+RETQyDVwUpNTDRRVsWnyACJ/yL3XiCEocoAo2klmQiI+Q4tFIes7LGyH1TH
-	 mG41xiy+tx70VXuW91AgMAMq8xHC3mekDv9Pa/2qoitkKcGrhu7FMFB1NoKAio6Zer
-	 AHMVs+Tr1+1FRnnCxZLGK4dWW4VQEkdKqdA0NrXuN/7CD04Fk4U/IJWUWt3vLjnv5L
-	 D8JoU8bSL6g3w==
-Date: Wed, 25 Feb 2026 11:42:51 +0000
+	b=txGgfxua/8cF/MA4o1Oz9VbVKEhhcvMq3HTHsCTzWoD9XN7QvmavFYtCRRbfnNsdn
+	 FUk1IYrSC0Ydjysmf1Pe8kk+C7W5lCaCQ+0+9PUgkXse7CvS0mEWFUv+jCaC6vgsr4
+	 QFx7uRUP/kMdkyN7twncOk1YwaMmV3jpma+Y/6qYZTm5rJQPiq1CClhPRAXy4lpWnb
+	 UIswNC7JLv0BCOAZr/LrJzDAfpZD3t88tBcLSJNJPGq53uz8cUyuxHCGY7mYnJ4p2c
+	 HcN0VH+xoPxf7Q0fP1bFrtEpbC9Z8dpMAqMvCb/HQsCWrTqkSsRXPWL+ih1EJZIV2r
+	 Grzk5LMbRb8WQ==
+Date: Wed, 25 Feb 2026 11:43:11 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -54,9 +54,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
 	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.19 000/781] 6.19.4-rc1 review
-Message-ID: <3a23ccea-7924-4c11-b484-0740e016ef85@sirena.org.uk>
-References: <20260225012359.695468795@linuxfoundation.org>
+Subject: Re: [PATCH 6.18 000/641] 6.18.14-rc1 review
+Message-ID: <457362d4-c400-47a2-834b-327ded7d6192@sirena.org.uk>
+References: <20260225012348.915798704@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,9 +64,9 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1ETqR31m015ovrZk"
+	protocol="application/pgp-signature"; boundary="e7VJNWWj2VJ4Z7WY"
 Content-Disposition: inline
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 X-Cookie: From concentrate.
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.76 / 15.00];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-2.76 / 15.00];
 	MAILLIST(-0.15)[generic];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219590-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219593-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
@@ -97,20 +97,19 @@ X-Spamd-Result: default: False [-2.76 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sirena.org.uk:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
-X-Rspamd-Queue-Id: 29005196C42
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,sirena.org.uk:mid]
+X-Rspamd-Queue-Id: C9CA3196CE7
 X-Rspamd-Action: no action
 
 
---1ETqR31m015ovrZk
+--e7VJNWWj2VJ4Z7WY
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 24, 2026 at 05:11:49PM -0800, Greg Kroah-Hartman wrote:
-
-> This is the start of the stable review cycle for the 6.19.4 release.
-> There are 781 patches in this series, all will be posted as a response
+On Tue, Feb 24, 2026 at 05:15:26PM -0800, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.14 release.
+> There are 641 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
@@ -128,20 +127,20 @@ rce_read_pages=E2=80=99 [-Wimplicit-function-declaration]
 
 IIRC there was a patch adding that function.
 
---1ETqR31m015ovrZk
+--e7VJNWWj2VJ4Z7WY
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmme4DoACgkQJNaLcl1U
-h9C2wAf/XhttC2N8zLEIyEfaHQoIIfYiSAWqzxhnTwN6ZpSajRgpCgnsESORA3Wo
-W4j0edFxV+uH9n820El4c/NdKCA5ZOZtH8Hu+hcrXr1k/qXBtoPzlYkMS6Cd8/8c
-mpgBNTL7g4azbV9i11seRGfNsbGoEiDxOdulqKzkgGZaWtJUe0cbeIsrDIxG7gTr
-eVeSQ+k/DMWU+Z91miAug0qtl2/jnmSfIg4banksvoqRVoqOMS8msHoyybeZRkst
-FBsHsL+fAV0cYcZoIuN3N8Ml05g6RuR7cHQYobDFZ655itOJa0mx90EVTXRcDxOo
-PhlPQ6DEwF9PKg0+ifW2REyJokc5mg==
-=h3Zv
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmme4E8ACgkQJNaLcl1U
+h9DQGAf9FeGTkDXEir9kS60ZUjm/vCivAMAYVcB2d1KOA4u/YjTu8BFXhghdkBAQ
+a9GoRTAU6xYdN/Xf/HFQQxv7BEC9tpiM1ugTqLaa2091ZjNjh2Omc9Ys1KmoPHHi
+YwseObb2AgdrXZmUd2FPA14NUOCsF/zFhSBPTL+dKeFRsNmOqdPfG9Q3wmfnPoSp
+QIi591V9ys/SjZMrJJJC/wPXb5Ca6HdXpO0PDiqlKpPlPZls9h7duksJdpbsVKMq
+BuUGoKxvPTVMyLHlbjHYEr/Xt7sdGODN8niyUODlYi6t6Ukv+GI6wFHt4j5Kt539
+FtDtbKan5oMzFffkw+0FRtN9dTxwwQ==
+=J4eN
 -----END PGP SIGNATURE-----
 
---1ETqR31m015ovrZk--
+--e7VJNWWj2VJ4Z7WY--
 
