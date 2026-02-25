@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CJOHRdZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218828-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:15 +0100
+	id 4Oh/ORafnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034241908AE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE81192E4E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA7D33247C31
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D2B8E3111033
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D4D262FE7;
-	Wed, 25 Feb 2026 01:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436BF30E834;
+	Wed, 25 Feb 2026 06:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dl4tPejB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehzxdXNI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3846F1E2834;
-	Wed, 25 Feb 2026 01:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075702C21DF;
+	Wed, 25 Feb 2026 06:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983709; cv=none; b=b/jDBvR2UdDROqFhRUoQTH+95q+4M0leNolLCiZo76MkBZhoprdgO8XFLyAvI2uLhMBV9gpZxtWNH7kegPM01RmxTnUGfGJ+o5GCHpm9SrFOmRJvQQedN56Nb49SgfpdYDrcFmNgiLYBdhBiZb1/1C9uvQq2bBYvixB1gFwZhRU=
+	t=1772002717; cv=none; b=LAD1PsXjnFafNG2tkNttHlLtJjAPW2z5QPdCtaRX6IhGdqfUVGdib8nYQqYWtsMxdsY1TO7bxkpQNXoUQxxLPImUs5prLt30n0lokCQZJCq2/OhRHqgGGqZ58xrM9LVnlcSQXqK3UiRu785NF5UpdKtWjfdFeKDDpE609T8TqBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983709; c=relaxed/simple;
-	bh=ydrpjouAYetoeQG8NVdTde5je2MftaQYDGMrTnzXuuM=;
+	s=arc-20240116; t=1772002717; c=relaxed/simple;
+	bh=HHZHvozvaIUdbhE+PtkdzpkAnTfU5+2ge3tO+8AfiBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QB6GtfvF/Cj/OIpy5jWbCM0hK5I3gInVS4UTHOXk9cAZVJNBgJovCPtmTCHyiCrQ9gpcJpJurJ4Mqkw4skjBrJaptUH3UrWe6VGDA6XAmLI2gY7Gtp/oD3K6zVFOTTvLbC0tuaYeiGGtqSdk2FLszBWfWWr6rv6al3guS00uFG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dl4tPejB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B69C116D0;
-	Wed, 25 Feb 2026 01:41:48 +0000 (UTC)
+	 MIME-Version; b=C6QBCG98BzCfqEsjvcJ5gW9dG/kuMNCAnoCtRIUCECrh4jD8cW4R+rpfamMG3NvU8Ht5f8gk7JmBit/Vxh7exvygrFg8eRuU0Xmyai43bYBU1X0Uzzyi7mqTyaQrJ2ZpyHBatJcCkkqZq4EuZPZqElji68Id/p38x2JhNuEBUGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehzxdXNI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F3AC19422;
+	Wed, 25 Feb 2026 06:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983709;
-	bh=ydrpjouAYetoeQG8NVdTde5je2MftaQYDGMrTnzXuuM=;
+	s=korg; t=1772002716;
+	bh=HHZHvozvaIUdbhE+PtkdzpkAnTfU5+2ge3tO+8AfiBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dl4tPejBrPW8Fk8/FSrstw/5P3KOjvdhWcbcNUHq8J+clXcLcjUd/6CzMtJWa41m3
-	 wkddNUcE6Hy2izegdZxiaEGXMHsw1qtWhHHRYIxK3xL6MrqDFzG5NveIMv4vuPdTUC
-	 hl4gzjKy1MTmgvbgRX5E9qroglZ4hRCV6Wq1D4KE=
+	b=ehzxdXNItH8zzZXQDXQ34eehEUHlAyNlIcIhgItAv5S7RsgCbKgdHkbCDu2zMwuiz
+	 KddLW1C4GImqCND24aGHZcxAqO1Sza1xT/cOXb3b79wrhQYzLBVQ4VHPFIVy1SD03F
+	 xuPtIi35xn3jHDwasgvQn6XpBh5GnTGhRtMtfsI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 742/781] x86/hyperv: Fix error pointer dereference
+Subject: [PATCH 6.18 525/641] net: sparx5/lan969x: fix PTP clock max_adj value
 Date: Tue, 24 Feb 2026 17:24:11 -0800
-Message-ID: <20260225012417.925448582@linuxfoundation.org>
+Message-ID: <20260225012401.251459749@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +68,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218828-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219440-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 034241908AE
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5DE81192E4E
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-[ Upstream commit 705d01c8d78121ee1634bfc602ac4b0ad1438fab ]
+[ Upstream commit a49d2a2c37a6252c41cbdd505f9d1c58d5a3817a ]
 
-The function idle_thread_get() can return an error pointer and is not
-checked for it. Add check for error pointer.
+The max_adj field in ptp_clock_info tells userspace how much the PHC
+clock frequency can be adjusted. ptp4l reads this and will never request
+a correction larger than max_adj.
 
-Detected by Smatch:
-arch/x86/hyperv/hv_vtl.c:126 hv_vtl_bringup_vcpu() error:
-'idle' dereferencing possible ERR_PTR()
+On both sparx5 and lan969x the clock offset may never converge because
+the servo needs a frequency correction larger than the current max_adj
+of 200000 (200 ppm) allows. The servo rails at the max and the offset
+stays in the tens of microseconds.
 
-Fixes: 2b4b90e053a29 ("x86/hyperv: Use per cpu initial stack for vtl context")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+The hardware has no inherent max adjustment limit; frequency correction
+is done by writing a 64-bit clock period increment to CLK_PER_CFG, and
+the register has plenty of range. The 200000 value was just an overly
+conservative software limit. The max_adj is shared between sparx5 and
+lan969x, and the increased value is safe for both.
+
+Fix this by increasing max_adj to 10000000 (10000 ppm), giving the
+servo sufficient headroom.
+
+Fixes: 0933bd04047c ("net: sparx5: Add support for ptp clocks")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260212-sparx5-ptp-max-adj-v2-v1-1-06b200e50ce3@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/hv_vtl.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-index c0edaed0efb30..9b6a9bc4ab760 100644
---- a/arch/x86/hyperv/hv_vtl.c
-+++ b/arch/x86/hyperv/hv_vtl.c
-@@ -110,7 +110,7 @@ static void hv_vtl_ap_entry(void)
- 
- static int hv_vtl_bringup_vcpu(u32 target_vp_index, int cpu, u64 eip_ignored)
- {
--	u64 status;
-+	u64 status, rsp, rip;
- 	int ret = 0;
- 	struct hv_enable_vp_vtl *input;
- 	unsigned long irq_flags;
-@@ -123,9 +123,11 @@ static int hv_vtl_bringup_vcpu(u32 target_vp_index, int cpu, u64 eip_ignored)
- 	struct desc_struct *gdt;
- 
- 	struct task_struct *idle = idle_thread_get(cpu);
--	u64 rsp = (unsigned long)idle->thread.sp;
-+	if (IS_ERR(idle))
-+		return PTR_ERR(idle);
- 
--	u64 rip = (u64)&hv_vtl_ap_entry;
-+	rsp = (unsigned long)idle->thread.sp;
-+	rip = (u64)&hv_vtl_ap_entry;
- 
- 	native_store_gdt(&gdt_ptr);
- 	store_idt(&idt_ptr);
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+index 2f168700f63c1..8b2e07821a950 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+@@ -576,7 +576,7 @@ static int sparx5_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
+ static struct ptp_clock_info sparx5_ptp_clock_info = {
+ 	.owner		= THIS_MODULE,
+ 	.name		= "sparx5 ptp",
+-	.max_adj	= 200000,
++	.max_adj	= 10000000,
+ 	.gettime64	= sparx5_ptp_gettime64,
+ 	.settime64	= sparx5_ptp_settime64,
+ 	.adjtime	= sparx5_ptp_adjtime,
 -- 
 2.51.0
 
