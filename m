@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JOlLXBTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:08 +0100
+	id qNXmDttUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F3318F853
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092AD18FE0B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0397231A9157
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6EE6930D35C9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651542417E0;
-	Wed, 25 Feb 2026 01:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F852652A2;
+	Wed, 25 Feb 2026 01:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ise1AvLv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5LHR3dL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D2A1D5ABA;
-	Wed, 25 Feb 2026 01:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08644248886;
+	Wed, 25 Feb 2026 01:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983165; cv=none; b=RmlO7hXKJFMzVhYvXyJORNtUEZi4xQqjKJXl/xAWMnRD/RkJpK7Yv9zOW7FJmWBBnKk58J0gelFLj/kX5pD2uXPJolb6vex64G7xhZrfRk8IH3Ut7SrCUd1a0DrIelrWSkefv07it81QmSB7DUo9p7PmUgNZdDmQENR6UyvmMuI=
+	t=1771983817; cv=none; b=VCeSG+IM1gFFFzg9glIb+Gr9YO8pTPkGZkWvmwLgxYsvz0jbRd8DDzdT5Y5WS+Yb8A7icT5rIbxJq0ewnINUF0lqlaBJxaqGV4dryAv+AWknmsa4DYDVxqEnSmjCKYUjPobBDGsUyUksMwkTmLadLqjF30DrURQJvkXfXYCDAio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983165; c=relaxed/simple;
-	bh=gEzWElSKBZ6BTQWwUgkTSDw3rdoJ2EJsBTvNOn9yUYw=;
+	s=arc-20240116; t=1771983817; c=relaxed/simple;
+	bh=rBJmvvt90HDeiAfb2lB09Hn+cy3yovrTxhNLvwMkFss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOK200xGXDdB6m5+65lRmfHbAhIY2ocYDLdyxwKdmHffzbeF21nlc/jv8m2CpCM3MIIWzaxa6pFv+4M0VmP9rRQ1dZo+Ikb0Q/GlpnsZZGbZvMwI0ENiCYuWCXcinA1mr2HPt5xWmdxz2mfs7ZXtLVY9CmE+2pmybfhjW9T9QhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ise1AvLv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A60C116D0;
-	Wed, 25 Feb 2026 01:32:44 +0000 (UTC)
+	 MIME-Version; b=fz0TnmO9D/7MMAjCbqqn4lWLkht+bx5XA6aJWqcCkri+6CGzznV4KfnVPF+/gCi1lw2xaJ+PHRl0qMJJAnoyVB7fGLYSI/GXlpgKm3/BJovY86H7w2ysMqNCB8HTvv2sE5pcUvaZ4BkkanhxJX9U0XPxue4/ILixJ2KSjPfFLR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5LHR3dL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9EDC116D0;
+	Wed, 25 Feb 2026 01:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983165;
-	bh=gEzWElSKBZ6BTQWwUgkTSDw3rdoJ2EJsBTvNOn9yUYw=;
+	s=korg; t=1771983816;
+	bh=rBJmvvt90HDeiAfb2lB09Hn+cy3yovrTxhNLvwMkFss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ise1AvLvCKVdDW38xjGQdItW8GQ9iQrrN49ca7rOTxwfWjX5hD229vZ/j6ZWHFQ9z
-	 lgjsWSLeTYZIh6l4VqECZzGU0yUa9MuxvA8DBlpvYY0RGhZjQ6OC+NK4SHID7fozEx
-	 YypqL0r2B2S6lgi+UrYOj4ZKa/3fMKO6Ir+53jZg=
+	b=Y5LHR3dLZI5Ano3O1TMAfFtb0ZKb37rIDVPKgQvuuPBuH4PJc3K6l6mJcztOy+ugz
+	 pPtv0iXUFqd5abhwaook8a21VUyjoS5LF862Nww+HL79sSuHfrkGGQjJx9B3npOKIO
+	 ScxuzVwh484phnjXmTKEKwkoFcuWvbdpTNdSbLpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baruch Siach <baruch@tkos.co.il>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 318/781] Documentation: PCI: endpoint: Fix ntb/vntb copy & paste errors
+Subject: [PATCH 6.18 101/641] selftests/bpf: Fix kprobe multi stacktrace_ips test
 Date: Tue, 24 Feb 2026 17:17:07 -0800
-Message-ID: <20260225012407.498827674@linuxfoundation.org>
+Message-ID: <20260225012351.556819218@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,110 +69,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218355-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218922-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tkos.co.il:email]
-X-Rspamd-Queue-Id: 33F3318F853
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 092AD18FE0B
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baruch Siach <baruch@tkos.co.il>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit ad0c6da5be901f5c181490f683d22b416059bccb ]
+[ Upstream commit 0207f94971e72a13380e28022c86da147e8e090f ]
 
-Fix copy & paste errors by changing the references from 'ntb' to 'vntb'.
+We now include the attached function in the stack trace,
+fixing the test accordingly.
 
-Fixes: 4ac8c8e52cd9 ("Documentation: PCI: Add specification for the PCI vNTB function device")
-Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-[mani: squashed the patches and fixed more errors]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/b51c2a69ffdbfa2c359f5cf33f3ad2acc3db87e4.1762154911.git.baruch@tkos.co.il
+Fixes: c9e208fa93cd ("selftests/bpf: Add stacktrace ips test for kprobe_multi/kretprobe_multi")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20260126211837.472802-4-jolsa@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/PCI/endpoint/pci-vntb-howto.rst | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ .../selftests/bpf/prog_tests/stacktrace_ips.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/PCI/endpoint/pci-vntb-howto.rst b/Documentation/PCI/endpoint/pci-vntb-howto.rst
-index 9a7a2f0a68498..3679f5c302549 100644
---- a/Documentation/PCI/endpoint/pci-vntb-howto.rst
-+++ b/Documentation/PCI/endpoint/pci-vntb-howto.rst
-@@ -52,14 +52,14 @@ pci-epf-vntb device, the following commands can be used::
- 	# cd /sys/kernel/config/pci_ep/
- 	# mkdir functions/pci_epf_vntb/func1
+diff --git a/tools/testing/selftests/bpf/prog_tests/stacktrace_ips.c b/tools/testing/selftests/bpf/prog_tests/stacktrace_ips.c
+index c9efdd2a5b18a..c93718dafd9b6 100644
+--- a/tools/testing/selftests/bpf/prog_tests/stacktrace_ips.c
++++ b/tools/testing/selftests/bpf/prog_tests/stacktrace_ips.c
+@@ -74,11 +74,20 @@ static void test_stacktrace_ips_kprobe_multi(bool retprobe)
  
--The "mkdir func1" above creates the pci-epf-ntb function device that will
-+The "mkdir func1" above creates the pci-epf-vntb function device that will
- be probed by pci_epf_vntb driver.
+ 	load_kallsyms();
  
- The PCI endpoint framework populates the directory with the following
- configurable fields::
+-	check_stacktrace_ips(bpf_map__fd(skel->maps.stackmap), skel->bss->stack_key, 4,
+-			     ksym_get_addr("bpf_testmod_stacktrace_test_3"),
+-			     ksym_get_addr("bpf_testmod_stacktrace_test_2"),
+-			     ksym_get_addr("bpf_testmod_stacktrace_test_1"),
+-			     ksym_get_addr("bpf_testmod_test_read"));
++	if (retprobe) {
++		check_stacktrace_ips(bpf_map__fd(skel->maps.stackmap), skel->bss->stack_key, 4,
++				     ksym_get_addr("bpf_testmod_stacktrace_test_3"),
++				     ksym_get_addr("bpf_testmod_stacktrace_test_2"),
++				     ksym_get_addr("bpf_testmod_stacktrace_test_1"),
++				     ksym_get_addr("bpf_testmod_test_read"));
++	} else {
++		check_stacktrace_ips(bpf_map__fd(skel->maps.stackmap), skel->bss->stack_key, 5,
++				     ksym_get_addr("bpf_testmod_stacktrace_test"),
++				     ksym_get_addr("bpf_testmod_stacktrace_test_3"),
++				     ksym_get_addr("bpf_testmod_stacktrace_test_2"),
++				     ksym_get_addr("bpf_testmod_stacktrace_test_1"),
++				     ksym_get_addr("bpf_testmod_test_read"));
++	}
  
--	# ls functions/pci_epf_ntb/func1
--	baseclass_code    deviceid          msi_interrupts    pci-epf-ntb.0
-+	# ls functions/pci_epf_vntb/func1
-+	baseclass_code    deviceid          msi_interrupts    pci-epf-vntb.0
- 	progif_code       secondary         subsys_id         vendorid
- 	cache_line_size   interrupt_pin     msix_interrupts   primary
- 	revid             subclass_code     subsys_vendor_id
-@@ -111,13 +111,13 @@ A sample configuration for virtual NTB driver for virtual PCI bus::
- 	# echo 0x080A > functions/pci_epf_vntb/func1/pci_epf_vntb.0/vntb_pid
- 	# echo 0x10 > functions/pci_epf_vntb/func1/pci_epf_vntb.0/vbus_number
- 
--Binding pci-epf-ntb Device to EP Controller
-+Binding pci-epf-vntb Device to EP Controller
- --------------------------------------------
- 
- NTB function device should be attached to PCI endpoint controllers
- connected to the host.
- 
--	# ln -s controllers/5f010000.pcie_ep functions/pci-epf-ntb/func1/primary
-+	# ln -s controllers/5f010000.pcie_ep functions/pci_epf_vntb/func1/primary
- 
- Once the above step is completed, the PCI endpoint controllers are ready to
- establish a link with the host.
-@@ -139,7 +139,7 @@ lspci Output at Host side
- -------------------------
- 
- Note that the devices listed here correspond to the values populated in
--"Creating pci-epf-ntb Device" section above::
-+"Creating pci-epf-vntb Device" section above::
- 
- 	# lspci
-         00:00.0 PCI bridge: Freescale Semiconductor Inc Device 0000 (rev 01)
-@@ -152,7 +152,7 @@ lspci Output at EP Side / Virtual PCI bus
- -----------------------------------------
- 
- Note that the devices listed here correspond to the values populated in
--"Creating pci-epf-ntb Device" section above::
-+"Creating pci-epf-vntb Device" section above::
- 
-         # lspci
-         10:00.0 Unassigned class [ffff]: Dawicontrol Computersysteme GmbH Device 1234 (rev ff)
+ cleanup:
+ 	stacktrace_ips__destroy(skel);
 -- 
 2.51.0
 
