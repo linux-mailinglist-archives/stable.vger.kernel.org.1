@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-219500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPkuLFKenmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:38 +0100
+	id QElFHQGhnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:13:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8637E192C28
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14C91931AD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 460CB301BA9C
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1DEE3200A87
 	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818D6318ED6;
-	Wed, 25 Feb 2026 06:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332793115BD;
+	Wed, 25 Feb 2026 06:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMzU4xbI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKeiy1Pv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459612FB08C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAC12FB08C;
 	Wed, 25 Feb 2026 06:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002757; cv=none; b=pyD9Ed/8E+VQ8E7hfcB9mvrG8hFpc7yFK9UrlEGhiLATDF9twguLEpsZwKGUmBSBJRQyDHCvbUedAaP4D83ZLrU/idOlGFo1h4DdFpluf3B+K715Old5j+wmwWBaflMOYYWAmQkym7Gmwj+C5mhhdRt5c8FKe6aBBy1cOLOTXso=
+	t=1772002758; cv=none; b=mmh3sgFeUUswn1UNwltTY5c99CpHJqpAgU7k3o3hNo6pBF5QnPHo6QjyXAcfjRkNHb0v+L9BigcvnXqmUkwfofi4VL7/giIPFR2ZVi2dDqHpcW4YBLVqdgt0F/rfhFrvcx1cRf40tP2p1AVUn8zYfrNO9zC4tlj0/LVEm6z5ABc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002757; c=relaxed/simple;
-	bh=u5X+C1g3xRrrwFjIGq7xA800WZpfHB5u2E4wKlnJCtM=;
+	s=arc-20240116; t=1772002758; c=relaxed/simple;
+	bh=DLdcpEFQtOVxrpHvLa/WnZGWQOBUifETBUkneoagpBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEJbGpschN28v0ZEEXGlNCxoDFy5Dh0RdZRiashKU3CX+MbMy1ynF96vVK3dPyqbWw8tHLM391p383UErwu19qJPF10TifONHwkx1bsUZIKJlBFf7cDJWGie7onjQDzFB9vGBnM1e2VAyE5xzCzM5g6WE6dXmO4W1P1kvO0ZqF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMzU4xbI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA67C116D0;
+	 MIME-Version; b=rfef85HF23aUE1ZDRZk3pofaOxylC8wW+tGXLIm9oq/9rR8sKQZHI/1DzKaYJ6P30PKC6Oyepmjss/pJVNO84vMJrRCfyL5mgj6arEpfjsvjq7tFkQwK1vX0G4qeekmxuddSD7aax6HAPn9ybHBmx1TkpVAN5C7k0kbcotl1lTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKeiy1Pv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB8AC116D0;
 	Wed, 25 Feb 2026 06:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1772002757;
-	bh=u5X+C1g3xRrrwFjIGq7xA800WZpfHB5u2E4wKlnJCtM=;
+	bh=DLdcpEFQtOVxrpHvLa/WnZGWQOBUifETBUkneoagpBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMzU4xbIfTb/ooBK/ugcU9UK9OmR0MIKTGDd+juAlg4jJK2GjQ6Fe/NENz3aCwrkf
-	 IkGvhV5S7QKDU8eIRZmy65mTeUHzMJxnNKB5ZcxDQljB+NP6jw0aqlU226DgYrsejs
-	 0/K2YL0AdNE8ncgcO8B84Y4V9OfQ8uzZYlM8fWFI=
+	b=TKeiy1Pvgj7pxd2sZsSOAaj5PRnsujp8w+m1xctairwTxPBcWHqrlOI3XTqiBf4vl
+	 yJvK16qN7Qs2pd/XjxB1jxCDq+j4TEC7CxhgBovkyOTHTG1Khb5Xhy56SVVvP59SBm
+	 RT0DrbhAZRbRWPT5Egr43Fc2Mv4cujuQObmUG81c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	"Jesse.Zhang" <Jesse.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	"Anirudh Rayabharam (Microsoft)" <anirudh@anirudhrb.com>,
+	Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 584/641] drm/amdgpu/sdma6: enable queue resets unconditionally
-Date: Tue, 24 Feb 2026 17:25:10 -0800
-Message-ID: <20260225012402.662040564@linuxfoundation.org>
+Subject: [PATCH 6.18 585/641] mshv: fix SRCU protection in irqfd resampler ack handler
+Date: Tue, 24 Feb 2026 17:25:11 -0800
+Message-ID: <20260225012402.687400161@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219500-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219501-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,62 +88,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8637E192C28
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D14C91931AD
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 56423871e9eef1dd069bddef895207fa5ce275fe ]
+[ Upstream commit 2e7577cd5ddc1f86d1b6c48caf3cfa87dbb14e34 ]
 
-There is no firmware version dependency.  This also
-enables sdma queue resets on all SDMA 6.x based
-chips.
+Replace hlist_for_each_entry_rcu() with hlist_for_each_entry_srcu()
+in mshv_irqfd_resampler_ack() to correctly handle SRCU-protected
+linked list traversal.
 
-Fixes: 59fd50b8663b ("drm/amdgpu: Add sysfs interface for sdma reset mask")
-Cc: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Jesse.Zhang <Jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The function uses SRCU (sleepable RCU) synchronization via
+partition->pt_irq_srcu, but was incorrectly using the RCU variant
+for list iteration. This could lead to race conditions when the
+list is modified concurrently.
+
+Also add srcu_read_lock_held() assertion as required by
+hlist_for_each_entry_srcu() to ensure we're in the proper
+read-side critical section.
+
+Fixes: 621191d709b14 ("Drivers: hv: Introduce mshv_root module to expose /dev/mshv to VMMs")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Reviewed-by: Anirudh Rayabharam (Microsoft) <anirudh@anirudhrb.com>
+Acked-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ drivers/hv/mshv_eventfd.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c
-index 2170400449872..6809c6d4be5b1 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c
-@@ -1351,18 +1351,9 @@ static int sdma_v6_0_sw_init(struct amdgpu_ip_block *ip_block)
+diff --git a/drivers/hv/mshv_eventfd.c b/drivers/hv/mshv_eventfd.c
+index 806674722868b..05d643f54f45a 100644
+--- a/drivers/hv/mshv_eventfd.c
++++ b/drivers/hv/mshv_eventfd.c
+@@ -87,8 +87,9 @@ static void mshv_irqfd_resampler_ack(struct mshv_irq_ack_notifier *mian)
  
- 	adev->sdma.supported_reset =
- 		amdgpu_get_soft_full_reset_mask(&adev->sdma.instance[0].ring);
--	switch (amdgpu_ip_version(adev, SDMA0_HWIP, 0)) {
--	case IP_VERSION(6, 0, 0):
--	case IP_VERSION(6, 0, 2):
--	case IP_VERSION(6, 0, 3):
--		if ((adev->sdma.instance[0].fw_version >= 21) &&
--		    !amdgpu_sriov_vf(adev) &&
--		    !adev->debug_disable_gpu_ring_reset)
--			adev->sdma.supported_reset |= AMDGPU_RESET_TYPE_PER_QUEUE;
--		break;
--	default:
--		break;
--	}
-+	if (!amdgpu_sriov_vf(adev) &&
-+	    !adev->debug_disable_gpu_ring_reset)
-+		adev->sdma.supported_reset |= AMDGPU_RESET_TYPE_PER_QUEUE;
+ 	idx = srcu_read_lock(&partition->pt_irq_srcu);
  
- 	if (amdgpu_sdma_ras_sw_init(adev)) {
- 		dev_err(adev->dev, "Failed to initialize sdma ras block!\n");
+-	hlist_for_each_entry_rcu(irqfd, &resampler->rsmplr_irqfd_list,
+-				 irqfd_resampler_hnode) {
++	hlist_for_each_entry_srcu(irqfd, &resampler->rsmplr_irqfd_list,
++				 irqfd_resampler_hnode,
++				 srcu_read_lock_held(&partition->pt_irq_srcu)) {
+ 		if (hv_should_clear_interrupt(irqfd->irqfd_lapic_irq.lapic_control.interrupt_type))
+ 			hv_call_clear_virtual_interrupt(partition->pt_id);
+ 
 -- 
 2.51.0
 
