@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCkQBBeonmmrWgQAu9opvQ
-	(envelope-from <stable+bounces-219408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:43:19 +0100
+	id yBV+EnNTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 618A8193AAD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:43:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D51C18F861
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADBDF31C815D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DB6DB3076487
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4A63126C2;
-	Wed, 25 Feb 2026 06:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B8C2652B7;
+	Wed, 25 Feb 2026 01:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdRLELrl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anKWkLv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B790311C35;
-	Wed, 25 Feb 2026 06:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAFE248881;
+	Wed, 25 Feb 2026 01:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002696; cv=none; b=dU4Wd8ahD2A4klcvXCAOu8mS+29Tjxkqd4xSE/aYLi3dIMPWCONYzM1a8boIReyLQYfV/8zJYmee+p6Ut3qGgXSEpAieGWW85sabl6x7X8YfLwMEIeiAhf5YI9pq8gFcsyh1Z53vhUIo6QihbNRqnyC2K+G2XAfAGo9gPTyrX/c=
+	t=1771983615; cv=none; b=B5o/WlXuaVyu2vquBVbem7R6/WYo8aqSHl2BcmrZKxZljK0M80ctGf6dWDJMLj4jCNzLqZ8oCL/dEezI6H8k7gDFyqTyfpPkGFGSvCDGbwtCTwqKvTebENlZVVtF2z82Ht40GQKTiAxQVnVix0ILbpTww8v21E/eil5NQuWJG6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002696; c=relaxed/simple;
-	bh=Yb3H5FVHM4Vlwlhpj3esGeV5Jqy3R8hAyrbkdeUA8kg=;
+	s=arc-20240116; t=1771983615; c=relaxed/simple;
+	bh=LwDa6oK5stJkRqj0LqFLPCXMMh5q3jBSA0P+hm7gMEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HcdW2HNmgFnat7izp+IHE2CP3NKIg/ALcksSsS+xhG8ketUN1Iiq4kcphZqak+V1mMSEU8Sl6pfBuqNbMjZT6DRgodvlIFe5i1r65/+aZeeWw7OFIKhZ2cOE5WnSU6HnZxU7mdt2CG8bBbCjylPan1I+pIJ/ughZILWCBzeM3Q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdRLELrl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16298C116D0;
-	Wed, 25 Feb 2026 06:58:16 +0000 (UTC)
+	 MIME-Version; b=n7wjPTodZg5FQuDogbP1v8AloSSiEll+R0RZ2nLYppnxpiNvb9pD3FQXssWZqyEQ+tk41F/tCbyFBcRA/1jRu3v8O3xFf8TaapYN/pZOkmG9ywk6cOiZ9kKzyjcrvn1WupmcRyv3M8aQfRynCLDGO7F2cpTAwaTURsTLtGevM6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anKWkLv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D9CC116D0;
+	Wed, 25 Feb 2026 01:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002696;
-	bh=Yb3H5FVHM4Vlwlhpj3esGeV5Jqy3R8hAyrbkdeUA8kg=;
+	s=korg; t=1771983615;
+	bh=LwDa6oK5stJkRqj0LqFLPCXMMh5q3jBSA0P+hm7gMEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdRLELrlV1uHnF/PjJ6Kvb8NNSZ8nja07IKBg3YVfI4SI0nHXAI+PuKZCTOj6ztKG
-	 NzQX4e5j+vL2V0xs7VEH9l+2Rp2jMqH2WD9ykJl/Iqe5M6aiE+21A8gVMf2r8HonxO
-	 Gl0ceZuX6+Xe0j7U0hwyhkKVKZSn/xaOI+V6JreE=
+	b=anKWkLv22a63HhGucyGEX9vZqgHfkSUon4FqgBzVnodigV0Zcy6yIFkA0e1QoGdjg
+	 VtrfFOydd9RBjcIJ90WLvEQhdKS2vr7w5IsBWN2sznd/4+VJTZ65dpTH1Vqpm8LbSN
+	 KBwh3rKNB044cWYTetVWRCBu+HjNTLoIJN0L5cAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karel Balej <balejk@matfyz.cz>,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
-	Lee Jones <lee@kernel.org>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	"Jesse.Zhang" <Jesse.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 492/641] leds: expresswire: Fix chip state breakage
+Subject: [PATCH 6.19 709/781] drm/amdgpu/sdma5: enable queue resets unconditionally
 Date: Tue, 24 Feb 2026 17:23:38 -0800
-Message-ID: <20260225012400.437371460@linuxfoundation.org>
+Message-ID: <20260225012417.139633530@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,159 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-219408-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218747-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 618A8193AAD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 0D51C18F861
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duje Mihanović <duje@dujemihanovic.xyz>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit f4b830a5371914239756b0599e5dc9d4c328e387 ]
+[ Upstream commit 46a2cb7d24f21132e970cab52359210c3f5ea3c6 ]
 
-It is possible to put the KTD2801 chip in an unknown/undefined state by
-changing the brightness very rapidly (for example, with a brightness
-slider). When this happens, the brightness is stuck on max and cannot be
-changed until the chip is power cycled.
+There is no firmware version dependency.
 
-Fix this by disabling interrupts while talking to the chip. While at it,
-make expresswire_power_off() use fsleep() and also unexport some
-functions meant to be internal.
-
-Fixes: 1368d06dd2c9 ("leds: Introduce ExpressWire library")
-Tested-by: Karel Balej <balejk@matfyz.cz>
-Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
-Link: https://patch.msgid.link/20251217-expresswire-fix-v2-1-4a02b10acd96@dujemihanovic.xyz
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 59fd50b8663b ("drm/amdgpu: Add sysfs interface for sdma reset mask")
+Cc: Jesse Zhang <Jesse.Zhang@amd.com>
+Reviewed-by: Jesse.Zhang <Jesse.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-expresswire.c  | 24 +++++++++++++++++-------
- include/linux/leds-expresswire.h |  3 ---
- 2 files changed, 17 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v5_0.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/leds/leds-expresswire.c b/drivers/leds/leds-expresswire.c
-index bb69be228a6d3..25c6b159a6ee9 100644
---- a/drivers/leds/leds-expresswire.c
-+++ b/drivers/leds/leds-expresswire.c
-@@ -9,6 +9,7 @@
- #include <linux/delay.h>
- #include <linux/export.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/irqflags.h>
- #include <linux/types.h>
+diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v5_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v5_0.c
+index 8ddc4df06a1fd..45e2933214a80 100644
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_0.c
+@@ -1424,18 +1424,9 @@ static int sdma_v5_0_sw_init(struct amdgpu_ip_block *ip_block)
  
- #include <linux/leds-expresswire.h>
-@@ -16,37 +17,41 @@
- void expresswire_power_off(struct expresswire_common_props *props)
- {
- 	gpiod_set_value_cansleep(props->ctrl_gpio, 0);
--	usleep_range(props->timing.poweroff_us, props->timing.poweroff_us * 2);
-+	fsleep(props->timing.poweroff_us);
- }
- EXPORT_SYMBOL_NS_GPL(expresswire_power_off, "EXPRESSWIRE");
+ 	adev->sdma.supported_reset =
+ 		amdgpu_get_soft_full_reset_mask(&adev->sdma.instance[0].ring);
+-	switch (amdgpu_ip_version(adev, SDMA0_HWIP, 0)) {
+-	case IP_VERSION(5, 0, 0):
+-	case IP_VERSION(5, 0, 2):
+-	case IP_VERSION(5, 0, 5):
+-		if ((adev->sdma.instance[0].fw_version >= 35) &&
+-		    !amdgpu_sriov_vf(adev) &&
+-		    !adev->debug_disable_gpu_ring_reset)
+-			adev->sdma.supported_reset |= AMDGPU_RESET_TYPE_PER_QUEUE;
+-		break;
+-	default:
+-		break;
+-	}
++	if (!amdgpu_sriov_vf(adev) &&
++	    !adev->debug_disable_gpu_ring_reset)
++		adev->sdma.supported_reset |= AMDGPU_RESET_TYPE_PER_QUEUE;
  
- void expresswire_enable(struct expresswire_common_props *props)
- {
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+
- 	gpiod_set_value(props->ctrl_gpio, 1);
- 	udelay(props->timing.detect_delay_us);
- 	gpiod_set_value(props->ctrl_gpio, 0);
- 	udelay(props->timing.detect_us);
- 	gpiod_set_value(props->ctrl_gpio, 1);
-+
-+	local_irq_restore(flags);
- }
- EXPORT_SYMBOL_NS_GPL(expresswire_enable, "EXPRESSWIRE");
- 
--void expresswire_start(struct expresswire_common_props *props)
-+static void expresswire_start(struct expresswire_common_props *props)
- {
- 	gpiod_set_value(props->ctrl_gpio, 1);
- 	udelay(props->timing.data_start_us);
- }
--EXPORT_SYMBOL_NS_GPL(expresswire_start, "EXPRESSWIRE");
- 
--void expresswire_end(struct expresswire_common_props *props)
-+static void expresswire_end(struct expresswire_common_props *props)
- {
- 	gpiod_set_value(props->ctrl_gpio, 0);
- 	udelay(props->timing.end_of_data_low_us);
- 	gpiod_set_value(props->ctrl_gpio, 1);
- 	udelay(props->timing.end_of_data_high_us);
- }
--EXPORT_SYMBOL_NS_GPL(expresswire_end, "EXPRESSWIRE");
- 
--void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
-+static void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
- {
- 	if (bit) {
- 		gpiod_set_value(props->ctrl_gpio, 0);
-@@ -60,13 +65,18 @@ void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
- 		udelay(props->timing.short_bitset_us);
- 	}
- }
--EXPORT_SYMBOL_NS_GPL(expresswire_set_bit, "EXPRESSWIRE");
- 
- void expresswire_write_u8(struct expresswire_common_props *props, u8 val)
- {
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+
- 	expresswire_start(props);
- 	for (int i = 7; i >= 0; i--)
- 		expresswire_set_bit(props, val & BIT(i));
- 	expresswire_end(props);
-+
-+	local_irq_restore(flags);
- }
- EXPORT_SYMBOL_NS_GPL(expresswire_write_u8, "EXPRESSWIRE");
-diff --git a/include/linux/leds-expresswire.h b/include/linux/leds-expresswire.h
-index a422921f4159f..7f8c4795f69fa 100644
---- a/include/linux/leds-expresswire.h
-+++ b/include/linux/leds-expresswire.h
-@@ -30,9 +30,6 @@ struct expresswire_common_props {
- 
- void expresswire_power_off(struct expresswire_common_props *props);
- void expresswire_enable(struct expresswire_common_props *props);
--void expresswire_start(struct expresswire_common_props *props);
--void expresswire_end(struct expresswire_common_props *props);
--void expresswire_set_bit(struct expresswire_common_props *props, bool bit);
- void expresswire_write_u8(struct expresswire_common_props *props, u8 val);
- 
- #endif /* _LEDS_EXPRESSWIRE_H */
+ 	/* Allocate memory for SDMA IP Dump buffer */
+ 	ptr = kcalloc(adev->sdma.num_instances * reg_count, sizeof(uint32_t), GFP_KERNEL);
 -- 
 2.51.0
 
