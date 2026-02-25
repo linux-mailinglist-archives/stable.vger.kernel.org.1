@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218606-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8K0TK+Kdnmk5WgQAu9opvQ
-	(envelope-from <stable+bounces-219230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:46 +0100
+	id 8IAqHvdTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218606-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA0B192AF7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D142718FB09
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B25F3070177
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0333C31857A3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199172C11CF;
-	Wed, 25 Feb 2026 06:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C518C258EF9;
+	Wed, 25 Feb 2026 01:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ugxj6sw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiDXF/BA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E582C0263;
-	Wed, 25 Feb 2026 06:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D93256C84;
+	Wed, 25 Feb 2026 01:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002579; cv=none; b=u8aASi+99+CLhcdUEHMhxxjoTsiqCNqEo24I89VRqyJlp4cAK/gKEdYq6z5EEhUC4ujGq7svIMsmf20/1O+AfFpw5tjMGfSLB9Z1LS38jHK50BAJltiy0+AW5e5e16Wk8XcwpqRmtiPS6rzZ41FVkrv8Pqbh9rmDk+3143sb3fI=
+	t=1771983451; cv=none; b=BG+uzvZBgBUAPObwV+Qa11rzXxfAr6KgXJ5EGGC6GK1RYo8jRDikQkvoHfjhmrY8hwYEVtgaDa8G3DtF5Q3RKPr6NKkQ55fEDR8pVXbZ+gEPzTSZ0gq9//rCCXWSg+n4+n5lO1PNgYrNkk4mzeSgWoL7LRS+89b+1idQrmd2Cyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002579; c=relaxed/simple;
-	bh=LsPrrW4FCHEZmjG5SKIsjK6z+hhoM5Rvu1QpRXmpymQ=;
+	s=arc-20240116; t=1771983451; c=relaxed/simple;
+	bh=ZF9NiagRgAy3owfkIN8oFWM706ir+dqsN6hD1icYBNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVsIdh3E/BIc+xBHDumxAJlxwNC0AimWYs0sR73qsVQgncsay69n9sgpPiuJGOSWKAWXmrq5aoNlQidQ5qgIWURmUKTCmyS4l4dPJ6x/TDzd6KSbpL3DskSpxCf5kvhdQ7MfRMZu0kMUvh3iu2VZgXPN60SnPD9ILgZbWvigEmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ugxj6sw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8CF8C116D0;
-	Wed, 25 Feb 2026 06:56:19 +0000 (UTC)
+	 MIME-Version; b=uLbZsrMv6pBAw4KPx5mvDx8XtOSk3RysCFpP72XWT22RQPZUgUbpEyDfqPIss3myYJtwk09YB/WGR5rnwpoDwN5yGMTI45jsjqelh40L+r5TTJzNjP9wUlxo/k2CyoK8P+C0QBy3Wui1wLT9FPGnYWJSCoM6mWk76tr4qrRuwX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiDXF/BA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCC6C116D0;
+	Wed, 25 Feb 2026 01:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002579;
-	bh=LsPrrW4FCHEZmjG5SKIsjK6z+hhoM5Rvu1QpRXmpymQ=;
+	s=korg; t=1771983451;
+	bh=ZF9NiagRgAy3owfkIN8oFWM706ir+dqsN6hD1icYBNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Ugxj6swkGhxKucJFxUc81d/qaGhTAB4ulXFOdBrIarafrBw7EOhUjYS/BXRX+dk0
-	 29ew29PWDxymPg2QH8avYXCS5valCOn8Oo04jAhZF6g+/PDcU0jsYBdPEBbdsx1pfp
-	 m3FhF+HoC4MheZGrIly/Uc2qu0A+9lly0E7CZh1Q=
+	b=yiDXF/BAmCCxZ4MSvoSbq5eipmV0QcZ2c44WM0WGVKBxx/AqQ2y5qlJyUGtbNuHXL
+	 Yl1H7075n7/0r91Yq+BAg9N0t8KGHjuoaGhsGgGIWgBmVOWyCPM9YlEWthrEzd4Iuc
+	 lCCel391my9LRY0jZSrw6x3gXEntFxSkiFZrDUJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	kernel test robot <lkp@intel.com>,
+	Brian Masney <bmasney@redhat.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 314/641] netfilter: nft_set_rbtree: validate element belonging to interval
+Subject: [PATCH 6.19 531/781] clk: microchip: core: remove duplicate determine_rate on pic32_sclk_ops
 Date: Tue, 24 Feb 2026 17:20:40 -0800
-Message-ID: <20260225012356.331841659@linuxfoundation.org>
+Message-ID: <20260225012412.825969579@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,322 +70,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218606-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219230-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,netfilter.org:email]
-X-Rspamd-Queue-Id: 0DA0B192AF7
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tuxon.dev:email]
+X-Rspamd-Queue-Id: D142718FB09
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 782f2688128eca6d05a48be1c247f68d86afc168 ]
+[ Upstream commit d93faac66dc04650d924f8f9584216d14f48fb14 ]
 
-The existing partial overlap detection does not check if the elements
-belong to the interval, eg.
+pic32_sclk_ops previously had a sclk_round_rate() member, and this was
+recently converted over to sclk_determine_rate() with the help of a
+Coccinelle semantic patch. pic32_sclk_ops now has two conflicting
+determine_rate ops members.
 
-  add element inet x y { 1.1.1.1-2.2.2.2, 4.4.4.4-5.5.5.5 }
-  add element inet x y { 1.1.1.1-5.5.5.5 } => this should fail: ENOENT
+Prior to the conversion, pic32_sclk_ops already had a determine_rate
+member that points to __clk_mux_determine_rate(). When both the
+round_rate() and determine_rate() ops are defined, the clk core only
+uses the determine_rate() op. Let's go ahead and drop the recently
+converted sclk_determine_rate() to match the previous functionality
+prior to the conversion.
 
-Similar situation occurs with deletions:
-
-  add element inet x y { 1.1.1.1-2.2.2.2, 4.4.4.4-5.5.5.5}
-  delete element inet x y { 1.1.1.1-5.5.5.5 } => this should fail: ENOENT
-
-This currently works via mitigation by nft in userspace, which is
-performing the overlap detection before sending the elements to the
-kernel. This requires a previous netlink dump of the set content which
-slows down incremental updates on interval sets, because a netlink set
-content dump is needed.
-
-This patch extends the existing overlap detection to track the most
-recent start element that already exists. The pointer to the existing
-start element is stored as a cookie (no pointer dereference is ever
-possible). If the end element is added and it already exists, then
-check that the existing end element is adjacent to the already existing
-start element. Similar logic applies to element deactivation.
-
-This patch also annotates the timestamp to identify if start cookie
-comes from an older batch, in such case reset it. Otherwise, a failing
-create element command leaves the start cookie in place, resulting in
-bogus error reporting.
-
-There is still a few more corner cases of overlap detection related to
-the open interval that are addressed in follow up patches.
-
-This is address an early design mistake where an interval is expressed
-as two elements, using the NFT_SET_ELEM_INTERVAL_END flag, instead of
-the more recent NFTA_SET_ELEM_KEY_END attribute that pipapo already
-uses.
-
-Fixes: 7c84d41416d8 ("netfilter: nft_set_rbtree: Detect partial overlaps on insertion")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: e9f039c08cdc ("clk: microchip: core: convert from round_rate() to determine_rate()")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202511222115.uvHrP95A-lkp@intel.com/
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Link: https://lore.kernel.org/r/20251205-clk-microchip-fixes-v3-1-a02190705e47@redhat.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 147 ++++++++++++++++++++++++++++++++-
- 1 file changed, 143 insertions(+), 4 deletions(-)
+ drivers/clk/microchip/clk-core.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 14b4256bb00d0..a4fb5b517d9de 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -33,8 +33,10 @@ struct nft_rbtree {
- 	rwlock_t		lock;
- 	struct nft_array __rcu	*array;
- 	struct nft_array	*array_next;
-+	unsigned long		start_rbe_cookie;
- 	unsigned long		last_gc;
- 	struct list_head	expired;
-+	u64			last_tstamp;
- };
- 
- struct nft_rbtree_elem {
-@@ -263,16 +265,85 @@ static struct nft_rbtree_elem *nft_rbtree_prev_active(struct nft_rbtree_elem *rb
- 	return rb_entry(node, struct nft_rbtree_elem, node);
+diff --git a/drivers/clk/microchip/clk-core.c b/drivers/clk/microchip/clk-core.c
+index b34348d491f3e..a0163441dfe5c 100644
+--- a/drivers/clk/microchip/clk-core.c
++++ b/drivers/clk/microchip/clk-core.c
+@@ -780,15 +780,6 @@ static unsigned long sclk_get_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	return parent_rate / div;
  }
  
-+static struct nft_rbtree_elem *
-+__nft_rbtree_next_active(struct rb_node *node, u8 genmask)
-+{
-+	struct nft_rbtree_elem *next_rbe;
-+
-+	while (node) {
-+		next_rbe = rb_entry(node, struct nft_rbtree_elem, node);
-+		if (!nft_set_elem_active(&next_rbe->ext, genmask)) {
-+			node = rb_next(node);
-+			continue;
-+		}
-+
-+		return next_rbe;
-+	}
-+
-+	return NULL;
-+}
-+
-+static struct nft_rbtree_elem *
-+nft_rbtree_next_active(struct nft_rbtree_elem *rbe, u8 genmask)
-+{
-+	return __nft_rbtree_next_active(rb_next(&rbe->node), genmask);
-+}
-+
-+static void nft_rbtree_maybe_reset_start_cookie(struct nft_rbtree *priv,
-+						u64 tstamp)
-+{
-+	if (priv->last_tstamp != tstamp) {
-+		priv->start_rbe_cookie = 0;
-+		priv->last_tstamp = tstamp;
-+	}
-+}
-+
-+static void nft_rbtree_set_start_cookie(struct nft_rbtree *priv,
-+					const struct nft_rbtree_elem *rbe)
-+{
-+	priv->start_rbe_cookie = (unsigned long)rbe;
-+}
-+
-+static bool nft_rbtree_cmp_start_cookie(struct nft_rbtree *priv,
-+					const struct nft_rbtree_elem *rbe)
-+{
-+	return priv->start_rbe_cookie == (unsigned long)rbe;
-+}
-+
-+static bool nft_rbtree_insert_same_interval(const struct net *net,
-+					    struct nft_rbtree *priv,
-+					    struct nft_rbtree_elem *rbe)
-+{
-+	u8 genmask = nft_genmask_next(net);
-+	struct nft_rbtree_elem *next_rbe;
-+
-+	if (!priv->start_rbe_cookie)
-+		return true;
-+
-+	next_rbe = nft_rbtree_next_active(rbe, genmask);
-+	if (next_rbe) {
-+		/* Closest start element differs from last element added. */
-+		if (nft_rbtree_interval_start(next_rbe) &&
-+		    nft_rbtree_cmp_start_cookie(priv, next_rbe)) {
-+			priv->start_rbe_cookie = 0;
-+			return true;
-+		}
-+	}
-+
-+	priv->start_rbe_cookie = 0;
-+
-+	return false;
-+}
-+
- static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 			       struct nft_rbtree_elem *new,
--			       struct nft_elem_priv **elem_priv)
-+			       struct nft_elem_priv **elem_priv, u64 tstamp)
+-static int sclk_determine_rate(struct clk_hw *hw,
+-			       struct clk_rate_request *req)
+-{
+-	req->rate = calc_best_divided_rate(req->rate, req->best_parent_rate,
+-					   SLEW_SYSDIV, 1);
+-
+-	return 0;
+-}
+-
+ static int sclk_set_rate(struct clk_hw *hw,
+ 			 unsigned long rate, unsigned long parent_rate)
  {
- 	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL, *rbe_prev;
- 	struct rb_node *node, *next, *parent, **p, *first = NULL;
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	u8 cur_genmask = nft_genmask_cur(net);
- 	u8 genmask = nft_genmask_next(net);
--	u64 tstamp = nft_net_tstamp(net);
- 	int d;
- 
- 	/* Descend the tree to search for an existing element greater than the
-@@ -378,12 +449,18 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 		}
- 	}
- 
-+	if (nft_rbtree_interval_null(set, new))
-+		priv->start_rbe_cookie = 0;
-+	else if (nft_rbtree_interval_start(new) && priv->start_rbe_cookie)
-+		priv->start_rbe_cookie = 0;
-+
- 	/* - new start element matching existing start element: full overlap
- 	 *   reported as -EEXIST, cleared by caller if NLM_F_EXCL is not given.
- 	 */
- 	if (rbe_ge && !nft_rbtree_cmp(set, new, rbe_ge) &&
- 	    nft_rbtree_interval_start(rbe_ge) == nft_rbtree_interval_start(new)) {
- 		*elem_priv = &rbe_ge->priv;
-+		nft_rbtree_set_start_cookie(priv, rbe_ge);
- 		return -EEXIST;
- 	}
- 
-@@ -399,6 +476,11 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 			return -ECANCELED;
- 
- 		*elem_priv = &rbe_le->priv;
-+
-+		/* - start and end element belong to the same interval. */
-+		if (!nft_rbtree_insert_same_interval(net, priv, rbe_le))
-+			return -ENOTEMPTY;
-+
- 		return -EEXIST;
- 	}
- 
-@@ -543,8 +625,11 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- {
- 	struct nft_rbtree_elem *rbe = nft_elem_priv_cast(elem->priv);
- 	struct nft_rbtree *priv = nft_set_priv(set);
-+	u64 tstamp = nft_net_tstamp(net);
- 	int err;
- 
-+	nft_rbtree_maybe_reset_start_cookie(priv, tstamp);
-+
- 	if (nft_array_may_resize(set) < 0)
- 		return -ENOMEM;
- 
-@@ -555,7 +640,7 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 		cond_resched();
- 
- 		write_lock_bh(&priv->lock);
--		err = __nft_rbtree_insert(net, set, rbe, elem_priv);
-+		err = __nft_rbtree_insert(net, set, rbe, elem_priv, tstamp);
- 		write_unlock_bh(&priv->lock);
- 	} while (err == -EAGAIN);
- 
-@@ -588,6 +673,48 @@ static void nft_rbtree_activate(const struct net *net,
- 	nft_clear(net, &rbe->ext);
- }
- 
-+static struct nft_rbtree_elem *
-+nft_rbtree_next_inactive(struct nft_rbtree_elem *rbe, u8 genmask)
-+{
-+	struct nft_rbtree_elem *next_rbe;
-+	struct rb_node *node;
-+
-+	node = rb_next(&rbe->node);
-+	if (node) {
-+		next_rbe = rb_entry(node, struct nft_rbtree_elem, node);
-+		if (nft_rbtree_interval_start(next_rbe) &&
-+		    !nft_set_elem_active(&next_rbe->ext, genmask))
-+			return next_rbe;
-+	}
-+
-+	return NULL;
-+}
-+
-+static bool nft_rbtree_deactivate_same_interval(const struct net *net,
-+						struct nft_rbtree *priv,
-+						struct nft_rbtree_elem *rbe)
-+{
-+	u8 genmask = nft_genmask_next(net);
-+	struct nft_rbtree_elem *next_rbe;
-+
-+	if (!priv->start_rbe_cookie)
-+		return true;
-+
-+	next_rbe = nft_rbtree_next_inactive(rbe, genmask);
-+	if (next_rbe) {
-+		/* Closest start element differs from last element added. */
-+		if (nft_rbtree_interval_start(next_rbe) &&
-+		    nft_rbtree_cmp_start_cookie(priv, next_rbe)) {
-+			priv->start_rbe_cookie = 0;
-+			return true;
-+		}
-+	}
-+
-+	priv->start_rbe_cookie = 0;
-+
-+	return false;
-+}
-+
- static void nft_rbtree_flush(const struct net *net,
- 			     const struct nft_set *set,
- 			     struct nft_elem_priv *elem_priv)
-@@ -602,12 +729,18 @@ nft_rbtree_deactivate(const struct net *net, const struct nft_set *set,
- 		      const struct nft_set_elem *elem)
- {
- 	struct nft_rbtree_elem *rbe, *this = nft_elem_priv_cast(elem->priv);
--	const struct nft_rbtree *priv = nft_set_priv(set);
-+	struct nft_rbtree *priv = nft_set_priv(set);
- 	const struct rb_node *parent = priv->root.rb_node;
- 	u8 genmask = nft_genmask_next(net);
- 	u64 tstamp = nft_net_tstamp(net);
- 	int d;
- 
-+	nft_rbtree_maybe_reset_start_cookie(priv, tstamp);
-+
-+	if (nft_rbtree_interval_start(this) ||
-+	    nft_rbtree_interval_null(set, this))
-+		priv->start_rbe_cookie = 0;
-+
- 	if (nft_array_may_resize(set) < 0)
- 		return NULL;
- 
-@@ -635,6 +768,12 @@ nft_rbtree_deactivate(const struct net *net, const struct nft_set *set,
- 				parent = parent->rb_left;
- 				continue;
- 			}
-+
-+			if (nft_rbtree_interval_start(rbe))
-+				nft_rbtree_set_start_cookie(priv, rbe);
-+			else if (!nft_rbtree_deactivate_same_interval(net, priv, rbe))
-+				return NULL;
-+
- 			nft_rbtree_flush(net, set, &rbe->priv);
- 			return &rbe->priv;
- 		}
+@@ -912,7 +903,6 @@ static int sclk_init(struct clk_hw *hw)
+ const struct clk_ops pic32_sclk_ops = {
+ 	.get_parent	= sclk_get_parent,
+ 	.set_parent	= sclk_set_parent,
+-	.determine_rate = sclk_determine_rate,
+ 	.set_rate	= sclk_set_rate,
+ 	.recalc_rate	= sclk_get_rate,
+ 	.init		= sclk_init,
 -- 
 2.51.0
 
