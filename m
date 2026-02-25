@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219302-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFtmGwlTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:25 +0100
+	id MEkeGG+dnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219302-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F9D18F66B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF6E1929C0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B6883302B19E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 643CE3053A40
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D611262FC0;
-	Wed, 25 Feb 2026 01:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2874F2FFF99;
+	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6Suiud5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNS2NhEN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202BD248881;
-	Wed, 25 Feb 2026 01:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2922D8DCF;
+	Wed, 25 Feb 2026 06:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983493; cv=none; b=dbzmRcw9xzJORfxIby87WYQS+R+gaHtCgoprSv/MykLxyeI18x5d6/Fmnwag1wsPhrrl/NOSUo/LXRtwBLQT72oEBcITch9rINTvzem8tySsRRYU7Jx/jOByjNEp0E6bLFmG2vOFg9FHU92SKtugD2y3GusRPChaECr5/Os+cvg=
+	t=1772002626; cv=none; b=XgseWpDcAgOUCwFWQzTxLV9vKq0l1qkrA+Sqrm21DxK4rDwpj1xxVMpz2EcBQyXIO1iYmZbLtYL47bxe275B3Ct5/SwJmBupW+86sU39LG6Ev7vHobiZEicF+VZNW1KLAn1ngJ/yFUb2ruVcDYBFTP1Nty6462WNOTlTlbiq1uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983493; c=relaxed/simple;
-	bh=dcBV2UW8xpJAtLJy8HaUd/F9MVmlThlMNB/4ak7hAts=;
+	s=arc-20240116; t=1772002626; c=relaxed/simple;
+	bh=Cegp8TLv9bvqUt9Whrby1MAB/LnL9jWw1XabjVgYFKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=peG+71g/d8Y163b2dY7HVNqfTgbKUmXMNEKbMSYCZNVkOjHNa31XsDVdsHuC4sWaQpgcGxsZjGUR/0sZlqZJ+Y+ONFBOZeNEW6Ut4QGqWR9fzy8ZadbrB9rg7S0V6+sILyVcc1d8k5bG9zFpI/a1CCtpCqaZ5Jw9BCQ3oSvMjkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6Suiud5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD506C116D0;
-	Wed, 25 Feb 2026 01:38:12 +0000 (UTC)
+	 MIME-Version; b=MHyndPuZOoVNR+RG1JJrX5GycspFN5W5ShxB26z+gG0PyK9MDoudFzIlV+wiBov+ilZxaGTk0Ub8MJkyQzSxoL2hNtITfbtjBFDc/8DzkvrXGQmah3d2CePDZ1QZYHz3GczerZPQFXgRfRqJ6yJG5zg2kIDVCequW8MY8A+agzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNS2NhEN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849FBC19425;
+	Wed, 25 Feb 2026 06:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983493;
-	bh=dcBV2UW8xpJAtLJy8HaUd/F9MVmlThlMNB/4ak7hAts=;
+	s=korg; t=1772002626;
+	bh=Cegp8TLv9bvqUt9Whrby1MAB/LnL9jWw1XabjVgYFKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6Suiud5rEov/afi0M4iXKK87uOJUSVez4oz7bnYSSDS3D//u80zLKvT/yJJ4I2CI
-	 V9L1n3lwFVfpFx+68PAJBGfU51GsfSt34WIMtyLD2VU1VlhCwodG0JvznvHP3RT33d
-	 kWeit47lz0mQ6omW53GeEiG4Vs33IWhPym91AeCo=
+	b=lNS2NhENF+AXfIcGUC/RkMOhSearShfDXKOQuAGVIu+EZDQY/UYL/DVOQXTanb7hc
+	 31Tza8cCFYbt0aDRjH38aEpmSxX88uVI9NlWHdWgUynJr/t724Gf3j1n/XvTGSP7oR
+	 UM9OAj0BcC9doEGKhpPa/1CfUQlSqB4NXLrfVLng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Waqar Hameed <waqar.hameed@axis.com>,
+	Nikita Travkin <nikita@trvn.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 603/781] pinctrl: meson: amlogic-a4: Fix device node reference leak in bank helpers
-Date: Tue, 24 Feb 2026 17:21:52 -0800
-Message-ID: <20260225012414.584476367@linuxfoundation.org>
+Subject: [PATCH 6.18 387/641] power: supply: pm8916_lbc: Fix use-after-free for extcon in IRQ handler
+Date: Tue, 24 Feb 2026 17:21:53 -0800
+Message-ID: <20260225012357.960322187@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +66,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218643-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amlogic.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219302-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.959];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amlogic.com:email]
-X-Rspamd-Queue-Id: 12F9D18F66B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CEF6E1929C0
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Waqar Hameed <waqar.hameed@axis.com>
 
-[ Upstream commit e56aa18eba32fb68ac5e19e44670010095bb189c ]
+[ Upstream commit 23067259919663580c6f81801847cfc7bd54fd1f ]
 
-of_parse_phandle_with_fixed_args() increments the reference count of the
-returned device node, so it must be explicitly released using
-of_node_put() after use.
+Using the `devm_` variant for requesting IRQ _before_ the `devm_`
+variant for allocating/registering the `extcon` handle, means that the
+`extcon` handle will be deallocated/unregistered _before_ the interrupt
+handler (since `devm_` naturally deallocates in reverse allocation
+order). This means that during removal, there is a race condition where
+an interrupt can fire just _after_ the `extcon` handle has been
+freed, *but* just _before_ the corresponding unregistration of the IRQ
+handler has run.
 
-Fix the reference leak in aml_bank_pins() and aml_bank_number() by
-adding the missing of_node_put() calls.
+This will lead to the IRQ handler calling `extcon_set_state_sync()` with
+a freed `extcon` handle. Which usually crashes the system or otherwise
+silently corrupts the memory...
 
-Fixes: 6e9be3abb78c ("pinctrl: Add driver support for Amlogic SoCs")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Fix this racy use-after-free by making sure the IRQ is requested _after_
+the registration of the `extcon` handle.
+
+Fixes: f8d7a3d21160 ("power: supply: Add driver for pm8916 lbc")
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+Reviewed-by: Nikita Travkin <nikita@trvn.ru>
+Link: https://patch.msgid.link/e2a4cd2fcd42b6cd97d856c17c097289a2aed393.1769163273.git.waqar.hameed@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-amlogic-a4.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/power/supply/pm8916_lbc.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
-index d9e3a8d5932a8..f05d8261624a4 100644
---- a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
-+++ b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
-@@ -725,8 +725,9 @@ static u32 aml_bank_pins(struct device_node *np)
- 	if (of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3,
- 					     0, &of_args))
- 		return 0;
--	else
--		return of_args.args[2];
-+
-+	of_node_put(of_args.np);
-+	return of_args.args[2];
- }
+diff --git a/drivers/power/supply/pm8916_lbc.c b/drivers/power/supply/pm8916_lbc.c
+index 3ca717d84aade..6b631012a7959 100644
+--- a/drivers/power/supply/pm8916_lbc.c
++++ b/drivers/power/supply/pm8916_lbc.c
+@@ -327,11 +327,6 @@ static int pm8916_lbc_charger_probe(struct platform_device *pdev)
+ 	if (irq < 0)
+ 		return irq;
  
- static int aml_bank_number(struct device_node *np)
-@@ -736,8 +737,9 @@ static int aml_bank_number(struct device_node *np)
- 	if (of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3,
- 					     0, &of_args))
- 		return -EINVAL;
--	else
--		return of_args.args[1] >> 8;
-+
-+	of_node_put(of_args.np);
-+	return of_args.args[1] >> 8;
- }
+-	ret = devm_request_threaded_irq(dev, irq, NULL, pm8916_lbc_charger_state_changed_irq,
+-					IRQF_ONESHOT, "pm8916_lbc", chg);
+-	if (ret)
+-		return ret;
+-
+ 	chg->edev = devm_extcon_dev_allocate(dev, pm8916_lbc_charger_cable);
+ 	if (IS_ERR(chg->edev))
+ 		return PTR_ERR(chg->edev);
+@@ -340,6 +335,11 @@ static int pm8916_lbc_charger_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "failed to register extcon device\n");
  
- static unsigned int aml_count_pins(struct device_node *np)
++	ret = devm_request_threaded_irq(dev, irq, NULL, pm8916_lbc_charger_state_changed_irq,
++					IRQF_ONESHOT, "pm8916_lbc", chg);
++	if (ret)
++		return ret;
++
+ 	ret = regmap_read(chg->regmap, chg->reg[LBC_USB] + PM8916_INT_RT_STS, &tmp);
+ 	if (ret)
+ 		goto comm_error;
 -- 
 2.51.0
 
