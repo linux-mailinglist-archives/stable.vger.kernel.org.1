@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iG1tFfZSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:06 +0100
+	id aHVYJIGdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E962618F61C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52DE5192A15
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BF5D73019C9C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 817BB301CCAA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCA26258ED5;
-	Wed, 25 Feb 2026 01:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5749E3033E7;
+	Wed, 25 Feb 2026 06:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jilOxmgQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jj47uMBA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908EC243376;
-	Wed, 25 Feb 2026 01:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7692D8396;
+	Wed, 25 Feb 2026 06:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983475; cv=none; b=QQpgvlINknO5Wq8FRwb52xbIfnMjhHcFHR9SO3yzp2i0b4hqfDF5XeN99PZR4HcgoJXJbRo8JCW35KEjDt3RdskKj5SWNc4N/sR9Ov6lB+gKFcQf6OxuKnQHaxUXnxcnASUvqa7jXdKZ8FmyWlcXZMv/NCNaFoubEWw6LNzdAB8=
+	t=1772002652; cv=none; b=a/sBdWodVEuaNbJiWTBDU8c5Hz4+PODuROWu5jhCaYHX2CegTBUv6tQyB/whp7+HDW/fyKRAFZ7O6BBVikpPdrSMt6qrxDgirWpyag86hz1lU66G6zCQyvAG8dlKQUShlFO9NOQGUwwcafvgG14sAdveEQiwYDyKiCNlINmJwlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983475; c=relaxed/simple;
-	bh=h/BYX8CzUARk4vyZv9XKm6XyvCAEDmy4pErxDmbxBRA=;
+	s=arc-20240116; t=1772002652; c=relaxed/simple;
+	bh=k7Wl108p0Czf+q75yfGreCltxC6dmcLTVIomRcy/7P8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiWxOHHEkpwvIPRLIS5G060hABMj5X7BSoJYVK5KInoIlz9aBBYJpLXzI+f8jmOobXkxpiIWhkomkzyMsFwD38SKz5p1KN38H07NIDToHOTm4I588aYEDY3b0KSFRzjRVpK+53Ai4eJWCFVq6ve6f2jHbozWe5saGar1WAUzMPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jilOxmgQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48481C116D0;
-	Wed, 25 Feb 2026 01:37:55 +0000 (UTC)
+	 MIME-Version; b=cdj1uZGHya7sMWyOzCokoA7xHdkngHP/L9jW5zt9IGWxcldkrgCZieNz8Hj5NgV06ytmrglVrPtAsqkdAsMoAPPQtrNBAs1+J1gZ0MUl/eBC+UmjoVmNL9Dt1SO9fjD3GC+IarPGao1tYeWHlOzorBlS+tD/+Qmoqg4tRoB0S6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jj47uMBA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9888C116D0;
+	Wed, 25 Feb 2026 06:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983475;
-	bh=h/BYX8CzUARk4vyZv9XKm6XyvCAEDmy4pErxDmbxBRA=;
+	s=korg; t=1772002651;
+	bh=k7Wl108p0Czf+q75yfGreCltxC6dmcLTVIomRcy/7P8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jilOxmgQm2F9IZSqftrrJwb5NGtBupJribvPfOwFzTb+yBFxaQ/P58TyT7xKS/RS+
-	 FqnkWz/0Zu18e5JfKrtG4rhMxRCNzCBWKeCn3CgzfqIJH6CbzDTQkRxCeZlZCdFowI
-	 EUe/DRiEMMCI0oYJgsJYguy3rCj4j50giqfCNl4A=
+	b=Jj47uMBA5XSRFHGH5qrwgrFcMvFQw3zcr112Ej26AMd9H+EIpnHYOcHWedVJbL+Vf
+	 1yGkXG/71guCJTzOq+bYuQPxNNmH3OLsQs3kuqDnDcpQ23UiFX49H7Oc/gp31rI8Ka
+	 hWUk8enctiodEOELhUqh+/EqQSa49tVqRpmWSmf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Marko <robert.marko@sartura.hr>,
-	Linus Walleij <linusw@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 590/781] mfd: simple-mfd-i2c: Add Delta TN48M CPLD support
+Subject: [PATCH 6.18 373/641] NFS/localio: Handle short writes by retrying
 Date: Tue, 24 Feb 2026 17:21:39 -0800
-Message-ID: <20260225012414.267681469@linuxfoundation.org>
+Message-ID: <20260225012357.643289829@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218627-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219341-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,78 +87,132 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sartura.hr:email]
-X-Rspamd-Queue-Id: E962618F61C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
+X-Rspamd-Queue-Id: 52DE5192A15
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Marko <robert.marko@sartura.hr>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 8f34c1a64c5394d2b51d3fba197947dc4b0b48a0 ]
+[ Upstream commit 615762059d284b863f9163b53679d95b3dcdd495 ]
 
-Delta TN48M switches have a Lattice CPLD that serves
-multiple purposes including being a GPIO expander.
+The current code for handling short writes in localio just truncates the
+I/O and then sets an error. While that is close to how the ordinary NFS
+code behaves, it does mean there is a chance the data that got written
+is lost because it isn't persisted.
+To fix this, change localio so that the upper layers can direct the
+behaviour to persist any unstable data by rewriting it, and then
+continuing writing until an ENOSPC is hit.
 
-So, lets use the simple I2C MFD driver to provide the MFD core.
-
-Also add a virtual symbol which pulls in the simple-mfd-i2c driver and
-provide a common symbol on which the subdevice drivers can depend on.
-
-Fixes: b3dcb5de6209 ("gpio: Add Delta TN48M CPLD GPIO driver")
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Link: https://lore.kernel.org/20220131133049.77780-2-robert.marko@sartura.hr
-Link: https://lore.kernel.org/linux-gpio/20260112064950.3837737-1-rdunlap@infradead.org/
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260112-mfd-tn48m-v11-1-00c798d8cd2a@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 70ba381e1a43 ("nfs: add LOCALIO support")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/Kconfig          | 11 +++++++++++
- drivers/mfd/simple-mfd-i2c.c |  1 +
- 2 files changed, 12 insertions(+)
+ fs/nfs/localio.c | 64 +++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 47 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index aace5766b38aa..f7f12a0428aa2 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -407,6 +407,17 @@ config MFD_CS47L92
- 	help
- 	  Support for Cirrus Logic CS42L92, CS47L92 and CS47L93 Smart Codecs
+diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
+index f537bc3386bf2..ea7b35191d0af 100644
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -58,6 +58,11 @@ struct nfs_local_fsync_ctx {
+ static bool localio_enabled __read_mostly = true;
+ module_param(localio_enabled, bool, 0644);
  
-+config MFD_TN48M_CPLD
-+	tristate "Delta Networks TN48M switch CPLD driver"
-+	depends on I2C
-+	depends on ARCH_MVEBU || COMPILE_TEST
-+	select MFD_SIMPLE_MFD_I2C
-+	help
-+	  Select this option to enable support for Delta Networks TN48M switch
-+	  CPLD. It consists of reset and GPIO drivers. CPLD provides GPIOS-s
-+	  for the SFP slots as well as power supply related information.
-+	  SFP support depends on the GPIO driver being selected.
++static int nfs_local_do_read(struct nfs_local_kiocb *iocb,
++			     const struct rpc_call_ops *call_ops);
++static int nfs_local_do_write(struct nfs_local_kiocb *iocb,
++			      const struct rpc_call_ops *call_ops);
 +
- config PMIC_DA903X
- 	bool "Dialog Semiconductor DA9030/DA9034 PMIC Support"
- 	depends on I2C=y
-diff --git a/drivers/mfd/simple-mfd-i2c.c b/drivers/mfd/simple-mfd-i2c.c
-index 8b751d8e3b5ae..7315fad618e44 100644
---- a/drivers/mfd/simple-mfd-i2c.c
-+++ b/drivers/mfd/simple-mfd-i2c.c
-@@ -116,6 +116,7 @@ static const struct simple_mfd_data spacemit_p1 = {
- };
+ static inline bool nfs_client_is_local(const struct nfs_client *clp)
+ {
+ 	return !!rcu_access_pointer(clp->cl_uuid.net);
+@@ -542,13 +547,50 @@ nfs_local_iocb_release(struct nfs_local_kiocb *iocb)
+ 	nfs_local_iocb_free(iocb);
+ }
  
- static const struct of_device_id simple_mfd_i2c_of_match[] = {
-+	{ .compatible = "delta,tn48m-cpld" },
- 	{ .compatible = "fsl,ls1028aqds-fpga" },
- 	{ .compatible = "fsl,lx2160aqds-fpga" },
- 	{ .compatible = "fsl,lx2160ardb-fpga" },
+-static void
+-nfs_local_pgio_release(struct nfs_local_kiocb *iocb)
++static void nfs_local_pgio_restart(struct nfs_local_kiocb *iocb,
++				   struct nfs_pgio_header *hdr)
++{
++	int status = 0;
++
++	iocb->kiocb.ki_pos = hdr->args.offset;
++	iocb->kiocb.ki_flags &= ~(IOCB_DSYNC | IOCB_SYNC | IOCB_DIRECT);
++	iocb->kiocb.ki_complete = NULL;
++	iocb->aio_complete_work = NULL;
++	iocb->end_iter_index = -1;
++
++	switch (hdr->rw_mode) {
++	case FMODE_READ:
++		nfs_local_iters_init(iocb, ITER_DEST);
++		status = nfs_local_do_read(iocb, hdr->task.tk_ops);
++		break;
++	case FMODE_WRITE:
++		nfs_local_iters_init(iocb, ITER_SOURCE);
++		status = nfs_local_do_write(iocb, hdr->task.tk_ops);
++		break;
++	default:
++		status = -EOPNOTSUPP;
++	}
++
++	if (status != 0) {
++		nfs_local_iocb_release(iocb);
++		hdr->task.tk_status = status;
++		nfs_local_hdr_release(hdr, hdr->task.tk_ops);
++	}
++}
++
++static void nfs_local_pgio_release(struct nfs_local_kiocb *iocb)
+ {
+ 	struct nfs_pgio_header *hdr = iocb->hdr;
++	struct rpc_task *task = &hdr->task;
++
++	task->tk_action = NULL;
++	task->tk_ops->rpc_call_done(task, hdr);
+ 
+-	nfs_local_iocb_release(iocb);
+-	nfs_local_hdr_release(hdr, hdr->task.tk_ops);
++	if (task->tk_action == NULL) {
++		nfs_local_iocb_release(iocb);
++		task->tk_ops->rpc_release(hdr);
++	} else
++		nfs_local_pgio_restart(iocb, hdr);
+ }
+ 
+ /*
+@@ -776,19 +818,7 @@ static void nfs_local_write_done(struct nfs_local_kiocb *iocb)
+ 		pr_info_ratelimited("nfs: Unexpected direct I/O write alignment failure\n");
+ 	}
+ 
+-	/* Handle short writes as if they are ENOSPC */
+-	status = hdr->res.count;
+-	if (status > 0 && status < hdr->args.count) {
+-		hdr->mds_offset += status;
+-		hdr->args.offset += status;
+-		hdr->args.pgbase += status;
+-		hdr->args.count -= status;
+-		nfs_set_pgio_error(hdr, -ENOSPC, hdr->args.offset);
+-		status = -ENOSPC;
+-		/* record -ENOSPC in terms of nfs_local_pgio_done */
+-		(void) nfs_local_pgio_done(iocb, status, true);
+-	}
+-	if (hdr->task.tk_status < 0)
++	if (status < 0)
+ 		nfs_reset_boot_verifier(hdr->inode);
+ }
+ 
 -- 
 2.51.0
 
