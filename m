@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIrlBOVSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:49 +0100
+	id qAlnFFNXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E39518F5B2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 766621904E6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A05863080C7F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1B94130A51E1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95FA2417E0;
-	Wed, 25 Feb 2026 01:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B19727055D;
+	Wed, 25 Feb 2026 01:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9tNPETa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQxBPMMW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0FA1E2834;
-	Wed, 25 Feb 2026 01:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E47119FA93;
+	Wed, 25 Feb 2026 01:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983153; cv=none; b=n6OqOCq6YJqCVwZKa+/2tHd78U3rHcziWX+0Jg3UyUaG35sNQ8oC3SkqnkOf//RMOTkTDcZcs2jT4t04NU3qOLfJvsS0MIIW9rMQPgXTMzKBCdA/jZj8jP8jBrEN+JB2dFI/jJzY8q/lOa8SH7RVbnICKlDN45S8UIiJaKS+Ois=
+	t=1771983742; cv=none; b=ofHDnr3GIGkameMgO6MVUm9IPWQOU1fPEVFT0LxDk2MM/IkwkQiRTDRDXDaCP2cTYt4uGMrxI7W4oqzqG4tByzAc/e7ALLkdjY196nmHnEz17ElCWwEUPgljcvVKe4PhnUL9US26neYmfq9qYdaF+IiSpkMu7LZwt6Vnm/PaK4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983153; c=relaxed/simple;
-	bh=TnoZ2E5e8WIOdl/w4U6Oq6n8+hPEIyOYM+aU1QGU+8s=;
+	s=arc-20240116; t=1771983742; c=relaxed/simple;
+	bh=DmATWHnuaReWS/4dlwsPRBHq6OFUKdPI55SChPdJ8V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYc5s1Z+P/80qKtabIp4PQjump66b2pGaMspHXnSgPPQJUPMsUgBgNTyZf8hePhWO/8fJV6zfFAr+HfV7AsOj9ZKs8xdK2SPT0S8ZH0cMsYJYUfzudiuc2AFPuL6pREWdqOKwAcKkj3lUFW1NfzjS5WJR2C9pgUqiLFeCXfRq0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9tNPETa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69695C116D0;
-	Wed, 25 Feb 2026 01:32:33 +0000 (UTC)
+	 MIME-Version; b=dJqPIclQ3FLMRozqda5MrxOVzEYi3Ji2y5SoDg8eUiNxXK88HuMO/Lel53m2mVTjPE/++4n4ipR86qDpY+JMzZ1b8hbj7BtRifwc66tY4nh/dBz1HgJ1QfZUD65dFOxqlpe+tt9g+jzsFFMm70vhQj2lG7IsQWyyE2u7f2Y6skY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQxBPMMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200ACC116D0;
+	Wed, 25 Feb 2026 01:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983153;
-	bh=TnoZ2E5e8WIOdl/w4U6Oq6n8+hPEIyOYM+aU1QGU+8s=;
+	s=korg; t=1771983742;
+	bh=DmATWHnuaReWS/4dlwsPRBHq6OFUKdPI55SChPdJ8V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x9tNPETa/bZAOiryzAPOOL58BvOvhgTF0b1KJsB2+Sq8mMYN4PTDdQ+6E6gk+pPn2
-	 qFyX5Q7NnsAufqCr86df8VktF+9mPxLDQQAcp4LUAm/RCMxkexff25NGpB0bsRqLYP
-	 wlRAaaxUtE3LxbP6A3SrvIk0k6BoIelEmUGAgSC0=
+	b=PQxBPMMWG057sqISpIbcTSDuzlmtikZ9Ce9jWvl1bSrhzJzElMfxjstg+rKOYaSoi
+	 HeZkl4KZB1PhYRhlKJw6lx/ReiqQji6vHTwXz1pMvi0o3rdtGGcTuNQmWM8/vFCazB
+	 BmbqwRxSGpFr2aHikVhRyz/7g2/Au0aMNMd6clTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 252/781] mei: late_bind: fix struct intel_lb_component_ops kernel-doc
+Subject: [PATCH 6.18 035/641] ACPI: processor: Update cpuidle driver check in __acpi_processor_start()
 Date: Tue, 24 Feb 2026 17:16:01 -0800
-Message-ID: <20260225012405.889488839@linuxfoundation.org>
+Message-ID: <20260225012349.847997484@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218344-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218857-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,56 +88,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5E39518F5B2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alien8.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: 766621904E6
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 936cae9254e55a39aeaa0c156a764d22f319338b ]
+[ Upstream commit 0089ce1c056aee547115bdc25c223f8f88c08498 ]
 
-Fix kernel-doc warnings on struct intel_lb_component_ops:
+Commit 7a8c994cbb2d ("ACPI: processor: idle: Optimize ACPI idle
+driver registration") moved the ACPI idle driver registration to
+acpi_processor_driver_init() and acpi_processor_power_init() does
+not register an idle driver any more.
 
-Warning: include/drm/intel/intel_lb_mei_interface.h:55 Incorrect use of
-  kernel-doc format: * push_payload - Sends a payload to the
-  authentication firmware
+Accordingly, the cpuidle driver check in __acpi_processor_start() needs
+to be updated to avoid calling acpi_processor_power_init() without a
+cpuidle driver, in which case the registration of the cpuidle device
+in that function would lead to a NULL pointer dereference in
+__cpuidle_register_device().
 
-And a bunch more. There isn't really support for documenting function
-pointer struct members in kernel-doc, but at least reference the member
-properly.
-
-Fixes: 741eeabb7c78 ("mei: late_bind: add late binding component driver")
-Cc: Alexander Usyskin <alexander.usyskin@intel.com>
-Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
-Link: https://patch.msgid.link/20260107160226.2381388-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: 7a8c994cbb2d ("ACPI: processor: idle: Optimize ACPI idle driver registration")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/20251223100914.2407069-4-lihuisong@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/intel/intel_lb_mei_interface.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/processor_driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/drm/intel/intel_lb_mei_interface.h b/include/drm/intel/intel_lb_mei_interface.h
-index d65be2cba2ab9..0850738a30fc7 100644
---- a/include/drm/intel/intel_lb_mei_interface.h
-+++ b/include/drm/intel/intel_lb_mei_interface.h
-@@ -53,7 +53,8 @@ enum intel_lb_status {
-  */
- struct intel_lb_component_ops {
- 	/**
--	 * push_payload - Sends a payload to the authentication firmware
-+	 * @push_payload: Sends a payload to the authentication firmware
-+	 *
- 	 * @dev: Device struct corresponding to the mei device
- 	 * @type: Payload type (see &enum intel_lb_type)
- 	 * @flags: Payload flags bitmap (e.g. %INTEL_LB_FLAGS_IS_PERSISTENT)
+diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
+index 65e779be64ffc..7644de24d2faa 100644
+--- a/drivers/acpi/processor_driver.c
++++ b/drivers/acpi/processor_driver.c
+@@ -166,7 +166,7 @@ static int __acpi_processor_start(struct acpi_device *device)
+ 	if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
+ 		dev_dbg(&device->dev, "CPPC data invalid or not present\n");
+ 
+-	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
++	if (cpuidle_get_driver() == &acpi_idle_driver)
+ 		acpi_processor_power_init(pr);
+ 
+ 	acpi_pss_perf_init(pr);
 -- 
 2.51.0
 
