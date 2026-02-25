@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-219399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DUGJZSinmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:19:48 +0100
+	id AFSiNs1UnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07E819338F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:19:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1058818FDD2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EB4831BF36D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27A8231006D7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0843019C5;
-	Wed, 25 Feb 2026 06:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928CC268690;
+	Wed, 25 Feb 2026 01:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldwW57Vh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYZv4ejG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5942FB08C;
-	Wed, 25 Feb 2026 06:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556F31D5141;
+	Wed, 25 Feb 2026 01:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002690; cv=none; b=UHujWg/qt6df66hVgwROLBE830yc80u24q58UuTrdOr4h3eQpVFcSlzz6uCyqpupwciPKINUCRaw/liQWlYo3rVacuTNElSBml28iteioqoxPgf/Eqt4lKd5Ls1Q6bSHomOQEdk783tR0i9zXWoE4Inko5OOR4vTt6M/zoMZEFg=
+	t=1771983583; cv=none; b=SMSGZUjWy1HH97FexW2hadH4szEDMiIn/DVkM4mkvVSjiCAvmNpPlrFXHexwaMnPQ0mSOZf6NOkcokvCixip89dbsMfgppHzCA2gediVHJUgyDd6L6ejrQKt+vhJ6nwW6cU6WJT4Ark2clWR/5Ats4g9Ezv7BclbAO5hFvBgzEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002690; c=relaxed/simple;
-	bh=xPVBD657GoiGw1Vndye4AGm+EHq+ckC7n7WhdWhhQ7w=;
+	s=arc-20240116; t=1771983583; c=relaxed/simple;
+	bh=GmKY+8mlZy6gfRt2tF51OUbNceBm5d0jAkCBC3egejQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSvgtrLeaQaYl9BuNQKmUsOyuwrusCR3YfdBsXZZS3PZiDvkwN++vbxwJ9C3x3kUGc/jyTDDMLiwC2HTnJCDkQ/ec8QI/kl1qTU+cx+yHu2UEO+e9HJCUonW1rCp3kIa0fy3nlS0fmrsPDJkjVtMmgHnPHsGW/LovwU4FT9Qpas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldwW57Vh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48176C19425;
-	Wed, 25 Feb 2026 06:58:10 +0000 (UTC)
+	 MIME-Version; b=QlYBSGvXd3xYVYoes4DizT7QvQFOWcG+LbhlqKbv9p4u+w5GY341iMtSkPiGKwd579O47CuP65QcB89WpMggfzGNHKx8jdz8vu3kGLQ7kLY30CFSJOwXtBTwT/NbnEuRtFR+25b8uXNZtA+aWq98DFjLRzERBCFG7+4BkbjrUaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYZv4ejG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1355EC116D0;
+	Wed, 25 Feb 2026 01:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002690;
-	bh=xPVBD657GoiGw1Vndye4AGm+EHq+ckC7n7WhdWhhQ7w=;
+	s=korg; t=1771983583;
+	bh=GmKY+8mlZy6gfRt2tF51OUbNceBm5d0jAkCBC3egejQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ldwW57VhOrI9ZZzWkmWZxdIBqm68bfCR75Um6iYfjRZnNf16GQYicwk/ZV+hDyIHy
-	 /KgULQ8Ev0D3/7a4YOc8YvYGxAeR2tsdwzWLvlfRZ8L+avHrW4dWvRojzVkHo/12QL
-	 HfhgqzSuLSf0i0biVo4ostxPWXuOy66a3hRi6m34=
+	b=GYZv4ejGmr8zP59qvoC9BtPElIvKGxiqFA/3Ft1ePQRYKM2Q79mRLs4Z1flbWr0LX
+	 1+cSFXAEkM9QNOw+cw8hmiJOnUyjJIA3kIIWNWaYB5sgMI1LrAXgjLRrBV1IEp8pnm
+	 X1ykd+dUbQJKL1yTML/4+Am0IOzTEiaUvWoBZl90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 466/641] mmc: rtsx_pci_sdmmc: increase power-on settling delay to 5ms
+Subject: [PATCH 6.19 683/781] bnge: fix reserving resources from FW
 Date: Tue, 24 Feb 2026 17:23:12 -0800
-Message-ID: <20260225012359.806168142@linuxfoundation.org>
+Message-ID: <20260225012416.526068780@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +71,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218721-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219399-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F07E819338F
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
+X-Rspamd-Queue-Id: 1058818FDD2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
+From: Vikas Gupta <vikas.gupta@broadcom.com>
 
-[ Upstream commit aced969e9bf3701dc75cfca57c78c031b7875b9d ]
+[ Upstream commit 604530085b2ef484843c723a105b6fd3218b4710 ]
 
-The existing 1ms delay in sd_power_on is insufficient and causes resume
-errors around 4% of the time.
+HWRM_FUNC_CFG is used to reserve resources, whereas HWRM_FUNC_QCFG is
+intended for querying resource information from the firmware.
+Since __bnge_hwrm_reserve_pf_rings() reserves resources for a specific
+PF, the command type should be HWRM_FUNC_CFG.
 
-Increasing the delay to 5ms resolves this issue after testing 300
-s2idle cycles.
-
-Fixes: 1f311c94aabd ("mmc: rtsx: add 74 Clocks in power on flow")
-Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Link: https://patch.msgid.link/20260105060236.400366-3-matthew.schwartz@linux.dev
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 627c67f038d2 ("bng_en: Add resource management support")
+Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Reviewed-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260218052755.4097468-1-vikas.gupta@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/rtsx_pci_sdmmc.c | 2 +-
+ drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
-index 4db3328f46dfb..b6cf1803c7d27 100644
---- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-@@ -937,7 +937,7 @@ static int sd_power_on(struct realtek_pci_sdmmc *host, unsigned char power_mode)
- 	if (err < 0)
- 		return err;
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
+index 198f49b40dbf0..2994f10446a63 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
+@@ -442,7 +442,7 @@ __bnge_hwrm_reserve_pf_rings(struct bnge_dev *bd, struct bnge_hw_rings *hwr)
+ 	struct hwrm_func_cfg_input *req;
+ 	u32 enables = 0;
  
--	mdelay(1);
-+	mdelay(5);
+-	if (bnge_hwrm_req_init(bd, req, HWRM_FUNC_QCFG))
++	if (bnge_hwrm_req_init(bd, req, HWRM_FUNC_CFG))
+ 		return NULL;
  
- 	err = rtsx_pci_write_register(pcr, CARD_OE, SD_OUTPUT_EN, SD_OUTPUT_EN);
- 	if (err < 0)
+ 	req->fid = cpu_to_le16(0xffff);
 -- 
 2.51.0
 
