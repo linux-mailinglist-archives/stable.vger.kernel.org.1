@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNvFDwVTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:21 +0100
+	id qEO8IHJVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B596318F655
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CD7190034
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B0E030F1563
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2DA2830FFBEA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9B61EB5E1;
-	Wed, 25 Feb 2026 01:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764EA2652B7;
+	Wed, 25 Feb 2026 01:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xhssv0AT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0ofhgMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826B518B0A;
-	Wed, 25 Feb 2026 01:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA2420C012;
+	Wed, 25 Feb 2026 01:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983257; cv=none; b=lFa896ghiMI+SZseH+Jac8PArHzglI1rKZHeX9YYBED+j3P8f37yF2AloBUFG4OXotrds6uzaUchO5FLfSwC6QiMg35sUym77q4GGR4IJoXbAP5fHhoCMCB4lJ832RWbnL4PkZF/nZBDEvcdKbnUhFRiGVpQtM6cL2KBPrl5VA8=
+	t=1771983907; cv=none; b=RE8EIke523RV1pXrym4yN8ZRBZIevrAxBpFW9a9O1mk/c6uQs/iSNeJVCBS2bzkMdoJZetFdapRZm8+TySIsZlpUVMWr3ekdN9e6I1cuAxGFi3VeAs63uMHbRpHIJP+SKrFvBVzJdLlEfxd5aJFiIGzc9FsIzwE1ZtILvjghUbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983257; c=relaxed/simple;
-	bh=3k3j0eYImRl0xyXieE3ldUnnN6elvs4fY6eraqdpIWE=;
+	s=arc-20240116; t=1771983907; c=relaxed/simple;
+	bh=WLMMpkcjKz6fcYFfCBafRzHT1HPa44bgmgMp0GMfnOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKF6FOVW+aYEHrgGUxLwsxKYg9rZ8mp0bKcizLqsEz1PB2NC/urGmTDolnLat1jTUGWMjPp0aZdyfFfUd1AIvy+cz5Ogfy97UZE8rSnzYAgTOU7OfAdVNl9M+0aUTl8Zph63wpExir5Nvr8aomlQeWbnp0bo/7ApQVb/WA58fiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xhssv0AT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424B7C116D0;
-	Wed, 25 Feb 2026 01:34:17 +0000 (UTC)
+	 MIME-Version; b=JayFL6yXmgz1gJLG8NCTIQDMaqJZjC0Vw4iAir0RtLqU7egJs9qDpXeMPTAVnrs+syC5ySz19tfoPYO4OMAqu93zixOibCRJ8DPin4Ug+hIVZY/HIvCGeDx7FV2Tc3EkepjXyiFXLKnZlvIR5wvKLLVw3b1XdTgEXnlmUHP260M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0ofhgMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E623CC116D0;
+	Wed, 25 Feb 2026 01:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983257;
-	bh=3k3j0eYImRl0xyXieE3ldUnnN6elvs4fY6eraqdpIWE=;
+	s=korg; t=1771983907;
+	bh=WLMMpkcjKz6fcYFfCBafRzHT1HPa44bgmgMp0GMfnOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xhssv0ATCnPYb4tsMmv6cPIGGoiPko5c66eoeQKzul0V6qPMNHLpZcUXoQIxb40li
-	 Xxw3WeEo2o5G4FqkrpbXfvtfzyVWLyYT6mmKnA7WYp7xpJcM1brwrby8+riQ0WRC52
-	 ENrpy5oR6Ef3wb2+M49Ct1dntN9a+Zna2GYcDgyI=
+	b=i0ofhgMdCyoTyX7bSGmFfNQ4hmE2CWCPRHE5PRBME0CG6/LwLAF6/t1uZZpp9vR1h
+	 ZF2+9Uj65pmt8Yqhz4E2CkmhcJ8jdiiNfIeGiDrVvky0YE8ebrSZ5BMhNngWrWOjuZ
+	 l9RfTR3sWaM+khATi4KeZlHfkjWj8rXgwmxQPr1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenbin Yao <wenbin.yao@oss.qualcomm.com>,
-	Qiang Yu <qiang.yu@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Lai Jiangshan <jiangshan.ljs@antgroup.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 391/781] PCI: dwc: Add new APIs to remove standard and extended Capability
+Subject: [PATCH 6.18 174/641] workqueue: Factor out assign_rescuer_work()
 Date: Tue, 24 Feb 2026 17:18:20 -0800
-Message-ID: <20260225012409.287893256@linuxfoundation.org>
+Message-ID: <20260225012353.253976892@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,139 +69,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218436-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218998-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: B596318F655
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,antgroup.com:email]
+X-Rspamd-Queue-Id: 20CD7190034
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Yu <qiang.yu@oss.qualcomm.com>
+From: Lai Jiangshan <jiangshan.ljs@antgroup.com>
 
-[ Upstream commit 0183562f1e824c0ca6c918309a0978e9a269af3e ]
+[ Upstream commit 99ed6f62a46e91dc796b785618d646eeded1b230 ]
 
-On some platforms, certain PCIe Capabilities may be present in hardware
-but are not fully implemented as defined in PCIe spec. These incomplete
-capabilities should be hidden from the PCI framework to prevent unexpected
-behavior.
+Move the code to assign work to rescuer and assign_rescuer_work().
 
-Introduce two APIs to remove a specific PCIe Capability and Extended
-Capability by updating the previous capability's next offset field to skip
-over the unwanted capability. These APIs allow RC drivers to easily hide
-unsupported or partially implemented capabilities from software.
-
-Co-developed-by: Wenbin Yao <wenbin.yao@oss.qualcomm.com>
-Signed-off-by: Wenbin Yao <wenbin.yao@oss.qualcomm.com>
-Signed-off-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20251109-remove_cap-v1-2-2208f46f4dc2@oss.qualcomm.com
-Stable-dep-of: 72cb5ed2a5c6 ("PCI: dwc: ep: Add per-PF BAR and inbound ATU mapping support")
+Signed-off-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Stable-dep-of: e5a30c303b07 ("workqueue: Process rescuer work items one-by-one using a cursor")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware.c | 53 ++++++++++++++++++++
- drivers/pci/controller/dwc/pcie-designware.h |  2 +
- 2 files changed, 55 insertions(+)
+ kernel/workqueue.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-index 5d7a7e6f5724e..345365ea97c74 100644
---- a/drivers/pci/controller/dwc/pcie-designware.c
-+++ b/drivers/pci/controller/dwc/pcie-designware.c
-@@ -236,6 +236,59 @@ u16 dw_pcie_find_ext_capability(struct dw_pcie *pci, u8 cap)
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 45320e27a16c4..2fa3187101725 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -3443,6 +3443,23 @@ static int worker_thread(void *__worker)
+ 	goto woke_up;
  }
- EXPORT_SYMBOL_GPL(dw_pcie_find_ext_capability);
  
-+void dw_pcie_remove_capability(struct dw_pcie *pci, u8 cap)
++static bool assign_rescuer_work(struct pool_workqueue *pwq, struct worker *rescuer)
 +{
-+	u8 cap_pos, pre_pos, next_pos;
-+	u16 reg;
++	struct worker_pool *pool = pwq->pool;
++	struct work_struct *work, *n;
 +
-+	cap_pos = PCI_FIND_NEXT_CAP(dw_pcie_read_cfg, PCI_CAPABILITY_LIST, cap,
-+				 &pre_pos, pci);
-+	if (!cap_pos)
-+		return;
-+
-+	reg = dw_pcie_readw_dbi(pci, cap_pos);
-+	next_pos = (reg & 0xff00) >> 8;
-+
-+	dw_pcie_dbi_ro_wr_en(pci);
-+	if (pre_pos == PCI_CAPABILITY_LIST)
-+		dw_pcie_writeb_dbi(pci, PCI_CAPABILITY_LIST, next_pos);
-+	else
-+		dw_pcie_writeb_dbi(pci, pre_pos + 1, next_pos);
-+	dw_pcie_dbi_ro_wr_dis(pci);
-+}
-+EXPORT_SYMBOL_GPL(dw_pcie_remove_capability);
-+
-+void dw_pcie_remove_ext_capability(struct dw_pcie *pci, u8 cap)
-+{
-+	int cap_pos, next_pos, pre_pos;
-+	u32 pre_header, header;
-+
-+	cap_pos = PCI_FIND_NEXT_EXT_CAP(dw_pcie_read_cfg, 0, cap, &pre_pos, pci);
-+	if (!cap_pos)
-+		return;
-+
-+	header = dw_pcie_readl_dbi(pci, cap_pos);
 +	/*
-+	 * If the first cap at offset PCI_CFG_SPACE_SIZE is removed,
-+	 * only set it's capid to zero as it cannot be skipped.
++	 * Slurp in all works issued via this workqueue and
++	 * process'em.
 +	 */
-+	if (cap_pos == PCI_CFG_SPACE_SIZE) {
-+		dw_pcie_dbi_ro_wr_en(pci);
-+		dw_pcie_writel_dbi(pci, cap_pos, header & 0xffff0000);
-+		dw_pcie_dbi_ro_wr_dis(pci);
-+		return;
++	list_for_each_entry_safe(work, n, &pool->worklist, entry) {
++		if (get_work_pwq(work) == pwq && assign_work(work, rescuer, &n))
++			pwq->stats[PWQ_STAT_RESCUED]++;
 +	}
 +
-+	pre_header = dw_pcie_readl_dbi(pci, pre_pos);
-+	next_pos = PCI_EXT_CAP_NEXT(header);
-+
-+	dw_pcie_dbi_ro_wr_en(pci);
-+	dw_pcie_writel_dbi(pci, pre_pos,
-+			  (pre_header & 0xfffff) | (next_pos << 20));
-+	dw_pcie_dbi_ro_wr_dis(pci);
++	return !list_empty(&rescuer->scheduled);
 +}
-+EXPORT_SYMBOL_GPL(dw_pcie_remove_ext_capability);
 +
- static u16 __dw_pcie_find_vsec_capability(struct dw_pcie *pci, u16 vendor_id,
- 					  u16 vsec_id)
- {
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index 31685951a0804..aec4af5194b51 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -562,6 +562,8 @@ void dw_pcie_version_detect(struct dw_pcie *pci);
+ /**
+  * rescuer_thread - the rescuer thread function
+  * @__rescuer: self
+@@ -3497,7 +3514,6 @@ static int rescuer_thread(void *__rescuer)
+ 		struct pool_workqueue *pwq = list_first_entry(&wq->maydays,
+ 					struct pool_workqueue, mayday_node);
+ 		struct worker_pool *pool = pwq->pool;
+-		struct work_struct *work, *n;
  
- u8 dw_pcie_find_capability(struct dw_pcie *pci, u8 cap);
- u16 dw_pcie_find_ext_capability(struct dw_pcie *pci, u8 cap);
-+void dw_pcie_remove_capability(struct dw_pcie *pci, u8 cap);
-+void dw_pcie_remove_ext_capability(struct dw_pcie *pci, u8 cap);
- u16 dw_pcie_find_rasdes_capability(struct dw_pcie *pci);
- u16 dw_pcie_find_ptm_capability(struct dw_pcie *pci);
+ 		__set_current_state(TASK_RUNNING);
+ 		list_del_init(&pwq->mayday_node);
+@@ -3508,18 +3524,9 @@ static int rescuer_thread(void *__rescuer)
  
+ 		raw_spin_lock_irq(&pool->lock);
+ 
+-		/*
+-		 * Slurp in all works issued via this workqueue and
+-		 * process'em.
+-		 */
+ 		WARN_ON_ONCE(!list_empty(&rescuer->scheduled));
+-		list_for_each_entry_safe(work, n, &pool->worklist, entry) {
+-			if (get_work_pwq(work) == pwq &&
+-			    assign_work(work, rescuer, &n))
+-				pwq->stats[PWQ_STAT_RESCUED]++;
+-		}
+ 
+-		if (!list_empty(&rescuer->scheduled)) {
++		if (assign_rescuer_work(pwq, rescuer)) {
+ 			process_scheduled_works(rescuer);
+ 
+ 			/*
 -- 
 2.51.0
 
