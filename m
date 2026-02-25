@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-218413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4B8KHu9SnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218413-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:59 +0100
+	id OJtTJM5TnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F53918F5FB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1F318FA24
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C3F631C9F57
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7CB6230EDB2B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CA718B0A;
-	Wed, 25 Feb 2026 01:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2775622579E;
+	Wed, 25 Feb 2026 01:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVDQFx0E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6cmeQP5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2C51E2834;
-	Wed, 25 Feb 2026 01:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7E818B0A;
+	Wed, 25 Feb 2026 01:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983231; cv=none; b=R+Rdpw08pu+szcZOxTQdsYGVFCuFd2hpwkSHOFyiz8YSmtikmUEyKQ46h9p4rHLPJ13BrpDG7fUksRLiMjwU0oTogrTe0L3Hkw/NEDB8lDhpGLPFsheU1TJVJnkIt8XYBBdG87N81hF7wG6mMfcahS0VmTustXdZzQ/i86/Fyg4=
+	t=1771983243; cv=none; b=VQ7llwPgqjINi3EU8QLmEMcaq31L0vNU74Z7kjaEDFxYQ8xhCp1F6CAc0l6ZKfVfrfWtPBZiYc1AEKziGxEppKxysrVGKk4u1wbdqHwvXE5Uymtz9PcNBVJpjWGlYUTLnMIwHKat+gk6s1c7LUNLg5hPsEgs37jdSAbURSLSquU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983231; c=relaxed/simple;
-	bh=rEK6jUgQLVoXQSH5YswAr04vob15Vn2TkqdLmCTk2pk=;
+	s=arc-20240116; t=1771983243; c=relaxed/simple;
+	bh=jCcJYW5Bs/3O5DELYJRoJu64KK3YwU5oeK8hwEFv5vE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDuSZApHxJXJIBMnqCJ+4uojHdWPp1P5IbShBgeRoP3bwi2yLGRscMDfbeaRxd12FgcFU0ugp6DLyiLRJev1FeNCgvQq8p8z1vY9QFmhftCm0xxDY6NOE7SNNYh89G9aKFBsRk1Ainm2mOp/cmeq8KpRBXWErKreIklbYHFFpno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVDQFx0E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C211C116D0;
-	Wed, 25 Feb 2026 01:33:51 +0000 (UTC)
+	 MIME-Version; b=IkwD1ECsSl2v5dc0m0WbbnwQGb3yTLMBuKH0PG7Vz2pSciGlplFfXh/jmM3Mec92+QNsbbMKsAe/LvltkO6VOgj9gXl+z17wvhTboeCR8zhCeSa6WtKEAwNteU8LsJe4f8oB30QL+P9esB+tkOV3WFlgkCpGQeCxK5KIu03KkWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6cmeQP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96692C116D0;
+	Wed, 25 Feb 2026 01:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983231;
-	bh=rEK6jUgQLVoXQSH5YswAr04vob15Vn2TkqdLmCTk2pk=;
+	s=korg; t=1771983243;
+	bh=jCcJYW5Bs/3O5DELYJRoJu64KK3YwU5oeK8hwEFv5vE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVDQFx0EjF34tWQ2vaunOUvCHUCzPoWUbJq7WQ6aI7dQ8kR/fYJG/WiX08agYI4NL
-	 RMWPggkM8fpURe8sUt7Rz9brx8+GNfE7xnyiV+XtQeP9pgbDQwvNHace/azY/GKfsf
-	 QC4x9Fv9OC9N04oR+lBzSGjpBFTEfMcVInPMVoKE=
+	b=u6cmeQP5mznMfdzXqW1lmB9MVy/FfGziQV+k9MbZGiMdZYneelmqp05uP2RD9lvb5
+	 nBIIgY3+0+efhya313x3iKxY/Wvoi+1FlcYhzZ48tIEYJfDukrfLJV+JGCDxwFa25k
+	 aYBxZB1GlJJlzPcJ4SFqNU9uJwBZpY2KX0Wyx6fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Slabihoudek <michal.slabihoudek@gooddata.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
+	Petr Mladek <pmladek@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Daniel Borkman <daniel@iogearbox.net>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	Marc Rutland <mark.rutland@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 348/781] netfilter: nf_conncount: fix tracking of connections from localhost
-Date: Tue, 24 Feb 2026 17:17:37 -0800
-Message-ID: <20260225012408.226232187@linuxfoundation.org>
+Subject: [PATCH 6.19 349/781] kallsyms/bpf: rename __bpf_address_lookup() to bpf_address_lookup()
+Date: Tue, 24 Feb 2026 17:17:38 -0800
+Message-ID: <20260225012408.250748798@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -66,101 +77,220 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218413-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-218424-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,kernel.org,atomlin.com,iogearbox.net,samsung.com,gmail.com,arm.com,google.com,goodmis.org,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.982];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,gooddata.com:email]
-X-Rspamd-Queue-Id: 0F53918F5FB
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0C1F318FA24
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Petr Mladek <pmladek@suse.com>
 
-[ Upstream commit de8a70cefcb26cdceaafdc5ac144712681419c29 ]
+[ Upstream commit cd6735896d0343942cf3dafb48ce32eb79341990 ]
 
-Since commit be102eb6a0e7 ("netfilter: nf_conncount: rework API to use
-sk_buff directly"), we skip the adding and trigger a GC when the ct is
-confirmed. For connections originated from local to local it doesn't
-work because the connection is confirmed on POSTROUTING, therefore
-tracking on the INPUT hook is always skipped.
+bpf_address_lookup() has been used only in kallsyms_lookup_buildid().  It
+was supposed to set @modname and @modbuildid when the symbol was in a
+module.
 
-In order to fix this, we check whether skb input ifindex is set to
-loopback ifindex. If it is then we fallback on a GC plus track operation
-skipping the optimization. This fallback is necessary to avoid
-duplicated tracking of a packet train e.g 10 UDP datagrams sent on a
-burst when initiating the connection.
+But it always just cleared @modname because BPF symbols were never in a
+module.  And it did not clear @modbuildid because the pointer was not
+passed.
 
-Tested with xt_connlimit/nft_connlimit and OVS limit and with a HTTP
-server and iperf3 on UDP mode.
+The wrapper is no longer needed.  Both @modname and @modbuildid are now
+always initialized to NULL in kallsyms_lookup_buildid().
 
-Fixes: be102eb6a0e7 ("netfilter: nf_conncount: rework API to use sk_buff directly")
-Reported-by: Michal Slabihoudek <michal.slabihoudek@gooddata.com>
-Closes: https://lore.kernel.org/netfilter/6989BD9F-8C24-4397-9AD7-4613B28BF0DB@gooddata.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Remove the wrapper and rename __bpf_address_lookup() to
+bpf_address_lookup() because this variant is used everywhere.
+
+[akpm@linux-foundation.org: fix loongarch]
+Link: https://lkml.kernel.org/r/20251128135920.217303-6-pmladek@suse.com
+Fixes: 9294523e3768 ("module: add printk formats to add module build ID to stacktraces")
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Cc: Aaron Tomlin <atomlin@atomlin.com>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: Daniel Gomez <da.gomez@samsung.com>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Marc Rutland <mark.rutland@arm.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conncount.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ arch/arm64/net/bpf_jit_comp.c   |  2 +-
+ arch/loongarch/net/bpf_jit.c    |  2 +-
+ arch/powerpc/net/bpf_jit_comp.c |  2 +-
+ include/linux/filter.h          | 26 ++++----------------------
+ kernel/bpf/core.c               |  4 ++--
+ kernel/kallsyms.c               |  5 ++---
+ 6 files changed, 11 insertions(+), 30 deletions(-)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 288936f5c1bf9..14e62b3263cd9 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -179,14 +179,25 @@ static int __nf_conncount_add(struct net *net,
- 		return -ENOENT;
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index b6eb7a465ad24..1d657bd3ce655 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -2951,7 +2951,7 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type old_t,
+ 	u64 plt_target = 0ULL;
+ 	bool poking_bpf_entry;
  
- 	if (ct && nf_ct_is_confirmed(ct)) {
--		err = -EEXIST;
--		goto out_put;
-+		/* local connections are confirmed in postrouting so confirmation
-+		 * might have happened before hitting connlimit
-+		 */
-+		if (skb->skb_iif != LOOPBACK_IFINDEX) {
-+			err = -EEXIST;
-+			goto out_put;
-+		}
-+
-+		/* this is likely a local connection, skip optimization to avoid
-+		 * adding duplicates from a 'packet train'
-+		 */
-+		goto check_connections;
+-	if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
++	if (!bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
+ 		/* Only poking bpf text is supported. Since kernel function
+ 		 * entry is set up by ftrace, we reply on ftrace to poke kernel
+ 		 * functions.
+diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+index d1d5a65308b9e..3b63bc5b99d9a 100644
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -1319,7 +1319,7 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type old_t,
+ 	/* Only poking bpf text is supported. Since kernel function entry
+ 	 * is set up by ftrace, we rely on ftrace to poke kernel functions.
+ 	 */
+-	if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
++	if (!bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
+ 		return -ENOTSUPP;
+ 
+ 	image = ip - offset;
+diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+index 5e976730b2f5f..e199976e410a1 100644
+--- a/arch/powerpc/net/bpf_jit_comp.c
++++ b/arch/powerpc/net/bpf_jit_comp.c
+@@ -1122,7 +1122,7 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type old_t,
+ 	bpf_func = (unsigned long)ip;
+ 
+ 	/* We currently only support poking bpf programs */
+-	if (!__bpf_address_lookup(bpf_func, &size, &offset, name)) {
++	if (!bpf_address_lookup(bpf_func, &size, &offset, name)) {
+ 		pr_err("%s (0x%lx): kernel/modules are not supported\n", __func__, bpf_func);
+ 		return -EOPNOTSUPP;
  	}
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index fd54fed8f95f3..7452817d707d1 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -1375,24 +1375,13 @@ static inline bool bpf_jit_kallsyms_enabled(void)
+ 	return false;
+ }
  
- 	if ((u32)jiffies == list->last_gc &&
- 	    (list->count - list->last_gc_count) < CONNCOUNT_GC_MAX_COLLECT)
- 		goto add_new_node;
+-int __bpf_address_lookup(unsigned long addr, unsigned long *size,
+-				 unsigned long *off, char *sym);
++int bpf_address_lookup(unsigned long addr, unsigned long *size,
++		       unsigned long *off, char *sym);
+ bool is_bpf_text_address(unsigned long addr);
+ int bpf_get_kallsym(unsigned int symnum, unsigned long *value, char *type,
+ 		    char *sym);
+ struct bpf_prog *bpf_prog_ksym_find(unsigned long addr);
  
-+check_connections:
- 	/* check the saved connections */
- 	list_for_each_entry_safe(conn, conn_n, &list->head, node) {
- 		if (collect > CONNCOUNT_GC_MAX_COLLECT)
+-static inline int
+-bpf_address_lookup(unsigned long addr, unsigned long *size,
+-		   unsigned long *off, char **modname, char *sym)
+-{
+-	int ret = __bpf_address_lookup(addr, size, off, sym);
+-
+-	if (ret && modname)
+-		*modname = NULL;
+-	return ret;
+-}
+-
+ void bpf_prog_kallsyms_add(struct bpf_prog *fp);
+ void bpf_prog_kallsyms_del(struct bpf_prog *fp);
+ 
+@@ -1431,8 +1420,8 @@ static inline bool bpf_jit_kallsyms_enabled(void)
+ }
+ 
+ static inline int
+-__bpf_address_lookup(unsigned long addr, unsigned long *size,
+-		     unsigned long *off, char *sym)
++bpf_address_lookup(unsigned long addr, unsigned long *size,
++		   unsigned long *off, char *sym)
+ {
+ 	return 0;
+ }
+@@ -1453,13 +1442,6 @@ static inline struct bpf_prog *bpf_prog_ksym_find(unsigned long addr)
+ 	return NULL;
+ }
+ 
+-static inline int
+-bpf_address_lookup(unsigned long addr, unsigned long *size,
+-		   unsigned long *off, char **modname, char *sym)
+-{
+-	return 0;
+-}
+-
+ static inline void bpf_prog_kallsyms_add(struct bpf_prog *fp)
+ {
+ }
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 1b9b18e5b03cb..85c0feaae0d3c 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -713,8 +713,8 @@ static struct bpf_ksym *bpf_ksym_find(unsigned long addr)
+ 	return n ? container_of(n, struct bpf_ksym, tnode) : NULL;
+ }
+ 
+-int __bpf_address_lookup(unsigned long addr, unsigned long *size,
+-				 unsigned long *off, char *sym)
++int bpf_address_lookup(unsigned long addr, unsigned long *size,
++		       unsigned long *off, char *sym)
+ {
+ 	struct bpf_ksym *ksym;
+ 	int ret = 0;
+diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
+index 049e296f586cc..7417dd5f8a796 100644
+--- a/kernel/kallsyms.c
++++ b/kernel/kallsyms.c
+@@ -345,7 +345,7 @@ int kallsyms_lookup_size_offset(unsigned long addr, unsigned long *symbolsize,
+ 		return 1;
+ 	}
+ 	return !!module_address_lookup(addr, symbolsize, offset, NULL, NULL, namebuf) ||
+-	       !!__bpf_address_lookup(addr, symbolsize, offset, namebuf);
++	       !!bpf_address_lookup(addr, symbolsize, offset, namebuf);
+ }
+ 
+ static int kallsyms_lookup_buildid(unsigned long addr,
+@@ -377,8 +377,7 @@ static int kallsyms_lookup_buildid(unsigned long addr,
+ 	ret = module_address_lookup(addr, symbolsize, offset,
+ 				    modname, modbuildid, namebuf);
+ 	if (!ret)
+-		ret = bpf_address_lookup(addr, symbolsize,
+-					 offset, modname, namebuf);
++		ret = bpf_address_lookup(addr, symbolsize, offset, namebuf);
+ 
+ 	if (!ret)
+ 		ret = ftrace_mod_address_lookup(addr, symbolsize,
 -- 
 2.51.0
 
