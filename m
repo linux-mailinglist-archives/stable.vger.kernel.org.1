@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFAUH+VZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:09:41 +0100
+	id 2D8OL2pTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6E51909E3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:09:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B1418F82F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA08832A5DBB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D08B73134245
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF20E279DA2;
-	Wed, 25 Feb 2026 01:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0105C20C012;
+	Wed, 25 Feb 2026 01:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e92z8KhD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsObK/tf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CEA256C84;
-	Wed, 25 Feb 2026 01:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89FA18DB2A;
+	Wed, 25 Feb 2026 01:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983861; cv=none; b=bo/vK0U2Ux4qDw5sBmYBysQN/SS4xMpsI/hUNAJrQSkf01LZ3HNwH0hGtWUG30PeI0xk7g5WHv+yoQAfw190X9oa6LuWoBo4eAebbIFXSnRf9QME89Lxck3/3wn9ONd5vAK+1iUX83ugu3QxMoFrJIzvza5OrYUnMd/rAcHx4mA=
+	t=1771983158; cv=none; b=Jm4IqnfPydYcDK83qZoJeDizGqLp+3neEnqfsHVFADX5Gkg0q7ZXRJcEGGlD7G+SjNLiwtK+46a3+moIF5Zzw7XdEPAbJ29vEyHa8JuolwR9ab9YJ3py+iiI7ovuRS2crPnocg+LY2wC3j9xyHrgC9KTugKwLf8vqvvEDe5Rml0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983861; c=relaxed/simple;
-	bh=WFsYtMSohbn0/iEhgp3ybl2HqXqS7Ml2usLFPmR7Vi8=;
+	s=arc-20240116; t=1771983158; c=relaxed/simple;
+	bh=9aVD/rrKbEmCYhgyNp3PO8Ooqag4nFee53w+qvQKN4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfZ9kIcOvG2dKvIxRvdyR2nHE3Vbtjb0vlv97J+UHlVAI6XpoeTjUH0EcHeAgoXuoIQiivkN6m7Yila5kC83VOStgAvjYnDtzELNLH8dxfBVIUJnSE4ttp11WH96rKHowl8MGGxCUURfo1Yb+DTCe6SWIdS72yX3fJBc9QH/zlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e92z8KhD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3074FC116D0;
-	Wed, 25 Feb 2026 01:44:21 +0000 (UTC)
+	 MIME-Version; b=TEuAa26hl5pwINz+BNuUmxzeBcIrVDm84qxz7CJu5K+ekUxX8cZ1rhUR7gnnpgRk6CvWCdQSfhWmKevD3E/1X4N2ItqFUABlKMoi6Idx7BfI0Qfg+UF139DMmvp1VfRGD+uVNLNZe1z3MVF/lRNNmb+kR3Il0OpQSwJ0RIolKKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsObK/tf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787F6C116D0;
+	Wed, 25 Feb 2026 01:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983861;
-	bh=WFsYtMSohbn0/iEhgp3ybl2HqXqS7Ml2usLFPmR7Vi8=;
+	s=korg; t=1771983158;
+	bh=9aVD/rrKbEmCYhgyNp3PO8Ooqag4nFee53w+qvQKN4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e92z8KhDIWV7xHbb5Qo0T8HXU2uF482XW0RtFtIyyvzGU/YPjXQ0Cv7aDptGKu0vs
-	 vJDnbJbH5hcxN38RJxNY7fu5/+43cxdJ/ljnzc/aAPHm6j7trp0ZO6PE0RphPCKqu0
-	 e2wLhUBgt/RZ+UFmQMsFe1TsyJKIj6aQJiibdmlY=
+	b=BsObK/tfTbhIFeTnbJ2hJ6+8K1uUXlSSJpm8C6zTsthTFIVQsQLFF7i1g4S1rBGiV
+	 XymMwwugrVv6esSbIf0k+Rrcy0e1cdYkKr+tIolx8x5awJbuf67qwrzZtdvr38R5ZH
+	 17JST9Er3NeHkR3rKC0dV9yz+4hdT2bIIKorh2Mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Gonnet <ggonnet.linux@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Francesco Lavra <flavra@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 095/641] bpf: Fix tcx/netkit detach permissions when prog fd isnt given
+Subject: [PATCH 6.19 312/781] spi: tools: Add include folder to .gitignore
 Date: Tue, 24 Feb 2026 17:17:01 -0800
-Message-ID: <20260225012351.405863188@linuxfoundation.org>
+Message-ID: <20260225012407.355212737@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,122 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218960-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218349-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.960];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1D6E51909E3
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,baylibre.com:email]
+X-Rspamd-Queue-Id: 54B1418F82F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Gonnet <ggonnet.linux@gmail.com>
+From: Francesco Lavra <flavra@baylibre.com>
 
-[ Upstream commit ae23bc81ddf7c17b663c4ed1b21e35527b0a7131 ]
+[ Upstream commit 5af56f30c4fcbade4a92f94dadfea517d1db9703 ]
 
-This commit fixes a security issue where BPF_PROG_DETACH on tcx or
-netkit devices could be executed by any user when no program fd was
-provided, bypassing permission checks. The fix adds a capability
-check for CAP_NET_ADMIN or CAP_SYS_ADMIN in this case.
+The Makefile for the SPI tools creates an include/linux/spi folder and some
+symlinks inside it. After running `make -C spi/tools`, this folder shows up
+as untracked in the git status.
+Add the above folder to the .gitignore file.
 
-Fixes: e420bed02507 ("bpf: Add fd-based tcx multi-prog infra with link support")
-Signed-off-by: Guillaume Gonnet <ggonnet.linux@gmail.com>
-Link: https://lore.kernel.org/r/20260127160200.10395-1-ggonnet.linux@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: f325b73dc4db ("spi: tools: move to tools buildsystem")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Link: https://patch.msgid.link/20260209095001.556495-1-flavra@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h       |  5 +++++
- include/linux/bpf_mprog.h | 10 ++++++++++
- kernel/bpf/syscall.c      |  7 ++-----
- 3 files changed, 17 insertions(+), 5 deletions(-)
+ tools/spi/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index d808253f2e945..e2dd3a6d495af 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -3200,6 +3200,11 @@ static inline void bpf_prog_report_arena_violation(bool write, unsigned long add
- }
- #endif /* CONFIG_BPF_SYSCALL */
- 
-+static inline bool bpf_net_capable(void)
-+{
-+	return capable(CAP_NET_ADMIN) || capable(CAP_SYS_ADMIN);
-+}
-+
- static __always_inline int
- bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
- {
-diff --git a/include/linux/bpf_mprog.h b/include/linux/bpf_mprog.h
-index 929225f7b0959..0b9f4caeeb0a3 100644
---- a/include/linux/bpf_mprog.h
-+++ b/include/linux/bpf_mprog.h
-@@ -340,4 +340,14 @@ static inline bool bpf_mprog_supported(enum bpf_prog_type type)
- 		return false;
- 	}
- }
-+
-+static inline bool bpf_mprog_detach_empty(enum bpf_prog_type type)
-+{
-+	switch (type) {
-+	case BPF_PROG_TYPE_SCHED_CLS:
-+		return bpf_net_capable();
-+	default:
-+		return false;
-+	}
-+}
- #endif /* __BPF_MPROG_H */
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index e9cf69594824c..f39367765f0c4 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -1365,11 +1365,6 @@ static int map_check_btf(struct bpf_map *map, struct bpf_token *token,
- 	return ret;
- }
- 
--static bool bpf_net_capable(void)
--{
--	return capable(CAP_NET_ADMIN) || capable(CAP_SYS_ADMIN);
--}
--
- #define BPF_MAP_CREATE_LAST_FIELD excl_prog_hash_size
- /* called via syscall */
- static int map_create(union bpf_attr *attr, bpfptr_t uattr)
-@@ -4554,6 +4549,8 @@ static int bpf_prog_detach(const union bpf_attr *attr)
- 			prog = bpf_prog_get_type(attr->attach_bpf_fd, ptype);
- 			if (IS_ERR(prog))
- 				return PTR_ERR(prog);
-+		} else if (!bpf_mprog_detach_empty(ptype)) {
-+			return -EPERM;
- 		}
- 	} else if (is_cgroup_prog_type(ptype, 0, false)) {
- 		if (attr->attach_flags || attr->relative_fd)
+diff --git a/tools/spi/.gitignore b/tools/spi/.gitignore
+index 14ddba3d21957..038261b34ed83 100644
+--- a/tools/spi/.gitignore
++++ b/tools/spi/.gitignore
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ spidev_fdx
+ spidev_test
++include/
 -- 
 2.51.0
 
