@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGO0AGlVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:33 +0100
+	id 6AIOFmWfnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBD518FFF8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFC5192F2F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A03D3218F95
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A41773067743
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8A22765D7;
-	Wed, 25 Feb 2026 01:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FA9306489;
+	Wed, 25 Feb 2026 06:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XscKwNSC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzb48GwW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607CA273D6D;
-	Wed, 25 Feb 2026 01:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5362D3EEE;
+	Wed, 25 Feb 2026 06:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983671; cv=none; b=NPJRBINYTn3npYZsffC8Xh5VQ6jUaF+9YQUqeI6sdzkCw+InFdGJvDeq9XP4sXu75lHxaNRPPekh0IeKo089CNzxk7sHZxqStTPZLYDehmov1BM1xwKv4hZirffctCyP4/h46rO7LT/brYXRJ4O8Hx9BgLezVDEj9Qga0Z+/FLw=
+	t=1772002728; cv=none; b=V2OCfH3YctZWAMcI7b9N5+buRS8S0tSJtf0P+jaEfkAf5AjfBu9/hgLLMGmjhDkjzTTTGBEKzvxjRH092Vb4J4Rv9sfPBKCY1JM3GgWZO+bfmjxRoE+d1W7iYpRBLK8RPEDhwCVzrkrwuUh+euCnLeTcsz6B5M1OR80spWxlLpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983671; c=relaxed/simple;
-	bh=XTKCu/t/UNuk2DQkvNQErAikw48j95z9gDrKl2868t8=;
+	s=arc-20240116; t=1772002728; c=relaxed/simple;
+	bh=2JpxI6AWZrxOCKjUUS7BMlgohUpaHWgG5VQYZyddbvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=In6yk7M+SHJmrAgYhRJd7+fVFOvFJJh6kYRwOm24VbclifeyV2GXy19FcWDBSRjNUK8SvBZak6c4cB/EPZ8KEL0HAN7WJT1AZX5TZhDac1xYpOR+Ry137k6VYW8l5dApv6dcLTwAhMbsqcHmVbYbbBhG7TVTPWBie0Hyy3nspGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XscKwNSC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA54C116D0;
-	Wed, 25 Feb 2026 01:41:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FcRwU4Zmcr6cQsv2mfraLuS/t6V4OxAZ/VpksvzHRlmybFriIsFf0gw8RgAX/VcYMbclnn0UPNoBzmV79u8c+rukkxsySxuEXs3i1QUKehzKG86dK0iOUOJLSVn1U7bkm7Co/BHB9skgERCoHy9ZUwUf6yKG4vvGE3DI180lAXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzb48GwW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E2CC116D0;
+	Wed, 25 Feb 2026 06:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983671;
-	bh=XTKCu/t/UNuk2DQkvNQErAikw48j95z9gDrKl2868t8=;
+	s=korg; t=1772002728;
+	bh=2JpxI6AWZrxOCKjUUS7BMlgohUpaHWgG5VQYZyddbvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XscKwNSCneNpkYvjkXHZXE5P89QdHcAT0uIXMvq8duVHUsG2NQIIPgTRO3OZ6DKF8
-	 hDGtarkFPH0nKW81i6C0m0QSmyyrfLA3WrnqdsJEKqfN27+RNWoaBH9ORMbugm5fv2
-	 XTyZ8lYzI8Dx+hf0Go39Gszx2c5zjrGZmEuCYaGI=
+	b=fzb48GwWkxxYBm0u00IbucrXSlw6/TzqxgfDxL6z8M8UUyhjd1XA1xmiULik0ucFt
+	 YuUUhcRDPeY7RJ80RQA/XmEmfZzYxF47IZwXgatvxWfT9ef4AYCVBEKRbQ7q4pkWrr
+	 yH+elF8CLe01C0MExos82yQNocbxKRBg/OEZgnCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.19 757/781] ext4: dont cache extent during splitting extent
+	Aleksei Oladko <aleksey.oladko@virtuozzo.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 540/641] selftests: forwarding: vxlan_bridge_1d_ipv6: fix test failure with br_netfilter enabled
 Date: Tue, 24 Feb 2026 17:24:26 -0800
-Message-ID: <20260225012418.285627517@linuxfoundation.org>
+Message-ID: <20260225012401.615685012@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +64,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218795-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-219457-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huaweicloud.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,huawei.com:email]
-X-Rspamd-Queue-Id: 4FBD518FFF8
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,nvidia.com:email,virtuozzo.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CAFC5192F2F
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
 
-commit 8b4b19a2f96348d70bfa306ef7d4a13b0bcbea79 upstream.
+[ Upstream commit ce9f6aec0fb780dafc1dfc5f47c688422aff464a ]
 
-Caching extents during the splitting process is risky, as it may result
-in stale extents remaining in the status tree. Moreover, in most cases,
-the corresponding extent block entries are likely already cached before
-the split happens, making caching here not particularly useful.
+The test generates VXLAN traffic using mausezahn, where the encapsulated
+inner IPv6 packet has an incorrect payload length set in the IPv6 header.
+After VXLAN decapsulation, such packets do not pass sanity checks in
+br_netfilter and are dropped, which causes the test to fail.
 
-Assume we have an unwritten extent, and then DIO writes the first half.
+Fix this by setting the correct IPv6 payload length for the encapsulated
+packet generated by mausezahn, so that the packet is accepted
+by br_netfilter.
 
-  [UUUUUUUUUUUUUUUU] on-disk extent        U: unwritten extent
-  [UUUUUUUUUUUUUUUU] extent status tree
-  |<-   ->| ----> dio write this range
+tools/testing/selftests/net/forwarding/vxlan_bridge_1d_ipv6.sh
+lines 698-706
 
-First, when ext4_split_extent_at() splits this extent, it truncates the
-existing extent and then inserts a new one. During this process, this
-extent status entry may be shrunk, and calls to ext4_find_extent() and
-ext4_cache_extents() may occur, which could potentially insert the
-truncated range as a hole into the extent status tree. After the split
-is completed, this hole is not replaced with the correct status.
+              )"00:03:"$(           : Payload length
+              )"3a:"$(              : Next header
+              )"04:"$(              : Hop limit
+              )"$saddr:"$(          : IP saddr
+              )"$daddr:"$(          : IP daddr
+              )"80:"$(              : ICMPv6.type
+              )"00:"$(              : ICMPv6.code
+              )"00:"$(              : ICMPv6.checksum
+              )
 
-  [UUUUUUU|UUUUUUUU] on-disk extent        U: unwritten extent
-  [UUUUUUU|HHHHHHHH] extent status tree    H: hole
+Data after IPv6 header:
+• 80: — 1 byte (ICMPv6 type)
+• 00: — 1 byte (ICMPv6 code)
+• 00: — 1 byte (ICMPv6 checksum, truncated)
 
-Then, the outer calling functions will not correct this remaining hole
-extent either. Finally, if we perform a delayed buffer write on this
-latter part, it will re-insert the delayed extent and cause an error in
-space accounting.
+Total: 3 bytes → 00:03 is correct. The old value 00:08 did not match
+the actual payload size.
 
-In adition, if the unwritten extent cache is not shrunk during the
-splitting, ext4_cache_extents() also conflicts with existing extents
-when caching extents. In the future, we will add checks when caching
-extents, which will trigger a warning. Therefore, Do not cache extents
-that are being split.
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Cc: stable@kernel.org
-Message-ID: <20251129103247.686136-6-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b07e9957f220 ("selftests: forwarding: Add VxLAN tests with a VLAN-unaware bridge for IPv6")
+Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260213131907.43351-3-aleksey.oladko@virtuozzo.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/testing/selftests/net/forwarding/vxlan_bridge_1d_ipv6.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3199,6 +3199,9 @@ static struct ext4_ext_path *ext4_split_
- 	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) &&
- 	       (split_flag & EXT4_EXT_DATA_VALID2));
- 
-+	/* Do not cache extents that are in the process of being modified. */
-+	flags |= EXT4_EX_NOCACHE;
-+
- 	ext_debug(inode, "logical block %llu\n", (unsigned long long)split);
- 
- 	ext4_ext_show_leaf(inode, path);
-@@ -3381,6 +3384,9 @@ static struct ext4_ext_path *ext4_split_
- 	ee_len = ext4_ext_get_actual_len(ex);
- 	unwritten = ext4_ext_is_unwritten(ex);
- 
-+	/* Do not cache extents that are in the process of being modified. */
-+	flags |= EXT4_EX_NOCACHE;
-+
- 	if (map->m_lblk + map->m_len < ee_block + ee_len) {
- 		split_flag1 = split_flag & EXT4_EXT_MAY_ZEROOUT;
- 		flags1 = flags | EXT4_GET_BLOCKS_SPLIT_NOMERGE;
+diff --git a/tools/testing/selftests/net/forwarding/vxlan_bridge_1d_ipv6.sh b/tools/testing/selftests/net/forwarding/vxlan_bridge_1d_ipv6.sh
+index a603f7b0a08f0..e642feeada0e7 100755
+--- a/tools/testing/selftests/net/forwarding/vxlan_bridge_1d_ipv6.sh
++++ b/tools/testing/selftests/net/forwarding/vxlan_bridge_1d_ipv6.sh
+@@ -695,7 +695,7 @@ vxlan_encapped_ping_do()
+ 		    )"6"$(			  : IP version
+ 		    )"$inner_tos"$(               : Traffic class
+ 		    )"0:00:00:"$(                 : Flow label
+-		    )"00:08:"$(                   : Payload length
++		    )"00:03:"$(                   : Payload length
+ 		    )"3a:"$(                      : Next header
+ 		    )"04:"$(                      : Hop limit
+ 		    )"$saddr:"$(		  : IP saddr
+-- 
+2.51.0
+
 
 
 
