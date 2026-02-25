@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-219043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218526-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAl8KjFWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219043-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:53 +0100
+	id +Aj/DtNSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218526-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7C51901F1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 907FF18F545
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 28BBF30CAB99
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16EF23073F77
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDFE1DDC37;
-	Wed, 25 Feb 2026 01:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF19A22579E;
+	Wed, 25 Feb 2026 01:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMKm83xm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJfEXeow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E2622127B;
-	Wed, 25 Feb 2026 01:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7331018B0A;
+	Wed, 25 Feb 2026 01:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983963; cv=none; b=aWJsJa81xlEF9lsQepO7H6nsZQ2UVMZv9G0cKV6RbGiQKQ828zhalP58EBpk8YogJzWy2It2ZpHRHpkjc/USTAhbgTBrdb2KB9LoDf+CPB8WqPD6568j2cjavKv1Gkn+LC3OYe87AmJM4W2ZCupjrHmnN+qTxx/to1LYX3X17Fs=
+	t=1771983362; cv=none; b=YZzfk4HpGqa718qyJzHlQqpAdSuB61svdETzIIe9vTT9644Z7jqJKTSjqHFlIM4w5De7eOSRMsnWhvgop1hHB75AXz32tnO4kNnPKwaguH/0zN94pGbnkZ+Q+0Gph3Yr0sILko+W6wezQOZjI4cniZytRXAf5KJb6Kd/vvo/vYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983963; c=relaxed/simple;
-	bh=xS3R1/4R4HhO0UAom0caqAULbhKqGEfnt3tu7/Ta7Lc=;
+	s=arc-20240116; t=1771983362; c=relaxed/simple;
+	bh=S4S5E6de1h9Sb0MshmZR+V6OhEhW6uFUGK5CSb4DavM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPxDKFpN2LvviNbPqKIIJVUP5zyIUxyhwLgt/UiNGe4feChWsRnopbiq/ZncHe/XrxrABrTAlOWoY9i+Wk6Cn2WJzXRuCIrPw+9p1CYNgv2jSZity2z+hhlxTugdVhPB+Ha2vhFlOc1n4K4/YX9RKGwXDnVReW6tp5wNxLmWseQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMKm83xm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4003DC116D0;
-	Wed, 25 Feb 2026 01:46:03 +0000 (UTC)
+	 MIME-Version; b=IksJRZY12flavMQ3HMNwM5P5MEzgMFMCWkohfIilqIqL1nzyFhj8d70rt/RoFkxErIA6R89BvLNOox+yxzbhFRfxEHm9/wBL5jsSjdIT9zVHOpiH1QxSa7RyQhNSIC3jNQArgwWSySxF+/jivNXwibsopmWqFolRZC2DwrXg/OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJfEXeow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344D7C116D0;
+	Wed, 25 Feb 2026 01:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983963;
-	bh=xS3R1/4R4HhO0UAom0caqAULbhKqGEfnt3tu7/Ta7Lc=;
+	s=korg; t=1771983362;
+	bh=S4S5E6de1h9Sb0MshmZR+V6OhEhW6uFUGK5CSb4DavM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMKm83xmnjIiTzjVB9JteczFkOY0VsmFhAP4HeOzKnipLl2iAZ5nknp19Q1txtzJh
-	 1PPGGs0nTPLfuTgW/GC6zPgpSp4wxwPIuF0pQ8jxW84G2tzO92PNMPjNeydEZ6Gu+h
-	 x9B8oBjQDPwkGUr6QijZdhimKbF6bhCxUQUUW6mI=
+	b=bJfEXeow6VaT3+iHocF24Kh3lv3K7D0lE4qgBBwiZ515PmeY0k+MHfH/UcKEMDvzW
+	 EgmhIo6fDSnZwI0awEboIwPsZbA9COLHmlSbe9HxS8B3WNpauppUvn4Kk/kO6uTK8b
+	 zQNEoq5FRqhe+6KDiGfxr+lHIV44ke5IYuvXTFY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Michael Dege <michael.dege@renesas.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 219/641] drm/xe: Unregister drm device on probe error
+Subject: [PATCH 6.19 436/781] net: renesas: rswitch: fix forwarding offload statemachine
 Date: Tue, 24 Feb 2026 17:19:05 -0800
-Message-ID: <20260225012354.232007927@linuxfoundation.org>
+Message-ID: <20260225012410.398398769@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,119 +69,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219043-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218526-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6D7C51901F1
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 907FF18F545
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Michael Dege <michael.dege@renesas.com>
 
-[ Upstream commit 96c2c72b817d70e8d110e78b0162e044a0c41f9f ]
+[ Upstream commit e9a5073a98d940837cbb95e71eed1f28f48e7b30 ]
 
-Call drm_dev_unregister() when xe_device_probe() fails after successful
-drm_dev_register(). This ensures the DRM device is promptly unregistered
-before returning an error, avoiding leaving it registered on the failure
-path.
-Otherwise, there is warn message if xe_device_probe() is called again:
-"
-[  207.322365] [drm:drm_minor_register]
-[  207.322381] debugfs: '128' already exists in 'dri'
-[  207.322432] sysfs: cannot create duplicate filename '/devices/pci0000:00/0000:00:01.0/0000:01:00.0/0000:02:01.0/0000:03:00.0/drm/renderD128'
-[  207.322435] CPU: 5 UID: 0 PID: 10261 Comm: modprobe Tainted: G    B   W           6.19.0-rc2-lgci-xe-kernel+ #223 PREEMPT(voluntary)
-[  207.322439] Tainted: [B]=BAD_PAGE, [W]=WARN
-[  207.322440] Hardware name: ASUS System Product Name/PRIME Z790-P WIFI, BIOS 0812 02/24/2023
-[  207.322441] Call Trace:
-[  207.322442]  <TASK>
-[  207.322443]  dump_stack_lvl+0xa0/0xc0
-[  207.322446]  dump_stack+0x10/0x20
-[  207.322448]  sysfs_warn_dup+0xd5/0x110
-[  207.322451]  sysfs_create_dir_ns+0x1f6/0x280
-[  207.322453]  ? __pfx_sysfs_create_dir_ns+0x10/0x10
-[  207.322455]  ? lock_acquire+0x1a4/0x2e0
-[  207.322458]  ? __kasan_check_read+0x11/0x20
-[  207.322461]  kobject_add_internal+0x28d/0x8e0
-[  207.322464]  kobject_add+0x11f/0x1f0
-[  207.322465]  ? lock_acquire+0x1a4/0x2e0
-[  207.322467]  ? __pfx_kobject_add+0x10/0x10
-[  207.322469]  ? __kasan_check_write+0x14/0x20
-[  207.322471]  ? kobject_put+0x62/0x4a0
-[  207.322473]  ? get_device_parent.isra.0+0x1bb/0x4c0
-[  207.322475]  ? kobject_put+0x62/0x4a0
-[  207.322477]  device_add+0x2d7/0x1500
-[  207.322479]  ? __pfx_device_add+0x10/0x10
-[  207.322481]  ? drm_debugfs_add_file+0xfa/0x170
-[  207.322483]  ? drm_debugfs_add_files+0x82/0xd0
-[  207.322485]  ? drm_debugfs_add_files+0x82/0xd0
-[  207.322487]  drm_minor_register+0x10a/0x2d0
-[  207.322489]  drm_dev_register+0x143/0x860
-[  207.322491]  ? xe_configfs_get_psmi_enabled+0x12/0x90 [xe]
-[  207.322667]  xe_device_probe+0x185b/0x2c40 [xe]
-[  207.322812]  ? __pfx___drm_dev_dbg+0x10/0x10
-[  207.322815]  ? add_dr+0x180/0x220
-[  207.322818]  ? __pfx___drmm_mutex_release+0x10/0x10
-[  207.322821]  ? __pfx_xe_device_probe+0x10/0x10 [xe]
-[  207.322966]  ? xe_pm_init_early+0x33a/0x410 [xe]
-[  207.323136]  xe_pci_probe+0x936/0x1250 [xe]
-[  207.323298]  ? lock_acquire+0x1a4/0x2e0
-[  207.323302]  ? __pfx_xe_pci_probe+0x10/0x10 [xe]
-[  207.323464]  local_pci_probe+0xe6/0x1a0
-[  207.323468]  pci_device_probe+0x523/0x840
-[  207.323470]  ? __pfx_pci_device_probe+0x10/0x10
-[  207.323473]  ? sysfs_do_create_link_sd.isra.0+0x8c/0x110
-[  207.323476]  ? sysfs_create_link+0x48/0xc0
-[  207.323479]  really_probe+0x1fd/0x8a0
-...
-"
+A change of the port state of one port, caused the state of another
+port to change. This behvior was unintended.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://patch.msgid.link/20260109211041.2446012-2-shuicheng.lin@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit 60bfb8baf8f0d5b0d521744dfd01c880ce1a23f3)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: b7502b1043de ("net: renesas: rswitch: add offloading for L2 switching")
+Signed-off-by: Michael Dege <michael.dege@renesas.com>
+Link: https://patch.msgid.link/20260206-fix-offloading-statemachine-v3-1-07bfba07d03e@renesas.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/renesas/rswitch_l2.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index fe5aadb27b779..0d69cd0e4e798 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -966,6 +966,7 @@ int xe_device_probe(struct xe_device *xe)
+diff --git a/drivers/net/ethernet/renesas/rswitch_l2.c b/drivers/net/ethernet/renesas/rswitch_l2.c
+index 4a69ec77d69c6..9433cd8adced9 100644
+--- a/drivers/net/ethernet/renesas/rswitch_l2.c
++++ b/drivers/net/ethernet/renesas/rswitch_l2.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Renesas Ethernet Switch device driver
+  *
+- * Copyright (C) 2025 Renesas Electronics Corporation
++ * Copyright (C) 2025 - 2026 Renesas Electronics Corporation
+  */
  
- err_unregister_display:
- 	xe_display_unregister(xe);
-+	drm_dev_unregister(&xe->drm);
+ #include <linux/err.h>
+@@ -60,6 +60,7 @@ static void rswitch_update_l2_hw_learning(struct rswitch_private *priv)
+ static void rswitch_update_l2_hw_forwarding(struct rswitch_private *priv)
+ {
+ 	struct rswitch_device *rdev;
++	bool new_forwarding_offload;
+ 	unsigned int fwd_mask;
  
- 	return err;
+ 	/* calculate fwd_mask with zeroes in bits corresponding to ports that
+@@ -73,8 +74,9 @@ static void rswitch_update_l2_hw_forwarding(struct rswitch_private *priv)
+ 	}
+ 
+ 	rswitch_for_all_ports(priv, rdev) {
+-		if ((rdev_for_l2_offload(rdev) && rdev->forwarding_requested) ||
+-		    rdev->forwarding_offloaded) {
++		new_forwarding_offload = (rdev_for_l2_offload(rdev) && rdev->forwarding_requested);
++
++		if (new_forwarding_offload || rdev->forwarding_offloaded) {
+ 			/* Update allowed offload destinations even for ports
+ 			 * with L2 offload enabled earlier.
+ 			 *
+@@ -84,13 +86,10 @@ static void rswitch_update_l2_hw_forwarding(struct rswitch_private *priv)
+ 				  priv->addr + FWPC2(rdev->port));
+ 		}
+ 
+-		if (rdev_for_l2_offload(rdev) &&
+-		    rdev->forwarding_requested &&
+-		    !rdev->forwarding_offloaded) {
++		if (new_forwarding_offload && !rdev->forwarding_offloaded)
+ 			rswitch_change_l2_hw_offloading(rdev, true, false);
+-		} else if (rdev->forwarding_offloaded) {
++		else if (!new_forwarding_offload && rdev->forwarding_offloaded)
+ 			rswitch_change_l2_hw_offloading(rdev, false, false);
+-		}
+ 	}
  }
+ 
 -- 
 2.51.0
 
