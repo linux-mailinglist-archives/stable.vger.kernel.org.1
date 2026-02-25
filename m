@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHnlOCFSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:33 +0100
+	id aGNPJvicnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:55:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 838C018F204
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 405A91928F3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:55:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 051263083DC3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A2F4030117C1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3456242D9B;
-	Wed, 25 Feb 2026 01:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3082C17A0;
+	Wed, 25 Feb 2026 06:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnrSaOLM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueMCi8KS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979D11EB5E1;
-	Wed, 25 Feb 2026 01:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5015A2C0F97;
+	Wed, 25 Feb 2026 06:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983317; cv=none; b=uQUVMtc+5ExT9zrPDR63LpDkBQKvBFr6rmpe6FoRmgC45Z9azh/dcNgoWgA1lCxzNdwgZswvZMN6MllShpML5gs2hgmcFdTOLATSqvJyEAbpBKZKRArq+KF/xeoaq/H2+UV6ehozMeDNy4Ln28NrMNB5paDAhHRoNH+bnwrwKNs=
+	t=1772002550; cv=none; b=sorfoEzkCWwMXB1HnuyU1xqLv8iguvooUvtyKo3eT7P4Xn2PGdQDZ9YDIB/h4s0ZsVQ8VhkDBCM4Zmlinqso/BrvVAbGjC4gFW+hThDnDaODJxpRKIovxDHBncJozY35ZzSKGV2JzD2E07awY/BNsFqfMX66paJOPDNSBDCP4kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983317; c=relaxed/simple;
-	bh=f7TnaVGrNOdXsDKjh9yU19RWfoW5KelcBecrAZs1XSQ=;
+	s=arc-20240116; t=1772002550; c=relaxed/simple;
+	bh=ibMsJcQ7U1VWy5gzdadNoMC8+pJa5GaqnMjLfjKC1rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZYeIpqLM0ExiiXNbBhQDypgJKOazy3WnkW0uNSmaPnscBfm9woFcf6TE3YqYr6/WxI6lrXY8HW6OPgBgRxmwjqZjMauVzNBrDIGzR1OnvV/8YIaVjpL0xKkofPHyonvUvvZ1Z6FWmnbvhaY+2xoAxUc1xADPrNSl5rKJaGqw8Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnrSaOLM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BEEC116D0;
-	Wed, 25 Feb 2026 01:35:17 +0000 (UTC)
+	 MIME-Version; b=f1ANs9gCqxzc3Xoz48m4lgFqVwvb9fBK76is/+YGTiKrd9ooek56R6MKAAK+eoqOjEB2zQiFrIyZkvaSn5tZWgZniNKmQonWpaib1SfjN7VEcPUq7D9PCaNNdkvFqtjJ2jwt4Hzy1QS+kl45tMi6FPNuAHwp8Ewt57AIBCM7XSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueMCi8KS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C562FC116D0;
+	Wed, 25 Feb 2026 06:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983317;
-	bh=f7TnaVGrNOdXsDKjh9yU19RWfoW5KelcBecrAZs1XSQ=;
+	s=korg; t=1772002549;
+	bh=ibMsJcQ7U1VWy5gzdadNoMC8+pJa5GaqnMjLfjKC1rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnrSaOLM4C/41vM+lJSDY2k9yJvRvlZmAjM6opAHvtPugNroJrusPllW8aeOGugIk
-	 derfAWIX6ysH5KB78xbWUSmw1IL0kusPPRpDc3MsSpPd3cz30oIhZTWwjYI4mli8sj
-	 ylRdVCCJPmuL1V8en2aSFliwEVY74W+nvNUoRHzg=
+	b=ueMCi8KS+OHWBGGAqLEJRbHbb5jD4Ib1DqJJ1OTgsuELHeuZw/QpjluGWYv/9e9L8
+	 h60uPTvoUND0ZUEFSXVprDrur7i4cl7mN4rY8FNJidIIXW7sJHLKiNM62Qs9lv95iL
+	 Lq/foUn8QKiyOogbaO/c1UL1/ERrLjl1k8Fj10/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 451/781] power: supply: cpcap-battery: Fix use-after-free in power_supply_changed()
-Date: Tue, 24 Feb 2026 17:19:20 -0800
-Message-ID: <20260225012410.775053903@linuxfoundation.org>
+Subject: [PATCH 6.18 235/641] PCI: xilinx: Fix INTx IRQ domain leak in error paths
+Date: Tue, 24 Feb 2026 17:19:21 -0800
+Message-ID: <20260225012354.581085583@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218488-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219203-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,76 +90,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 838C018F204
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 405A91928F3
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waqar Hameed <waqar.hameed@axis.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 642f33e34b969eedec334738fd5df95d2dc42742 ]
+[ Upstream commit f42b3c053b1554d66af6fe45bb1ef357464c0456 ]
 
-Using the `devm_` variant for requesting IRQ _before_ the `devm_`
-variant for allocating/registering the `power_supply` handle, means that
-the `power_supply` handle will be deallocated/unregistered _before_ the
-interrupt handler (since `devm_` naturally deallocates in reverse
-allocation order). This means that during removal, there is a race
-condition where an interrupt can fire just _after_ the `power_supply`
-handle has been freed, *but* just _before_ the corresponding
-unregistration of the IRQ handler has run.
+In xilinx_pcie_init_irq_domain(), if xilinx_allocate_msi_domains() fails
+after pcie->leg_domain has been successfully created via
+irq_domain_create_linear(), the function returns directly without cleaning
+up the allocated IRQ domain, resulting in a resource leak. In
+xilinx_free_msi_domains(), pcie->leg_domain is also neglected.
 
-This will lead to the IRQ handler calling `power_supply_changed()` with
-a freed `power_supply` handle. Which usually crashes the system or
-otherwise silently corrupts the memory...
+Add irq_domain_remove() call in the error path to properly release the
+IRQ domain before returning the error. Also rename
+xilinx_free_msi_domains() to xilinx_free_irq_domains() and add the release
+of pcie->leg_domain to it.
 
-Note that there is a similar situation which can also happen during
-`probe()`; the possibility of an interrupt firing _before_ registering
-the `power_supply` handle. This would then lead to the nasty situation
-of using the `power_supply` handle *uninitialized* in
-`power_supply_changed()`.
-
-Fix this racy use-after-free by making sure the IRQ is requested _after_
-the registration of the `power_supply` handle.
-
-Fixes: 874b2adbed12 ("power: supply: cpcap-battery: Add a battery driver")
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-Link: https://patch.msgid.link/81db58d610c9a51a68184f856cd431a934cccee2.1766268280.git.waqar.hameed@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 313b64c3ae52 ("PCI: xilinx: Convert to MSI domains")
+Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20251219021615.965-1-vulab@iscas.ac.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/cpcap-battery.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/controller/pcie-xilinx.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/cpcap-battery.c
-index 8106d1edcbc26..507fdc1c866d5 100644
---- a/drivers/power/supply/cpcap-battery.c
-+++ b/drivers/power/supply/cpcap-battery.c
-@@ -1122,10 +1122,6 @@ static int cpcap_battery_probe(struct platform_device *pdev)
+diff --git a/drivers/pci/controller/pcie-xilinx.c b/drivers/pci/controller/pcie-xilinx.c
+index 937ea6ae1ac48..4aa139abac16e 100644
+--- a/drivers/pci/controller/pcie-xilinx.c
++++ b/drivers/pci/controller/pcie-xilinx.c
+@@ -302,9 +302,10 @@ static int xilinx_allocate_msi_domains(struct xilinx_pcie *pcie)
+ 	return 0;
+ }
  
- 	platform_set_drvdata(pdev, ddata);
+-static void xilinx_free_msi_domains(struct xilinx_pcie *pcie)
++static void xilinx_free_irq_domains(struct xilinx_pcie *pcie)
+ {
+ 	irq_domain_remove(pcie->msi_domain);
++	irq_domain_remove(pcie->leg_domain);
+ }
  
--	error = cpcap_battery_init_interrupts(pdev, ddata);
--	if (error)
--		return error;
--
- 	error = cpcap_battery_init_iio(ddata);
- 	if (error)
- 		return error;
-@@ -1142,6 +1138,10 @@ static int cpcap_battery_probe(struct platform_device *pdev)
- 		return error;
- 	}
+ /* INTx Functions */
+@@ -480,8 +481,10 @@ static int xilinx_pcie_init_irq_domain(struct xilinx_pcie *pcie)
+ 		phys_addr_t pa = ALIGN_DOWN(virt_to_phys(pcie), SZ_4K);
  
-+	error = cpcap_battery_init_interrupts(pdev, ddata);
-+	if (error)
-+		return error;
-+
- 	atomic_set(&ddata->active, 1);
+ 		ret = xilinx_allocate_msi_domains(pcie);
+-		if (ret)
++		if (ret) {
++			irq_domain_remove(pcie->leg_domain);
+ 			return ret;
++		}
  
- 	error = cpcap_battery_calibrate(ddata);
+ 		pcie_write(pcie, upper_32_bits(pa), XILINX_PCIE_REG_MSIBASE1);
+ 		pcie_write(pcie, lower_32_bits(pa), XILINX_PCIE_REG_MSIBASE2);
+@@ -600,7 +603,7 @@ static int xilinx_pcie_probe(struct platform_device *pdev)
+ 
+ 	err = pci_host_probe(bridge);
+ 	if (err)
+-		xilinx_free_msi_domains(pcie);
++		xilinx_free_irq_domains(pcie);
+ 
+ 	return err;
+ }
 -- 
 2.51.0
 
