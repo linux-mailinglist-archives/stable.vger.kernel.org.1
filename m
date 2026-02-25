@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILx8CxNWnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:23 +0100
+	id YDGpJGVSnmm6UgQAu9opvQ
+	(envelope-from <stable+bounces-218261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505B41901AF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DF918F355
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4466632A7AB4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B1363184FB6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D7C26463A;
-	Wed, 25 Feb 2026 01:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3652B243376;
+	Wed, 25 Feb 2026 01:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4rYjhh4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sr1MQz3r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABE11E2834;
-	Wed, 25 Feb 2026 01:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE651FE45D;
+	Wed, 25 Feb 2026 01:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983751; cv=none; b=aBzLg7/gRi/VTbhwlV8AcwyAwJeEsigDX20imZUmqqPJ2KBxFHmeR5drc4To84AjWWmsDsAd/4ySqszRmqsMxIy8M9OVNgoWh08bRXu/klOs7E+b4srm77H3BPmZPGiqPRtEa0Ot+pJ5BgsSz7YpKParyve0Uprvqz+or41bKhw=
+	t=1771983060; cv=none; b=fFpIUVwcrMgUySJ+avAuoj92VdxGzsfJMbNaa7ob3B3JOUfFGOeQQBN7o1AzLu9nZiu19MRJWTbE4G5ywjTL4pVVw950vX8qQaOimvrd1V7CIaNWr4MQ7bzY+ZmIAVQeqVCaL3F0/antQSz/aI72S8aNEHLDfPypOuIYKMgPBsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983751; c=relaxed/simple;
-	bh=fcD01XNIxlIJTujy7rFyK68MT3qYPY7GrbXJ1/cj/yY=;
+	s=arc-20240116; t=1771983060; c=relaxed/simple;
+	bh=gGWOeW+z2jhZADuQRbHFrHpL+bLTUdeR8azPzaRdJpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MgHw5CHBtqa8QkTtMJC2DBwe0aA4PkRqzd4mT1Ww4UhhiBDPvBukXDE3l9b9zUIjSC5Tx8AUO5o6m0gfTq7GCfJj2iMc0ejVVYMMPIZBWudY1izQk2zQSzB4ovlGM43yVKLG/vDAyIGgLQGgNDTxpAg2qIyVI+EVIxjXqZNPmCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4rYjhh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1DCC19423;
-	Wed, 25 Feb 2026 01:42:31 +0000 (UTC)
+	 MIME-Version; b=fu628TJWt0tBZUMdCgKFRnjJW97O3HV8nRWoFuLZVmn7ejYiLVNGg2N9zV1yW6ZOZ6g+3t7/LsuX8p+JpIdDD7h5evXvP7ApgVEUSqlsppxRgp02Nhb69E33OW0aTQlrOJmNe0qFt9YfEuevfOfvyrfW+mSiqzVMCl5KBrm/F34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sr1MQz3r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC92C116D0;
+	Wed, 25 Feb 2026 01:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983751;
-	bh=fcD01XNIxlIJTujy7rFyK68MT3qYPY7GrbXJ1/cj/yY=;
+	s=korg; t=1771983059;
+	bh=gGWOeW+z2jhZADuQRbHFrHpL+bLTUdeR8azPzaRdJpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4rYjhh4mwdu8FvKkQ9Ldbq1L1MxWI3O2LCWkzpV0nRivqvg9zAnr4QvvzRrqqZIS
-	 gCtZlDGyhT7wAW7uBMeL3YJ2fcHhHw4ujdrdsu/QR/p12OI0iQcecwSOC3F3JoUAze
-	 VBCuSo7Xhiiuv+c+lwoKgwL2AthBAa3r8qvOwzI4=
+	b=sr1MQz3rOqDhO20nRnNfitVFWiGBvfYkt3aQKeInBINvvrZUx4xIVzkxK3FcXuUWv
+	 806jOBwzLFFAXARG+XMwetBl2YMfOUXEknCWnClXgwx7N+Mqq7r7XMS1k4MPW0i8nA
+	 Pa6EF2sjL5v9o3c5OfF7iT6GrLDcTS/YIVHVH//I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Paul Moore <paul@paul-moore.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 006/641] audit: move the compat_xxx_class[] extern declarations to audit_arch.h
-Date: Tue, 24 Feb 2026 17:15:32 -0800
-Message-ID: <20260225012349.093808612@linuxfoundation.org>
+Subject: [PATCH 6.19 224/781] ASoC: SDCA: Allow sample width wild cards in set_usage()
+Date: Tue, 24 Feb 2026 17:15:33 -0800
+Message-ID: <20260225012405.205318764@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,104 +70,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218261-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218866-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,paul-moore.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,codethink.co.uk:email]
-X-Rspamd-Queue-Id: 505B41901AF
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email]
+X-Rspamd-Queue-Id: 23DF918F355
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit 76489955c6d4a065ca69dc88faf7a50a59b66f35 ]
+[ Upstream commit 87783532d34050e2bff6749a4fe9860e624a0540 ]
 
-The comapt_xxx_class symbols aren't declared in anything that
-lib/comapt_audit.c is including (arm64 build) which is causing
-the following sparse warnings:
+The SDCA spec allows the sample rate and width to be wild cards, but the
+current implementation of set_usage() only checked for a wild card of
+the sample rate.
 
-lib/compat_audit.c:7:10: warning: symbol 'compat_dir_class'
-  was not declared. Should it be static?
-lib/compat_audit.c:12:10: warning: symbol 'compat_read_class'
-  was not declared. Should it be static?
-lib/compat_audit.c:17:10: warning: symbol 'compat_write_class'
-  was not declared. Should it be static?
-lib/compat_audit.c:22:10: warning: symbol 'compat_chattr_class'
-  was not declared. Should it be static?
-lib/compat_audit.c:27:10: warning: symbol 'compat_signal_class'
-  was not declared. Should it be static?
-
-Trying to fix this by chaning compat_audit.c to inclde <linux/audit.h>
-does not work on arm64 due to compile errors with the extra includes
-that changing this header makes. The simpler thing would be just to
-move the definitons of these symbols out of <linux/audit.h> into
-<linux/audit_arch.h> which is included.
-
-Fixes: 4b58841149dca ("audit: Add generic compat syscall support")
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-[PM: rewrite subject line, fixed line length in description]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: 4ed357f72a0e ("ASoC: SDCA: Add hw_params() helper function")
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251216142204.183958-1-simont@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/audit.h      | 6 ------
- include/linux/audit_arch.h | 7 +++++++
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ sound/soc/sdca/sdca_asoc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index 536f8ee8da818..b8d8029c6c480 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -128,12 +128,6 @@ enum audit_nfcfgop {
- extern int __init audit_register_class(int class, unsigned *list);
- extern int audit_classify_syscall(int abi, unsigned syscall);
- extern int audit_classify_arch(int arch);
--/* only for compat system calls */
--extern unsigned compat_write_class[];
--extern unsigned compat_read_class[];
--extern unsigned compat_dir_class[];
--extern unsigned compat_chattr_class[];
--extern unsigned compat_signal_class[];
+diff --git a/sound/soc/sdca/sdca_asoc.c b/sound/soc/sdca/sdca_asoc.c
+index 2d328bbb95b94..498aba9df5d9b 100644
+--- a/sound/soc/sdca/sdca_asoc.c
++++ b/sound/soc/sdca/sdca_asoc.c
+@@ -1478,7 +1478,7 @@ static int set_usage(struct device *dev, struct regmap *regmap,
+ 		unsigned int rate = sdca_range(range, SDCA_USAGE_SAMPLE_RATE, i);
+ 		unsigned int width = sdca_range(range, SDCA_USAGE_SAMPLE_WIDTH, i);
  
- /* audit_names->type values */
- #define	AUDIT_TYPE_UNKNOWN	0	/* we don't know yet */
-diff --git a/include/linux/audit_arch.h b/include/linux/audit_arch.h
-index 0e34d673ef171..2b8153791e6a5 100644
---- a/include/linux/audit_arch.h
-+++ b/include/linux/audit_arch.h
-@@ -23,4 +23,11 @@ enum auditsc_class_t {
- 
- extern int audit_classify_compat_syscall(int abi, unsigned syscall);
- 
-+/* only for compat system calls */
-+extern unsigned compat_write_class[];
-+extern unsigned compat_read_class[];
-+extern unsigned compat_dir_class[];
-+extern unsigned compat_chattr_class[];
-+extern unsigned compat_signal_class[];
-+
- #endif
+-		if ((!rate || rate == target_rate) && width == target_width) {
++		if ((!rate || rate == target_rate) && (!width || width == target_width)) {
+ 			unsigned int usage = sdca_range(range, SDCA_USAGE_NUMBER, i);
+ 			unsigned int reg = SDW_SDCA_CTL(function->desc->adr,
+ 							entity->id, sel, 0);
 -- 
 2.51.0
 
