@@ -1,72 +1,62 @@
-Return-Path: <stable+bounces-218420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGGfIPVSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218420-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:05 +0100
+	id cNwjDTlanmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046A118F60E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF35190A92
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5FC6F31CCB24
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 63EE031138B4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3181EB5E1;
-	Wed, 25 Feb 2026 01:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181CC29BDA2;
+	Wed, 25 Feb 2026 01:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HB8Jft4d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XR/MkHB+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E93918B0A;
-	Wed, 25 Feb 2026 01:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6C51FC7;
+	Wed, 25 Feb 2026 01:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983239; cv=none; b=nRoI21fjpTh7CNRoIoW3kSG90UDrqQoPicgc6lwqwdi+oTd4OtAQfm/VBnme99yODgeInySgK8xh5OJDPuMxuYhScVoT7Njcydm6Zr9ZlFwuiJARkv0K18Y5pjQFm0fikp/LvtHFP2YaWmROUyVCpY8Z0OGYlKYRkMYSPNddsN0=
+	t=1771983893; cv=none; b=pf5wIX2ZiJd+RnUySlOb8AR+/paap7wSf0FcCSRxKxO6ghwOs95+lvtC3/UkIzV6TwP7UU5S1AVqyyustlt29rzbqlEi5it5DnajlkVeQeNz0o6lbobxsGHGmLVja8epqA1S3AR8w5nHNDpkcIi6WWwxkAg4cGAQcW2PFQtKNHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983239; c=relaxed/simple;
-	bh=4nMXJdOj1nguDlRNkq73Y+Y0WvE8hK9vZMFRvloBXnM=;
+	s=arc-20240116; t=1771983893; c=relaxed/simple;
+	bh=nwkBQeUvsVA8BieULcdXEc7FfHlNM3cL1E7ZauX7h9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEnc2aRc/PKZJAn/mEZHJ2twbqF2jIslhURPXupAE8EKAMadS0v7sb4xhgCPMsoyWrmLqm4tSS4ST+GRLuszTrXjKeWNG67p04Qf4LdCl4DL8E7/KM1+0ocIVkNGfgaHjMYqUgeagrdYwxnQ7WKj4HWVweOK/8Pn47IeRQMSWAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HB8Jft4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BF1C116D0;
-	Wed, 25 Feb 2026 01:33:59 +0000 (UTC)
+	 MIME-Version; b=kXnUBC8aS+RiSslofbs+QFkZx/jDd0JUYnfTz1VOZCJoEDEEEtyzsJV+9VxBSfSYIYnM0BUQ6iCSIbo1GdZsgsmdBxeJuAidoz72WoXttKABndoN3t6w3IWQ9BfOjwReFUfxmKSTj4s1rb4/k1pfsk0fNkX4H3SSKKuKM+URCBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XR/MkHB+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BAFC116D0;
+	Wed, 25 Feb 2026 01:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983239;
-	bh=4nMXJdOj1nguDlRNkq73Y+Y0WvE8hK9vZMFRvloBXnM=;
+	s=korg; t=1771983893;
+	bh=nwkBQeUvsVA8BieULcdXEc7FfHlNM3cL1E7ZauX7h9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HB8Jft4d6b24wLek5Yz4VGPReYA92PBN89rER4kxjdnGDWR/SK1d6BnnY8tcVS+s+
-	 rdzjx2u9SJYCxkma2sGPi9LwIumFn2lAr3ZL1eRx9xiRtddc82loDWiJEaQNp6InBv
-	 mpkvgSAsLJ6Hl2CKdSFYwyKGeNCKwRsXxrI1qlps=
+	b=XR/MkHB+Yywg2XcUR97+lO5RO9rCCArZQ4cHwMozSxPIUh2nj13l9YvDvWAi9Byfv
+	 fKvCDrlL1ds7r5fPFgHdJOLrr+aM9OnEjNHmsYZ6WAMUtxPRrRATThGtqbHwilvGOL
+	 0KLLHonTyqA705Z020BMUsjspnWPFX0WJgzuSkQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	SeongJae Park <sj@kernel.org>,
-	wang lian <lianux.mm@gmail.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mark Brown <broonie@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Usama Anjum <Usama.Anjum@arm.com>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 381/781] selftests/mm: fix usage of FORCE_READ() in cow tests
-Date: Tue, 24 Feb 2026 17:18:10 -0800
-Message-ID: <20260225012409.039405066@linuxfoundation.org>
+Subject: [PATCH 6.18 165/641] arm64: dts: qcom: agatti: Add CX_MEM/DBGC GPU regions
+Date: Tue, 24 Feb 2026 17:18:11 -0800
+Message-ID: <20260225012353.059699751@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,130 +68,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-218420-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,kernel.org,gmail.com,nvidia.com,oracle.com,redhat.com,huawei.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218988-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.986];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 046A118F60E
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,0.90.6.224:email]
+X-Rspamd-Queue-Id: 5BF35190A92
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Brodsky <kevin.brodsky@arm.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit bce1dabd310e87fefe0645fec9ba98b84d37e418 ]
+[ Upstream commit 0fdcc948929a6d673bd0f90631dd6e42090c3dbd ]
 
-Commit 5bbc2b785e63 ("selftests/mm: fix FORCE_READ to read input value
-correctly") modified FORCE_READ() to take a value instead of a pointer.
-It also changed most of the call sites accordingly, but missed many of
-them in cow.c.  In those cases, we ended up with the pointer itself being
-read, not the memory it points to.
+Describe the GPU register regions, with the former existing but not
+being used much if at all on this silicon, and the latter containing
+various debugging levers generally related to dumping the state of
+the IP upon a crash.
 
-No failure occurred as a result, so it looks like the tests work just fine
-without faulting in.  However, the huge_zeropage tests explicitly check
-that pages are populated, so those became skipped.
-
-Convert all the remaining FORCE_READ() to fault in the mapped page, as was
-originally intended.  This allows the huge_zeropage tests to run again (3
-tests in total).
-
-Link: https://lkml.kernel.org/r/20260122170224.4056513-5-kevin.brodsky@arm.com
-Fixes: 5bbc2b785e63 ("selftests/mm: fix FORCE_READ to read input value correctly")
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: wang lian <lianux.mm@gmail.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Usama Anjum <Usama.Anjum@arm.com>
-Cc: Yunsheng Lin <linyunsheng@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4faeef52c8e6 ("arm64: dts: qcom: qcm2290: Add GPU nodes")
+Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Closes: https://lore.kernel.org/linux-arm-msm/8a64f70b-8034-45e7-86a3-0015cf357132@oss.qualcomm.com/T/#m404f1425c36b61467760f058b696b8910340a063
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251229-topic-6115_2290_gpu_dbgc-v1-2-4a24d196389c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/cow.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/qcm2290.dtsi | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
-index accfd198dbda8..83b3563be26b6 100644
---- a/tools/testing/selftests/mm/cow.c
-+++ b/tools/testing/selftests/mm/cow.c
-@@ -1612,8 +1612,8 @@ static void run_with_huge_zeropage(non_anon_test_fn fn, const char *desc)
- 	 * the first sub-page and test if we get another sub-page populated
- 	 * automatically.
- 	 */
--	FORCE_READ(mem);
--	FORCE_READ(smem);
-+	FORCE_READ(*mem);
-+	FORCE_READ(*smem);
- 	if (!pagemap_is_populated(pagemap_fd, mem + pagesize) ||
- 	    !pagemap_is_populated(pagemap_fd, smem + pagesize)) {
- 		ksft_test_result_skip("Did not get THPs populated\n");
-@@ -1663,8 +1663,8 @@ static void run_with_memfd(non_anon_test_fn fn, const char *desc)
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/qcm2290.dtsi b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
+index 3b0ba590ee825..e0e400fdd2497 100644
+--- a/arch/arm64/boot/dts/qcom/qcm2290.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
+@@ -1503,8 +1503,12 @@ usb_dwc3_ss: endpoint {
  
- 	/* Fault the page in. */
--	FORCE_READ(mem);
--	FORCE_READ(smem);
-+	FORCE_READ(*mem);
-+	FORCE_READ(*smem);
+ 		gpu: gpu@5900000 {
+ 			compatible = "qcom,adreno-07000200", "qcom,adreno";
+-			reg = <0x0 0x05900000 0x0 0x40000>;
+-			reg-names = "kgsl_3d0_reg_memory";
++			reg = <0x0 0x05900000 0x0 0x40000>,
++			      <0x0 0x0599e000 0x0 0x1000>,
++			      <0x0 0x05961000 0x0 0x800>;
++			reg-names = "kgsl_3d0_reg_memory",
++				    "cx_mem",
++				    "cx_dbgc";
  
- 	fn(mem, smem, pagesize);
- munmap:
-@@ -1719,8 +1719,8 @@ static void run_with_tmpfile(non_anon_test_fn fn, const char *desc)
- 	}
+ 			interrupts = <GIC_SPI 177 IRQ_TYPE_LEVEL_HIGH>;
  
- 	/* Fault the page in. */
--	FORCE_READ(mem);
--	FORCE_READ(smem);
-+	FORCE_READ(*mem);
-+	FORCE_READ(*smem);
- 
- 	fn(mem, smem, pagesize);
- munmap:
-@@ -1773,8 +1773,8 @@ static void run_with_memfd_hugetlb(non_anon_test_fn fn, const char *desc,
- 	}
- 
- 	/* Fault the page in. */
--	FORCE_READ(mem);
--	FORCE_READ(smem);
-+	FORCE_READ(*mem);
-+	FORCE_READ(*smem);
- 
- 	fn(mem, smem, hugetlbsize);
- munmap:
 -- 
 2.51.0
 
