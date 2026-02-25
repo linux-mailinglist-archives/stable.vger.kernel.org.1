@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-219213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNUEFHOdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:55 +0100
+	id 4GVAGqFSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4D51929D4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1801A18F47A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DDEFC309EE96
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 27162300D347
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B752C11CD;
-	Wed, 25 Feb 2026 06:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8816B254B03;
+	Wed, 25 Feb 2026 01:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVhEcd3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjAqCCln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940FF2D322F;
-	Wed, 25 Feb 2026 06:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C059256C6C;
+	Wed, 25 Feb 2026 01:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002564; cv=none; b=RHbbY9QQIh22TQH/oL6DI5GWbnA18euzqdCldXrCgcZrLMcKu3B5t8bcl5qp02m4rYxXRN37upFnYnQfOEjzTIwmuCqciERmsikD8b4gKDTaErD2imx2GV21ywGpyaVwyqImDHQOBlE7QgHP9I9nqQ3zIyrxYhMe12pc95e3NYw=
+	t=1771983394; cv=none; b=eSP/dzKgB2BmfYKuW+8ym7orwaeDJ2RLFZx5m/Trd9KAuIqi1EUsi44+B2hCR555jD7gN9Z0Znv8wOgU0Gfb8matdF1QLaa1NhysxkkNn4taHmJ8F4MbUsN513VnVhYmIk4ZmLDz2fPpZB8IXkpvARh8H9uy4IvUIH3ufsB0OJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002564; c=relaxed/simple;
-	bh=xekCzRQYIXcFm01+Ulwn5lHQeNigUXXqXCFdaKVFD/s=;
+	s=arc-20240116; t=1771983394; c=relaxed/simple;
+	bh=0P57qqbAfslKg/ZHYk+5ckkFS074O3sTwm143HKmGEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0pkahZuLRXE9q4emD5DsSGPj3rQrzQlFpMOAmW47bjoc+c6Td+ftbXLe+g61zn0sd2GWmmyNgvkLrASLbep0cIcdeNZaCOXpPAX6TIWocxFH9W0Zb/nT5rKWAAbCgWZLrD4M9VPKrYGWdY/kFYSHTUsUeGR9nAZPQ6T24ekAfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVhEcd3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7CBC19425;
-	Wed, 25 Feb 2026 06:56:04 +0000 (UTC)
+	 MIME-Version; b=ULqKgo9hrCca+E2fPMPOGfdMdIAg4MqgOhS1tiNnQE2J7+OD7F1Hhz+/vPfrvxxjnqrnTnHOLSucNgwTnxTBbgT9rMuGMd895mYJdwJuBZ7OkEVV9ZyKwO3v55+qE39VksBCfSRGBlJGmib85vQhpq+w2XCqgMoCGREwxMjEcMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjAqCCln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9ADC116D0;
+	Wed, 25 Feb 2026 01:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002564;
-	bh=xekCzRQYIXcFm01+Ulwn5lHQeNigUXXqXCFdaKVFD/s=;
+	s=korg; t=1771983394;
+	bh=0P57qqbAfslKg/ZHYk+5ckkFS074O3sTwm143HKmGEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVhEcd3ss8ZYx0hXERf2zpSrBc2nXGlIEc+h2QNMRFD5gLKeVAtzKg+knksyAXOkY
-	 ypPTQi5olbeltb7DVpzJxSUQ1i7oPMEXD3ZH+9VVYnAehOkoO41I7ZIQwdj7Bl5fht
-	 Nx9n159JbWTOaSgdiCHddzf3bQX4sHbCp5PcJeqI=
+	b=QjAqCClnqBZMstawFIyh3voUPjhsK2TFlLqVj63825U7cHr+YItIAAHq/o0xq51Rr
+	 vp5HdtCeLJu+wSHDVgx2CyzEbtBBKqrWQOymvLpHFB3KUkwXNcj+Y9ImvmCr6U/Utx
+	 D51g+8xHOoK8ojSUGlBPuk/oSDpk08CDoQ3B6bb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 299/641] mptcp: fix receive space timestamp initialization
+Subject: [PATCH 6.19 516/781] clk: meson: gxbb: Limit the HDMI PLL OD to /4 on GXL/GXM SoCs
 Date: Tue, 24 Feb 2026 17:20:25 -0800
-Message-ID: <20260225012355.989080453@linuxfoundation.org>
+Message-ID: <20260225012412.460359922@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,124 +65,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219213-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218555-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,googlemail.com,baylibre.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.987];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AC4D51929D4
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,baylibre.com:email]
+X-Rspamd-Queue-Id: 1801A18F47A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 70274765fef555af92a1532d5bd5450c691fca9d ]
+[ Upstream commit 5b1a43950fd3162af0ce52b13c14a2d29b179d4f ]
 
-MPTCP initialize the receive buffer stamp in mptcp_rcv_space_init(),
-using the provided subflow stamp. Such helper is invoked in several
-places; for passive sockets, space init happened at clone time.
+GXBB has the HDMI PLL OD in the HHI_HDMI_PLL_CNTL2 register while for
+GXL/GXM the OD has moved to HHI_HDMI_PLL_CNTL3. At first glance the rest
+of the OD setup seems identical.
 
-In such scenario, MPTCP ends-up accesses the subflow stamp before
-its initialization, leading to quite randomic timing for the first
-receive buffer auto-tune event, as the timestamp for newly created
-subflow is not refreshed there.
+However, looking at the downstream kernel sources as well as testing
+shows that GXL only supports three OD values:
+- register value 0 means: divide by 1
+- register value 1 means: divide by 2
+- register value 2 means: divide by 4
 
-Fix the issue moving the stamp initialization out of the mentioned helper,
-at the data transfer start, and always using a fresh timestamp.
+Using register value 3 (which on GXBB means: divide by 8) still divides
+by 4 as verified using meson-clk-measure. Downstream sources are also
+only using OD register values 0, 1 and 2 for GXL (while for GXBB the
+downstream kernel sources are also using value 3).
 
-Fixes: 013e3179dbd2 ("mptcp: fix rcv space initialization")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260203-net-next-mptcp-misc-feat-6-20-v1-2-31ec8bfc56d1@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add clk_div_table and have it replace the CLK_DIVIDER_POWER_OF_TWO flag
+to make the kernel's view of this register match with how the hardware
+actually works.
+
+Fixes: 69d92293274b ("clk: meson: add the gxl hdmi pll")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20260105204710.447779-2-martin.blumenstingl@googlemail.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 8 ++++----
- net/mptcp/protocol.h | 5 +++++
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/clk/meson/gxbb.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 15a70af7b776d..8f18509204b67 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2056,8 +2056,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
+diff --git a/drivers/clk/meson/gxbb.c b/drivers/clk/meson/gxbb.c
+index 5a229c4ffae10..ec9a3414875ac 100644
+--- a/drivers/clk/meson/gxbb.c
++++ b/drivers/clk/meson/gxbb.c
+@@ -349,12 +349,23 @@ static struct clk_regmap gxbb_hdmi_pll = {
+ 	},
+ };
  
- 	msk->rcvq_space.copied += copied;
- 
--	mstamp = div_u64(tcp_clock_ns(), NSEC_PER_USEC);
--	time = tcp_stamp_us_delta(mstamp, msk->rcvq_space.time);
-+	mstamp = mptcp_stamp();
-+	time = tcp_stamp_us_delta(mstamp, READ_ONCE(msk->rcvq_space.time));
- 
- 	rtt_us = msk->rcvq_space.rtt_us;
- 	if (rtt_us && time < (rtt_us >> 3))
-@@ -3421,6 +3421,7 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 	__mptcp_propagate_sndbuf(nsk, ssk);
- 
- 	mptcp_rcv_space_init(msk, ssk);
-+	msk->rcvq_space.time = mptcp_stamp();
- 
- 	if (mp_opt->suboptions & OPTION_MPTCP_MPC_ACK)
- 		__mptcp_subflow_fully_established(msk, subflow, mp_opt);
-@@ -3438,8 +3439,6 @@ void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk)
- 	msk->rcvq_space.copied = 0;
- 	msk->rcvq_space.rtt_us = 0;
- 
--	msk->rcvq_space.time = tp->tcp_mstamp;
--
- 	/* initial rcv_space offering made to peer */
- 	msk->rcvq_space.space = min_t(u32, tp->rcv_wnd,
- 				      TCP_INIT_CWND * tp->advmss);
-@@ -3652,6 +3651,7 @@ void mptcp_finish_connect(struct sock *ssk)
- 	 * accessing the field below
- 	 */
- 	WRITE_ONCE(msk->local_key, subflow->local_key);
-+	WRITE_ONCE(msk->rcvq_space.time, mptcp_stamp());
- 
- 	mptcp_pm_new_connection(msk, ssk, 0);
- }
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 30d5e57197936..27b1698c5aa2d 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -870,6 +870,11 @@ static inline bool mptcp_is_fully_established(struct sock *sk)
- 	       READ_ONCE(mptcp_sk(sk)->fully_established);
- }
- 
-+static inline u64 mptcp_stamp(void)
-+{
-+	return div_u64(tcp_clock_ns(), NSEC_PER_USEC);
-+}
++/*
++ * GXL hdmi OD dividers are POWER_OF_TWO dividers but limited to /4.
++ * A divider value of 3 should map to /8 but instead map /4 so ignore it.
++ */
++static const struct clk_div_table gxl_hdmi_pll_od_div_table[] = {
++	{ .val = 0, .div = 1 },
++	{ .val = 1, .div = 2 },
++	{ .val = 2, .div = 4 },
++	{ /* sentinel */ }
++};
 +
- void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk);
- void mptcp_data_ready(struct sock *sk, struct sock *ssk);
- bool mptcp_finish_join(struct sock *sk);
+ static struct clk_regmap gxl_hdmi_pll_od = {
+ 	.data = &(struct clk_regmap_div_data){
+ 		.offset = HHI_HDMI_PLL_CNTL + 8,
+ 		.shift = 21,
+ 		.width = 2,
+-		.flags = CLK_DIVIDER_POWER_OF_TWO,
++		.table = gxl_hdmi_pll_od_div_table,
+ 	},
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "hdmi_pll_od",
+@@ -372,7 +383,7 @@ static struct clk_regmap gxl_hdmi_pll_od2 = {
+ 		.offset = HHI_HDMI_PLL_CNTL + 8,
+ 		.shift = 23,
+ 		.width = 2,
+-		.flags = CLK_DIVIDER_POWER_OF_TWO,
++		.table = gxl_hdmi_pll_od_div_table,
+ 	},
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "hdmi_pll_od2",
+@@ -390,7 +401,7 @@ static struct clk_regmap gxl_hdmi_pll = {
+ 		.offset = HHI_HDMI_PLL_CNTL + 8,
+ 		.shift = 19,
+ 		.width = 2,
+-		.flags = CLK_DIVIDER_POWER_OF_TWO,
++		.table = gxl_hdmi_pll_od_div_table,
+ 	},
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "hdmi_pll",
 -- 
 2.51.0
 
