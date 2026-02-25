@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-219106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218495-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFMXGYJXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:30 +0100
+	id WIU6JHlSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218495-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBC5190557
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DE618F38E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C128831EA314
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 54AC8306FE44
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE0B280CFC;
-	Wed, 25 Feb 2026 01:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F150F22579E;
+	Wed, 25 Feb 2026 01:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rt0OG5fY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9zwf2TS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F4A26FA60;
-	Wed, 25 Feb 2026 01:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AFE1EB5E1;
+	Wed, 25 Feb 2026 01:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984039; cv=none; b=W2/nu1gZoqJbINLo5OJ8OCACgx21canVOpAZ5U0ElHEeObvWC3YG+rsA9NeRYJV6Ekeno044EBHG/AQhva+YAHR3MZuSxopQ4g2PdjQKF9w2PclZLUJDAi1Yy5bG7ewP5u0jhthG8WnUDLduuI00m6mGx0C5+IWX5nUgCw+w5Vk=
+	t=1771983325; cv=none; b=PTMNdMzsmSxZiKtQ1/3ajf2UI9IyszJeGvhRTXyL/YPPKDjLAXjppzR/yLtMP0zilAIfzOhD9iCCI4RJbSVkNKaq7KlhkztWcuH8GYcIh6OYFGFtYoCy01pomPA+L2RbPXH8dgHjoHREhbKRR1gxDU1pD62ninJnkrg4b65zHgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984039; c=relaxed/simple;
-	bh=OQ8KfNjiw+qcAtG8lj/ZnoLx+Di9bwW1B3Xd6kjV/Tw=;
+	s=arc-20240116; t=1771983325; c=relaxed/simple;
+	bh=nwvuobPwt2RQKR8gzccMKr1DXAm2ZPE69r8eDYRkPk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ODpATw8bYgBctLiMNaUr1KosCiksxzNKz45JR4H+fl+TF6wd6BSPTE71K2KZ+tNWsbDc8rF0J2+uK6Ufo73LwSyIVtRW6F/iH9s+F+3XTuAeaTmYu2Crh6g+5TL4svbEIpBgbTKJpKMr4nsF2kOK14Z0G1FPAElcQzthFa67MTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rt0OG5fY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EEDC116D0;
-	Wed, 25 Feb 2026 01:47:18 +0000 (UTC)
+	 MIME-Version; b=UsWTO4Ej/qNY501/WfCBE8qRNCAv7q4ioPjYZ4NpDWs6Z5NsRpfwnLSm9Sh67d2DpynnqZcDeBjPT+ekzl7WWgTSJglnOh3XjgSN0sxkArmwdvU1qvJ7h3DBKAqeYtiuGkKN88OwDz4Z54GFDmwr6tRu5BzWYJIOppP1HN6BMXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9zwf2TS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7310EC116D0;
+	Wed, 25 Feb 2026 01:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984039;
-	bh=OQ8KfNjiw+qcAtG8lj/ZnoLx+Di9bwW1B3Xd6kjV/Tw=;
+	s=korg; t=1771983325;
+	bh=nwvuobPwt2RQKR8gzccMKr1DXAm2ZPE69r8eDYRkPk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rt0OG5fYgIt8lgVBMokqq+nZw2kSPKVmqc9xuBIxM7BEraoy39VrG+mfKcRmL3OV6
-	 j7ikOipsiFgt7lqkXuPYz/azoa4+YLBIXoaZ714kfJA0xV5bOuxEIqIc2qsQ31/O8A
-	 KPxt2eXCNGZjQGWfa9Z+IoUkVM41iH/OeQI8Q6GU=
+	b=H9zwf2TSQcmIbZG5LDgCeTRmPg2mLfONvY4XcHhzpfNLxhJhidGOyUlS0om4uNhg6
+	 yAGF7egoZMV5k/CIerOK9DBck5dPJAghS7anPpu+73+dNyBBx0pzXTj3Kr+ZESh9jk
+	 m7MgwGEzR+ZS1t3INVP4p8mZF3UcdEFNg5HqidZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Alistair Popple <apopple@nvidia.com>,
+	Waqar Hameed <waqar.hameed@axis.com>,
+	Phil Reid <preid@electromag.com.au>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 240/641] PCI/P2PDMA: Fix p2pmem_alloc_mmap() warning condition
+Subject: [PATCH 6.19 457/781] power: supply: sbs-battery: Fix use-after-free in power_supply_changed()
 Date: Tue, 24 Feb 2026 17:19:26 -0800
-Message-ID: <20260225012354.690759101@linuxfoundation.org>
+Message-ID: <20260225012410.929183592@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219106-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218495-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,63 +87,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,huawei.com:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,deltatee.com:email]
-X-Rspamd-Queue-Id: BDBC5190557
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,msgid.link:url,axis.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 32DE618F38E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Waqar Hameed <waqar.hameed@axis.com>
 
-[ Upstream commit cb500023a75246f60b79af9f7321d6e75330c5b5 ]
+[ Upstream commit 8d59cf3887fbabacef53bfba473e33e8a8d9d07b ]
 
-Commit b7e282378773 has already changed the initial page refcount of
-p2pdma page from one to zero, however, in p2pmem_alloc_mmap() it uses
-"VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))" to assert the initial page
-refcount should not be zero and the following will be reported when
-CONFIG_DEBUG_VM is enabled:
+Using the `devm_` variant for requesting IRQ _before_ the `devm_`
+variant for allocating/registering the `power_supply` handle, means that
+the `power_supply` handle will be deallocated/unregistered _before_ the
+interrupt handler (since `devm_` naturally deallocates in reverse
+allocation order). This means that during removal, there is a race
+condition where an interrupt can fire just _after_ the `power_supply`
+handle has been freed, *but* just _before_ the corresponding
+unregistration of the IRQ handler has run.
 
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x380400000
-  flags: 0x20000000002000(reserved|node=0|zone=4)
-  raw: 0020000000002000 ff1100015e3ab440 0000000000000000 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))
-  ------------[ cut here ]------------
-  WARNING: CPU: 5 PID: 449 at drivers/pci/p2pdma.c:240 p2pmem_alloc_mmap+0x83a/0xa60
+This will lead to the IRQ handler calling `power_supply_changed()` with
+a freed `power_supply` handle. Which usually crashes the system or
+otherwise silently corrupts the memory...
 
-Fix by using "page_ref_count(page)" as the assertion condition.
+Note that there is a similar situation which can also happen during
+`probe()`; the possibility of an interrupt firing _before_ registering
+the `power_supply` handle. This would then lead to the nasty situation
+of using the `power_supply` handle *uninitialized* in
+`power_supply_changed()`.
 
-Fixes: b7e282378773 ("mm/mm_init: move p2pdma page refcount initialisation to p2pdma")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Link: https://patch.msgid.link/20251220040446.274991-3-houtao@huaweicloud.com
+Fix this racy use-after-free by making sure the IRQ is requested _after_
+the registration of the `power_supply` handle. Keep the old behavior of
+just printing a warning in case of any failures during the IRQ request
+and finishing the probe successfully.
+
+Fixes: d2cec82c2880 ("power: sbs-battery: Request threaded irq and fix dev callback cookie")
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+Reviewed-by: Phil Reid <preid@electromag.com.au>
+Link: https://patch.msgid.link/0ef896e002495e615157b482d18a437af19ddcd0.1766268280.git.waqar.hameed@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/p2pdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/sbs-battery.c | 36 +++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 5497ce0be7c5c..12c69bb2b2326 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -147,7 +147,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
- 		 * we have just allocated the page no one else should be
- 		 * using it.
- 		 */
--		VM_WARN_ON_ONCE_PAGE(!page_ref_count(page), page);
-+		VM_WARN_ON_ONCE_PAGE(page_ref_count(page), page);
- 		set_page_count(page, 1);
- 		ret = vm_insert_page(vma, vaddr, page);
- 		if (ret) {
+diff --git a/drivers/power/supply/sbs-battery.c b/drivers/power/supply/sbs-battery.c
+index 943c82ee978f4..43c48196c1674 100644
+--- a/drivers/power/supply/sbs-battery.c
++++ b/drivers/power/supply/sbs-battery.c
+@@ -1174,24 +1174,6 @@ static int sbs_probe(struct i2c_client *client)
+ 
+ 	i2c_set_clientdata(client, chip);
+ 
+-	if (!chip->gpio_detect)
+-		goto skip_gpio;
+-
+-	irq = gpiod_to_irq(chip->gpio_detect);
+-	if (irq <= 0) {
+-		dev_warn(&client->dev, "Failed to get gpio as irq: %d\n", irq);
+-		goto skip_gpio;
+-	}
+-
+-	rc = devm_request_threaded_irq(&client->dev, irq, NULL, sbs_irq,
+-		IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+-		dev_name(&client->dev), chip);
+-	if (rc) {
+-		dev_warn(&client->dev, "Failed to request irq: %d\n", rc);
+-		goto skip_gpio;
+-	}
+-
+-skip_gpio:
+ 	/*
+ 	 * Before we register, we might need to make sure we can actually talk
+ 	 * to the battery.
+@@ -1217,6 +1199,24 @@ static int sbs_probe(struct i2c_client *client)
+ 		return dev_err_probe(&client->dev, PTR_ERR(chip->power_supply),
+ 				     "Failed to register power supply\n");
+ 
++	if (!chip->gpio_detect)
++		goto out;
++
++	irq = gpiod_to_irq(chip->gpio_detect);
++	if (irq <= 0) {
++		dev_warn(&client->dev, "Failed to get gpio as irq: %d\n", irq);
++		goto out;
++	}
++
++	rc = devm_request_threaded_irq(&client->dev, irq, NULL, sbs_irq,
++		IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
++		dev_name(&client->dev), chip);
++	if (rc) {
++		dev_warn(&client->dev, "Failed to request irq: %d\n", rc);
++		goto out;
++	}
++
++out:
+ 	dev_info(&client->dev,
+ 		"%s: battery gas gauge device registered\n", client->name);
+ 
 -- 
 2.51.0
 
