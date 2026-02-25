@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-219211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFcVC1OdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:23 +0100
+	id 0G1YLZJTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA77192984
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5163018F90A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 19575308AFC3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B09FB3144963
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DA22C11D6;
-	Wed, 25 Feb 2026 06:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86559253932;
+	Wed, 25 Feb 2026 01:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYa70M6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ku4bTJ+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6ED2C0263;
-	Wed, 25 Feb 2026 06:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE4D18B0A;
+	Wed, 25 Feb 2026 01:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002562; cv=none; b=WsZ3kSedglKnDl98N9CJiwa8zJvgRej6+FRj/bj/aOmVZyjgXJK97v+YW2i4F/xY0K/M4TdfJSDwXL5pyNopHeg8hh2x1tJzo8xSXA1CavZTIv1Oq8Kqv1wPplbmau1lihrTuryWnEYElLDr/RZ3gOM95uyePXwXlEvbUObcR34=
+	t=1771983393; cv=none; b=hqISuukjs/ajMRPKAB003Mp8pSOMf6Ie4jFpA0fd9hFCEvo+0ioL8hDFHBP9ZtnGAJHdEBkGOUoJqqDiVPmdf0Rzw0DBDPibBd3L4PCMVpOeI1GWrChXFV0APhSbPc3z5bR8H1qQCv3euAKmiR0n8xxZr3fjvHIH/Y8dtnEmLtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002562; c=relaxed/simple;
-	bh=WhWC/rHETpuJW08mJvAKrse5Fovu0cC/ahcZMwpibzQ=;
+	s=arc-20240116; t=1771983393; c=relaxed/simple;
+	bh=rrQdZBWbOCMtCas/X6Vd3I8wl70dGeo7uSCVVuHtTf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYFrR62XjjKRTsX+OLHDzYKlrDeT8b9HZ6gzM7zWJZ5eWloh1+1dJk3IISoc/HFSHo1czJaCx2BsrpRBfdA6j4tKTQGGqk1iaM7y/h80mW8/MyUZQ+eUEJQde8SCrJz1tmCTQV9VA4GYW1ZlVEcj3wTJwD6fMp/2KMwJyiGlNns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYa70M6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F733C116D0;
-	Wed, 25 Feb 2026 06:56:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I9HJV3RFqgQRSKfaqVca2b7PZ0GXHR2Z8d6j/oeF9Ch05kmlf40+I6VveahuL3AxGxwZhztTaOTABLj9v+zT1BS/ZtBPB5+DQ9EHp643cDDoc0DGyu44Gd3SCnaidxPFlYHmDz3C0P1pFRyq+41IeuMRJrrHDAOFLLf8QYaKok4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ku4bTJ+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045FEC116D0;
+	Wed, 25 Feb 2026 01:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002562;
-	bh=WhWC/rHETpuJW08mJvAKrse5Fovu0cC/ahcZMwpibzQ=;
+	s=korg; t=1771983393;
+	bh=rrQdZBWbOCMtCas/X6Vd3I8wl70dGeo7uSCVVuHtTf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sYa70M6AITcQ0T6x+zJR390hbPo/mLGwaiiozAwSyR/BoelBvoPeIcZ1ksMm2MCSD
-	 HtARalmYgz8OoRmPd7AA3piae/rY0YV+D7JK5r/ZYodzuqPuXPGlYkULTLW1GNAror
-	 lnwdkz+p5NZ0uJaiaFoze3esCgNdx7AKdDHQ0Xzg=
+	b=ku4bTJ+QFcgVcv5+WiFkPKYfU7jkayYiheobXdKf+iLUu4+P35sUtY2rS+188z50e
+	 VWSCGBO4G8zYlOvt6r2fot+664OMX9Xsuxmz9s08y8jC20tAWo0WS59cHCGJyZlP4l
+	 TEA3VU6vmnDFDGw3wytK+hwDeCFIn4mvIM3g+ETg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 298/641] mptcp: do not account for OoO in mptcp_rcvbuf_grow()
+Subject: [PATCH 6.19 515/781] clk: qcom: rcg2: compute 2d using duty fraction directly
 Date: Tue, 24 Feb 2026 17:20:24 -0800
-Message-ID: <20260225012355.966103772@linuxfoundation.org>
+Message-ID: <20260225012412.437199209@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +63,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219211-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218554-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: BFA77192984
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5163018F90A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Taniya Das <taniya.das@oss.qualcomm.com>
 
-[ Upstream commit 6b329393502e5857662b851a13f947209c588587 ]
+[ Upstream commit d6205a1878dd4cc9664c4b4829b68a29c0426efc ]
 
-MPTCP-level OoOs are physiological when multiple subflows are active
-concurrently and will not cause retransmissions nor are caused by
-drops.
+The duty-cycle calculation in clk_rcg2_set_duty_cycle() currently
+derives an intermediate percentage `duty_per = (num * 100) / den` and
+then computes:
 
-Accounting for them in mptcp_rcvbuf_grow() causes the rcvbuf slowly
-drifting towards tcp_rmem[2].
+    d = DIV_ROUND_CLOSEST(n * duty_per * 2, 100);
 
-Remove such accounting. Note that subflows will still account for TCP-level
-OoO when the MPTCP-level rcvbuf is propagated.
+This introduces integer truncation at the percentage step (division by
+`den`) and a redundant scaling by 100, which can reduce precision for
+large `den` and skew the final rounding.
 
-This also closes a subtle and very unlikely race condition with rcvspace
-init; active sockets with user-space holding the msk-level socket lock,
-could complete such initialization in the receive callback, after that the
-first OoO data reaches the rcvbuf and potentially triggering a divide by
-zero Oops.
+Compute `2d` directly from the duty fraction to preserve precision and
+avoid the unnecessary scaling:
 
-Fixes: e118cdc34dd1 ("mptcp: rcvbuf auto-tuning improvement")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260203-net-next-mptcp-misc-feat-6-20-v1-1-31ec8bfc56d1@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    d = DIV_ROUND_CLOSEST(n * duty->num * 2, duty->den);
+
+This keeps the intended formula `d ≈ n * 2 * (num/den)` while performing
+a single, final rounded division, improving accuracy especially for small
+duty cycles or large denominators. It also removes the unused `duty_per`
+variable, simplifying the code.
+
+There is no functional changes beyond improved numerical accuracy.
+
+Fixes: 7f891faf596ed ("clk: qcom: clk-rcg2: Add support for duty-cycle for RCG")
+Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260105-duty_cycle_precision-v2-1-d1d466a6330a@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/clk/qcom/clk-rcg2.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index e4bb7e2d7b19a..15a70af7b776d 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -224,9 +224,6 @@ static bool mptcp_rcvbuf_grow(struct sock *sk, u32 newval)
- 	do_div(grow, oldval);
- 	rcvwin += grow << 1;
+diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
+index e18cb8807d735..2838d4cb2d58e 100644
+--- a/drivers/clk/qcom/clk-rcg2.c
++++ b/drivers/clk/qcom/clk-rcg2.c
+@@ -755,7 +755,7 @@ static int clk_rcg2_get_duty_cycle(struct clk_hw *hw, struct clk_duty *duty)
+ static int clk_rcg2_set_duty_cycle(struct clk_hw *hw, struct clk_duty *duty)
+ {
+ 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
+-	u32 notn_m, n, m, d, not2d, mask, duty_per, cfg;
++	u32 notn_m, n, m, d, not2d, mask, cfg;
+ 	int ret;
  
--	if (!RB_EMPTY_ROOT(&msk->out_of_order_queue))
--		rcvwin += MPTCP_SKB_CB(msk->ooo_last_skb)->end_seq - msk->ack_seq;
+ 	/* Duty-cycle cannot be modified for non-MND RCGs */
+@@ -774,10 +774,8 @@ static int clk_rcg2_set_duty_cycle(struct clk_hw *hw, struct clk_duty *duty)
+ 
+ 	n = (~(notn_m) + m) & mask;
+ 
+-	duty_per = (duty->num * 100) / duty->den;
 -
- 	cap = READ_ONCE(net->ipv4.sysctl_tcp_rmem[2]);
+ 	/* Calculate 2d value */
+-	d = DIV_ROUND_CLOSEST(n * duty_per * 2, 100);
++	d = DIV_ROUND_CLOSEST(n * duty->num * 2, duty->den);
  
- 	rcvbuf = min_t(u32, mptcp_space_from_win(sk, rcvwin), cap);
-@@ -350,9 +347,6 @@ static void mptcp_data_queue_ofo(struct mptcp_sock *msk, struct sk_buff *skb)
- end:
- 	skb_condense(skb);
- 	skb_set_owner_r(skb, sk);
--	/* do not grow rcvbuf for not-yet-accepted or orphaned sockets. */
--	if (sk->sk_socket)
--		mptcp_rcvbuf_grow(sk, msk->rcvq_space.space);
- }
- 
- static void mptcp_init_skb(struct sock *ssk, struct sk_buff *skb, int offset,
+ 	/*
+ 	 * Check bit widths of 2d. If D is too big reduce duty cycle.
 -- 
 2.51.0
 
