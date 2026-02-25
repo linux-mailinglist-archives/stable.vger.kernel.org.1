@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-219612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMngIq74nmm+YAQAu9opvQ
-	(envelope-from <stable+bounces-219612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:27:10 +0100
+	id 6EwCD7P4nmm+YAQAu9opvQ
+	(envelope-from <stable+bounces-219613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:27:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECB81980AE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:27:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B79121980BC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBF5230EE921
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 13:23:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E482310AECC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 13:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1672B3B8BBE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BB93B8D70;
 	Wed, 25 Feb 2026 13:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YUKOHBrN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PzXNGGFw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1763AE701
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 13:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDE234F49A
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 13:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772025784; cv=none; b=Bm8iGIJqRcaGpwSUWAWMyD4mPg1IohYo1n5VduYTzQGLy+fKHJr5R7wh2JG0WPiVmW47AGQY65H07NpJ2L3iKZdyBme5YTn0fYweW5nYOloawpWmG0lqk/aA95fdlo3kFqm+cUpMRdQLA/xx4emr22kX79uenkb4z4zWjITMIzk=
+	t=1772025785; cv=none; b=D09GPYX7MP9p0j8dlnGltTYuQf0SsTDZwOjB2+5NvtPruyfqQz2/jgLWMFAvQnSV4k8y3951fyYurfXtR9ZyrfL45Qi0yOEh0DLR3FG2O4TOaqX9HBThJ23hP/NwKNerwWZlfYLvmFh1few7dTRLC5FF5r2M8QjRYH9LhLVs2Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772025784; c=relaxed/simple;
-	bh=4Y4zP84HFAUB3kgviW60MveSoggDS6HMNQ6s3Qtd2Eg=;
+	s=arc-20240116; t=1772025785; c=relaxed/simple;
+	bh=6EwtloHH8zTNCsVXU2JNfULYTrkQVwF6+z9/CToBFtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mI5ge3EZYcRlHXkaOymiPwFmIg3EtBh+V5pP4YJ+7UR4zNoxHis+IsYa5UeChiLrjDKEMKqoHn88BaVa6TKPb2/ItqAQf37T7vg/naHUz/1BO+dAXBWk2aYNNH6+EwI5SUdc9R4Cuwv9YorjRltLjtzgyhMhoT8o3g2su9onR/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YUKOHBrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3814C19423;
-	Wed, 25 Feb 2026 13:23:03 +0000 (UTC)
+	 MIME-Version; b=X6DBTX97zYvSurh+UcThoHDNgrFlkCyBXrmrSQpRtbsyvPBbvK9tKc7QlEB+c2LC7Jbs2YidZb+6YmvwIB8ND8uX07PVUUwlIzK4ytpbwHFlP6h7GIGpyhfZ0kpkaXj0LJkrVsA2jRTtx4KuKbK1YvGHKxhORH1uWF6HxHhHPGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PzXNGGFw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8531C2BC86;
+	Wed, 25 Feb 2026 13:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772025784;
-	bh=4Y4zP84HFAUB3kgviW60MveSoggDS6HMNQ6s3Qtd2Eg=;
+	s=k20201202; t=1772025785;
+	bh=6EwtloHH8zTNCsVXU2JNfULYTrkQVwF6+z9/CToBFtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YUKOHBrN+n6BBl5KBBPEgevTQn07MVaYxXzkop+qpMCIasiZz5XnTMX/+NAPOmlmC
-	 yctef+BdWWp2uTkThlqqp9nRq/72lpF80mMHFM+ugpBZXRetpEfxpVIZ3WvXUPxZYg
-	 UuQw61abQnRrE8f8vU0KUELypJCeL68YVSEPk79V6az326JxVaoiHxeIJsLgY4xITq
-	 /3wYeBV/WWmvGZYaYNzt/zQqoJcdWHG3dVGgmQbLc/UONVJOHEXueyJWfz8dLFqbO9
-	 yin4tgITPYTDTprAd/OBv6Huo7MDTY0DUC54sAqEK/+QLbpysVM9wsP+yA/VTM8U+g
-	 l4mGxLEE5Tdjg==
+	b=PzXNGGFwBH+GDmHy0D9CIslagTCr8Rs+uOBDkIzMI4tAPu0gAQuyRf7/v1GRaFnWb
+	 HfA0xDtP8kvARL3LQAH0AEMXXtrN9RzkHXKoVDu6jfcvb+eCi6MhGre51tPhV3JYUk
+	 QgxoefdMec4dBdR6Mz99K5XjLtQDEmlRxJcMxYtD6SnbcdaYTZyBqFVlPqcVUyczz+
+	 zmuwRnTwWhwBt7p0P3OocfNxc2B/bbmfaITjmXNlZHx1mClVdl8wlFrJ5qIEJ3FdnY
+	 xQlsaE9NVwxIbSpHdRHWgpZsIYK7M21wRLqX1dmB6v44CzuQaaupMpxsLrSm6n3cur
+	 V55OViayST6Xw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/6] ext4: remove unnecessary e4b->bd_buddy_page check in ext4_mb_load_buddy_gfp
-Date: Wed, 25 Feb 2026 08:22:57 -0500
-Message-ID: <20260225132302.222887-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/6] ext4: convert some BUG_ON's in mballoc to use WARN_RATELIMITED instead
+Date: Wed, 25 Feb 2026 08:22:58 -0500
+Message-ID: <20260225132302.222887-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026022401-arose-calm-3e73@gregkh>
+In-Reply-To: <20260225132302.222887-1-sashal@kernel.org>
 References: <2026022401-arose-calm-3e73@gregkh>
+ <20260225132302.222887-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,19 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219612-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219613-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,43 +88,88 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huaweicloud.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0ECB81980AE
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B79121980BC
 X-Rspamd-Action: no action
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 285164b80175157c18a06425cf25591c9f942b1a ]
+[ Upstream commit 19b8b035a776939ceb3de0f45aded4751d7849ef ]
 
-e4b->bd_buddy_page is only set if we initialize ext4_buddy successfully. So
-e4b->bd_buddy_page is always NULL in error handle branch. Just remove the
-dead check.
+In cases where we have an obvious way of continuing, let's use
+WARN_RATELIMITED() instead of BUG_ON().
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230303172120.3800725-11-shikemeng@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Stable-dep-of: bdc56a9c46b2 ("ext4: fix e4b bitmap inconsistency reports")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
 diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index da0c63897190b..bf53a6b283ae4 100644
+index bf53a6b283ae4..e44dd404fe407 100644
 --- a/fs/ext4/mballoc.c
 +++ b/fs/ext4/mballoc.c
-@@ -1601,8 +1601,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 		put_page(page);
- 	if (e4b->bd_bitmap_page)
- 		put_page(e4b->bd_bitmap_page);
--	if (e4b->bd_buddy_page)
--		put_page(e4b->bd_buddy_page);
-+
- 	e4b->bd_buddy = NULL;
- 	e4b->bd_bitmap = NULL;
- 	return ret;
+@@ -1533,7 +1533,13 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 			put_page(page);
+ 		page = find_or_create_page(inode->i_mapping, pnum, gfp);
+ 		if (page) {
+-			BUG_ON(page->mapping != inode->i_mapping);
++			if (WARN_RATELIMIT(page->mapping != inode->i_mapping,
++	"ext4: bitmap's paging->mapping != inode->i_mapping\n")) {
++				/* should never happen */
++				unlock_page(page);
++				ret = -EINVAL;
++				goto err;
++			}
+ 			if (!PageUptodate(page)) {
+ 				ret = ext4_mb_init_cache(page, NULL, gfp);
+ 				if (ret) {
+@@ -1569,7 +1575,13 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 			put_page(page);
+ 		page = find_or_create_page(inode->i_mapping, pnum, gfp);
+ 		if (page) {
+-			BUG_ON(page->mapping != inode->i_mapping);
++			if (WARN_RATELIMIT(page->mapping != inode->i_mapping,
++	"ext4: buddy bitmap's page->mapping != inode->i_mapping\n")) {
++				/* should never happen */
++				unlock_page(page);
++				ret = -EINVAL;
++				goto err;
++			}
+ 			if (!PageUptodate(page)) {
+ 				ret = ext4_mb_init_cache(page, e4b->bd_bitmap,
+ 							 gfp);
+@@ -2288,7 +2300,9 @@ void ext4_mb_simple_scan_group(struct ext4_allocation_context *ac,
+ 			continue;
+ 
+ 		buddy = mb_find_buddy(e4b, i, &max);
+-		BUG_ON(buddy == NULL);
++		if (WARN_RATELIMIT(buddy == NULL,
++			 "ext4: mb_simple_scan_group: mb_find_buddy failed, (%d)\n", i))
++			continue;
+ 
+ 		k = mb_find_next_zero_bit(buddy, max, 0);
+ 		if (k >= max) {
+@@ -4314,15 +4328,14 @@ static void ext4_discard_allocated_blocks(struct ext4_allocation_context *ac)
+ 		if (ac->ac_f_ex.fe_len == 0)
+ 			return;
+ 		err = ext4_mb_load_buddy(ac->ac_sb, ac->ac_f_ex.fe_group, &e4b);
+-		if (err) {
++		if (WARN_RATELIMIT(err,
++				   "ext4: mb_load_buddy failed (%d)", err))
+ 			/*
+ 			 * This should never happen since we pin the
+ 			 * pages in the ext4_allocation_context so
+ 			 * ext4_mb_load_buddy() should never fail.
+ 			 */
+-			WARN(1, "mb_load_buddy failed (%d)", err);
+ 			return;
+-		}
+ 		ext4_lock_group(ac->ac_sb, ac->ac_f_ex.fe_group);
+ 		mb_free_blocks(ac->ac_inode, &e4b, ac->ac_f_ex.fe_start,
+ 			       ac->ac_f_ex.fe_len);
 -- 
 2.51.0
 
