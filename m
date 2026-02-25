@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218416-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLQ8MTlVnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:45 +0100
+	id IP09LMNTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218416-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B8218FF58
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB2C18F9FF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8D50C30E9538
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3FC2E30B775B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7899428507B;
-	Wed, 25 Feb 2026 01:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B3A22579E;
+	Wed, 25 Feb 2026 01:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9+Sg//y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHAk7E50"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD471F03DE;
-	Wed, 25 Feb 2026 01:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A2E18B0A;
+	Wed, 25 Feb 2026 01:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983886; cv=none; b=WeFfbvylti5nhKZBQHc4C0gUcxT/qZwb2Ree4MlFp4K9zonxMKOqdkc3SWJhkg4i4BuCeT+YDf2carasz5RlmNDxWwt98rQZbQWUtEkQ5MSgAwa58jlJ6UYMJnok6QkIh5IA1l9YUDyHDM7UXLhjHN5EcnFsvVVROIz+HWhkHKc=
+	t=1771983234; cv=none; b=cyTzwkKbPkd24Q1Zhg2mYqps/q3iAWWaYm7+7J7LCOI98NuI6BVXbTcPX80JV6jf7NCO1PONunfvj5GbxGO1dVY/dVUCh7dftMAh0MdsHQD0dvfRmNL13GJtst9wFN0cAbwN74XpQh/WEc7g+8QGM0iesCdPbJlRZbfk9Cw4q24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983886; c=relaxed/simple;
-	bh=UCl8WhMBgv+Lmi4Q87Nny1AigDhOb6kXC1jUtfhMbN4=;
+	s=arc-20240116; t=1771983234; c=relaxed/simple;
+	bh=ySEq7xpCw64/HmUu4VHQNSY93V5dlrv5kEaAAixBMKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fiW5+eMho6F2UZzKvUfKFu2bYRM7oBMaxoeXaCkg/GJUt44daSqAx0163iOnnSEtcVh6MWtOUOW+qJ+H8hKkMrb7SFZ3DKDjl7woUAs5Qvq8WqmqA4sOW07ZUW0V35VM4xbQ58blmGXGU9+Cu2wgdp4R5X9H9bMSN1EJGCjttqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9+Sg//y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A3DC116D0;
-	Wed, 25 Feb 2026 01:44:45 +0000 (UTC)
+	 MIME-Version; b=AqqVK9s5JKr2lErTY1vbjuWRiOTyb9ls73f/QI5XexxqYkTR7HYxgdEpdvoP/3wzp69PgLrOofSNnKItIlXrbRrrz83fvhNc7f8My4J0XuvVVUEoiXfT1b3r47Lw5VW5qYwPB/eTge6o0nbAmq+ah5cExRQm50ck+TUVNIG3m5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHAk7E50; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E221C116D0;
+	Wed, 25 Feb 2026 01:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983885;
-	bh=UCl8WhMBgv+Lmi4Q87Nny1AigDhOb6kXC1jUtfhMbN4=;
+	s=korg; t=1771983234;
+	bh=ySEq7xpCw64/HmUu4VHQNSY93V5dlrv5kEaAAixBMKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9+Sg//ybVQv1Y2CeOdRzQFBw6qZE13msx0liSptaqfmuBSaOX0BUVtYAFxHO2jUt
-	 cnaLjyGBN0s/AElxy4nOFfHMMHPatXojE7MFOyYXxASnG8FjmsVY+8G5FzAqU9IyC7
-	 ZfxP+C0pLqmT5gfPtTCtdo28izJR4R09VsQnUa7Q=
+	b=nHAk7E50xE13PATiGFuJMl0wDmF+IC9X07b/JzZ9T+QNPAOSeMSvOfXNJdwmmh70k
+	 LlANgih4khUIv7Z+bQFSG5f33EsWL5ivp4iHSEuqOALrUtNYUoEGbMEYTacNP/dSYq
+	 XM+zzmiQ5p0x/fVrYXrAL1QkWj3mHeLmHmWrnVxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 159/641] arm64: dts: amlogic: g12: assign the MMC A signal clock
-Date: Tue, 24 Feb 2026 17:18:05 -0800
-Message-ID: <20260225012352.927303636@linuxfoundation.org>
+Subject: [PATCH 6.19 377/781] wifi: ath12k: clear stale link mapping of ahvif->links_map
+Date: Tue, 24 Feb 2026 17:18:06 -0800
+Message-ID: <20260225012408.939323766@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +71,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218416-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218981-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ffe03000:email,ffe05000:email]
-X-Rspamd-Queue-Id: 34B8218FF58
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 4FB2C18F9FF
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
 
-[ Upstream commit 3c941feaa363f1573a501452391ddf513394c84b ]
+[ Upstream commit 2c1ba9c2adf0fda96eaaebd8799268a7506a8fc9 ]
 
-The amlogic MMC driver operate with the assumption that MMC clock
-is configured to provide 24MHz. It uses this path for low
-rates such as 400kHz.
+When an arvif is initialized in non-AP STA mode but MLO connection
+preparation fails before the arvif is created
+(arvif->is_created remains false), the error path attempts to delete all
+links. However, link deletion only executes when arvif->is_created is true.
+As a result, ahvif retains a stale entry of arvif that is initialized but
+not created.
 
-Assign the clock to make sure it is properly configured
+When a new arvif is initialized with the same link id, this stale mapping
+triggers the following WARN_ON.
 
-Fixes: 8a6b3ca2d361 ("arm64: dts: meson: g12a: add SDIO controller")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260114-amlogic-mmc-clocks-followup-v1-6-a999fafbe0aa@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+WARNING: drivers/net/wireless/ath/ath12k/mac.c:4271 at ath12k_mac_op_change_vif_links+0x140/0x180 [ath12k], CPU#3: wpa_supplicant/275
+
+Call trace:
+ ath12k_mac_op_change_vif_links+0x140/0x180 [ath12k] (P)
+ drv_change_vif_links+0xbc/0x1a4 [mac80211]
+ ieee80211_vif_update_links+0x54c/0x6a0 [mac80211]
+ ieee80211_vif_set_links+0x40/0x70 [mac80211]
+ ieee80211_prep_connection+0x84/0x450 [mac80211]
+ ieee80211_mgd_auth+0x200/0x480 [mac80211]
+ ieee80211_auth+0x14/0x20 [mac80211]
+ cfg80211_mlme_auth+0x90/0xf0 [cfg80211]
+ nl80211_authenticate+0x32c/0x380 [cfg80211]
+ genl_family_rcv_msg_doit+0xc8/0x134
+
+Fix this issue by unassigning the link vif and clearing ahvif->links_map
+if arvif is only initialized but not created.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+
+Fixes: 81e4be30544e ("wifi: ath12k: handle link removal in change_vif_links()")
+Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260127033400.1721220-1-aaradhana.sahu@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath12k/mac.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi b/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
-index 6724405eaa6f5..8d8ab775404d9 100644
---- a/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
-@@ -2431,6 +2431,9 @@ sd_emmc_a: mmc@ffe03000 {
- 				 <&clkc CLKID_FCLK_DIV2>;
- 			clock-names = "core", "clkin0", "clkin1";
- 			resets = <&reset RESET_SD_EMMC_A>;
-+
-+			assigned-clocks = <&clkc CLKID_SD_EMMC_A_CLK0>;
-+			assigned-clock-rates = <24000000>;
- 		};
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index e0e49f782bf8d..63684ff9332d4 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4175,8 +4175,10 @@ ath12k_mac_op_change_vif_links(struct ieee80211_hw *hw,
+ 		if (WARN_ON(!arvif))
+ 			return -EINVAL;
  
- 		sd_emmc_b: mmc@ffe05000 {
+-		if (!arvif->is_created)
++		if (!arvif->is_created) {
++			ath12k_mac_unassign_link_vif(arvif);
+ 			continue;
++		}
+ 
+ 		if (WARN_ON(!arvif->ar))
+ 			return -EINVAL;
 -- 
 2.51.0
 
