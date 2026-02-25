@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-218059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218060-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8D0gJfJPnmlIUgQAu9opvQ
-	(envelope-from <stable+bounces-218059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:27:14 +0100
+	id gOX3KQxQnmleUgQAu9opvQ
+	(envelope-from <stable+bounces-218060-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:27:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FE718EA8A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:27:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A89618EAC6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2AE203008338
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B27030BA43C
 	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFA025332E;
-	Wed, 25 Feb 2026 01:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543282505B2;
+	Wed, 25 Feb 2026 01:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMhVtLGl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BaOTKiVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70E424A06D;
-	Wed, 25 Feb 2026 01:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1832C2517AC;
+	Wed, 25 Feb 2026 01:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982829; cv=none; b=RjI4cmg8L0LFk7L6ESYuoQ3E/8HAHPo/9UhAxX5If67Frw1R/li13DJs2AVJrfnqcCUTFoNrnO+geNFfuPYoGuQtWGjHey+BhLCVGX613A/dnjzi2r1yrjnvVFL0tj6z9YyGZCp414VzdWQd/l2/tyBL7ete17SceMl5CFMKwz4=
+	t=1771982830; cv=none; b=Ks669xMD6OUizFRgWAaXHrMhwo8tsCawXqS2j0owNlf6Xp8TpkZB1UU9TPEAeLncerwZsU8f/yMB8OMzLiwd8r+KnF8dHpvcCWbGT7Pd057pUGTOKqJBZsrc3EBmIsiet9zu3IaoZQlqzi0pQENU7Ny6D2Vjwx1ow0d2lf7aZw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982829; c=relaxed/simple;
-	bh=gfj8WfXsSjJ/7yng3nkl0fBnxakZjYGZb9V7tFUE4xY=;
+	s=arc-20240116; t=1771982830; c=relaxed/simple;
+	bh=zdx8U/PfqhbK6iPo/ecL2ACMUcDdDXH5wMnElrmaOpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+UsOuVv3peHe6bOlDdbdbwpIbG2ORjhdkm0dgv/cS+HTrpuPJS4MixarZkBd0Qwvh99e4rXL2d01jJvMjcvCgKK82FxyI8G2gtuokRLY4UGUwTdwI861rS3Ns2f8uLCD8KolNQMNhHXKgPn/47I4guaL7SIRDUxfUhPB2t6NGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMhVtLGl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68B8C116D0;
-	Wed, 25 Feb 2026 01:27:08 +0000 (UTC)
+	 MIME-Version; b=pIjd8+czEr1gY85/uDmjcIVBUk0cC5jZPrZMTEE5qjCcQCSjqsOqqopCyApa3fR5hq2Fy/pGVQKsBKMEGKpkfPvwl9nbcptq7gUN1wRK9oG9A4ujLWyy2EPqSZb6H8VJNWQWjAoDdAplht+iYKK+YV1lKn2627wZUgRBSWt8YRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BaOTKiVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD35C116D0;
+	Wed, 25 Feb 2026 01:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982828;
-	bh=gfj8WfXsSjJ/7yng3nkl0fBnxakZjYGZb9V7tFUE4xY=;
+	s=korg; t=1771982830;
+	bh=zdx8U/PfqhbK6iPo/ecL2ACMUcDdDXH5wMnElrmaOpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xMhVtLGlRt8GOv/TdtV0DMGa1KWTz0bhFN8AXZPRQ1d6uvcID8s88fWj2cWI7QhCn
-	 8Svuczy23Zv1sBJiWuiDzSa3M4aGeEdXKhp72gMCgffVZnWn8P6V+69ZceibS9Lu72
-	 BFnMn7M2X7NMZ+B74bgkjnQuIxq6mv0hTfyRq56E=
+	b=BaOTKiVJROeBPirrz07h9ATLg3Z6RI/mWa5xXyhLGxivtw0/U4q/EYPYpjYT74ZG/
+	 dcaoylhm2VCY1pT6/edFOqNezQl+Zr3eIPdIv/cgI/LhyebcLXpoaeJ7LOkkSjEDxp
+	 BYOGWIJ3HkKC15uprPHeqTPZUJPXLg8xhoxsYy9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Paul Moore <paul@paul-moore.com>,
+	Xiaochen Shen <shenxiaochen@open-hieco.net>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 007/781] audit: move the compat_xxx_class[] extern declarations to audit_arch.h
-Date: Tue, 24 Feb 2026 17:11:56 -0800
-Message-ID: <20260225012359.877183087@linuxfoundation.org>
+Subject: [PATCH 6.19 008/781] selftests/resctrl: Fix a division by zero error on Hygon
+Date: Tue, 24 Feb 2026 17:11:57 -0800
+Message-ID: <20260225012359.900895895@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -67,105 +69,96 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218059-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218060-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 63FE718EA8A
+X-Rspamd-Queue-Id: 3A89618EAC6
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Xiaochen Shen <shenxiaochen@open-hieco.net>
 
-[ Upstream commit 76489955c6d4a065ca69dc88faf7a50a59b66f35 ]
+[ Upstream commit 671ef08d9455f5754d1fc96f5a14e357d6b80936 ]
 
-The comapt_xxx_class symbols aren't declared in anything that
-lib/comapt_audit.c is including (arm64 build) which is causing
-the following sparse warnings:
+Change to adjust effective L3 cache size with SNC enabled change
+introduced the snc_nodes_per_l3_cache() function to detect the Intel
+Sub-NUMA Clustering (SNC) feature by comparing #CPUs in node0 with #CPUs
+sharing LLC with CPU0. The function was designed to return:
+  (1) >1: SNC mode is enabled.
+  (2)  1: SNC mode is not enabled or not supported.
 
-lib/compat_audit.c:7:10: warning: symbol 'compat_dir_class'
-  was not declared. Should it be static?
-lib/compat_audit.c:12:10: warning: symbol 'compat_read_class'
-  was not declared. Should it be static?
-lib/compat_audit.c:17:10: warning: symbol 'compat_write_class'
-  was not declared. Should it be static?
-lib/compat_audit.c:22:10: warning: symbol 'compat_chattr_class'
-  was not declared. Should it be static?
-lib/compat_audit.c:27:10: warning: symbol 'compat_signal_class'
-  was not declared. Should it be static?
+However, on certain Hygon CPUs, #CPUs sharing LLC with CPU0 is actually
+less than #CPUs in node0. This results in snc_nodes_per_l3_cache()
+returning 0 (calculated as cache_cpus / node_cpus).
 
-Trying to fix this by chaning compat_audit.c to inclde <linux/audit.h>
-does not work on arm64 due to compile errors with the extra includes
-that changing this header makes. The simpler thing would be just to
-move the definitons of these symbols out of <linux/audit.h> into
-<linux/audit_arch.h> which is included.
+This leads to a division by zero error in get_cache_size():
+  *cache_size /= snc_nodes_per_l3_cache();
 
-Fixes: 4b58841149dca ("audit: Add generic compat syscall support")
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-[PM: rewrite subject line, fixed line length in description]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Causing the resctrl selftest to fail with:
+  "Floating point exception (core dumped)"
+
+Fix the issue by ensuring snc_nodes_per_l3_cache() returns 1 when SNC
+mode is not supported on the platform.
+
+Updated commit log to fix commit has issues:
+Shuah Khan <skhan@linuxfoundation.org>
+
+Link: https://lore.kernel.org/r/20251217030456.3834956-2-shenxiaochen@open-hieco.net
+Fixes: a1cd99e700ec ("selftests/resctrl: Adjust effective L3 cache size with SNC enabled")
+Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/audit.h      | 6 ------
- include/linux/audit_arch.h | 7 +++++++
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ tools/testing/selftests/resctrl/resctrlfs.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index 536f8ee8da818..b8d8029c6c480 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -128,12 +128,6 @@ enum audit_nfcfgop {
- extern int __init audit_register_class(int class, unsigned *list);
- extern int audit_classify_syscall(int abi, unsigned syscall);
- extern int audit_classify_arch(int arch);
--/* only for compat system calls */
--extern unsigned compat_write_class[];
--extern unsigned compat_read_class[];
--extern unsigned compat_dir_class[];
--extern unsigned compat_chattr_class[];
--extern unsigned compat_signal_class[];
+diff --git a/tools/testing/selftests/resctrl/resctrlfs.c b/tools/testing/selftests/resctrl/resctrlfs.c
+index 195f04c4d1586..b9c1bfb6cc029 100644
+--- a/tools/testing/selftests/resctrl/resctrlfs.c
++++ b/tools/testing/selftests/resctrl/resctrlfs.c
+@@ -243,6 +243,16 @@ int snc_nodes_per_l3_cache(void)
+ 		}
+ 		snc_mode = cache_cpus / node_cpus;
  
- /* audit_names->type values */
- #define	AUDIT_TYPE_UNKNOWN	0	/* we don't know yet */
-diff --git a/include/linux/audit_arch.h b/include/linux/audit_arch.h
-index 0e34d673ef171..2b8153791e6a5 100644
---- a/include/linux/audit_arch.h
-+++ b/include/linux/audit_arch.h
-@@ -23,4 +23,11 @@ enum auditsc_class_t {
- 
- extern int audit_classify_compat_syscall(int abi, unsigned syscall);
- 
-+/* only for compat system calls */
-+extern unsigned compat_write_class[];
-+extern unsigned compat_read_class[];
-+extern unsigned compat_dir_class[];
-+extern unsigned compat_chattr_class[];
-+extern unsigned compat_signal_class[];
++		/*
++		 * On some platforms (e.g. Hygon),
++		 * cache_cpus < node_cpus, the calculated snc_mode is 0.
++		 *
++		 * Set snc_mode = 1 to indicate that SNC mode is not
++		 * supported on the platform.
++		 */
++		if (!snc_mode)
++			snc_mode = 1;
 +
- #endif
+ 		if (snc_mode > 1)
+ 			ksft_print_msg("SNC-%d mode discovered.\n", snc_mode);
+ 	}
 -- 
 2.51.0
 
