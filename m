@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-219360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDlWISuenmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:59 +0100
+	id 8IwDOYBVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B85192BB4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA32190058
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C37C305EBA1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DF2AB307C65F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52D62F9DB5;
-	Wed, 25 Feb 2026 06:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6C626463A;
+	Wed, 25 Feb 2026 01:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r045LiyW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WInDHdB6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6636630EF97;
-	Wed, 25 Feb 2026 06:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90955248881;
+	Wed, 25 Feb 2026 01:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002664; cv=none; b=IcTqPSGsZPxu/w0mJQBRCdYg5o8gANWlAckCW1XtN1DJ1AGlHBglRN8TpVwmpnKCrpafOnQXekasfFeU8TzYpP/VfWMR2pMtsSmy7qD0BoD6vUzSMmooNuvr8GxMxRMwH3wmn303kks+5zBMLY7psg+5ODG0Cfhq9KQlFIK9Gn0=
+	t=1771983563; cv=none; b=TrRiodX7bpDwvDoaRnV0X/y8W8kTDM8hZvYlDAn/w68FEwfkeoiL5Yv4Q2W+Jqd0OePOCoqNJLRE3ZtmvayoBtW4jvutEcSAm9J+7yX7FLk27BjD9nJHy2MT13k99ljKg92mFjsN5L/7c6n0D3BS5ZsHY2CN/l+6letXYHKGYqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002664; c=relaxed/simple;
-	bh=asVjkajU7e7DUBMVY2y0yYFtiFdZXrthDNs93Hl2N+Q=;
+	s=arc-20240116; t=1771983563; c=relaxed/simple;
+	bh=oXKMBsWeH/VtZdyvpSkz+p3EcToWvc8ziks1aPAMmsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PxbiCZIAlyM9gxT0lFas5u3Wdp9Zesoo2Myx0SyJIF3XvPYX71E2L8U3DHVw6EvxLNfMcjVxDgYdCDHi7v4FiMmvrwf4+FzsGQrqjQVN+a+TEwchSC2bKtknWlnKJjXZC5UlgX9J5/43TjDKHH1ddKUynaCJohcliOykHvgsCx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r045LiyW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7C2C19422;
-	Wed, 25 Feb 2026 06:57:44 +0000 (UTC)
+	 MIME-Version; b=QsqhTpCfemMm2xYDW2e5X55V+LrkUo7/1BXMePGS3eH/oJ6Roz6nhhAiQZNXJJQeUOfIjFe6y5LD6eHJ2Wiz+Fs2QFAvOsW3+Blw9h/1+B+v7l1csohcSI0adqXzXhihedqODY0zepZmKiledIunMjEknsRiZELhy0HHn9e8aMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WInDHdB6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B00FC116D0;
+	Wed, 25 Feb 2026 01:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002664;
-	bh=asVjkajU7e7DUBMVY2y0yYFtiFdZXrthDNs93Hl2N+Q=;
+	s=korg; t=1771983563;
+	bh=oXKMBsWeH/VtZdyvpSkz+p3EcToWvc8ziks1aPAMmsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r045LiyWbB9jCy9Q1Klh7G7wg1HQcCwzs9DmXGl7kwMaMU4v0Ip28Hg1jA83Ydky8
-	 AIwYc6tuYo9mAGC8dfxbooN1YSkb6zgn4hL6Q9l8AEsfWpZa8iAYm5flzXHCwhI7CT
-	 DftQ4EEd7rx28tmUZxmzQXCq21FSG0M6hjdElacg=
+	b=WInDHdB674s23k3mPLpc6/PBVQTPzMihHWSGKODPOtWnNDUG1WJKMc/KdjS8vsg6w
+	 vLgz/NQqo+OBH+1ah8SjjIcyarBFWCEMuov6kQMQn7jzknXWaaDDhAS8vNUJfOwe6j
+	 sH47KO57iI9mJ6jFA4T8LGpEKfa6Fnd9iVTHy3tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Brian Witte <brianwitte@mailfence.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 444/641] clk: zynqmp: divider: convert from divider_round_rate() to divider_determine_rate()
-Date: Tue, 24 Feb 2026 17:22:50 -0800
-Message-ID: <20260225012359.283465288@linuxfoundation.org>
+Subject: [PATCH 6.19 662/781] netfilter: nft_quota: use atomic64_xchg for reset
+Date: Tue, 24 Feb 2026 17:22:51 -0800
+Message-ID: <20260225012416.024413239@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,75 +70,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218703-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219360-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 00B85192BB4
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mailfence.com:email,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DDA32190058
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Brian Witte <brianwitte@mailfence.com>
 
-[ Upstream commit 30a807808c69a1907001ffb79289237a2ee97cfa ]
+[ Upstream commit 30c4d7fb59ac4c8d7fa7937df11eed10b368fa11 ]
 
-The divider_round_rate() function is now deprecated, so let's migrate
-to divider_determine_rate() instead so that this deprecated API can be
-removed.
+Use atomic64_xchg() to atomically read and zero the consumed value
+on reset, which is simpler than the previous read+sub pattern and
+doesn't require lock serialization.
 
-Note that when the main function itself was migrated to use
-determine_rate, this was mistakenly converted to:
-
-    req->rate = divider_round_rate(...)
-
-This is invalid in the case when an error occurs since it can set the
-rate to a negative value.
-
-Fixes: 0f9cf96a01fd ("clk: zynqmp: divider: convert from round_rate() to determine_rate()")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+Fixes: bd662c4218f9 ("netfilter: nf_tables: Add locking for NFT_MSG_GETOBJ_RESET requests")
+Fixes: 3d483faa6663 ("netfilter: nf_tables: Add locking for NFT_MSG_GETSETELEM_RESET requests")
+Fixes: 3cb03edb4de3 ("netfilter: nf_tables: Add locking for NFT_MSG_GETRULE_RESET requests")
+Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Brian Witte <brianwitte@mailfence.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/zynqmp/divider.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/netfilter/nft_quota.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
-index c824eeacd8ebd..de6f478d527d8 100644
---- a/drivers/clk/zynqmp/divider.c
-+++ b/drivers/clk/zynqmp/divider.c
-@@ -151,8 +151,9 @@ static int zynqmp_clk_divider_determine_rate(struct clk_hw *hw,
+diff --git a/net/netfilter/nft_quota.c b/net/netfilter/nft_quota.c
+index df0798da2329b..cb6c0e04ff675 100644
+--- a/net/netfilter/nft_quota.c
++++ b/net/netfilter/nft_quota.c
+@@ -140,11 +140,16 @@ static int nft_quota_do_dump(struct sk_buff *skb, struct nft_quota *priv,
+ 	u64 consumed, consumed_cap, quota;
+ 	u32 flags = priv->flags;
  
- 	width = fls(divider->max_div);
+-	/* Since we inconditionally increment consumed quota for each packet
++	/* Since we unconditionally increment consumed quota for each packet
+ 	 * that we see, don't go over the quota boundary in what we send to
+ 	 * userspace.
+ 	 */
+-	consumed = atomic64_read(priv->consumed);
++	if (reset) {
++		consumed = atomic64_xchg(priv->consumed, 0);
++		clear_bit(NFT_QUOTA_DEPLETED_BIT, &priv->flags);
++	} else {
++		consumed = atomic64_read(priv->consumed);
++	}
+ 	quota = atomic64_read(&priv->quota);
+ 	if (consumed >= quota) {
+ 		consumed_cap = quota;
+@@ -160,10 +165,6 @@ static int nft_quota_do_dump(struct sk_buff *skb, struct nft_quota *priv,
+ 	    nla_put_be32(skb, NFTA_QUOTA_FLAGS, htonl(flags)))
+ 		goto nla_put_failure;
  
--	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
--				       NULL, width, divider->flags);
-+	ret = divider_determine_rate(hw, req, NULL, width, divider->flags);
-+	if (ret != 0)
-+		return ret;
+-	if (reset) {
+-		atomic64_sub(consumed, priv->consumed);
+-		clear_bit(NFT_QUOTA_DEPLETED_BIT, &priv->flags);
+-	}
+ 	return 0;
  
- 	if (divider->is_frac && (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) &&
- 	    (req->rate % req->best_parent_rate))
+ nla_put_failure:
 -- 
 2.51.0
 
