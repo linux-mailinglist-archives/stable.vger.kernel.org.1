@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-219078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBc3EPFYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219078-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:37 +0100
+	id 6FR9HYpSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8B0190852
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31CF018F3CC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A70363138D9F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5D534308E0FB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D60248881;
-	Wed, 25 Feb 2026 01:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EEB1EB5E1;
+	Wed, 25 Feb 2026 01:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4+42LJX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmfLWtDz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9123248886;
-	Wed, 25 Feb 2026 01:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF453242D9B;
+	Wed, 25 Feb 2026 01:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984004; cv=none; b=Pj6r4k1uyK3KcOAZY3iWN73pkVA3s4jF6yXshbLn9vLJj2CfoOMb5wgETkwQ8NzQqqyIzNwHLksHGWW63UL5DzYYnXrYNeKmwr0qx5H932mEiD83jjAJ+kSOgeKkGWWp8A4szAMCqVXcLC9WrcgOGT2waqnU9Ug1aIr3eEGkUSA=
+	t=1771983344; cv=none; b=ictP4bhNEIouO3yphjqH9zrwvEbkHjZ0wjpogQ7Izh540MsPLQLk9Lvq0ZHepVl+s4QXVwAQTixXzDnWN93aUrGupCnpvzoVIwgZ/FHgTANdrfB1fN07AiAxvqUu2mm5f3pO+r0kiUafM34glokI9KSQFR4KBsGNUU0TW0h4uOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984004; c=relaxed/simple;
-	bh=NRmaXp04joY0e+4ZWnk9fqUu3g7Mvx5gppyU8hH5WAA=;
+	s=arc-20240116; t=1771983344; c=relaxed/simple;
+	bh=1+xfVaQlVoI/4BZDkVVenVyuIRmrAY60mB56gRLccuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6E0QhJm2m+3wh8iFYgcUyddrMUSs6fX8G8MNLF0xVVBCBgZrXhkJ/6IW0YxhkJhfHVKbqBMtLpqlqcdHoSOwf0t+oZ49A0Q/zvBzALyQu7HztGREa8cPvWSMFLjmhD3fMXCL/iF1TCbN9XViQS2oSvYS+VRzWZdZcRpc06ozfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4+42LJX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63227C116D0;
-	Wed, 25 Feb 2026 01:46:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DlttAjG5mkiXpN7AlWSwA3barBR+qo0ZXueGuur/BWBJCyZ67a5FedwuZeWceddlePY4sDoc67qkMkaArz0V72IWOo8mEmES2LyvD/hVyH5svQSyjeKveyHpuA4moojuwuPYOQLqP7p0ieoqUvOfq051ugatnazYmFlMYK2zZCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmfLWtDz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F919C116D0;
+	Wed, 25 Feb 2026 01:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984004;
-	bh=NRmaXp04joY0e+4ZWnk9fqUu3g7Mvx5gppyU8hH5WAA=;
+	s=korg; t=1771983344;
+	bh=1+xfVaQlVoI/4BZDkVVenVyuIRmrAY60mB56gRLccuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4+42LJX3cIUaI9MhC8x3UcvT0bZh/qF2/4knUOlIOxUFvitE9CqdrESpXncNaTHR
-	 T3Y4sjNxW23TzC7pD5exXwJukX62Mx0+qSCdjyN1oPdnvWmGMMwogod5HyNU0bm5rP
-	 GpojBrGzDbNQKMkzmm1zHxwoKNDDsq3rLJDKCswU=
+	b=qmfLWtDzERNEtQ6+BzyixFWB+gpFcNvxHGMtFyn89xSbb4uY9xtAJ0u76NFqcP+wK
+	 fZGdVbwQ/Xc7zCCZ8X3H6drlYDXvkPxZSEBulWHiP2Y+iLEkdw3FIi/O4hgQ+mDGfY
+	 f1kDSBfqLgfNQjhWLYDpXq1K9YNaX5O4hNJKLQZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
+	Lars Francke <lars.francke@gmail.com>,
+	Yijun Shen <Yijun.Shen@Dell.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 256/641] netfilter: nf_tables: reset table validation state on abort
+Subject: [PATCH 6.19 473/781] crypto: ccp - Add an S4 restore flow
 Date: Tue, 24 Feb 2026 17:19:42 -0800
-Message-ID: <20260225012355.042085508@linuxfoundation.org>
+Message-ID: <20260225012411.417574589@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +67,201 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,Dell.com,kernel.org,amd.com,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-218512-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219078-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: 8A8B0190852
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 31CF018F3CC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 6f93616a7323d646d18db9c09f147e453b40fdd7 ]
+[ Upstream commit 0ba2035026d0ab6c7c7e65ad8b418dc73d5700d9 ]
 
-If a transaction fails the final validation in the commit hook, the table
-validation state is changed to NFT_VALIDATE_DO and a replay of the batch is
-performed.  Every rule insert will then do a graph validation.
+The system will have lost power during S4.  The ring used for TEE
+communications needs to be initialized before use.
 
-This is much slower, but provides better error reporting to the user
-because we can point at the rule that introduces the validation issue.
-
-Without this reset the affected table(s) remain in full validation mode,
-i.e. on next transaction we start with slow-mode.
-
-This makes the next transaction after a failed incremental update very slow:
-
- # time iptables-restore < /tmp/ruleset
- real    0m0.496s [..]
- # time iptables -A CALLEE -j CALLER
- iptables v1.8.11 (nf_tables):  RULE_APPEND failed (Too many links): rule in chain CALLEE
- real    0m0.022s [..]
- # time iptables-restore < /tmp/ruleset
- real    1m22.355s [..]
-
-After this patch, 2nd iptables-restore is back to ~0.5s.
-
-Fixes: 9a32e9850686 ("netfilter: nf_tables: don't write table validation state without mutex")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: f892a21f51162 ("crypto: ccp - use generic power management")
+Reported-by: Lars Francke <lars.francke@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/CAD-Ua_gfJnQSo8ucS_7ZwzuhoBRJ14zXP7s8b-zX3ZcxcyWePw@mail.gmail.com/
+Tested-by: Yijun Shen <Yijun.Shen@Dell.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://patch.msgid.link/20260116041132.153674-4-superm1@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/crypto/ccp/psp-dev.c | 11 +++++++++++
+ drivers/crypto/ccp/sp-dev.c  | 12 ++++++++++++
+ drivers/crypto/ccp/sp-dev.h  |  3 +++
+ drivers/crypto/ccp/sp-pci.c  | 16 +++++++++++++++-
+ drivers/crypto/ccp/tee-dev.c |  5 +++++
+ drivers/crypto/ccp/tee-dev.h |  1 +
+ 6 files changed, 47 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 6059a299004d4..df18dfd5a8271 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -11538,6 +11538,13 @@ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
- 	ret = __nf_tables_abort(net, action);
- 	nft_gc_seq_end(nft_net, gc_seq);
+diff --git a/drivers/crypto/ccp/psp-dev.c b/drivers/crypto/ccp/psp-dev.c
+index 9e21da0e298ad..5c7f7e02a7d8a 100644
+--- a/drivers/crypto/ccp/psp-dev.c
++++ b/drivers/crypto/ccp/psp-dev.c
+@@ -351,6 +351,17 @@ struct psp_device *psp_get_master_device(void)
+ 	return sp ? sp->psp_data : NULL;
+ }
  
-+	if (action == NFNL_ABORT_NONE) {
-+		struct nft_table *table;
++int psp_restore(struct sp_device *sp)
++{
++	struct psp_device *psp = sp->psp_data;
++	int ret = 0;
 +
-+		list_for_each_entry(table, &nft_net->tables, list)
-+			table->validate_state = NFT_VALIDATE_SKIP;
++	if (psp->tee_data)
++		ret = tee_restore(psp);
++
++	return ret;
++}
++
+ void psp_pci_init(void)
+ {
+ 	psp_master = psp_get_master_device();
+diff --git a/drivers/crypto/ccp/sp-dev.c b/drivers/crypto/ccp/sp-dev.c
+index 3467f6db4f505..f204aa5df96e2 100644
+--- a/drivers/crypto/ccp/sp-dev.c
++++ b/drivers/crypto/ccp/sp-dev.c
+@@ -230,6 +230,18 @@ int sp_resume(struct sp_device *sp)
+ 	return 0;
+ }
+ 
++int sp_restore(struct sp_device *sp)
++{
++	if (sp->psp_data) {
++		int ret = psp_restore(sp);
++
++		if (ret)
++			return ret;
 +	}
 +
- 	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++	return sp_resume(sp);
++}
++
+ struct sp_device *sp_get_psp_master_device(void)
+ {
+ 	struct sp_device *i, *ret = NULL;
+diff --git a/drivers/crypto/ccp/sp-dev.h b/drivers/crypto/ccp/sp-dev.h
+index 1335a83fe052e..a83751cfd0060 100644
+--- a/drivers/crypto/ccp/sp-dev.h
++++ b/drivers/crypto/ccp/sp-dev.h
+@@ -141,6 +141,7 @@ void sp_destroy(struct sp_device *sp);
  
- 	/* module autoload needs to happen after GC sequence update because it
+ int sp_suspend(struct sp_device *sp);
+ int sp_resume(struct sp_device *sp);
++int sp_restore(struct sp_device *sp);
+ int sp_request_ccp_irq(struct sp_device *sp, irq_handler_t handler,
+ 		       const char *name, void *data);
+ void sp_free_ccp_irq(struct sp_device *sp, void *data);
+@@ -174,6 +175,7 @@ int psp_dev_init(struct sp_device *sp);
+ void psp_pci_init(void);
+ void psp_dev_destroy(struct sp_device *sp);
+ void psp_pci_exit(void);
++int psp_restore(struct sp_device *sp);
+ 
+ #else /* !CONFIG_CRYPTO_DEV_SP_PSP */
+ 
+@@ -181,6 +183,7 @@ static inline int psp_dev_init(struct sp_device *sp) { return 0; }
+ static inline void psp_pci_init(void) { }
+ static inline void psp_dev_destroy(struct sp_device *sp) { }
+ static inline void psp_pci_exit(void) { }
++static inline int psp_restore(struct sp_device *sp) { return 0; }
+ 
+ #endif /* CONFIG_CRYPTO_DEV_SP_PSP */
+ 
+diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
+index 8891ceee1d7d0..6ac805d99ccb3 100644
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -353,6 +353,13 @@ static int __maybe_unused sp_pci_resume(struct device *dev)
+ 	return sp_resume(sp);
+ }
+ 
++static int __maybe_unused sp_pci_restore(struct device *dev)
++{
++	struct sp_device *sp = dev_get_drvdata(dev);
++
++	return sp_restore(sp);
++}
++
+ #ifdef CONFIG_CRYPTO_DEV_SP_PSP
+ static const struct sev_vdata sevv1 = {
+ 	.cmdresp_reg		= 0x10580,	/* C2PMSG_32 */
+@@ -563,7 +570,14 @@ static const struct pci_device_id sp_pci_table[] = {
+ };
+ MODULE_DEVICE_TABLE(pci, sp_pci_table);
+ 
+-static SIMPLE_DEV_PM_OPS(sp_pci_pm_ops, sp_pci_suspend, sp_pci_resume);
++static const struct dev_pm_ops sp_pci_pm_ops = {
++	.suspend = pm_sleep_ptr(sp_pci_suspend),
++	.resume = pm_sleep_ptr(sp_pci_resume),
++	.freeze = pm_sleep_ptr(sp_pci_suspend),
++	.thaw = pm_sleep_ptr(sp_pci_resume),
++	.poweroff = pm_sleep_ptr(sp_pci_suspend),
++	.restore_early = pm_sleep_ptr(sp_pci_restore),
++};
+ 
+ static struct pci_driver sp_pci_driver = {
+ 	.name = "ccp",
+diff --git a/drivers/crypto/ccp/tee-dev.c b/drivers/crypto/ccp/tee-dev.c
+index af881daa5855b..11c4b05e2f3a2 100644
+--- a/drivers/crypto/ccp/tee-dev.c
++++ b/drivers/crypto/ccp/tee-dev.c
+@@ -366,3 +366,8 @@ int psp_check_tee_status(void)
+ 	return 0;
+ }
+ EXPORT_SYMBOL(psp_check_tee_status);
++
++int tee_restore(struct psp_device *psp)
++{
++	return tee_init_ring(psp->tee_data);
++}
+diff --git a/drivers/crypto/ccp/tee-dev.h b/drivers/crypto/ccp/tee-dev.h
+index ea9a2b7c05f57..c23416cb7bb37 100644
+--- a/drivers/crypto/ccp/tee-dev.h
++++ b/drivers/crypto/ccp/tee-dev.h
+@@ -111,5 +111,6 @@ struct tee_ring_cmd {
+ 
+ int tee_dev_init(struct psp_device *psp);
+ void tee_dev_destroy(struct psp_device *psp);
++int tee_restore(struct psp_device *psp);
+ 
+ #endif /* __TEE_DEV_H__ */
 -- 
 2.51.0
 
