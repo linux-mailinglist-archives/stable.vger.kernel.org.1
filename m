@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-218280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6G85Mh1Snmm6UgQAu9opvQ
-	(envelope-from <stable+bounces-218280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:29 +0100
+	id oEd4Is5VnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFEB018F1EE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D301900FE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1B9F330730AC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1FD6C3273C8E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4180231A41;
-	Wed, 25 Feb 2026 01:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1722C27603A;
+	Wed, 25 Feb 2026 01:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rO6UW734"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9gdsD0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7815C1E2834;
-	Wed, 25 Feb 2026 01:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6BF1D5141;
+	Wed, 25 Feb 2026 01:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983080; cv=none; b=WF1SFux6mVhpk1E7KjUh0kfbbpOJPgMOQ31QjwA7B4MCNgPwwYIjcOpPl5aMt9WhGNRRbdbN7qrrsKfd8CS6uTF44pC5hPj4wNIDg8ghORtZymaS0/4sEx5/4RiqhBZz2QLjbF9GEXLXIFEDSmZUm18i6qFXxPsCnT3161GSioE=
+	t=1771983728; cv=none; b=Jr5PThvQIdcfPTMLrNvoZk/nN6XYSzW/eP+pFTB9zIe7YAZRyyXv/hKOi23mQm0hR7VHrpki3xqZd9debPkAAFlzTXf/9Q1yj5p37GiHxx6+xPj0Howx398eIDTycvaQjAlXOOD0uV2qdRT6+2D4dgxiRHUj9R/wYXuy9IL1B8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983080; c=relaxed/simple;
-	bh=YS5SqUwIU5g+cQKTTTzp1pzCDqi3N8BZx/yY0bQFwO8=;
+	s=arc-20240116; t=1771983728; c=relaxed/simple;
+	bh=uJdgWmdxVoqHdmXpEC/RHRkoyFW85DEgtZ+XfqfWRGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s86VIG4Wj/MqapzKeAjcKt7luVjhKVdnGufWhtA1pOCays3pK6UbtJ6/7zGitNDo6qlv7tHfiC01OV0BwvLe5HuIhpEv+XJon/2CTaIPWfqkkdJMQ/ClvzUd2oXKmcJSHQy9OoxDt+hZMp87H1AD8JvTLSkHBDo3EsDyZfV8+r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rO6UW734; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBD8C116D0;
-	Wed, 25 Feb 2026 01:31:20 +0000 (UTC)
+	 MIME-Version; b=SCnApGzdK5jfsrEgilBblPn6wfjNcLO1LUS4Y1/FKb5A/W5cOGzgyKkzW20xGLOMLworUZBGAs4Eftz9HP44jIGLfi32MrpvqdjJG63GFimxeGYCAUptYXTT0+05C/r870x7DvMDSOSF5TYgHA7X85dBdK/QSAUoUWGPlqQd0ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9gdsD0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD9BC116D0;
+	Wed, 25 Feb 2026 01:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983080;
-	bh=YS5SqUwIU5g+cQKTTTzp1pzCDqi3N8BZx/yY0bQFwO8=;
+	s=korg; t=1771983728;
+	bh=uJdgWmdxVoqHdmXpEC/RHRkoyFW85DEgtZ+XfqfWRGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rO6UW734C8Z0vIRgVRQKaYYYSk6PEVqrElEg65fV6tmwtkt4rKve9+l9X8b0cvLMg
-	 uA/3sf8Mh0QO/q37ISe62KxmLRWvg2M6aULJXJwiOWZQ5CH6kwZYoXu1bCKfUV1qzK
-	 k7gIVgf8aUvy+0qxWXP5y0yGnAODt5nswUuANhqE=
+	b=i9gdsD0AOevtXjEV3w9mFsBMXqeNxs25VIAnBDKqYgzmU3P7emgQTV1QibJo5tWaD
+	 VoRI8vvnarz1SXC1COV5azAASqXWTjRO/L4qfLYhFk0pm+OkujQY+gCEvsBoh03khg
+	 6a1GCUUEvtAxzzaF6mrUfwT0wSMPgzihNifnwBvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	darlington Opara <darlington.opara@amd.com>,
-	Jinage Zhao <jiange.zhao@amd.com>,
-	Monk Liu <Monk.Liu@amd.com>,
-	Emily Deng <Emily.Deng@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 241/781] drm/amdgpu: Use explicit VCN instance 0 in SR-IOV init
+Subject: [PATCH 6.18 024/641] btrfs: make sure all btrfs_bio::end_io are called in task context
 Date: Tue, 24 Feb 2026 17:15:50 -0800
-Message-ID: <20260225012405.617801942@linuxfoundation.org>
+Message-ID: <20260225012349.565373155@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,210 +63,234 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218280-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218845-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: AFEB018F1EE
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E7D301900FE
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit af26fa751c2eef66916acbf0d3c3e9159da56186 ]
+[ Upstream commit 4591c3ef751d861d7dd95ff4d2aadb1b5e95854e ]
 
-vcn_v2_0_start_sriov() declares a local variable "i" initialized to zero
-and uses it only as the instance index in SOC15_REG_OFFSET(UVD, i, ...).
-The value is never changed and all other fields are taken from
-adev->vcn.inst[0], so this path only ever programs VCN instance 0.
+[BACKGROUND]
+Btrfs has a lot of different bi_end_io functions, to handle different
+raid profiles. But they introduced a lot of different contexts for
+btrfs_bio::end_io() calls:
 
-This triggered a Smatch:
-warn: iterator 'i' not incremented
+- Simple read bios
+  Run in task context, backed by either endio_meta_workers or
+  endio_workers.
 
-Replace the dummy iterator with an explicit instance index of 0 in
-SOC15_REG_OFFSET() calls.
+- Simple write bios
+  Run in IRQ context.
 
-Fixes: dd26858a9cd8 ("drm/amdgpu: implement initialization part on VCN2.0 for SRIOV")
-Reported by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: darlington Opara <darlington.opara@amd.com>
-Cc: Jinage Zhao <jiange.zhao@amd.com>
-Cc: Monk Liu <Monk.Liu@amd.com>
-Cc: Emily Deng <Emily.Deng@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Emily Deng <Emily.Deng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+- RAID56 write or rebuild bios
+  Run in task context, backed by rmw_workers.
+
+- Mirrored write bios
+  Run in irq context.
+
+This is inconsistent, and contributes to the number of workqueues used
+in btrfs.
+
+[ENHANCEMENT]
+Make all the above bios call their btrfs_bio::end_io() in task context,
+backed by either endio_meta_workers for metadata, or endio_workers for
+data.
+
+For simple write bios, merge the handling into simple_end_io_work().
+
+For mirrored write bios, it will be a little more complex, since both
+the original or the cloned bios can run the final btrfs_bio::end_io().
+
+Here we make sure the cloned bios are using btrfs_bioset, to reuse the
+end_io_work, and run both original and cloned work inside the workqueue.
+
+Add extra ASSERT()s to make sure btrfs_bio_end_io() is running in task
+context.
+
+This not only unifies the context for btrfs_bio::end_io() functions, but
+also opens a new door for further btrfs_bio::end_io() related cleanups.
+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: b39b26e017c7 ("btrfs: zoned: don't zone append to conventional zone")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c | 45 ++++++++++++++-------------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ fs/btrfs/bio.c | 64 ++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 46 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
-index 8897dcc9c1a0a..e35fae9cdaf66 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
-@@ -1964,7 +1964,8 @@ static int vcn_v2_0_start_sriov(struct amdgpu_device *adev)
- 	struct mmsch_v2_0_cmd_end end = { {0} };
- 	struct mmsch_v2_0_init_header *header;
- 	uint32_t *init_table = adev->virt.mm_table.cpu_addr;
--	uint8_t i = 0;
+diff --git a/fs/btrfs/bio.c b/fs/btrfs/bio.c
+index b85b6b21b5450..52b8893f26f16 100644
+--- a/fs/btrfs/bio.c
++++ b/fs/btrfs/bio.c
+@@ -102,6 +102,9 @@ static struct btrfs_bio *btrfs_split_bio(struct btrfs_fs_info *fs_info,
+ 
+ void btrfs_bio_end_io(struct btrfs_bio *bbio, blk_status_t status)
+ {
++	/* Make sure we're already in task context. */
++	ASSERT(in_task());
 +
-+	/* This path only programs VCN instance 0. */
+ 	bbio->bio.bi_status = status;
+ 	if (bbio->bio.bi_pool == &btrfs_clone_bioset) {
+ 		struct btrfs_bio *orig_bbio = bbio->private;
+@@ -318,15 +321,20 @@ static struct workqueue_struct *btrfs_end_io_wq(const struct btrfs_fs_info *fs_i
+ 	return fs_info->endio_workers;
+ }
  
- 	header = (struct mmsch_v2_0_init_header *)init_table;
- 	direct_wt.cmd_header.command_type = MMSCH_COMMAND__DIRECT_REG_WRITE;
-@@ -1983,93 +1984,93 @@ static int vcn_v2_0_start_sriov(struct amdgpu_device *adev)
- 		size = AMDGPU_GPU_PAGE_ALIGN(adev->vcn.inst[0].fw->size + 4);
+-static void btrfs_end_bio_work(struct work_struct *work)
++static void simple_end_io_work(struct work_struct *work)
+ {
+ 	struct btrfs_bio *bbio = container_of(work, struct btrfs_bio, end_io_work);
++	struct bio *bio = &bbio->bio;
  
- 		MMSCH_V2_0_INSERT_DIRECT_RD_MOD_WT(
--			SOC15_REG_OFFSET(UVD, i, mmUVD_STATUS),
-+			SOC15_REG_OFFSET(UVD, 0, mmUVD_STATUS),
- 			0xFFFFFFFF, 0x00000004);
+-	/* Metadata reads are checked and repaired by the submitter. */
+-	if (is_data_bbio(bbio))
+-		btrfs_check_read_bio(bbio, bbio->bio.bi_private);
+-	else
+-		btrfs_bio_end_io(bbio, bbio->bio.bi_status);
++	if (bio_op(bio) == REQ_OP_READ) {
++		/* Metadata reads are checked and repaired by the submitter. */
++		if (is_data_bbio(bbio))
++			return btrfs_check_read_bio(bbio, bbio->bio.bi_private);
++		return btrfs_bio_end_io(bbio, bbio->bio.bi_status);
++	}
++	if (bio_is_zone_append(bio) && !bio->bi_status)
++		btrfs_record_physical_zoned(bbio);
++	btrfs_bio_end_io(bbio, bbio->bio.bi_status);
+ }
  
- 		/* mc resume*/
- 		if (adev->firmware.load_type == AMDGPU_FW_LOAD_PSP) {
- 			MMSCH_V2_0_INSERT_DIRECT_WT(
--				SOC15_REG_OFFSET(UVD, i,
-+				SOC15_REG_OFFSET(UVD, 0,
- 					mmUVD_LMI_VCPU_CACHE_64BIT_BAR_LOW),
- 				adev->firmware.ucode[AMDGPU_UCODE_ID_VCN].tmr_mc_addr_lo);
- 			MMSCH_V2_0_INSERT_DIRECT_WT(
--				SOC15_REG_OFFSET(UVD, i,
-+				SOC15_REG_OFFSET(UVD, 0,
- 					mmUVD_LMI_VCPU_CACHE_64BIT_BAR_HIGH),
- 				adev->firmware.ucode[AMDGPU_UCODE_ID_VCN].tmr_mc_addr_hi);
- 			offset = 0;
- 		} else {
- 			MMSCH_V2_0_INSERT_DIRECT_WT(
--				SOC15_REG_OFFSET(UVD, i,
-+				SOC15_REG_OFFSET(UVD, 0,
- 					mmUVD_LMI_VCPU_CACHE_64BIT_BAR_LOW),
- 				lower_32_bits(adev->vcn.inst->gpu_addr));
- 			MMSCH_V2_0_INSERT_DIRECT_WT(
--				SOC15_REG_OFFSET(UVD, i,
-+				SOC15_REG_OFFSET(UVD, 0,
- 					mmUVD_LMI_VCPU_CACHE_64BIT_BAR_HIGH),
- 				upper_32_bits(adev->vcn.inst->gpu_addr));
- 			offset = size;
- 		}
+ static void btrfs_simple_end_io(struct bio *bio)
+@@ -340,14 +348,8 @@ static void btrfs_simple_end_io(struct bio *bio)
+ 	if (bio->bi_status)
+ 		btrfs_log_dev_io_error(bio, dev);
  
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i, mmUVD_VCPU_CACHE_OFFSET0),
-+			SOC15_REG_OFFSET(UVD, 0, mmUVD_VCPU_CACHE_OFFSET0),
- 			0);
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i, mmUVD_VCPU_CACHE_SIZE0),
-+			SOC15_REG_OFFSET(UVD, 0, mmUVD_VCPU_CACHE_SIZE0),
- 			size);
+-	if (bio_op(bio) == REQ_OP_READ) {
+-		INIT_WORK(&bbio->end_io_work, btrfs_end_bio_work);
+-		queue_work(btrfs_end_io_wq(fs_info, bio), &bbio->end_io_work);
+-	} else {
+-		if (bio_is_zone_append(bio) && !bio->bi_status)
+-			btrfs_record_physical_zoned(bbio);
+-		btrfs_bio_end_io(bbio, bbio->bio.bi_status);
+-	}
++	INIT_WORK(&bbio->end_io_work, simple_end_io_work);
++	queue_work(btrfs_end_io_wq(fs_info, bio), &bbio->end_io_work);
+ }
  
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i,
-+			SOC15_REG_OFFSET(UVD, 0,
- 				mmUVD_LMI_VCPU_CACHE1_64BIT_BAR_LOW),
- 			lower_32_bits(adev->vcn.inst->gpu_addr + offset));
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i,
-+			SOC15_REG_OFFSET(UVD, 0,
- 				mmUVD_LMI_VCPU_CACHE1_64BIT_BAR_HIGH),
- 			upper_32_bits(adev->vcn.inst->gpu_addr + offset));
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i, mmUVD_VCPU_CACHE_OFFSET1),
-+			SOC15_REG_OFFSET(UVD, 0, mmUVD_VCPU_CACHE_OFFSET1),
- 			0);
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i, mmUVD_VCPU_CACHE_SIZE1),
-+			SOC15_REG_OFFSET(UVD, 0, mmUVD_VCPU_CACHE_SIZE1),
- 			AMDGPU_VCN_STACK_SIZE);
+ static void btrfs_raid56_end_io(struct bio *bio)
+@@ -355,6 +357,9 @@ static void btrfs_raid56_end_io(struct bio *bio)
+ 	struct btrfs_io_context *bioc = bio->bi_private;
+ 	struct btrfs_bio *bbio = btrfs_bio(bio);
  
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i,
-+			SOC15_REG_OFFSET(UVD, 0,
- 				mmUVD_LMI_VCPU_CACHE2_64BIT_BAR_LOW),
- 			lower_32_bits(adev->vcn.inst->gpu_addr + offset +
- 				AMDGPU_VCN_STACK_SIZE));
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i,
-+			SOC15_REG_OFFSET(UVD, 0,
- 				mmUVD_LMI_VCPU_CACHE2_64BIT_BAR_HIGH),
- 			upper_32_bits(adev->vcn.inst->gpu_addr + offset +
- 				AMDGPU_VCN_STACK_SIZE));
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i, mmUVD_VCPU_CACHE_OFFSET2),
-+			SOC15_REG_OFFSET(UVD, 0, mmUVD_VCPU_CACHE_OFFSET2),
- 			0);
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i, mmUVD_VCPU_CACHE_SIZE2),
-+			SOC15_REG_OFFSET(UVD, 0, mmUVD_VCPU_CACHE_SIZE2),
- 			AMDGPU_VCN_CONTEXT_SIZE);
++	/* RAID56 endio is always handled in workqueue. */
++	ASSERT(in_task());
++
+ 	btrfs_bio_counter_dec(bioc->fs_info);
+ 	bbio->mirror_num = bioc->mirror_num;
+ 	if (bio_op(bio) == REQ_OP_READ && is_data_bbio(bbio))
+@@ -365,11 +370,12 @@ static void btrfs_raid56_end_io(struct bio *bio)
+ 	btrfs_put_bioc(bioc);
+ }
  
- 		for (r = 0; r < adev->vcn.inst[0].num_enc_rings; ++r) {
- 			ring = &adev->vcn.inst->ring_enc[r];
- 			ring->wptr = 0;
- 			MMSCH_V2_0_INSERT_DIRECT_WT(
--				SOC15_REG_OFFSET(UVD, i, mmUVD_RB_BASE_LO),
-+				SOC15_REG_OFFSET(UVD, 0, mmUVD_RB_BASE_LO),
- 				lower_32_bits(ring->gpu_addr));
- 			MMSCH_V2_0_INSERT_DIRECT_WT(
--				SOC15_REG_OFFSET(UVD, i, mmUVD_RB_BASE_HI),
-+				SOC15_REG_OFFSET(UVD, 0, mmUVD_RB_BASE_HI),
- 				upper_32_bits(ring->gpu_addr));
- 			MMSCH_V2_0_INSERT_DIRECT_WT(
--				SOC15_REG_OFFSET(UVD, i, mmUVD_RB_SIZE),
-+				SOC15_REG_OFFSET(UVD, 0, mmUVD_RB_SIZE),
- 				ring->ring_size / 4);
- 		}
+-static void btrfs_orig_write_end_io(struct bio *bio)
++static void orig_write_end_io_work(struct work_struct *work)
+ {
++	struct btrfs_bio *bbio = container_of(work, struct btrfs_bio, end_io_work);
++	struct bio *bio = &bbio->bio;
+ 	struct btrfs_io_stripe *stripe = bio->bi_private;
+ 	struct btrfs_io_context *bioc = stripe->bioc;
+-	struct btrfs_bio *bbio = btrfs_bio(bio);
  
- 		ring = &adev->vcn.inst->ring_dec;
- 		ring->wptr = 0;
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i,
-+			SOC15_REG_OFFSET(UVD, 0,
- 				mmUVD_LMI_RBC_RB_64BIT_BAR_LOW),
- 			lower_32_bits(ring->gpu_addr));
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i,
-+			SOC15_REG_OFFSET(UVD, 0,
- 				mmUVD_LMI_RBC_RB_64BIT_BAR_HIGH),
- 			upper_32_bits(ring->gpu_addr));
- 		/* force RBC into idle state */
-@@ -2080,7 +2081,7 @@ static int vcn_v2_0_start_sriov(struct amdgpu_device *adev)
- 		tmp = REG_SET_FIELD(tmp, UVD_RBC_RB_CNTL, RB_NO_UPDATE, 1);
- 		tmp = REG_SET_FIELD(tmp, UVD_RBC_RB_CNTL, RB_RPTR_WR_EN, 1);
- 		MMSCH_V2_0_INSERT_DIRECT_WT(
--			SOC15_REG_OFFSET(UVD, i, mmUVD_RBC_RB_CNTL), tmp);
-+			SOC15_REG_OFFSET(UVD, 0, mmUVD_RBC_RB_CNTL), tmp);
+ 	btrfs_bio_counter_dec(bioc->fs_info);
  
- 		/* add end packet */
- 		tmp = sizeof(struct mmsch_v2_0_cmd_end);
+@@ -394,8 +400,18 @@ static void btrfs_orig_write_end_io(struct bio *bio)
+ 	btrfs_put_bioc(bioc);
+ }
+ 
+-static void btrfs_clone_write_end_io(struct bio *bio)
++static void btrfs_orig_write_end_io(struct bio *bio)
++{
++	struct btrfs_bio *bbio = btrfs_bio(bio);
++
++	INIT_WORK(&bbio->end_io_work, orig_write_end_io_work);
++	queue_work(btrfs_end_io_wq(bbio->inode->root->fs_info, bio), &bbio->end_io_work);
++}
++
++static void clone_write_end_io_work(struct work_struct *work)
+ {
++	struct btrfs_bio *bbio = container_of(work, struct btrfs_bio, end_io_work);
++	struct bio *bio = &bbio->bio;
+ 	struct btrfs_io_stripe *stripe = bio->bi_private;
+ 
+ 	if (bio->bi_status) {
+@@ -410,6 +426,14 @@ static void btrfs_clone_write_end_io(struct bio *bio)
+ 	bio_put(bio);
+ }
+ 
++static void btrfs_clone_write_end_io(struct bio *bio)
++{
++	struct btrfs_bio *bbio = btrfs_bio(bio);
++
++	INIT_WORK(&bbio->end_io_work, clone_write_end_io_work);
++	queue_work(btrfs_end_io_wq(bbio->inode->root->fs_info, bio), &bbio->end_io_work);
++}
++
+ static void btrfs_submit_dev_bio(struct btrfs_device *dev, struct bio *bio)
+ {
+ 	if (!dev || !dev->bdev ||
+@@ -456,6 +480,7 @@ static void btrfs_submit_dev_bio(struct btrfs_device *dev, struct bio *bio)
+ static void btrfs_submit_mirrored_bio(struct btrfs_io_context *bioc, int dev_nr)
+ {
+ 	struct bio *orig_bio = bioc->orig_bio, *bio;
++	struct btrfs_bio *orig_bbio = btrfs_bio(orig_bio);
+ 
+ 	ASSERT(bio_op(orig_bio) != REQ_OP_READ);
+ 
+@@ -464,8 +489,11 @@ static void btrfs_submit_mirrored_bio(struct btrfs_io_context *bioc, int dev_nr)
+ 		bio = orig_bio;
+ 		bio->bi_end_io = btrfs_orig_write_end_io;
+ 	} else {
+-		bio = bio_alloc_clone(NULL, orig_bio, GFP_NOFS, &fs_bio_set);
++		/* We need to use endio_work to run end_io in task context. */
++		bio = bio_alloc_clone(NULL, orig_bio, GFP_NOFS, &btrfs_bioset);
+ 		bio_inc_remaining(orig_bio);
++		btrfs_bio_init(btrfs_bio(bio), orig_bbio->inode,
++			       orig_bbio->file_offset, NULL, NULL);
+ 		bio->bi_end_io = btrfs_clone_write_end_io;
+ 	}
+ 
 -- 
 2.51.0
 
