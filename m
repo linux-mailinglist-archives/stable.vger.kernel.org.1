@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-219261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJbCLKaenmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:02 +0100
+	id 0LNkMOOenmlVWgQAu9opvQ
+	(envelope-from <stable+bounces-219272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1D5192D16
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396C5192DC4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BD96312DDF9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 750A63146AAA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459892D3EEE;
-	Wed, 25 Feb 2026 06:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5168F2D1F44;
+	Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8ZT6cle"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkzGGFZp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D7A2D063E;
-	Wed, 25 Feb 2026 06:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154F12C17A0;
+	Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002600; cv=none; b=CjOXgJI2P53DIA7fEujmbvVb+4Ubzd4MMpmlh0tQX0JwEPL0iGQxAtCiPlJ8Kc8vyf8ppup/mGtFHfhm7HyRFGxaqhKyojOZhBPNbGREqkZYrKAjlNQzq/ElZ2b61m7y5BhKZ6e8oULKIqnu9j5QDCx2UbzGN92wTnqmrMvJScY=
+	t=1772002607; cv=none; b=lrEz2J8nPE8BUF1U3NXrivRUWgaSPa8bE0LVXc5MoYBGbcUV2xWq+YaBFZKFgvo0QawIXzS6JupEEX42pICSYqG8Gg3hdTYTnTpuoYP+oIrXhlP+RvnBNT4Lz3oYAQgLgMXwWYrYOinCq2K27qLnZI5KAuLVjgs2HmMPqsVFp7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002600; c=relaxed/simple;
-	bh=zA8cddfNAnaC5YSkOhfb8DjI+LH5RRG//vTBmb+g3jA=;
+	s=arc-20240116; t=1772002607; c=relaxed/simple;
+	bh=vB9J3tnDQtzFKtogYctvgHb9KSXr+9uybd/9XMkf9aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSrd84neL+9XsHCsD9tsRAay6tqwfOiNfIuXTTgDBVWwWOFvYK7u0oO2P0SVfkcFjeElBum4UcR9QVB/gO6so5EcZflTGXBSUgtJXE/INUDv6lolxbcBh3XLira3Dm69jY2NQ71PiIva/4zVpoy6QoVxfIFUP9yM7qkU03En7Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8ZT6cle; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36CDC116D0;
-	Wed, 25 Feb 2026 06:56:39 +0000 (UTC)
+	 MIME-Version; b=HjyH3yoPKypiyTRcAR5oqqC8ly+LN3KqDmpgxvv4n90Gu4eCNAkrF0tmZ0/G57IMEti6hvp6eZKT+8Eu3Pwp3xW7gHMGCJd27zGmF6jqxun0ALSFBYq5JVTJn/AUr7qvIHFba8I4lpIrN8RvnVj5fN+K9eEBxfJoqoTvBNZHn+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkzGGFZp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA37EC116D0;
+	Wed, 25 Feb 2026 06:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002599;
-	bh=zA8cddfNAnaC5YSkOhfb8DjI+LH5RRG//vTBmb+g3jA=;
+	s=korg; t=1772002606;
+	bh=vB9J3tnDQtzFKtogYctvgHb9KSXr+9uybd/9XMkf9aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8ZT6clef6loJB+5r5HZfzZmfZN87GWxhbaSz71FVoIU5uWkHi3O1tuv7GZxz1THj
-	 9p2cIcj872HevtcwKaIIJZ/FcJCQICDpHElHYsbpSXfhUez2RYOlsSDAlSDkoq61Y/
-	 p9z4Yv1uaQnE8X3bLBTWR0z3dpR2ynM1pIocJV7E=
+	b=NkzGGFZpPEedKruq7N0vNAObxUeyfUiV1uSmR1p17RhgTJhurv2NjNY/tyIamw4xz
+	 BZ0W9y0gXAH1jYQdherXaOARrxjVNVmF1oMGpDc1qXYi6k5H8TiFGI6b4SNGO/mDME
+	 6PHTJLkudtuHlxHzc5yv36ezl65SwrcK/tQbAzG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+827272712bd6d12c79a4@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jijie Shao <shaojijie@huawei.com>,
+	Sathesh Edara <sedara@marvell.com>,
+	Shinas Rasheed <srasheed@marvell.com>,
+	Vimlesh Kumar <vimleshk@marvell.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 329/641] serial: caif: fix use-after-free in caif_serial ldisc_close()
-Date: Tue, 24 Feb 2026 17:20:55 -0800
-Message-ID: <20260225012356.662272727@linuxfoundation.org>
+Subject: [PATCH 6.18 330/641] octeon_ep: disable per ring interrupts
+Date: Tue, 24 Feb 2026 17:20:56 -0800
+Message-ID: <20260225012356.685361014@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -67,185 +67,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219261-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219272-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,827272712bd6d12c79a4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,appspotmail.com:email,shopee.com:email]
-X-Rspamd-Queue-Id: 1F1D5192D16
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,marvell.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 396C5192DC4
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Vimlesh Kumar <vimleshk@marvell.com>
 
-[ Upstream commit 308e7e4d0a846359685f40aade023aee7b27284c ]
+[ Upstream commit 73e6ffa37cebee152c07c5f2b8bc70fd2899ea6e ]
 
-There is a use-after-free bug in caif_serial where handle_tx() may
-access ser->tty after the tty has been freed.
+Disable the MSI-X per ring interrupt for every PF ring when PF
+netdev goes down.
 
-The race condition occurs between ldisc_close() and packet transmission:
-
-    CPU 0 (close)                     CPU 1 (xmit)
-    -------------                     ------------
-    ldisc_close()
-      tty_kref_put(ser->tty)
-      [tty may be freed here]
-                     <-- race window -->
-                                      caif_xmit()
-                                        handle_tx()
-                                          tty = ser->tty  // dangling ptr
-                                          tty->ops->write() // UAF!
-      schedule_work()
-        ser_release()
-          unregister_netdevice()
-
-The root cause is that tty_kref_put() is called in ldisc_close() while
-the network device is still active and can receive packets.
-
-Since ser and tty have a 1:1 binding relationship with consistent
-lifecycles (ser is allocated in ldisc_open and freed in ser_release
-via unregister_netdevice, and each ser binds exactly one tty), we can
-safely defer the tty reference release to ser_release() where the
-network device is unregistered.
-
-Fix this by moving tty_kref_put() from ldisc_close() to ser_release(),
-after unregister_netdevice(). This ensures the tty reference is held
-as long as the network device exists, preventing the UAF.
-
-Note: We save ser->tty before unregister_netdevice() because ser is
-embedded in netdev's private data and will be freed along with netdev
-(needs_free_netdev = true).
-
-How to reproduce: Add mdelay(500) at the beginning of ldisc_close()
-to widen the race window, then run the reproducer program [1].
-
-Note: There is a separate deadloop issue in handle_tx() when using
-PORT_UNKNOWN serial ports (e.g., /dev/ttyS3 in QEMU without proper
-serial backend). This deadloop exists even without this patch,
-and is likely caused by inconsistency between uart_write_room() and
-uart_write() in serial core. It has been addressed in a separate
-patch [2].
-
-KASAN report:
-
-==================================================================
-BUG: KASAN: slab-use-after-free in handle_tx+0x5d1/0x620
-Read of size 1 at addr ffff8881131e1490 by task caif_uaf_trigge/9929
-
-Call Trace:
- <TASK>
- dump_stack_lvl+0x10e/0x1f0
- print_report+0xd0/0x630
- kasan_report+0xe4/0x120
- handle_tx+0x5d1/0x620
- dev_hard_start_xmit+0x9d/0x6c0
- __dev_queue_xmit+0x6e2/0x4410
- packet_xmit+0x243/0x360
- packet_sendmsg+0x26cf/0x5500
- __sys_sendto+0x4a3/0x520
- __x64_sys_sendto+0xe0/0x1c0
- do_syscall_64+0xc9/0xf80
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f615df2c0d7
-
-Allocated by task 9930:
-
-Freed by task 64:
-
-Last potentially related work creation:
-
-The buggy address belongs to the object at ffff8881131e1000
- which belongs to the cache kmalloc-cg-2k of size 2048
-The buggy address is located 1168 bytes inside of
- freed 2048-byte region [ffff8881131e1000, ffff8881131e1800)
-
-The buggy address belongs to the physical page:
-page_owner tracks the page as allocated
-page last free pid 9778 tgid 9778 stack trace:
-
-Memory state around the buggy address:
- ffff8881131e1380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8881131e1400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff8881131e1480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                         ^
- ffff8881131e1500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8881131e1580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-[1]: https://gist.github.com/mrpre/f683f244544f7b11e7fa87df9e6c2eeb
-[2]: https://lore.kernel.org/linux-serial/20260204074327.226165-1-jiayuan.chen@linux.dev/T/#u
-
-Reported-by: syzbot+827272712bd6d12c79a4@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000a4a7550611e234f5@google.com/T/
-Fixes: 56e0ef527b18 ("drivers/net: caif: fix wrong rtnl_is_locked() usage")
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20260206074450.154267-1-jiayuan.chen@linux.dev
+Fixes: 1f2c2d0cee023 ("octeon_ep: add hardware configuration APIs")
+Signed-off-by: Sathesh Edara <sedara@marvell.com>
+Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+Signed-off-by: Vimlesh Kumar <vimleshk@marvell.com>
+Link: https://patch.msgid.link/20260206111510.1045092-2-vimleshk@marvell.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/caif/caif_serial.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../ethernet/marvell/octeon_ep/octep_cn9k_pf.c | 18 +++++++++++++++---
+ .../ethernet/marvell/octeon_ep/octep_cnxk_pf.c | 18 +++++++++++++++---
+ .../marvell/octeon_ep/octep_regs_cn9k_pf.h     |  1 +
+ .../marvell/octeon_ep/octep_regs_cnxk_pf.h     |  1 +
+ 4 files changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
-index c398ac42eae90..b90890030751f 100644
---- a/drivers/net/caif/caif_serial.c
-+++ b/drivers/net/caif/caif_serial.c
-@@ -284,6 +284,7 @@ static void ser_release(struct work_struct *work)
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_cn9k_pf.c b/drivers/net/ethernet/marvell/octeon_ep/octep_cn9k_pf.c
+index b5805969404fa..f0bcb5f3c1474 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_cn9k_pf.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_cn9k_pf.c
+@@ -696,14 +696,26 @@ static void octep_enable_interrupts_cn93_pf(struct octep_device *oct)
+ /* Disable all interrupts */
+ static void octep_disable_interrupts_cn93_pf(struct octep_device *oct)
  {
- 	struct list_head list;
- 	struct ser_device *ser, *tmp;
-+	struct tty_struct *tty;
+-	u64 intr_mask = 0ULL;
++	u64 reg_val, intr_mask = 0ULL;
+ 	int srn, num_rings, i;
  
- 	spin_lock(&ser_lock);
- 	list_replace_init(&ser_release_list, &list);
-@@ -292,9 +293,11 @@ static void ser_release(struct work_struct *work)
- 	if (!list_empty(&list)) {
- 		rtnl_lock();
- 		list_for_each_entry_safe(ser, tmp, &list, node) {
-+			tty = ser->tty;
- 			dev_close(ser->dev);
- 			unregister_netdevice(ser->dev);
- 			debugfs_deinit(ser);
-+			tty_kref_put(tty);
- 		}
- 		rtnl_unlock();
- 	}
-@@ -355,8 +358,6 @@ static void ldisc_close(struct tty_struct *tty)
+ 	srn = CFG_GET_PORTS_PF_SRN(oct->conf);
+ 	num_rings = CFG_GET_PORTS_ACTIVE_IO_RINGS(oct->conf);
+ 
+-	for (i = 0; i < num_rings; i++)
+-		intr_mask |= (0x1ULL << (srn + i));
++	for (i = 0; i < num_rings; i++) {
++		intr_mask |= BIT_ULL(srn + i);
++		reg_val = octep_read_csr64(oct,
++					   CN93_SDP_R_IN_INT_LEVELS(srn + i));
++		reg_val &= ~CN93_INT_ENA_BIT;
++		octep_write_csr64(oct,
++				  CN93_SDP_R_IN_INT_LEVELS(srn + i), reg_val);
++
++		reg_val = octep_read_csr64(oct,
++					   CN93_SDP_R_OUT_INT_LEVELS(srn + i));
++		reg_val &= ~CN93_INT_ENA_BIT;
++		octep_write_csr64(oct,
++				  CN93_SDP_R_OUT_INT_LEVELS(srn + i), reg_val);
++	}
+ 
+ 	octep_write_csr64(oct, CN93_SDP_EPF_IRERR_RINT_ENA_W1C, intr_mask);
+ 	octep_write_csr64(oct, CN93_SDP_EPF_ORERR_RINT_ENA_W1C, intr_mask);
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_cnxk_pf.c b/drivers/net/ethernet/marvell/octeon_ep/octep_cnxk_pf.c
+index 5de0b5ecbc5fd..07e00887c6940 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_cnxk_pf.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_cnxk_pf.c
+@@ -720,14 +720,26 @@ static void octep_enable_interrupts_cnxk_pf(struct octep_device *oct)
+ /* Disable all interrupts */
+ static void octep_disable_interrupts_cnxk_pf(struct octep_device *oct)
  {
- 	struct ser_device *ser = tty->disc_data;
+-	u64 intr_mask = 0ULL;
++	u64 reg_val, intr_mask = 0ULL;
+ 	int srn, num_rings, i;
  
--	tty_kref_put(ser->tty);
--
- 	spin_lock(&ser_lock);
- 	list_move(&ser->node, &ser_release_list);
- 	spin_unlock(&ser_lock);
+ 	srn = CFG_GET_PORTS_PF_SRN(oct->conf);
+ 	num_rings = CFG_GET_PORTS_ACTIVE_IO_RINGS(oct->conf);
+ 
+-	for (i = 0; i < num_rings; i++)
+-		intr_mask |= (0x1ULL << (srn + i));
++	for (i = 0; i < num_rings; i++) {
++		intr_mask |= BIT_ULL(srn + i);
++		reg_val = octep_read_csr64(oct,
++					   CNXK_SDP_R_IN_INT_LEVELS(srn + i));
++		reg_val &= ~CNXK_INT_ENA_BIT;
++		octep_write_csr64(oct,
++				  CNXK_SDP_R_IN_INT_LEVELS(srn + i), reg_val);
++
++		reg_val = octep_read_csr64(oct,
++					   CNXK_SDP_R_OUT_INT_LEVELS(srn + i));
++		reg_val &= ~CNXK_INT_ENA_BIT;
++		octep_write_csr64(oct,
++				  CNXK_SDP_R_OUT_INT_LEVELS(srn + i), reg_val);
++	}
+ 
+ 	octep_write_csr64(oct, CNXK_SDP_EPF_IRERR_RINT_ENA_W1C, intr_mask);
+ 	octep_write_csr64(oct, CNXK_SDP_EPF_ORERR_RINT_ENA_W1C, intr_mask);
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cn9k_pf.h b/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cn9k_pf.h
+index ca473502d7a02..95f1dfff90cce 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cn9k_pf.h
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cn9k_pf.h
+@@ -386,5 +386,6 @@
+ #define CN93_PEM_BAR4_INDEX            7
+ #define CN93_PEM_BAR4_INDEX_SIZE       0x400000ULL
+ #define CN93_PEM_BAR4_INDEX_OFFSET     (CN93_PEM_BAR4_INDEX * CN93_PEM_BAR4_INDEX_SIZE)
++#define CN93_INT_ENA_BIT	BIT_ULL(62)
+ 
+ #endif /* _OCTEP_REGS_CN9K_PF_H_ */
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cnxk_pf.h b/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cnxk_pf.h
+index e637d7c8224d4..4d172a552f80c 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cnxk_pf.h
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_regs_cnxk_pf.h
+@@ -412,5 +412,6 @@
+ #define CNXK_PEM_BAR4_INDEX		7
+ #define CNXK_PEM_BAR4_INDEX_SIZE	0x400000ULL
+ #define CNXK_PEM_BAR4_INDEX_OFFSET	(CNXK_PEM_BAR4_INDEX * CNXK_PEM_BAR4_INDEX_SIZE)
++#define CNXK_INT_ENA_BIT	BIT_ULL(62)
+ 
+ #endif /* _OCTEP_REGS_CNXK_PF_H_ */
 -- 
 2.51.0
 
