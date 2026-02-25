@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Bu4AUVZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:07:01 +0100
+	id kIvrOTNTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C46190907
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:07:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853D618F724
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF5DB305E9FC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E5EEE319467B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854D8271471;
-	Wed, 25 Feb 2026 01:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF7C242D9B;
+	Wed, 25 Feb 2026 01:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMiMaAjy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1T2rHv4n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498CB19FA93;
-	Wed, 25 Feb 2026 01:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5223518DB2A;
+	Wed, 25 Feb 2026 01:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983743; cv=none; b=jJFFErns44RZKJj0twFRHIE/xkKCSXwmpco+ugPupRgLvY4RYakKVvKVhi97C2hmUZnqn7eK8SzfQm4QV+OEjzZt6wpS6Q/6nquvGSXPXQ8T+JCbTNw+mI6D04p7hgJv+7jc8a1LcN4CgXx/IM3PFuDcnm83G5j8jtxueVyWx6w=
+	t=1771983111; cv=none; b=Tggv2Nf1fa99xcisH9c/60L5oqO/UYxeVyrWAkR1GtoisSIfguqRY2gUVbP9lb1bvbXEqbgrqvxefY6WLX2M2kX2o2rSDk0/T+I4befzVkWuCQg1YX7nqhBahPssMS3wE9Bvd9+jBSpbfl4EJdAwHPbOrqj5XYHzWLoXiwS5Nz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983743; c=relaxed/simple;
-	bh=Y8N5gHuJGtKMgwaCu1IS8UKmo6+B8LN6W4vGTN4ewGs=;
+	s=arc-20240116; t=1771983111; c=relaxed/simple;
+	bh=zf2CqcKrZolEImqZaDmnKQPceJr54m0E9GiTgvmpFI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pm7v3Rbhtgio9mh261Lw3DyOhdLIpi960IB4ZhdLdR7DT0xe8VuSkkFnsB6/c0+5y683U3StgFt4M90LLxLsOiJ3YITqg4lC2etrOBYKz78XfdRPVQR+eEN8KYoTXJg+xFx4CZJM0eHNyb0PWFyqx7lw4v4plR9ozyXwIeDSgmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMiMaAjy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0F5C116D0;
-	Wed, 25 Feb 2026 01:42:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VdM8pqB4vhFNdup5oB39R52on6Jo3CHjwpes1TEKcUhnliJIwMubWG+n38n7S5BvyicCxTh8v/zOu7jOpI+iiJZhxoKgJWNdDMVVvI0AQkpAvGSVsnyh2Iug410XHLq5x3d4joMhOo2hTu/F4vRrBjHheC8A30eegwxsne3VgFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1T2rHv4n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F91C116D0;
+	Wed, 25 Feb 2026 01:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983743;
-	bh=Y8N5gHuJGtKMgwaCu1IS8UKmo6+B8LN6W4vGTN4ewGs=;
+	s=korg; t=1771983111;
+	bh=zf2CqcKrZolEImqZaDmnKQPceJr54m0E9GiTgvmpFI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YMiMaAjytD5fWcEXnqEh+SQUm1nbhecDNt+W6CKLfomC1ojRZWJJ3HgqQLbXcsUoX
-	 7d7jh+/GKY/TGCFw9MtJlrYdNju2xQXMgQvWlxLXUnNwQK+g4NP/dbBfwwuzTc/9tD
-	 tWndctQvsI0Nus/z7CWCGsNT1hVPQoE04bT3W5V8=
+	b=1T2rHv4n7A56Ua38TlLFfoIVThGPjnhN1RofLl6bresbcuk14wQ23UeXaPwqdkwss
+	 0qqn3+ST0MGtJRGZsDFe/ZrgOYfW7Rmz0BQMqByrgIuurndoViAvj8SGc4PChWq9JD
+	 Xwm1mg/Sb1+CrHeKvVkaIdagQ3vbQiLw7wNzYOmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Teddy Astie <teddy.astie@vates.tech>,
-	Juergen Gross <jgross@suse.com>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 036/641] xen/virtio: Dont use grant-dma-ops when running as Dom0
-Date: Tue, 24 Feb 2026 17:16:02 -0800
-Message-ID: <20260225012349.874591875@linuxfoundation.org>
+Subject: [PATCH 6.19 254/781] regulator: core: fix locking in regulator_resolve_supply() error path
+Date: Tue, 24 Feb 2026 17:16:03 -0800
+Message-ID: <20260225012405.937724195@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218858-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218309-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
-X-Rspamd-Queue-Id: 66C46190907
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
+X-Rspamd-Queue-Id: 853D618F724
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Teddy Astie <teddy.astie@vates.tech>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit dc8ea8714311e549ee93a2b0bdd5487d20bfadbf ]
+[ Upstream commit 497330b203d2c59c5ff3fa4c34d14494d7203bc3 ]
 
-Dom0 inherit devices from the machine and is usually in PV mode.
-If we are running in a virtual that has virtio devices, these devices
-would be considered as using grants with Dom0 as backend, while being
-the said Dom0 itself, while we want to use these devices like regular
-PCI devices.
+If late enabling of a supply regulator fails in
+regulator_resolve_supply(), the code currently triggers a lockdep
+warning:
 
-Fix this by preventing grant-dma-ops from being used when running as Dom0
-(initial domain). We still keep the device-tree logic as-is.
+    WARNING: drivers/regulator/core.c:2649 at _regulator_put+0x80/0xa0, CPU#6: kworker/u32:4/596
+    ...
+    Call trace:
+     _regulator_put+0x80/0xa0 (P)
+     regulator_resolve_supply+0x7cc/0xbe0
+     regulator_register_resolve_supply+0x28/0xb8
 
-Signed-off-by: Teddy Astie <teddy.astie@vates.tech>
-Fixes: 61367688f1fb0 ("xen/virtio: enable grant based virtio on x86")
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <6698564dd2270a9f7377b78ebfb20cb425cabbe8.1767720955.git.teddy.astie@vates.tech>
+as the regulator_list_mutex must be held when calling _regulator_put().
+
+To solve this, simply switch to using regulator_put().
+
+While at it, we should also make sure that no concurrent access happens
+to our rdev while we clear out the supply pointer. Add appropriate
+locking to ensure that.
+
+While the code in question will be removed altogether in a follow-up
+commit, I believe it is still beneficial to have this corrected before
+removal for future reference.
+
+Fixes: 36a1f1b6ddc6 ("regulator: core: Fix memory leak in regulator_resolve_supply()")
+Fixes: 8e5356a73604 ("regulator: core: Clear the supply pointer if enabling fails")
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://patch.msgid.link/20260109-regulators-defer-v2-2-1a25dc968e60@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/grant-dma-ops.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/regulator/core.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/xen/grant-dma-ops.c b/drivers/xen/grant-dma-ops.c
-index 29257d2639dbf..43a918c498c6c 100644
---- a/drivers/xen/grant-dma-ops.c
-+++ b/drivers/xen/grant-dma-ops.c
-@@ -362,7 +362,8 @@ static int xen_grant_init_backend_domid(struct device *dev,
- 	if (np) {
- 		ret = xen_dt_grant_init_backend_domid(dev, np, backend_domid);
- 		of_node_put(np);
--	} else if (IS_ENABLED(CONFIG_XEN_VIRTIO_FORCE_GRANT) || xen_pv_domain()) {
-+	} else if (!xen_initial_domain() &&
-+		   (IS_ENABLED(CONFIG_XEN_VIRTIO_FORCE_GRANT) || xen_pv_domain())) {
- 		dev_info(dev, "Using dom0 as backend\n");
- 		*backend_domid = 0;
- 		ret = 0;
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 4b6182cde859a..b2dcd1acd0ece 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2285,8 +2285,16 @@ static int regulator_resolve_supply(struct regulator_dev *rdev)
+ 	if (rdev->use_count) {
+ 		ret = regulator_enable(rdev->supply);
+ 		if (ret < 0) {
+-			_regulator_put(rdev->supply);
++			struct regulator *supply;
++
++			regulator_lock_two(rdev, rdev->supply->rdev, &ww_ctx);
++
++			supply = rdev->supply;
+ 			rdev->supply = NULL;
++
++			regulator_unlock_two(rdev, supply->rdev, &ww_ctx);
++
++			regulator_put(supply);
+ 			goto out;
+ 		}
+ 	}
 -- 
 2.51.0
 
