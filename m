@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-218073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FgQA2ZQnmlIUgQAu9opvQ
-	(envelope-from <stable+bounces-218073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:10 +0100
+	id aHfKCmlQnmmNUgQAu9opvQ
+	(envelope-from <stable+bounces-218075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5768318EBB7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D05318EBC4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6CAEE3047E84
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DC0B4304B46F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5EA242D9B;
-	Wed, 25 Feb 2026 01:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9802522A7;
+	Wed, 25 Feb 2026 01:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtlaqgSE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfOXe547"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EBD24A06D;
-	Wed, 25 Feb 2026 01:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF032494FE;
+	Wed, 25 Feb 2026 01:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982844; cv=none; b=O1IN97FHWTm1lFf9LTO3PCgza7A36AFj15tr/cZJVt/nsqJhLJEym9SR+J5I/nUL2jKLf8muY27Bx87VnzwnBmh6SUpLTZk97uQ7Nb8Txg0jNNVJy1Ci+AKzKg0DKxewjvEMToWC0KcR6SrNNdGIU+Owsj+J6YV6vFWT6tS+qg8=
+	t=1771982847; cv=none; b=C5uQ2LfO2Kkrfoly/QDSgwVYiLNj0lvMOqa2QqSgEn5gqWauDoqO7sJBs7gq/5L2rOhrToaifrmzF2Wm6jHunmmJU4ie76rz0llXisz1tOW7VsJvjpwSf/6lj1TpMNBULZp3jIDJMvOCeu2ktIcVouOL6DgcgHvu4qUgpJbikTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982844; c=relaxed/simple;
-	bh=RD6T8qGDCzttzsMXuGvtgZjfSCkLiNsWRMd6V7cnUGU=;
+	s=arc-20240116; t=1771982847; c=relaxed/simple;
+	bh=8xkTS9F6o1XlsM3lEQeEzmhcaDRJ79psN7Tib0BJgMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNxG6kQ0pPiKcz77g/F9V94iwsZXMGMEg+rQAWnJkcTBCl2+3Jwsuxg+PDiSBMVDB30CjiKZ7GZfnw37oCXApP7GyPcTsCGNy8kGB82ng9gjMBUM0d0/a58wJaW6psa1Ki5pXYMkqN+Y1baX9F4tyQadXvopyFZJS1ufGMlTRCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtlaqgSE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81991C116D0;
-	Wed, 25 Feb 2026 01:27:24 +0000 (UTC)
+	 MIME-Version; b=f6rzjy7fNToRow3pGU03NwJcR1Cl63iWK7jSorPw+UPUmBK8+BiT12UfEN8hUK8StngDiRgy/1gpHrbN2tFve1HSDNZQVtnzgaJgQloASuQ5H3hSOQ4mytuykedqq1tBkUsbcdmimuqjxb+JOqu+sx1F3sEMXVvoNKXBGVbM+pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfOXe547; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A3DC19423;
+	Wed, 25 Feb 2026 01:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982844;
-	bh=RD6T8qGDCzttzsMXuGvtgZjfSCkLiNsWRMd6V7cnUGU=;
+	s=korg; t=1771982847;
+	bh=8xkTS9F6o1XlsM3lEQeEzmhcaDRJ79psN7Tib0BJgMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OtlaqgSEe8Bc61YRCA1ShNl3leTI+9waABHZlheMuIBUbyH3kw9IvftFbL3MChB/m
-	 LEx3b+zd36Uqax8lT0HbkMoMqRQiRGn5i2RH9YDfNspicUT+HRz6ubHDgwcgeEgRtA
-	 18c80k5Kw18Q1e3Py/Sb6pnOgeb1W8JXMpOOTE2c=
+	b=wfOXe547Bq8gUCv+hxUvg79dd6aAlBcM1yuv6Gvq/e/42KPBwlSPCWlzXnvF7rDmj
+	 NAz73nTcErAuEgT2dpKH6RHiI2RrxXocDlG2I9Otbti3kEbXfBz7r1gmpy5mOkauYO
+	 eqLfVFdr7HrO6mF9w5jUmxLqayKPpDGitTtZC83A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 036/781] rnbd-srv: Fix server side setting of bi_size for special IOs
-Date: Tue, 24 Feb 2026 17:12:25 -0800
-Message-ID: <20260225012400.588288309@linuxfoundation.org>
+Subject: [PATCH 6.19 037/781] docs: find-unused-docs.sh: fixup directory usage
+Date: Tue, 24 Feb 2026 17:12:26 -0800
+Message-ID: <20260225012400.612362057@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -77,7 +76,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218073-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218075-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -88,90 +87,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5768318EBB7
+X-Rspamd-Queue-Id: 4D05318EBC4
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 4ac9690d4b9456ca1d5276d86547fa2e7cd47684 ]
+[ Upstream commit e970637707f4f8e5bd098b09090b755f2f57898b ]
 
-On rnbd-srv, the bi_size of the bio is set during the bio_add_page
-function, to which datalen is passed. But for special IOs like DISCARD
-and WRITE_ZEROES, datalen is 0, since there is no data to write. For
-these special IOs, use the bi_size of the rnbd_msg_io.
+The recent move of this script from scripts/ to tools/docs/
+did not account for the 'cd' directory usage.
+Update "cd .." to "cd ../.." to make the script self-correcting.
 
-Fixes: f6f84be089c9 ("block/rnbd-srv: Add sanity check and remove redundant assignment")
-Signed-off-by: Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This also eliminates a shell warning:
+./tools/docs/find-unused-docs.sh: line 33: cd: Documentation/: No such file or directory
+
+Fixes: 184414c6a6ca ("docs: move find-unused-docs.sh to tools/docs")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Fixes: 184414c6a6ca (docs: move find-unused-docs.sh to tools/docs)
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Message-ID: <20260102200657.1040234-1-rdunlap@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rnbd/rnbd-srv.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ tools/docs/find-unused-docs.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/rnbd/rnbd-srv.c b/drivers/block/rnbd/rnbd-srv.c
-index 2df8941a6b146..9b3fdc202e152 100644
---- a/drivers/block/rnbd/rnbd-srv.c
-+++ b/drivers/block/rnbd/rnbd-srv.c
-@@ -145,18 +145,30 @@ static int process_rdma(struct rnbd_srv_session *srv_sess,
- 	priv->sess_dev = sess_dev;
- 	priv->id = id;
+diff --git a/tools/docs/find-unused-docs.sh b/tools/docs/find-unused-docs.sh
+index 05552dbda5bcb..ca4e607ec3f72 100755
+--- a/tools/docs/find-unused-docs.sh
++++ b/tools/docs/find-unused-docs.sh
+@@ -28,7 +28,7 @@ if ! [ -d "$1" ]; then
+ fi
  
--	bio = bio_alloc(file_bdev(sess_dev->bdev_file), 1,
-+	bio = bio_alloc(file_bdev(sess_dev->bdev_file), !!datalen,
- 			rnbd_to_bio_flags(le32_to_cpu(msg->rw)), GFP_KERNEL);
--	bio_add_virt_nofail(bio, data, datalen);
--
--	bio->bi_opf = rnbd_to_bio_flags(le32_to_cpu(msg->rw));
--	if (bio_has_data(bio) &&
--	    bio->bi_iter.bi_size != le32_to_cpu(msg->bi_size)) {
--		rnbd_srv_err_rl(sess_dev, "Datalen mismatch:  bio bi_size (%u), bi_size (%u)\n",
--				bio->bi_iter.bi_size, msg->bi_size);
--		err = -EINVAL;
--		goto bio_put;
-+	if (unlikely(!bio)) {
-+		err = -ENOMEM;
-+		goto put_sess_dev;
- 	}
-+
-+	if (!datalen) {
-+		/*
-+		 * For special requests like DISCARD and WRITE_ZEROES, the datalen is zero.
-+		 */
-+		bio->bi_iter.bi_size = le32_to_cpu(msg->bi_size);
-+	} else {
-+		bio_add_virt_nofail(bio, data, datalen);
-+		bio->bi_opf = rnbd_to_bio_flags(le32_to_cpu(msg->rw));
-+		if (bio->bi_iter.bi_size != le32_to_cpu(msg->bi_size)) {
-+			rnbd_srv_err_rl(sess_dev,
-+					"Datalen mismatch:  bio bi_size (%u), bi_size (%u)\n",
-+					bio->bi_iter.bi_size, msg->bi_size);
-+			err = -EINVAL;
-+			goto bio_put;
-+		}
-+	}
-+
- 	bio->bi_end_io = rnbd_dev_bi_end_io;
- 	bio->bi_private = priv;
- 	bio->bi_iter.bi_sector = le64_to_cpu(msg->sector);
-@@ -170,6 +182,7 @@ static int process_rdma(struct rnbd_srv_session *srv_sess,
+ cd "$( dirname "${BASH_SOURCE[0]}" )"
+-cd ..
++cd ../..
  
- bio_put:
- 	bio_put(bio);
-+put_sess_dev:
- 	rnbd_put_sess_dev(sess_dev);
- err:
- 	kfree(priv);
+ cd Documentation/
+ 
 -- 
 2.51.0
 
