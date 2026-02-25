@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-219042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218438-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEbkJEhanmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:20 +0100
+	id 0EaBCORTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218438-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282D5190ABB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A83918FAAD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D08BA31D76D5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5377F305A0EB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC0D26FD97;
-	Wed, 25 Feb 2026 01:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1371EB5E1;
+	Wed, 25 Feb 2026 01:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOYmyHu5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4fxC4tQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBAB252917;
-	Wed, 25 Feb 2026 01:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F5C18B0A;
+	Wed, 25 Feb 2026 01:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983962; cv=none; b=fCK3IQzODeU0ymOaB6m0vLsPt7i/t/sq0hst3OpdUE4EMYWwufU52KiWS14wDBLVlz0WaPuU0YC+v9uKDPeph/D/AEXMpQ7jqopQhre8VJ9feDprlHGcMbaCNHNmC7uc3Tk4s11Ib+FbGqnfnPv32JeUXK3YiZKcP13M8hnIVpM=
+	t=1771983259; cv=none; b=JkWxx9wYaJ6WwHvp4q2vYGoo1J3dpqMZrP/i9QPOPUS45WzwsZNYrn4gYlvv3s5fXDxtghZWj7SNtLYnDdZfr1K/Vz0ExlY8uWNPA95lgvNM4/BRbB16/nD5ztTPv/DiranF4VkB7XrBB6WLOdpLJGCGxG+VZGSMxO8DHEs9pBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983962; c=relaxed/simple;
-	bh=UuLu/9X7THhUYAQrb/0w+BeHwt19NrQFPqBYpqEef7A=;
+	s=arc-20240116; t=1771983259; c=relaxed/simple;
+	bh=ab0W3OyWZ3vste0zexbKdaEUDEXdPs76hWEk8YuMCLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iNa1Q/Rt7Ek/IRKYRbY1usS1o2LR+c4LqRNfsUZfl7c6tDtwEZTtL5k+mFxHSwB1jpgcVUbHKkfAplmKrCEYMmFtfYjXAK5Hjx+hkOmQLdIbXchHKjd9FUUjvyCDgp72kfxHXzQW0Rw5IF/rJbKi8JQ7ecyKVrk6Q7UQRqLuRAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOYmyHu5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284D3C116D0;
-	Wed, 25 Feb 2026 01:46:02 +0000 (UTC)
+	 MIME-Version; b=fRtoK2/y2uJYdEDjZYhrxa3VgRDj0TnZy/HjIgXVmZmy0HwYHXRUr//Igms0PJBtEkVpHLcchft5s94r69oWemgKjm8CNNDs7AN+pEorjzJJIcad7OcapfTN36ZYtm1MevotjEEUkt4G9d1ttQ7sedHijx3o8imbVlZTO0PdWwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4fxC4tQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F29EC116D0;
+	Wed, 25 Feb 2026 01:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983962;
-	bh=UuLu/9X7THhUYAQrb/0w+BeHwt19NrQFPqBYpqEef7A=;
+	s=korg; t=1771983259;
+	bh=ab0W3OyWZ3vste0zexbKdaEUDEXdPs76hWEk8YuMCLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iOYmyHu5SeZH1WSNj5LNQvj3/RQ3J7DNjijPfRXWb+8gZsAeW9Md6DhS2mFd/TD2J
-	 RDUSWLJ5Qe3lQK7p7ZQMf4/pxEdrbZJKkRdEstHeAIpp3G9Q3Xosq5WxrAPdT+uPB/
-	 TkbKx0PoSH8CFcgnotBTTKqT00Qx7ZFhsZ8YS+98=
+	b=O4fxC4tQv+hc6Ymq93EY8cum+aRSythrZT6Cf31DCbX8+EerUeW34ESodtOdvfYB6
+	 MVUEsVgD3JXlkOBVIYWMF5mVHGm4QRyHkTalGa03+8LTJX77U29mUyofFchGUaN2Zg
+	 zpoBKRgbTxQls/klb8wq1IX5wNUG2bN00P6SdvWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Ketil Johnsen <ketil.johnsen@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Steven Price <steven.price@arm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 183/641] drm/panthor: Evict groups before VM termination
-Date: Tue, 24 Feb 2026 17:18:29 -0800
-Message-ID: <20260225012353.453905593@linuxfoundation.org>
+Subject: [PATCH 6.19 401/781] mptcp: do not account for OoO in mptcp_rcvbuf_grow()
+Date: Tue, 24 Feb 2026 17:18:30 -0800
+Message-ID: <20260225012409.541414423@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219042-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218438-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,101 +88,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
-X-Rspamd-Queue-Id: 282D5190ABB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4A83918FAAD
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ketil Johnsen <ketil.johnsen@arm.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 565ed40b5fc1242f7538a016fce5a85f802d4fb5 ]
+[ Upstream commit 6b329393502e5857662b851a13f947209c588587 ]
 
-Ensure all related groups are evicted and suspended before VM
-destruction takes place.
+MPTCP-level OoOs are physiological when multiple subflows are active
+concurrently and will not cause retransmissions nor are caused by
+drops.
 
-This fixes an issue where panthor_vm_destroy() destroys and unmaps the
-heap context while there are still on slot groups using this.
-The FW will do a write out to the heap context when a CSG (group) is
-suspended, so a premature unmap of the heap context will cause a
-GPU page fault.
-This page fault is quite harmless, and do not affect the continued
-operation of the GPU.
+Accounting for them in mptcp_rcvbuf_grow() causes the rcvbuf slowly
+drifting towards tcp_rmem[2].
 
-Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Link: https://patch.msgid.link/20251219093546.1227697-1-ketil.johnsen@arm.com
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Remove such accounting. Note that subflows will still account for TCP-level
+OoO when the MPTCP-level rcvbuf is propagated.
+
+This also closes a subtle and very unlikely race condition with rcvspace
+init; active sockets with user-space holding the msk-level socket lock,
+could complete such initialization in the receive callback, after that the
+first OoO data reaches the rcvbuf and potentially triggering a divide by
+zero Oops.
+
+Fixes: e118cdc34dd1 ("mptcp: rcvbuf auto-tuning improvement")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260203-net-next-mptcp-misc-feat-6-20-v1-1-31ec8bfc56d1@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_mmu.c   |  4 ++++
- drivers/gpu/drm/panthor/panthor_sched.c | 14 ++++++++++++++
- drivers/gpu/drm/panthor/panthor_sched.h |  1 +
- 3 files changed, 19 insertions(+)
+ net/mptcp/protocol.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index 15961629872e1..0fd8ffec92dd0 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -1561,6 +1561,10 @@ static void panthor_vm_destroy(struct panthor_vm *vm)
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 8d32336674181..cfa38bdaf2a92 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -224,9 +224,6 @@ static bool mptcp_rcvbuf_grow(struct sock *sk, u32 newval)
+ 	do_div(grow, oldval);
+ 	rcvwin += grow << 1;
  
- 	vm->destroyed = true;
+-	if (!RB_EMPTY_ROOT(&msk->out_of_order_queue))
+-		rcvwin += MPTCP_SKB_CB(msk->ooo_last_skb)->end_seq - msk->ack_seq;
+-
+ 	cap = READ_ONCE(net->ipv4.sysctl_tcp_rmem[2]);
  
-+	/* Tell scheduler to stop all GPU work related to this VM */
-+	if (refcount_read(&vm->as.active_cnt) > 0)
-+		panthor_sched_prepare_for_vm_destruction(vm->ptdev);
-+
- 	mutex_lock(&vm->heaps.lock);
- 	panthor_heap_pool_destroy(vm->heaps.pool);
- 	vm->heaps.pool = NULL;
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 8f11fe73bee23..c7dd98936bd6b 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -2707,6 +2707,20 @@ void panthor_sched_report_mmu_fault(struct panthor_device *ptdev)
- 		panthor_sched_immediate_tick(ptdev);
+ 	rcvbuf = min_t(u32, mptcp_space_from_win(sk, rcvwin), cap);
+@@ -350,9 +347,6 @@ static void mptcp_data_queue_ofo(struct mptcp_sock *msk, struct sk_buff *skb)
+ end:
+ 	skb_condense(skb);
+ 	skb_set_owner_r(skb, sk);
+-	/* do not grow rcvbuf for not-yet-accepted or orphaned sockets. */
+-	if (sk->sk_socket)
+-		mptcp_rcvbuf_grow(sk, msk->rcvq_space.space);
  }
  
-+void panthor_sched_prepare_for_vm_destruction(struct panthor_device *ptdev)
-+{
-+	/* FW can write out internal state, like the heap context, during CSG
-+	 * suspend. It is therefore important that the scheduler has fully
-+	 * evicted any pending and related groups before VM destruction can
-+	 * safely continue. Failure to do so can lead to GPU page faults.
-+	 * A controlled termination of a Panthor instance involves destroying
-+	 * the group(s) before the VM. This means any relevant group eviction
-+	 * has already been initiated by this point, and we just need to
-+	 * ensure that any pending tick_work() has been completed.
-+	 */
-+	flush_work(&ptdev->scheduler->tick_work.work);
-+}
-+
- void panthor_sched_resume(struct panthor_device *ptdev)
- {
- 	/* Force a tick to re-evaluate after a resume. */
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.h b/drivers/gpu/drm/panthor/panthor_sched.h
-index 742b0b4ff3a3c..6a560ab0a5b31 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.h
-+++ b/drivers/gpu/drm/panthor/panthor_sched.h
-@@ -49,6 +49,7 @@ void panthor_sched_suspend(struct panthor_device *ptdev);
- void panthor_sched_resume(struct panthor_device *ptdev);
- 
- void panthor_sched_report_mmu_fault(struct panthor_device *ptdev);
-+void panthor_sched_prepare_for_vm_destruction(struct panthor_device *ptdev);
- void panthor_sched_report_fw_events(struct panthor_device *ptdev, u32 events);
- 
- void panthor_fdinfo_gather_group_samples(struct panthor_file *pfile);
+ static void mptcp_init_skb(struct sock *ssk, struct sk_buff *skb, int offset,
 -- 
 2.51.0
 
