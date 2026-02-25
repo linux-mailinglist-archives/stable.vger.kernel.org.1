@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218934-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNxkCcFSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:13 +0100
+	id +FehGL1WnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218934-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC41018F513
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C1F1903B6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7633231AF228
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F392731C75DE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D649820C012;
-	Wed, 25 Feb 2026 01:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FEA279324;
+	Wed, 25 Feb 2026 01:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rl59Wwky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoFr4Zk/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2981D5ABA;
-	Wed, 25 Feb 2026 01:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2842765ED;
+	Wed, 25 Feb 2026 01:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983178; cv=none; b=RurHZ7Tn8Y9HSrCNdas1VyL5pjY65jIAUML2NBUlw01VZstEyRhSKWO4y/yiE4b85TJQtFDSegT+JCxtzvNkefRWZV/ykpQtgYUMlfpu/tFe/eCc623Ns5J+JBqsadeVPA3qtxjkaTVaL9vyiK2gUNpRKgadMPbsIoZOrEMmsEc=
+	t=1771983831; cv=none; b=PYXHvhox7cNr6eK4mQe+QrbxrzyGzGaqQ48W1A/z66j42/LV7V8rSdYnqtmkwgei+aiKVXbYEvo4z0CCCJyZUpP3mLoyFu9Nqh7js5E/yyGBVw8sQdgkyxMaetRqbY44eQjnKI347cmDo0oPtRXb900dNIUlqj6lWNTrsL7seVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983178; c=relaxed/simple;
-	bh=zBjZjYQ7LMchrZDs4QlXJy74nIVjalAQ3UlZTIqNeqA=;
+	s=arc-20240116; t=1771983831; c=relaxed/simple;
+	bh=Qsy9OsHCC39NqXg0QMhwu6q2iySe+sh06cs+uBraK38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W8jAtgQlB/X9KGIcbZRYaRODmM+SIj9UOxkf3fa39Ns98EAds6TT6R9cdJz0bpcHTI5UJK2KUzdQmQS/qQo9VYiYHrQEay2OLKvNe9TPVOeyJwe4Kxdgqzci5e0KiyEDIRucOoBhotbp5wzlwDDFnFBr/6Fddu8MWj08ZgC0yuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rl59Wwky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732F6C116D0;
-	Wed, 25 Feb 2026 01:32:58 +0000 (UTC)
+	 MIME-Version; b=avxKEC7Qei24B0HeOXaUaxD8km+iFbXv7ZAqe7wdIoBw27HyOeTa8RA6F9ogrNbrH0t/372IHy6e70+x/G+o6wuwL5NirqvTMyxT1GM66eENUX9QU+H3bKGa/bYD5WMOiugdRfhrNBNmS1z9L5PfRsFED160pLuve6l9WeUdvGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoFr4Zk/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8264AC116D0;
+	Wed, 25 Feb 2026 01:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983178;
-	bh=zBjZjYQ7LMchrZDs4QlXJy74nIVjalAQ3UlZTIqNeqA=;
+	s=korg; t=1771983831;
+	bh=Qsy9OsHCC39NqXg0QMhwu6q2iySe+sh06cs+uBraK38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rl59Wwkyb2eooNLoeZUBasamGDtpzWByNAyI5p4sroeQKoXNOIRSQUGwZ5n/I+ZGA
-	 diEz3uJbOnlQavHgTs65XRWbHGJkPsVB6RFZXmtYTC0xdNs+pxZn+emzyT+UE9JGBo
-	 T0f/J9nTBXwMGnXwEldzJqApvq/qjtw+7X3D0W6M=
+	b=VoFr4Zk/gFU288w9Q5G8g+j1apZP2XdaYi4cw27qsUH/Snp1t6YCcl+GrME2OiQpR
+	 X7Gv3gO8G/dI5KAC3ImviJeGc32KaLXb/gqNvizE7BE5w95xDfKayaKC1N45MkPJja
+	 p2wqM2l1wF4qD+F3DAji+W1376EpuOw1GW28uk94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 329/781] PCI/portdrv: Fix potential resource leak
+Subject: [PATCH 6.18 112/641] rtc: amlogic-a4: Remove IRQF_ONESHOT
 Date: Tue, 24 Feb 2026 17:17:18 -0800
-Message-ID: <20260225012407.772618471@linuxfoundation.org>
+Message-ID: <20260225012351.838046091@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +64,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218368-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218934-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,baylibre.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
-X-Rspamd-Queue-Id: BC41018F513
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amlogic.com:email,linutronix.de:email]
+X-Rspamd-Queue-Id: C0C1F1903B6
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 01464a3fdf91c041a381d93a1b6fefbdb819a46f ]
+[ Upstream commit 18d28446231390e4ea3634fb16200865df2c6506 ]
 
-pcie_port_probe_service() unconditionally calls get_device() (unless it
-fails). So drop that reference also unconditionally as it's fine for a
-PCIe driver to not have a remove callback.
+Passing IRQF_ONESHOT ensures that the interrupt source is masked until
+the secondary (threaded) handler is done. If only a primary handler is
+used then the flag makes no sense because the interrupt can not fire
+(again) while its handler is running.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/e1c68c3b3f1af8427e98ca5e2c79f8bf0ebe2ce4.1764688034.git.u.kleine-koenig@baylibre.com
+The flag also prevents force-threading of the primary handler and the
+irq-core will warn about this.
+
+Remove IRQF_ONESHOT from irqflags.
+
+Fixes: c89ac9182ee29 ("rtc: support for the Amlogic on-chip RTC")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Link: https://patch.msgid.link/20260128095540.863589-13-bigeasy@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/portdrv.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/rtc/rtc-amlogic-a4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pcie/portdrv.c b/drivers/pci/pcie/portdrv.c
-index 38a41ccf79b9a..a0991da482136 100644
---- a/drivers/pci/pcie/portdrv.c
-+++ b/drivers/pci/pcie/portdrv.c
-@@ -557,10 +557,10 @@ static int pcie_port_remove_service(struct device *dev)
+diff --git a/drivers/rtc/rtc-amlogic-a4.c b/drivers/rtc/rtc-amlogic-a4.c
+index a993d35e1d6b0..d766055d95848 100644
+--- a/drivers/rtc/rtc-amlogic-a4.c
++++ b/drivers/rtc/rtc-amlogic-a4.c
+@@ -371,7 +371,7 @@ static int aml_rtc_probe(struct platform_device *pdev)
+ 	}
  
- 	pciedev = to_pcie_device(dev);
- 	driver = to_service_driver(dev->driver);
--	if (driver && driver->remove) {
-+	if (driver && driver->remove)
- 		driver->remove(pciedev);
--		put_device(dev);
--	}
-+
-+	put_device(dev);
- 	return 0;
- }
- 
+ 	ret = devm_request_irq(dev, rtc->irq, aml_rtc_handler,
+-			       IRQF_ONESHOT, "aml-rtc alarm", rtc);
++			       0, "aml-rtc alarm", rtc);
+ 	if (ret) {
+ 		dev_err_probe(dev, ret, "IRQ%d request failed, ret = %d\n",
+ 			      rtc->irq, ret);
 -- 
 2.51.0
 
