@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMBMCcJRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:34:58 +0100
+	id YFMcA4xZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:08:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18DE18F082
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:34:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6405419095D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6ED0530A4584
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1616632E5B23
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147081D5ABA;
-	Wed, 25 Feb 2026 01:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9936D27280F;
+	Wed, 25 Feb 2026 01:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rv6io3/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDzEmGNk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC34D18DB2A;
-	Wed, 25 Feb 2026 01:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9F025A357;
+	Wed, 25 Feb 2026 01:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983134; cv=none; b=PQA7eFTRCD/Ch2Nf2i2EX2Xztztuy0A7c1A9SsxPvHfcMlXl+jImkj0nwmkITF+uOjlFDHXeXfhUGqoYHWSW1sGflvwiO7xLz8lexQG+HYtkEBl95WQ8cm7U3k9PUUqNHgSppnvUuA15bbe6yqDMd0lUb4YvcC9oWATO5Z1cF98=
+	t=1771983786; cv=none; b=aTsal3WFeuy5BjW+1LCvUHUjIMJda79cx+qGKeYIya1NOITXgm1EWZ2xFBvq8Dg6vMYtxgvHYXhwwzenSehTvB69DyxPx3sxdr6N3xqURCcvhh87BG5vkUbYkDI20sgkd/76LGB/d0WIkV+0QO3ybJASgrl3iyZojdgQndTtgM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983134; c=relaxed/simple;
-	bh=eVWDnI2UtVnWHxT8SezOz9A4dhV7hcdy59pcdeQzhNw=;
+	s=arc-20240116; t=1771983786; c=relaxed/simple;
+	bh=41NZP90nW7db6NUSzJYWDsnbfudEZ+RGuGDKqU3fWFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrifN9iwP7/IXw+ejrmnd0Eic6HjIB7HiF84AwWDo1W2JX7h6HwGRC653csjwiKb9kWllRs6Df4OdJ4T8OvpCTUcuhQaKGXqpSqb+JbLHhK6Bo+3sChnt2YdufApa6cM4xNAalZhyTvu4YBCob05pHLdUyn5LzbnlanUSKAJFZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rv6io3/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3CAC116D0;
-	Wed, 25 Feb 2026 01:32:14 +0000 (UTC)
+	 MIME-Version; b=WHZuSR8zY00dfWT0WAOMSE29MFMUWIVlenyWxv2J+/NcceDnndYrhlZmnG/bQQIhHUnrCq4ZbccocYfYq8m1wJ+hVW7NfVchMLgFBWvgCOWWRbwkR2v2hucq6yYtFU3vFkL+JFygJ6QhY47zAOgPOmsZiMTJCFAFzlG/up6nYGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDzEmGNk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266F1C116D0;
+	Wed, 25 Feb 2026 01:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983134;
-	bh=eVWDnI2UtVnWHxT8SezOz9A4dhV7hcdy59pcdeQzhNw=;
+	s=korg; t=1771983786;
+	bh=41NZP90nW7db6NUSzJYWDsnbfudEZ+RGuGDKqU3fWFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1rv6io3/Mj62++XudQSeGQ5UvuQlTNiKI1V3KaBG7knvy04ffmcwgAOUiU91sa26Z
-	 Yqx9+dT2GXwXNLOR4shX0n4FDcCKyvYL+fv6XckUCjIdsFfAGyPGTNmIKk5cDt2HW+
-	 Sjev5+IW9+eGhzNozZ/+0dFCshnJq85sGVsGMHk4=
+	b=PDzEmGNkWtZGrjFXrAzKj7zmthgOa3XdRbFUcjH12jS0YSsMVw88SWWJ8WgzU/gFR
+	 CLdEN4GjNGSDiWoz6AgQ2GDoJyXSzj095Z+ZsCN8pjgC/vQUL5UwAr7dh36vkNy1Mt
+	 Iz+/MDAtJF6YqwvdXBtwVF8Iu1HfEYBGnxxrV4OA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheetal <sheetal@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Weili Qian <qianweili@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 291/781] ASoC: tegra: Add AHUB writeable_reg for RX holes
+Subject: [PATCH 6.18 074/641] crypto: hisilicon/zip - adjust the way to obtain the req in the callback function
 Date: Tue, 24 Feb 2026 17:16:40 -0800
-Message-ID: <20260225012406.844335416@linuxfoundation.org>
+Message-ID: <20260225012350.859806091@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218330-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218897-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,162 +87,138 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: D18DE18F082
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
+X-Rspamd-Queue-Id: 6405419095D
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheetal <sheetal@nvidia.com>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit 0ba6286a71581aaf8413a55b9bd90ea3463fd23b ]
+[ Upstream commit 19c2475ce1984cf675ebfbbeaa5509b2fb1887d6 ]
 
-Add writeable_reg callbacks for Tegra210/186 AHUB RX registers so the
-flat cache only treats valid RX locations as writable, avoiding holes
-in the register map.
+In the shared queue design, multiple tfms use same qp, and one qp
+need to corresponds to multiple qp_ctx. So use tag to obtain the
+req virtual address. Build a one-to-one relationship between tfm
+and qp_ctx. finaly remove the old get_tag operation.
 
-Fixes: 16e1bcc2caf4 ("ASoC: tegra: Add Tegra210 based AHUB driver")
-Signed-off-by: Sheetal <sheetal@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260123095346.1258556-2-sheetal@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 2bcf36348ce5 ("crypto: hisilicon/zip - initialize operations about 'sqe' in 'acomp_alg.init'")
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Weili Qian <qianweili@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/tegra/tegra210_ahub.c | 57 +++++++++++++++++++++++++++++++++
- sound/soc/tegra/tegra210_ahub.h | 30 +++++++++++++++++
- 2 files changed, 87 insertions(+)
+ drivers/crypto/hisilicon/zip/zip_crypto.c | 24 +++++++++--------------
+ 1 file changed, 9 insertions(+), 15 deletions(-)
 
-diff --git a/sound/soc/tegra/tegra210_ahub.c b/sound/soc/tegra/tegra210_ahub.c
-index e795907a3963a..fc5892056f832 100644
---- a/sound/soc/tegra/tegra210_ahub.c
-+++ b/sound/soc/tegra/tegra210_ahub.c
-@@ -2049,6 +2049,61 @@ static const struct snd_soc_component_driver tegra264_ahub_component = {
- 	.num_dapm_routes	= ARRAY_SIZE(tegra264_ahub_routes),
+diff --git a/drivers/crypto/hisilicon/zip/zip_crypto.c b/drivers/crypto/hisilicon/zip/zip_crypto.c
+index b97513981a3b7..b4a656e0177d2 100644
+--- a/drivers/crypto/hisilicon/zip/zip_crypto.c
++++ b/drivers/crypto/hisilicon/zip/zip_crypto.c
+@@ -39,6 +39,7 @@ enum {
+ 	HZIP_CTX_Q_NUM
  };
  
-+static bool tegra210_ahub_wr_reg(struct device *dev, unsigned int reg)
-+{
-+	int part;
-+
-+	if (reg % TEGRA210_XBAR_RX_STRIDE)
-+		return false;
-+
-+	for (part = 0; part < TEGRA210_XBAR_UPDATE_MAX_REG; part++) {
-+		switch (reg & ~(part * TEGRA210_XBAR_PART1_RX)) {
-+		case TEGRA210_AXBAR_PART_0_ADMAIF_RX1_0 ... TEGRA210_AXBAR_PART_0_ADMAIF_RX10_0:
-+		case TEGRA210_AXBAR_PART_0_I2S1_RX1_0 ... TEGRA210_AXBAR_PART_0_I2S5_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_SFC1_RX1_0 ... TEGRA210_AXBAR_PART_0_SFC4_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_MIXER1_RX1_0 ... TEGRA210_AXBAR_PART_0_MIXER1_RX10_0:
-+		case TEGRA210_AXBAR_PART_0_SPDIF1_RX1_0 ... TEGRA210_AXBAR_PART_0_SPDIF1_RX2_0:
-+		case TEGRA210_AXBAR_PART_0_AFC1_RX1_0 ... TEGRA210_AXBAR_PART_0_AFC6_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_OPE1_RX1_0 ... TEGRA210_AXBAR_PART_0_OPE2_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_SPKPROT1_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_MVC1_RX1_0 ... TEGRA210_AXBAR_PART_0_MVC2_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_AMX1_RX1_0 ... TEGRA210_AXBAR_PART_0_ADX2_RX1_0:
-+			return true;
-+		default:
-+			break;
-+		}
-+	}
-+
-+	return false;
-+}
-+
-+static bool tegra186_ahub_wr_reg(struct device *dev, unsigned int reg)
-+{
-+	int part;
-+
-+	if (reg % TEGRA210_XBAR_RX_STRIDE)
-+		return false;
-+
-+	for (part = 0; part < TEGRA186_XBAR_UPDATE_MAX_REG; part++) {
-+		switch (reg & ~(part * TEGRA210_XBAR_PART1_RX)) {
-+		case TEGRA210_AXBAR_PART_0_ADMAIF_RX1_0 ... TEGRA186_AXBAR_PART_0_I2S6_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_SFC1_RX1_0 ... TEGRA210_AXBAR_PART_0_SFC4_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_MIXER1_RX1_0 ... TEGRA210_AXBAR_PART_0_MIXER1_RX10_0:
-+		case TEGRA186_AXBAR_PART_0_DSPK1_RX1_0 ... TEGRA186_AXBAR_PART_0_DSPK2_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_AFC1_RX1_0 ... TEGRA210_AXBAR_PART_0_AFC6_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_OPE1_RX1_0:
-+		case TEGRA186_AXBAR_PART_0_MVC1_RX1_0 ... TEGRA186_AXBAR_PART_0_MVC2_RX1_0:
-+		case TEGRA186_AXBAR_PART_0_AMX1_RX1_0 ... TEGRA186_AXBAR_PART_0_AMX3_RX4_0:
-+		case TEGRA210_AXBAR_PART_0_ADX1_RX1_0 ... TEGRA186_AXBAR_PART_0_ASRC1_RX7_0:
-+			return true;
-+		default:
-+			break;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- static bool tegra264_ahub_wr_reg(struct device *dev, unsigned int reg)
++#define GET_REQ_FROM_SQE(sqe)	((u64)(sqe)->dw26 | (u64)(sqe)->dw27 << 32)
+ #define COMP_NAME_TO_TYPE(alg_name)					\
+ 	(!strcmp((alg_name), "deflate") ? HZIP_ALG_TYPE_DEFLATE : 0)
+ 
+@@ -48,6 +49,7 @@ struct hisi_zip_req {
+ 	struct hisi_acc_hw_sgl *hw_dst;
+ 	dma_addr_t dma_src;
+ 	dma_addr_t dma_dst;
++	struct hisi_zip_qp_ctx *qp_ctx;
+ 	u16 req_id;
+ };
+ 
+@@ -74,7 +76,6 @@ struct hisi_zip_sqe_ops {
+ 	void (*fill_req_type)(struct hisi_zip_sqe *sqe, u8 req_type);
+ 	void (*fill_tag)(struct hisi_zip_sqe *sqe, struct hisi_zip_req *req);
+ 	void (*fill_sqe_type)(struct hisi_zip_sqe *sqe, u8 sqe_type);
+-	u32 (*get_tag)(struct hisi_zip_sqe *sqe);
+ 	u32 (*get_status)(struct hisi_zip_sqe *sqe);
+ 	u32 (*get_dstlen)(struct hisi_zip_sqe *sqe);
+ };
+@@ -131,6 +132,7 @@ static struct hisi_zip_req *hisi_zip_create_req(struct hisi_zip_qp_ctx *qp_ctx,
+ 	req_cache = q + req_id;
+ 	req_cache->req_id = req_id;
+ 	req_cache->req = req;
++	req_cache->qp_ctx = qp_ctx;
+ 
+ 	return req_cache;
+ }
+@@ -181,7 +183,8 @@ static void hisi_zip_fill_req_type(struct hisi_zip_sqe *sqe, u8 req_type)
+ 
+ static void hisi_zip_fill_tag(struct hisi_zip_sqe *sqe, struct hisi_zip_req *req)
  {
- 	int part;
-@@ -2076,6 +2131,7 @@ static const struct regmap_config tegra210_ahub_regmap_config = {
- 	.reg_bits		= 32,
- 	.val_bits		= 32,
- 	.reg_stride		= 4,
-+	.writeable_reg		= tegra210_ahub_wr_reg,
- 	.max_register		= TEGRA210_MAX_REGISTER_ADDR,
- 	.cache_type		= REGCACHE_FLAT,
- };
-@@ -2084,6 +2140,7 @@ static const struct regmap_config tegra186_ahub_regmap_config = {
- 	.reg_bits		= 32,
- 	.val_bits		= 32,
- 	.reg_stride		= 4,
-+	.writeable_reg		= tegra186_ahub_wr_reg,
- 	.max_register		= TEGRA186_MAX_REGISTER_ADDR,
- 	.cache_type		= REGCACHE_FLAT,
- };
-diff --git a/sound/soc/tegra/tegra210_ahub.h b/sound/soc/tegra/tegra210_ahub.h
-index f355b2cfd19b2..acbe640dd3b57 100644
---- a/sound/soc/tegra/tegra210_ahub.h
-+++ b/sound/soc/tegra/tegra210_ahub.h
-@@ -68,6 +68,36 @@
- #define TEGRA210_MAX_REGISTER_ADDR (TEGRA210_XBAR_PART2_RX +		\
- 	(TEGRA210_XBAR_RX_STRIDE * (TEGRA210_XBAR_AUDIO_RX_COUNT - 1)))
+-	sqe->dw26 = req->req_id;
++	sqe->dw26 = lower_32_bits((u64)req);
++	sqe->dw27 = upper_32_bits((u64)req);
+ }
  
-+/* AXBAR register offsets */
-+#define TEGRA186_AXBAR_PART_0_AMX1_RX1_0	0x120
-+#define TEGRA186_AXBAR_PART_0_AMX3_RX4_0	0x14c
-+#define TEGRA186_AXBAR_PART_0_ASRC1_RX7_0	0x1a8
-+#define TEGRA186_AXBAR_PART_0_DSPK1_RX1_0	0xc0
-+#define TEGRA186_AXBAR_PART_0_DSPK2_RX1_0	0xc4
-+#define TEGRA186_AXBAR_PART_0_I2S6_RX1_0	0x54
-+#define TEGRA186_AXBAR_PART_0_MVC1_RX1_0	0x110
-+#define TEGRA186_AXBAR_PART_0_MVC2_RX1_0	0x114
-+#define TEGRA210_AXBAR_PART_0_ADMAIF_RX10_0	0x24
-+#define TEGRA210_AXBAR_PART_0_ADMAIF_RX1_0	0x0
-+#define TEGRA210_AXBAR_PART_0_ADX1_RX1_0	0x160
-+#define TEGRA210_AXBAR_PART_0_ADX2_RX1_0	0x164
-+#define TEGRA210_AXBAR_PART_0_AFC1_RX1_0	0xd0
-+#define TEGRA210_AXBAR_PART_0_AFC6_RX1_0	0xe4
-+#define TEGRA210_AXBAR_PART_0_AMX1_RX1_0	0x140
-+#define TEGRA210_AXBAR_PART_0_I2S1_RX1_0	0x40
-+#define TEGRA210_AXBAR_PART_0_I2S5_RX1_0	0x50
-+#define TEGRA210_AXBAR_PART_0_MIXER1_RX10_0	0xa4
-+#define TEGRA210_AXBAR_PART_0_MIXER1_RX1_0	0x80
-+#define TEGRA210_AXBAR_PART_0_MVC1_RX1_0	0x120
-+#define TEGRA210_AXBAR_PART_0_MVC2_RX1_0	0x124
-+#define TEGRA210_AXBAR_PART_0_OPE1_RX1_0	0x100
-+#define TEGRA210_AXBAR_PART_0_OPE2_RX1_0	0x104
-+#define TEGRA210_AXBAR_PART_0_SFC1_RX1_0	0x60
-+#define TEGRA210_AXBAR_PART_0_SFC4_RX1_0	0x6c
-+#define TEGRA210_AXBAR_PART_0_SPDIF1_RX1_0	0xc0
-+#define TEGRA210_AXBAR_PART_0_SPDIF1_RX2_0	0xc4
-+#define TEGRA210_AXBAR_PART_0_SPKPROT1_RX1_0	0x110
-+
- #define MUX_REG(id) (TEGRA210_XBAR_RX_STRIDE * (id))
+ static void hisi_zip_fill_sqe_type(struct hisi_zip_sqe *sqe, u8 sqe_type)
+@@ -237,7 +240,7 @@ static int hisi_zip_do_work(struct hisi_zip_qp_ctx *qp_ctx,
+ 						    &req->dma_dst, DMA_FROM_DEVICE);
+ 	if (IS_ERR(req->hw_dst)) {
+ 		ret = PTR_ERR(req->hw_dst);
+-		dev_err(dev, "failed to map the dst buffer to hw slg (%d)!\n",
++		dev_err(dev, "failed to map the dst buffer to hw sgl (%d)!\n",
+ 			ret);
+ 		goto err_unmap_input;
+ 	}
+@@ -265,11 +268,6 @@ static int hisi_zip_do_work(struct hisi_zip_qp_ctx *qp_ctx,
+ 	return ret;
+ }
  
- #define MUX_VALUE(npart, nbit) (1 + (nbit) + (npart) * 32)
+-static u32 hisi_zip_get_tag(struct hisi_zip_sqe *sqe)
+-{
+-	return sqe->dw26;
+-}
+-
+ static u32 hisi_zip_get_status(struct hisi_zip_sqe *sqe)
+ {
+ 	return sqe->dw3 & HZIP_BD_STATUS_M;
+@@ -282,14 +280,12 @@ static u32 hisi_zip_get_dstlen(struct hisi_zip_sqe *sqe)
+ 
+ static void hisi_zip_acomp_cb(struct hisi_qp *qp, void *data)
+ {
+-	struct hisi_zip_qp_ctx *qp_ctx = qp->qp_ctx;
++	struct hisi_zip_sqe *sqe = data;
++	struct hisi_zip_req *req = (struct hisi_zip_req *)GET_REQ_FROM_SQE(sqe);
++	struct hisi_zip_qp_ctx *qp_ctx = req->qp_ctx;
+ 	const struct hisi_zip_sqe_ops *ops = qp_ctx->ctx->ops;
+ 	struct hisi_zip_dfx *dfx = &qp_ctx->zip_dev->dfx;
+-	struct hisi_zip_req_q *req_q = &qp_ctx->req_q;
+ 	struct device *dev = &qp->qm->pdev->dev;
+-	struct hisi_zip_sqe *sqe = data;
+-	u32 tag = ops->get_tag(sqe);
+-	struct hisi_zip_req *req = req_q->q + tag;
+ 	struct acomp_req *acomp_req = req->req;
+ 	int err = 0;
+ 	u32 status;
+@@ -393,7 +389,6 @@ static const struct hisi_zip_sqe_ops hisi_zip_ops = {
+ 	.fill_req_type		= hisi_zip_fill_req_type,
+ 	.fill_tag		= hisi_zip_fill_tag,
+ 	.fill_sqe_type		= hisi_zip_fill_sqe_type,
+-	.get_tag		= hisi_zip_get_tag,
+ 	.get_status		= hisi_zip_get_status,
+ 	.get_dstlen		= hisi_zip_get_dstlen,
+ };
+@@ -581,7 +576,6 @@ static void hisi_zip_acomp_exit(struct crypto_acomp *tfm)
+ {
+ 	struct hisi_zip_ctx *ctx = crypto_tfm_ctx(&tfm->base);
+ 
+-	hisi_zip_set_acomp_cb(ctx, NULL);
+ 	hisi_zip_release_sgl_pool(ctx);
+ 	hisi_zip_release_req_q(ctx);
+ 	hisi_zip_ctx_exit(ctx);
 -- 
 2.51.0
 
