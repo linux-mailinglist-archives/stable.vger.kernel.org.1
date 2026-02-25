@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-218958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HyAAgVanmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:13 +0100
+	id IINjMNdRnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C719190A0D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD3018F0D3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4266A30EAFE6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3BCFF308B07A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8CD281341;
-	Wed, 25 Feb 2026 01:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE17A242D9B;
+	Wed, 25 Feb 2026 01:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnQT4l7J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbuurRo6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAE8256C84;
-	Wed, 25 Feb 2026 01:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13E118DB2A;
+	Wed, 25 Feb 2026 01:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983859; cv=none; b=Gge+KTVwoIZHqZPvPy5a29sJDLae6aUVdbVInHCWlWIzmTAJ7tfgCCr5qb3hlJeFYJWaRNEYY1k3SgGtm3hecFQv9r9zeQe9nSqiy+oG5oOXIPT76zaZiu/uLx4MSrX8DmRZlKLi6TlnwM/u0FCnW4WcE89ymPTBd3XM/z5wMgE=
+	t=1771983156; cv=none; b=Bkhjzv6dBTfD7glPi5kTh+/m+kurackmaFs8izjmnOitLeAS+TnB/vPTqW6pniNuvt3ys+GJASX0cFxBpSWAqipAsajdWlixtcdkgUMLnrOnnZGjLKuzqWDLbhFog1TXREbfm/QuQqymFfwhfPK+XkyzDYvivqWZOFZXnyZY9rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983859; c=relaxed/simple;
-	bh=wbq6iNPhKZC5cljK/7taG8GX4ZZng1sO9Oc6Yw8WHKA=;
+	s=arc-20240116; t=1771983156; c=relaxed/simple;
+	bh=GJt8d8L/G48U4rztjkVbhUlqlHApYELHflXTrc57/1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WG/gZJhNtgNMhjdOlMcD4XGf6FJR55ZgM7dDGsfFdLcv4h6QRg3XMXg6y898eBFlUE/izgsvjjtX9VFLcSM2cJ/j0MGwVBaYwLM7jrVsJ3JctBPxjJFOI5KZdzrIU7WiETTt1VzQ+Kqmz1Ya23y05heYjqFfCQybJa1QdD1cLe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnQT4l7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C200EC116D0;
-	Wed, 25 Feb 2026 01:44:18 +0000 (UTC)
+	 MIME-Version; b=WmrXzUUNiom2HLjhSaP11MmDGH6vpW/CbXCG3RujSWyUbR4LVlT3+x8SR5mU3486EhgZovw/g+TZRfm/qopBJ7COx/sr2OUkbapHxMtQ8SlUlOKI/tgXUutLMX25iPVxUI70bRdyJmynJ7VqfbKxJZTc+oOJUK2dfYXoEvngWGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbuurRo6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC0BC116D0;
+	Wed, 25 Feb 2026 01:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983858;
-	bh=wbq6iNPhKZC5cljK/7taG8GX4ZZng1sO9Oc6Yw8WHKA=;
+	s=korg; t=1771983156;
+	bh=GJt8d8L/G48U4rztjkVbhUlqlHApYELHflXTrc57/1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RnQT4l7J+sbaS0A22tvE3czsFQCpwA1iZtcgp/Gtsi6EPZTfsxlsOT9R3Y2mOJcje
-	 tykHJ3bGlW+3+lMpNAHfotr/SV+TDcI7hlLI+WhReb2dy/Sr+ryZ7bFBMZIMCTtvXx
-	 pqp5tRr8qYPesA8i8xie6jPkOoflNhx9G7QksrsA=
+	b=tbuurRo6cErhqnQqNmhjcqrTqfE245T+8fJx+Hg8GXr5t9lm4xYjXwPHDdPtG8ive
+	 PfCjKB2qwEp+4fO8Rv8vh02C1nNhK6mcyZ5dZB6XA2xeB94edQvfZbA1q1YdrhdB0f
+	 BCmZgkYW30n+IuuqAZzUQQuwU6FYUOnEd8JFTc+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Petr Mladek <pmladek@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 093/641] bpf, sockmap: Fix incorrect copied_seq calculation
+Subject: [PATCH 6.19 310/781] vsnprintf: drop __printf() attributes on binary printing functions
 Date: Tue, 24 Feb 2026 17:16:59 -0800
-Message-ID: <20260225012351.354329506@linuxfoundation.org>
+Message-ID: <20260225012407.308527998@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,206 +74,105 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218958-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218347-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,cloudflare.com,gmail.com,linux.dev,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,arndb.de,suse.com,linux.intel.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.958];
+	NEURAL_HAM(-0.00)[-0.987];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,cloudflare.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3C719190A0D
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5FD3018F0D3
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b40cc5adaa80e1471095a62d78233b611d7a558c ]
+[ Upstream commit b07829d546c83134629591f02c5348d57cea0c1e ]
 
-A socket using sockmap has its own independent receive queue: ingress_msg.
-This queue may contain data from its own protocol stack or from other
-sockets.
+The printf() format attributes are applied inconsistently for the binary
+printf helpers, which causes warnings for the bpf_trace code using
+them from functions that pass down format strings:
 
-The issue is that when reading from ingress_msg, we update tp->copied_seq
-by default. However, if the data is not from its own protocol stack,
-tcp->rcv_nxt is not increased. Later, if we convert this socket to a
-native socket, reading from this socket may fail because copied_seq might
-be significantly larger than rcv_nxt.
+    kernel/trace/bpf_trace.c: In function '____bpf_trace_printk':
+    kernel/trace/bpf_trace.c:377:9: error: function '____bpf_trace_printk' might be a candidate for 'gnu_printf' format attribute [-Werror=suggest-attribute=format]
+      377 |         ret = bstr_printf(data.buf, MAX_BPRINTF_BUF, fmt, data.bin_args);
+          |         ^~~
 
-This fix also addresses the syzkaller-reported bug referenced in the
-Closes tag.
+This can be addressed either by annotating all five callers in bpf code,
+or by removing the annotations on the callees that were added by Andy
+Shevchenko last year.
 
-This patch marks the skmsg objects in ingress_msg. When reading, we update
-copied_seq only if the data is from its own protocol stack.
+As Alexei Starovoitov points out, there are no callers in C code that
+would benefit from the __printf attributes, the only users are in BPF
+code or in the do_trace_printk() helper that already checks the arguments.
 
-                                                     FD1:read()
-                                                     --  FD1->copied_seq++
-                                                         |  [read data]
-                                                         |
-                                [enqueue data]           v
-                  [sockmap]     -> ingress to self ->  ingress_msg queue
-FD1 native stack  ------>                                 ^
--- FD1->rcv_nxt++               -> redirect to other      | [enqueue data]
-                                       |                  |
-                                       |             ingress to FD1
-                                       v                  ^
-                                      ...                 |  [sockmap]
-                                                     FD2 native stack
+Drop all three of these annotations, reverting the earlierl commits that
+added these, in order to get a clean build with -Wsuggest-attribute=format.
 
-Closes: https://syzkaller.appspot.com/bug?extid=06dbd397158ec0ea4983
-Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://lore.kernel.org/r/20260124113314.113584-2-jiayuan.chen@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 6b2c1e30ad68 ("seq_file: Mark binary printing functions with __printf() attribute")
+Fixes: 7bf819aa992f ("vsnprintf: Mark binary printing functions with __printf() attribute")
+Link: https://lore.kernel.org/all/CAADnVQK3eZp3yp35OUx8j1UBsQFhgsn5-4VReqAJ=68PaaKYmg@mail.gmail.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202512061640.9hKTnB8p-lkp@intel.com/
+Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Acked-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Petr Mladek <pmladek@suse.com>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20260204132643.1302967-1-arnd@kernel.org
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skmsg.h |  2 ++
- net/core/skmsg.c      | 27 ++++++++++++++++++++++++---
- net/ipv4/tcp_bpf.c    |  5 +++--
- 3 files changed, 29 insertions(+), 5 deletions(-)
+ include/linux/seq_file.h | 1 -
+ include/linux/string.h   | 4 ++--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-index 49847888c287a..dfdc158ab88c8 100644
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -141,6 +141,8 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
- 			     struct sk_msg *msg, u32 bytes);
- int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
- 		   int len, int flags);
-+int __sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
-+		     int len, int flags, int *copied_from_self);
- bool sk_msg_is_readable(struct sock *sk);
+diff --git a/include/linux/seq_file.h b/include/linux/seq_file.h
+index d6ebf0596510c..2fb266ea69fa4 100644
+--- a/include/linux/seq_file.h
++++ b/include/linux/seq_file.h
+@@ -181,7 +181,6 @@ int seq_open_private(struct file *, const struct seq_operations *, int);
+ int seq_release_private(struct inode *, struct file *);
  
- static inline void sk_msg_check_to_free(struct sk_msg *msg, u32 i, u32 bytes)
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 2ac7731e1e0a7..d402da5caadd6 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -409,22 +409,26 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
- }
- EXPORT_SYMBOL_GPL(sk_msg_memcopy_from_iter);
+ #ifdef CONFIG_BINARY_PRINTF
+-__printf(2, 0)
+ void seq_bprintf(struct seq_file *m, const char *f, const u32 *binary);
+ #endif
  
--/* Receive sk_msg from psock->ingress_msg to @msg. */
--int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
--		   int len, int flags)
-+int __sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
-+		     int len, int flags, int *copied_from_self)
- {
- 	struct iov_iter *iter = &msg->msg_iter;
- 	int peek = flags & MSG_PEEK;
- 	struct sk_msg *msg_rx;
- 	int i, copied = 0;
-+	bool from_self;
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 1b564c36d721b..b850bd91b3d88 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -336,8 +336,8 @@ int __sysfs_match_string(const char * const *array, size_t n, const char *s);
+ #define sysfs_match_string(_a, _s) __sysfs_match_string(_a, ARRAY_SIZE(_a), _s)
  
- 	msg_rx = sk_psock_peek_msg(psock);
-+	if (copied_from_self)
-+		*copied_from_self = 0;
-+
- 	while (copied != len) {
- 		struct scatterlist *sge;
+ #ifdef CONFIG_BINARY_PRINTF
+-__printf(3, 0) int vbin_printf(u32 *bin_buf, size_t size, const char *fmt, va_list args);
+-__printf(3, 0) int bstr_printf(char *buf, size_t size, const char *fmt, const u32 *bin_buf);
++int vbin_printf(u32 *bin_buf, size_t size, const char *fmt, va_list args);
++int bstr_printf(char *buf, size_t size, const char *fmt, const u32 *bin_buf);
+ #endif
  
- 		if (unlikely(!msg_rx))
- 			break;
- 
-+		from_self = msg_rx->sk == sk;
- 		i = msg_rx->sg.start;
- 		do {
- 			struct page *page;
-@@ -443,6 +447,9 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
- 			}
- 
- 			copied += copy;
-+			if (from_self && copied_from_self)
-+				*copied_from_self += copy;
-+
- 			if (likely(!peek)) {
- 				sge->offset += copy;
- 				sge->length -= copy;
-@@ -487,6 +494,13 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
- out:
- 	return copied;
- }
-+
-+/* Receive sk_msg from psock->ingress_msg to @msg. */
-+int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
-+		   int len, int flags)
-+{
-+	return __sk_msg_recvmsg(sk, psock, msg, len, flags, NULL);
-+}
- EXPORT_SYMBOL_GPL(sk_msg_recvmsg);
- 
- bool sk_msg_is_readable(struct sock *sk)
-@@ -616,6 +630,12 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
- 	if (unlikely(!msg))
- 		return -EAGAIN;
- 	skb_set_owner_r(skb, sk);
-+
-+	/* This is used in tcp_bpf_recvmsg_parser() to determine whether the
-+	 * data originates from the socket's own protocol stack. No need to
-+	 * refcount sk because msg's lifetime is bound to sk via the ingress_msg.
-+	 */
-+	msg->sk = sk;
- 	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, take_ref);
- 	if (err < 0)
- 		kfree(msg);
-@@ -909,6 +929,7 @@ int sk_psock_msg_verdict(struct sock *sk, struct sk_psock *psock,
- 	sk_msg_compute_data_pointers(msg);
- 	msg->sk = sk;
- 	ret = bpf_prog_run_pin_on_cpu(prog, msg);
-+	msg->sk = NULL;
- 	ret = sk_psock_map_verd(ret, msg->sk_redir);
- 	psock->apply_bytes = msg->apply_bytes;
- 	if (ret == __SK_REDIRECT) {
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index a268e1595b22a..5c698fd7fbf81 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -226,6 +226,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 	int peek = flags & MSG_PEEK;
- 	struct sk_psock *psock;
- 	struct tcp_sock *tcp;
-+	int copied_from_self = 0;
- 	int copied = 0;
- 	u32 seq;
- 
-@@ -262,7 +263,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 	}
- 
- msg_bytes_ready:
--	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
-+	copied = __sk_msg_recvmsg(sk, psock, msg, len, flags, &copied_from_self);
- 	/* The typical case for EFAULT is the socket was gracefully
- 	 * shutdown with a FIN pkt. So check here the other case is
- 	 * some error on copy_page_to_iter which would be unexpected.
-@@ -277,7 +278,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 			goto out;
- 		}
- 	}
--	seq += copied;
-+	seq += copied_from_self;
- 	if (!copied) {
- 		long timeo;
- 		int data;
+ extern ssize_t memory_read_from_buffer(void *to, size_t count, loff_t *ppos,
 -- 
 2.51.0
 
