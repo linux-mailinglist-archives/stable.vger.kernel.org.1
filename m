@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNVfGUZYnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218979-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:46 +0100
+	id uBNdEzFSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B281906D1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E302818F270
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B94EE30FB9DD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8B788307984B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0841325A655;
-	Wed, 25 Feb 2026 01:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B689B248881;
+	Wed, 25 Feb 2026 01:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPuRnnXD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCnlpWy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7911F03DE;
-	Wed, 25 Feb 2026 01:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6C318DB2A;
+	Wed, 25 Feb 2026 01:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983883; cv=none; b=mdrIsONaBJtCyeeEuJGYi9XDwoRiFL1b1LrNb4VP8c4IqbYQEzvSg7sB0e63QceCOOoJIs+EszTGlfgOzEQiHETntmVgeAmQvY8oUjfPKoICPYO+6BT3UgFf70qIEky28/GMxWx8qMCEUhK1gE6O/aKWQNDo/vkWRBXCQBK71cg=
+	t=1771983230; cv=none; b=u/tDqB332A7JpzyufZkiGm1lByM4o3AXRfEGOBviqNhjZ+Fk0/I0zzEzuybrMCjs1B5U6rTED1UyjWWon3/RDGxLpgQ+9tZqnKpi9dy/RZXuENLbwLkbuKw9PP7HLXjYaqngddxgIKBQDdXKIC6IK3h7uP6CKwkemoyE+JsrsNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983883; c=relaxed/simple;
-	bh=iOnbOdj2pJD/UUmBWOpt+9EDVxpFj5Lha65g2VP4AII=;
+	s=arc-20240116; t=1771983230; c=relaxed/simple;
+	bh=8AoqDM+5h0eCyEtt7tC2qxGPNmeoeOZjWYjgqlOY5Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwS2VUdxsbhPZyc/lrPshoMHYSQkw9fY8McQmJVld+ZVFP7oZcR1xEbmpFrJqI7JDLKFrq7Sz1ylg/OhNLWiy3oYomCvrOV7jzq6Lqzf6jCmDIRMI1DTfdiR/6r0V7Ljihb8wHb9KvxXx2jC5VwJYDpFuSbfSUjRed8Qv4Y32Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPuRnnXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B221C116D0;
-	Wed, 25 Feb 2026 01:44:43 +0000 (UTC)
+	 MIME-Version; b=WNwKRzuRy/vaV/flcADyPJ/uDA/46Keu+m5WNcLHYYG89Fkexj781DC4+AGUmc1lthga0EqX3GDmmc8uhdSVzFj0ShKQ5P4L77zwi5NIlrElHyeg6wRmioKmS4b65JV5E9Vp+58chAZoEl64RTlSXBmsSUaE7el0nxLoOuVX0Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCnlpWy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388C8C116D0;
+	Wed, 25 Feb 2026 01:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983883;
-	bh=iOnbOdj2pJD/UUmBWOpt+9EDVxpFj5Lha65g2VP4AII=;
+	s=korg; t=1771983230;
+	bh=8AoqDM+5h0eCyEtt7tC2qxGPNmeoeOZjWYjgqlOY5Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OPuRnnXDH06jM5Ts2PCvkI0fWPdLWN/yYS3rtb0EhN+/zpgO04/IKmEgximc3yHgE
-	 3vvmwlzqmDdwg0E5K7pKo7vpr3qM2QH5uVblCpImIiL49WT54O2TZ1PpASDBAg6yR2
-	 BG/X8zl1MOh7rEZnMinqp0xfQ9iVConJm3LiL99o=
+	b=VCnlpWy0aSE/SUJ2NWoWcUDauoYP5LLiNUBYQsNxMth5yu5WuoJhVfOa5FrabdNsQ
+	 EftA4DR2HU1TF44vEpNd0m6X7YeBkLbYOg/8sTFb39OM1JF6KvoO/3aQPjIDE9Sq9Z
+	 yDd4G90WP2ZB8z5XVbpOpbDbYqOgR0Oo6VABixPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 157/641] arm64: dts: amlogic: gx: assign the MMC signal clocks
+Subject: [PATCH 6.19 374/781] wifi: ath10k: sdio: add missing lock protection in ath10k_sdio_fw_crashed_dump()
 Date: Tue, 24 Feb 2026 17:18:03 -0800
-Message-ID: <20260225012352.884698469@linuxfoundation.org>
+Message-ID: <20260225012408.863560798@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,125 +70,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218412-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218979-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,baylibre.com:email,msgid.link:url,linaro.org:email]
-X-Rspamd-Queue-Id: 96B281906D1
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: E302818F270
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-[ Upstream commit 406706559046eebc09a31e8ae5e78620bfd746fe ]
+[ Upstream commit e55ac348089e579fc224569c7bd90340bf2439f9 ]
 
-The amlogic MMC driver operate with the assumption that MMC clock
-is configured to provide 24MHz. It uses this path for low
-rates such as 400kHz.
+ath10k_sdio_fw_crashed_dump() calls ath10k_coredump_new() which requires
+ar->dump_mutex to be held, as indicated by lockdep_assert_held() in that
+function. However, the SDIO implementation does not acquire this lock,
+unlike the PCI and SNOC implementations which properly hold the mutex.
 
-Assign the clocks to make sure they are properly configured
+Additionally, ar->stats.fw_crash_counter is documented as protected by
+ar->data_lock in core.h, but the SDIO implementation modifies it without
+holding this spinlock.
 
-Fixes: 50662499f911 ("ARM64: dts: meson-gx: Use correct mmc clock source 0")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260114-amlogic-mmc-clocks-followup-v1-4-a999fafbe0aa@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Add the missing mutex_lock()/mutex_unlock() around the coredump
+operations, and add spin_lock_bh()/spin_unlock_bh() around the
+fw_crash_counter increment, following the pattern used in
+ath10k_pci_fw_dump_work() and ath10k_snoc_fw_crashed_dump().
+
+Fixes: 3c45f21af84e ("ath10k: sdio: add firmware coredump support")
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260123045822.2221549-1-n7l8m4@u.northwestern.edu
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi | 9 +++++++++
- arch/arm64/boot/dts/amlogic/meson-gxl.dtsi  | 9 +++++++++
- 2 files changed, 18 insertions(+)
+ drivers/net/wireless/ath/ath10k/sdio.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-index f69923da07feb..a9c830a570cc6 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-@@ -824,6 +824,9 @@ &sd_emmc_a {
- 		 <&clkc CLKID_FCLK_DIV2>;
- 	clock-names = "core", "clkin0", "clkin1";
- 	resets = <&reset RESET_SD_EMMC_A>;
-+
-+	assigned-clocks = <&clkc CLKID_SD_EMMC_A_CLK0>;
-+	assigned-clock-rates = <24000000>;
- };
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index c06d50db40b81..00d0556dafefd 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -2487,7 +2487,11 @@ void ath10k_sdio_fw_crashed_dump(struct ath10k *ar)
+ 	if (fast_dump)
+ 		ath10k_bmi_start(ar);
  
- &sd_emmc_b {
-@@ -832,6 +835,9 @@ &sd_emmc_b {
- 		 <&clkc CLKID_FCLK_DIV2>;
- 	clock-names = "core", "clkin0", "clkin1";
- 	resets = <&reset RESET_SD_EMMC_B>;
++	mutex_lock(&ar->dump_mutex);
 +
-+	assigned-clocks = <&clkc CLKID_SD_EMMC_B_CLK0>;
-+	assigned-clock-rates = <24000000>;
- };
++	spin_lock_bh(&ar->data_lock);
+ 	ar->stats.fw_crash_counter++;
++	spin_unlock_bh(&ar->data_lock);
  
- &sd_emmc_c {
-@@ -840,6 +846,9 @@ &sd_emmc_c {
- 		 <&clkc CLKID_FCLK_DIV2>;
- 	clock-names = "core", "clkin0", "clkin1";
- 	resets = <&reset RESET_SD_EMMC_C>;
+ 	ath10k_sdio_disable_intrs(ar);
+ 
+@@ -2505,6 +2509,8 @@ void ath10k_sdio_fw_crashed_dump(struct ath10k *ar)
+ 
+ 	ath10k_sdio_enable_intrs(ar);
+ 
++	mutex_unlock(&ar->dump_mutex);
 +
-+	assigned-clocks = <&clkc CLKID_SD_EMMC_C_CLK0>;
-+	assigned-clock-rates = <24000000>;
- };
+ 	ath10k_core_start_recovery(ar);
+ }
  
- &simplefb_hdmi {
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-index ba535010a3c91..e202d84f06720 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-@@ -894,6 +894,9 @@ &sd_emmc_a {
- 		 <&clkc CLKID_FCLK_DIV2>;
- 	clock-names = "core", "clkin0", "clkin1";
- 	resets = <&reset RESET_SD_EMMC_A>;
-+
-+	assigned-clocks = <&clkc CLKID_SD_EMMC_A_CLK0>;
-+	assigned-clock-rates = <24000000>;
- };
- 
- &sd_emmc_b {
-@@ -902,6 +905,9 @@ &sd_emmc_b {
- 		 <&clkc CLKID_FCLK_DIV2>;
- 	clock-names = "core", "clkin0", "clkin1";
- 	resets = <&reset RESET_SD_EMMC_B>;
-+
-+	assigned-clocks = <&clkc CLKID_SD_EMMC_B_CLK0>;
-+	assigned-clock-rates = <24000000>;
- };
- 
- &sd_emmc_c {
-@@ -910,6 +916,9 @@ &sd_emmc_c {
- 		 <&clkc CLKID_FCLK_DIV2>;
- 	clock-names = "core", "clkin0", "clkin1";
- 	resets = <&reset RESET_SD_EMMC_C>;
-+
-+	assigned-clocks = <&clkc CLKID_SD_EMMC_C_CLK0>;
-+	assigned-clock-rates = <24000000>;
- };
- 
- &simplefb_hdmi {
 -- 
 2.51.0
 
