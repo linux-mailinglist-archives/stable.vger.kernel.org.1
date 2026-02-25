@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLJjBp6enmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219401-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:54 +0100
+	id gBSmJJ5TnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 894E0192D00
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D6E18F944
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 19F6A308A529
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B717F309012F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A1A3115AF;
-	Wed, 25 Feb 2026 06:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C65E2701D9;
+	Wed, 25 Feb 2026 01:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCSig9b1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C15ds4Dm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9752311599;
-	Wed, 25 Feb 2026 06:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F0126ED33;
+	Wed, 25 Feb 2026 01:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002691; cv=none; b=tBuf7+IPgeTqxGiMQk4lWN+AqcKQk9/6Z+ApJOMOCRAveQzgphg/Qiryd8zNqf83GIaA+IyimDU8AudxTexoXW8+hLm6Eb8N0za1FrDj12vNPxCAoSKoUbWt7xcJpvfcSFTQ1ClvEH14sj+nR4FgkHP1dvw6/qJ5hBDECaq9fvM=
+	t=1771983660; cv=none; b=b65oa4RmCp6xUbtQmsckqDXpk7P2onYjJGMAxxaV1D+i4LTaXnjjb04OWE7nuOSmmK5WvEZXMe5LIMqblAo2GpTgb/iqE9wt/1JqozoJOSy2al4FfDgEx5UQYMvXcSATAMJEIOWK0+NcLK1JBL42uNT8eiuIvhz34915Jqfbd5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002691; c=relaxed/simple;
-	bh=ySrb6A5RyWHDiUmqIsmNMsJs8Z3UcTNvYmUnh9Ygy5w=;
+	s=arc-20240116; t=1771983660; c=relaxed/simple;
+	bh=BwbcoY09LBNlEuZ57vbpmaGg9vuGWxEif+rcY6ZFXe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIZ6+Sf6/jiAp6InkCuYf1ziM8JvKBwGSNqLFE3XdnBz3kL+jDk7id/8B8twuWkBRrGJu6WdK1PWQM4PntC/WoYlLr2v2GwtkUC0XC7pBEIx1My8iJ6P+W9flMOUxqS3AxTsEH0cobws+Ph5/mDdXw6asEpuk7UMDDV6gsi98XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCSig9b1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921CAC19422;
-	Wed, 25 Feb 2026 06:58:11 +0000 (UTC)
+	 MIME-Version; b=TZZHmZV2XOnH4bfsfaWP5zifTbc8742J1Ur3ao0h4Z8awcAOBp8Tiu649AcDbrYzS36jwkvQf7NrZYhYmaD0qIz/+bwdlIaO2PmpscqHa1E4UCQwhAgRg/NLEiIylgkg4sGGXE4dh4kzr4QFQPHWQeWy4RAqfzrBeCYkRCCN9cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C15ds4Dm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF5FC116D0;
+	Wed, 25 Feb 2026 01:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002691;
-	bh=ySrb6A5RyWHDiUmqIsmNMsJs8Z3UcTNvYmUnh9Ygy5w=;
+	s=korg; t=1771983660;
+	bh=BwbcoY09LBNlEuZ57vbpmaGg9vuGWxEif+rcY6ZFXe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCSig9b1qaiK2/XoUcNl3QfaX7F4cZTPoiOZatZ7b+CD2NL0/39o27akdbPzWbHWO
-	 SSaTAWJ3dpjfYvQOgebZzzh+Y+3aK8JJwerr++WnD2t+0CaSkQM93yg3BNlmeBnbPR
-	 YTN5+5YxSV1ogQ5RPuyLC7dS6n7OPl2oUruGsmX0=
+	b=C15ds4DmwZjHLkWW0cNdCxZT1yn9YoYGljxHzNZyKjrHjKqf01Cc9YUo1henwkOKS
+	 YyDEPWhB7fXHDtxmfIg5+yEtN2kUC9FgPARZgU37kcSylXYIe+0HdxDBrQUha6bC28
+	 Bx1+Wi/FUyjz8effxpEXui+Y9CpGUEsQR2YJp56M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 485/641] iio: sca3000: Fix a resource leak in sca3000_probe()
+Subject: [PATCH 6.19 702/781] apparmor: make label_match return a consistent value
 Date: Tue, 24 Feb 2026 17:23:31 -0800
-Message-ID: <20260225012400.269812190@linuxfoundation.org>
+Message-ID: <20260225012416.974274332@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,70 +69,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219401-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218786-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
-X-Rspamd-Queue-Id: 894E0192D00
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 79D6E18F944
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: John Johansen <john.johansen@canonical.com>
 
-[ Upstream commit 62b44ebc1f2c71db3ca2d4737c52e433f6f03038 ]
+[ Upstream commit a4c9efa4dbad6dacad6e8b274e30e814c8353097 ]
 
-spi->irq from request_threaded_irq() not released when
-iio_device_register() fails. Add an return value check and jump to a
-common error handler when iio_device_register() fails.
+compound match is inconsistent in returning a state or an integer error
+this is problemati if the error is ever used as a state in the state
+machine
 
-Fixes: 9a4936dc89a3 ("staging:iio:accel:sca3000 Tidy up probe order to avoid a race.")
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: f1bd904175e81 ("apparmor: add the base fns() for domain labels")
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/sca3000.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ security/apparmor/label.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-index bfa8a3f5a92f4..9ef4d6e274669 100644
---- a/drivers/iio/accel/sca3000.c
-+++ b/drivers/iio/accel/sca3000.c
-@@ -1489,7 +1489,11 @@ static int sca3000_probe(struct spi_device *spi)
- 	if (ret)
- 		goto error_free_irq;
+diff --git a/security/apparmor/label.c b/security/apparmor/label.c
+index 02ee128f53d13..1d3fa5c28d97f 100644
+--- a/security/apparmor/label.c
++++ b/security/apparmor/label.c
+@@ -1278,7 +1278,7 @@ static inline aa_state_t match_component(struct aa_profile *profile,
+  * @request: permissions to request
+  * @perms: perms struct to set
+  *
+- * Returns: 0 on success else ERROR
++ * Returns: state match stopped at or DFA_NOMATCH if aborted early
+  *
+  * For the label A//&B//&C this does the perm match for A//&B//&C
+  * @perms should be preinitialized with allperms OR a previous permission
+@@ -1305,7 +1305,7 @@ static int label_compound_match(struct aa_profile *profile,
  
--	return iio_device_register(indio_dev);
-+	ret = iio_device_register(indio_dev);
-+	if (ret)
-+		goto error_free_irq;
-+
-+	return 0;
+ 	/* no component visible */
+ 	*perms = allperms;
+-	return 0;
++	return state;
  
- error_free_irq:
- 	if (spi->irq)
+ next:
+ 	label_for_each_cont(i, label, tp) {
+@@ -1317,14 +1317,11 @@ static int label_compound_match(struct aa_profile *profile,
+ 			goto fail;
+ 	}
+ 	*perms = *aa_lookup_perms(rules->policy, state);
+-	if ((perms->allow & request) != request)
+-		return -EACCES;
+-
+-	return 0;
++	return state;
+ 
+ fail:
+ 	*perms = nullperms;
+-	return state;
++	return DFA_NOMATCH;
+ }
+ 
+ /**
+@@ -1406,11 +1403,12 @@ int aa_label_match(struct aa_profile *profile, struct aa_ruleset *rules,
+ 		   struct aa_label *label, aa_state_t state, bool subns,
+ 		   u32 request, struct aa_perms *perms)
+ {
+-	int error = label_compound_match(profile, rules, label, state, subns,
+-					 request, perms);
+-	if (!error)
+-		return error;
++	aa_state_t tmp = label_compound_match(profile, rules, label, state, subns,
++					request, perms);
++	if ((perms->allow & request) == request)
++		return 0;
+ 
++	/* failed compound_match try component matches */
+ 	*perms = allperms;
+ 	return label_components_match(profile, rules, label, state, subns,
+ 				      request, perms);
 -- 
 2.51.0
 
