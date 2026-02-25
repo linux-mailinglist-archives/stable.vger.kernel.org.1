@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218867-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDGpJGVSnmm6UgQAu9opvQ
-	(envelope-from <stable+bounces-218261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:41 +0100
+	id 8KpMLGpUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218867-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DF918F355
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCDF18FCAD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1B1363184FB6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5B8A930BF68D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3652B243376;
-	Wed, 25 Feb 2026 01:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D603248881;
+	Wed, 25 Feb 2026 01:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sr1MQz3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlEJQiHv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE651FE45D;
-	Wed, 25 Feb 2026 01:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0170128851F;
+	Wed, 25 Feb 2026 01:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983060; cv=none; b=fFpIUVwcrMgUySJ+avAuoj92VdxGzsfJMbNaa7ob3B3JOUfFGOeQQBN7o1AzLu9nZiu19MRJWTbE4G5ywjTL4pVVw950vX8qQaOimvrd1V7CIaNWr4MQ7bzY+ZmIAVQeqVCaL3F0/antQSz/aI72S8aNEHLDfPypOuIYKMgPBsA=
+	t=1771983753; cv=none; b=snOFHFaIcsSc5pI3cP4AQzJKa05iByH6anbhadFEAD/4shWdssx2W0ED3LVNRYnTzX+Bq/rduO/u+jtk658TRhVowAZX5Qn5IajuTRm300fWGsO94Eb1QklAEhhO9nJEt0FCUTd3ZnwzCfS6U0E71YeYxLhlq1KQcWrTu9z6z4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983060; c=relaxed/simple;
-	bh=gGWOeW+z2jhZADuQRbHFrHpL+bLTUdeR8azPzaRdJpM=;
+	s=arc-20240116; t=1771983753; c=relaxed/simple;
+	bh=88dZP/FQuW/wvsCe+aIuzgrjWmoR1rgac8IKIWWHBVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fu628TJWt0tBZUMdCgKFRnjJW97O3HV8nRWoFuLZVmn7ejYiLVNGg2N9zV1yW6ZOZ6g+3t7/LsuX8p+JpIdDD7h5evXvP7ApgVEUSqlsppxRgp02Nhb69E33OW0aTQlrOJmNe0qFt9YfEuevfOfvyrfW+mSiqzVMCl5KBrm/F34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sr1MQz3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC92C116D0;
-	Wed, 25 Feb 2026 01:30:59 +0000 (UTC)
+	 MIME-Version; b=QVG/ZeE6h6E6dsLJ7+2fdeJIvTpB43Op7C+EFbtVFBCbE1Xqx6YYJ7tD3FaVc57845VqEdc3250Q5RWVuPmPClv64SHddcRHLdtj6Wa3nAoNOomcbzxNegugyziDqvnHMf2eN+cnX5gbjtn4DVGuFZLjPoTD+j63Tm9SlPOenGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlEJQiHv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05D7C19423;
+	Wed, 25 Feb 2026 01:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983059;
-	bh=gGWOeW+z2jhZADuQRbHFrHpL+bLTUdeR8azPzaRdJpM=;
+	s=korg; t=1771983752;
+	bh=88dZP/FQuW/wvsCe+aIuzgrjWmoR1rgac8IKIWWHBVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sr1MQz3rOqDhO20nRnNfitVFWiGBvfYkt3aQKeInBINvvrZUx4xIVzkxK3FcXuUWv
-	 806jOBwzLFFAXARG+XMwetBl2YMfOUXEknCWnClXgwx7N+Mqq7r7XMS1k4MPW0i8nA
-	 Pa6EF2sjL5v9o3c5OfF7iT6GrLDcTS/YIVHVH//I=
+	b=JlEJQiHvEP1P/yXoNwtYTdWT7bYhDVsI73rIfiPnEEApVFVKwDf6EZ6TeZ9dcJU0L
+	 Zz2OZYgkmW0FAHiFMrjhcb/8gHtwVUYyiQZfHogCpozje/RLpzfb3OUthFcvkEtn8z
+	 7/W/NGCzzdQcsRD7/Uz+aC/5wCnZ2cfswLg772Fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Xiaochen Shen <shenxiaochen@open-hieco.net>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 224/781] ASoC: SDCA: Allow sample width wild cards in set_usage()
+Subject: [PATCH 6.18 007/641] selftests/resctrl: Fix a division by zero error on Hygon
 Date: Tue, 24 Feb 2026 17:15:33 -0800
-Message-ID: <20260225012405.205318764@linuxfoundation.org>
+Message-ID: <20260225012349.117826556@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218261-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218867-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,50 +88,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email]
-X-Rspamd-Queue-Id: 23DF918F355
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email,nvidia.com:email]
+X-Rspamd-Queue-Id: 5CCDF18FCAD
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Xiaochen Shen <shenxiaochen@open-hieco.net>
 
-[ Upstream commit 87783532d34050e2bff6749a4fe9860e624a0540 ]
+[ Upstream commit 671ef08d9455f5754d1fc96f5a14e357d6b80936 ]
 
-The SDCA spec allows the sample rate and width to be wild cards, but the
-current implementation of set_usage() only checked for a wild card of
-the sample rate.
+Change to adjust effective L3 cache size with SNC enabled change
+introduced the snc_nodes_per_l3_cache() function to detect the Intel
+Sub-NUMA Clustering (SNC) feature by comparing #CPUs in node0 with #CPUs
+sharing LLC with CPU0. The function was designed to return:
+  (1) >1: SNC mode is enabled.
+  (2)  1: SNC mode is not enabled or not supported.
 
-Fixes: 4ed357f72a0e ("ASoC: SDCA: Add hw_params() helper function")
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251216142204.183958-1-simont@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+However, on certain Hygon CPUs, #CPUs sharing LLC with CPU0 is actually
+less than #CPUs in node0. This results in snc_nodes_per_l3_cache()
+returning 0 (calculated as cache_cpus / node_cpus).
+
+This leads to a division by zero error in get_cache_size():
+  *cache_size /= snc_nodes_per_l3_cache();
+
+Causing the resctrl selftest to fail with:
+  "Floating point exception (core dumped)"
+
+Fix the issue by ensuring snc_nodes_per_l3_cache() returns 1 when SNC
+mode is not supported on the platform.
+
+Updated commit log to fix commit has issues:
+Shuah Khan <skhan@linuxfoundation.org>
+
+Link: https://lore.kernel.org/r/20251217030456.3834956-2-shenxiaochen@open-hieco.net
+Fixes: a1cd99e700ec ("selftests/resctrl: Adjust effective L3 cache size with SNC enabled")
+Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sdca/sdca_asoc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/resctrl/resctrlfs.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/sound/soc/sdca/sdca_asoc.c b/sound/soc/sdca/sdca_asoc.c
-index 2d328bbb95b94..498aba9df5d9b 100644
---- a/sound/soc/sdca/sdca_asoc.c
-+++ b/sound/soc/sdca/sdca_asoc.c
-@@ -1478,7 +1478,7 @@ static int set_usage(struct device *dev, struct regmap *regmap,
- 		unsigned int rate = sdca_range(range, SDCA_USAGE_SAMPLE_RATE, i);
- 		unsigned int width = sdca_range(range, SDCA_USAGE_SAMPLE_WIDTH, i);
+diff --git a/tools/testing/selftests/resctrl/resctrlfs.c b/tools/testing/selftests/resctrl/resctrlfs.c
+index 195f04c4d1586..b9c1bfb6cc029 100644
+--- a/tools/testing/selftests/resctrl/resctrlfs.c
++++ b/tools/testing/selftests/resctrl/resctrlfs.c
+@@ -243,6 +243,16 @@ int snc_nodes_per_l3_cache(void)
+ 		}
+ 		snc_mode = cache_cpus / node_cpus;
  
--		if ((!rate || rate == target_rate) && width == target_width) {
-+		if ((!rate || rate == target_rate) && (!width || width == target_width)) {
- 			unsigned int usage = sdca_range(range, SDCA_USAGE_NUMBER, i);
- 			unsigned int reg = SDW_SDCA_CTL(function->desc->adr,
- 							entity->id, sel, 0);
++		/*
++		 * On some platforms (e.g. Hygon),
++		 * cache_cpus < node_cpus, the calculated snc_mode is 0.
++		 *
++		 * Set snc_mode = 1 to indicate that SNC mode is not
++		 * supported on the platform.
++		 */
++		if (!snc_mode)
++			snc_mode = 1;
++
+ 		if (snc_mode > 1)
+ 			ksft_print_msg("SNC-%d mode discovered.\n", snc_mode);
+ 	}
 -- 
 2.51.0
 
