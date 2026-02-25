@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIJ7A1hWnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:32 +0100
+	id gE8MAaOgnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:11:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B7919027F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654D0193120
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 870F730BC5F4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B74231E9EEF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3441E2834;
-	Wed, 25 Feb 2026 01:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0452F314B76;
+	Wed, 25 Feb 2026 06:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQMjJjvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USnzwOkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BCB26ED3D;
-	Wed, 25 Feb 2026 01:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC81F2D3EEE;
+	Wed, 25 Feb 2026 06:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983667; cv=none; b=knjK+50zn9O/5BVYJfLq9SWqUnBkSJB1XYQDTd6vtkbohbXM98MvciDPctC8CRImU7CUOp0OmohDv0FfYy6gzH9NZQhtbOwXfAQM/bceDWBM8ZOONYe2/PsIRAo8HWHH8MLXEfJmYwfYhhvZybXTt3yfuM6XjwNRDCmWAp/m9J8=
+	t=1772002725; cv=none; b=ihT01bE4eFFFjJluLetmy2cUr9K89tfwg2pQhjMf0eCjcrWx38Y/ObIax90jSgnaQJM7mUg1TxivrBz5r04oPAcl0m33beEpFUA+Zz8dl1mRkwGyJ/G98YGyL0VWObf4Sa/yqR9o/zLXWT0ebaNv0R0TR55X8AMK/ng7k7HNqJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983667; c=relaxed/simple;
-	bh=3fzs9/L4ao9lcOeianHnCyuk05YV6s0BLIreW/av+30=;
+	s=arc-20240116; t=1772002725; c=relaxed/simple;
+	bh=sTHzHyRiAIw9PcehAPJNGn+Arh9XfZtVKcFle+QilyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZCHoscjfK6QBg7gy86msVKwINeRefvHKvDT3gtBDVt6yGEjQufTN5neJpU/eBvOpIgdNMhzl2ZXL2bLee1RjU8Ej8+NtxLdUiu+iPTI8uVoAjeO4JKk/MC0TlMmn+DH1yBWILjuFxXtUZ0vQ2yCmIA8z55AEmDDDARu285NQvio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQMjJjvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFD0C116D0;
-	Wed, 25 Feb 2026 01:41:07 +0000 (UTC)
+	 MIME-Version; b=PoSaDECc2WGRJDOBFaUm9YmhGghxzE0zfNKgEtUoyb1uKd5oCgQvcigGjgh2M8xMx5QWTbIFoBMPfhhk4BbTY2TL97MwW+Aja6DpsiE2rlO/2uf1fS/Uztd4+zDPWVqYhzotYnIRvSPGXTvAAFcTezyytIiX5j6CdeeUx7UEUOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USnzwOkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCCBC116D0;
+	Wed, 25 Feb 2026 06:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983667;
-	bh=3fzs9/L4ao9lcOeianHnCyuk05YV6s0BLIreW/av+30=;
+	s=korg; t=1772002725;
+	bh=sTHzHyRiAIw9PcehAPJNGn+Arh9XfZtVKcFle+QilyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQMjJjvEuddhufvHHTslggYq7n4xTJ4pTO+rQyEpJhkwf92l2bkqI1D1jqA0VL0YU
-	 EvU4ZHQ4Xm4GvXkhLRWnUngklDAFZlUa/bPhuaOuldJCuDPV6d7fHqU3sbf6yH41HI
-	 7n0Ri+LtTpV4w5E3Q8csIkihv4JerxSPJwW/rn7M=
+	b=USnzwOkUMA0sgMjPQBE5zEQk08XRe4rXiOPewQPTUEIWs/Tzd9w83PimyFbwqIdGv
+	 ftDH0i5zncVArE2h2eLPcXnyqrN4EjM76FAC5iMF7II9sHAsKqIzZcV+eh4G+OtDl/
+	 bezbefLBgLxy4SPjtF1bOJRa5JqItBGj+PB8cBGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.19 754/781] ext4: subdivide EXT4_EXT_DATA_VALID1
+	Simon Horman <horms@kernel.org>,
+	Allison Henderson <achender@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 537/641] net/rds: rds_sendmsg should not discard payload_len
 Date: Tue, 24 Feb 2026 17:24:23 -0800
-Message-ID: <20260225012418.214597138@linuxfoundation.org>
+Message-ID: <20260225012401.543524321@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218792-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219453-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,99 +87,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huaweicloud.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,huawei.com:email]
-X-Rspamd-Queue-Id: 05B7919027F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 654D0193120
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Allison Henderson <achender@kernel.org>
 
-commit 22784ca541c0f01c5ebad14e8228298dc0a390ed upstream.
+[ Upstream commit da29e453dcb3aa7cabead7915f5f945d0add3a52 ]
 
-When splitting an extent, if the EXT4_GET_BLOCKS_CONVERT flag is set and
-it is necessary to split the target extent in the middle,
-ext4_split_extent() first handles splitting the latter half of the
-extent and passes the EXT4_EXT_DATA_VALID1 flag. This flag implies that
-all blocks before the split point contain valid data; however, this
-assumption is incorrect.
+Commit 3db6e0d172c9 ("rds: use RCU to synchronize work-enqueue with
+connection teardown") modifies rds_sendmsg to avoid enqueueing work
+while a tear down is in progress. However, it also changed the return
+value of rds_sendmsg to that of rds_send_xmit instead of the
+payload_len. This means the user may incorrectly receive errno values
+when it should have simply received a payload of 0 while the peer
+attempts a reconnections.  So this patch corrects the teardown handling
+code to only use the out error path in that case, thus restoring the
+original payload_len return value.
 
-Therefore, subdivid EXT4_EXT_DATA_VALID1 into
-EXT4_EXT_DATA_ENTIRE_VALID1 and EXT4_EXT_DATA_PARTIAL_VALID1, which
-indicate that the first half of the extent is either entirely valid or
-only partially valid, respectively. These two flags cannot be set
-simultaneously.
-
-This patch does not use EXT4_EXT_DATA_PARTIAL_VALID1, it only replaces
-EXT4_EXT_DATA_VALID1 with EXT4_EXT_DATA_ENTIRE_VALID1 at the location
-where it is set, no logical changes.
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Cc: stable@kernel.org
-Message-ID: <20251129103247.686136-2-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3db6e0d172c9 ("rds: use RCU to synchronize work-enqueue with connection teardown")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260213035409.1963391-1-achender@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ net/rds/send.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -43,8 +43,13 @@
- #define EXT4_EXT_MARK_UNWRIT1	0x2  /* mark first half unwritten */
- #define EXT4_EXT_MARK_UNWRIT2	0x4  /* mark second half unwritten */
- 
--#define EXT4_EXT_DATA_VALID1	0x8  /* first half contains valid data */
--#define EXT4_EXT_DATA_VALID2	0x10 /* second half contains valid data */
-+/* first half contains valid data */
-+#define EXT4_EXT_DATA_ENTIRE_VALID1	0x8   /* has entirely valid data */
-+#define EXT4_EXT_DATA_PARTIAL_VALID1	0x10  /* has partially valid data */
-+#define EXT4_EXT_DATA_VALID1		(EXT4_EXT_DATA_ENTIRE_VALID1 | \
-+					 EXT4_EXT_DATA_PARTIAL_VALID1)
+diff --git a/net/rds/send.c b/net/rds/send.c
+index 0b3d0ef2f008b..071c5dca969a2 100644
+--- a/net/rds/send.c
++++ b/net/rds/send.c
+@@ -1382,9 +1382,11 @@ int rds_sendmsg(struct socket *sock, struct msghdr *msg, size_t payload_len)
+ 		else
+ 			queue_delayed_work(rds_wq, &cpath->cp_send_w, 1);
+ 		rcu_read_unlock();
 +
-+#define EXT4_EXT_DATA_VALID2	0x20 /* second half contains valid data */
++		if (ret)
++			goto out;
+ 	}
+-	if (ret)
+-		goto out;
++
+ 	rds_message_put(rm);
  
- static __le32 ext4_extent_block_csum(struct inode *inode,
- 				     struct ext4_extent_header *eh)
-@@ -3190,8 +3195,9 @@ static struct ext4_ext_path *ext4_split_
- 	unsigned int ee_len, depth;
- 	int err = 0;
- 
--	BUG_ON((split_flag & (EXT4_EXT_DATA_VALID1 | EXT4_EXT_DATA_VALID2)) ==
--	       (EXT4_EXT_DATA_VALID1 | EXT4_EXT_DATA_VALID2));
-+	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) == EXT4_EXT_DATA_VALID1);
-+	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) &&
-+	       (split_flag & EXT4_EXT_DATA_VALID2));
- 
- 	ext_debug(inode, "logical block %llu\n", (unsigned long long)split);
- 
-@@ -3373,7 +3379,7 @@ static struct ext4_ext_path *ext4_split_
- 			split_flag1 |= EXT4_EXT_MARK_UNWRIT1 |
- 				       EXT4_EXT_MARK_UNWRIT2;
- 		if (split_flag & EXT4_EXT_DATA_VALID2)
--			split_flag1 |= EXT4_EXT_DATA_VALID1;
-+			split_flag1 |= EXT4_EXT_DATA_ENTIRE_VALID1;
- 		path = ext4_split_extent_at(handle, inode, path,
- 				map->m_lblk + map->m_len, split_flag1, flags1);
- 		if (IS_ERR(path))
-@@ -3728,7 +3734,7 @@ static struct ext4_ext_path *ext4_split_
- 
- 	/* Convert to unwritten */
- 	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
--		split_flag |= EXT4_EXT_DATA_VALID1;
-+		split_flag |= EXT4_EXT_DATA_ENTIRE_VALID1;
- 	/* Convert to initialized */
- 	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
- 		/*
+ 	for (ind = 0; ind < vct.indx; ind++)
+-- 
+2.51.0
+
 
 
 
