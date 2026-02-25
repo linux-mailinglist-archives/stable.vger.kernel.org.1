@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-219511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFWcFV+enmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:51 +0100
+	id MAWtCbOhnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:16:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A05F192C46
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3C419327B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:16:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6075330439E7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 146BB323DB82
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B016C3195FD;
-	Wed, 25 Feb 2026 06:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D23313E10;
+	Wed, 25 Feb 2026 06:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eu570Diw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vb2GHDLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74615311C07;
-	Wed, 25 Feb 2026 06:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B9C3081C2;
+	Wed, 25 Feb 2026 06:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002764; cv=none; b=meuGG9DFYT/YWMvDZ3e5A5yg4fh9zStlyEi0DNDhATQAHHsNk9COvEjvCbuW9a9+4C2mSSz0HawvcTHVxoVgv8H1X8a87PAdXac9Tl+aHJiC0+GsTVPuNJ/mp5lbxaOtQs0IiuPY34d63DmaDTGsxASXhjby2YszmFz688wKFgY=
+	t=1772002799; cv=none; b=qNzKnyUz/AiRiaLpszTWWTUvHDlRjlmEZUu0jpwhBqacP2ki2c/uyz18pG+I5iTqSBiPsWISiQUiIHY8ZGj+D6DA6FnRd/k34DH+t2eqizP16f5cwYdd0AR/3fcBkpkwBJncVEMLHGjYR6RzNxIOQQHWYsXED6/Mon/Ba0VSAxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002764; c=relaxed/simple;
-	bh=9JVE30yjWeREaJSn/gB6cTpkB4IMwUTRR+KlyZRo9lc=;
+	s=arc-20240116; t=1772002799; c=relaxed/simple;
+	bh=QwFOFaceIQU9Bbw+c3IEKYrHx/490C0httbAe+SI+yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0vec0+nXderPMtNAlaBTwtb5eR8iUPyD/Op1XIS9bd6i0ymQv68Q3oB9nLcq62w4FwTHcWYvqHBEV6Ria0gDZPcBYCR8+fLS07h1iAFDXXh6gZxUm5BUVr4JxSQ/jC2OIRPQC9Nelcv7wceaGy6t3NLIR6KDyYcTqt8Gn/jgdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eu570Diw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D69BC116D0;
-	Wed, 25 Feb 2026 06:59:24 +0000 (UTC)
+	 MIME-Version; b=ESXsCuzhxzUxpJB7jX5bfJtLlAEpE3C33Y1c1JzKBxfiJsRLZSlum0mdKNdDZZhcRm7xmjefEk8aRYpGIif5AfrvdNJIcdyxVCyuTCmmOn3fV9GSBeppbR/cnQJgfL8IhSZO3V0kyW3D9cHMpMgHhepW1vrSrSKVwEFPYiWP+5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vb2GHDLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B4CC19422;
+	Wed, 25 Feb 2026 06:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002764;
-	bh=9JVE30yjWeREaJSn/gB6cTpkB4IMwUTRR+KlyZRo9lc=;
+	s=korg; t=1772002799;
+	bh=QwFOFaceIQU9Bbw+c3IEKYrHx/490C0httbAe+SI+yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eu570DiwLoy3/YoCCD/bma7GYXwzLasYeJijc8yotrHC7VYgLZzU6MRNJoejf8DHg
-	 WZFb0fx3P7RB5Sn9pllUNMNoNP37/Y312mEcYpdIfJW+2d+n1+pNqsRtHP38lEBX6S
-	 e8+Cxq55ORkxtaIJlaNAEAoddvC/ONvLy9P7blOU=
+	b=vb2GHDLO6SF9B9r/x7o5JE3G8n+vp/rLq6l40mJbMBoGYa51rb5JR2XYZuuDQYq/r
+	 A4DEIWzpMobh8OcXyE7sKtGGSQPXCwOwCLsnyOJ6xXGrqUz/tb2TaE9C4FsAqYpDQS
+	 X52c6wQjENDWlh6i5sIw1dCLPjujwqB68bPiW2d4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 594/641] s390/kexec: Make KEXEC_SIG available when CONFIG_MODULES=n
-Date: Tue, 24 Feb 2026 17:25:20 -0800
-Message-ID: <20260225012402.908783420@linuxfoundation.org>
+Subject: [PATCH 6.18 595/641] drm/xe/configfs: Fix parameter name omitted errors
+Date: Tue, 24 Feb 2026 17:25:21 -0800
+Message-ID: <20260225012402.931674614@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -69,89 +70,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219564-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219511-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1A05F192C46
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 1E3C419327B
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Egorenkov <egorenar@linux.ibm.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit dd3411959b57df6e05a3ccbac67b0a836871c0c4 ]
+[ Upstream commit 2a673fb4d787ce6672862cb693112378bff86abb ]
 
-The commit c8424e776b09 ("MODSIGN: Export module signature definitions")
-replaced the dependency of KEXEC_SIG on SYSTEM_DATA_VERIFICATION with the
-dependency on MODULE_SIG_FORMAT. This change disables KEXEC_SIG in s390
-kernels built with MODULES=n if nothing else selects MODULE_SIG_FORMAT.
+On some configs and old compilers we can get following build errors:
 
-Furthermore, the signature verification in s390 kexec does not require
-MODULE_SIG_FORMAT because it requires only the struct module_signature and,
-therefore, does not depend on code in kernel/module_signature.c.
+  ../drivers/gpu/drm/xe/xe_configfs.h: In function 'xe_configfs_get_ctx_restore_mid_bb':
+  ../drivers/gpu/drm/xe/xe_configfs.h:40:76: error: parameter name omitted
+   static inline u32 xe_configfs_get_ctx_restore_mid_bb(struct pci_dev *pdev, enum xe_engine_class,
+                                                                            ^~~~~~~~~~~~~~~~~~~~
+  ../drivers/gpu/drm/xe/xe_configfs.h: In function 'xe_configfs_get_ctx_restore_post_bb':
+  ../drivers/gpu/drm/xe/xe_configfs.h:42:77: error: parameter name omitted
+   static inline u32 xe_configfs_get_ctx_restore_post_bb(struct pci_dev *pdev, enum xe_engine_class,
+                                                                             ^~~~~~~~~~~~~~~~~~~~
+when trying to define our configfs stub functions. Fix that.
 
-But making ARCH_SUPPORTS_KEXEC_SIG depend on SYSTEM_DATA_VERIFICATION is
-also incorrect because it makes KEXEC_SIG available on s390 only if some
-other arbitrary option (for instance a file system or device driver)
-selects it directly or indirectly.
-
-To properly make KEXEC_SIG available for s390 kernels built with MODULES=y
-as well as MODULES=n _and_ also not depend on arbitrary options selecting
-SYSTEM_DATA_VERIFICATION, set ARCH_SUPPORTS_KEXEC_SIG=y for s390 and select
-SYSTEM_DATA_VERIFICATION when KEXEC_SIG=y.
-
-Fixes: c8424e776b09 ("MODSIGN: Export module signature definitions")
-Suggested-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 7a4756b2fd04 ("drm/xe/lrc: Allow to add user commands mid context switch")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Link: https://patch.msgid.link/20260203193745.576-1-michal.wajdeczko@intel.com
+(cherry picked from commit f59cde8a2452b392115d2af8f1143a94725f4827)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_configfs.h | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index df22b10d91415..e60d2b823e091 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -270,6 +270,7 @@ config S390
- 	select SPARSE_IRQ
- 	select SWIOTLB
- 	select SYSCTL_EXCEPTION_TRACE
-+	select SYSTEM_DATA_VERIFICATION if KEXEC_SIG
- 	select THREAD_INFO_IN_TASK
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select TTY
-@@ -296,7 +297,7 @@ config ARCH_SUPPORTS_KEXEC_FILE
- 	def_bool y
+diff --git a/drivers/gpu/drm/xe/xe_configfs.h b/drivers/gpu/drm/xe/xe_configfs.h
+index c61e0e47ed94c..08cce375ae0f3 100644
+--- a/drivers/gpu/drm/xe/xe_configfs.h
++++ b/drivers/gpu/drm/xe/xe_configfs.h
+@@ -19,9 +19,11 @@ void xe_configfs_check_device(struct pci_dev *pdev);
+ bool xe_configfs_get_survivability_mode(struct pci_dev *pdev);
+ u64 xe_configfs_get_engines_allowed(struct pci_dev *pdev);
+ bool xe_configfs_get_psmi_enabled(struct pci_dev *pdev);
+-u32 xe_configfs_get_ctx_restore_mid_bb(struct pci_dev *pdev, enum xe_engine_class,
++u32 xe_configfs_get_ctx_restore_mid_bb(struct pci_dev *pdev,
++				       enum xe_engine_class class,
+ 				       const u32 **cs);
+-u32 xe_configfs_get_ctx_restore_post_bb(struct pci_dev *pdev, enum xe_engine_class,
++u32 xe_configfs_get_ctx_restore_post_bb(struct pci_dev *pdev,
++					enum xe_engine_class class,
+ 					const u32 **cs);
+ #else
+ static inline int xe_configfs_init(void) { return 0; }
+@@ -30,9 +32,11 @@ static inline void xe_configfs_check_device(struct pci_dev *pdev) { }
+ static inline bool xe_configfs_get_survivability_mode(struct pci_dev *pdev) { return false; }
+ static inline u64 xe_configfs_get_engines_allowed(struct pci_dev *pdev) { return U64_MAX; }
+ static inline bool xe_configfs_get_psmi_enabled(struct pci_dev *pdev) { return false; }
+-static inline u32 xe_configfs_get_ctx_restore_mid_bb(struct pci_dev *pdev, enum xe_engine_class,
++static inline u32 xe_configfs_get_ctx_restore_mid_bb(struct pci_dev *pdev,
++						     enum xe_engine_class class,
+ 						     const u32 **cs) { return 0; }
+-static inline u32 xe_configfs_get_ctx_restore_post_bb(struct pci_dev *pdev, enum xe_engine_class,
++static inline u32 xe_configfs_get_ctx_restore_post_bb(struct pci_dev *pdev,
++						      enum xe_engine_class class,
+ 						      const u32 **cs) { return 0; }
+ #endif
  
- config ARCH_SUPPORTS_KEXEC_SIG
--	def_bool MODULE_SIG_FORMAT
-+	def_bool y
- 
- config ARCH_SUPPORTS_KEXEC_PURGATORY
- 	def_bool y
 -- 
 2.51.0
 
