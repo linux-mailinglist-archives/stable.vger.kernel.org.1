@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEXUDCVSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:37 +0100
+	id UAcFNVpanmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-219065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C290018F222
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FA1190AE9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8DF08305D1F5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F1C332084BC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E368522579E;
-	Wed, 25 Feb 2026 01:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3C3251793;
+	Wed, 25 Feb 2026 01:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNydXfJx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZU2o5zwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A351EB5E1;
-	Wed, 25 Feb 2026 01:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1E61FE45D;
+	Wed, 25 Feb 2026 01:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983318; cv=none; b=rwh2j1xWyz9MBPofGiLKe2PmRlB/WKflyRbwMPJmkIv/efYHRmpQ/cn1JgphgQplvfYpFI5hJfP/4FQrX9xfoDYVRxYu3kdOgacHpd35LnSEHgH1hxkbrQ5PUpcjttq97bLMCG4YLmlrdKpaVKhy/VgLBV4fZ6t9TNfO5wYGUeY=
+	t=1771983989; cv=none; b=nqp8A6h4tFbXRrFMii7zNIbCPI6fV/gylJjm+P+C5MdBaTgPlEnpJ1xR553cTZp4kjegNMo07XAeJExDuleo4u3+wZWwU9Ce8rskFmo0PlMsVG0mexUwsPPXyg062LT5uKc/wYHPYN1PIZ2SzQ4BFLO5W7Ziz/EQhyq7B7acpcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983318; c=relaxed/simple;
-	bh=OfyRoqfDS/sxscnmccv39VAuTeBHy9dhbPNEKRn0ru8=;
+	s=arc-20240116; t=1771983989; c=relaxed/simple;
+	bh=sefwJ2FvDOnRTV0VlHlRRwg9foyKqFXG/YN9QoBW1sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6OKnMUBxx/u74PX5bmmBjuFtlvH8uvBSGLy6+tpTxjDPhSQ7p+d3PnNlQiImUycllhwmC4d7LmkB+osfhyxOAYZf27SaMCWOSvq8BDBuQCyKgAR34E6QsxsZ1eh0EYopnlK/nljLlUvAer8sNAionfFDIwBIJtjmKchf37Knds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNydXfJx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE81C116D0;
-	Wed, 25 Feb 2026 01:35:18 +0000 (UTC)
+	 MIME-Version; b=FJ8qBChe6U6NvyUKfBNqRpqoyICUbmVhIdIIrv4HvVFitdYow60FbQDAybyHPxsESFPzBQheoD/fZpEdD6jzVdEPuEATWilhmRAgqc3jSAKEbVYm6M7/S0E0XjPfbOeNFCp/+wIrkuN0LMwbMqpSQWUvRmz48T5ZRrGXiw1DnRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZU2o5zwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C57C19423;
+	Wed, 25 Feb 2026 01:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983318;
-	bh=OfyRoqfDS/sxscnmccv39VAuTeBHy9dhbPNEKRn0ru8=;
+	s=korg; t=1771983989;
+	bh=sefwJ2FvDOnRTV0VlHlRRwg9foyKqFXG/YN9QoBW1sU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNydXfJxA3jqLefFvj+FYtUvValsrpTtF+ALaIQSGD+vjUnfDd2ZABaeEg76A5U+9
-	 8v7OI+xGhj639dbUhC3O8i5X8Cmq757WOzx+kyjCO5glGnyTFrotl+pvDoNd4mUyGl
-	 ct/WttGJGd8Z2h6YanjlAT1m7KAZuFxHmrPMpLUQ=
+	b=ZU2o5zwVv0f4/GcRqEKSmZ4Q/kF7m1wXFyw96Q30j2qTUAiapIq7R52wx2t/VY3gz
+	 PPERH3dS8N806o7OA+oeK5DFUoiBKoAwq2sXKESHWoIqtHXo4I6tQKjh9pmre4BQMR
+	 NZBKKAjdmrmSBH1YM07imOYknGbH+1YdIl+S9r0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 452/781] power: supply: goldfish: Fix use-after-free in power_supply_changed()
-Date: Tue, 24 Feb 2026 17:19:21 -0800
-Message-ID: <20260225012410.799147835@linuxfoundation.org>
+Subject: [PATCH 6.18 236/641] Documentation: PCI: endpoint: Fix ntb/vntb copy & paste errors
+Date: Tue, 24 Feb 2026 17:19:22 -0800
+Message-ID: <20260225012354.603542225@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,101 +71,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219065-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218489-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: C290018F222
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nxp.com:email,tkos.co.il:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 43FA1190AE9
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waqar Hameed <waqar.hameed@axis.com>
+From: Baruch Siach <baruch@tkos.co.il>
 
-[ Upstream commit b2ce982e2e0c888dc55c888ad0e20ea04daf2e6b ]
+[ Upstream commit ad0c6da5be901f5c181490f683d22b416059bccb ]
 
-Using the `devm_` variant for requesting IRQ _before_ the `devm_`
-variant for allocating/registering the `power_supply` handle, means that
-the `power_supply` handle will be deallocated/unregistered _before_ the
-interrupt handler (since `devm_` naturally deallocates in reverse
-allocation order). This means that during removal, there is a race
-condition where an interrupt can fire just _after_ the `power_supply`
-handle has been freed, *but* just _before_ the corresponding
-unregistration of the IRQ handler has run.
+Fix copy & paste errors by changing the references from 'ntb' to 'vntb'.
 
-This will lead to the IRQ handler calling `power_supply_changed()` with
-a freed `power_supply` handle. Which usually crashes the system or
-otherwise silently corrupts the memory...
-
-Note that there is a similar situation which can also happen during
-`probe()`; the possibility of an interrupt firing _before_ registering
-the `power_supply` handle. This would then lead to the nasty situation
-of using the `power_supply` handle *uninitialized* in
-`power_supply_changed()`.
-
-Fix this racy use-after-free by making sure the IRQ is requested _after_
-the registration of the `power_supply` handle.
-
-Fixes: 84d7b7687489 ("power: Add battery driver for goldfish emulator")
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-Link: https://patch.msgid.link/500a606bb6fb6f2bb8d797e19a00cea9dd7b03c1.1766268280.git.waqar.hameed@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 4ac8c8e52cd9 ("Documentation: PCI: Add specification for the PCI vNTB function device")
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+[mani: squashed the patches and fixed more errors]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/b51c2a69ffdbfa2c359f5cf33f3ad2acc3db87e4.1762154911.git.baruch@tkos.co.il
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/goldfish_battery.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ Documentation/PCI/endpoint/pci-vntb-howto.rst | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/power/supply/goldfish_battery.c b/drivers/power/supply/goldfish_battery.c
-index 479195e35d734..5aa24e4dc4455 100644
---- a/drivers/power/supply/goldfish_battery.c
-+++ b/drivers/power/supply/goldfish_battery.c
-@@ -224,12 +224,6 @@ static int goldfish_battery_probe(struct platform_device *pdev)
- 	if (data->irq < 0)
- 		return -ENODEV;
+diff --git a/Documentation/PCI/endpoint/pci-vntb-howto.rst b/Documentation/PCI/endpoint/pci-vntb-howto.rst
+index 9a7a2f0a68498..3679f5c302549 100644
+--- a/Documentation/PCI/endpoint/pci-vntb-howto.rst
++++ b/Documentation/PCI/endpoint/pci-vntb-howto.rst
+@@ -52,14 +52,14 @@ pci-epf-vntb device, the following commands can be used::
+ 	# cd /sys/kernel/config/pci_ep/
+ 	# mkdir functions/pci_epf_vntb/func1
  
--	ret = devm_request_irq(&pdev->dev, data->irq,
--			       goldfish_battery_interrupt,
--			       IRQF_SHARED, pdev->name, data);
--	if (ret)
--		return ret;
--
- 	psy_cfg.drv_data = data;
+-The "mkdir func1" above creates the pci-epf-ntb function device that will
++The "mkdir func1" above creates the pci-epf-vntb function device that will
+ be probed by pci_epf_vntb driver.
  
- 	data->ac = devm_power_supply_register(&pdev->dev,
-@@ -244,6 +238,12 @@ static int goldfish_battery_probe(struct platform_device *pdev)
- 	if (IS_ERR(data->battery))
- 		return PTR_ERR(data->battery);
+ The PCI endpoint framework populates the directory with the following
+ configurable fields::
  
-+	ret = devm_request_irq(&pdev->dev, data->irq,
-+			       goldfish_battery_interrupt,
-+			       IRQF_SHARED, pdev->name, data);
-+	if (ret)
-+		return ret;
-+
- 	GOLDFISH_BATTERY_WRITE(data, BATTERY_INT_ENABLE, BATTERY_INT_MASK);
- 	return 0;
- }
+-	# ls functions/pci_epf_ntb/func1
+-	baseclass_code    deviceid          msi_interrupts    pci-epf-ntb.0
++	# ls functions/pci_epf_vntb/func1
++	baseclass_code    deviceid          msi_interrupts    pci-epf-vntb.0
+ 	progif_code       secondary         subsys_id         vendorid
+ 	cache_line_size   interrupt_pin     msix_interrupts   primary
+ 	revid             subclass_code     subsys_vendor_id
+@@ -111,13 +111,13 @@ A sample configuration for virtual NTB driver for virtual PCI bus::
+ 	# echo 0x080A > functions/pci_epf_vntb/func1/pci_epf_vntb.0/vntb_pid
+ 	# echo 0x10 > functions/pci_epf_vntb/func1/pci_epf_vntb.0/vbus_number
+ 
+-Binding pci-epf-ntb Device to EP Controller
++Binding pci-epf-vntb Device to EP Controller
+ --------------------------------------------
+ 
+ NTB function device should be attached to PCI endpoint controllers
+ connected to the host.
+ 
+-	# ln -s controllers/5f010000.pcie_ep functions/pci-epf-ntb/func1/primary
++	# ln -s controllers/5f010000.pcie_ep functions/pci_epf_vntb/func1/primary
+ 
+ Once the above step is completed, the PCI endpoint controllers are ready to
+ establish a link with the host.
+@@ -139,7 +139,7 @@ lspci Output at Host side
+ -------------------------
+ 
+ Note that the devices listed here correspond to the values populated in
+-"Creating pci-epf-ntb Device" section above::
++"Creating pci-epf-vntb Device" section above::
+ 
+ 	# lspci
+         00:00.0 PCI bridge: Freescale Semiconductor Inc Device 0000 (rev 01)
+@@ -152,7 +152,7 @@ lspci Output at EP Side / Virtual PCI bus
+ -----------------------------------------
+ 
+ Note that the devices listed here correspond to the values populated in
+-"Creating pci-epf-ntb Device" section above::
++"Creating pci-epf-vntb Device" section above::
+ 
+         # lspci
+         10:00.0 Unassigned class [ffff]: Dawicontrol Computersysteme GmbH Device 1234 (rev ff)
 -- 
 2.51.0
 
