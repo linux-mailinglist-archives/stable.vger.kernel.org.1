@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218972-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPKjB7FTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:13 +0100
+	id OCU2OilVnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218972-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493DF18F9A0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 798BB18FF26
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 459DA31499AC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1C20930BA6DD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC491EB5E1;
-	Wed, 25 Feb 2026 01:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46F62741B6;
+	Wed, 25 Feb 2026 01:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xm1lQgl+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYwyJ10+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C8218B0A;
-	Wed, 25 Feb 2026 01:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8EA26B2D7;
+	Wed, 25 Feb 2026 01:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983221; cv=none; b=EfB95cIsKiR+fJki7rako6uoAmqiBi/nG6Wom6sxmXUSZu7yAIvbe0nQaB07+9rd+abPxbew519X0HRvrplfSx1NQUbuEnSGzGHyf0V6+7rwtqjXSpDfurvC5wpHgtF/3JhvvkJo74rZwfYzbx0lUcN2tX38diEmoNEiMEYceSM=
+	t=1771983875; cv=none; b=MpAv0OjiC6iA+yEo5nLTtK8tk95ZGiqH1fth5hLRZqUC0gL6PASb2vIm9tQ8zNqEIuEQq0i3ZL1CtcfN6QEuu1lq7fRFSBLrpQgl3ElKoenH1GSVb7mWD+NiBNq8aT/Lu+YD/YjBKhNNBDDLSiH6paWtbsZUQ9/FHcMB0QD9VzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983221; c=relaxed/simple;
-	bh=l9MxjKAs181626ITK6W6XUvznm6du9FehVKVr6NUfPs=;
+	s=arc-20240116; t=1771983875; c=relaxed/simple;
+	bh=fqPgeUOB53mIoleIXKx2H7Fb5W0vXH+kStjteHd0crg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IbrgxxXqlrB0CkqLmsjPYfHkQjSyI9A2DjWP2DcqYs0A0ACc2ZwcY22tnM+w48NDRKhIg9s8dEtw9jB+cPkzj9CyseJ6laaHBOMIkSRG8bELh9hYDZlLXvEtbV6dwBqdWnzNqXqyxmxui2sitrWrfJSMuchqyGkrl6UsZlCg7NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xm1lQgl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382CDC116D0;
-	Wed, 25 Feb 2026 01:33:41 +0000 (UTC)
+	 MIME-Version; b=DgBQSn9yPzu6d3ZNETif53xP4XJVFFCFDpYIbWSP6T41lD6YUc7sN97ZqLVddd3gXdB/3sz8wGCcsrD/kb+uUfLfRdam751hfHs/5OT6VrfRVFu07bex47yLlCN734dont2yjBc0SZ+mf8rIO05vME5lXqKjVkQ8WvOML6T9LUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYwyJ10+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A90C116D0;
+	Wed, 25 Feb 2026 01:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983221;
-	bh=l9MxjKAs181626ITK6W6XUvznm6du9FehVKVr6NUfPs=;
+	s=korg; t=1771983875;
+	bh=fqPgeUOB53mIoleIXKx2H7Fb5W0vXH+kStjteHd0crg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xm1lQgl+0rD6N2EhrQj6oUyA0syNanou1gDs4w7IRGx6U0atvopdOZZljDMUjz0JL
-	 fROxRZiKML9h7ugT+IKRkPl9lijNkhBi2XFZQguEi4eFNbi9QZcGlk149eNhHEBUdU
-	 NYSb0Mesf06uUQhZKG9OxYuqwS0HmPaZjLVe083Q=
+	b=lYwyJ10+CLRedYAJRUSZ/fKJIwjaCLhWZOq2qDsG6/JB2J8HdDhihSzskQaQ5v6D3
+	 ID0w0QPna3tCQLU25WWvzdyA0wq3uqHFIGEh4TYOPSVTLnGt/ehkLuhi1659DjtG1X
+	 pdbE/XZgkM3bJ4bdjUb+45zwewPNmZpHXsiNX5Dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Malte=20Schr=C3=B6der?= <malte+lkml@tnxip.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Abhash Kumar Jha <a-kumar2@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 368/781] PCI: Rewrite bridge window head alignment function
+Subject: [PATCH 6.18 151/641] arm64: dts: ti: k3-j784s4-main.dtsi: Move c71_3 node to appropriate order
 Date: Tue, 24 Feb 2026 17:17:57 -0800
-Message-ID: <20260225012408.706960332@linuxfoundation.org>
+Message-ID: <20260225012352.753243885@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,206 +64,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218406-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218972-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tnxip.de:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 493DF18F9A0
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,4.10.139.192:email,0.44.142.64:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.76.153.96:email]
+X-Rspamd-Queue-Id: 798BB18FF26
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Abhash Kumar Jha <a-kumar2@ti.com>
 
-[ Upstream commit bc75c8e5071120e919beb39e69f0979cccfdf219 ]
+[ Upstream commit 24c9d5fb8bbf5e8c9e6fc2beffeb80ac2da83de4 ]
 
-The calculation of bridge window head alignment is done by
-calculate_mem_align() [*]. With the default bridge window alignment, it
-is used for both head and tail alignment.
+The device tree nodes should be ordered by unit addresses in ascending
+order.
 
-The selected head alignment does not always result in tight-fitting
-resources (gap at d4f00000-d4ffffff):
+Correct the order by moving the c71_3 DSP node at the end as it has a
+higher unit address.
 
-  d4800000-dbffffff : PCI Bus 0000:06
-    d4800000-d48fffff : PCI Bus 0000:07
-      d4800000-d4803fff : 0000:07:00.0
-        d4800000-d4803fff : nvme
-    d4900000-d49fffff : PCI Bus 0000:0a
-      d4900000-d490ffff : 0000:0a:00.0
-        d4900000-d490ffff : r8169
-      d4910000-d4913fff : 0000:0a:00.0
-    d4a00000-d4cfffff : PCI Bus 0000:0b
-      d4a00000-d4bfffff : 0000:0b:00.0
-        d4a00000-d4bfffff : 0000:0b:00.0
-      d4c00000-d4c07fff : 0000:0b:00.0
-    d4d00000-d4dfffff : PCI Bus 0000:15
-      d4d00000-d4d07fff : 0000:15:00.0
-        d4d00000-d4d07fff : xhci-hcd
-    d4e00000-d4efffff : PCI Bus 0000:16
-      d4e00000-d4e7ffff : 0000:16:00.0
-      d4e80000-d4e803ff : 0000:16:00.0
-        d4e80000-d4e803ff : ahci
-    d5000000-dbffffff : PCI Bus 0000:0c
-
-This has not caused problems (for years) with the default bridge window
-tail alignment that grossly over-estimates the required tail alignment
-leaving more tail room than necessary. With the introduction of relaxed
-tail alignment that leaves no extra tail room whatsoever, any gaps will
-immediately turn into assignment failures.
-
-Introduce head alignment calculation that ensures no gaps are left and
-apply the new approach when using relaxed alignment. We may want to
-consider using it for the normal alignment eventually, but as the first
-step, solve only the problem with the relaxed tail alignment.
-
-([*] I don't understand the algorithm in calculate_mem_align().)
-
-Link: https://git.kernel.org/history/history/c/5d0a8965aea9 ("[PATCH] 2.5.14: New PCI allocation code (alpha, arm, parisc) [2/2]")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220775
-Reported-by: Malte Schröder <malte+lkml@tnxip.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Malte Schröder <malte+lkml@tnxip.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251219174036.16738-3-ilpo.jarvinen@linux.intel.com
-Stable-dep-of: f909e3ee3ed1 ("PCI: Remove old_size limit from bridge window sizing")
+Signed-off-by: Abhash Kumar Jha <a-kumar2@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://patch.msgid.link/20260112085113.3476193-2-a-kumar2@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Stable-dep-of: 61acc4428a7f ("arm64: dts: ti: k3-j784s4-j742s2-main-common.dtsi: Refactor watchdog instances for j784s4")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 53 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 44 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi | 26 +++++++++++-----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index a61d38777cdc4..99086980e102e 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -1227,6 +1227,45 @@ static inline resource_size_t calculate_mem_align(resource_size_t *aligns,
- 	return min_align;
- }
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
+index 0160fe0da9838..5b7830a3c0975 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
+@@ -6,19 +6,6 @@
+  */
  
-+/*
-+ * Calculate bridge window head alignment that leaves no gaps in between
-+ * resources.
-+ */
-+static resource_size_t calculate_head_align(resource_size_t *aligns,
-+					    int max_order)
-+{
-+	resource_size_t head_align = 1;
-+	resource_size_t remainder = 0;
-+	int order;
+ &cbass_main {
+-	c71_3: dsp@67800000 {
+-		compatible = "ti,j721s2-c71-dsp";
+-		reg = <0x00 0x67800000 0x00 0x00080000>,
+-		      <0x00 0x67e00000 0x00 0x0000c000>;
+-		reg-names = "l2sram", "l1dram";
+-		resets = <&k3_reset 40 1>;
+-		firmware-name = "j784s4-c71_3-fw";
+-		ti,sci = <&sms>;
+-		ti,sci-dev-id = <40>;
+-		ti,sci-proc-ids = <0x33 0xff>;
+-		status = "disabled";
+-	};
+-
+ 	pcie2_rc: pcie@2920000 {
+ 		compatible = "ti,j784s4-pcie-host";
+ 		reg = <0x00 0x02920000 0x00 0x1000>,
+@@ -113,6 +100,19 @@ serdes2: serdes@5020000 {
+ 			status = "disabled";
+ 		};
+ 	};
 +
-+	/* Take the largest alignment as the starting point. */
-+	head_align <<= max_order + __ffs(SZ_1M);
-+
-+	for (order = max_order - 1; order >= 0; order--) {
-+		resource_size_t align1 = 1;
-+
-+		align1 <<= order + __ffs(SZ_1M);
-+
-+		/*
-+		 * Account smaller resources with alignment < max_order that
-+		 * could be used to fill head room if alignment less than
-+		 * max_order is used.
-+		 */
-+		remainder += aligns[order];
-+
-+		/*
-+		 * Test if head fill is enough to satisfy the alignment of
-+		 * the larger resources after reducing the alignment.
-+		 */
-+		while ((head_align > align1) && (remainder >= head_align / 2)) {
-+			head_align /= 2;
-+			remainder -= head_align;
-+		}
-+	}
-+
-+	return head_align;
-+}
-+
- /**
-  * pbus_upstream_space_available - Check no upstream resource limits allocation
-  * @bus:	The bus
-@@ -1314,13 +1353,13 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- {
- 	struct pci_dev *dev;
- 	resource_size_t min_align, win_align, align, size, size0, size1 = 0;
--	resource_size_t aligns[28]; /* Alignments from 1MB to 128TB */
-+	resource_size_t aligns[28] = {}; /* Alignments from 1MB to 128TB */
-+	resource_size_t aligns2[28] = {};/* Alignments from 1MB to 128TB */
- 	int order, max_order;
- 	struct resource *b_res = pbus_select_window_for_type(bus, type);
- 	resource_size_t children_add_size = 0;
- 	resource_size_t children_add_align = 0;
- 	resource_size_t add_align = 0;
--	resource_size_t relaxed_align;
- 	resource_size_t old_size;
++	c71_3: dsp@67800000 {
++		compatible = "ti,j721s2-c71-dsp";
++		reg = <0x00 0x67800000 0x00 0x00080000>,
++		      <0x00 0x67e00000 0x00 0x0000c000>;
++		reg-names = "l2sram", "l1dram";
++		resets = <&k3_reset 40 1>;
++		firmware-name = "j784s4-c71_3-fw";
++		ti,sci = <&sms>;
++		ti,sci-dev-id = <40>;
++		ti,sci-proc-ids = <0x33 0xff>;
++		status = "disabled";
++	};
+ };
  
- 	if (!b_res)
-@@ -1330,7 +1369,6 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 	if (b_res->parent)
- 		return;
- 
--	memset(aligns, 0, sizeof(aligns));
- 	max_order = 0;
- 	size = 0;
- 
-@@ -1381,6 +1419,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 			 */
- 			if (r_size <= align)
- 				aligns[order] += align;
-+			aligns2[order] += align;
- 			if (order > max_order)
- 				max_order = order;
- 
-@@ -1405,9 +1444,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 
- 	if (bus->self && size0 &&
- 	    !pbus_upstream_space_available(bus, b_res, size0, min_align)) {
--		relaxed_align = 1ULL << (max_order + __ffs(SZ_1M));
--		relaxed_align = max(relaxed_align, win_align);
--		min_align = min(min_align, relaxed_align);
-+		min_align = calculate_head_align(aligns2, max_order);
- 		size0 = calculate_memsize(size, min_size, 0, 0, old_size, win_align);
- 		resource_set_range(b_res, min_align, size0);
- 		pci_info(bus->self, "bridge window %pR to %pR requires relaxed alignment rules\n",
-@@ -1421,9 +1458,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 
- 		if (bus->self && size1 &&
- 		    !pbus_upstream_space_available(bus, b_res, size1, add_align)) {
--			relaxed_align = 1ULL << (max_order + __ffs(SZ_1M));
--			relaxed_align = max(relaxed_align, win_align);
--			min_align = min(min_align, relaxed_align);
-+			min_align = calculate_head_align(aligns2, max_order);
- 			size1 = calculate_memsize(size, min_size, add_size, children_add_size,
- 						  old_size, win_align);
- 			pci_info(bus->self,
+ &scm_conf {
 -- 
 2.51.0
 
