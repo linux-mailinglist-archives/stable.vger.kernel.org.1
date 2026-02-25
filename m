@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-218691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219350-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIMTJpVUnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:01 +0100
+	id cKOnA/idnmk5WgQAu9opvQ
+	(envelope-from <stable+bounces-219350-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2818518FD34
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1041192B3F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD7B330ED526
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C6C8030A7879
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360CF265CA6;
-	Wed, 25 Feb 2026 01:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD6B2BDC03;
+	Wed, 25 Feb 2026 06:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejhYVzcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzfOtCzo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3B9243376;
-	Wed, 25 Feb 2026 01:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F0D303A0A;
+	Wed, 25 Feb 2026 06:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983550; cv=none; b=SJZoCz0AkHfrRF30g3gYORtAIBIIeQGvg//PYqiRo/LXX+KZ91Q4YfuKEEw3gKhKncQkz+WrZYdOMkkZACa6mPMWWcayxq16r0jasuU1kH4M4z13MjlxRuq6A6/kR3cqFCXWOyJekz/O3okBVxjezzrzaeJn0CkFyJF5iYsVFBs=
+	t=1772002657; cv=none; b=OmGx7DJ7WUY8tpAvTkYAKlFa+8Jje7OuPi5b9FfHWC/lsHpiBOVSE1kG6VYGCG4AJvmakc4fjVzIEuXJJdL5Cp1ejaLqH4CXKLbhkR9c8Ypewbql1QyEgAvHFSu7OT52Zo2lHosa9oXBmGmw+kEAsV21XOARyullMy+eStsYqFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983550; c=relaxed/simple;
-	bh=XaesEADasfBUvHuzRN+9mT5kJoI+GNQGvVvsyx9DWnE=;
+	s=arc-20240116; t=1772002657; c=relaxed/simple;
+	bh=A3YR2WaEOpSsI1Fz46WRs7QLgvZh2/vix46nuu4bfTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfU3Z58oZit6SrBeIQ5v9gqvh86glLP2MV3vyS5Rj54FsCedRMGGJnSEnLwfQSMKyBfT0ezFJyqU7P+buqbwXPTiA63r1F1b5hHElhfioI1rVQvRnjdsmWsJBkfHq/9Cgnxv2DFqRVP6XZZcJWJMrtsrvOlH/9osGmHUV1Y4WXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejhYVzcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B7DC116D0;
-	Wed, 25 Feb 2026 01:39:09 +0000 (UTC)
+	 MIME-Version; b=chlPbMsesgetALBKEjnrNPvoLagnqQ76D9G5ELuUyMiSG8xjtyxczYeBL43xNwkMu0QQ3UwqtofZRMmWYWKFOHuIq1URp2x365hoHbJi9k7iDRod3WL521vWk7YBe1UJNirF8n/zLY1MZO5mbp47FZobv2MpospOkqwICgBDAis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzfOtCzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A51C116D0;
+	Wed, 25 Feb 2026 06:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983549;
-	bh=XaesEADasfBUvHuzRN+9mT5kJoI+GNQGvVvsyx9DWnE=;
+	s=korg; t=1772002657;
+	bh=A3YR2WaEOpSsI1Fz46WRs7QLgvZh2/vix46nuu4bfTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejhYVzcgEW768xMvJCAB6cMzDWxTcYuocWGYIaqeRemQRl3wxHJREwqHQ+ZZBKspX
-	 yqVB8dknT1NQVv79xBnYWwoNgGPyR/lNuQ8dmqWFUzK3idJqa1E+2N5pJbtMw4FnJm
-	 xH8EFtgO/f+OpEFdSrC66dDPJDRM/6GUTxVh9dto=
+	b=YzfOtCzoeQ15NvLQk9NiAbNE7oRcQwPOivbsh9+4C7+COVOt0f5h8G0BBNzPLwSx1
+	 DVNs8jAR5CNweAocaiSvBoXVqJTkC+G8jijR1OjvzfQS9GnJw766xIgMZZxppNmR6L
+	 s4ghtDFZnARwucAuv+Ju7fOG+5yBU30fpcae5U9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Brian Masney <bmasney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 651/781] eth: fbnic: increase FBNIC_HDR_BYTES_MIN from 128 to 256 bytes
-Date: Tue, 24 Feb 2026 17:22:40 -0800
-Message-ID: <20260225012415.758816017@linuxfoundation.org>
+Subject: [PATCH 6.18 435/641] clk: milbeaut: convert from divider_round_rate() to divider_determine_rate()
+Date: Tue, 24 Feb 2026 17:22:41 -0800
+Message-ID: <20260225012359.077221324@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218691-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,meta.com,gmail.com,redhat.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219350-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.969];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,meta.com:email]
-X-Rspamd-Queue-Id: 2818518FD34
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C1041192B3F
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit bd254115f38db3c046332bb62e8719e0dc7c2b53 ]
+[ Upstream commit 865e63b038c446d38593ddbcc362ebb62e6ff007 ]
 
-Increase FBNIC_HDR_BYTES_MIN from 128 to 256 bytes. The previous minimum
-was too small to guarantee that very long L2+L3+L4 headers always fit
-within the header buffer. When EN_HDR_SPLIT is disabled and a packet
-exceeds MAX_HEADER_BYTES, splitting occurs at that byte offset instead
-of the header boundary, resulting in some of the header landing in the
-payload page. The increased minimum ensures headers always fit with the
-MAX_HEADER_BYTES cut off and land in the header page.
+The divider_round_rate() function is now deprecated, so let's migrate
+to divider_determine_rate() instead so that this deprecated API can be
+removed.
 
-Fixes: 2b30fc01a6c7 ("eth: fbnic: Add support for HDS configuration")
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Acked-by: Mohsin Bashir <mohsin.bashr@gmail.com>
-Link: https://patch.msgid.link/20260211-fbnic-tcp-hds-fixes-v1-2-55d050e6f606@meta.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
+
+    req->rate = divider_round_rate(...)
+
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
+
+Fixes: 7b45988fcf78 ("clk: milbeaut: convert from round_rate() to determine_rate()")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/clk-milbeaut.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
-index 27776e844e29b..51a98f27d5d91 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
-@@ -66,7 +66,7 @@ struct fbnic_net;
- 	(4096 - FBNIC_RX_HROOM - FBNIC_RX_TROOM - FBNIC_RX_PAD)
- #define FBNIC_HDS_THRESH_DEFAULT \
- 	(1536 - FBNIC_RX_PAD)
--#define FBNIC_HDR_BYTES_MIN		128
-+#define FBNIC_HDR_BYTES_MIN		256
+diff --git a/drivers/clk/clk-milbeaut.c b/drivers/clk/clk-milbeaut.c
+index b4f9b7143eaa6..bb94d02a76cf1 100644
+--- a/drivers/clk/clk-milbeaut.c
++++ b/drivers/clk/clk-milbeaut.c
+@@ -407,10 +407,7 @@ static int m10v_clk_divider_determine_rate(struct clk_hw *hw,
+ 		return 0;
+ 	}
  
- struct fbnic_pkt_buff {
- 	struct xdp_buff buff;
+-	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
+-				       divider->table, divider->width, divider->flags);
+-
+-	return 0;
++	return divider_determine_rate(hw, req, divider->table, divider->width, divider->flags);
+ }
+ 
+ static int m10v_clk_divider_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.51.0
 
