@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WP+kCAxanmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:20 +0100
+	id KDSNKqdTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 400FD190A1D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29AEF18F983
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5F3D430F2276
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A47731C1022
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948C8271471;
-	Wed, 25 Feb 2026 01:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCEB20C012;
+	Wed, 25 Feb 2026 01:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzO7/YXO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgEAVzT5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509EC27280F;
-	Wed, 25 Feb 2026 01:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE511D5ABA;
+	Wed, 25 Feb 2026 01:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983867; cv=none; b=eWQd+mvdtsh3V+/9l/9jq6MAVCOxDfBGN+ZJzQIcRI0hFVWlBsBRs4KwlNGEh4YkUfDeU8H0oqNB07YQDG/8olF2rOXj/6EP2w+oPl83habhB3eARgJcq9T81XkaRAw7fEcqS1bUpgHEbW1kcdn5xr+ziTuDYfmUcCA4h1k0WiE=
+	t=1771983212; cv=none; b=NaGO1Wtu2XxGbZ1atOqBFmU/tOEVJcfbMUzBra6lCQQpXDwixeIuAj0zdg0yC/zU3lBJFfkIwmIXqTh1w8UK3f0t9pVKoTqV2OmTSJXvcofXjU7lctJtteIix8WvPaNPJFmUkh/+nW6yLMUXLaKHRtH9o6LfoyQRwpaDv2kpM6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983867; c=relaxed/simple;
-	bh=BCDthqZJKFBA6LAwt5sfNqmf7HMEIJ7GVVRFGibyMX0=;
+	s=arc-20240116; t=1771983212; c=relaxed/simple;
+	bh=Ppo/N4+2Hs/UqJNmmm/0twJcI1VZ7MTnBhCOO5ff5Fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4DJpb5vjPcfvslObqL3Cw3hlDuMep+3ma6jw6a4VSUc6QpJfwnr28/KJb+3Xm5wFBvCLbW8Wvt986j8oke9blienwSm8jtXPcC3p5ajck8wTAaloyGnxEnUJlAYrl+EoZxH4reNrYW7UgEfFqQ5driEuBdsV0HKlXzxXna3z8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzO7/YXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC22C116D0;
-	Wed, 25 Feb 2026 01:44:26 +0000 (UTC)
+	 MIME-Version; b=J3+s5W5wCl2Y5nvEpsCF/qyApuZowELJG2Zf6Z6uW0f5N4D/0UTwSiRAISuirNBAx/VpgQcjwILmFy2svr6rM2EyBMaSeF8edIijgqdyTI8xUZRE2MvdZ5Fj3RQjIKtIwge1it2KpifWiaAnDR0HAb8syoGGysgHwdWX1UHLU1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgEAVzT5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF99C116D0;
+	Wed, 25 Feb 2026 01:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983867;
-	bh=BCDthqZJKFBA6LAwt5sfNqmf7HMEIJ7GVVRFGibyMX0=;
+	s=korg; t=1771983212;
+	bh=Ppo/N4+2Hs/UqJNmmm/0twJcI1VZ7MTnBhCOO5ff5Fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzO7/YXOwe4rZ7RpknRy3tjrUHWY/BVHhrsh85ruK6OjphM4KgLn5moDJOkYMM31L
-	 MwK4kskNJbtG5XZ1dSwNtddG+PC0j9H6g+AOLro8r+k9DxLQN0ny/9kM/hTe93qL9/
-	 d9W3bTjXe7mTtpaquKIIjSV8mve29lLOMZQjzikQ=
+	b=vgEAVzT5zfN5tXomlawusggIMaW5rfmeWjMNWauND79lQm2sOKjPPctNKYA4uFDW6
+	 Zoz4nHtnwJGDkpPfs9j6m2S7MBZAqF0oxRKcm6z9paywQh5mY08cor7mBkgP3R4o14
+	 WZo+zycdkBRqWbzPX1AebOj0GxCrfHeerMCKxYew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 144/641] soc: mediatek: svs: Fix memory leak in svs_enable_debug_write()
+Subject: [PATCH 6.19 361/781] xdrgen: Initialize data pointer for zero-length items
 Date: Tue, 24 Feb 2026 17:17:50 -0800
-Message-ID: <20260225012352.603206827@linuxfoundation.org>
+Message-ID: <20260225012408.538095029@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218965-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218398-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,70 +87,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,seu.edu.cn:email,collabora.com:email]
-X-Rspamd-Queue-Id: 400FD190A1D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[brown.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 29AEF18F983
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 6259094ee806fb813ca95894c65fb80e2ec98bf1 ]
+[ Upstream commit 27b0fcae8f535fb882b1876227a935dcfdf576aa ]
 
-In svs_enable_debug_write(), the buf allocated by memdup_user_nul()
-is leaked if kstrtoint() fails.
+The xdrgen decoders for strings and opaque data had an
+optimization that skipped calling xdr_inline_decode() when the
+item length was zero. This left the data pointer uninitialized,
+which could lead to unpredictable behavior when callers access
+it.
 
-Fix this by using __free(kfree) to automatically free buf, eliminating
-the need for explicit kfree() calls and preventing leaks.
+Remove the zero-length check and always call xdr_inline_decode().
+When passed a length of zero, xdr_inline_decode() returns the
+current buffer position, which is valid and matches the behavior
+of hand-coded XDR decoders throughout the kernel.
 
-Fixes: 13f1bbcfb582 ("soc: mediatek: SVS: add debug commands")
-Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-[Angelo: Added missing cleanup.h inclusion]
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 4b132aacb076 ("tools: Add xdrgen")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-svs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/linux/sunrpc/xdrgen/_builtins.h | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mtk-svs.c b/drivers/soc/mediatek/mtk-svs.c
-index f45537546553e..99edecb204f25 100644
---- a/drivers/soc/mediatek/mtk-svs.c
-+++ b/drivers/soc/mediatek/mtk-svs.c
-@@ -9,6 +9,7 @@
- #include <linux/bits.h>
- #include <linux/clk.h>
- #include <linux/completion.h>
-+#include <linux/cleanup.h>
- #include <linux/cpu.h>
- #include <linux/cpuidle.h>
- #include <linux/debugfs.h>
-@@ -789,7 +790,7 @@ static ssize_t svs_enable_debug_write(struct file *filp,
- 	struct svs_bank *svsb = file_inode(filp)->i_private;
- 	struct svs_platform *svsp = dev_get_drvdata(svsb->dev);
- 	int enabled, ret;
--	char *buf = NULL;
-+	char *buf __free(kfree) = NULL;
- 
- 	if (count >= PAGE_SIZE)
- 		return -EINVAL;
-@@ -807,8 +808,6 @@ static ssize_t svs_enable_debug_write(struct file *filp,
- 		svsb->mode_support = SVSB_MODE_ALL_DISABLE;
- 	}
- 
--	kfree(buf);
--
- 	return count;
+diff --git a/include/linux/sunrpc/xdrgen/_builtins.h b/include/linux/sunrpc/xdrgen/_builtins.h
+index 66ca3ece951ab..a5ab75d2db044 100644
+--- a/include/linux/sunrpc/xdrgen/_builtins.h
++++ b/include/linux/sunrpc/xdrgen/_builtins.h
+@@ -188,12 +188,10 @@ xdrgen_decode_string(struct xdr_stream *xdr, string *ptr, u32 maxlen)
+ 		return false;
+ 	if (unlikely(maxlen && len > maxlen))
+ 		return false;
+-	if (len != 0) {
+-		p = xdr_inline_decode(xdr, len);
+-		if (unlikely(!p))
+-			return false;
+-		ptr->data = (unsigned char *)p;
+-	}
++	p = xdr_inline_decode(xdr, len);
++	if (unlikely(!p))
++		return false;
++	ptr->data = (unsigned char *)p;
+ 	ptr->len = len;
+ 	return true;
  }
- 
+@@ -219,12 +217,10 @@ xdrgen_decode_opaque(struct xdr_stream *xdr, opaque *ptr, u32 maxlen)
+ 		return false;
+ 	if (unlikely(maxlen && len > maxlen))
+ 		return false;
+-	if (len != 0) {
+-		p = xdr_inline_decode(xdr, len);
+-		if (unlikely(!p))
+-			return false;
+-		ptr->data = (u8 *)p;
+-	}
++	p = xdr_inline_decode(xdr, len);
++	if (unlikely(!p))
++		return false;
++	ptr->data = (u8 *)p;
+ 	ptr->len = len;
+ 	return true;
+ }
 -- 
 2.51.0
 
