@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JvbH0VXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:29 +0100
+	id uJf5HyFSnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4291904D7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E6118F203
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 459223086C19
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A60D930748C5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1A1279DA2;
-	Wed, 25 Feb 2026 01:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EF11E2834;
+	Wed, 25 Feb 2026 01:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIoEUPyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2rxHba1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0051D5141;
-	Wed, 25 Feb 2026 01:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA3D243376;
+	Wed, 25 Feb 2026 01:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983732; cv=none; b=Fs1Rb9fVqoXF++0DS0KlIOLwMB5RFeTh2l/xnT3lgMrZhvA7aML/lQuXH2mQuZrwe24E0zP72b2GDEjQPVX+tpqa+02LDQPP8/jW3nhO+HMB8rN3bPuKFpDzO/MDpiJFn52x7L/RIj86N+dABfNTWexztzDexwq+wZNXs3gw7Ck=
+	t=1771983084; cv=none; b=CZOfbhlMvsoFCFMQ+oNiCViGoWXbGOB8NaM5lftFYCj+mpQqYqOH913NGkJotNge9v382QgEzP9Ok3clMFfz+hyhuu602nl2IN5azHZvdUUxr4uwaDWSfOZPqisdTEUVqHLexqzkiafH+IHcIioUwq7NnFs+v1OWoC4d/L8VfE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983732; c=relaxed/simple;
-	bh=FXHdcgfSF4eyoJ6B2QDrGqjTSudwpmX0LQB/zwb6Tc4=;
+	s=arc-20240116; t=1771983084; c=relaxed/simple;
+	bh=JNXizagqVJ4cOyL/Uia+v14FlHn3nTTT/oDr0og4Hy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SByZrLBYYfIRdjRGku+gpp2S+wy7XrFElwc3dbzzkIT53MADoKa/sos0S8EjOeeuZLQJM97kgN8Ih5aOXpaob9CKgMhFT9/LTUnMlZz7mWnaTwVaV27K47/+AZDw4OYjR3gwjpyihKRRwq4ckpC4abIIZ+gaqiKZN/sqWUBQ3T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIoEUPyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D60C116D0;
-	Wed, 25 Feb 2026 01:42:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rXKvnZDeef6l+GGfPpR+FTeO5ef9OHmadFfNr2lqGafYFLqVZn1XWCvQ9dm5SBlLESt3IL6krJyY5bynNZX5WzgegQosje0GOskLFjyjM7BsUZY9EU4MpqFtErBs1DM+L8d/tD4lVh8vI/zTZovlRViWQahb5dahRXDxuUkMs8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2rxHba1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CA0C116D0;
+	Wed, 25 Feb 2026 01:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983732;
-	bh=FXHdcgfSF4eyoJ6B2QDrGqjTSudwpmX0LQB/zwb6Tc4=;
+	s=korg; t=1771983083;
+	bh=JNXizagqVJ4cOyL/Uia+v14FlHn3nTTT/oDr0og4Hy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xIoEUPyw1EmKD7CY1BDyh73I33LfphHPR5nN09eRvVIFcNkUzciCBOV1BKbOarR6T
-	 2KA9lB20Z1MmQJ3AUyzkBhAFDm591mTmq32co6LGt3hnbEnWtb2wFn/PVdVRFibJND
-	 M9uKIlkfZpOUIrzxONWMlUM8SSh7bespIh4aiQ4E=
+	b=F2rxHba1gadHSEUsD2YG3bEs78p7j5I+6UofR9SzQ8DK96y4QMTLquYlZQgayMJiT
+	 JIgFsEoEPGqa0NXN9El3VXH0DmTDEUlb+pQPsaHrD/ZyffVdATL/Zr/hlt/s/DEij1
+	 Ff+o9Qb1Twu6kTWaBdYFrVfNJbZt1lefjQGUehqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 027/641] btrfs: zoned: dont zone append to conventional zone
+Subject: [PATCH 6.19 244/781] drm/amd/display: Pass proper DAC encoder ID to VBIOS
 Date: Tue, 24 Feb 2026 17:15:53 -0800
-Message-ID: <20260225012349.643654392@linuxfoundation.org>
+Message-ID: <20260225012405.691967988@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,151 +63,173 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218848-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218283-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.994];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,wdc.com:email,lst.de:email]
-X-Rspamd-Queue-Id: CC4291904D7
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: B1E6118F203
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit b39b26e017c7889181cb84032e22bef72e81cf29 ]
+[ Upstream commit 436d0d22aa7035a9f9b24fb14cd0e84d6571ea87 ]
 
-In case of a zoned RAID, it can happen that a data write is targeting a
-sequential write required zone and a conventional zone. In this case the
-bio will be marked as REQ_OP_ZONE_APPEND but for the conventional zone,
-this needs to be REQ_OP_WRITE.
+Similarly to the analog_engine field, add a new	analog_id field
+which contains the encoder ID of the analog encoder that
+corresponds to the link encoder.
 
-The setting of REQ_OP_ZONE_APPEND is deferred to the last possible time in
-btrfs_submit_dev_bio(), but the decision if we can use zone append is
-cached in btrfs_bio.
+Previously, the default encoder ID of the link encoder was used,
+which meant that we passed the wrong ID in case of DVI-I.
 
-CC: Naohiro Aota <naohiro.aota@wdc.com>
-Fixes: e9b9b911e03c ("btrfs: add raid stripe tree to features enabled with debug config")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 5834c33fd3f6 ("drm/amd/display: Add concept of analog encoders (v2)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/bio.c | 19 +++++++++----------
- fs/btrfs/bio.h |  3 +++
- 2 files changed, 12 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c |  2 ++
+ drivers/gpu/drm/amd/display/dc/inc/hw/link_encoder.h  |  2 ++
+ drivers/gpu/drm/amd/display/dc/link/link_factory.c    | 11 ++++++-----
+ .../amd/display/dc/resource/dce110/dce110_resource.c  |  2 ++
+ 4 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/bio.c b/fs/btrfs/bio.c
-index c3d860a2bca42..9b71f3fde618b 100644
---- a/fs/btrfs/bio.c
-+++ b/fs/btrfs/bio.c
-@@ -441,6 +441,8 @@ static void btrfs_clone_write_end_io(struct bio *bio)
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+index 87dbb8d7ed27d..5c1a10f77733a 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+@@ -850,6 +850,7 @@ void dce110_link_encoder_construct(
+ 	enc110->base.funcs = &dce110_lnk_enc_funcs;
+ 	enc110->base.ctx = init_data->ctx;
+ 	enc110->base.id = init_data->encoder;
++	enc110->base.analog_id = init_data->analog_encoder;
  
- static void btrfs_submit_dev_bio(struct btrfs_device *dev, struct bio *bio)
+ 	enc110->base.hpd_source = init_data->hpd_source;
+ 	enc110->base.connector = init_data->connector;
+@@ -1793,6 +1794,7 @@ void dce60_link_encoder_construct(
+ 	enc110->base.funcs = &dce60_lnk_enc_funcs;
+ 	enc110->base.ctx = init_data->ctx;
+ 	enc110->base.id = init_data->encoder;
++	enc110->base.analog_id = init_data->analog_encoder;
+ 
+ 	enc110->base.hpd_source = init_data->hpd_source;
+ 	enc110->base.connector = init_data->connector;
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/link_encoder.h b/drivers/gpu/drm/amd/display/dc/inc/hw/link_encoder.h
+index df512920a9fab..e638325e35ecf 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/link_encoder.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/link_encoder.h
+@@ -47,6 +47,7 @@ struct encoder_init_data {
+ 	enum hpd_source_id hpd_source;
+ 	/* TODO: in DAL2, here was pointer to EventManagerInterface */
+ 	struct graphics_object_id encoder;
++	struct graphics_object_id analog_encoder;
+ 	enum engine_id analog_engine;
+ 	struct dc_context *ctx;
+ 	enum transmitter transmitter;
+@@ -81,6 +82,7 @@ struct link_encoder {
+ 	int32_t aux_channel_offset;
+ 	struct dc_context *ctx;
+ 	struct graphics_object_id id;
++	struct graphics_object_id analog_id;
+ 	struct graphics_object_id connector;
+ 	uint32_t output_signals;
+ 	enum engine_id preferred_engine;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+index c79c18efb6f89..d9cb6b6714009 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+@@ -433,20 +433,19 @@ static enum channel_id get_ddc_line(struct dc_link *link)
+ 	return channel;
+ }
+ 
+-static enum engine_id find_analog_engine(struct dc_link *link)
++static enum engine_id find_analog_engine(struct dc_link *link, struct graphics_object_id *enc)
  {
-+	u64 physical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
-+
- 	if (!dev || !dev->bdev ||
- 	    test_bit(BTRFS_DEV_STATE_MISSING, &dev->dev_state) ||
- 	    (btrfs_op(bio) == BTRFS_MAP_WRITE &&
-@@ -455,12 +457,13 @@ static void btrfs_submit_dev_bio(struct btrfs_device *dev, struct bio *bio)
- 	 * For zone append writing, bi_sector must point the beginning of the
- 	 * zone
+ 	struct dc_bios *bp = link->ctx->dc_bios;
+-	struct graphics_object_id encoder = {0};
+ 	enum bp_result bp_result = BP_RESULT_OK;
+ 	int i;
+ 
+ 	for (i = 0; i < 3; i++) {
+-		bp_result = bp->funcs->get_src_obj(bp, link->link_id, i, &encoder);
++		bp_result = bp->funcs->get_src_obj(bp, link->link_id, i, enc);
+ 
+ 		if (bp_result != BP_RESULT_OK)
+ 			return ENGINE_ID_UNKNOWN;
+ 
+-		switch (encoder.id) {
++		switch (enc->id) {
+ 		case ENCODER_ID_INTERNAL_DAC1:
+ 		case ENCODER_ID_INTERNAL_KLDSCP_DAC1:
+ 			return ENGINE_ID_DACA;
+@@ -456,6 +455,7 @@ static enum engine_id find_analog_engine(struct dc_link *link)
+ 		}
+ 	}
+ 
++	memset(enc, 0, sizeof(*enc));
+ 	return ENGINE_ID_UNKNOWN;
+ }
+ 
+@@ -508,7 +508,7 @@ static bool construct_phy(struct dc_link *link,
  	 */
--	if (bio_op(bio) == REQ_OP_ZONE_APPEND) {
--		u64 physical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
-+	if (btrfs_bio(bio)->can_use_append && btrfs_dev_is_sequential(dev, physical)) {
- 		u64 zone_start = round_down(physical, dev->fs_info->zone_size);
+ 	bp_funcs->get_src_obj(bios, link->link_id, 0, &link_encoder);
+ 	transmitter_from_encoder = translate_encoder_to_transmitter(link_encoder);
+-	link_analog_engine = find_analog_engine(link);
++	link_analog_engine = find_analog_engine(link, &enc_init_data.analog_encoder);
  
- 		ASSERT(btrfs_dev_is_sequential(dev, physical));
- 		bio->bi_iter.bi_sector = zone_start >> SECTOR_SHIFT;
-+		bio->bi_opf &= ~REQ_OP_WRITE;
-+		bio->bi_opf |= REQ_OP_ZONE_APPEND;
- 	}
- 	btrfs_debug(dev->fs_info,
- 	"%s: rw %d 0x%x, sector=%llu, dev=%lu (%s id %llu), size=%u",
-@@ -708,7 +711,6 @@ static bool btrfs_submit_chunk(struct btrfs_bio *bbio, int mirror_num)
- 	u64 logical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
- 	u64 length = bio->bi_iter.bi_size;
- 	u64 map_length = length;
--	bool use_append = btrfs_use_zone_append(bbio);
- 	struct btrfs_io_context *bioc = NULL;
- 	struct btrfs_io_stripe smap;
- 	blk_status_t status;
-@@ -736,8 +738,10 @@ static bool btrfs_submit_chunk(struct btrfs_bio *bbio, int mirror_num)
- 	if (bio_op(bio) == REQ_OP_WRITE && is_data_bbio(bbio))
- 		bbio->orig_logical = logical;
+ 	if (transmitter_from_encoder == TRANSMITTER_UNKNOWN &&
+ 	    !analog_engine_supported(link_analog_engine)) {
+@@ -648,6 +648,7 @@ static bool construct_phy(struct dc_link *link,
+ 	enc_init_data.channel = get_ddc_line(link);
+ 	enc_init_data.hpd_source = get_hpd_line(link);
+ 	enc_init_data.transmitter = transmitter_from_encoder;
++	enc_init_data.analog_engine = find_analog_engine(link, &enc_init_data.analog_encoder);
+ 	enc_init_data.encoder = link_encoder;
+ 	enc_init_data.analog_engine = link_analog_engine;
  
-+	bbio->can_use_append = btrfs_use_zone_append(bbio);
-+
- 	map_length = min(map_length, length);
--	if (use_append)
-+	if (bbio->can_use_append)
- 		map_length = btrfs_append_map_length(bbio, map_length);
- 
- 	if (map_length < length) {
-@@ -766,11 +770,6 @@ static bool btrfs_submit_chunk(struct btrfs_bio *bbio, int mirror_num)
- 	}
- 
- 	if (btrfs_op(bio) == BTRFS_MAP_WRITE) {
--		if (use_append) {
--			bio->bi_opf &= ~REQ_OP_WRITE;
--			bio->bi_opf |= REQ_OP_ZONE_APPEND;
--		}
--
- 		if (is_data_bbio(bbio) && bioc && bioc->use_rst) {
- 			/*
- 			 * No locking for the list update, as we only add to
-@@ -797,7 +796,7 @@ static bool btrfs_submit_chunk(struct btrfs_bio *bbio, int mirror_num)
- 			status = errno_to_blk_status(ret);
- 			if (status)
- 				goto fail;
--		} else if (use_append ||
-+		} else if (bbio->can_use_append ||
- 			   (btrfs_is_zoned(fs_info) && inode &&
- 			    inode->flags & BTRFS_INODE_NODATASUM)) {
- 			ret = btrfs_alloc_dummy_sum(bbio);
-diff --git a/fs/btrfs/bio.h b/fs/btrfs/bio.h
-index 488cdbdd9e2f8..126bc68c87605 100644
---- a/fs/btrfs/bio.h
-+++ b/fs/btrfs/bio.h
-@@ -99,6 +99,9 @@ struct btrfs_bio {
- 	/* Whether the csum generation for data write is async. */
- 	bool async_csum;
- 
-+	/* Whether the bio is written using zone append. */
-+	bool can_use_append;
-+
- 	/*
- 	 * This member must come last, bio_alloc_bioset will allocate enough
- 	 * bytes for entire btrfs_bio but relies on bio being last.
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c
+index cd54382c0af3e..7c09825cd9bd3 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c
+@@ -895,6 +895,8 @@ static void get_pixel_clock_parameters(
+ 	 */
+ 	pixel_clk_params->requested_pix_clk_100hz = stream->timing.pix_clk_100hz;
+ 	pixel_clk_params->encoder_object_id = stream->link->link_enc->id;
++	if (dc_is_rgb_signal(pipe_ctx->stream->signal))
++		pixel_clk_params->encoder_object_id = stream->link->link_enc->analog_id;
+ 	pixel_clk_params->signal_type = pipe_ctx->stream->signal;
+ 	pixel_clk_params->controller_id = pipe_ctx->stream_res.tg->inst + 1;
+ 	/* TODO: un-hardcode*/
 -- 
 2.51.0
 
