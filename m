@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNRwDGNSnmm6UgQAu9opvQ
-	(envelope-from <stable+bounces-218503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:39 +0100
+	id IGloIuRYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-219069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A322618F340
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CA5190832
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8043D30A572A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5396D3137641
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AAE251793;
-	Wed, 25 Feb 2026 01:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD0D285C85;
+	Wed, 25 Feb 2026 01:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYY4G67D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUOLuHbM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2FB23D7CF;
-	Wed, 25 Feb 2026 01:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211331FE45D;
+	Wed, 25 Feb 2026 01:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983334; cv=none; b=k2JImEI9yVd2AZYD3pmTvq35SDERRCaZIc0yKIt7I8RyvjPhidihj+GBUYW+Ii2mbu4/0gzIzExlqVtjfkO/DE74vN7ciLOtVRL/FP+lXj415dkYBqjo82J1Bhg1hoqFcLXd1bqRCtxfVgVmJlsWiKDHlS1cGCSpbIqKUODEgKE=
+	t=1771983994; cv=none; b=BF4pR9YNKBExwu/WyPRmGyTQ25GxWCL5fksYzr8exRDzWTmOWHWFa8iA5PEAEdBt+wrAVI2e8GkWSsIbZ/ck1sDszcvhmKRtcUi5vVWDNCg4N/bpj/1/PLPJ5y9IEaf89VMDWp8bD/9nNgk3UoF8XybgN0LpXlz7H/oBq4aI7+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983334; c=relaxed/simple;
-	bh=8O7jdvcHnqDHkCzIC6/aX5AuhZDUTvZfd+4BQcGKeFs=;
+	s=arc-20240116; t=1771983994; c=relaxed/simple;
+	bh=FrSdb+lW6M4NEvHh3D6vj9zhthtQQiBKoSMy5kffpC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrzQpKFCG+aqHN44MnYaagrf61mSZI5hKXSdewTyzH8lNbjpQ6cF8zaKM7pefuZM8Q4dt23WO76c9BnMIT1CmRo5FAtdZxGQdfri549lkEty5giGnBmwi4xPnh0XJU7M1aq4d+iVV4DUokCOmnTcIpZAjjHovWl+2wJH4m6Cdu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYY4G67D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DE1C116D0;
-	Wed, 25 Feb 2026 01:35:34 +0000 (UTC)
+	 MIME-Version; b=qU7eSvu/B+7Q99Fb+X6yd/v8wq7oEJmO/v4z5dCspywNJGrOwQ3unZc/b8ZpXoV8sORypcwyxAlLETg2x1aHulvCG6yEP7F/lk/Mbntp59fOqx7nE73lXNLZlBcImXs6OomrNvO5uh3pNwTSPY8ZltXUGilnOM38e3nKbgKreSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUOLuHbM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0EEC116D0;
+	Wed, 25 Feb 2026 01:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983334;
-	bh=8O7jdvcHnqDHkCzIC6/aX5AuhZDUTvZfd+4BQcGKeFs=;
+	s=korg; t=1771983994;
+	bh=FrSdb+lW6M4NEvHh3D6vj9zhthtQQiBKoSMy5kffpC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYY4G67DmFT8vxLy0WWDGdOrFEieGnRtFbtvLxLgEik7Ulm8s1gxdg19sqzWT+YFg
-	 24qK44dp+IayaQnZ0LD1j2wgEJjg2sLrA3YFnib6wgMG/2Scwf8biMR/4ZhKt+VFCX
-	 gw7j3zcWJvl7vsY/S0+SUgMCiTTlBIsEIyBCRQ88=
+	b=mUOLuHbMsZZLkwq4Un/DxFXvmZdFRw23BKIrQ0Fqg9yJiSO3YfvG6Hzb1YtpQiMqP
+	 XcVq3EGhQus2fbeS9nfD80jErvsidvB2PyE60sPaBFg0lR4o4dWNgW11zrRS93hLxW
+	 ZqkKzg03V5Qqt75aENyLU9lyMPfsbduOP49Wp7vE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Malaya Kumar Rout <mrout@redhat.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Balbir Singh <balbirs@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 465/781] tools/power/x86/intel-speed-select: Fix file descriptor leak in isolate_cpus()
+Subject: [PATCH 6.18 248/641] PCI/P2PDMA: Reset page reference count when page mapping fails
 Date: Tue, 24 Feb 2026 17:19:34 -0800
-Message-ID: <20260225012411.228290056@linuxfoundation.org>
+Message-ID: <20260225012354.864455538@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +71,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219069-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218503-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A322618F340
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,deltatee.com:email,msgid.link:url,nvidia.com:email]
+X-Rspamd-Queue-Id: D9CA5190832
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Malaya Kumar Rout <mrout@redhat.com>
+From: Alistair Popple <apopple@nvidia.com>
 
-[ Upstream commit 56c17ee151c6e1a73d77e15b82a8e2130cd8dd16 ]
+[ Upstream commit 83014d82a1100abc89f7712ad67c3e5accaddc43 ]
 
-The file descriptor opened in isolate_cpus() when (!level) is true was
-not being closed before returning, causing a file descriptor leak in
-both the error path and the success path.
+When mapping a p2pdma page the page reference count is initialised to 1
+prior to calling vm_insert_page(). This is to avoid vm_insert_page()
+warning if the page refcount is zero. Prior to setting the page count there
+is a check to ensure the page is currently free (ie. has a zero reference
+count).
 
-When write() fails at line 950, the function returns at line 953 without
-closing the file descriptor. Similarly, on success, the function returns
-at line 956 without closing the file descriptor.
+However vm_insert_page() can fail. In this case the pages are freed back to
+the genalloc pool, but that does not reset the page refcount.  So a future
+allocation of the same page will see the elevated page refcount from the
+previous set_page_count() call triggering the VM_WARN_ON_ONCE_PAGE checking
+that the page is free.
 
-Add close(fd) calls before both return statements to fix the resource
-leak. This follows the same pattern used elsewhere in the same function
-where file descriptors are properly closed before returning (see lines
-1005 and 1027).
+Fix this by resetting the page refcount to zero using set_page_count().
+Note that put_page() is not used because that would result in freeing the
+page twice due to implicitly calling p2pdma_folio_free().
 
-Fixes: 997074df658e ("tools/power/x86/intel-speed-select: Use cgroup v2 isolation")
-Signed-off-by: Malaya Kumar Rout <mrout@redhat.com>
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Fixes: b7e282378773 ("mm/mm_init: move p2pdma page refcount initialisation to p2pdma")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Acked-by: Balbir Singh <balbirs@nvidia.com>
+Link: https://patch.msgid.link/20260112005440.998543-1-apopple@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/intel-speed-select/isst-config.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/p2pdma.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/power/x86/intel-speed-select/isst-config.c b/tools/power/x86/intel-speed-select/isst-config.c
-index 558138eea75e9..d00d15490a98c 100644
---- a/tools/power/x86/intel-speed-select/isst-config.c
-+++ b/tools/power/x86/intel-speed-select/isst-config.c
-@@ -950,9 +950,11 @@ int isolate_cpus(struct isst_id *id, int mask_size, cpu_set_t *cpu_mask, int lev
- 		ret = write(fd, "member", strlen("member"));
- 		if (ret == -1) {
- 			printf("Can't update to member\n");
-+			close(fd);
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 12c69bb2b2326..49e395eb013d3 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -152,6 +152,13 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+ 		ret = vm_insert_page(vma, vaddr, page);
+ 		if (ret) {
+ 			gen_pool_free(p2pdma->pool, (uintptr_t)kaddr, len);
++
++			/*
++			 * Reset the page count. We don't use put_page()
++			 * because we don't want to trigger the
++			 * p2pdma_folio_free() path.
++			 */
++			set_page_count(page, 0);
+ 			percpu_ref_put(ref);
  			return ret;
  		}
- 
-+		close(fd);
- 		return 0;
- 	}
- 
 -- 
 2.51.0
 
