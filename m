@@ -1,331 +1,283 @@
-Return-Path: <stable+bounces-219582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LnTFK/TnmnwXQQAu9opvQ
-	(envelope-from <stable+bounces-219582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 11:49:19 +0100
+	id CNr6GDjUnmkTXgQAu9opvQ
+	(envelope-from <stable+bounces-219583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 11:51:36 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E15196021
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 11:49:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3EFD196050
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 11:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E6D1300FED4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 10:46:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D76F3073A4D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 10:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832DB3939AF;
-	Wed, 25 Feb 2026 10:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2918C3939CA;
+	Wed, 25 Feb 2026 10:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="c3qAaNWt"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bJNYOFPM";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hsMvS1fn"
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC11938F929;
-	Wed, 25 Feb 2026 10:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51B73939A6
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 10:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772016410; cv=none; b=GzE31sPCKc3tpsdX/L7D6i5Oxof5BnrjcRbr9WDzRkoMyR5DGOFFVXpQCMLSSmDnlU5De7LhupyD95ehK6bg6T16Q6Mj+mRT1S5Kd/epZ94cR5aFWZa/IC6cxQcXyiURgI7u2ExAPszolw80mNKdSCGwD08j+a0z2MikwcgtFCQ=
+	t=1772016519; cv=none; b=FCOVgeJv+Y6DsammZ8VgkMpqFXRemgK/zGXpB/sxxzOe8aZHKWfT+exjM9fAQjLTLmfJ2uEJCLDdJv56PTodZJuHcZgEYe3ShrwPpxrYyL066KUetUYxbCeaxLV0SWE4Q9mdcYFqmYmeh98ZUctPIpm0QYXjIZNOybrhQQz7atM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772016410; c=relaxed/simple;
-	bh=9Dv2IvGylF32F7+KA7fjZQk4VgDt91Z2DeX4FeEdgas=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KpvrOBPd+Edlihc4soLYo6FL1sPfj+8H7DyiOmPkL5DyxXeS2bMsYzYvp158mbgcO1/lxYmeFIo+txA6cRtLj43wDBZOzQOMUR4PhfJ/p43qLUsKqAZXdnzLizy8zrXIRtK6e/Zz+3YTgatbicjhpJSxpy4eBDPcuXTW07eNZi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=c3qAaNWt; arc=none smtp.client-ip=89.208.246.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
-	s=default; t=1772016399;
-	bh=yVre8NVKeOCHoJhT8H2iR7ctMiAIQFnJdsONAZs3b9g=;
-	h=From:To:Cc:Subject:Date:From;
-	b=c3qAaNWt9Z9d44yq1nrp0Xa2Nei2jAIbUfL6e8+Nha+n7c87NWlMwbK92zYfUljr+
-	 ysuXb1zY/MkNc62OOsvTr7B1W8siz4eRtPVXzTPNrsWChMztbN3+f3mlFr9hfTHAK8
-	 baonUkTaT4qECM2drrH18pNi15QnCTS4uvxY+6lo=
-Received: from stargazer (unknown [IPv6:2409:8a4c:e12:da00:cf6b:74dc:7b4c:50c7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 404611A42B2;
-	Wed, 25 Feb 2026 05:46:30 -0500 (EST)
-From: Xi Ruoyao <xry111@xry111.site>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>
-Cc: WANG Rui <wangrui@loongson.cn>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Zixing Liu <liushuyu@aosc.io>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	stable@vger.kernel.org,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Hanlu Li <lihanlu@loongson.cn>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
-Date: Wed, 25 Feb 2026 18:45:54 +0800
-Message-ID: <20260225104607.3803060-1-xry111@xry111.site>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1772016519; c=relaxed/simple;
+	bh=U8F4hftcy2685oOybweH3eevPSFoJSj/GAd2RKXzJrg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fBUpb+pT4B2EEeKIN8e8zebfwgRRkR7eqAe+26/AsszJEysRDGrfKVxg8mLXhz9vbRpVt5ulEKnzPva8O88KloewBd1tKUdE99sh1SgmvDwiqsYZ8sYi+pAFwPS5VD1d1USjG7+YlRhw2mtWb7AGjV+5fEPnuw3PkMgDhLzLtbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bJNYOFPM; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hsMvS1fn; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61P9Sr9D2691923
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 10:48:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	asexqnFyFkaUecgQLxvKMFLjNlOwun5ZD/JgnhKqz5g=; b=bJNYOFPMoVkrwUGH
+	q8VqaChnncNNAL9KhiurTorI36tFsTdMqWtAc8+JUIR/8cSDkStb8DnezRRskB6X
+	q61ZDMLuP7fo5o4EflJDlcc2SOl816huVSISzBwWj6YXvsxg0xTN4BOwYWd0uV8M
+	ZWd0QLTvR/n8MCLKQ+3yX4nw/PBtHJXQ6Fk7JROJkvoiECBAzmWmJkLUygCsFxOA
+	HIGCiMV1eKpAO0p27htQDpdy2lkjsn6q31j900vvvhZ07lNDCpXk6n5J+7pEqx5e
+	0uRtiKfE1IT+R62wisrAmVvvgXV/4U22J/GULLvnzyaVzEJk2jGMIsu/WDzs2CLo
+	aVxAdA==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4chg2gtxf9-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 10:48:37 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8ca3ef536ddso6322788685a.0
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:48:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772016517; x=1772621317; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=asexqnFyFkaUecgQLxvKMFLjNlOwun5ZD/JgnhKqz5g=;
+        b=hsMvS1fnsWMWPKjmjq7kaNL2hG1WUMNBctTmOFVzyI9yTuMaYkjoPkJrfjJpG5XyKX
+         sXdDWK12eaRRbGHjoGk/3f+J5wdybyIz19GKGmQFnyB1qlJ/xZJ+fUBtfLEaul2ZjYNT
+         sj5Y3l90sbb89VUJ5LOt7sdKvWAV/GbgatD84RkS4pWluveYvB7GEQOlqY+ESgy8UB5D
+         g17sq6wP5Qtyxtuj69BLYsJqy5raR4yiXNBp1vxGuGVbCAQ9wC2um9J8K0jymq9+1hn2
+         WkFoDLi91VREAQ6a01rre04gPpxNqzHQ6OGX/0dmRS3mCOEbZegZdNVBQvECUAyrH3J7
+         5Ukg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772016517; x=1772621317;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=asexqnFyFkaUecgQLxvKMFLjNlOwun5ZD/JgnhKqz5g=;
+        b=HMn7vKhWY2ZfEXYnMR/NpIW/ZsRX6obWFscAhiGVia002I58njVU05b45Eg2sfWQLD
+         7JoEGRTgGBgW2SnxL7xKR8jWRZPbagMKgFeNQpvh4NuwLE10bFVrEnJNcM/iDJbXUFv/
+         WGU5XxIYQ/P6icVCvDTQZrrBmdQBTmi1Y2eQA6F4G5hbkjTMvbzdKUEQRJEbtcWHCsPp
+         YFC7+VjMdDLQxRVNXcj4WGsvHMvk+eDJNxE4DY0EeLsdKHpW18IKSHLMsPYtwvn7G6FD
+         7VjRnUnIy+uINo8uNsbNwYzpoRcM2JPMaL7KUVv7ds5flC+qgnIkE7Ld+GvhB3AgTWSN
+         j1Eg==
+X-Gm-Message-State: AOJu0Yz30qsCcjKZg/hzLniUOCTyoNhVvpijlgTzhmSbPOIUxeOyLfP3
+	RGA8XZh2Wb3yvqEEC1Ypp0ftx2YuT3LjSNJ1GzyqUIlub9jv2GpFkWTvtIPfVqV6qldC/1XkOjR
+	O+7+PAaWVIpPSyY/T1NRjubMhJAOMn3nb9jO8DYUfbfiPl8rNRHUJ3W8qEHs=
+X-Gm-Gg: ATEYQzz3tLV4qf+kNggztBSefE1RJEVCw/aer0nDqGWnRw/L5kgydR9sBnizuuWl/+9
+	TJuex/XjDDXXf+rrPqvumOSfRgxRs/6D7+LGnJkduWHdV89rU6VJpbALJfwzTR4wIAkgOjdqweu
+	Ytm3Ob3bReIbUPHjUuB3x/zu78981oL2AEZQDxgGhzlSbCatV+DFLrvuh8sODxdCVbmwP77B1kL
+	UB9dHbZSd49tiJGTmSOb3VzEB3M/EXcQ+1w7SfxBPXA1ttWTeLGkGJPbcBXbHTSKdeyzR6SMmWN
+	GyNuyfdIVUWxRJqj6YbbhHl67Ago+oQotMU25OVYajEYtT6qGMKPPhac/t2xhMGvBt7LO8jSL6V
+	BGkOzGugVw+KM9zzpcjcwLWBHmB/N5mNrBob/DarNX2aix81Xcg==
+X-Received: by 2002:a05:620a:4554:b0:8b2:37ff:de74 with SMTP id af79cd13be357-8cb8ca048d4mr2023794585a.34.1772016517008;
+        Wed, 25 Feb 2026 02:48:37 -0800 (PST)
+X-Received: by 2002:a05:620a:4554:b0:8b2:37ff:de74 with SMTP id af79cd13be357-8cb8ca048d4mr2023791885a.34.1772016516425;
+        Wed, 25 Feb 2026 02:48:36 -0800 (PST)
+Received: from [192.168.1.29] ([178.197.223.140])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd7031f3sm58897785e9.6.2026.02.25.02.48.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Feb 2026 02:48:35 -0800 (PST)
+Message-ID: <3e5001a6-ea3c-4304-8db3-bbe616eb4015@oss.qualcomm.com>
+Date: Wed, 25 Feb 2026 11:48:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] firmware: exynos-acpm: Drop fake 'const' on handle
+ pointer
+To: Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd
+ <sboyd@kernel.org>,
+        =?UTF-8?Q?Andr=C3=A9_Draszik?=
+ <andre.draszik@linaro.org>,
+        Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc: stable@vger.kernel.org
+References: <20260224104203.42950-2-krzysztof.kozlowski@oss.qualcomm.com>
+ <b083e950-f54a-44aa-b587-eec2cc10460b@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@oss.qualcomm.com; keydata=
+ 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
+ cwzYbmi/Et7T2+47PN9NZAOyb771QoVr8A==
+In-Reply-To: <b083e950-f54a-44aa-b587-eec2cc10460b@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: x5Grk85-pIlVIjs6opi-gmeQ4Pwg1LnF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDEwMyBTYWx0ZWRfX1axNVK7116dg
+ v13ZzGaxdVHM2el6UUyFgxYClfPxYLH+OYjHcp2O6q+18TAPvnMJAE1YyZswHPPgSVhIo2c574n
+ /CYq/Naj6kJxkkNTJ2vcZdBqrKQLW3frEiXqn1FL/fUJzQzergX6M4E2HSnZvC3oozQCdyCR7OQ
+ GGqtwtbp/kobVLMu42LiRRTYyKc0bDRWFXKAqC87QyC14zXgeKVv4U/axjX+302SXb8lXC9Et9t
+ 5s2zoEkU+x4mhgxwsNIuQ2rPAnjxQtHoxjYN4TKNdPZFk1b18vtUXSO+5cm+0BbMYOzX06+L6YF
+ vxY+IvNq1naJ2lqNj7fN79g89pJc5fPCCNmUmugT8zxmkdBIMlrFbSdydB7GpQ8ZWRaXrhgZgyw
+ gyl9RWrrBdMq/n9YGco8ut7OaHpjS/Cj5RdQaZv+WJ2nM24L3TKmtIJT3iiXADbHrgflL/BQ47j
+ xl6Sosu+CX30rvybC4Q==
+X-Authority-Analysis: v=2.4 cv=ftHRpV4f c=1 sm=1 tr=0 ts=699ed385 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=6nO30s3o7FuWeffXwhKHTA==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=CFJn5XCy4UlJ5aEQFSIA:9 a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-GUID: x5Grk85-pIlVIjs6opi-gmeQ4Pwg1LnF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-24_03,2026-02-23_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 clxscore=1015 spamscore=0
+ impostorscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602250103
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[loongson.cn,aosc.io,zytor.com,xry111.site,vger.kernel.org,infradead.org,gmail.com,kernel.org,flygoat.com,uniontech.com,lists.linux.dev];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-219582-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219583-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[xry111.site:+];
-	NEURAL_HAM(-0.00)[-0.983];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[krzysztof.kozlowski@oss.qualcomm.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xry111.site:mid,xry111.site:dkim,xry111.site:email,loongson.cn:email]
-X-Rspamd-Queue-Id: A7E15196021
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: D3EFD196050
 X-Rspamd-Action: no action
 
-With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
-of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
-empty.  This is not valid, as the current DWARF specification mandates
-the first byte of the EH frame to be the version number 1.  It causes
-some unwinders to complain, for example the ClickHouse query profiler
-spams the log with messages:
+On 24/02/2026 13:57, Tudor Ambarus wrote:
+> Hi Krzysztof,
+> 
+> On 2/24/26 12:42 PM, Krzysztof Kozlowski wrote:
+>> All the functions operating on the 'handle' pointer are claiming it is a
+>> pointer to const thus they should not modify the handle.  In fact that's
+>> a false statement, because first thing these functions do is drop the
+>> cast to const with container_of:
+>>
+>>   struct acpm_info *acpm = handle_to_acpm_info(handle);
+>>
+>> And with such cast the handle is easily writable with simple:
+>>
+>>   acpm->handle.ops.pmic_ops.read_reg = NULL;
+>>> The code is not correct logically, either, because functions like
+>> acpm_get_by_node() and acpm_handle_put() are meant to modify the handle
+>> reference counting, thus they must modify the handle.  Modification here
+> 
+> You are right that casting away const via container_of to modify the
+> parent's reference count is incorrect, so dropping the const from the
+> handle argument makes sense.
+> 
+> However, to address the underlying issue of the operations being
+> writable (e.g., acpm->handle.ops.pmic_ops.read_reg = NULL), I think we
+> should also decouple the ops from the handle struct and keep them strictly
+> constant in .rodata.
+> 
+> How about we apply your fix for the signatures, and I follow up with
+> (or we include) a patch to do the following:
+> 
+> struct acpm_handle {
+>         const struct acpm_ops *ops; // Changed from embedded struct to pointer
+> };
+> 
+> static const struct acpm_ops exynos_acpm_driver_ops = {
+>         .dvfs_ops = {
+>                 .set_rate = acpm_dvfs_set_rate,
+>                 .get_rate = acpm_dvfs_get_rate,
+>         },
+>         .pmic_ops = {
+>                 .read_reg = acpm_pmic_read_reg,
+>                 .write_reg = acpm_pmic_write_reg,
+>                 // ... other ops
+>         },
+> };
+> 
+> and in probe:
+> acpm->handle.ops = &exynos_acpm_driver_ops;
+> 
+> This way, the handle safely reflects the mutability of its container,
+> but our function pointers remain fully protected.
 
-    clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
-    version: 127 at 7ffffffb0000
+Yes, this makes sense.
 
-Here "127" is just the byte located at the p_vaddr (0, i.e. the
-beginning of the vDSO) of the empty GNU_EH_FRAME segment.
-Cross-checking with /proc/365854/maps has also proven 7ffffffb0000 is
-the start of vDSO in the process VM image.
-
-In LoongArch the -fno-asynchronous-unwind-tables option seems just a
-MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
-"genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
-use -fno-asynchronous-unwind-tables").  IIUC it indicates some inherent
-limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
-we can simply flip it over to -fasynchronous-unwind-tables and pass
---eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
-stack for statistics even if the sample point is taken when the PC is in
-the vDSO.
-
-However simply adjusting the options above would exploit an issue: when
-the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
-falled back to a machine-specific routine to match the code pattern of
-rt_sigreturn and extract the registers saved in the sigframe if the code
-pattern is matched.  As unwinding from signal handlers is vital for
-libgcc to support pthread cancellation etc., the fall-back routine had
-been silently keeping the LoongArch Linux systems functioning since
-Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
-format, fall-back routine will no longer be used and libgcc will fail
-to unwind the sigframe, and unwinding from signal handlers will no
-longer work, causing dozens of glibc test failures.  To make it possible
-to unwind from signal handlers again, it's necessary to code the unwind
-info in __vdso_rt_sigreturn via .cfi_* directives.
-
-The offsets in the .cfi_* directives depend on the layout of struct
-sigframe, notably the offset of sigcontect in the sigframe.  To use the
-offset in the assembly file, factor out struct sigframe into a header to
-allow asm-offsets.c to output the offset for assembly.
-
-To work around a long-term issue in the libgcc unwinder (the pc is
-unconditionally substracted by 1: doing so is technically incorrect for
-a signal frame), a nop instruction is included with the two real
-instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
-hack has been used on x86 for a long time.
-
-Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
----
- arch/loongarch/include/asm/sigframe.h | 22 ++++++++++++++
- arch/loongarch/kernel/asm-offsets.c   |  2 ++
- arch/loongarch/kernel/signal.c        |  6 +---
- arch/loongarch/vdso/Makefile          |  4 +--
- arch/loongarch/vdso/sigreturn.S       | 44 ++++++++++++++++++++++++---
- 5 files changed, 67 insertions(+), 11 deletions(-)
- create mode 100644 arch/loongarch/include/asm/sigframe.h
-
-diff --git a/arch/loongarch/include/asm/sigframe.h b/arch/loongarch/include/asm/sigframe.h
-new file mode 100644
-index 000000000000..6889bcf5dc88
---- /dev/null
-+++ b/arch/loongarch/include/asm/sigframe.h
-@@ -0,0 +1,22 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Separated from arch/loongarch/kernel/signal.c:
-+ *
-+ * Author: Hanlu Li <lihanlu@loongson.cn>
-+ *         Huacai Chen <chenhuacai@loongson.cn>
-+ * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
-+ *
-+ * Derived from MIPS:
-+ * Copyright (C) 1991, 1992  Linus Torvalds
-+ * Copyright (C) 1994 - 2000  Ralf Baechle
-+ * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-+ * Copyright (C) 2014, Imagination Technologies Ltd.
-+ */
-+
-+#include <uapi/asm/ucontext.h>
-+#include <asm/siginfo.h>
-+
-+struct rt_sigframe {
-+	struct siginfo rs_info;
-+	struct ucontext rs_uctx;
-+};
-diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
-index 3017c7157600..2cc953f113ac 100644
---- a/arch/loongarch/kernel/asm-offsets.c
-+++ b/arch/loongarch/kernel/asm-offsets.c
-@@ -16,6 +16,7 @@
- #include <asm/ptrace.h>
- #include <asm/processor.h>
- #include <asm/ftrace.h>
-+#include <asm/sigframe.h>
- #include <vdso/datapage.h>
- 
- static void __used output_ptreg_defines(void)
-@@ -220,6 +221,7 @@ static void __used output_sc_defines(void)
- 	COMMENT("Linux sigcontext offsets.");
- 	OFFSET(SC_REGS, sigcontext, sc_regs);
- 	OFFSET(SC_PC, sigcontext, sc_pc);
-+	OFFSET(RT_SIGFRAME_SC, rt_sigframe, rs_uctx.uc_mcontext);
- 	BLANK();
- }
- 
-diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.c
-index c9f7ca778364..e297d54ea638 100644
---- a/arch/loongarch/kernel/signal.c
-+++ b/arch/loongarch/kernel/signal.c
-@@ -37,6 +37,7 @@
- #include <asm/lbt.h>
- #include <asm/ucontext.h>
- #include <asm/vdso.h>
-+#include <asm/sigframe.h>
- 
- #ifdef DEBUG_SIG
- #  define DEBUGP(fmt, args...) printk("%s: " fmt, __func__, ##args)
-@@ -51,11 +52,6 @@
- #define lock_lbt_owner()	({ preempt_disable(); pagefault_disable(); })
- #define unlock_lbt_owner()	({ pagefault_enable(); preempt_enable(); })
- 
--struct rt_sigframe {
--	struct siginfo rs_info;
--	struct ucontext rs_uctx;
--};
--
- struct _ctx_layout {
- 	struct sctx_info *addr;
- 	unsigned int size;
-diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-index 520f1513f07d..294c16b9517f 100644
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -26,7 +26,7 @@ cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
- 	-std=gnu11 -fms-extensions -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
--	$(call cc-option, -fno-asynchronous-unwind-tables) \
-+	$(call cc-option, -fasynchronous-unwind-tables) \
- 	$(call cc-option, -fno-stack-protector)
- aflags-vdso := $(ccflags-vdso) \
- 	-D__ASSEMBLY__ -Wa,-gdwarf-2
-@@ -41,7 +41,7 @@ endif
- 
- # VDSO linker flags.
- ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
--	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
-+	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id --eh-frame-hdr -T
- 
- #
- # Shared build commands.
-diff --git a/arch/loongarch/vdso/sigreturn.S b/arch/loongarch/vdso/sigreturn.S
-index 9cb3c58fad03..e46c1deacb9e 100644
---- a/arch/loongarch/vdso/sigreturn.S
-+++ b/arch/loongarch/vdso/sigreturn.S
-@@ -12,13 +12,49 @@
- 
- #include <asm/regdef.h>
- #include <asm/asm.h>
-+#include <asm/asm-offsets.h>
- 
- 	.section	.text
--	.cfi_sections	.debug_frame
- 
--SYM_FUNC_START(__vdso_rt_sigreturn)
-+	.cfi_startproc
-+	.cfi_signal_frame
- 
-+	/*
-+	 * There is a struct rt_sigframe at $sp, set CFA to the address of
-+	 * the struct sigcontext in the rt_sigframe to simplify the
-+	 * offsets below.
-+	 */
-+	.cfi_def_cfa 3, RT_SIGFRAME_SC
-+
-+	/*
-+	 * 72 is DWARF 2 CFA column for the return address from a signal
-+	 * handler context on LoongArch, i.e. the PC stored in the
-+	 * sigcontext.
-+	 */
-+	.cfi_return_column 72
-+	.cfi_offset 72, SC_PC
-+
-+	/* The GPRs of the "caller" are also stored in the sigcontext.  */
-+.irp	num, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, \
-+	     17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
-+	.cfi_offset \num, SC_REGS + \num * SZREG
-+.endr
-+
-+	/*
-+	 * HACK: The dwarf2 unwind routine will subtract 1 from the return
-+	 * address to get an address in the middle of the persumed call
-+	 * instruction.  While in libgcc there exists a logic to avoid
-+	 * subtracting 1 for the signal frame (a frame with the 'S'
-+	 * augmentation that we've already added via .cfi_signal_frame),
-+	 * unfortunately it doesn't really work: the check of signal frame
-+	 * is at libgcc/unwind-dw2:1008 in GCC 15.2.0, but the flag it
-+	 * checks will only get updated by the extract_cie_info call at line
-+	 * 1025.  So include a nop before the real start to make up for it.
-+	 * This is also the reason we don't use SYM_FUNC_START.
-+	 */
-+	nop
-+SYM_START(__vdso_rt_sigreturn, SYM_L_GLOBAL, SYM_A_ALIGN)
- 	li.w	a7, __NR_rt_sigreturn
- 	syscall	0
--
--SYM_FUNC_END(__vdso_rt_sigreturn)
-+	.cfi_endproc
-+SYM_END(__vdso_rt_sigreturn, SYM_T_FUNC)
--- 
-2.53.0
-
+Best regards,
+Krzysztof
 
