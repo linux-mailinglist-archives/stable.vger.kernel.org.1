@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-218095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218097-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEIgMo5QnmmNUgQAu9opvQ
-	(envelope-from <stable+bounces-218095-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:50 +0100
+	id WLZUBpxQnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218097-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72CB018EC55
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443ED18EC69
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8575230FBA8D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A928E305E458
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072B325228D;
-	Wed, 25 Feb 2026 01:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A354369A;
+	Wed, 25 Feb 2026 01:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBjlU72m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3vDiN7t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7B321D596;
-	Wed, 25 Feb 2026 01:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DCD21D596;
+	Wed, 25 Feb 2026 01:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982870; cv=none; b=JxL6/7/iETOoZoxhcy8Uc/niOqJctfsJc5iJavCszbwahDskBd8bFF4sXV0FHJWuBkzI+1lkZwOOVwOhjq4EALZD5CxMuVjlXF+wuSfV2VqzlST3dHWhdNa0qv9VNjhyJ0Vy0sQUL0LUhqJ1IbQJLy2o4YeQK35O2H7draYhEJc=
+	t=1771982872; cv=none; b=H3YHYIIO2KoVe6zTjkyY0SmFOFi1zct52vDx38YQRCuZljR1NSEhOKkm9x8LAqEn2xkytJoUK4aS7o6/mGa21LnUgDK9wv08Ez8N9GgrD17IhX22h/chhisw6IeWelbFQrr5oGg7SyU6CBGrmw7PE6dwteVxDOMY6fiAHj3E4XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982870; c=relaxed/simple;
-	bh=6tG94616Mie+Y9od8ss6cVVbzD5eOOkkkP5Do/+O/PU=;
+	s=arc-20240116; t=1771982872; c=relaxed/simple;
+	bh=KXO4O7bySRgk10iMghDNrw6R8Ku1FItNWQRD2Vmqq3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dODKy9/OCflhL9pQLI7ZuR6bfInuFA45bEr0F89WEEJFiDAYkchhhnEMRi7dUWsKBv+BY5uqMsnXT3az1eoki9vus3OGje4sa1r31h5xl1YKhcJlcrd8CLT0fzxEv6qIABilETXeiMl5LyB5PbZz+NAPpJlYf/XQ9ZwfXeKoUT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBjlU72m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46240C116D0;
-	Wed, 25 Feb 2026 01:27:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mh/KphuFxlNV3+5rk061THRpQt3QWbVQeh+Isq3R70MvxNwRIjDv9nafhadRM8Q0I3yyVulJs1FsffYQJmt24uabfPAIFoTcLAEsZ2CUkKgKMUCbhHQSnDeKyb9b9nOuQQ1yrl6d0m56Vd9PAfFoq+a5N/7MIuCIXvpLQw112cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3vDiN7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FAAC116D0;
+	Wed, 25 Feb 2026 01:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982870;
-	bh=6tG94616Mie+Y9od8ss6cVVbzD5eOOkkkP5Do/+O/PU=;
+	s=korg; t=1771982872;
+	bh=KXO4O7bySRgk10iMghDNrw6R8Ku1FItNWQRD2Vmqq3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JBjlU72m07SQ6Qh8p0QO4FblaDjjjzuA/pyLIp5C689ZBGFq5BYw01QKlLuO/Vslj
-	 uob9Nd/ZSk7rIGPotEj1wyFGgWRr57dbtRP1Ezv75syfvCaQswdT4+DM+y/fCJ3b6Z
-	 bfFoI6CLMNeUg+AXGlRqoa1yty1vTTpRxc4ooFsw=
+	b=W3vDiN7tXJS8dErL7tTZjxv/huX0v22judQDqZEA9GEtfXnyxT+N8e58QYqB/FNtl
+	 LFBpwyd9F3w2iNOJy9ndjLM1aJJ5VsFXhf0mLvjcOATLYujKNBhx2p/U7nOulTeAFH
+	 qqJTD0UMojBI+999l0qp82QFhwYDcapOF4Zed9xY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	James Dingwall <james@dingwall.me.uk>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 056/781] ublk: use READ_ONCE() to read struct ublksrv_ctrl_cmd
-Date: Tue, 24 Feb 2026 17:12:45 -0800
-Message-ID: <20260225012401.080776686@linuxfoundation.org>
+Subject: [PATCH 6.19 057/781] Partial revert "x86/xen: fix balloon target initialization for PVH dom0"
+Date: Tue, 24 Feb 2026 17:12:46 -0800
+Message-ID: <20260225012401.104244910@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -64,227 +64,169 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218095-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-218097-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 72CB018EC55
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 443ED18EC69
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-[ Upstream commit ed9f54cc1e335096733aed03c2a46de3d58922ed ]
+[ Upstream commit 0949c646d64697428ff6257d52efa5093566868d ]
 
-struct ublksrv_ctrl_cmd is part of the io_uring_sqe, which may lie in
-userspace-mapped memory. It's racy to access its fields with normal
-loads, as userspace may write to them concurrently. Use READ_ONCE() to
-copy the ublksrv_ctrl_cmd from the io_uring_sqe to the stack. Use the
-local copy in place of the one in the io_uring_sqe.
+This partially reverts commit 87af633689ce16ddb166c80f32b120e50b1295de so
+the current memory target for PV guests is still fetched from
+start_info->nr_pages, which matches exactly what the toolstack sets the
+initial memory target to.
 
-Fixes: 87213b0d847c ("ublk: allow non-blocking ctrl cmds in IO_URING_F_NONBLOCK issue")
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Using get_num_physpages() is possible on PV also, but needs adjusting to
+take into account the ISA hole and the PFN at 0 not considered usable
+memory despite being populated, and hence would need extra adjustments.
+Instead of carrying those extra adjustments switch back to the previous
+code.  That leaves Linux with a difference in how current memory target is
+obtained for HVM vs PV, but that's better than adding extra logic just for
+PV.
+
+However if switching to start_info->nr_pages for PV domains we need to
+differentiate between released pages (freed back to the hypervisor) as
+opposed to pages in the physmap which are not populated to start with.
+Introduce a new xen_unpopulated_pages to account for papges that have
+never been populated, and hence in the PV case don't need subtracting.
+
+Fixes: 87af633689ce ("x86/xen: fix balloon target initialization for PVH dom0")
+Reported-by: James Dingwall <james@dingwall.me.uk>
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20260128110510.46425-2-roger.pau@citrix.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c | 56 ++++++++++++++++++++++------------------
- 1 file changed, 31 insertions(+), 25 deletions(-)
+ arch/x86/xen/enlighten.c        |  2 +-
+ drivers/xen/balloon.c           | 19 +++++++++++++++----
+ drivers/xen/unpopulated-alloc.c |  3 +++
+ include/xen/xen.h               |  2 ++
+ 4 files changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 0ce0e537fb850..06e0790150d1d 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -3311,12 +3311,11 @@ static int ublk_ctrl_del_dev(struct ublk_device **p_ub, bool wait)
- 	return 0;
- }
- 
--static inline void ublk_ctrl_cmd_dump(struct io_uring_cmd *cmd)
-+static inline void ublk_ctrl_cmd_dump(u32 cmd_op,
-+				      const struct ublksrv_ctrl_cmd *header)
- {
--	const struct ublksrv_ctrl_cmd *header = io_uring_sqe_cmd(cmd->sqe);
--
- 	pr_devel("%s: cmd_op %x, dev id %d qid %d data %llx buf %llx len %u\n",
--			__func__, cmd->cmd_op, header->dev_id, header->queue_id,
-+			__func__, cmd_op, header->dev_id, header->queue_id,
- 			header->data[0], header->addr, header->len);
- }
- 
-@@ -3685,9 +3684,8 @@ static int ublk_char_dev_permission(struct ublk_device *ub,
- }
- 
- static int ublk_ctrl_uring_cmd_permission(struct ublk_device *ub,
--		struct io_uring_cmd *cmd)
-+		u32 cmd_op, struct ublksrv_ctrl_cmd *header)
- {
--	struct ublksrv_ctrl_cmd *header = (struct ublksrv_ctrl_cmd *)io_uring_sqe_cmd(cmd->sqe);
- 	bool unprivileged = ub->dev_info.flags & UBLK_F_UNPRIVILEGED_DEV;
- 	void __user *argp = (void __user *)(unsigned long)header->addr;
- 	char *dev_path = NULL;
-@@ -3703,7 +3701,7 @@ static int ublk_ctrl_uring_cmd_permission(struct ublk_device *ub,
- 		 * know if the specified device is created as unprivileged
- 		 * mode.
+diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
+index 53282dc7d5ac5..23b91bf9b6630 100644
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -470,7 +470,7 @@ int __init arch_xen_unpopulated_init(struct resource **res)
+ 		 * driver to know how much of the physmap is unpopulated and
+ 		 * set an accurate initial memory target.
  		 */
--		if (_IOC_NR(cmd->cmd_op) != UBLK_CMD_GET_DEV_INFO2)
-+		if (_IOC_NR(cmd_op) != UBLK_CMD_GET_DEV_INFO2)
- 			return 0;
+-		xen_released_pages += xen_extra_mem[i].n_pfns;
++		xen_unpopulated_pages += xen_extra_mem[i].n_pfns;
+ 		/* Zero so region is not also added to the balloon driver. */
+ 		xen_extra_mem[i].n_pfns = 0;
  	}
- 
-@@ -3724,7 +3722,7 @@ static int ublk_ctrl_uring_cmd_permission(struct ublk_device *ub,
- 		return PTR_ERR(dev_path);
- 
- 	ret = -EINVAL;
--	switch (_IOC_NR(cmd->cmd_op)) {
-+	switch (_IOC_NR(cmd_op)) {
- 	case UBLK_CMD_GET_DEV_INFO:
- 	case UBLK_CMD_GET_DEV_INFO2:
- 	case UBLK_CMD_GET_QUEUE_AFFINITY:
-@@ -3753,7 +3751,7 @@ static int ublk_ctrl_uring_cmd_permission(struct ublk_device *ub,
- 		header->addr += header->dev_path_len;
- 	}
- 	pr_devel("%s: dev id %d cmd_op %x uid %d gid %d path %s ret %d\n",
--			__func__, ub->ub_number, cmd->cmd_op,
-+			__func__, ub->ub_number, cmd_op,
- 			ub->dev_info.owner_uid, ub->dev_info.owner_gid,
- 			dev_path, ret);
- exit:
-@@ -3777,7 +3775,9 @@ static bool ublk_ctrl_uring_cmd_may_sleep(u32 cmd_op)
- static int ublk_ctrl_uring_cmd(struct io_uring_cmd *cmd,
- 		unsigned int issue_flags)
+diff --git a/drivers/xen/balloon.c b/drivers/xen/balloon.c
+index 49c3f99263943..8c44a25a7d2b9 100644
+--- a/drivers/xen/balloon.c
++++ b/drivers/xen/balloon.c
+@@ -724,6 +724,7 @@ static int __init balloon_add_regions(void)
+ static int __init balloon_init(void)
  {
--	const struct ublksrv_ctrl_cmd *header = io_uring_sqe_cmd(cmd->sqe);
-+	/* May point to userspace-mapped memory */
-+	const struct ublksrv_ctrl_cmd *ub_src = io_uring_sqe_cmd(cmd->sqe);
-+	struct ublksrv_ctrl_cmd header;
- 	struct ublk_device *ub = NULL;
- 	u32 cmd_op = cmd->cmd_op;
- 	int ret = -EINVAL;
-@@ -3789,41 +3789,47 @@ static int ublk_ctrl_uring_cmd(struct io_uring_cmd *cmd,
- 	if (!(issue_flags & IO_URING_F_SQE128))
- 		return -EINVAL;
+ 	struct task_struct *task;
++	unsigned long current_pages;
+ 	int rc;
  
--	ublk_ctrl_cmd_dump(cmd);
-+	header.dev_id = READ_ONCE(ub_src->dev_id);
-+	header.queue_id = READ_ONCE(ub_src->queue_id);
-+	header.len = READ_ONCE(ub_src->len);
-+	header.addr = READ_ONCE(ub_src->addr);
-+	header.data[0] = READ_ONCE(ub_src->data[0]);
-+	header.dev_path_len = READ_ONCE(ub_src->dev_path_len);
-+	ublk_ctrl_cmd_dump(cmd_op, &header);
+ 	if (!xen_domain())
+@@ -731,12 +732,18 @@ static int __init balloon_init(void)
  
- 	ret = ublk_check_cmd_op(cmd_op);
- 	if (ret)
- 		goto out;
+ 	pr_info("Initialising balloon driver\n");
  
- 	if (cmd_op == UBLK_U_CMD_GET_FEATURES) {
--		ret = ublk_ctrl_get_features(header);
-+		ret = ublk_ctrl_get_features(&header);
- 		goto out;
+-	if (xen_released_pages >= get_num_physpages()) {
+-		WARN(1, "Released pages underflow current target");
+-		return -ERANGE;
++	if (xen_pv_domain()) {
++		if (xen_released_pages >= xen_start_info->nr_pages)
++			goto underflow;
++		current_pages = min(xen_start_info->nr_pages -
++		                    xen_released_pages, max_pfn);
++	} else {
++		if (xen_unpopulated_pages >= get_num_physpages())
++			goto underflow;
++		current_pages = get_num_physpages() - xen_unpopulated_pages;
  	}
  
- 	if (_IOC_NR(cmd_op) != UBLK_CMD_ADD_DEV) {
- 		ret = -ENODEV;
--		ub = ublk_get_device_from_id(header->dev_id);
-+		ub = ublk_get_device_from_id(header.dev_id);
- 		if (!ub)
- 			goto out;
+-	balloon_stats.current_pages = get_num_physpages() - xen_released_pages;
++	balloon_stats.current_pages = current_pages;
+ 	balloon_stats.target_pages  = balloon_stats.current_pages;
+ 	balloon_stats.balloon_low   = 0;
+ 	balloon_stats.balloon_high  = 0;
+@@ -767,6 +774,10 @@ static int __init balloon_init(void)
+ 	xen_balloon_init();
  
--		ret = ublk_ctrl_uring_cmd_permission(ub, cmd);
-+		ret = ublk_ctrl_uring_cmd_permission(ub, cmd_op, &header);
- 		if (ret)
- 			goto put_dev;
- 	}
- 
- 	switch (_IOC_NR(cmd_op)) {
- 	case UBLK_CMD_START_DEV:
--		ret = ublk_ctrl_start_dev(ub, header);
-+		ret = ublk_ctrl_start_dev(ub, &header);
- 		break;
- 	case UBLK_CMD_STOP_DEV:
- 		ret = ublk_ctrl_stop_dev(ub);
- 		break;
- 	case UBLK_CMD_GET_DEV_INFO:
- 	case UBLK_CMD_GET_DEV_INFO2:
--		ret = ublk_ctrl_get_dev_info(ub, header);
-+		ret = ublk_ctrl_get_dev_info(ub, &header);
- 		break;
- 	case UBLK_CMD_ADD_DEV:
--		ret = ublk_ctrl_add_dev(header);
-+		ret = ublk_ctrl_add_dev(&header);
- 		break;
- 	case UBLK_CMD_DEL_DEV:
- 		ret = ublk_ctrl_del_dev(&ub, true);
-@@ -3832,26 +3838,26 @@ static int ublk_ctrl_uring_cmd(struct io_uring_cmd *cmd,
- 		ret = ublk_ctrl_del_dev(&ub, false);
- 		break;
- 	case UBLK_CMD_GET_QUEUE_AFFINITY:
--		ret = ublk_ctrl_get_queue_affinity(ub, header);
-+		ret = ublk_ctrl_get_queue_affinity(ub, &header);
- 		break;
- 	case UBLK_CMD_GET_PARAMS:
--		ret = ublk_ctrl_get_params(ub, header);
-+		ret = ublk_ctrl_get_params(ub, &header);
- 		break;
- 	case UBLK_CMD_SET_PARAMS:
--		ret = ublk_ctrl_set_params(ub, header);
-+		ret = ublk_ctrl_set_params(ub, &header);
- 		break;
- 	case UBLK_CMD_START_USER_RECOVERY:
--		ret = ublk_ctrl_start_recovery(ub, header);
-+		ret = ublk_ctrl_start_recovery(ub, &header);
- 		break;
- 	case UBLK_CMD_END_USER_RECOVERY:
--		ret = ublk_ctrl_end_recovery(ub, header);
-+		ret = ublk_ctrl_end_recovery(ub, &header);
- 		break;
- 	case UBLK_CMD_UPDATE_SIZE:
--		ublk_ctrl_set_size(ub, header);
-+		ublk_ctrl_set_size(ub, &header);
- 		ret = 0;
- 		break;
- 	case UBLK_CMD_QUIESCE_DEV:
--		ret = ublk_ctrl_quiesce_dev(ub, header);
-+		ret = ublk_ctrl_quiesce_dev(ub, &header);
- 		break;
- 	default:
- 		ret = -EOPNOTSUPP;
-@@ -3863,7 +3869,7 @@ static int ublk_ctrl_uring_cmd(struct io_uring_cmd *cmd,
- 		ublk_put_device(ub);
-  out:
- 	pr_devel("%s: cmd done ret %d cmd_op %x, dev id %d qid %d\n",
--			__func__, ret, cmd->cmd_op, header->dev_id, header->queue_id);
-+			__func__, ret, cmd_op, header.dev_id, header.queue_id);
- 	return ret;
+ 	return 0;
++
++ underflow:
++	WARN(1, "Released pages underflow current target");
++	return -ERANGE;
  }
+ subsys_initcall(balloon_init);
  
+diff --git a/drivers/xen/unpopulated-alloc.c b/drivers/xen/unpopulated-alloc.c
+index d6fc2aefe2646..1dc0b495c8e59 100644
+--- a/drivers/xen/unpopulated-alloc.c
++++ b/drivers/xen/unpopulated-alloc.c
+@@ -18,6 +18,9 @@ static unsigned int list_count;
+ 
+ static struct resource *target_resource;
+ 
++/* Pages to subtract from the memory count when setting balloon target. */
++unsigned long xen_unpopulated_pages __initdata;
++
+ /*
+  * If arch is not happy with system "iomem_resource" being used for
+  * the region allocation it can provide it's own view by creating specific
+diff --git a/include/xen/xen.h b/include/xen/xen.h
+index 61854e3f28377..f280c5dcf9236 100644
+--- a/include/xen/xen.h
++++ b/include/xen/xen.h
+@@ -69,11 +69,13 @@ extern u64 xen_saved_max_mem_size;
+ #endif
+ 
+ #ifdef CONFIG_XEN_UNPOPULATED_ALLOC
++extern unsigned long xen_unpopulated_pages;
+ int xen_alloc_unpopulated_pages(unsigned int nr_pages, struct page **pages);
+ void xen_free_unpopulated_pages(unsigned int nr_pages, struct page **pages);
+ #include <linux/ioport.h>
+ int arch_xen_unpopulated_init(struct resource **res);
+ #else
++#define xen_unpopulated_pages 0UL
+ #include <xen/balloon.h>
+ static inline int xen_alloc_unpopulated_pages(unsigned int nr_pages,
+ 		struct page **pages)
 -- 
 2.51.0
 
