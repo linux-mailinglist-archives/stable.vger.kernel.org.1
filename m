@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-219109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBRJDIZXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:34 +0100
+	id wAx6IpJanmlSUwQAu9opvQ
+	(envelope-from <stable+bounces-219110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:34 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8E719056B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B02190B53
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 174DA31ECB1B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 308D131EDB2C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455AC2882B4;
-	Wed, 25 Feb 2026 01:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7933528751B;
+	Wed, 25 Feb 2026 01:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZ2FT4iO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiCnTyZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A09281357;
-	Wed, 25 Feb 2026 01:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C71627FD44;
+	Wed, 25 Feb 2026 01:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984043; cv=none; b=JwSA248/oPYzsxxmnxHQZ2qGr72K2tZvy4xZAIYjy735omQTcZS8t4CDkr8zrdV1k5JZjLj2kNatSDAsMjmVHEcUBneEmhoDaEulbzqFW6X1YUGNVGpyPU/tJFxxgliqHmSquz7OYnPO5WRvZi7WuUdD2RtqFDnv+hP9GACIwyA=
+	t=1771984044; cv=none; b=CXfNkBemgvkuTBoF+zcJm97HTJSvpOUI8PDPVdmtY4M0VTprN34ahm2fu8xitcW0NPUre7gjnqzzCmDLyVpA2PMbuxs/lgVH4iU6su/+iGHbt/GUv4LjHfGA92nfJnjIOpCrENowkISecTrbOqKq/FaKRX5uIjbuZ78ze0P5KQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984043; c=relaxed/simple;
-	bh=smSHnupjDVKXrQdNWBSfk1PCtc+7SOTV5h6jYnNSMOI=;
+	s=arc-20240116; t=1771984044; c=relaxed/simple;
+	bh=gmP+Fcy09/qdP0C5zJ+yLqG8N1T22nc38wqSF+7DfPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=irOI9Y+t0oEg5v6rq9Wmrkl9vEr+5EOepHpLL34JZe/iyfzLUAwXsWg7PBUhSh+6iFNllK0kI2WItnHn9W1PSZp/MSYFwxvdxeGbZqA/f7DVf6hioE11h1HMpNzV8FBJ9ww0jHL/O8uPsYkyycgbaalnoJ6/3d/Gx8giit0DUzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZ2FT4iO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5847C116D0;
-	Wed, 25 Feb 2026 01:47:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kicowfQO8H8mEhUohajyEXztg2e1Petr/ZHhiuyb4abf3b79CC5i9teXO2jqcWtkfJaMEFd++4srYGcAQpGKDQtOoAcUd1zD0bu08Sa4rpNpVmT5fu/KKL78+up3fGyQWYbH2ekG4xTPk7LsFm4o4fvcUV+BnQ1rml4lEZQAsnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiCnTyZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE11AC116D0;
+	Wed, 25 Feb 2026 01:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984042;
-	bh=smSHnupjDVKXrQdNWBSfk1PCtc+7SOTV5h6jYnNSMOI=;
+	s=korg; t=1771984043;
+	bh=gmP+Fcy09/qdP0C5zJ+yLqG8N1T22nc38wqSF+7DfPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZ2FT4iOuisOKBTcDNjlMYxJ63XPGeqNImg5Dnv6z1p+uSBt9DQMUKjceLIgaNhuy
-	 awcc9YhucQ2FM8CKkt26mlr1VbdOCnYMn2/2EW8aB0FoVozxOp72HjNZmAbbK/gDJS
-	 qeHfG2qcxX1htejp4vfcpQQsSQ9efWBtYrs2VCj0=
+	b=hiCnTyZsjWztbAHUg1xC1QcLYULNz5PtlG2UvnIPMg8Vp5Ti+d1nsEm16pqQrnERx
+	 HUUXKXPkvTsSq77qyEqJ0T91z7xll/4QAI+RFuSU5PEyEXGHq3WDFfalEI1Vac6kbw
+	 Ak5dh8pvf798IS3jU2T7mGTXnXvR1w65COycyqVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Han Gao <gaohan@iscas.ac.cn>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 243/641] PCI: sophgo: Disable L0s and L1 on Sophgo 2044 PCIe Root Ports
-Date: Tue, 24 Feb 2026 17:19:29 -0800
-Message-ID: <20260225012354.757324035@linuxfoundation.org>
+Subject: [PATCH 6.18 244/641] PCI/portdrv: Fix potential resource leak
+Date: Tue, 24 Feb 2026 17:19:30 -0800
+Message-ID: <20260225012354.777695773@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -64,103 +65,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-219110-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,iscas.ac.cn];
-	TAGGED_FROM(0.00)[bounces-219109-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 8F8E719056B
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: F0B02190B53
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 613f3255a35a95f52575dd8c60b7ac9d711639ce ]
+[ Upstream commit 01464a3fdf91c041a381d93a1b6fefbdb819a46f ]
 
-Sophgo 2044 Root Ports advertise L0 and L1 capabilities without supporting
-them. Since commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM
-states for devicetree platforms") force enabled ASPM on all device tree
-platforms, the issue became evident and the SG2044 Root Port started
-breaking.
+pcie_port_probe_service() unconditionally calls get_device() (unless it
+fails). So drop that reference also unconditionally as it's fine for a
+PCIe driver to not have a remove callback.
 
-Hence, disable the L0s and L1 capabilities in the LINKCAP register for the
-SG2044 Root Ports, so that these states won't get enabled.
-
-Fixes: 467d9c0348d6 ("PCI: dwc: Add Sophgo SG2044 PCIe controller driver in Root Complex mode")
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-[mani: reworded description and corrected fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Tested-by: Han Gao <gaohan@iscas.ac.cn>
-Link: https://patch.msgid.link/20260109040756.731169-1-inochiama@gmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/e1c68c3b3f1af8427e98ca5e2c79f8bf0ebe2ce4.1764688034.git.u.kleine-koenig@baylibre.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-sophgo.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/pci/pcie/portdrv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-sophgo.c b/drivers/pci/controller/dwc/pcie-sophgo.c
-index ad4baaa34ffa1..044088898819e 100644
---- a/drivers/pci/controller/dwc/pcie-sophgo.c
-+++ b/drivers/pci/controller/dwc/pcie-sophgo.c
-@@ -161,6 +161,22 @@ static void sophgo_pcie_msi_enable(struct dw_pcie_rp *pp)
- 	raw_spin_unlock_irqrestore(&pp->lock, flags);
+diff --git a/drivers/pci/pcie/portdrv.c b/drivers/pci/pcie/portdrv.c
+index 38a41ccf79b9a..a0991da482136 100644
+--- a/drivers/pci/pcie/portdrv.c
++++ b/drivers/pci/pcie/portdrv.c
+@@ -557,10 +557,10 @@ static int pcie_port_remove_service(struct device *dev)
+ 
+ 	pciedev = to_pcie_device(dev);
+ 	driver = to_service_driver(dev->driver);
+-	if (driver && driver->remove) {
++	if (driver && driver->remove)
+ 		driver->remove(pciedev);
+-		put_device(dev);
+-	}
++
++	put_device(dev);
+ 	return 0;
  }
  
-+static void sophgo_pcie_disable_l0s_l1(struct dw_pcie_rp *pp)
-+{
-+	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	u32 offset, val;
-+
-+	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-+
-+	dw_pcie_dbi_ro_wr_en(pci);
-+
-+	val = dw_pcie_readl_dbi(pci, PCI_EXP_LNKCAP + offset);
-+	val &= ~(PCI_EXP_LNKCAP_ASPM_L0S | PCI_EXP_LNKCAP_ASPM_L1);
-+	dw_pcie_writel_dbi(pci, PCI_EXP_LNKCAP + offset, val);
-+
-+	dw_pcie_dbi_ro_wr_dis(pci);
-+}
-+
- static int sophgo_pcie_host_init(struct dw_pcie_rp *pp)
- {
- 	int irq;
-@@ -171,6 +187,8 @@ static int sophgo_pcie_host_init(struct dw_pcie_rp *pp)
- 
- 	irq_set_chained_handler_and_data(irq, sophgo_pcie_intx_handler, pp);
- 
-+	sophgo_pcie_disable_l0s_l1(pp);
-+
- 	sophgo_pcie_msi_enable(pp);
- 
- 	return 0;
 -- 
 2.51.0
 
