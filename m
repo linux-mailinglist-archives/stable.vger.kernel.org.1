@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-218505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDJfAYZSnmm6UgQAu9opvQ
-	(envelope-from <stable+bounces-218505-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:14 +0100
+	id ICDLF6JanmlSUwQAu9opvQ
+	(envelope-from <stable+bounces-219071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748FD18F3B9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD00190B62
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F47F30C4F64
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0FE183137A86
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729B92505B2;
-	Wed, 25 Feb 2026 01:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9C5286D64;
+	Wed, 25 Feb 2026 01:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CromKN6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDILo/Ah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352AC248F54;
-	Wed, 25 Feb 2026 01:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801B11FE45D;
+	Wed, 25 Feb 2026 01:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983337; cv=none; b=Iz5V7nB2Xe+bz2qhdQadLzAt8GyLLzvpVrz1ED+4yg+cU6RaU/mGLLTltHdtcqH/PLA52EajtsJAhBDbAqRZrfY3ROMvmegxyJtkphYAsM6km6Bm8xkNuDDl24uUFgFWoNOTB9zugXdQ4+gtZvwON3ta9NZd/qbLu8VNMakBofA=
+	t=1771983996; cv=none; b=UoWL841rtdfdK9whLxzgpNqlxlo4YvgroGtbgQ3pW7Rsb/8EyhOVSedSd3LkGx5XFmVlW5OYk8j+nlt1WlS2+hUl/Am80bBh9rs7ORPmAfrKsS6SqrqwdWrBlxA49qrUSqk/mg6Z7jNTaDVzSHoQv3oenmWaPDFiidF/GOslG+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983337; c=relaxed/simple;
-	bh=5S8BQhTjxNffYnv+hinFV9n94guIPq2bA+11VNZcF9E=;
+	s=arc-20240116; t=1771983996; c=relaxed/simple;
+	bh=Veu8Ppl5/aa19wLyEVBRlVVLRvdVscextJnh1/Xr77s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eojUC6SkXMfzJnIKLl1OxjV+7eUsaejyU4dHmPpaFQKmWjBPBSxBDonve+qDhU/qJIktBW4kUgvzD5VtgKqhRo92QpKf+WaCOnS78QNR4jqtQ2u54DmOjkoHCjba6JJkMcjCGeYTdIksWU1Maj/6VXQBDWNWIYbitZWSyYtXxkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CromKN6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E12C19424;
-	Wed, 25 Feb 2026 01:35:36 +0000 (UTC)
+	 MIME-Version; b=GhcZ2/pwdlGOHdYxYkjwo6v4R+Yk/3994LPWJ0BjtC+m3EtgO1wfBDzQFOREI95Lptvn3xZtYX3+798w0ST5DLwuGUAkVE6AHpDQrkegJ7vwz1AtpYKb9PpM4YkUtsQZH/p9hqwtTL0SRMSz+I6m87si7P2RPedimb2AOABsUpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDILo/Ah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5F7C19424;
+	Wed, 25 Feb 2026 01:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983336;
-	bh=5S8BQhTjxNffYnv+hinFV9n94guIPq2bA+11VNZcF9E=;
+	s=korg; t=1771983996;
+	bh=Veu8Ppl5/aa19wLyEVBRlVVLRvdVscextJnh1/Xr77s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CromKN6AvBY7MsBCUQNj29kTah3VL9ztUkxXcNhEIH4UvIYyjdDfHZPpPq9dN8gwl
-	 V3x8OICWB3B3ZKkii3Gz/2HAMzdNMqKEif8Uy8V+eVS58ulN+T7ErfjLYq78lCEQ3D
-	 2xZDpyTrNbTHKIyZ3DSPCIoaDkLUPgTPdLL85Amo=
+	b=LDILo/Ah956X7ZDorxAb/wBMy44SxBoNTztBfuSXdWpGKLzR+PcipEuJEO9VezxyY
+	 lFJH6q4PaGlK6EVhR6QeZaYfWQNqHuiJXQWQzH4NmJZOzToe6w8lIz4HYYn7JoWGoJ
+	 pEYaoM4b8KjMe5QZilwfx3le2g+YweSpnluZbPvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 466/781] RDMA/mlx5: Fix UMR hang in LAG error state unload
-Date: Tue, 24 Feb 2026 17:19:35 -0800
-Message-ID: <20260225012411.251979118@linuxfoundation.org>
+Subject: [PATCH 6.18 250/641] wifi: ath12k: do WoW offloads only on primary link
+Date: Tue, 24 Feb 2026 17:19:36 -0800
+Message-ID: <20260225012354.907837201@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218505-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219071-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,231 +87,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 748FD18F3B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9FD00190B62
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit ebc2164a4cd4314503f1a0c8e7aaf76d7e5fa211 ]
+[ Upstream commit e62102ac9b773bdb08475aa9ca24dea61ae98708 ]
 
-During firmware reset in LAG mode, a race condition causes the driver
-to hang indefinitely while waiting for UMR completion during device
-unload. See [1].
+In case of multi-link connection, WCN7850 firmware crashes due to WoW
+offloads enabled on both primary and secondary links.
 
-In LAG mode the bond device is only registered on the master, so it
-never sees sys_error events from the slave.
-During firmware reset this causes UMR waits to hang forever on unload
-as the slave is dead but the master hasn't entered error state yet, so
-UMR posts succeed but completions never arrive.
+Change to do it only on primary link to fix it.
 
-Fix this by adding a sys_error notifier that gets registered before
-MLX5_IB_STAGE_IB_REG and stays alive until after ib_unregister_device().
-This ensures error events reach the bond device throughout teardown.
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
 
-[1]
-Call Trace:
- __schedule+0x2bd/0x760
- schedule+0x37/0xa0
- schedule_preempt_disabled+0xa/0x10
- __mutex_lock.isra.6+0x2b5/0x4a0
- __mlx5_ib_dereg_mr+0x606/0x870 [mlx5_ib]
- ? __xa_erase+0x4a/0xa0
- ? _cond_resched+0x15/0x30
- ? wait_for_completion+0x31/0x100
- ib_dereg_mr_user+0x48/0xc0 [ib_core]
- ? rdmacg_uncharge_hierarchy+0xa0/0x100
- destroy_hw_idr_uobject+0x20/0x50 [ib_uverbs]
- uverbs_destroy_uobject+0x37/0x150 [ib_uverbs]
- __uverbs_cleanup_ufile+0xda/0x140 [ib_uverbs]
- uverbs_destroy_ufile_hw+0x3a/0xf0 [ib_uverbs]
- ib_uverbs_remove_one+0xc3/0x140 [ib_uverbs]
- remove_client_context+0x8b/0xd0 [ib_core]
- disable_device+0x8c/0x130 [ib_core]
- __ib_unregister_device+0x10d/0x180 [ib_core]
- ib_unregister_device+0x21/0x30 [ib_core]
- __mlx5_ib_remove+0x1e4/0x1f0 [mlx5_ib]
- auxiliary_bus_remove+0x1e/0x30
- device_release_driver_internal+0x103/0x1f0
- bus_remove_device+0xf7/0x170
- device_del+0x181/0x410
- mlx5_rescan_drivers_locked.part.10+0xa9/0x1d0 [mlx5_core]
- mlx5_disable_lag+0x253/0x260 [mlx5_core]
- mlx5_lag_disable_change+0x89/0xc0 [mlx5_core]
- mlx5_eswitch_disable+0x67/0xa0 [mlx5_core]
- mlx5_unload+0x15/0xd0 [mlx5_core]
- mlx5_unload_one+0x71/0xc0 [mlx5_core]
- mlx5_sync_reset_reload_work+0x83/0x100 [mlx5_core]
- process_one_work+0x1a7/0x360
- worker_thread+0x30/0x390
- ? create_worker+0x1a0/0x1a0
- kthread+0x116/0x130
- ? kthread_flush_work_fn+0x10/0x10
- ret_from_fork+0x22/0x40
-
-Fixes: ede132a5cf55 ("RDMA/mlx5: Move events notifier registration to be after device registration")
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Link: https://patch.msgid.link/20260113-umr-hand-lag-fix-v1-1-3dc476e00cd9@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 32f7b19668bd ("wifi: ath12k: support MLO as well if single_chip_mlo_support flag is set")
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251103-ath12-primary-link-wow-v1-1-3cf523dc09f0@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c    | 75 ++++++++++++++++++++++++----
- drivers/infiniband/hw/mlx5/mlx5_ib.h |  2 +
- 2 files changed, 68 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath12k/wow.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 8d515d266125e..3485a9a3d75e0 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -2878,7 +2878,6 @@ static void mlx5_ib_handle_event(struct work_struct *_work)
- 		container_of(_work, struct mlx5_ib_event_work, work);
- 	struct mlx5_ib_dev *ibdev;
- 	struct ib_event ibev;
--	bool fatal = false;
+diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
+index e8481626f1940..c78aa95d49791 100644
+--- a/drivers/net/wireless/ath/ath12k/wow.c
++++ b/drivers/net/wireless/ath/ath12k/wow.c
+@@ -135,6 +135,9 @@ static int ath12k_wow_cleanup(struct ath12k *ar)
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
  
- 	if (work->is_slave) {
- 		ibdev = mlx5_ib_get_ibdev_from_mpi(work->mpi);
-@@ -2889,12 +2888,6 @@ static void mlx5_ib_handle_event(struct work_struct *_work)
- 	}
+ 	list_for_each_entry(arvif, &ar->arvifs, list) {
++		if (arvif != &arvif->ahvif->deflink)
++			continue;
++
+ 		ret = ath12k_wow_vif_cleanup(arvif);
+ 		if (ret) {
+ 			ath12k_warn(ar->ab, "failed to clean wow wakeups on vdev %i: %d\n",
+@@ -479,8 +482,12 @@ static int ath12k_wow_set_wakeups(struct ath12k *ar,
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
  
- 	switch (work->event) {
--	case MLX5_DEV_EVENT_SYS_ERROR:
--		ibev.event = IB_EVENT_DEVICE_FATAL;
--		mlx5_ib_handle_internal_error(ibdev);
--		ibev.element.port_num  = (u8)(unsigned long)work->param;
--		fatal = true;
--		break;
- 	case MLX5_EVENT_TYPE_PORT_CHANGE:
- 		if (handle_port_change(ibdev, work->param, &ibev))
- 			goto out;
-@@ -2916,8 +2909,6 @@ static void mlx5_ib_handle_event(struct work_struct *_work)
- 	if (ibdev->ib_active)
- 		ib_dispatch_event(&ibev);
+ 	list_for_each_entry(arvif, &ar->arvifs, list) {
++		if (arvif != &arvif->ahvif->deflink)
++			continue;
++
+ 		if (ath12k_wow_is_p2p_vdev(arvif->ahvif))
+ 			continue;
++
+ 		ret = ath12k_wow_vif_set_wakeups(arvif, wowlan);
+ 		if (ret) {
+ 			ath12k_warn(ar->ab, "failed to set wow wakeups on vdev %i: %d\n",
+@@ -538,6 +545,9 @@ static int ath12k_wow_nlo_cleanup(struct ath12k *ar)
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
  
--	if (fatal)
--		ibdev->ib_active = false;
- out:
- 	kfree(work);
- }
-@@ -2961,6 +2952,66 @@ static int mlx5_ib_event_slave_port(struct notifier_block *nb,
- 	return NOTIFY_OK;
- }
+ 	list_for_each_entry(arvif, &ar->arvifs, list) {
++		if (arvif != &arvif->ahvif->deflink)
++			continue;
++
+ 		if (ath12k_wow_is_p2p_vdev(arvif->ahvif))
+ 			continue;
  
-+static void mlx5_ib_handle_sys_error_event(struct work_struct *_work)
-+{
-+	struct mlx5_ib_event_work *work =
-+		container_of(_work, struct mlx5_ib_event_work, work);
-+	struct mlx5_ib_dev *ibdev = work->dev;
-+	struct ib_event ibev;
+@@ -745,6 +755,9 @@ static int ath12k_wow_arp_ns_offload(struct ath12k *ar, bool enable)
+ 	list_for_each_entry(arvif, &ar->arvifs, list) {
+ 		ahvif = arvif->ahvif;
+ 
++		if (arvif != &ahvif->deflink)
++			continue;
 +
-+	ibev.event = IB_EVENT_DEVICE_FATAL;
-+	mlx5_ib_handle_internal_error(ibdev);
-+	ibev.element.port_num = (u8)(unsigned long)work->param;
-+	ibev.device = &ibdev->ib_dev;
+ 		if (ahvif->vdev_type != WMI_VDEV_TYPE_STA)
+ 			continue;
+ 
+@@ -776,6 +789,9 @@ static int ath12k_gtk_rekey_offload(struct ath12k *ar, bool enable)
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+ 
+ 	list_for_each_entry(arvif, &ar->arvifs, list) {
++		if (arvif != &arvif->ahvif->deflink)
++			continue;
 +
-+	if (!rdma_is_port_valid(&ibdev->ib_dev, ibev.element.port_num)) {
-+		mlx5_ib_warn(ibdev, "warning: event on port %d\n",  ibev.element.port_num);
-+		goto out;
-+	}
-+
-+	if (ibdev->ib_active)
-+		ib_dispatch_event(&ibev);
-+
-+	ibdev->ib_active = false;
-+out:
-+	kfree(work);
-+}
-+
-+static int mlx5_ib_sys_error_event(struct notifier_block *nb,
-+				   unsigned long event, void *param)
-+{
-+	struct mlx5_ib_event_work *work;
-+
-+	if (event != MLX5_DEV_EVENT_SYS_ERROR)
-+		return NOTIFY_DONE;
-+
-+	work = kmalloc(sizeof(*work), GFP_ATOMIC);
-+	if (!work)
-+		return NOTIFY_DONE;
-+
-+	INIT_WORK(&work->work, mlx5_ib_handle_sys_error_event);
-+	work->dev = container_of(nb, struct mlx5_ib_dev, sys_error_events);
-+	work->is_slave = false;
-+	work->param = param;
-+	work->event = event;
-+
-+	queue_work(mlx5_ib_event_wq, &work->work);
-+
-+	return NOTIFY_OK;
-+}
-+
-+static int mlx5_ib_stage_sys_error_notifier_init(struct mlx5_ib_dev *dev)
-+{
-+	dev->sys_error_events.notifier_call = mlx5_ib_sys_error_event;
-+	mlx5_notifier_register(dev->mdev, &dev->sys_error_events);
-+	return 0;
-+}
-+
-+static void mlx5_ib_stage_sys_error_notifier_cleanup(struct mlx5_ib_dev *dev)
-+{
-+	mlx5_notifier_unregister(dev->mdev, &dev->sys_error_events);
-+}
-+
- static int mlx5_ib_get_plane_num(struct mlx5_core_dev *mdev, u8 *num_plane)
- {
- 	struct mlx5_hca_vport_context vport_ctx;
-@@ -4811,6 +4862,9 @@ static const struct mlx5_ib_profile pf_profile = {
- 	STAGE_CREATE(MLX5_IB_STAGE_WHITELIST_UID,
- 		     mlx5_ib_devx_init,
- 		     mlx5_ib_devx_cleanup),
-+	STAGE_CREATE(MLX5_IB_STAGE_SYS_ERROR_NOTIFIER,
-+		     mlx5_ib_stage_sys_error_notifier_init,
-+		     mlx5_ib_stage_sys_error_notifier_cleanup),
- 	STAGE_CREATE(MLX5_IB_STAGE_IB_REG,
- 		     mlx5_ib_stage_ib_reg_init,
- 		     mlx5_ib_stage_ib_reg_cleanup),
-@@ -4868,6 +4922,9 @@ const struct mlx5_ib_profile raw_eth_profile = {
- 	STAGE_CREATE(MLX5_IB_STAGE_WHITELIST_UID,
- 		     mlx5_ib_devx_init,
- 		     mlx5_ib_devx_cleanup),
-+	STAGE_CREATE(MLX5_IB_STAGE_SYS_ERROR_NOTIFIER,
-+		     mlx5_ib_stage_sys_error_notifier_init,
-+		     mlx5_ib_stage_sys_error_notifier_cleanup),
- 	STAGE_CREATE(MLX5_IB_STAGE_IB_REG,
- 		     mlx5_ib_stage_ib_reg_init,
- 		     mlx5_ib_stage_ib_reg_cleanup),
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 09d82d5f95e35..fbccb0362590b 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -1007,6 +1007,7 @@ enum mlx5_ib_stages {
- 	MLX5_IB_STAGE_BFREG,
- 	MLX5_IB_STAGE_PRE_IB_REG_UMR,
- 	MLX5_IB_STAGE_WHITELIST_UID,
-+	MLX5_IB_STAGE_SYS_ERROR_NOTIFIER,
- 	MLX5_IB_STAGE_IB_REG,
- 	MLX5_IB_STAGE_DEVICE_NOTIFIER,
- 	MLX5_IB_STAGE_POST_IB_REG_UMR,
-@@ -1165,6 +1166,7 @@ struct mlx5_ib_dev {
- 	/* protect accessing data_direct_dev */
- 	struct mutex			data_direct_lock;
- 	struct notifier_block		mdev_events;
-+	struct notifier_block		sys_error_events;
- 	struct notifier_block           lag_events;
- 	int				num_ports;
- 	/* serialize update of capability mask
+ 		if (arvif->ahvif->vdev_type != WMI_VDEV_TYPE_STA ||
+ 		    !arvif->is_up ||
+ 		    !arvif->rekey_data.enable_offload)
 -- 
 2.51.0
 
