@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-219464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPCKHrOgnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:11:47 +0100
+	id MFicDftYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5B8193140
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:11:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94ECA19086E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BB0D30F413E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B3CE321FF30
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300583101AD;
-	Wed, 25 Feb 2026 06:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA2B26B764;
+	Wed, 25 Feb 2026 01:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwI6rpuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAM69zhI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85A22D3EEE;
-	Wed, 25 Feb 2026 06:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D64248F54;
+	Wed, 25 Feb 2026 01:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002733; cv=none; b=eNJBtnNA7TqNi2DMRR//xlv2YPQENzvHI29UoumWMFH3xZskofMBaEfy30f0vW1EpuLD+OWD+Fv8tiNw8+QDWWxLAZXfmOZ+SmPnp4D8wKeUKHnGL2iWbHDaXlRq9HivfGaDgvXRdmeQD0g+7Kq6bxArXdHn7cK8dSR/hMzLUj4=
+	t=1771983680; cv=none; b=ZasFJWBEeKapFW/m3SQZ6EQvlwDmUdOQenAkuaA5bCyikCkwQLW1Yjv1ungAlNqEWzpi+2O5hNiTOm4QDpXU63/RxJZvEJ1XIahDoLKuPbVkgpOwswWE8EmHlQHzqMlewjjKIS/h7V/amx75jGCtj96f7IU3m1q02z9qi0dqiJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002733; c=relaxed/simple;
-	bh=1qBglaaCz/JRoiv/bzKzsqD8/0nnaFVclscpoV0DEUA=;
+	s=arc-20240116; t=1771983680; c=relaxed/simple;
+	bh=myv6e9AWl64oz9oofk2gwrr+5oS4+JpuJeCoLJal0Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gu0xOAmrHN4wIY3epipv5aDw5ZqQHSE0uTk971s2o6MMNqc3xdqIOMnD1hnmf2MYz+Hb2bSuTtdcdUd3YSnZDOQwi/iwDRaGLRS8t9IG71NdAHDNA/1RBc/PAlXfBWfiie6QCVKgSMQAJ6VWqqgVTgP/M9T0LXUzGodIPQp5f3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwI6rpuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF99CC116D0;
-	Wed, 25 Feb 2026 06:58:52 +0000 (UTC)
+	 MIME-Version; b=iIe8Hb25n9csd/feVLd547FE+//Ae5MdmxY+mqdVSawAtRv+dGCXkM+SYQv3WrdT8z97Hgp8E3WKhAC4RS2WVRyD3rQ1aldTMM/ijEo3tr1tlIchi1Pc9soQRjm4EFWHcLQGaO2ZHR6j2CNoiB5hV4s7ZqQTxkgpLfoPUJPytHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAM69zhI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B518C116D0;
+	Wed, 25 Feb 2026 01:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002732;
-	bh=1qBglaaCz/JRoiv/bzKzsqD8/0nnaFVclscpoV0DEUA=;
+	s=korg; t=1771983680;
+	bh=myv6e9AWl64oz9oofk2gwrr+5oS4+JpuJeCoLJal0Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FwI6rpuDQtnT/znr7AfHJhADp5087fssQFkZfenDhkKGx+/C/1GnTEiumLfd2RT4m
-	 IsXbl+l7KpZSboTg3GLk54r5NjWxtkOhYeg65zoqvx0R6192PeTdFalUwjJ3d9hSGF
-	 5AMA1bz3I14chzD1DhoPD9NGwvC4GIq0qND3dSH0=
+	b=XAM69zhI830UJPM4pI0YOjmpgu3BXmHcPhmbwzBLE6/CMdb4Lay5T3VuUaxMlg+4/
+	 ULDc91beCGteFlTF8+e5mPDOg1kdWWwnZkOO56oTrdu5GeRWdHsGTWFDDGX3h0eTX1
+	 ZdL3Cjw5Dik0DBfCtSrfDwLH4x8CgYpmqP0hYIjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 547/641] net: psp: select CONFIG_SKB_EXTENSIONS
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.19 764/781] ext4: use optimized mballoc scanning regardless of inode format
 Date: Tue, 24 Feb 2026 17:24:33 -0800
-Message-ID: <20260225012401.783119615@linuxfoundation.org>
+Message-ID: <20260225012418.457591680@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +67,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219464-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arndb.de,kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218803-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.950];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,arndb.de:email]
-X-Rspamd-Queue-Id: DA5B8193140
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 94ECA19086E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 6e980df452169f82674f2e650079c1fe0aee343d ]
+commit 3574c322b1d0eb32dbd76b469cb08f9a67641599 upstream.
 
-psp now uses skb extensions, failing to build when that is disabled:
+Currently we don't used mballoc optimized scanning (using max free
+extent order and avg free extent order group lists) for inodes with
+indirect block based format. This is confusing for users and I don't see
+a good reason for that. Even with indirect block based inode format we
+can spend big amount of time searching for free blocks for large
+filesystems with fragmented free space. To add to the confusion before
+commit 077d0c2c78df ("ext4: make mb_optimize_scan performance mount
+option work with extents") optimized scanning was applied *only* to
+indirect block based inodes so that commit appears as a performance
+regression to some users. Just use optimized scanning whenever it is
+enabled by mount options.
 
-In file included from include/net/psp.h:7,
-                 from net/psp/psp_sock.c:9:
-include/net/psp/functions.h: In function '__psp_skb_coalesce_diff':
-include/net/psp/functions.h:60:13: error: implicit declaration of function 'skb_ext_find'; did you mean 'skb_ext_copy'? [-Wimplicit-function-declaration]
-   60 |         a = skb_ext_find(one, SKB_EXT_PSP);
-      |             ^~~~~~~~~~~~
-      |             skb_ext_copy
-include/net/psp/functions.h:60:31: error: 'SKB_EXT_PSP' undeclared (first use in this function)
-   60 |         a = skb_ext_find(one, SKB_EXT_PSP);
-      |                               ^~~~~~~~~~~
-include/net/psp/functions.h:60:31: note: each undeclared identifier is reported only once for each function it appears in
-include/net/psp/functions.h: In function '__psp_sk_rx_policy_check':
-include/net/psp/functions.h:94:53: error: 'SKB_EXT_PSP' undeclared (first use in this function)
-   94 |         struct psp_skb_ext *pse = skb_ext_find(skb, SKB_EXT_PSP);
-      |                                                     ^~~~~~~~~~~
-net/psp/psp_sock.c: In function 'psp_sock_recv_queue_check':
-net/psp/psp_sock.c:164:41: error: 'SKB_EXT_PSP' undeclared (first use in this function)
-  164 |                 pse = skb_ext_find(skb, SKB_EXT_PSP);
-      |                                         ^~~~~~~~~~~
-
-Select the Kconfig symbol as we do from its other users.
-
-Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
-Link: https://patch.msgid.link/20260216105500.2382181-1-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20260114182836.14120-4-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/psp/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/mballoc.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/psp/Kconfig b/net/psp/Kconfig
-index 371e8771f3bd3..84d6b0f254606 100644
---- a/net/psp/Kconfig
-+++ b/net/psp/Kconfig
-@@ -6,6 +6,7 @@ config INET_PSP
- 	bool "PSP Security Protocol support"
- 	depends on INET
- 	select SKB_DECRYPTED
-+	select SKB_EXTENSIONS
- 	select SOCK_VALIDATE_XMIT
- 	help
- 	Enable kernel support for the PSP Security Protocol (PSP).
--- 
-2.51.0
-
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1148,8 +1148,6 @@ static inline int should_optimize_scan(s
+ 		return 0;
+ 	if (ac->ac_criteria >= CR_GOAL_LEN_SLOW)
+ 		return 0;
+-	if (!ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS))
+-		return 0;
+ 	return 1;
+ }
+ 
 
 
 
