@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2D85E21anmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:57 +0100
+	id cE4iH7ZSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C339B190AF9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE3A118F4BB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72839324D13D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F40B30E1CCF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F35526CE1A;
-	Wed, 25 Feb 2026 01:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69CC922579E;
+	Wed, 25 Feb 2026 01:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpM9q3H4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OT9nHcFI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3365D20C012;
-	Wed, 25 Feb 2026 01:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E14918B0A;
+	Wed, 25 Feb 2026 01:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984008; cv=none; b=hZNNe7Ue+6hzyb0XzITG5jfFggKtz1NFwiSK4vdMSGw+jaR9TFYeWu/GLsrLpKBshU2tak0eSnUrg1FFanP3lQR1WNUtantibsQW1TbMVzdzuK5XDqBSqRo7Fou2ptBTSO3ifTa4cofgeRrlXuv0gSyf1Qe+LD62kazyfXyeTWk=
+	t=1771983350; cv=none; b=WZVaQOZY3hrLx4QLVR9qrmUzsc5tRwDlL1fCcftk18ygFeMh/CvVBLDhWWRQ4ZUtMHOZkalC3QyDDPv6tOHFrtp9AccmxunG2yY+XZr72HMzJiW55CrLxPRKNShfBrtc+V/MHtNwUCgTxgasBQeMGs55XnGR8QeWFZIOev5HxdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984008; c=relaxed/simple;
-	bh=wrJ5kRupEg7811yJ8+3RAzV2bLPuzUDyyS6LkK4L7JY=;
+	s=arc-20240116; t=1771983350; c=relaxed/simple;
+	bh=4GzRTBINmHtpN/cWDWKJVwoh120xq9BiFkh3PBnsxfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iU3cTNjOEZRsRjrk6jyctO5bV3L+2my97C04YaHABtkI2iJ7hLpQ2ZXrux9tWy8G9Mh1Fi+4GjLeM8+3TWbMyqA54RJJ9QtVBpFR10mZ61sMQz54eSQEhWgif4PDH/lJw6ABgzMpCweh3/y3oxrHzUcnO7pEFxuTcR615ZrHU2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpM9q3H4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2ED4C116D0;
-	Wed, 25 Feb 2026 01:46:47 +0000 (UTC)
+	 MIME-Version; b=U+aumNxs3FN9hjIbgHYeZ4uZUqkxK+80gfG0Js1Qc50fujgyz9OqeigIEDyBWyP4oAUKX/tpF5zbndPGhTq+AybW3av+ZgAV8e2dhb5C3A5FzxowuGVU+ZE+kqtMDsgKwQDhXclmV+luFTmc7S84hjdwimWSYBSD36KpHcgeP8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OT9nHcFI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8FBC116D0;
+	Wed, 25 Feb 2026 01:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984008;
-	bh=wrJ5kRupEg7811yJ8+3RAzV2bLPuzUDyyS6LkK4L7JY=;
+	s=korg; t=1771983350;
+	bh=4GzRTBINmHtpN/cWDWKJVwoh120xq9BiFkh3PBnsxfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OpM9q3H40SJRM2/3UCMfKV1R4aaYmou20qvGNlKGheM//BDIXuujKPp+Qe0uR8RFu
-	 Zke6z1IlslBfqRvI/diSyd4e1/Aomk2SR/naTLkcZ2zX+475SgmY0e64nSumaPI5rw
-	 3xpDIau0lK3QArPphAR0WOsncGYs+4fHj/1JgzQg=
+	b=OT9nHcFI4pG5q+qVuXlOH9gQzGb4Qpytt6pO4WQJUw0B9eEcHfK3DNuw0ShrDx4Kw
+	 ZSl9RPMEp8fDJOH72z6ijBM3V0fiEzlKia9i6OU+9oyBP2aw4wxiDOuON/d+T7cwO+
+	 H2q21T9TNSecDi42sfCFt2tD0A5Dr4V4NdzubDMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 259/641] netfilter: nft_compat: add more restrictions on netlink attributes
-Date: Tue, 24 Feb 2026 17:19:45 -0800
-Message-ID: <20260225012355.103448869@linuxfoundation.org>
+Subject: [PATCH 6.19 477/781] NFS/localio: Handle short writes by retrying
+Date: Tue, 24 Feb 2026 17:19:46 -0800
+Message-ID: <20260225012411.513020659@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,94 +75,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218517-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219081-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C339B190AF9
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,hammerspace.com:email]
+X-Rspamd-Queue-Id: EE3A118F4BB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit cda26c645946b08f070f20c166d4736767e4a805 ]
+[ Upstream commit 615762059d284b863f9163b53679d95b3dcdd495 ]
 
-As far as I can see nothing bad can happen when NFTA_TARGET/MATCH_NAME
-are too large because this calls x_tables helpers which check for the
-length, but it seems better to already reject it during netlink parsing.
+The current code for handling short writes in localio just truncates the
+I/O and then sets an error. While that is close to how the ordinary NFS
+code behaves, it does mean there is a chance the data that got written
+is lost because it isn't persisted.
+To fix this, change localio so that the upper layers can direct the
+behaviour to persist any unstable data by rewriting it, and then
+continuing writing until an ENOSPC is hit.
 
-Rest of the changes avoid silent u8/u16 truncations.
-
-For _TYPE, its expected to be only 1 or 0. In x_tables world, this
-variable is set by kernel, for IPT_SO_GET_REVISION_TARGET its 1, for
-all others its set to 0.
-
-As older versions of nf_tables permitted any value except 1 to mean 'match',
-keep this as-is but sanitize the value for consistency.
-
-Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 70ba381e1a43 ("nfs: add LOCALIO support")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_compat.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/nfs/localio.c | 64 +++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 47 insertions(+), 17 deletions(-)
 
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index 72711d62fddfa..08f620311b03f 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -134,7 +134,8 @@ static void nft_target_eval_bridge(const struct nft_expr *expr,
+diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
+index 41fbcb3f9167e..00bbac6c9fe40 100644
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -58,6 +58,11 @@ struct nfs_local_fsync_ctx {
+ static bool localio_enabled __read_mostly = true;
+ module_param(localio_enabled, bool, 0644);
+ 
++static int nfs_local_do_read(struct nfs_local_kiocb *iocb,
++			     const struct rpc_call_ops *call_ops);
++static int nfs_local_do_write(struct nfs_local_kiocb *iocb,
++			      const struct rpc_call_ops *call_ops);
++
+ static inline bool nfs_client_is_local(const struct nfs_client *clp)
+ {
+ 	return !!rcu_access_pointer(clp->cl_uuid.net);
+@@ -542,13 +547,50 @@ nfs_local_iocb_release(struct nfs_local_kiocb *iocb)
+ 	nfs_local_iocb_free(iocb);
  }
  
- static const struct nla_policy nft_target_policy[NFTA_TARGET_MAX + 1] = {
--	[NFTA_TARGET_NAME]	= { .type = NLA_NUL_STRING },
-+	[NFTA_TARGET_NAME]	= { .type = NLA_NUL_STRING,
-+				    .len = XT_EXTENSION_MAXNAMELEN, },
- 	[NFTA_TARGET_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
- 	[NFTA_TARGET_INFO]	= { .type = NLA_BINARY },
- };
-@@ -434,7 +435,8 @@ static void nft_match_eval(const struct nft_expr *expr,
+-static void
+-nfs_local_pgio_release(struct nfs_local_kiocb *iocb)
++static void nfs_local_pgio_restart(struct nfs_local_kiocb *iocb,
++				   struct nfs_pgio_header *hdr)
++{
++	int status = 0;
++
++	iocb->kiocb.ki_pos = hdr->args.offset;
++	iocb->kiocb.ki_flags &= ~(IOCB_DSYNC | IOCB_SYNC | IOCB_DIRECT);
++	iocb->kiocb.ki_complete = NULL;
++	iocb->aio_complete_work = NULL;
++	iocb->end_iter_index = -1;
++
++	switch (hdr->rw_mode) {
++	case FMODE_READ:
++		nfs_local_iters_init(iocb, ITER_DEST);
++		status = nfs_local_do_read(iocb, hdr->task.tk_ops);
++		break;
++	case FMODE_WRITE:
++		nfs_local_iters_init(iocb, ITER_SOURCE);
++		status = nfs_local_do_write(iocb, hdr->task.tk_ops);
++		break;
++	default:
++		status = -EOPNOTSUPP;
++	}
++
++	if (status != 0) {
++		nfs_local_iocb_release(iocb);
++		hdr->task.tk_status = status;
++		nfs_local_hdr_release(hdr, hdr->task.tk_ops);
++	}
++}
++
++static void nfs_local_pgio_release(struct nfs_local_kiocb *iocb)
+ {
+ 	struct nfs_pgio_header *hdr = iocb->hdr;
++	struct rpc_task *task = &hdr->task;
++
++	task->tk_action = NULL;
++	task->tk_ops->rpc_call_done(task, hdr);
+ 
+-	nfs_local_iocb_release(iocb);
+-	nfs_local_hdr_release(hdr, hdr->task.tk_ops);
++	if (task->tk_action == NULL) {
++		nfs_local_iocb_release(iocb);
++		task->tk_ops->rpc_release(hdr);
++	} else
++		nfs_local_pgio_restart(iocb, hdr);
  }
  
- static const struct nla_policy nft_match_policy[NFTA_MATCH_MAX + 1] = {
--	[NFTA_MATCH_NAME]	= { .type = NLA_NUL_STRING },
-+	[NFTA_MATCH_NAME]	= { .type = NLA_NUL_STRING,
-+				    .len = XT_EXTENSION_MAXNAMELEN },
- 	[NFTA_MATCH_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
- 	[NFTA_MATCH_INFO]	= { .type = NLA_BINARY },
- };
-@@ -693,7 +695,12 @@ static int nfnl_compat_get_rcu(struct sk_buff *skb,
+ /*
+@@ -773,19 +815,7 @@ static void nfs_local_write_done(struct nfs_local_kiocb *iocb)
+ 		pr_info_ratelimited("nfs: Unexpected direct I/O write alignment failure\n");
+ 	}
  
- 	name = nla_data(tb[NFTA_COMPAT_NAME]);
- 	rev = ntohl(nla_get_be32(tb[NFTA_COMPAT_REV]));
--	target = ntohl(nla_get_be32(tb[NFTA_COMPAT_TYPE]));
-+	/* x_tables api checks for 'target == 1' to mean target,
-+	 * everything else means 'match'.
-+	 * In x_tables world, the number is set by kernel, not
-+	 * userspace.
-+	 */
-+	target = nla_get_be32(tb[NFTA_COMPAT_TYPE]) == htonl(1);
+-	/* Handle short writes as if they are ENOSPC */
+-	status = hdr->res.count;
+-	if (status > 0 && status < hdr->args.count) {
+-		hdr->mds_offset += status;
+-		hdr->args.offset += status;
+-		hdr->args.pgbase += status;
+-		hdr->args.count -= status;
+-		nfs_set_pgio_error(hdr, -ENOSPC, hdr->args.offset);
+-		status = -ENOSPC;
+-		/* record -ENOSPC in terms of nfs_local_pgio_done */
+-		(void) nfs_local_pgio_done(iocb, status, true);
+-	}
+-	if (hdr->task.tk_status < 0)
++	if (status < 0)
+ 		nfs_reset_boot_verifier(hdr->inode);
+ }
  
- 	switch(family) {
- 	case AF_INET:
 -- 
 2.51.0
 
