@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-218205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218216-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEDOL7BQnmmNUgQAu9opvQ
-	(envelope-from <stable+bounces-218205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:24 +0100
+	id 8CaTDwFSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218216-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638A518EC9D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5D918F17E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B0F20305E987
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:30:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0ABFE3172333
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E440D2505B2;
-	Wed, 25 Feb 2026 01:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D2122579E;
+	Wed, 25 Feb 2026 01:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXnkTjMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZGI10jI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CAD242D9B;
-	Wed, 25 Feb 2026 01:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48D02BAF7;
+	Wed, 25 Feb 2026 01:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982996; cv=none; b=FfH48JIH4OotJsyc3hZngVp/LnwnQckXHhnSmI8kkthL2lTGtEKRQzVRLn5O6TfoFJmgoHfbCCl0OTP9OTOFKE5yLpXtOqFe9vCACCTXqVHa5YzoyCEEoZ4gym2NRbJOKLVp5QgdGcomdnQsYi+IRcLEg7iwA3VttNER6PjkoKI=
+	t=1771983009; cv=none; b=ZetpYrP7iDFwAT44K095Oo5uFJNOJH/5gnKmPZubo7DLEd+i147rmv5oqCegRmZlvGXaIYLOwSK1m7p0Q6ItFwvy4K9o4DBnU3QztHcNOJR/cObR2UXh3XeEn4wHrJrvC7LLhaDjo71o9TfPaNTwvtp3Yn4KoDlcsHyOfnoMv4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982996; c=relaxed/simple;
-	bh=vUbrtn9/YAAScGBJhiFNi/6y9ZDwcgBvUiDK44ksf7o=;
+	s=arc-20240116; t=1771983009; c=relaxed/simple;
+	bh=90LZYfBO6h1RcchcINqQSDwaoTQxI5R/iLzXpFPObLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+3a99E5wD3GlLTMCoIAqXv7AoOxLyI+9Fi23yjADxoRFluDWOcKKRWGT9PvKJzX9V8i874UbFTCific5h+6rDA3xb6OxDSUVPmQhM2YY0n1UfWrF5Nxx39N5kIhgaG4IFlfDcosobpmmJo7RbHnQOxSMNzfO7lRzc7+/lgGYlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXnkTjMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE6CC116D0;
-	Wed, 25 Feb 2026 01:29:56 +0000 (UTC)
+	 MIME-Version; b=IZXvwUBYsOWD3i9vh7f8v3MgASjRQvKDpdseuYLiglWNRrFr364/R9gAetxyZDsdLrQyJHZIDPVT32RpYm4+GsJFOhEMHa0uaWv+LNSiSw5e7ybBPY+e1xkjqKcvaTrX6YkZnT7Jy5d6hw/jxScPn+yepYBePIh2zMSQTtlx5WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZGI10jI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C615C116D0;
+	Wed, 25 Feb 2026 01:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982996;
-	bh=vUbrtn9/YAAScGBJhiFNi/6y9ZDwcgBvUiDK44ksf7o=;
+	s=korg; t=1771983009;
+	bh=90LZYfBO6h1RcchcINqQSDwaoTQxI5R/iLzXpFPObLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KXnkTjMN+gh8yhvsRb7P3zek0CBDcNlL6pho9KscodofSZT+LvE9utC3SSc5CoeS3
-	 eqlbX2eMUL+s9k/pcrDE7AlUuaLa3eJXWEK0I6FZ37T0uBrq5rMq+Ugk+LhbMcXlk5
-	 MK6E7TSKAjGIibNYCbCu6nM05aOjxZvRwy2bi1t8=
+	b=lZGI10jInJH6x04HqZcNYw0pxjoHZzj122XwbMgTi1e+8iR+qLPi13ttI4UyePL0P
+	 eg86ejUQv+ap1gLfcPxjzZr1RZtshWKFxjBa0SDhDJRKsH/4nuEU2rZrzhK2tEcVto
+	 mLLGxi0rln6y2eA23tN9Rwpvjoy6RhsM93eKIDIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 160/781] arm64: dts: qcom: msm8994-octagon: Fix Analog Devices vendor prefix of AD7147
-Date: Tue, 24 Feb 2026 17:14:29 -0800
-Message-ID: <20260225012403.579422994@linuxfoundation.org>
+Subject: [PATCH 6.19 161/781] ARM: dts: allwinner: sun5i-a13-utoo-p66: delete "power-gpios" property
+Date: Tue, 24 Feb 2026 17:14:30 -0800
+Message-ID: <20260225012403.601988868@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -67,73 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218205-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 638A518EC9D
+	TAGGED_FROM(0.00)[bounces-218216-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.968];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BF5D918F17E
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Chen-Yu Tsai <wens@kernel.org>
 
-[ Upstream commit 7db5fbe508deedec6c183d5056cf3c504c027f40 ]
+[ Upstream commit 0b2761eb1287bd9f62367cccf6626eb3107cef6f ]
 
-Trivial change, Analog Devices vendor prefix is "adi", but there is
-a valid "ad" vendor prefix of another company, this may explain why
-the issue hasn't been discovered by the automatic tests.
+The P66's device tree includes the reference design dtsi files, which
+defines a node and properties for the touchpanel in the common design.
+The P66 dts file then overrides all the properties to match its own
+design, but as the touchpanel model is different, a different schema
+is matched. This other schema uses a different name for the GPIO.
 
-A problem of not described compatible value is out of this change scope.
+The original submission added the correct GPIO property, but did not
+delete the one inherited from the reference design, causing validation
+errors.
 
-Fixes: c636eeb751f6 ("arm64: dts: qcom: msm8994-octagon: Add AD7147 and APDS9930 sensors")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251226003923.3341904-1-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Explicitly delete the incorrect GPIO property.
+
+Fixes: 2a53aff27236 ("ARM: dts: sun5i: Enable touchscreen on Utoo P66")
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20251225103616.3203473-4-wens@kernel.org
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8994-msft-lumia-octagon.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/allwinner/sun5i-a13-utoo-p66.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-octagon.dtsi b/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-octagon.dtsi
-index 4c983b10dd925..7ace3540ef0a0 100644
---- a/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-octagon.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-octagon.dtsi
-@@ -378,7 +378,7 @@ &blsp2_i2c1 {
- 	status = "okay";
- 
- 	sideinteraction: touch@2c {
--		compatible = "ad,ad7147_captouch";
-+		compatible = "adi,ad7147_captouch";
- 		reg = <0x2c>;
- 
- 		pinctrl-names = "default", "sleep";
+diff --git a/arch/arm/boot/dts/allwinner/sun5i-a13-utoo-p66.dts b/arch/arm/boot/dts/allwinner/sun5i-a13-utoo-p66.dts
+index be486d28d04fa..428cab5a0e906 100644
+--- a/arch/arm/boot/dts/allwinner/sun5i-a13-utoo-p66.dts
++++ b/arch/arm/boot/dts/allwinner/sun5i-a13-utoo-p66.dts
+@@ -102,6 +102,7 @@ &touchscreen {
+ 	/* The P66 uses a different EINT then the reference design */
+ 	interrupts = <6 9 IRQ_TYPE_EDGE_FALLING>; /* EINT9 (PG9) */
+ 	/* The icn8318 binding expects wake-gpios instead of power-gpios */
++	/delete-property/ power-gpios;
+ 	wake-gpios = <&pio 1 3 GPIO_ACTIVE_HIGH>; /* PB3 */
+ 	touchscreen-size-x = <800>;
+ 	touchscreen-size-y = <480>;
 -- 
 2.51.0
 
