@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-219188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id JWmlI653nmn/VQQAu9opvQ
-	(envelope-from <stable+bounces-219188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 05:16:46 +0100
+	id 2J2NM7d3nmn/VQQAu9opvQ
+	(envelope-from <stable+bounces-219189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 05:16:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2E119188A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 05:16:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3201E191891
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 05:16:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA7AA304C486
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 04:16:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD88C3059A89
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 04:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F46329BD90;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85432C0268;
 	Wed, 25 Feb 2026 04:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MyvzTN8u"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gWjn/pfy"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26141E8836;
-	Wed, 25 Feb 2026 04:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7A929AAFA;
+	Wed, 25 Feb 2026 04:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771992999; cv=none; b=t8Yy9P48f4X3TTcP1idsm5PvCnICHClFiqM+J3Bpc4hdhVY6fFyeWAmsbuaq+6gK/8NTiia+LbX98d410bQGC1hXhlRb3JuCNadW1DjGkRmhPx5brwXj65YHr9HFBtlv70djKDGWtGQzByKd+po1zh0T3ZP4+8KUC70XU9UpEYg=
+	t=1771993000; cv=none; b=R3dS4scgFIQ+UlZNVCPdpvKq5rX35j8AVi6mM1/L5hV/QaURI3Ce59fysZ0dbXxTktdYEPpkE3wtQDDq5/MTBHGGb4IRMHNZWjPv6UGFI0wmJAokQyOkriO8mXY2nyaN2b5QzIqSZdDIlMimY2pERpGD303pivb2aI9NV2rRREs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771992999; c=relaxed/simple;
-	bh=sdKKVLcqscdDMHAnpJ+Gkqhj+X56bUXmUnQwvc+2jLU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m9HZKoh+3NDTqw0/+7RwTJ5lI2ZYB9zUfxCy1z1x6Clp9GTnsBZqe5TbVyBUs9Mv/HclQ0Vt7Uwu5XSY6kgWo2uKeWLIOt7Sl9ynBN3hdBkfBcd5s8e5CuXVsuJcHn6yXjteph9dgV0388zQYIethb35By+5ZwdipqZy98fidSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MyvzTN8u; arc=none smtp.client-ip=117.135.210.3
+	s=arc-20240116; t=1771993000; c=relaxed/simple;
+	bh=ZZMd/kJaZY4ndIrpQoCh1nYqfeoIF7VWl42NDmrb8YY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=iLgpNpsWSGMDfvayYKz1HLUsWPHrbHikWrrvAbuYFiKqXZcUBsycGHp9h3I2dSDbG4h4awblFL3mIPgOiM4sDQW2WELqSpG4kKas4yWNkPTZzBJwl7lj/tUPih1baZGuaCnNUNr3Y3hEH7aW2ouRStBHNd4QUkSvruf+stz0THw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gWjn/pfy; arc=none smtp.client-ip=220.197.31.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Hr
-	hdleSboPuLc6Y9mZ4jEkEnwB4af0/nPwDI6YPYUfU=; b=MyvzTN8u61wLcChTdo
-	eCMHgT/ycIMFpsTnvivUwOFByQwtjyKdaauHtm3YZU0yA6BQZIN6kyKu2G88uA4j
-	NBqr+rHpJeoIhxfjsp/8f1CiGyWeIUq0MUnYrBuzM4571ofBGKLPu8BIDVSioh99
-	v9dkVONMlqVR/yTDv2diX1Bls=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=cH
+	npC4NzEhgVPkjGq4NCPnMeblL1uBcLtuEN0puwgGQ=; b=gWjn/pfyk6EIOwIMPT
+	iRcHmMkCst8RChcHrKlPXk4/wy/hunNAZc4Ag31GBeX0LwMbHvwJplhbtGF8iDam
+	i/5knsI5mbs8R9pAxeaOdz1iPKN0EFFPKjQq6peSFg+8fIhUIHYYTCSFNB8y6Ny3
+	0vWulT8f+I/SYyglqsnOs9UmM=
 Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDX_QiHd55pLy8aMw--.48963S2;
-	Wed, 25 Feb 2026 12:16:08 +0800 (CST)
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDX_QiHd55pLy8aMw--.48963S3;
+	Wed, 25 Feb 2026 12:16:09 +0800 (CST)
 From: Rahul Sharma <black.hawk@163.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
+	Wei Fang <wei.fang@nxp.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1.y 1/2] net: enetc: reimplement RFS/RSS memory clearing as PCI quirk
-Date: Wed, 25 Feb 2026 12:16:04 +0800
-Message-Id: <20260225041605.1563705-1-black.hawk@163.com>
+Subject: [PATCH 6.1.y 2/2] net: enetc: allocate vf_state during PF probes
+Date: Wed, 25 Feb 2026 12:16:05 +0800
+Message-Id: <20260225041605.1563705-2-black.hawk@163.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260225041605.1563705-1-black.hawk@163.com>
+References: <20260225041605.1563705-1-black.hawk@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,25 +64,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDX_QiHd55pLy8aMw--.48963S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Aw18Zr47WF43Kw1xJw4UCFg_yoWxXr4DpF
-	WfWasIgr4kXry5Cw4kJr4UAFy5KF4Iq3yrW3yxCw1I9a1avFn7Jrn2gr10y3W8trWkXa17
-	A34Dta18ZF1kAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi4SokUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+QkCm2med4k0cQAA3l
+X-CM-TRANSID:_____wDX_QiHd55pLy8aMw--.48963S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZw13uFyfKF1rJw4xArykGrg_yoW5KF13pr
+	WfJasIgr48Xa17AFWkW3W8ZF98Kay8ta4rGrW2kw4fuF4av3W5tr1vqryYgF1FvrWvqay3
+	t34fCws5uF4ktwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE9mi7UUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+gsCm2med4sYhAAA3-
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219188-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nxp.com,kernel.org,davemloft.net,163.com];
+	TAGGED_FROM(0.00)[bounces-219189-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,nxp.com,kernel.org,163.com];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -94,207 +97,108 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,davemloft.net:email]
-X-Rspamd-Queue-Id: DA2E119188A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,ls1028ardb:email]
+X-Rspamd-Queue-Id: 3201E191891
 X-Rspamd-Action: no action
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit f0168042a21292d20007d24ab2e4fc32f79ebf11 ]
+[ Upstream commit e15c5506dd39885cd047f811a64240e2e8ab401b ]
 
-The workaround implemented in commit 3222b5b613db ("net: enetc:
-initialize RFS/RSS memories for unused ports too") is no longer
-effective after commit 6fffbc7ae137 ("PCI: Honor firmware's device
-disabled status"). Thus, it has introduced a regression and we see AER
-errors being reported again:
+In the previous implementation, vf_state is allocated memory only when VF
+is enabled. However, net_device_ops::ndo_set_vf_mac() may be called before
+VF is enabled to configure the MAC address of VF. If this is the case,
+enetc_pf_set_vf_mac() will access vf_state, resulting in access to a null
+pointer. The simplified error log is as follows.
 
-$ ip link set sw2p0 up && dhclient -i sw2p0 && ip addr show sw2p0
-fsl_enetc 0000:00:00.2 eno2: configuring for fixed/internal link mode
-fsl_enetc 0000:00:00.2 eno2: Link is Up - 2.5Gbps/Full - flow control rx/tx
-mscc_felix 0000:00:00.5 swp2: configuring for fixed/sgmii link mode
-mscc_felix 0000:00:00.5 swp2: Link is Up - 1Gbps/Full - flow control off
-sja1105 spi2.2 sw2p0: configuring for phy/rgmii-id link mode
-sja1105 spi2.2 sw2p0: Link is Up - 1Gbps/Full - flow control off
-pcieport 0000:00:1f.0: AER: Multiple Corrected error received: 0000:00:00.0
-pcieport 0000:00:1f.0: AER: can't find device of ID0000
+root@ls1028ardb:~# ip link set eno0 vf 1 mac 00:0c:e7:66:77:89
+[  173.543315] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000004
+[  173.637254] pc : enetc_pf_set_vf_mac+0x3c/0x80 Message from sy
+[  173.641973] lr : do_setlink+0x4a8/0xec8
+[  173.732292] Call trace:
+[  173.734740]  enetc_pf_set_vf_mac+0x3c/0x80
+[  173.738847]  __rtnl_newlink+0x530/0x89c
+[  173.742692]  rtnl_newlink+0x50/0x7c
+[  173.746189]  rtnetlink_rcv_msg+0x128/0x390
+[  173.750298]  netlink_rcv_skb+0x60/0x130
+[  173.754145]  rtnetlink_rcv+0x18/0x24
+[  173.757731]  netlink_unicast+0x318/0x380
+[  173.761665]  netlink_sendmsg+0x17c/0x3c8
 
-Rob's suggestion is to reimplement the enetc driver workaround as a
-PCI fixup, and to modify the PCI core to run the fixups for all PCI
-functions. This change handles the first part.
-
-We refactor the common code in enetc_psi_create() and enetc_psi_destroy(),
-and use the PCI fixup only for those functions for which enetc_pf_probe()
-won't get called. This avoids some work being done twice for the PFs
-which are enabled.
-
-Fixes: 6fffbc7ae137 ("PCI: Honor firmware's device disabled status")
-Link: https://lore.kernel.org/netdev/CAL_JsqLsVYiPLx2kcHkDQ4t=hQVCR7NHziDwi9cCFUFhx48Qow@mail.gmail.com/
-Suggested-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241031060247.1290941-2-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Rahul Sharma <black.hawk@163.com>
 ---
- .../net/ethernet/freescale/enetc/enetc_pf.c   | 103 +++++++++++++-----
- 1 file changed, 73 insertions(+), 30 deletions(-)
+ .../net/ethernet/freescale/enetc/enetc_pf.c    | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-index b84d5a66558a..b6fd12c9ecc4 100644
+index b6fd12c9ecc4..99422c0b4a26 100644
 --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
 +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -1236,50 +1236,81 @@ static int enetc_pf_register_with_ierb(struct pci_dev *pdev)
- 	return ret;
- }
+@@ -683,19 +683,11 @@ static int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
  
--static int enetc_pf_probe(struct pci_dev *pdev,
--			  const struct pci_device_id *ent)
-+static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
- {
--	struct device_node *node = pdev->dev.of_node;
--	struct enetc_ndev_priv *priv;
--	struct net_device *ndev;
- 	struct enetc_si *si;
--	struct enetc_pf *pf;
- 	int err;
+ 	if (!num_vfs) {
+ 		enetc_msg_psi_free(pf);
+-		kfree(pf->vf_state);
+ 		pf->num_vfs = 0;
+ 		pci_disable_sriov(pdev);
+ 	} else {
+ 		pf->num_vfs = num_vfs;
  
--	err = enetc_pf_register_with_ierb(pdev);
--	if (err == -EPROBE_DEFER)
--		return err;
--	if (err)
--		dev_warn(&pdev->dev,
--			 "Could not register with IERB driver: %pe, please update the device tree\n",
--			 ERR_PTR(err));
+-		pf->vf_state = kcalloc(num_vfs, sizeof(struct enetc_vf_state),
+-				       GFP_KERNEL);
+-		if (!pf->vf_state) {
+-			pf->num_vfs = 0;
+-			return -ENOMEM;
+-		}
 -
--	err = enetc_pci_probe(pdev, KBUILD_MODNAME, sizeof(*pf));
--	if (err)
--		return dev_err_probe(&pdev->dev, err, "PCI probing failed\n");
-+	err = enetc_pci_probe(pdev, KBUILD_MODNAME, sizeof(struct enetc_pf));
-+	if (err) {
-+		dev_err_probe(&pdev->dev, err, "PCI probing failed\n");
-+		goto out;
+ 		err = enetc_msg_psi_init(pf);
+ 		if (err) {
+ 			dev_err(&pdev->dev, "enetc_msg_psi_init (%d)\n", err);
+@@ -714,7 +706,6 @@ static int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
+ err_en_sriov:
+ 	enetc_msg_psi_free(pf);
+ err_msg_psi:
+-	kfree(pf->vf_state);
+ 	pf->num_vfs = 0;
+ 
+ 	return err;
+@@ -1322,6 +1313,12 @@ static int enetc_pf_probe(struct pci_dev *pdev,
+ 	pf = enetc_si_priv(si);
+ 	pf->si = si;
+ 	pf->total_vfs = pci_sriov_get_totalvfs(pdev);
++	if (pf->total_vfs) {
++		pf->vf_state = kcalloc(pf->total_vfs, sizeof(struct enetc_vf_state),
++				       GFP_KERNEL);
++		if (!pf->vf_state)
++			goto err_alloc_vf_state;
 +	}
  
- 	si = pci_get_drvdata(pdev);
- 	if (!si->hw.port || !si->hw.global) {
- 		err = -ENODEV;
- 		dev_err(&pdev->dev, "could not map PF space, probing a VF?\n");
--		goto err_map_pf_space;
-+		goto out_pci_remove;
- 	}
- 
- 	err = enetc_setup_cbdr(&pdev->dev, &si->hw, ENETC_CBDR_DEFAULT_SIZE,
- 			       &si->cbd_ring);
+ 	err = enetc_setup_mac_addresses(node, pf);
  	if (err)
--		goto err_setup_cbdr;
-+		goto out_pci_remove;
- 
- 	err = enetc_init_port_rfs_memory(si);
- 	if (err) {
- 		dev_err(&pdev->dev, "Failed to initialize RFS memory\n");
--		goto err_init_port_rfs;
-+		goto out_teardown_cbdr;
- 	}
- 
- 	err = enetc_init_port_rss_memory(si);
- 	if (err) {
- 		dev_err(&pdev->dev, "Failed to initialize RSS memory\n");
--		goto err_init_port_rss;
-+		goto out_teardown_cbdr;
-+	}
-+
-+	return si;
-+
-+out_teardown_cbdr:
-+	enetc_teardown_cbdr(&si->cbd_ring);
-+out_pci_remove:
-+	enetc_pci_remove(pdev);
-+out:
-+	return ERR_PTR(err);
-+}
-+
-+static void enetc_psi_destroy(struct pci_dev *pdev)
-+{
-+	struct enetc_si *si = pci_get_drvdata(pdev);
-+
-+	enetc_teardown_cbdr(&si->cbd_ring);
-+	enetc_pci_remove(pdev);
-+}
-+
-+static int enetc_pf_probe(struct pci_dev *pdev,
-+			  const struct pci_device_id *ent)
-+{
-+	struct device_node *node = pdev->dev.of_node;
-+	struct enetc_ndev_priv *priv;
-+	struct net_device *ndev;
-+	struct enetc_si *si;
-+	struct enetc_pf *pf;
-+	int err;
-+
-+	err = enetc_pf_register_with_ierb(pdev);
-+	if (err == -EPROBE_DEFER)
-+		return err;
-+	if (err)
-+		dev_warn(&pdev->dev,
-+			 "Could not register with IERB driver: %pe, please update the device tree\n",
-+			 ERR_PTR(err));
-+
-+	si = enetc_psi_create(pdev);
-+	if (IS_ERR(si)) {
-+		err = PTR_ERR(si);
-+		goto err_psi_create;
- 	}
- 
- 	if (node && !of_device_is_available(node)) {
-@@ -1365,15 +1396,10 @@ static int enetc_pf_probe(struct pci_dev *pdev,
- 	si->ndev = NULL;
- 	free_netdev(ndev);
+@@ -1398,6 +1395,8 @@ static int enetc_pf_probe(struct pci_dev *pdev,
  err_alloc_netdev:
--err_init_port_rss:
--err_init_port_rfs:
  err_device_disabled:
  err_setup_mac_addresses:
--	enetc_teardown_cbdr(&si->cbd_ring);
--err_setup_cbdr:
--err_map_pf_space:
--	enetc_pci_remove(pdev);
--
-+	enetc_psi_destroy(pdev);
-+err_psi_create:
++	kfree(pf->vf_state);
++err_alloc_vf_state:
+ 	enetc_psi_destroy(pdev);
+ err_psi_create:
  	return err;
- }
- 
-@@ -1396,12 +1422,29 @@ static void enetc_pf_remove(struct pci_dev *pdev)
- 	enetc_free_msix(priv);
- 
+@@ -1424,6 +1423,7 @@ static void enetc_pf_remove(struct pci_dev *pdev)
  	enetc_free_si_resources(priv);
--	enetc_teardown_cbdr(&si->cbd_ring);
  
  	free_netdev(si->ndev);
++	kfree(pf->vf_state);
  
--	enetc_pci_remove(pdev);
-+	enetc_psi_destroy(pdev);
-+}
-+
-+static void enetc_fixup_clear_rss_rfs(struct pci_dev *pdev)
-+{
-+	struct device_node *node = pdev->dev.of_node;
-+	struct enetc_si *si;
-+
-+	/* Only apply quirk for disabled functions. For the ones
-+	 * that are enabled, enetc_pf_probe() will apply it.
-+	 */
-+	if (node && of_device_is_available(node))
-+		return;
-+
-+	si = enetc_psi_create(pdev);
-+	if (si)
-+		enetc_psi_destroy(pdev);
+ 	enetc_psi_destroy(pdev);
  }
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FREESCALE, ENETC_DEV_ID_PF,
-+			enetc_fixup_clear_rss_rfs);
- 
- static const struct pci_device_id enetc_pf_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_DEV_ID_PF) },
 -- 
 2.34.1
 
