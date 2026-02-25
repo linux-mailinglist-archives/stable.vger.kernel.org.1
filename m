@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iI1QEndTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:15 +0100
+	id YK9fGK9WnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC80118F87F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2781903A1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1928731ABE61
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4021E319DCAC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742C32417E0;
-	Wed, 25 Feb 2026 01:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578E8286D70;
+	Wed, 25 Feb 2026 01:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGrn/3dl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6gqwcZL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DC918DB2A;
-	Wed, 25 Feb 2026 01:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B87C263C7F;
+	Wed, 25 Feb 2026 01:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983169; cv=none; b=uQ0dJlE6xrtbXhbcMy77vz0Nl/pnPk6H+UwojyM8f1ZmXy4YfPcQIuZrllveTuBhQtB9Zzb18qz81ICyYbdDp+CtdJERqa4ZStgWGUsvX7F7/hWpohPW2ZwWJonHaQwnXIXf/cAEmX3bDRcb8Lr04sXIddaWgYYxbMZL+oz1AjU=
+	t=1771983820; cv=none; b=nzyGCKb5TclQulI33YPFV+49DslthwhdzR++XHPvxxoygucu+yUYaCBwv7mYwyhjR9tX/R0aYlqmyhmndVCa/vJQgTAg+4L4JyUoOD2H4+eeM8E3x41shRApuyGJi2G/PY5dZCSpxbXRGkzNpkrKqm9KptuMDHbrNxisbAUHESE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983169; c=relaxed/simple;
-	bh=+/QPcB9pOGyssjvX3lSv0N5dfvWWQtkGacWUciZWBkE=;
+	s=arc-20240116; t=1771983820; c=relaxed/simple;
+	bh=GIblY3GZGMcVr7UfIsfREdJJrx2MYrAlv7qxAeRqBeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIC9csVJN1PmLtbEAH8COmN/STmZC3XN3gOPxmUY8txuxx23ywF6pW4YHuqwCi71DC47wCqjEbjp1QypgCl7DC4PjBbvmvdIhTla/s7Je9TmPn+gyD9pw6Ixhy4UYcuhbGdlmNrJ/ZQGiAL6RxxUWcyEemynOrvNTN+2WayvlOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGrn/3dl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067E7C116D0;
-	Wed, 25 Feb 2026 01:32:48 +0000 (UTC)
+	 MIME-Version; b=CgL5bEVf0hmItqV5+5I+8dzlELWDFrQqL6AeWeoPegl9Ta0JIb/4j/wwaqk70bvGFr4ehTbecMYbxRAWaPgTlKC98Wm+TKsE8e4i5QyOxaiyVkDFC5aJFv2cw8N0ZVgm2NbJ+CsHfbkyDSR3TOUP7b/s0AHVKB4Et5vSol3rHCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6gqwcZL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DAAC116D0;
+	Wed, 25 Feb 2026 01:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983169;
-	bh=+/QPcB9pOGyssjvX3lSv0N5dfvWWQtkGacWUciZWBkE=;
+	s=korg; t=1771983820;
+	bh=GIblY3GZGMcVr7UfIsfREdJJrx2MYrAlv7qxAeRqBeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGrn/3dl8sAceWwhyLl1kX+Xt83A2hxYSHWhCJ1FCRlkzow/bj2qp9HH15ww5CY7s
-	 5yW6ec4A54wPBwuKcgcPkkBCqL+N+HDeY6yqg3QcBDdMTDP12WU/IRM9hRa7U5oZ2V
-	 MnUvUh5rqLTwu87kg+e8CGMss0BtZTqNFN2eEPvg=
+	b=Y6gqwcZLWAiUQ/8bimHZ89uf161ye0PiDkkX6Xiff71+xlXm0k1IEZh0EiTYkxrel
+	 0NSXlQa2PY+Jj06TwNTTywIgAegid/rK9OH+5R6RcsYRNHgTyQUixOO4VnqHM5X/ip
+	 LELwUqvY4so0//HlDcJupDZAqCZgkcUSqTGTYabo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 321/781] PCI: rzg3s-host: Use pci_generic_config_write() for the root bus
+Subject: [PATCH 6.18 104/641] bpf: Fix bpf_xdp_store_bytes proto for read-only arg
 Date: Tue, 24 Feb 2026 17:17:10 -0800
-Message-ID: <20260225012407.575132052@linuxfoundation.org>
+Message-ID: <20260225012351.636125097@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,121 +68,90 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218359-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,sang-engineering.com:email,renesas.com:email]
-X-Rspamd-Queue-Id: CC80118F87F
+	TAGGED_FROM(0.00)[bounces-218925-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.962];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BA2781903A1
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 4b86eff47e205819eb862097493ec20e25ac8f56 ]
+[ Upstream commit 6557f1565d779851c4db9c488c49c05a47a6e72f ]
 
-The Renesas RZ/G3S host controller allows writing to read-only PCIe
-configuration registers when the RZG3S_PCI_PERM_CFG_HWINIT_EN bit is set in
-the RZG3S_PCI_PERM register. However, callers of struct pci_ops::write
-expect the semantics defined by the PCIe specification, meaning that writes
-to read-only registers must not be allowed.
+While making some maps in Cilium read-only from the BPF side, we noticed
+that the bpf_xdp_store_bytes proto is incorrect. In particular, the
+verifier was throwing the following error:
 
-The previous custom struct pci_ops::write implementation for the root bus
-temporarily enabled write access before calling pci_generic_config_write().
-This breaks the expected semantics.
+  ; ret = ctx_store_bytes(ctx, l3_off + offsetof(struct iphdr, saddr),
+                          &nat->address, 4, 0);
+  635: (79) r1 = *(u64 *)(r10 -144)     ; R1=ctx() R10=fp0 fp-144=ctx()
+  636: (b4) w2 = 26                     ; R2=26
+  637: (b4) w4 = 4                      ; R4=4
+  638: (b4) w5 = 0                      ; R5=0
+  639: (85) call bpf_xdp_store_bytes#190
+  write into map forbidden, value_size=6 off=0 size=4
 
-Remove the custom implementation and simply use pci_generic_config_write().
+nat comes from a BPF_F_RDONLY_PROG map, so R3 is a PTR_TO_MAP_VALUE.
+The verifier checks the helper's memory access to R3 in
+check_mem_size_reg, as it reaches ARG_CONST_SIZE argument. The third
+argument has expected type ARG_PTR_TO_UNINIT_MEM, which includes the
+MEM_WRITE flag. The verifier thus checks for a BPF_WRITE access on R3.
+Given R3 points to a read-only map, the check fails.
 
-Along with this change, the updates of the PCI_PRIMARY_BUS,
-PCI_SECONDARY_BUS, and PCI_SUBORDINATE_BUS registers were moved so that
-they no longer depends on the RZG3S_PCI_PERM_CFG_HWINIT_EN bit in the
-RZG3S_PCI_PERM_CFG register, since these registers are R/W.
+Conversely, ARG_PTR_TO_UNINIT_MEM can also lead to the helper reading
+from uninitialized memory.
 
-Fixes: 7ef502fb35b2 ("PCI: Add Renesas RZ/G3S host controller driver")
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://patch.msgid.link/20251217111510.138848-2-claudiu.beznea.uj@bp.renesas.com
+This patch simply fixes the expected argument type to match that of
+bpf_skb_store_bytes.
+
+Fixes: 3f364222d032 ("net: xdp: introduce bpf_xdp_pointer utility routine")
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/9fa3c9f72d806e82541071c4df88b8cba28ad6a9.1769875479.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rzg3s-host.c | 27 ++++--------------------
- 1 file changed, 4 insertions(+), 23 deletions(-)
+ net/core/filter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-rzg3s-host.c b/drivers/pci/controller/pcie-rzg3s-host.c
-index 83ec66a708236..ae6d9c7dc2c12 100644
---- a/drivers/pci/controller/pcie-rzg3s-host.c
-+++ b/drivers/pci/controller/pcie-rzg3s-host.c
-@@ -439,28 +439,9 @@ static void __iomem *rzg3s_pcie_root_map_bus(struct pci_bus *bus,
- 	return host->pcie + where;
- }
- 
--/* Serialized by 'pci_lock' */
--static int rzg3s_pcie_root_write(struct pci_bus *bus, unsigned int devfn,
--				 int where, int size, u32 val)
--{
--	struct rzg3s_pcie_host *host = bus->sysdata;
--	int ret;
--
--	/* Enable access control to the CFGU */
--	writel_relaxed(RZG3S_PCI_PERM_CFG_HWINIT_EN,
--		       host->axi + RZG3S_PCI_PERM);
--
--	ret = pci_generic_config_write(bus, devfn, where, size, val);
--
--	/* Disable access control to the CFGU */
--	writel_relaxed(0, host->axi + RZG3S_PCI_PERM);
--
--	return ret;
--}
--
- static struct pci_ops rzg3s_pcie_root_ops = {
- 	.read		= pci_generic_config_read,
--	.write		= rzg3s_pcie_root_write,
-+	.write		= pci_generic_config_write,
- 	.map_bus	= rzg3s_pcie_root_map_bus,
+diff --git a/net/core/filter.c b/net/core/filter.c
+index b9a51f322b655..d93f7dea828e5 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -4133,7 +4133,7 @@ static const struct bpf_func_proto bpf_xdp_store_bytes_proto = {
+ 	.ret_type	= RET_INTEGER,
+ 	.arg1_type	= ARG_PTR_TO_CTX,
+ 	.arg2_type	= ARG_ANYTHING,
+-	.arg3_type	= ARG_PTR_TO_UNINIT_MEM,
++	.arg3_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
+ 	.arg4_type	= ARG_CONST_SIZE,
  };
- 
-@@ -1065,14 +1046,14 @@ static int rzg3s_pcie_config_init(struct rzg3s_pcie_host *host)
- 	writel_relaxed(0xffffffff, host->pcie + RZG3S_PCI_CFG_BARMSK00L);
- 	writel_relaxed(0xffffffff, host->pcie + RZG3S_PCI_CFG_BARMSK00U);
- 
-+	/* Disable access control to the CFGU */
-+	writel_relaxed(0, host->axi + RZG3S_PCI_PERM);
-+
- 	/* Update bus info */
- 	writeb_relaxed(primary_bus, host->pcie + PCI_PRIMARY_BUS);
- 	writeb_relaxed(secondary_bus, host->pcie + PCI_SECONDARY_BUS);
- 	writeb_relaxed(subordinate_bus, host->pcie + PCI_SUBORDINATE_BUS);
- 
--	/* Disable access control to the CFGU */
--	writel_relaxed(0, host->axi + RZG3S_PCI_PERM);
--
- 	return 0;
- }
  
 -- 
 2.51.0
