@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-218483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJ8WJw5SnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218483-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:14 +0100
+	id uKRTIk9anmlSUwQAu9opvQ
+	(envelope-from <stable+bounces-219055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F09818F1AF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EABDD190AD2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4335630789E1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1954D31DA45D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F57248886;
-	Wed, 25 Feb 2026 01:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088CF284B29;
+	Wed, 25 Feb 2026 01:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSMFhRis"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KducAZbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553AF18B0A;
-	Wed, 25 Feb 2026 01:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0191251795;
+	Wed, 25 Feb 2026 01:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983312; cv=none; b=F8VszOeka2GwZp6rw/hR/5OpdzURn5vsV/ChTsS47MZ22+9gwVQITFeluhepp97PJKyjnDb8DcefuU8PsBkshhBPCIOcfLjfeQaZzzsEP8ciy65beqqZw9gfOkAkdBN5BadlIeoNICBbEwuedVc5o36EjSz8+PNsSIYWRR/SFX8=
+	t=1771983977; cv=none; b=oIBSrcasNJrPAQ3ly3NKOlNd2HuLro0i6sgdDCY57SczI+5IippeiVlp3AE/sv1ompeg3fLVkJzvJWGu6UxczvkQXjvXNha5CSA3+g8MO1KncyWRAAkfX6f/xPSgh+1mp10dGOOB4sUP8W6n9jZlil3wAdlXL4KUC5pcXJA9lKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983312; c=relaxed/simple;
-	bh=ifUlT3Q1bruDK+IvbpQ3Funucg/uvvXmKq0Uc7EGKQo=;
+	s=arc-20240116; t=1771983977; c=relaxed/simple;
+	bh=MTsQemdt8StVzY778CwSdW1c0QFfwVMpJnUJOCbe31g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSJmQ3XkJJ1IrCyVN08XZU5ZXCEQwi/WqMOF03XB1fCgqAoL6/gDED79iYGJyCFGG4DxGPyp5y4NdG9dsn6zl0AMnyfKWaJNJDmyBvzgVTwzhSIKJaIx9C2lLLKwVjcgJ3Yi4gYpe0rHUHlZFo10TJEsR4sf4zlUDJ3GSBFHax0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSMFhRis; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB94BC116D0;
-	Wed, 25 Feb 2026 01:35:11 +0000 (UTC)
+	 MIME-Version; b=qoW2YWar3qWgkWmOX35JQk09BLvZ3KNBpcou0tX53VMbrhYDoZ/I/N46dU44i+yNkndra8pVdZpBLmVkKuamQKEei6mAQXER58WCjvQnlkI9HY8l3YYJkmiITGQJUo+ZBBePoYHqLszH6lG0FvxwqYU6NJ4JkFp2or4WwdaJbmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KducAZbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883ACC116D0;
+	Wed, 25 Feb 2026 01:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983312;
-	bh=ifUlT3Q1bruDK+IvbpQ3Funucg/uvvXmKq0Uc7EGKQo=;
+	s=korg; t=1771983977;
+	bh=MTsQemdt8StVzY778CwSdW1c0QFfwVMpJnUJOCbe31g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSMFhRisDnP1pDsZuIrL5KQuIkD9Ls+kvryDk6nDEe91Un2fsbuW6i/gMvk1HEK4j
-	 oAUgeSMsTknZMB2TjNp4gbNZGO5lXhkNhsS36mIg0FTlHgRVeJu/QPtGCge+hPL/z5
-	 xKBYHlreyQfTxx+ZtE8/XSF+r6eie5g3z4rYcAm8=
+	b=KducAZbTvIb8ljSkNBV3yRqJw8wjZG7P8i/joqFGevdFk+Z/ukfrtUfB9gEvnzcx3
+	 2j6iZUPhlXGxiSA+c4b+W3woqbG/jfaM/50fTJbv+cGZwWUCWT8PUYMIMc9cMWDW/M
+	 BJkG5+DjItTGb27BfUU/KT58s0nMz3+TveCSWMFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ben Cheatham <benjamin.cheatham@amd.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Alejandro Lucero <alucerop@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 446/781] cxl/mem: Fix devm_cxl_memdev_edac_release() confusion
-Date: Tue, 24 Feb 2026 17:19:15 -0800
-Message-ID: <20260225012410.646945137@linuxfoundation.org>
+Subject: [PATCH 6.18 230/641] ASoC: SDCA: Handle volatile controls correctly
+Date: Tue, 24 Feb 2026 17:19:16 -0800
+Message-ID: <20260225012354.472778651@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,206 +70,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219055-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218483-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,huawei.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 1F09818F1AF
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,cirrus.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: EABDD190AD2
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 10016118b6fade907143a32a7aeaa777063dc79c ]
+[ Upstream commit 9fad74b79e5ff353fe156c4b685cceffa5afdb1d ]
 
-A device release method is only for undoing allocations on the path to
-preparing the device for device_add(). In contrast, devm allocations are
-post device_add(), are acquired during / after ->probe() and are released
-synchronous with ->remove().
+There are very few volatile controls in SDCA that are exported
+as ALSA controls, typically Detected Mode is the only common
+one. However, the current code does not resume the device when
+these ALSA controls are accessed, which will result in the
+read/write failing.
 
-So, a "devm" helper in a "release" method is a clear anti-pattern.
+Add a new wrapper specifically for volatile controls that will do
+the required pm_runtime operations before accessing the register.
 
-Move this devm release action where it belongs, an action created at edac
-object creation time. Otherwise, this leaks resources until
-cxl_memdev_release() time which may be long after these xarray and error
-record caches have gone idle.
-
-Note, this also fixes up the type of @cxlmd->err_rec_array which needlessly
-dropped type-safety.
-
-Fixes: 0b5ccb0de1e2 ("cxl/edac: Support for finding memory operation attributes from the current boot")
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Shiju Jose <shiju.jose@huawei.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Ben Cheatham <benjamin.cheatham@amd.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Tested-by: Shiju Jose <shiju.jose@huawei.com>
-Reviewed-by: Shiju Jose <shiju.jose@huawei.com>
-Tested-by: Alejandro Lucero <alucerop@amd.com>
-Link: https://patch.msgid.link/20251216005616.3090129-2-dan.j.williams@intel.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: c3ca24e3fcb6 ("ASoC: SDCA: Create ALSA controls from DisCo")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260204125944.1134011-3-ckeepax@opensource.cirrus.com
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/edac.c   | 64 ++++++++++++++++++++++-----------------
- drivers/cxl/core/memdev.c |  1 -
- drivers/cxl/cxlmem.h      |  5 +--
- 3 files changed, 38 insertions(+), 32 deletions(-)
+ sound/soc/sdca/sdca_asoc.c | 52 ++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 50 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cxl/core/edac.c b/drivers/cxl/core/edac.c
-index 79994ca9bc9f3..81160260e26b7 100644
---- a/drivers/cxl/core/edac.c
-+++ b/drivers/cxl/core/edac.c
-@@ -1988,6 +1988,40 @@ static int cxl_memdev_soft_ppr_init(struct cxl_memdev *cxlmd,
+diff --git a/sound/soc/sdca/sdca_asoc.c b/sound/soc/sdca/sdca_asoc.c
+index 7e986870d48c5..197a592ec2f16 100644
+--- a/sound/soc/sdca/sdca_asoc.c
++++ b/sound/soc/sdca/sdca_asoc.c
+@@ -16,6 +16,7 @@
+ #include <linux/minmax.h>
+ #include <linux/module.h>
+ #include <linux/overflow.h>
++#include <linux/pm_runtime.h>
+ #include <linux/regmap.h>
+ #include <linux/soundwire/sdw_registers.h>
+ #include <linux/string_helpers.h>
+@@ -836,6 +837,48 @@ static int control_limit_kctl(struct device *dev,
  	return 0;
  }
  
-+static void err_rec_free(void *_cxlmd)
++static int volatile_get_volsw(struct snd_kcontrol *kcontrol,
++			      struct snd_ctl_elem_value *ucontrol)
 +{
-+	struct cxl_memdev *cxlmd = _cxlmd;
-+	struct cxl_mem_err_rec *array_rec = cxlmd->err_rec_array;
-+	struct cxl_event_gen_media *rec_gen_media;
-+	struct cxl_event_dram *rec_dram;
-+	unsigned long index;
++	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
++	struct device *dev = component->dev;
++	int ret;
 +
-+	cxlmd->err_rec_array = NULL;
-+	xa_for_each(&array_rec->rec_dram, index, rec_dram)
-+		kfree(rec_dram);
-+	xa_destroy(&array_rec->rec_dram);
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret < 0) {
++		dev_err(dev, "failed to resume reading %s: %d\n",
++			kcontrol->id.name, ret);
++		return ret;
++	}
 +
-+	xa_for_each(&array_rec->rec_gen_media, index, rec_gen_media)
-+		kfree(rec_gen_media);
-+	xa_destroy(&array_rec->rec_gen_media);
-+	kfree(array_rec);
++	ret = snd_soc_get_volsw(kcontrol, ucontrol);
++
++	pm_runtime_put(dev);
++
++	return ret;
 +}
 +
-+static int devm_cxl_memdev_setup_err_rec(struct cxl_memdev *cxlmd)
++static int volatile_put_volsw(struct snd_kcontrol *kcontrol,
++			      struct snd_ctl_elem_value *ucontrol)
 +{
-+	struct cxl_mem_err_rec *array_rec =
-+		kzalloc(sizeof(*array_rec), GFP_KERNEL);
++	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
++	struct device *dev = component->dev;
++	int ret;
 +
-+	if (!array_rec)
-+		return -ENOMEM;
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret < 0) {
++		dev_err(dev, "failed to resume writing %s: %d\n",
++			kcontrol->id.name, ret);
++		return ret;
++	}
 +
-+	xa_init(&array_rec->rec_gen_media);
-+	xa_init(&array_rec->rec_dram);
-+	cxlmd->err_rec_array = array_rec;
++	ret = snd_soc_put_volsw(kcontrol, ucontrol);
 +
-+	return devm_add_action_or_reset(&cxlmd->dev, err_rec_free, cxlmd);
++	pm_runtime_put(dev);
++
++	return ret;
 +}
 +
- int devm_cxl_memdev_edac_register(struct cxl_memdev *cxlmd)
- {
- 	struct edac_dev_feature ras_features[CXL_NR_EDAC_DEV_FEATURES];
-@@ -2038,15 +2072,9 @@ int devm_cxl_memdev_edac_register(struct cxl_memdev *cxlmd)
- 		}
+ static int populate_control(struct device *dev,
+ 			    struct sdca_function_data *function,
+ 			    struct sdca_entity *entity,
+@@ -890,8 +933,13 @@ static int populate_control(struct device *dev,
+ 	(*kctl)->private_value = (unsigned long)mc;
+ 	(*kctl)->iface = SNDRV_CTL_ELEM_IFACE_MIXER;
+ 	(*kctl)->info = snd_soc_info_volsw;
+-	(*kctl)->get = snd_soc_get_volsw;
+-	(*kctl)->put = snd_soc_put_volsw;
++	if (control->is_volatile) {
++		(*kctl)->get = volatile_get_volsw;
++		(*kctl)->put = volatile_put_volsw;
++	} else {
++		(*kctl)->get = snd_soc_get_volsw;
++		(*kctl)->put = snd_soc_put_volsw;
++	}
  
- 		if (repair_inst) {
--			struct cxl_mem_err_rec *array_rec =
--				devm_kzalloc(&cxlmd->dev, sizeof(*array_rec),
--					     GFP_KERNEL);
--			if (!array_rec)
--				return -ENOMEM;
--
--			xa_init(&array_rec->rec_gen_media);
--			xa_init(&array_rec->rec_dram);
--			cxlmd->err_rec_array = array_rec;
-+			rc = devm_cxl_memdev_setup_err_rec(cxlmd);
-+			if (rc)
-+				return rc;
- 		}
- 	}
- 
-@@ -2088,22 +2116,4 @@ int devm_cxl_region_edac_register(struct cxl_region *cxlr)
- }
- EXPORT_SYMBOL_NS_GPL(devm_cxl_region_edac_register, "CXL");
- 
--void devm_cxl_memdev_edac_release(struct cxl_memdev *cxlmd)
--{
--	struct cxl_mem_err_rec *array_rec = cxlmd->err_rec_array;
--	struct cxl_event_gen_media *rec_gen_media;
--	struct cxl_event_dram *rec_dram;
--	unsigned long index;
--
--	if (!IS_ENABLED(CONFIG_CXL_EDAC_MEM_REPAIR) || !array_rec)
--		return;
--
--	xa_for_each(&array_rec->rec_dram, index, rec_dram)
--		kfree(rec_dram);
--	xa_destroy(&array_rec->rec_dram);
- 
--	xa_for_each(&array_rec->rec_gen_media, index, rec_gen_media)
--		kfree(rec_gen_media);
--	xa_destroy(&array_rec->rec_gen_media);
--}
--EXPORT_SYMBOL_NS_GPL(devm_cxl_memdev_edac_release, "CXL");
-diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
-index e370d733e4400..4dff7f44d908e 100644
---- a/drivers/cxl/core/memdev.c
-+++ b/drivers/cxl/core/memdev.c
-@@ -27,7 +27,6 @@ static void cxl_memdev_release(struct device *dev)
- 	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
- 
- 	ida_free(&cxl_memdev_ida, cxlmd->id);
--	devm_cxl_memdev_edac_release(cxlmd);
- 	kfree(cxlmd);
- }
- 
-diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-index 434031a0c1f74..c12ab4fc95123 100644
---- a/drivers/cxl/cxlmem.h
-+++ b/drivers/cxl/cxlmem.h
-@@ -63,7 +63,7 @@ struct cxl_memdev {
- 	int depth;
- 	u8 scrub_cycle;
- 	int scrub_region_id;
--	void *err_rec_array;
-+	struct cxl_mem_err_rec *err_rec_array;
- };
- 
- static inline struct cxl_memdev *to_cxl_memdev(struct device *dev)
-@@ -877,7 +877,6 @@ int devm_cxl_memdev_edac_register(struct cxl_memdev *cxlmd);
- int devm_cxl_region_edac_register(struct cxl_region *cxlr);
- int cxl_store_rec_gen_media(struct cxl_memdev *cxlmd, union cxl_event *evt);
- int cxl_store_rec_dram(struct cxl_memdev *cxlmd, union cxl_event *evt);
--void devm_cxl_memdev_edac_release(struct cxl_memdev *cxlmd);
- #else
- static inline int devm_cxl_memdev_edac_register(struct cxl_memdev *cxlmd)
- { return 0; }
-@@ -889,8 +888,6 @@ static inline int cxl_store_rec_gen_media(struct cxl_memdev *cxlmd,
- static inline int cxl_store_rec_dram(struct cxl_memdev *cxlmd,
- 				     union cxl_event *evt)
- { return 0; }
--static inline void devm_cxl_memdev_edac_release(struct cxl_memdev *cxlmd)
--{ return; }
- #endif
- 
- #ifdef CONFIG_CXL_SUSPEND
+ 	if (readonly_control(control))
+ 		(*kctl)->access = SNDRV_CTL_ELEM_ACCESS_READ;
 -- 
 2.51.0
 
