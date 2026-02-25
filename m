@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-218927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIq8FuFUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218927-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:17 +0100
+	id aMmlAPBUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1081C18FE19
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F57018FE58
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8E4C830A45A4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8AE1530A5E53
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D9826D4F7;
-	Wed, 25 Feb 2026 01:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B9427E1DC;
+	Wed, 25 Feb 2026 01:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJgTZM/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUs781aa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CD3265CBE;
-	Wed, 25 Feb 2026 01:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7250279DB3;
+	Wed, 25 Feb 2026 01:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983822; cv=none; b=KVr01OUXrdI2xol+3Emz3E+40JcPZwK26tBjvW6+P1UtkxRvZJ8KJBb5+ligkcecIrbHMdakL+t8iSXByy4YWTQh5de4vKpEpdKSpuPX0YozEh2x7F8MZFSg4BsK+Nf3lgTpyOHWLdXqoqGChsXxHLMgCj8bUTFM/YWXEx68LJI=
+	t=1771983836; cv=none; b=JD7J1t2x5U+Bsjtw/XeMsUp5hcnEkk9pUdjxY6b9y3nAVT8ETORbaB0HqP8uRSfFZ773+9WRuX9+GhYyYIxtAXxJ5dKmSoF/wcTQ3DHBS+UK29r1eq3OFl0Q5XI/mN0PbsA8BoZAvIJZkIYBiW3z9Z5RLrcWK/MM8TiE+T5qD5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983822; c=relaxed/simple;
-	bh=Emi3e+tIDuebKsnlDDEmZd0c6LpiFfJFouEPTl+MycI=;
+	s=arc-20240116; t=1771983836; c=relaxed/simple;
+	bh=Nj8YMcytXTp6sp3HzDR4Z5G8XQOnWiu9obFtk6EpfnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fBzq7sM8UC57OwXLA5Ik7ibXet7O9ZJ8kLINnktMygbTln+xDUwHsdyipIgKl324fP3cepJlP9q62ZJ0GZ1tP5v9p8WhZD/SEeEGuC5Wo5cwKGI0fuGN0HBFh+xLJcwKX5CC5LXIxNm3DMe3bsUJ8qQq7+d7IX5AlkwgZOAN54I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJgTZM/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26CAC116D0;
-	Wed, 25 Feb 2026 01:43:41 +0000 (UTC)
+	 MIME-Version; b=aaD+LD9+H5weMKTzh3F+UTxdceNMSOsz40aJL5HhiX3mcyTj37uMbpup83mNXCX0+Dsvy7MpyAEnJlbs70JWQSK9NSvHMVpXLDkIwRP/J5Vx9ARf5ipA5rSc/8ubVZh4fhUfff3XHptrqkJK1DynHkcBMhKLp3f51OdWHhfTC4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUs781aa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D49CC116D0;
+	Wed, 25 Feb 2026 01:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983822;
-	bh=Emi3e+tIDuebKsnlDDEmZd0c6LpiFfJFouEPTl+MycI=;
+	s=korg; t=1771983836;
+	bh=Nj8YMcytXTp6sp3HzDR4Z5G8XQOnWiu9obFtk6EpfnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJgTZM/u43hGRyPNwJ/1g0CGDswJM44o5i4Qb4R3zVPzFbXAAw7BOykESACD95Yw5
-	 pRl+zkDgE7l4Nfms2tQIOtz4GsS8FN++3vuvpH2BGrEAOuzlb86iNR/95fiB/kAM7+
-	 SO5mAjiQyfg0AkRsH1CBUIsDDP4D3mGpDzl9h+Ts=
+	b=AUs781aaiTOxHpSb+cCfsExKAVV8kHtR2adI2YWX03wv1HGVGNAhXwG7IBrSTL0kd
+	 g3GOS+MPRW7cfWGcZUVbRTPjXVH355EenSrkOQI4zMJIOPL2sfLojNcd/MQ49/sTbM
+	 81O5wOd0b3jtAmmLaBc1gehXRDZvB+SZTSfmQW74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Antoine Tenart <atenart@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Tycho Andersen (AMD)" <tycho@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 088/641] crypto: inside-secure/eip93 - fix kernel panic in driver detach
-Date: Tue, 24 Feb 2026 17:16:54 -0800
-Message-ID: <20260225012351.228994279@linuxfoundation.org>
+Subject: [PATCH 6.18 089/641] crypto: ccp - Fix a case where SNP_SHUTDOWN is missed
+Date: Tue, 24 Feb 2026 17:16:55 -0800
+Message-ID: <20260225012351.255405826@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -75,61 +76,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wp.pl,kernel.org,gondor.apana.org.au];
-	TAGGED_FROM(0.00)[bounces-218927-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218938-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,wp.pl:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1081C18FE19
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email]
+X-Rspamd-Queue-Id: 8F57018FE58
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-[ Upstream commit b6e32ba6d32503440a3e3e16c8d0521cbb7e0c5d ]
+[ Upstream commit 551120148b67e04527b405c5ec33a31593846ba4 ]
 
-During driver detach, the same hash algorithm is unregistered multiple
-times due to a wrong iterator.
+If page reclaim fails in sev_ioctl_do_snp_platform_status() and SNP was
+moved from UNINIT to INIT for the function, SNP is not moved back to
+UNINIT state. Additionally, SNP is not required to be initialized in order
+to execute the SNP_PLATFORM_STATUS command, so don't attempt to move to
+INIT state and let SNP_PLATFORM_STATUS report the status as is.
 
-Fixes: 9739f5f93b78 ("crypto: eip93 - Add Inside Secure SafeXcel EIP-93 crypto engine support")
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Reviewed-by: Antoine Tenart <atenart@kernel.org>
+Fixes: ceac7fb89e8d ("crypto: ccp - Ensure implicit SEV/SNP init and shutdown in ioctls")
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Tycho Andersen (AMD) <tycho@kernel.org>
+Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
+Signed-off-by: Tycho Andersen (AMD) <tycho@kernel.org>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/inside-secure/eip93/eip93-main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/ccp/sev-dev.c | 46 ++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/crypto/inside-secure/eip93/eip93-main.c b/drivers/crypto/inside-secure/eip93/eip93-main.c
-index 0b38a567da0e0..3cdc3308dcac8 100644
---- a/drivers/crypto/inside-secure/eip93/eip93-main.c
-+++ b/drivers/crypto/inside-secure/eip93/eip93-main.c
-@@ -90,7 +90,7 @@ static void eip93_unregister_algs(unsigned int i)
- 			crypto_unregister_aead(&eip93_algs[j]->alg.aead);
- 			break;
- 		case EIP93_ALG_TYPE_HASH:
--			crypto_unregister_ahash(&eip93_algs[i]->alg.ahash);
-+			crypto_unregister_ahash(&eip93_algs[j]->alg.ahash);
- 			break;
- 		}
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index 0d13d47c164bb..3c6ee8b4e4487 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -2351,11 +2351,10 @@ static int sev_ioctl_do_pdh_export(struct sev_issue_cmd *argp, bool writable)
+ static int sev_ioctl_do_snp_platform_status(struct sev_issue_cmd *argp)
+ {
+ 	struct sev_device *sev = psp_master->sev_data;
+-	bool shutdown_required = false;
+ 	struct sev_data_snp_addr buf;
+ 	struct page *status_page;
+-	int ret, error;
+ 	void *data;
++	int ret;
+ 
+ 	if (!argp->data)
+ 		return -EINVAL;
+@@ -2366,31 +2365,35 @@ static int sev_ioctl_do_snp_platform_status(struct sev_issue_cmd *argp)
+ 
+ 	data = page_address(status_page);
+ 
+-	if (!sev->snp_initialized) {
+-		ret = snp_move_to_init_state(argp, &shutdown_required);
+-		if (ret)
+-			goto cleanup;
+-	}
+-
+ 	/*
+-	 * Firmware expects status page to be in firmware-owned state, otherwise
+-	 * it will report firmware error code INVALID_PAGE_STATE (0x1A).
++	 * SNP_PLATFORM_STATUS can be executed in any SNP state. But if executed
++	 * when SNP has been initialized, the status page must be firmware-owned.
+ 	 */
+-	if (rmp_mark_pages_firmware(__pa(data), 1, true)) {
+-		ret = -EFAULT;
+-		goto cleanup;
++	if (sev->snp_initialized) {
++		/*
++		 * Firmware expects the status page to be in Firmware state,
++		 * otherwise it will report an error INVALID_PAGE_STATE.
++		 */
++		if (rmp_mark_pages_firmware(__pa(data), 1, true)) {
++			ret = -EFAULT;
++			goto cleanup;
++		}
  	}
+ 
+ 	buf.address = __psp_pa(data);
+ 	ret = __sev_do_cmd_locked(SEV_CMD_SNP_PLATFORM_STATUS, &buf, &argp->error);
+ 
+-	/*
+-	 * Status page will be transitioned to Reclaim state upon success, or
+-	 * left in Firmware state in failure. Use snp_reclaim_pages() to
+-	 * transition either case back to Hypervisor-owned state.
+-	 */
+-	if (snp_reclaim_pages(__pa(data), 1, true))
+-		return -EFAULT;
++	if (sev->snp_initialized) {
++		/*
++		 * The status page will be in Reclaim state on success, or left
++		 * in Firmware state on failure. Use snp_reclaim_pages() to
++		 * transition either case back to Hypervisor-owned state.
++		 */
++		if (snp_reclaim_pages(__pa(data), 1, true)) {
++			snp_leak_pages(__page_to_pfn(status_page), 1);
++			return -EFAULT;
++		}
++	}
+ 
+ 	if (ret)
+ 		goto cleanup;
+@@ -2400,9 +2403,6 @@ static int sev_ioctl_do_snp_platform_status(struct sev_issue_cmd *argp)
+ 		ret = -EFAULT;
+ 
+ cleanup:
+-	if (shutdown_required)
+-		__sev_snp_shutdown_locked(&error, false);
+-
+ 	__free_pages(status_page, 0);
+ 	return ret;
+ }
 -- 
 2.51.0
 
