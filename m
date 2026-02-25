@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218901-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CE/3C8VSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:17 +0100
+	id aGe6G2xWnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218901-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD6418F521
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2751902D7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A650930A60D4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 771C230A7576
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479E01FE45D;
-	Wed, 25 Feb 2026 01:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429D22820A4;
+	Wed, 25 Feb 2026 01:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlPkDqS2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aj9xAjR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3561D5ABA;
-	Wed, 25 Feb 2026 01:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0531919FA93;
+	Wed, 25 Feb 2026 01:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983142; cv=none; b=kYLUSR2+bEd33MRVzrtyaWELeD5NLx03gFnadTikuFBJf5LSPd2LpV5/9uQH64QKXYLKFilAwXXsqX/4EKXPs0Bi2YrpkNMrKK5QRpmTKVd7m5gBIu0c4PzDHTvP3BbDtu1gYdO10z5CTQhJhoPaOekgMLVAApf2jBrqao5rKEM=
+	t=1771983793; cv=none; b=FIBgPAShrLWg2lGwqBckmcJ0gIpVl+SNjAyxyDQ91LGALGylWk/ZEAFtttBDVSQq/k8d0ZotoI7CcAD5nB1F2WL9whIun9xJT6apq+wd3HgLWP1VDYndEGYLwRlBYjDmG7TzfOYmFPjVENfEimRQuQGRheVqRCuWFOgRel0ZEXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983142; c=relaxed/simple;
-	bh=nSNPfmaPDqNZRe1uzaXoZH5tSWpGj5zx/Np/OPxY3wQ=;
+	s=arc-20240116; t=1771983793; c=relaxed/simple;
+	bh=QDEV1Qb0y0OQ4kKrrQC2a2qHDZIVfkpSTgu1YBWb9FM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0N62sMWiOSsIAYu4OQxBLI/hAUfH36bnaljqlDgp2xGgvsePJjgrIicnwgT8CD+WQ0nSBgXcuWPdyEEJYtXujA8O0oWES9jPuZPSmE0wn1jxDx/1bEc05ajSJ8Vo9VFWbcB2QKsEWPwbtaLW5iXFndlBooXMaafsAo0SQCXG4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlPkDqS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86CE2C116D0;
-	Wed, 25 Feb 2026 01:32:21 +0000 (UTC)
+	 MIME-Version; b=fuK7PWzqdub7hayCF8l7Ds1FmLXDBQ65PlOTCoJgmzE8RayqKCy8DEVYrEoCOFiXXcGQzAPkmpZaqVxPSXzXOw1sWvJjxsc2/K5U4mVsGy4hmP+tsaohkShGrrY5F+hJv0hiZY3hIh6y7+BY7eXGKEz3PGlf1i4gPOb2ivWiCBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aj9xAjR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA29AC116D0;
+	Wed, 25 Feb 2026 01:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983141;
-	bh=nSNPfmaPDqNZRe1uzaXoZH5tSWpGj5zx/Np/OPxY3wQ=;
+	s=korg; t=1771983792;
+	bh=QDEV1Qb0y0OQ4kKrrQC2a2qHDZIVfkpSTgu1YBWb9FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZlPkDqS2jmojqtrb98AyQTuZIMY6WQNBIJ0kL8GP9ahvMfCmKq5x9Wbya82HM+b6l
-	 5f9yBoZRBytWF8qzYzrLMO/Mm39VbCnCKWEBvWKCgqW9baRtjkHoxz72uNT5Rh/YYX
-	 vUpLABc84psBcomQL1INJToArMfso5i8uhDa+GZM=
+	b=aj9xAjR/3kUEpCvwGA6O6VlVZ5lXJYqSUBLKL2jf56/p2nydg2ZsEr3GLkA+FhIKp
+	 nWIa3oo+q9RP8YgjmDs+3RTV/T7v5nr52oYPXGyZaZiyciKevH11Jz4V1zO0UTsfrd
+	 cUIxQDTRASNbP+zENtUL/hjSng/0NyT5RNNsdQGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zishun Yi <zishun.yi.dev@gmail.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Min Ma <mamin506@gmail.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Weili Qian <qianweili@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 295/781] accel/amdxdna: Fix memory leak in amdxdna_ubuf_map
+Subject: [PATCH 6.18 078/641] crypto: hisilicon/qm - centralize the sending locks of each module into qm
 Date: Tue, 24 Feb 2026 17:16:44 -0800
-Message-ID: <20260225012406.944695732@linuxfoundation.org>
+Message-ID: <20260225012350.962551698@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +66,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218335-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218901-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4DD6418F521
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
+X-Rspamd-Queue-Id: 1A2751902D7
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zishun Yi <zishun.yi.dev@gmail.com>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit 84dd57fb0359500092f1101409ca32091731490d ]
+[ Upstream commit 8cd9b608ee8dea78cac3f373bd5e3b3de2755d46 ]
 
-The amdxdna_ubuf_map() function allocates memory for sg and
-internal sg table structures, but it fails to free them if subsequent
-operations (sg_alloc_table_from_pages or dma_map_sgtable) fail.
+When a single queue used by multiple tfms, the protection of shared
+resources by individual module driver programs is no longer
+sufficient. The hisi_qp_send needs to be ensured by the lock in qp.
 
-Fixes: bd72d4acda10 ("accel/amdxdna: Support user space allocated buffer")
-Signed-off-by: Zishun Yi <zishun.yi.dev@gmail.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Reviewed-by: Min Ma <mamin506@gmail.com>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20260129171022.68578-1-zishun.yi.dev@gmail.com
+Fixes: 5fdb4b345cfb ("crypto: hisilicon - add a lock for the qp send operation")
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Weili Qian <qianweili@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/amdxdna_ubuf.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/crypto/hisilicon/hpre/hpre_crypto.c |  4 ----
+ drivers/crypto/hisilicon/qm.c               | 16 ++++++++++++----
+ drivers/crypto/hisilicon/zip/zip_crypto.c   |  3 ---
+ include/linux/hisi_acc_qm.h                 |  1 +
+ 4 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/amdxdna_ubuf.c b/drivers/accel/amdxdna/amdxdna_ubuf.c
-index 077b2261cf2a0..9e3b3b055caa8 100644
---- a/drivers/accel/amdxdna/amdxdna_ubuf.c
-+++ b/drivers/accel/amdxdna/amdxdna_ubuf.c
-@@ -34,15 +34,21 @@ static struct sg_table *amdxdna_ubuf_map(struct dma_buf_attachment *attach,
- 	ret = sg_alloc_table_from_pages(sg, ubuf->pages, ubuf->nr_pages, 0,
- 					ubuf->nr_pages << PAGE_SHIFT, GFP_KERNEL);
- 	if (ret)
--		return ERR_PTR(ret);
-+		goto err_free_sg;
+diff --git a/drivers/crypto/hisilicon/hpre/hpre_crypto.c b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
+index 4197281c8dff5..220022ae7afb6 100644
+--- a/drivers/crypto/hisilicon/hpre/hpre_crypto.c
++++ b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
+@@ -109,7 +109,6 @@ struct hpre_ctx {
+ 	struct hisi_qp *qp;
+ 	struct device *dev;
+ 	struct hpre *hpre;
+-	spinlock_t req_lock;
+ 	unsigned int key_sz;
+ 	bool crt_g2_mode;
+ 	union {
+@@ -410,7 +409,6 @@ static int hpre_ctx_init(struct hpre_ctx *ctx, u8 type)
  
- 	if (ubuf->flags & AMDXDNA_UBUF_FLAG_MAP_DMA) {
- 		ret = dma_map_sgtable(attach->dev, sg, direction, 0);
- 		if (ret)
--			return ERR_PTR(ret);
-+			goto err_free_table;
+ 	qp->qp_ctx = ctx;
+ 	qp->req_cb = hpre_alg_cb;
+-	spin_lock_init(&ctx->req_lock);
+ 	ctx->qp = qp;
+ 	ctx->dev = &qp->qm->pdev->dev;
+ 	hpre = container_of(ctx->qp->qm, struct hpre, qm);
+@@ -478,9 +476,7 @@ static int hpre_send(struct hpre_ctx *ctx, struct hpre_sqe *msg)
+ 
+ 	do {
+ 		atomic64_inc(&dfx[HPRE_SEND_CNT].value);
+-		spin_lock_bh(&ctx->req_lock);
+ 		ret = hisi_qp_send(ctx->qp, msg);
+-		spin_unlock_bh(&ctx->req_lock);
+ 		if (ret != -EBUSY)
+ 			break;
+ 		atomic64_inc(&dfx[HPRE_SEND_BUSY_CNT].value);
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index 41b7ffa0fb1ae..c2c24c3a2be86 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -2360,26 +2360,33 @@ EXPORT_SYMBOL_GPL(hisi_qm_stop_qp);
+ int hisi_qp_send(struct hisi_qp *qp, const void *msg)
+ {
+ 	struct hisi_qp_status *qp_status = &qp->qp_status;
+-	u16 sq_tail = qp_status->sq_tail;
+-	u16 sq_tail_next = (sq_tail + 1) % qp->sq_depth;
+-	void *sqe = qm_get_avail_sqe(qp);
++	u16 sq_tail, sq_tail_next;
++	void *sqe;
+ 
++	spin_lock_bh(&qp->qp_lock);
+ 	if (unlikely(atomic_read(&qp->qp_status.flags) == QP_STOP ||
+ 		     atomic_read(&qp->qm->status.flags) == QM_STOP ||
+ 		     qp->is_resetting)) {
++		spin_unlock_bh(&qp->qp_lock);
+ 		dev_info_ratelimited(&qp->qm->pdev->dev, "QP is stopped or resetting\n");
+ 		return -EAGAIN;
  	}
  
- 	return sg;
-+
-+err_free_table:
-+	sg_free_table(sg);
-+err_free_sg:
-+	kfree(sg);
-+	return ERR_PTR(ret);
- }
+-	if (!sqe)
++	sqe = qm_get_avail_sqe(qp);
++	if (!sqe) {
++		spin_unlock_bh(&qp->qp_lock);
+ 		return -EBUSY;
++	}
  
- static void amdxdna_ubuf_unmap(struct dma_buf_attachment *attach,
++	sq_tail = qp_status->sq_tail;
++	sq_tail_next = (sq_tail + 1) % qp->sq_depth;
+ 	memcpy(sqe, msg, qp->qm->sqe_size);
+ 	qp->msg[sq_tail] = msg;
+ 
+ 	qm_db(qp->qm, qp->qp_id, QM_DOORBELL_CMD_SQ, sq_tail_next, 0);
+ 	atomic_inc(&qp->qp_status.used);
+ 	qp_status->sq_tail = sq_tail_next;
++	spin_unlock_bh(&qp->qp_lock);
+ 
+ 	return 0;
+ }
+@@ -2956,6 +2963,7 @@ static int hisi_qp_memory_init(struct hisi_qm *qm, size_t dma_size, int id,
+ 	qp->qm = qm;
+ 	qp->qp_id = id;
+ 
++	spin_lock_init(&qp->qp_lock);
+ 	spin_lock_init(&qp->backlog.lock);
+ 	INIT_LIST_HEAD(&qp->backlog.list);
+ 
+diff --git a/drivers/crypto/hisilicon/zip/zip_crypto.c b/drivers/crypto/hisilicon/zip/zip_crypto.c
+index 8250a33ba5862..2f9035c016f3f 100644
+--- a/drivers/crypto/hisilicon/zip/zip_crypto.c
++++ b/drivers/crypto/hisilicon/zip/zip_crypto.c
+@@ -217,7 +217,6 @@ static int hisi_zip_do_work(struct hisi_zip_qp_ctx *qp_ctx,
+ {
+ 	struct hisi_acc_sgl_pool *pool = qp_ctx->sgl_pool;
+ 	struct hisi_zip_dfx *dfx = &qp_ctx->zip_dev->dfx;
+-	struct hisi_zip_req_q *req_q = &qp_ctx->req_q;
+ 	struct acomp_req *a_req = req->req;
+ 	struct hisi_qp *qp = qp_ctx->qp;
+ 	struct device *dev = &qp->qm->pdev->dev;
+@@ -250,9 +249,7 @@ static int hisi_zip_do_work(struct hisi_zip_qp_ctx *qp_ctx,
+ 
+ 	/* send command to start a task */
+ 	atomic64_inc(&dfx->send_cnt);
+-	spin_lock_bh(&req_q->req_lock);
+ 	ret = hisi_qp_send(qp, &zip_sqe);
+-	spin_unlock_bh(&req_q->req_lock);
+ 	if (unlikely(ret < 0)) {
+ 		atomic64_inc(&dfx->send_busy_cnt);
+ 		ret = -EAGAIN;
+diff --git a/include/linux/hisi_acc_qm.h b/include/linux/hisi_acc_qm.h
+index 4f83f07009907..75ae01ddaa1a8 100644
+--- a/include/linux/hisi_acc_qm.h
++++ b/include/linux/hisi_acc_qm.h
+@@ -473,6 +473,7 @@ struct hisi_qp {
+ 	u16 pasid;
+ 	struct uacce_queue *uacce_q;
+ 
++	spinlock_t qp_lock;
+ 	struct instance_backlog backlog;
+ 	const void **msg;
+ };
 -- 
 2.51.0
 
