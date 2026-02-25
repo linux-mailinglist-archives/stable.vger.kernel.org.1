@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qD5QBedVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:39 +0100
+	id oNrxKQOenmk5WgQAu9opvQ
+	(envelope-from <stable+bounces-219436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C82190142
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7FE192B53
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1BCC830B8429
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1611C304671E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790D6258EF9;
-	Wed, 25 Feb 2026 01:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A822E313E3D;
+	Wed, 25 Feb 2026 06:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hy1x6VQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIKAcmiP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC86262FC0;
-	Wed, 25 Feb 2026 01:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3D530F53B;
+	Wed, 25 Feb 2026 06:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983652; cv=none; b=Kb9IiSHKNjmDaKa6QbkMBYeaVeVsvmaA3yjVHl8eZxOL4iJOWDSo9DIR6PqduUbZzY3cdQ31WXdnZH3HfAVbypW/WaIoDtOH/uZC0QuElNsoagCa6BeXQ1AOLARm+z4XqnvOgdzRDVtrtHduB2hdC8kv+vmbwkhVbb4lBiA9CbI=
+	t=1772002714; cv=none; b=hQaekfcmIV8Xhz3BKtxLywh/geGB0cEFl3d4GU71WeRYcXElHhdn3Bu5qd3OUA31Xp14dyf8uIik3mnfR1VQsROfkAzbZ3eMmIkNfo5qq1aUI7nf6IclU2EvW081ob2Ic+V6fOzZPLLiyXSHAEF78kFtDIA79FA2QNsJkzB6TgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983652; c=relaxed/simple;
-	bh=XVBpZbBXquTFsn4Ql9APXExxu44O2on1TE6lv0zalgc=;
+	s=arc-20240116; t=1772002714; c=relaxed/simple;
+	bh=3eq+6kDWSmF+Aj8XL3qEt+45Lmb+8044A2dp9X4S/ZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQNpzgqTtz2BkXwA34uLNIj/XZW8JYj+znLSVIE53aRXUADDj9C6acmglQa3JJBEMpD5+lmOX8gL3rEfpcKrnkqVo6ATZtfFsNPiyPB/avjqvKKPJ10SHbjl8qxE7stoabHelqA42JRVxP3huDbcyTHQCa2hlgiXV+7iJfHaZFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hy1x6VQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACB5C116D0;
-	Wed, 25 Feb 2026 01:40:51 +0000 (UTC)
+	 MIME-Version; b=oPwl44hqFIcOv5FdGT1hpTxO114nZ/OAyJ+ZgHijb8n8D2njE+tOmHRsf/7hL+oPAeuVHvRGcTScbkcN12iuyIiryVo6c/9zSHDofOJfacgPKTRDGg6wGOqfiuenykgx3o0592fF46TybruSwHOwdtWlZpx0O05TjQXPgXDLyRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIKAcmiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45477C116D0;
+	Wed, 25 Feb 2026 06:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983652;
-	bh=XVBpZbBXquTFsn4Ql9APXExxu44O2on1TE6lv0zalgc=;
+	s=korg; t=1772002714;
+	bh=3eq+6kDWSmF+Aj8XL3qEt+45Lmb+8044A2dp9X4S/ZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hy1x6VQ5PcPnfCQfV1eatZOvT3eMDyCbl47bxLvAouApOdQhCytM6Tjmafv3PQEOa
-	 vVvrvPUzy3Y3WNtG6jHFhNlB+mE661AzChNYS3x6ilEWWu4xLeChu1tGVOwKUnXlwC
-	 tjTCuVIFNzb62Xtw8LiNvH5LzL6K3wECiEOEfX6I=
+	b=IIKAcmiPg3M04nUp6QM9yEFm1+EPWf0WA6NfMv85YqSwyHAEplPkN30O9y+bJW/Gn
+	 5B0TRWt6TX8xAJN0sbQ4xmKM3QhVZX1zA0dZzn9IXiPU2jphzY8ijnmis/ApriXdej
+	 rPTE4ajs4+MNbxQ4D4DJedLtiTlB324CklsXUB4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 738/781] btrfs: fix invalid leaf access in btrfs_quota_enable() if ref key not found
+Subject: [PATCH 6.18 521/641] net: mscc: ocelot: add missing lock protection in ocelot_port_xmit_inj()
 Date: Tue, 24 Feb 2026 17:24:07 -0800
-Message-ID: <20260225012417.830188918@linuxfoundation.org>
+Message-ID: <20260225012401.153756617@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218779-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219436-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,62 +87,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 64C82190142
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4E7FE192B53
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-[ Upstream commit ecb7c2484cfc83a93658907580035a8adf1e0a92 ]
+[ Upstream commit 026f6513c5880c2c89e38ad66bbec2868f978605 ]
 
-If btrfs_search_slot_for_read() returns 1, it means we did not find any
-key greater than or equals to the key we asked for, meaning we have
-reached the end of the tree and therefore the path is not valid. If
-this happens we need to break out of the loop and stop, instead of
-continuing and accessing an invalid path.
+ocelot_port_xmit_inj() calls ocelot_can_inject() and
+ocelot_port_inject_frame() without holding the injection group lock.
+Both functions contain lockdep_assert_held() for the injection lock,
+and the correct caller felix_port_deferred_xmit() properly acquires
+the lock using ocelot_lock_inj_grp() before calling these functions.
 
-Fixes: 5223cc60b40a ("btrfs: drop the path before adding qgroup items when enabling qgroups")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Add ocelot_lock_inj_grp()/ocelot_unlock_inj_grp() around the register
+injection path to fix the missing lock protection. The FDMA path is not
+affected as it uses its own locking mechanism.
+
+Fixes: c5e12ac3beb0 ("net: mscc: ocelot: serialize access to the injection/extraction groups")
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20260208225602.1339325-4-n7l8m4@u.northwestern.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mscc/ocelot_net.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index c634e01140514..bed9d1c11c67a 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1137,11 +1137,14 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
- 			}
- 			if (ret > 0) {
- 				/*
--				 * Shouldn't happen, but in case it does we
--				 * don't need to do the btrfs_next_item, just
--				 * continue.
-+				 * Shouldn't happen because the key should still
-+				 * be there (return 0), but in case it does it
-+				 * means we have reached the end of the tree -
-+				 * there are no more leaves with items that have
-+				 * a key greater than or equals to @found_key,
-+				 * so just stop the search loop.
- 				 */
--				continue;
-+				break;
- 			}
- 		}
- 		ret = btrfs_next_item(tree_root, path);
+diff --git a/drivers/net/ethernet/mscc/ocelot_net.c b/drivers/net/ethernet/mscc/ocelot_net.c
+index a7966c174b2e2..1b82693204640 100644
+--- a/drivers/net/ethernet/mscc/ocelot_net.c
++++ b/drivers/net/ethernet/mscc/ocelot_net.c
+@@ -597,14 +597,22 @@ static netdev_tx_t ocelot_port_xmit_inj(struct sk_buff *skb,
+ 	int port = priv->port.index;
+ 	u32 rew_op = 0;
+ 
+-	if (!ocelot_can_inject(ocelot, 0))
++	ocelot_lock_inj_grp(ocelot, 0);
++
++	if (!ocelot_can_inject(ocelot, 0)) {
++		ocelot_unlock_inj_grp(ocelot, 0);
+ 		return NETDEV_TX_BUSY;
++	}
+ 
+-	if (!ocelot_xmit_timestamp(ocelot, port, skb, &rew_op))
++	if (!ocelot_xmit_timestamp(ocelot, port, skb, &rew_op)) {
++		ocelot_unlock_inj_grp(ocelot, 0);
+ 		return NETDEV_TX_OK;
++	}
+ 
+ 	ocelot_port_inject_frame(ocelot, port, 0, rew_op, skb);
+ 
++	ocelot_unlock_inj_grp(ocelot, 0);
++
+ 	consume_skb(skb);
+ 
+ 	return NETDEV_TX_OK;
 -- 
 2.51.0
 
