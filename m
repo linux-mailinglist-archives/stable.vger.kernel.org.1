@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MoPAOlVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:41 +0100
+	id iMMqAplSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22820190156
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9A318F443
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 939F8328C328
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9908C31287FA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A416924A05D;
-	Wed, 25 Feb 2026 01:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7EA248881;
+	Wed, 25 Feb 2026 01:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vl3bAjo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18KORUnL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6729619FA93;
-	Wed, 25 Feb 2026 01:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCD41D5ABA;
+	Wed, 25 Feb 2026 01:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983744; cv=none; b=ECY6ZbFuuj+O/lbEg7wUMJU2sQSgKrwx9iNDfWGNAsgbp3VLfxEt8o5pLB/B/i5B5XWMzZrksfajx0m5qa1f4Nu+80267UkkHDbgalXd/Z+IdZQQt3CXGtaXjTNQw9FK9EtyIl4aAFrX5QgCdD6mbymp49DBrZXKYDkfHJ6GhVw=
+	t=1771983123; cv=none; b=A4S9yG/6RUCuarNW9e4Tbhsb7EF569jkLBq/2waUEmE1JIIkiQbZzcqbQJWp3E81IppQ0SWhpOuii7MGhokhykSr52ab9dmU1xGCP+1M455xX8WwWLAZWbwVgryzV8ClYnIkFuEZ3hwM1GPCdMJQKXIHAduSW5veqM1hDUJdBIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983744; c=relaxed/simple;
-	bh=PtZbwm77/yUuVOgdgM2mJwVC7pcmgKbOwsgM+SL2X/E=;
+	s=arc-20240116; t=1771983123; c=relaxed/simple;
+	bh=0f2hww6WPrRIor2dlI45mZl1z+6/m7bIqhF3i3pPoko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EWcJAFpAckTKW/QNGUOUrmFMjFnVoW11CgYHSI4cZd8PfURd758vs1h9yzyNJLLjhF/uwfqYWnMXBvQRP1iQYVg7+1jg1TtKQDiaOMaSmlj5rlCRlDGUAjA8fYF7/+NmzEtleevPGgQwTm4nPzFTIQTlDlbIQzj3UP/UJUu2j18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vl3bAjo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D876C116D0;
-	Wed, 25 Feb 2026 01:42:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AtbdZrXYUh+Gqj5H/1jdC9fnHaLrD7US5U+Y0r+Rcv/zMQe65A9CHlPBc0MJW6L9WnLEaeO4Owoo1Wz1oIPKmbEQlsdtj3MmxOfs8azp9mp465TAVSzPzw7gxBl0uhAtn29PHmZSkw3fIRI5vak5tUKlCv/9d9/eD4S9VXA4xfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18KORUnL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C15C116D0;
+	Wed, 25 Feb 2026 01:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983744;
-	bh=PtZbwm77/yUuVOgdgM2mJwVC7pcmgKbOwsgM+SL2X/E=;
+	s=korg; t=1771983123;
+	bh=0f2hww6WPrRIor2dlI45mZl1z+6/m7bIqhF3i3pPoko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vl3bAjo+fah5wz5V5tqq8OdWp2AqhN83V16l1AfPtQeZrT0ntWK2EOAO+nVHNuILc
-	 zS0UICBff9oKAHSBphmo3RYIJ3Q6XJ1caJS5a02pC4TRJerccPmQtzSJvPc78096JC
-	 Ry3cVZ3zG7dS/IVink+nGBNTjpGKMl91VJ1S3UKY=
+	b=18KORUnLgKkkxZoMp7ntjO1++bRfL4ATSUh6389HlabA4TdopjlhCZuLfsvvpPmNz
+	 kEZQa0t+c0yDwNDj8AYw827o8XolWypfNJaU9THJ28RypTFUYZ4l5A0nIqqKQ7B55v
+	 z4GuytKqVKfNWTkYCJlkjSkMsCZD8TIeUPehuKCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 037/641] io_uring: use release-acquire ordering for IORING_SETUP_R_DISABLED
-Date: Tue, 24 Feb 2026 17:16:03 -0800
-Message-ID: <20260225012349.901111466@linuxfoundation.org>
+Subject: [PATCH 6.19 255/781] regulator: core: move supply check earlier in set_machine_constraints()
+Date: Tue, 24 Feb 2026 17:16:04 -0800
+Message-ID: <20260225012405.961082000@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,128 +63,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,purestorage.com,gmail.com,suse.de,kernel.dk,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218859-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218320-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,purestorage.com:email,kernel.dk:email]
-X-Rspamd-Queue-Id: 22820190156
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
+X-Rspamd-Queue-Id: 8B9A318F443
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit 7a8737e1132ff07ca225aa7a4008f87319b5b1ca ]
+[ Upstream commit 86a8eeb0e913f4b6a55dabba5122098d4e805e55 ]
 
-io_uring_enter(), __io_msg_ring_data(), and io_msg_send_fd() read
-ctx->flags and ctx->submitter_task without holding the ctx's uring_lock.
-This means they may race with the assignment to ctx->submitter_task and
-the clearing of IORING_SETUP_R_DISABLED from ctx->flags in
-io_register_enable_rings(). Ensure the correct ordering of the
-ctx->flags and ctx->submitter_task memory accesses by storing to
-ctx->flags using release ordering and loading it using acquire ordering.
+Since commit 98e48cd9283d ("regulator: core: resolve supply for
+boot-on/always-on regulators"), set_machine_constraints() can return
+-EPROBE_DEFER very late, after it has done a lot of work and
+configuration of the regulator.
 
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Fixes: 4add705e4eeb ("io_uring: remove io_register_submitter")
-Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This means that configuration will happen multiple times for no
+benefit in that case. Furthermore, this can lead to timing-dependent
+voltage glitches as mentioned e.g. in commit 8a866d527ac0 ("regulator:
+core: Resolve supply name earlier to prevent double-init").
+
+We can know that it's going to fail very early, in particular before
+going through the complete regulator configuration by moving some code
+around a little.
+
+Do so to avoid re-configuring the regulator multiple times, also
+avoiding the voltage glitches if we can.
+
+Fixes: 98e48cd9283d ("regulator: core: resolve supply for boot-on/always-on regulators")
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://patch.msgid.link/20260109-regulators-defer-v2-3-1a25dc968e60@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |  6 +++++-
- io_uring/msg_ring.c | 12 ++++++++++--
- io_uring/register.c |  3 ++-
- 3 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/regulator/core.c | 55 ++++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 25 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 104192bcc8e4b..d8a35a49dd1ac 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3490,7 +3490,11 @@ SYSCALL_DEFINE6(io_uring_enter, unsigned int, fd, u32, to_submit,
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index b2dcd1acd0ece..d0140227fcbdb 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1444,6 +1444,33 @@ static int set_machine_constraints(struct regulator_dev *rdev)
+ 	int ret = 0;
+ 	const struct regulator_ops *ops = rdev->desc->ops;
  
- 	ctx = file->private_data;
- 	ret = -EBADFD;
--	if (unlikely(ctx->flags & IORING_SETUP_R_DISABLED))
 +	/*
-+	 * Keep IORING_SETUP_R_DISABLED check before submitter_task load
-+	 * in io_uring_add_tctx_node() -> __io_uring_add_tctx_node_from_submit()
++	 * If there is no mechanism for controlling the regulator then
++	 * flag it as always_on so we don't end up duplicating checks
++	 * for this so much.  Note that we could control the state of
++	 * a supply to control the output on a regulator that has no
++	 * direct control.
 +	 */
-+	if (unlikely(smp_load_acquire(&ctx->flags) & IORING_SETUP_R_DISABLED))
- 		goto out;
- 
- 	/*
-diff --git a/io_uring/msg_ring.c b/io_uring/msg_ring.c
-index 5e5b94236d720..bce74a8b64c6e 100644
---- a/io_uring/msg_ring.c
-+++ b/io_uring/msg_ring.c
-@@ -124,7 +124,11 @@ static int __io_msg_ring_data(struct io_ring_ctx *target_ctx,
- 		return -EINVAL;
- 	if (!(msg->flags & IORING_MSG_RING_FLAGS_PASS) && msg->dst_fd)
- 		return -EINVAL;
--	if (target_ctx->flags & IORING_SETUP_R_DISABLED)
++	if (!rdev->ena_pin && !ops->enable) {
++		if (rdev->supply_name && !rdev->supply)
++			return -EPROBE_DEFER;
++
++		if (rdev->supply)
++			rdev->constraints->always_on =
++				rdev->supply->rdev->constraints->always_on;
++		else
++			rdev->constraints->always_on = true;
++	}
++
 +	/*
-+	 * Keep IORING_SETUP_R_DISABLED check before submitter_task load
-+	 * in io_msg_data_remote() -> io_msg_remote_post()
++	 * If we want to enable this regulator, make sure that we know the
++	 * supplying regulator.
 +	 */
-+	if (smp_load_acquire(&target_ctx->flags) & IORING_SETUP_R_DISABLED)
- 		return -EBADFD;
++	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
++		if (rdev->supply_name && !rdev->supply)
++			return -EPROBE_DEFER;
++	}
++
+ 	ret = machine_constraints_voltage(rdev, rdev->constraints);
+ 	if (ret != 0)
+ 		return ret;
+@@ -1609,37 +1636,15 @@ static int set_machine_constraints(struct regulator_dev *rdev)
+ 		}
+ 	}
  
- 	if (io_msg_need_remote(target_ctx))
-@@ -244,7 +248,11 @@ static int io_msg_send_fd(struct io_kiocb *req, unsigned int issue_flags)
- 		return -EINVAL;
- 	if (target_ctx == ctx)
- 		return -EINVAL;
--	if (target_ctx->flags & IORING_SETUP_R_DISABLED)
-+	/*
-+	 * Keep IORING_SETUP_R_DISABLED check before submitter_task load
-+	 * in io_msg_fd_remote()
-+	 */
-+	if (smp_load_acquire(&target_ctx->flags) & IORING_SETUP_R_DISABLED)
- 		return -EBADFD;
- 	if (!msg->src_file) {
- 		int ret = io_msg_grab_file(req, issue_flags);
-diff --git a/io_uring/register.c b/io_uring/register.c
-index d189b266b8cce..db53e664348d7 100644
---- a/io_uring/register.c
-+++ b/io_uring/register.c
-@@ -193,7 +193,8 @@ static int io_register_enable_rings(struct io_ring_ctx *ctx)
- 	if (ctx->restrictions.registered)
- 		ctx->restricted = 1;
+-	/*
+-	 * If there is no mechanism for controlling the regulator then
+-	 * flag it as always_on so we don't end up duplicating checks
+-	 * for this so much.  Note that we could control the state of
+-	 * a supply to control the output on a regulator that has no
+-	 * direct control.
+-	 */
+-	if (!rdev->ena_pin && !ops->enable) {
+-		if (rdev->supply_name && !rdev->supply)
+-			return -EPROBE_DEFER;
+-
+-		if (rdev->supply)
+-			rdev->constraints->always_on =
+-				rdev->supply->rdev->constraints->always_on;
+-		else
+-			rdev->constraints->always_on = true;
+-	}
+-
+ 	/* If the constraints say the regulator should be on at this point
+ 	 * and we have control then make sure it is enabled.
+ 	 */
+ 	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
+ 		bool supply_enabled = false;
  
--	ctx->flags &= ~IORING_SETUP_R_DISABLED;
-+	/* Keep submitter_task store before clearing IORING_SETUP_R_DISABLED */
-+	smp_store_release(&ctx->flags, ctx->flags & ~IORING_SETUP_R_DISABLED);
- 	if (ctx->sq_data && wq_has_sleeper(&ctx->sq_data->wait))
- 		wake_up(&ctx->sq_data->wait);
- 	return 0;
+-		/* If we want to enable this regulator, make sure that we know
+-		 * the supplying regulator.
+-		 */
+-		if (rdev->supply_name && !rdev->supply)
+-			return -EPROBE_DEFER;
+-
+-		/* If supplying regulator has already been enabled,
++		/* We have ensured a potential supply has been resolved above.
++		 *
++		 * If supplying regulator has already been enabled,
+ 		 * it's not intended to have use_count increment
+ 		 * when rdev is only boot-on.
+ 		 */
 -- 
 2.51.0
 
