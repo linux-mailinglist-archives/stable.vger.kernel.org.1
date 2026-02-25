@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0G1YLZJTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:42 +0100
+	id CNUEFHOdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5163018F90A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4D51929D4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B09FB3144963
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDEFC309EE96
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86559253932;
-	Wed, 25 Feb 2026 01:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B752C11CD;
+	Wed, 25 Feb 2026 06:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ku4bTJ+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVhEcd3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE4D18B0A;
-	Wed, 25 Feb 2026 01:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940FF2D322F;
+	Wed, 25 Feb 2026 06:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983393; cv=none; b=hqISuukjs/ajMRPKAB003Mp8pSOMf6Ie4jFpA0fd9hFCEvo+0ioL8hDFHBP9ZtnGAJHdEBkGOUoJqqDiVPmdf0Rzw0DBDPibBd3L4PCMVpOeI1GWrChXFV0APhSbPc3z5bR8H1qQCv3euAKmiR0n8xxZr3fjvHIH/Y8dtnEmLtc=
+	t=1772002564; cv=none; b=RHbbY9QQIh22TQH/oL6DI5GWbnA18euzqdCldXrCgcZrLMcKu3B5t8bcl5qp02m4rYxXRN37upFnYnQfOEjzTIwmuCqciERmsikD8b4gKDTaErD2imx2GV21ywGpyaVwyqImDHQOBlE7QgHP9I9nqQ3zIyrxYhMe12pc95e3NYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983393; c=relaxed/simple;
-	bh=rrQdZBWbOCMtCas/X6Vd3I8wl70dGeo7uSCVVuHtTf4=;
+	s=arc-20240116; t=1772002564; c=relaxed/simple;
+	bh=xekCzRQYIXcFm01+Ulwn5lHQeNigUXXqXCFdaKVFD/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I9HJV3RFqgQRSKfaqVca2b7PZ0GXHR2Z8d6j/oeF9Ch05kmlf40+I6VveahuL3AxGxwZhztTaOTABLj9v+zT1BS/ZtBPB5+DQ9EHp643cDDoc0DGyu44Gd3SCnaidxPFlYHmDz3C0P1pFRyq+41IeuMRJrrHDAOFLLf8QYaKok4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ku4bTJ+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045FEC116D0;
-	Wed, 25 Feb 2026 01:36:32 +0000 (UTC)
+	 MIME-Version; b=B0pkahZuLRXE9q4emD5DsSGPj3rQrzQlFpMOAmW47bjoc+c6Td+ftbXLe+g61zn0sd2GWmmyNgvkLrASLbep0cIcdeNZaCOXpPAX6TIWocxFH9W0Zb/nT5rKWAAbCgWZLrD4M9VPKrYGWdY/kFYSHTUsUeGR9nAZPQ6T24ekAfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVhEcd3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7CBC19425;
+	Wed, 25 Feb 2026 06:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983393;
-	bh=rrQdZBWbOCMtCas/X6Vd3I8wl70dGeo7uSCVVuHtTf4=;
+	s=korg; t=1772002564;
+	bh=xekCzRQYIXcFm01+Ulwn5lHQeNigUXXqXCFdaKVFD/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ku4bTJ+QFcgVcv5+WiFkPKYfU7jkayYiheobXdKf+iLUu4+P35sUtY2rS+188z50e
-	 VWSCGBO4G8zYlOvt6r2fot+664OMX9Xsuxmz9s08y8jC20tAWo0WS59cHCGJyZlP4l
-	 TEA3VU6vmnDFDGw3wytK+hwDeCFIn4mvIM3g+ETg=
+	b=fVhEcd3ss8ZYx0hXERf2zpSrBc2nXGlIEc+h2QNMRFD5gLKeVAtzKg+knksyAXOkY
+	 ypPTQi5olbeltb7DVpzJxSUQ1i7oPMEXD3ZH+9VVYnAehOkoO41I7ZIQwdj7Bl5fht
+	 Nx9n159JbWTOaSgdiCHddzf3bQX4sHbCp5PcJeqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 515/781] clk: qcom: rcg2: compute 2d using duty fraction directly
-Date: Tue, 24 Feb 2026 17:20:24 -0800
-Message-ID: <20260225012412.437199209@linuxfoundation.org>
+Subject: [PATCH 6.18 299/641] mptcp: fix receive space timestamp initialization
+Date: Tue, 24 Feb 2026 17:20:25 -0800
+Message-ID: <20260225012355.989080453@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +65,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218554-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219213-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5163018F90A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AC4D51929D4
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <taniya.das@oss.qualcomm.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit d6205a1878dd4cc9664c4b4829b68a29c0426efc ]
+[ Upstream commit 70274765fef555af92a1532d5bd5450c691fca9d ]
 
-The duty-cycle calculation in clk_rcg2_set_duty_cycle() currently
-derives an intermediate percentage `duty_per = (num * 100) / den` and
-then computes:
+MPTCP initialize the receive buffer stamp in mptcp_rcv_space_init(),
+using the provided subflow stamp. Such helper is invoked in several
+places; for passive sockets, space init happened at clone time.
 
-    d = DIV_ROUND_CLOSEST(n * duty_per * 2, 100);
+In such scenario, MPTCP ends-up accesses the subflow stamp before
+its initialization, leading to quite randomic timing for the first
+receive buffer auto-tune event, as the timestamp for newly created
+subflow is not refreshed there.
 
-This introduces integer truncation at the percentage step (division by
-`den`) and a redundant scaling by 100, which can reduce precision for
-large `den` and skew the final rounding.
+Fix the issue moving the stamp initialization out of the mentioned helper,
+at the data transfer start, and always using a fresh timestamp.
 
-Compute `2d` directly from the duty fraction to preserve precision and
-avoid the unnecessary scaling:
-
-    d = DIV_ROUND_CLOSEST(n * duty->num * 2, duty->den);
-
-This keeps the intended formula `d ≈ n * 2 * (num/den)` while performing
-a single, final rounded division, improving accuracy especially for small
-duty cycles or large denominators. It also removes the unused `duty_per`
-variable, simplifying the code.
-
-There is no functional changes beyond improved numerical accuracy.
-
-Fixes: 7f891faf596ed ("clk: qcom: clk-rcg2: Add support for duty-cycle for RCG")
-Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260105-duty_cycle_precision-v2-1-d1d466a6330a@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 013e3179dbd2 ("mptcp: fix rcv space initialization")
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260203-net-next-mptcp-misc-feat-6-20-v1-2-31ec8bfc56d1@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-rcg2.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/mptcp/protocol.c | 8 ++++----
+ net/mptcp/protocol.h | 5 +++++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
-index e18cb8807d735..2838d4cb2d58e 100644
---- a/drivers/clk/qcom/clk-rcg2.c
-+++ b/drivers/clk/qcom/clk-rcg2.c
-@@ -755,7 +755,7 @@ static int clk_rcg2_get_duty_cycle(struct clk_hw *hw, struct clk_duty *duty)
- static int clk_rcg2_set_duty_cycle(struct clk_hw *hw, struct clk_duty *duty)
- {
- 	struct clk_rcg2 *rcg = to_clk_rcg2(hw);
--	u32 notn_m, n, m, d, not2d, mask, duty_per, cfg;
-+	u32 notn_m, n, m, d, not2d, mask, cfg;
- 	int ret;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 15a70af7b776d..8f18509204b67 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2056,8 +2056,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
  
- 	/* Duty-cycle cannot be modified for non-MND RCGs */
-@@ -774,10 +774,8 @@ static int clk_rcg2_set_duty_cycle(struct clk_hw *hw, struct clk_duty *duty)
+ 	msk->rcvq_space.copied += copied;
  
- 	n = (~(notn_m) + m) & mask;
+-	mstamp = div_u64(tcp_clock_ns(), NSEC_PER_USEC);
+-	time = tcp_stamp_us_delta(mstamp, msk->rcvq_space.time);
++	mstamp = mptcp_stamp();
++	time = tcp_stamp_us_delta(mstamp, READ_ONCE(msk->rcvq_space.time));
  
--	duty_per = (duty->num * 100) / duty->den;
+ 	rtt_us = msk->rcvq_space.rtt_us;
+ 	if (rtt_us && time < (rtt_us >> 3))
+@@ -3421,6 +3421,7 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+ 	__mptcp_propagate_sndbuf(nsk, ssk);
+ 
+ 	mptcp_rcv_space_init(msk, ssk);
++	msk->rcvq_space.time = mptcp_stamp();
+ 
+ 	if (mp_opt->suboptions & OPTION_MPTCP_MPC_ACK)
+ 		__mptcp_subflow_fully_established(msk, subflow, mp_opt);
+@@ -3438,8 +3439,6 @@ void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk)
+ 	msk->rcvq_space.copied = 0;
+ 	msk->rcvq_space.rtt_us = 0;
+ 
+-	msk->rcvq_space.time = tp->tcp_mstamp;
 -
- 	/* Calculate 2d value */
--	d = DIV_ROUND_CLOSEST(n * duty_per * 2, 100);
-+	d = DIV_ROUND_CLOSEST(n * duty->num * 2, duty->den);
+ 	/* initial rcv_space offering made to peer */
+ 	msk->rcvq_space.space = min_t(u32, tp->rcv_wnd,
+ 				      TCP_INIT_CWND * tp->advmss);
+@@ -3652,6 +3651,7 @@ void mptcp_finish_connect(struct sock *ssk)
+ 	 * accessing the field below
+ 	 */
+ 	WRITE_ONCE(msk->local_key, subflow->local_key);
++	WRITE_ONCE(msk->rcvq_space.time, mptcp_stamp());
  
- 	/*
- 	 * Check bit widths of 2d. If D is too big reduce duty cycle.
+ 	mptcp_pm_new_connection(msk, ssk, 0);
+ }
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 30d5e57197936..27b1698c5aa2d 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -870,6 +870,11 @@ static inline bool mptcp_is_fully_established(struct sock *sk)
+ 	       READ_ONCE(mptcp_sk(sk)->fully_established);
+ }
+ 
++static inline u64 mptcp_stamp(void)
++{
++	return div_u64(tcp_clock_ns(), NSEC_PER_USEC);
++}
++
+ void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk);
+ void mptcp_data_ready(struct sock *sk, struct sock *ssk);
+ bool mptcp_finish_join(struct sock *sk);
 -- 
 2.51.0
 
