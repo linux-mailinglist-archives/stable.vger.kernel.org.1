@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219460-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PlkJ2xVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218797-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:36 +0100
+	id EN4SLG6fnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219460-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4934D190018
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2418F192F36
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9EED7321AE23
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F6373124BAA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B92F25EF9C;
-	Wed, 25 Feb 2026 01:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924F02D6E74;
+	Wed, 25 Feb 2026 06:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FD8ONlih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSBb3rJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C333926CE1A;
-	Wed, 25 Feb 2026 01:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565232D3EEE;
+	Wed, 25 Feb 2026 06:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983673; cv=none; b=Z9OWBEO8qSCG4KRPPCzETIXfWlWpArndq+pPZ0qHW3vjDAD6eX6sZTM+hIyXTSHM1LBoKuI2M+KgFEJDu+BblI9lFGJN9tQ0/uyym81Pp5DIhYdmJrMY8mSpLTMTPVjlg5EQhAz4B92NuVXK4Wr/eEbs66Iq97d3AdvdHXKY3xY=
+	t=1772002730; cv=none; b=cjTFi/AotXV+WM9ZQbMDVa3StNHt46zZEMenDVxApoEalLOa1JV6Cub8QdynjMH8HS1NHOjHWotYXUrKlGYm16ynlhlAqlkhJP3Qxgriz66RsUd26IcRF2vFmkn+uq4f0+wp42FeQbERCUA1zjHLHLVgvGlPEI0bRvEpmeYIhrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983673; c=relaxed/simple;
-	bh=k3JELUXMTEHML+CbDHUV8jZTBpizpDLnnGy6qQJRVvk=;
+	s=arc-20240116; t=1772002730; c=relaxed/simple;
+	bh=8eIvQBDzGAYabG3K+Ytjt7XNFtUNgo6aUAbf+NPyGXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stAD1C3cVkQZtmrmyygWlWpoEHm9uYOcluzdlIUeMU5j7kiknWsTHRqCnJoYvG+FCPFuUHASivrSoDkms9t34EJQNLKO/f//fnxt+Ggnhcd+jj+z/fNObxYX4IEbna0LPA1+bw7gZPKFFndg+ICuFh1RAyc0QCphM1PCArln+wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FD8ONlih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5ABC116D0;
-	Wed, 25 Feb 2026 01:41:13 +0000 (UTC)
+	 MIME-Version; b=paS/3I07Pkb6ktRyoZ78QCMx97faimm4Xo4rGNk1j75EmXRPXdWI+yFLFSdEHs6PxqIIunBvFuEvroTvSaA5+82X2qbiN15/96qSBnD4Yczr0FOdfUHkSFv1sXIQJvwGkMIq/L7bwKU4v7kn6HMJbWnqrRODpuqHbEmarQrsygA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSBb3rJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3017BC116D0;
+	Wed, 25 Feb 2026 06:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983673;
-	bh=k3JELUXMTEHML+CbDHUV8jZTBpizpDLnnGy6qQJRVvk=;
+	s=korg; t=1772002730;
+	bh=8eIvQBDzGAYabG3K+Ytjt7XNFtUNgo6aUAbf+NPyGXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FD8ONlihR1vppEy8csg/YmfypPCExf5WFOdoEJSVxddsynIEs0ItFrZcfl+i99RdO
-	 6SKdPu10h1FI4FJyP33kVFMxabOtK8yATX69eWDtXOc+9KnzagkatDdb+fbzYoBodC
-	 jH+OqqKP0Q9FJz/8SIYLZjS/mIKaNm1NVS+5ozxU=
+	b=GSBb3rJFOK4BEoDfhg9V2qpix0CrniKIfcALCpJ1vMzQXFJ4A4lxd+9xHiU46Fd6M
+	 eKWDWVja5UYYyyEVw02VroCfrFwxlYyx2xHMnJiL1Acl9DwU1nRW0oPbHe0YvVe4ty
+	 JBpt2XU+tGT1ybEp7Bj8VzS8rjD1b77X1N9ONYls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	stable@kernel.org,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.19 759/781] ext4: drop extent cache when splitting extent fails
-Date: Tue, 24 Feb 2026 17:24:28 -0800
-Message-ID: <20260225012418.333087565@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 543/641] net: remove WARN_ON_ONCE when accessing forward path array
+Date: Tue, 24 Feb 2026 17:24:29 -0800
+Message-ID: <20260225012401.688543837@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,87 +69,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218797-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219460-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,huaweicloud.com:email]
-X-Rspamd-Queue-Id: 4934D190018
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2418F192F36
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 79b592e8f1b435796cbc2722190368e3e8ffd7a1 upstream.
+[ Upstream commit 008e7a7c293b30bc43e4368dac6ea3808b75a572 ]
 
-When the split extent fails, we might leave some extents still being
-processed and return an error directly, which will result in stale
-extent entries remaining in the extent status tree. So drop all of the
-remaining potentially stale extents if the splitting fails.
+Although unlikely, recent support for IPIP tunnels increases chances of
+reaching this WARN_ON_ONCE if userspace manages to build a sufficiently
+long forward path.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Cc: stable@kernel.org
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Message-ID: <20251129103247.686136-8-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Remove it.
+
+Fixes: ddb94eafab8b ("net: resolve forwarding path from virtual netdevice and HW destination address")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/core/dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3267,7 +3267,7 @@ static struct ext4_ext_path *ext4_split_
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 5b536860138d1..ff70c902a4196 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -738,7 +738,7 @@ static struct net_device_path *dev_fwd_path(struct net_device_path_stack *stack)
+ {
+ 	int k = stack->num_paths++;
  
- 	err = PTR_ERR(path);
- 	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
--		return path;
-+		goto out_path;
+-	if (WARN_ON_ONCE(k >= NET_DEVICE_PATH_STACK_MAX))
++	if (k >= NET_DEVICE_PATH_STACK_MAX)
+ 		return NULL;
  
- 	/*
- 	 * Get a new path to try to zeroout or fix the extent length.
-@@ -3281,7 +3281,7 @@ static struct ext4_ext_path *ext4_split_
- 	if (IS_ERR(path)) {
- 		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
- 				 split, PTR_ERR(path));
--		return path;
-+		goto out_path;
- 	}
- 	depth = ext_depth(inode);
- 	ex = path[depth].p_ext;
-@@ -3358,6 +3358,10 @@ out:
- 		ext4_free_ext_path(path);
- 		path = ERR_PTR(err);
- 	}
-+out_path:
-+	if (IS_ERR(path))
-+		/* Remove all remaining potentially stale extents. */
-+		ext4_es_remove_extent(inode, ee_block, ee_len);
- 	ext4_ext_show_leaf(inode, path);
- 	return path;
- }
+ 	return &stack->path[k];
+-- 
+2.51.0
+
 
 
 
