@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-218849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHYWEiZUnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:10 +0100
+	id qGHaL4BSnmm6UgQAu9opvQ
+	(envelope-from <stable+bounces-218284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07CF818FBDA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F9D18F3A3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DD25A309010E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C92A30ABBBD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00832701D9;
-	Wed, 25 Feb 2026 01:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196481D5ABA;
+	Wed, 25 Feb 2026 01:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHRYZvoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7OgxWZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933EE1D5141;
-	Wed, 25 Feb 2026 01:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F891FE45D;
+	Wed, 25 Feb 2026 01:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983733; cv=none; b=Wifai/99D6LkBTmBpkrmWvHfbASG5TyuN4SuhPa+XHhs7Qsu3J/KVhWtl8dxkLSPKfJ2YkcMbO/w0YpgPeCxvKcn1YcteVipe5dpIcZgq6/VP2caKlAVaJKw7pm+BktbR+QOl6XjdnTga2a6nIKemcuvAgJ/5ZserHnN8eaAVoc=
+	t=1771983084; cv=none; b=DDxM1nUUM/sHTCX7JKfP0i4AQKkSVkiPDxIx7Z3BI9DvDZ5WowLQrUeq+poHNIdMY6vb9FV00bV++HwUuwQ/mn0epfjMcPwfz3gXlYUPuGczHKXWv0mifJn8Ajd6lu2+X63WFVh/Sm61fCevnyi8iLxPs8QqlMqh0SJx25fngMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983733; c=relaxed/simple;
-	bh=RETED7amnF99+qlcIlPtk60rjzIg/yA2j3wZipVnNiA=;
+	s=arc-20240116; t=1771983084; c=relaxed/simple;
+	bh=wpVMExUPOGwFDuOFsdsDnbQI2WFUXTUs9zLDW67x9Ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsqDlX/IEQm/Cvx4YfrL265IpWVtjxvzARB0xCXQUWS1StKwBcU8iYoVGjUgiSLlCjQDWhno8xjlWHUrb1+ufU7JyFwvEdS2oRRsMtUAkcS4N9Oj+xbIukeWj64zf7jAdDxceKQXejmfF3jg7m+n/rJwedLpic1hEGjhsA8OiQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHRYZvoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57BEFC19423;
-	Wed, 25 Feb 2026 01:42:13 +0000 (UTC)
+	 MIME-Version; b=qMmnx0kC3E1OlOH59Tkt8QwFWI9tRy5+Fn18riBpNaxBXIw61xva2apS8LrkLROfrbQgBZtN569wY8kkwnv28ooNT1TiPt2DzVXsPS9v0tDfLHkJ6RDB+znYdAjW/sfegYlzE8nmpl6G78YbG4cy7oJDoBVtn+KUephflFRe/Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7OgxWZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1C0C116D0;
+	Wed, 25 Feb 2026 01:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983733;
-	bh=RETED7amnF99+qlcIlPtk60rjzIg/yA2j3wZipVnNiA=;
+	s=korg; t=1771983084;
+	bh=wpVMExUPOGwFDuOFsdsDnbQI2WFUXTUs9zLDW67x9Ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHRYZvoDFye+2LBg6A8CJ9UdpPZ4AX3+cn5uA7Kh2uG3YX1kw0VSGLWdJBe1Xq76n
-	 JQXWlJNsIDxXrDNV46P+xgOiCivIlog5x9+granvm1/4vT1VPEJZ0Vrox2B9P1K5f0
-	 uR3GA7beU5H6pwHGrCKQ68nite9vlj8hL3FCSXfY=
+	b=W7OgxWZrR8IbjMm83As9jPo4XkTYbWBt5YXw2jDmWrgXvbv3l23QitziPwsHPPwit
+	 7GlYKLQiY9oMm9xD3JzZcvU72w8WVOBtDYWfQ2CaWm1wzyb0MA/M+GlK41Rq9o80rS
+	 cLW9rpulrUSEHQZe0hxneBe0i1gnCoZNWwQv+H6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Chenyu Chen <chen-yu.chen@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 028/641] btrfs: qgroup: return correct error when deleting qgroup relation item
+Subject: [PATCH 6.19 245/781] drm/amd/display: Update dc_connection_dac_load to dc_connection_analog_load
 Date: Tue, 24 Feb 2026 17:15:54 -0800
-Message-ID: <20260225012349.666768799@linuxfoundation.org>
+Message-ID: <20260225012405.716630638@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218849-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218284-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,53 +89,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 07CF818FBDA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 66F9D18F3A3
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 51b1fcf71c88c3c89e7dcf07869c5de837b1f428 ]
+[ Upstream commit 57c8690a84bec025a8bc22e5f867fd660c4a3e76 ]
 
-If we fail to delete the second qgroup relation item, we end up returning
-success or -ENOENT in case the first item does not exist, instead of
-returning the error from the second item deletion.
+Update to a more accurate name dc_connection_analog_load.
 
-Fixes: 73798c465b66 ("btrfs: qgroup: Try our best to delete qgroup relations")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Chenyu Chen <chen-yu.chen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 0d89268d20c9 ("drm/amd/display: Don't repeat DAC load detection")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c    | 2 +-
+ drivers/gpu/drm/amd/display/dc/dc_types.h            | 2 +-
+ drivers/gpu/drm/amd/display/dc/link/link_detection.c | 8 ++++----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index febc22d1b6487..7a1dd250e92c0 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1627,8 +1627,10 @@ static int __del_qgroup_relation(struct btrfs_trans_handle *trans, u64 src,
- 	if (ret < 0 && ret != -ENOENT)
- 		goto out;
- 	ret2 = del_qgroup_relation_item(trans, dst, src);
--	if (ret2 < 0 && ret2 != -ENOENT)
-+	if (ret2 < 0 && ret2 != -ENOENT) {
-+		ret = ret2;
- 		goto out;
-+	}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index a8a59126b2d2b..b31bd6fa70181 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -7434,7 +7434,7 @@ amdgpu_dm_connector_poll(struct amdgpu_dm_connector *aconnector, bool force)
+ 	 *
+ 	 * Only allow to poll such a connector again when forcing.
+ 	 */
+-	if (!force && link->local_sink && link->type == dc_connection_dac_load)
++	if (!force && link->local_sink && link->type == dc_connection_analog_load)
+ 		return connector->status;
  
- 	/* At least one deletion succeeded, return 0 */
- 	if (!ret || !ret2)
+ 	mutex_lock(&aconnector->hpd_lock);
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index f46039f642034..3e63d7bda1661 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -354,7 +354,7 @@ enum dc_connection_type {
+ 	dc_connection_single,
+ 	dc_connection_mst_branch,
+ 	dc_connection_sst_branch,
+-	dc_connection_dac_load
++	dc_connection_analog_load
+ };
+ 
+ struct dc_csc_adjustments {
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+index 7fa6bc97a9193..4f48e7ea75110 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+@@ -1176,7 +1176,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
+ 				/* If we didn't do DAC load detection yet, do it now
+ 				 * to verify there really is a display connected.
+ 				 */
+-				if (link->type != dc_connection_dac_load &&
++				if (link->type != dc_connection_analog_load &&
+ 					!link_detect_dac_load_detect(link)) {
+ 					if (prev_sink)
+ 						dc_sink_release(prev_sink);
+@@ -1185,7 +1185,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
+ 				}
+ 
+ 				DC_LOG_INFO("%s detected analog display without EDID\n", __func__);
+-				link->type = dc_connection_dac_load;
++				link->type = dc_connection_analog_load;
+ 				sink->edid_caps.analog = true;
+ 				break;
+ 			}
+@@ -1372,7 +1372,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
+  * @link: DC link to evaluate (must support analog signalling).
+  * @type: Updated with the detected connection type:
+  *        dc_connection_single (analog via DDC),
+- *        dc_connection_dac_load (via load-detect),
++ *        dc_connection_analog_load (via load-detect),
+  *        or dc_connection_none.
+  *
+  * Return: true if detection completed.
+@@ -1388,7 +1388,7 @@ static bool link_detect_analog(struct dc_link *link, enum dc_connection_type *ty
+ 	}
+ 
+ 	if (link_detect_dac_load_detect(link)) {
+-		*type = dc_connection_dac_load;
++		*type = dc_connection_analog_load;
+ 		return true;
+ 	}
+ 
 -- 
 2.51.0
 
