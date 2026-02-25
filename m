@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218694-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HexAo2dnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219352-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:21 +0100
+	id AAkfBXNVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218694-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B32192A33
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3990E190035
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BDE62301C163
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F31FA30A7F4E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66DD130E0D9;
-	Wed, 25 Feb 2026 06:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33351263C7F;
+	Wed, 25 Feb 2026 01:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3+lTAPs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6Dslw3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E60309DC4;
-	Wed, 25 Feb 2026 06:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1CA2494FE;
+	Wed, 25 Feb 2026 01:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002659; cv=none; b=kRClovS/pHTkNGTworWdCucfSVhT/VNCnGpAM4mqxp3hgy0Q/O/x2kgFU/hjluqclk2EcW7aZq9qISHwiSoKZg8OClajVV3T6C/D5OO5TTiGBVKIYR6J8jmtfyzl5unp1BK4YK6MmzdyNRk+d4IovXdO2MOGcsiOfsUodsco1wg=
+	t=1771983553; cv=none; b=sg/Roe6XXiQUzdEkM398afzXUyBnZf4imK4XvXxEZHC3t3Yk4LI5iogEAvLXZU0C7LKGkmnJ827SM8BI8E4jE2KNtbYy1w0GDUwsaGBcwlaEOJXoJ3ps2/Lgk04I/5/KwvnvXdOdrRquvInhgUxtuB0Se5zor7K+Ger5nGdLBYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002659; c=relaxed/simple;
-	bh=1RCPb46i4XrQrHMBUPlb/VrKEdZN7a+RttApHL0GVDE=;
+	s=arc-20240116; t=1771983553; c=relaxed/simple;
+	bh=E85yOt4pSORu4QOBtd36kBvgFHRGF+AgLA1tXI5EtPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJq1Xktelz5FdCQdY2lIffd/QcZgdS/dYdz+t124ysH6p3eCTRdnI+iMNyME2KGxVJmxeGDh+zVaY6/hTxG4SpF53WmWB/6jtNdQ49Tr4OGWR6vbYvr/Ntu6xZZwDOjgPOFkHw5EQnRrEraTn7/0QNW+wTcekA4srJp/Q2VjJhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3+lTAPs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01780C116D0;
-	Wed, 25 Feb 2026 06:57:38 +0000 (UTC)
+	 MIME-Version; b=MeXFSJJPx89PfVNuJOkUe08Y8cb1Ii+nL89MbvzCtRXjpkygWpYFjocTM9E5hRra91F3B9LGjzMbOO6I66aOA+3vMGOSrKiEcRnmt+sSzqoYeDoaGn892RwS1v4Olb8u6r3sbstSICmU9pGVIe7ru9y3jL5doYslQD+5/qY+w28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6Dslw3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EF6C116D0;
+	Wed, 25 Feb 2026 01:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002659;
-	bh=1RCPb46i4XrQrHMBUPlb/VrKEdZN7a+RttApHL0GVDE=;
+	s=korg; t=1771983552;
+	bh=E85yOt4pSORu4QOBtd36kBvgFHRGF+AgLA1tXI5EtPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z3+lTAPs3KOD+dC8Py/RjoYv+nbwJjIN0ClS7vhoYodpieWMCu8cdf4IWK13Luzkp
-	 J3Uwd8+eer9kw1MbXocirAfrHKe8r0+YKwwaL0ivHslcL/ta/85prcdb4WZBlz9mVn
-	 06h8DkT75Otlk+2IMuce31CFxA/hrp7bsNvhs6Vg=
+	b=s6Dslw3ZU+9FZ+eKYxxZK9Kjp6UukoZRa+4es2Bb3eKPAu8kjjqqsuln/ZrISUC2f
+	 z+VlNo/ZfTC6Aag7RT1wuHhJ1H6yHE8cd8YGr0KfpaeF8lvprB0XUQWHjESa30Pf6f
+	 9KTibu5xBv7y1y3c7HC8FGZVSF2TmeOb5NRpov64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Brian Masney <bmasney@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 437/641] clk: nxp: lpc32xx: convert from divider_round_rate() to divider_determine_rate()
+Subject: [PATCH 6.19 654/781] net: usb: catc: enable basic endpoint checking
 Date: Tue, 24 Feb 2026 17:22:43 -0800
-Message-ID: <20260225012359.123630609@linuxfoundation.org>
+Message-ID: <20260225012415.832061903@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,78 +70,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218694-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219352-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mleia.com:email]
-X-Rspamd-Queue-Id: B3B32192A33
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3990E190035
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-[ Upstream commit af943663ccc266e6346e5645b13c0fca71d24395 ]
+[ Upstream commit 9e7021d2aeae57c323a6f722ed7915686cdcc123 ]
 
-The divider_round_rate() function is now deprecated, so let's migrate
-to divider_determine_rate() instead so that this deprecated API can be
-removed.
+catc_probe() fills three URBs with hardcoded endpoint pipes without
+verifying the endpoint descriptors:
 
-Note that when the main function itself was migrated to use
-determine_rate, this was mistakenly converted to:
+  - usb_sndbulkpipe(usbdev, 1) and usb_rcvbulkpipe(usbdev, 1) for TX/RX
+  - usb_rcvintpipe(usbdev, 2) for interrupt status
 
-    req->rate = divider_round_rate(...)
+A malformed USB device can present these endpoints with transfer types
+that differ from what the driver assumes.
 
-This is invalid in the case when an error occurs since it can set the
-rate to a negative value.
+Add a catc_usb_ep enum for endpoint numbers, replacing magic constants
+throughout. Add usb_check_bulk_endpoints() and usb_check_int_endpoints()
+calls after usb_set_interface() to verify endpoint types before use,
+rejecting devices with mismatched descriptors at probe time.
 
-Fixes: 0879768df240 ("clk: nxp: lpc32xx: convert from round_rate() to determine_rate()")
-Tested-by: Vladimir Zapolskiy <vz@mleia.com>
-Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+Similar to
+- commit 90b7f2961798 ("net: usb: rtl8150: enable basic endpoint checking")
+which fixed the issue in rtl8150.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Link: https://patch.msgid.link/20260212214154.3609844-1-n7l8m4@u.northwestern.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/nxp/clk-lpc32xx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/usb/catc.c | 37 +++++++++++++++++++++++++++++++------
+ 1 file changed, 31 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/nxp/clk-lpc32xx.c b/drivers/clk/nxp/clk-lpc32xx.c
-index 23f980cf6a2b5..ae2fa5341a2e4 100644
---- a/drivers/clk/nxp/clk-lpc32xx.c
-+++ b/drivers/clk/nxp/clk-lpc32xx.c
-@@ -975,10 +975,8 @@ static int clk_divider_determine_rate(struct clk_hw *hw,
- 		return 0;
+diff --git a/drivers/net/usb/catc.c b/drivers/net/usb/catc.c
+index 6759388692f8e..3c824340ffb06 100644
+--- a/drivers/net/usb/catc.c
++++ b/drivers/net/usb/catc.c
+@@ -64,6 +64,16 @@ static const char driver_name[] = "catc";
+ #define CTRL_QUEUE		16	/* Max control requests in flight (power of two) */
+ #define RX_PKT_SZ		1600	/* Max size of receive packet for F5U011 */
+ 
++/*
++ * USB endpoints.
++ */
++
++enum catc_usb_ep {
++	CATC_USB_EP_CONTROL	= 0,
++	CATC_USB_EP_BULK	= 1,
++	CATC_USB_EP_INT_IN	= 2,
++};
++
+ /*
+  * Control requests.
+  */
+@@ -772,6 +782,13 @@ static int catc_probe(struct usb_interface *intf, const struct usb_device_id *id
+ 	u8 broadcast[ETH_ALEN];
+ 	u8 *macbuf;
+ 	int pktsz, ret = -ENOMEM;
++	static const u8 bulk_ep_addr[] = {
++		CATC_USB_EP_BULK | USB_DIR_OUT,
++		CATC_USB_EP_BULK | USB_DIR_IN,
++		0};
++	static const u8 int_ep_addr[] = {
++		CATC_USB_EP_INT_IN | USB_DIR_IN,
++		0};
+ 
+ 	macbuf = kmalloc(ETH_ALEN, GFP_KERNEL);
+ 	if (!macbuf)
+@@ -784,6 +801,14 @@ static int catc_probe(struct usb_interface *intf, const struct usb_device_id *id
+ 		goto fail_mem;
  	}
  
--	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
--				       divider->table, divider->width, divider->flags);
--
--	return 0;
-+	return divider_determine_rate(hw, req, divider->table, divider->width,
-+				      divider->flags);
- }
++	/* Verify that all required endpoints are present */
++	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
++	    !usb_check_int_endpoints(intf, int_ep_addr)) {
++		dev_err(dev, "Missing or invalid endpoints\n");
++		ret = -ENODEV;
++		goto fail_mem;
++	}
++
+ 	netdev = alloc_etherdev(sizeof(struct catc));
+ 	if (!netdev)
+ 		goto fail_mem;
+@@ -828,14 +853,14 @@ static int catc_probe(struct usb_interface *intf, const struct usb_device_id *id
+ 	usb_fill_control_urb(catc->ctrl_urb, usbdev, usb_sndctrlpipe(usbdev, 0),
+ 		NULL, NULL, 0, catc_ctrl_done, catc);
  
- static int clk_divider_set_rate(struct clk_hw *hw, unsigned long rate,
+-	usb_fill_bulk_urb(catc->tx_urb, usbdev, usb_sndbulkpipe(usbdev, 1),
+-		NULL, 0, catc_tx_done, catc);
++	usb_fill_bulk_urb(catc->tx_urb, usbdev, usb_sndbulkpipe(usbdev, CATC_USB_EP_BULK),
++			  NULL, 0, catc_tx_done, catc);
+ 
+-	usb_fill_bulk_urb(catc->rx_urb, usbdev, usb_rcvbulkpipe(usbdev, 1),
+-		catc->rx_buf, pktsz, catc_rx_done, catc);
++	usb_fill_bulk_urb(catc->rx_urb, usbdev, usb_rcvbulkpipe(usbdev, CATC_USB_EP_BULK),
++			  catc->rx_buf, pktsz, catc_rx_done, catc);
+ 
+-	usb_fill_int_urb(catc->irq_urb, usbdev, usb_rcvintpipe(usbdev, 2),
+-                catc->irq_buf, 2, catc_irq_done, catc, 1);
++	usb_fill_int_urb(catc->irq_urb, usbdev, usb_rcvintpipe(usbdev, CATC_USB_EP_INT_IN),
++			 catc->irq_buf, 2, catc_irq_done, catc, 1);
+ 
+ 	if (!catc->is_f5u011) {
+ 		u32 *buf;
 -- 
 2.51.0
 
