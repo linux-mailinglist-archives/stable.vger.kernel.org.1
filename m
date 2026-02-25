@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218964-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOK1HOJSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218397-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:46 +0100
+	id wNqUEetZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218964-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:09:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E120D18F59D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C311909EA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:09:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 62C9931BFDFC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D18030D15B2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDCD242D9B;
-	Wed, 25 Feb 2026 01:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4262505B2;
+	Wed, 25 Feb 2026 01:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1LyFYp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEEgPQZJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B315C1D5ABA;
-	Wed, 25 Feb 2026 01:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401C325A357;
+	Wed, 25 Feb 2026 01:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983211; cv=none; b=hva7aDl5S2ja0AP7rcOjcZBlxo9Ct/5RU7tQogUCPNHH1zY+kgj0t3aw4JRrCnEvHVOF1J7VKxoJV8A/crrlFmukcCFqwjj5Xy4BmFSc6GC8Td2XvtehVt9XmAi1tq3gxs+pLmz2RWWzKsIX2RNJ94Yo/4cK6KwsiAj3I4gUhF4=
+	t=1771983866; cv=none; b=cRjaGnV7a6kI7/Gv/i2Gk65xnORxIs17J7Ksg6NTTHub5nndh38OvYNFvorGTTJTXEcFtr+QFDK99w1ezLzt9aPDUKoere914NtoZC/tv1zRw9dFaS31vvR1sbLMmhoYnRWzt2uB/vT9PwuS4meRBDxn81myMOC2w2LPDxeYTKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983211; c=relaxed/simple;
-	bh=LnFu5jJrcJKDSYBpgF8jtCbBa5UuzrrXLI6hknBj6kM=;
+	s=arc-20240116; t=1771983866; c=relaxed/simple;
+	bh=lxlNbfaeAcR4Ra7O3ocG3tgehzC8UA6RKNO9Q8kMPOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ET41BYgCs4iMndIKCfL+AR6LDx+pAho9s02APhka9TUqwlJSyH3/jNk7VEbLXZR2B5ZKv3iXY6FSCKlCJ8dBXdFsuQF15sUkw62YSq6nCKx5l/sE9V7Y9U//dKEZkxSdQbX35AUomjslkuM+SaOr7rFRG+B5JTu61Rh2Qg7/H+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1LyFYp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCA1C116D0;
-	Wed, 25 Feb 2026 01:33:31 +0000 (UTC)
+	 MIME-Version; b=rPojsEYMyp1zdCPaxg1U76qsnzFPN/CNr4JZQWw5XswoombGG+FEhKL5SkytXGWjDUTqUukEs9xyMoO16/bBl4ObK7q9rHj7Xda1OuABsIhkHhW/0TeJoke1nh+FcW/za9FI2PyCxCZj6TyOW7JvjISqQI/r9gI3RrjtBraSQx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEEgPQZJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AD6C116D0;
+	Wed, 25 Feb 2026 01:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983211;
-	bh=LnFu5jJrcJKDSYBpgF8jtCbBa5UuzrrXLI6hknBj6kM=;
+	s=korg; t=1771983866;
+	bh=lxlNbfaeAcR4Ra7O3ocG3tgehzC8UA6RKNO9Q8kMPOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1LyFYp5NI5r1BEjdlqTZ9+O1z0E2Qw8/vyFwpoRX/AY10mQE7bpsFmBG73txrrWs
-	 5zZR0V3UThoGhIhXZg1IPc4ViWFUwaVfEYxFsLwRLmzKDvPqMytumbwzND7qJYmmmJ
-	 YOmMxsN+6HgeqyYVHp1y3iRzdsRjd/ULOduGJTeA=
+	b=BEEgPQZJZ5uVhzkTe8lXG8eEt1wEswvGf34n75i7lOIlqPPmPbj4pevx4xzk246WM
+	 bGcHZc+DqTmQMFpYdn+uCpk2kOmURIw2qtsaFipwdW76C21ssDSF/OKoWQXWQqObL3
+	 CaN7BRLl4ZlyqacOzhztVYHbAuUTrT0jWFKBhQ2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 360/781] NFS: NFSERR_INVAL is not defined by NFSv2
+Subject: [PATCH 6.18 143/641] soc: qcom: cmd-db: Use devm_memremap() to fix memory leak in cmd_db_dev_probe
 Date: Tue, 24 Feb 2026 17:17:49 -0800
-Message-ID: <20260225012408.513906113@linuxfoundation.org>
+Message-ID: <20260225012352.581044636@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218397-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218964-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,89 +87,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,brown.name:email]
-X-Rspamd-Queue-Id: E120D18F59D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: B0C311909EA
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 0ac903d1bfdce8ff40657c2b7d996947b72b6645 ]
+[ Upstream commit 0da7824734d8d83e6a844dd0207f071cb0c50cf4 ]
 
-A documenting comment in include/uapi/linux/nfs.h claims incorrectly
-that NFSv2 defines NFSERR_INVAL. There is no such definition in either
-RFC 1094 or https://pubs.opengroup.org/onlinepubs/9629799/chap7.htm
+If cmd_db_magic_matches() fails after memremap() succeeds, the function
+returns -EINVAL without unmapping the memory region, causing a
+potential resource leak.
 
-NFS3ERR_INVAL is introduced in RFC 1813.
+Switch to devm_memremap to automatically manage the map resource.
 
-NFSD returns NFSERR_INVAL for PROC_GETACL, which has no
-specification (yet).
-
-However, nfsd_map_status() maps nfserr_symlink and nfserr_wrong_type
-to nfserr_inval, which does not align with RFC 1094. This logic was
-introduced only recently by commit 438f81e0e92a ("nfsd: move error
-choice for incorrect object types to version-specific code."). Given
-that we have no INVAL or SERVERFAULT status in NFSv2, probably the
-only choice is NFSERR_IO.
-
-Fixes: 438f81e0e92a ("nfsd: move error choice for incorrect object types to version-specific code.")
-Reviewed-by: NeilBrown <neil@brown.name>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 312416d9171a ("drivers: qcom: add command DB driver")
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20251216013933.773-1-vulab@iscas.ac.cn
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs2acl.c        | 2 +-
- fs/nfsd/nfsproc.c        | 2 +-
- include/uapi/linux/nfs.h | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/soc/qcom/cmd-db.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfsd/nfs2acl.c b/fs/nfsd/nfs2acl.c
-index 5fb202acb0fd0..0ac538c761800 100644
---- a/fs/nfsd/nfs2acl.c
-+++ b/fs/nfsd/nfs2acl.c
-@@ -45,7 +45,7 @@ static __be32 nfsacld_proc_getacl(struct svc_rqst *rqstp)
- 	inode = d_inode(fh->fh_dentry);
+diff --git a/drivers/soc/qcom/cmd-db.c b/drivers/soc/qcom/cmd-db.c
+index ae66c2623d250..84a75d8c4b702 100644
+--- a/drivers/soc/qcom/cmd-db.c
++++ b/drivers/soc/qcom/cmd-db.c
+@@ -349,15 +349,16 @@ static int cmd_db_dev_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
  
- 	if (argp->mask & ~NFS_ACL_MASK) {
--		resp->status = nfserr_inval;
-+		resp->status = nfserr_io;
- 		goto out;
+-	cmd_db_header = memremap(rmem->base, rmem->size, MEMREMAP_WC);
+-	if (!cmd_db_header) {
+-		ret = -ENOMEM;
++	cmd_db_header = devm_memremap(&pdev->dev, rmem->base, rmem->size, MEMREMAP_WC);
++	if (IS_ERR(cmd_db_header)) {
++		ret = PTR_ERR(cmd_db_header);
+ 		cmd_db_header = NULL;
+ 		return ret;
  	}
- 	resp->mask = argp->mask;
-diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
-index 481e789a76974..8873033d1e82f 100644
---- a/fs/nfsd/nfsproc.c
-+++ b/fs/nfsd/nfsproc.c
-@@ -33,7 +33,7 @@ static __be32 nfsd_map_status(__be32 status)
- 		break;
- 	case nfserr_symlink:
- 	case nfserr_wrong_type:
--		status = nfserr_inval;
-+		status = nfserr_io;
- 		break;
+ 
+ 	if (!cmd_db_magic_matches(cmd_db_header)) {
+ 		dev_err(&pdev->dev, "Invalid Command DB Magic\n");
++		cmd_db_header = NULL;
+ 		return -EINVAL;
  	}
- 	return status;
-diff --git a/include/uapi/linux/nfs.h b/include/uapi/linux/nfs.h
-index 71c7196d32817..e629c49535345 100644
---- a/include/uapi/linux/nfs.h
-+++ b/include/uapi/linux/nfs.h
-@@ -55,7 +55,7 @@
- 	NFSERR_NODEV = 19,		/* v2 v3 v4 */
- 	NFSERR_NOTDIR = 20,		/* v2 v3 v4 */
- 	NFSERR_ISDIR = 21,		/* v2 v3 v4 */
--	NFSERR_INVAL = 22,		/* v2 v3 v4 */
-+	NFSERR_INVAL = 22,		/*    v3 v4 */
- 	NFSERR_FBIG = 27,		/* v2 v3 v4 */
- 	NFSERR_NOSPC = 28,		/* v2 v3 v4 */
- 	NFSERR_ROFS = 30,		/* v2 v3 v4 */
+ 
 -- 
 2.51.0
 
