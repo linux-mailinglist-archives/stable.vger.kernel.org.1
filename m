@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FzZEmZWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:46 +0100
+	id wIzbMVRTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD95F1902B3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617CC18F7C3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CF3F32E6F61
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 39081312B960
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B851F24A05D;
-	Wed, 25 Feb 2026 01:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB182417E0;
+	Wed, 25 Feb 2026 01:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQR9eeJb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFwUNmXi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEFF25228D;
-	Wed, 25 Feb 2026 01:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CB21D5ABA;
+	Wed, 25 Feb 2026 01:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983789; cv=none; b=XkBHjIkF6ILelkGxLeRXktZOOx3ZVoNVDy+DuKb9DzFjcFVp+4S/kp5omJVs9KnbXo3MnUUDTitopDe3urc2gH+vfF9sdUhvhceJhnRhHv5iihiKohlNeIX1uHpK2gDI92f9sFFW7t8QBLfP80fI4hzF2bOffONL4bVvfTSTTJ0=
+	t=1771983138; cv=none; b=h6TGfwOK6HyK4QcKNoxEt1Cj4qSpCveA+SspeIm1EYa4jZFD2G138W9tVeXVHNFMa6Dw/msiANQ6F/RqvDES6wTBf5x47SK38aJ5E3YCbcCLAKJFgKwghbOn7UNR+sSuyzEkmcFodCDyW/jM5jPJIc7S6HGYhdULSUrgJOb5Nuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983789; c=relaxed/simple;
-	bh=9U9QlQTDZIU9rxnSjnFsAM4PiuuIq3mNdrYvWrNVL0U=;
+	s=arc-20240116; t=1771983138; c=relaxed/simple;
+	bh=7tFJsZ+KGxXSvTdxlkcxB/887mFNoi7DkPg3F/UcOhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOjyBAQI17Bhvz+RhSL4YTj0iyH8x2Q3j8N2sktWl5QmZvGB1Hhw6OBYPOQjyiNiWROJ1juSbP/yQu6WYYIWMkKPxhukM0J3mO08fmUE5/x1uBM2w74ijkrsSvORrcUoOXX1m7votSTbxcMRUgFLJPit9qdKmWkAAVJkIapoG/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQR9eeJb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A24BC116D0;
-	Wed, 25 Feb 2026 01:43:09 +0000 (UTC)
+	 MIME-Version; b=rNQVaQ2PWcpiMpihtbS2rFmWAfTwCslzQ58gOQP8xLtCg8BZJWgtLZigmdNXBp1lHL1OjmklqIPW9dgVE+Bpjq6MdHPPMSF3XdorE2mQsTiNXoiT/iY/K3ecOm8OSZt0AEEfurAuBJOLxfgY5GcMguFA60DA4tHOttXBGT0/tWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFwUNmXi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A5FC116D0;
+	Wed, 25 Feb 2026 01:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983789;
-	bh=9U9QlQTDZIU9rxnSjnFsAM4PiuuIq3mNdrYvWrNVL0U=;
+	s=korg; t=1771983138;
+	bh=7tFJsZ+KGxXSvTdxlkcxB/887mFNoi7DkPg3F/UcOhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pQR9eeJbG5L3pXxd7dWpIQeQprRuKleUxSkyQ3l5AJbts+IZgSbqhrc9n59KJWLpX
-	 Ef7fxWeLKvRe+eVQbNvwFxzwOG2iGHmrDN4RSFjEye3lJxHHGjtVSsL8JfWzW7upBC
-	 oJYc7hHxf7RgBOqR937BDoyrQIxlcRMZtdgi+szI=
+	b=zFwUNmXiGH3NTbDtuK5t/q8sKXo+KWjqTzlZlBYHGRNOTCTLJRs1eOEAILQUCDUiY
+	 SGFEPRZm+9QT8R9vx7q20MqXwvMi3K2/LgMHCaglhQUxVZuEkQyET5yUdXObxx5nxI
+	 7MyNTw+3n9yNHsTUgC31xY/QF8QN3BGgRFXhGyTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Weili Qian <qianweili@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 075/641] crypto: hisilicon/sec - move backlog management to qp and store sqe in qp for callback
-Date: Tue, 24 Feb 2026 17:16:41 -0800
-Message-ID: <20260225012350.885980177@linuxfoundation.org>
+Subject: [PATCH 6.19 293/781] accel/amdxdna: Hold mm structure across iommu_sva_unbind_device()
+Date: Tue, 24 Feb 2026 17:16:42 -0800
+Message-ID: <20260225012406.897133576@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,392 +69,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218898-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218333-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
-X-Rspamd-Queue-Id: DD95F1902B3
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 617CC18F7C3
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit 08eb67d23e5172a5d1e60f1f0acccee569fe10ba ]
+[ Upstream commit a9162439ad792afcddc04718408ec1380b7a5f63 ]
 
-When multiple tfm use a same qp, the backlog data should be managed
-centrally by the qp, rather than in the qp_ctx of each req.
+Some tests trigger a crash in iommu_sva_unbind_device() due to
+accessing iommu_mm after the associated mm structure has been
+freed.
 
-Additionally, since SEC_BD_TYPE1 and SEC_BD_TYPE2 cannot use the
-tag of the sqe to carry the virtual address of the req, the sent
-sqe is stored in the qp. This allows the callback function to get
-the req address. To handle the differences between hardware types,
-the callback functions are split into two separate implementations.
+Fix this by taking an explicit reference to the mm structure
+after successfully binding the device, and releasing it only
+after the device is unbound. This ensures the mm remains valid
+for the entire SVA bind/unbind lifetime.
 
-Fixes: f0ae287c5045 ("crypto: hisilicon/sec2 - implement full backlog mode for sec")
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Weili Qian <qianweili@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: be462c97b7df ("accel/amdxdna: Add hardware context")
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://patch.msgid.link/20260128002356.1858122-1-lizhi.hou@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/qm.c              | 20 ++++-
- drivers/crypto/hisilicon/sec2/sec.h        |  7 --
- drivers/crypto/hisilicon/sec2/sec_crypto.c | 88 +++++++++++-----------
- include/linux/hisi_acc_qm.h                |  8 ++
- 4 files changed, 69 insertions(+), 54 deletions(-)
+ drivers/accel/amdxdna/amdxdna_pci_drv.c | 3 +++
+ drivers/accel/amdxdna/amdxdna_pci_drv.h | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index 0968304c0cb51..6bf91735dfcd8 100644
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -2210,6 +2210,7 @@ static void qp_stop_fail_cb(struct hisi_qp *qp)
- 	for (i = 0; i < qp_used; i++) {
- 		pos = (i + cur_head) % sq_depth;
- 		qp->req_cb(qp, qp->sqe + (u32)(qm->sqe_size * pos));
-+		qm_cq_head_update(qp);
- 		atomic_dec(&qp->qp_status.used);
+diff --git a/drivers/accel/amdxdna/amdxdna_pci_drv.c b/drivers/accel/amdxdna/amdxdna_pci_drv.c
+index fcc9be23b3de5..bcb0d77b63cbb 100644
+--- a/drivers/accel/amdxdna/amdxdna_pci_drv.c
++++ b/drivers/accel/amdxdna/amdxdna_pci_drv.c
+@@ -83,6 +83,8 @@ static int amdxdna_drm_open(struct drm_device *ddev, struct drm_file *filp)
+ 		ret = -ENODEV;
+ 		goto unbind_sva;
  	}
- }
-@@ -2374,6 +2375,7 @@ int hisi_qp_send(struct hisi_qp *qp, const void *msg)
- 		return -EBUSY;
++	client->mm = current->mm;
++	mmgrab(client->mm);
+ 	init_srcu_struct(&client->hwctx_srcu);
+ 	xa_init_flags(&client->hwctx_xa, XA_FLAGS_ALLOC);
+ 	mutex_init(&client->mm_lock);
+@@ -119,6 +121,7 @@ static void amdxdna_drm_close(struct drm_device *ddev, struct drm_file *filp)
+ 		drm_gem_object_put(to_gobj(client->dev_heap));
  
- 	memcpy(sqe, msg, qp->qm->sqe_size);
-+	qp->msg[sq_tail] = msg;
+ 	iommu_sva_unbind_device(client->sva);
++	mmdrop(client->mm);
  
- 	qm_db(qp->qm, qp->qp_id, QM_DOORBELL_CMD_SQ, sq_tail_next, 0);
- 	atomic_inc(&qp->qp_status.used);
-@@ -2907,12 +2909,13 @@ EXPORT_SYMBOL_GPL(hisi_qm_wait_task_finish);
- static void hisi_qp_memory_uninit(struct hisi_qm *qm, int num)
- {
- 	struct device *dev = &qm->pdev->dev;
--	struct qm_dma *qdma;
-+	struct hisi_qp *qp;
- 	int i;
+ 	XDNA_DBG(xdna, "pid %d closed", client->pid);
+ 	kfree(client);
+diff --git a/drivers/accel/amdxdna/amdxdna_pci_drv.h b/drivers/accel/amdxdna/amdxdna_pci_drv.h
+index 0d50c4c8b3533..ec21cb378a472 100644
+--- a/drivers/accel/amdxdna/amdxdna_pci_drv.h
++++ b/drivers/accel/amdxdna/amdxdna_pci_drv.h
+@@ -130,6 +130,7 @@ struct amdxdna_client {
  
- 	for (i = num - 1; i >= 0; i--) {
--		qdma = &qm->qp_array[i].qdma;
--		dma_free_coherent(dev, qdma->size, qdma->va, qdma->dma);
-+		qp = &qm->qp_array[i];
-+		dma_free_coherent(dev, qp->qdma.size, qp->qdma.va, qp->qdma.dma);
-+		kfree(qp->msg);
- 		kfree(qm->poll_data[i].qp_finish_id);
- 	}
- 
-@@ -2934,10 +2937,14 @@ static int hisi_qp_memory_init(struct hisi_qm *qm, size_t dma_size, int id,
- 		return -ENOMEM;
- 
- 	qp = &qm->qp_array[id];
-+	qp->msg = kmalloc_array(sq_depth, sizeof(void *), GFP_KERNEL);
-+	if (!qp->msg)
-+		goto err_free_qp_finish_id;
-+
- 	qp->qdma.va = dma_alloc_coherent(dev, dma_size, &qp->qdma.dma,
- 					 GFP_KERNEL);
- 	if (!qp->qdma.va)
--		goto err_free_qp_finish_id;
-+		goto err_free_qp_msg;
- 
- 	qp->sqe = qp->qdma.va;
- 	qp->sqe_dma = qp->qdma.dma;
-@@ -2949,8 +2956,13 @@ static int hisi_qp_memory_init(struct hisi_qm *qm, size_t dma_size, int id,
- 	qp->qm = qm;
- 	qp->qp_id = id;
- 
-+	spin_lock_init(&qp->backlog.lock);
-+	INIT_LIST_HEAD(&qp->backlog.list);
-+
- 	return 0;
- 
-+err_free_qp_msg:
-+	kfree(qp->msg);
- err_free_qp_finish_id:
- 	kfree(qm->poll_data[id].qp_finish_id);
- 	return ret;
-diff --git a/drivers/crypto/hisilicon/sec2/sec.h b/drivers/crypto/hisilicon/sec2/sec.h
-index 81d0beda93b2b..0710977861f32 100644
---- a/drivers/crypto/hisilicon/sec2/sec.h
-+++ b/drivers/crypto/hisilicon/sec2/sec.h
-@@ -82,11 +82,6 @@ struct sec_aead_req {
- 	__u8 out_mac_buf[SEC_MAX_MAC_LEN];
+ 	struct iommu_sva		*sva;
+ 	int				pasid;
++	struct mm_struct		*mm;
  };
  
--struct sec_instance_backlog {
--	struct list_head list;
--	spinlock_t lock;
--};
--
- /* SEC request of Crypto */
- struct sec_req {
- 	union {
-@@ -112,7 +107,6 @@ struct sec_req {
- 	bool use_pbuf;
- 
- 	struct list_head list;
--	struct sec_instance_backlog *backlog;
- 	struct sec_request_buf buf;
- };
- 
-@@ -172,7 +166,6 @@ struct sec_qp_ctx {
- 	spinlock_t id_lock;
- 	struct hisi_acc_sgl_pool *c_in_pool;
- 	struct hisi_acc_sgl_pool *c_out_pool;
--	struct sec_instance_backlog backlog;
- 	u16 send_head;
- };
- 
-diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-index 31590d01139a3..4e41235116e15 100644
---- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-@@ -54,7 +54,6 @@
- #define SEC_AUTH_CIPHER_V3	0x40
- #define SEC_FLAG_OFFSET		7
- #define SEC_FLAG_MASK		0x0780
--#define SEC_TYPE_MASK		0x0F
- #define SEC_DONE_MASK		0x0001
- #define SEC_ICV_MASK		0x000E
- 
-@@ -148,7 +147,7 @@ static void sec_free_req_id(struct sec_req *req)
- 	spin_unlock_bh(&qp_ctx->id_lock);
- }
- 
--static u8 pre_parse_finished_bd(struct bd_status *status, void *resp)
-+static void pre_parse_finished_bd(struct bd_status *status, void *resp)
- {
- 	struct sec_sqe *bd = resp;
- 
-@@ -158,11 +157,9 @@ static u8 pre_parse_finished_bd(struct bd_status *status, void *resp)
- 					SEC_FLAG_MASK) >> SEC_FLAG_OFFSET;
- 	status->tag = le16_to_cpu(bd->type2.tag);
- 	status->err_type = bd->type2.error_type;
--
--	return bd->type_cipher_auth & SEC_TYPE_MASK;
- }
- 
--static u8 pre_parse_finished_bd3(struct bd_status *status, void *resp)
-+static void pre_parse_finished_bd3(struct bd_status *status, void *resp)
- {
- 	struct sec_sqe3 *bd3 = resp;
- 
-@@ -172,8 +169,6 @@ static u8 pre_parse_finished_bd3(struct bd_status *status, void *resp)
- 					SEC_FLAG_MASK) >> SEC_FLAG_OFFSET;
- 	status->tag = le64_to_cpu(bd3->tag);
- 	status->err_type = bd3->error_type;
--
--	return le32_to_cpu(bd3->bd_param) & SEC_TYPE_MASK;
- }
- 
- static int sec_cb_status_check(struct sec_req *req,
-@@ -244,7 +239,7 @@ static void sec_alg_send_backlog_soft(struct sec_ctx *ctx, struct sec_qp_ctx *qp
- 	struct sec_req *req, *tmp;
- 	int ret;
- 
--	list_for_each_entry_safe(req, tmp, &qp_ctx->backlog.list, list) {
-+	list_for_each_entry_safe(req, tmp, &qp_ctx->qp->backlog.list, list) {
- 		list_del(&req->list);
- 		ctx->req_op->buf_unmap(ctx, req);
- 		if (req->req_id >= 0)
-@@ -265,11 +260,12 @@ static void sec_alg_send_backlog_soft(struct sec_ctx *ctx, struct sec_qp_ctx *qp
- 
- static void sec_alg_send_backlog(struct sec_ctx *ctx, struct sec_qp_ctx *qp_ctx)
- {
-+	struct hisi_qp *qp = qp_ctx->qp;
- 	struct sec_req *req, *tmp;
- 	int ret;
- 
--	spin_lock_bh(&qp_ctx->backlog.lock);
--	list_for_each_entry_safe(req, tmp, &qp_ctx->backlog.list, list) {
-+	spin_lock_bh(&qp->backlog.lock);
-+	list_for_each_entry_safe(req, tmp, &qp->backlog.list, list) {
- 		ret = qp_send_message(req);
- 		switch (ret) {
- 		case -EINPROGRESS:
-@@ -287,42 +283,46 @@ static void sec_alg_send_backlog(struct sec_ctx *ctx, struct sec_qp_ctx *qp_ctx)
- 	}
- 
- unlock:
--	spin_unlock_bh(&qp_ctx->backlog.lock);
-+	spin_unlock_bh(&qp->backlog.lock);
- }
- 
- static void sec_req_cb(struct hisi_qp *qp, void *resp)
- {
--	struct sec_qp_ctx *qp_ctx = qp->qp_ctx;
--	struct sec_dfx *dfx = &qp_ctx->ctx->sec->debug.dfx;
--	u8 type_supported = qp_ctx->ctx->type_supported;
-+	const struct sec_sqe *sqe = qp->msg[qp->qp_status.cq_head];
-+	struct sec_req *req = container_of(sqe, struct sec_req, sec_sqe);
-+	struct sec_ctx *ctx = req->ctx;
-+	struct sec_dfx *dfx = &ctx->sec->debug.dfx;
- 	struct bd_status status;
--	struct sec_ctx *ctx;
--	struct sec_req *req;
- 	int err;
--	u8 type;
- 
--	if (type_supported == SEC_BD_TYPE2) {
--		type = pre_parse_finished_bd(&status, resp);
--		req = qp_ctx->req_list[status.tag];
--	} else {
--		type = pre_parse_finished_bd3(&status, resp);
--		req = (void *)(uintptr_t)status.tag;
--	}
-+	pre_parse_finished_bd(&status, resp);
- 
--	if (unlikely(type != type_supported)) {
--		atomic64_inc(&dfx->err_bd_cnt);
--		pr_err("err bd type [%u]\n", type);
--		return;
--	}
-+	req->err_type = status.err_type;
-+	err = sec_cb_status_check(req, &status);
-+	if (err)
-+		atomic64_inc(&dfx->done_flag_cnt);
- 
--	if (unlikely(!req)) {
--		atomic64_inc(&dfx->invalid_req_cnt);
--		atomic_inc(&qp->qp_status.used);
--		return;
--	}
-+	atomic64_inc(&dfx->recv_cnt);
- 
-+	ctx->req_op->buf_unmap(ctx, req);
-+	ctx->req_op->callback(ctx, req, err);
-+}
-+
-+static void sec_req_cb3(struct hisi_qp *qp, void *resp)
-+{
-+	struct bd_status status;
-+	struct sec_ctx *ctx;
-+	struct sec_dfx *dfx;
-+	struct sec_req *req;
-+	int err;
-+
-+	pre_parse_finished_bd3(&status, resp);
-+
-+	req = (void *)(uintptr_t)status.tag;
- 	req->err_type = status.err_type;
- 	ctx = req->ctx;
-+	dfx = &ctx->sec->debug.dfx;
-+
- 	err = sec_cb_status_check(req, &status);
- 	if (err)
- 		atomic64_inc(&dfx->done_flag_cnt);
-@@ -330,7 +330,6 @@ static void sec_req_cb(struct hisi_qp *qp, void *resp)
- 	atomic64_inc(&dfx->recv_cnt);
- 
- 	ctx->req_op->buf_unmap(ctx, req);
--
- 	ctx->req_op->callback(ctx, req, err);
- }
- 
-@@ -348,8 +347,10 @@ static int sec_alg_send_message_retry(struct sec_req *req)
- 
- static int sec_alg_try_enqueue(struct sec_req *req)
- {
-+	struct hisi_qp *qp = req->qp_ctx->qp;
-+
- 	/* Check if any request is already backlogged */
--	if (!list_empty(&req->backlog->list))
-+	if (!list_empty(&qp->backlog.list))
- 		return -EBUSY;
- 
- 	/* Try to enqueue to HW ring */
-@@ -359,17 +360,18 @@ static int sec_alg_try_enqueue(struct sec_req *req)
- 
- static int sec_alg_send_message_maybacklog(struct sec_req *req)
- {
-+	struct hisi_qp *qp = req->qp_ctx->qp;
- 	int ret;
- 
- 	ret = sec_alg_try_enqueue(req);
- 	if (ret != -EBUSY)
- 		return ret;
- 
--	spin_lock_bh(&req->backlog->lock);
-+	spin_lock_bh(&qp->backlog.lock);
- 	ret = sec_alg_try_enqueue(req);
- 	if (ret == -EBUSY)
--		list_add_tail(&req->list, &req->backlog->list);
--	spin_unlock_bh(&req->backlog->lock);
-+		list_add_tail(&req->list, &qp->backlog.list);
-+	spin_unlock_bh(&qp->backlog.lock);
- 
- 	return ret;
- }
-@@ -629,13 +631,14 @@ static int sec_create_qp_ctx(struct sec_ctx *ctx, int qp_ctx_id)
- 	qp_ctx->qp = qp;
- 	qp_ctx->ctx = ctx;
- 
--	qp->req_cb = sec_req_cb;
-+	if (ctx->type_supported == SEC_BD_TYPE3)
-+		qp->req_cb = sec_req_cb3;
-+	else
-+		qp->req_cb = sec_req_cb;
- 
- 	spin_lock_init(&qp_ctx->req_lock);
- 	idr_init(&qp_ctx->req_idr);
--	spin_lock_init(&qp_ctx->backlog.lock);
- 	spin_lock_init(&qp_ctx->id_lock);
--	INIT_LIST_HEAD(&qp_ctx->backlog.list);
- 	qp_ctx->send_head = 0;
- 
- 	ret = sec_alloc_qp_ctx_resource(ctx, qp_ctx);
-@@ -1952,7 +1955,6 @@ static int sec_request_init(struct sec_ctx *ctx, struct sec_req *req)
- 	} while (req->req_id < 0 && ++i < ctx->sec->ctx_q_num);
- 
- 	req->qp_ctx = qp_ctx;
--	req->backlog = &qp_ctx->backlog;
- 
- 	return 0;
- }
-diff --git a/include/linux/hisi_acc_qm.h b/include/linux/hisi_acc_qm.h
-index c4690e365ade9..2d0cc61ed8869 100644
---- a/include/linux/hisi_acc_qm.h
-+++ b/include/linux/hisi_acc_qm.h
-@@ -444,6 +444,11 @@ struct hisi_qp_ops {
- 	int (*fill_sqe)(void *sqe, void *q_parm, void *d_parm);
- };
- 
-+struct instance_backlog {
-+	struct list_head list;
-+	spinlock_t lock;
-+};
-+
- struct hisi_qp {
- 	u32 qp_id;
- 	u16 sq_depth;
-@@ -468,6 +473,9 @@ struct hisi_qp {
- 	bool is_in_kernel;
- 	u16 pasid;
- 	struct uacce_queue *uacce_q;
-+
-+	struct instance_backlog backlog;
-+	const void **msg;
- };
- 
- static inline int vfs_num_set(const char *val, const struct kernel_param *kp)
+ #define amdxdna_for_each_hwctx(client, hwctx_id, entry)		\
 -- 
 2.51.0
 
