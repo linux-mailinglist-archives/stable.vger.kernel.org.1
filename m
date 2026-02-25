@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-218563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDUgL6NTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:59 +0100
+	id aIohN/JXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9A518F969
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AEBB190647
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A94D3314D163
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6259305DD40
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D79243376;
-	Wed, 25 Feb 2026 01:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BAA258EF9;
+	Wed, 25 Feb 2026 01:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDWNCC97"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ua07VxpE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB67718B0A;
-	Wed, 25 Feb 2026 01:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B77418B0A;
+	Wed, 25 Feb 2026 01:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983402; cv=none; b=m3lzuGK1K26YWpGYUxLNjOq0xvU0HaXnKUeOIGfI0in94hKU7RyZHD9cxw+i3mOIjad2K3dUar/8MIfLiM9oCNfhKvDEGSdSc4CnUJEnZUX4TGhi62N37GFyT1ntAVlQpONd9e4yQB109qKmKC3rsc8GLTxaTM6kZZAqveVfUcU=
+	t=1771983403; cv=none; b=Ea1N+W70l8kkAJFXiF1aI8OPMGTNy7T0Srnhml46NKgnZvi9S4sCh4gka7+NS6TOm3xuFVr1OZw4dY6bP47gKQC5QMMM3sHXIxkZr+dTgG2xIIpuTDh9qBakVfGRZd1w6VItENFjmXqNKKVCBv5XgLaYm1go3fpL1i5JNnwBetg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983402; c=relaxed/simple;
-	bh=Y1SziltBEW1hPyYuh7G8YOEkEHPm4JxCkqPncEb/UZM=;
+	s=arc-20240116; t=1771983403; c=relaxed/simple;
+	bh=Aoc//cSGV8tP9vHFKRn9fBu9nIKcBQW6RCV6T/MNG/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7EEqXK+M+K8juZhPT10kPay5FHmksNzCu1xh0zQYxwGowIAFE4sZXaZq2RAHYdhGOwyRf6p7PFi6Ke562UerFuUGt0zAdfU37SGTHnjwDyrL0uuYr3r/U8sEOfaERb58ymos4SpGgQJ808qD0WRWhl1pUQQWD0eTQrLt7BI0Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDWNCC97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73995C116D0;
-	Wed, 25 Feb 2026 01:36:42 +0000 (UTC)
+	 MIME-Version; b=tcCpVTCIIUVOjQPHzPQmtUcW4sDCLFG5bH/sefPxJ9cHHdMEMzbfsqsqlLhOYsD17kH83m9aSybuNN6FA+YIXNuzST0E8ec6IwA4vuQjI0XAs5pVjd6gQIrUfgiZp3aA+7atY+KkPk96rjJ+/voPfHZ4BccF9XXF4lbh/fSCsPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ua07VxpE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A9EC116D0;
+	Wed, 25 Feb 2026 01:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983402;
-	bh=Y1SziltBEW1hPyYuh7G8YOEkEHPm4JxCkqPncEb/UZM=;
+	s=korg; t=1771983403;
+	bh=Aoc//cSGV8tP9vHFKRn9fBu9nIKcBQW6RCV6T/MNG/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDWNCC97Q0jC/KlM6tCW9o0eKX2vcnnRNL/TbNOYR6K3SmBIJ0pyffVly8KA+8py1
-	 xZ/tHOHoTNo2fsVolnwYHQfRwaloMPionnogolBt6IU6ZBLt6856kf/lxpcaTypk5/
-	 Sbjqlojs3KJdD1d+tE4pD9GjFJye/N9LDqEZUR4o=
+	b=ua07VxpE9wt473mKf91kiAdXN4zSmwjB96UIq0mqc5m7ZJzhiBWnEfH/TBXQoFztx
+	 KivZuJ8MhGBNk1Nd7FoqFODv3baoq9DgJqCY/NSZInbV0l7U8zGjB4RHoLz/avtMee
+	 a4rzNYyLz39V/M3ap/b1NYnMYkrppRFpcpb1H+S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
 	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
 	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 523/781] clk: qcom: gcc-x1e80100: Update the SDCC RCGs to use shared_floor_ops
-Date: Tue, 24 Feb 2026 17:20:32 -0800
-Message-ID: <20260225012412.627095203@linuxfoundation.org>
+Subject: [PATCH 6.19 524/781] clk: qcom: gcc-qdu1000: Update the SDCC RCGs to use shared_floor_ops
+Date: Tue, 24 Feb 2026 17:20:33 -0800
+Message-ID: <20260225012412.650804449@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218563-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218564-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,11 +91,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1D9A518F969
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: 4AEBB190647
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
@@ -103,41 +104,42 @@ X-Rspamd-Action: no action
 
 From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
 
-[ Upstream commit a468047c4e1c56783204a3ac551b843b4277c8fc ]
+[ Upstream commit 947c4b326c1f4dc64aed42170b39c2cf551ba8ca ]
 
 Use shared_floor_ops for the SDCC RCGs so the RCG is safely parked
 during disable and the new parent configuration is programmed in
 hardware only when the new parent is enabled, avoiding cases where
 the RCG configuration fails to update.
 
-Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
+Fixes: baa316580013 ("clk: qcom: gcc-qdu1000: Update the SDCC clock RCG ops")
 Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
 Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
 Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-6-473afc86589c@oss.qualcomm.com
+Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-7-473afc86589c@oss.qualcomm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-x1e80100.c | 4 ++--
+ drivers/clk/qcom/gcc-qdu1000.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
-index b63c8abdd2fc2..e46e65e631513 100644
---- a/drivers/clk/qcom/gcc-x1e80100.c
-+++ b/drivers/clk/qcom/gcc-x1e80100.c
-@@ -1516,7 +1516,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.parent_data = gcc_parent_data_9,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_9),
- 		.flags = CLK_SET_RATE_PARENT,
+diff --git a/drivers/clk/qcom/gcc-qdu1000.c b/drivers/clk/qcom/gcc-qdu1000.c
+index dbe9e9437939a..915bb9b4ff813 100644
+--- a/drivers/clk/qcom/gcc-qdu1000.c
++++ b/drivers/clk/qcom/gcc-qdu1000.c
+@@ -904,7 +904,7 @@ static struct clk_rcg2 gcc_sdcc5_apps_clk_src = {
+ 		.name = "gcc_sdcc5_apps_clk_src",
+ 		.parent_data = gcc_parent_data_8,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_8),
 -		.ops = &clk_rcg2_floor_ops,
 +		.ops = &clk_rcg2_shared_floor_ops,
  	},
  };
  
-@@ -1538,7 +1538,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
- 		.parent_data = gcc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
+@@ -923,7 +923,7 @@ static struct clk_rcg2 gcc_sdcc5_ice_core_clk_src = {
+ 		.name = "gcc_sdcc5_ice_core_clk_src",
+ 		.parent_data = gcc_parent_data_2,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_2),
 -		.ops = &clk_rcg2_floor_ops,
 +		.ops = &clk_rcg2_shared_floor_ops,
  	},
