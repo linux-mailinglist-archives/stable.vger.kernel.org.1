@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218981-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPdiATVSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:53 +0100
+	id sLQ8MTlVnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218981-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E5418F285
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B8218FF58
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A2A83309C508
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8D50C30E9538
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC2A20C012;
-	Wed, 25 Feb 2026 01:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7899428507B;
+	Wed, 25 Feb 2026 01:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FN7Y1Dqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9+Sg//y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7C618B0A;
-	Wed, 25 Feb 2026 01:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD471F03DE;
+	Wed, 25 Feb 2026 01:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983233; cv=none; b=nza4seDHKSaIdnbdamVawgc7zMLMFhnocZbxb7f8iIy5OuCpX6LpUw8KHRjXGqDkPwIxawK3eoG4omfb8R6f7wdVNqs7Q9YWV3+j9zOiJb88eozhbnlktvsIpkVKYjYJ/AmizH4XiEFm8JxWgipCEvPjKdmwqiY+yIRwvene6U4=
+	t=1771983886; cv=none; b=WeFfbvylti5nhKZBQHc4C0gUcxT/qZwb2Ree4MlFp4K9zonxMKOqdkc3SWJhkg4i4BuCeT+YDf2carasz5RlmNDxWwt98rQZbQWUtEkQ5MSgAwa58jlJ6UYMJnok6QkIh5IA1l9YUDyHDM7UXLhjHN5EcnFsvVVROIz+HWhkHKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983233; c=relaxed/simple;
-	bh=OOsI3sMnTZKxZXAEW/unyUS8w5teGUeeVzINyV38gMA=;
+	s=arc-20240116; t=1771983886; c=relaxed/simple;
+	bh=UCl8WhMBgv+Lmi4Q87Nny1AigDhOb6kXC1jUtfhMbN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cn7+jKd2rEJ+ezhAUqXWBDEn7ugvJ9Os7NqS/VZUZSF79HfDh7XXVrpD3amzfRAAhZDBMF1WWmVCOntrvIcnQnRLrmL+ScRdglrvT4+llQjT6gglQpOgF1EOtVJiTVZ+/rw1YwRKxGsyiqFdanDlpwDsoWV/4Wj8UneIb2u8d9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FN7Y1Dqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473BDC116D0;
-	Wed, 25 Feb 2026 01:33:53 +0000 (UTC)
+	 MIME-Version; b=fiW5+eMho6F2UZzKvUfKFu2bYRM7oBMaxoeXaCkg/GJUt44daSqAx0163iOnnSEtcVh6MWtOUOW+qJ+H8hKkMrb7SFZ3DKDjl7woUAs5Qvq8WqmqA4sOW07ZUW0V35VM4xbQ58blmGXGU9+Cu2wgdp4R5X9H9bMSN1EJGCjttqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9+Sg//y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A3DC116D0;
+	Wed, 25 Feb 2026 01:44:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983233;
-	bh=OOsI3sMnTZKxZXAEW/unyUS8w5teGUeeVzINyV38gMA=;
+	s=korg; t=1771983885;
+	bh=UCl8WhMBgv+Lmi4Q87Nny1AigDhOb6kXC1jUtfhMbN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FN7Y1DqjEg2ZR9mtlDW3uu3QHshaJ8CaOTXtZElS7TAksZqLdHVpaKJbq1+AM+e/Y
-	 DJ09ZfWd/l4UN1GlVtisPqCA5PbSwfIG/oNBBBuqLMNKvtUlq3k+NrjCuw7MQ1KFej
-	 trhkrnq7GylWyYIbHxSK6H3g8U0HUikrgf2kWy0c=
+	b=k9+Sg//ybVQv1Y2CeOdRzQFBw6qZE13msx0liSptaqfmuBSaOX0BUVtYAFxHO2jUt
+	 cnaLjyGBN0s/AElxy4nOFfHMMHPatXojE7MFOyYXxASnG8FjmsVY+8G5FzAqU9IyC7
+	 ZfxP+C0pLqmT5gfPtTCtdo28izJR4R09VsQnUa7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 376/781] wifi: ath12k: Fix index decrement when array_len is zero
+Subject: [PATCH 6.18 159/641] arm64: dts: amlogic: g12: assign the MMC A signal clock
 Date: Tue, 24 Feb 2026 17:18:05 -0800
-Message-ID: <20260225012408.914531700@linuxfoundation.org>
+Message-ID: <20260225012352.927303636@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,79 +74,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218415-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218981-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 97E5418F285
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ffe03000:email,ffe05000:email]
+X-Rspamd-Queue-Id: 34B8218FF58
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit e4763898bb1325dbb3792961b6d607b5c6452d64 ]
+[ Upstream commit 3c941feaa363f1573a501452391ddf513394c84b ]
 
-Currently, print_array_to_buf_index() decrements index unconditionally.
-This may lead to invalid buffer access when array_len is zero.
+The amlogic MMC driver operate with the assumption that MMC clock
+is configured to provide 24MHz. It uses this path for low
+rates such as 400kHz.
 
-Fix this by decrementing index only when array_len is non-zero.
+Assign the clock to make sure it is properly configured
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
-
-Fixes: adf6df963c03 ("wifi: ath12k: Add support to parse requested stats_type")
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260123071253.2202644-2-aaradhana.sahu@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 8a6b3ca2d361 ("arm64: dts: meson: g12a: add SDIO controller")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260114-amlogic-mmc-clocks-followup-v1-6-a999fafbe0aa@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index 48b010a1b7566..4f749d473d0e1 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
+diff --git a/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi b/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
+index 6724405eaa6f5..8d8ab775404d9 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
+@@ -2431,6 +2431,9 @@ sd_emmc_a: mmc@ffe03000 {
+ 				 <&clkc CLKID_FCLK_DIV2>;
+ 			clock-names = "core", "clkin0", "clkin1";
+ 			resets = <&reset RESET_SD_EMMC_A>;
++
++			assigned-clocks = <&clkc CLKID_SD_EMMC_A_CLK0>;
++			assigned-clock-rates = <24000000>;
+ 		};
  
- #include <linux/vmalloc.h>
-@@ -29,8 +29,10 @@ print_array_to_buf_index(u8 *buf, u32 offset, const char *header, u32 stats_inde
- 				   " %u:%u,", stats_index++, le32_to_cpu(array[i]));
- 	}
- 	/* To overwrite the last trailing comma */
--	index--;
--	*(buf + offset + index) = '\0';
-+	if (array_len > 0) {
-+		index--;
-+		*(buf + offset + index) = '\0';
-+	}
- 
- 	if (footer) {
- 		index += scnprintf(buf + offset + index,
+ 		sd_emmc_b: mmc@ffe05000 {
 -- 
 2.51.0
 
