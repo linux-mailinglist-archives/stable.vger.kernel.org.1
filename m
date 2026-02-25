@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218328-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAD1LGBWnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:40 +0100
+	id uJTNHJxSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218328-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B16190296
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D2418F45A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBBEB32E3E8F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EC21E312A598
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4827270EDF;
-	Wed, 25 Feb 2026 01:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D4420C012;
+	Wed, 25 Feb 2026 01:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3kMK8lk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j16gMZx/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EF72701DA;
-	Wed, 25 Feb 2026 01:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA741D5ABA;
+	Wed, 25 Feb 2026 01:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983783; cv=none; b=ifPSO0DbVXcrVNzNbdKPNE7oU+gtmZZ8XQ3XjdQ2WvjbD85IU0v89ELTOi22tqmmGjmC7F1OksGbCiVNiSVXgfOmPv+cydBtylfLA7N+bH3YB0akfgj9moLC+GQH85VeBbyFHoj94/SQ8t7r1dpxP6uBU2o+nyJs/4ONaAn7jiU=
+	t=1771983132; cv=none; b=F8KW8QS+rLSNMbztLws7k25rJady/FHRmC7vrX/Bg1OKwXonNqzmE16SYL/4uooho4MilySNUKabvH8aZQPEsagMzoNOeD50nEg7wY43OtIwfARY7ZKPha2jUQ9gsKyP33XYpWTCd0tzkdtgzjjQoICqJsAYui2HjG4eL9lrH6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983783; c=relaxed/simple;
-	bh=wmjehVeucMKAxDYVBXdWXHDv9YsFBrbiiJZPEthqmtc=;
+	s=arc-20240116; t=1771983132; c=relaxed/simple;
+	bh=8J45grnlKsoBrB2LI2wjZI8zRwJXskG+OLBKEIBRLMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMahejsHqQV6pOFt5jeFkWVqQ98F5MKNAnYtdAZufGfvvEEbGoUtrP2ynBDpm4KHdcsFJpadU2KSAPKRx8zkeGiDWn42tmHiAmdeTPSJxPBka64zpC589bBwDbVCojRcQMnKDS1FiEQNcc0B36GCcF55dMg7BXflR4XHRyNd1No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3kMK8lk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F68C116D0;
-	Wed, 25 Feb 2026 01:43:03 +0000 (UTC)
+	 MIME-Version; b=r/8CHslurooN2NzpvEiTpA4R+8bKr2k6TDDpQDQQlIa2zJiKTO3UKryc6kSO/VBMLAx32Nsb21VV2AMNIdzfzlv20qecuy9iv9HNSbXLSCZGFsr7oEBhAp5qYQmNmUjOzeDNFM4WPiDUFmPGyoNLbGzwoIOQRS6g+pV7fGKyJHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j16gMZx/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182D9C116D0;
+	Wed, 25 Feb 2026 01:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983783;
-	bh=wmjehVeucMKAxDYVBXdWXHDv9YsFBrbiiJZPEthqmtc=;
+	s=korg; t=1771983132;
+	bh=8J45grnlKsoBrB2LI2wjZI8zRwJXskG+OLBKEIBRLMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3kMK8lkhXNplpe5CmOoRMWCT8iOtQA5HV+6YKk8jaIPpo2dxyW0Y3ywdhCiIP5t3
-	 WQMTKyE0rrYLCvMomkXObRrnk5Kmm8alOfFbK1A8BjZ31xJPdhffGLXeZHKUCsrV4r
-	 wSXxfaOaCwiD6v5LODIt4RNIgRxXFxNCcu451Eyc=
+	b=j16gMZx/SDoDKEljE+Z59f/PhcFd6n7Ya3dSj+YOxJFoWf20kGX27GdRhX78DTo4h
+	 8e7pGLfvqDoH9ITECNdKh4pKgumSEEnbbLSaYEt1z1B0YDemznnUF8eduXNkNyvrZv
+	 JTY2gJIo7X88o14Jtgf8wZGvRyekXIohYj4TXSbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Phil Auld <pauld@redhat.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 071/641] sched: Fix build for modules using set_tsk_need_resched()
-Date: Tue, 24 Feb 2026 17:16:37 -0800
-Message-ID: <20260225012350.785878693@linuxfoundation.org>
+Subject: [PATCH 6.19 289/781] drm/xe: Unregister drm device on probe error
+Date: Tue, 24 Feb 2026 17:16:38 -0800
+Message-ID: <20260225012406.794964998@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218894-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218328-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,55 +88,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 11B16190296
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 23D2418F45A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 8d737320166bd145af70a3133a9964b00ca81cba ]
+[ Upstream commit 96c2c72b817d70e8d110e78b0162e044a0c41f9f ]
 
-Commit adcc3bfa8806 ("sched: Adapt sched tracepoints for RV task model")
-added a tracepoint to the need_resched action that can be triggered also
-by set_tsk_need_resched.
-This function was previously accessible from out-of-tree modules but
-it's no longer available because the __trace_set_need_resched() symbol
-is not exported (together with the tracepoint itself, which was exported
-in a separate patch) and building such modules fails.
+Call drm_dev_unregister() when xe_device_probe() fails after successful
+drm_dev_register(). This ensures the DRM device is promptly unregistered
+before returning an error, avoiding leaving it registered on the failure
+path.
+Otherwise, there is warn message if xe_device_probe() is called again:
+"
+[  207.322365] [drm:drm_minor_register]
+[  207.322381] debugfs: '128' already exists in 'dri'
+[  207.322432] sysfs: cannot create duplicate filename '/devices/pci0000:00/0000:00:01.0/0000:01:00.0/0000:02:01.0/0000:03:00.0/drm/renderD128'
+[  207.322435] CPU: 5 UID: 0 PID: 10261 Comm: modprobe Tainted: G    B   W           6.19.0-rc2-lgci-xe-kernel+ #223 PREEMPT(voluntary)
+[  207.322439] Tainted: [B]=BAD_PAGE, [W]=WARN
+[  207.322440] Hardware name: ASUS System Product Name/PRIME Z790-P WIFI, BIOS 0812 02/24/2023
+[  207.322441] Call Trace:
+[  207.322442]  <TASK>
+[  207.322443]  dump_stack_lvl+0xa0/0xc0
+[  207.322446]  dump_stack+0x10/0x20
+[  207.322448]  sysfs_warn_dup+0xd5/0x110
+[  207.322451]  sysfs_create_dir_ns+0x1f6/0x280
+[  207.322453]  ? __pfx_sysfs_create_dir_ns+0x10/0x10
+[  207.322455]  ? lock_acquire+0x1a4/0x2e0
+[  207.322458]  ? __kasan_check_read+0x11/0x20
+[  207.322461]  kobject_add_internal+0x28d/0x8e0
+[  207.322464]  kobject_add+0x11f/0x1f0
+[  207.322465]  ? lock_acquire+0x1a4/0x2e0
+[  207.322467]  ? __pfx_kobject_add+0x10/0x10
+[  207.322469]  ? __kasan_check_write+0x14/0x20
+[  207.322471]  ? kobject_put+0x62/0x4a0
+[  207.322473]  ? get_device_parent.isra.0+0x1bb/0x4c0
+[  207.322475]  ? kobject_put+0x62/0x4a0
+[  207.322477]  device_add+0x2d7/0x1500
+[  207.322479]  ? __pfx_device_add+0x10/0x10
+[  207.322481]  ? drm_debugfs_add_file+0xfa/0x170
+[  207.322483]  ? drm_debugfs_add_files+0x82/0xd0
+[  207.322485]  ? drm_debugfs_add_files+0x82/0xd0
+[  207.322487]  drm_minor_register+0x10a/0x2d0
+[  207.322489]  drm_dev_register+0x143/0x860
+[  207.322491]  ? xe_configfs_get_psmi_enabled+0x12/0x90 [xe]
+[  207.322667]  xe_device_probe+0x185b/0x2c40 [xe]
+[  207.322812]  ? __pfx___drm_dev_dbg+0x10/0x10
+[  207.322815]  ? add_dr+0x180/0x220
+[  207.322818]  ? __pfx___drmm_mutex_release+0x10/0x10
+[  207.322821]  ? __pfx_xe_device_probe+0x10/0x10 [xe]
+[  207.322966]  ? xe_pm_init_early+0x33a/0x410 [xe]
+[  207.323136]  xe_pci_probe+0x936/0x1250 [xe]
+[  207.323298]  ? lock_acquire+0x1a4/0x2e0
+[  207.323302]  ? __pfx_xe_pci_probe+0x10/0x10 [xe]
+[  207.323464]  local_pci_probe+0xe6/0x1a0
+[  207.323468]  pci_device_probe+0x523/0x840
+[  207.323470]  ? __pfx_pci_device_probe+0x10/0x10
+[  207.323473]  ? sysfs_do_create_link_sd.isra.0+0x8c/0x110
+[  207.323476]  ? sysfs_create_link+0x48/0xc0
+[  207.323479]  really_probe+0x1fd/0x8a0
+...
+"
 
-Export __trace_set_need_resched to modules to fix those build issues.
-
-Fixes: adcc3bfa8806 ("sched: Adapt sched tracepoints for RV task model")
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Link: https://patch.msgid.link/20260112140413.362202-1-gmonaco@redhat.com
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://patch.msgid.link/20260109211041.2446012-2-shuicheng.lin@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit 60bfb8baf8f0d5b0d521744dfd01c880ce1a23f3)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 1 +
+ drivers/gpu/drm/xe/xe_device.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index c1e4d8a5947cf..582c3847f483a 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1139,6 +1139,7 @@ void __trace_set_need_resched(struct task_struct *curr, int tif)
- {
- 	trace_sched_set_need_resched_tp(curr, smp_processor_id(), tif);
- }
-+EXPORT_SYMBOL_GPL(__trace_set_need_resched);
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index 9a6d49fcd8e49..ef5acef32f416 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -976,6 +976,7 @@ int xe_device_probe(struct xe_device *xe)
  
- void resched_curr(struct rq *rq)
- {
+ err_unregister_display:
+ 	xe_display_unregister(xe);
++	drm_dev_unregister(&xe->drm);
+ 
+ 	return err;
+ }
 -- 
 2.51.0
 
