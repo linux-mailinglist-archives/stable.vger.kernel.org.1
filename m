@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-218630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFJRDB9UnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:03 +0100
+	id iO1WOO6enmlVWgQAu9opvQ
+	(envelope-from <stable+bounces-219274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13EE18FBA0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43359192DE1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82C9430BC948
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7BC0314B6ED
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9DB2641FC;
-	Wed, 25 Feb 2026 01:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A286C2D23A4;
+	Wed, 25 Feb 2026 06:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOTNIDEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPK60Ij2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114F42550D7;
-	Wed, 25 Feb 2026 01:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BD22D063E;
+	Wed, 25 Feb 2026 06:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983479; cv=none; b=Lf6StQq3T5OBHSuHqWJ3Yr9BMJzaK4qCFbSyiYQ3OW0KWXc6e6UA4kkrvJVpP62Bt0TLfOF/Uuprkz5QoA2elQmfgWvDhRbH/Pwac0Q8s8L87eLHg9zR8wF6IYj23JIQq3T7Mf26Vq0ymy5S2URqkkOvcH472zPpAcz1VKlVrXE=
+	t=1772002608; cv=none; b=oF8ADeo7sVnZhBYa8O1MRb7uDpeD3eHAwC6p3fSPmGYFzZndF9Ln9QhuMYw/PrtoC1X2zsXFW1qyuCw68oeZDDl/fwQzkF+7cbxk2p+Qj+fF+WJ4fa5nOzOj8sptyI4+PzG99BL6Z5mcLpIDUuYgXbV4/ztf314/mDcICmI4rZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983479; c=relaxed/simple;
-	bh=BqG6YdlFcCYCzom1hIoRdj/DKpRtIBwIu0YTqh6l8ZU=;
+	s=arc-20240116; t=1772002608; c=relaxed/simple;
+	bh=Jwcz3hRADV13+aQiAx6q0/Wox2/152N7huxsMnMY6ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NuJwNjfUbeEYTunbKpkLe4GxpFVRbUwbzJKhrWTlEaFtW+E04I1VX5VDIZZXFbpzHauZO7Sn4AaNzaOkzjH9iItbtXulMOsXzUMLWNB7JytuZZtLPHaTKYEbxkYyvPZyX9DF5sDNZS1wf/W5sTFLXEgt6xgEzuKBT/Re6eZbDUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOTNIDEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36C7C116D0;
-	Wed, 25 Feb 2026 01:37:58 +0000 (UTC)
+	 MIME-Version; b=UbBuhegO+B9h9NYFWZ/9n+ikYsUrzcGYGHn1Za/PkvNsvprXCkPgaSZaUbDW3/iXtVxTIPVw0Xg3cMT/vlt+I84bRXV391NtESCaQ4O31dqicweNItdBv9Adw53eKOB4nAU7ySxjypb4nc0CVCuXowc/QTVA9QJ6SW9FGmcQxbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPK60Ij2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE46C116D0;
+	Wed, 25 Feb 2026 06:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983479;
-	bh=BqG6YdlFcCYCzom1hIoRdj/DKpRtIBwIu0YTqh6l8ZU=;
+	s=korg; t=1772002608;
+	bh=Jwcz3hRADV13+aQiAx6q0/Wox2/152N7huxsMnMY6ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOTNIDEnDQTW2/969/j/CRq/LKlXxMU1Lz9mHfnAcZIpWo6Lo2Hd9R8XcCdwBXQjs
-	 owzAPlPhCL9R9cnaqBIZrD7mJEeRVmHO4uNbChuF7fK0lhFI7OX5lKHs8RxijdTP1K
-	 sd2BZvk7REyRFlgz8uI2aFcVjBSzZqJraKhquIPg=
+	b=vPK60Ij2xs1kFt1TRJC639gI4R20QrhJu3byZMtbyaR/SGezGoembF+fNSBVQebup
+	 6TzOnv/rm4MKSdOUUKJWOmuvJEKpeSkZ3w2QGK3hV2pRMCN0lss9UMKZHp/GgrOQyt
+	 eFDlW6E5stLP0KDiSVM+y3IstWutdBunP+shvwso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Zhu Yanjun <yanjun.Zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 575/781] stm class: Kconfig: correct symbol name
+Subject: [PATCH 6.18 358/641] RDMA/rxe: Fix double free in rxe_srq_from_init
 Date: Tue, 24 Feb 2026 17:21:24 -0800
-Message-ID: <20260225012413.903533381@linuxfoundation.org>
+Message-ID: <20260225012357.300489441@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +70,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
+	TAGGED_FROM(0.00)[bounces-219274-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218630-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B13EE18FBA0
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 43359192DE1
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit ed1613fc18834b5ec38d3534e96e4bc990289aa2 ]
+[ Upstream commit 0beefd0e15d962f497aad750b2d5e9c3570b66d1 ]
 
-Drop the leading "CONFIG_" when referring to Kconfig symbols--
-it is supplied by the kconfig software.
-This make the default values work as (apparently) expected.
+In rxe_srq_from_init(), the queue pointer 'q' is assigned to
+'srq->rq.queue' before copying the SRQ number to user space.
+If copy_to_user() fails, the function calls rxe_queue_cleanup()
+to free the queue, but leaves the now-invalid pointer in
+'srq->rq.queue'.
 
-Fixes: a02509f301c6 ("stm class: Factor out default framing protocol")
-Fixes: d69d5e83110f ("stm class: Add MIPI SyS-T protocol support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20251228190502.2480758-1-rdunlap@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The caller of rxe_srq_from_init() (rxe_create_srq) eventually
+calls rxe_srq_cleanup() upon receiving the error, which triggers
+a second rxe_queue_cleanup() on the same memory, leading to a
+double free.
+
+The call trace looks like this:
+   kmem_cache_free+0x.../0x...
+   rxe_queue_cleanup+0x1a/0x30 [rdma_rxe]
+   rxe_srq_cleanup+0x42/0x60 [rdma_rxe]
+   rxe_elem_release+0x31/0x70 [rdma_rxe]
+   rxe_create_srq+0x12b/0x1a0 [rdma_rxe]
+   ib_create_srq_user+0x9a/0x150 [ib_core]
+
+Fix this by moving 'srq->rq.queue = q' after copy_to_user.
+
+Fixes: aae0484e15f0 ("IB/rxe: avoid srq memory leak")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://patch.msgid.link/20260112015412.29458-1-jiashengjiangcool@gmail.com
+Reviewed-by: Zhu Yanjun <yanjun.Zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/stm/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_srq.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwtracing/stm/Kconfig b/drivers/hwtracing/stm/Kconfig
-index eda6b11d40a1f..cd7f0b0f3fbeb 100644
---- a/drivers/hwtracing/stm/Kconfig
-+++ b/drivers/hwtracing/stm/Kconfig
-@@ -13,7 +13,7 @@ if STM
+diff --git a/drivers/infiniband/sw/rxe/rxe_srq.c b/drivers/infiniband/sw/rxe/rxe_srq.c
+index 2a234f26ac104..c9a7cd38953d3 100644
+--- a/drivers/infiniband/sw/rxe/rxe_srq.c
++++ b/drivers/infiniband/sw/rxe/rxe_srq.c
+@@ -77,9 +77,6 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
+ 		goto err_free;
+ 	}
  
- config STM_PROTO_BASIC
- 	tristate "Basic STM framing protocol driver"
--	default CONFIG_STM
-+	default STM
- 	help
- 	  This is a simple framing protocol for sending data over STM
- 	  devices. This was the protocol that the STM framework used
-@@ -28,7 +28,7 @@ config STM_PROTO_BASIC
+-	srq->rq.queue = q;
+-	init->attr.max_wr = srq->rq.max_wr;
+-
+ 	if (uresp) {
+ 		if (copy_to_user(&uresp->srq_num, &srq->srq_num,
+ 				 sizeof(uresp->srq_num))) {
+@@ -88,6 +85,9 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
+ 		}
+ 	}
  
- config STM_PROTO_SYS_T
- 	tristate "MIPI SyS-T STM framing protocol driver"
--	default CONFIG_STM
-+	default STM
- 	help
- 	  This is an implementation of MIPI SyS-T protocol to be used
- 	  over the STP transport. In addition to the data payload, it
++	srq->rq.queue = q;
++	init->attr.max_wr = srq->rq.max_wr;
++
+ 	return 0;
+ 
+ err_free:
 -- 
 2.51.0
 
