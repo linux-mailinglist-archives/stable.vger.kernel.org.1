@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-219015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDApCCVanmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:45 +0100
+	id SOevJfhTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF8A190A66
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AF618FB11
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08F9B32B1488
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 147A5315A2C1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A638D27F73A;
-	Wed, 25 Feb 2026 01:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49331EB5E1;
+	Wed, 25 Feb 2026 01:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aznqtK6y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmJqJJgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689F9279DB3;
-	Wed, 25 Feb 2026 01:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7897A18B0A;
+	Wed, 25 Feb 2026 01:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983927; cv=none; b=ma6dJRa8kF0Vet2ltqWC6ZusmSWR7y2LuugMDZgnhpnpiVD2aGM72H76ucEAPzWA4G3JEYaCa31oqhMK5lFqjcBaWTF5stCez4h/EdfhUV92LVm75zReg/6BynqkNKNfkX7IAMrjdCULf9MFBrF8gSo9utSIcXVWsZgKoHov56o=
+	t=1771983272; cv=none; b=b+RahkQjsm78MjY9ltAOZPL1SEGncBXQ0sGqE1LB8DlDQRX2T7GFzXcvRk451Fajvew2qWsAA4lRVONCA3y0sVEya0Zxq87SBT0b03W9VdAZ2maBvRA27Ulq+e42eKbRNpMMjohsLuKjhX+xxbVj90Nj+tHikyboZLmu8qQvkx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983927; c=relaxed/simple;
-	bh=ZwaZ39MqiMn7QcRMcpe8gM9azp6y/DtoiDviMmLog3A=;
+	s=arc-20240116; t=1771983272; c=relaxed/simple;
+	bh=522gXAKSue+OAtZN5ReA58M4T70LgW9JZ5WIXdPNC7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jrv9m6XF+GKggb9eki4paBa/unY95VV7xwbgyq1OuysCUWuHGTv/hORpdjsXrlxIBKOOZmK32iBqA+RKaJHLqfajxhUOtFqOupX7xhyOrPRLF71IyEJtRxJ003FWF8E+6x2cPieubH4rWpcRDIoGXxEjd0YQqLnre4sE1y13cGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aznqtK6y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257E4C116D0;
-	Wed, 25 Feb 2026 01:45:27 +0000 (UTC)
+	 MIME-Version; b=eydVlXPqgsbJbJcADaI7xar4JHczWhB1RopJOSIMvzmxOwFc92EZR5pMZaRVYvUqcL24lx/WkY9oTKZ9FwG66+nF4SPpPddnfzc9EiwYuer5BrMlWLF9lhCklDv+AsHbt5UdH7pE2o+cw+Ofa2Ozi8wYScl212lGjcJ7kauIctE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmJqJJgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3886AC116D0;
+	Wed, 25 Feb 2026 01:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983927;
-	bh=ZwaZ39MqiMn7QcRMcpe8gM9azp6y/DtoiDviMmLog3A=;
+	s=korg; t=1771983272;
+	bh=522gXAKSue+OAtZN5ReA58M4T70LgW9JZ5WIXdPNC7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aznqtK6ypFubRjFlAAY93wVAdtPhL5MlT9roKOKoCD2+UP+0U989FFrjKX6ZxQY9x
-	 uNfgQH9WkJd8oGhnJuiJBznhI4yGk5kJzkUM8ZIrxrkq7RlkrDEzeRifk28mz96Oah
-	 NrVbr/gE8kMWMPfJtxdweArQerwBAaAQ+x+uy9jk=
+	b=nmJqJJgxpkEtpxb5ij7JiW+5Pgc/a3JHIOaHybec9ivifyb2h/2PO5DhvPwYdoB/f
+	 eZ8Md1diPqLUEkeouC4ojed37ieoAV15SkjYRlrGB2qXNoWtw8hD0mGFcCe8TxTKFZ
+	 VxOgDrWmuswhQbgtLo9chrth5b0Ul0WirIQCTXzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mani Chandana Ballary Kuntumalla <quic_mkuntuma@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 194/641] drm/msm/dp: Update msm_dp_controller IDs for sa8775p
-Date: Tue, 24 Feb 2026 17:18:40 -0800
-Message-ID: <20260225012353.694302316@linuxfoundation.org>
+Subject: [PATCH 6.19 412/781] netfilter: nft_set_rbtree: fix bogus EEXIST with NLM_F_CREATE with null interval
+Date: Tue, 24 Feb 2026 17:18:41 -0800
+Message-ID: <20260225012409.807792890@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219015-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218450-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,48 +90,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,quicinc.com:email,qualcomm.com:email,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: 5CF8A190A66
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: 57AF618FB11
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mani Chandana Ballary Kuntumalla <quic_mkuntuma@quicinc.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 1338e8ae4084e55c0359a79e617b2ae183d01579 ]
+[ Upstream commit 7f9203f41aae8eea74fba6a3370da41332eabcda ]
 
-The Qualcomm SA8775P platform comes with 2 DisplayPort controllers
-for each mdss. Update controller id for DPTX0 and DPTX1 of mdss1.
+Userspace adds a non-matching null element to the kernel for historical
+reasons. This null element is added when the set is populated with
+elements. Inclusion of this element is conditional, therefore,
+userspace needs to dump the set content to check for its presence.
 
-Fixes: dcb380d19e58 ("drm/msm/dp: Add DisplayPort controller for SA8775P")
-Signed-off-by: Mani Chandana Ballary Kuntumalla <quic_mkuntuma@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/690234/
-Link: https://lore.kernel.org/r/20251125105622.1755651-2-quic_mkuntuma@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+If the NLM_F_CREATE flag is turned on, this becomes an issue because
+kernel bogusly reports EEXIST.
+
+Add special case to ignore NLM_F_CREATE in this case, therefore,
+re-adding the nul-element never fails.
+
+Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_display.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c  |  5 +++++
+ net/netfilter/nft_set_rbtree.c | 13 +++++++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
-index d87d47cc7ec3e..f247aad553975 100644
---- a/drivers/gpu/drm/msm/dp/dp_display.c
-+++ b/drivers/gpu/drm/msm/dp/dp_display.c
-@@ -133,8 +133,8 @@ struct msm_dp_desc {
- static const struct msm_dp_desc msm_dp_desc_sa8775p[] = {
- 	{ .io_start = 0x0af54000, .id = MSM_DP_CONTROLLER_0, .wide_bus_supported = true },
- 	{ .io_start = 0x0af5c000, .id = MSM_DP_CONTROLLER_1, .wide_bus_supported = true },
--	{ .io_start = 0x22154000, .id = MSM_DP_CONTROLLER_2, .wide_bus_supported = true },
--	{ .io_start = 0x2215c000, .id = MSM_DP_CONTROLLER_3, .wide_bus_supported = true },
-+	{ .io_start = 0x22154000, .id = MSM_DP_CONTROLLER_0, .wide_bus_supported = true },
-+	{ .io_start = 0x2215c000, .id = MSM_DP_CONTROLLER_1, .wide_bus_supported = true },
- 	{}
- };
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ec9e5e2a9f277..198b9c739b559 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7635,6 +7635,11 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 			 * and an existing one.
+ 			 */
+ 			err = -EEXIST;
++		} else if (err == -ECANCELED) {
++			/* ECANCELED reports an existing nul-element in
++			 * interval sets.
++			 */
++			err = 0;
+ 		}
+ 		goto err_element_clash;
+ 	}
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index ca594161b8402..eacb3acc2b957 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -39,6 +39,13 @@ static bool nft_rbtree_interval_start(const struct nft_rbtree_elem *rbe)
+ 	return !nft_rbtree_interval_end(rbe);
+ }
  
++static bool nft_rbtree_interval_null(const struct nft_set *set,
++				     const struct nft_rbtree_elem *rbe)
++{
++	return (!memchr_inv(nft_set_ext_key(&rbe->ext), 0, set->klen) &&
++		nft_rbtree_interval_end(rbe));
++}
++
+ static int nft_rbtree_cmp(const struct nft_set *set,
+ 			  const struct nft_rbtree_elem *e1,
+ 			  const struct nft_rbtree_elem *e2)
+@@ -431,6 +438,12 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	 */
+ 	if (rbe_le && !nft_rbtree_cmp(set, new, rbe_le) &&
+ 	    nft_rbtree_interval_end(rbe_le) == nft_rbtree_interval_end(new)) {
++		/* - ignore null interval, otherwise NLM_F_CREATE bogusly
++		 *   reports EEXIST.
++		 */
++		if (nft_rbtree_interval_null(set, new))
++			return -ECANCELED;
++
+ 		*elem_priv = &rbe_le->priv;
+ 		return -EEXIST;
+ 	}
 -- 
 2.51.0
 
