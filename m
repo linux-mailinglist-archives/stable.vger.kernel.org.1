@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-218257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCsUBe9RnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:43 +0100
+	id oMzRDCRXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:56 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E2F118F132
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DEF190496
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F06A9303D0CB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A1FF4309C207
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30F91F03DE;
-	Wed, 25 Feb 2026 01:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100C0271456;
+	Wed, 25 Feb 2026 01:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfX5PqnK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KS4lA+8A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8688A25228D;
-	Wed, 25 Feb 2026 01:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80DE280CE5;
+	Wed, 25 Feb 2026 01:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983055; cv=none; b=BYYd8Kf2cVDiXNifFKxnr5sPAVvHKXfTNDbssJHZMpxuhoTCJqEyT2BDJDxGlTgd065c6DgCexsQJ+w7qN2WbtnyDojFCBmGfKtEmHyUzXNgCrFjMKJwvfP/FTxHhOevMi8aIA3OAep7LbHjfCswfyX59DMSpn3VMf2T6Xgta18=
+	t=1771983735; cv=none; b=f2kWzyXFD7V63Iklkb2tH36hd/C6ewUCoUjL59Dba+iQCd2MD41WBqWtolWKXOtNre/yLI+7CtP9KetDJ2iXcbrZnQ2kIwchyKiE/yAUvNd+gD53Suu+tx5Fb++KDwyDpckUON9055XG1OhC809L1+QQ6mbfCPKmT7OHC+7uwAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983055; c=relaxed/simple;
-	bh=Av7LvkKFpoAFqChOJvcDasxL+Rc69uxIFWAz7HdkaI8=;
+	s=arc-20240116; t=1771983735; c=relaxed/simple;
+	bh=o14d0mNoLyfdtPY4Bc62M+pIcL9ykKgJbk0V4tda2Vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=neDL6T/yZxJhpUB9tNGjyrrwcKF3c/gsDEq6M3TUbV3QKRgSrrssNSKbBhpMYgTP8lAwYc7xjFcTF2BH/R7mdhx/7Ze5dqxijWu88NW3mtKyGMSz8BUodapKf7chDtR/XQvGUKf9NT4TrwbyL11oE8EfnTqXRpTcYWKa5YhcG7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfX5PqnK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B850C116D0;
-	Wed, 25 Feb 2026 01:30:55 +0000 (UTC)
+	 MIME-Version; b=X1PBh+Ha13mOacvGS54pUhQhs6feWDQaYMpa5X59SopyM7oaRkop7aXPxnzvMgF+/N1iKGkfgKpJ1i5XfhMqy7wiJQRjhW5N3qAR8vCqmNsDcjN9hOHIA0kzNo7ANghPUSJJZIOkH1yFRuAhgopNe8atvWKJIr7QqL2BIi/nzzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KS4lA+8A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F35C19424;
+	Wed, 25 Feb 2026 01:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983055;
-	bh=Av7LvkKFpoAFqChOJvcDasxL+Rc69uxIFWAz7HdkaI8=;
+	s=korg; t=1771983735;
+	bh=o14d0mNoLyfdtPY4Bc62M+pIcL9ykKgJbk0V4tda2Vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfX5PqnKrzy0wcPoSji23jdo5pSbcTXguQRQiAz9BkRtM57IdjWyN4ewInCZRGN6R
-	 3tpZO3RTq3JpJk8iILy/M6G33E6iQ9y4zsjy+ss1TW1xmxrNAeTMwqPqfmhF95ByJ8
-	 zkTL2hfk40N4ZJPYVmrxAwUHHlqnPTvj+kGAn9Yk=
+	b=KS4lA+8AYpL7BWnUtTob0bzMaJ4VVsldYPqDrj8YqBl4FKIJoJCBRlEZwVdXDtzv/
+	 st7HogMr19k17dsWsvxcGZQjmMLqIXK1GWqmBdioC95kwP7kaePWuRAwbP+wXJ8tRj
+	 1u+W5aWUJk1QI4JapXy977qdaajdR760LymWxvNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 220/781] ALSA: vmaster: Relax __free() variable declarations
+Subject: [PATCH 6.18 003/641] auxdisplay: arm-charlcd: fix release_mem_region() size
 Date: Tue, 24 Feb 2026 17:15:29 -0800
-Message-ID: <20260225012405.109648294@linuxfoundation.org>
+Message-ID: <20260225012349.014959845@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218257-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218851-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux-m68k.org,linux.intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.986];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 6E2F118F132
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 84DEF190496
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 3b7c7bda39e1e48f926fb3d280a5f5d20a939857 ]
+[ Upstream commit b5c23a4d291d2ac1dfdd574a68a3a68c8da3069e ]
 
-We used to have a variable declaration with __free() initialized with
-NULL.  This was to keep the old coding style rule, but recently it's
-relaxed and rather recommends to follow the new rule to declare in
-place of use for __free() -- which avoids potential deadlocks or UAFs
-with nested cleanups.
+It seems like, after the request_mem_region(), the corresponding
+release_mem_region() must take the same size. This was done
+in (now removed due to previous refactoring) charlcd_remove()
+but not in the error path in charlcd_probe().
 
-Although the current code has no bug, per se, let's follow the new
-standard and move the declaration to the place of assignment (or
-directly assign the allocated result) instead of NULL initializations.
-
-Fixes: fb9e197f3f27 ("ALSA: vmaster: Use automatic cleanup of kfree()")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20251216140634.171890-9-tiwai@suse.de
+Fixes: ce8962455e90 ("ARM: 6214/2: driver for the character LCD found in ARM refdesigns")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/vmaster.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/auxdisplay/arm-charlcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/core/vmaster.c b/sound/core/vmaster.c
-index c657659b236c4..76cc64245f5df 100644
---- a/sound/core/vmaster.c
-+++ b/sound/core/vmaster.c
-@@ -56,10 +56,10 @@ struct link_follower {
- 
- static int follower_update(struct link_follower *follower)
- {
--	struct snd_ctl_elem_value *uctl __free(kfree) = NULL;
- 	int err, ch;
-+	struct snd_ctl_elem_value *uctl __free(kfree) =
-+		kzalloc(sizeof(*uctl), GFP_KERNEL);
- 
--	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
- 	if (!uctl)
- 		return -ENOMEM;
- 	uctl->id = follower->follower.id;
-@@ -74,7 +74,6 @@ static int follower_update(struct link_follower *follower)
- /* get the follower ctl info and save the initial values */
- static int follower_init(struct link_follower *follower)
- {
--	struct snd_ctl_elem_info *uinfo __free(kfree) = NULL;
- 	int err;
- 
- 	if (follower->info.count) {
-@@ -84,7 +83,8 @@ static int follower_init(struct link_follower *follower)
- 		return 0;
- 	}
- 
--	uinfo = kmalloc(sizeof(*uinfo), GFP_KERNEL);
-+	struct snd_ctl_elem_info *uinfo __free(kfree) =
-+		kmalloc(sizeof(*uinfo), GFP_KERNEL);
- 	if (!uinfo)
- 		return -ENOMEM;
- 	uinfo->id = follower->follower.id;
-@@ -341,9 +341,9 @@ static int master_get(struct snd_kcontrol *kcontrol,
- static int sync_followers(struct link_master *master, int old_val, int new_val)
- {
- 	struct link_follower *follower;
--	struct snd_ctl_elem_value *uval __free(kfree) = NULL;
-+	struct snd_ctl_elem_value *uval __free(kfree) =
-+		kmalloc(sizeof(*uval), GFP_KERNEL);
- 
--	uval = kmalloc(sizeof(*uval), GFP_KERNEL);
- 	if (!uval)
- 		return -ENOMEM;
- 	list_for_each_entry(follower, &master->followers, list) {
+diff --git a/drivers/auxdisplay/arm-charlcd.c b/drivers/auxdisplay/arm-charlcd.c
+index a7eae99a48f77..4e22882f57c9c 100644
+--- a/drivers/auxdisplay/arm-charlcd.c
++++ b/drivers/auxdisplay/arm-charlcd.c
+@@ -323,7 +323,7 @@ static int __init charlcd_probe(struct platform_device *pdev)
+ out_no_irq:
+ 	iounmap(lcd->virtbase);
+ out_no_memregion:
+-	release_mem_region(lcd->phybase, SZ_4K);
++	release_mem_region(lcd->phybase, lcd->physize);
+ out_no_resource:
+ 	kfree(lcd);
+ 	return ret;
 -- 
 2.51.0
 
