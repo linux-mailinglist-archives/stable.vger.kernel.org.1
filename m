@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJTNHJxSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:36 +0100
+	id gOQTFKFUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D2418F45A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC5618FD5F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EC21E312A598
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 337263007509
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D4420C012;
-	Wed, 25 Feb 2026 01:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD652701B8;
+	Wed, 25 Feb 2026 01:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j16gMZx/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHznHSUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA741D5ABA;
-	Wed, 25 Feb 2026 01:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D1426ED3D;
+	Wed, 25 Feb 2026 01:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983132; cv=none; b=F8KW8QS+rLSNMbztLws7k25rJady/FHRmC7vrX/Bg1OKwXonNqzmE16SYL/4uooho4MilySNUKabvH8aZQPEsagMzoNOeD50nEg7wY43OtIwfARY7ZKPha2jUQ9gsKyP33XYpWTCd0tzkdtgzjjQoICqJsAYui2HjG4eL9lrH6Q=
+	t=1771983784; cv=none; b=M0lFdRXDXsVECIDNWArzWRtgZDy9ofFh9y5GDAxhOhxpU28f9aCEmCXS1MY2jL4jZRZZeROaopzFbJ6VBKwLnJ9XcarbE3XSyK7RScZy6Q6VJ16UPq7jp2nhEeoF53/VIsNR1LDtNbPssbZF+Cp38xFeU2yMDUJ9sfGaZntC/l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983132; c=relaxed/simple;
-	bh=8J45grnlKsoBrB2LI2wjZI8zRwJXskG+OLBKEIBRLMI=;
+	s=arc-20240116; t=1771983784; c=relaxed/simple;
+	bh=Bs4nlMR06mLwHkgmqfuyjSL7W9H4ZyIFVACPRqsnG+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/8CHslurooN2NzpvEiTpA4R+8bKr2k6TDDpQDQQlIa2zJiKTO3UKryc6kSO/VBMLAx32Nsb21VV2AMNIdzfzlv20qecuy9iv9HNSbXLSCZGFsr7oEBhAp5qYQmNmUjOzeDNFM4WPiDUFmPGyoNLbGzwoIOQRS6g+pV7fGKyJHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j16gMZx/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182D9C116D0;
-	Wed, 25 Feb 2026 01:32:12 +0000 (UTC)
+	 MIME-Version; b=trpkuaZx6Fg2Ba1gylhBqXT2oYbHvZnYalSXWXihiJf98npz93SmGizTOLTcTQ41oElvR3zGZsVtdmtse3ZqzVj5g+6yYNcA8VN4FE2c/ibdr7rZ91F1CCWZ87WsxJrhzr+ot0n/eaL2QYxEUhqnwcQI8fUF9p7WTaOgCoZf4fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHznHSUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBBCC116D0;
+	Wed, 25 Feb 2026 01:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983132;
-	bh=8J45grnlKsoBrB2LI2wjZI8zRwJXskG+OLBKEIBRLMI=;
+	s=korg; t=1771983784;
+	bh=Bs4nlMR06mLwHkgmqfuyjSL7W9H4ZyIFVACPRqsnG+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j16gMZx/SDoDKEljE+Z59f/PhcFd6n7Ya3dSj+YOxJFoWf20kGX27GdRhX78DTo4h
-	 8e7pGLfvqDoH9ITECNdKh4pKgumSEEnbbLSaYEt1z1B0YDemznnUF8eduXNkNyvrZv
-	 JTY2gJIo7X88o14Jtgf8wZGvRyekXIohYj4TXSbU=
+	b=XHznHSUC1sqdZEHymLNItt2guwSTEqNuds2NPZm2xbFJedJomU/K1d1P/pd1e3N86
+	 Dtqb0dpOxDOLB2pH0PpByX/GLi7McL5RJZ7TLhQdC+ZHQ5dfSxE8etn79l4xV+Pdg4
+	 E0PvprR6XqVxfWJXgPqY61faDgxST1NivBcGFiUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 289/781] drm/xe: Unregister drm device on probe error
+Subject: [PATCH 6.18 072/641] crypto: cavium - fix dma_free_coherent() size
 Date: Tue, 24 Feb 2026 17:16:38 -0800
-Message-ID: <20260225012406.794964998@linuxfoundation.org>
+Message-ID: <20260225012350.810416677@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,123 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218328-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218895-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.987];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 23D2418F45A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,apana.org.au:email]
+X-Rspamd-Queue-Id: CDC5618FD5F
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 96c2c72b817d70e8d110e78b0162e044a0c41f9f ]
+[ Upstream commit 941676c30ba5b40a01bed92448f457ce62fd1f07 ]
 
-Call drm_dev_unregister() when xe_device_probe() fails after successful
-drm_dev_register(). This ensures the DRM device is promptly unregistered
-before returning an error, avoiding leaving it registered on the failure
-path.
-Otherwise, there is warn message if xe_device_probe() is called again:
-"
-[  207.322365] [drm:drm_minor_register]
-[  207.322381] debugfs: '128' already exists in 'dri'
-[  207.322432] sysfs: cannot create duplicate filename '/devices/pci0000:00/0000:00:01.0/0000:01:00.0/0000:02:01.0/0000:03:00.0/drm/renderD128'
-[  207.322435] CPU: 5 UID: 0 PID: 10261 Comm: modprobe Tainted: G    B   W           6.19.0-rc2-lgci-xe-kernel+ #223 PREEMPT(voluntary)
-[  207.322439] Tainted: [B]=BAD_PAGE, [W]=WARN
-[  207.322440] Hardware name: ASUS System Product Name/PRIME Z790-P WIFI, BIOS 0812 02/24/2023
-[  207.322441] Call Trace:
-[  207.322442]  <TASK>
-[  207.322443]  dump_stack_lvl+0xa0/0xc0
-[  207.322446]  dump_stack+0x10/0x20
-[  207.322448]  sysfs_warn_dup+0xd5/0x110
-[  207.322451]  sysfs_create_dir_ns+0x1f6/0x280
-[  207.322453]  ? __pfx_sysfs_create_dir_ns+0x10/0x10
-[  207.322455]  ? lock_acquire+0x1a4/0x2e0
-[  207.322458]  ? __kasan_check_read+0x11/0x20
-[  207.322461]  kobject_add_internal+0x28d/0x8e0
-[  207.322464]  kobject_add+0x11f/0x1f0
-[  207.322465]  ? lock_acquire+0x1a4/0x2e0
-[  207.322467]  ? __pfx_kobject_add+0x10/0x10
-[  207.322469]  ? __kasan_check_write+0x14/0x20
-[  207.322471]  ? kobject_put+0x62/0x4a0
-[  207.322473]  ? get_device_parent.isra.0+0x1bb/0x4c0
-[  207.322475]  ? kobject_put+0x62/0x4a0
-[  207.322477]  device_add+0x2d7/0x1500
-[  207.322479]  ? __pfx_device_add+0x10/0x10
-[  207.322481]  ? drm_debugfs_add_file+0xfa/0x170
-[  207.322483]  ? drm_debugfs_add_files+0x82/0xd0
-[  207.322485]  ? drm_debugfs_add_files+0x82/0xd0
-[  207.322487]  drm_minor_register+0x10a/0x2d0
-[  207.322489]  drm_dev_register+0x143/0x860
-[  207.322491]  ? xe_configfs_get_psmi_enabled+0x12/0x90 [xe]
-[  207.322667]  xe_device_probe+0x185b/0x2c40 [xe]
-[  207.322812]  ? __pfx___drm_dev_dbg+0x10/0x10
-[  207.322815]  ? add_dr+0x180/0x220
-[  207.322818]  ? __pfx___drmm_mutex_release+0x10/0x10
-[  207.322821]  ? __pfx_xe_device_probe+0x10/0x10 [xe]
-[  207.322966]  ? xe_pm_init_early+0x33a/0x410 [xe]
-[  207.323136]  xe_pci_probe+0x936/0x1250 [xe]
-[  207.323298]  ? lock_acquire+0x1a4/0x2e0
-[  207.323302]  ? __pfx_xe_pci_probe+0x10/0x10 [xe]
-[  207.323464]  local_pci_probe+0xe6/0x1a0
-[  207.323468]  pci_device_probe+0x523/0x840
-[  207.323470]  ? __pfx_pci_device_probe+0x10/0x10
-[  207.323473]  ? sysfs_do_create_link_sd.isra.0+0x8c/0x110
-[  207.323476]  ? sysfs_create_link+0x48/0xc0
-[  207.323479]  really_probe+0x1fd/0x8a0
-...
-"
+The size of the buffer in alloc_command_queues() is
+curr->size + CPT_NEXT_CHUNK_PTR_SIZE, so used that length for
+dma_free_coherent().
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://patch.msgid.link/20260109211041.2446012-2-shuicheng.lin@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit 60bfb8baf8f0d5b0d521744dfd01c880ce1a23f3)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: c694b233295b ("crypto: cavium - Add the Virtual Function driver for CPT")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/cavium/cpt/cptvf_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index 9a6d49fcd8e49..ef5acef32f416 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -976,6 +976,7 @@ int xe_device_probe(struct xe_device *xe)
+diff --git a/drivers/crypto/cavium/cpt/cptvf_main.c b/drivers/crypto/cavium/cpt/cptvf_main.c
+index c246920e6f540..bccd680c7f7ee 100644
+--- a/drivers/crypto/cavium/cpt/cptvf_main.c
++++ b/drivers/crypto/cavium/cpt/cptvf_main.c
+@@ -180,7 +180,8 @@ static void free_command_queues(struct cpt_vf *cptvf,
  
- err_unregister_display:
- 	xe_display_unregister(xe);
-+	drm_dev_unregister(&xe->drm);
- 
- 	return err;
- }
+ 		hlist_for_each_entry_safe(chunk, node, &cqinfo->queue[i].chead,
+ 					  nextchunk) {
+-			dma_free_coherent(&pdev->dev, chunk->size,
++			dma_free_coherent(&pdev->dev,
++					  chunk->size + CPT_NEXT_CHUNK_PTR_SIZE,
+ 					  chunk->head,
+ 					  chunk->dma_addr);
+ 			chunk->head = NULL;
 -- 
 2.51.0
 
