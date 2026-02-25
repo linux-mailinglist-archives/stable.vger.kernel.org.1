@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-218759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJ8oDShVnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:28 +0100
+	id YPKvL9eenmlVWgQAu9opvQ
+	(envelope-from <stable+bounces-219422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C929A18FF18
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 771C1192D98
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CACB31FBD99
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1CB253101437
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3E92701DA;
-	Wed, 25 Feb 2026 01:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847D03033CB;
+	Wed, 25 Feb 2026 06:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9ZhjGSa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLfehNHe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F721E2834;
-	Wed, 25 Feb 2026 01:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4862C30E85D;
+	Wed, 25 Feb 2026 06:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983629; cv=none; b=GgvcmpB4/JS8/LTwiXTnqhkSIgj0eY4T7ei8K2oeF012o3HM1+PNCRi3j+Suy+O70+AohfWUPpBpSURG/l3fsHdXgZha+opE96iI699uL+EjSq09BJkUtARTQVfM18WRWWK7i1MHO6w9RUw3ZLxAkOFcYl9V/owyz5O9kU9ofbk=
+	t=1772002705; cv=none; b=I2VItDpzGJlQDrHhsqrBIR4Fe1ONxoA4uFgBaAjADGTNhagmGypBXIYjOwxjc7NlsAEWjHzFHqwHTnT3mIPrOqbudrj8spWFrmDfkB+dE4vqPij0BRAaI5hlFZhoNlGe0OELLLvF0F8e0MfB/FbdRc9+YiH5iZ9E++lrgmGVVQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983629; c=relaxed/simple;
-	bh=cAij1+YVKbClfI1PB9TJR0KMJGkkd17Yqze00JI8E9E=;
+	s=arc-20240116; t=1772002705; c=relaxed/simple;
+	bh=+13Ucbj4WeHDaMHJE0/v/p+oF7SWf+X1QunpZfE5Wr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MT5CdfWpH0H8+mCEEzE8ACg6OjbAIAX2Aox5JC7P5HjlosM8QGMx+UqD8OpzQjv9AuAKiFCGWpM6H9EjGFipIATt8fZ+Jgiv3CVgysqke3CX3xEVgLguhU7Sh8ABKly722dUR9NCk+YMIxgTPceoxaGbhfZQr6qWR84sT8Qy+dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9ZhjGSa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122B2C116D0;
-	Wed, 25 Feb 2026 01:40:29 +0000 (UTC)
+	 MIME-Version; b=JPjDB0Zmd9EN8tubO5/pmOHTV07jBGD+07Ooggf3C8brow+UGI+JZq6gm9YCMZnw7lILc/VHSSoDzzMDWTeSJ9iICmD62ORuVJBFW0EMzFIxpaa8wAbyJ7vcoEqkl6O+Hpvwbgydn6DEy+v32YQaHVeEqMcixa3/1WiVPx5xQuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLfehNHe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225DCC19422;
+	Wed, 25 Feb 2026 06:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983629;
-	bh=cAij1+YVKbClfI1PB9TJR0KMJGkkd17Yqze00JI8E9E=;
+	s=korg; t=1772002705;
+	bh=+13Ucbj4WeHDaMHJE0/v/p+oF7SWf+X1QunpZfE5Wr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c9ZhjGSaukL5QLtCHj+m28ZJofL6aRP/RRWe1BBde+4wMZSdubxVAIsM+Z1dxQYkQ
-	 ypYc2AfB/JLJ+/umUl79Z+DTqWo4OB8YzIB/iWLJp3eIIR3VOvi4sIyanLI2V7nUgK
-	 qfh9JHqXsEfnft0lOXs26WsV8y0kl9sC+kXB+Bvs=
+	b=RLfehNHe73PLRDeWhZvCFx8MGFI+ah3pDSG7j2kEceoxTz7ZxCc/VeeH9bf5ZnSDl
+	 E4QdBRoHP/HsjAW5ZiM6m3Hs8vRiQOgr/GeBRBFT90PU8NoNt//AEe3xCLwRFBuxda
+	 RD89aZofwimm7mtAnmWTH5v8XCP3OemhyVosl5uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 720/781] drm/amdgpu: Fix missing unwind in amdgpu_ib_schedule() error path
-Date: Tue, 24 Feb 2026 17:23:49 -0800
-Message-ID: <20260225012417.396485080@linuxfoundation.org>
+Subject: [PATCH 6.18 504/641] powercap: intel_rapl_tpmi: Remove FW_BUG from invalid version check
+Date: Tue, 24 Feb 2026 17:23:50 -0800
+Message-ID: <20260225012400.734635230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,115 +65,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218759-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219422-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C929A18FF18
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 771C1192D98
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-[ Upstream commit ba038065655c45728be346d0b174a6da08d8a5c5 ]
+[ Upstream commit c7d54dafa042cf379859dba265fe5afef6fa8770 ]
 
-amdgpu_ib_schedule() returns early after calling amdgpu_ring_undo().
-This skips the common free_fence cleanup path.  Other error paths were
-already changed to use goto free_fence, but this one was missed.
+On partitioned systems, multiple TPMI instances may exist per package,
+but RAPL registers are only valid on one instance since RAPL has
+package-scope control. Other instances return invalid versions during
+domain parsing, which is expected behavior on such systems.
 
-Change the early return to goto free_fence so all error paths clean up
-the same way.
+Currently this generates a firmware bug warning:
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c:232 amdgpu_ib_schedule()
-warn: missing unwind goto?
+  intel_rapl_tpmi: [Firmware Bug]: Invalid version
 
-drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-    124 int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned int num_ibs,
-    125                        struct amdgpu_ib *ibs, struct amdgpu_job *job,
-    126                        struct dma_fence **f)
-    127 {
+Remove the FW_BUG tag, downgrade to pr_debug(), and update the message
+to clarify that invalid versions are expected on partitioned systems
+where only one instance can be valid.
 
-    ...
-
-    224
-    225         if (ring->funcs->insert_start)
-    226                 ring->funcs->insert_start(ring);
-    227
-    228         if (job) {
-    229                 r = amdgpu_vm_flush(ring, job, need_pipe_sync);
-    230                 if (r) {
-    231                         amdgpu_ring_undo(ring);
---> 232                         return r;
-
-	The patch changed the other error paths to goto free_fence but
-	this one was accidentally skipped.
-
-    233                 }
-    234         }
-    235
-    236         amdgpu_ring_ib_begin(ring);
-
-    ...
-
-    338
-    339 free_fence:
-    340         if (!job)
-    341                 kfree(af);
-    342         return r;
-    343 }
-
-Fixes: f903b85ed0f1 ("drm/amdgpu: fix possible fence leaks from job structure")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 9eef7f9da928 ("powercap: intel_rapl: Introduce RAPL TPMI interface driver")
+Reported-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20260211223401.1575776-1-sathyanarayanan.kuppuswamy@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c | 2 +-
+ drivers/powercap/intel_rapl_tpmi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-index 44f230d67da24..bfa64cd7a62d4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-@@ -229,7 +229,7 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned int num_ibs,
- 		r = amdgpu_vm_flush(ring, job, need_pipe_sync);
- 		if (r) {
- 			amdgpu_ring_undo(ring);
--			return r;
-+			goto free_fence;
- 		}
+diff --git a/drivers/powercap/intel_rapl_tpmi.c b/drivers/powercap/intel_rapl_tpmi.c
+index 82201bf4685d4..34c0bd1edd61a 100644
+--- a/drivers/powercap/intel_rapl_tpmi.c
++++ b/drivers/powercap/intel_rapl_tpmi.c
+@@ -157,7 +157,7 @@ static int parse_one_domain(struct tpmi_rapl_package *trp, u32 offset)
+ 	tpmi_domain_flags = tpmi_domain_header >> 32 & 0xffff;
+ 
+ 	if (tpmi_domain_version == TPMI_VERSION_INVALID) {
+-		pr_warn(FW_BUG "Invalid version\n");
++		pr_debug("Invalid version, other instances may be valid\n");
+ 		return -ENODEV;
  	}
  
 -- 
