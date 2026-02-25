@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-219278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6L+kF/6enmlVWgQAu9opvQ
-	(envelope-from <stable+bounces-219278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:30 +0100
+	id MECSORlTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218662-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C619C192E04
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF7618F6C6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71C5E31525F3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ED14030765EE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCE72D5926;
-	Wed, 25 Feb 2026 06:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC6F26A1A4;
+	Wed, 25 Feb 2026 01:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkbGbzPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjzDueKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733BD2D1F40;
-	Wed, 25 Feb 2026 06:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301EB2550D7;
+	Wed, 25 Feb 2026 01:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002611; cv=none; b=M0j2HRhSxNXWgh2chxz6ZPdGLRdAko/3acpI4E2l8j8eIykDfpH/3l8LuYlcIi4hIMKlrtIYvWEUz8scWstLEnmZQKWsC78IXBXhfksb4uT/W8dqd71erltFMrIoop8BAvIioUnTCgkd86WaG9BnGpuKz0c2zfAmhkAsM+VtC28=
+	t=1771983515; cv=none; b=fgTV7/rq2d4zqZgylDLjWQabndZJgQeBu784X6iwodAIXqO1ok7bZJQa0EZ9hknRicQPznEiEqMF1xhcnSn1gSCn8q6cigQAhse1yF4Uji1YJukl+s/B8XGOwwywom3xIIAHFh2a1LJRT475VxhmaCBtKvkAlTqykj/w75zDJHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002611; c=relaxed/simple;
-	bh=odIl59M7unxuwuAtziNLIweWjFqEoPKj031Ny7+QiG8=;
+	s=arc-20240116; t=1771983515; c=relaxed/simple;
+	bh=RXDCvXS8tJXeGFgqpAHa3olv21NKTjMYDAlVSlWgrWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7qhD4+mb3eVrS6tcDXZTX3aIEeMVHb8boiavBpIAiJ+Fm9MLua7EzFmUlqH2xYafnDemNponnR7/RUuk9R3/CXpgCiPHkBBz149XSjV8mutP7tKDVvfSsIPaLNkD8GDJVp/tdTJTLUxZDPkqKKoicpwVyYu2jH8eHp9zLEME1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkbGbzPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45637C116D0;
-	Wed, 25 Feb 2026 06:56:51 +0000 (UTC)
+	 MIME-Version; b=jHHj7NLyAaS8Ct8qL7Ez1S9HUb6BYvqJc62woqx85n1Oa64GK9MUSstadMoyfobgMSH4nFV92pnfWiPnu2NNCi4V0x2TxmL4corf5Hf8hDn3oQdj8s+Enz2ePsgJaW1m1mT4NNkWpRYr2UHEJsyEQhHt5jpGty/gLdnirj1dbIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjzDueKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAABFC116D0;
+	Wed, 25 Feb 2026 01:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002611;
-	bh=odIl59M7unxuwuAtziNLIweWjFqEoPKj031Ny7+QiG8=;
+	s=korg; t=1771983515;
+	bh=RXDCvXS8tJXeGFgqpAHa3olv21NKTjMYDAlVSlWgrWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkbGbzPOIXocMoMxd/Oh6g0oGRtHGDq1vI0mn3IUU0CsZgDh0duMyuU6NvR3YjKl4
-	 FEueK+z0Cwo9vYVuQ8FIhvOm2RlNARwxiYVXQSwi8dbf3yidAm9iAFocqAatSg5n9u
-	 HsGwbFQVEsdGPA2anLj5ygiT1YcweTQJUBAUncIA=
+	b=LjzDueKeQ6iKvdR1tdR/Rd4YYFN05URhhQSwp7xv+92LVrPr+u/FeMJaejcrdUXbq
+	 DvMGvnPRqvnXsaXk9A9O1DAeoEqy68oTG7o/G4uGmEOBLOLMcpv6Dy5s+ZIgpR6sLs
+	 2WWu97AtT/4NyhA0qM4Iiwvl+tnF8UtjsR1F03I4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Petre Rodan <petre.rodan@subdimension.ro>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 362/641] RDMA/mlx5: Fix UMR hang in LAG error state unload
-Date: Tue, 24 Feb 2026 17:21:28 -0800
-Message-ID: <20260225012357.389179760@linuxfoundation.org>
+Subject: [PATCH 6.19 580/781] iio: pressure: mprls0025pa: fix scan_type struct
+Date: Tue, 24 Feb 2026 17:21:29 -0800
+Message-ID: <20260225012414.024241689@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219278-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218662-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,231 +87,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C619C192E04
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 8AF7618F6C6
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Petre Rodan <petre.rodan@subdimension.ro>
 
-[ Upstream commit ebc2164a4cd4314503f1a0c8e7aaf76d7e5fa211 ]
+[ Upstream commit 8a228e036926f7e57421d750c3724e63f11b808a ]
 
-During firmware reset in LAG mode, a race condition causes the driver
-to hang indefinitely while waiting for UMR completion during device
-unload. See [1].
+Fix the scan_type sign and realbits assignment.
 
-In LAG mode the bond device is only registered on the master, so it
-never sees sys_error events from the slave.
-During firmware reset this causes UMR waits to hang forever on unload
-as the slave is dead but the master hasn't entered error state yet, so
-UMR posts succeed but completions never arrive.
+The pressure is a 24bit unsigned int between output_min and output_max.
 
-Fix this by adding a sys_error notifier that gets registered before
-MLX5_IB_STAGE_IB_REG and stays alive until after ib_unregister_device().
-This ensures error events reach the bond device throughout teardown.
+ transfer function A: 10%   to 90%   of 2^24
+ transfer function B:  2.5% to 22.5% of 2^24
+ transfer function C: 20%   to 80%   of 2^24
+[MPR_FUNCTION_A] = { .output_min = 1677722, .output_max = 15099494 }
+[MPR_FUNCTION_B] = { .output_min =  419430, .output_max =  3774874 }
+[MPR_FUNCTION_C] = { .output_min = 3355443, .output_max = 13421773 }
 
-[1]
-Call Trace:
- __schedule+0x2bd/0x760
- schedule+0x37/0xa0
- schedule_preempt_disabled+0xa/0x10
- __mutex_lock.isra.6+0x2b5/0x4a0
- __mlx5_ib_dereg_mr+0x606/0x870 [mlx5_ib]
- ? __xa_erase+0x4a/0xa0
- ? _cond_resched+0x15/0x30
- ? wait_for_completion+0x31/0x100
- ib_dereg_mr_user+0x48/0xc0 [ib_core]
- ? rdmacg_uncharge_hierarchy+0xa0/0x100
- destroy_hw_idr_uobject+0x20/0x50 [ib_uverbs]
- uverbs_destroy_uobject+0x37/0x150 [ib_uverbs]
- __uverbs_cleanup_ufile+0xda/0x140 [ib_uverbs]
- uverbs_destroy_ufile_hw+0x3a/0xf0 [ib_uverbs]
- ib_uverbs_remove_one+0xc3/0x140 [ib_uverbs]
- remove_client_context+0x8b/0xd0 [ib_core]
- disable_device+0x8c/0x130 [ib_core]
- __ib_unregister_device+0x10d/0x180 [ib_core]
- ib_unregister_device+0x21/0x30 [ib_core]
- __mlx5_ib_remove+0x1e4/0x1f0 [mlx5_ib]
- auxiliary_bus_remove+0x1e/0x30
- device_release_driver_internal+0x103/0x1f0
- bus_remove_device+0xf7/0x170
- device_del+0x181/0x410
- mlx5_rescan_drivers_locked.part.10+0xa9/0x1d0 [mlx5_core]
- mlx5_disable_lag+0x253/0x260 [mlx5_core]
- mlx5_lag_disable_change+0x89/0xc0 [mlx5_core]
- mlx5_eswitch_disable+0x67/0xa0 [mlx5_core]
- mlx5_unload+0x15/0xd0 [mlx5_core]
- mlx5_unload_one+0x71/0xc0 [mlx5_core]
- mlx5_sync_reset_reload_work+0x83/0x100 [mlx5_core]
- process_one_work+0x1a7/0x360
- worker_thread+0x30/0x390
- ? create_worker+0x1a0/0x1a0
- kthread+0x116/0x130
- ? kthread_flush_work_fn+0x10/0x10
- ret_from_fork+0x22/0x40
-
-Fixes: ede132a5cf55 ("RDMA/mlx5: Move events notifier registration to be after device registration")
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Link: https://patch.msgid.link/20260113-umr-hand-lag-fix-v1-1-3dc476e00cd9@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c    | 75 ++++++++++++++++++++++++----
- drivers/infiniband/hw/mlx5/mlx5_ib.h |  2 +
- 2 files changed, 68 insertions(+), 9 deletions(-)
+ drivers/iio/pressure/mprls0025pa.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 8f69c8c1ba54d..b6096f9126858 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -2874,7 +2874,6 @@ static void mlx5_ib_handle_event(struct work_struct *_work)
- 		container_of(_work, struct mlx5_ib_event_work, work);
- 	struct mlx5_ib_dev *ibdev;
- 	struct ib_event ibev;
--	bool fatal = false;
- 
- 	if (work->is_slave) {
- 		ibdev = mlx5_ib_get_ibdev_from_mpi(work->mpi);
-@@ -2885,12 +2884,6 @@ static void mlx5_ib_handle_event(struct work_struct *_work)
- 	}
- 
- 	switch (work->event) {
--	case MLX5_DEV_EVENT_SYS_ERROR:
--		ibev.event = IB_EVENT_DEVICE_FATAL;
--		mlx5_ib_handle_internal_error(ibdev);
--		ibev.element.port_num  = (u8)(unsigned long)work->param;
--		fatal = true;
--		break;
- 	case MLX5_EVENT_TYPE_PORT_CHANGE:
- 		if (handle_port_change(ibdev, work->param, &ibev))
- 			goto out;
-@@ -2912,8 +2905,6 @@ static void mlx5_ib_handle_event(struct work_struct *_work)
- 	if (ibdev->ib_active)
- 		ib_dispatch_event(&ibev);
- 
--	if (fatal)
--		ibdev->ib_active = false;
- out:
- 	kfree(work);
- }
-@@ -2957,6 +2948,66 @@ static int mlx5_ib_event_slave_port(struct notifier_block *nb,
- 	return NOTIFY_OK;
- }
- 
-+static void mlx5_ib_handle_sys_error_event(struct work_struct *_work)
-+{
-+	struct mlx5_ib_event_work *work =
-+		container_of(_work, struct mlx5_ib_event_work, work);
-+	struct mlx5_ib_dev *ibdev = work->dev;
-+	struct ib_event ibev;
-+
-+	ibev.event = IB_EVENT_DEVICE_FATAL;
-+	mlx5_ib_handle_internal_error(ibdev);
-+	ibev.element.port_num = (u8)(unsigned long)work->param;
-+	ibev.device = &ibdev->ib_dev;
-+
-+	if (!rdma_is_port_valid(&ibdev->ib_dev, ibev.element.port_num)) {
-+		mlx5_ib_warn(ibdev, "warning: event on port %d\n",  ibev.element.port_num);
-+		goto out;
-+	}
-+
-+	if (ibdev->ib_active)
-+		ib_dispatch_event(&ibev);
-+
-+	ibdev->ib_active = false;
-+out:
-+	kfree(work);
-+}
-+
-+static int mlx5_ib_sys_error_event(struct notifier_block *nb,
-+				   unsigned long event, void *param)
-+{
-+	struct mlx5_ib_event_work *work;
-+
-+	if (event != MLX5_DEV_EVENT_SYS_ERROR)
-+		return NOTIFY_DONE;
-+
-+	work = kmalloc(sizeof(*work), GFP_ATOMIC);
-+	if (!work)
-+		return NOTIFY_DONE;
-+
-+	INIT_WORK(&work->work, mlx5_ib_handle_sys_error_event);
-+	work->dev = container_of(nb, struct mlx5_ib_dev, sys_error_events);
-+	work->is_slave = false;
-+	work->param = param;
-+	work->event = event;
-+
-+	queue_work(mlx5_ib_event_wq, &work->work);
-+
-+	return NOTIFY_OK;
-+}
-+
-+static int mlx5_ib_stage_sys_error_notifier_init(struct mlx5_ib_dev *dev)
-+{
-+	dev->sys_error_events.notifier_call = mlx5_ib_sys_error_event;
-+	mlx5_notifier_register(dev->mdev, &dev->sys_error_events);
-+	return 0;
-+}
-+
-+static void mlx5_ib_stage_sys_error_notifier_cleanup(struct mlx5_ib_dev *dev)
-+{
-+	mlx5_notifier_unregister(dev->mdev, &dev->sys_error_events);
-+}
-+
- static int mlx5_ib_get_plane_num(struct mlx5_core_dev *mdev, u8 *num_plane)
- {
- 	struct mlx5_hca_vport_context vport_ctx;
-@@ -4807,6 +4858,9 @@ static const struct mlx5_ib_profile pf_profile = {
- 	STAGE_CREATE(MLX5_IB_STAGE_WHITELIST_UID,
- 		     mlx5_ib_devx_init,
- 		     mlx5_ib_devx_cleanup),
-+	STAGE_CREATE(MLX5_IB_STAGE_SYS_ERROR_NOTIFIER,
-+		     mlx5_ib_stage_sys_error_notifier_init,
-+		     mlx5_ib_stage_sys_error_notifier_cleanup),
- 	STAGE_CREATE(MLX5_IB_STAGE_IB_REG,
- 		     mlx5_ib_stage_ib_reg_init,
- 		     mlx5_ib_stage_ib_reg_cleanup),
-@@ -4864,6 +4918,9 @@ const struct mlx5_ib_profile raw_eth_profile = {
- 	STAGE_CREATE(MLX5_IB_STAGE_WHITELIST_UID,
- 		     mlx5_ib_devx_init,
- 		     mlx5_ib_devx_cleanup),
-+	STAGE_CREATE(MLX5_IB_STAGE_SYS_ERROR_NOTIFIER,
-+		     mlx5_ib_stage_sys_error_notifier_init,
-+		     mlx5_ib_stage_sys_error_notifier_cleanup),
- 	STAGE_CREATE(MLX5_IB_STAGE_IB_REG,
- 		     mlx5_ib_stage_ib_reg_init,
- 		     mlx5_ib_stage_ib_reg_cleanup),
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 09d82d5f95e35..fbccb0362590b 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -1007,6 +1007,7 @@ enum mlx5_ib_stages {
- 	MLX5_IB_STAGE_BFREG,
- 	MLX5_IB_STAGE_PRE_IB_REG_UMR,
- 	MLX5_IB_STAGE_WHITELIST_UID,
-+	MLX5_IB_STAGE_SYS_ERROR_NOTIFIER,
- 	MLX5_IB_STAGE_IB_REG,
- 	MLX5_IB_STAGE_DEVICE_NOTIFIER,
- 	MLX5_IB_STAGE_POST_IB_REG_UMR,
-@@ -1165,6 +1166,7 @@ struct mlx5_ib_dev {
- 	/* protect accessing data_direct_dev */
- 	struct mutex			data_direct_lock;
- 	struct notifier_block		mdev_events;
-+	struct notifier_block		sys_error_events;
- 	struct notifier_block           lag_events;
- 	int				num_ports;
- 	/* serialize update of capability mask
+diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
+index 4b23f87a822b1..6ba45d4c16b30 100644
+--- a/drivers/iio/pressure/mprls0025pa.c
++++ b/drivers/iio/pressure/mprls0025pa.c
+@@ -160,8 +160,8 @@ static const struct iio_chan_spec mpr_channels[] = {
+ 					BIT(IIO_CHAN_INFO_OFFSET),
+ 		.scan_index = 0,
+ 		.scan_type = {
+-			.sign = 's',
+-			.realbits = 32,
++			.sign = 'u',
++			.realbits = 24,
+ 			.storagebits = 32,
+ 			.endianness = IIO_CPU,
+ 		},
 -- 
 2.51.0
 
