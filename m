@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-219216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sG9AE42dnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:21 +0100
+	id 4KR6GXZUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83E7192A32
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94BBF18FCCB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65BBE30B0A52
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E6B34307015F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078CA2C11CF;
-	Wed, 25 Feb 2026 06:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D74243376;
+	Wed, 25 Feb 2026 01:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0q+oHhmm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veeJdnpv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7602C0263;
-	Wed, 25 Feb 2026 06:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C05720C012;
+	Wed, 25 Feb 2026 01:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002568; cv=none; b=KY9u9pxEILgks/oM7GWzKu2RTMmNR9jZ55jRQHcCKkXJcVAmwzEH8j9Nx9wZh1UUSn0fIJYxiw9Yqgxb5IYZZ2dlXFxmh4PWATNC8egyIJRA+QrJCFmnNnSTv0ODGDUo/dJJ6xgIvWeuRC46XMd9wWVmb5qdfp7wUREiOhpwp/M=
+	t=1771983377; cv=none; b=moM4Aftn0+5oXBBE0I3PQowbJmo0qipKTXOOj5yc/Ok8o8I5WP7B+gVq13ZXa8iHGmto9lTMvcuUN/ms0FzTt7a+PacZ0SNKx2EEgvn65//wJUopocHZarwMAKjHyLlSHaVenfI4f+Wpc+5ppMgFADGrVYoO2zLwVHdB814ntTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002568; c=relaxed/simple;
-	bh=Ye17X6TllHcoJP6W5ZDNvyR3qqSPmIWEzzjWfutJ9Yw=;
+	s=arc-20240116; t=1771983377; c=relaxed/simple;
+	bh=FatDsmeB12Z23jWDrGfOVfTiK3/9HwYNOOu5Xr08wTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mh0T8CdVg7oRAHH3i6+PM1w1f95ndROMzuR9P9YK+W5TeKeu6SU96lqX8mjmUX0ZymaadhBhn/Ab4Wr6nGksVlhC852GpRvUWfaoe39H99+PpRtkO2WQHM1peyZe/vvLuawz/BmU9dkqA4yDqMJDPIzwykJt6/FC5CjBNHbw+jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0q+oHhmm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB4BC19425;
-	Wed, 25 Feb 2026 06:56:08 +0000 (UTC)
+	 MIME-Version; b=EpTbg2YC/V5eUGd+99HGalmtjikBzpaYcjsLU6fpVEKrN8o+rpPJNXCf7m3GGieJqv8zQWLChvLioXpnISc/IWY5pT3nnVYkohUQtUuWMItbHY76g3G/hSkl0KPt6ML4zWqMLrRcYXGJIsj+u7Qwm2sRYy0h9MHDr1vHxGr+Bco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veeJdnpv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AFDC116D0;
+	Wed, 25 Feb 2026 01:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002568;
-	bh=Ye17X6TllHcoJP6W5ZDNvyR3qqSPmIWEzzjWfutJ9Yw=;
+	s=korg; t=1771983377;
+	bh=FatDsmeB12Z23jWDrGfOVfTiK3/9HwYNOOu5Xr08wTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0q+oHhmmM0d6PzEBGWKtyItP4ZaTqnDK6RPO8FQvU4RmdG/8RPcXWQjBA16Y98WQ5
-	 DEdbuaLI3YfiJTAGb94qp+BVHzSwMxFTJW8eRNNtvZFDYdFu/ChRn130o/l3GyJu88
-	 QmPBXR9pI3AzqAeh+hSNtWlxHCP3KMLp+YT2Uhkw=
+	b=veeJdnpvHeKh0H1+eX+8tP/so5CSW/QxKHGJOYxcZGF+tkQumPR7H/+VcH98al7It
+	 bzHBGLoZ7eWvEvDeHWyxl1ATP8d7DACvcHAJINd179k5qpP0uYJX4rVM0pDyQ+KaL+
+	 jYNO5nHObxZiINplXmLmUswOQ42Y7P4G4opGCD68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Li Chen <me@linux.beauty>,
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 284/641] wifi: ath11k: add usecase firmware handling based on device compatible
+Subject: [PATCH 6.19 501/781] nvdimm: virtio_pmem: serialize flush requests
 Date: Tue, 24 Feb 2026 17:20:10 -0800
-Message-ID: <20260225012355.649858596@linuxfoundation.org>
+Message-ID: <20260225012412.093837228@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,132 +67,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219216-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-218539-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.beauty,gmail.com,redhat.com,intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.952];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email]
-X-Rspamd-Queue-Id: A83E7192A32
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 94BBF18FCCB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+From: Li Chen <me@linux.beauty>
 
-[ Upstream commit c386a2b1068910538e87ef1cf2fc938ebf7e218f ]
+[ Upstream commit a9ba6733c7f1096c4506bf4e34a546e07242df74 ]
 
-For M.2 WLAN chips, there is no suitable DTS node to specify the
-firmware-name property. In addition, assigning firmware for the
-M.2 PCIe interface causes chips that do not use usecase specific
-firmware to fail. Therefore, abandoning the approach of specifying
-firmware in DTS. As an alternative, propose a static lookup table
-mapping device compatible to firmware names. Currently, only WCN6855
-HW2.1 requires this.
+Under heavy concurrent flush traffic, virtio-pmem can overflow its request
+virtqueue (req_vq): virtqueue_add_sgs() starts returning -ENOSPC and the
+driver logs "no free slots in the virtqueue". Shortly after that the
+device enters VIRTIO_CONFIG_S_NEEDS_RESET and flush requests fail with
+"virtio pmem device needs a reset".
 
-However, support for the firmware-name property is retained to keep
-the ABI backwards compatible.
+Serialize virtio_pmem_flush() with a per-device mutex so only one flush
+request is in-flight at a time. This prevents req_vq descriptor overflow
+under high concurrency.
 
-For details on usecase specific firmware, see:
-https://lore.kernel.org/all/20250522013444.1301330-3-miaoqing.pan@oss.qualcomm.com/.
+Reproducer (guest with virtio-pmem):
+  - mkfs.ext4 -F /dev/pmem0
+  - mount -t ext4 -o dax,noatime /dev/pmem0 /mnt/bench
+  - fio: ioengine=io_uring rw=randwrite bs=4k iodepth=64 numjobs=64
+        direct=1 fsync=1 runtime=30s time_based=1
+  - dmesg: "no free slots in the virtqueue"
+           "virtio pmem device needs a reset"
 
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04685-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
-
-Fixes: edbbc647c4f3 ("wifi: ath11k: support usercase-specific firmware overrides")
-Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260121095055.3683957-2-miaoqing.pan@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 6e84200c0a29 ("virtio-pmem: Add virtio pmem driver")
+Signed-off-by: Li Chen <me@linux.beauty>
+Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20260203021353.121091-1-me@linux.beauty
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 27 ++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/core.h |  4 ++++
- 2 files changed, 31 insertions(+)
+ drivers/nvdimm/nd_virtio.c   | 3 ++-
+ drivers/nvdimm/virtio_pmem.c | 1 +
+ drivers/nvdimm/virtio_pmem.h | 4 ++++
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 812686173ac8a..06b4df2370e95 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -997,6 +997,33 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
- 	{}
- };
+diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+index c3f07be4aa22a..af82385be7c6a 100644
+--- a/drivers/nvdimm/nd_virtio.c
++++ b/drivers/nvdimm/nd_virtio.c
+@@ -44,6 +44,8 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 	unsigned long flags;
+ 	int err, err1;
  
-+static const struct __ath11k_core_usecase_firmware_table {
-+	u32 hw_rev;
-+	const char *compatible;
-+	const char *firmware_name;
-+} ath11k_core_usecase_firmware_table[] = {
-+	{ ATH11K_HW_WCN6855_HW21, "qcom,lemans-evk", "nfa765"},
-+	{ ATH11K_HW_WCN6855_HW21, "qcom,monaco-evk", "nfa765"},
-+	{ ATH11K_HW_WCN6855_HW21, "qcom,hamoa-iot-evk", "nfa765"},
-+	{ /* Sentinel */ }
-+};
++	guard(mutex)(&vpmem->flush_lock);
 +
-+const char *ath11k_core_get_usecase_firmware(struct ath11k_base *ab)
-+{
-+	const struct __ath11k_core_usecase_firmware_table *entry = NULL;
-+
-+	entry = ath11k_core_usecase_firmware_table;
-+	while (entry->compatible) {
-+		if (ab->hw_rev == entry->hw_rev &&
-+		    of_machine_is_compatible(entry->compatible))
-+			return entry->firmware_name;
-+		entry++;
-+	}
-+
-+	return NULL;
-+}
-+EXPORT_SYMBOL(ath11k_core_get_usecase_firmware);
-+
- void ath11k_fw_stats_pdevs_free(struct list_head *head)
- {
- 	struct ath11k_fw_stats_pdev *i, *tmp;
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index e8780b05ce11e..834988dad591c 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -1275,6 +1275,7 @@ bool ath11k_core_coldboot_cal_support(struct ath11k_base *ab);
+ 	/*
+ 	 * Don't bother to submit the request to the device if the device is
+ 	 * not activated.
+@@ -53,7 +55,6 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 		return -EIO;
+ 	}
  
- const struct firmware *ath11k_core_firmware_request(struct ath11k_base *ab,
- 						    const char *filename);
-+const char *ath11k_core_get_usecase_firmware(struct ath11k_base *ab);
+-	might_sleep();
+ 	req_data = kmalloc(sizeof(*req_data), GFP_KERNEL);
+ 	if (!req_data)
+ 		return -ENOMEM;
+diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
+index 2396d19ce5496..77b1966619059 100644
+--- a/drivers/nvdimm/virtio_pmem.c
++++ b/drivers/nvdimm/virtio_pmem.c
+@@ -64,6 +64,7 @@ static int virtio_pmem_probe(struct virtio_device *vdev)
+ 		goto out_err;
+ 	}
  
- static inline const char *ath11k_scan_state_str(enum ath11k_scan_state state)
- {
-@@ -1329,6 +1330,9 @@ static inline void ath11k_core_create_firmware_path(struct ath11k_base *ab,
++	mutex_init(&vpmem->flush_lock);
+ 	vpmem->vdev = vdev;
+ 	vdev->priv = vpmem;
+ 	err = init_vq(vpmem);
+diff --git a/drivers/nvdimm/virtio_pmem.h b/drivers/nvdimm/virtio_pmem.h
+index 0dddefe594c46..f72cf17f9518f 100644
+--- a/drivers/nvdimm/virtio_pmem.h
++++ b/drivers/nvdimm/virtio_pmem.h
+@@ -13,6 +13,7 @@
+ #include <linux/module.h>
+ #include <uapi/linux/virtio_pmem.h>
+ #include <linux/libnvdimm.h>
++#include <linux/mutex.h>
+ #include <linux/spinlock.h>
  
- 	of_property_read_string(ab->dev->of_node, "firmware-name", &fw_name);
+ struct virtio_pmem_request {
+@@ -35,6 +36,9 @@ struct virtio_pmem {
+ 	/* Virtio pmem request queue */
+ 	struct virtqueue *req_vq;
  
-+	if (!fw_name)
-+		fw_name = ath11k_core_get_usecase_firmware(ab);
++	/* Serialize flush requests to the device. */
++	struct mutex flush_lock;
 +
- 	if (fw_name && strncmp(filename, "board", 5))
- 		snprintf(buf, buf_len, "%s/%s/%s/%s", ATH11K_FW_DIR,
- 			 ab->hw_params.fw.dir, fw_name, filename);
+ 	/* nvdimm bus registers virtio pmem device */
+ 	struct nvdimm_bus *nvdimm_bus;
+ 	struct nvdimm_bus_descriptor nd_desc;
 -- 
 2.51.0
 
