@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOH2ELlSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:05 +0100
+	id iH4lJH5anmlSUwQAu9opvQ
+	(envelope-from <stable+bounces-219092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA18718F4D9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2881190B22
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D159730066AE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB5E531096AB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C607254B03;
-	Wed, 25 Feb 2026 01:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0484C278753;
+	Wed, 25 Feb 2026 01:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWuiAson"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FL5DzNcX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404261D5141;
-	Wed, 25 Feb 2026 01:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8311E2834;
+	Wed, 25 Feb 2026 01:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983409; cv=none; b=Epq9aEvcptWdpOfXNObRtNhkxddtC9IA6LazEfe0To1tSMBUKEGxhdk6Cb0mLkhKXMVMfNtBzWtN4sYdm6o/jdG1PJ9CrT4EW7Km4hFjM5WMKUW1dB9A/5gCW6f3nZJoBSEl1tNPeF96aEiPHOq+nXoa5oz3T/bwXPA9MUazVeg=
+	t=1771984023; cv=none; b=m0YmksdyWDevz6Od8l+CeJQ4CvhOvlw4672hqayClOUyCMeV9W/QrZQYwufQ33Mq5sWSHQYQRoDHkgQtXbyeB3nWjpWVcMdjKsjFcix8mO4LA6uwuVeRIrbc2+E7KQtlEABLEJsoyVcb+d/GDGZF5XtARvK/Im8BwWXtYnEWT94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983409; c=relaxed/simple;
-	bh=NPm/E0oKk9pdANF3js/YGdDzpmeyQzO7zjZmBEd5ots=;
+	s=arc-20240116; t=1771984023; c=relaxed/simple;
+	bh=xibSOYnMlT/zJ9hlsZn66bYUYd+sBDtitoneK7Orlbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pneVfwT8/91Rs8bv557xBE9rNgFUqpP+SeWYVHSNM7j017Sf1qXjhNHyQqwKGM9+8D4dqgMfJzbXCsj5D8IDG2QPzP4Jkun1TnbB7oADBlcjwozjd7R9TfBz5Yyt5UOl4GokJ2jJzXb6PGK28olpxnaBJXwrQlEDsSyqUMR3GMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWuiAson; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B639C116D0;
-	Wed, 25 Feb 2026 01:36:48 +0000 (UTC)
+	 MIME-Version; b=NUrcLZz3+1BxgrME36Vz0Kkgbj579bReYl02vqwoOKMLSOphdn4QbSkqCz96lHytmlbylmWjv6ftZU5vXfXWZaBZG2bl562peLmRzxLxNi1AUKNaJR8YJ9hZ2In0XBCU52K+rHGraDDOIQG/2bP3OdgCafA0Bk7idoe1kVYVHQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FL5DzNcX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C5FC116D0;
+	Wed, 25 Feb 2026 01:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983408;
-	bh=NPm/E0oKk9pdANF3js/YGdDzpmeyQzO7zjZmBEd5ots=;
+	s=korg; t=1771984023;
+	bh=xibSOYnMlT/zJ9hlsZn66bYUYd+sBDtitoneK7Orlbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWuiAsonKKM4iCXPocHi4FHznpwwSKs1ZHyTNnd76m3osI8kGZi2rL0mR9JmBYp9N
-	 5bfp5e5c0PdY0+Ixj36EsGeKhKudWjtbwidVKae/5rggYb1AQhN8bE06ytUZa2vmBX
-	 iT4gWglsCi1dKfZdmQZN5sn7lDLtUP1Hshtyqgvk=
+	b=FL5DzNcX1jXpZ+bttbWt3O6vRVTAJJpakqixy+ChfH5DfDIPJQzpjprqcaZabHI1+
+	 kUPe6sNtDYlf7OM+z9Js3jc7jot9BAIqmjENhLvfGN4UBc7HOG7jgafKKlYLVN90IF
+	 wlb1tymGp51FjFFyEgZK+DJFGVNceGXw3liEiG24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Liu <liuy22@mails.tsinghua.edu.cn>,
-	Leon Romanovsky <leon@kernel.org>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 486/781] RDMA/uverbs: Validate wqe_size before using it in ib_uverbs_post_send
+Subject: [PATCH 6.18 269/641] dm: use bio_clone_blkg_association
 Date: Tue, 24 Feb 2026 17:19:55 -0800
-Message-ID: <20260225012411.732015066@linuxfoundation.org>
+Message-ID: <20260225012355.320346499@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,75 +79,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218567-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219092-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,tsinghua.edu.cn:email]
-X-Rspamd-Queue-Id: EA18718F4D9
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: F2881190B22
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <liuy22@mails.tsinghua.edu.cn>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 1956f0a74ccf5dc9c3ef717f2985c3ed3400aab0 ]
+[ Upstream commit 2df8b310bcfe76827fd71092f58a2493ee6590b0 ]
 
-ib_uverbs_post_send() uses cmd.wqe_size from userspace without any
-validation before passing it to kmalloc() and using the allocated
-buffer as struct ib_uverbs_send_wr.
+The origin bio carries blk-cgroup information which could be set from
+foreground(task_css(css) - wbc->wb->blkcg_css), so the blkcg won't
+control buffer io since commit ca522482e3eaf ("dm: pass NULL bdev to
+bio_alloc_clone"). The synchronous io is still under control by blkcg,
+because 'bio->bi_blkg' is set by io submitting task which has been added
+into 'cgroup.procs'.
 
-If a user provides a small wqe_size value (e.g., 1), kmalloc() will
-succeed, but subsequent accesses to user_wr->opcode, user_wr->num_sge,
-and other fields will read beyond the allocated buffer, resulting in
-an out-of-bounds read from kernel heap memory. This could potentially
-leak sensitive kernel information to userspace.
+Fix it by using bio_clone_blkg_association when submitting a cloned bio.
 
-Additionally, providing an excessively large wqe_size can trigger a
-WARNING in the memory allocation path, as reported by syzkaller.
-
-This is inconsistent with ib_uverbs_unmarshall_recv() which properly
-validates that wqe_size >= sizeof(struct ib_uverbs_recv_wr) before
-proceeding.
-
-Add the same validation for ib_uverbs_post_send() to ensure wqe_size
-is at least sizeof(struct ib_uverbs_send_wr).
-
-Fixes: c3bea3d2dc53 ("RDMA/uverbs: Use the iterator for ib_uverbs_unmarshall_recv()")
-Signed-off-by: Yi Liu <liuy22@mails.tsinghua.edu.cn>
-Link: https://patch.msgid.link/20260122142900.2356276-2-liuy22@mails.tsinghua.edu.cn
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220985
+Fixes: ca522482e3eaf ("dm: pass NULL bdev to bio_alloc_clone")
+Reported-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Tested-by: Zhihao Cheng <chengzhihao1@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/md/dm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
-index ce16404cdfb8c..3259e9848cc79 100644
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -2049,7 +2049,10 @@ static int ib_uverbs_post_send(struct uverbs_attr_bundle *attrs)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 6c83ab940af75..52f01c44e73a6 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1363,6 +1363,8 @@ void dm_submit_bio_remap(struct bio *clone, struct bio *tgt_clone)
+ 	if (!tgt_clone)
+ 		tgt_clone = clone;
  
--	user_wr = kmalloc(cmd.wqe_size, GFP_KERNEL);
-+	if (cmd.wqe_size < sizeof(struct ib_uverbs_send_wr))
-+		return -EINVAL;
++	bio_clone_blkg_association(tgt_clone, io->orig_bio);
 +
-+	user_wr = kmalloc(cmd.wqe_size, GFP_KERNEL | __GFP_NOWARN);
- 	if (!user_wr)
- 		return -ENOMEM;
- 
+ 	/*
+ 	 * Account io->origin_bio to DM dev on behalf of target
+ 	 * that took ownership of IO with DM_MAPIO_SUBMITTED.
 -- 
 2.51.0
 
