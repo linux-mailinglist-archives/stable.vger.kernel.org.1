@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHwsDNhUnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:08 +0100
+	id CCMiDW1TnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B002B18FDFD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A496F18F83E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AE07130A17D1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 81A2D31354A8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1502E2874F8;
-	Wed, 25 Feb 2026 01:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDCE1FE45D;
+	Wed, 25 Feb 2026 01:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/83b+Yf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXzLhOaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDE42652A2;
-	Wed, 25 Feb 2026 01:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47A01E2834;
+	Wed, 25 Feb 2026 01:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983813; cv=none; b=gi4NZZzVD2T689bPXAufMjhTSSYXoan5m1gPRi7o0GEnyOxH6gQoOOY7Ig3Puiy0b5NEIyYIJe8L3nejEEnURM+GqWRQKManmNoSu7CIoBea5QK0s0Dqg7h37VSqPVXISJz8lWn28Grng51cXwAs9yRpQynYWLb2cwwLMCjgzYA=
+	t=1771983162; cv=none; b=bj+cIl2D5IVyj0brIln9sCFMgQDF6FoLtwCmISdsEu8G+88mvySQIoF0cxAZ8FcHwByRkUYAQr6z32ulVtj/ojUwenENQVfJLA3gi/yeLimHQJ6Sc1VwwONuw7QPZbNY/qM6slrqiQYeW3AaDOy15z8bIa5H4ZcoA+svy1RbeW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983813; c=relaxed/simple;
-	bh=GRR0DLwaLnYDQbCm4wtgVFUmLMMqoaq8QT8l2AumtrI=;
+	s=arc-20240116; t=1771983162; c=relaxed/simple;
+	bh=ltHw5KYznlgJK6QfsK+dypzk7ri8WwgbHHSzbYRspT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USmsw5yDRVzqGyB/vCZzt489Rl2SGTuOcLUPXCWhnWIXneggrPuOa4xfeIeFLaOwyS9YECjMGsuAytGtSfxMO3z2w0HEPG4cIfV2I9c7GcbseX7aW61ciw9y10dvjvE/If1F4yHxJ6WdMLq1bkI0p64Uw0vgdfOq5NQrllewroc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/83b+Yf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B901C116D0;
-	Wed, 25 Feb 2026 01:43:33 +0000 (UTC)
+	 MIME-Version; b=avhZUXZbdcX+7j2RzIRmhVXY1in7rdTUCJfNTaGOyBgwUEU885ZnUQTx/l13FYU0gcrrB/HfX4Ooisul5byqUzTp7qeOEaIy/Fy3KSUei1zof2d11nZazBLi3i+XYmpxNJ8qIph5fXblkU0vYq39FUDTianwJ1a7e0IZxA7UPHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXzLhOaS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1C3C116D0;
+	Wed, 25 Feb 2026 01:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983813;
-	bh=GRR0DLwaLnYDQbCm4wtgVFUmLMMqoaq8QT8l2AumtrI=;
+	s=korg; t=1771983161;
+	bh=ltHw5KYznlgJK6QfsK+dypzk7ri8WwgbHHSzbYRspT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/83b+YfWjKKma2RML3+I7Jpn48X3kIwiJwN0USlLbEVHudaitFNtr3RPUbnz9P6M
-	 CRnnigUgtIbfX3APuotig6Q53mHNjvFcWJbZ80UqCopAOkkK3XR4/xEHnuYO2xmeoh
-	 YDbP7i95NLiOlCTvtN7SbEgFuMVgbB5miv1pD5pg=
+	b=VXzLhOaS4JDJ2Zxsi25bo1iDOKLV6QmFCsWMATkcBJL6bJUR5t8TyDQue23B/qPU8
+	 x78nlvedM/2E2BmEvv62swgxnE9HKAPbKR5WWWOraZhWVPooSm5apV1qiYmeJBLyhg
+	 M70AOoHY+vV4diNN2HKB0P1K03M7RoBiCu+sqpQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Antoine Tenart <atenart@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 098/641] crypto: inside-secure/eip93 - unregister only available algorithm
+Subject: [PATCH 6.19 315/781] PCI: mediatek: Fix IRQ domain leak when MSI allocation fails
 Date: Tue, 24 Feb 2026 17:17:04 -0800
-Message-ID: <20260225012351.482317166@linuxfoundation.org>
+Message-ID: <20260225012407.427464850@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,193 +69,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wp.pl,kernel.org,gondor.apana.org.au];
-	TAGGED_FROM(0.00)[bounces-218919-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-218352-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,wp.pl:email]
-X-Rspamd-Queue-Id: B002B18FDFD
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iscas.ac.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: A496F18F83E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 0ceeadc7b53a041d89d5843f6bf0ccb7c98b0b4f ]
+[ Upstream commit 7f0cdcddf8bef1c8c18f9be6708073fd3790a20f ]
 
-EIP93 has an options register. This register indicates which crypto
-algorithms are implemented in silicon. Supported algorithms are
-registered on this basis. Unregister algorithms on the same basis.
-Currently, all algorithms are unregistered, even those not supported
-by HW. This results in panic on platforms that don't have all options
-implemented in silicon.
+In mtk_pcie_init_irq_domain(), if mtk_pcie_allocate_msi_domains()
+fails after port->irq_domain has been successfully created via
+irq_domain_create_linear(), the function returns directly without
+cleaning up the allocated IRQ domain, resulting in a resource leak.
 
-Fixes: 9739f5f93b78 ("crypto: eip93 - Add Inside Secure SafeXcel EIP-93 crypto engine support")
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Acked-by: Antoine Tenart <atenart@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Add irq_domain_remove() call in the error path to properly release the
+INTx IRQ domain before returning the error.
+
+Fixes: 43e6409db64d ("PCI: mediatek: Add MSI support for MT2712 and MT7622")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20251119023308.476-1-vulab@iscas.ac.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../crypto/inside-secure/eip93/eip93-main.c   | 92 +++++++++++--------
- 1 file changed, 53 insertions(+), 39 deletions(-)
+ drivers/pci/controller/pcie-mediatek.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/inside-secure/eip93/eip93-main.c b/drivers/crypto/inside-secure/eip93/eip93-main.c
-index 3cdc3308dcac8..b7fd9795062d4 100644
---- a/drivers/crypto/inside-secure/eip93/eip93-main.c
-+++ b/drivers/crypto/inside-secure/eip93/eip93-main.c
-@@ -77,11 +77,44 @@ inline void eip93_irq_clear(struct eip93_device *eip93, u32 mask)
- 	__raw_writel(mask, eip93->base + EIP93_REG_INT_CLR);
- }
+diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
+index 4b78b6528f9fd..5defa5cc4c2bd 100644
+--- a/drivers/pci/controller/pcie-mediatek.c
++++ b/drivers/pci/controller/pcie-mediatek.c
+@@ -585,8 +585,10 @@ static int mtk_pcie_init_irq_domain(struct mtk_pcie_port *port,
  
--static void eip93_unregister_algs(unsigned int i)
-+static int eip93_algo_is_supported(u32 alg_flags, u32 supported_algo_flags)
-+{
-+	if ((IS_DES(alg_flags) || IS_3DES(alg_flags)) &&
-+	    !(supported_algo_flags & EIP93_PE_OPTION_TDES))
-+		return 0;
-+
-+	if (IS_AES(alg_flags) &&
-+	    !(supported_algo_flags & EIP93_PE_OPTION_AES))
-+		return 0;
-+
-+	if (IS_HASH_MD5(alg_flags) &&
-+	    !(supported_algo_flags & EIP93_PE_OPTION_MD5))
-+		return 0;
-+
-+	if (IS_HASH_SHA1(alg_flags) &&
-+	    !(supported_algo_flags & EIP93_PE_OPTION_SHA_1))
-+		return 0;
-+
-+	if (IS_HASH_SHA224(alg_flags) &&
-+	    !(supported_algo_flags & EIP93_PE_OPTION_SHA_224))
-+		return 0;
-+
-+	if (IS_HASH_SHA256(alg_flags) &&
-+	    !(supported_algo_flags & EIP93_PE_OPTION_SHA_256))
-+		return 0;
-+
-+	return 1;
-+}
-+
-+static void eip93_unregister_algs(u32 supported_algo_flags, unsigned int i)
- {
- 	unsigned int j;
+ 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+ 		ret = mtk_pcie_allocate_msi_domains(port);
+-		if (ret)
++		if (ret) {
++			irq_domain_remove(port->irq_domain);
+ 			return ret;
++		}
+ 	}
  
- 	for (j = 0; j < i; j++) {
-+		if (!eip93_algo_is_supported(eip93_algs[j]->flags,
-+					     supported_algo_flags))
-+			continue;
-+
- 		switch (eip93_algs[j]->type) {
- 		case EIP93_ALG_TYPE_SKCIPHER:
- 			crypto_unregister_skcipher(&eip93_algs[j]->alg.skcipher);
-@@ -106,49 +139,27 @@ static int eip93_register_algs(struct eip93_device *eip93, u32 supported_algo_fl
- 
- 		eip93_algs[i]->eip93 = eip93;
- 
--		if ((IS_DES(alg_flags) || IS_3DES(alg_flags)) &&
--		    !(supported_algo_flags & EIP93_PE_OPTION_TDES))
-+		if (!eip93_algo_is_supported(alg_flags, supported_algo_flags))
- 			continue;
- 
--		if (IS_AES(alg_flags)) {
--			if (!(supported_algo_flags & EIP93_PE_OPTION_AES))
--				continue;
-+		if (IS_AES(alg_flags) && !IS_HMAC(alg_flags)) {
-+			if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY128)
-+				eip93_algs[i]->alg.skcipher.max_keysize =
-+					AES_KEYSIZE_128;
- 
--			if (!IS_HMAC(alg_flags)) {
--				if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY128)
--					eip93_algs[i]->alg.skcipher.max_keysize =
--						AES_KEYSIZE_128;
-+			if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY192)
-+				eip93_algs[i]->alg.skcipher.max_keysize =
-+					AES_KEYSIZE_192;
- 
--				if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY192)
--					eip93_algs[i]->alg.skcipher.max_keysize =
--						AES_KEYSIZE_192;
-+			if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY256)
-+				eip93_algs[i]->alg.skcipher.max_keysize =
-+					AES_KEYSIZE_256;
- 
--				if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY256)
--					eip93_algs[i]->alg.skcipher.max_keysize =
--						AES_KEYSIZE_256;
--
--				if (IS_RFC3686(alg_flags))
--					eip93_algs[i]->alg.skcipher.max_keysize +=
--						CTR_RFC3686_NONCE_SIZE;
--			}
-+			if (IS_RFC3686(alg_flags))
-+				eip93_algs[i]->alg.skcipher.max_keysize +=
-+					CTR_RFC3686_NONCE_SIZE;
- 		}
- 
--		if (IS_HASH_MD5(alg_flags) &&
--		    !(supported_algo_flags & EIP93_PE_OPTION_MD5))
--			continue;
--
--		if (IS_HASH_SHA1(alg_flags) &&
--		    !(supported_algo_flags & EIP93_PE_OPTION_SHA_1))
--			continue;
--
--		if (IS_HASH_SHA224(alg_flags) &&
--		    !(supported_algo_flags & EIP93_PE_OPTION_SHA_224))
--			continue;
--
--		if (IS_HASH_SHA256(alg_flags) &&
--		    !(supported_algo_flags & EIP93_PE_OPTION_SHA_256))
--			continue;
--
- 		switch (eip93_algs[i]->type) {
- 		case EIP93_ALG_TYPE_SKCIPHER:
- 			ret = crypto_register_skcipher(&eip93_algs[i]->alg.skcipher);
-@@ -167,7 +178,7 @@ static int eip93_register_algs(struct eip93_device *eip93, u32 supported_algo_fl
  	return 0;
- 
- fail:
--	eip93_unregister_algs(i);
-+	eip93_unregister_algs(supported_algo_flags, i);
- 
- 	return ret;
- }
-@@ -469,8 +480,11 @@ static int eip93_crypto_probe(struct platform_device *pdev)
- static void eip93_crypto_remove(struct platform_device *pdev)
- {
- 	struct eip93_device *eip93 = platform_get_drvdata(pdev);
-+	u32 algo_flags;
-+
-+	algo_flags = readl(eip93->base + EIP93_REG_PE_OPTION_1);
- 
--	eip93_unregister_algs(ARRAY_SIZE(eip93_algs));
-+	eip93_unregister_algs(algo_flags, ARRAY_SIZE(eip93_algs));
- 	eip93_cleanup(eip93);
- }
- 
 -- 
 2.51.0
 
