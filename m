@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-219223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ZYVvDrWdnmk5WgQAu9opvQ
-	(envelope-from <stable+bounces-219223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:01 +0100
+	id KFpXK7ZSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885EB192A8E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4727718F4BC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1159730C865C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4B7913003D3D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E148F2C21C4;
-	Wed, 25 Feb 2026 06:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D8824A05D;
+	Wed, 25 Feb 2026 01:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvcK/bhG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zr0lHcek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53CF2C0263;
-	Wed, 25 Feb 2026 06:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAECC1D5141;
+	Wed, 25 Feb 2026 01:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002573; cv=none; b=SvZAWfK/t38aC9YJ3o/HxnvB83xPSQ9boTE6IwgN5bMWud0XdDK+IHQAycjWcF+8GWaOWZFBNM3Z2UlgjlDslUolSr1/jpbdXkBejcLgrtUivnlJ2v0DbZf3iaavOPihtZuRhKHl1FMhiJl8LoUqu2xlW6bmm3+/8enA5ep7yXM=
+	t=1771983406; cv=none; b=dMaRzCiFKewag+JCE67a3YZ6T/2FYmygeNicVlWUNTGJOilSmB4W1uVtCz0YPmtl5jQcVXQRtXIQ1jEKFw5NvVoHYDXv4vaLhyshDFu3HJjO9XVRpov+m3y5QRT/T74PqvxNJ3hhmJAlEC9gEsUU+prtSwLR8BoKgzi4IW7D7pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002573; c=relaxed/simple;
-	bh=F6a18Um+NX2W3x0JArDiwRoDha7I3mhDVmWgQ5upft0=;
+	s=arc-20240116; t=1771983406; c=relaxed/simple;
+	bh=ZP0fwtWH9yDsSlzCjZvLxezSNeA6nDuaYgDWEC3ooRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rnTjmOPEmt17dN0Ab3HJqnU+uCe48oFALVXt3JCKUVnw6HQnyKx5RjbX18SOeE0WgrA2gpa0Mc6kiPN/N3RuglUYkreMrf9xQ3ZWg8tUOJYfm+Gw/BY3Ug4wgBFE0nfEDzy2vx6ZBWv9TN2vVw+1Q7KDd9jsgaSrT26JcalwAYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvcK/bhG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8FDC116D0;
-	Wed, 25 Feb 2026 06:56:13 +0000 (UTC)
+	 MIME-Version; b=aaGUctDxeWnyZlfgsv91Dy5KVioyG54DUJ7dzp9Zgh88sBnIO9SOqjhPOkfPv5n00kMIwNmYPvCqE8tq6tD4ArI2qNAAVrph8WJHWAqtVLoeHuExQPSRXAl34CrkxQ+ykRqEKaQZym13oIP+ldHdUT5UNnqvAKEG8C4ouC5x4Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zr0lHcek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1C4C116D0;
+	Wed, 25 Feb 2026 01:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002573;
-	bh=F6a18Um+NX2W3x0JArDiwRoDha7I3mhDVmWgQ5upft0=;
+	s=korg; t=1771983406;
+	bh=ZP0fwtWH9yDsSlzCjZvLxezSNeA6nDuaYgDWEC3ooRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvcK/bhGOc7BubA8EU6f29lZ86igNwqJpzXftCTJgC+ZMuaKJlmILqzppsgew08Si
-	 BHYLtTtptxkqyPEAjzFMvZOKpPl3ONe0ROg8DEP+IAthGT0TV4xXbnUZhrsIw7EaOU
-	 j+Blg77Bd3gYGTqp0B7HZRPMXdaXfRFIcSoc8WWc=
+	b=Zr0lHcekFpEFsFc/9HzbVZsCMa0ep9LxQ4IKUJhsWEIR+Ha+MlVg+3w8cZjA1PMKO
+	 qsWn+X/yZ1ERRBioAaxaERZsTCvdzNHksyCHq4cnwSeW7LJxXlV4Y6IWwkQidJKdtA
+	 zCp/qNuL48oturrirP/ErkMrq9wOwMXjP/yoDdcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 308/641] netfilter: nft_set_rbtree: fix bogus EEXIST with NLM_F_CREATE with null interval
+Subject: [PATCH 6.19 525/781] clk: qcom: gcc-glymur: Update the SDCC RCGs to use shared_floor_ops
 Date: Tue, 24 Feb 2026 17:20:34 -0800
-Message-ID: <20260225012356.196033236@linuxfoundation.org>
+Message-ID: <20260225012412.675306813@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,107 +72,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218565-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219223-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: 885EB192A8E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
+X-Rspamd-Queue-Id: 4727718F4BC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
 
-[ Upstream commit 7f9203f41aae8eea74fba6a3370da41332eabcda ]
+[ Upstream commit d5639a6d72810023d257c935cb763aea1ada1abc ]
 
-Userspace adds a non-matching null element to the kernel for historical
-reasons. This null element is added when the set is populated with
-elements. Inclusion of this element is conditional, therefore,
-userspace needs to dump the set content to check for its presence.
+Use shared_floor_ops for the SDCC RCGs so the RCG is safely parked
+during disable and the new parent configuration is programmed in
+hardware only when the new parent is enabled, avoiding cases where
+the RCG configuration fails to update.
 
-If the NLM_F_CREATE flag is turned on, this becomes an issue because
-kernel bogusly reports EEXIST.
-
-Add special case to ignore NLM_F_CREATE in this case, therefore,
-re-adding the nul-element never fails.
-
-Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: efe504300a17 ("clk: qcom: gcc: Add support for Global Clock Controller")
+Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-8-473afc86589c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c  |  5 +++++
- net/netfilter/nft_set_rbtree.c | 13 +++++++++++++
- 2 files changed, 18 insertions(+)
+ drivers/clk/qcom/gcc-glymur.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index df18dfd5a8271..e3279179cd305 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7637,6 +7637,11 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 			 * and an existing one.
- 			 */
- 			err = -EEXIST;
-+		} else if (err == -ECANCELED) {
-+			/* ECANCELED reports an existing nul-element in
-+			 * interval sets.
-+			 */
-+			err = 0;
- 		}
- 		goto err_element_clash;
- 	}
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index ca594161b8402..eacb3acc2b957 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -39,6 +39,13 @@ static bool nft_rbtree_interval_start(const struct nft_rbtree_elem *rbe)
- 	return !nft_rbtree_interval_end(rbe);
- }
+diff --git a/drivers/clk/qcom/gcc-glymur.c b/drivers/clk/qcom/gcc-glymur.c
+index deab819576d0e..238e205735ed5 100644
+--- a/drivers/clk/qcom/gcc-glymur.c
++++ b/drivers/clk/qcom/gcc-glymur.c
+@@ -2317,7 +2317,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_17,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_17),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
-+static bool nft_rbtree_interval_null(const struct nft_set *set,
-+				     const struct nft_rbtree_elem *rbe)
-+{
-+	return (!memchr_inv(nft_set_ext_key(&rbe->ext), 0, set->klen) &&
-+		nft_rbtree_interval_end(rbe));
-+}
-+
- static int nft_rbtree_cmp(const struct nft_set *set,
- 			  const struct nft_rbtree_elem *e1,
- 			  const struct nft_rbtree_elem *e2)
-@@ -431,6 +438,12 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	 */
- 	if (rbe_le && !nft_rbtree_cmp(set, new, rbe_le) &&
- 	    nft_rbtree_interval_end(rbe_le) == nft_rbtree_interval_end(new)) {
-+		/* - ignore null interval, otherwise NLM_F_CREATE bogusly
-+		 *   reports EEXIST.
-+		 */
-+		if (nft_rbtree_interval_null(set, new))
-+			return -ECANCELED;
-+
- 		*elem_priv = &rbe_le->priv;
- 		return -EEXIST;
- 	}
+@@ -2339,7 +2339,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_3,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_3),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
+ 
 -- 
 2.51.0
 
