@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-218865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OG8qM1lZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:07:21 +0100
+	id SF+0IUdRnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A83D19091C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:07:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE8E18EF69
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E61E32A6D90
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9BB32309049B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC86E258EF9;
-	Wed, 25 Feb 2026 01:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7D3256C8B;
+	Wed, 25 Feb 2026 01:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocWKBHKO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOZTpcat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A551E2834;
-	Wed, 25 Feb 2026 01:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B0B2417E0;
+	Wed, 25 Feb 2026 01:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983750; cv=none; b=TpCLQ1N3YnPU+EZ5F+aScTC0ydvtYVuEUaAP9QiQB0D6v2N2I/9MpFnAsRy9vBX4KY4TU7582y09IPadtuq2S5IYTpIFFN0EQ+8ZhRQgYcx+sDd+FOFIJQ83eYtvTw4jPVKPev83gy7pVKb8b4haf47Kge8BUfMAR8bDkB13QQ0=
+	t=1771983057; cv=none; b=UAeicOZB6LF6EY3w04qshNfcG+JQvhzVnzt0YoV2XvjT0LoFi2uHqJxQxbaK+x3/HgLIYC9hVCVsVw2fUxluTv+sVrYgMngWpJen4DAQkhe7285GvSn3fNaBY9MRUt9PTSu/28/UJt4EUw0P95JzJUYac31MOrCrxt4Lu2dLgdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983750; c=relaxed/simple;
-	bh=NUcC9p2PUX1+18A2tiu9ZgBTb3JiX27iIAvRO/QfQnE=;
+	s=arc-20240116; t=1771983057; c=relaxed/simple;
+	bh=1S4ysg/DKUevLT1TIItGEihqQf68ZOmCzmd/xATO2js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsPLt5J0gxhtC8kHs/IV2zqkOAo5CB8VFGBTr333vOY4zQGu3K/Z6TQmU/m7TZXl1o7B5tV6agk7P1I6VWivqyFKowmOj5IanbKMx6+FyVhdiomEEfaKzvg0nJXqdWIOvMoOjRsPo0rf/y5CiU2qnWagtn/QEpoFZHMHHsOnHLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocWKBHKO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16929C116D0;
-	Wed, 25 Feb 2026 01:42:30 +0000 (UTC)
+	 MIME-Version; b=gQa12td4VYg8I1ey4J17af0JanY3Wbr/n6DE4pF7zQSWI3ceNBuxUj3AaRLk+rxXc1GBpM6HfKU/i+Z0HQSOkavk0lANxJaPXIrJjVDEEA9s7afF4w9gDTitd/OYKoQxY452i6DDag3YNv2F8+CDX9Wc7e/COZY1RQA98v2XFR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOZTpcat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDC4C116D0;
+	Wed, 25 Feb 2026 01:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983750;
-	bh=NUcC9p2PUX1+18A2tiu9ZgBTb3JiX27iIAvRO/QfQnE=;
+	s=korg; t=1771983057;
+	bh=1S4ysg/DKUevLT1TIItGEihqQf68ZOmCzmd/xATO2js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ocWKBHKOGzgGvqmix3dErOa/zQZHhm4iSGrUqAh0BYG+If3vKvb21KRbRMJ1I0cGe
-	 bR1kOt3ivMNRQlyR9LTbW+YXmEvKA5uW6uwbxmo5N1wZJjHEa3KZ71UfDKoWB1HDw/
-	 CDwdgkG7FFkXuwZBrkoHmIG85RfiJZtYqco2SJs8=
+	b=iOZTpcat6q16H9UTHwElvuvAqs/39cVUZdmDQ1CpobaFlPPrlxhu+7JG0SmdPYHnz
+	 /s1GvaJ41rF5UBczQh+TX3XQPE6xoDs1pFW/el+6aPkmRCHCDpVwz9Z7c0cwerCB8z
+	 zaVI4fB9G/nPPbTBVB29ivL95Rg5LljcXf6Fd8wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tengda Wu <wutengda2@huawei.com>,
-	Yao Kai <yaokai34@huawei.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 005/641] rcu: Fix rcu_read_unlock() deadloop due to softirq
+Subject: [PATCH 6.19 222/781] ALSA: usx2y: Relax __free() variable declarations
 Date: Tue, 24 Feb 2026 17:15:31 -0800
-Message-ID: <20260225012349.068821828@linuxfoundation.org>
+Message-ID: <20260225012405.158359758@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,202 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218865-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,nvidia.com,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-218259-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: 5A83D19091C
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 3DE8E18EF69
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Kai <yaokai34@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit d41e37f26b3157b3f1d10223863519a943aa239b ]
+[ Upstream commit 43cc944c8e28d26f152198278f81cf7f9955ff85 ]
 
-Commit 5f5fa7ea89dc ("rcu: Don't use negative nesting depth in
-__rcu_read_unlock()") removes the recursion-protection code from
-__rcu_read_unlock(). Therefore, we could invoke the deadloop in
-raise_softirq_irqoff() with ftrace enabled as follows:
+We used to have a variable declaration with __free() initialized with
+NULL.  This was to keep the old coding style rule, but recently it's
+relaxed and rather recommends to follow the new rule to declare in
+place of use for __free() -- which avoids potential deadlocks or UAFs
+with nested cleanups.
 
-WARNING: CPU: 0 PID: 0 at kernel/trace/trace.c:3021 __ftrace_trace_stack.constprop.0+0x172/0x180
-Modules linked in: my_irq_work(O)
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G O 6.18.0-rc7-dirty #23 PREEMPT(full)
-Tainted: [O]=OOT_MODULE
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:__ftrace_trace_stack.constprop.0+0x172/0x180
-RSP: 0018:ffffc900000034a8 EFLAGS: 00010002
-RAX: 0000000000000000 RBX: 0000000000000004 RCX: 0000000000000000
-RDX: 0000000000000003 RSI: ffffffff826d7b87 RDI: ffffffff826e9329
-RBP: 0000000000090009 R08: 0000000000000005 R09: ffffffff82afbc4c
-R10: 0000000000000008 R11: 0000000000011d7a R12: 0000000000000000
-R13: ffff888003874100 R14: 0000000000000003 R15: ffff8880038c1054
-FS:  0000000000000000(0000) GS:ffff8880fa8ea000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055b31fa7f540 CR3: 00000000078f4005 CR4: 0000000000770ef0
-PKRU: 55555554
-Call Trace:
- <IRQ>
- trace_buffer_unlock_commit_regs+0x6d/0x220
- trace_event_buffer_commit+0x5c/0x260
- trace_event_raw_event_softirq+0x47/0x80
- raise_softirq_irqoff+0x6e/0xa0
- rcu_read_unlock_special+0xb1/0x160
- unwind_next_frame+0x203/0x9b0
- __unwind_start+0x15d/0x1c0
- arch_stack_walk+0x62/0xf0
- stack_trace_save+0x48/0x70
- __ftrace_trace_stack.constprop.0+0x144/0x180
- trace_buffer_unlock_commit_regs+0x6d/0x220
- trace_event_buffer_commit+0x5c/0x260
- trace_event_raw_event_softirq+0x47/0x80
- raise_softirq_irqoff+0x6e/0xa0
- rcu_read_unlock_special+0xb1/0x160
- unwind_next_frame+0x203/0x9b0
- __unwind_start+0x15d/0x1c0
- arch_stack_walk+0x62/0xf0
- stack_trace_save+0x48/0x70
- __ftrace_trace_stack.constprop.0+0x144/0x180
- trace_buffer_unlock_commit_regs+0x6d/0x220
- trace_event_buffer_commit+0x5c/0x260
- trace_event_raw_event_softirq+0x47/0x80
- raise_softirq_irqoff+0x6e/0xa0
- rcu_read_unlock_special+0xb1/0x160
- unwind_next_frame+0x203/0x9b0
- __unwind_start+0x15d/0x1c0
- arch_stack_walk+0x62/0xf0
- stack_trace_save+0x48/0x70
- __ftrace_trace_stack.constprop.0+0x144/0x180
- trace_buffer_unlock_commit_regs+0x6d/0x220
- trace_event_buffer_commit+0x5c/0x260
- trace_event_raw_event_softirq+0x47/0x80
- raise_softirq_irqoff+0x6e/0xa0
- rcu_read_unlock_special+0xb1/0x160
- __is_insn_slot_addr+0x54/0x70
- kernel_text_address+0x48/0xc0
- __kernel_text_address+0xd/0x40
- unwind_get_return_address+0x1e/0x40
- arch_stack_walk+0x9c/0xf0
- stack_trace_save+0x48/0x70
- __ftrace_trace_stack.constprop.0+0x144/0x180
- trace_buffer_unlock_commit_regs+0x6d/0x220
- trace_event_buffer_commit+0x5c/0x260
- trace_event_raw_event_softirq+0x47/0x80
- __raise_softirq_irqoff+0x61/0x80
- __flush_smp_call_function_queue+0x115/0x420
- __sysvec_call_function_single+0x17/0xb0
- sysvec_call_function_single+0x8c/0xc0
- </IRQ>
+Although the current code has no bug, per se, let's follow the new
+standard and move the declaration to the place of assignment (or
+directly assign the allocated result) instead of NULL initializations.
 
-Commit b41642c87716 ("rcu: Fix rcu_read_unlock() deadloop due to IRQ work")
-fixed the infinite loop in rcu_read_unlock_special() for IRQ work by
-setting a flag before calling irq_work_queue_on(). We fix this issue by
-setting the same flag before calling raise_softirq_irqoff() and rename the
-flag to defer_qs_pending for more common.
-
-Fixes: 5f5fa7ea89dc ("rcu: Don't use negative nesting depth in __rcu_read_unlock()")
-Reported-by: Tengda Wu <wutengda2@huawei.com>
-Signed-off-by: Yao Kai <yaokai34@huawei.com>
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Fixes: 67afec157fe6 ("ALSA: usb-audio: us144mkii: Add MIDI support and mixer controlsj")
+Fixes: a2a2210f2c2e ("ALSA: usb-audio: us144mkii: Implement audio playback and feedback")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20251216140634.171890-11-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree.h        |  2 +-
- kernel/rcu/tree_plugin.h | 15 +++++++++------
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ sound/usb/usx2y/us144mkii.c          | 4 ++--
+ sound/usb/usx2y/us144mkii_controls.c | 4 ++--
+ sound/usb/usx2y/us144mkii_pcm.c      | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
-index b8bbe7960cda7..2265b9c2906e1 100644
---- a/kernel/rcu/tree.h
-+++ b/kernel/rcu/tree.h
-@@ -203,7 +203,7 @@ struct rcu_data {
- 					/*  during and after the last grace */
- 					/* period it is aware of. */
- 	struct irq_work defer_qs_iw;	/* Obtain later scheduler attention. */
--	int defer_qs_iw_pending;	/* Scheduler attention pending? */
-+	int defer_qs_pending;		/* irqwork or softirq pending? */
- 	struct work_struct strict_work;	/* Schedule readers for strict GPs. */
+diff --git a/sound/usb/usx2y/us144mkii.c b/sound/usb/usx2y/us144mkii.c
+index f6572a576c150..bc71968df8e2c 100644
+--- a/sound/usb/usx2y/us144mkii.c
++++ b/sound/usb/usx2y/us144mkii.c
+@@ -412,7 +412,6 @@ static int tascam_probe(struct usb_interface *intf,
+ 	struct snd_card *card;
+ 	struct tascam_card *tascam;
+ 	int err;
+-	char *handshake_buf __free(kfree) = NULL;
  
- 	/* 2) batch handling */
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index d85763336b3c0..cafb1cc8eff84 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -487,8 +487,8 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
- 	union rcu_special special;
+ 	if (dev->speed != USB_SPEED_HIGH)
+ 		dev_info(
+@@ -439,7 +438,8 @@ static int tascam_probe(struct usb_interface *intf,
+ 		return -ENOENT;
+ 	}
  
- 	rdp = this_cpu_ptr(&rcu_data);
--	if (rdp->defer_qs_iw_pending == DEFER_QS_PENDING)
--		rdp->defer_qs_iw_pending = DEFER_QS_IDLE;
-+	if (rdp->defer_qs_pending == DEFER_QS_PENDING)
-+		rdp->defer_qs_pending = DEFER_QS_IDLE;
+-	handshake_buf = kmalloc(1, GFP_KERNEL);
++	char *handshake_buf __free(kfree) =
++		kmalloc(1, GFP_KERNEL);
+ 	if (!handshake_buf)
+ 		return -ENOMEM;
  
- 	/*
- 	 * If RCU core is waiting for this CPU to exit its critical section,
-@@ -645,7 +645,7 @@ static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
- 	 * 5. Deferred QS reporting does not happen.
- 	 */
- 	if (rcu_preempt_depth() > 0)
--		WRITE_ONCE(rdp->defer_qs_iw_pending, DEFER_QS_IDLE);
-+		WRITE_ONCE(rdp->defer_qs_pending, DEFER_QS_IDLE);
- }
+diff --git a/sound/usb/usx2y/us144mkii_controls.c b/sound/usb/usx2y/us144mkii_controls.c
+index 5d69441ef414b..62055fb8e7bac 100644
+--- a/sound/usb/usx2y/us144mkii_controls.c
++++ b/sound/usb/usx2y/us144mkii_controls.c
+@@ -373,7 +373,6 @@ static int tascam_samplerate_get(struct snd_kcontrol *kcontrol,
+ {
+ 	struct tascam_card *tascam =
+ 		(struct tascam_card *)snd_kcontrol_chip(kcontrol);
+-	u8 *buf __free(kfree) = NULL;
+ 	int err;
+ 	u32 rate = 0;
  
- /*
-@@ -747,7 +747,10 @@ static void rcu_read_unlock_special(struct task_struct *t)
- 			// Using softirq, safe to awaken, and either the
- 			// wakeup is free or there is either an expedited
- 			// GP in flight or a potential need to deboost.
--			raise_softirq_irqoff(RCU_SOFTIRQ);
-+			if (rdp->defer_qs_pending != DEFER_QS_PENDING) {
-+				rdp->defer_qs_pending = DEFER_QS_PENDING;
-+				raise_softirq_irqoff(RCU_SOFTIRQ);
-+			}
- 		} else {
- 			// Enabling BH or preempt does reschedule, so...
- 			// Also if no expediting and no possible deboosting,
-@@ -756,11 +759,11 @@ static void rcu_read_unlock_special(struct task_struct *t)
- 			set_tsk_need_resched(current);
- 			set_preempt_need_resched();
- 			if (IS_ENABLED(CONFIG_IRQ_WORK) && irqs_were_disabled &&
--			    needs_exp && rdp->defer_qs_iw_pending != DEFER_QS_PENDING &&
-+			    needs_exp && rdp->defer_qs_pending != DEFER_QS_PENDING &&
- 			    cpu_online(rdp->cpu)) {
- 				// Get scheduler to re-evaluate and call hooks.
- 				// If !IRQ_WORK, FQS scan will eventually IPI.
--				rdp->defer_qs_iw_pending = DEFER_QS_PENDING;
-+				rdp->defer_qs_pending = DEFER_QS_PENDING;
- 				irq_work_queue_on(&rdp->defer_qs_iw, rdp->cpu);
- 			}
+@@ -384,7 +383,8 @@ static int tascam_samplerate_get(struct snd_kcontrol *kcontrol,
  		}
+ 	}
+ 
+-	buf = kmalloc(3, GFP_KERNEL);
++	u8 *buf __free(kfree) =
++		kmalloc(3, GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+diff --git a/sound/usb/usx2y/us144mkii_pcm.c b/sound/usb/usx2y/us144mkii_pcm.c
+index 0c84304d46246..03dfb1f388012 100644
+--- a/sound/usb/usx2y/us144mkii_pcm.c
++++ b/sound/usb/usx2y/us144mkii_pcm.c
+@@ -115,7 +115,6 @@ void process_capture_routing_us144mkii(struct tascam_card *tascam,
+ int us144mkii_configure_device_for_rate(struct tascam_card *tascam, int rate)
+ {
+ 	struct usb_device *dev = tascam->dev;
+-	u8 *rate_payload_buf __free(kfree) = NULL;
+ 	u16 rate_vendor_wValue;
+ 	int err = 0;
+ 	const u8 *current_payload_src;
+@@ -148,7 +147,8 @@ int us144mkii_configure_device_for_rate(struct tascam_card *tascam, int rate)
+ 		return -EINVAL;
+ 	}
+ 
+-	rate_payload_buf = kmemdup(current_payload_src, 3, GFP_KERNEL);
++	u8 *rate_payload_buf __free(kfree) =
++		kmemdup(current_payload_src, 3, GFP_KERNEL);
+ 	if (!rate_payload_buf)
+ 		return -ENOMEM;
+ 
 -- 
 2.51.0
 
