@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHm/I+ZUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:22 +0100
+	id CCZyCr5SnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC6118FE35
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAE318F4FD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1EA0D30D6456
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CFA83313B45D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1480277026;
-	Wed, 25 Feb 2026 01:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A26C2417E0;
+	Wed, 25 Feb 2026 01:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iR7bOS/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WV+j1di8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BE6265CBE;
-	Wed, 25 Feb 2026 01:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D89C1E2834;
+	Wed, 25 Feb 2026 01:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983828; cv=none; b=rAPmoy8SBCi+frPdK80mVTF2HQ9nqS1SMzSUWgZNTOJ8q9l99tZ74bPC6kJG2O+YWzLGTlTdoVHINg26knDqTdzQ57QXdOBgns3OnGvUp56BYTbugEVlF4UKAo/5ZBoeBhNH1CPvD5iewiCuLsAWSQoxPdrlheSZIjqD0bnka6o=
+	t=1771983174; cv=none; b=Pe0BzIetMO8yc0ZdVJ1Ln8HP1CHc+Sc9YSbPVWO6+x1S8dq02x4dSsmjjod3RExgnutSAF5hTR1zPrPxFVuX4IKqOBmLbDVD/YYeou+fLrOBQIjm0NHTOIcv2LetGvlY/JM8kMjpr+dWrT3GrEeltU9KVG/IwTVXu/uYUhjWvzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983828; c=relaxed/simple;
-	bh=bO4NnhmFy8eR/h0Wuz/gO/w7WogTQtM67CukVRtkF+A=;
+	s=arc-20240116; t=1771983174; c=relaxed/simple;
+	bh=qa/CsHn7+JnWYDq0s2o00dIJ+caETMzqERIeSbI5tMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+c8zHAoiFIa+btVjmI7xoyYQZg2kb4qrvKkwdAOXsYxkZpZHLZPK+wF6DJYrcQFX2OTN9ILLQlJWrtnNdXPOEdeihnOi9AlpP+CMoOuJvpyohvn+YY8ztB6hSUCtkGJdbkSGn47aJKy6WnYfRyHZhXKFT82XH+GDdjSpiRnAmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iR7bOS/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B082C116D0;
-	Wed, 25 Feb 2026 01:43:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TjavJ8IM0wjqRBGmgabtEv9g8obkY22FgRI+UE0Ilx81Sc2pOFfp4PVFYJDA+L8Kx1cEV8JKYRkrWUHpDrSUZq013z+WAG/h4KDpS8NAGDiZ/zcf/SYy9PjNL/J8E8fscCAp6Yp3lhKJGJUrup3qUq0rqg1qObP5UvuJoKC75Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WV+j1di8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185F1C116D0;
+	Wed, 25 Feb 2026 01:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983828;
-	bh=bO4NnhmFy8eR/h0Wuz/gO/w7WogTQtM67CukVRtkF+A=;
+	s=korg; t=1771983174;
+	bh=qa/CsHn7+JnWYDq0s2o00dIJ+caETMzqERIeSbI5tMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iR7bOS/wVBO5Hq7VQhjPRbu10Bo6OPd9VPWm8WKIdM2lGfyFGVDF8e0qCUZ8Qodev
-	 l4oPyuHjEvakT6NDG80THDAIqNkFcarwb47GF7iA0XSKkxOudJW64ar8S90ffKyCCA
-	 3qpvLK5jLHbncgoyM6/vNvtjaCW2FicovIf015cg=
+	b=WV+j1di8faXT2bno7PwbhJ8mS9KkBYxGakilojWRWF1wFiH+T2kFcwvLUVrTo42gz
+	 sUwvR9DXoCz6kxmdGrQC/jFkXO3yyzSitG7oSlvnyN6Oo/5HBnm37Bwf8YaWmCgNne
+	 VwGCI3+rXRJrnbxRfm6XxAHHEiCc9s3ln6/+5C/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 109/641] scsi: efct: Use IRQF_ONESHOT and default primary handler
+Subject: [PATCH 6.19 326/781] Documentation: tracing: Add PCI tracepoint documentation
 Date: Tue, 24 Feb 2026 17:17:15 -0800
-Message-ID: <20260225012351.762555016@linuxfoundation.org>
+Message-ID: <20260225012407.703088842@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +64,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218364-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218931-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4AC6118FE35
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,alibaba.com:email]
+X-Rspamd-Queue-Id: 9AAE318F4FD
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit bd81f07e9a27c341cd7e72be95eb0b7cf3910926 ]
+[ Upstream commit 8236fc613d44e59f6736d6c3e9efffaf26ab7f00 ]
 
-There is no added value in efct_intr_msix() compared to
-irq_default_primary_handler().
+The PCI tracing system provides tracepoints to monitor critical hardware
+events that can impact system performance and reliability. Add
+documentation about it.
 
-Using a threaded interrupt without a dedicated primary handler mandates
-the IRQF_ONESHOT flag to mask the interrupt source while the threaded
-handler is active. Otherwise the interrupt can fire again before the
-threaded handler had a chance to run.
-
-Use the default primary interrupt handler by specifying NULL and set
-IRQF_ONESHOT so the interrupt source is masked until the secondary
-handler is done.
-
-Fixes: 4df84e8466242 ("scsi: elx: efct: Driver initialization routines")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260128095540.863589-8-bigeasy@linutronix.de
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+[bhelgaas: squash fixes:
+https://lore.kernel.org/r/20260108013956.14351-2-bagasdotme@gmail.com
+https://lore.kernel.org/r/20260108013956.14351-3-bagasdotme@gmail.com]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20251210132907.58799-4-xueshuai@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/elx/efct/efct_driver.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ Documentation/trace/events-pci.rst | 74 ++++++++++++++++++++++++++++++
+ Documentation/trace/index.rst      |  1 +
+ 2 files changed, 75 insertions(+)
+ create mode 100644 Documentation/trace/events-pci.rst
 
-diff --git a/drivers/scsi/elx/efct/efct_driver.c b/drivers/scsi/elx/efct/efct_driver.c
-index 1bd42f7db1773..528399f725d42 100644
---- a/drivers/scsi/elx/efct/efct_driver.c
-+++ b/drivers/scsi/elx/efct/efct_driver.c
-@@ -415,12 +415,6 @@ efct_intr_thread(int irq, void *handle)
- 	return IRQ_HANDLED;
- }
- 
--static irqreturn_t
--efct_intr_msix(int irq, void *handle)
--{
--	return IRQ_WAKE_THREAD;
--}
--
- static int
- efct_setup_msix(struct efct *efct, u32 num_intrs)
- {
-@@ -450,7 +444,7 @@ efct_setup_msix(struct efct *efct, u32 num_intrs)
- 		intr_ctx->index = i;
- 
- 		rc = request_threaded_irq(pci_irq_vector(efct->pci, i),
--					  efct_intr_msix, efct_intr_thread, 0,
-+					  NULL, efct_intr_thread, IRQF_ONESHOT,
- 					  EFCT_DRIVER_NAME, intr_ctx);
- 		if (rc) {
- 			dev_err(&efct->pci->dev,
+diff --git a/Documentation/trace/events-pci.rst b/Documentation/trace/events-pci.rst
+new file mode 100644
+index 0000000000000..03ff4ad30ddfa
+--- /dev/null
++++ b/Documentation/trace/events-pci.rst
+@@ -0,0 +1,74 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++===========================
++Subsystem Trace Points: PCI
++===========================
++
++Overview
++========
++The PCI tracing system provides tracepoints to monitor critical hardware events
++that can impact system performance and reliability. These events normally show
++up here:
++
++	/sys/kernel/tracing/events/pci
++
++Cf. include/trace/events/pci.h for the events definitions.
++
++Available Tracepoints
++=====================
++
++pci_hp_event
++------------
++
++Monitors PCI hotplug events including card insertion/removal and link
++state changes.
++::
++
++    pci_hp_event  "%s slot:%s, event:%s\n"
++
++**Event Types**:
++
++* ``LINK_UP`` - PCIe link established
++* ``LINK_DOWN`` - PCIe link lost
++* ``CARD_PRESENT`` - Card detected in slot
++* ``CARD_NOT_PRESENT`` - Card removed from slot
++
++**Example Usage**::
++
++    # Enable the tracepoint
++    echo 1 > /sys/kernel/debug/tracing/events/pci/pci_hp_event/enable
++
++    # Monitor events (the following output is generated when a device is hotplugged)
++    cat /sys/kernel/debug/tracing/trace_pipe
++       irq/51-pciehp-88      [001] .....  1311.177459: pci_hp_event: 0000:00:02.0 slot:10, event:CARD_PRESENT
++
++       irq/51-pciehp-88      [001] .....  1311.177566: pci_hp_event: 0000:00:02.0 slot:10, event:LINK_UP
++
++pcie_link_event
++---------------
++
++Monitors PCIe link speed changes and provides detailed link status information.
++::
++
++    pcie_link_event  "%s type:%d, reason:%d, cur_bus_speed:%d, max_bus_speed:%d, width:%u, flit_mode:%u, status:%s\n"
++
++**Parameters**:
++
++* ``type`` - PCIe device type (4=Root Port, etc.)
++* ``reason`` - Reason for link change:
++
++  - ``0`` - Link retrain
++  - ``1`` - Bus enumeration
++  - ``2`` - Bandwidth notification enable
++  - ``3`` - Bandwidth notification IRQ
++  - ``4`` - Hotplug event
++
++
++**Example Usage**::
++
++    # Enable the tracepoint
++    echo 1 > /sys/kernel/debug/tracing/events/pci/pcie_link_event/enable
++
++    # Monitor events (the following output is generated when a device is hotplugged)
++    cat /sys/kernel/debug/tracing/trace_pipe
++       irq/51-pciehp-88      [001] .....   381.545386: pcie_link_event: 0000:00:02.0 type:4, reason:4, cur_bus_speed:20, max_bus_speed:23, width:1, flit_mode:0, status:DLLLA
+diff --git a/Documentation/trace/index.rst b/Documentation/trace/index.rst
+index b4a429dc4f7ad..0a40bfabcf19b 100644
+--- a/Documentation/trace/index.rst
++++ b/Documentation/trace/index.rst
+@@ -54,6 +54,7 @@ applications.
+    events-power
+    events-nmi
+    events-msr
++   events-pci
+    boottime-trace
+    histogram
+    histogram-design
 -- 
 2.51.0
 
