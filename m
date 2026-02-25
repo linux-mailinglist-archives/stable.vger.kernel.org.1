@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFUQB3ydnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219337-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:04 +0100
+	id 8O4qFEVYnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDA2192A06
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C5A1906CA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 79C1E30172DA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0DD33319D967
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9282E301718;
-	Wed, 25 Feb 2026 06:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE486262FC0;
+	Wed, 25 Feb 2026 01:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4pIqmJz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1cEcQGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BC62D7393;
-	Wed, 25 Feb 2026 06:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A3824A05D;
+	Wed, 25 Feb 2026 01:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002649; cv=none; b=TMpmMzBKwcXav0NQiSjLoBlrBEbfCFj2Dhq6K/Bvxrc/uJD8m/vgP7CQIvgHF7e0iNtijGlieBeMUg9ySwjY/v9Z7mBUdqZXSFry5H9r56i+gfKOjGgxnDJTYi7NqZE/Zq/c2oK4aS8ueabmmJsca4bFAlxIXH0E0s08C4JjJYY=
+	t=1771983483; cv=none; b=flteucpQbW0L4qb7jXXJGYWn4t+XH9YpwYaMicJKyK+z5vw0v9sHPBq3P4T2waox+uJOT4/ATlT8V989++aBfbR+Avg/egLUzOTXZjZda0qSkftqaB8MXi2RyTVQ+qzcrGeImtraSpOBoEx+I5AYg1VRiDj75u4lfzg28SjUeSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002649; c=relaxed/simple;
-	bh=Ud/WvECC/8ass2bk3d9LVvh9dJNDzK2N35x3OGwmreI=;
+	s=arc-20240116; t=1771983483; c=relaxed/simple;
+	bh=zEfBHDLdVl5CdqutueLENBMjmsg58YNRD27eJFYaZ1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BEJ34lXfgUI6zYW/NoDVoZXa6U3hJH90oXx/9qgJFEYd131C+S8nvAuZTs/UaA1kIAfX2KkeIdpMyHsH7SVkzE8xEhVeW0eLE6hqMachzWsTAyZUkIrNDf5uRtL27wlY9TZPtprtnZwc/KoP7HHkoJEeH7wuTLCMMOwo9pBcdkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4pIqmJz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267F4C116D0;
-	Wed, 25 Feb 2026 06:57:29 +0000 (UTC)
+	 MIME-Version; b=JKKp69YTsf8PTph3863zbYoewUb47ve8i2SVmKawO78E+uDP+fqy5+ywoxTZOITP4/GAy/h5BHikc1rBtxcrgG/8ny/xfVE1Fq6G3oHsE3t9bSC2KtNQO0Mm2ydSINjffT8T5DwHXSTo/O2aw1lTkXfR3GWVhqDjimyhhceL7Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1cEcQGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C172C116D0;
+	Wed, 25 Feb 2026 01:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002649;
-	bh=Ud/WvECC/8ass2bk3d9LVvh9dJNDzK2N35x3OGwmreI=;
+	s=korg; t=1771983483;
+	bh=zEfBHDLdVl5CdqutueLENBMjmsg58YNRD27eJFYaZ1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4pIqmJzGeeWvAO38ZPeazEXjkIuOgIDbTcLmH6nT8ZcnmLFP19vp2MdejmxuL8q7
-	 pl67YOLjQy84i0YlI0538PAmYhq7hzaY8MtOsaZ9SaDOmnGjwpk59MfZT8lcx2uvpW
-	 iAI/NP1EAE+M+J5DxE2FAMBDdvXI9t3ifj9+IQYc=
+	b=m1cEcQGm2oT4wgYizNI49NBZp+qrlavr2KbQT4ChBlJQ6st32TuCc3CU92n3841jz
+	 QyMKkamMwjAx2qv1rVPKz8My+4kr9k0mMM9m+lK/839z+m8RLkUlfyggE/zFKWZGP6
+	 2q+kDldTExd1HNv+k9kLEeYpJp9t1dPiGvtHaVws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Liu <liuy22@mails.tsinghua.edu.cn>,
-	Leon Romanovsky <leon@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 379/641] RDMA/uverbs: Validate wqe_size before using it in ib_uverbs_post_send
+Subject: [PATCH 6.19 596/781] pinctrl: equilibrium: Fix device node reference leak in pinbank_init()
 Date: Tue, 24 Feb 2026 17:21:45 -0800
-Message-ID: <20260225012357.778251705@linuxfoundation.org>
+Message-ID: <20260225012414.414079444@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219337-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218634-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.961];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BCDA2192A06
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A8C5A1906CA
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <liuy22@mails.tsinghua.edu.cn>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 1956f0a74ccf5dc9c3ef717f2985c3ed3400aab0 ]
+[ Upstream commit c0b4a4feeb43305a754893d8d9c6b2b5a52d45ac ]
 
-ib_uverbs_post_send() uses cmd.wqe_size from userspace without any
-validation before passing it to kmalloc() and using the allocated
-buffer as struct ib_uverbs_send_wr.
+When calling of_parse_phandle_with_fixed_args(), the caller is
+responsible to call of_node_put() to release the reference of device
+node.
 
-If a user provides a small wqe_size value (e.g., 1), kmalloc() will
-succeed, but subsequent accesses to user_wr->opcode, user_wr->num_sge,
-and other fields will read beyond the allocated buffer, resulting in
-an out-of-bounds read from kernel heap memory. This could potentially
-leak sensitive kernel information to userspace.
+In pinbank_init(), the reference of the node obtained from the
+"gpio-ranges" property is never released, resulting in a reference
+count leak.
 
-Additionally, providing an excessively large wqe_size can trigger a
-WARNING in the memory allocation path, as reported by syzkaller.
+Add the missing of_node_put() call to fix the leak.
 
-This is inconsistent with ib_uverbs_unmarshall_recv() which properly
-validates that wqe_size >= sizeof(struct ib_uverbs_recv_wr) before
-proceeding.
-
-Add the same validation for ib_uverbs_post_send() to ensure wqe_size
-is at least sizeof(struct ib_uverbs_send_wr).
-
-Fixes: c3bea3d2dc53 ("RDMA/uverbs: Use the iterator for ib_uverbs_unmarshall_recv()")
-Signed-off-by: Yi Liu <liuy22@mails.tsinghua.edu.cn>
-Link: https://patch.msgid.link/20260122142900.2356276-2-liuy22@mails.tsinghua.edu.cn
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 1948d5c51dba ("pinctrl: Add pinmux & GPIO controller driver for a new SoC")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Acked-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-equilibrium.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
-index ce16404cdfb8c..3259e9848cc79 100644
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -2049,7 +2049,10 @@ static int ib_uverbs_post_send(struct uverbs_attr_bundle *attrs)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/pinctrl/pinctrl-equilibrium.c b/drivers/pinctrl/pinctrl-equilibrium.c
+index 2d04829b29c99..48b55c5bf8d4f 100644
+--- a/drivers/pinctrl/pinctrl-equilibrium.c
++++ b/drivers/pinctrl/pinctrl-equilibrium.c
+@@ -846,6 +846,7 @@ static int pinbank_init(struct device_node *np,
  
--	user_wr = kmalloc(cmd.wqe_size, GFP_KERNEL);
-+	if (cmd.wqe_size < sizeof(struct ib_uverbs_send_wr))
-+		return -EINVAL;
-+
-+	user_wr = kmalloc(cmd.wqe_size, GFP_KERNEL | __GFP_NOWARN);
- 	if (!user_wr)
- 		return -ENOMEM;
+ 	bank->pin_base = spec.args[1];
+ 	bank->nr_pins = spec.args[2];
++	of_node_put(spec.np);
  
+ 	bank->aval_pinmap = readl(bank->membase + REG_AVAIL);
+ 	bank->id = id;
 -- 
 2.51.0
 
