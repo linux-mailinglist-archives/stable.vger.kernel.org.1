@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-218285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HfQDSRSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:36 +0100
+	id uBvMIzBSnmm6UgQAu9opvQ
+	(envelope-from <stable+bounces-218292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:48 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD0E18F212
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA33F18F261
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C32143073EF4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 19F8C309D188
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674C71E2834;
-	Wed, 25 Feb 2026 01:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25CE1F03DE;
+	Wed, 25 Feb 2026 01:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDtZ8hdV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0jyZlje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC712BAF7;
-	Wed, 25 Feb 2026 01:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7596F1D5ABA;
+	Wed, 25 Feb 2026 01:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983086; cv=none; b=Yhsb4cUgnFALlAFPNK0umMUhXpasmKIrQ23dl0wUk9Jso+1JNLWOyr2HG0wzpAa3aSlV9RLBVdXS3rKTj+VnLNyyflqvV5+upixmlgatzfaXIif/Jbsb0d8tJFnpT8fCiMM9MCxMNflnWPxQSkSS/kMiOhIpzh6is4L24c/gbyA=
+	t=1771983093; cv=none; b=Bxbui9Q17qhNJXcZNdbxDGjJmkRmcUEEl3h8Ev+pbLol0LdFg3eJsNBjQWd18ynQ5wkFXwKqWEunQP12CrhsdpdAvZqaq7NDXfpxP/6II1c3EA/5ziAcGpMxoVroOniawpviL9pNHR/A5pccDjwafyHeIv68a9du7NduWj4As6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983086; c=relaxed/simple;
-	bh=0WkPLJQYYF0dwbdpHG9B8GU0aoScBAjwgZ2+hpo5sNM=;
+	s=arc-20240116; t=1771983093; c=relaxed/simple;
+	bh=VxmaaNsuHMpPiT4UI0RiUZabBU1K6zGum6H8eYImgDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLij5ClCeOIDqFQRzwuz3A4LQG4TJ+YLayyWinqzchJcmwAxRhHLvmJCi01Y1ynM0pkngWsmu5RvzVk7Hy/6bVNtsfV+qkt3DrYRcd720WtnwlEMZOMxCrX7nqNMr9a3FfzHE3Dk7cfP/FBPx17n3tpn9/9A8hLyhkcA+IczpwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDtZ8hdV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7363C116D0;
-	Wed, 25 Feb 2026 01:31:25 +0000 (UTC)
+	 MIME-Version; b=TBfFQDHsdkub9ax44i1eaq7ox3pAmTWgfc9fbIOGp+hDPsv29GE2SgubeBs1TWM1SIdBysnatHfg5xPkpFuYg6j3vkScteZoKj4nJgmYTVUdZEZFdkQR1vQPbVceQjpuiYTDb0qUM8GLjFLFBxPQec9E5t+R3qVM8/Oz29HGJww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0jyZlje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B616C116D0;
+	Wed, 25 Feb 2026 01:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983085;
-	bh=0WkPLJQYYF0dwbdpHG9B8GU0aoScBAjwgZ2+hpo5sNM=;
+	s=korg; t=1771983093;
+	bh=VxmaaNsuHMpPiT4UI0RiUZabBU1K6zGum6H8eYImgDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VDtZ8hdV9qrnj8jy7uC7RGCoZ8F1vOAcsKSYLUyVCh9XDVj4ynyQq+6IRD1EbJmik
-	 /pS3dFHARrn0Mcl1sOnv0+iiPHq0GCXAyHw1EWKbarincI20tVXyEt875piZqTxB2F
-	 RJcFn27nCll8jjIbOR43kLPA6SyJEkYaVHrHZ1eM=
+	b=A0jyZljeYoIzF4CeaRJmYsKAIwXfBaHaQW3nxHhXH80yzKHlCU32qG3WOOgsN1c4u
+	 IkqZziqCvEFk1SIyCk54EBJc8Q/C6djAGH2scnbQAnvC30CiJqiKNFp/Y4hVK+nkXX
+	 hNl65JSM4V1h97TDWeOqciVd01TBEczQJfVevTaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akif Ejaz <akifejaz40@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 210/781] spi: cadence-qspi: Remove redundant pm_runtime_mark_last_busy call
-Date: Tue, 24 Feb 2026 17:15:19 -0800
-Message-ID: <20260225012404.864923852@linuxfoundation.org>
+Subject: [PATCH 6.19 211/781] accel/amdxdna: Fix potential NULL pointer dereference in context cleanup
+Date: Tue, 24 Feb 2026 17:15:20 -0800
+Message-ID: <20260225012404.889316985@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -67,78 +67,163 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218285-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218292-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7DD0E18F212
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: DA33F18F261
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akif Ejaz <akifejaz40@gmail.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit 28d21dfcea0121afec04451733a6c553fd319c8e ]
+[ Upstream commit 97f27573837ef96b4ba42af463cc800cab615c0e ]
 
-The pm_runtime_mark_last_busy() call is redundant in probe function
-as pm_runtime_put_autosuspend() already calls pm_runtime_mark_last_busy()
-internally to update the last access time of the device before queuing
-autosuspend.
+aie_destroy_context() is invoked during error handling in
+aie2_create_context(). However, aie_destroy_context() assumes that the
+context's mailbox channel pointer is non-NULL. If mailbox channel
+creation fails, the pointer remains NULL and calling aie_destroy_context()
+can lead to a NULL pointer dereference.
 
-Remove the pm_runtime_mark_last_busy() call from the probe function.
+In aie2_create_context(), replace aie_destroy_context() with a function
+which request firmware to remove the context created previously.
 
-Tested on StarFive VisionFive 2 v1.2A board.
-
-Fixes: e1f2e77624db ("spi: cadence-qspi: Fix runtime PM imbalance in probe")
-
-Signed-off-by: Akif Ejaz <akifejaz40@gmail.com>
-Link: https://patch.msgid.link/20251203181921.97171-1-akifejaz40@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: be462c97b7df ("accel/amdxdna: Add hardware context")
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://patch.msgid.link/20251212183244.1826318-1-lizhi.hou@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/accel/amdxdna/aie2_message.c | 50 +++++++++++++++-------------
+ 1 file changed, 26 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 965b4cea3388a..b9a560c75c5cd 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -2012,10 +2012,8 @@ static int cqspi_probe(struct platform_device *pdev)
- 		goto probe_setup_failed;
+diff --git a/drivers/accel/amdxdna/aie2_message.c b/drivers/accel/amdxdna/aie2_message.c
+index e64dc3152c884..9e55e66830ead 100644
+--- a/drivers/accel/amdxdna/aie2_message.c
++++ b/drivers/accel/amdxdna/aie2_message.c
+@@ -185,6 +185,19 @@ int aie2_query_firmware_version(struct amdxdna_dev_hdl *ndev,
+ 	return 0;
+ }
+ 
++static int aie2_destroy_context_req(struct amdxdna_dev_hdl *ndev, u32 id)
++{
++	DECLARE_AIE2_MSG(destroy_ctx, MSG_OP_DESTROY_CONTEXT);
++	struct amdxdna_dev *xdna = ndev->xdna;
++	int ret;
++
++	req.context_id = id;
++	ret = aie2_send_mgmt_msg_wait(ndev, &msg);
++	if (ret)
++		XDNA_WARN(xdna, "Destroy context failed, ret %d", ret);
++
++	return ret;
++}
+ int aie2_create_context(struct amdxdna_dev_hdl *ndev, struct amdxdna_hwctx *hwctx)
+ {
+ 	DECLARE_AIE2_MSG(create_ctx, MSG_OP_CREATE_CONTEXT);
+@@ -207,13 +220,14 @@ int aie2_create_context(struct amdxdna_dev_hdl *ndev, struct amdxdna_hwctx *hwct
+ 		return ret;
+ 
+ 	hwctx->fw_ctx_id = resp.context_id;
+-	WARN_ONCE(hwctx->fw_ctx_id == -1, "Unexpected context id");
++	if (WARN_ON_ONCE(hwctx->fw_ctx_id == -1))
++		return -EINVAL;
+ 
+ 	if (ndev->force_preempt_enabled) {
+ 		ret = aie2_runtime_cfg(ndev, AIE2_RT_CFG_FORCE_PREEMPT, &hwctx->fw_ctx_id);
+ 		if (ret) {
+ 			XDNA_ERR(xdna, "failed to enable force preempt %d", ret);
+-			return ret;
++			goto del_ctx_req;
+ 		}
  	}
  
--	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
--		pm_runtime_mark_last_busy(dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
- 		pm_runtime_put_autosuspend(dev);
--	}
+@@ -230,51 +244,39 @@ int aie2_create_context(struct amdxdna_dev_hdl *ndev, struct amdxdna_hwctx *hwct
+ 
+ 	ret = pci_irq_vector(to_pci_dev(xdna->ddev.dev), resp.msix_id);
+ 	if (ret == -EINVAL) {
+-		XDNA_ERR(xdna, "not able to create channel");
+-		goto out_destroy_context;
++		XDNA_ERR(xdna, "Alloc IRQ failed %d", ret);
++		goto del_ctx_req;
+ 	}
+ 
+ 	intr_reg = i2x.mb_head_ptr_reg + 4;
+ 	hwctx->priv->mbox_chann = xdna_mailbox_create_channel(ndev->mbox, &x2i, &i2x,
+ 							      intr_reg, ret);
+ 	if (!hwctx->priv->mbox_chann) {
+-		XDNA_ERR(xdna, "not able to create channel");
++		XDNA_ERR(xdna, "Not able to create channel");
+ 		ret = -EINVAL;
+-		goto out_destroy_context;
++		goto del_ctx_req;
+ 	}
+ 	ndev->hwctx_num++;
+ 
+-	XDNA_DBG(xdna, "%s mailbox channel irq: %d, msix_id: %d",
+-		 hwctx->name, ret, resp.msix_id);
+-	XDNA_DBG(xdna, "%s created fw ctx %d pasid %d", hwctx->name,
+-		 hwctx->fw_ctx_id, hwctx->client->pasid);
++	XDNA_DBG(xdna, "Mailbox channel irq: %d, msix_id: %d", ret, resp.msix_id);
++	XDNA_DBG(xdna, "Created fw ctx %d pasid %d", hwctx->fw_ctx_id, hwctx->client->pasid);
  
  	return 0;
- probe_setup_failed:
+ 
+-out_destroy_context:
+-	aie2_destroy_context(ndev, hwctx);
++del_ctx_req:
++	aie2_destroy_context_req(ndev, hwctx->fw_ctx_id);
+ 	return ret;
+ }
+ 
+ int aie2_destroy_context(struct amdxdna_dev_hdl *ndev, struct amdxdna_hwctx *hwctx)
+ {
+-	DECLARE_AIE2_MSG(destroy_ctx, MSG_OP_DESTROY_CONTEXT);
+ 	struct amdxdna_dev *xdna = ndev->xdna;
+ 	int ret;
+ 
+-	if (hwctx->fw_ctx_id == -1)
+-		return 0;
+-
+ 	xdna_mailbox_stop_channel(hwctx->priv->mbox_chann);
+-
+-	req.context_id = hwctx->fw_ctx_id;
+-	ret = aie2_send_mgmt_msg_wait(ndev, &msg);
+-	if (ret)
+-		XDNA_WARN(xdna, "%s destroy context failed, ret %d", hwctx->name, ret);
+-
++	ret = aie2_destroy_context_req(ndev, hwctx->fw_ctx_id);
+ 	xdna_mailbox_destroy_channel(hwctx->priv->mbox_chann);
+-	XDNA_DBG(xdna, "%s destroyed fw ctx %d", hwctx->name,
+-		 hwctx->fw_ctx_id);
++	XDNA_DBG(xdna, "Destroyed fw ctx %d", hwctx->fw_ctx_id);
+ 	hwctx->priv->mbox_chann = NULL;
+ 	hwctx->fw_ctx_id = -1;
+ 	ndev->hwctx_num--;
 -- 
 2.51.0
 
