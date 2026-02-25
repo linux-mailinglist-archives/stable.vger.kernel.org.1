@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-218806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219468-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2G8MLmxWnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:52 +0100
+	id oARAB7ygnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219468-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:11:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA161902D8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F4719314E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:11:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1257330BF7AE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EE0630F583C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E833E258ED5;
-	Wed, 25 Feb 2026 01:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27CB316185;
+	Wed, 25 Feb 2026 06:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3d2MYT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozy+40sb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7CD26056D;
-	Wed, 25 Feb 2026 01:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AE32D3EEE;
+	Wed, 25 Feb 2026 06:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983683; cv=none; b=NLDWDf4jvQF0NvvVsaS8VkGycMN0KRbe7ZuLDcbMvxQsX0PvnkWvulQn0MNt9/jMbIns7/387kEUoVq33p6N5HQmOpF0AC/TUSUssP2/5MZPLYgi3USfuCDQGe3hQwKOPQYI40DnpIBzCMAW4nVlox04fg3ZZ+pW6bB1qzhnSt4=
+	t=1772002735; cv=none; b=KV0QC9D2NGFs7EJGohxDsaXESCB3ArW9PUhytTiUwcX//zgG4XImp+G4I/s9pHlGzx9zRvhBeh+X3nxQIUCVtQpUvMbtiFej4l26pcqpcPNbvS+aPF50c9VhyrvMnuCJAI2ezXOYRjcJFspXBHBMtRP6C7utTzKTo2ifUcN/ndE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983683; c=relaxed/simple;
-	bh=bXSnc6AjXbC5ivVqtoTlG+ahR1tdp0K5SCpisaSmBoI=;
+	s=arc-20240116; t=1772002735; c=relaxed/simple;
+	bh=JaB4Jz47Taon04b3hTI9TmI/xhIL6tZBRPSIPHqkz60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jko5XQFi3zzSExUAcj9Tf2LxQYigXC7v0sjF4ENeVWTPI4Mm00dagP4PdhP/n7PFaOvR6kjPkp0jH76p5JZdpxHsANZ1J3PkRLmgwN2ylga2sE7qvxqhKjZiT/Slgo1x0lsCgbFFDd+NuNjgy5SyHvgoKw/32DkgsvFltzxPvOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3d2MYT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B32C116D0;
-	Wed, 25 Feb 2026 01:41:23 +0000 (UTC)
+	 MIME-Version; b=fhlxQHs4wbmkpg28E7Y190n4siFZxv3nO88dF702jU9PYWwNNVI8oxJQvE3OI8mOphoyYiZXDr8Ncwi63xmiQiEpV3zjrakKip11GxYM9wHVyIVZxl2ysR0LoAXRn4qxjoTvMK6OgwCo++aa8p99fd4GuMld3f2v72rjw0x2LnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozy+40sb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9FCC116D0;
+	Wed, 25 Feb 2026 06:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983683;
-	bh=bXSnc6AjXbC5ivVqtoTlG+ahR1tdp0K5SCpisaSmBoI=;
+	s=korg; t=1772002735;
+	bh=JaB4Jz47Taon04b3hTI9TmI/xhIL6tZBRPSIPHqkz60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3d2MYT/SNbB05zwW0yLrvGORWvAd0I+6PCxkgbWbhUypz23wnCJSgttHMoRpps/e
-	 97sCDan7z8vG8WhtP1WJrD0Qcs002vDfIvGqI23uEzMUv5NlDq4e1SXs4ddRyDgO0e
-	 b8u7fcIBydslVwn+EKti+5foGBk205Ce7a6ac9Bk=
+	b=ozy+40sbvAazLpcZbS/9IltvT90IhkSr3X8kSSd7PLzVDwPlnfOY+KCbvN+FJoBTt
+	 DuJgZAfvoB8HvUR/ALOxGhtQlWuTa9Co2jl4VD/Sh6wqMPXwIQCDmDQg0fxmgHm2jz
+	 S58NVHlmSwrD4kTWb5ispIHYWjtVGx00wyBJvVRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>
-Subject: [PATCH 6.19 767/781] ata: libata-scsi: avoid Non-NCQ command starvation
+	Eric Dumazet <edumazet@google.com>,
+	valis <sec@valis.email>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 550/641] macvlan: observe an RCU grace period in macvlan_common_newlink() error path
 Date: Tue, 24 Feb 2026 17:24:36 -0800
-Message-ID: <20260225012418.528826275@linuxfoundation.org>
+Message-ID: <20260225012401.851274347@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218806-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219468-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,275 +87,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,huawei.com:email]
-X-Rspamd-Queue-Id: 2FA161902D8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 75F4719314E
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 0ea84089dbf62a92dc7889c79e6b18fc89260808 upstream.
+[ Upstream commit e3f000f0dee1bfab52e2e61ca6a3835d9e187e35 ]
 
-When a non-NCQ command is issued while NCQ commands are being executed,
-ata_scsi_qc_issue() indicates to the SCSI layer that the command issuing
-should be deferred by returning SCSI_MLQUEUE_XXX_BUSY.  This command
-deferring is correct and as mandated by the ACS specifications since
-NCQ and non-NCQ commands cannot be mixed.
+valis reported that a race condition still happens after my prior patch.
 
-However, in the case of a host adapter using multiple submission queues,
-when the target device is under a constant load of NCQ commands, there
-are no guarantees that requeueing the non-NCQ command will be executed
-later and it may be deferred again repeatedly as other submission queues
-can constantly issue NCQ commands from different CPUs ahead of the
-non-NCQ command. This can lead to very long delays for the execution of
-non-NCQ commands, and even complete starvation for these commands in the
-worst case scenario.
+macvlan_common_newlink() might have made @dev visible before
+detecting an error, and its caller will directly call free_netdev(dev).
 
-Since the block layer and the SCSI layer do not distinguish between
-queueable (NCQ) and non queueable (non-NCQ) commands, libata-scsi SAT
-implementation must ensure forward progress for non-NCQ commands in the
-presence of NCQ command traffic. This is similar to what SAS HBAs with a
-hardware/firmware based SAT implementation do.
+We must respect an RCU period, either in macvlan or the core networking
+stack.
 
-Implement such forward progress guarantee by limiting requeueing of
-non-NCQ commands from ata_scsi_qc_issue(): when a non-NCQ command is
-received and NCQ commands are in-flight, do not force a requeue of the
-non-NCQ command by returning SCSI_MLQUEUE_XXX_BUSY and instead return 0
-to indicate that the command was accepted but hold on to the qc using
-the new deferred_qc field of struct ata_port.
+After adding a temporary mdelay(1000) in macvlan_forward_source_one()
+to open the race window, valis repro was:
 
-This deferred qc will be issued using the work item deferred_qc_work
-running the function ata_scsi_deferred_qc_work() once all in-flight
-commands complete, which is checked with the port qc_defer() callback
-return value indicating that no further delay is necessary. This check
-is done using the helper function ata_scsi_schedule_deferred_qc() which
-is called from ata_scsi_qc_complete(). This thus excludes this mechanism
-from all internal non-NCQ commands issued by ATA EH.
+ip link add p1 type veth peer p2
+ip link set address 00:00:00:00:00:20 dev p1
+ip link set up dev p1
+ip link set up dev p2
+ip link add mv0 link p2 type macvlan mode source
 
-When a port deferred_qc is non NULL, that is, the port has a command
-waiting for the device queue to drain, the issuing of all incoming
-commands (both NCQ and non-NCQ) is deferred using the regular busy
-mechanism. This simplifies the code and also avoids potential denial of
-service problems if a user issues too many non-NCQ commands.
+(ip link add invalid% link p2 type macvlan mode source macaddr add
+00:00:00:00:00:20 &) ; sleep 0.5 ; ping -c1 -I p1 1.2.3.4
+PING 1.2.3.4 (1.2.3.4): 56 data bytes
+RTNETLINK answers: Invalid argument
 
-Finally, whenever ata EH is scheduled, regardless of the reason, a
-deferred qc is always requeued so that it can be retried once EH
-completes. This is done by calling the function
-ata_scsi_requeue_deferred_qc() from ata_eh_set_pending(). This avoids
-the need for any special processing for the deferred qc in case of NCQ
-error, link or device reset, or device timeout.
+BUG: KASAN: slab-use-after-free in macvlan_forward_source
+(drivers/net/macvlan.c:408 drivers/net/macvlan.c:444)
+Read of size 8 at addr ffff888016bb89c0 by task e/175
 
-Reported-by: Xingui Yang <yangxingui@huawei.com>
-Reported-by: Igor Pylypiv <ipylypiv@google.com>
-Fixes: bdb01301f3ea ("scsi: Add host and host template flag 'host_tagset'")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Tested-by: Igor Pylypiv <ipylypiv@google.com>
-Tested-by: Xingui Yang <yangxingui@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU: 1 UID: 1000 PID: 175 Comm: e Not tainted 6.19.0-rc8+ #33 NONE
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
+Call Trace:
+<IRQ>
+dump_stack_lvl (lib/dump_stack.c:123)
+print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
+? macvlan_forward_source (drivers/net/macvlan.c:408 drivers/net/macvlan.c:444)
+kasan_report (mm/kasan/report.c:597)
+? macvlan_forward_source (drivers/net/macvlan.c:408 drivers/net/macvlan.c:444)
+macvlan_forward_source (drivers/net/macvlan.c:408 drivers/net/macvlan.c:444)
+? tasklet_init (kernel/softirq.c:983)
+macvlan_handle_frame (drivers/net/macvlan.c:501)
+
+Allocated by task 169:
+kasan_save_stack (mm/kasan/common.c:58)
+kasan_save_track (./arch/x86/include/asm/current.h:25
+mm/kasan/common.c:70 mm/kasan/common.c:79)
+__kasan_kmalloc (mm/kasan/common.c:419)
+__kvmalloc_node_noprof (./include/linux/kasan.h:263 mm/slub.c:5657
+mm/slub.c:7140)
+alloc_netdev_mqs (net/core/dev.c:12012)
+rtnl_create_link (net/core/rtnetlink.c:3648)
+rtnl_newlink (net/core/rtnetlink.c:3830 net/core/rtnetlink.c:3957
+net/core/rtnetlink.c:4072)
+rtnetlink_rcv_msg (net/core/rtnetlink.c:6958)
+netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1344)
+netlink_sendmsg (net/netlink/af_netlink.c:1894)
+__sys_sendto (net/socket.c:727 net/socket.c:742 net/socket.c:2206)
+__x64_sys_sendto (net/socket.c:2209)
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:131)
+
+Freed by task 169:
+kasan_save_stack (mm/kasan/common.c:58)
+kasan_save_track (./arch/x86/include/asm/current.h:25
+mm/kasan/common.c:70 mm/kasan/common.c:79)
+kasan_save_free_info (mm/kasan/generic.c:587)
+__kasan_slab_free (mm/kasan/common.c:287)
+kfree (mm/slub.c:6674 mm/slub.c:6882)
+rtnl_newlink (net/core/rtnetlink.c:3845 net/core/rtnetlink.c:3957
+net/core/rtnetlink.c:4072)
+rtnetlink_rcv_msg (net/core/rtnetlink.c:6958)
+netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1344)
+netlink_sendmsg (net/netlink/af_netlink.c:1894)
+__sys_sendto (net/socket.c:727 net/socket.c:742 net/socket.c:2206)
+__x64_sys_sendto (net/socket.c:2209)
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:131)
+
+Fixes: f8db6475a836 ("macvlan: fix error recovery in macvlan_common_newlink()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: valis <sec@valis.email>
+Link: https://patch.msgid.link/20260213142557.3059043-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c |    5 ++
- drivers/ata/libata-eh.c   |    6 ++
- drivers/ata/libata-scsi.c |   93 ++++++++++++++++++++++++++++++++++++++++++++++
- drivers/ata/libata.h      |    2 
- include/linux/libata.h    |    3 +
- 5 files changed, 109 insertions(+)
+ drivers/net/macvlan.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5620,6 +5620,7 @@ struct ata_port *ata_port_alloc(struct a
- 	mutex_init(&ap->scsi_scan_mutex);
- 	INIT_DELAYED_WORK(&ap->hotplug_task, ata_scsi_hotplug);
- 	INIT_DELAYED_WORK(&ap->scsi_rescan_task, ata_scsi_dev_rescan);
-+	INIT_WORK(&ap->deferred_qc_work, ata_scsi_deferred_qc_work);
- 	INIT_LIST_HEAD(&ap->eh_done_q);
- 	init_waitqueue_head(&ap->eh_wait_q);
- 	init_completion(&ap->park_req_pending);
-@@ -6232,6 +6233,10 @@ static void ata_port_detach(struct ata_p
- 		}
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index c509228be84d1..4433b8e95b6ac 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -1572,6 +1572,11 @@ int macvlan_common_newlink(struct net_device *dev,
+ 		if (create)
+ 			macvlan_port_destroy(port->dev);
  	}
- 
-+	/* Make sure the deferred qc work finished. */
-+	cancel_work_sync(&ap->deferred_qc_work);
-+	WARN_ON(ap->deferred_qc);
-+
- 	/* Tell EH to disable all devices */
- 	ap->pflags |= ATA_PFLAG_UNLOADING;
- 	ata_port_schedule_eh(ap);
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -917,6 +917,12 @@ static void ata_eh_set_pending(struct at
- 
- 	ap->pflags |= ATA_PFLAG_EH_PENDING;
- 
-+	/*
-+	 * If we have a deferred qc, requeue it so that it is retried once EH
-+	 * completes.
++	/* @dev might have been made visible before an error was detected.
++	 * Make sure to observe an RCU grace period before our caller
++	 * (rtnl_newlink()) frees it.
 +	 */
-+	ata_scsi_requeue_deferred_qc(ap);
-+
- 	if (!fastdrain)
- 		return;
- 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1658,8 +1658,77 @@ static void ata_qc_done(struct ata_queue
- 	done(cmd);
++	synchronize_net();
+ 	return err;
  }
- 
-+void ata_scsi_deferred_qc_work(struct work_struct *work)
-+{
-+	struct ata_port *ap =
-+		container_of(work, struct ata_port, deferred_qc_work);
-+	struct ata_queued_cmd *qc;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(ap->lock, flags);
-+
-+	/*
-+	 * If we still have a deferred qc and we are not in EH, issue it. In
-+	 * such case, we should not need any more deferring the qc, so warn if
-+	 * qc_defer() says otherwise.
-+	 */
-+	qc = ap->deferred_qc;
-+	if (qc && !ata_port_eh_scheduled(ap)) {
-+		WARN_ON_ONCE(ap->ops->qc_defer(qc));
-+		ap->deferred_qc = NULL;
-+		ata_qc_issue(qc);
-+	}
-+
-+	spin_unlock_irqrestore(ap->lock, flags);
-+}
-+
-+void ata_scsi_requeue_deferred_qc(struct ata_port *ap)
-+{
-+	struct ata_queued_cmd *qc = ap->deferred_qc;
-+	struct scsi_cmnd *scmd;
-+
-+	lockdep_assert_held(ap->lock);
-+
-+	/*
-+	 * If we have a deferred qc when a reset occurs or NCQ commands fail,
-+	 * do not try to be smart about what to do with this deferred command
-+	 * and simply retry it by completing it with DID_SOFT_ERROR.
-+	 */
-+	if (!qc)
-+		return;
-+
-+	scmd = qc->scsicmd;
-+	ap->deferred_qc = NULL;
-+	ata_qc_free(qc);
-+	scmd->result = (DID_SOFT_ERROR << 16);
-+	scsi_done(scmd);
-+}
-+
-+static void ata_scsi_schedule_deferred_qc(struct ata_port *ap)
-+{
-+	struct ata_queued_cmd *qc = ap->deferred_qc;
-+
-+	lockdep_assert_held(ap->lock);
-+
-+	/*
-+	 * If we have a deferred qc, then qc_defer() is defined and we can use
-+	 * this callback to determine if this qc is good to go, unless EH has
-+	 * been scheduled.
-+	 */
-+	if (!qc)
-+		return;
-+
-+	if (ata_port_eh_scheduled(ap)) {
-+		ata_scsi_requeue_deferred_qc(ap);
-+		return;
-+	}
-+	if (!ap->ops->qc_defer(qc))
-+		queue_work(system_highpri_wq, &ap->deferred_qc_work);
-+}
-+
- static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
- {
-+	struct ata_port *ap = qc->ap;
- 	struct scsi_cmnd *cmd = qc->scsicmd;
- 	u8 *cdb = cmd->cmnd;
- 	bool have_sense = qc->flags & ATA_QCFLAG_SENSE_VALID;
-@@ -1689,6 +1758,8 @@ static void ata_scsi_qc_complete(struct
- 	}
- 
- 	ata_qc_done(qc);
-+
-+	ata_scsi_schedule_deferred_qc(ap);
- }
- 
- static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
-@@ -1698,6 +1769,16 @@ static int ata_scsi_qc_issue(struct ata_
- 	if (!ap->ops->qc_defer)
- 		goto issue;
- 
-+	/*
-+	 * If we already have a deferred qc, then rely on the SCSI layer to
-+	 * requeue and defer all incoming commands until the deferred qc is
-+	 * processed, once all on-going commands complete.
-+	 */
-+	if (ap->deferred_qc) {
-+		ata_qc_free(qc);
-+		return SCSI_MLQUEUE_DEVICE_BUSY;
-+	}
-+
- 	/* Check if the command needs to be deferred. */
- 	ret = ap->ops->qc_defer(qc);
- 	switch (ret) {
-@@ -1716,6 +1797,18 @@ static int ata_scsi_qc_issue(struct ata_
- 	}
- 
- 	if (ret) {
-+		/*
-+		 * We must defer this qc: if this is not an NCQ command, keep
-+		 * this qc as a deferred one and report to the SCSI layer that
-+		 * we issued it so that it is not requeued. The deferred qc will
-+		 * be issued with the port deferred_qc_work once all on-going
-+		 * commands complete.
-+		 */
-+		if (!ata_is_ncq(qc->tf.protocol)) {
-+			ap->deferred_qc = qc;
-+			return 0;
-+		}
-+
- 		/* Force a requeue of the command to defer its execution. */
- 		ata_qc_free(qc);
- 		return ret;
---- a/drivers/ata/libata.h
-+++ b/drivers/ata/libata.h
-@@ -165,6 +165,8 @@ void ata_scsi_sdev_config(struct scsi_de
- int ata_scsi_dev_config(struct scsi_device *sdev, struct queue_limits *lim,
- 		struct ata_device *dev);
- int __ata_scsi_queuecmd(struct scsi_cmnd *scmd, struct ata_device *dev);
-+void ata_scsi_deferred_qc_work(struct work_struct *work);
-+void ata_scsi_requeue_deferred_qc(struct ata_port *ap);
- 
- /* libata-eh.c */
- extern unsigned int ata_internal_cmd_timeout(struct ata_device *dev, u8 cmd);
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -903,6 +903,9 @@ struct ata_port {
- 	u64			qc_active;
- 	int			nr_active_links; /* #links with active qcs */
- 
-+	struct work_struct	deferred_qc_work;
-+	struct ata_queued_cmd	*deferred_qc;
-+
- 	struct ata_link		link;		/* host default link */
- 	struct ata_link		*slave_link;	/* see ata_slave_link_init() */
- 
+ EXPORT_SYMBOL_GPL(macvlan_common_newlink);
+-- 
+2.51.0
+
 
 
 
