@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOgqDuRUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218929-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:20 +0100
+	id EI3oFXtTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E720318FE2E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32D018F893
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 996F130D5E5E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B7F6931ACBB9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8A426ED2A;
-	Wed, 25 Feb 2026 01:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9E01F03DE;
+	Wed, 25 Feb 2026 01:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ictnhAfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3tOakYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC1A24677D;
-	Wed, 25 Feb 2026 01:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319B3242D9B;
+	Wed, 25 Feb 2026 01:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983826; cv=none; b=jZmbUP3xlDw7Xm1KM43S6IQxuiXRq7CKQV9HVA1jGRgH1THM4U8IWm1zYUKTo95BqMWOYbCGvjFXaMQWn8O++x09fHRkJInBtGC+kviWv4pcg2tO52rEMwqQ0/Nr2yrs0+Gdyy4JLIrvlPVCJh+YnjYz107UGDPDALgFqaNfbJY=
+	t=1771983172; cv=none; b=Q0iqDpgucQ/Jd1OVQr6cZH/L16j3g0veA0MwcwAxBE/RlW51j0mUA9miiF1u61xRIZd62z4x0QTAKVItgpeUIistPvZWAL9uwCM4h3f4UTSnL5aNluUxSvYy09SIfHaRnW/z3jY9I+s7c+uwY8+L1Ne8FD6yuPpNJLcqkkLIOf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983826; c=relaxed/simple;
-	bh=x/SB3Xp7PLgqPMyExswdJ2jPTpIVjSoRLvMvIK08+Fg=;
+	s=arc-20240116; t=1771983172; c=relaxed/simple;
+	bh=JxmPFASYiiHSWr/4j1JT8k9obwcqDnvaDZ/beV3DIHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSahRIZuyD/avejsBvzhY9bZ3iFR8cXJayvR9yMaqkZiFrhjE6p0OArpZZ58sb/LTpy85oAHfcSk2DWVRkA5TbBD4BDNb45nPun8MYsxzP6x9oTS4Qk5CZh0rCrm46X+uzYIBmGLP2TwpZSnTO7vb8qkCuEc9Fig/o9IMQMALrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ictnhAfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30928C116D0;
-	Wed, 25 Feb 2026 01:43:46 +0000 (UTC)
+	 MIME-Version; b=Jjel9/P559m3Ck7yLYh2BOln+zc5dK3n3NCHSTcAIzTclUYQC2PPp2wC2xCGxQG+khI6sgSyRwhpfxRWSiwxDw5zGiKaplckXUM4WppcS+/wC9JNZc3Mu4CFYHXYNgkQgpIXCupnIM5i27k62d1Z3vfDiJkvT4OZny95cePZiFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3tOakYc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCDEC116D0;
+	Wed, 25 Feb 2026 01:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983826;
-	bh=x/SB3Xp7PLgqPMyExswdJ2jPTpIVjSoRLvMvIK08+Fg=;
+	s=korg; t=1771983172;
+	bh=JxmPFASYiiHSWr/4j1JT8k9obwcqDnvaDZ/beV3DIHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ictnhAfU2kYD0xBEVRHw7biy2buxvXWQBiA4j3HD4tTiEDO2PrB/4NtQtofDQCFjf
-	 GzLKCZF/gAjTKkrJVmz3xkBe4jXytl/13/Mer1hifAxrejql+FXqhvO4mC7JbVSQv2
-	 deyKhOrGQgrqeEt4UVfXuLH7lwOgclQM82LDorgA=
+	b=D3tOakYcP47DNQ3o9ae1j16m0fKRAhYac5klMH+ee9G1PeIiAnvm3p57txGXAvrZ1
+	 uuXSfT5vJcFwdkV+i9sNjtX1OCeToG5lvgkp0Met4hp6ALy/fJVt40BFVfDPP2Cfze
+	 T7PDgWjC4t5LeTute+uXTvFRMr4Y11XSXE1E4J8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Alistair Popple <apopple@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 107/641] iommu/amd: Use cores primary handler and set IRQF_ONESHOT
+Subject: [PATCH 6.19 324/781] PCI/P2PDMA: Release per-CPU pgmap ref when vm_insert_page() fails
 Date: Tue, 24 Feb 2026 17:17:13 -0800
-Message-ID: <20260225012351.711700470@linuxfoundation.org>
+Message-ID: <20260225012407.653116462@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,123 +71,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218362-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218929-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E720318FE2E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,deltatee.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: E32D018F893
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 5bfcdccb4d18d3909b7f87942be67fd6bdc00c1d ]
+[ Upstream commit 6220694c52a5a04102b48109e4f24e958b559bd3 ]
 
-request_threaded_irq() is invoked with a primary and a secondary handler
-and no flags are passed. The primary handler is the same as
-irq_default_primary_handler() so there is no need to have an identical
-copy.
+When vm_insert_page() fails in p2pmem_alloc_mmap(), p2pmem_alloc_mmap()
+doesn't invoke percpu_ref_put() to free the per-CPU ref of pgmap acquired
+after gen_pool_alloc_owner(), and memunmap_pages() will hang forever when
+trying to remove the PCI device.
 
-The lack of the IRQF_ONESHOT can be dangerous because the interrupt
-source is not masked while the threaded handler is active. This means,
-especially on LEVEL typed interrupt lines, the interrupt can fire again
-before the threaded handler had a chance to run.
+Fix it by adding the missed percpu_ref_put().
 
-Use the default primary interrupt handler by specifying NULL and set
-IRQF_ONESHOT so the interrupt source is masked until the secondary
-handler is done.
-
-Fixes: 72fe00f01f9a3 ("x86/amd-iommu: Use threaded interupt handler")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260128095540.863589-4-bigeasy@linutronix.de
+Fixes: 7e9c7ef83d78 ("PCI/P2PDMA: Allow userspace VMA allocations through sysfs")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Link: https://patch.msgid.link/20251220040446.274991-2-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/amd_iommu.h |  1 -
- drivers/iommu/amd/init.c      | 12 ++++--------
- drivers/iommu/amd/iommu.c     |  5 -----
- 3 files changed, 4 insertions(+), 14 deletions(-)
+ drivers/pci/p2pdma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
-index 9b4b589a54b57..bf77fdf5529f4 100644
---- a/drivers/iommu/amd/amd_iommu.h
-+++ b/drivers/iommu/amd/amd_iommu.h
-@@ -15,7 +15,6 @@ irqreturn_t amd_iommu_int_thread(int irq, void *data);
- irqreturn_t amd_iommu_int_thread_evtlog(int irq, void *data);
- irqreturn_t amd_iommu_int_thread_pprlog(int irq, void *data);
- irqreturn_t amd_iommu_int_thread_galog(int irq, void *data);
--irqreturn_t amd_iommu_int_handler(int irq, void *data);
- void amd_iommu_restart_log(struct amd_iommu *iommu, const char *evt_type,
- 			   u8 cntrl_intr, u8 cntrl_log,
- 			   u32 status_run_mask, u32 status_overflow_mask);
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 034edce816d01..53afb1cb0a6fc 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -2355,12 +2355,8 @@ static int iommu_setup_msi(struct amd_iommu *iommu)
- 	if (r)
- 		return r;
- 
--	r = request_threaded_irq(iommu->dev->irq,
--				 amd_iommu_int_handler,
--				 amd_iommu_int_thread,
--				 0, "AMD-Vi",
--				 iommu);
--
-+	r = request_threaded_irq(iommu->dev->irq, NULL, amd_iommu_int_thread,
-+				 IRQF_ONESHOT, "AMD-Vi", iommu);
- 	if (r) {
- 		pci_disable_msi(iommu->dev);
- 		return r;
-@@ -2534,8 +2530,8 @@ static int __iommu_setup_intcapxt(struct amd_iommu *iommu, const char *devname,
- 		return irq;
- 	}
- 
--	ret = request_threaded_irq(irq, amd_iommu_int_handler,
--				   thread_fn, 0, devname, iommu);
-+	ret = request_threaded_irq(irq, NULL, thread_fn, IRQF_ONESHOT, devname,
-+				   iommu);
- 	if (ret) {
- 		irq_domain_free_irqs(irq, 1);
- 		irq_domain_remove(domain);
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 5914bef0c8c19..30dd482fe0953 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -1146,11 +1146,6 @@ irqreturn_t amd_iommu_int_thread(int irq, void *data)
- 	return IRQ_HANDLED;
- }
- 
--irqreturn_t amd_iommu_int_handler(int irq, void *data)
--{
--	return IRQ_WAKE_THREAD;
--}
--
- /****************************************************************************
-  *
-  * IOMMU command queuing functions
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 4a2fc7ab42c34..218c1f5252b66 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -152,6 +152,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
+ 		ret = vm_insert_page(vma, vaddr, page);
+ 		if (ret) {
+ 			gen_pool_free(p2pdma->pool, (uintptr_t)kaddr, len);
++			percpu_ref_put(ref);
+ 			return ret;
+ 		}
+ 		percpu_ref_get(ref);
 -- 
 2.51.0
 
