@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-219004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKIDO4JVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-219004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:58 +0100
+	id KDjJEtxSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD3219005F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE6B18F579
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 331CA30C4E7A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D60223141819
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2303726056D;
-	Wed, 25 Feb 2026 01:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6550D20C012;
+	Wed, 25 Feb 2026 01:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TF5e9joS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrXVtw9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8311E2834;
-	Wed, 25 Feb 2026 01:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265F918DB2A;
+	Wed, 25 Feb 2026 01:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983914; cv=none; b=ao7Cvq2MTJnquKrQ5kGThHz/R3N3kxbp2F8x2g7XBsJ9uZDUyFXEoEyXGKJ8rNOoPzz+62txiZ0s8hrggO8p2fi5iCbjeoj8/qpZtmg2/YOTaJUD1CZz7sNPsxHyhMfVayXtfF/JnTkolmyTdSQM8axlEGHnO5DCcdrHdWi5kZU=
+	t=1771983206; cv=none; b=Pt8eydzM7MRddfB3ldlsAsk0KEXEgP6k/cXv/rqRpKRW87pVMijn+HAKzWH6yAiqvyxfGEkTZsLwB1wqSiNLkNXb3oiO6E2e7kQBOIUcZLHLwMCCrt5EWcoeYA0QhbdwRjXuQZyIcVPXnLUtm/Iyl6YwDGslLdz+jBjK/fVnXoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983914; c=relaxed/simple;
-	bh=dcN6eSgvaO3cpkOWinoAXnbUjVZ6gJkAEvGck50+Uzg=;
+	s=arc-20240116; t=1771983206; c=relaxed/simple;
+	bh=AjtFBzsbFCHy4S6vLJxqM6VC5g5w0vIN+X0JM//p7Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrkQ2pU42363fnDJ2moJKqDO/OJRhpOcwkM5mHTMCwhs3OKkH8kn+JFkjip36Lk16ndL2Ljqg3TRkEG+8DxYYuASFipWy/HCiooDCn4xu7Q6uUQLFKSMnlGCX68JknH00iXC11oWJeolOFD+fKcp0O9unkmqXngSSqc+qd5SDCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TF5e9joS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BB4C19423;
-	Wed, 25 Feb 2026 01:45:14 +0000 (UTC)
+	 MIME-Version; b=Ww5hRggfnpqrMXRgh2P5om0bCphrLLEp5WNnqBtQVT447Iq3da7YSPJVxj79nWnXDdNLg4yR3LJCcwJ0CVoRtJ50JH2u41Uo8p6EWTnbV7Q9iiqK39q8ToXRvLR4OknBXGuKQPvUnPRlXwaSOC9stDrogQv2ZbgFVlN1nSvUxwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrXVtw9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F090FC116D0;
+	Wed, 25 Feb 2026 01:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983914;
-	bh=dcN6eSgvaO3cpkOWinoAXnbUjVZ6gJkAEvGck50+Uzg=;
+	s=korg; t=1771983206;
+	bh=AjtFBzsbFCHy4S6vLJxqM6VC5g5w0vIN+X0JM//p7Lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TF5e9joScO8OqSFDEerVlc6LRMFZXGxs6E5vG9FHv5kiQ+JouIm2AN8CRqkP9x8v6
-	 7by34Y2pPlgjmKy9xk0Gd5FV1IHFIvIlHGpiwztKC0AMTzPAoJGGNt595apagtIAcP
-	 VVnSWm4V2NjN3x1G5aDhR3yVOibhGbxwXxb21sSc=
+	b=zrXVtw9hWbxDvoi2VCQzFVL8bC3ie1lSAptXpo/+zmKZaenXzpg5MxH2Ac7tm18Dj
+	 bE05MY7SYjn6gIpo7eIH0Nzu6+xTzzk4yHCRXxRBUNVurYTkqv4Sn2KNQlLkT57smU
+	 f/XK1vhqRk9Xp99CAW/6CksTF4I06Kmn9OwzMsAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Dmytro Maluka <dmaluka@chromium.org>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 138/641] arm64: dts: qcom: x1e80100: Fix USB combo PHYs SS1 and SS2 ref clocks
+Subject: [PATCH 6.19 355/781] iommu/vt-d: Clear Present bit before tearing down PASID entry
 Date: Tue, 24 Feb 2026 17:17:44 -0800
-Message-ID: <20260225012352.474732372@linuxfoundation.org>
+Message-ID: <20260225012408.393919685@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219004-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218392-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,72 +89,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fdf000:email,fda000:email]
-X-Rspamd-Queue-Id: 5FD3219005F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,chromium.org:email]
+X-Rspamd-Queue-Id: CCE6B18F579
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 3af51501e2b8c87564b5cda43b0e5c316cf54717 ]
+[ Upstream commit 75ed00055c059dedc47b5daaaa2f8a7a019138ff ]
 
-It seems the USB combo SS1 and SS2 ref clocks have another gate, unlike
-the SS0. These gates are part of the TCSR clock controller.
+The Intel VT-d Scalable Mode PASID table entry consists of 512 bits (64
+bytes). When tearing down an entry, the current implementation zeros the
+entire 64-byte structure immediately using multiple 64-bit writes.
 
-At least on Dell XPS 13 (9345), if the ref clock provided by the TCSR
-clock controller for SS1 PHY is disabled on the clk_disable_unused late
-initcall, the PHY fails to initialize. It doesn't happen on the SS0 PHY
-and the SS2 is not used on this device.
+Since the IOMMU hardware may fetch these 64 bytes using multiple
+internal transactions (e.g., four 128-bit bursts), updating or zeroing
+the entire entry while it is active (P=1) risks a "torn" read. If a
+hardware fetch occurs simultaneously with the CPU zeroing the entry, the
+hardware could observe an inconsistent state, leading to unpredictable
+behavior or spurious faults.
 
-This doesn't seem to be a problem on CRD though. It might be that the
-RPMh has a vote for it from some other consumer and does not actually
-disable it when ther kernel drops its vote.
+Follow the "Guidance to Software for Invalidations" in the VT-d spec
+(Section 6.5.3.3) by implementing the recommended ownership handshake:
 
-Either way, these TCSR provided clocks seem to be the correct ones for
-the SS1 and SS2, so use them instead.
+1. Clear only the 'Present' (P) bit of the PASID entry.
+2. Use a dma_wmb() to ensure the cleared bit is visible to hardware
+   before proceeding.
+3. Execute the required invalidation sequence (PASID cache, IOTLB, and
+   Device-TLB flush) to ensure the hardware has released all cached
+   references.
+4. Only after the flushes are complete, zero out the remaining fields
+   of the PASID entry.
 
-Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251103-dts-qcom-x1e80100-fix-combo-ref-clks-v1-1-f395ec3cb7e8@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Also, add a dma_wmb() in pasid_set_present() to ensure that all other
+fields of the PASID entry are visible to the hardware before the Present
+bit is set.
+
+Fixes: 0bbeb01a4faf ("iommu/vt-d: Manage scalalble mode PASID tables")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Dmytro Maluka <dmaluka@chromium.org>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20260120061816.2132558-2-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/intel/pasid.c |  6 +++++-
+ drivers/iommu/intel/pasid.h | 14 ++++++++++++++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index 662ad694cd914..3290fd8c2d6e6 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -2910,7 +2910,7 @@ usb_1_ss1_qmpphy: phy@fda000 {
- 			reg = <0 0x00fda000 0 0x4000>;
+diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
+index 77b9b147ab50e..b611ad070e729 100644
+--- a/drivers/iommu/intel/pasid.c
++++ b/drivers/iommu/intel/pasid.c
+@@ -273,7 +273,7 @@ void intel_pasid_tear_down_entry(struct intel_iommu *iommu, struct device *dev,
  
- 			clocks = <&gcc GCC_USB3_SEC_PHY_AUX_CLK>,
--				 <&rpmhcc RPMH_CXO_CLK>,
-+				 <&tcsr TCSR_USB4_1_CLKREF_EN>,
- 				 <&gcc GCC_USB3_SEC_PHY_COM_AUX_CLK>,
- 				 <&gcc GCC_USB3_SEC_PHY_PIPE_CLK>;
- 			clock-names = "aux",
-@@ -2981,7 +2981,7 @@ usb_1_ss2_qmpphy: phy@fdf000 {
- 			reg = <0 0x00fdf000 0 0x4000>;
+ 	did = pasid_get_domain_id(pte);
+ 	pgtt = pasid_pte_get_pgtt(pte);
+-	intel_pasid_clear_entry(dev, pasid, fault_ignore);
++	pasid_clear_present(pte);
+ 	spin_unlock(&iommu->lock);
  
- 			clocks = <&gcc GCC_USB3_TERT_PHY_AUX_CLK>,
--				 <&rpmhcc RPMH_CXO_CLK>,
-+				 <&tcsr TCSR_USB4_2_CLKREF_EN>,
- 				 <&gcc GCC_USB3_TERT_PHY_COM_AUX_CLK>,
- 				 <&gcc GCC_USB3_TERT_PHY_PIPE_CLK>;
- 			clock-names = "aux",
+ 	if (!ecap_coherent(iommu->ecap))
+@@ -287,6 +287,10 @@ void intel_pasid_tear_down_entry(struct intel_iommu *iommu, struct device *dev,
+ 		iommu->flush.flush_iotlb(iommu, did, 0, 0, DMA_TLB_DSI_FLUSH);
+ 
+ 	devtlb_invalidation_with_pasid(iommu, dev, pasid);
++	intel_pasid_clear_entry(dev, pasid, fault_ignore);
++	if (!ecap_coherent(iommu->ecap))
++		clflush_cache_range(pte, sizeof(*pte));
++
+ 	if (!fault_ignore)
+ 		intel_iommu_drain_pasid_prq(dev, pasid);
+ }
+diff --git a/drivers/iommu/intel/pasid.h b/drivers/iommu/intel/pasid.h
+index 3809793e0259f..b67b2dc4ad9c0 100644
+--- a/drivers/iommu/intel/pasid.h
++++ b/drivers/iommu/intel/pasid.h
+@@ -234,9 +234,23 @@ static inline void pasid_set_wpe(struct pasid_entry *pe)
+  */
+ static inline void pasid_set_present(struct pasid_entry *pe)
+ {
++	dma_wmb();
+ 	pasid_set_bits(&pe->val[0], 1 << 0, 1);
+ }
+ 
++/*
++ * Clear the Present (P) bit (bit 0) of a scalable-mode PASID table entry.
++ * This initiates the transition of the entry's ownership from hardware
++ * to software. The caller is responsible for fulfilling the invalidation
++ * handshake recommended by the VT-d spec, Section 6.5.3.3 (Guidance to
++ * Software for Invalidations).
++ */
++static inline void pasid_clear_present(struct pasid_entry *pe)
++{
++	pasid_set_bits(&pe->val[0], 1 << 0, 0);
++	dma_wmb();
++}
++
+ /*
+  * Setup Page Walk Snoop bit (Bit 87) of a scalable mode PASID
+  * entry.
 -- 
 2.51.0
 
