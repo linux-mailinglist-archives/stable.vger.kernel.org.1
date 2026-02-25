@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-218952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCCtLt1WnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218952-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:45 +0100
+	id KNCpIdxTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE87190401
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F1F18FA7C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0257632576C8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3918E30D6CE1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1B1275864;
-	Wed, 25 Feb 2026 01:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6497242D9B;
+	Wed, 25 Feb 2026 01:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGd3vOkN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSupuQ4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D5226E6FA;
-	Wed, 25 Feb 2026 01:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8D418B0A;
+	Wed, 25 Feb 2026 01:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983852; cv=none; b=atzeUjP7SAfzAwEmQfJTqy3ohBdoONfNbQIlI9RWkLSeGoFuJrA8q3rhsp42R18GP0NXblJYvI/uDHaFyioyBe3Qb8nz8vT8fm3D1p31ZXwz3SmtMupcv9JdXahgZZhNImpwQVj+w/kf4Jn/sZ4f/ZM41SZQnxYp6NE/+rO+7BE=
+	t=1771983256; cv=none; b=mXvDxrydI73Omjq9YGx9KuC4cmLqqW3PLuOJ1Ibr6DzvAbu0Rsz0rf3Wu9Oce0iyNbMTDuMZgK1j20iomLl7qVocbRKXrVFLX+Sc9lMZUYfUgCIhmz45QZcbnoHkaqj7w7GuEOt7M+m+8kPCTEsn6pPd5lY+InWJ1RhaV5FHyc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983852; c=relaxed/simple;
-	bh=bVmqXDzKRI6LNXMqyJWdjMwaahC1jc/bdJH+D8DeBc4=;
+	s=arc-20240116; t=1771983256; c=relaxed/simple;
+	bh=TSqL8/e/l3vQoDKC7q2TLODonjE2NudyX6AG3Jqu+zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+JcPVVgBVJHDqx0zvNFAFFwxRU1y62eUhERnkAXGUut7RF9E6e3TR99Dkmse2Psgz5PFxaYC6cefIZ7tinTNHsozsIbpJ/0MBJFiO//cAW+IA6nBnyvFyK6dKSDtEPFT8A3r5cPgSWDBa5sdwc5YoXsdNaeACS8xwJv+Ejsr9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGd3vOkN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6196EC116D0;
-	Wed, 25 Feb 2026 01:44:12 +0000 (UTC)
+	 MIME-Version; b=YgsVahqqoeVx0njDQWcf7uE41ceIKZJqDcNY+MlqCQKN8d1H/4b6Q8aELg56dhYbw/CR/NGcAjodfsM7jnYdqCL2YFkIy0WWdxF0UOgiKraxBOBE0N4s2KoyK+CHLwg3IH+Q65IzKXmEKDvu0bQdkF3TL0gJ/DASgfSSL/6XxQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSupuQ4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C30FC116D0;
+	Wed, 25 Feb 2026 01:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983852;
-	bh=bVmqXDzKRI6LNXMqyJWdjMwaahC1jc/bdJH+D8DeBc4=;
+	s=korg; t=1771983256;
+	bh=TSqL8/e/l3vQoDKC7q2TLODonjE2NudyX6AG3Jqu+zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGd3vOkNXbE7Ha0iO5do8Ddmg5KYF1tQe20bIU8J5pqAONiQ9n4oBVHJovdsiI9Xd
-	 MBCDQjsfl5ZQCMzb7h3rZ71NKHxvfeubMdxWUA+XGQJU2HysVTf5ItDjst+ir9awWn
-	 fK85ftBmCmAWpYuxz2Nbk3ptW+UySDAymz4YTp/E=
+	b=dSupuQ4eyYOxmKoGvK345y6NhvDDn/OdNo5HHVjyZsUmUdjzx4CJS2pNvG64EOPdC
+	 6To5NRRDCjRq6tdRJChe09auOZ4VoGAYjz1XhBpKs/DrdK78iiDbyrYaajuF8Wb1PN
+	 qZ4rn3NqviEV+rKQBekImTjWDR5ozGxplSk53ioU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 128/641] EDAC/i5000: Fix snprintf() size calculation in calculate_dimm_size()
+Subject: [PATCH 6.19 345/781] netfilter: nf_tables: reset table validation state on abort
 Date: Tue, 24 Feb 2026 17:17:34 -0800
-Message-ID: <20260225012352.253205450@linuxfoundation.org>
+Message-ID: <20260225012408.154779128@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,68 +68,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218952-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218435-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 2AE87190401
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email]
+X-Rspamd-Queue-Id: D9F1F18FA7C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 7b5c7e83ac405ff9ecbdd92b37a477f4288f8814 ]
+[ Upstream commit 6f93616a7323d646d18db9c09f147e453b40fdd7 ]
 
-The snprintf() can't really overflow because we're writing a max of 42
-bytes to a PAGE_SIZE buffer.  But the limit calculation doesn't take
-the first 11 bytes that we wrote into consideration so the limit is
-not correct.  Just fix it for correctness even though it doesn't
-affect runtime.
+If a transaction fails the final validation in the commit hook, the table
+validation state is changed to NFT_VALIDATE_DO and a replay of the batch is
+performed.  Every rule insert will then do a graph validation.
 
-Fixes: 64e1fdaf55d6 ("i5000_edac: Fix the logic that retrieves memory information")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Link: https://patch.msgid.link/07cd652c51e77aad5a8350e1a7cd9407e5bbe373.1765290801.git.dan.carpenter@linaro.org
+This is much slower, but provides better error reporting to the user
+because we can point at the rule that introduces the validation issue.
+
+Without this reset the affected table(s) remain in full validation mode,
+i.e. on next transaction we start with slow-mode.
+
+This makes the next transaction after a failed incremental update very slow:
+
+ # time iptables-restore < /tmp/ruleset
+ real    0m0.496s [..]
+ # time iptables -A CALLEE -j CALLER
+ iptables v1.8.11 (nf_tables):  RULE_APPEND failed (Too many links): rule in chain CALLEE
+ real    0m0.022s [..]
+ # time iptables-restore < /tmp/ruleset
+ real    1m22.355s [..]
+
+After this patch, 2nd iptables-restore is back to ~0.5s.
+
+Fixes: 9a32e9850686 ("netfilter: nf_tables: don't write table validation state without mutex")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/i5000_edac.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_tables_api.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/edac/i5000_edac.c b/drivers/edac/i5000_edac.c
-index 4a1bebc1ff14d..471b8540d18b0 100644
---- a/drivers/edac/i5000_edac.c
-+++ b/drivers/edac/i5000_edac.c
-@@ -1111,6 +1111,7 @@ static void calculate_dimm_size(struct i5000_pvt *pvt)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index be92750e2af3a..ec9e5e2a9f277 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -11536,6 +11536,13 @@ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+ 	ret = __nf_tables_abort(net, action);
+ 	nft_gc_seq_end(nft_net, gc_seq);
  
- 	n = snprintf(p, space, "           ");
- 	p += n;
-+	space -= n;
- 	for (branch = 0; branch < MAX_BRANCHES; branch++) {
- 		n = snprintf(p, space, "       branch %d       | ", branch);
- 		p += n;
++	if (action == NFNL_ABORT_NONE) {
++		struct nft_table *table;
++
++		list_for_each_entry(table, &nft_net->tables, list)
++			table->validate_state = NFT_VALIDATE_SKIP;
++	}
++
+ 	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
+ 
+ 	/* module autoload needs to happen after GC sequence update because it
 -- 
 2.51.0
 
