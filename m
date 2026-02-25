@@ -1,59 +1,51 @@
-Return-Path: <stable+bounces-219651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILo7CGYVn2nWYwQAu9opvQ
-	(envelope-from <stable+bounces-219651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:29:42 +0100
+	id CBj8JEUWn2nWYwQAu9opvQ
+	(envelope-from <stable+bounces-219652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:33:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3A31999D1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:29:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D0E199A99
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:33:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3E4A33062504
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:22:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1D02318C231
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18DB3D34AA;
-	Wed, 25 Feb 2026 15:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB123D3D04;
+	Wed, 25 Feb 2026 15:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="CTxCXBeR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dg1fRSCg"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D31338F93A;
-	Wed, 25 Feb 2026 15:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927793D3319;
+	Wed, 25 Feb 2026 15:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772032976; cv=none; b=M4BmZ0FmkpzHkwifu+ZP3yzTFo8bRqjv71dJF34ZdtIhmgmhqSYaplFR8YUqKh28aAs7VNQrQsNvC1THIWGux62QNd8Njouz0zqh3TXiZmWfXozheIg6b48IsXrnyvO2t5ZfySFRk7HTMhnd4z2or0szqcNRmV/0YgWgZ0CkVxY=
+	t=1772033013; cv=none; b=mlIFjYLtIt1ErCKLPiZiXN4dhquFUbL2OlGU6blCDxbq8EtX7alBa5QfioaV4Lrd1kfSVHMoKgRayMpacavOwhZEdXOvqJVXPUWstC4ly7TEQg3phhVC5e4FplvFVqtbbfHthk5QVPAI8uCCR8XAq+xnx1raeLPf2joi2s6AjhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772032976; c=relaxed/simple;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zx+hOlPQzm/6P75kYMu3mNic9Fu1EG0lHW8rT5kd3ReQ50AE+KlXaZAnT9me2QZMvKG7F2kanDuW7NRtfOmbEZG8kcR8wh/mtWQs3Vb+DocGQl1lfiBxuXX+6JCt6NxYV7H27pFtpgfpvy5laihjYo9o8gItiNHc0w8TLmqDnqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=CTxCXBeR; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1772032970; x=1772637770; i=rwarsow@gmx.de;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=CTxCXBeREbYxpPEuY0kYhqtEHzRlRC4fN5fIOEnpQl3Njbc2Mp20bx9OTA73CUTf
-	 riOu2NiC97fNfIiex7F8QI4441aVAbTIA0WYy1pVBOHU5kMgNvEIL4jV4k2SF2clM
-	 W0hfvtI7mGkNdZjO1W4NTBDUlJRIJKSDU3xZ9fm3YVGJDDVe56wwYPBpKDQzQCgpH
-	 6uuXhbF9ydvJigYIjCcTSWRgDuVSkvcBe7W5qfDgnJl1wITMyKTH6loc4xlouGFNQ
-	 uOvveuFUFgEN8ga24mWKl+HATl53y26MDxfjteNtpryPvrC3/kBI/KaB1KLIHWcgT
-	 Yl59udiwOkUMiOVHkQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.34.196]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MWASY-1wEbrs2bb0-00HxYd; Wed, 25
- Feb 2026 16:22:50 +0100
-Message-ID: <f293295e-718e-44e4-963a-5ff449b238fb@gmx.de>
-Date: Wed, 25 Feb 2026 16:22:46 +0100
+	s=arc-20240116; t=1772033013; c=relaxed/simple;
+	bh=gS5Yk7wYTW6W1m8o50Cew7D6B1+VreaVyadftIITtbc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=T1/e6Heb3MwRl2ZfnXd6h4wJu6bCXQo4vF61M73X0TqGv1tU5tirN+aBC2Ly4XkJVsH7tOmU3Fo9VX/IIIPf7OAx6Wgz9kq1ihoaro05wvCiMzHpOWPPM9NTDc72A2ITl2KSCUeAYSifFPgxREJIcpPIvKvAQJBmFdPKYO1NIqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dg1fRSCg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43831C116D0;
+	Wed, 25 Feb 2026 15:23:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772033013;
+	bh=gS5Yk7wYTW6W1m8o50Cew7D6B1+VreaVyadftIITtbc=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=Dg1fRSCg7k3Q2cK9Sat615Pj7Jh0PALjT32x9LczwQkRJEkfcOlRGlQvCq/OfhtyQ
+	 SU+aTqkoeOQMHGt6s/Oc6VC6xrwccygDUgzu9ii4MyuDMtNBqzDgwChPufMaqkCzgW
+	 uLHQuo0VgJ3QxnXTbIKkqcDWrcpBEy9VrmC46MD+elXPqK08UWyEego0mwNh+rYb/U
+	 S+LE3hsOmSqxwHWQdTfhsAZKOCUtomSxdHJr83Lo6JxATY49GUAn2ORLbpCLhZgnQh
+	 TkKAV3TTOwTwKGZmUrAHcmNEPdLEWUEV4ebP7hEtgoRnhX2bnpA2vQ14qhuC2nWPu2
+	 EjcdY+vRMEt9w==
+Message-ID: <7da49940-e1a4-4018-9db1-208411598e77@kernel.org>
+Date: Wed, 25 Feb 2026 16:23:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,136 +53,158 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 000/781] 6.19.4-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260225012359.695468795@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:toxi38npCJhzhyb15vvBzYV/2Kb3Xn9kFLleRjj2y5nmitq4HLd
- IkckTVrfo1YeC1l6inD0aDMbEQ2alj+ZW9PlCwJemvjh0v/499KBssGlmgeE/fsQ9LNIBLe
- YV+uXK5Mf0NoqFmRsw++WXTYsyZYIYosptVPSwbsKVMpLo93WqgkcRPd/7qoxavO5YOnYdx
- 56C6DN0V56evV9gJ3f0hQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:+2y516H32bk=;qi9B/Py7gi3xS33+LQscQsy7UwD
- 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
+Subject: Re: [PATCH 1/2] mm/huge_memory: Fix use of NULL folio in
+ move_pages_huge_pmd()
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Chris Down <chris@chrisdown.name>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <aZU1vSmn5aF8xvJj@chrisdown.name>
+ <0b653dcd-842b-4360-bc1c-8fe779efbc23@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <0b653dcd-842b-4360-bc1c-8fe779efbc23@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-219652-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219651-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gmx.de:mid,gmx.de:dkim,gmx.de:email]
-X-Rspamd-Queue-Id: 3D3A31999D1
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chrisdown.name:email]
+X-Rspamd-Queue-Id: E9D0E199A99
 X-Rspamd-Action: no action
 
-Hi
+On 2/18/26 08:52, David Hildenbrand (Arm) wrote:
+> On 2/18/26 04:45, Chris Down wrote:
+>> move_pages_huge_pmd() handles UFFDIO_MOVE for both normal THPs and huge
+>> zero pages. For the huge zero page path, src_folio is explicitly set to
+>> NULL (used as a sentinel to skip folio operations like lock and rmap).
+>>
+>> In the huge zero page branch, src_folio is NULL, so folio_mk_pmd(NULL,
+>> pgprot) passes NULL through folio_pfn() and page_to_pfn(). With
+>> SPARSEMEM_VMEMMAP this silently produces a bogus PFN, installing a PMD
+>> pointing to non-existent physical memory. On other memory models it
+>> is a NULL dereference.
+>>
+>> Use page_folio(src_page) to obtain the valid huge zero folio from the
+>> page, which was obtained from pmd_page() and remains valid throughout.
+>>
+>> Fixes: e3981db444a0 ("mm: add folio_mk_pmd()")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Chris Down <chris@chrisdown.name>
+>> ---
+>>   mm/huge_memory.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 44ff8a648afd..fed57951a7cd 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -2794,7 +2794,7 @@ int move_pages_huge_pmd(struct mm_struct *mm,
+>> pmd_t *dst_pmd, pmd_t *src_pmd, pm
+>>           _dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
+>>       } else {
+>>           src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
+>> -        _dst_pmd = folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
+>> +        _dst_pmd = folio_mk_pmd(page_folio(src_page), dst_vma-
+>> >vm_page_prot);
+>>       }
+>>       set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
+>>   
+> 
+> God this code is horrible.
+> 
+> Why can't we simply move the PMD like move_huge_pmd() would do and make
+> this code less error prone?
+> 
+>     _dst_pmd = src_pmdval;
+> 
+> According to validate_move_areas(), the permissions of both VMAs are equal.
+> 
+> 
+> We might have to handle it just like move_huge_pmd():
+> 
+>     _dst_pmd = move_soft_dirty_pmd(src_pmdval);
+> 
+> To also set the softdirty bit.
+> 
+> Then, we would want to just clear uffd.
+> 
+>     _dst_pmd = move_soft_dirty_pmd(src_pmdval);
+>     _dst_pmd = clear_uffd_wp_pmd(_dst_pmd);
+> 
 
-no regressions here on x86_64 (Intel 11th Gen. CPU)
+Chris, do you have time to follow up, or should I look into it? The
+issue looks quite bad, so we should tackle it ASAP.
 
-Thanks
+-- 
+Cheers,
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+David
 
