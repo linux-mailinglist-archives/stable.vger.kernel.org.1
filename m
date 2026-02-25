@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-219425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gF8lLUKgnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:54 +0100
+	id sDoJLzJVnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFA61930B3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC8A18FF3C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6091030DC9CE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10E2831FF383
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7623030B501;
-	Wed, 25 Feb 2026 06:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BBE24A05D;
+	Wed, 25 Feb 2026 01:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKuTEfn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MF0+ctLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3905730E855;
-	Wed, 25 Feb 2026 06:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447F627055D;
+	Wed, 25 Feb 2026 01:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002707; cv=none; b=heLk2M3namZdIDTjW/HghBIAu7kMzvb9mqxxgw0PzYKXA8hy2oIWR2EJLZgOR6jPU3BDc79vOYybBO89SsW5At5CDYOVGBC55MH0NVb0DlgRJSrT7Kal7ssEvZiwZAyIpVZfCbvTrda8es3nT5RvQXluUQmxkY0queO2F+BZI50=
+	t=1771983635; cv=none; b=SEHW+PZi6Q0bK3KCIUxAjS4+Ox+4z5o9yT7ETvf++67tkg7lET418zORFRI7qzORLRmCfgKIEEFcDGuIJewX6QDYeI/Ov9lZ1Ye+nKK8xnBPiT2hXpyiNgUFMJm1bhFWs8/7JZNVEPbDbG/dr6w6nuzjbQpkzxtZ+Y1gaxNmEvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002707; c=relaxed/simple;
-	bh=YOTwB4FSfJEENOxv1381HVPZAR9/tS1JT01CIIcf5e4=;
+	s=arc-20240116; t=1771983635; c=relaxed/simple;
+	bh=7QRl7dcYFsP/2ctfEjG0ZTN+INSb4LDdHo/48rAwGXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqMwIPcrxQh0f2m/eREuJf80keQEULAEGzol8D0gzi/dDeYXgaMKlp+ZgOe9/x8Z2gz6GVmU4v0HM3dDQAKGwH1T/VswQFbHIzLnW8FeWk8I/sy66XaOqrSSk08JBsHRgKkVOIiI5UmSUCjE19GxXrIkUD9L1DP7OpgfpvqBw6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKuTEfn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12789C116D0;
-	Wed, 25 Feb 2026 06:58:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JOsW9kEWcjE1rHq3qXVmoB79NQuWzwxbDrD8ZoO8sp1soXqeAVQWHxgln2dEvrVtD6R/I23RONm00Rx7D4NhkAJ5bRNpLOrg2Iy5qy+A4aK3xlJrIgERl4c35YF5NTifAhhT0zOELd1wrdtNYAPAYaDMIUVCG2mF+4bLVquZbLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF0+ctLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048CCC116D0;
+	Wed, 25 Feb 2026 01:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002707;
-	bh=YOTwB4FSfJEENOxv1381HVPZAR9/tS1JT01CIIcf5e4=;
+	s=korg; t=1771983635;
+	bh=7QRl7dcYFsP/2ctfEjG0ZTN+INSb4LDdHo/48rAwGXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKuTEfn4MalRmEHa2zGvn5g5VwPaHLqKmrtAtcNB1hAyxr1IderivoGxT4z5xNO9N
-	 vPVNluX1Eius8DXRZa4MaafhwzBszu9QhRBPCo19xG3fWj9HTF6TjLCABSZ2X9iJYC
-	 wXZt80J6PMQyCtsCe+IdQwzsW+eoYglaZRZ0PnAI=
+	b=MF0+ctLDcvDheSybWlZgkgwUCFMXb93woqFexDcXpx7Lutk6kXthjr/dE5myTCbgd
+	 bRVbuob7vbEhC2iZ/R7fDP+CBHngiWWNiOghqtzGVgEIGsDe2Q9rOCv3bP88fGgRDI
+	 Gi2Vg70iLvLGON4VjpokB1jWmgzpNLp2wCUP78Ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhouwenhao <zhouwenhao7600@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Matt Wu <wuqiang.matt@bytedance.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	"=?UTF-8?q?J . =20Neusch=C3=A4fer?=" <j.ne@posteo.net>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 507/641] objpool: fix the overestimation of object pooling metadata size
+Subject: [PATCH 6.19 724/781] spi: wpcm-fiu: Fix potential NULL pointer dereference in wpcm_fiu_probe()
 Date: Tue, 24 Feb 2026 17:23:53 -0800
-Message-ID: <20260225012400.809444793@linuxfoundation.org>
+Message-ID: <20260225012417.493649178@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux-foundation.org,kernel.org,bytedance.com];
-	TAGGED_FROM(0.00)[bounces-219425-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,posteo.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218764-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,bytedance.com:email]
-X-Rspamd-Queue-Id: 2BFA61930B3
+	NEURAL_HAM(-0.00)[-0.984];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,posteo.net:email]
+X-Rspamd-Queue-Id: 0AC8A18FF3C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhouwenhao <zhouwenhao7600@gmail.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 5ed4b6b37c647d168ae31035b3f61b705997e043 ]
+[ Upstream commit 888a0a802c467bbe34a42167bdf9d7331333440a ]
 
-objpool uses struct objpool_head to store metadata information, and its
-cpu_slots member points to an array of pointers that store the addresses
-of the percpu ring arrays.  However, the memory size allocated during the
-initialization of cpu_slots is nr_cpu_ids * sizeof(struct objpool_slot).
-On a 64-bit machine, the size of struct objpool_slot is 16 bytes, which is
-twice the size of the actual pointer required, and the extra memory is
-never be used, resulting in a waste of memory.  Therefore, the memory size
-required for cpu_slots needs to be corrected.
+platform_get_resource_byname() can return NULL, which would cause a crash
+when passed the pointer to resource_size().
 
-Link: https://lkml.kernel.org/r/20260202132846.68257-1-zhouwenhao7600@gmail.com
-Fixes: b4edb8d2d464 ("lib: objpool added: ring-array based lockless MPMC")
-Signed-off-by: zhouwenhao <zhouwenhao7600@gmail.com>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Matt Wu <wuqiang.matt@bytedance.com>
-Cc: wuqiang.matt <wuqiang.matt@bytedance.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Move the fiu->memory_size assignment after the error check for
+devm_ioremap_resource() to prevent the potential NULL pointer dereference.
+
+Fixes: 9838c182471e ("spi: wpcm-fiu: Add direct map support")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: J. Neuschäfer <j.ne@posteo.net>
+Link: https://patch.msgid.link/20260212-wpcm-v1-1-5b7c4f526aac@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/objpool.c | 2 +-
+ drivers/spi/spi-wpcm-fiu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/objpool.c b/lib/objpool.c
-index b998b720c7329..d98fadf1de169 100644
---- a/lib/objpool.c
-+++ b/lib/objpool.c
-@@ -142,7 +142,7 @@ int objpool_init(struct objpool_head *pool, int nr_objs, int object_size,
- 	pool->gfp = gfp & ~__GFP_ZERO;
- 	pool->context = context;
- 	pool->release = release;
--	slot_size = nr_cpu_ids * sizeof(struct objpool_slot);
-+	slot_size = nr_cpu_ids * sizeof(struct objpool_slot *);
- 	pool->cpu_slots = kzalloc(slot_size, pool->gfp);
- 	if (!pool->cpu_slots)
- 		return -ENOMEM;
+diff --git a/drivers/spi/spi-wpcm-fiu.c b/drivers/spi/spi-wpcm-fiu.c
+index a9aee2a6c7dcb..c47b56f0933f1 100644
+--- a/drivers/spi/spi-wpcm-fiu.c
++++ b/drivers/spi/spi-wpcm-fiu.c
+@@ -459,11 +459,11 @@ static int wpcm_fiu_probe(struct platform_device *pdev)
+ 
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "memory");
+ 	fiu->memory = devm_ioremap_resource(dev, res);
+-	fiu->memory_size = min_t(size_t, resource_size(res), MAX_MEMORY_SIZE_TOTAL);
+ 	if (IS_ERR(fiu->memory))
+ 		return dev_err_probe(dev, PTR_ERR(fiu->memory),
+ 			       "Failed to map flash memory window\n");
+ 
++	fiu->memory_size = min_t(size_t, resource_size(res), MAX_MEMORY_SIZE_TOTAL);
+ 	fiu->shm_regmap = syscon_regmap_lookup_by_phandle_optional(dev->of_node, "nuvoton,shm");
+ 
+ 	wpcm_fiu_hw_init(fiu);
 -- 
 2.51.0
 
