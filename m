@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MUhEbJVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:51:46 +0100
+	id 8MCpDm9SnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8166B1900B7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:51:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66FD18F36B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 515463254E82
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C541E31876B9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B9124677D;
-	Wed, 25 Feb 2026 01:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0273231A41;
+	Wed, 25 Feb 2026 01:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1kGWcGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0kBwhbk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C13B26056D;
-	Wed, 25 Feb 2026 01:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838A92BAF7;
+	Wed, 25 Feb 2026 01:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983716; cv=none; b=mwAIB2wIty+tWE+ETOdIAj9KQ+4pqjfN2dVCt93NhApyY65ZVbpJ4zZkjZnbclqkQ35wFyqJYyJGW87fjlshRwWDqfSc854I5AHp2wZw/GLpsn6dBqEyWKlEvK3d427k4k1hi27FR/GABOYfwMgaBbrr2lDyzp+Zvgz3k6seTsI=
+	t=1771983068; cv=none; b=ByxRqn6gb0h+x1Xf27nyWGr9Cuj55q9Qu2T4J6jL9wBPrDU0bKioQqyVl8BKnv8UQkvZ0rsyDNJuQRYgchQq/l0VJ2E0UUvBShIWt/weX+S3TEeLI72EKVZfHGu/ByfNEhJEPVi/NRT5iIELSUeSp6AXYkRZ1/jJvrEo2W5FX5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983716; c=relaxed/simple;
-	bh=YkIxeVoaJOEz5cQLgzwdxhhbc3o67Fk6p8dNWSQ0GPE=;
+	s=arc-20240116; t=1771983068; c=relaxed/simple;
+	bh=CRjd7X6hPXjTQJ5EmR/YJg1UpSuwUbLmNqPCQyxMfMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=is3ISRfXpkmMtpTYPRzAs17Vkr9QSSUBI8lm13dZExbwmUFBGKNFJ3JTLAd4TytLXfiwtXazV/MqbArQMz1ZM6B4zG8tHpYZdKuQXNnQA9h7R038v0KDPf39M9wLYcgn0KmaJCHnuc9WrGobNlFYhYnxWkEqqU/JP6Df+vLdS+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1kGWcGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF03EC116D0;
-	Wed, 25 Feb 2026 01:41:55 +0000 (UTC)
+	 MIME-Version; b=t4VesWxbnK5LIY44/0bHfp9TxycWF9swExEqFpUj7673NujfzAq1Ix8wJsuOcOik1tXD9PyuwAbM1rclkYECC5wzQYgUQ9ZIP/jQA35q/bu/UF60cBNSu7pTPClOH4ik/b6cyq+MQ4EYoYEGkRYlKRfQwqmlMtSipY8ue0DrJY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0kBwhbk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4978CC116D0;
+	Wed, 25 Feb 2026 01:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983716;
-	bh=YkIxeVoaJOEz5cQLgzwdxhhbc3o67Fk6p8dNWSQ0GPE=;
+	s=korg; t=1771983068;
+	bh=CRjd7X6hPXjTQJ5EmR/YJg1UpSuwUbLmNqPCQyxMfMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1kGWcGuaebj85YKORMmzCMH5HWe5TSV0HY8wELVXWcT5REllQg5qrr1Ap20aafy/
-	 1vTR3iQ+aODZMKSIAHwmC80Bw7PUM1Al7Fv4JepYr/CByc4z5rYIVQJaz6vOOvIy6a
-	 8pRfTSWgwwo1rXD8kqtpk/o/Od6bF04FGSyJC29w=
+	b=F0kBwhbkS71F0TS9+Af5oXBS/CWN1e08Kpj/rht+Hn1QJgB+zwQXJwxSLBPybheNR
+	 OlpOKsYnCkRc83dVP7hxgfb3dlga+iCx7uYYOV7ZQ8/dO3yNffd/RRiu6jPERk8AGY
+	 f8xkf6wKPdK7JhgoCvZThT4sMVil0dsgTBKD3Alw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+046b605f01802054bff0@syzkaller.appspotmail.com,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 014/641] gfs2: Fix slab-use-after-free in qd_put
+Subject: [PATCH 6.19 231/781] smack: /smack/doi must be > 0
 Date: Tue, 24 Feb 2026 17:15:40 -0800
-Message-ID: <20260225012349.300389769@linuxfoundation.org>
+Message-ID: <20260225012405.376485059@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +65,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218834-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218269-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
-	TAGGED_RCPT(0.00)[stable,046b605f01802054bff0];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 8166B1900B7
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[schaufler-ca.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A66FD18F36B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit 22150a7d401d9e9169b9b68e05bed95f7f49bf69 ]
+[ Upstream commit 19c013e1551bf51e1493da1270841d60e4fd3f15 ]
 
-Commit a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
-started freeing quota data objects during filesystem shutdown instead of
-putting them back onto the LRU list, but it failed to remove these
-objects from the LRU list, causing LRU list corruption.  This caused
-use-after-free when the shrinker (gfs2_qd_shrink_scan) tried to access
-already-freed objects on the LRU list.
+/smack/doi allows writing and keeping negative doi values.
+Correct values are 0 < doi <= (max 32-bit positive integer)
 
-Fix this by removing qd objects from the LRU list before freeing them in
-qd_put().
+(2008-02-04, Casey Schaufler)
+Fixes: e114e473771c ("Smack: Simplified Mandatory Access Control Kernel")
 
-Initial fix from Deepanshu Kartikey <kartikey406@gmail.com>.
-
-Fixes: a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
-Reported-by: syzbot+046b605f01802054bff0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=046b605f01802054bff0
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/quota.c | 1 +
- 1 file changed, 1 insertion(+)
+ security/smack/smackfs.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index f2df01f801b81..898fc3937b449 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -334,6 +334,7 @@ static void qd_put(struct gfs2_quota_data *qd)
- 		lockref_mark_dead(&qd->qd_lockref);
- 		spin_unlock(&qd->qd_lockref.lock);
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index 2a9d3f2ebbe13..e611e0fb56209 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -141,7 +141,7 @@ struct smack_parsed_rule {
+ 	int			smk_access2;
+ };
  
-+		list_lru_del_obj(&gfs2_qd_lru, &qd->qd_lru);
- 		gfs2_qd_dispose(qd);
- 		return;
- 	}
+-static int smk_cipso_doi_value = SMACK_CIPSO_DOI_DEFAULT;
++static u32 smk_cipso_doi_value = SMACK_CIPSO_DOI_DEFAULT;
+ 
+ /*
+  * Values for parsing cipso rules
+@@ -1562,7 +1562,7 @@ static ssize_t smk_read_doi(struct file *filp, char __user *buf,
+ 	if (*ppos != 0)
+ 		return 0;
+ 
+-	sprintf(temp, "%d", smk_cipso_doi_value);
++	sprintf(temp, "%lu", (unsigned long)smk_cipso_doi_value);
+ 	rc = simple_read_from_buffer(buf, count, ppos, temp, strlen(temp));
+ 
+ 	return rc;
+@@ -1581,7 +1581,7 @@ static ssize_t smk_write_doi(struct file *file, const char __user *buf,
+ 			     size_t count, loff_t *ppos)
+ {
+ 	char temp[80];
+-	int i;
++	unsigned long u;
+ 
+ 	if (!smack_privileged(CAP_MAC_ADMIN))
+ 		return -EPERM;
+@@ -1594,10 +1594,12 @@ static ssize_t smk_write_doi(struct file *file, const char __user *buf,
+ 
+ 	temp[count] = '\0';
+ 
+-	if (sscanf(temp, "%d", &i) != 1)
++	if (kstrtoul(temp, 10, &u))
+ 		return -EINVAL;
+ 
+-	smk_cipso_doi_value = i;
++	if (u == CIPSO_V4_DOI_UNKNOWN || u > U32_MAX)
++		return -EINVAL;
++	smk_cipso_doi_value = u;
+ 
+ 	smk_cipso_doi();
+ 
 -- 
 2.51.0
 
