@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-218061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKObDvVPnmleUgQAu9opvQ
-	(envelope-from <stable+bounces-218061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:27:17 +0100
+	id wAK8Ot9PnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:26:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED07018EA9A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA76418EA59
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:26:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 38197300B1A4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 253F7300898B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E53E24E4B4;
-	Wed, 25 Feb 2026 01:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF882522A7;
+	Wed, 25 Feb 2026 01:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n95gbKDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byvc+Gqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4252A242D9B;
-	Wed, 25 Feb 2026 01:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F87C251795;
+	Wed, 25 Feb 2026 01:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982831; cv=none; b=h/6PGfAGe1aV2ZYLIb46eH3hGS8vdL3k4cbIscj9wQmXph3pz4Q2YWfFvJTZ8lPHRM/CLkpMKQTmTzyusrRkuagrs+Z3mPi328q0A1O7JUig9NcfHiOv43sQEjqvaD5zrva/Tq2fyel+2tezOXHqZgfulYWOOy2mreWMr9Ak+gA=
+	t=1771982812; cv=none; b=aQ0C12y8ZNMcW97VUladGxC6/g5JOlGGwFCfCtFea1ZHr7r/K/I76PZ43jktreDMRcI1eK5JuWbJp0YqMRsbHzgLMOi70z6qJ6H1Z6iwGY3mH7pje4rbpo3EsZN4YpiWS9zg4ERGbrVVcQ3YPgnkvczY43VxPIwjV/LpS71D8p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982831; c=relaxed/simple;
-	bh=5s/o2zL5tJYEPEL0Rlto7Ij6dzOofSLDHXqPr/Q1YFE=;
+	s=arc-20240116; t=1771982812; c=relaxed/simple;
+	bh=5VFJjOYyBdKuxGRUTvHYUcv9oFCe2XjyuKj6jMkYo9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKvaHKeSNpVoXxUfPqJkjinXHGysJg9WclQjO+VoNxKwc/bnc2Pg3rx1gEAg11FKFC5qjRXmqtGMoa3WRXCb9fCflLAf3Mn/teEiRwGokEohT+7BHmpGPJERvaEb4xG4i0/i7KC5l0M9UYnbY+RgaqKg1iE2S9aR7XMk7S5VH/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n95gbKDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0EAC116D0;
-	Wed, 25 Feb 2026 01:27:10 +0000 (UTC)
+	 MIME-Version; b=UHdGNkHSQe7Cg30xKjzw6/SVl9O9oNrZEPfuDNHaGPLInn4mlvN2QKivTpTAXmttaKI2Ktbh/EoNtTF4DD8cs8MfQrYSEelsiTNRMBX/yDfDuVOfS/hmNoxEhhA+oyl0k447KUth5HGCFsR4WVdMxO10v3DhAqJdyj5aIsK0lPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byvc+Gqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E14C116D0;
+	Wed, 25 Feb 2026 01:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982831;
-	bh=5s/o2zL5tJYEPEL0Rlto7Ij6dzOofSLDHXqPr/Q1YFE=;
+	s=korg; t=1771982812;
+	bh=5VFJjOYyBdKuxGRUTvHYUcv9oFCe2XjyuKj6jMkYo9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n95gbKDD+jmqZDIVo3EDbO7bID7iKVQ2gXQvEREij0CXlYFa5OEnx5QWFAicc4hzM
-	 Qfp93UBgzkkTY1oyoE+uqAH/IG75Qw6b9batvSC26RmVTqFII8xNuJmubTuK84DDvh
-	 xdKC476XD8uUJdTVktkA08GWfnTFQhTCBG0I3lVs=
+	b=byvc+Gqy6xipvbn09VPdgidG9DQTCZshWC2XDmh3oHVi9z76E3Lb0dXtMpqoTVUqD
+	 9k3IjzKuYbcjrR5kKNC3fGlXOl6AQBlO0rnqpBmv2zF3HwWK7xRzAK2obJ8Oiu4fzR
+	 LCs87uium9fCMI14ua0Yv99d+SzjjbtdK0usbt7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Breno Leitao <leitao@debian.org>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 009/781] i3c: Move device name assignment after i3c_bus_init
-Date: Tue, 24 Feb 2026 17:11:58 -0800
-Message-ID: <20260225012359.925747326@linuxfoundation.org>
+Subject: [PATCH 6.19 010/781] device_cgroup: remove branch hint after code refactor
+Date: Tue, 24 Feb 2026 17:11:59 -0800
+Message-ID: <20260225012359.954820805@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -75,68 +75,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218061-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218047-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: ED07018EA9A
+X-Rspamd-Queue-Id: CA76418EA59
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 3502cea99c7ceb331458cbd34ef6792c83144687 ]
+[ Upstream commit 6784f274722559c0cdaaa418bc8b7b1d61c314f9 ]
 
-Move device name initialization to occur after i3c_bus_init()
-so that i3cbus->id is guaranteed to be assigned before it is used.
+commit 4ef4ac360101 ("device_cgroup: avoid access to ->i_rdev in the
+common case in devcgroup_inode_permission()") reordered the checks in
+devcgroup_inode_permission() to check the inode mode before checking
+i_rdev, for better cache behavior.
 
-Fixes: 9d4f219807d5 ("i3c: fix refcount inconsistency in i3c_master_register")
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260112-upstream_i3c_fix-v1-1-cbbf2cb71809@aspeedtech.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+However, the likely() annotation on the i_rdev check was not updated
+to reflect the new code flow. Originally, when i_rdev was checked
+first, likely(!inode->i_rdev) made sense because most inodes were(?)
+regular files/directories, thus i_rdev == 0.
+
+After the reorder, by the time we reach the i_rdev check, we have
+already confirmed the inode IS a block or character device. Block and
+character special files are precisely defined by having a device number
+(i_rdev), so !inode->i_rdev is now the rare edge case, not the common
+case.
+
+Branch profiling confirmed this is 100% mispredicted:
+
+  correct incorrect  %    Function                      File              Line
+  ------- ---------  -    --------                      ----              ----
+        0   2631904 100   devcgroup_inode_permission    device_cgroup.h   24
+
+Remove likely() to avoid giving the wrong hint to the CPU.
+
+Fixes: 4ef4ac360101 ("device_cgroup: avoid access to ->i_rdev in the common case in devcgroup_inode_permission()")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260107-likely_device-v1-1-0c55f83a7e47@debian.org
+Reviewed-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/device_cgroup.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 7f606c8716480..1bc3c90684028 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2881,7 +2881,6 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	INIT_LIST_HEAD(&master->boardinfo.i3c);
+diff --git a/include/linux/device_cgroup.h b/include/linux/device_cgroup.h
+index 0864773a57e8f..822085bc2d202 100644
+--- a/include/linux/device_cgroup.h
++++ b/include/linux/device_cgroup.h
+@@ -21,7 +21,7 @@ static inline int devcgroup_inode_permission(struct inode *inode, int mask)
+ 	if (likely(!S_ISBLK(inode->i_mode) && !S_ISCHR(inode->i_mode)))
+ 		return 0;
  
- 	device_initialize(&master->dev);
--	dev_set_name(&master->dev, "i3c-%d", i3cbus->id);
+-	if (likely(!inode->i_rdev))
++	if (!inode->i_rdev)
+ 		return 0;
  
- 	master->dev.dma_mask = parent->dma_mask;
- 	master->dev.coherent_dma_mask = parent->coherent_dma_mask;
-@@ -2891,6 +2890,8 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	if (ret)
- 		goto err_put_dev;
- 
-+	dev_set_name(&master->dev, "i3c-%d", i3cbus->id);
-+
- 	ret = of_populate_i3c_bus(master);
- 	if (ret)
- 		goto err_put_dev;
+ 	if (S_ISBLK(inode->i_mode))
 -- 
 2.51.0
 
