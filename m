@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-219158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CFeLlBlnmlCVAQAu9opvQ
-	(envelope-from <stable+bounces-219158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:58:24 +0100
+	id aCnbM0ZlnmlCVAQAu9opvQ
+	(envelope-from <stable+bounces-219156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:58:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D71D19116D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:58:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C6219115F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:58:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E6ED30E0512
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 962F130A050C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2996D29A9C9;
-	Wed, 25 Feb 2026 02:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C52299924;
+	Wed, 25 Feb 2026 02:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cTCJwB/P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5xrOAoN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C9C296BD1
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326E8299AB1
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771988257; cv=none; b=ercbJKls7R0SZcaG+oBTtB15fhm+NJskWrvCmVjBPamff4akIHrD8Kyy1YZ0Nx1QEewgxod5ZT3kQbVTgGxgtxT/VA6ymFPc7sA1c3TyfHnIp3TUP1MGtYd2faI8reTMc7h80J8fwNXyPIyV/3cqIDU+FH0iyuKpg8nCBh9GxAs=
+	t=1771988255; cv=none; b=rWOy69Z7aIZX8rl0/L6DzHzanJX8uw5QL0oKD6bB49NbXs5/qg7ncZ/8eyHezTfN2YoQzjPMEq/w8hOK5WjCtxK71xqbtjI4wEDGsku9O1E+reGl6RuQuL1E169wygwRFmQGFWb9Tua2MmqOEAk/UABtKkTK3tLTRkWm99xoTso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771988257; c=relaxed/simple;
-	bh=pkvmTAQZEAvcYU6s55Dcl5omaruk3nk/NrTVJY5YScI=;
+	s=arc-20240116; t=1771988255; c=relaxed/simple;
+	bh=1qx+AqVD33249s12ffeocRfItCv+rPaBYVnOWemxYZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OycPYeeUTfbwLn/BBaZhvfOIG1rv1ctqNAHxDx8CBf0B5kuwDsihTLzn7pzibXxypdhyEqWCdnhq9x6aj4Bpv4Url9vCMqZcxVezmcyOLEr1QYpvgMxBFs4cTCz0CF1CL5+lm4OE2bxwyZVQB1c8xfrF+gImuv481pWU8T5wdTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cTCJwB/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F41C116D0;
-	Wed, 25 Feb 2026 02:57:35 +0000 (UTC)
+	 MIME-Version; b=r6e2BfdJmBo+2Bvlt8oS2ueghmLEKG3tKDx/wtzyU6G4RriXBXcPMSPSZIgspjTvW9cbbxF5Xes0ghMQYo/BRmHBFW1RQY6xS+7c2gfdpD1rSU7VF9dePPImZoZyiKURJR7wgJjz6sFlzBxhQaQbqjeA+M8o2ttchYlEm6Nhslo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5xrOAoN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51583C116D0;
+	Wed, 25 Feb 2026 02:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771988256;
-	bh=pkvmTAQZEAvcYU6s55Dcl5omaruk3nk/NrTVJY5YScI=;
+	s=k20201202; t=1771988255;
+	bh=1qx+AqVD33249s12ffeocRfItCv+rPaBYVnOWemxYZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTCJwB/PB4QQMP8B/xk0oMyZaeZ+fgGKuRn4BCbZwlZ1awqsQRPZM73YJ5rYBaDL8
-	 8M4ehPZ4Ukek6ZkGkq53nOFlk6D1yzfd+gB/1fBawDKMFx5WePabDpX5yAlNyFKz2X
-	 AXychvOOocLzYQHsjRCGQ2mG0Zb/+D+UsQzj4bx+rZM9DJjFx6z9DPqpDqcGHhYwyk
-	 sgtmQa4OAUXUVjIRspHlgUi0mv+IZNSvUmNJOEf25aU1BbB5DVNtX1UfhbVRJtpgL9
-	 iXN0NABeUn50OHk7JEOcfvZqLavvPucHXqQeTGsu14dJzLoknUtsV/HS1IJ4H9/Bj/
-	 cFPDDf1OK/cuA==
+	b=e5xrOAoNcKdhLUwPaLiN6Jz+tGCSr5j/Y10LNdWUGaCjeRrSORcdjsDnwPvO70BPE
+	 1Utq1OnzK6fyX6CW2cNR2ppomJE2wL5+hmOKJe4euuPe+RrpbbVQqmPivch+9TFJ85
+	 bW986/u2qDWGeGV3wEVqxMmZtaC5b+5/Ij7gV6fmqCnenwwnAOsm+Zahe5V4LqW7Yo
+	 Vi0qokgRTfE3DtiRKo9oUCKvjANCBIrGjm1zXkjoAf0vcULm/6u9oicBDoHPIAhWaq
+	 uf9IE00Wk9scd5MGSiHxmp7f3lDEy7F664IEr5rXVuq+QU4EmNz7Gry09m25MlYGVi
+	 Y/FkaEGAJ0yFw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Zhang Yi <yi.zhang@huawei.com>,
@@ -52,13 +52,12 @@ Cc: Zhang Yi <yi.zhang@huawei.com>,
 	stable@kernel.org,
 	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 6/6] ext4: don't zero the entire extent if EXT4_EXT_DATA_PARTIAL_VALID1
-Date: Tue, 24 Feb 2026 21:57:29 -0500
-Message-ID: <20260225025729.3839073-6-sashal@kernel.org>
+Subject: [PATCH 6.1.y] ext4: don't set EXT4_GET_BLOCKS_CONVERT when splitting before submitting I/O
+Date: Tue, 24 Feb 2026 21:57:32 -0500
+Message-ID: <20260225025732.3839126-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260225025729.3839073-1-sashal@kernel.org>
-References: <2026022438-resample-unlit-c02b@gregkh>
- <20260225025729.3839073-1-sashal@kernel.org>
+In-Reply-To: <2026022422-humorous-scam-a54d@gregkh>
+References: <2026022422-humorous-scam-a54d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,13 +71,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219158-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219156-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -92,93 +91,101 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huaweicloud.com:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4D71D19116D
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huaweicloud.com:email]
+X-Rspamd-Queue-Id: 50C6219115F
 X-Rspamd-Action: no action
 
 From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 1bf6974822d1dba86cf11b5f05498581cf3488a2 ]
+[ Upstream commit feaf2a80e78f89ee8a3464126077ba8683b62791 ]
 
-When allocating initialized blocks from a large unwritten extent, or
-when splitting an unwritten extent during end I/O and converting it to
-initialized, there is currently a potential issue of stale data if the
-extent needs to be split in the middle.
+When allocating blocks during within-EOF DIO and writeback with
+dioread_nolock enabled, EXT4_GET_BLOCKS_PRE_IO was set to split an
+existing large unwritten extent. However, EXT4_GET_BLOCKS_CONVERT was
+set when calling ext4_split_convert_extents(), which may potentially
+result in stale data issues.
 
-       0  A      B  N
-       [UUUUUUUUUUUU]    U: unwritten extent
-       [--DDDDDDDD--]    D: valid data
-          |<-  ->| ----> this range needs to be initialized
+Assume we have an unwritten extent, and then DIO writes the second half.
 
-ext4_split_extent() first try to split this extent at B with
-EXT4_EXT_DATA_ENTIRE_VALID1 and EXT4_EXT_MAY_ZEROOUT flag set, but
-ext4_split_extent_at() failed to split this extent due to temporary lack
-of space. It zeroout B to N and mark the entire extent from 0 to N
-as written.
+   [UUUUUUUUUUUUUUUU] on-disk extent        U: unwritten extent
+   [UUUUUUUUUUUUUUUU] extent status tree
+            |<-   ->| ----> dio write this range
 
-       0  A      B  N
-       [WWWWWWWWWWWW]    W: written extent
-       [SSDDDDDDDDZZ]    Z: zeroed, S: stale data
+First, ext4_iomap_alloc() call ext4_map_blocks() with
+EXT4_GET_BLOCKS_PRE_IO, EXT4_GET_BLOCKS_UNWRIT_EXT and
+EXT4_GET_BLOCKS_CREATE flags set. ext4_map_blocks() find this extent and
+call ext4_split_convert_extents() with EXT4_GET_BLOCKS_CONVERT and the
+above flags set.
 
-ext4_split_extent() then try to split this extent at A with
-EXT4_EXT_DATA_VALID2 flag set. This time, it split successfully and left
-a stale written extent from 0 to A.
+Then, ext4_split_convert_extents() calls ext4_split_extent() with
+EXT4_EXT_MAY_ZEROOUT, EXT4_EXT_MARK_UNWRIT2 and EXT4_EXT_DATA_VALID2
+flags set, and it calls ext4_split_extent_at() to split the second half
+with EXT4_EXT_DATA_VALID2, EXT4_EXT_MARK_UNWRIT1, EXT4_EXT_MAY_ZEROOUT
+and EXT4_EXT_MARK_UNWRIT2 flags set. However, ext4_split_extent_at()
+failed to insert extent since a temporary lack -ENOSPC. It zeroes out
+the first half but convert the entire on-disk extent to written since
+the EXT4_EXT_DATA_VALID2 flag set, but left the second half as unwritten
+in the extent status tree.
 
-       0  A      B   N
-       [WW|WWWWWWWWWW]
-       [SS|DDDDDDDDZZ]
+   [0000000000SSSSSS]  data                S: stale data, 0: zeroed
+   [WWWWWWWWWWWWWWWW]  on-disk extent      W: written extent
+   [WWWWWWWWWWUUUUUU]  extent status tree
 
-Fix this by pass EXT4_EXT_DATA_PARTIAL_VALID1 to ext4_split_extent_at()
-when splitting at B, don't convert the entire extent to written and left
-it as unwritten after zeroing out B to N. The remaining work is just
-like the standard two-part split. ext4_split_extent() will pass the
-EXT4_EXT_DATA_VALID2 flag when it calls ext4_split_extent_at() for the
-second time, allowing it to properly handle the split. If the split is
-successful, it will keep extent from 0 to A as unwritten.
+Finally, if the DIO failed to write data to the disk, the stale data in
+the second half will be exposed once the cached extent entry is gone.
 
+Fix this issue by not passing EXT4_GET_BLOCKS_CONVERT when splitting
+an unwritten extent before submitting I/O, and make
+ext4_split_convert_extents() to zero out the entire extent range
+to zero for this case, and also mark the extent in the extent status
+tree for consistency.
+
+Fixes: b8a8684502a0 ("ext4: Introduce FALLOC_FL_ZERO_RANGE flag for fallocate")
 Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 Reviewed-by: Baokun Li <libaokun1@huawei.com>
 Cc: stable@kernel.org
-Message-ID: <20251129103247.686136-3-yi.zhang@huaweicloud.com>
+Message-ID: <20251129103247.686136-4-yi.zhang@huaweicloud.com>
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ different function signatures ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/ext4/extents.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 1a29c2056eef5..2d322b06ccd88 100644
+index 1aad4ae0e7ae4..dfc365b021094 100644
 --- a/fs/ext4/extents.c
 +++ b/fs/ext4/extents.c
-@@ -3293,6 +3293,15 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
- 		}
- 
- 		if (!err) {
-+			/*
-+			 * The first half contains partially valid data, the
-+			 * splitting of this extent has not been completed, fix
-+			 * extent length and ext4_split_extent() split will the
-+			 * first half again.
-+			 */
-+			if (split_flag & EXT4_EXT_DATA_PARTIAL_VALID1)
-+				goto fix_extent_len;
-+
- 			/* update the extent length and mark as initialized */
- 			ex->ee_len = cpu_to_le16(ee_len);
- 			ext4_ext_try_to_merge(handle, inode, path, ex);
-@@ -3365,7 +3374,9 @@ static int ext4_split_extent(handle_t *handle,
- 			split_flag1 |= EXT4_EXT_MARK_UNWRIT1 |
- 				       EXT4_EXT_MARK_UNWRIT2;
- 		if (split_flag & EXT4_EXT_DATA_VALID2)
--			split_flag1 |= EXT4_EXT_DATA_ENTIRE_VALID1;
-+			split_flag1 |= map->m_lblk > ee_block ?
-+				       EXT4_EXT_DATA_PARTIAL_VALID1 :
-+				       EXT4_EXT_DATA_ENTIRE_VALID1;
- 		path = ext4_split_extent_at(handle, inode, path,
- 				map->m_lblk + map->m_len, split_flag1, flags1);
- 		if (IS_ERR(path)) {
+@@ -3705,11 +3705,15 @@ static int ext4_split_convert_extents(handle_t *handle,
+ 	/* Convert to unwritten */
+ 	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
+ 		split_flag |= EXT4_EXT_DATA_VALID1;
+-	/* Convert to initialized */
+-	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
++	/* Split the existing unwritten extent */
++	} else if (flags & (EXT4_GET_BLOCKS_UNWRIT_EXT |
++			    EXT4_GET_BLOCKS_CONVERT)) {
+ 		split_flag |= ee_block + ee_len <= eof_block ?
+ 			      EXT4_EXT_MAY_ZEROOUT : 0;
+-		split_flag |= (EXT4_EXT_MARK_UNWRIT2 | EXT4_EXT_DATA_VALID2);
++		split_flag |= EXT4_EXT_MARK_UNWRIT2;
++		/* Convert to initialized */
++		if (flags & EXT4_GET_BLOCKS_CONVERT)
++			split_flag |= EXT4_EXT_DATA_VALID2;
+ 	}
+ 	flags |= EXT4_GET_BLOCKS_PRE_IO;
+ 	return ext4_split_extent(handle, inode, ppath, map, split_flag, flags);
+@@ -3874,7 +3878,7 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
+ 	/* get_block() before submitting IO, split the extent */
+ 	if (flags & EXT4_GET_BLOCKS_PRE_IO) {
+ 		ret = ext4_split_convert_extents(handle, inode, map, ppath,
+-					 flags | EXT4_GET_BLOCKS_CONVERT);
++					 flags);
+ 		if (ret < 0) {
+ 			err = ret;
+ 			goto out2;
 -- 
 2.51.0
 
