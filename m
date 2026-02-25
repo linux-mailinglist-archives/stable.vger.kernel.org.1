@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOjCJydSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218288-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:39 +0100
+	id uLWVGjBUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F5C18F23D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA1D18FC04
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0D77309C7BB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CD208301E5D8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4671622579E;
-	Wed, 25 Feb 2026 01:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800DD281356;
+	Wed, 25 Feb 2026 01:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xw9fUZIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQSC2FTr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8CD1D5ABA;
-	Wed, 25 Feb 2026 01:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4389E26FD97;
+	Wed, 25 Feb 2026 01:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983089; cv=none; b=aYXMstPCjfYTFFVo58pvl+Yx4/yxHYtdf5zlW6AKdGF+9Fq/4Yq9Ou4E9vhIC0oCxd18W77jtwJemElmVK/sCxkLGeZpNTzfZzoB/ER3o8HtuADOBMBFGWA/Oxe+f5WaolZpPRyYwVWjXAZXOhYxemQlHJsFcQE1eYmX1M3rQho=
+	t=1771983738; cv=none; b=Yyasp+uDOiY9yhGY7Yl74vDbmVBvw0isdlUKO7XhH/xekHXzplvkflHnUC+z43hd5rpVOXUQmeWfKhmXVPm+gySdzuxNEKU4u6eUqE4G7zrHWeLFssNrKI+/ZiGXtvHyAvF2Smr7f4FYo10Q8qCc3Bjve/LVRjDDDRJKPf26Mic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983089; c=relaxed/simple;
-	bh=knVftmp68A1jzapCZwe6Yu4mfUMMqtdCWThbeKUt0nw=;
+	s=arc-20240116; t=1771983738; c=relaxed/simple;
+	bh=ej8u9kQojQyfoJVV0xKNI5r2RGMcCrJojq8Kivf2K0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcU1880A7PaUsYubTAq4HSUt6E6YKLCBdVIzQtnog8RvBaF3hQMLv4RCjXye+MU81qG25B5qlbtXcX/fhYm+t+WidwvEDvlyIFytGPrzQGYxD7Q6dhAjScn5tp94xE7Zk3HrbqibVOvozzleACV7tx+JnAEcSpI2U2513eKEI7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xw9fUZIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B37C116D0;
-	Wed, 25 Feb 2026 01:31:28 +0000 (UTC)
+	 MIME-Version; b=Yj41OZcalum9Mf5Rbae4Ad03XqaAktjp3VXE/lfb1GHLnr2CxblQjdREcPpJiSJ1aRNSaRy+0G0doR7YUs/nLjv5JRuFEmIeX5FAR5/z6dv6pvd6UFXrbtf7vB9Idaeg73riR4zP5LtHXnTGmJ5hz+e+pFJSutZG6+PA6lbSS9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQSC2FTr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF899C116D0;
+	Wed, 25 Feb 2026 01:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983088;
-	bh=knVftmp68A1jzapCZwe6Yu4mfUMMqtdCWThbeKUt0nw=;
+	s=korg; t=1771983738;
+	bh=ej8u9kQojQyfoJVV0xKNI5r2RGMcCrJojq8Kivf2K0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xw9fUZIWsCyFlp1eSBO6VvMA+c14PQOSLm3Oi5PePxO33Pdi4ZRlHNzoSO1hJAm8k
-	 xmkZqd0bc+Vc+5/cNiXwreBgzqRvyNCKBb1iY3EDmZhkTnbVsnuvYnEoJyfjO3k2vf
-	 eaZY0vNSj1PezbqjfNwnZlsJo0pEnnY3//rwXvng=
+	b=QQSC2FTrB+17p5gHrFi1+1Tvf5F3mgda8Unr0HAQFgX9xJ3ME5sX0UkEFDaDyJf75
+	 VAoYGPbTIy2ldD8UwRScjFQyMxfuCRYf0XPteSbgJbBJ+J4B2rw84oSOl+mRSpxRLH
+	 +eB7bOH6rHQLSxE5kyj7cXDFRWoi2Y76edFo0j28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Teguh Sobirin <teguh@sobir.in>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 248/781] drm/msm/dpu: Set vsync source irrespective of mdp top support
+Subject: [PATCH 6.18 031/641] erofs: fix inline data read failure for ztailpacking pclusters
 Date: Tue, 24 Feb 2026 17:15:57 -0800
-Message-ID: <20260225012405.791017522@linuxfoundation.org>
+Message-ID: <20260225012349.744710467@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,96 +69,156 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218288-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218853-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,patchwork.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,somainline.org:email,sobir.in:email]
-X-Rspamd-Queue-Id: D2F5C18F23D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2CA1D18FC04
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Teguh Sobirin <teguh@sobir.in>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 1ad9880f059c9b0943e53714f9a59924cb035bbb ]
+[ Upstream commit c134a40f86efb8d6b5a949ef70e06d5752209be5 ]
 
-Since DPU 5.x the vsync source TE setup is split between MDP TOP and
-INTF blocks. Currently all code to setup vsync_source is only executed
-if MDP TOP implements the setup_vsync_source() callback. However on
-DPU >= 8.x this callback is not implemented, making DPU driver skip all
-vsync setup. Move the INTF part out of this condition, letting DPU
-driver to setup TE vsync selection on all new DPU devices.
+Compressed folios for ztailpacking pclusters must be valid before adding
+these pclusters to I/O chains. Otherwise, z_erofs_decompress_pcluster()
+may assume they are already valid and then trigger a NULL pointer
+dereference.
 
-Signed-off-by: Teguh Sobirin <teguh@sobir.in>
-Fixes: 2f69e5458447 ("drm/msm/dpu: skip watchdog timer programming through TOP on >= SM8450")
-[DB: restored top->ops.setup_vsync_source call]
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/696584/
-Link: https://lore.kernel.org/r/20251230-intf-fix-wd-v6-1-98203d150611@oss.qualcomm.com
+It is somewhat hard to reproduce because the inline data is in the same
+block as the tail of the compressed indexes, which are usually read just
+before. However, it may still happen if a fatal signal arrives while
+read_mapping_folio() is running, as shown below:
+
+ erofs: (device dm-1): z_erofs_pcluster_begin: failed to get inline data -4
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
+
+ ...
+
+ pc : z_erofs_decompress_queue+0x4c8/0xa14
+ lr : z_erofs_decompress_queue+0x160/0xa14
+ sp : ffffffc08b3eb3a0
+ x29: ffffffc08b3eb570 x28: ffffffc08b3eb418 x27: 0000000000001000
+ x26: ffffff8086ebdbb8 x25: ffffff8086ebdbb8 x24: 0000000000000001
+ x23: 0000000000000008 x22: 00000000fffffffb x21: dead000000000700
+ x20: 00000000000015e7 x19: ffffff808babb400 x18: ffffffc089edc098
+ x17: 00000000c006287d x16: 00000000c006287d x15: 0000000000000004
+ x14: ffffff80ba8f8000 x13: 0000000000000004 x12: 00000006589a77c9
+ x11: 0000000000000015 x10: 0000000000000000 x9 : 0000000000000000
+ x8 : 0000000000000000 x7 : 0000000000000000 x6 : 000000000000003f
+ x5 : 0000000000000040 x4 : ffffffffffffffe0 x3 : 0000000000000020
+ x2 : 0000000000000008 x1 : 0000000000000000 x0 : 0000000000000000
+ Call trace:
+  z_erofs_decompress_queue+0x4c8/0xa14
+  z_erofs_runqueue+0x908/0x97c
+  z_erofs_read_folio+0x128/0x228
+  filemap_read_folio+0x68/0x128
+  filemap_get_pages+0x44c/0x8b4
+  filemap_read+0x12c/0x5b8
+  generic_file_read_iter+0x4c/0x15c
+  do_iter_readv_writev+0x188/0x1e0
+  vfs_iter_read+0xac/0x1a4
+  backing_file_read_iter+0x170/0x34c
+  ovl_read_iter+0xf0/0x140
+  vfs_read+0x28c/0x344
+  ksys_read+0x80/0xf0
+  __arm64_sys_read+0x24/0x34
+  invoke_syscall+0x60/0x114
+  el0_svc_common+0x88/0xe4
+  do_el0_svc+0x24/0x30
+  el0_svc+0x40/0xa8
+  el0t_64_sync_handler+0x70/0xbc
+  el0t_64_sync+0x1bc/0x1c0
+
+Fix this by reading the inline data before allocating and adding
+the pclusters to the I/O chains.
+
+Fixes: cecf864d3d76 ("erofs: support inline data decompression")
+Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-and-tested-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/erofs/zdata.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 9f3957f24c6a3..af5122a514bd1 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -785,6 +785,8 @@ static void _dpu_encoder_update_vsync_source(struct dpu_encoder_virt *dpu_enc,
- 		return;
- 	}
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 683703aee5ef2..98e44570841a3 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -805,14 +805,26 @@ static int z_erofs_pcluster_begin(struct z_erofs_frontend *fe)
+ 	struct erofs_map_blocks *map = &fe->map;
+ 	struct super_block *sb = fe->inode->i_sb;
+ 	struct z_erofs_pcluster *pcl = NULL;
+-	void *ptr;
++	void *ptr = NULL;
+ 	int ret;
  
-+	vsync_cfg.vsync_source = disp_info->vsync_source;
-+
- 	if (hw_mdptop->ops.setup_vsync_source) {
- 		for (i = 0; i < dpu_enc->num_phys_encs; i++)
- 			vsync_cfg.ppnumber[i] = dpu_enc->hw_pp[i]->idx;
-@@ -792,17 +794,15 @@ static void _dpu_encoder_update_vsync_source(struct dpu_encoder_virt *dpu_enc,
- 		vsync_cfg.pp_count = dpu_enc->num_phys_encs;
- 		vsync_cfg.frame_rate = drm_mode_vrefresh(&dpu_enc->base.crtc->state->adjusted_mode);
+ 	DBG_BUGON(fe->pcl);
+ 	/* must be Z_EROFS_PCLUSTER_TAIL or pointed to previous pcluster */
+ 	DBG_BUGON(!fe->head);
  
--		vsync_cfg.vsync_source = disp_info->vsync_source;
--
- 		hw_mdptop->ops.setup_vsync_source(hw_mdptop, &vsync_cfg);
-+	}
- 
--		for (i = 0; i < dpu_enc->num_phys_encs; i++) {
--			phys_enc = dpu_enc->phys_encs[i];
-+	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
-+		phys_enc = dpu_enc->phys_encs[i];
- 
--			if (phys_enc->has_intf_te && phys_enc->hw_intf->ops.vsync_sel)
--				phys_enc->hw_intf->ops.vsync_sel(phys_enc->hw_intf,
--						vsync_cfg.vsync_source);
+-	if (!(map->m_flags & EROFS_MAP_META)) {
++	if (map->m_flags & EROFS_MAP_META) {
++		ret = erofs_init_metabuf(&map->buf, sb,
++					 erofs_inode_in_metabox(fe->inode));
++		if (ret)
++			return ret;
++		ptr = erofs_bread(&map->buf, map->m_pa, false);
++		if (IS_ERR(ptr)) {
++			erofs_err(sb, "failed to read inline data %pe @ pa %llu of nid %llu",
++				  ptr, map->m_pa, EROFS_I(fe->inode)->nid);
++			return PTR_ERR(ptr);
++		}
++		ptr = map->buf.page;
++	} else {
+ 		while (1) {
+ 			rcu_read_lock();
+ 			pcl = xa_load(&EROFS_SB(sb)->managed_pslots, map->m_pa);
+@@ -852,18 +864,8 @@ static int z_erofs_pcluster_begin(struct z_erofs_frontend *fe)
+ 		/* bind cache first when cached decompression is preferred */
+ 		z_erofs_bind_cache(fe);
+ 	} else {
+-		ret = erofs_init_metabuf(&map->buf, sb,
+-					 erofs_inode_in_metabox(fe->inode));
+-		if (ret)
+-			return ret;
+-		ptr = erofs_bread(&map->buf, map->m_pa, false);
+-		if (IS_ERR(ptr)) {
+-			ret = PTR_ERR(ptr);
+-			erofs_err(sb, "failed to get inline folio %d", ret);
+-			return ret;
 -		}
-+		if (phys_enc->has_intf_te && phys_enc->hw_intf->ops.vsync_sel)
-+			phys_enc->hw_intf->ops.vsync_sel(phys_enc->hw_intf,
-+							 vsync_cfg.vsync_source);
+-		folio_get(page_folio(map->buf.page));
+-		WRITE_ONCE(fe->pcl->compressed_bvecs[0].page, map->buf.page);
++		folio_get(page_folio((struct page *)ptr));
++		WRITE_ONCE(fe->pcl->compressed_bvecs[0].page, ptr);
+ 		fe->pcl->pageofs_in = map->m_pa & ~PAGE_MASK;
+ 		fe->mode = Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE;
  	}
- }
- 
 -- 
 2.51.0
 
