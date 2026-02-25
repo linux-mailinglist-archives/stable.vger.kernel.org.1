@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-219065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAcFNVpanmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:38 +0100
+	id sDqBGylSnmm6UgQAu9opvQ
+	(envelope-from <stable+bounces-218490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:41 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FA1190AE9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D4918F244
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F1C332084BC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEA7D30879C7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3C3251793;
-	Wed, 25 Feb 2026 01:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A10123D7CF;
+	Wed, 25 Feb 2026 01:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZU2o5zwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVWcYD/i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1E61FE45D;
-	Wed, 25 Feb 2026 01:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21771EB5E1;
+	Wed, 25 Feb 2026 01:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983989; cv=none; b=nqp8A6h4tFbXRrFMii7zNIbCPI6fV/gylJjm+P+C5MdBaTgPlEnpJ1xR553cTZp4kjegNMo07XAeJExDuleo4u3+wZWwU9Ce8rskFmo0PlMsVG0mexUwsPPXyg062LT5uKc/wYHPYN1PIZ2SzQ4BFLO5W7Ziz/EQhyq7B7acpcg=
+	t=1771983319; cv=none; b=IMHGf8/NaOyh32o38fGIcOG8OL0U6lLZWL6IY/a9EZR0/usKoe95G3SZLmrXxkhRB/OJHycnVe78nBH/c/eBqz28vk8bCxQAeFNlGSI5hZ55uwsmj33vKHdz2E4h+hifVCHZLKUOVQh9wc9yTV3dBlRI6QMViDc4sJApKczGn90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983989; c=relaxed/simple;
-	bh=sefwJ2FvDOnRTV0VlHlRRwg9foyKqFXG/YN9QoBW1sU=;
+	s=arc-20240116; t=1771983319; c=relaxed/simple;
+	bh=5nSwxOX9O9n3ndDs/LRarRFtlGacyFucEw+joj5xAVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJ8qBChe6U6NvyUKfBNqRpqoyICUbmVhIdIIrv4HvVFitdYow60FbQDAybyHPxsESFPzBQheoD/fZpEdD6jzVdEPuEATWilhmRAgqc3jSAKEbVYm6M7/S0E0XjPfbOeNFCp/+wIrkuN0LMwbMqpSQWUvRmz48T5ZRrGXiw1DnRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZU2o5zwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C57C19423;
-	Wed, 25 Feb 2026 01:46:28 +0000 (UTC)
+	 MIME-Version; b=q/fE8gl3kf85oC4781Dk8vyjSUS/Z8GxSKxCOgBAf2VU57SqRIhnuOw7O9/89wIcd4DKjlBMZIdTIBmldKJaUt5ohOxdGHsYaumN3183OIPaMqOLdAqyjV0tJWLA2yOJz1sR8omjNskoRBLnazZd4Rn+Of0uZkmiVqY/85xde4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVWcYD/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81877C116D0;
+	Wed, 25 Feb 2026 01:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983989;
-	bh=sefwJ2FvDOnRTV0VlHlRRwg9foyKqFXG/YN9QoBW1sU=;
+	s=korg; t=1771983319;
+	bh=5nSwxOX9O9n3ndDs/LRarRFtlGacyFucEw+joj5xAVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZU2o5zwVv0f4/GcRqEKSmZ4Q/kF7m1wXFyw96Q30j2qTUAiapIq7R52wx2t/VY3gz
-	 PPERH3dS8N806o7OA+oeK5DFUoiBKoAwq2sXKESHWoIqtHXo4I6tQKjh9pmre4BQMR
-	 NZBKKAjdmrmSBH1YM07imOYknGbH+1YdIl+S9r0M=
+	b=kVWcYD/icdWq6Y2FA+J+9p7iHOlIklc/Cp0Vl8wznoK1jTZSAgtl8lohisKj+Bd1t
+	 ed02cx3Ay0/lV7xp5yXTdVFfbTqjckOaHRcr09oLFl154d/cCQgGtsEc23JOJrwsov
+	 99AqePO9552R1DO+iGew8fb/lH6IyuN+7Fu2dJK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baruch Siach <baruch@tkos.co.il>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Waqar Hameed <waqar.hameed@axis.com>,
+	Samuel Kayode <samkay014@gmail.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 236/641] Documentation: PCI: endpoint: Fix ntb/vntb copy & paste errors
+Subject: [PATCH 6.19 453/781] power: supply: pf1550: Fix use-after-free in power_supply_changed()
 Date: Tue, 24 Feb 2026 17:19:22 -0800
-Message-ID: <20260225012354.603542225@linuxfoundation.org>
+Message-ID: <20260225012410.823290446@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,105 +75,118 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,axis.com,gmail.com,collabora.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218490-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219065-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nxp.com:email,tkos.co.il:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 43FA1190AE9
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: C9D4918F244
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baruch Siach <baruch@tkos.co.il>
+From: Waqar Hameed <waqar.hameed@axis.com>
 
-[ Upstream commit ad0c6da5be901f5c181490f683d22b416059bccb ]
+[ Upstream commit 838767f5074700552d3f006d867caed65edc7328 ]
 
-Fix copy & paste errors by changing the references from 'ntb' to 'vntb'.
+Using the `devm_` variant for requesting IRQ _before_ the `devm_`
+variant for allocating/registering the `power_supply` handle, means that
+the `power_supply` handle will be deallocated/unregistered _before_ the
+interrupt handler (since `devm_` naturally deallocates in reverse
+allocation order). This means that during removal, there is a race
+condition where an interrupt can fire just _after_ the `power_supply`
+handle has been freed, *but* just _before_ the corresponding
+unregistration of the IRQ handler has run.
 
-Fixes: 4ac8c8e52cd9 ("Documentation: PCI: Add specification for the PCI vNTB function device")
-Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-[mani: squashed the patches and fixed more errors]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/b51c2a69ffdbfa2c359f5cf33f3ad2acc3db87e4.1762154911.git.baruch@tkos.co.il
+This will lead to the IRQ handler calling `power_supply_changed()` with
+a freed `power_supply` handle. Which usually crashes the system or
+otherwise silently corrupts the memory...
+
+Note that there is a similar situation which can also happen during
+`probe()`; the possibility of an interrupt firing _before_ registering
+the `power_supply` handle. This would then lead to the nasty situation
+of using the `power_supply` handle *uninitialized* in
+`power_supply_changed()`.
+
+Fix this racy use-after-free by making sure the IRQ is requested _after_
+the registration of the `power_supply` handle.
+
+Fixes: 4b6b6433a97d ("power: supply: pf1550: add battery charger support")
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+Reviewed-by: Samuel Kayode <samkay014@gmail.com>
+Link: https://patch.msgid.link/ae5a71b7e4dd2967d8fdcc531065cc71b17c86f5.1766268280.git.waqar.hameed@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/PCI/endpoint/pci-vntb-howto.rst | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/power/supply/pf1550-charger.c | 32 +++++++++++++--------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/Documentation/PCI/endpoint/pci-vntb-howto.rst b/Documentation/PCI/endpoint/pci-vntb-howto.rst
-index 9a7a2f0a68498..3679f5c302549 100644
---- a/Documentation/PCI/endpoint/pci-vntb-howto.rst
-+++ b/Documentation/PCI/endpoint/pci-vntb-howto.rst
-@@ -52,14 +52,14 @@ pci-epf-vntb device, the following commands can be used::
- 	# cd /sys/kernel/config/pci_ep/
- 	# mkdir functions/pci_epf_vntb/func1
+diff --git a/drivers/power/supply/pf1550-charger.c b/drivers/power/supply/pf1550-charger.c
+index 98f1ee8eca3bc..a457862ef4610 100644
+--- a/drivers/power/supply/pf1550-charger.c
++++ b/drivers/power/supply/pf1550-charger.c
+@@ -584,22 +584,6 @@ static int pf1550_charger_probe(struct platform_device *pdev)
+ 		return dev_err_probe(chg->dev, ret,
+ 				     "failed to add battery sense work\n");
  
--The "mkdir func1" above creates the pci-epf-ntb function device that will
-+The "mkdir func1" above creates the pci-epf-vntb function device that will
- be probed by pci_epf_vntb driver.
+-	for (i = 0; i < PF1550_CHARGER_IRQ_NR; i++) {
+-		irq = platform_get_irq(pdev, i);
+-		if (irq < 0)
+-			return irq;
+-
+-		chg->virqs[i] = irq;
+-
+-		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
+-						pf1550_charger_irq_handler,
+-						IRQF_NO_SUSPEND,
+-						"pf1550-charger", chg);
+-		if (ret)
+-			return dev_err_probe(&pdev->dev, ret,
+-					     "failed irq request\n");
+-	}
+-
+ 	psy_cfg.drv_data = chg;
  
- The PCI endpoint framework populates the directory with the following
- configurable fields::
+ 	chg->charger = devm_power_supply_register(&pdev->dev,
+@@ -616,6 +600,22 @@ static int pf1550_charger_probe(struct platform_device *pdev)
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(chg->battery),
+ 				     "failed: power supply register\n");
  
--	# ls functions/pci_epf_ntb/func1
--	baseclass_code    deviceid          msi_interrupts    pci-epf-ntb.0
-+	# ls functions/pci_epf_vntb/func1
-+	baseclass_code    deviceid          msi_interrupts    pci-epf-vntb.0
- 	progif_code       secondary         subsys_id         vendorid
- 	cache_line_size   interrupt_pin     msix_interrupts   primary
- 	revid             subclass_code     subsys_vendor_id
-@@ -111,13 +111,13 @@ A sample configuration for virtual NTB driver for virtual PCI bus::
- 	# echo 0x080A > functions/pci_epf_vntb/func1/pci_epf_vntb.0/vntb_pid
- 	# echo 0x10 > functions/pci_epf_vntb/func1/pci_epf_vntb.0/vbus_number
++	for (i = 0; i < PF1550_CHARGER_IRQ_NR; i++) {
++		irq = platform_get_irq(pdev, i);
++		if (irq < 0)
++			return irq;
++
++		chg->virqs[i] = irq;
++
++		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
++						pf1550_charger_irq_handler,
++						IRQF_NO_SUSPEND,
++						"pf1550-charger", chg);
++		if (ret)
++			return dev_err_probe(&pdev->dev, ret,
++					     "failed irq request\n");
++	}
++
+ 	pf1550_dt_parse_dev_info(chg);
  
--Binding pci-epf-ntb Device to EP Controller
-+Binding pci-epf-vntb Device to EP Controller
- --------------------------------------------
- 
- NTB function device should be attached to PCI endpoint controllers
- connected to the host.
- 
--	# ln -s controllers/5f010000.pcie_ep functions/pci-epf-ntb/func1/primary
-+	# ln -s controllers/5f010000.pcie_ep functions/pci_epf_vntb/func1/primary
- 
- Once the above step is completed, the PCI endpoint controllers are ready to
- establish a link with the host.
-@@ -139,7 +139,7 @@ lspci Output at Host side
- -------------------------
- 
- Note that the devices listed here correspond to the values populated in
--"Creating pci-epf-ntb Device" section above::
-+"Creating pci-epf-vntb Device" section above::
- 
- 	# lspci
-         00:00.0 PCI bridge: Freescale Semiconductor Inc Device 0000 (rev 01)
-@@ -152,7 +152,7 @@ lspci Output at EP Side / Virtual PCI bus
- -----------------------------------------
- 
- Note that the devices listed here correspond to the values populated in
--"Creating pci-epf-ntb Device" section above::
-+"Creating pci-epf-vntb Device" section above::
- 
-         # lspci
-         10:00.0 Unassigned class [ffff]: Dawicontrol Computersysteme GmbH Device 1234 (rev ff)
+ 	return pf1550_reg_init(chg);
 -- 
 2.51.0
 
