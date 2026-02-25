@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GD63M/FUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:33 +0100
+	id +E8ZIemdnmk5WgQAu9opvQ
+	(envelope-from <stable+bounces-219231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0781118FE67
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D8A192B1A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CF820310CAA6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E787730E0530
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045A8256C6C;
-	Wed, 25 Feb 2026 01:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C157E2C17A0;
+	Wed, 25 Feb 2026 06:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wt7FCPKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMmbc1o0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCC91FE45D;
-	Wed, 25 Feb 2026 01:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841C02C0263;
+	Wed, 25 Feb 2026 06:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983459; cv=none; b=tJV/7ON2XrU4ZpeEUMvkYIzO4p+Jxgq4Wx2T9Jupe4MAtgvvdlVe0fLsO5842ikJtw4EK8P59TmDpP/foz0D63HWM+ZIBP9+NiEJtbdpvzCW3ZvQr+RdfATsvNqH6Q/IrtVeOffsm8ZCRMb//wiPi8vn/yWJpImTZl27EqipSYs=
+	t=1772002580; cv=none; b=N8Y9O34Mp0trDDxXB3EdCu3IXmeG6mAvtm1erm+9mVBVNt3oKXJrkdP8HGTiR47EZa2NKe0XpWrMV8C+Pvle0dviC4+iW93mXxosCeK+0YhF697QlkTrnBnYDK2X1NSCeF831an8AhVIB2ZiLjjZfZjjBV3i/x849yNS/eV+7ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983459; c=relaxed/simple;
-	bh=rjsbXpXpGIYdK613B3fHBKz2Dsuq7H5LAcG5teULoq8=;
+	s=arc-20240116; t=1772002580; c=relaxed/simple;
+	bh=Z3V3npPp5O4mKmVYnwFavYsNDE782JdGjoa0u0ai8tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hxxm9r5+6YldyU8sDhUCNoJ00I2dS4YdH5WTXtqStFT56w7e/DxOe/UeYhrFSok75xQeaur9v6nVDzFXepVgjWgWsSKWP0jI4HM/FDsWJnpLA3IbK//5dI4cPuisJnjQSHiJ1xMLLRX37mp9v6rgZU1lcSTmJsa64OTMi0elDxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wt7FCPKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF38C116D0;
-	Wed, 25 Feb 2026 01:37:39 +0000 (UTC)
+	 MIME-Version; b=tzi2a+3Si03ud6IOcTY8g9UVS2Q38eY/7OGf+sRNSpQBh0nKFw9wMLpucIy1FeG1z+XMz155yQhC1DziIWQOrkt1OkGXk17lVkjAetD0I2P4jfG24jkYF0oJYRVGIf3rC+addJapuuyU4Zn6o0qjkhknVsxJLhoirTHdi0DoSNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMmbc1o0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58711C116D0;
+	Wed, 25 Feb 2026 06:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983459;
-	bh=rjsbXpXpGIYdK613B3fHBKz2Dsuq7H5LAcG5teULoq8=;
+	s=korg; t=1772002580;
+	bh=Z3V3npPp5O4mKmVYnwFavYsNDE782JdGjoa0u0ai8tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wt7FCPKQSWUUygPuzrrfdZ8b4gXqvLdTka2HvmC6liJyVIJ2LQMdEXSax6pBDUuEm
-	 llABx1vvYlSbBdJG8giYboI31hMybI2BbnL9YbFqE0jqufNkItskuPium14RIYPR+i
-	 5x/NYNY5BwZLSFyTIdVbv8m4IGG30Wu8gDTpqJYQ=
+	b=mMmbc1o0url2ZbA+BjRqbQUBKLRrGk1Pi1x0Xs3OcrsTKgh2fCJNlm9e/9JisOlAv
+	 GHjQCgTfKBP7FRZXN6K2+chsQIOQXSd2bwh/rYFOZfyJbf9LhngZgQphF4czf7CohY
+	 SJRoIXxVY7HyK/ATmUYs6+WUSFRjxs8wZ4g2lmvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 532/781] Input: adp5589 - remove a leftover header file
+Subject: [PATCH 6.18 315/641] netfilter: nft_set_rbtree: validate open interval overlap
 Date: Tue, 24 Feb 2026 17:20:41 -0800
-Message-ID: <20260225012412.849570781@linuxfoundation.org>
+Message-ID: <20260225012356.353371017@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,250 +63,342 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mleia.com,ideasonboard.com,analog.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218613-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219231-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,analog.com:email,mleia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ideasonboard.com:email]
-X-Rspamd-Queue-Id: 0781118FE67
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 22D8A192B1A
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vz@mleia.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit f8a6e5eac701369afb5d69aba875dc5fec93003d ]
+[ Upstream commit 648946966a08e4cb1a71619e3d1b12bd7642de7b ]
 
-In commit 3bdbd0858df6 ("Input: adp5589: remove the driver") the last user
-of include/linux/input/adp5589.h was removed along with the whole driver,
-thus the header file can be also removed.
+Open intervals do not have an end element, in particular an open
+interval at the end of the set is hard to validate because of it is
+lacking the end element, and interval validation relies on such end
+element to perform the checks.
 
-Signed-off-by: Vladimir Zapolskiy <vz@mleia.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Fixes: 3bdbd0858df6 ("Input: adp5589: remove the driver")
-Link: https://patch.msgid.link/20260113151140.3843753-1-vz@mleia.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+This patch adds a new flag field to struct nft_set_elem, this is not an
+issue because this is a temporary object that is allocated in the stack
+from the insert/deactivate path. This flag field is used to specify that
+this is the last element in this add/delete command.
+
+The last flag is used, in combination with the start element cookie, to
+check if there is a partial overlap, eg.
+
+   Already exists:   255.255.255.0-255.255.255.254
+   Add interval:     255.255.255.0-255.255.255.255
+                     ~~~~~~~~~~~~~
+             start element overlap
+
+Basically, the idea is to check for an existing end element in the set
+if there is an overlap with an existing start element.
+
+However, the last open interval can come in any position in the add
+command, the corner case can get a bit more complicated:
+
+   Already exists:   255.255.255.0-255.255.255.254
+   Add intervals:    255.255.255.0-255.255.255.255,255.255.255.0-255.255.255.254
+                     ~~~~~~~~~~~~~
+             start element overlap
+
+To catch this overlap, annotate that the new start element is a possible
+overlap, then report the overlap if the next element is another start
+element that confirms that previous element in an open interval at the
+end of the set.
+
+For deletions, do not update the start cookie when deleting an open
+interval, otherwise this can trigger spurious EEXIST when adding new
+elements.
+
+Unfortunately, there is no NFT_SET_ELEM_INTERVAL_OPEN flag which would
+make easier to detect open interval overlaps.
+
+Fixes: 7c84d41416d8 ("netfilter: nft_set_rbtree: Detect partial overlaps on insertion")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/input/adp5589.h | 180 ----------------------------------
- 1 file changed, 180 deletions(-)
- delete mode 100644 include/linux/input/adp5589.h
+ include/net/netfilter/nf_tables.h |  4 ++
+ net/netfilter/nf_tables_api.c     | 21 +++++++--
+ net/netfilter/nft_set_rbtree.c    | 71 ++++++++++++++++++++++++++-----
+ 3 files changed, 82 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/input/adp5589.h b/include/linux/input/adp5589.h
-deleted file mode 100644
-index 0e4742c8c81e3..0000000000000
---- a/include/linux/input/adp5589.h
-+++ /dev/null
-@@ -1,180 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * Analog Devices ADP5589/ADP5585 I/O Expander and QWERTY Keypad Controller
-- *
-- * Copyright 2010-2011 Analog Devices Inc.
-- */
--
--#ifndef _ADP5589_H
--#define _ADP5589_H
--
--/*
-- * ADP5589 specific GPI and Keymap defines
-- */
--
--#define ADP5589_KEYMAPSIZE	88
--
--#define ADP5589_GPI_PIN_ROW0 97
--#define ADP5589_GPI_PIN_ROW1 98
--#define ADP5589_GPI_PIN_ROW2 99
--#define ADP5589_GPI_PIN_ROW3 100
--#define ADP5589_GPI_PIN_ROW4 101
--#define ADP5589_GPI_PIN_ROW5 102
--#define ADP5589_GPI_PIN_ROW6 103
--#define ADP5589_GPI_PIN_ROW7 104
--#define ADP5589_GPI_PIN_COL0 105
--#define ADP5589_GPI_PIN_COL1 106
--#define ADP5589_GPI_PIN_COL2 107
--#define ADP5589_GPI_PIN_COL3 108
--#define ADP5589_GPI_PIN_COL4 109
--#define ADP5589_GPI_PIN_COL5 110
--#define ADP5589_GPI_PIN_COL6 111
--#define ADP5589_GPI_PIN_COL7 112
--#define ADP5589_GPI_PIN_COL8 113
--#define ADP5589_GPI_PIN_COL9 114
--#define ADP5589_GPI_PIN_COL10 115
--#define GPI_LOGIC1 116
--#define GPI_LOGIC2 117
--
--#define ADP5589_GPI_PIN_ROW_BASE ADP5589_GPI_PIN_ROW0
--#define ADP5589_GPI_PIN_ROW_END ADP5589_GPI_PIN_ROW7
--#define ADP5589_GPI_PIN_COL_BASE ADP5589_GPI_PIN_COL0
--#define ADP5589_GPI_PIN_COL_END ADP5589_GPI_PIN_COL10
--
--#define ADP5589_GPI_PIN_BASE ADP5589_GPI_PIN_ROW_BASE
--#define ADP5589_GPI_PIN_END ADP5589_GPI_PIN_COL_END
--
--#define ADP5589_GPIMAPSIZE_MAX (ADP5589_GPI_PIN_END - ADP5589_GPI_PIN_BASE + 1)
--
--/*
-- * ADP5585 specific GPI and Keymap defines
-- */
--
--#define ADP5585_KEYMAPSIZE	30
--
--#define ADP5585_GPI_PIN_ROW0 37
--#define ADP5585_GPI_PIN_ROW1 38
--#define ADP5585_GPI_PIN_ROW2 39
--#define ADP5585_GPI_PIN_ROW3 40
--#define ADP5585_GPI_PIN_ROW4 41
--#define ADP5585_GPI_PIN_ROW5 42
--#define ADP5585_GPI_PIN_COL0 43
--#define ADP5585_GPI_PIN_COL1 44
--#define ADP5585_GPI_PIN_COL2 45
--#define ADP5585_GPI_PIN_COL3 46
--#define ADP5585_GPI_PIN_COL4 47
--#define GPI_LOGIC 48
--
--#define ADP5585_GPI_PIN_ROW_BASE ADP5585_GPI_PIN_ROW0
--#define ADP5585_GPI_PIN_ROW_END ADP5585_GPI_PIN_ROW5
--#define ADP5585_GPI_PIN_COL_BASE ADP5585_GPI_PIN_COL0
--#define ADP5585_GPI_PIN_COL_END ADP5585_GPI_PIN_COL4
--
--#define ADP5585_GPI_PIN_BASE ADP5585_GPI_PIN_ROW_BASE
--#define ADP5585_GPI_PIN_END ADP5585_GPI_PIN_COL_END
--
--#define ADP5585_GPIMAPSIZE_MAX (ADP5585_GPI_PIN_END - ADP5585_GPI_PIN_BASE + 1)
--
--struct adp5589_gpi_map {
--	unsigned short pin;
--	unsigned short sw_evt;
--};
--
--/* scan_cycle_time */
--#define ADP5589_SCAN_CYCLE_10ms		0
--#define ADP5589_SCAN_CYCLE_20ms		1
--#define ADP5589_SCAN_CYCLE_30ms		2
--#define ADP5589_SCAN_CYCLE_40ms		3
--
--/* RESET_CFG */
--#define RESET_PULSE_WIDTH_500us		0
--#define RESET_PULSE_WIDTH_1ms		1
--#define RESET_PULSE_WIDTH_2ms		2
--#define RESET_PULSE_WIDTH_10ms		3
--
--#define RESET_TRIG_TIME_0ms		(0 << 2)
--#define RESET_TRIG_TIME_1000ms		(1 << 2)
--#define RESET_TRIG_TIME_1500ms		(2 << 2)
--#define RESET_TRIG_TIME_2000ms		(3 << 2)
--#define RESET_TRIG_TIME_2500ms		(4 << 2)
--#define RESET_TRIG_TIME_3000ms		(5 << 2)
--#define RESET_TRIG_TIME_3500ms		(6 << 2)
--#define RESET_TRIG_TIME_4000ms		(7 << 2)
--
--#define RESET_PASSTHRU_EN		(1 << 5)
--#define RESET1_POL_HIGH			(1 << 6)
--#define RESET1_POL_LOW			(0 << 6)
--#define RESET2_POL_HIGH			(1 << 7)
--#define RESET2_POL_LOW			(0 << 7)
--
--/* ADP5589 Mask Bits:
-- * C C C C C C C C C C C | R R R R R R R R
-- * 1 9 8 7 6 5 4 3 2 1 0 | 7 6 5 4 3 2 1 0
-- * 0
-- * ---------------- BIT ------------------
-- * 1 1 1 1 1 1 1 1 1 0 0 | 0 0 0 0 0 0 0 0
-- * 8 7 6 5 4 3 2 1 0 9 8 | 7 6 5 4 3 2 1 0
-- */
--
--#define ADP_ROW(x)	(1 << (x))
--#define ADP_COL(x)	(1 << (x + 8))
--#define ADP5589_ROW_MASK		0xFF
--#define ADP5589_COL_MASK		0xFF
--#define ADP5589_COL_SHIFT		8
--#define ADP5589_MAX_ROW_NUM		7
--#define ADP5589_MAX_COL_NUM		10
--
--/* ADP5585 Mask Bits:
-- * C C C C C | R R R R R R
-- * 4 3 2 1 0 | 5 4 3 2 1 0
-- *
-- * ---- BIT -- -----------
-- * 1 0 0 0 0 | 0 0 0 0 0 0
-- * 0 9 8 7 6 | 5 4 3 2 1 0
-- */
--
--#define ADP5585_ROW_MASK		0x3F
--#define ADP5585_COL_MASK		0x1F
--#define ADP5585_ROW_SHIFT		0
--#define ADP5585_COL_SHIFT		6
--#define ADP5585_MAX_ROW_NUM		5
--#define ADP5585_MAX_COL_NUM		4
--
--#define ADP5585_ROW(x)	(1 << ((x) & ADP5585_ROW_MASK))
--#define ADP5585_COL(x)	(1 << (((x) & ADP5585_COL_MASK) + ADP5585_COL_SHIFT))
--
--/* Put one of these structures in i2c_board_info platform_data */
--
--struct adp5589_kpad_platform_data {
--	unsigned keypad_en_mask;	/* Keypad (Rows/Columns) enable mask */
--	const unsigned short *keymap;	/* Pointer to keymap */
--	unsigned short keymapsize;	/* Keymap size */
--	bool repeat;			/* Enable key repeat */
--	bool en_keylock;		/* Enable key lock feature (ADP5589 only)*/
--	unsigned char unlock_key1;	/* Unlock Key 1 (ADP5589 only) */
--	unsigned char unlock_key2;	/* Unlock Key 2 (ADP5589 only) */
--	unsigned char unlock_timer;	/* Time in seconds [0..7] between the two unlock keys 0=disable (ADP5589 only) */
--	unsigned char scan_cycle_time;	/* Time between consecutive scan cycles */
--	unsigned char reset_cfg;	/* Reset config */
--	unsigned short reset1_key_1;	/* Reset Key 1 */
--	unsigned short reset1_key_2;	/* Reset Key 2 */
--	unsigned short reset1_key_3;	/* Reset Key 3 */
--	unsigned short reset2_key_1;	/* Reset Key 1 */
--	unsigned short reset2_key_2;	/* Reset Key 2 */
--	unsigned debounce_dis_mask;	/* Disable debounce mask */
--	unsigned pull_dis_mask;		/* Disable all pull resistors mask */
--	unsigned pullup_en_100k;	/* Pull-Up 100k Enable Mask */
--	unsigned pullup_en_300k;	/* Pull-Up 300k Enable Mask */
--	unsigned pulldown_en_300k;	/* Pull-Down 300k Enable Mask */
--	const struct adp5589_gpi_map *gpimap;
--	unsigned short gpimapsize;
--	const struct adp5589_gpio_platform_data *gpio_data;
--};
--
--struct i2c_client; /* forward declaration */
--
--struct adp5589_gpio_platform_data {
--	int	gpio_start;	/* GPIO Chip base # */
--};
--
--#endif
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 0e266c2d0e7f0..7eac73f9b4ce3 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -278,6 +278,8 @@ struct nft_userdata {
+ 	unsigned char		data[];
+ };
+ 
++#define NFT_SET_ELEM_INTERNAL_LAST	0x1
++
+ /* placeholder structure for opaque set element backend representation. */
+ struct nft_elem_priv { };
+ 
+@@ -287,6 +289,7 @@ struct nft_elem_priv { };
+  *	@key: element key
+  *	@key_end: closing element key
+  *	@data: element data
++ * 	@flags: flags
+  *	@priv: element private data and extensions
+  */
+ struct nft_set_elem {
+@@ -302,6 +305,7 @@ struct nft_set_elem {
+ 		u32		buf[NFT_DATA_VALUE_MAXLEN / sizeof(u32)];
+ 		struct nft_data val;
+ 	} data;
++	u32			flags;
+ 	struct nft_elem_priv	*priv;
+ };
+ 
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index e3279179cd305..9051f2c3595a2 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7271,7 +7271,8 @@ static u32 nft_set_maxsize(const struct nft_set *set)
+ }
+ 
+ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+-			    const struct nlattr *attr, u32 nlmsg_flags)
++			    const struct nlattr *attr, u32 nlmsg_flags,
++			    bool last)
+ {
+ 	struct nft_expr *expr_array[NFT_SET_EXPR_MAX] = {};
+ 	struct nlattr *nla[NFTA_SET_ELEM_MAX + 1];
+@@ -7557,6 +7558,11 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 	if (flags)
+ 		*nft_set_ext_flags(ext) = flags;
+ 
++	if (last)
++		elem.flags = NFT_SET_ELEM_INTERNAL_LAST;
++	else
++		elem.flags = 0;
++
+ 	if (obj)
+ 		*nft_set_ext_obj(ext) = obj;
+ 
+@@ -7720,7 +7726,8 @@ static int nf_tables_newsetelem(struct sk_buff *skb,
+ 	nft_ctx_init(&ctx, net, skb, info->nlh, family, table, NULL, nla);
+ 
+ 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
+-		err = nft_add_set_elem(&ctx, set, attr, info->nlh->nlmsg_flags);
++		err = nft_add_set_elem(&ctx, set, attr, info->nlh->nlmsg_flags,
++				       nla_is_last(attr, rem));
+ 		if (err < 0) {
+ 			NL_SET_BAD_ATTR(extack, attr);
+ 			return err;
+@@ -7843,7 +7850,7 @@ static void nft_trans_elems_destroy_abort(const struct nft_ctx *ctx,
+ }
+ 
+ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
+-			   const struct nlattr *attr)
++			   const struct nlattr *attr, bool last)
+ {
+ 	struct nlattr *nla[NFTA_SET_ELEM_MAX + 1];
+ 	struct nft_set_ext_tmpl tmpl;
+@@ -7911,6 +7918,11 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
+ 	if (flags)
+ 		*nft_set_ext_flags(ext) = flags;
+ 
++	if (last)
++		elem.flags = NFT_SET_ELEM_INTERNAL_LAST;
++	else
++		elem.flags = 0;
++
+ 	trans = nft_trans_elem_alloc(ctx, NFT_MSG_DELSETELEM, set);
+ 	if (trans == NULL)
+ 		goto fail_trans;
+@@ -8058,7 +8070,8 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
+ 		return nft_set_flush(&ctx, set, genmask);
+ 
+ 	nla_for_each_nested(attr, nla[NFTA_SET_ELEM_LIST_ELEMENTS], rem) {
+-		err = nft_del_setelem(&ctx, set, attr);
++		err = nft_del_setelem(&ctx, set, attr,
++				      nla_is_last(attr, rem));
+ 		if (err == -ENOENT &&
+ 		    NFNL_MSG_TYPE(info->nlh->nlmsg_type) == NFT_MSG_DESTROYSETELEM)
+ 			continue;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index a4fb5b517d9de..644d4b9167057 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -304,10 +304,19 @@ static void nft_rbtree_set_start_cookie(struct nft_rbtree *priv,
+ 	priv->start_rbe_cookie = (unsigned long)rbe;
+ }
+ 
++static void nft_rbtree_set_start_cookie_open(struct nft_rbtree *priv,
++					     const struct nft_rbtree_elem *rbe,
++					     unsigned long open_interval)
++{
++	priv->start_rbe_cookie = (unsigned long)rbe | open_interval;
++}
++
++#define NFT_RBTREE_OPEN_INTERVAL	1UL
++
+ static bool nft_rbtree_cmp_start_cookie(struct nft_rbtree *priv,
+ 					const struct nft_rbtree_elem *rbe)
+ {
+-	return priv->start_rbe_cookie == (unsigned long)rbe;
++	return (priv->start_rbe_cookie & ~NFT_RBTREE_OPEN_INTERVAL) == (unsigned long)rbe;
+ }
+ 
+ static bool nft_rbtree_insert_same_interval(const struct net *net,
+@@ -337,13 +346,14 @@ static bool nft_rbtree_insert_same_interval(const struct net *net,
+ 
+ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 			       struct nft_rbtree_elem *new,
+-			       struct nft_elem_priv **elem_priv, u64 tstamp)
++			       struct nft_elem_priv **elem_priv, u64 tstamp, bool last)
+ {
+ 	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL, *rbe_prev;
+ 	struct rb_node *node, *next, *parent, **p, *first = NULL;
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	u8 cur_genmask = nft_genmask_cur(net);
+ 	u8 genmask = nft_genmask_next(net);
++	unsigned long open_interval = 0;
+ 	int d;
+ 
+ 	/* Descend the tree to search for an existing element greater than the
+@@ -449,10 +459,18 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 		}
+ 	}
+ 
+-	if (nft_rbtree_interval_null(set, new))
+-		priv->start_rbe_cookie = 0;
+-	else if (nft_rbtree_interval_start(new) && priv->start_rbe_cookie)
++	if (nft_rbtree_interval_null(set, new)) {
+ 		priv->start_rbe_cookie = 0;
++	} else if (nft_rbtree_interval_start(new) && priv->start_rbe_cookie) {
++		if (nft_set_is_anonymous(set)) {
++			priv->start_rbe_cookie = 0;
++		} else if (priv->start_rbe_cookie & NFT_RBTREE_OPEN_INTERVAL) {
++			/* Previous element is an open interval that partially
++			 * overlaps with an existing non-open interval.
++			 */
++			return -ENOTEMPTY;
++		}
++	}
+ 
+ 	/* - new start element matching existing start element: full overlap
+ 	 *   reported as -EEXIST, cleared by caller if NLM_F_EXCL is not given.
+@@ -460,7 +478,27 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	if (rbe_ge && !nft_rbtree_cmp(set, new, rbe_ge) &&
+ 	    nft_rbtree_interval_start(rbe_ge) == nft_rbtree_interval_start(new)) {
+ 		*elem_priv = &rbe_ge->priv;
+-		nft_rbtree_set_start_cookie(priv, rbe_ge);
++
++		/* - Corner case: new start element of open interval (which
++		 *   comes as last element in the batch) overlaps the start of
++		 *   an existing interval with an end element: partial overlap.
++		 */
++		node = rb_first(&priv->root);
++		rbe = __nft_rbtree_next_active(node, genmask);
++		if (rbe && nft_rbtree_interval_end(rbe)) {
++			rbe = nft_rbtree_next_active(rbe, genmask);
++			if (rbe &&
++			    nft_rbtree_interval_start(rbe) &&
++			    !nft_rbtree_cmp(set, new, rbe)) {
++				if (last)
++					return -ENOTEMPTY;
++
++				/* Maybe open interval? */
++				open_interval = NFT_RBTREE_OPEN_INTERVAL;
++			}
++		}
++		nft_rbtree_set_start_cookie_open(priv, rbe_ge, open_interval);
++
+ 		return -EEXIST;
+ 	}
+ 
+@@ -515,6 +553,12 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	    nft_rbtree_interval_end(rbe_ge) && nft_rbtree_interval_end(new))
+ 		return -ENOTEMPTY;
+ 
++	/* - start element overlaps an open interval but end element is new:
++	 *   partial overlap, reported as -ENOEMPTY.
++	 */
++	if (!rbe_ge && priv->start_rbe_cookie && nft_rbtree_interval_end(new))
++		return -ENOTEMPTY;
++
+ 	/* Accepted element: pick insertion point depending on key value */
+ 	parent = NULL;
+ 	p = &priv->root.rb_node;
+@@ -624,6 +668,7 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 			     struct nft_elem_priv **elem_priv)
+ {
+ 	struct nft_rbtree_elem *rbe = nft_elem_priv_cast(elem->priv);
++	bool last = !!(elem->flags & NFT_SET_ELEM_INTERNAL_LAST);
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	u64 tstamp = nft_net_tstamp(net);
+ 	int err;
+@@ -640,8 +685,12 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 		cond_resched();
+ 
+ 		write_lock_bh(&priv->lock);
+-		err = __nft_rbtree_insert(net, set, rbe, elem_priv, tstamp);
++		err = __nft_rbtree_insert(net, set, rbe, elem_priv, tstamp, last);
+ 		write_unlock_bh(&priv->lock);
++
++		if (nft_rbtree_interval_end(rbe))
++			priv->start_rbe_cookie = 0;
++
+ 	} while (err == -EAGAIN);
+ 
+ 	return err;
+@@ -729,6 +778,7 @@ nft_rbtree_deactivate(const struct net *net, const struct nft_set *set,
+ 		      const struct nft_set_elem *elem)
+ {
+ 	struct nft_rbtree_elem *rbe, *this = nft_elem_priv_cast(elem->priv);
++	bool last = !!(elem->flags & NFT_SET_ELEM_INTERNAL_LAST);
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	const struct rb_node *parent = priv->root.rb_node;
+ 	u8 genmask = nft_genmask_next(net);
+@@ -769,9 +819,10 @@ nft_rbtree_deactivate(const struct net *net, const struct nft_set *set,
+ 				continue;
+ 			}
+ 
+-			if (nft_rbtree_interval_start(rbe))
+-				nft_rbtree_set_start_cookie(priv, rbe);
+-			else if (!nft_rbtree_deactivate_same_interval(net, priv, rbe))
++			if (nft_rbtree_interval_start(rbe)) {
++				if (!last)
++					nft_rbtree_set_start_cookie(priv, rbe);
++			} else if (!nft_rbtree_deactivate_same_interval(net, priv, rbe))
+ 				return NULL;
+ 
+ 			nft_rbtree_flush(net, set, &rbe->priv);
 -- 
 2.51.0
 
