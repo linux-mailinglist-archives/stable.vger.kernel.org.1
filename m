@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wLPfEMFZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:09:05 +0100
+	id UL3iGfFRnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A621909B8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:09:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2647218F140
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11DD531D6EE2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 587EB30A8574
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163652777FE;
-	Wed, 25 Feb 2026 01:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24C11F03DE;
+	Wed, 25 Feb 2026 01:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a38I8MmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQVfOQJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC0424677D;
-	Wed, 25 Feb 2026 01:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BA31D5ABA;
+	Wed, 25 Feb 2026 01:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983832; cv=none; b=KWY4FDQ84PKhaL5/VtCU/vqjvCWfL5GOoM1Jnlwt+zz13Vpj+UTQNnTO6wZLrQyV4V51d0Bk6uMeiFnaso8J0wU+vSOpezlUpP5QKbXSCBABGlJghzVRx6yqOzVbo6sbykSsIK5pE4HRlfF012J67ES66B+cjy9OBG4+mFHeI2w=
+	t=1771983179; cv=none; b=pT6LHJHk7LYvI4Uytwz3aBd9GEhRcG37mHUEs4bfu/3C1xt9eAmTnCxIr1bls9ckjpLWiiYqZU3201lisGx6uEakDHD+ox7nufML7z1zyx+k0tKWScvCIfWQTotxOhMPQhy1HugCVAkcn+X3ifbnwK6cBb+3gByW9z+HyI1hWPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983832; c=relaxed/simple;
-	bh=UurxWU9pPGG2cDPCWK+kcLEGgW383fHT8MNtO4rccKI=;
+	s=arc-20240116; t=1771983179; c=relaxed/simple;
+	bh=REO3FOzALaW2l0U776uUpC9YbtrUnW02cPll9+zh+TA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9jTtaYGJCRejlYIPaPUZ+Xt8EwqcmQ47uRGKE/gqH1oMVIxv7iGRUvffG4lynkVLpp3wCRF2xbgC00hmsawHyaYIMnewwzOKKCs9wDxGikE16gJpUZ/MG2mt/t06oH16kJprSyCmvEugVUJCzH3qV/hEpg0pK0N86sgvDBRKpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a38I8MmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCFDC116D0;
-	Wed, 25 Feb 2026 01:43:52 +0000 (UTC)
+	 MIME-Version; b=VoNfxJLdSUWdgupufL2Ssh7XUWuTKkrmzrDZjfnP6F/6XiK0wry1/CAHs/ggLat0TWHhIN5VWs8TPNnVOQtsvaGDLNHDBZgs2DsTIhPFuq7s72KHrxa/aqtPdkKkYA4KYgGOnepCGqvhFuXcv71HzxVRJ7q0dN/QdEldNEWHj7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQVfOQJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63200C116D0;
+	Wed, 25 Feb 2026 01:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983832;
-	bh=UurxWU9pPGG2cDPCWK+kcLEGgW383fHT8MNtO4rccKI=;
+	s=korg; t=1771983179;
+	bh=REO3FOzALaW2l0U776uUpC9YbtrUnW02cPll9+zh+TA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a38I8MmWkiZMkIpztLzmGqDiO7PEwlilhNTApJinnMV83eLewZS2zLNZm5EQ6RXdi
-	 g0M/SANvcKPtGhmYYSAJT4Y0h1t0dmMiaci211X4G0jLYv5oUoHTZfkkzbHgNX8bmb
-	 QNI0rh3kBJ0xZHM/23QwUyvBDEqe1vs7kRGKQYCk=
+	b=oQVfOQJVSTY6ChnSWdpBtu/gukeBuXK63QOkfmIgrmgGRyzNLUoM+vRgzNFnW+Txm
+	 n509kePVTEKufQJHquFKTUrvSMCQVS/mwk6rYd+5cHc6EZFsFSF6QujIyJ/ADBtL08
+	 IuLkqzuouOBennkt/XMvLoQbsv1RWYs2vI1QU2aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 113/641] mfd: wm8350-core: Use IRQF_ONESHOT
+Subject: [PATCH 6.19 330/781] dm: fix unlocked test for dm_suspended_md
 Date: Tue, 24 Feb 2026 17:17:19 -0800
-Message-ID: <20260225012351.862882088@linuxfoundation.org>
+Message-ID: <20260225012407.797624252@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,76 +69,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218935-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218369-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,cirrus.com:email]
-X-Rspamd-Queue-Id: B6A621909B8
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2647218F140
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 553b4999cbe231b5011cb8db05a3092dec168aca ]
+[ Upstream commit 24c405fdbe215c45e57bba672cc42859038491ee ]
 
-Using a threaded interrupt without a dedicated primary handler mandates
-the IRQF_ONESHOT flag to mask the interrupt source while the threaded
-handler is active. Otherwise the interrupt can fire again before the
-threaded handler had a chance to run.
+The function dm_blk_report_zones tests if the device is suspended with
+the "dm_suspended_md" call. However, this function is called without
+holding any locks, so the device may be suspended just after it.
 
-Mark explained that this should not happen with this hardware since it
-is a slow irqchip which is behind an I2C/ SPI bus but the IRQ-core will
-refuse to accept such a handler.
+Move the call to dm_suspended_md after dm_get_live_table, so that the
+device can't be suspended after the suspended state was tested.
 
-Set IRQF_ONESHOT so the interrupt source is masked until the secondary
-handler is done.
-
-Fixes: 1c6c69525b40e ("genirq: Reject bogus threaded irq requests")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260128095540.863589-16-bigeasy@linutronix.de
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 37f53a2c60d0 ("dm: fix dm_blk_report_zones")
+Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mfd/wm8350/core.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-zone.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/mfd/wm8350/core.h b/include/linux/mfd/wm8350/core.h
-index 5f70d3b5d1b1a..097ef4dfcdac8 100644
---- a/include/linux/mfd/wm8350/core.h
-+++ b/include/linux/mfd/wm8350/core.h
-@@ -667,7 +667,7 @@ static inline int wm8350_register_irq(struct wm8350 *wm8350, int irq,
- 		return -ENODEV;
+diff --git a/drivers/md/dm-zone.c b/drivers/md/dm-zone.c
+index c95e417194b33..bc4e45862a220 100644
+--- a/drivers/md/dm-zone.c
++++ b/drivers/md/dm-zone.c
+@@ -60,11 +60,13 @@ int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
+ 		 * Zone revalidation during __bind() is in progress, but this
+ 		 * call is from a different process
+ 		 */
+-		if (dm_suspended_md(md))
+-			return -EAGAIN;
+-
+ 		map = dm_get_live_table(md, &srcu_idx);
+ 		put_table = true;
++
++		if (dm_suspended_md(md)) {
++			ret = -EAGAIN;
++			goto do_put_table;
++		}
+ 	} else {
+ 		/* Zone revalidation during __bind() */
+ 		map = zone_revalidate_map;
+@@ -79,6 +81,7 @@ int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
+ 		ret = dm_blk_do_report_zones(md, map, nr_zones, &dm_args);
+ 	}
  
- 	return request_threaded_irq(irq + wm8350->irq_base, NULL,
--				    handler, flags, name, data);
-+				    handler, flags | IRQF_ONESHOT, name, data);
- }
++do_put_table:
+ 	if (put_table)
+ 		dm_put_live_table(md, srcu_idx);
  
- static inline void wm8350_free_irq(struct wm8350 *wm8350, int irq, void *data)
 -- 
 2.51.0
 
