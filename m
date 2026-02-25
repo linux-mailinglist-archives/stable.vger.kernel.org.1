@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-219073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPNnGWVXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:01 +0100
+	id wMd7LmdanmlSUwQAu9opvQ
+	(envelope-from <stable+bounces-219074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2111190514
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EFAE190AF1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B77CF3230D0A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C76BA3234C42
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B23C2853F7;
-	Wed, 25 Feb 2026 01:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FC8258EF9;
+	Wed, 25 Feb 2026 01:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHW9JsBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyBdIMzS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33502522A7;
-	Wed, 25 Feb 2026 01:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C35413D51E;
+	Wed, 25 Feb 2026 01:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983999; cv=none; b=GKfTfhHmcw9aA6TGPH3ftBg9/NGP/q/1DjAbzmaFrbJuBZg6UZl4nacXwNI1GUtLh7S/iQy9bQpwf/9oljKLUjFCxacW6Yp+umvWsd2Hmc1xkcMiDZqVJ4N2iW9RbXpNbG5uHp3bqVfVMSPptwwTrOI63wHAN0IOeONv6EWBOJg=
+	t=1771984000; cv=none; b=I7Xk2SnPtGoImrDV59dlPqlNWux6o2qOEQ7lXynpQEV9TRsLQOR9uvxVQWMmHZiPUDt854+tXyNU7fKL/UbnWFtCxrlLwubu+oc+aVLdmxS+CUeTYfSLnHKYw9Js7Tsx+ruYhkTQLXd1txBPIugxr0Y/sxpc6SBBaQojYCeAE1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983999; c=relaxed/simple;
-	bh=bv9dU9p25sD+B+Ynbr//hqPLq3wYCHBe1dAm5s2VnSg=;
+	s=arc-20240116; t=1771984000; c=relaxed/simple;
+	bh=AMwnZMHvAvIiSELEV28wZrnx8vQ5jrGp0kmKQ6Z+Pgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcpygc7BbDF3I0V55aHNjI6iorBC1xbxO6LXc16yUeEd7r9biFElL6JSljJdCm5jMItkAi0ejdHtO3mKl5OqquVmK532WEjN1TPZYEjS3rXrTY5CF+1Tvi/mGnhSMbfcN4fS2Ek6z4mHAkwdgMyOZ501e/dem+cBNIl7zJBxDsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHW9JsBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59EFC116D0;
-	Wed, 25 Feb 2026 01:46:38 +0000 (UTC)
+	 MIME-Version; b=MJglxIDVt4N9l/G8H/SfRhTsP9QgBQxt1pieYriKHIehHLNzsxQOrN+GJnjCTX62wtqivNi+iNOi2CKv51poknKGLmDepScm79V5xrAmWt/f58Pabvw7LcR4Yp1sxyfCe0CqCN/vW3PSiMYeOmQBSo4duvfgR+69Ttr9ZhmZmJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyBdIMzS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC68C116D0;
+	Wed, 25 Feb 2026 01:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983998;
-	bh=bv9dU9p25sD+B+Ynbr//hqPLq3wYCHBe1dAm5s2VnSg=;
+	s=korg; t=1771984000;
+	bh=AMwnZMHvAvIiSELEV28wZrnx8vQ5jrGp0kmKQ6Z+Pgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHW9JsByW6YQrvRXXt+yJOMuviWRA4V7NRz3YWa+ASpGgFpLzS8EWNvmsaLCwx5RE
-	 pD9QEtssnm0jw0wj+p7Rrfu5FmXRFxbhNdAEPuoHTG8KPttGuXY3x4evtnHA3CLZtZ
-	 pCom8WKkhyEG0EI9fVeRjjlTILRn12a5iw3rEVCA=
+	b=vyBdIMzSJXzGE6L5f6biMUldnt5FUeHi1ZgBikyEJ5Ro5Elelhm4r7wyvOESREt4J
+	 9FLW/egnjC7lgg9y8bv9szJJOTgoVxRxUfjtfR4SKBLuDEl78zVzfbgBKig4yeIYs8
+	 uHKtXnmEdwXE/FhVpkCI05LdKIkkQLEWUGFZzpBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhang <zhangjian.3032@bytedance.com>,
+	Matt Johnston <matt@codeconstruct.com.au>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 252/641] net: mctp-i2c: fix duplicate reception of old data
-Date: Tue, 24 Feb 2026 17:19:38 -0800
-Message-ID: <20260225012354.951746026@linuxfoundation.org>
+Subject: [PATCH 6.18 253/641] mctp i2c: initialise event handler read bytes
+Date: Tue, 24 Feb 2026 17:19:39 -0800
+Message-ID: <20260225012354.974463875@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -74,72 +74,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-219074-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219073-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_PROHIBIT(0.00)[0.0.0.52:email];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:email]
-X-Rspamd-Queue-Id: C2111190514
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,codeconstruct.com.au:email]
+X-Rspamd-Queue-Id: 1EFAE190AF1
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit ae4744e173fadd092c43eda4ca92dcb74645225a ]
+[ Upstream commit 2a14e91b6d76639dac70ea170f4384c1ee3cb48d ]
 
-The MCTP I2C slave callback did not handle I2C_SLAVE_READ_REQUESTED
-events. As a result, i2c read event will trigger repeated reception of
-old data, reset rx_pos when a read request is received.
+Set a 0xff value for i2c reads of an mctp-i2c device. Otherwise reads
+will return "val" from the i2c bus driver. For i2c-aspeed and
+i2c-npcm7xx that is a stack uninitialised u8.
 
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Link: https://patch.msgid.link/20260108101829.1140448-1-zhangjian.3032@bytedance.com
+Tested with "i2ctransfer -y 1 r10@0x34" where 0x34 is a mctp-i2c
+instance, now it returns all 0xff.
+
+Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20260113-mctp-read-fix-v1-1-70c4b59c741c@codeconstruct.com.au
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 2a14e91b6d76 ("mctp i2c: initialise event handler read bytes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mctp/mctp-i2c.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/mctp/mctp-i2c.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-index f782d93f826ef..ecda1cc36391c 100644
+index ecda1cc36391c..8043b57bdf250 100644
 --- a/drivers/net/mctp/mctp-i2c.c
 +++ b/drivers/net/mctp/mctp-i2c.c
-@@ -242,6 +242,9 @@ static int mctp_i2c_slave_cb(struct i2c_client *client,
- 		return 0;
+@@ -243,7 +243,10 @@ static int mctp_i2c_slave_cb(struct i2c_client *client,
  
  	switch (event) {
-+	case I2C_SLAVE_READ_REQUESTED:
-+		midev->rx_pos = 0;
-+		break;
+ 	case I2C_SLAVE_READ_REQUESTED:
++	case I2C_SLAVE_READ_PROCESSED:
++		/* MCTP I2C transport only uses writes */
+ 		midev->rx_pos = 0;
++		*val = 0xff;
+ 		break;
  	case I2C_SLAVE_WRITE_RECEIVED:
  		if (midev->rx_pos < MCTP_I2C_BUFSZ) {
- 			midev->rx_buffer[midev->rx_pos] = *val;
-@@ -279,6 +282,9 @@ static int mctp_i2c_recv(struct mctp_i2c_dev *midev)
- 	size_t recvlen;
- 	int status;
- 
-+	if (midev->rx_pos == 0)
-+		return 0;
-+
- 	/* + 1 for the PEC */
- 	if (midev->rx_pos < MCTP_I2C_MINLEN + 1) {
- 		ndev->stats.rx_length_errors++;
 -- 
 2.51.0
 
