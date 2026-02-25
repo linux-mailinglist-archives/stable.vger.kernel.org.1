@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDSNKqdTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:03 +0100
+	id uGQLFBBanmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29AEF18F983
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79FC4190A32
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A47731C1022
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 43A0A3093D74
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCEB20C012;
-	Wed, 25 Feb 2026 01:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE24224A05D;
+	Wed, 25 Feb 2026 01:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgEAVzT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFZmvLTs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE511D5ABA;
-	Wed, 25 Feb 2026 01:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6051DDC37;
+	Wed, 25 Feb 2026 01:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983212; cv=none; b=NaGO1Wtu2XxGbZ1atOqBFmU/tOEVJcfbMUzBra6lCQQpXDwixeIuAj0zdg0yC/zU3lBJFfkIwmIXqTh1w8UK3f0t9pVKoTqV2OmTSJXvcofXjU7lctJtteIix8WvPaNPJFmUkh/+nW6yLMUXLaKHRtH9o6LfoyQRwpaDv2kpM6w=
+	t=1771983868; cv=none; b=sSlMaZd4AxTxv66GI0PScYN8R4mek82dDRPeKjPG1bCAuJUdyLLK8lRCYMh7126E6JRNjl5eOPm1g0kSoymzMo3+ehdZd/Kn8m6Ruiw59dimz+fxvFRMci/df2uCT6fWqaIKRUhJXz4yCuxt3K10Vz3Ydy/fl23JaUwR/rd8tTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983212; c=relaxed/simple;
-	bh=Ppo/N4+2Hs/UqJNmmm/0twJcI1VZ7MTnBhCOO5ff5Fw=;
+	s=arc-20240116; t=1771983868; c=relaxed/simple;
+	bh=7nW6KdvLE5crtmap/q/vAeTga3HRd6GMmFHLh24F5gE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3+s5W5wCl2Y5nvEpsCF/qyApuZowELJG2Zf6Z6uW0f5N4D/0UTwSiRAISuirNBAx/VpgQcjwILmFy2svr6rM2EyBMaSeF8edIijgqdyTI8xUZRE2MvdZ5Fj3RQjIKtIwge1it2KpifWiaAnDR0HAb8syoGGysgHwdWX1UHLU1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgEAVzT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF99C116D0;
-	Wed, 25 Feb 2026 01:33:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b8Zq77emjPvbfMx79wD9hVCrSJI/Yw3H/+zwgFYIxWPlfjOgaFMVCtUdyjne1q+kmR1nkGFTeakqyTs1uRYKKrGnlONIMlAfCB/P+xNEWlrrlqvTrp8RgQNWQkNS0nBf4jX6tBwwLX1G1zqG6Rk6OhN1iIH1eXRNepJfd7eQErQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFZmvLTs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F72C116D0;
+	Wed, 25 Feb 2026 01:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983212;
-	bh=Ppo/N4+2Hs/UqJNmmm/0twJcI1VZ7MTnBhCOO5ff5Fw=;
+	s=korg; t=1771983868;
+	bh=7nW6KdvLE5crtmap/q/vAeTga3HRd6GMmFHLh24F5gE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgEAVzT5zfN5tXomlawusggIMaW5rfmeWjMNWauND79lQm2sOKjPPctNKYA4uFDW6
-	 Zoz4nHtnwJGDkpPfs9j6m2S7MBZAqF0oxRKcm6z9paywQh5mY08cor7mBkgP3R4o14
-	 WZo+zycdkBRqWbzPX1AebOj0GxCrfHeerMCKxYew=
+	b=SFZmvLTsnrLPrhFYgWR2POFOSIk5T15egU++ohWd7GFm0WGF+3Ln6YXXqwzBsgFZ/
+	 htsG3FrQZuaP4LHUUHIXPiiwwCTIIiOW18E2dv7E7voULKJtJqrk9pR8IG6bNSmpLp
+	 ix0OhwicFSQVcM6L74Ymr6NtL7zXsdmE7ZoEFtG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Narayana Murty N <nnmlinux@linux.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 361/781] xdrgen: Initialize data pointer for zero-length items
-Date: Tue, 24 Feb 2026 17:17:50 -0800
-Message-ID: <20260225012408.538095029@linuxfoundation.org>
+Subject: [PATCH 6.18 145/641] powerpc/eeh: fix recursive pci_lock_rescan_remove locking in EEH event handling
+Date: Tue, 24 Feb 2026 17:17:51 -0800
+Message-ID: <20260225012352.623920509@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +65,305 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218398-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218966-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[brown.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 29AEF18F983
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 79FC4190A32
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-[ Upstream commit 27b0fcae8f535fb882b1876227a935dcfdf576aa ]
+[ Upstream commit 815a8d2feb5615ae7f0b5befd206af0b0160614c ]
 
-The xdrgen decoders for strings and opaque data had an
-optimization that skipped calling xdr_inline_decode() when the
-item length was zero. This left the data pointer uninitialized,
-which could lead to unpredictable behavior when callers access
-it.
+The recent commit 1010b4c012b0 ("powerpc/eeh: Make EEH driver device
+hotplug safe") restructured the EEH driver to improve synchronization
+with the PCI hotplug layer.
 
-Remove the zero-length check and always call xdr_inline_decode().
-When passed a length of zero, xdr_inline_decode() returns the
-current buffer position, which is valid and matches the behavior
-of hand-coded XDR decoders throughout the kernel.
+However, it inadvertently moved pci_lock_rescan_remove() outside its
+intended scope in eeh_handle_normal_event(), leading to broken PCI
+error reporting and improper EEH event triggering. Specifically,
+eeh_handle_normal_event() acquired pci_lock_rescan_remove() before
+calling eeh_pe_bus_get(), but eeh_pe_bus_get() itself attempts to
+acquire the same lock internally, causing nested locking and disrupting
+normal EEH event handling paths.
 
-Fixes: 4b132aacb076 ("tools: Add xdrgen")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+This patch adds a boolean parameter do_lock to _eeh_pe_bus_get(),
+with two public wrappers:
+    eeh_pe_bus_get() with locking enabled.
+    eeh_pe_bus_get_nolock() that skips locking.
+
+Callers that already hold pci_lock_rescan_remove() now use
+eeh_pe_bus_get_nolock() to avoid recursive lock acquisition.
+
+Additionally, pci_lock_rescan_remove() calls are restored to the correct
+position—after eeh_pe_bus_get() and immediately before iterating affected
+PEs and devices. This ensures EEH-triggered PCI removes occur under proper
+bus rescan locking without recursive lock contention.
+
+The eeh_pe_loc_get() function has been split into two functions:
+    eeh_pe_loc_get(struct eeh_pe *pe) which retrieves the loc for given PE.
+    eeh_pe_loc_get_bus(struct pci_bus *bus) which retrieves the location
+    code for given bus.
+
+This resolves lockdep warnings such as:
+<snip>
+[   84.964298] [    T928] ============================================
+[   84.964304] [    T928] WARNING: possible recursive locking detected
+[   84.964311] [    T928] 6.18.0-rc3 #51 Not tainted
+[   84.964315] [    T928] --------------------------------------------
+[   84.964320] [    T928] eehd/928 is trying to acquire lock:
+[   84.964324] [    T928] c000000003b29d58 (pci_rescan_remove_lock){+.+.}-{3:3}, at: pci_lock_rescan_remove+0x28/0x40
+[   84.964342] [    T928]
+                       but task is already holding lock:
+[   84.964347] [    T928] c000000003b29d58 (pci_rescan_remove_lock){+.+.}-{3:3}, at: pci_lock_rescan_remove+0x28/0x40
+[   84.964357] [    T928]
+                       other info that might help us debug this:
+[   84.964363] [    T928]  Possible unsafe locking scenario:
+
+[   84.964367] [    T928]        CPU0
+[   84.964370] [    T928]        ----
+[   84.964373] [    T928]   lock(pci_rescan_remove_lock);
+[   84.964378] [    T928]   lock(pci_rescan_remove_lock);
+[   84.964383] [    T928]
+                       *** DEADLOCK ***
+
+[   84.964388] [    T928]  May be due to missing lock nesting notation
+
+[   84.964393] [    T928] 1 lock held by eehd/928:
+[   84.964397] [    T928]  #0: c000000003b29d58 (pci_rescan_remove_lock){+.+.}-{3:3}, at: pci_lock_rescan_remove+0x28/0x40
+[   84.964408] [    T928]
+                       stack backtrace:
+[   84.964414] [    T928] CPU: 2 UID: 0 PID: 928 Comm: eehd Not tainted 6.18.0-rc3 #51 VOLUNTARY
+[   84.964417] [    T928] Hardware name: IBM,9080-HEX POWER10 (architected) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_022) hv:phyp pSeries
+[   84.964419] [    T928] Call Trace:
+[   84.964420] [    T928] [c0000011a7157990] [c000000001705de4] dump_stack_lvl+0xc8/0x130 (unreliable)
+[   84.964424] [    T928] [c0000011a71579d0] [c0000000002f66e0] print_deadlock_bug+0x430/0x440
+[   84.964428] [    T928] [c0000011a7157a70] [c0000000002fd0c0] __lock_acquire+0x1530/0x2d80
+[   84.964431] [    T928] [c0000011a7157ba0] [c0000000002fea54] lock_acquire+0x144/0x410
+[   84.964433] [    T928] [c0000011a7157cb0] [c0000011a7157cb0] __mutex_lock+0xf4/0x1050
+[   84.964436] [    T928] [c0000011a7157e00] [c000000000de21d8] pci_lock_rescan_remove+0x28/0x40
+[   84.964439] [    T928] [c0000011a7157e20] [c00000000004ed98] eeh_pe_bus_get+0x48/0xc0
+[   84.964442] [    T928] [c0000011a7157e50] [c000000000050434] eeh_handle_normal_event+0x64/0xa60
+[   84.964446] [    T928] [c0000011a7157f30] [c000000000051de8] eeh_event_handler+0xf8/0x190
+[   84.964450] [    T928] [c0000011a7157f90] [c0000000002747ac] kthread+0x16c/0x180
+[   84.964453] [    T928] [c0000011a7157fe0] [c00000000000ded8] start_kernel_thread+0x14/0x18
+</snip>
+
+Fixes: 1010b4c012b0 ("powerpc/eeh: Make EEH driver device hotplug safe")
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+Reviewed-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20251210142559.8874-1-nnmlinux@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/xdrgen/_builtins.h | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ arch/powerpc/include/asm/eeh.h   |  2 +
+ arch/powerpc/kernel/eeh_driver.c | 11 ++---
+ arch/powerpc/kernel/eeh_pe.c     | 74 ++++++++++++++++++++++++++++++--
+ 3 files changed, 78 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/sunrpc/xdrgen/_builtins.h b/include/linux/sunrpc/xdrgen/_builtins.h
-index 66ca3ece951ab..a5ab75d2db044 100644
---- a/include/linux/sunrpc/xdrgen/_builtins.h
-+++ b/include/linux/sunrpc/xdrgen/_builtins.h
-@@ -188,12 +188,10 @@ xdrgen_decode_string(struct xdr_stream *xdr, string *ptr, u32 maxlen)
- 		return false;
- 	if (unlikely(maxlen && len > maxlen))
- 		return false;
--	if (len != 0) {
--		p = xdr_inline_decode(xdr, len);
--		if (unlikely(!p))
--			return false;
--		ptr->data = (unsigned char *)p;
--	}
-+	p = xdr_inline_decode(xdr, len);
-+	if (unlikely(!p))
-+		return false;
-+	ptr->data = (unsigned char *)p;
- 	ptr->len = len;
- 	return true;
+diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
+index 5e34611de9ef4..b7ebb4ac2c710 100644
+--- a/arch/powerpc/include/asm/eeh.h
++++ b/arch/powerpc/include/asm/eeh.h
+@@ -289,6 +289,8 @@ void eeh_pe_dev_traverse(struct eeh_pe *root,
+ void eeh_pe_restore_bars(struct eeh_pe *pe);
+ const char *eeh_pe_loc_get(struct eeh_pe *pe);
+ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe);
++const char *eeh_pe_loc_get_bus(struct pci_bus *bus);
++struct pci_bus *eeh_pe_bus_get_nolock(struct eeh_pe *pe);
+ 
+ void eeh_show_enabled(void);
+ int __init eeh_init(struct eeh_ops *ops);
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index ef78ff77cf8f2..028f691585323 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -846,7 +846,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 
+ 	pci_lock_rescan_remove();
+ 
+-	bus = eeh_pe_bus_get(pe);
++	bus = eeh_pe_bus_get_nolock(pe);
+ 	if (!bus) {
+ 		pr_err("%s: Cannot find PCI bus for PHB#%x-PE#%x\n",
+ 			__func__, pe->phb->global_number, pe->addr);
+@@ -886,14 +886,15 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 	/* Log the event */
+ 	if (pe->type & EEH_PE_PHB) {
+ 		pr_err("EEH: Recovering PHB#%x, location: %s\n",
+-			pe->phb->global_number, eeh_pe_loc_get(pe));
++			pe->phb->global_number, eeh_pe_loc_get_bus(bus));
+ 	} else {
+ 		struct eeh_pe *phb_pe = eeh_phb_pe_get(pe->phb);
+ 
+ 		pr_err("EEH: Recovering PHB#%x-PE#%x\n",
+ 		       pe->phb->global_number, pe->addr);
+ 		pr_err("EEH: PE location: %s, PHB location: %s\n",
+-		       eeh_pe_loc_get(pe), eeh_pe_loc_get(phb_pe));
++		       eeh_pe_loc_get_bus(bus),
++		       eeh_pe_loc_get_bus(eeh_pe_bus_get_nolock(phb_pe)));
+ 	}
+ 
+ #ifdef CONFIG_STACKTRACE
+@@ -1098,7 +1099,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
+ 		eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
+ 
+-		bus = eeh_pe_bus_get(pe);
++		bus = eeh_pe_bus_get_nolock(pe);
+ 		if (bus)
+ 			pci_hp_remove_devices(bus);
+ 		else
+@@ -1222,7 +1223,7 @@ void eeh_handle_special_event(void)
+ 				    (phb_pe->state & EEH_PE_RECOVERING))
+ 					continue;
+ 
+-				bus = eeh_pe_bus_get(phb_pe);
++				bus = eeh_pe_bus_get_nolock(phb_pe);
+ 				if (!bus) {
+ 					pr_err("%s: Cannot find PCI bus for "
+ 					       "PHB#%x-PE#%x\n",
+diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+index e740101fadf3b..040e8f69a4aa8 100644
+--- a/arch/powerpc/kernel/eeh_pe.c
++++ b/arch/powerpc/kernel/eeh_pe.c
+@@ -812,6 +812,24 @@ void eeh_pe_restore_bars(struct eeh_pe *pe)
+ const char *eeh_pe_loc_get(struct eeh_pe *pe)
+ {
+ 	struct pci_bus *bus = eeh_pe_bus_get(pe);
++	return eeh_pe_loc_get_bus(bus);
++}
++
++/**
++ * eeh_pe_loc_get_bus - Retrieve location code binding to the given PCI bus
++ * @bus: PCI bus
++ *
++ * Retrieve the location code associated with the given PCI bus. If the bus
++ * is a root bus, the location code is fetched from the PHB device tree node
++ * or root port. Otherwise, the location code is obtained from the device
++ * tree node of the upstream bridge of the bus. The function walks up the
++ * bus hierarchy if necessary, checking each node for the appropriate
++ * location code property ("ibm,io-base-loc-code" for root buses,
++ * "ibm,slot-location-code" for others). If no location code is found,
++ * returns "N/A".
++ */
++const char *eeh_pe_loc_get_bus(struct pci_bus *bus)
++{
+ 	struct device_node *dn;
+ 	const char *loc = NULL;
+ 
+@@ -838,8 +856,9 @@ const char *eeh_pe_loc_get(struct eeh_pe *pe)
  }
-@@ -219,12 +217,10 @@ xdrgen_decode_opaque(struct xdr_stream *xdr, opaque *ptr, u32 maxlen)
- 		return false;
- 	if (unlikely(maxlen && len > maxlen))
- 		return false;
--	if (len != 0) {
--		p = xdr_inline_decode(xdr, len);
--		if (unlikely(!p))
--			return false;
--		ptr->data = (u8 *)p;
--	}
-+	p = xdr_inline_decode(xdr, len);
-+	if (unlikely(!p))
-+		return false;
-+	ptr->data = (u8 *)p;
- 	ptr->len = len;
- 	return true;
+ 
+ /**
+- * eeh_pe_bus_get - Retrieve PCI bus according to the given PE
++ * _eeh_pe_bus_get - Retrieve PCI bus according to the given PE
+  * @pe: EEH PE
++ * @do_lock: Is the caller already held the pci_lock_rescan_remove?
+  *
+  * Retrieve the PCI bus according to the given PE. Basically,
+  * there're 3 types of PEs: PHB/Bus/Device. For PHB PE, the
+@@ -847,7 +866,7 @@ const char *eeh_pe_loc_get(struct eeh_pe *pe)
+  * returned for BUS PE. However, we don't have associated PCI
+  * bus for DEVICE PE.
+  */
+-struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
++static struct pci_bus *_eeh_pe_bus_get(struct eeh_pe *pe, bool do_lock)
+ {
+ 	struct eeh_dev *edev;
+ 	struct pci_dev *pdev;
+@@ -862,11 +881,58 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
+ 
+ 	/* Retrieve the parent PCI bus of first (top) PCI device */
+ 	edev = list_first_entry_or_null(&pe->edevs, struct eeh_dev, entry);
+-	pci_lock_rescan_remove();
++	if (do_lock)
++		pci_lock_rescan_remove();
+ 	pdev = eeh_dev_to_pci_dev(edev);
+ 	if (pdev)
+ 		bus = pdev->bus;
+-	pci_unlock_rescan_remove();
++	if (do_lock)
++		pci_unlock_rescan_remove();
+ 
+ 	return bus;
  }
++
++/**
++ * eeh_pe_bus_get - Retrieve PCI bus associated with the given EEH PE, locking
++ * if needed
++ * @pe: Pointer to the EEH PE
++ *
++ * This function is a wrapper around _eeh_pe_bus_get(), which retrieves the PCI
++ * bus associated with the provided EEH PE structure. It acquires the PCI
++ * rescans lock to ensure safe access to shared data during the retrieval
++ * process. This function should be used when the caller requires the PCI bus
++ * while holding the rescan/remove lock, typically during operations that modify
++ * or inspect PCIe device state in a safe manner.
++ *
++ * RETURNS:
++ * A pointer to the PCI bus associated with the EEH PE, or NULL if none found.
++ */
++
++struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
++{
++	return _eeh_pe_bus_get(pe, true);
++}
++
++/**
++ * eeh_pe_bus_get_nolock - Retrieve PCI bus associated with the given EEH PE
++ * without locking
++ * @pe: Pointer to the EEH PE
++ *
++ * This function is a variant of _eeh_pe_bus_get() that retrieves the PCI bus
++ * associated with the specified EEH PE without acquiring the
++ * pci_lock_rescan_remove lock. It should only be used when the caller can
++ * guarantee safe access to PE structures without the need for that lock,
++ * typically in contexts where the lock is already held locking is otherwise
++ * managed.
++ *
++ * RETURNS:
++ * pointer to the PCI bus associated with the EEH PE, or NULL if none is found.
++ *
++ * NOTE:
++ * Use this function carefully to avoid race conditions and data corruption.
++ */
++
++struct pci_bus *eeh_pe_bus_get_nolock(struct eeh_pe *pe)
++{
++	return _eeh_pe_bus_get(pe, false);
++}
 -- 
 2.51.0
 
