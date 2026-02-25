@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPwDKeFYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:21 +0100
+	id MFZrMTCenmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424F5190829
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E78192BC4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1DFE3203314
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4BD57305CAB0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F2A274B3B;
-	Wed, 25 Feb 2026 01:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D8630BBAE;
+	Wed, 25 Feb 2026 06:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFa7+fiv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpwHj3y/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0840D258ED5;
-	Wed, 25 Feb 2026 01:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0723E2D3EEE;
+	Wed, 25 Feb 2026 06:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983642; cv=none; b=NK41DRhx5MyGvnWrybs1zeKrFbMn1aoIdVCEBfVOHgdIAWhC3XMH3aPO0voAzUGPl45uv2mbz6fY1hJDZRh+i8i22YFqezTDiwt+Ef+ssSrC6O9m3LHONeWDWc+WXdutiQAWRVPMxMG/oLnS/tyiOAkpldlbZcuvE3VmLeUREig=
+	t=1772002735; cv=none; b=rX+FeuS01tBzFpLjgn2w1rkIZ3dvSlcqzot7Vm2Jtwitv/7QOZR9tKJlH3M3S3BRumpLyJu4erVT52XEUiVT3cIlnmWdg5DA8llUyZC99hejPjv6BTblwzRnbbUJnKE1mjBgTd7bRATd2pBEjP5RXhkjluYCaGxeQfAN02LJ/SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983642; c=relaxed/simple;
-	bh=ZAI/Kdki0czgfxuhfuLxo+aLSRlhSnilSI9I8WvgvMI=;
+	s=arc-20240116; t=1772002735; c=relaxed/simple;
+	bh=Cw/RSrTtaux8XoLkV85y1P7p8poENNHHHV/fAKApC0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLFs+0f+EG7EujcpMaQMF+sK0+zX6oG/8q0Jct6r58MuEgWyd7qKAXA8R3eW1v2nRjG0XiRuYkEhl8vN9gkjEYbHzbehRfb8nu+7DjJDeOW07t2SfGHknf0lxWvwyaOm8uTZ7P23fbM60yM7z7xJq+pOAFEa+LjQ/pWzBL2U0D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFa7+fiv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FEBC116D0;
-	Wed, 25 Feb 2026 01:40:41 +0000 (UTC)
+	 MIME-Version; b=b0oef2KzIotFuveomjWF1Dms/XtpV0kEiX5XIqgBKDgbmNIqihUureMs/8CdJZ7viU+riiRn1A7HNfXzLmuI6FXQTyuZSlsMHQsH4a7U20kN5ETRydU4OgfJtoQLmtBa+YZv6xDMG4rZNQ5zTFTyawemTddWExZ60UnRG5bcctc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpwHj3y/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88DDC116D0;
+	Wed, 25 Feb 2026 06:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983641;
-	bh=ZAI/Kdki0czgfxuhfuLxo+aLSRlhSnilSI9I8WvgvMI=;
+	s=korg; t=1772002734;
+	bh=Cw/RSrTtaux8XoLkV85y1P7p8poENNHHHV/fAKApC0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFa7+fivqbh78p9PnCMK6vyLhnp02DAubPLqLHb0UGfM1HolQ6QAQYaf5OMsSLQe9
-	 mct6Bp41khK6IuyJK3wspbf4gXfSqOikODZfwy1wocU8KENFDF3LNmmk6NaXWfN8pq
-	 ZQRLotNEDvxyIJ1Mvr+DphylS9Eq/6I/VzNK+94U=
+	b=HpwHj3y/9qAEbruzWsvMxPj5itLXbvUxDbpNtlO9yVArhqIGd7KNJTbnKqMn7CEl2
+	 SyzTlz5iKdzEAKNodDnPIXTwgXhBh/3JK6XFCjlcUKUNZXk8ZLMPyMpSHIjwLlVFIX
+	 V+q/npkg4r1bQgEpjd8j6gi4L2irFeFnAf0UHJfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shekhar Chauhan <shekhar.chauhan@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 730/781] drm/xe/xe2_hpg: Fix handling of Wa_14019988906 & Wa_14019877138
-Date: Tue, 24 Feb 2026 17:23:59 -0800
-Message-ID: <20260225012417.638526218@linuxfoundation.org>
+Subject: [PATCH 6.18 514/641] selftests: net: lib: Fix jq parsing error
+Date: Tue, 24 Feb 2026 17:24:00 -0800
+Message-ID: <20260225012400.976438907@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218770-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219467-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,83 +87,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 424F5190829
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 68E78192BC4
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit bc6387a2e0c1562faa56ce2a98cef50cab809e08 ]
+[ Upstream commit 10ec0fc0ccc525abc807b0ca8ad5a26a0bd56361 ]
 
-The PSS_CHICKEN register has been part of the RCS engine's LRC since it
-was first introduced in Xe_LP.  That means that any workarounds that
-adjust its value (such as Wa_14019988906 and Wa_14019877138) need to be
-implemented in the lrc_was[] table so that they become part of the
-default LRC from which all subsequent LRCs are copied.  Although these
-workarounds were implemented correctly on most platforms, they were
-incorrectly placed on the engine_was[] table for Xe2_HPG.
+The testcase failed as below:
+$./vlan_bridge_binding.sh
+...
++ adf_ip_link_set_up d1
++ local name=d1
++ shift
++ ip_link_is_up d1
++ ip_link_has_flag d1 UP
++ local name=d1
++ shift
++ local flag=UP
++ shift
+++ ip -j link show d1
+++ jq --arg flag UP 'any(.[].flags.[]; . == $flag)'
+jq: error: syntax error, unexpected '[', expecting FORMAT or QQSTRING_START
+ (Unix shell quoting issues?) at <top-level>, line 1:
+any(.[].flags.[]; . == $flag)
+jq: 1 compile error
 
-Move the workarounds to the proper lrc_was[] table and switch the
-'xe_rtp_match_first_render_or_compute' rule to specifically match the
-RCS since that's the engine whose LRC manages the register.
+Remove the extra dot (.) after flags array to fix this.
 
-Bspec: 65182
-Fixes: 7f3ee7d88058 ("drm/xe/xe2hpg: Add initial GT workarounds")
-Reviewed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Link: https://patch.msgid.link/20260205220508.51905-2-matthew.d.roper@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit e04c609eedf4d6748ac0bcada4de1275b034fed6)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 4baa1d3a5080 ("selftests: net: lib: Add ip_link_has_flag()")
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/20260211022146.190948-1-yuehaibing@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_wa.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ tools/testing/selftests/net/lib.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
-index e32dd2fde6f1c..c7eab0c4af7a8 100644
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -567,16 +567,6 @@ static const struct xe_rtp_entry_sr engine_was[] = {
- 		       FUNC(xe_rtp_match_first_render_or_compute)),
- 	  XE_RTP_ACTIONS(SET(ROW_CHICKEN, EARLY_EOT_DIS))
- 	},
--	{ XE_RTP_NAME("14019988906"),
--	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002),
--		       FUNC(xe_rtp_match_first_render_or_compute)),
--	  XE_RTP_ACTIONS(SET(XEHP_PSS_CHICKEN, FLSH_IGNORES_PSD))
--	},
--	{ XE_RTP_NAME("14019877138"),
--	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002),
--		       FUNC(xe_rtp_match_first_render_or_compute)),
--	  XE_RTP_ACTIONS(SET(XEHP_PSS_CHICKEN, FD_END_COLLECT))
--	},
- 	{ XE_RTP_NAME("14020338487"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002),
- 		       FUNC(xe_rtp_match_first_render_or_compute)),
-@@ -873,6 +863,14 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
- 	  XE_RTP_RULES(GRAPHICS_VERSION(2001), ENGINE_CLASS(RENDER)),
- 	  XE_RTP_ACTIONS(SET(WM_CHICKEN3, HIZ_PLANE_COMPRESSION_DIS))
- 	},
-+	{ XE_RTP_NAME("14019988906"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002), ENGINE_CLASS(RENDER)),
-+	  XE_RTP_ACTIONS(SET(XEHP_PSS_CHICKEN, FLSH_IGNORES_PSD))
-+	},
-+	{ XE_RTP_NAME("14019877138"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002), ENGINE_CLASS(RENDER)),
-+	  XE_RTP_ACTIONS(SET(XEHP_PSS_CHICKEN, FD_END_COLLECT))
-+	},
- 	{ XE_RTP_NAME("14021490052"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION(2001), ENGINE_CLASS(RENDER)),
- 	  XE_RTP_ACTIONS(SET(FF_MODE,
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index f448bafb3f208..d0306b27fe95e 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -576,7 +576,7 @@ ip_link_has_flag()
+ 	local flag=$1; shift
+ 
+ 	local state=$(ip -j link show "$name" |
+-		      jq --arg flag "$flag" 'any(.[].flags.[]; . == $flag)')
++		      jq --arg flag "$flag" 'any(.[].flags[]; . == $flag)')
+ 	[[ $state == true ]]
+ }
+ 
 -- 
 2.51.0
 
