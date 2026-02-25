@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218744-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBAKCw6gnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:02 +0100
+	id MHegCApVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218744-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84938193048
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BA118FEB7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D145F31C2982
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5ADD31190F3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAC42BDC03;
-	Wed, 25 Feb 2026 06:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C692126B764;
+	Wed, 25 Feb 2026 01:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnsJIMHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="poDqyujx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5316D3081D7;
-	Wed, 25 Feb 2026 06:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACBA248881;
+	Wed, 25 Feb 2026 01:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002694; cv=none; b=fHerpnqrwwD/msgnXsO6IXfqnQU8nUIdjjjDdBcGVf9GT9unyKinuij4Whx9oMm7Z439HIsd+Zk7qdTlhLGsaFDq4URYIw3FOeaqwjBKRWOu3qmEDSjbJXh/7XHYrjrcwMJrPCqLZs0rjgpCP12YXonaY6alVLMDagDOJO/+xVM=
+	t=1771983611; cv=none; b=Fy/lyxvlx9K6ssfX8Thxxi+g9Kz6SJU4a8mHpOr/yl6CG8cfcOOPAJS+fewI+Z7zjFO44BRcG5X8eYaAHjPytFXrKcXSnWDAH7YRsfOJyxqN6vi2WmSR+zqbDWKWgxMNSh3HM2bV5SfMlYcQMtB3rRZ4LL01rjsyMfIMNTqxwuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002694; c=relaxed/simple;
-	bh=LvPsTPBwJ3HAtTWL/sSbkPggwowCa15cDIQcxedsods=;
+	s=arc-20240116; t=1771983611; c=relaxed/simple;
+	bh=Rk6/ez/L8oCsU7jYWhJuuXvpcpYf45bFdHqC2IMcEHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDhsX05xguWomT8ziEWllsNQf2gf49OjaL2CdDOLuvuVDE/b59bE7yJDwlJBSWepCmHmv71UQRggwM7QBRlyONFsY1Zz5zUh1xwPX7Fx7C/Yo3+C1vsaOerQlEzoSDZMOAZBCz4ecrRYAk06cWbvcN7glkr8gB+9V1KhLjX94Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnsJIMHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD3EC19425;
-	Wed, 25 Feb 2026 06:58:14 +0000 (UTC)
+	 MIME-Version; b=fFGQHIBpuwmEAoaHibnccBAFKAvtabiZR5Pb4qt1QGnL4/IO4vpTko+82e2wWOenIfFpwwXGdbomJheNRI9pnEiHklj2SZZ6KjJD1ziI+tgbyuZaFmw0LqOGFk8x4tMDJfm9Y1zbjPcggoiLPoiiV961wKqamwCNIVSDt8Mp1pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=poDqyujx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45111C19423;
+	Wed, 25 Feb 2026 01:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002694;
-	bh=LvPsTPBwJ3HAtTWL/sSbkPggwowCa15cDIQcxedsods=;
+	s=korg; t=1771983611;
+	bh=Rk6/ez/L8oCsU7jYWhJuuXvpcpYf45bFdHqC2IMcEHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnsJIMHKz5NkJKa6f21gshDaFB0K4LmIPwtui0YbU3EkLp+FeVkJ+Yul5mp1os7xj
-	 EEP7ZEaHXARzj4idvxMXpX1fO22C4dRYb5XKyESYwWeuqRbLdTjQHgOBa9c1L03Izy
-	 YU9HwIjrCzS8wEeLD1VPzKT28uodJJqbT6vOf+6U=
+	b=poDqyujxTtHVR5IJHAc4a7tEy3EqAuRZ6x3uOa0fxFYvO8aIj9cZGzL3XBqBITeZ7
+	 fx3TDf7spw35BgqRbdE+sFFF5mZIFvp9hQl4YTs7feTj8vuUpzLX52zA+kvh56ag5n
+	 zE9mSogxWJLbL5piuzs6BN/XPv+7jwDKcXhPTpqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 489/641] pinctrl: meson: amlogic-a4: Fix device node reference leak in bank helpers
+Subject: [PATCH 6.19 706/781] drm/amdgpu: Fix memory leak in amdgpu_acpi_enumerate_xcc()
 Date: Tue, 24 Feb 2026 17:23:35 -0800
-Message-ID: <20260225012400.366423005@linuxfoundation.org>
+Message-ID: <20260225012417.067197384@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +66,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219405-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amlogic.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218744-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.955];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amlogic.com:email]
-X-Rspamd-Queue-Id: 84938193048
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,seu.edu.cn:email]
+X-Rspamd-Queue-Id: 82BA118FEB7
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit e56aa18eba32fb68ac5e19e44670010095bb189c ]
+[ Upstream commit c9be63d565789b56ca7b0197e2cb78a3671f95a8 ]
 
-of_parse_phandle_with_fixed_args() increments the reference count of the
-returned device node, so it must be explicitly released using
-of_node_put() after use.
+In amdgpu_acpi_enumerate_xcc(), if amdgpu_acpi_dev_init() returns -ENOMEM,
+the function returns directly without releasing the allocated xcc_info,
+resulting in a memory leak.
 
-Fix the reference leak in aml_bank_pins() and aml_bank_number() by
-adding the missing of_node_put() calls.
+Fix this by ensuring that xcc_info is properly freed in the error paths.
 
-Fixes: 6e9be3abb78c ("pinctrl: Add driver support for Amlogic SoCs")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
+
+Fixes: 4d5275ab0b18 ("drm/amdgpu: Add parsing of acpi xcc objects")
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-amlogic-a4.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
-index d9e3a8d5932a8..f05d8261624a4 100644
---- a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
-+++ b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
-@@ -725,8 +725,9 @@ static u32 aml_bank_pins(struct device_node *np)
- 	if (of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3,
- 					     0, &of_args))
- 		return 0;
--	else
--		return of_args.args[2];
-+
-+	of_node_put(of_args.np);
-+	return of_args.args[2];
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+index d31460a9e9582..7c9d8a6d0bfdb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -1135,8 +1135,10 @@ static int amdgpu_acpi_enumerate_xcc(void)
+ 		if (!dev_info)
+ 			ret = amdgpu_acpi_dev_init(&dev_info, xcc_info, sbdf);
  
- static int aml_bank_number(struct device_node *np)
-@@ -736,8 +737,9 @@ static int aml_bank_number(struct device_node *np)
- 	if (of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3,
- 					     0, &of_args))
- 		return -EINVAL;
--	else
--		return of_args.args[1] >> 8;
-+
-+	of_node_put(of_args.np);
-+	return of_args.args[1] >> 8;
- }
+-		if (ret == -ENOMEM)
++		if (ret == -ENOMEM) {
++			kfree(xcc_info);
+ 			return ret;
++		}
  
- static unsigned int aml_count_pins(struct device_node *np)
+ 		if (!dev_info) {
+ 			kfree(xcc_info);
 -- 
 2.51.0
 
