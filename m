@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-218268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MI5vE1xRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:16 +0100
+	id INXYNvxTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BC718EFB9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E7618FB34
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C8EA3094D5E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C77EA308CC4E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CBC251795;
-	Wed, 25 Feb 2026 01:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCDE1E2834;
+	Wed, 25 Feb 2026 01:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSNAR2ZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SO13g/rY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7392BAF7;
-	Wed, 25 Feb 2026 01:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C02256C8B;
+	Wed, 25 Feb 2026 01:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983067; cv=none; b=epwebdKPaCsFZoY7w7IewpKNlmpI2OPO6F0yOaTqfvpDDbFwrFyPLsqQlZwoYEk5nQ++mi7r1ZmfzUXK5ppJTnqcObMPuUx2plU+hUZRg4EwAe3t3vaROlmnLc5yX59dRwojhxReP+EwfcEmLmw4yeOL2vytNRWSaTExJbhb31c=
+	t=1771983715; cv=none; b=kC9JaqmyMbICyJMkEM79FwfC70ZrDFheVLTRQNH0R+roHl99al9eCRw4jI9V6ZNoDkc94CCPCCrW9JsMAY39P2bNxGjZUuqRSecu3jC8pEHZ3iGfFFtfClyJwv+b584NyUKEBf1Iz8CQZ8kCNOaFI/7UAXWQtlp8mn54NtWUYxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983067; c=relaxed/simple;
-	bh=IrPOJ8OdZXN1KXM4DAvYTLX+PTJEcy138PAvSo76i7k=;
+	s=arc-20240116; t=1771983715; c=relaxed/simple;
+	bh=oiF2/VpCDPglN7M4PT8WGHhHY1GEokQi8rWp1W9wNVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwUVSIc2rup3l/x7ycaplKnKUP9deKpezL1QlK3iCdDQlQJaI+AXc44PrGqdzXmxZEcFdH2jT1uhetxqefZLHEUiN7twUvAA53OpDtKMETJNBdUnweuzelVqjEQhPMkeRs78G1k1kCqzZhdbMAgbMH85S2rH1UiFG8a73yi/51Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSNAR2ZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5DEC116D0;
-	Wed, 25 Feb 2026 01:31:07 +0000 (UTC)
+	 MIME-Version; b=fW5o/Fs2OPKAo9zvIY6vvZbUvdbK9c3XxI5NImc5499M/qdv57MW1mP0D3joi40QYlBnh0Ysa+Vrpz9zLlHaWiZ+HlLJc0bfg3EskgwPmG+VYrBMOW4G1svAd4DZLKpTdNxDpH/CeJZKv+sPBxq/W4YluU8rtyPPXaMVKDy9XHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SO13g/rY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62B3C116D0;
+	Wed, 25 Feb 2026 01:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983067;
-	bh=IrPOJ8OdZXN1KXM4DAvYTLX+PTJEcy138PAvSo76i7k=;
+	s=korg; t=1771983715;
+	bh=oiF2/VpCDPglN7M4PT8WGHhHY1GEokQi8rWp1W9wNVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSNAR2ZLxDJHfu61aSxJw7pFikxUobDSIuOX799yWnUMTO5o8K/01ngGtnH5Sm5sr
-	 VNAIgxcVCGYv/99j7jfx4rXuaiTvJgcPAENsyXJIVFb5UMhDkuffSjZxYJjlxnF8Zb
-	 U5r5dyoqX/Fag/PSGvze42c959G3wXKn7Z8FQyEc=
+	b=SO13g/rYKPVnoolRb8ikoC5jadzj2Px9fczPcSf/eaEgH+xxNO7MNrNS827EMky2i
+	 q0miHeuNlCXp1NhHUzpMpocuFBMupECL4OPRL4nsk6C3oDMQGGxOfpfqJQRAboT4X0
+	 OWMHrZoj9R42pogmgP3l/vRDF6h91nW7ChGRlUwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris J Arges <carges@cloudflare.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 230/781] ima: Fix stack-out-of-bounds in is_bprm_creds_for_exec()
+Subject: [PATCH 6.18 013/641] gfs2: Retries missing in gfs2_{rename,exchange}
 Date: Tue, 24 Feb 2026 17:15:39 -0800
-Message-ID: <20260225012405.352917102@linuxfoundation.org>
+Message-ID: <20260225012349.266685810@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,225 +66,208 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218268-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218833-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E8BC718EFB9
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C3E7618FB34
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris J Arges <carges@cloudflare.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 377cae9851e8559e9d8b82a78c1ac0abeb18839c ]
+[ Upstream commit 11d763f0b0afc2cf5f92f4adae5dbbbbef712f8f ]
 
-KASAN reported a stack-out-of-bounds access in ima_appraise_measurement
-from is_bprm_creds_for_exec:
+Fix a bug in gfs2's asynchronous glock handling for rename and exchange
+operations.  The original async implementation from commit ad26967b9afa
+("gfs2: Use async glocks for rename") mentioned that retries were needed
+but never implemented them, causing operations to fail with -ESTALE
+instead of retrying on timeout.
 
-BUG: KASAN: stack-out-of-bounds in ima_appraise_measurement+0x12dc/0x16a0
- Read of size 1 at addr ffffc9000160f940 by task sudo/550
-The buggy address belongs to stack of task sudo/550
-and is located at offset 24 in frame:
-  ima_appraise_measurement+0x0/0x16a0
-This frame has 2 objects:
-  [48, 56) 'file'
-  [80, 148) 'hash'
+Also makes the waiting interruptible.
 
-This is caused by using container_of on the *file pointer. This offset
-calculation is what triggers the stack-out-of-bounds error.
+In addition, the timeouts used were too high for situations in which
+timing out is a rare but expected scenario.  Switch to shorter timeouts
+with randomization and exponentional backoff.
 
-In order to fix this, pass in a bprm_is_check boolean which can be set
-depending on how process_measurement is called. If the caller has a
-linux_binprm pointer and the function is BPRM_CHECK we can determine
-is_check and set it then. Otherwise set it to false.
-
-Fixes: 95b3cdafd7cb7 ("ima: instantiate the bprm_creds_for_exec() hook")
-
-Signed-off-by: Chris J Arges <carges@cloudflare.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fixes: ad26967b9afa ("gfs2: Use async glocks for rename")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima.h          |  6 ++++--
- security/integrity/ima/ima_appraise.c | 16 +++-------------
- security/integrity/ima/ima_main.c     | 22 +++++++++++++---------
- 3 files changed, 20 insertions(+), 24 deletions(-)
+ fs/gfs2/glock.c | 36 +++++++++++++++++++++++++++---------
+ fs/gfs2/glock.h |  3 ++-
+ fs/gfs2/inode.c | 18 ++++++++++++++----
+ 3 files changed, 43 insertions(+), 14 deletions(-)
 
-diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-index e3d71d8d56e38..89ebe98ffc5e5 100644
---- a/security/integrity/ima/ima.h
-+++ b/security/integrity/ima/ima.h
-@@ -441,7 +441,8 @@ int ima_check_blacklist(struct ima_iint_cache *iint,
- int ima_appraise_measurement(enum ima_hooks func, struct ima_iint_cache *iint,
- 			     struct file *file, const unsigned char *filename,
- 			     struct evm_ima_xattr_data *xattr_value,
--			     int xattr_len, const struct modsig *modsig);
-+			     int xattr_len, const struct modsig *modsig,
-+			     bool bprm_is_check);
- int ima_must_appraise(struct mnt_idmap *idmap, struct inode *inode,
- 		      int mask, enum ima_hooks func);
- void ima_update_xattr(struct ima_iint_cache *iint, struct file *file);
-@@ -466,7 +467,8 @@ static inline int ima_appraise_measurement(enum ima_hooks func,
- 					   const unsigned char *filename,
- 					   struct evm_ima_xattr_data *xattr_value,
- 					   int xattr_len,
--					   const struct modsig *modsig)
-+					   const struct modsig *modsig,
-+					   bool bprm_is_check)
- {
- 	return INTEGRITY_UNKNOWN;
- }
-diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity/ima/ima_appraise.c
-index 5149ff4fd50d2..16c20c578ea87 100644
---- a/security/integrity/ima/ima_appraise.c
-+++ b/security/integrity/ima/ima_appraise.c
-@@ -470,17 +470,6 @@ int ima_check_blacklist(struct ima_iint_cache *iint,
- 	return rc;
- }
- 
--static bool is_bprm_creds_for_exec(enum ima_hooks func, struct file *file)
--{
--	struct linux_binprm *bprm;
--
--	if (func == BPRM_CHECK) {
--		bprm = container_of(&file, struct linux_binprm, file);
--		return bprm->is_check;
--	}
--	return false;
--}
--
- /*
-  * ima_appraise_measurement - appraise file measurement
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 9f2eb7e385695..7aec6cfdfd91d 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -1354,31 +1354,45 @@ static int glocks_pending(unsigned int num_gh, struct gfs2_holder *ghs)
+  * gfs2_glock_async_wait - wait on multiple asynchronous glock acquisitions
+  * @num_gh: the number of holders in the array
+  * @ghs: the glock holder array
++ * @retries: number of retries attempted so far
   *
-@@ -492,7 +481,8 @@ static bool is_bprm_creds_for_exec(enum ima_hooks func, struct file *file)
- int ima_appraise_measurement(enum ima_hooks func, struct ima_iint_cache *iint,
- 			     struct file *file, const unsigned char *filename,
- 			     struct evm_ima_xattr_data *xattr_value,
--			     int xattr_len, const struct modsig *modsig)
-+			     int xattr_len, const struct modsig *modsig,
-+			     bool bprm_is_check)
- {
- 	static const char op[] = "appraise_data";
- 	int audit_msgno = AUDIT_INTEGRITY_DATA;
-@@ -514,7 +504,7 @@ int ima_appraise_measurement(enum ima_hooks func, struct ima_iint_cache *iint,
- 	 * of the script interpreter(userspace). Differentiate kernel and
- 	 * userspace enforced integrity audit messages.
- 	 */
--	if (is_bprm_creds_for_exec(func, file))
-+	if (bprm_is_check)
- 		audit_msgno = AUDIT_INTEGRITY_USERSPACE;
+  * Returns: 0 on success, meaning all glocks have been granted and are held.
+  *          -ESTALE if the request timed out, meaning all glocks were released,
+  *          and the caller should retry the operation.
+  */
  
- 	/* If reading the xattr failed and there's no modsig, error out. */
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index 5770cf691912a..1d6229b156fb1 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -236,7 +236,8 @@ static void ima_file_free(struct file *file)
- static int process_measurement(struct file *file, const struct cred *cred,
- 			       struct lsm_prop *prop, char *buf, loff_t size,
- 			       int mask, enum ima_hooks func,
--			       enum kernel_read_file_id read_id)
-+			       enum kernel_read_file_id read_id,
-+			       bool bprm_is_check)
+-int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs)
++int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs,
++			  unsigned int retries)
  {
- 	struct inode *real_inode, *inode = file_inode(file);
- 	struct ima_iint_cache *iint = NULL;
-@@ -426,7 +427,8 @@ static int process_measurement(struct file *file, const struct cred *cred,
- 			inode_lock(inode);
- 			rc = ima_appraise_measurement(func, iint, file,
- 						      pathname, xattr_value,
--						      xattr_len, modsig);
-+						      xattr_len, modsig,
-+						      bprm_is_check);
- 			inode_unlock(inode);
+ 	struct gfs2_sbd *sdp = ghs[0].gh_gl->gl_name.ln_sbd;
+-	int i, ret = 0, timeout = 0;
+ 	unsigned long start_time = jiffies;
++	int i, ret = 0;
++	long timeout;
+ 
+ 	might_sleep();
+-	/*
+-	 * Total up the (minimum hold time * 2) of all glocks and use that to
+-	 * determine the max amount of time we should wait.
+-	 */
+-	for (i = 0; i < num_gh; i++)
+-		timeout += ghs[i].gh_gl->gl_hold_time << 1;
+ 
+-	if (!wait_event_timeout(sdp->sd_async_glock_wait,
++	timeout = GL_GLOCK_MIN_HOLD;
++	if (retries) {
++		unsigned int max_shift;
++		long incr;
++
++		/* Add a random delay and increase the timeout exponentially. */
++		max_shift = BITS_PER_LONG - 2 - __fls(GL_GLOCK_HOLD_INCR);
++		incr = min(GL_GLOCK_HOLD_INCR << min(retries - 1, max_shift),
++			   10 * HZ - GL_GLOCK_MIN_HOLD);
++		schedule_timeout_interruptible(get_random_long() % (incr / 3));
++		if (signal_pending(current))
++			goto interrupted;
++		timeout += (incr / 3) + get_random_long() % (incr / 3);
++	}
++
++	if (!wait_event_interruptible_timeout(sdp->sd_async_glock_wait,
+ 				!glocks_pending(num_gh, ghs), timeout)) {
+ 		ret = -ESTALE; /* request timed out. */
+ 		goto out;
+ 	}
++	if (signal_pending(current))
++		goto interrupted;
+ 
+ 	for (i = 0; i < num_gh; i++) {
+ 		struct gfs2_holder *gh = &ghs[i];
+@@ -1402,6 +1416,10 @@ int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs)
  		}
- 		if (!rc)
-@@ -493,14 +495,15 @@ static int ima_file_mmap(struct file *file, unsigned long reqprot,
+ 	}
+ 	return ret;
++
++interrupted:
++	ret = -EINTR;
++	goto out;
+ }
  
- 	if (reqprot & PROT_EXEC) {
- 		ret = process_measurement(file, current_cred(), &prop, NULL,
--					  0, MAY_EXEC, MMAP_CHECK_REQPROT, 0);
-+					  0, MAY_EXEC, MMAP_CHECK_REQPROT, 0,
-+					  false);
- 		if (ret)
- 			return ret;
+ /**
+diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
+index d041b922b45e3..2d4fd1a2bbbb8 100644
+--- a/fs/gfs2/glock.h
++++ b/fs/gfs2/glock.h
+@@ -204,7 +204,8 @@ int gfs2_glock_poll(struct gfs2_holder *gh);
+ int gfs2_instantiate(struct gfs2_holder *gh);
+ int gfs2_glock_holder_ready(struct gfs2_holder *gh);
+ int gfs2_glock_wait(struct gfs2_holder *gh);
+-int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs);
++int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs,
++			  unsigned int retries);
+ void gfs2_glock_dq(struct gfs2_holder *gh);
+ void gfs2_glock_dq_wait(struct gfs2_holder *gh);
+ void gfs2_glock_dq_uninit(struct gfs2_holder *gh);
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index d7e35a05c1610..63d9fe7464344 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -1495,7 +1495,7 @@ static int gfs2_rename(struct inode *odir, struct dentry *odentry,
+ 	unsigned int num_gh;
+ 	int dir_rename = 0;
+ 	struct gfs2_diradd da = { .nr_blocks = 0, .save_loc = 0, };
+-	unsigned int x;
++	unsigned int retries = 0, x;
+ 	int error;
+ 
+ 	gfs2_holder_mark_uninitialized(&r_gh);
+@@ -1545,12 +1545,17 @@ static int gfs2_rename(struct inode *odir, struct dentry *odentry,
+ 		num_gh++;
  	}
  
- 	if (prot & PROT_EXEC)
- 		return process_measurement(file, current_cred(), &prop, NULL,
--					   0, MAY_EXEC, MMAP_CHECK, 0);
-+					   0, MAY_EXEC, MMAP_CHECK, 0, false);
++again:
+ 	for (x = 0; x < num_gh; x++) {
+ 		error = gfs2_glock_nq(ghs + x);
+ 		if (error)
+ 			goto out_gunlock;
+ 	}
+-	error = gfs2_glock_async_wait(num_gh, ghs);
++	error = gfs2_glock_async_wait(num_gh, ghs, retries);
++	if (error == -ESTALE) {
++		retries++;
++		goto again;
++	}
+ 	if (error)
+ 		goto out_gunlock;
  
- 	return 0;
- }
-@@ -584,7 +587,8 @@ static int ima_bprm_check(struct linux_binprm *bprm)
+@@ -1739,7 +1744,7 @@ static int gfs2_exchange(struct inode *odir, struct dentry *odentry,
+ 	struct gfs2_sbd *sdp = GFS2_SB(odir);
+ 	struct gfs2_holder ghs[4], r_gh;
+ 	unsigned int num_gh;
+-	unsigned int x;
++	unsigned int retries = 0, x;
+ 	umode_t old_mode = oip->i_inode.i_mode;
+ 	umode_t new_mode = nip->i_inode.i_mode;
+ 	int error;
+@@ -1783,13 +1788,18 @@ static int gfs2_exchange(struct inode *odir, struct dentry *odentry,
+ 	gfs2_holder_init(nip->i_gl, LM_ST_EXCLUSIVE, GL_ASYNC, ghs + num_gh);
+ 	num_gh++;
  
- 	security_current_getlsmprop_subj(&prop);
- 	return process_measurement(bprm->file, current_cred(),
--				   &prop, NULL, 0, MAY_EXEC, BPRM_CHECK, 0);
-+				   &prop, NULL, 0, MAY_EXEC, BPRM_CHECK, 0,
-+				   bprm->is_check);
- }
++again:
+ 	for (x = 0; x < num_gh; x++) {
+ 		error = gfs2_glock_nq(ghs + x);
+ 		if (error)
+ 			goto out_gunlock;
+ 	}
  
- /**
-@@ -614,7 +618,7 @@ static int ima_creds_check(struct linux_binprm *bprm, const struct file *file)
+-	error = gfs2_glock_async_wait(num_gh, ghs);
++	error = gfs2_glock_async_wait(num_gh, ghs, retries);
++	if (error == -ESTALE) {
++		retries++;
++		goto again;
++	}
+ 	if (error)
+ 		goto out_gunlock;
  
- 	security_current_getlsmprop_subj(&prop);
- 	return process_measurement((struct file *)file, bprm->cred, &prop, NULL,
--				   0, MAY_EXEC, CREDS_CHECK, 0);
-+				   0, MAY_EXEC, CREDS_CHECK, 0, false);
- }
- 
- /**
-@@ -662,7 +666,7 @@ static int ima_file_check(struct file *file, int mask)
- 	security_current_getlsmprop_subj(&prop);
- 	return process_measurement(file, current_cred(), &prop, NULL, 0,
- 				   mask & (MAY_READ | MAY_WRITE | MAY_EXEC |
--					   MAY_APPEND), FILE_CHECK, 0);
-+					   MAY_APPEND), FILE_CHECK, 0, false);
- }
- 
- static int __ima_inode_hash(struct inode *inode, struct file *file, char *buf,
-@@ -881,7 +885,7 @@ static int ima_read_file(struct file *file, enum kernel_read_file_id read_id,
- 	func = read_idmap[read_id] ?: FILE_CHECK;
- 	security_current_getlsmprop_subj(&prop);
- 	return process_measurement(file, current_cred(), &prop, NULL, 0,
--				   MAY_READ, func, 0);
-+				   MAY_READ, func, 0, false);
- }
- 
- const int read_idmap[READING_MAX_ID] = {
-@@ -925,7 +929,7 @@ static int ima_post_read_file(struct file *file, char *buf, loff_t size,
- 	func = read_idmap[read_id] ?: FILE_CHECK;
- 	security_current_getlsmprop_subj(&prop);
- 	return process_measurement(file, current_cred(), &prop, buf, size,
--				   MAY_READ, func, read_id);
-+				   MAY_READ, func, read_id, false);
- }
- 
- /**
 -- 
 2.51.0
 
