@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDxZDdVTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:49 +0100
+	id CEqiAUBVnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC1918FA58
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91AA818FF66
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 32B683087693
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BA8FF3016882
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8896820C012;
-	Wed, 25 Feb 2026 01:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD1729A309;
+	Wed, 25 Feb 2026 01:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epa4DPY7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybzms/hb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C56518B0A;
-	Wed, 25 Feb 2026 01:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4F4285419;
+	Wed, 25 Feb 2026 01:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983253; cv=none; b=Ycu6REtmB+lRbIxhhmGmPcPHQ4gBzu3QQBmTHxaCV/0fba7rL329MpjXdkRch6h+yt9qH7DX2ReI4gn/kllK7auA1uvCP/ii0vhrDQdzCMOKWvfeVvh58rIE58YV0V2L+6Bb4pST37fCqSQ4htcoj/aJxL5EWeZlFonDbxCmEFY=
+	t=1771983889; cv=none; b=mML+HXBqwzHi8ubp45P1k5th9mKGBUCy0lN0JMrhT0LDR4tEAquNJAciYjHysv+apPbMuviFqkXQbAmkf/a4YyKl3iNRsYN5Mi7Y/lqp5jkvULdYLCDCUTQlKA5F4JQR+rkCbTnDBCRCAFz903p74xV2a1vlLVyJfo4t0EyAX5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983253; c=relaxed/simple;
-	bh=oiV+6hP4qiLfIIakgEP9oTy3euNBKq6IGlqIrAclvmQ=;
+	s=arc-20240116; t=1771983889; c=relaxed/simple;
+	bh=cQhU8V1KP+BrbAyoqCQue4bR7RUYhkwfAJVEO+16+4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pDvynrGP4smm+Du8uGAlEtge0v2c2oA33MpLI1/9z7gMc9zraCXkgyGis/HP/ViaPig0nebSwLrY9skP+k83HyN85hGY2R2Krodbi+/YDBMAtbITWf4YvNH1M1NKkVActESOxQTHU7RgBPMDEosU2hecmQhBHRcL87aE/Y55jc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epa4DPY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16105C116D0;
-	Wed, 25 Feb 2026 01:34:13 +0000 (UTC)
+	 MIME-Version; b=GvEB20xNFBTACV7bBkSFAvYVBk95gvuqYDLwRtJS6g4/KKWYx50gCPSkU6bOy11UDppv3ZkJL/96cI12UElZXYxs7q0fGcY2vL/T3b80Yj9+RJLyRz9pgH54BSpCjfPsQB9aWMbxyi4VSZGjcsKWKS5OqedFZ0ftT9k/OPpqnKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybzms/hb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC00CC19424;
+	Wed, 25 Feb 2026 01:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983253;
-	bh=oiV+6hP4qiLfIIakgEP9oTy3euNBKq6IGlqIrAclvmQ=;
+	s=korg; t=1771983889;
+	bh=cQhU8V1KP+BrbAyoqCQue4bR7RUYhkwfAJVEO+16+4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=epa4DPY7yYVSRinTR9fmyDGps3ez/uBFiHLTyOtkFEroZ3Cw9SC64X2oG/C1fVzyE
-	 NNKCj/bsTOEjMmrU35imUgAUvlAJ+QlKAXW5Sv5ERr+jK/+jzeOIPYS9q0R+Jyw5ty
-	 I2sAPcA/GH+M7sBZC0EHAh+YsjI5Vj080spU4Rt8=
+	b=ybzms/hbe2Q3ar06PkpmFi3J8+bdLCShqoTigYM222vcwyP7QZgoJx609NYu8IINs
+	 nDJ12CUfiC+39oh2kj5+IdK6t7Hpk63vQdQibUJAX/Y7dJFMTGydSGcR56cEpXJI/s
+	 ML5EZfg+3kTaGKh8Jiw4oYxuRNEmFEqSLAct6JY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?J=C3=B6rg=20Wedekind?= <joerg@wedekind.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	David Heidelberg <david@ixit.cz>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 352/781] PCI: Mark 3ware-9650SA Root Port Extended Tags as broken
+Subject: [PATCH 6.18 135/641] arm64: dts: qcom: sdm845-oneplus: Dont mark ts supply boot-on
 Date: Tue, 24 Feb 2026 17:17:41 -0800
-Message-ID: <20260225012408.323772659@linuxfoundation.org>
+Message-ID: <20260225012352.411222368@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +65,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218432-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218984-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 5CC1918FA58
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ixit.cz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
+X-Rspamd-Queue-Id: 91AA818FF66
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jörg Wedekind <joerg@wedekind.de>
+From: Casey Connolly <casey.connolly@linaro.org>
 
-[ Upstream commit 959ac08a2c2811305be8c2779779e8b0932e5a99 ]
+[ Upstream commit c9b98b9dad9749bf2eb7336a6fca31a6af1039d7 ]
 
-Per PCIe r7.0, sec 2.2.6.2.1 and 7.5.3.4, a Requester may not use 8-bit Tags
-unless its Extended Tag Field Enable is set, but all Receivers/Completers
-must handle 8-bit Tags correctly regardless of their Extended Tag Field
-Enable.
+The touchscreen isn't enabled by bootloader and doesn't need to be
+enabled at boot, only when the driver probes, thus remove the
+regulator-boot-on property.
 
-Some devices do not handle 8-bit Tags as Completers, so add a quirk for
-them.  If we find such a device, we disable Extended Tags for the entire
-hierarchy to make peer-to-peer DMA possible.
-
-The 3ware 9650SA seems to have issues with handling 8-bit tags. Mark it as
-broken.
-
-This fixes PCI Parity Errors like :
-
-  3w-9xxx: scsi0: ERROR: (0x06:0x000C): PCI Parity Error: clearing.
-  3w-9xxx: scsi0: ERROR: (0x06:0x000D): PCI Abort: clearing.
-  3w-9xxx: scsi0: ERROR: (0x06:0x000E): Controller Queue Error: clearing.
-  3w-9xxx: scsi0: ERROR: (0x06:0x0010): Microcontroller Error: clearing.
-
-Fixes: 60db3a4d8cc9 ("PCI: Enable PCIe Extended Tags if supported")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=202425
-Signed-off-by: Jörg Wedekind <joerg@wedekind.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20260119143114.21948-1-joerg@wedekind.de
+Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251118-dts-oneplus-regulators-v2-1-3e67cea1e4e7@ixit.cz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 280cd50d693bd..211b7f72d103e 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5581,6 +5581,7 @@ static void quirk_no_ext_tags(struct pci_dev *pdev)
- 	pci_walk_bus(bridge->bus, pci_configure_extended_tags, NULL);
- }
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_3WARE, 0x1004, quirk_no_ext_tags);
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_3WARE, 0x1005, quirk_no_ext_tags);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0132, quirk_no_ext_tags);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0140, quirk_no_ext_tags);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0141, quirk_no_ext_tags);
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index 51a9a276399ac..35d105ff689b9 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -160,7 +160,6 @@ ts_1p8_supply: ts-1p8-regulator {
+ 
+ 		gpio = <&tlmm 88 0>;
+ 		enable-active-high;
+-		regulator-boot-on;
+ 	};
+ };
+ 
 -- 
 2.51.0
 
