@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-218692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLgdAZZUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:02 +0100
+	id wHF5DoydnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9422B18FD35
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D13192A2A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1865330ED537
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D6FDB301DF70
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098AA2690EC;
-	Wed, 25 Feb 2026 01:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3A230DD30;
+	Wed, 25 Feb 2026 06:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRn8U/lz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPyrsxSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20D526B764;
-	Wed, 25 Feb 2026 01:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F96C303A0A;
+	Wed, 25 Feb 2026 06:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983550; cv=none; b=hFsFbrYpqFOjpo91zlryW6CYy6Rd1j8p63GAJCXEvcibAmYyVANRkxFCfhiXCqgjj3sfV59SKkc71yGlDCdxgPx4aN1qirFlBUAyQJJdmnu9gFnDWTc1KNAJo1VIe+9EA1Cyye8n4AuRTwx/bVnikNrtdmX64mbm2msDjNilqqM=
+	t=1772002658; cv=none; b=QXuy44T1Zo5mMV2Lqt5fPMQimN0btAUgyQ9KkZyk4JUhgk/LeQVwgGFGYLjf0gjXcTXMgnuZgvrxVQNvkNleXJTK68JpYbqTheiNVSKZqYXVHIIx6z2zyoKmw8VOmesIaElcJOGtbtY9XnYywwMuu3L/HJuWKUiqx1V0O5tc3eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983550; c=relaxed/simple;
-	bh=/Z/VPXaTmHdFIJPemChravodFpHRgxjrCXjgPeA3Q/Y=;
+	s=arc-20240116; t=1772002658; c=relaxed/simple;
+	bh=fZC5noTchacPenLHbAERwZLV6RIN5KepYV5nI8hCDSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FyRyM6PlJ1XXnapN/bOXSS/sVg30eG78qmFVQEIJHg0U27ZnFV+Xsn+7RWKiak4QwXhgcXI0YEr+xIXNvuFwJUNG4k+HJ0zy4PT8SeM4Xw62Drz9KV48hCnEKt51BNltwsrC7FtOPRAz864X6zdDcJvZo2kfvS7BW3KrtM99BBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRn8U/lz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D49C19423;
-	Wed, 25 Feb 2026 01:39:10 +0000 (UTC)
+	 MIME-Version; b=qAZUrLyXRLcZDq/Tn8ecGE7IbbYGd8Rk0zEfCCwNwlLUT3y+VyZQzkcjhLAEOMGzScW1LYkO3Xgg2CzvVhOIrQqUhZUM4u+oFReu2/q1gUbRC1Sjb8y3A97JGi62IGo7JQ8ma0Y/bxGtp2wZAPe/w9BzQ6KPhB82RgFB8iD7LFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPyrsxSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59040C116D0;
+	Wed, 25 Feb 2026 06:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983550;
-	bh=/Z/VPXaTmHdFIJPemChravodFpHRgxjrCXjgPeA3Q/Y=;
+	s=korg; t=1772002658;
+	bh=fZC5noTchacPenLHbAERwZLV6RIN5KepYV5nI8hCDSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wRn8U/lzDSfvQIL+UggsU0gE+DWlcYaNx5uCnSw52qad3oR3XEicYOOiwo6DRojn6
-	 hMt4FaPgZmapbC+aaGKFJP10rcmG72ABP7o84eAW56oC8Ya+1X9JXWkQC/7WMR4bax
-	 2bq4CvlOGBBvKfNpM6ACcI0eYyiSKIen1lb1SXb0=
+	b=jPyrsxSzB9pIoF11rH+3SH2otLVqhGLXWvSDr3pKn/ggl6f5l+aOk2SJqoelqboHk
+	 vGiF3MwpEnTXTidEx9rjHUpuionp0gg0xEHI48Qha3XetJexHovK5aRPHfHrkW/i0K
+	 KmwBHuAvzat0xER14RMoMxK9h19hZRnP3mTQM5gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Brian Masney <bmasney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 652/781] eth: fbnic: set DMA_HINT_L4 for all flows
-Date: Tue, 24 Feb 2026 17:22:41 -0800
-Message-ID: <20260225012415.782939632@linuxfoundation.org>
+Subject: [PATCH 6.18 436/641] clk: nuvoton: ma35d1-divider: convert from divider_round_rate() to divider_determine_rate()
+Date: Tue, 24 Feb 2026 17:22:42 -0800
+Message-ID: <20260225012359.100722792@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218692-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219351-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,70 +87,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,meta.com:email]
-X-Rspamd-Queue-Id: 9422B18FD35
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 25D13192A2A
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 0f30a31b55c4179fc55613a75ef41d496687d465 ]
+[ Upstream commit 9329d784ca9aad03b12508128797d40fd1f2e0c1 ]
 
-fbnic always advertises ETHTOOL_TCP_DATA_SPLIT_ENABLED via ethtool
-.get_ringparam. To enable proper splitting for all flow types, even for
-IP/Ethernet flows, this patch sets DMA_HINT_L4 unconditionally for all
-RSS and NFC flow steering rules. According to the spec, L4 falls back to
-L3 if no valid L4 is found, and L3 falls back to L2 if no L3 is found.
-This makes sure that the correct header boundary is used regardless of
-traffic type. This is important for zero-copy use cases where we must
-ensure that all ZC packets are split correctly.
+The divider_round_rate() function is now deprecated, so let's migrate
+to divider_determine_rate() instead so that this deprecated API can be
+removed.
 
-Fixes: 2b30fc01a6c7 ("eth: fbnic: Add support for HDS configuration")
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Link: https://patch.msgid.link/20260211-fbnic-tcp-hds-fixes-v1-3-55d050e6f606@meta.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
+
+    req->rate = divider_round_rate(...)
+
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
+
+Fixes: 215f8aa095a1 ("clk: nuvoton: ma35d1-divider: convert from round_rate() to determine_rate()")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c | 3 +++
- drivers/net/ethernet/meta/fbnic/fbnic_rpc.c     | 5 ++---
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/clk/nuvoton/clk-ma35d1-divider.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-index 693ebdf387055..5edc28ba29553 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-@@ -1142,6 +1142,9 @@ static int fbnic_set_cls_rule_ins(struct fbnic_net *fbn,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/clk/nuvoton/clk-ma35d1-divider.c b/drivers/clk/nuvoton/clk-ma35d1-divider.c
+index e39f53d5bf457..e992e7c303419 100644
+--- a/drivers/clk/nuvoton/clk-ma35d1-divider.c
++++ b/drivers/clk/nuvoton/clk-ma35d1-divider.c
+@@ -44,11 +44,8 @@ static int ma35d1_clkdiv_determine_rate(struct clk_hw *hw,
+ {
+ 	struct ma35d1_adc_clk_div *dclk = to_ma35d1_adc_clk_div(hw);
  
-+	dest |= FIELD_PREP(FBNIC_RPC_ACT_TBL0_DMA_HINT,
-+			   FBNIC_RCD_HDR_AL_DMA_HINT_L4);
-+
- 	/* Write action table values */
- 	act_tcam->dest = dest;
- 	act_tcam->rss_en_mask = fbnic_flow_hash_2_rss_en_mask(fbn, hash_idx);
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-index 7f31e890031c0..42a186db43ea9 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-@@ -338,9 +338,8 @@ void fbnic_rss_reinit(struct fbnic_dev *fbd, struct fbnic_net *fbn)
- 		else if (tstamp_mask & (1u << flow_type))
- 			dest |= FBNIC_RPC_ACT_TBL0_TS_ENA;
+-	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
+-				       dclk->table, dclk->width,
+-				       CLK_DIVIDER_ROUND_CLOSEST);
+-
+-	return 0;
++	return divider_determine_rate(hw, req, dclk->table, dclk->width,
++				      CLK_DIVIDER_ROUND_CLOSEST);
+ }
  
--		if (act1_value[flow_type] & FBNIC_RPC_TCAM_ACT1_L4_VALID)
--			dest |= FIELD_PREP(FBNIC_RPC_ACT_TBL0_DMA_HINT,
--					   FBNIC_RCD_HDR_AL_DMA_HINT_L4);
-+		dest |= FIELD_PREP(FBNIC_RPC_ACT_TBL0_DMA_HINT,
-+				   FBNIC_RCD_HDR_AL_DMA_HINT_L4);
- 
- 		rss_en_mask = fbnic_flow_hash_2_rss_en_mask(fbn, flow_type);
- 
+ static int ma35d1_clkdiv_set_rate(struct clk_hw *hw, unsigned long rate, unsigned long parent_rate)
 -- 
 2.51.0
 
