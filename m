@@ -1,248 +1,162 @@
-Return-Path: <stable+bounces-219653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMMAN6Qbn2kzZAQAu9opvQ
-	(envelope-from <stable+bounces-219653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:56:20 +0100
+	id 8EpvFLAbn2kzZAQAu9opvQ
+	(envelope-from <stable+bounces-219654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:56:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5338D19A125
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:56:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B8219A13B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0D9331F41B6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:43:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 713D43060B21
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4E73D7D77;
-	Wed, 25 Feb 2026 15:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667643DA7C6;
+	Wed, 25 Feb 2026 15:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="B8Kn1HHZ"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="cfEwiare"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6F63D7D71
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 15:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8AE3D9050
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 15:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772033916; cv=none; b=n9zCY0AaifJSDmKeR46FxkGJILjxqG1qJNeMKH1Yzc5gWnd7BdvgYrljTmPFiVosONJEBlt0Ms2z8cFVRSwQZzghKaQAuXwE6YTSqyk3hBGb185x1gIW1w4JikP7TfyI9JQ9BuUXo5L1DVowmtxtLO63o+ZDYw0ax05p0W93Y/A=
+	t=1772033919; cv=none; b=SnHBpgwlqiaXeAWU+FY+ZRrRJsw1XjdrmqsoXR7nyFyCpSOfihXPVsoVgPWx2ve2LmUuOwL4WKwFA+lRrBEFLo/IHp+uWzqmrBirmfWBO2DN+PfChmV+6cp6BtuSuU9dFHnZo1f4pWwvYFklHOeCUI+VSYisdzaurmg7yfY8IRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772033916; c=relaxed/simple;
-	bh=YhjBQew5gzB4pLmLGvlQ5a4ijHNLQAUTvykDlvnWBSA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lf0qWsOyw6Jd8tS7R7BQRDr+3d96u9jZQRzv8zak1shM8SUn3ceBqz6GPHTqLZyyZnkSLuDWlzARAts8r4W5Fs4Nua6DwiQRzKAvnp3bXnW2VQrS1HGCv7YMB1hkO4LwPYtmOCb95xH5GwphsrHQ0Bo4KPbt8TWaAOkJ0xqVYQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=B8Kn1HHZ; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8c711959442so94834385a.0
-        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 07:38:35 -0800 (PST)
+	s=arc-20240116; t=1772033919; c=relaxed/simple;
+	bh=lwA1dAaZa5R/4FI3CQlKfYG8RBjmQqFghd6x3qOPE3U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tjrUTu+ivBvX8iRga5O2CeP5lhYLe3Hfj6Ss72cK5JcOKznQcKCyFroQ/ZeXnEhfZs39u9Y/wPOp2pt6k1cwjc5uKAAJ4EQrPT/zDCbda+9btU6/ZAzLtP8z0Zc2Fm8jBa5NCmPzaRW3XqbKsZvS6UOvTdtQLFoXdLifeVQctHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=cfEwiare; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43991064db8so661911f8f.2
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 07:38:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1772033914; x=1772638714; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=l5HNgHHBMKtxWITqTdRd2/TKdA9TSeuNJbOQlnmGijo=;
-        b=B8Kn1HHZVIW5hb7q7q/iq9QdWlzLQxKGgbgRKVVA2dcsiWXsU8J5zRxg7akZAjZQ+K
-         EjbwZiE7vXVxBJIWExJTQmLW4NkkpXNsm6SzdByTN8j0oFCT1Cvd8hcIKivmyg2agVv3
-         t4yME9/k9VvBYTNFrVVkeXxNlFWPSR0vucvZUD/Jg2K7sPkR9+5ioteGAkiw6Muv5wqN
-         UpR9GY1dIYY+zO6BUiKK4azCpbqXvY7gjXAwwXU69x0wacorBYAqEA0e3ymJvLpsBctn
-         7WXUaDeyMlPV+BarLarHSFk6r8H+lXXxX33A77qmxrcmr1ok9sIA6A5lGxO57oGv6XLZ
-         0vwg==
+        d=googlemail.com; s=20230601; t=1772033916; x=1772638716; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=R47EnWn3QFF72N0L20NhKvIfYZosIMpJW4OqVso6fwc=;
+        b=cfEwiarev+T/E0LPVmpTaKWm7ET+AGsdLrDK8A8IvYkQGbSX/mzjFkbwWzfWy+v6Lk
+         KFOx4KQLLyYXq3MtN2fkkgUS8fp/vplAPpcbKBWl7Olv3H0bjXYVTwN+Cb8PnRqGGCUn
+         hgVGY5dZtWsgRL1e+dstKWjJrvAuLzszkF3cQIBBwcJ5jRV6BCJ8cqnq5Uc3T2akhntY
+         zO3j+kKoxs70CfneDis7TPG60FpeaQY8JRI2flbdwbwoMsdZOb+czCwiYf6v0vak6Btz
+         63azj1cGOnDq3cvnWn4IzFQ3pM+BJzyAM+gEW1hTdSSNfofxvPPy0d9ujAHN0cpqC12o
+         1mCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772033914; x=1772638714;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l5HNgHHBMKtxWITqTdRd2/TKdA9TSeuNJbOQlnmGijo=;
-        b=MqN1zeVyUC2jEaWjMA01/XuEUFr+jMjrrHQMbJJJdGdreMO6VFotLvsmOVvk6S/8H9
-         Vv5n0nkfY+0JrXVTfyE/Hugjco+/RleAkSZhIGLDKs6y5CuEXd7SdOkqpMMomaLJuhbO
-         D+WkCfwc4AKBEswqBEvaXyfodbFxMb303me8KRpOeJogqCEgeB9ZWWTOE9xcUn7hGoaN
-         engX6a3p9OOi4WdHG7k5UExK1gD6pbb7yyAvruijzhsNDs4l1m8kWtiU7E2QkStXrSkA
-         Uv+EpszAuazW3ht8UWy7jk9zC2Tm0q81Y0b+rar1p81yUj0FiohyJ2mil91jAYAQsrw8
-         Zdhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVRtSvaOqZJ21KGGCPmw+hHWG8WhDs99raMyRcwI9Q4fJmDvE8B31xmZtuYjdbcEdGsR8SkhA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWbF3E4LuDceAJMJ/xh2nf3Wt0pPd4xT7JMkT9xM3Jw0N28HwC
-	CTEz9LF6W3YlAMBIYHQdUKNCFXrsl55egeojS7wHjz8nAiiHdEt4255B1YISAae81w==
-X-Gm-Gg: ATEYQzxf511MGyxBTE6JM/uNY75VJPxMqcZD0l99+B2/B4g2trNwroPkXd2YCUylgjD
-	mpld2Ld1rk0QUbgFOreFg2kXEJ7O9d6Biav/xWr2jaIIY3IFYxe/TTYIxt6FOaAN5gXiwARping
-	ULcm8C9Ei2HE5dWF+hiUt7SP8kY64VsSgLnULpBG2fxgK5rLtGG7fDc8DPhdVl+d8IapiCYBhe+
-	cimd8RrrrcG+9dkF+Q0k81Wi2vJQreW/EOXTZcXIO2uHet0U2eQfHb3uVObSrgiQjN/kr3MXeLW
-	tBiN6lqwHUoN7Y3y8s3GDguiC5IyKUXVMM++MgmNj96dRMJfBKeuPn8cS1ThiVjWLdx/B9vadOX
-	z4kJR49f4lL/r4qZ2D48HrMq/u0J5ww/0DGzrihAoKIwMPoqpkCXQKfHnVR+rEiTEJ8NBVyfqfj
-	Fj6pjRFpbUb+L6Rfrl3vOwyWQCVK//DlO4PZhS9a0c4SPSMEGYmd2W
-X-Received: by 2002:a05:620a:280a:b0:8c6:a587:377f with SMTP id af79cd13be357-8cbb20e412emr467750985a.36.1772033913962;
-        Wed, 25 Feb 2026 07:38:33 -0800 (PST)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb8d101ceesm1312661285a.34.2026.02.25.07.38.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 07:38:33 -0800 (PST)
-Date: Wed, 25 Feb 2026 10:38:31 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: "Jimmy Hu (xWF)" <hhhuuu@xwf.google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Dan Vacura <w36195@motorola.com>, Xu Yang <xu.yang_2@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	badhri@google.com
-Subject: Re: [PATCH] usb: gadget: f_uvc: fix NULL pointer dereference during
- unbind race
-Message-ID: <5d79b7a5-7856-456a-9b9f-48f55feefe4f@rowland.harvard.edu>
-References: <20260224083955.1375032-1-hhhuuu@google.com>
- <50314bb4-1539-452d-86d6-47887a9603a7@rowland.harvard.edu>
- <CAJh=zj+qoLr40+sSMksRi5AG36GkO_kDk=axvPoEU76Md-NeCg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1772033916; x=1772638716;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R47EnWn3QFF72N0L20NhKvIfYZosIMpJW4OqVso6fwc=;
+        b=lUFGwOw29QbjdgZbF1Ps4Z7dSrq6KTF95wWJE7UsgFqyxeu7PgRPASnpZTXIfCfvFR
+         17qqKMhGqUZCdQn/imGnLYtTlhT8B6f9cRViyEC/r2FHdn2JfeBVusxNetbWnZQwfAdN
+         OLg4BqGRq9rtp1efH1GthBACLtNpWuXlUo2wNYihVkI/fhmQp/jD2m8cVXt3kvLrazXv
+         pvqOiFrjNTQ5xoeKArxau+BL4QFzjiYu05GNcPs+QtMMhvRhSig06jrKDOhQdBbik8KC
+         suNzP6YN+C2fAlwmrWbxofZQGHjy9C/B4qQs1aWdV8S4BHNeV1F8dVC6YO4bH04ariEo
+         35MA==
+X-Forwarded-Encrypted: i=1; AJvYcCV9VNXh9lA5LiPFFPO6B+xWUE7dExr1WBe8BIsHfZjbX5NnxVk8C03cBVVugsuMcPy1fwsPr/8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQWKaJpcLLh3JQqx3LZjNJYH/WdL6m/ZAZuLTcC5jnRSgZn2A0
+	nEZZJcYMDAzCz3QSN6Mibci3FBoJOgaI7L0rX9j5M7b3q3gQWXEQwVI=
+X-Gm-Gg: ATEYQzzSFUyNS6hRrTW5QvKODr2OcN8sh1p1ShLCEkhe4die5iDdzGRbrpJ2NFd14f+
+	5lyYspJWjrll5slXBVPXOtHNkQqn4iO3RGdwN2K/9326SPwJIhFGXYekTWEQMcbC2wk2eJfUTTd
+	PLiqsfngkEogCkaIyDJl9psJjsurLF7RFufZNUZ6+xQ6mI/1ljJEHrKocSWT5OPasd4JpB3aM72
+	MnahpgbiClEEVgAEoyjhao6Gb0z0V+Io7N0PuQKUnTtf3si74pytukWTl1H6BYeRRYznIAA0XbD
+	pyH45qlsqUGjuNIEFSfn+ErVUzwbgoizrvsnxelTdP9pvLINVsUbX95NCNPBW6uCgIHidumNgZm
+	9AnPDiOUoaeGJtE83kgQy4JvC0NRncIpI3SQODwIcRRfRPerEpBmRmLdD149nWvQsXRovYzdbas
+	MOu4dEae1zsK6Axj14l0uxWkXB55R9NyKVDOs6Jcw9uIpMRAT6N/e+zKk+UvS55UvQPcwNPm15H
+	Q0=
+X-Received: by 2002:a05:6000:2410:b0:439:9015:a96c with SMTP id ffacd0b85a97d-4399015ab62mr4568471f8f.35.1772033916099;
+        Wed, 25 Feb 2026 07:38:36 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b47ea.dip0.t-ipconnect.de. [91.43.71.234])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d3ff6dsm36540108f8f.25.2026.02.25.07.38.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Feb 2026 07:38:35 -0800 (PST)
+Message-ID: <1f1bbab1-b67c-4a5d-a88b-2c9b9f0970a2@googlemail.com>
+Date: Wed, 25 Feb 2026 16:38:34 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.19 000/781] 6.19.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260225012359.695468795@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJh=zj+qoLr40+sSMksRi5AG36GkO_kDk=axvPoEU76Md-NeCg@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rowland.harvard.edu,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[rowland.harvard.edu:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[rowland.harvard.edu:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219653-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219654-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rowland.harvard.edu:mid,rowland.harvard.edu:dkim,harvard.edu:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5338D19A125
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mailvelope.com:url,peters-netzplatz.de:url,googlemail.com:mid,googlemail.com:dkim]
+X-Rspamd-Queue-Id: C2B8219A13B
 X-Rspamd-Action: no action
 
-On Wed, Feb 25, 2026 at 10:31:54AM +0800, Jimmy Hu (xWF) wrote:
-> On Tue, Feb 24, 2026 at 11:47 PM Alan Stern <stern@rowland.harvard.edu> wrote:
-> >
-> > On Tue, Feb 24, 2026 at 04:39:55PM +0800, Jimmy Hu wrote:
-> > > Commit b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly
-> > > shutdown") introduced two stages of synchronization waits totaling 1500ms
-> > > in uvc_function_unbind() to prevent several types of kernel panics.
-> > > However, this timing-based approach is insufficient during power
-> > > management (PM) transitions.
-> > >
-> > > When the PM subsystem starts freezing user space processes, the
-> > > wait_event_interruptible_timeout() is aborted early, which allows the
-> > > unbind thread to proceed and nullify the gadget pointer
-> > > (cdev->gadget = NULL):
-> > >
-> > > [  814.123447][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind()
-> > > [  814.178583][ T3173] PM: suspend entry (deep)
-> > > [  814.192487][ T3173] Freezing user space processes
-> > > [  814.197668][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind no clean disconnect, wait for release
-> > >
-> > > When the PM subsystem resumes or aborts the suspend and tasks are
-> > > restarted, the V4L2 release path is executed and attempts to access the
-> > > already nullified gadget pointer, triggering a kernel panic:
-> > >
-> > > [  814.292597][    C0] PM: pm_system_irq_wakeup: 479 triggered dhdpcie_host_wake
-> > > [  814.386727][ T3173] Restarting tasks ...
-> > > [  814.403522][ T4558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
-> > > [  814.404021][ T4558] pc : usb_gadget_deactivate+0x14/0xf4
-> > > [  814.404031][ T4558] lr : usb_function_deactivate+0x54/0x94
-> > > [  814.404078][ T4558] Call trace:
-> > > [  814.404080][ T4558]  usb_gadget_deactivate+0x14/0xf4
-> > > [  814.404083][ T4558]  usb_function_deactivate+0x54/0x94
-> > > [  814.404087][ T4558]  uvc_function_disconnect+0x1c/0x5c
-> > > [  814.404092][ T4558]  uvc_v4l2_release+0x44/0xac
-> > > [  814.404095][ T4558]  v4l2_release+0xcc/0x130
-> > >
-> > > The fix introduces a 'func_unbinding' flag in struct uvc_device to protect
-> > > critical sections:
-> > > 1. In uvc_function_disconnect(), it prevents accessing the nullified
-> > >    cdev->gadget pointer.
-> > > 2. In uvc_v4l2_release(), it ensures uvcg_free_buffers() is skipped
-> > >    if unbind is already in progress, avoiding races with concurrent
-> > >    bind operations or use-after-free on the video queue memory.
-> >
-> > Sorry if the answer to this question is obvious to anybody familiar with
-> > the driver...
-> >
-> > The patch adds a flag that can be accessed by two different tasks
-> > (disconnect and release).  Is there any synchronization to prevent these
-> > tasks from racing and accessing the new flag concurrently?
-> >
-> > Alan Stern
-> 
-> Hi Alan,
-> 
-> Thanks for pointing that out. You're right, the boolean flag lacks
-> proper synchronization for concurrent access.
-> I will submit a V2 patch using atomic bit operations to ensure memory
-> visibility and atomicity across tasks. The changes will include:
-> * Replacing 'bool func_unbinding' with 'unsigned long flags' in struct
-> uvc_device.
-> * Using clear_bit() in uvc_function_bind() to reset the state.
-> * Using set_bit() in uvc_function_unbind() to mark the unbinding phase.
-> * Using test_bit() in uvc_function_disconnect() and uvc_v4l2_disable()
-> for safe checks.
-> 
-> Does this approach look reasonable to you?
+Am 25.02.2026 um 02:11 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.19.4 release.
+> There are 781 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-No, because data races are more complicated than just concurrent 
-non-atomic accesses.  There's also the issue of ordering.  Here's what I 
-mean...
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-You want to change the bind routine to do something like:
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-	cdev->gadget = ...
-	set_bit(&uvc->flags, 0);	// Driver is bound
 
-and unbind to do something like:
+Beste Grüße,
+Peter Schneider
 
-	clear_bit(&uvc->flags, 0);	// Driver is unbound
-	cdev->gadget = NULL;
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-You'll also change disconnect and disable like this:
-
-	if (test_bit(&uvc->flags, 0)) {
-		... use cdev->gadget ...
-	}
-
-The problem is that modern CPUs can execute instructions out of order 
-and can speculate loads.  When the CPU runs the bind routine, there's 
-nothing to prevent it from doing the set_bit() before assigning 
-cdev->gadget.  Similarly, when the CPU runs the unbind routine, there's 
-nothing to prevent it from setting cdev->gadget to NULL before doing the 
-clear_bit().
-
-More subtly, when the CPU runs the disconnect or disable routines, 
-there's nothing to prevent it from speculatively reading cdev->gadget 
-(and getting a NULL result) before doing the test_bit() (and getting 1).
-
-To prevent these problems, you would need to use memory barriers.  For 
-example, you could put smb_wmb() between the two statements in bind and 
-unbind, and smp_rmb() in disconnect and disable before cdev->gadget 
-gets used.  (For a lot more information about these memory barriers and 
-other ordering issues, see 
-tools/memory-model/Documentation/explanation.txt.)
-
-A simpler approach, if it won't cause any problems, is to ensure 
-synchronization by protecting all these different pieces of code with a 
-mutex.  Then they would never execute concurrently.
-
-Alan Stern
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
