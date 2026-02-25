@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJKPMuBWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218954-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:48 +0100
+	id +HnpEiZSnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9A9190408
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC1818F236
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29924325F992
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 286A1305FB51
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1886C28C2BF;
-	Wed, 25 Feb 2026 01:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F22F1EB5E1;
+	Wed, 25 Feb 2026 01:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRr6jQeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJtqBvUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEF8253932;
-	Wed, 25 Feb 2026 01:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D4A18DB2A;
+	Wed, 25 Feb 2026 01:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983854; cv=none; b=KQdyMySmgyjR9fEU1W+qM/1sCCVYvF6iBFuI4LYmmCLwIj3VvfhDsktJqr67QNJx3X+0eS0Ai2fA2rwdHK/Us3VBLi4sX6l0fy61n8elMulRazq1jcC3d2Jz9nGADb7hcO8K5XrJrVkfm648uh6cR4jqeHpEMrm70R9EoWqRkqI=
+	t=1771983217; cv=none; b=nMqYIjeo2erl5SvZjBjSIITSN/MtKHxQ/or1PWYcvZZ3Cdmor1uy2aHUotQPhM0nrlDDKtqPleverLr7ncvqP9i+WCLgnOaNq+Pxm997kWa9dlsEOYO637ndiet9hCc0Q+IyQDd8cuxcz7cOAkbJVJCAX5Qh/jLqkQJ3Ak2RSi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983854; c=relaxed/simple;
-	bh=VLzbtn4voZUv0h+vSpHE6xpGG83MwUcgrXNrLdlkMes=;
+	s=arc-20240116; t=1771983217; c=relaxed/simple;
+	bh=LxsQyi/XeSCVI88IE8+Pmf5D2X3ur3Dw9yQTb5NdBU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UnUHTzbDvgDA6QkERnpSbxMiSvyWZEU49X1UCjSAdq6Gk5HntX6VHS6b5/4fUt23e9ztEdE3RAmhDq4MthyC7szvQ916z+RFIelKIFYqzNEJYSLD1KxGHx5uJu+rfdeEiu+1HGzsIilkRc2z3IT2OMNpQMU9iH6/GB5t8xHyNNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRr6jQeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D059C116D0;
-	Wed, 25 Feb 2026 01:44:14 +0000 (UTC)
+	 MIME-Version; b=XgMbyHFU0wjKzdoJyw4ctHeUrn7kv3062k9729LB4lsFF74ApllyZE5PM7jAz7yur/qhbbFJEz8fDDfMDx+gsTZx8kJTAg1rUXRtmhk+4CwJI2/B9kbYHIK4ocj5D2vRkLLgiMfnt4F3WBcpeoHuSAZiyJXe5MmLKv+sAmv8oXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJtqBvUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FFDC116D0;
+	Wed, 25 Feb 2026 01:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983854;
-	bh=VLzbtn4voZUv0h+vSpHE6xpGG83MwUcgrXNrLdlkMes=;
+	s=korg; t=1771983217;
+	bh=LxsQyi/XeSCVI88IE8+Pmf5D2X3ur3Dw9yQTb5NdBU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NRr6jQehZj0KHREgizNYTiMm9dmwp87T4pam4ullfDj7ALCN6AUBDGbKW2QC8lQps
-	 2jCNH4TYa7SitTuxhYw6GeEE418yRB+fuz7HmV5fhw+HY/9BoH6nuS/Vsmnu21yv+2
-	 +7UNoRiitTT/zhqYE+Ws9jatmsRbt9jFT5L0588c=
+	b=vJtqBvUAv7PMy2jZfJwJEZh5KMfdB651p2Hyo9SSSYJoVnMgskTmjbowPdF8Bemlq
+	 y/kSPZnF/CkeyNzGDSYdr/wnHVE6yixIK3Qvmt6jP3+cnowoiU5m4xhZh26vDvv73O
+	 NNwnaCv7nwCvDq8GE1yiBrxIrVbDYxXCxV9G3o18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sourav Mohapatra <sourav.mohapatra@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 130/641] firmware: arm_ffa: Correct 32-bit response handling in NOTIFICATION_INFO_GET
+Subject: [PATCH 6.19 347/781] netfilter: nft_compat: add more restrictions on netlink attributes
 Date: Tue, 24 Feb 2026 17:17:36 -0800
-Message-ID: <20260225012352.300531332@linuxfoundation.org>
+Message-ID: <20260225012408.200851218@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218954-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218402-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,125 +90,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
-X-Rspamd-Queue-Id: 6B9A9190408
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0CC1818F236
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit be4d4543f78074fbebd530ba5109d39a2a34e668 ]
+[ Upstream commit cda26c645946b08f070f20c166d4736767e4a805 ]
 
-The FF-A specification allows NOTIFICATION_INFO_GET to return either a
-64-bit (FFA_FN64_SUCCESS) or a 32-bit (FFA_SUCCESS) response, depending on
-whether the firmware chooses the SMC64 or SMC32 calling convention.
+As far as I can see nothing bad can happen when NFTA_TARGET/MATCH_NAME
+are too large because this calls x_tables helpers which check for the
+length, but it seems better to already reject it during netlink parsing.
 
-The driver previously detected the response format by checking ret.a0, but
-still interpreted the returned ID lists (x3..x17 or w3..w7) as if they always
-followed the 64-bit SMC64 layout. In the SMC32 case, the upper 32 bits of
-each argument register are undefined by the calling convention, meaning the
-driver could read stale or garbage values when parsing notification IDs.
+Rest of the changes avoid silent u8/u16 truncations.
 
-This resulted in incorrectly decoded partition/VCPU IDs whenever the FF-A
-firmware used an SMC32 return path.
+For _TYPE, its expected to be only 1 or 0. In x_tables world, this
+variable is set by kernel, for IPT_SO_GET_REVISION_TARGET its 1, for
+all others its set to 0.
 
-Fix the issue by:
+As older versions of nf_tables permitted any value except 1 to mean 'match',
+keep this as-is but sanitize the value for consistency.
 
-- Introducing logic to map list indices to the correct u16 offsets,
-  depending on whether the response width matches the kernel word size
-  or is a 32-bit response on a 64-bit kernel.
-- Ensuring that the packed ID list is parsed using the proper layout,
-  avoiding reads from undefined upper halves in the SMC32 case.
-
-With this change, NOTIFICATION_INFO_GET now correctly interprets ID list
-entries regardless of the response width, aligning the driver with the FF-A
-specification.
-
-Fixes: 3522be48d82b ("firmware: arm_ffa: Implement the NOTIFICATION_INFO_GET interface")
-Reported-by: Sourav Mohapatra <sourav.mohapatra@arm.com>
-Message-Id: <20251218142001.2457111-1-sudeep.holla@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 33 +++++++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
+ net/netfilter/nft_compat.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index c72ee47565856..c501c3104b3a4 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -981,10 +981,27 @@ static void __do_sched_recv_cb(u16 part_id, u16 vcpu, bool is_per_vcpu)
- 	}
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 72711d62fddfa..08f620311b03f 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -134,7 +134,8 @@ static void nft_target_eval_bridge(const struct nft_expr *expr,
  }
  
-+/*
-+ * Map logical ID index to the u16 index within the packed ID list.
-+ *
-+ * For native responses (FF-A width == kernel word size), IDs are
-+ * tightly packed: idx -> idx.
-+ *
-+ * For 32-bit responses on a 64-bit kernel, each 64-bit register
-+ * contributes 4 x u16 values but only the lower 2 are defined; the
-+ * upper 2 are garbage. This mapping skips those upper halves:
-+ *   0,1,2,3,4,5,... -> 0,1,4,5,8,9,...
-+ */
-+static int list_idx_to_u16_idx(int idx, bool is_native_resp)
-+{
-+	return is_native_resp ? idx : idx + 2 * (idx >> 1);
-+}
-+
- static void ffa_notification_info_get(void)
- {
--	int idx, list, max_ids, lists_cnt, ids_processed, ids_count[MAX_IDS_64];
--	bool is_64b_resp;
-+	int ids_processed, ids_count[MAX_IDS_64];
-+	int idx, list, max_ids, lists_cnt;
-+	bool is_64b_resp, is_native_resp;
- 	ffa_value_t ret;
- 	u64 id_list;
+ static const struct nla_policy nft_target_policy[NFTA_TARGET_MAX + 1] = {
+-	[NFTA_TARGET_NAME]	= { .type = NLA_NUL_STRING },
++	[NFTA_TARGET_NAME]	= { .type = NLA_NUL_STRING,
++				    .len = XT_EXTENSION_MAXNAMELEN, },
+ 	[NFTA_TARGET_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_TARGET_INFO]	= { .type = NLA_BINARY },
+ };
+@@ -434,7 +435,8 @@ static void nft_match_eval(const struct nft_expr *expr,
+ }
  
-@@ -1001,6 +1018,7 @@ static void ffa_notification_info_get(void)
- 		}
+ static const struct nla_policy nft_match_policy[NFTA_MATCH_MAX + 1] = {
+-	[NFTA_MATCH_NAME]	= { .type = NLA_NUL_STRING },
++	[NFTA_MATCH_NAME]	= { .type = NLA_NUL_STRING,
++				    .len = XT_EXTENSION_MAXNAMELEN },
+ 	[NFTA_MATCH_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_MATCH_INFO]	= { .type = NLA_BINARY },
+ };
+@@ -693,7 +695,12 @@ static int nfnl_compat_get_rcu(struct sk_buff *skb,
  
- 		is_64b_resp = (ret.a0 == FFA_FN64_SUCCESS);
-+		is_native_resp = (ret.a0 == FFA_FN_NATIVE(SUCCESS));
+ 	name = nla_data(tb[NFTA_COMPAT_NAME]);
+ 	rev = ntohl(nla_get_be32(tb[NFTA_COMPAT_REV]));
+-	target = ntohl(nla_get_be32(tb[NFTA_COMPAT_TYPE]));
++	/* x_tables api checks for 'target == 1' to mean target,
++	 * everything else means 'match'.
++	 * In x_tables world, the number is set by kernel, not
++	 * userspace.
++	 */
++	target = nla_get_be32(tb[NFTA_COMPAT_TYPE]) == htonl(1);
  
- 		ids_processed = 0;
- 		lists_cnt = FIELD_GET(NOTIFICATION_INFO_GET_ID_COUNT, ret.a2);
-@@ -1017,12 +1035,16 @@ static void ffa_notification_info_get(void)
- 
- 		/* Process IDs */
- 		for (list = 0; list < lists_cnt; list++) {
-+			int u16_idx;
- 			u16 vcpu_id, part_id, *packed_id_list = (u16 *)&ret.a3;
- 
- 			if (ids_processed >= max_ids - 1)
- 				break;
- 
--			part_id = packed_id_list[ids_processed++];
-+			u16_idx = list_idx_to_u16_idx(ids_processed,
-+						      is_native_resp);
-+			part_id = packed_id_list[u16_idx];
-+			ids_processed++;
- 
- 			if (ids_count[list] == 1) { /* Global Notification */
- 				__do_sched_recv_cb(part_id, 0, false);
-@@ -1034,7 +1056,10 @@ static void ffa_notification_info_get(void)
- 				if (ids_processed >= max_ids - 1)
- 					break;
- 
--				vcpu_id = packed_id_list[ids_processed++];
-+				u16_idx = list_idx_to_u16_idx(ids_processed,
-+							      is_native_resp);
-+				vcpu_id = packed_id_list[u16_idx];
-+				ids_processed++;
- 
- 				__do_sched_recv_cb(part_id, vcpu_id, true);
- 			}
+ 	switch(family) {
+ 	case AF_INET:
 -- 
 2.51.0
 
