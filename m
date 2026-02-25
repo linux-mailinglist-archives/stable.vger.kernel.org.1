@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-218799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIGpC25VnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:38 +0100
+	id 2EXMJK+gnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:11:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E0819001F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 014E0193130
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD3DE3135EBD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3791231EE593
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A04E243376;
-	Wed, 25 Feb 2026 01:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A214315D3B;
+	Wed, 25 Feb 2026 06:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPLeMp1b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fT8xWhQj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C751248886;
-	Wed, 25 Feb 2026 01:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22112D3EEE;
+	Wed, 25 Feb 2026 06:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983676; cv=none; b=RGtzzroVGx7pFcqH2GIuWXVmRR0V4SOZcLZ1P5yjXpFwYvweZ1mPl5rNHpsPuYUyAjLQWVnQtth56sxoM57gWF1fP66uZQqSp9+vp8yq9KyXH7F4uLGjrekjVFPWDdKvfqxKI0w06vx0+/u6VL+S7MLfL3pUU4mXcIhy2a+dDuQ=
+	t=1772002731; cv=none; b=j1Pb0y0YPAUHcRWXoIBGEgR4N+jQozTVMyX7nwY6X4Ww5VVALAcETUXd3CaQ/7Ub5D/dGO6aKIkvL6DhaZoxALTK26e0Bo0SivjRu9kwtY+RZwPYVWKmu/Ik0887Rys843BBilibDaXHC5UVuNxfXpIsEQ5kJL70arkXVAO8ilk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983676; c=relaxed/simple;
-	bh=TKwbNBZTSXuJnH3vjJCcoT1iJnPIfKuoT69uxnBt+X8=;
+	s=arc-20240116; t=1772002731; c=relaxed/simple;
+	bh=4tcr6VaAJZOdEtnun6EIYrrQTuGBI2S8opnD5uquvpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZKx+kpCZMxcbXzoJltxCygwhOORvHtUz+h35vBMj4DTyaujYri3iND65ms2igP0QsSN9o8CpQpOv7m+yaTcEsU/31eN2MDJxDYyXo7UDO7Cbmrr6wswIrnza93V1OaX31p9O3X08RGTEeX5x6CXrqDFp7QOtiEJz7hXIzYvHiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPLeMp1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7D5C116D0;
-	Wed, 25 Feb 2026 01:41:15 +0000 (UTC)
+	 MIME-Version; b=RTT/WhCC1PnvIC/Vi7LBbaybsMD3d5jqIbZMtLPK9oKk/RDA51ObMOQIfIl/fAlj9pw2hn1DKVpaj2gU5Q+CSHJaK0m44nWEgReF3nf9qgUfBQuRM8IJtVaPmoQZ0mj41ntAldS0wQ8JlzuuO1KBoW+R3s+xUvkyS/8eupFS5MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fT8xWhQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3EBC116D0;
+	Wed, 25 Feb 2026 06:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983676;
-	bh=TKwbNBZTSXuJnH3vjJCcoT1iJnPIfKuoT69uxnBt+X8=;
+	s=korg; t=1772002730;
+	bh=4tcr6VaAJZOdEtnun6EIYrrQTuGBI2S8opnD5uquvpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPLeMp1bCxFDGGkr3il6BpWzuaEyNVfkjU0xPtmQ/pAp5KyTR8hI+/u2BGXg9082P
-	 shlzm2lnXuuyYTFxc45BM+JtwQMzaOi4UmxKzgcDLS45TsRWk1t8deHvuBbAsE7q4J
-	 EB7DGVxUUcez9fzFWj7UaCvGd0GjcsmN6l8Ym7jQ=
+	b=fT8xWhQjEMsH0V+f7CPNy4G2q9VKeQdvAX5lMfIb6KOtB/0joVTw/VbuV4M7ZPmRT
+	 BT6HKy3uXNu2HgiN2Ff7Uux7oVv6duazTiHvi6pT7/aADWaPYDVaRo9ZhYGJ1cmK4b
+	 +8wXzN2H/NexdP5MZp+hIc4JrBbEGyNJI2ZcQb+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongjian Sun <sunyongjian1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.19 761/781] ext4: fix e4b bitmap inconsistency reports
+	Inseo An <y0un9sa@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 544/641] netfilter: nf_tables: fix use-after-free in nf_tables_addchain()
 Date: Tue, 24 Feb 2026 17:24:30 -0800
-Message-ID: <20260225012418.383923114@linuxfoundation.org>
+Message-ID: <20260225012401.711267622@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,155 +67,88 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-219461-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218799-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,suse.cz:email]
-X-Rspamd-Queue-Id: 52E0819001F
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email]
+X-Rspamd-Queue-Id: 014E0193130
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongjian Sun <sunyongjian1@huawei.com>
+From: Inseo An <y0un9sa@gmail.com>
 
-commit bdc56a9c46b2a99c12313122b9352b619a2e719e upstream.
+[ Upstream commit 71e99ee20fc3f662555118cf1159443250647533 ]
 
-A bitmap inconsistency issue was observed during stress tests under
-mixed huge-page workloads. Ext4 reported multiple e4b bitmap check
-failures like:
+nf_tables_addchain() publishes the chain to table->chains via
+list_add_tail_rcu() (in nft_chain_add()) before registering hooks.
+If nf_tables_register_hook() then fails, the error path calls
+nft_chain_del() (list_del_rcu()) followed by nf_tables_chain_destroy()
+with no RCU grace period in between.
 
-ext4_mb_complex_scan_group:2508: group 350, 8179 free clusters as
-per group info. But got 8192 blocks
+This creates two use-after-free conditions:
 
-Analysis and experimentation confirmed that the issue is caused by a
-race condition between page migration and bitmap modification. Although
-this timing window is extremely narrow, it is still hit in practice:
+ 1) Control-plane: nf_tables_dump_chains() traverses table->chains
+    under rcu_read_lock(). A concurrent dump can still be walking
+    the chain when the error path frees it.
 
-folio_lock                        ext4_mb_load_buddy
-__migrate_folio
-  check ref count
-  folio_mc_copy                     __filemap_get_folio
-                                      folio_try_get(folio)
-                                  ......
-                                  mb_mark_used
-                                  ext4_mb_unload_buddy
-  __folio_migrate_mapping
-    folio_ref_freeze
-folio_unlock
+ 2) Packet path: for NFPROTO_INET, nf_register_net_hook() briefly
+    installs the IPv4 hook before IPv6 registration fails.  Packets
+    entering nft_do_chain() via the transient IPv4 hook can still be
+    dereferencing chain->blob_gen_X when the error path frees the
+    chain.
 
-The root cause of this issue is that the fast path of load_buddy only
-increments the folio's reference count, which is insufficient to prevent
-concurrent folio migration. We observed that the folio migration process
-acquires the folio lock. Therefore, we can determine whether to take the
-fast path in load_buddy by checking the lock status. If the folio is
-locked, we opt for the slow path (which acquires the lock) to close this
-concurrency window.
+Add synchronize_rcu() between nft_chain_del() and the chain destroy
+so that all RCU readers -- both dump threads and in-flight packet
+evaluation -- have finished before the chain is freed.
 
-Additionally, this change addresses the following issues:
-
-When the DOUBLE_CHECK macro is enabled to inspect bitmap-related
-issues, the following error may be triggered:
-
-corruption in group 324 at byte 784(6272): f in copy != ff on
-disk/prealloc
-
-Analysis reveals that this is a false positive. There is a specific race
-window where the bitmap and the group descriptor become momentarily
-inconsistent, leading to this error report:
-
-ext4_mb_load_buddy                   ext4_mb_load_buddy
-  __filemap_get_folio(create|lock)
-    folio_lock
-  ext4_mb_init_cache
-    folio_mark_uptodate
-                                     __filemap_get_folio(no lock)
-                                     ......
-                                     mb_mark_used
-                                       mb_mark_used_double
-  mb_cmp_bitmaps
-                                       mb_set_bits(e4b->bd_bitmap)
-  folio_unlock
-
-The original logic assumed that since mb_cmp_bitmaps is called when the
-bitmap is newly loaded from disk, the folio lock would be sufficient to
-prevent concurrent access. However, this overlooks a specific race
-condition: if another process attempts to load buddy and finds the folio
-is already in an uptodate state, it will immediately begin using it without
-holding folio lock.
-
-Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260106090820.836242-1-sunyongjian@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 91c7b38dc9f0 ("netfilter: nf_tables: use new transaction infrastructure to handle chain")
+Signed-off-by: Inseo An <y0un9sa@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ net/netfilter/nf_tables_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1706,16 +1706,17 @@ ext4_mb_load_buddy_gfp(struct super_bloc
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 9051f2c3595a2..df367638cdef0 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2822,6 +2822,7 @@ static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 policy,
  
- 	/* Avoid locking the folio in the fast path ... */
- 	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
--	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
-+	if (IS_ERR(folio) || !folio_test_uptodate(folio) || folio_test_locked(folio)) {
-+		/*
-+		 * folio_test_locked is employed to detect ongoing folio
-+		 * migrations, since concurrent migrations can lead to
-+		 * bitmap inconsistency. And if we are not uptodate that
-+		 * implies somebody just created the folio but is yet to
-+		 * initialize it. We can drop the folio reference and
-+		 * try to get the folio with lock in both cases to avoid
-+		 * concurrency.
-+		 */
- 		if (!IS_ERR(folio))
--			/*
--			 * drop the folio reference and try
--			 * to get the folio with lock. If we
--			 * are not uptodate that implies
--			 * somebody just created the folio but
--			 * is yet to initialize it. So
--			 * wait for it to initialize.
--			 */
- 			folio_put(folio);
- 		folio = __filemap_get_folio(inode->i_mapping, pnum,
- 				FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
-@@ -1764,7 +1765,7 @@ ext4_mb_load_buddy_gfp(struct super_bloc
- 
- 	/* we need another folio for the buddy */
- 	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
--	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
-+	if (IS_ERR(folio) || !folio_test_uptodate(folio) || folio_test_locked(folio)) {
- 		if (!IS_ERR(folio))
- 			folio_put(folio);
- 		folio = __filemap_get_folio(inode->i_mapping, pnum,
+ err_register_hook:
+ 	nft_chain_del(chain);
++	synchronize_rcu();
+ err_chain_add:
+ 	nft_trans_destroy(trans);
+ err_trans:
+-- 
+2.51.0
+
 
 
 
