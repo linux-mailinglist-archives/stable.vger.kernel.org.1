@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-219113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219114-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EP6nNa9anmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:13:03 +0100
+	id yJd7Af1anmlSUwQAu9opvQ
+	(envelope-from <stable+bounces-219114-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:14:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BEB190B81
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:13:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EFE190BE8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:14:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7CBC3206B62
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:49:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F2B7D31244A2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B25253932;
-	Wed, 25 Feb 2026 01:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675FD22127B;
+	Wed, 25 Feb 2026 01:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwqYst9O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1vbqLzL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B773D24503F
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 01:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCC71FC7
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 01:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984155; cv=none; b=dV7Qqleu7aDNCgcDm+CPaVMJqRRMBCYFHiNxvaaasron2q8D5mfHwsfM0u0zsebLhVjk+dWJFXI2DA3aY7ZhBqw5kLzgrsxSQM8FkCPjHLcJoKhlTPIUQnxWWRdFVIIqxPyIgexFn0Zb5A/ErULmcqcQwaPEYk96ifUKGVbnCq8=
+	t=1771984162; cv=none; b=PNMi+SsktZ8X8YEsAV6HnaRf7RNu1OQA9tvz3AUYs9Jb9zJyBX4V1mAVQH9oZraM4Pujz9SezMmWkxNREkN0tgGojML1U538IzKBWuTMbjFV+Nl4DAHc/Gq+maop7ApE+vV0VCJI5f2NBkQrEd6OzIyb4FjFjkR9RuWKz/nFUp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984155; c=relaxed/simple;
-	bh=OsC0GWzhcoQ7qxOYoARGDwBOPDMNdXKAJJsyfmrdsvs=;
+	s=arc-20240116; t=1771984162; c=relaxed/simple;
+	bh=EctrzKK5fr39uEJPXD/ZJLo1TzWq0c8HBfDOaayGukk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMVeYycbkxinZejMyLh1IeYdyPe9MlO4kidA9uA0bcYQfggYdWDweITKy3g2KsxtGNhvYnMtMscYY2bkwJxa4sqc+gl/VR6WvpghvDZJd1WZOcZfqGKTiBUeG9swf5XGLvOSJYpbNlPf+07lpJfjWJIUHLLb5B30PCQnp1HaS2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwqYst9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D253FC2BC86;
-	Wed, 25 Feb 2026 01:49:14 +0000 (UTC)
+	 MIME-Version; b=tedTw7e7IsWZGdpkclGF8ocmMDLZobQ3UKs/vjMSUeOMPW2PLweWHy2I/mt6aJpgKH84evHDEr47Fn31kdKJXOCLauAcEaveZyx8IYKEClLpgpOdSj3sMtZ0PEvYg5bBjmKbnWofDprrBbCx5sKsQBQ2Ir9JxnZlXBI51KJdtMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1vbqLzL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4320CC116D0;
+	Wed, 25 Feb 2026 01:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771984155;
-	bh=OsC0GWzhcoQ7qxOYoARGDwBOPDMNdXKAJJsyfmrdsvs=;
+	s=k20201202; t=1771984161;
+	bh=EctrzKK5fr39uEJPXD/ZJLo1TzWq0c8HBfDOaayGukk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwqYst9OtMyAnUIeNmOebNq15qk9LOH2qgZtA6V5gJxLGmOH6MDyrUDGTNNfKcL6b
-	 ajusdaJVXQ/c4eht14hKqqUOWt0g8DlKSHpcW5zVPdyp4kslvDjWxkL+kOqtUQ5979
-	 aI4Fhh5j0tJYRVBzUheoAL8DnTmcRbQ+KOLyOfQ0shBj1Ftpl2aCW6COgz29+VO/Vx
-	 mhjPeJWSMlW8TuFGDK2YvroyxbyqM3P4tGRZUYmbHCbG3G0ugJlwM5ND6ELj0ZYv60
-	 G/L0uiqbiiAbA0t7JakwmSLchE0D3c6d6J4gKNEdi07JEy6N3rZq31oz3uZKK+mVAP
-	 keXUIuqKFfPeg==
+	b=k1vbqLzLdQwo/eqL469POEP4LxbZguGDn4pr0CRW4Qod0y/5JsplhNxSrANxVW9aY
+	 NKffR70ur0f5MqaRLJj3uA9bDzG0jeYgAvKpP/AiH/LF5HH9l/nt/uUZ9oap6SIAoz
+	 8e9SWkrlylQCx5yY0vZfEn2uxI0keC+gQkCXw2tu3Dznr11whzwSxTAYBL7slsxKa+
+	 bTigsU/RLogireHYC9QMxv5qCVQQAEWGPP1K8y60JW89DV1e+PzuNXxH5i5xdyALNi
+	 GnEmnAm5zt5H517p7X0D+o27PtTIOgNNqkIDRdAwgD6JTTcynPkbgypdbqu3D0WfLk
+	 HdKr7kzXmuNbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Zhang Yi <yi.zhang@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	stable@kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: Hongyu Xie <xiehongyu1@kylinos.cn>,
+	Peter Chen <peter.chen@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 3/3] ext4: don't set EXT4_GET_BLOCKS_CONVERT when splitting before submitting I/O
-Date: Tue, 24 Feb 2026 20:49:11 -0500
-Message-ID: <20260225014911.3767562-3-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/3] usb: cdns3: remove redundant if branch
+Date: Tue, 24 Feb 2026 20:49:17 -0500
+Message-ID: <20260225014919.3767757-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260225014911.3767562-1-sashal@kernel.org>
-References: <2026022418-mulberry-curliness-5860@gregkh>
- <20260225014911.3767562-1-sashal@kernel.org>
+In-Reply-To: <2026022420-straddle-unquote-c2f6@gregkh>
+References: <2026022420-straddle-unquote-c2f6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,127 +65,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219114-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219113-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 46BEB190B81
+X-Rspamd-Queue-Id: 23EFE190BE8
 X-Rspamd-Action: no action
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Hongyu Xie <xiehongyu1@kylinos.cn>
 
-[ Upstream commit feaf2a80e78f89ee8a3464126077ba8683b62791 ]
+[ Upstream commit dedab674428f8a99468a4864c067128ba9ea83a6 ]
 
-When allocating blocks during within-EOF DIO and writeback with
-dioread_nolock enabled, EXT4_GET_BLOCKS_PRE_IO was set to split an
-existing large unwritten extent. However, EXT4_GET_BLOCKS_CONVERT was
-set when calling ext4_split_convert_extents(), which may potentially
-result in stale data issues.
+cdns->role_sw->dev->driver_data gets set in routines showing below,
+cdns_init
+  sw_desc.driver_data = cdns;
+  cdns->role_sw = usb_role_switch_register(dev, &sw_desc);
+    dev_set_drvdata(&sw->dev, desc->driver_data);
 
-Assume we have an unwritten extent, and then DIO writes the second half.
+In cdns_resume,
+cdns->role = cdns_role_get(cdns->role_sw); //line redundant
+  struct cdns *cdns = usb_role_switch_get_drvdata(sw);
+    dev_get_drvdata(&sw->dev)
+      return dev->driver_data
+return cdns->role;
 
-   [UUUUUUUUUUUUUUUU] on-disk extent        U: unwritten extent
-   [UUUUUUUUUUUUUUUU] extent status tree
-            |<-   ->| ----> dio write this range
+"line redundant" equals to,
+	cdns->role = cdns->role;
 
-First, ext4_iomap_alloc() call ext4_map_blocks() with
-EXT4_GET_BLOCKS_PRE_IO, EXT4_GET_BLOCKS_UNWRIT_EXT and
-EXT4_GET_BLOCKS_CREATE flags set. ext4_map_blocks() find this extent and
-call ext4_split_convert_extents() with EXT4_GET_BLOCKS_CONVERT and the
-above flags set.
+So fix this if branch.
 
-Then, ext4_split_convert_extents() calls ext4_split_extent() with
-EXT4_EXT_MAY_ZEROOUT, EXT4_EXT_MARK_UNWRIT2 and EXT4_EXT_DATA_VALID2
-flags set, and it calls ext4_split_extent_at() to split the second half
-with EXT4_EXT_DATA_VALID2, EXT4_EXT_MARK_UNWRIT1, EXT4_EXT_MAY_ZEROOUT
-and EXT4_EXT_MARK_UNWRIT2 flags set. However, ext4_split_extent_at()
-failed to insert extent since a temporary lack -ENOSPC. It zeroes out
-the first half but convert the entire on-disk extent to written since
-the EXT4_EXT_DATA_VALID2 flag set, but left the second half as unwritten
-in the extent status tree.
-
-   [0000000000SSSSSS]  data                S: stale data, 0: zeroed
-   [WWWWWWWWWWWWWWWW]  on-disk extent      W: written extent
-   [WWWWWWWWWWUUUUUU]  extent status tree
-
-Finally, if the DIO failed to write data to the disk, the stale data in
-the second half will be exposed once the cached extent entry is gone.
-
-Fix this issue by not passing EXT4_GET_BLOCKS_CONVERT when splitting
-an unwritten extent before submitting I/O, and make
-ext4_split_convert_extents() to zero out the entire extent range
-to zero for this case, and also mark the extent in the extent status
-tree for consistency.
-
-Fixes: b8a8684502a0 ("ext4: Introduce FALLOC_FL_ZERO_RANGE flag for fallocate")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Cc: stable@kernel.org
-Message-ID: <20251129103247.686136-4-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20241231013641.23908-1-xiehongyu1@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 87e4b043b98a ("usb: cdns3: fix role switching during resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/usb/cdns3/core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 5ce147bf48162..d24e02b59ceec 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3735,15 +3735,19 @@ static struct ext4_ext_path *ext4_split_convert_extents(handle_t *handle,
- 	/* Convert to unwritten */
- 	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
- 		split_flag |= EXT4_EXT_DATA_ENTIRE_VALID1;
--	/* Convert to initialized */
--	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
-+	/* Split the existing unwritten extent */
-+	} else if (flags & (EXT4_GET_BLOCKS_UNWRIT_EXT |
-+			    EXT4_GET_BLOCKS_CONVERT)) {
- 		/*
- 		 * It is safe to convert extent to initialized via explicit
- 		 * zeroout only if extent is fully inside i_size or new_size.
- 		 */
- 		split_flag |= ee_block + ee_len <= eof_block ?
- 			      EXT4_EXT_MAY_ZEROOUT : 0;
--		split_flag |= (EXT4_EXT_MARK_UNWRIT2 | EXT4_EXT_DATA_VALID2);
-+		split_flag |= EXT4_EXT_MARK_UNWRIT2;
-+		/* Convert to initialized */
-+		if (flags & EXT4_GET_BLOCKS_CONVERT)
-+			split_flag |= EXT4_EXT_DATA_VALID2;
- 	}
- 	flags |= EXT4_GET_BLOCKS_PRE_IO;
- 	return ext4_split_extent(handle, inode, path, map, split_flag, flags,
-@@ -3919,7 +3923,7 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
- 	/* get_block() before submitting IO, split the extent */
- 	if (flags & EXT4_GET_BLOCKS_PRE_IO) {
- 		path = ext4_split_convert_extents(handle, inode, map, path,
--				flags | EXT4_GET_BLOCKS_CONVERT, allocated);
-+						  flags, allocated);
- 		if (IS_ERR(path))
- 			return path;
- 		/*
+diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+index 465e9267b49c1..98980a23e1c22 100644
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -529,9 +529,7 @@ int cdns_resume(struct cdns *cdns)
+ 	int ret = 0;
+ 
+ 	if (cdns_power_is_lost(cdns)) {
+-		if (cdns->role_sw) {
+-			cdns->role = cdns_role_get(cdns->role_sw);
+-		} else {
++		if (!cdns->role_sw) {
+ 			real_role = cdns_hw_role_state_machine(cdns);
+ 			if (real_role != cdns->role) {
+ 				ret = cdns_hw_role_switch(cdns);
 -- 
 2.51.0
 
