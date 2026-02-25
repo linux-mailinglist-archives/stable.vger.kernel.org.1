@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wE9DEVZRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:10 +0100
+	id GEi9D61VnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:51:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17E218EFA3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5729C1900A9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:51:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A963B309375C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0313E3003611
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FADF2417E0;
-	Wed, 25 Feb 2026 01:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D717424A06D;
+	Wed, 25 Feb 2026 01:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJr5i5jn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egfqog2q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3375A2BAF7;
-	Wed, 25 Feb 2026 01:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98929248886;
+	Wed, 25 Feb 2026 01:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983064; cv=none; b=pfw/yO9c1Vn3j8BeGM8M5EcPBdBRnXUP56mE0JmeimABUiFNGtjFITvwWxCcwMQ7ewSTXM2vFhf7CaHsLrXT2pB+TUJoeMTlPUvyTGO1KnKh2wUD0XnhY2P/qNLQpacC8dbTnSX+xcfL/43iaF/F7W7T0PJiv3fu+91pWCSmB4s=
+	t=1771983711; cv=none; b=uKXGp9A2B9L68Z/XH73WEqA4tl8JbcVK47x65xnHreEmE5NqDRgzAcYy6/6NcYUsQbYnQ3ydO8ZcY9LMVkNkzm3yyh5u9Wad1kmr/2X9Ex3rPogmk6pkEnu3lbfC/Ppy06tWHc08DFTdxqEPJJFeUFoki/J8826nZ2QXakkS4D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983064; c=relaxed/simple;
-	bh=9JahBHeCu6z8Qo3gpxjPsIN1537gxO+mKnDHWgELtew=;
+	s=arc-20240116; t=1771983711; c=relaxed/simple;
+	bh=EdEWTS2t04fQF5fAbAmiJKVDshRUYJ4giqXWuWph26s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dj32zfoESxn0/eDPiW1yWLglhPxyCShwjKwlB7dkIlVzXn4mbfu0P9dMGAgSbm7j51AU5trS6JUwtLcXNu+pjQy6kOU+Rgmi0OMi48ZN8OKyxiKDrEECE8Fkx9LykA5Gvzjd7+ATKcuX1zURUyggfxqDvWUe9yXqMOx3qxGVggk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJr5i5jn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDEAC116D0;
-	Wed, 25 Feb 2026 01:31:03 +0000 (UTC)
+	 MIME-Version; b=unMwuINoVa/Vb3UkIMLwAwRSw7rjUJ3jPqFjqHutoSQL0H1Q92RwU0siQc1wDhwcCQCyUZjmvLK/spKW1bXclNNk4ZzxSQWPQLDniwJcbp/e+99izD/3hW0jMtTzrfNs/Wxw8pDcYTIygJLaPpW4OSCEvHzCrM4wsEVasDgap4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egfqog2q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E20C116D0;
+	Wed, 25 Feb 2026 01:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983064;
-	bh=9JahBHeCu6z8Qo3gpxjPsIN1537gxO+mKnDHWgELtew=;
+	s=korg; t=1771983711;
+	bh=EdEWTS2t04fQF5fAbAmiJKVDshRUYJ4giqXWuWph26s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJr5i5jnr7smhTEBXgEHDWXHSRPwxwH9vzfSfz1mrTsQ25jgyxpJIJHBtt9aTE00z
-	 xvw1JrZDTTcpNR+v7n/XnG3bqab/SBBWZJNB9YG7tb1NIL5LDA7zCNMQ0m2JuKbGfB
-	 0HtQIeg0wePFSkGGyTYOzuIW/+BJuSG/H+koWcx0=
+	b=egfqog2q93W2dC/skhFog9Ynz9Q5fNWU7T5qYJPevh22/OLfoEhzAviGyF4XN5sCn
+	 yIk+9JAf8U8jwXgQmtsDGPM1EBhPwg08FUdr5cRZupBU8ltaqkTFnyqVb0jNphBea+
+	 pR9Ekl79f8GKT+IZ8L2akNvLoCR9Ae/Z9bLv1T9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Ketil Johnsen <ketil.johnsen@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Steven Price <steven.price@arm.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 227/781] drm/panthor: Evict groups before VM termination
+Subject: [PATCH 6.18 010/641] fs: move initializing f_mode before file_ref_init()
 Date: Tue, 24 Feb 2026 17:15:36 -0800
-Message-ID: <20260225012405.279281781@linuxfoundation.org>
+Message-ID: <20260225012349.192398659@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,117 +70,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218265-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218830-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E17E218EFA3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 5729C1900A9
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ketil Johnsen <ketil.johnsen@arm.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 565ed40b5fc1242f7538a016fce5a85f802d4fb5 ]
+[ Upstream commit 1219e0feaefc9697f738b223540e8e8906291cb3 ]
 
-Ensure all related groups are evicted and suspended before VM
-destruction takes place.
+The comment above file_ref_init() says:
+"We're SLAB_TYPESAFE_BY_RCU so initialize f_ref last."
+but file_set_fsnotify_mode() was added after file_ref_init().
 
-This fixes an issue where panthor_vm_destroy() destroys and unmaps the
-heap context while there are still on slot groups using this.
-The FW will do a write out to the heap context when a CSG (group) is
-suspended, so a premature unmap of the heap context will cause a
-GPU page fault.
-This page fault is quite harmless, and do not affect the continued
-operation of the GPU.
+Move it right after setting f_mode, where it makes more sense.
 
-Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Link: https://patch.msgid.link/20251219093546.1227697-1-ketil.johnsen@arm.com
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Fixes: 711f9b8fbe4f4 ("fsnotify: disable pre-content and permission events by default")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://patch.msgid.link/20260109211536.3565697-1-amir73il@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_mmu.c   |  4 ++++
- drivers/gpu/drm/panthor/panthor_sched.c | 14 ++++++++++++++
- drivers/gpu/drm/panthor/panthor_sched.h |  1 +
- 3 files changed, 19 insertions(+)
+ fs/file_table.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index f6339963e4960..9194bad4b6196 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -1503,6 +1503,10 @@ static void panthor_vm_destroy(struct panthor_vm *vm)
+diff --git a/fs/file_table.c b/fs/file_table.c
+index cd4a3db4659ac..34244fccf2edf 100644
+--- a/fs/file_table.c
++++ b/fs/file_table.c
+@@ -176,6 +176,11 @@ static int init_file(struct file *f, int flags, const struct cred *cred)
  
- 	vm->destroyed = true;
+ 	f->f_flags	= flags;
+ 	f->f_mode	= OPEN_FMODE(flags);
++	/*
++	 * Disable permission and pre-content events for all files by default.
++	 * They may be enabled later by fsnotify_open_perm_and_set_mode().
++	 */
++	file_set_fsnotify_mode(f, FMODE_NONOTIFY_PERM);
  
-+	/* Tell scheduler to stop all GPU work related to this VM */
-+	if (refcount_read(&vm->as.active_cnt) > 0)
-+		panthor_sched_prepare_for_vm_destruction(vm->ptdev);
-+
- 	mutex_lock(&vm->heaps.lock);
- 	panthor_heap_pool_destroy(vm->heaps.pool);
- 	vm->heaps.pool = NULL;
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 6ac4cec52f9e4..bd397d773d72b 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -2805,6 +2805,20 @@ void panthor_sched_report_mmu_fault(struct panthor_device *ptdev)
- 		panthor_sched_immediate_tick(ptdev);
+ 	f->f_op		= NULL;
+ 	f->f_mapping	= NULL;
+@@ -197,11 +202,6 @@ static int init_file(struct file *f, int flags, const struct cred *cred)
+ 	 * refcount bumps we should reinitialize the reused file first.
+ 	 */
+ 	file_ref_init(&f->f_ref, 1);
+-	/*
+-	 * Disable permission and pre-content events for all files by default.
+-	 * They may be enabled later by fsnotify_open_perm_and_set_mode().
+-	 */
+-	file_set_fsnotify_mode(f, FMODE_NONOTIFY_PERM);
+ 	return 0;
  }
  
-+void panthor_sched_prepare_for_vm_destruction(struct panthor_device *ptdev)
-+{
-+	/* FW can write out internal state, like the heap context, during CSG
-+	 * suspend. It is therefore important that the scheduler has fully
-+	 * evicted any pending and related groups before VM destruction can
-+	 * safely continue. Failure to do so can lead to GPU page faults.
-+	 * A controlled termination of a Panthor instance involves destroying
-+	 * the group(s) before the VM. This means any relevant group eviction
-+	 * has already been initiated by this point, and we just need to
-+	 * ensure that any pending tick_work() has been completed.
-+	 */
-+	flush_work(&ptdev->scheduler->tick_work.work);
-+}
-+
- void panthor_sched_resume(struct panthor_device *ptdev)
- {
- 	/* Force a tick to re-evaluate after a resume. */
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.h b/drivers/gpu/drm/panthor/panthor_sched.h
-index f4a475aa34c0a..9a8692de8aded 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.h
-+++ b/drivers/gpu/drm/panthor/panthor_sched.h
-@@ -50,6 +50,7 @@ void panthor_sched_suspend(struct panthor_device *ptdev);
- void panthor_sched_resume(struct panthor_device *ptdev);
- 
- void panthor_sched_report_mmu_fault(struct panthor_device *ptdev);
-+void panthor_sched_prepare_for_vm_destruction(struct panthor_device *ptdev);
- void panthor_sched_report_fw_events(struct panthor_device *ptdev, u32 events);
- 
- void panthor_fdinfo_gather_group_samples(struct panthor_file *pfile);
 -- 
 2.51.0
 
