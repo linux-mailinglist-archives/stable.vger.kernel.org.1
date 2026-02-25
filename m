@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-218479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDHiAQBSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:00 +0100
+	id gCE3CSlanmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-219020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629BD18F177
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA9C190A6E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4AB62305872A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9AF5932D996D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8073248886;
-	Wed, 25 Feb 2026 01:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEEB1279907;
+	Wed, 25 Feb 2026 01:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9ZJgz/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fK2WzVmU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC31918B0A;
-	Wed, 25 Feb 2026 01:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABECD28850C;
+	Wed, 25 Feb 2026 01:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983307; cv=none; b=b6G9Wad+9R9CvZVhAHScVnfJKsn33zeQpt02MHqf24C2rncLv3Y/PwejP13UlvblBE9W1gS5r3goOyc5/sW/hq8Il5CgJKdwjI25dvr1TxvLdLBa9fqFZMtX5n3wX7Aj6x8zmb4qc0Qf36eTXwtjHSoCEYWJfrdUqjYeIP2KtUs=
+	t=1771983933; cv=none; b=EZKgwZIdLQYRc2AxotF0PF47fMQ/ANYrolQTckJmTasir5vY6bS1dQ7GI0LXQOu9EKlAcI88cUu0e0zyNutAEvBDueiiMXaOp4rV1QjSBzugcHsSf1QgXdKmPYt7j9BIu87HOwAuv6n1uReIupueHOOzJF2nvyOwvP0cNDWVEK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983307; c=relaxed/simple;
-	bh=1HMHSSnlr5TsL244XkHaqCaWqPmCglL+gy/RAypi8mM=;
+	s=arc-20240116; t=1771983933; c=relaxed/simple;
+	bh=3V3t9b0eMa55ZyFXhdp7Smey5xFofuCj9Oh9IlX1zf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1nv/Hu9+Vre/x1cC5IdkZrf0gQOwTahCatiUTn0kkpI45uhrn20N9Ct7xsXw88kcWHAFJPMZRLl+CBn9QKLhO6uG434MkwsHoZZmbEnNgMNt6RSpBRN25Eh4m2RjHY48QZcHtFE2kBXynpKNF95+qt6tC7ThNncJoDbKq3LlO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9ZJgz/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2DAC116D0;
-	Wed, 25 Feb 2026 01:35:07 +0000 (UTC)
+	 MIME-Version; b=IqnfXtPA4r1l0h8ksbbKSA7mKqToyuzbwLFWNDsQMrmhC9prJ+9N10k7ZNWI2s84IkakppbqPQfDF5szh4ylhRFdXzPin8pgwIPW95sUn/yhCi4nhJw0kPBWWnm/fABvRgQPcHnODRrrOXBqqgeZWFPa6RV8vwm5DCj0SlrJ59A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fK2WzVmU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823C6C116D0;
+	Wed, 25 Feb 2026 01:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983307;
-	bh=1HMHSSnlr5TsL244XkHaqCaWqPmCglL+gy/RAypi8mM=;
+	s=korg; t=1771983933;
+	bh=3V3t9b0eMa55ZyFXhdp7Smey5xFofuCj9Oh9IlX1zf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d9ZJgz/dfOxrrRY5DmdwZUTC+EpzhyQIvXLZ5GfIEiNmXDYO9pGgRoa5SPAzVxzCr
-	 el2GxxGc0cSXt+FKsVtow1Cy/cKQcxZTsK2IATTAQV+L2aT3rx8+4tLPB32YMVVWWt
-	 M5isWUmgjcdnlUnU53jzbsgZM2XrL2N2FI6Dp8eI=
+	b=fK2WzVmUpqRXhHupTnGJoXtXZ1zk9AarEF41HpM5wU1cIu463vLFDcotuxcQQ5yxI
+	 ct1U9GJdUa/8+LULCIa6hFRFa+xwsH7R5ocU9felOnkvGvVD36DxtcLhix7QwC+uKv
+	 +MKrKhJ7F2UvtnBu+WrYkBNk6YwDOA2LSSfJtBHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aksh Garg <a-garg7@ti.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 398/781] PCI: dwc: ep: Fix resizable BAR support for multi-PF configurations
+Subject: [PATCH 6.18 181/641] ALSA: vmaster: Relax __free() variable declarations
 Date: Tue, 24 Feb 2026 17:18:27 -0800
-Message-ID: <20260225012409.467292308@linuxfoundation.org>
+Message-ID: <20260225012353.411426280@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,201 +68,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218479-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219020-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,ti.com:email]
-X-Rspamd-Queue-Id: 629BD18F177
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 9AA9C190A6E
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aksh Garg <a-garg7@ti.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 43d67ec26b329f8aea34ba9dff23d69b84a8e564 ]
+[ Upstream commit 3b7c7bda39e1e48f926fb3d280a5f5d20a939857 ]
 
-The resizable BAR support added by the commit 3a3d4cabe681 ("PCI: dwc: ep:
-Allow EPF drivers to configure the size of Resizable BARs") incorrectly
-configures the resizable BARs only for the first Physical Function (PF0)
-in EP mode.
+We used to have a variable declaration with __free() initialized with
+NULL.  This was to keep the old coding style rule, but recently it's
+relaxed and rather recommends to follow the new rule to declare in
+place of use for __free() -- which avoids potential deadlocks or UAFs
+with nested cleanups.
 
-The resizable BAR configuration functions use generic dw_pcie_*_dbi()
-operations instead of physical function specific dw_pcie_ep_*_dbi()
-operations. This causes resizable BAR configuration to always target
-PF0 regardless of the requested function number.
+Although the current code has no bug, per se, let's follow the new
+standard and move the declaration to the place of assignment (or
+directly assign the allocated result) instead of NULL initializations.
 
-Additionally, dw_pcie_ep_init_non_sticky_registers() only initializes
-resizable BAR registers for PF0, leaving other PFs unconfigured during
-the execution of this function.
-
-Fix this by using physical function specific configuration space access
-operations throughout the resizable BAR code path and initializing
-registers for all the physical functions that support resizable BARs.
-
-Fixes: 3a3d4cabe681 ("PCI: dwc: ep: Allow EPF drivers to configure the size of Resizable BARs")
-Signed-off-by: Aksh Garg <a-garg7@ti.com>
-[mani: added stable tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260130115516.515082-2-a-garg7@ti.com
-Stable-dep-of: 72cb5ed2a5c6 ("PCI: dwc: ep: Add per-PF BAR and inbound ATU mapping support")
+Fixes: fb9e197f3f27 ("ALSA: vmaster: Use automatic cleanup of kfree()")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20251216140634.171890-9-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../pci/controller/dwc/pcie-designware-ep.c   | 48 ++++++++++++-------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+ sound/core/vmaster.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 855b2e58c3380..1cc2985bab03d 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -75,6 +75,13 @@ static u8 dw_pcie_ep_find_capability(struct dw_pcie_ep *ep, u8 func_no, u8 cap)
- 				 cap, NULL, ep, func_no);
- }
+diff --git a/sound/core/vmaster.c b/sound/core/vmaster.c
+index c657659b236c4..76cc64245f5df 100644
+--- a/sound/core/vmaster.c
++++ b/sound/core/vmaster.c
+@@ -56,10 +56,10 @@ struct link_follower {
  
-+static u16 dw_pcie_ep_find_ext_capability(struct dw_pcie_ep *ep,
-+					  u8 func_no, u8 cap)
-+{
-+	return PCI_FIND_NEXT_EXT_CAP(dw_pcie_ep_read_cfg, 0,
-+				     cap, NULL, ep, func_no);
-+}
-+
- static int dw_pcie_ep_write_header(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 				   struct pci_epf_header *hdr)
+ static int follower_update(struct link_follower *follower)
  {
-@@ -350,22 +357,22 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 	ep->epf_bar[bar] = NULL;
- }
+-	struct snd_ctl_elem_value *uctl __free(kfree) = NULL;
+ 	int err, ch;
++	struct snd_ctl_elem_value *uctl __free(kfree) =
++		kzalloc(sizeof(*uctl), GFP_KERNEL);
  
--static unsigned int dw_pcie_ep_get_rebar_offset(struct dw_pcie *pci,
-+static unsigned int dw_pcie_ep_get_rebar_offset(struct dw_pcie_ep *ep, u8 func_no,
- 						enum pci_barno bar)
+-	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
+ 	if (!uctl)
+ 		return -ENOMEM;
+ 	uctl->id = follower->follower.id;
+@@ -74,7 +74,6 @@ static int follower_update(struct link_follower *follower)
+ /* get the follower ctl info and save the initial values */
+ static int follower_init(struct link_follower *follower)
  {
- 	u32 reg, bar_index;
- 	unsigned int offset, nbars;
- 	int i;
+-	struct snd_ctl_elem_info *uinfo __free(kfree) = NULL;
+ 	int err;
  
--	offset = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_REBAR);
-+	offset = dw_pcie_ep_find_ext_capability(ep, func_no, PCI_EXT_CAP_ID_REBAR);
- 	if (!offset)
- 		return offset;
- 
--	reg = dw_pcie_readl_dbi(pci, offset + PCI_REBAR_CTRL);
-+	reg = dw_pcie_ep_readl_dbi(ep, func_no, offset + PCI_REBAR_CTRL);
- 	nbars = FIELD_GET(PCI_REBAR_CTRL_NBAR_MASK, reg);
- 
- 	for (i = 0; i < nbars; i++, offset += PCI_REBAR_CTRL) {
--		reg = dw_pcie_readl_dbi(pci, offset + PCI_REBAR_CTRL);
-+		reg = dw_pcie_ep_readl_dbi(ep, func_no, offset + PCI_REBAR_CTRL);
- 		bar_index = FIELD_GET(PCI_REBAR_CTRL_BAR_IDX, reg);
- 		if (bar_index == bar)
- 			return offset;
-@@ -386,7 +393,7 @@ static int dw_pcie_ep_set_bar_resizable(struct dw_pcie_ep *ep, u8 func_no,
- 	u32 rebar_cap, rebar_ctrl;
- 	int ret;
- 
--	rebar_offset = dw_pcie_ep_get_rebar_offset(pci, bar);
-+	rebar_offset = dw_pcie_ep_get_rebar_offset(ep, func_no, bar);
- 	if (!rebar_offset)
- 		return -EINVAL;
- 
-@@ -416,16 +423,16 @@ static int dw_pcie_ep_set_bar_resizable(struct dw_pcie_ep *ep, u8 func_no,
- 	 * 1 MB to 128 TB. Bits 31:16 in PCI_REBAR_CTRL define "supported sizes"
- 	 * bits for sizes 256 TB to 8 EB. Disallow sizes 256 TB to 8 EB.
- 	 */
--	rebar_ctrl = dw_pcie_readl_dbi(pci, rebar_offset + PCI_REBAR_CTRL);
-+	rebar_ctrl = dw_pcie_ep_readl_dbi(ep, func_no, rebar_offset + PCI_REBAR_CTRL);
- 	rebar_ctrl &= ~GENMASK(31, 16);
--	dw_pcie_writel_dbi(pci, rebar_offset + PCI_REBAR_CTRL, rebar_ctrl);
-+	dw_pcie_ep_writel_dbi(ep, func_no, rebar_offset + PCI_REBAR_CTRL, rebar_ctrl);
- 
- 	/*
- 	 * The "selected size" (bits 13:8) in PCI_REBAR_CTRL are automatically
- 	 * updated when writing PCI_REBAR_CAP, see "Figure 3-26 Resizable BAR
- 	 * Example for 32-bit Memory BAR0" in DWC EP databook 5.96a.
- 	 */
--	dw_pcie_writel_dbi(pci, rebar_offset + PCI_REBAR_CAP, rebar_cap);
-+	dw_pcie_ep_writel_dbi(ep, func_no, rebar_offset + PCI_REBAR_CAP, rebar_cap);
- 
- 	dw_pcie_dbi_ro_wr_dis(pci);
- 
-@@ -1023,20 +1030,17 @@ void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
- }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_deinit);
- 
--static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
-+static void dw_pcie_ep_init_rebar_registers(struct dw_pcie_ep *ep, u8 func_no)
- {
--	struct dw_pcie_ep *ep = &pci->ep;
- 	unsigned int offset;
- 	unsigned int nbars;
- 	enum pci_barno bar;
- 	u32 reg, i, val;
- 
--	offset = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_REBAR);
--
--	dw_pcie_dbi_ro_wr_en(pci);
-+	offset = dw_pcie_ep_find_ext_capability(ep, func_no, PCI_EXT_CAP_ID_REBAR);
- 
- 	if (offset) {
--		reg = dw_pcie_readl_dbi(pci, offset + PCI_REBAR_CTRL);
-+		reg = dw_pcie_ep_readl_dbi(ep, func_no, offset + PCI_REBAR_CTRL);
- 		nbars = FIELD_GET(PCI_REBAR_CTRL_NBAR_MASK, reg);
- 
- 		/*
-@@ -1057,16 +1061,28 @@ static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
- 			 * the controller when RESBAR_CAP_REG is written, which
- 			 * is why RESBAR_CAP_REG is written here.
- 			 */
--			val = dw_pcie_readl_dbi(pci, offset + PCI_REBAR_CTRL);
-+			val = dw_pcie_ep_readl_dbi(ep, func_no, offset + PCI_REBAR_CTRL);
- 			bar = FIELD_GET(PCI_REBAR_CTRL_BAR_IDX, val);
- 			if (ep->epf_bar[bar])
- 				pci_epc_bar_size_to_rebar_cap(ep->epf_bar[bar]->size, &val);
- 			else
- 				val = BIT(4);
- 
--			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, val);
-+			dw_pcie_ep_writel_dbi(ep, func_no, offset + PCI_REBAR_CAP, val);
- 		}
+ 	if (follower->info.count) {
+@@ -84,7 +83,8 @@ static int follower_init(struct link_follower *follower)
+ 		return 0;
  	}
-+}
-+
-+static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
-+{
-+	struct dw_pcie_ep *ep = &pci->ep;
-+	u8 funcs = ep->epc->max_functions;
-+	u8 func_no;
-+
-+	dw_pcie_dbi_ro_wr_en(pci);
-+
-+	for (func_no = 0; func_no < funcs; func_no++)
-+		dw_pcie_ep_init_rebar_registers(ep, func_no);
  
- 	dw_pcie_setup(pci);
- 	dw_pcie_dbi_ro_wr_dis(pci);
+-	uinfo = kmalloc(sizeof(*uinfo), GFP_KERNEL);
++	struct snd_ctl_elem_info *uinfo __free(kfree) =
++		kmalloc(sizeof(*uinfo), GFP_KERNEL);
+ 	if (!uinfo)
+ 		return -ENOMEM;
+ 	uinfo->id = follower->follower.id;
+@@ -341,9 +341,9 @@ static int master_get(struct snd_kcontrol *kcontrol,
+ static int sync_followers(struct link_master *master, int old_val, int new_val)
+ {
+ 	struct link_follower *follower;
+-	struct snd_ctl_elem_value *uval __free(kfree) = NULL;
++	struct snd_ctl_elem_value *uval __free(kfree) =
++		kmalloc(sizeof(*uval), GFP_KERNEL);
+ 
+-	uval = kmalloc(sizeof(*uval), GFP_KERNEL);
+ 	if (!uval)
+ 		return -ENOMEM;
+ 	list_for_each_entry(follower, &master->followers, list) {
 -- 
 2.51.0
 
