@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-218289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218854-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YH6wOYNRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218289-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:55 +0100
+	id oAJWNEFZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218854-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A98D18F009
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337541908F9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BDBF6309D24C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 174AA3286FA0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567B1231A41;
-	Wed, 25 Feb 2026 01:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9990E27280F;
+	Wed, 25 Feb 2026 01:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlhYoYHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLnj0O+k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4122BAF7;
-	Wed, 25 Feb 2026 01:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACFB19FA93;
+	Wed, 25 Feb 2026 01:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983090; cv=none; b=KcxpIWBD8dyhucq1vNOLq/cl8ZhMdePBAj7meeOyLlnBr2bYJrncr5mSXmJteWt8IsRN9UyYRHIGqwmDt/J/q6kb5TozVSK1AjE2Kus1Z95EMcPugHe+xbXcbPASqrFf12ETtCGo8IBVyUoc1MLIwI8yrKwufC1jYA3zayNoHLA=
+	t=1771983739; cv=none; b=oyi6WAlaGHoDUdirznc8Zo951nHIjluQfhXh6cN8BYOxup1bBpAkcCVucYglqS4p56td/0+pLWlNZpTKoROvs5fDvLRkq2CmjDdxGF1Hn30/oDqK1fVdL5dZzJ2uUDr5Xg2cGIGwU4bEHXqB8ufE4DpgpVOvikATJJ9lfk0FDG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983090; c=relaxed/simple;
-	bh=iCaA4T1ovmSVmDiPIJTemVeFsQ4wSmkk6iW9LGuOo/I=;
+	s=arc-20240116; t=1771983739; c=relaxed/simple;
+	bh=mRDWBMAnhqCSP1o0aGyE9V6vYclyjrcECZ/0SvrOfmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EsDcvWAJhHEnO5lJVnTowxNjNKk+9N2/njmduL7luvMF7FyozoRXyLFlbU+rWOVmyey9af5EnwwG1kExBpyJ+rPmT44EeqMAl/0PlgRvnRg6et/XSQPGR3uCrvblvVjcIkRGilNni/RT9q/r3BYpeAoIHxO/kHxb7WguJGkEmAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlhYoYHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA50C116D0;
-	Wed, 25 Feb 2026 01:31:29 +0000 (UTC)
+	 MIME-Version; b=lUy65egoKTReOgKtntH+72PG0ruW9XNA7yopIanql+kJm4a+IBEKDduKGH/yfcd4GR2HlcQQ+Xb5e5eFm+lbyjv7nmYrE3Wge32OvXTXCR9KJrv3a4LxR4omlmC7Ehq8tqbJlwN7eLikWbekxdaiBpNk7bqWxs04+mFmg8rmKLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLnj0O+k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F2AC116D0;
+	Wed, 25 Feb 2026 01:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983090;
-	bh=iCaA4T1ovmSVmDiPIJTemVeFsQ4wSmkk6iW9LGuOo/I=;
+	s=korg; t=1771983739;
+	bh=mRDWBMAnhqCSP1o0aGyE9V6vYclyjrcECZ/0SvrOfmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LlhYoYHQj23Pz1tu+Tj63tqfO7Visx0dRUqth68ucBRYwm7bX6GRr6iIOKFDAL4LP
-	 /tpxLnqtgReyGEqIK44nY2EHVTjBL+lUzQRBhn/T3tEM0m5fTbPBmv5b2iEWKusoYK
-	 GtAbwm38XOgJ6C6as1t4qfSzDmS/zkUYazYKpt58=
+	b=yLnj0O+k3PQ10JacVxQnBqkSlsqrC5N6jdu1SzXaVDzrI8W4zOTgeDY571yrHUcFx
+	 4uBI/dEkuUIEAgPVUe29k1wucSRmT5pT7tOEbbfALAzNQt4bPpVNxYrpVtSpWbZreE
+	 L30plxhgG6YR+AoGN2dxM5+AN6iClGfiRVEA8Y2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 249/781] drm/msm/dpu: fix WD timer handling on DPU 8.x
+Subject: [PATCH 6.18 032/641] smb: client: fix potential UAF and double free in smb2_open_file()
 Date: Tue, 24 Feb 2026 17:15:58 -0800
-Message-ID: <20260225012405.814141427@linuxfoundation.org>
+Message-ID: <20260225012349.769920463@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,227 +70,71 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218289-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218854-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8A98D18F009
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,manguebit.org:email,kylinos.cn:email]
+X-Rspamd-Queue-Id: 337541908F9
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit 794b0e68caba49b950b42ec32e364028c2facf57 ]
+[ Upstream commit ebbbc4bfad4cb355d17c671223d0814ee3ef4eda ]
 
-Since DPU 8.x Watchdog timer settings were moved from the TOP to the
-INTF block. Support programming the timer in the INTF block. Fixes tag
-points to the commit which removed register access to those registers on
-DPU 8.x+ (and which also should have added proper support for WD timer
-on those devices).
+Zero out @err_iov and @err_buftype before retrying SMB2_open() to
+prevent an UAF bug if @data != NULL, otherwise a double free.
 
-Fixes: 43e3293fc614 ("drm/msm/dpu: add support for MDP_TOP blackhole")
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/696586/
-Link: https://lore.kernel.org/r/20251230-intf-fix-wd-v6-2-98203d150611@oss.qualcomm.com
+Fixes: e3a43633023e ("smb/client: fix memory leak in smb2_open_file()")
+Reported-by: David Howells <dhowells@redhat.com>
+Closes: https://lore.kernel.org/r/2892312.1770306653@warthog.procyon.org.uk
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Cc: linux-cifs@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c |  4 +-
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c | 49 +++++++++++++++++++--
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h |  3 +-
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_top.c  |  7 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h |  7 +++
- 5 files changed, 57 insertions(+), 13 deletions(-)
+ fs/smb/client/smb2file.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index af5122a514bd1..eba1d52211f68 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -786,13 +786,13 @@ static void _dpu_encoder_update_vsync_source(struct dpu_encoder_virt *dpu_enc,
- 	}
- 
- 	vsync_cfg.vsync_source = disp_info->vsync_source;
-+	vsync_cfg.frame_rate = drm_mode_vrefresh(&dpu_enc->base.crtc->state->adjusted_mode);
- 
- 	if (hw_mdptop->ops.setup_vsync_source) {
- 		for (i = 0; i < dpu_enc->num_phys_encs; i++)
- 			vsync_cfg.ppnumber[i] = dpu_enc->hw_pp[i]->idx;
- 
- 		vsync_cfg.pp_count = dpu_enc->num_phys_encs;
--		vsync_cfg.frame_rate = drm_mode_vrefresh(&dpu_enc->base.crtc->state->adjusted_mode);
- 
- 		hw_mdptop->ops.setup_vsync_source(hw_mdptop, &vsync_cfg);
- 	}
-@@ -802,7 +802,7 @@ static void _dpu_encoder_update_vsync_source(struct dpu_encoder_virt *dpu_enc,
- 
- 		if (phys_enc->has_intf_te && phys_enc->hw_intf->ops.vsync_sel)
- 			phys_enc->hw_intf->ops.vsync_sel(phys_enc->hw_intf,
--							 vsync_cfg.vsync_source);
-+							 &vsync_cfg);
- 	}
- }
- 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
-index a80ac82a96255..7e620f5909849 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
-@@ -67,6 +67,10 @@
- #define INTF_MISR_CTRL                  0x180
- #define INTF_MISR_SIGNATURE             0x184
- 
-+#define INTF_WD_TIMER_0_CTL		0x230
-+#define INTF_WD_TIMER_0_CTL2		0x234
-+#define INTF_WD_TIMER_0_LOAD_VALUE	0x238
-+
- #define INTF_MUX                        0x25C
- #define INTF_STATUS                     0x26C
- #define INTF_AVR_CONTROL                0x270
-@@ -475,7 +479,20 @@ static int dpu_hw_intf_get_vsync_info(struct dpu_hw_intf *intf,
- }
- 
- static void dpu_hw_intf_vsync_sel(struct dpu_hw_intf *intf,
--				  enum dpu_vsync_source vsync_source)
-+				  struct dpu_vsync_source_cfg *cfg)
-+{
-+	struct dpu_hw_blk_reg_map *c;
-+
-+	if (!intf)
-+		return;
-+
-+	c = &intf->hw;
-+
-+	DPU_REG_WRITE(c, INTF_TEAR_MDP_VSYNC_SEL, (cfg->vsync_source & 0xf));
-+}
-+
-+static void dpu_hw_intf_vsync_sel_v8(struct dpu_hw_intf *intf,
-+				  struct dpu_vsync_source_cfg *cfg)
- {
- 	struct dpu_hw_blk_reg_map *c;
- 
-@@ -484,7 +501,30 @@ static void dpu_hw_intf_vsync_sel(struct dpu_hw_intf *intf,
- 
- 	c = &intf->hw;
- 
--	DPU_REG_WRITE(c, INTF_TEAR_MDP_VSYNC_SEL, (vsync_source & 0xf));
-+	if (cfg->vsync_source >= DPU_VSYNC_SOURCE_WD_TIMER_4 &&
-+	    cfg->vsync_source <= DPU_VSYNC_SOURCE_WD_TIMER_1) {
-+		pr_warn_once("DPU 8.x supports only GPIOs and timer0 as TE sources\n");
-+		return;
-+	}
-+
-+	if (cfg->vsync_source == DPU_VSYNC_SOURCE_WD_TIMER_0) {
-+		u32 reg;
-+
-+		DPU_REG_WRITE(c, INTF_WD_TIMER_0_LOAD_VALUE,
-+			      CALCULATE_WD_LOAD_VALUE(cfg->frame_rate));
-+
-+		DPU_REG_WRITE(c, INTF_WD_TIMER_0_CTL, BIT(0)); /* clear timer */
-+
-+		reg  = BIT(8);		/* enable heartbeat timer */
-+		reg |= BIT(0);		/* enable WD timer */
-+		reg |= BIT(1);		/* select default 16 clock ticks */
-+		DPU_REG_WRITE(c, INTF_WD_TIMER_0_CTL2, reg);
-+
-+		/* make sure that timers are enabled/disabled for vsync state */
-+		wmb();
-+	}
-+
-+	dpu_hw_intf_vsync_sel(intf, cfg);
- }
- 
- static void dpu_hw_intf_disable_autorefresh(struct dpu_hw_intf *intf,
-@@ -598,7 +638,10 @@ struct dpu_hw_intf *dpu_hw_intf_init(struct drm_device *dev,
- 		c->ops.enable_tearcheck = dpu_hw_intf_enable_te;
- 		c->ops.disable_tearcheck = dpu_hw_intf_disable_te;
- 		c->ops.connect_external_te = dpu_hw_intf_connect_external_te;
--		c->ops.vsync_sel = dpu_hw_intf_vsync_sel;
-+		if (mdss_rev->core_major_ver >= 8)
-+			c->ops.vsync_sel = dpu_hw_intf_vsync_sel_v8;
-+		else
-+			c->ops.vsync_sel = dpu_hw_intf_vsync_sel;
- 		c->ops.disable_autorefresh = dpu_hw_intf_disable_autorefresh;
- 	}
- 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h
-index 5a19cd74fa947..f6ef2c21b66d4 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h
-@@ -12,6 +12,7 @@
- #include "dpu_hw_util.h"
- 
- struct dpu_hw_intf;
-+struct dpu_vsync_source_cfg;
- 
- /* intf timing settings */
- struct dpu_hw_intf_timing_params {
-@@ -104,7 +105,7 @@ struct dpu_hw_intf_ops {
- 
- 	int (*connect_external_te)(struct dpu_hw_intf *intf, bool enable_external_te);
- 
--	void (*vsync_sel)(struct dpu_hw_intf *intf, enum dpu_vsync_source vsync_source);
-+	void (*vsync_sel)(struct dpu_hw_intf *intf, struct dpu_vsync_source_cfg *cfg);
- 
- 	void (*disable_autorefresh)(struct dpu_hw_intf *intf, uint32_t encoder_id, u16 vdisplay);
- 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_top.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_top.c
-index 96dc10589bee6..1ebd75d4f9be8 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_top.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_top.c
-@@ -22,13 +22,6 @@
- #define TRAFFIC_SHAPER_WR_CLIENT(num)     (0x060 + (num * 4))
- #define TRAFFIC_SHAPER_FIXPOINT_FACTOR    4
- 
--#define MDP_TICK_COUNT                    16
--#define XO_CLK_RATE                       19200
--#define MS_TICKS_IN_SEC                   1000
--
--#define CALCULATE_WD_LOAD_VALUE(fps) \
--	((uint32_t)((MS_TICKS_IN_SEC * XO_CLK_RATE)/(MDP_TICK_COUNT * fps)))
--
- static void dpu_hw_setup_split_pipe(struct dpu_hw_mdp *mdp,
- 		struct split_pipe_cfg *cfg)
- {
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
-index 67b08e99335dc..6fe65bc3bff4e 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
-@@ -21,6 +21,13 @@
- 
- #define TO_S15D16(_x_)((_x_) << 7)
- 
-+#define MDP_TICK_COUNT                    16
-+#define XO_CLK_RATE                       19200
-+#define MS_TICKS_IN_SEC                   1000
-+
-+#define CALCULATE_WD_LOAD_VALUE(fps) \
-+	((uint32_t)((MS_TICKS_IN_SEC * XO_CLK_RATE)/(MDP_TICK_COUNT * fps)))
-+
- extern const struct dpu_csc_cfg dpu_csc_YUV2RGB_601L;
- extern const struct dpu_csc_cfg dpu_csc10_YUV2RGB_601L;
- extern const struct dpu_csc_cfg dpu_csc10_rgb2yuv_601l;
+diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
+index 03f90553d8319..e6cdf2efc7f4f 100644
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -178,6 +178,8 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
+ 		       &err_buftype);
+ 	if (rc == -EACCES && retry_without_read_attributes) {
+ 		free_rsp_buf(err_buftype, err_iov.iov_base);
++		memset(&err_iov, 0, sizeof(err_iov));
++		err_buftype = CIFS_NO_BUFFER;
+ 		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
+ 		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
+ 			       &err_buftype);
 -- 
 2.51.0
 
