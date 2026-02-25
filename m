@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-218708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qM8QHbZUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:34 +0100
+	id uFJ4LGCfnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936C818FD89
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF518192F21
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C78230F9E63
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0CEA23183392
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066DF26B2D7;
-	Wed, 25 Feb 2026 01:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5894B301010;
+	Wed, 25 Feb 2026 06:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwsglv1s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ic3VSaWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE09D25A642;
-	Wed, 25 Feb 2026 01:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C73E2D77FA;
+	Wed, 25 Feb 2026 06:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983568; cv=none; b=jtW2F4pgtvVtOC+9Ecff58y6G7kha3yekUcn4yqNMYVJGvUkDb/3pFrtY0rJQx2+onhVlnhUlGifF6BahZwdzgljn3PDbqJMKE1GzjXpUY6N6N7LaHGhfJPxwkW9FKsB3MkAjrnOstkELPefly/1QcMUTlAul85Ahn/rYpNMw3A=
+	t=1772002642; cv=none; b=A0LtjlBiRT1YYtCNmk1FCuDkInJ8x9RqE0g9Jyxp3RyjzBJuGhdbWfQbwh1INwOcDQN4dxwn/QoUPKB0dswhz5/T62I7ehU2Q4+jiJlCWcivLU5zMAKba83OniIrfjDLBKDwp4LXO1Yy/JFZISJYV8JENPuladLR4pnH/ww+8MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983568; c=relaxed/simple;
-	bh=fEGyEByCqX2E+bhb3pgJ2fjc1bgQULVtvCAkCOr5yhw=;
+	s=arc-20240116; t=1772002642; c=relaxed/simple;
+	bh=gNNYgjdU6DGMnc1AGKsSq7veHbJlcnlLP8WHKXW2o/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfZnqrxdJiF1Er2rLzqg0p4NjR2D4IkEHi/+qRYA7CEO0dpX5vKYBBpHgHsS3IcjiiXEhpvMm31DPAketZI0fGXs3xU8nWt1wWjs9H2aWMg2HsgURYJGBcy6vXrmzCBoRy9W6aTamQFENwvLcMpNgLkxz2c125KqJYkJqW7JTik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwsglv1s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6C1C19423;
-	Wed, 25 Feb 2026 01:39:28 +0000 (UTC)
+	 MIME-Version; b=XIgXepAAJFLBwoxyjmkVAjg6X8VrEO5eCAKackJ7qZEoE+SNNWDZDGLi3hoeA0AXL3jlw2IqMTGcjuCtVxjExMQ5LHo9ZpCjXTrmZl95445HjKDMHRi4mpnFxng2d/wwO862DYFr3elMloajBTAFh/6YeO9pLjMkpeIPcltnd/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ic3VSaWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E973DC116D0;
+	Wed, 25 Feb 2026 06:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983568;
-	bh=fEGyEByCqX2E+bhb3pgJ2fjc1bgQULVtvCAkCOr5yhw=;
+	s=korg; t=1772002642;
+	bh=gNNYgjdU6DGMnc1AGKsSq7veHbJlcnlLP8WHKXW2o/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwsglv1sYIPCeqRIMyLjBftJNW6XYgVJxVx1P3DcnSbOrMFvb9cgLdtZMWtJJAvCc
-	 TidT7GmtlQSVMl0z2lKWG7yK9tYCgn/LxnhW5nRiX7sxUEbds+g1uptfibooT3L0Me
-	 0iHIKFNDdjEGiu1KOeDqMjN0/FI4jCH2Ei3hrA60=
+	b=Ic3VSaWWP/4CAcMDonAUfKB63tbE/xceFRkxIO/PNj+dLu2aNQ2N0tikVDFC0iE2T
+	 7aze00zIuy0+wxbzQ+YlucTnVrNIf0QXNf31aRaX3LqHOgEtByRQcC0NEvBVEOQHi0
+	 zvS/jFuBnpDZw3ZPgf1Z7QDm6av9TuLyZ3Os3OE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 626/781] kbuild: Add objtool to top-level clean target
+Subject: [PATCH 6.18 409/641] clk: qcom: gcc-sm8450: Update the SDCC RCGs to use shared_floor_ops
 Date: Tue, 24 Feb 2026 17:22:15 -0800
-Message-ID: <20260225012415.167110696@linuxfoundation.org>
+Message-ID: <20260225012358.473850755@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218708-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219326-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,80 +92,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,checkpatch.pl:url]
-X-Rspamd-Queue-Id: 936C818FD89
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: DF518192F21
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
 
-[ Upstream commit 68b4fe32d73789dea23e356f468de67c8367ef8f ]
+[ Upstream commit 89428516f99572a9c37ebbb7859595881e7025a0 ]
 
-Objtool is an integral part of the build, make sure it gets cleaned by
-"make clean" and "make mrproper".
+Use shared_floor_ops for the SDCC RCGs so the RCG is safely parked
+during disable and the new parent configuration is programmed in
+hardware only when the new parent is enabled, avoiding cases where
+the RCG configuration fails to update.
 
-Fixes: 442f04c34a1a ("objtool: Add tool to perform compile-time stack metadata validation")
-Reported-by: Jens Remus <jremus@linux.ibm.com>
-Closes: https://lore.kernel.org/15f2af3b-be33-46fc-b972-6b8e7e0aa52e@linux.ibm.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Tested-by: Jens Remus <jremus@linux.ibm.com>
-Link: https://patch.msgid.link/968faf2ed30fa8b3519f79f01a1ecfe7929553e5.1770759919.git.jpoimboe@kernel.org
-[nathan: use Closes: instead of Link: per checkpatch.pl]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: a27ac3806b0a ("clk: qcom: gcc-sm8450: Use floor ops for SDCC RCGs")
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-1-473afc86589c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile               | 11 ++++++++++-
- tools/objtool/Makefile |  2 ++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sm8450.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 21df635071198..7e34042743d9e 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1474,6 +1474,15 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
- 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
- endif
+diff --git a/drivers/clk/qcom/gcc-sm8450.c b/drivers/clk/qcom/gcc-sm8450.c
+index 65d7d52bce034..b18bb34889ab2 100644
+--- a/drivers/clk/qcom/gcc-sm8450.c
++++ b/drivers/clk/qcom/gcc-sm8450.c
+@@ -1034,7 +1034,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_7,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_7),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
-+PHONY += objtool_clean
-+
-+objtool_O = $(abspath $(objtree))/tools/objtool
-+
-+objtool_clean:
-+ifneq ($(wildcard $(objtool_O)),)
-+	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
-+endif
-+
- tools/: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
- 	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
-@@ -1637,7 +1646,7 @@ vmlinuxclean:
- 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/link-vmlinux.sh clean
- 	$(Q)$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) clean)
+@@ -1057,7 +1057,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
--clean: archclean vmlinuxclean resolve_btfids_clean
-+clean: archclean vmlinuxclean resolve_btfids_clean objtool_clean
- 
- # mrproper - Delete all generated files, including .config
- #
-diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index a40f302329291..6964175abdfdf 100644
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -29,6 +29,8 @@ srctree := $(patsubst %/,%,$(dir $(CURDIR)))
- srctree := $(patsubst %/,%,$(dir $(srctree)))
- endif
- 
-+RM ?= rm -f
-+
- LIBSUBCMD_DIR = $(srctree)/tools/lib/subcmd/
- ifneq ($(OUTPUT),)
-   LIBSUBCMD_OUTPUT = $(abspath $(OUTPUT))/libsubcmd
 -- 
 2.51.0
 
