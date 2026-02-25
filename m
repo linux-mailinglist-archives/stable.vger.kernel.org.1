@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-218191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHeVDItQnmmNUgQAu9opvQ
-	(envelope-from <stable+bounces-218191-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:47 +0100
+	id aMCdDJNQnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF46D18EC41
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA52E18EC62
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 24703302140E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:29:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 47171301136D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB912505B2;
-	Wed, 25 Feb 2026 01:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3D61D5ABA;
+	Wed, 25 Feb 2026 01:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRIJvrUS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiFM3bCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F7A21D596;
-	Wed, 25 Feb 2026 01:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0175E24A06D;
+	Wed, 25 Feb 2026 01:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982980; cv=none; b=iFFARWTl/zCxyLwwIVO92gBo1R5MPABDbiuEsAKRI53wZrEjZMop6uoLqI+su2ymg6C3RBWypCuJz1zIbtcZZ3Xq+shsTWoF6Gsw0FadGKte6ekt22uidfsYvy2KZl2ahkSd+6pOegcM3vtFAkCO2oAUD4qmfm3ifsAIq/j6YaI=
+	t=1771982990; cv=none; b=scGbgAH2Rjr/FI6lJyXmlBmyP7w03w/5hU0dU1+JXAWYgkYo+LYvLOJyEaN2X8xnHGrvu3/XwbXvWZAHyzmUvK5ZM6+DBCpHgt7YKehv9U4qk7fOgQdKUpC4CT2ditjWmPq5crpRGT3tIaWQiGTQvwkTdaquAmfeK+4OZvdELHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982980; c=relaxed/simple;
-	bh=9uHy421SvF6o8Px/Nay7WoBQxK0nJXP51+UUYR/DGEI=;
+	s=arc-20240116; t=1771982990; c=relaxed/simple;
+	bh=nnJUW9e5B/qXHu72ARPIL+3EoqhmjjfMppv5vOwxsEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BwutDJKXYeNOoG0XilpAAzGdlQbjjBV9jA7WvU2hHMO9PI6pCfqzqRv3IPCJwZPGs6R8ZLDLot0MYwCni33nsyPS6C0d3HBtt0NF7qfx+hvuvL5P8BjEorIOVm/HDseJVoeDURO0uW6vxQPLxe1t/cU/A/gkWPuC1lR+RdSt7vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRIJvrUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029F3C116D0;
-	Wed, 25 Feb 2026 01:29:39 +0000 (UTC)
+	 MIME-Version; b=QjrONHSaNLsVNaYTVm4Pkce1j0A8UhPk2cHJAVvBRrDFo35SJxAU0G2+PKPxNsA8AexzEhPpPhsOgoJ7ZsGbORvvd+OjNwas9AzqmV3JoT7/xlN+dRUNNzLEi4PYM3LcShh+oLelDCu8nio3cn25L6Jare9sCvVPtPJR/nMaPsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiFM3bCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7103C116D0;
+	Wed, 25 Feb 2026 01:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982980;
-	bh=9uHy421SvF6o8Px/Nay7WoBQxK0nJXP51+UUYR/DGEI=;
+	s=korg; t=1771982989;
+	bh=nnJUW9e5B/qXHu72ARPIL+3EoqhmjjfMppv5vOwxsEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRIJvrUSiQQmBRWb3668eGShAMalouv75plNriPwhpb4+koI4Tdk6EVJSrmJQoFfJ
-	 sl8WRo13+uYWoRxU80zfWNGYejh/DYxiJT3vlVspuf0+G34dDZqF4saMEnMwd8S63o
-	 XubWiwr2j04P5h8RSMKqjmjcBdC9QIgZkxcdNy/M=
+	b=TiFM3bCbfGaMsTi5GFm7sNDpKvVjGIhRoqDDyWBsUIhaNbnsbTuHuV4b/5XmWjy8u
+	 c8DcdN731Nn82GJPC6EiW69tOJVg43gw0iiBmuI1w6fmt2yYJ1cqiOHXycHefveO0r
+	 BYpI7lqrjHWGwOlBrnEXXS0ctrGKBiJd3LZvMEbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 116/781] bpf: Fix bpf_xdp_store_bytes proto for read-only arg
-Date: Tue, 24 Feb 2026 17:13:45 -0800
-Message-ID: <20260225012402.519849202@linuxfoundation.org>
+Subject: [PATCH 6.19 117/781] genirq: Set IRQF_COND_ONESHOT in devm_request_irq().
+Date: Tue, 24 Feb 2026 17:13:46 -0800
+Message-ID: <20260225012402.543493146@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -65,92 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218191-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218199-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.979];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CF46D18EC41
+X-Rspamd-Queue-Id: CA52E18EC62
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 6557f1565d779851c4db9c488c49c05a47a6e72f ]
+[ Upstream commit 943b052ded21feb84f293d40b06af3181cd0d0d7 ]
 
-While making some maps in Cilium read-only from the BPF side, we noticed
-that the bpf_xdp_store_bytes proto is incorrect. In particular, the
-verifier was throwing the following error:
+The flag IRQF_COND_ONESHOT was already force-added to request_irq() because
+the ACPI SCI interrupt handler is using the IRQF_ONESHOT flag which breaks
+all shared handlers.
 
-  ; ret = ctx_store_bytes(ctx, l3_off + offsetof(struct iphdr, saddr),
-                          &nat->address, 4, 0);
-  635: (79) r1 = *(u64 *)(r10 -144)     ; R1=ctx() R10=fp0 fp-144=ctx()
-  636: (b4) w2 = 26                     ; R2=26
-  637: (b4) w4 = 4                      ; R4=4
-  638: (b4) w5 = 0                      ; R5=0
-  639: (85) call bpf_xdp_store_bytes#190
-  write into map forbidden, value_size=6 off=0 size=4
+devm_request_irq() needs the same change since some users, such as
+int0002_vgpio, are using this function instead.
 
-nat comes from a BPF_F_RDONLY_PROG map, so R3 is a PTR_TO_MAP_VALUE.
-The verifier checks the helper's memory access to R3 in
-check_mem_size_reg, as it reaches ARG_CONST_SIZE argument. The third
-argument has expected type ARG_PTR_TO_UNINIT_MEM, which includes the
-MEM_WRITE flag. The verifier thus checks for a BPF_WRITE access on R3.
-Given R3 points to a read-only map, the check fails.
+Add IRQF_COND_ONESHOT to the flags passed to devm_request_irq().
 
-Conversely, ARG_PTR_TO_UNINIT_MEM can also lead to the helper reading
-from uninitialized memory.
-
-This patch simply fixes the expected argument type to match that of
-bpf_skb_store_bytes.
-
-Fixes: 3f364222d032 ("net: xdp: introduce bpf_xdp_pointer utility routine")
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/9fa3c9f72d806e82541071c4df88b8cba28ad6a9.1769875479.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: c37927a203fa2 ("genirq: Set IRQF_COND_ONESHOT in request_irq()")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260128095540.863589-2-bigeasy@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 2 +-
+ include/linux/interrupt.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b1f8e2930e1c4..51318cb40f778 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4137,7 +4137,7 @@ static const struct bpf_func_proto bpf_xdp_store_bytes_proto = {
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
- 	.arg2_type	= ARG_ANYTHING,
--	.arg3_type	= ARG_PTR_TO_UNINIT_MEM,
-+	.arg3_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
- 	.arg4_type	= ARG_CONST_SIZE,
- };
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index 266f2b39213a0..b2bb878abd113 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -228,7 +228,7 @@ static inline int __must_check
+ devm_request_irq(struct device *dev, unsigned int irq, irq_handler_t handler,
+ 		 unsigned long irqflags, const char *devname, void *dev_id)
+ {
+-	return devm_request_threaded_irq(dev, irq, handler, NULL, irqflags,
++	return devm_request_threaded_irq(dev, irq, handler, NULL, irqflags | IRQF_COND_ONESHOT,
+ 					 devname, dev_id);
+ }
  
 -- 
 2.51.0
