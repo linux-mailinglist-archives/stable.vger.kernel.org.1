@@ -1,71 +1,79 @@
-Return-Path: <stable+bounces-219745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219746-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEfZFLCzn2kpdQQAu9opvQ
-	(envelope-from <stable+bounces-219745-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 03:45:04 +0100
+	id eDWzMMO2n2mKdQQAu9opvQ
+	(envelope-from <stable+bounces-219746-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 03:58:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84091A0321
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 03:45:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D2D1A03F3
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 03:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 711E5301A38E
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 02:42:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4F253303AA84
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 02:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD6037E314;
-	Thu, 26 Feb 2026 02:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE183806BB;
+	Thu, 26 Feb 2026 02:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RNl8NcKR"
+	dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b="tY+f45iX"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373112D7DD9;
-	Thu, 26 Feb 2026 02:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772073765; cv=none; b=XwFNXJ5/AAjFfxIzRlm9tTx1u9wHqnejtEodrGUu28804VIjvaUvpN83kPtUkWOGE55kvYksQCR5UvN0IHu9C3LrKnc1d5FboXqXO+hIl5WduAxfQBZVNaWMRrwrKHTC2P2DDULMAUfkz+CJccMtgF8pvmorkLuep2IiPbt20Rc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772073765; c=relaxed/simple;
-	bh=4X4xeZaAEDiSH5/EyfICbKLACJ826PFhGinFJCgeVoU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FQJmoZqRy5HdXTh2W6DOkTCAd3kGdLfA9d5zPE2SXJZEkiv0Wn2wBSTvNreWFOCHt+7fDUb2r3f8x0N1n2NwZn4RGvdVWpiOQ674FZOzgSSxf/82rrvR+bRc5Q8Sg2OhRzwLj8VVPytTFZHIqiMCTtNzNyFkXMvt9VMyJR1N3jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RNl8NcKR; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=cs
-	j3I2Hh0axpARrMAY/JNBtqgshUyDLfkG9MfsSGEus=; b=RNl8NcKR7+6I+n+kXI
-	8zwfeKNmhDac11onaRdTORVzGiOS7yHWJE6mgL/z9AfIU41gtzfn0lKUsUrns2Sz
-	p1prq/79ugWvsnsPlrJPulpTN5Ja6JxNxkbqUrK9Rt4e3FsHbKbS84KQfsi5Juy0
-	bETVBrxc3nkVRxgI9iY+TlADs=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3B0K_sp9pVNYaOA--.27764S2;
-	Thu, 26 Feb 2026 10:41:04 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	David Howells <dhowells@redhat.com>
-Cc: Marc Dionne <marc.dionne@auristor.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-kernel@vger.kernel.org,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Faith <faith@zellic.io>,
-	Pumpkin Chang <pumpkin@devco.re>,
-	Nir Ohfeld <niro@wiz.io>,
-	Willy Tarreau <w@1wt.eu>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.6.y] rxrpc: Fix recvmsg() unconditional requeue
-Date: Thu, 26 Feb 2026 10:41:02 +0800
-Message-Id: <20260226024102.3522867-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B6E37104C;
+	Thu, 26 Feb 2026 02:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772074678; cv=pass; b=CJ07v+7FfZ+hVTFOY6SR2WiZq2wzpkjaVR2GmFIAI0vf6JW4TO4Bmug+jenzwaT6kC7yhecOQOmLtfeWQCbc2rgecgBxONc02j0u7SE52oraS/+pXMLvAOfuiKesh/DvT4AJ1iBLxKi/LHdn9z8SQAr8lyNChesyw5GYs9akTNI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772074678; c=relaxed/simple;
+	bh=O/LisHOxnvsb5Dqd5u8jcdfT+/3yN1d88jMC2Se/cfw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LOuze79zpYTN/TEugVmC56RQBt+JDgaCt/Wwz8+hDwlH52UbZ1eNJ5e7P9clJ8zJ9dIgVTmAYci+0UO0MY69jrNiYP2gf5/9iTgpDx1ij1lhH7NxdLNCndyCc1JpkteSVzK+iIVAPTtyTD/aiTmaFiOzSyCpbJeOAWRJdBX+A+Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.beauty; spf=pass smtp.mailfrom=linux.beauty; dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b=tY+f45iX; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.beauty
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.beauty
+ARC-Seal: i=1; a=rsa-sha256; t=1772074661; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=O8M0QGr9gmlXX+Me3lzhusG/A0AdLs2mungSvq97ERHrZcJqhpwIZRBatnYwcQHZj7au5sgsJ5D/UfD/bfHiYBu97iof7u+j06Z5eXdgeSOY5KNLxnV6OpK/7pt8heFWVfqH+R1fybAZvgSxZgANi05+M9l0M6Y6hDwNvswTcLg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1772074661; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=lBU9qgcPvDyg8bOg8EfAruhG0zrehzJsYcTv4V658BY=; 
+	b=db/sJUw/UBXzFcytzCCr5GBsD+e2mEsDGv9cmSjNXeZtgsD7JPCQN7IR6kpOp7/XtvKRSov6B7jLaIsYBLj33Oq/UrtNDQqlxCZy1p/CaOuQZFBojjrzTOg1N0FtNsFf02J5/yyhZ10NjBiDzBol0cMkqsDQHaxb9JyS1J9CcJI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=linux.beauty;
+	spf=pass  smtp.mailfrom=me@linux.beauty;
+	dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772074661;
+	s=zmail; d=linux.beauty; i=me@linux.beauty;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=lBU9qgcPvDyg8bOg8EfAruhG0zrehzJsYcTv4V658BY=;
+	b=tY+f45iX4GAYSD4xX/WiyiR58IvYGxAEbQFdEEiC4RgS34RKdV75AsNW+mdoPo5x
+	EYrq5IE1UxORGn09hNKBUc6mk3fZ+kQLDHEae9pIXj9ZPPE2iIPvXu1SkGjeiqubvc1
+	w37WuE2hPh5mi+RA5cMDwe2A3aYs61SDQqPUrkkw=
+Received: by mx.zohomail.com with SMTPS id 1772074658800313.4974609710948;
+	Wed, 25 Feb 2026 18:57:38 -0800 (PST)
+From: Li Chen <me@linux.beauty>
+To: Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Staron <jstaron@google.com>,
+	virtualization@lists.linux.dev,
+	nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Li Chen <me@linux.beauty>
+Subject: [PATCH v3 3/5] nvdimm: virtio_pmem: refcount requests for token lifetime
+Date: Thu, 26 Feb 2026 10:57:08 +0800
+Message-ID: <20260226025712.2236279-4-me@linux.beauty>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260226025712.2236279-1-me@linux.beauty>
+References: <20260226025712.2236279-1-me@linux.beauty>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,146 +81,197 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3B0K_sp9pVNYaOA--.27764S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWF4Duw4DWryxKF17Cry7trb_yoWrury8pF
-	n8ArsxZw18Xw1IvFZ3GFy8W3WUWFs7Wr17Jr1fZasakr1xZw4vqF1jgw45ZF1rGanrArWU
-	XF1DWw4jyrs8X37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UIdgZUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAQEfimmfssFDeQAA3q
+X-ZohoMailClient: External
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.beauty,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux.beauty:s=zmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219745-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219746-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,intel.com,redhat.com,google.com,lists.linux.dev,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[auristor.com,163.com,goodmis.org,vger.kernel.org,kernel.org,davemloft.net,google.com,redhat.com,lists.infradead.org,zellic.io,devco.re,wiz.io,1wt.eu];
-	DKIM_TRACE(0.00)[163.com:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linux.beauty:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[me@linux.beauty,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wiz.io:email]
-X-Rspamd-Queue-Id: D84091A0321
+	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.beauty:mid,linux.beauty:dkim,linux.beauty:email]
+X-Rspamd-Queue-Id: 72D2D1A03F3
 X-Rspamd-Action: no action
 
-From: David Howells <dhowells@redhat.com>
+KASAN reports slab-use-after-free in __wake_up_common():
+BUG: KASAN: slab-use-after-free in __wake_up_common+0x114/0x160
+Read of size 8 at addr ffff88810fdcb710 by task swapper/0/0
 
-[ Upstream commit 2c28769a51deb6022d7fbd499987e237a01dd63a ]
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
+6.19.0-next-20260220-00006-g1eae5f204ec3 #4 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux
+1.17.0-2-2 04/01/2014
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x6d/0xb0
+ print_report+0x170/0x4e2
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? __virt_addr_valid+0x1dc/0x380
+ kasan_report+0xbc/0xf0
+ ? __wake_up_common+0x114/0x160
+ ? __wake_up_common+0x114/0x160
+ __wake_up_common+0x114/0x160
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ __wake_up+0x36/0x60
+ virtio_pmem_host_ack+0x11d/0x3b0
+ ? sched_balance_domains+0x29f/0xb00
+ ? __pfx_virtio_pmem_host_ack+0x10/0x10
+ ? _raw_spin_lock_irqsave+0x98/0x100
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ vring_interrupt+0x1c9/0x5e0
+ ? __pfx_vp_interrupt+0x10/0x10
+ vp_vring_interrupt+0x87/0x100
+ ? __pfx_vp_interrupt+0x10/0x10
+ __handle_irq_event_percpu+0x17f/0x550
+ ? __pfx__raw_spin_lock+0x10/0x10
+ handle_irq_event+0xab/0x1c0
+ handle_fasteoi_irq+0x276/0xae0
+ __common_interrupt+0x65/0x130
+ common_interrupt+0x78/0xa0
+ </IRQ>
 
-If rxrpc_recvmsg() fails because MSG_DONTWAIT was specified but the call at
-the front of the recvmsg queue already has its mutex locked, it requeues
-the call - whether or not the call is already queued.  The call may be on
-the queue because MSG_PEEK was also passed and so the call was not dequeued
-or because the I/O thread requeued it.
+virtio_pmem_host_ack() wakes a request that has already been freed by the
+submitter.
 
-The unconditional requeue may then corrupt the recvmsg queue, leading to
-things like UAFs or refcount underruns.
+This happens when the request token is still reachable via the virtqueue,
+but virtio_pmem_flush() returns and frees it.
 
-Fix this by only requeuing the call if it isn't already on the queue - and
-moving it to the front if it is already queued.  If we don't queue it, we
-have to put the ref we obtained by dequeuing it.
+Fix the token lifetime by refcounting struct virtio_pmem_request.
+virtio_pmem_flush() holds a submitter reference, and the virtqueue holds an
+extra reference once the request is queued. The completion path drops the
+virtqueue reference, and the submitter drops its reference before
+returning.
 
-Also, MSG_PEEK doesn't dequeue the call so shouldn't call
-rxrpc_notify_socket() for the call if we didn't use up all the data on the
-queue, so fix that also.
-
-Fixes: 540b1c48c37a ("rxrpc: Fix deadlock between call creation and sendmsg/recvmsg")
-Reported-by: Faith <faith@zellic.io>
-Reported-by: Pumpkin Chang <pumpkin@devco.re>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Marc Dionne <marc.dionne@auristor.com>
-cc: Nir Ohfeld <niro@wiz.io>
-cc: Willy Tarreau <w@1wt.eu>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/95163.1768428203@warthog.procyon.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Use spin_unlock instead of spin_unlock_irq to maintain context consistency.]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Fixes: 6e84200c0a29 ("virtio-pmem: Add virtio pmem driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Chen <me@linux.beauty>
 ---
- include/trace/events/rxrpc.h |  4 ++++
- net/rxrpc/recvmsg.c          | 19 +++++++++++++++----
- 2 files changed, 19 insertions(+), 4 deletions(-)
+v2->v3:
+- Add raw KASAN report to the patch description.
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 743f8f1f42a7..ceb09fabfb04 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -270,6 +270,7 @@
- 	EM(rxrpc_call_put_kernel,		"PUT kernel  ") \
- 	EM(rxrpc_call_put_poke,			"PUT poke    ") \
- 	EM(rxrpc_call_put_recvmsg,		"PUT recvmsg ") \
-+	EM(rxrpc_call_put_recvmsg_peek_nowait,	"PUT peek-nwt") \
- 	EM(rxrpc_call_put_release_sock,		"PUT rls-sock") \
- 	EM(rxrpc_call_put_release_sock_tba,	"PUT rls-sk-a") \
- 	EM(rxrpc_call_put_sendmsg,		"PUT sendmsg ") \
-@@ -287,6 +288,9 @@
- 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
- 	EM(rxrpc_call_see_input,		"SEE input   ") \
- 	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
-+	EM(rxrpc_call_see_recvmsg_requeue,	"SEE recv-rqu") \
-+	EM(rxrpc_call_see_recvmsg_requeue_first, "SEE recv-rqF") \
-+	EM(rxrpc_call_see_recvmsg_requeue_move,	"SEE recv-rqM") \
- 	EM(rxrpc_call_see_release,		"SEE release ") \
- 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
- 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
-diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
-index e24a44bae9a3..b6e524c065f0 100644
---- a/net/rxrpc/recvmsg.c
-+++ b/net/rxrpc/recvmsg.c
-@@ -430,7 +430,8 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 	if (rxrpc_call_has_failed(call))
- 		goto call_failed;
+ drivers/nvdimm/nd_virtio.c   | 34 +++++++++++++++++++++++++++++-----
+ drivers/nvdimm/virtio_pmem.h |  2 ++
+ 2 files changed, 31 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+index ada0c679cf2e..d0bf213d8caf 100644
+--- a/drivers/nvdimm/nd_virtio.c
++++ b/drivers/nvdimm/nd_virtio.c
+@@ -9,6 +9,14 @@
+ #include "virtio_pmem.h"
+ #include "nd.h"
  
--	if (!skb_queue_empty(&call->recvmsg_queue))
-+	if (!(flags & MSG_PEEK) &&
-+	    !skb_queue_empty(&call->recvmsg_queue))
- 		rxrpc_notify_socket(call);
- 	goto not_yet_complete;
- 
-@@ -461,11 +462,21 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- error_requeue_call:
- 	if (!(flags & MSG_PEEK)) {
- 		spin_lock(&rx->recvmsg_lock);
--		list_add(&call->recvmsg_link, &rx->recvmsg_q);
--		spin_unlock(&rx->recvmsg_lock);
-+		if (list_empty(&call->recvmsg_link)) {
-+			list_add(&call->recvmsg_link, &rx->recvmsg_q);
-+			rxrpc_see_call(call, rxrpc_call_see_recvmsg_requeue);
-+			spin_unlock(&rx->recvmsg_lock);
-+		} else if (list_is_first(&call->recvmsg_link, &rx->recvmsg_q)) {
-+			spin_unlock(&rx->recvmsg_lock);
-+			rxrpc_put_call(call, rxrpc_call_see_recvmsg_requeue_first);
-+		} else {
-+			list_move(&call->recvmsg_link, &rx->recvmsg_q);
-+			spin_unlock(&rx->recvmsg_lock);
-+			rxrpc_put_call(call, rxrpc_call_see_recvmsg_requeue_move);
-+		}
- 		trace_rxrpc_recvmsg(call_debug_id, rxrpc_recvmsg_requeue, 0);
- 	} else {
--		rxrpc_put_call(call, rxrpc_call_put_recvmsg);
-+		rxrpc_put_call(call, rxrpc_call_put_recvmsg_peek_nowait);
++static void virtio_pmem_req_release(struct kref *kref)
++{
++	struct virtio_pmem_request *req;
++
++	req = container_of(kref, struct virtio_pmem_request, kref);
++	kfree(req);
++}
++
+ static void virtio_pmem_wake_one_waiter(struct virtio_pmem *vpmem)
+ {
+ 	struct virtio_pmem_request *req_buf;
+@@ -36,6 +44,7 @@ void virtio_pmem_host_ack(struct virtqueue *vq)
+ 		virtio_pmem_wake_one_waiter(vpmem);
+ 		WRITE_ONCE(req_data->done, true);
+ 		wake_up(&req_data->host_acked);
++		kref_put(&req_data->kref, virtio_pmem_req_release);
  	}
- error_no_call:
- 	release_sock(&rx->sk);
+ 	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+ }
+@@ -66,6 +75,7 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 	if (!req_data)
+ 		return -ENOMEM;
+ 
++	kref_init(&req_data->kref);
+ 	WRITE_ONCE(req_data->done, false);
+ 	init_waitqueue_head(&req_data->host_acked);
+ 	init_waitqueue_head(&req_data->wq_buf);
+@@ -83,10 +93,23 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 	  * to req_list and wait for host_ack to wake us up when free
+ 	  * slots are available.
+ 	  */
+-	while ((err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req_data,
+-					GFP_ATOMIC)) == -ENOSPC) {
+-
+-		dev_info(&vdev->dev, "failed to send command to virtio pmem device, no free slots in the virtqueue\n");
++	for (;;) {
++		err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req_data,
++					GFP_ATOMIC);
++		if (!err) {
++			/*
++			 * Take the virtqueue reference while @pmem_lock is
++			 * held so completion cannot run concurrently.
++			 */
++			kref_get(&req_data->kref);
++			break;
++		}
++
++		if (err != -ENOSPC)
++			break;
++
++		dev_info_ratelimited(&vdev->dev,
++				     "failed to send command to virtio pmem device, no free slots in the virtqueue\n");
+ 		WRITE_ONCE(req_data->wq_buf_avail, false);
+ 		list_add_tail(&req_data->list, &vpmem->req_list);
+ 		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+@@ -95,6 +118,7 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 		wait_event(req_data->wq_buf, READ_ONCE(req_data->wq_buf_avail));
+ 		spin_lock_irqsave(&vpmem->pmem_lock, flags);
+ 	}
++
+ 	err1 = virtqueue_kick(vpmem->req_vq);
+ 	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+ 	/*
+@@ -110,7 +134,7 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 		err = le32_to_cpu(req_data->resp.ret);
+ 	}
+ 
+-	kfree(req_data);
++	kref_put(&req_data->kref, virtio_pmem_req_release);
+ 	return err;
+ };
+ 
+diff --git a/drivers/nvdimm/virtio_pmem.h b/drivers/nvdimm/virtio_pmem.h
+index f72cf17f9518..1017e498c9b4 100644
+--- a/drivers/nvdimm/virtio_pmem.h
++++ b/drivers/nvdimm/virtio_pmem.h
+@@ -12,11 +12,13 @@
+ 
+ #include <linux/module.h>
+ #include <uapi/linux/virtio_pmem.h>
++#include <linux/kref.h>
+ #include <linux/libnvdimm.h>
+ #include <linux/mutex.h>
+ #include <linux/spinlock.h>
+ 
+ struct virtio_pmem_request {
++	struct kref kref;
+ 	struct virtio_pmem_req req;
+ 	struct virtio_pmem_resp resp;
+ 
 -- 
-2.34.1
-
+2.52.0
 
