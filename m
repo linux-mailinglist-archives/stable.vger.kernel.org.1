@@ -1,69 +1,88 @@
-Return-Path: <stable+bounces-219829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mP6AAXpsoGk3jgQAu9opvQ
-	(envelope-from <stable+bounces-219829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:53:30 +0100
+	id 6Ap8O7hnoGkejQQAu9opvQ
+	(envelope-from <stable+bounces-219828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:33:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735641A927B
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:53:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0FCF1A8C65
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:33:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8709F31E510E
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:38:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B3EDE3016AC8
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C03A40F8E9;
-	Thu, 26 Feb 2026 15:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC573F23B9;
+	Thu, 26 Feb 2026 15:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="pifSszUl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AAxmhlY7"
 X-Original-To: stable@vger.kernel.org
-Received: from forward202a.mail.yandex.net (forward202a.mail.yandex.net [178.154.239.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE2540F8E7;
-	Thu, 26 Feb 2026 15:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7A23F0775
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 15:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772120316; cv=none; b=rGO7tR9XDHHdHdLwFAI3qe6602s5fz/TMXr7N3rltgUDgGfgubQ+pZl/0TViLX8gDi9MpnYE3B5igNZOb0EeH3HZqL3Gu2/iGteQHBeZ7Uk15PUTTu1dQ+sGCvLv9Txuk38Z7Cid9irXcWziMX2GlnQsY4FU6wnmI6C87f6gDbI=
+	t=1772119986; cv=none; b=E1YnWeWj/8m90HHffACaz7dXYmVRiFK6YhNOFu9epq6HWAWmHmRTYRARBMTtF+fnkW+qeudNm7inudD7BnqibxiEg4QTSUViL77MzRjizAJ0dtcBp2Y04yhrM/MxpRm78zKuqCnzHRNNN377dCw5yyvE20tzQBgbWtk6p4YjTvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772120316; c=relaxed/simple;
-	bh=Jc1KCw4PS7kSTbxiHStSFaR3kFALt652H8w/cv7GtBk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PuWyWz6EOG10/D3ur2wjr9JRNwd9akw9sdtdytF365aYbNpjoid7FfjZD2v4LwrKsR84aiTyomLgcDRQzEnGB7yhkukZeIsvIhCNPGBA+O3h+fdkNBn2jK50Ca+TDOHDKisMwbk/lc6F/BiZJPNoAjexL/h15Scz7rEo6947QzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=pifSszUl; arc=none smtp.client-ip=178.154.239.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d101])
-	by forward202a.mail.yandex.net (Yandex) with ESMTPS id E6A57851EA;
-	Thu, 26 Feb 2026 18:31:37 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1ba7:0:640:dccd:0])
-	by forward101a.mail.yandex.net (Yandex) with ESMTPS id 9729980D13;
-	Thu, 26 Feb 2026 18:31:29 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 8Vkqhh1GMGk0-wRfDlrsE;
-	Thu, 26 Feb 2026 18:31:28 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1772119888; bh=9u+hw7P1kZrxGYw4H4TMvbi/ck0cvcuM+YKL6lqFTQo=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=pifSszUlb2N/rZIVP+qPjlC1mTVLnGQ+aRmMCUd0EMVWv+lDjZEr8EPNi6shDDHhn
-	 AVTXYtpAvv1hL7QnGdCeD62wWo9sPP9ztWQFT2kYkBa5nUH7tWc/THp1QataVcsfs+
-	 BBuIH0Csbof6gtSyHXiCymRbThXXJaK7riUut3FY=
-Authentication-Results: mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Evgenii Burenchev <evg28bur@yandex.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Evgenii Burenchev <evg28bur@yandex.ru>,
-	lingshan.zhu@kernel.org,
-	mst@redhat.com,
-	jasowang@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH] vdpa/ifcvf: handle dev_set_name() failure in ifcvf_vdpa_dev_add()
-Date: Thu, 26 Feb 2026 18:29:23 +0300
-Message-ID: <20260226152924.38790-1-evg28bur@yandex.ru>
+	s=arc-20240116; t=1772119986; c=relaxed/simple;
+	bh=c1SiJQ+mtrwggWTRz06IeBax2Ht6wj3Y5QVnKautFIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P12VUgim8vJJBBJgthl/0eVA0239B8uEkgANftZhjyKYzMA+5WGQRbJAWoFJucbzOLrmZ7x7OnKckb8FW6wo0AFTE6rzMtG5CCRp68NebG3BAHuABUKCBY3NaLR60sdfK+sVQ6EZq365c1vmLIyhJUjlLjKJ6xyyg28LJzcjRX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AAxmhlY7; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2aaf9191da3so5856215ad.2
+        for <stable@vger.kernel.org>; Thu, 26 Feb 2026 07:33:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772119983; x=1772724783; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=czT64XVAAmaM0nwz2K1ZEj7YNNi99MV6HlVNHnaACJw=;
+        b=AAxmhlY7jWlsp1V9sBt3fEbFw/vT3lCo8V7oJ7kodinpuy1msag0ijhMtd+f8jvamw
+         AUfUrpYL5+RhkEIRHPtn7tg5+iixu9HivhKtBPA92An3t6I3Y8E/o2HNKdxPDH2qzyi/
+         5kjn6ltTxQbSwGKackbS2xL3zVdPZmxkK68009k3M3ywt20NTY2UG0aQK12lJ3nI3+eV
+         c6/ft7/5stQpwbQuKqTAzi466FhmpZIGFIYR57lN7lEZvdUSdmsfHbT5bFoAC10UCces
+         1kUFcgZwT+tKP3lAe6vjwifTb6ZWiiX2I69GJgiOZM/bQS3vcRT+5CE1usEuRTIRfbBz
+         7WNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772119983; x=1772724783;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=czT64XVAAmaM0nwz2K1ZEj7YNNi99MV6HlVNHnaACJw=;
+        b=BuUd0uyeHKb6I7iOw7myGYv2kN9euIi1c3Li71HWvUl69uHIUZUF8dutT83bxBdxIT
+         1tIq6eRQJtNzW4l0RjKx7sGFj5poTlr/DtdR7da+lca0DoTmE8QOYjmxniQD/5357TaR
+         lbLg72eo4FpSkmhYddEe3RFRuwSHzIgE7grgmSMaua3Sr21TLS2Luz81vxa/Xe0HZ/UN
+         FX97nU03v2Cl1NBm73pK9OaB1N+O46nYrsrzHjvcDMXAsGhFoxgkSEGnj/KYQDTePbme
+         kyaafClhmGlKWk0CtmcS16iP77lkX2EegPrQ3ICeEeWjhM+njPiA/0Z0VpqhhQj2XvqX
+         9SlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWRXnrst/6+bzweLbpIx0LrncFbNhJw70xzSQtK7R7PEtmm3O/8gSZ5kNjeBMx9xHlx1eY+3aA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfj9lx7fdemBIexSOjS/9f7xHH3+0p8iV2Z7X2MIQ3NFJOejad
+	aTzEsnxarN9L7+E43M+mQnrg7FnUVGGrU+MKKQwHIvNihMPj69AvhvmK
+X-Gm-Gg: ATEYQzwFjj8eGfFbLZon+4VeQ1kN98S9MBd916fWC8h2M0vacSDmLKsxzOUV3MCaaLk
+	szyQm3TYd89pKbfwN2HOZtHasNBOS3T2PZBoBZBt2CAyzYDmRvkP/vOw3dyqxk6d95uDOoeumvQ
+	LTc1IPmgtV3e4oYNzKqbUSo7W9pRXC/gp3d16WLYUbHBC/iS7QmowGEv2ujv1VnHQhNE/ocLvJN
+	ifOMw3b0lrwoGpR9ph78e5alZaYWW/DHGTf/KJ4pvH6aNZ3SrgM3bBCej1Cw1mDLZiiJOu4yuC4
+	eKysmbAd245dt0Q+s/pE2WcgxctfP+bAFaNxWUd55qdK7JoRaMe97SEkgvhNMJjT82mvcb6qikb
+	2HiBsETPDsYI+1AHl8HcMPy1jBS8kwHdOOOo4anq+L4/veXMyezG7S+sPUtMCbldFtqiympkT2T
+	TNkdu79ca9A+Rzv31xhumeThLn42iKAmM=
+X-Received: by 2002:a17:902:d4cd:b0:2ad:9421:6136 with SMTP id d9443c01a7336-2ae0305ede6mr25763805ad.1.1772119983292;
+        Thu, 26 Feb 2026 07:33:03 -0800 (PST)
+Received: from lgs.. ([223.80.110.53])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb69f996sm26706535ad.50.2026.02.26.07.32.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 07:33:02 -0800 (PST)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Yaxing Guo <guoyaxing@bosc.ac.cn>,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] uio: uio_pci_generic_sva: fix double free of devm_kzalloc() memory
+Date: Thu, 26 Feb 2026 23:32:50 +0800
+Message-ID: <20260226153250.18079-1-lgs201920130244@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,80 +93,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[yandex.ru,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[yandex.ru:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-219828-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[yandex.ru,kernel.org,redhat.com,linux.alibaba.com,lists.linux.dev,vger.kernel.org,linuxtesting.org];
-	TAGGED_FROM(0.00)[bounces-219829-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[yandex.ru:+];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[yandex.ru];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 735641A927B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D0FCF1A8C65
 X-Rspamd-Action: no action
 
-dev_set_name() may fail and return an error, but its return value
-is currently ignored and overwritten by _vdpa_register_device().
+uio_pci_sva allocates struct uio_pci_sva_dev with devm_kzalloc() in
+probe(), but then calls kfree(udev) both on the probe() error path
+(label out_free) and again in remove().
 
-Abort device creation if dev_set_name() fails and release the
-device reference to avoid continuing with an improperly initialized
-struct device.
+Because devm_kzalloc() allocations are devres-managed and are freed
+automatically when the device is detached (including after a failing
+probe() and during driver unbind), the explicit kfree() can lead to a
+double free.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+If probe() fails after devm_kzalloc(), the error path frees udev and
+devres cleanup will free it again when the core unwinds the partially
+bound device. On normal driver removal, remove() frees udev and devres
+will free it again when the device is detached.
 
-Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
+This issue was identified by a static analysis tool I developed and
+confirmed by manual review. Fix by removing the manual kfree() calls
+and dropping the now-unused label.
+
+Fixes: 3397c3cd859a2 ("uio: Add SVA support for PCI devices via uio_pci_generic_sva.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- drivers/vdpa/ifcvf/ifcvf_main.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+v4:
+  - Add description of how the issue was found and tested.
 
-diff --git a/drivers/vdpa/ifcvf/ifcvf_main.c b/drivers/vdpa/ifcvf/ifcvf_main.c
-index d46c1606c97a..ab6d6ab3b3d8 100644
---- a/drivers/vdpa/ifcvf/ifcvf_main.c
-+++ b/drivers/vdpa/ifcvf/ifcvf_main.c
-@@ -734,15 +734,22 @@ static int ifcvf_vdpa_dev_add(struct vdpa_mgmt_dev *mdev, const char *name,
- 		ret = dev_set_name(&vdpa_dev->dev, "%s", name);
- 	else
- 		ret = dev_set_name(&vdpa_dev->dev, "vdpa%u", vdpa_dev->index);
-+	if (ret) {
-+		IFCVF_ERR(pdev, "Failed to set device name");
-+		goto err;
-+	}
- 
- 	ret = _vdpa_register_device(&adapter->vdpa, vf->nr_vring);
+v3:
+  - Add changelog below the --- line describing changes since v2.
+
+v2:
+  - Reflow commit message to keep lines within 75 characters.
+
+ drivers/uio/uio_pci_generic_sva.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/uio/uio_pci_generic_sva.c b/drivers/uio/uio_pci_generic_sva.c
+index 4a46acd994a8..152201047334 100644
+--- a/drivers/uio/uio_pci_generic_sva.c
++++ b/drivers/uio/uio_pci_generic_sva.c
+@@ -129,15 +129,13 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	ret = devm_uio_register_device(&pdev->dev, &udev->info);
  	if (ret) {
--		put_device(&adapter->vdpa.dev);
- 		IFCVF_ERR(pdev, "Failed to register to vDPA bus");
--		return ret;
-+		goto err;
+ 		dev_err(&pdev->dev, "Failed to register uio device\n");
+-		goto out_free;
++		goto out_disable;
  	}
  
+ 	pci_set_drvdata(pdev, udev);
+ 
  	return 0;
-+
-+err:
-+	put_device(&adapter->vdpa.dev);
-+	return ret;
+ 
+-out_free:
+-	kfree(udev);
+ out_disable:
+ 	pci_disable_device(pdev);
+ 
+@@ -150,7 +148,6 @@ static void remove(struct pci_dev *pdev)
+ 
+ 	pci_release_regions(pdev);
+ 	pci_disable_device(pdev);
+-	kfree(udev);
  }
  
- static void ifcvf_vdpa_dev_del(struct vdpa_mgmt_dev *mdev, struct vdpa_device *dev)
+ static ssize_t pasid_show(struct device *dev,
 -- 
 2.43.0
 
