@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-219750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219751-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wH/mM6rNn2kYeAQAu9opvQ
-	(envelope-from <stable+bounces-219750-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 05:35:54 +0100
+	id ILwoGZjUn2nZeAQAu9opvQ
+	(envelope-from <stable+bounces-219751-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 06:05:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E651A0DD1
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 05:35:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CECF01A0F77
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 06:05:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9F4B3055951
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 04:35:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 94E543076487
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 05:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2DB38A29A;
-	Thu, 26 Feb 2026 04:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F222C028C;
+	Thu, 26 Feb 2026 05:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jMG+qnLT"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kksHbjBD"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3899525E469;
-	Thu, 26 Feb 2026 04:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B585A45C0B;
+	Thu, 26 Feb 2026 05:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772080548; cv=none; b=UkmH+/CK0FYrBw9VQa8EDskX5szSTNelzof+H8Gq3Lrv1BAdDrPz+Ym9OHysrcqEvVrB/rpeUIMHaBH2k+J1cYSUguc564B0sxDsQcTq7EB9lk9gtfdZMMsmVbG3TLPEksi8HowC0SEGE0VDmqvQeGmUMEmnwr3CoXuMi0oToIc=
+	t=1772082322; cv=none; b=GNtPzA3lMvk3J+WELgFvk+YrSonmzEEEoqqLP1YWoPSomk1Uko8qJkaHfGkrismmX6vMMgNa9P9ir8z5FCEAII91n5T6Mym5ByOttLk+MqN6vo4SFmDXwjlO76mwUDZ2IR8ZbbZcW5jPxPJ4D7DtGMsZECAIAXLfBAB/JNHEoIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772080548; c=relaxed/simple;
-	bh=VgKZ7h5jF94IMBFjoGg6OlKJR1vxd/PAP/SHux2b4Kk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FJUsmv5K7ZIDvlcLEwhZZaIWWlbMPO4nVoVs3o2adzjiUkqzPusd7ZxzU2l2AeBF6StgcIjhFBjGffvH3vqgxtrEqucIVK4btoQYYA6wNX7gNizh7ZW0sPkkK7KTj33fyrVaB8FzuHr1xpx7b6TfiHdPorAybUG7k4dOa1ow1dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jMG+qnLT; arc=none smtp.client-ip=220.197.31.5
+	s=arc-20240116; t=1772082322; c=relaxed/simple;
+	bh=kwBh37NANwcXhc2TtJ61Oo+5M4kdUfSb+k5fFH9upZM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D9sOys7pzRWjvlt2PMlglGE5RkcuHJXhMiQGrk+51Y21l3ClzCK9OKfbuYgoTszADzZqIitDAgg/6cSQ/epdWquSauczY5fnEo9TGqK2kou+eQ+nrCsQCZXHz8RzWsWcTMhKOFlCh7vURTRjYu0g3A4x5tDhXTuDOklgLz0KMyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kksHbjBD; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=xd
-	FrtjJUkRGvjv55SiKHuajTga/BZquBU8gFVuUTEYs=; b=jMG+qnLT7AcVeFLEJX
-	KGWmp+pJc7o3ThLR+K9oXNBiQwhBTV5+IAsp0Ca1md+6LPyuZf+IuB6so+SPpYEV
-	7V1qN/k5IIVcWHVaoF13x+lnA7rqzmGEH8Nt6OvjIzTzg8Drv+2Fqgd5oYQ7xewu
-	YFMgRXlH6lrTulfIJGaI98Rbo=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=nE
+	E27e8uG76RjHLoTbC/alv3uxT1YhabsN0M0uUxzNI=; b=kksHbjBDFwp/dEfPs9
+	bckbLd4DJZYBQXyzQNQpi3RubpAGxToPN5tftWvp7nrlNwPjQotfpHuDb51xYmAP
+	LVcn/hyHLXBnqH7WVGGqkwg74SJCQUSznEJlo3y0cM7276II+g+EhOwlAXZwBw1o
+	nHfVZz3BgdDqK4sbHDzDvwwSU=
 Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wAnM7V1zZ9pMaEyNg--.63411S2;
-	Thu, 26 Feb 2026 12:35:02 +0800 (CST)
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgBXrNBV1J9pvRs+Pg--.2127S2;
+	Thu, 26 Feb 2026 13:04:23 +0800 (CST)
 From: Rahul Sharma <black.hawk@163.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Sami Tolvanen <samitolvanen@google.com>,
 	Eric Biggers <ebiggers@kernel.org>,
 	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.12.y] dm-verity: disable recursive forward error correction
-Date: Thu, 26 Feb 2026 12:35:00 +0800
-Message-Id: <20260226043500.3945988-1-black.hawk@163.com>
+Subject: [PATCH 6.6.y] dm-verity: disable recursive forward error correction
+Date: Thu, 26 Feb 2026 13:04:18 +0800
+Message-Id: <20260226050418.159241-1-black.hawk@163.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,24 +62,24 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAnM7V1zZ9pMaEyNg--.63411S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCFWfKw1DtrW8uF1rZr4DCFg_yoW5Jw47pF
-	Z09a4fCr1rJF47GryDJ3WUZa45u34DK393GFW3uwna9a4Fyry8WryUtFW7ZFW0qr9rGFyY
-	qF4qkFW5Z3s7uFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEwID-UUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3RbSbGmfzXbspQAA3x
+X-CM-TRANSID:PCgvCgBXrNBV1J9pvRs+Pg--.2127S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCFWfKw1DtrW8uF1rZF18Zrb_yoW5GFW8pF
+	Z09a4fCr1rJF4xGryUJ3WUZa45u3srt393GFW3u3Z29a4Fyry8WryUtFW3ZF48Xr97GryY
+	vF4qkFW5Zas5uaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pNhFcUUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3heMJmmf1FdMgAAA3a
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219750-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219751-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,google.com,kernel.org,163.com];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -95,9 +95,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 35E651A0DD1
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CECF01A0F77
 X-Rspamd-Action: no action
 
 From: Mikulas Patocka <mpatocka@redhat.com>
@@ -124,7 +124,9 @@ Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 Reviewed-by: Eric Biggers <ebiggers@kernel.org>
 [ The context change is due to the commit bdf253d580d7
 ("dm-verity: remove support for asynchronous hashes")
-in v6.18 which is irrelevant to the logic of this patch. ]
+in v6.18 and the commit 9356fcfe0ac4
+("dm verity: set DM_TARGET_SINGLETON feature flag") in v6.9
+which are irrelevant to the logic of this patch. ]
 Signed-off-by: Rahul Sharma <black.hawk@163.com>
 ---
  drivers/md/dm-verity-fec.c | 4 +---
@@ -132,10 +134,10 @@ Signed-off-by: Rahul Sharma <black.hawk@163.com>
  2 files changed, 1 insertion(+), 6 deletions(-)
 
 diff --git a/drivers/md/dm-verity-fec.c b/drivers/md/dm-verity-fec.c
-index 7d477ff6f26b..c55f454ff979 100644
+index 4474352ad3d1..eda646a0d237 100644
 --- a/drivers/md/dm-verity-fec.c
 +++ b/drivers/md/dm-verity-fec.c
-@@ -424,10 +424,8 @@ int verity_fec_decode(struct dm_verity *v, struct dm_verity_io *io,
+@@ -439,10 +439,8 @@ int verity_fec_decode(struct dm_verity *v, struct dm_verity_io *io,
  	if (!verity_fec_is_enabled(v))
  		return -EOPNOTSUPP;
  
@@ -148,7 +150,7 @@ index 7d477ff6f26b..c55f454ff979 100644
  	fio->level++;
  
 diff --git a/drivers/md/dm-verity-fec.h b/drivers/md/dm-verity-fec.h
-index 09123a612953..ec37e607cb3f 100644
+index 8454070d2824..7a73866f727d 100644
 --- a/drivers/md/dm-verity-fec.h
 +++ b/drivers/md/dm-verity-fec.h
 @@ -23,9 +23,6 @@
