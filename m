@@ -1,146 +1,142 @@
-Return-Path: <stable+bounces-219814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBm2M/FToGlLiQQAu9opvQ
-	(envelope-from <stable+bounces-219814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:08:49 +0100
+	id MOoYGE5ZoGlPigQAu9opvQ
+	(envelope-from <stable+bounces-219815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:31:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7441A73B5
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:08:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 543E01A793B
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5B07E3030484
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:08:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 160133098CD6
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25F333372D;
-	Thu, 26 Feb 2026 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BC236AB73;
+	Thu, 26 Feb 2026 14:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eAF2sFn4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6sO2eJx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A2D2DA756;
-	Thu, 26 Feb 2026 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4715133A9F7;
+	Thu, 26 Feb 2026 14:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772114895; cv=none; b=IevEXwSa70+0t899LDdS3QZGBlwh34ks2GwF/K74BBhAdH7vbWOQX3cLN78ioCm2Nd2Q+AkcjDrNArvdJ9hAqhqg0h+uZyJaoZzDZnp7/o/BAsreDSVteqSHfYTsZcbtO4AkFG6J33mw5KNat3iVYBOJnt3aRkJDh0RqrTwT68g=
+	t=1772114955; cv=none; b=ZWKpKF89ln6VilsltSPQA+nTQD3erhAh+k/z1CHp3bVCidMlEgjvo07ogBqIYELJlhLUrGGyLOVzPoXFfPeIoKOGtDr3pgz9zaPaBCnjcHlCCWe2qyGLoHGQ15Wp7sQu7aJNLBekkwYqsh4mlHHEAd/jFg/VHqwpZF3anw+rPmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772114895; c=relaxed/simple;
-	bh=jaI4l3nRDTB82ejX1iS+mncKA/33oPwJ2XkQL9l1CeY=;
+	s=arc-20240116; t=1772114955; c=relaxed/simple;
+	bh=8WDXKaLHom5c3E/DwCunlAjOlHZNSGTUJkRY5uIDLx4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n9wFBBWcb3CL8BvR5efD589S8TQgKkrmuQnWHTIIJ1Jev2Ryhji2aNKPrKFHY1G7jbl95O1wFzoqSOI62dyePC5D+2YBGJ8vF4zBGX04mvYVlpwOjTQF3WI5ftuC3o9J7uqzr2QqwV8uGfg0nJTCFWIYySDhXCSqBe5agnk59mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eAF2sFn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23D0C116C6;
-	Thu, 26 Feb 2026 14:08:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=kbBeudcFUGzQ3mUbRC+G+Nb6Sxsd7dH3Rd24xINUQOZ1LKVYmk3jjzsUHDAcq+VG3m9j0LiweQKbrI1GXyugaO25nfp6jRca10nIDd78YVw6AUSOJrdD1IE0NUM25jByrZaGKnsyXsHXnjIzZtQjYnCmdZEkfQL2XqbFl4uU3bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6sO2eJx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B342AC116C6;
+	Thu, 26 Feb 2026 14:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772114895;
-	bh=jaI4l3nRDTB82ejX1iS+mncKA/33oPwJ2XkQL9l1CeY=;
+	s=k20201202; t=1772114954;
+	bh=8WDXKaLHom5c3E/DwCunlAjOlHZNSGTUJkRY5uIDLx4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eAF2sFn44nht9CCsXT0GOKOzMJ1KDp9C774jlDZ1H4LWf3UAVE25fCQtqONnxUGQ0
-	 ijuCARL3eyHxlbRyAKCTpoJESk0kCO5hvSGUIIijyxEVeumEEPo9vCF7dyYVz/6z3A
-	 8b6TzAZ7IS6OpuaGZpgm8LhVFp2iwze0M6+G/SVGTVQm4yiWXOv/HAIlhuqyGAyXxZ
-	 oE9eew7PbQELQo5YGoOC5MflXvXQcRRsEs/fNJBe8vWn/q1ag7LtgbQkYdVDBlX6hG
-	 qpolqy5udLKLZJTkFp+Da/wHQLCequLVYYIvnyK5vkz154a8yTgPo/6s4HFcXY6EIk
-	 K0C8QY/YoZmCA==
-Date: Thu, 26 Feb 2026 14:08:10 +0000
-From: Lee Jones <lee@kernel.org>
-To: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>, David Rheinsberg <david@readahead.eu>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] HID: uhid: Fix out-of-bounds write caused by raw
- events mismanagement
-Message-ID: <20260226140810.GD8023@google.com>
-References: <20260211164025.171242-1-lee@kernel.org>
- <aZmsTQeeGf26FqvY@plouf>
- <172q4775-616s-p7s4-7n80-p8579n0r3516@xreary.bet>
- <47ro00po-r74n-870q-q178-67s8rpsss12q@xreary.bet>
- <aZ3IKiL91Ya7_iIM@plouf>
- <r6574n79-563r-9rrp-0n92-784532r67o63@xreary.bet>
- <20260226111816.GA8023@google.com>
- <aaA6fioiB9_aiBrA@plouf>
+	b=W6sO2eJxeOLvlQ9mpL1mZ9pdNYgf/x6X5Vk3jytPpF4EeK4GOxcnfskcBjkXwDBBV
+	 2qq5q2kU1XKnmM99cg64n+IdHCe8KdA2GjbHFihYphUV1uUGBG91N+11GIsz5QtpxO
+	 0NfvN2cBrEpXNTvuy1xGq2lBTE/GPrPkgLdRTOLnEwCvFpV6DltN0qx3CTZ+6BQNW0
+	 bfqqlUuRoRHyRAybpbDIk8nqS68HJ4O1ryrNqw3k/JN6CCEIo6TVj99sko3SfM1NS7
+	 ZTJSJllW0WTGH/QTTJFxoIZiGN4fcxYT5Wq7wKdCUt1+oYza8TsdDQ9MqHgVaZ/wQ7
+	 71YDJv0xlj/Ug==
+Date: Thu, 26 Feb 2026 09:09:13 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Amir Goldstein <amir73il@gmail.com>, patches@lists.linux.dev,
+	stable@vger.kernel.org, Jakub Acs <acsjakub@amazon.de>,
+	Christian Brauner <brauner@kernel.org>, viro@zeniv.linux.org.uk,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.19-5.15] fsnotify: Shutdown fsnotify before
+ destroying sb's dcache
+Message-ID: <aaBUCU50P-GYMnne@laps>
+References: <20260214212452.782265-1-sashal@kernel.org>
+ <20260214212452.782265-85-sashal@kernel.org>
+ <CAOQ4uxgKwp2FSAUwqhHN-kTBcy0DsFmLstGUY+zJWppOzTAmHA@mail.gmail.com>
+ <z6nyopsvzubwxowiqxdg2yt5v6yu4i3uzlflvryjwuk2su7z4m@35ikyzqbxb46>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aaA6fioiB9_aiBrA@plouf>
+In-Reply-To: <z6nyopsvzubwxowiqxdg2yt5v6yu4i3uzlflvryjwuk2su7z4m@35ikyzqbxb46>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,lists.linux.dev,vger.kernel.org,amazon.de,kernel.org,zeniv.linux.org.uk];
+	TAGGED_FROM(0.00)[bounces-219815-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219814-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4C7441A73B5
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.cz:email]
+X-Rspamd-Queue-Id: 543E01A793B
 X-Rspamd-Action: no action
 
-On Thu, 26 Feb 2026, Benjamin Tissoires wrote:
+On Tue, Feb 17, 2026 at 11:00:42AM +0100, Jan Kara wrote:
+>On Sun 15-02-26 09:11:30, Amir Goldstein wrote:
+>> On Sat, Feb 14, 2026 at 11:27 PM Sasha Levin <sashal@kernel.org> wrote:
+>> >
+>> > From: Jan Kara <jack@suse.cz>
+>> >
+>> > [ Upstream commit 74bd284537b3447c651588101c32a203e4fe1a32 ]
+>> >
+>> > Currently fsnotify_sb_delete() was called after we have evicted
+>> > superblock's dcache and inode cache. This was done mainly so that we
+>> > iterate as few inodes as possible when removing inode marks. However, as
+>> > Jakub reported, this is problematic because for some filesystems
+>> > encoding of file handles uses sb->s_root which gets cleared as part of
+>> > dcache eviction. And either delayed fsnotify events or reading fdinfo
+>> > for fsnotify group with marks on fs being unmounted may trigger encoding
+>> > of file handles during unmount.
+>>
+>> In retrospect, the text "Now that we iterate inode connectors..."
+>> would have helped LLM (as well as human) patch backports understand
+>> that this is NOT a standalone patch.
+>
+>Good point :)
+>
+>> Sasha,
+>>
+>> I am very for backporting this fix, but need to backport the series
+>> https://lore.kernel.org/linux-fsdevel/20260121135513.12008-1-jack@suse.cz/
+>
+>Yes. Without commits 94bd01253c3d5 ("fsnotify: Track inode connectors for a
+>superblock") and a05fc7edd988c ("fsnotify: Use connector list for
+>destroying inode marks") the reordering alone can cause large latencies
+>during filesystem unmount.
 
-> On Feb 26 2026, Lee Jones wrote:
-> > On Tue, 24 Feb 2026, Jiri Kosina wrote:
-> > 
-> > > On Tue, 24 Feb 2026, Benjamin Tissoires wrote:
-> > > 
-> > > > Long story short: that patch is too intrusive as it makes assumption on
-> > > > the behavior of the device. We need to understand where/if the bug was
-> > > > spotted and fix the caller of hid_hw_raw_request, not the uhid
-> > > > implementation.
-> > > 
-> > > Thanks a lot for the analysis, Benjamin!
-> > > 
-> > > I asked about that here:
-> > > 
-> > > 	https://lore.kernel.org/all/172q4775-616s-p7s4-7n80-p8579n0r3516@xreary.bet/
-> > > 
-> > > So let's wait for Lee to clarify. Until that, the patch stays out of the 
-> > > branch.
-> > 
-> > Thanks to both of you for looking into this.  I appreciate your efforts.
-> > 
-> > This is very much real world.
-> > 
-> > Is there a way to add an errata for the PS3 controller?
-> > 
-> 
-> Unfortunatelly no. uhid merely emulates what a device can do, and HID is
-> a convention. So if we were to have a special case to PS3 controllers,
-> we would then start having to maintain an endless list of quirks when
-> the issue is *not* in uhid, but in the processing of the device after
-> (maybe in hid-core?).
-
-Actually I think the issue is in UHID.  At least the way I read it.
-
-Are there legitimate use-cases for devices overwriting the Report ID
-contained in the first index of the data buffer?  From my very limited
-knowledge of the subsystem, this sounds like an oversight.
+Looks like going even to 6.18 requires a bunch of dependencies, so a backport
+would be appreciated :)
 
 -- 
-Lee Jones [李琼斯]
+Thanks,
+Sasha
 
