@@ -1,174 +1,163 @@
-Return-Path: <stable+bounces-219770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCLFA+X5n2n3fAQAu9opvQ
-	(envelope-from <stable+bounces-219770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 08:44:37 +0100
+	id eOo5JyP6n2n3fAQAu9opvQ
+	(envelope-from <stable+bounces-219771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 08:45:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 966C61A1FBD
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 08:44:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFB11A2003
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 08:45:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01BD4300183F
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 07:40:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0D9F43033BEE
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 07:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D393921FF;
-	Thu, 26 Feb 2026 07:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC26372B3A;
+	Thu, 26 Feb 2026 07:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l+6jRiAF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ptLnmgz+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A079394462;
-	Thu, 26 Feb 2026 07:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EF2311599;
+	Thu, 26 Feb 2026 07:45:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772091568; cv=none; b=jdTTEoF4lc9u64Ul76ixeHakr3mmDz5FeAZruisWTwB6luwgePkogC/F3399VETrQVhYUk5Ie7WiBEopn6brcdycvUbmHR2QXZJ7MqVGSGZZ7rkbxCVYBOKEevWsUPz1xVvNwJiPBe84Sdjq0OhcYK3k89XQvYVy7UyssKwoFYc=
+	t=1772091927; cv=none; b=Yv3hP/ad51WkzyI1wmeXPXKMkwtCWp7s1EqzlxiywqJDT1DIy7AcOfwQBPOIv9/GeiXOUs8jxxAsTf+VZxQXFfJGopXckNsjt2kFLjw8wLB3VEnlNS0pcKzrllAtq2xXYrL9cU5GvLY/6LO6Bpmjq863Osu5bdDGlB92iVbGO5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772091568; c=relaxed/simple;
-	bh=i7iP6SLqvueBiBwMWCpHe631svyqbUXNRPwIet3OvZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n+NVx6Pi63O07deNNVGIHAPT7XyTxN7H1JuPQ/UGfoXnT1M+e3043FS7TsqLggASszFgJ4kNNYiNeULlv+7mXtbEM39hD+9IMNiAFOaRMvtKXSBp40Ef3usc1WLOq8IO79gcCGBRHFbn/ssHAIG0Or7Q4sYHl0mNdFxeNbJfAP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l+6jRiAF; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772091567; x=1803627567;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=i7iP6SLqvueBiBwMWCpHe631svyqbUXNRPwIet3OvZA=;
-  b=l+6jRiAFvyXQptMVyYUATMePI4FuVr20lthBcb4hwfLzyjtL+UU0uqXj
-   xHfxSE9hk7GeA69mYkIMSeNgTmEvNzucBnetbmL4voBVdt0AqmFaTPXvU
-   tKa1rLtAHVjgqvYqadhC2doWs5U3/1mLEYYfGmjMEAB52ySN9DGxZFnlO
-   lCKxLW29Y+j3UBucyW/Jlx/GUSUT45y2amdC5ixmLu/svKS/YFri4xAgr
-   xUXzMUChv9QnPSUzo54EnUP+8PZCihnq/VVLxf3hO0Um/yTjCvqpgVhWQ
-   HdJB0UuL2aTM4aSUTjw/n7RDZ/cgNNEf/Z7wPCUPrtRs5IrSmnNwPyTZT
-   A==;
-X-CSE-ConnectionGUID: am96dhvuSqu4WUWBTlBRlA==
-X-CSE-MsgGUID: zDsNf6w5Tfq7+A/FLlyOSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="73055343"
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
-   d="scan'208";a="73055343"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 23:39:26 -0800
-X-CSE-ConnectionGUID: fPAAVPIkQ1SWENSS28/HPw==
-X-CSE-MsgGUID: YCz21X1dRFKPHDecmmGLJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
-   d="scan'208";a="214499028"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.167])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 23:39:25 -0800
-Date: Thu, 26 Feb 2026 09:39:22 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Brian Mak <makb@juniper.net>
-Cc: Lee Jones <lee@kernel.org>, Herve Codina <herve.codina@bootlin.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mfd: core: Preserve OF node when ACPI handle is present
-Message-ID: <aZ_4qqZCnpMKD_5q@smile.fi.intel.com>
-References: <20260225232105.454931-1-makb@juniper.net>
- <aZ_18m0gYBDEpSlt@smile.fi.intel.com>
+	s=arc-20240116; t=1772091927; c=relaxed/simple;
+	bh=1IbN5lpgxAaO8ppG/o1kIrggMbmfH/Y/DeH37gQka3g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uujZlh9NR/1tcloOSsx+5kYy1NUBIOdd96gLc3R0riv9ygAqKglROPAecfBLyhlQGz9aW1Q2FnDdcl/XRkB4C3i1+X2SmOskoMvaaSLJaX/3vOmtp2L/GtnKYUaULzYxSBe7+21mLd+2BmAOUrMyuz0Ou10uy17DG5kiSscAxiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ptLnmgz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FCEC19422;
+	Thu, 26 Feb 2026 07:45:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772091927;
+	bh=1IbN5lpgxAaO8ppG/o1kIrggMbmfH/Y/DeH37gQka3g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ptLnmgz+AzFi9R9PIH/runcaID8THrPJGhwp7ck1abf2WPdP9Divs2tDSxNax5Nre
+	 OWiSIItALllCC9aEdQPHjr2q3QwCfJArR/8H8DXTh/nsbNFsL0Lr9GV37jNzbYXLtb
+	 VbVQHICbtVv6zNt2xuRe+KTMh5OC8+XnB5YsYutNdO/3VqHD6a5yV1Ddr3q8HRC64u
+	 WSUkEjgf9gFs/EEAD3nsmiKjM/R5tAkYW/XF0txEdqE5BRKbHYwwLPxjFlqOCafr+/
+	 +8hgdPyE1jN1dIxQhJWQVBHvg1ksAgZeI/InAqK3/s7zF3yw0zMrIdlFq2lc3HBNr1
+	 5aFLXyoXtEGdA==
+Message-ID: <4bbeb69d-698f-4fe7-86d0-67c6f7e2ebdf@kernel.org>
+Date: Thu, 26 Feb 2026 08:45:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZ_18m0gYBDEpSlt@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 767/781] ata: libata-scsi: avoid Non-NCQ command
+ starvation
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
+ Igor Pylypiv <ipylypiv@google.com>, Damien Le Moal <dlemoal@kernel.org>,
+ Niklas Cassel <cassel@kernel.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ John Garry <john.g.garry@oracle.com>
+References: <20260225012359.695468795@linuxfoundation.org>
+ <20260225012418.528826275@linuxfoundation.org>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20260225012418.528826275@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219770-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219771-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim]
-X-Rspamd-Queue-Id: 966C61A1FBD
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3AFB11A2003
 X-Rspamd-Action: no action
 
-On Thu, Feb 26, 2026 at 09:27:50AM +0200, Andy Shevchenko wrote:
-> On Wed, Feb 25, 2026 at 03:21:05PM -0800, Brian Mak wrote:
-> > Switch device_set_node back to ACPI_COMPANION_SET, so that the ACPI
+On 25. 02. 26, 2:24, Greg Kroah-Hartman wrote:
+> 6.19-stable review patch.  If anyone has any objections, please let me know.
 > 
-> device_set_node()
-> ACPI_COMPANION_SET() // but see below.
+> ------------------
 > 
-> > fwnode does not overwrite the of_node with NULL.
+> From: Damien Le Moal <dlemoal@kernel.org>
 > 
-> > This allows MFD children with both OF nodes and ACPI handles to have OF
-> > nodes again.
-> 
-> Do you have a real use case? Can you elaborate more (platform, drivers
-> being involved, et cetera)?
+> commit 0ea84089dbf62a92dc7889c79e6b18fc89260808 upstream.
 
-Even more thinking on this it looks like a violation of the levels of
-the fwnodes. The current design was not expecting the ACPI *and* OF node
-to appear in the list. They both are considered "primary" from the design
-point of view.
+Hi, this one is broken and needs (very fresh) fixes according to our 
+tooling:
 
-In your case it seems like an OF node comes from likely DT overlay and
-messes up this logic (although it can be considered 'secondary' semantically).
-But the proposed patch is not a solution, it's a band-aid.
+eddb98ad9364 ata: libata-eh: correctly handle deferred qc timeouts
+55db00992663 ata: libata-core: fix cancellation of a port deferred qc work
 
-TL;DR: if there is a use case that worked before (please elaborate),
-the patch as a quick fix looks okay, but with FIXME added and open coded logic:
-
-	/*
-	 * ...description of use case...
-	 *
-	 * FIXME: The fwnode design doesn't allow proper sharing and stacking.
-	 * Eventually this should become some device fwnode API call that will
-	 * prepend the list of fwnodes (making ACPI one "primary" in that sense).
-	 */
-	if (adev)
-		set_primary_fwnode(&pdev->dev, acpi_fwnode_handle(adev));
-	else if (parent)
-		set_primary_fwnode(&pdev->dev, acpi_fwnode_handle(parent));
-
-...
-
-> > -	device_set_node(&pdev->dev, acpi_fwnode_handle(adev ?: parent));
-> > +	ACPI_COMPANION_SET(&pdev->dev, adev ?: parent);
-> 
-> As a quick fix this may be fine, but it needs a big FIXME explaining that this
-> is actually a design limitation of fwnode that doesn't allow proper sharing
-> and stacking.
-> 
-> Bouncing back to ACPI_COMPANION_SET() also doesn't feel right as it hides
-> the real thing here, and real thing is the primary/secondary fwnode types
-> that we need to care of. Just call set_primary_fwnode() directly. It helps
-> also to get rid of ACPI_COMPANION_SET() calls where it may be replaced with
-> simple device_set_node().
-
+thanks,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+js
+suse labs
 
 
