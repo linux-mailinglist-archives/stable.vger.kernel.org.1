@@ -1,189 +1,154 @@
-Return-Path: <stable+bounces-219827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJrALHpqoGk3jgQAu9opvQ
-	(envelope-from <stable+bounces-219827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:44:58 +0100
+	id mP6AAXpsoGk3jgQAu9opvQ
+	(envelope-from <stable+bounces-219829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:53:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320601A9070
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:44:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735641A927B
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9BB69329D486
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:22:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8709F31E510E
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C77407579;
-	Thu, 26 Feb 2026 15:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C03A40F8E9;
+	Thu, 26 Feb 2026 15:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mvqsq0kU"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="pifSszUl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward202a.mail.yandex.net (forward202a.mail.yandex.net [178.154.239.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4D6407572;
-	Thu, 26 Feb 2026 15:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE2540F8E7;
+	Thu, 26 Feb 2026 15:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772119056; cv=none; b=RRJOOtGbpQgzMtJUaTi7EAM4T5ylfd2JPCLaiStFVKAd3WbB1KLE6y9+0rF/yHwLP73uY8BLI8aifcyrzRd7r97lZkMh3r2mtCWsbD8IXBraD9SGZBAzXlYOhdk8RsY4ugWjwx2jxzaB1SlQKwsNVXWq9lKRcuqBRpT9Uz5VdtY=
+	t=1772120316; cv=none; b=rGO7tR9XDHHdHdLwFAI3qe6602s5fz/TMXr7N3rltgUDgGfgubQ+pZl/0TViLX8gDi9MpnYE3B5igNZOb0EeH3HZqL3Gu2/iGteQHBeZ7Uk15PUTTu1dQ+sGCvLv9Txuk38Z7Cid9irXcWziMX2GlnQsY4FU6wnmI6C87f6gDbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772119056; c=relaxed/simple;
-	bh=aLGd9kkNNgUcYFmtIiy7QnU197IGoyxW/VYrnzMnoP0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qm8NI+rNEnnSJ+86m/Vfmr2ee9rKyyVFsFsmMkYGS8O9FCrwF3MFluHX/d7sNCVQiJxK7hF+m5NQgKaARIplNZj+/tUI3Gv3HRFjjmOgy+yazaZvF5ihUVs+0ZHeDqTPuwTHxBVxD7mRgEglQ0zYjYMTDE5gWkBcVKswNaF/6gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mvqsq0kU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A073DC116C6;
-	Thu, 26 Feb 2026 15:17:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772119056;
-	bh=aLGd9kkNNgUcYFmtIiy7QnU197IGoyxW/VYrnzMnoP0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mvqsq0kUH13XZgmV8wElxnONJYeKXRqcfRRtYItlQjBVZKxpIE/dc+ITxNhd6S1p3
-	 T2AjMG/TXthk8J2aulk2q2MatA2xW+lUiBrhq/dJfzPp0Tvh1M45a6xqx+nCoimZB8
-	 Pa2p1cUOqejG1LVB6MWXxv7ibGazvHkWUonN7OkkMkvDkN7+rPQj7hKLdKOjCbSJgJ
-	 Qs3pYm9sEqtL0C1RQDAZtPzelk+G+G4c8UXhxne2nTIChYjR15eVMDKR1l7R9/JRD3
-	 WkhmvwuAcYqgQkKVomgYxqh5obrOaPBcUtP6Y0HGiJQzdwcykcopRA2JFm+oEdE2Gg
-	 4xNbTcjO4nhSQ==
-Message-ID: <6147cf80-9d02-4c5c-ab81-8cb9b00044f0@kernel.org>
-Date: Thu, 26 Feb 2026 16:17:31 +0100
+	s=arc-20240116; t=1772120316; c=relaxed/simple;
+	bh=Jc1KCw4PS7kSTbxiHStSFaR3kFALt652H8w/cv7GtBk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PuWyWz6EOG10/D3ur2wjr9JRNwd9akw9sdtdytF365aYbNpjoid7FfjZD2v4LwrKsR84aiTyomLgcDRQzEnGB7yhkukZeIsvIhCNPGBA+O3h+fdkNBn2jK50Ca+TDOHDKisMwbk/lc6F/BiZJPNoAjexL/h15Scz7rEo6947QzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=pifSszUl; arc=none smtp.client-ip=178.154.239.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d101])
+	by forward202a.mail.yandex.net (Yandex) with ESMTPS id E6A57851EA;
+	Thu, 26 Feb 2026 18:31:37 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1ba7:0:640:dccd:0])
+	by forward101a.mail.yandex.net (Yandex) with ESMTPS id 9729980D13;
+	Thu, 26 Feb 2026 18:31:29 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 8Vkqhh1GMGk0-wRfDlrsE;
+	Thu, 26 Feb 2026 18:31:28 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1772119888; bh=9u+hw7P1kZrxGYw4H4TMvbi/ck0cvcuM+YKL6lqFTQo=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=pifSszUlb2N/rZIVP+qPjlC1mTVLnGQ+aRmMCUd0EMVWv+lDjZEr8EPNi6shDDHhn
+	 AVTXYtpAvv1hL7QnGdCeD62wWo9sPP9ztWQFT2kYkBa5nUH7tWc/THp1QataVcsfs+
+	 BBuIH0Csbof6gtSyHXiCymRbThXXJaK7riUut3FY=
+Authentication-Results: mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Evgenii Burenchev <evg28bur@yandex.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Evgenii Burenchev <evg28bur@yandex.ru>,
+	lingshan.zhu@kernel.org,
+	mst@redhat.com,
+	jasowang@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH] vdpa/ifcvf: handle dev_set_name() failure in ifcvf_vdpa_dev_add()
+Date: Thu, 26 Feb 2026 18:29:23 +0300
+Message-ID: <20260226152924.38790-1-evg28bur@yandex.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm/huge_memory: Prevent huge zeropage refcount
- corruption in PMD move
-To: Chris Down <chris@chrisdown.name>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <aaBVz7eb6-VBCvaz@chrisdown.name>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aaBVz7eb6-VBCvaz@chrisdown.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[yandex.ru,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[yandex.ru:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219827-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[yandex.ru,kernel.org,redhat.com,linux.alibaba.com,lists.linux.dev,vger.kernel.org,linuxtesting.org];
+	TAGGED_FROM(0.00)[bounces-219829-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[yandex.ru:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_FROM(0.00)[yandex.ru];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chrisdown.name:email]
-X-Rspamd-Queue-Id: 320601A9070
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 735641A927B
 X-Rspamd-Action: no action
 
-On 2/26/26 15:16, Chris Down wrote:
-> After commit d82d09e48219 ("mm/huge_memory: mark PMD mappings of the
-> huge zero folio special"), moved huge zero PMDs must remain special so
-> vm_normal_page_pmd() continues to treat them as special mappings.
-> 
-> move_pages_huge_pmd() currently reconstructs the destination PMD in the
-> huge zero page branch, which drops PMD state such as pmd_special() on
-> architectures with CONFIG_ARCH_HAS_PTE_SPECIAL. As a result,
-> vm_normal_page_pmd() can treat the moved huge zero PMD as a normal page
-> and corrupt its refcount.
-> 
-> Instead of reconstructing the PMD from the folio, derive the destination
-> entry from src_pmdval after pmdp_huge_clear_flush(), then handle the PMD
-> metadata the same way move_huge_pmd() does for moved entries by marking
-> it soft-dirty and clearing uffd-wp.
-> 
-> Fixes: d82d09e48219 ("mm/huge_memory: mark PMD mappings of the huge zero folio special")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chris Down <chris@chrisdown.name>
-> ---
->  mm/huge_memory.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index fed57951a7cd..8166b5e871ad 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2794,7 +2794,8 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
->  		_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
->  	} else {
->  		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
-> -		_dst_pmd = folio_mk_pmd(page_folio(src_page), dst_vma->vm_page_prot);
-> +		_dst_pmd = move_soft_dirty_pmd(src_pmdval);
-> +		_dst_pmd = clear_uffd_wp_pmd(_dst_pmd);
+dev_set_name() may fail and return an error, but its return value
+is currently ignored and overwritten by _vdpa_register_device().
 
-Please squash that patch directly in #1.
+Abort device creation if dev_set_name() fails and release the
+device reference to avoid continuing with an improperly initialized
+struct device.
 
-It doesn't make sense to leave something partially fixed in #1. It's
-been completely broken from the start. folio_mk_pmd() should never have
-been used.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Apart from that, the end results LGTM, thanks
+Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
+---
+ drivers/vdpa/ifcvf/ifcvf_main.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/vdpa/ifcvf/ifcvf_main.c b/drivers/vdpa/ifcvf/ifcvf_main.c
+index d46c1606c97a..ab6d6ab3b3d8 100644
+--- a/drivers/vdpa/ifcvf/ifcvf_main.c
++++ b/drivers/vdpa/ifcvf/ifcvf_main.c
+@@ -734,15 +734,22 @@ static int ifcvf_vdpa_dev_add(struct vdpa_mgmt_dev *mdev, const char *name,
+ 		ret = dev_set_name(&vdpa_dev->dev, "%s", name);
+ 	else
+ 		ret = dev_set_name(&vdpa_dev->dev, "vdpa%u", vdpa_dev->index);
++	if (ret) {
++		IFCVF_ERR(pdev, "Failed to set device name");
++		goto err;
++	}
+ 
+ 	ret = _vdpa_register_device(&adapter->vdpa, vf->nr_vring);
+ 	if (ret) {
+-		put_device(&adapter->vdpa.dev);
+ 		IFCVF_ERR(pdev, "Failed to register to vDPA bus");
+-		return ret;
++		goto err;
+ 	}
+ 
+ 	return 0;
++
++err:
++	put_device(&adapter->vdpa.dev);
++	return ret;
+ }
+ 
+ static void ifcvf_vdpa_dev_del(struct vdpa_mgmt_dev *mdev, struct vdpa_device *dev)
 -- 
-Cheers,
+2.43.0
 
-David
 
