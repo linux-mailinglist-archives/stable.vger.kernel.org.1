@@ -1,220 +1,234 @@
-Return-Path: <stable+bounces-219809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMoaBklOoGnvhwQAu9opvQ
-	(envelope-from <stable+bounces-219809-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:44:41 +0100
+	id 0K9sExFPoGmIiAQAu9opvQ
+	(envelope-from <stable+bounces-219810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:48:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807401A6DB7
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:44:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F731A6EDC
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C4E00300A522
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 13:39:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1F1831A07A7
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 13:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E768E27587D;
-	Thu, 26 Feb 2026 13:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383EE36BCCF;
+	Thu, 26 Feb 2026 13:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="e3IjUPcs";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="gaGc91Zy";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="O5E7h2c1";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="SvAWqU4F"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jcb9LgjN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7246F22173D
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 13:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD8B363C6B;
+	Thu, 26 Feb 2026 13:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772113168; cv=none; b=fzSBLjunSQMecM9+3AInq33L5mepohBbVWPe6Zk50kkv7cKu6y08LuZbc2kEBn5GIisKcuZyArljl32krRH5x+4bt26MIAaExrXB25b0OevQbO2hL25hP0Lmndx4Uwqlno7x4+2w/IiWhiqLH1yap+MIYE2rzKobm3hVn5JlCAs=
+	t=1772113264; cv=none; b=G3VGng9Pjfi0hdbwjJgUrOsLvH6l6Z9nab7NSRfHKz3y1SF+kBwi3EvlFFxh1ig0ABGqQDomRSukDtxbLuumxsXFQS+fIZOj0Uqk72+8tCadTLEMY2zYb4wnQMOfkCMfIAvoiffyls2Fd/V+aOuSxlGch2+hnzWjFiZtR8PaxpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772113168; c=relaxed/simple;
-	bh=IIIAzBYvY1zIrRjAJ2Bq0qo6uLAb4Rc16WoUXokZA20=;
+	s=arc-20240116; t=1772113264; c=relaxed/simple;
+	bh=Cd4dpBLUHEkDK0iuCRBFU+xopfpY+DpvYGCUImgDuuk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IH+G1yjGjCcTY7ui0ML1dV8YjL3ItYfT4lgpBonPkvkJTouTdZteYfWUHBtHSFJFSh1UzkWY5dJfDiGnj33Q93LPwB0PBkBECqfxDHQtDhZHLCFFBcFLyUpfJrCyOCPNJDUeuCDNjchVmwHhXeuZy0g4P5tTA7HQiaLDXQVMapg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=e3IjUPcs; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=gaGc91Zy; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=O5E7h2c1; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=SvAWqU4F; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B2E351FAA3;
-	Thu, 26 Feb 2026 13:39:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772113165; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c/rXhoBzkdB7BsxszB1c7jbt2UMbPw0IOuoVqNzSFxk=;
-	b=e3IjUPcscDOBmJvuRJfEFWt3rqtqjD+N7WtCHvANjk7quI9EoLNeQfqsPtsLL8bXLq/Qku
-	aj7Jt/boK7ZgX4Ta8uOEbktgniXN4/8eZVwIe7rRpFDcNeUMhc43vDFFBeYxl8CBTqBhpW
-	w28sM/U6wM7GzeE9q0gXtiFJzRCZRJw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772113165;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c/rXhoBzkdB7BsxszB1c7jbt2UMbPw0IOuoVqNzSFxk=;
-	b=gaGc91ZyXfsgQ5CFlRMgHRtZPHJogyDR+q/yHh7jnRGtRMHmN2UXyEXnwnP17rK0OVz5XS
-	BY8dK+Ar1cbEAYAA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=O5E7h2c1;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SvAWqU4F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772113164; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c/rXhoBzkdB7BsxszB1c7jbt2UMbPw0IOuoVqNzSFxk=;
-	b=O5E7h2c1/MXNc0M4eaCFjg1NVCAsGhVCaWHrmc8Dyv6p58HNQ5/IycbNTSd7gfuNpqYNGk
-	m/3DuNlexMbBFa4tUQ9wU05PcaMbfukWxy2pZ0yzwdLSVCoVlC3AkHqE97eAwlXtsKq78i
-	pGdaVOa2AA59SZX27bj0r2fPFRb9SIA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772113164;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c/rXhoBzkdB7BsxszB1c7jbt2UMbPw0IOuoVqNzSFxk=;
-	b=SvAWqU4FdeoB8l0FDhxnW6hcYWeW+iPIZzTf4/SjdkFjLW1SFF3Ipb+S9jQvDNW/nHzfEW
-	fW3UHIOUSjEbVYCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A89E63EA62;
-	Thu, 26 Feb 2026 13:39:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id FlYnKQxNoGk6ZAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 26 Feb 2026 13:39:24 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6DA5CA0A27; Thu, 26 Feb 2026 14:39:24 +0100 (CET)
-Date: Thu, 26 Feb 2026 14:39:24 +0100
-From: Jan Kara <jack@suse.cz>
-To: Zhang Yi <yi.zhang@huaweicloud.com>
-Cc: Jan Kara <jack@suse.cz>, Ted Tso <tytso@mit.edu>, 
-	linux-ext4@vger.kernel.org, Free Ekanayaka <free.ekanayaka@gmail.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] ext4: Fix fsync(2) for nojournal mode
-Message-ID: <gzffe2p4gbxrkwolwk2lxpd72gzkbnvfgopz2z5g5z3ses5rdy@fyraeynvocf7>
-References: <20260211140209.30337-1-jack@suse.cz>
- <20260216164848.3074-4-jack@suse.cz>
- <85f5a062-2cdb-48ef-8250-cdc022209634@huaweicloud.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=uk0D1LMol2DMBhiLQtPbTg9ZY5zVMiYKFlvm8QuUioB5AP+TQC4cQBfCxlsmCTC0XwHtA3Oj77Pju6i7Z66OQzkdSoAkMVIaYDalKhD7+JZAb/Nb8PieAJnl1fXkCR7+LgDQxQ6UouZO3WIlFaYhMAwz6DikzDbqPjbycZtrn/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jcb9LgjN; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q99f0k2839736;
+	Thu, 26 Feb 2026 13:40:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:sender:subject:to; s=pp1;
+	 bh=uMssfxhPFSn/6vIySmtb07vru5Ln5O2CT/2uar6TikI=; b=jcb9LgjNBXfm
+	gmB0RiZ9M7lUG0G/EHKTtZYmZLM2oslFGR9wrTdi6D6sqUywGZ7KPsE9aKMER7E7
+	iJ6BoSjJY1TDCaiQyKHyZFZbUsbloRsFbDiGbEb4r45SmXeAXKjcSJYhgdlFng3j
+	6Q2/0rMVRJd/sMj4+pq2+tiBmM5XDTX0TWWCggmmApdRAaOmyIJHyCuLOK0uN426
+	FYQDDmaRRvq4zsL4zJL7kVTrus2nA9d8LktJER2C882/Q0vNOUYYcztVe9dp96Wm
+	kfry53xPD/WDmKZ6QVdUHkzLwfxKNFbrR/8xYdNXhAOlnVYwvjjkU0utezYB/KaC
+	0u8aHVERHA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4bs5smg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Feb 2026 13:40:57 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61QBFsu4027797;
+	Thu, 26 Feb 2026 13:40:57 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfsr23eu2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Feb 2026 13:40:56 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61QDerQ048955798
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Feb 2026 13:40:53 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EEEB520049;
+	Thu, 26 Feb 2026 13:40:52 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DD25B20040;
+	Thu, 26 Feb 2026 13:40:52 +0000 (GMT)
+Received: from p1gen4-pw042f0m (unknown [9.52.223.163])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 26 Feb 2026 13:40:52 +0000 (GMT)
+Received: from bblock by p1gen4-pw042f0m with local (Exim 4.99.1)
+	(envelope-from <bblock@linux.ibm.com>)
+	id 1vvbbo-00000001FWX-2Zix;
+	Thu, 26 Feb 2026 14:40:52 +0100
+Date: Thu, 26 Feb 2026 14:40:52 +0100
+From: Benjamin Block <bblock@linux.ibm.com>
+To: ionut.nechita@windriver.com
+Cc: bhelgaas@google.com, helgaas@kernel.org, schnelle@linux.ibm.com,
+        alifm@linux.ibm.com, julianr@linux.ibm.com, dtatulea@nvidia.com,
+        ionut_n2001@yahoo.com, sunlightlinux@gmail.com,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] PCI/IOV: Add reentrant locking in
+ sriov_add_vfs/sriov_del_vfs for complete serialization
+Message-ID: <20260226134052.GA13050@p1gen4-pw042f0m>
+References: <20260225202434.18737-1-ionut.nechita@windriver.com>
+ <20260225202434.18737-2-ionut.nechita@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <85f5a062-2cdb-48ef-8250-cdc022209634@huaweicloud.com>
-X-Spam-Flag: NO
-X-Spam-Score: -2.51
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260225202434.18737-2-ionut.nechita@windriver.com>
+Sender: Benjamin Block <bblock@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: DvPWJn3ZgTygi4SYrUIl9MfbtT4yi3fi
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDEyMyBTYWx0ZWRfX5QXDFr9MaSr3
+ LpuVYBOV/PgMhZwsw+LMUcltH48RrFTe0dH2bXTp45ncuWiTvYa000XvKCvIDpArzOAk8U8Hzrz
+ ibpqDhkExZa7VBsKpFqQH6q23WiNRKelAXwyABGZ6xI2xwrJQk0Kpy5RL5M9E25y26QVuY8Yj6b
+ lQFLBdwIfvoyAU5+7+BI7Dqa+646ugU+vZy3IM/446YO2RCkvMULE2lwOuj1uYRSNHPA5Q202/O
+ kt2y8smdxkMswijlvnfX9Zsa1MAL11rjGsZPCcVhxFkXo6z2Hc6aFwriaZcJsB/MbvqgeFPtNVT
+ 5sZrQYnM1yiKz9gepUkIVURntTR5t61Ejh6kCZLQKyzNXjqQRQWmAUZQd8CFHcOt9H+4nuA6jaS
+ ZhDBKOOqqNQe1vqDscyJ7wgcj76cO7DVdd0VTEjjLw/dwwXi45Uc+nbblicxQGHzUDhWTERprnJ
+ GvjswCCPZW4lo8lPq7A==
+X-Authority-Analysis: v=2.4 cv=eNceTXp1 c=1 sm=1 tr=0 ts=69a04d6a cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=8nJEP1OIZ-IA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
+ a=t7CeM3EgAAAA:8 a=Gb5hSY02JU1MmV-but8A:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+ a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: mQi7RIAWRoQiojNv512PgMEhbY7_QUR4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-25_04,2026-02-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 phishscore=0 suspectscore=0 adultscore=0
+ bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602260123
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219809-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,suse.cz:email,suse.cz:dkim,huawei.com:email];
-	DMARC_NA(0.00)[suse.cz];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[suse.cz,mit.edu,vger.kernel.org,gmail.com];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[google.com,kernel.org,linux.ibm.com,nvidia.com,yahoo.com,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-219810-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	NEURAL_HAM(-0.00)[-0.993];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bblock@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_TWELVE(0.00)[12];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 807401A6DB7
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,windriver.com:email]
+X-Rspamd-Queue-Id: A2F731A6EDC
 X-Rspamd-Action: no action
 
-On Thu 26-02-26 19:56:34, Zhang Yi wrote:
-> On 2/17/2026 12:48 AM, Jan Kara wrote:
-> > When inode metadata is changed, we sometimes just call
-> > ext4_mark_inode_dirty() to track modified metadata. This copies inode
-> > metadata into block buffer which is enough when we are journalling
-> > metadata. However when we are running in nojournal mode we currently
-> > fail to write the dirtied inode buffer during fsync(2) because the inode
-> > is not marked as dirty.
+On Wed, Feb 25, 2026 at 10:24:34PM +0200, ionut.nechita@windriver.com wrote:
+> From: Ionut Nechita <ionut.nechita@windriver.com>
 > 
-> Please let me understand this. You mean that because some places we
-> directly call ext4_mark_inode_dirty() to mark the inode as dirty, instead
-> of using the generic mark_inode_dirty(), this results in the inode missing
-> the I_DIRTY_INODE flag. Consequently, generic_buffers_fsync_noflush()->
-> sync_inode_metadata() does not write the inode, leading to the metadata
-> not being updated on disk after fsync(2), right?
-
-Correct.
-
-> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-
-Thanks for review!
-
-								Honza
-
-> > Use explicit ext4_write_inode() call to make
-> > sure the inode table buffer is written to the disk. This is a band aid
-> > solution but proper solution requires a much larger rewrite including
-> > changes in metadata bh tracking infrastructure.
-> > 
-> > Reported-by: Free Ekanayaka <free.ekanayaka@gmail.com>
-> > Link: https://lore.kernel.org/all/87il8nhxdm.fsf@x1.mail-host-address-is-not-set/
-> > CC: stable@vger.kernel.org
-> > Signed-off-by: Jan Kara <jack@suse.cz>
-> > ---
-> >  fs/ext4/fsync.c | 16 ++++++++++++++--
-> >  1 file changed, 14 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/fs/ext4/fsync.c b/fs/ext4/fsync.c
-> > index e476c6de3074..bd8f230fa507 100644
-> > --- a/fs/ext4/fsync.c
-> > +++ b/fs/ext4/fsync.c
-> > @@ -83,11 +83,23 @@ static int ext4_fsync_nojournal(struct file *file, loff_t start, loff_t end,
-> >  				int datasync, bool *needs_barrier)
-> >  {
-> >  	struct inode *inode = file->f_inode;
-> > +	struct writeback_control wbc = {
-> > +		.sync_mode = WB_SYNC_ALL,
-> > +		.nr_to_write = 0,
-> > +	};
-> >  	int ret;
-> >  
-> >  	ret = generic_buffers_fsync_noflush(file, start, end, datasync);
-> > -	if (!ret)
-> > -		ret = ext4_sync_parent(inode);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Force writeout of inode table buffer to disk */
-> > +	ret = ext4_write_inode(inode, &wbc);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = ext4_sync_parent(inode);
-> > +
-> >  	if (test_opt(inode->i_sb, BARRIER))
-> >  		*needs_barrier = true;
-> >  
+--8<--
 > 
+> Instead, introduce owner tracking for pci_rescan_remove_lock via a new
+> pci_lock_rescan_remove_reentrant() helper. This function checks if the
+> current task already holds the lock:
+>  - If the lock is not held: acquires it and returns true, providing
+>    full serialization against concurrent hotplug events (including
+>    platform-generated events on s390).
+>  - If the lock is already held by the current task (reentrant call from
+>    remove_store or sriov_numvfs_store paths): returns false without
+>    re-acquiring, avoiding deadlock while the caller already provides
+>    the necessary serialization.
+>  - If the lock is held by another task (concurrent hotplug): blocks
+>    until the lock is released, then acquires it, providing complete
+>    serialization. This is the key improvement over a trylock approach.
+> 
+--8<--
+>
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index bccc7a4bdd794..467362c277f19 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -3509,19 +3509,38 @@ EXPORT_SYMBOL_GPL(pci_rescan_bus);
+>   * routines should always be executed under this mutex.
+>   */
+>  DEFINE_MUTEX(pci_rescan_remove_lock);
+> +static struct task_struct *pci_rescan_remove_owner;
+                            ^
+                            const *pci_rescan_remove_owner
+
+Minor nitpick: you could declare this `const`; making it clear that this is
+not meant to be used to modify the task in any way.
+
+>  void pci_lock_rescan_remove(void)
+>  {
+>  	mutex_lock(&pci_rescan_remove_lock);
+> +	pci_rescan_remove_owner = current;
+>  }
+>  EXPORT_SYMBOL_GPL(pci_lock_rescan_remove);
+>  
+>  void pci_unlock_rescan_remove(void)
+>  {
+> +	pci_rescan_remove_owner = NULL;
+>  	mutex_unlock(&pci_rescan_remove_lock);
+>  }
+>  EXPORT_SYMBOL_GPL(pci_unlock_rescan_remove);
+>  
+> +bool pci_lock_rescan_remove_reentrant(void)
+> +{
+> +	if (pci_rescan_remove_owner == current)
+> +		return false;
+> +	pci_lock_rescan_remove();
+> +	return true;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_lock_rescan_remove_reentrant);
+
+Otherwise this looks good to me.
+
+I've run tests on s390 with hot-unplug from within Linux and externally
+triggered, driver unbind/unload, s390 PCI recovery, and some other minor
+tests.
+No lockdep splats, no other warnings/splats; it looks good to me.
+
+
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Tested-by: Benjamin Block <bblock@linux.ibm.com>
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Best Regards, Benjamin Block        /        Linux on IBM Z Kernel Development
+IBM Deutschland Research & Development GmbH    /   https://www.ibm.com/privacy
+Vors. Aufs.-R.: Wolfgang Wendt         /        Geschäftsführung: David Faller
+Sitz der Ges.: Ehningen     /     Registergericht: AmtsG Stuttgart, HRB 243294
 
