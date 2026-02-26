@@ -1,341 +1,173 @@
-Return-Path: <stable+bounces-219820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMyUHfNaoGlPigQAu9opvQ
-	(envelope-from <stable+bounces-219820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:38:43 +0100
+	id cLEmJi1aoGlPigQAu9opvQ
+	(envelope-from <stable+bounces-219821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:35:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5434F1A7B8E
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:38:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 185181A7A7A
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 15:35:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 17EDB308A1DC
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:18:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5F44300D158
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387863B5304;
-	Thu, 26 Feb 2026 14:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875253D4120;
+	Thu, 26 Feb 2026 14:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.b="K7t2TU4n"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kcinII8x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DB43B52F4
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 14:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B400C3D3CEC
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 14:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772115493; cv=none; b=XAhSMzVbBvXs89cxd4iRLhDyhzaW5g4Va4msp6A4cSCTMlctmREC3TSagoK09UMa5d4rWM6RSBaICIQ/kfaZJLbzHDvrIKARojSg8L5M6DUxsh2OzIQnCtKd/pwmuojGtd5y/8UOFnLggVSXNgLBr3t8XvrD3MBWTpyRVAYxNes=
+	t=1772116133; cv=none; b=S9Kuxm6vISijTVURBBc+9PnWhu9qp0xL1ekVTr9ZLEkSLlWzV+wEtcLgmu8PWobDRgdGr4LiJ75KxQEJ2Hrb2Jg/Gp/2b6iaydtJbirhxgHPotVMlXXGMsvQsncj+vwfKc4EbNpWVgJmfNnrv1PshdU2dOFwRNm98GCE9r2bZJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772115493; c=relaxed/simple;
-	bh=jBHu0PbpXWisz64Z7upJAs0O6HKKSqbwDGxPa7KDQZ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=b+X6ipntmF+PKPbEV8Wqs3BsdSwOj2Aow9Pz05HhppP5wLzby+rnf94PYQTvQgmhg7u9CzNJ9SMbMEXS6ZejK4rzB3WxcWnPxPENy5Oz5k9a109WSBGhKM5VrIR7vM2XlsfHcjHIvDL8zyI9nRNsD2EAAd9+2Yw9T8/m8FZIQUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chrisdown.name; spf=pass smtp.mailfrom=chrisdown.name; dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.b=K7t2TU4n; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chrisdown.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chrisdown.name
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ad4d639db3so4293175ad.0
-        for <stable@vger.kernel.org>; Thu, 26 Feb 2026 06:18:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1772115491; x=1772720291; darn=vger.kernel.org;
-        h=user-agent:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dXXHPkuaOyT/Lkk4V58fFeap91QST2S+bcIMS7/ydUs=;
-        b=K7t2TU4nUbTghb62h94pCwGsYcv8oVnlJTheMMDsu9GVY/NS2KQHtkd04akqLSpVGd
-         PNFvQYyAvOSqV9kQbqQiwDcGg8JN/CZR0c1UiPT/AU86rHkPPlgUApWW2iADgHpZB5YN
-         HppXmM0EIZrDpZGWYg4hmaupUj2tjl300Y4W8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772115491; x=1772720291;
-        h=user-agent:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dXXHPkuaOyT/Lkk4V58fFeap91QST2S+bcIMS7/ydUs=;
-        b=TnfR5AXJQhXMHTTx3oQMJefvSMR0a5dxsfmimPgto4FEcN/0WfLY32sIIw00WPsBUn
-         Gm6dYRnvTBK2ZHGa/w5ktkuGinT+FSOLbIXG5JVBqk+EJpRN3X8QCf+M3+JuAM2zJ0vh
-         BpbfkP7wPnoZE6i5B834DL5vVJZ1QMfdWqxAIYxzyxB8gdW23Zj3eJRaUFISgJO8IHbL
-         UD9o9r4ziHFtnc1UDVeduKmX6tPwb0mziBIxM6MW8HCmeahAT4YBzAJpL89alODJszjc
-         4fxRqJ6OrfcSwrYMvSt8w+m22rIqHjm55xiVR8ejA3WWYIafGgBmUPxnvXVgkcm/LHOh
-         aO3g==
-X-Forwarded-Encrypted: i=1; AJvYcCU9PiJATqC8taJiOUW1Gtj+2BDcHPHo71++K5+fdeEzB2nWF6u/pERf3GRMzwjDBeM9L2NRSaQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8RgMtoOni3g5o7a/YFINAR0B7JONdmL+XamNlMpfZH09FmK7s
-	UlaiOaORifuffetC+pte/cps/wyN9hSuHh/ebiht/xqoRQXv8qgtpiv3CemlwyGOLL4=
-X-Gm-Gg: ATEYQzyOLfRFOBPVF8s9n0MaQYdURWZuxUo5wixcAd9XG8J6qgU7IywAgXORDQC+JZP
-	3ck9KSc2od99Yhzix4DUf6Cuevxme1ZFFVc9AxoQrAnT06MdvDiH/H7G5Oy18sGcJ5F+jkHkCEi
-	3e6Ir4wRv9yfXFW8QJd6VjbGUozG9O11grlo6SYgqgadEds0KhExlbfnLk5Lg2jr3DWdKxkSmLm
-	SIXOGXg5ZaTyLyEVOylcNj7ejR8F6P+est5ECv3r70o1JiIELIKAke30krBf5iPvsKROSH6g8kG
-	19gCvZlGn5KUfl1K5NhpAAqZF3joU5R4n4Cx/PKhSLgc0Vkymg7LrlhMI64vihv3veJOGgECbJf
-	/Q028/c9rdvYVlC/GSQ6tzNH6b3J3WDjChT1tRGfypl+Wsz7qa6EcojCbaV3OyXnt2PPFGvX9Bl
-	Zqo4cXNObxZHC4M7Xibg==
-X-Received: by 2002:a17:903:1986:b0:2ad:edc4:1796 with SMTP id d9443c01a7336-2adedc422demr36518595ad.39.1772115491093;
-        Thu, 26 Feb 2026 06:18:11 -0800 (PST)
-Received: from localhost ([154.47.23.70])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5c1fa8sm29415725ad.26.2026.02.26.06.18.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 06:18:10 -0800 (PST)
-Date: Thu, 26 Feb 2026 22:18:03 +0800
-From: Chris Down <chris@chrisdown.name>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 3/3] selftests/mm: Add UFFDIO_MOVE huge zeropage PMD
- regression test
-Message-ID: <aaBWG4fajXXbjpVN@chrisdown.name>
+	s=arc-20240116; t=1772116133; c=relaxed/simple;
+	bh=7rpVZ+fxTUQLAz/MsXS+ABz6b8FDyA1NowiHxW15/zs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MMOC1AzmFTYBKDfqk6VEmmKW3S8HCv9UmAf2y4/cBMZApnCoXoOv66t39i1EnSBpi+2drvyF5+Lx2OOn4YOlG2sf1VxbQcifPRCKxc3qXOnEZzNyc2oKwKPF8FTuPilW+PIivQOyFwkTLfFTe7ulN0hHrDpJIG0IIJmDeINZkdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kcinII8x; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <46896339-b3a3-4109-a2e2-324446be5aeb@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772116126;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AQnoxdPqvcrup1Ns5bia3RQkVtFv3JRAv6rhmjfIRe8=;
+	b=kcinII8xvQi7dPe8qWMA8eJ00twW2kq2qUuuzP5isI8+GdlUewOyrXS/yYsgPHegxfwFe6
+	HkLZ4ODOTRfHBnyjLMAG8nSjEAHrl2Smjoj/C2aAm2lr5siJtku1vYQqi8YoG4ildrVywS
+	ZgsODQbTI1YUgV5/dIkmUR+U5pi8Yhw=
+Date: Thu, 26 Feb 2026 14:28:14 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/2.2.15 (2b349c5e) (2025-10-02)
+Subject: Re: [PATCH net] net: mana: Ring doorbell at 4 CQ wraparounds
+To: Long Li <longli@microsoft.com>, "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+ Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+ linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260225184948.941599-1-longli@microsoft.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260225184948.941599-1-longli@microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chrisdown.name,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[chrisdown.name:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[chrisdown.name:+];
-	TAGGED_FROM(0.00)[bounces-219820-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219821-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chris@chrisdown.name,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[vadim.fedorenko@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,chrisdown.name:mid,chrisdown.name:dkim,chrisdown.name:email]
-X-Rspamd-Queue-Id: 5434F1A7B8E
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:mid,linux.dev:dkim]
+X-Rspamd-Queue-Id: 185181A7A7A
 X-Rspamd-Action: no action
 
-The existing uffd-unit-tests move-pmd coverage exercises PMD-sized
-UFFDIO_MOVE on anonymous THPs, but it does not force the huge zeropage
-PMD path in move_pages_huge_pmd().
+On 25/02/2026 18:49, Long Li wrote:
+> MANA hardware requires at least one doorbell ring every 8 wraparounds
+> of the CQ. The driver rings the doorbell as a form of flow control to
+> inform hardware that CQEs have been consumed.
+> 
+> The NAPI poll functions mana_poll_tx_cq() and mana_poll_rx_cq() can
+> poll up to CQE_POLLING_BUFFER (512) completions per call. If the CQ
+> has fewer than 512 entries, a single poll call can process more than
+> 4 wraparounds without ringing the doorbell. The doorbell threshold
+> check also uses ">" instead of ">=", delaying the ring by one extra
+> CQE beyond 4 wraparounds. Combined, these issues can cause the driver
+> to exceed the 8-wraparound hardware limit, leading to missed
+> completions and stalled queues.
+> 
+> Fix this by capping the number of CQEs polled per call to 4 wraparounds
+> of the CQ in both TX and RX paths. Also change the doorbell threshold
+> from ">" to ">=" so the doorbell is rung as soon as 4 wraparounds are
+> reached.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
+> Signed-off-by: Long Li <longli@microsoft.com>
+> ---
+>   drivers/net/ethernet/microsoft/mana/mana_en.c | 23 +++++++++++++++----
+>   1 file changed, 18 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> index 9919183ad39e..fe667e0d930d 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> @@ -1770,8 +1770,14 @@ static void mana_poll_tx_cq(struct mana_cq *cq)
+>   	ndev = txq->ndev;
+>   	apc = netdev_priv(ndev);
+>   
+> +	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
+> +	 * doorbell can be rung in time for the hardware's requirement
+> +	 * of at least one doorbell ring every 8 wraparounds.
+> +	 */
+>   	comp_read = mana_gd_poll_cq(cq->gdma_cq, completions,
+> -				    CQE_POLLING_BUFFER);
+> +				    min_t(u32, (cq->gdma_cq->queue_size /
 
-Add a dedicated anonymous UFFDIO_MOVE PMD test that exercises this
-relatively comprehensively.
+no need for min_t, simple min() can be used, queue_size is already u32
 
-Signed-off-by: Chris Down <chris@chrisdown.name>
----
- tools/testing/selftests/mm/uffd-unit-tests.c | 176 +++++++++++++++++++
- 1 file changed, 176 insertions(+)
+> +					   COMP_ENTRY_SIZE) * 4,
+> +					  CQE_POLLING_BUFFER));
+>   
+>   	if (comp_read < 1)
+>   		return;
+> @@ -2156,7 +2162,14 @@ static void mana_poll_rx_cq(struct mana_cq *cq)
+>   	struct mana_rxq *rxq = cq->rxq;
+>   	int comp_read, i;
+>   
+> -	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp, CQE_POLLING_BUFFER);
+> +	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
+> +	 * doorbell can be rung in time for the hardware's requirement
+> +	 * of at least one doorbell ring every 8 wraparounds.
+> +	 */
+> +	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp,
+> +				    min_t(u32, (cq->gdma_cq->queue_size /
 
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index 6f5e404a446c..372619e3906d 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -203,6 +203,62 @@ static int pagemap_open(void)
- 	return fd;
- }
- 
-+static long uffd_pagemap_scan_get_categories_raw(int fd, char *start,
-+						 struct page_region *r)
-+{
-+	struct pm_scan_arg arg = { 0 };
-+
-+	arg.start = (uintptr_t)start;
-+	arg.end = (uintptr_t)(start + psize());
-+	arg.vec = (uintptr_t)r;
-+	arg.vec_len = 1;
-+	arg.flags = 0;
-+	arg.size = sizeof(struct pm_scan_arg);
-+	arg.max_pages = 0;
-+	arg.category_inverted = 0;
-+	arg.category_mask = 0;
-+	arg.category_anyof_mask = PAGE_IS_WPALLOWED | PAGE_IS_WRITTEN |
-+				  PAGE_IS_FILE | PAGE_IS_PRESENT |
-+				  PAGE_IS_SWAPPED | PAGE_IS_PFNZERO |
-+				  PAGE_IS_HUGE | PAGE_IS_SOFT_DIRTY;
-+	arg.return_mask = arg.category_anyof_mask;
-+
-+	return ioctl(fd, PAGEMAP_SCAN, &arg);
-+}
-+
-+static bool uffd_pagemap_scan_supported(int fd, char *start)
-+{
-+	static int supported = -1;
-+	int ret;
-+
-+	if (supported != -1)
-+		return supported;
-+
-+	ret = uffd_pagemap_scan_get_categories_raw(fd, start,
-+						   (struct page_region *)~0UL);
-+	if (ret == 0)
-+		err("PAGEMAP_SCAN succeeded unexpectedly");
-+
-+	supported = errno == EFAULT;
-+	return supported;
-+}
-+
-+static bool uffd_pagemap_scan_get_categories(int fd, char *start, uint64_t *categories)
-+{
-+	struct page_region r = { 0 };
-+	long ret;
-+
-+	if (!uffd_pagemap_scan_supported(fd, start))
-+		return false;
-+
-+	ret = uffd_pagemap_scan_get_categories_raw(fd, start, &r);
-+	if (ret < 0)
-+		err("PAGEMAP_SCAN failed: %s", strerror(errno));
-+
-+	*categories = ret ? r.categories : 0;
-+	return true;
-+}
-+
- /* This macro let __LINE__ works in err() */
- #define  pagemap_check_wp(value, wp) do {				\
- 		if (!!(value & PM_UFFD_WP) != wp)			\
-@@ -1227,6 +1283,119 @@ static void uffd_move_pmd_test(uffd_global_test_opts_t *gopts, uffd_test_args_t
- 			      uffd_move_pmd_handle_fault);
- }
- 
-+static void uffd_move_pmd_huge_zeropage_test(uffd_global_test_opts_t *gopts,
-+					     uffd_test_args_t *targs)
-+{
-+	unsigned long pmd_size = read_pmd_pagesize();
-+	unsigned long pmd_pages;
-+	unsigned long bytes = gopts->nr_pages * gopts->page_size;
-+	char *orig_area_src = gopts->area_src, *orig_area_dst = gopts->area_dst;
-+	char *aligned_src, *aligned_dst;
-+	unsigned long src_offs, dst_offs, max_offs;
-+	pthread_t uffd_mon;
-+	struct uffd_args args = { 0 };
-+	char c = '\0';
-+	int pagemap_fd;
-+	uint64_t categories;
-+	unsigned long i;
-+
-+	if (pmd_size <= gopts->page_size) {
-+		uffd_test_skip("huge page size is 0, feature missing?");
-+		return;
-+	}
-+	if (!detect_huge_zeropage()) {
-+		uffd_test_skip("transparent huge zeropage disabled");
-+		return;
-+	}
-+
-+	pmd_pages = pmd_size / gopts->page_size;
-+	if (bytes < pmd_size) {
-+		uffd_test_skip("not enough pages for one PMD-sized move");
-+		return;
-+	}
-+
-+	aligned_src = ALIGN_UP(orig_area_src, pmd_size);
-+	aligned_dst = ALIGN_UP(orig_area_dst, pmd_size);
-+	src_offs = (aligned_src - orig_area_src) / gopts->page_size;
-+	dst_offs = (aligned_dst - orig_area_dst) / gopts->page_size;
-+	max_offs = src_offs > dst_offs ? src_offs : dst_offs;
-+	if (max_offs + pmd_pages > gopts->nr_pages) {
-+		uffd_test_skip("could not find aligned PMD-sized src/dst window");
-+		return;
-+	}
-+
-+	if (madvise(orig_area_dst, bytes, MADV_HUGEPAGE))
-+		err("madvise(MADV_HUGEPAGE) failure");
-+	if (madvise(orig_area_src, bytes, MADV_DONTFORK))
-+		err("madvise(MADV_DONTFORK) failure");
-+	if (madvise(aligned_src, pmd_size, MADV_DONTNEED))
-+		err("madvise(MADV_DONTNEED) failure");
-+
-+	/* Materialise a PMD-sized huge zeropage mapping in the source. */
-+	force_read_pages(aligned_src, pmd_pages, gopts->page_size);
-+
-+	pagemap_fd = pagemap_open();
-+	if (!uffd_pagemap_scan_get_categories(pagemap_fd, aligned_src, &categories)) {
-+		close(pagemap_fd);
-+		uffd_test_skip("PAGEMAP_SCAN unsupported");
-+		return;
-+	}
-+	if ((categories & (PAGE_IS_PRESENT | PAGE_IS_PFNZERO | PAGE_IS_HUGE)) !=
-+	    (PAGE_IS_PRESENT | PAGE_IS_PFNZERO | PAGE_IS_HUGE)) {
-+		close(pagemap_fd);
-+		uffd_test_skip("could not materialise a huge zeropage PMD mapping");
-+		return;
-+	}
-+	gopts->area_src = aligned_src;
-+	gopts->area_dst = aligned_dst;
-+
-+	if (uffd_register(gopts->uffd, gopts->area_dst, pmd_size, true, false, false))
-+		err("register failure");
-+
-+	args.gopts = gopts;
-+	args.handle_fault = uffd_move_pmd_handle_fault;
-+	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
-+		err("uffd_poll_thread create");
-+
-+	/*
-+	 * One fault on dst should trigger a single PMD-sized UFFDIO_MOVE from
-+	 * the huge zeropage PMD we populated in the source.
-+	 */
-+	force_read_pages(gopts->area_dst, pmd_pages, gopts->page_size);
-+
-+	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
-+		err("pipe write");
-+	if (pthread_join(uffd_mon, NULL))
-+		err("join() failed");
-+
-+	if (args.missing_faults != 1 || args.minor_faults != 0) {
-+		uffd_test_fail("stats check error");
-+	} else if (!uffd_pagemap_scan_get_categories(pagemap_fd, gopts->area_dst,
-+						     &categories)) {
-+		uffd_test_fail("PAGEMAP_SCAN unsupported");
-+	} else if ((categories & (PAGE_IS_PRESENT | PAGE_IS_PFNZERO |
-+				  PAGE_IS_HUGE)) !=
-+			(PAGE_IS_PRESENT | PAGE_IS_PFNZERO | PAGE_IS_HUGE)) {
-+		uffd_test_fail("moved destination is not a huge zeropage PMD");
-+	} else if (!check_huge_anon(gopts->area_dst, 0, pmd_size)) {
-+		/* vm_normal_page_pmd() must continue to treat the moved PMD as special. */
-+		uffd_test_fail("moved huge zeropage PMD counted as AnonHugePages");
-+	} else {
-+		for (i = 0; i < pmd_size; i++) {
-+			if (gopts->area_dst[i]) {
-+				uffd_test_fail("moved huge zeropage PMD data is not zero");
-+				goto out_restore;
-+			}
-+		}
-+		uffd_test_pass();
-+	}
-+
-+out_restore:
-+	gopts->area_src = orig_area_src;
-+	gopts->area_dst = orig_area_dst;
-+	close(pagemap_fd);
-+}
-+
- static void uffd_move_pmd_split_test(uffd_global_test_opts_t *gopts, uffd_test_args_t *targs)
- {
- 	if (madvise(gopts->area_dst, gopts->nr_pages * gopts->page_size, MADV_NOHUGEPAGE))
-@@ -1550,6 +1719,13 @@ uffd_test_case_t uffd_tests[] = {
- 		.uffd_feature_required = UFFD_FEATURE_MOVE,
- 		.test_case_ops = &uffd_move_test_pmd_case_ops,
- 	},
-+	{
-+		.name = "move-pmd-huge-zeropage",
-+		.uffd_fn = uffd_move_pmd_huge_zeropage_test,
-+		.mem_targets = MEM_ANON,
-+		.uffd_feature_required = UFFD_FEATURE_MOVE,
-+		.test_case_ops = &uffd_move_test_pmd_case_ops,
-+	},
- 	{
- 		.name = "move-pmd-split",
- 		.uffd_fn = uffd_move_pmd_split_test,
--- 
-2.51.2
+same here
 
+> +					   COMP_ENTRY_SIZE) * 4,
+> +					  CQE_POLLING_BUFFER));
+>   	WARN_ON_ONCE(comp_read > CQE_POLLING_BUFFER);
+>   
+>   	rxq->xdp_flush = false;
 
