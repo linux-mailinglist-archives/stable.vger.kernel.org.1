@@ -1,66 +1,65 @@
-Return-Path: <stable+bounces-219794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBapH1E0oGnyggQAu9opvQ
-	(envelope-from <stable+bounces-219794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 12:53:53 +0100
+	id kIkjDow0oGnyggQAu9opvQ
+	(envelope-from <stable+bounces-219796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 12:54:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD1E1A561D
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 12:53:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B541A566A
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 12:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D69AA3074D06
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 11:48:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E02343035F1F
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 11:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A28237A483;
-	Thu, 26 Feb 2026 11:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E001437AA73;
+	Thu, 26 Feb 2026 11:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="kvcAudrX"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="T9Nh2WP7"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D62737BE61
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 11:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B517378D80;
+	Thu, 26 Feb 2026 11:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772106509; cv=none; b=Ouq7XleC94G7xB9uaQSWQkM2TlugoyputBXaxmD+ZNQajkdV8S5CUsQhm8lD5bEpz/GGFYoMc0rAjN/JMGkCjz9xPHjGQ96Ec4MAhP9tRLUEcEwZRw/0aXkLKVYVI/qrWoCFZxYmDlYzWFEWrLGGDkIxO2EAnMrLVO9hdr5duZw=
+	t=1772106759; cv=none; b=D0PAT6GyGIsIswW7cwUdW1lUKzF51K3LPP+Yma1X4FWKZ1GQ07Z5ZMUmHl96SBxK9dpGH5AZuVY5sOumsSJyudrrtp6VNrXVr0SQl1HU6olHW9fr67w36A8r3INyt/T6DzbNeYGnNzJAdLXzZQ8b3+KTsid3jayzPKkSgTVknyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772106509; c=relaxed/simple;
-	bh=WYtlVM205K3QU9DIjhiwkxIqYc0xfMMqqjDtoW/PYa8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BA6tWei5uDFs1FFpiBToAnvA9toP4lf0c+BgVtVBSiOKrjISJ/QuiAn2NoTfD6cs24FCaeeIkXYwILDxRGZ69OTBp8zScscouoM6130kyYXaEkagXOtVSDBCyVQrdlpaq/gCID1gp8JkZZA5sw4fEYrJgMCBb+XLZMJQpU5x+bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=kvcAudrX; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=kvcAudrXfMzIRESlV2TZf0Du3SQPmfCD/n/EWm1OpFYfeaPP9B1TviUU17j1qi+pO6m1IjImqQKlZ
-	 BstQ96wryCWiW7a42a0XlSyKa3aBd7Vcm7VK9y561m/D6YByFbekbIxO6l3qtFwtpBGp6IoZwuepML
-	 LIKoKdCDh3M4kvGs=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[120.244.194.215])
-	by rmsmtp-lg-appmail-04-12082 (RichMail) with SMTP id 2f3269a032ff8ac-1801f;
-	Thu, 26 Feb 2026 19:48:23 +0800 (CST)
-X-RM-TRANSID:2f3269a032ff8ac-1801f
-From: Bin Lan <lanbincn@139.com>
-To: gregkh@linuxfoundation.org,
+	s=arc-20240116; t=1772106759; c=relaxed/simple;
+	bh=CXr5VJhif1+yrnl2535K5q8dU3AJN+r4Eg/m9tx77Lo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tlrRgDYOhVZ/LJ7H3bHX9cDY5hRuB7YrRLqdcGbQa1gR8XYEeofF3fVeadWrfAgl0va70ik9b/REkfTw4yC1nJc4YhgA3O0u/xYg0hsuJAFaHo6BtZNjNVcMqeFLRrW1rbotUscBr+MT2m/59maTWufriaYZU1YJpUG8LFGi5Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=T9Nh2WP7; arc=none smtp.client-ip=95.215.58.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772106755;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=e4UtDCLPK6MdNbkYxpreAAQYHqOm0mkD391PTP+crYQ=;
+	b=T9Nh2WP7sIe3MKc7LtjuySVNIG+4vS4bCG6ibBNIgH/EGfbZUmKHR+N4SLz2Cw/z9Dn2Bv
+	8CUeCxnA/vlAsvcgSYCJWJyZ+Mkuyq5/31fFV3qnnDEftqvePsDkZIPf3qrcRg0NMnaxnT
+	LDxjti2DMHk6vQJBOzzWh0B372MvaJw=
+From: Hao Li <hao.li@linux.dev>
+To: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev
+Cc: vbabka@suse.cz,
+	harry.yoo@oracle.com,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Li <hao.li@linux.dev>,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 5.15.y 2/2] net/sched: cls_u32: use skb_header_pointer_careful()
-Date: Thu, 26 Feb 2026 19:48:10 +0800
-Message-ID: <20260226114810.4142-2-lanbincn@139.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260226114810.4142-1-lanbincn@139.com>
-References: <20260226114810.4142-1-lanbincn@139.com>
+Subject: [PATCH] memcg: fix slab accounting in refill_obj_stock() trylock path
+Date: Thu, 26 Feb 2026 19:51:37 +0800
+Message-ID: <20260226115145.62903-1-hao.li@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,103 +67,63 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[139.com];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[google.com,gmail.com,kernel.org,139.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219794-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[139.com:-];
+	TAGGED_FROM(0.00)[bounces-219796-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.831];
+	FROM_NEQ_ENVFROM(0.00)[hao.li@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9CD1E1A561D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 59B541A566A
 X-Rspamd-Action: no action
 
-From: Eric Dumazet <edumazet@google.com>
+In the trylock path of refill_obj_stock(), mod_objcg_mlstate() should
+use the real alloc/free bytes (i.e., nr_acct) for accounting, rather
+than nr_bytes.
 
-[ Upstream commit cabd1a976375780dabab888784e356f574bbaed8 ]
-
-skb_header_pointer() does not fully validate negative @offset values.
-
-Use skb_header_pointer_careful() instead.
-
-GangMin Kim provided a report and a repro fooling u32_classify():
-
-BUG: KASAN: slab-out-of-bounds in u32_classify+0x1180/0x11b0
-net/sched/cls_u32.c:221
-
-Fixes: fbc2e7d9cf49 ("cls_u32: use skb_header_pointer() to dereference data safely")
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Closes: https://lore.kernel.org/netdev/CANn89iJkyUZ=mAzLzC4GdcAgLuPnUoivdLaOs6B9rq5_erj76w@mail.gmail.com/T/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260128141539.3404400-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Bin Lan <lanbincn@139.com>
+Fixes: 200577f69f29 ("memcg: objcg stock trylock without irq disabling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hao Li <hao.li@linux.dev>
 ---
- net/sched/cls_u32.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ mm/memcontrol.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index 440c29dc058e..23f9e2b5f3b6 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -149,10 +149,8 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 			int toff = off + key->off + (off2 & key->offmask);
- 			__be32 *data, hdata;
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 2d6dfba540d4..683f9f9bf47e 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3060,7 +3060,7 @@ static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
  
--			if (skb_headroom(skb) + toff > INT_MAX)
--				goto out;
--
--			data = skb_header_pointer(skb, toff, 4, &hdata);
-+			data = skb_header_pointer_careful(skb, toff, 4,
-+							  &hdata);
- 			if (!data)
- 				goto out;
- 			if ((*data ^ key->val) & key->mask) {
-@@ -202,8 +200,9 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 		if (ht->divisor) {
- 			__be32 *data, hdata;
- 
--			data = skb_header_pointer(skb, off + n->sel.hoff, 4,
--						  &hdata);
-+			data = skb_header_pointer_careful(skb,
-+							  off + n->sel.hoff,
-+							  4, &hdata);
- 			if (!data)
- 				goto out;
- 			sel = ht->divisor & u32_hash_fold(*data, &n->sel,
-@@ -217,7 +216,7 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 			if (n->sel.flags & TC_U32_VAROFFSET) {
- 				__be16 *data, hdata;
- 
--				data = skb_header_pointer(skb,
-+				data = skb_header_pointer_careful(skb,
- 							  off + n->sel.offoff,
- 							  2, &hdata);
- 				if (!data)
+ 	if (!local_trylock(&obj_stock.lock)) {
+ 		if (pgdat)
+-			mod_objcg_mlstate(objcg, pgdat, idx, nr_bytes);
++			mod_objcg_mlstate(objcg, pgdat, idx, nr_acct);
+ 		nr_pages = nr_bytes >> PAGE_SHIFT;
+ 		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
+ 		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
 -- 
-2.43.0
-
+2.50.1
 
 
