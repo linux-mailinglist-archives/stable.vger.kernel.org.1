@@ -1,169 +1,134 @@
-Return-Path: <stable+bounces-219751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219752-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILwoGZjUn2nZeAQAu9opvQ
-	(envelope-from <stable+bounces-219751-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 06:05:28 +0100
+	id sB8jIafUn2nZeAQAu9opvQ
+	(envelope-from <stable+bounces-219752-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 06:05:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CECF01A0F77
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 06:05:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A030D1A0F87
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 06:05:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 94E543076487
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 05:05:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E6C4B3031886
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 05:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F222C028C;
-	Thu, 26 Feb 2026 05:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A197A3126B1;
+	Thu, 26 Feb 2026 05:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kksHbjBD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uAjy4z7Z"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B585A45C0B;
-	Thu, 26 Feb 2026 05:05:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE8745C0B;
+	Thu, 26 Feb 2026 05:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772082322; cv=none; b=GNtPzA3lMvk3J+WELgFvk+YrSonmzEEEoqqLP1YWoPSomk1Uko8qJkaHfGkrismmX6vMMgNa9P9ir8z5FCEAII91n5T6Mym5ByOttLk+MqN6vo4SFmDXwjlO76mwUDZ2IR8ZbbZcW5jPxPJ4D7DtGMsZECAIAXLfBAB/JNHEoIg=
+	t=1772082331; cv=none; b=bvi4BnVup6wre/hU4GmafTxyjXGa2l2afOUEH6iY7CMeabhLNDa66jlEAMUxIz/cQ6TbIRcrCXYwsLNDsGrmGWAF1tShZWvAynOxVVtYYdk3xzKsIIuwW4c0yy+rShfcmb2LYYUmEzpOzh4PTPpvJNqZRMm2YsE07h6qWqYYhbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772082322; c=relaxed/simple;
-	bh=kwBh37NANwcXhc2TtJ61Oo+5M4kdUfSb+k5fFH9upZM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D9sOys7pzRWjvlt2PMlglGE5RkcuHJXhMiQGrk+51Y21l3ClzCK9OKfbuYgoTszADzZqIitDAgg/6cSQ/epdWquSauczY5fnEo9TGqK2kou+eQ+nrCsQCZXHz8RzWsWcTMhKOFlCh7vURTRjYu0g3A4x5tDhXTuDOklgLz0KMyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kksHbjBD; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=nE
-	E27e8uG76RjHLoTbC/alv3uxT1YhabsN0M0uUxzNI=; b=kksHbjBDFwp/dEfPs9
-	bckbLd4DJZYBQXyzQNQpi3RubpAGxToPN5tftWvp7nrlNwPjQotfpHuDb51xYmAP
-	LVcn/hyHLXBnqH7WVGGqkwg74SJCQUSznEJlo3y0cM7276II+g+EhOwlAXZwBw1o
-	nHfVZz3BgdDqK4sbHDzDvwwSU=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgBXrNBV1J9pvRs+Pg--.2127S2;
-	Thu, 26 Feb 2026 13:04:23 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.6.y] dm-verity: disable recursive forward error correction
-Date: Thu, 26 Feb 2026 13:04:18 +0800
-Message-Id: <20260226050418.159241-1-black.hawk@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1772082331; c=relaxed/simple;
+	bh=lRWzvObeAaVyyqRA63sIgkc5s83+SORp3L0cua+A9HQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bE/kkv/iU69YOMxuLZOY5I9ZZ7mYMYK7uinzg6KWRMKvLdGoFICqZwxEI4Vv9lUUv3vHyB5SIhbLoknY9BoCQYqCrqVQDLpHqElrOW0iCIsUTZ+bveHS4vmKCpThh0mWvIS0nn6RZrG4dqfXGuFhNiHJkad5rQpaeU1zgAw+y1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uAjy4z7Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69E3C19422;
+	Thu, 26 Feb 2026 05:05:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772082331;
+	bh=lRWzvObeAaVyyqRA63sIgkc5s83+SORp3L0cua+A9HQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uAjy4z7Zg08j2qAeTEwrMTsNFRRnpvAK7IZ9CL7t/qEHG/IioK7ualItv8aP65SqW
+	 JXf2jnT/ph2Pl8i5NTQyekFV3ATr3wDDqRCGPKTZ3mtF47rIhkCTqmh65ujkfqL+ES
+	 ayuQd9QA5/WHv+658hP78GSQLIooNFg3KL++eU5sZCXxwj2dDkU2LEw/MnkUujiuEg
+	 oBqvBE6WAsHhyW/kyrr4OSNj1S4zFwdmvbr/hFb8Bwqr4qkczPAiFDhMVxoAORLSoa
+	 OU600NqVdiHj0H0N+WidV+OCWthkQg6Ixemqc6JBJVqcl3xzNIQn35iYcvsk/3cD2Q
+	 mlXp5o7o1XTnQ==
+Date: Wed, 25 Feb 2026 21:04:40 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Rahul Sharma <black.hawk@163.com>
+Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mikulas Patocka <mpatocka@redhat.com>,
+	dm-devel@lists.linux.dev, Guangwu Zhang <guazhang@redhat.com>,
+	Sami Tolvanen <samitolvanen@google.com>
+Subject: Re: [PATCH 6.12.y] dm-verity: disable recursive forward error
+ correction
+Message-ID: <20260226050440.GA2302@sol>
+References: <20260226043500.3945988-1-black.hawk@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgBXrNBV1J9pvRs+Pg--.2127S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCFWfKw1DtrW8uF1rZF18Zrb_yoW5GFW8pF
-	Z09a4fCr1rJF4xGryUJ3WUZa45u3srt393GFW3u3Z29a4Fyry8WryUtFW3ZF48Xr97GryY
-	vF4qkFW5Zas5uaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pNhFcUUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3heMJmmf1FdMgAAA3a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260226043500.3945988-1-black.hawk@163.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219751-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,google.com,kernel.org,163.com];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219752-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[163.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CECF01A0F77
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A030D1A0F87
 X-Rspamd-Action: no action
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+[+Cc dm-devel@lists.linux.dev]
 
-[ Upstream commit d9f3e47d3fae0c101d9094bc956ed24e7a0ee801 ]
+On Thu, Feb 26, 2026 at 12:35:00PM +0800, Rahul Sharma wrote:
+> From: Mikulas Patocka <mpatocka@redhat.com>
+> 
+> [ Upstream commit d9f3e47d3fae0c101d9094bc956ed24e7a0ee801 ]
+> 
+> There are two problems with the recursive correction:
+> 
+> 1. It may cause denial-of-service. In fec_read_bufs, there is a loop that
+> has 253 iterations. For each iteration, we may call verity_hash_for_block
+> recursively. There is a limit of 4 nested recursions - that means that
+> there may be at most 253^4 (4 billion) iterations. Red Hat QE team
+> actually created an image that pushes dm-verity to this limit - and this
+> image just makes the udev-worker process get stuck in the 'D' state.
+> 
+> 2. It doesn't work. In fec_read_bufs we store data into the variable
+> "fio->bufs", but fio bufs is shared between recursive invocations, if
+> "verity_hash_for_block" invoked correction recursively, it would
+> overwrite partially filled fio->bufs.
+> 
+> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+> Reported-by: Guangwu Zhang <guazhang@redhat.com>
+> Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+> Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+> [ The context change is due to the commit bdf253d580d7
+> ("dm-verity: remove support for asynchronous hashes")
+> in v6.18 which is irrelevant to the logic of this patch. ]
+> Signed-off-by: Rahul Sharma <black.hawk@163.com>
 
-There are two problems with the recursive correction:
+Looks good.  The upstream patch incremented the dm target version number
+too, but skipping that part looks good.  This further shows that the dm
+subsystem's version numbers don't really work.
 
-1. It may cause denial-of-service. In fec_read_bufs, there is a loop that
-has 253 iterations. For each iteration, we may call verity_hash_for_block
-recursively. There is a limit of 4 nested recursions - that means that
-there may be at most 253^4 (4 billion) iterations. Red Hat QE team
-actually created an image that pushes dm-verity to this limit - and this
-image just makes the udev-worker process get stuck in the 'D' state.
-
-2. It doesn't work. In fec_read_bufs we store data into the variable
-"fio->bufs", but fio bufs is shared between recursive invocations, if
-"verity_hash_for_block" invoked correction recursively, it would
-overwrite partially filled fio->bufs.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reported-by: Guangwu Zhang <guazhang@redhat.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-[ The context change is due to the commit bdf253d580d7
-("dm-verity: remove support for asynchronous hashes")
-in v6.18 and the commit 9356fcfe0ac4
-("dm verity: set DM_TARGET_SINGLETON feature flag") in v6.9
-which are irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
----
- drivers/md/dm-verity-fec.c | 4 +---
- drivers/md/dm-verity-fec.h | 3 ---
- 2 files changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/drivers/md/dm-verity-fec.c b/drivers/md/dm-verity-fec.c
-index 4474352ad3d1..eda646a0d237 100644
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -439,10 +439,8 @@ int verity_fec_decode(struct dm_verity *v, struct dm_verity_io *io,
- 	if (!verity_fec_is_enabled(v))
- 		return -EOPNOTSUPP;
- 
--	if (fio->level >= DM_VERITY_FEC_MAX_RECURSION) {
--		DMWARN_LIMIT("%s: FEC: recursion too deep", v->data_dev->name);
-+	if (fio->level)
- 		return -EIO;
--	}
- 
- 	fio->level++;
- 
-diff --git a/drivers/md/dm-verity-fec.h b/drivers/md/dm-verity-fec.h
-index 8454070d2824..7a73866f727d 100644
---- a/drivers/md/dm-verity-fec.h
-+++ b/drivers/md/dm-verity-fec.h
-@@ -23,9 +23,6 @@
- #define DM_VERITY_FEC_BUF_MAX \
- 	(1 << (PAGE_SHIFT - DM_VERITY_FEC_BUF_RS_BITS))
- 
--/* maximum recursion level for verity_fec_decode */
--#define DM_VERITY_FEC_MAX_RECURSION	4
--
- #define DM_VERITY_OPT_FEC_DEV		"use_fec_from_device"
- #define DM_VERITY_OPT_FEC_BLOCKS	"fec_blocks"
- #define DM_VERITY_OPT_FEC_START		"fec_start"
--- 
-2.34.1
-
+- Eric
 
