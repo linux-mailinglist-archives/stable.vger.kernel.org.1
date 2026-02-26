@@ -1,234 +1,148 @@
-Return-Path: <stable+bounces-219810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0K9sExFPoGmIiAQAu9opvQ
-	(envelope-from <stable+bounces-219810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:48:01 +0100
+	id 0NxtHOBPoGmIiAQAu9opvQ
+	(envelope-from <stable+bounces-219811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:51:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F731A6EDC
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:48:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911241A6FCC
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 14:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B1F1831A07A7
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 13:41:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1516730378D6
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 13:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383EE36BCCF;
-	Thu, 26 Feb 2026 13:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3472D780A;
+	Thu, 26 Feb 2026 13:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jcb9LgjN"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TUGBuzDP"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD8B363C6B;
-	Thu, 26 Feb 2026 13:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27942877C3
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 13:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772113264; cv=none; b=G3VGng9Pjfi0hdbwjJgUrOsLvH6l6Z9nab7NSRfHKz3y1SF+kBwi3EvlFFxh1ig0ABGqQDomRSukDtxbLuumxsXFQS+fIZOj0Uqk72+8tCadTLEMY2zYb4wnQMOfkCMfIAvoiffyls2Fd/V+aOuSxlGch2+hnzWjFiZtR8PaxpQ=
+	t=1772113448; cv=none; b=Yq3ED0ZhwsTzlWnXMjOBicEN8urqtTpQAc267HAk7GjaU3eg2UIIJT6x/uDMbuIGlG7bWlgP5S9U8bIPqm6qyam37/G3t+iCHXeQHYfRVdwiPNKiLKrjfh+m2JK3ULjuBbawA9RilEGMnSR2O8f6M6lsdIGDyhIZQNkZh5KhF9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772113264; c=relaxed/simple;
-	bh=Cd4dpBLUHEkDK0iuCRBFU+xopfpY+DpvYGCUImgDuuk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uk0D1LMol2DMBhiLQtPbTg9ZY5zVMiYKFlvm8QuUioB5AP+TQC4cQBfCxlsmCTC0XwHtA3Oj77Pju6i7Z66OQzkdSoAkMVIaYDalKhD7+JZAb/Nb8PieAJnl1fXkCR7+LgDQxQ6UouZO3WIlFaYhMAwz6DikzDbqPjbycZtrn/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jcb9LgjN; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q99f0k2839736;
-	Thu, 26 Feb 2026 13:40:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:sender:subject:to; s=pp1;
-	 bh=uMssfxhPFSn/6vIySmtb07vru5Ln5O2CT/2uar6TikI=; b=jcb9LgjNBXfm
-	gmB0RiZ9M7lUG0G/EHKTtZYmZLM2oslFGR9wrTdi6D6sqUywGZ7KPsE9aKMER7E7
-	iJ6BoSjJY1TDCaiQyKHyZFZbUsbloRsFbDiGbEb4r45SmXeAXKjcSJYhgdlFng3j
-	6Q2/0rMVRJd/sMj4+pq2+tiBmM5XDTX0TWWCggmmApdRAaOmyIJHyCuLOK0uN426
-	FYQDDmaRRvq4zsL4zJL7kVTrus2nA9d8LktJER2C882/Q0vNOUYYcztVe9dp96Wm
-	kfry53xPD/WDmKZ6QVdUHkzLwfxKNFbrR/8xYdNXhAOlnVYwvjjkU0utezYB/KaC
-	0u8aHVERHA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4bs5smg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 13:40:57 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61QBFsu4027797;
-	Thu, 26 Feb 2026 13:40:57 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfsr23eu2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 13:40:56 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61QDerQ048955798
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Feb 2026 13:40:53 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EEEB520049;
-	Thu, 26 Feb 2026 13:40:52 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD25B20040;
-	Thu, 26 Feb 2026 13:40:52 +0000 (GMT)
-Received: from p1gen4-pw042f0m (unknown [9.52.223.163])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 26 Feb 2026 13:40:52 +0000 (GMT)
-Received: from bblock by p1gen4-pw042f0m with local (Exim 4.99.1)
-	(envelope-from <bblock@linux.ibm.com>)
-	id 1vvbbo-00000001FWX-2Zix;
-	Thu, 26 Feb 2026 14:40:52 +0100
-Date: Thu, 26 Feb 2026 14:40:52 +0100
-From: Benjamin Block <bblock@linux.ibm.com>
-To: ionut.nechita@windriver.com
-Cc: bhelgaas@google.com, helgaas@kernel.org, schnelle@linux.ibm.com,
-        alifm@linux.ibm.com, julianr@linux.ibm.com, dtatulea@nvidia.com,
-        ionut_n2001@yahoo.com, sunlightlinux@gmail.com,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] PCI/IOV: Add reentrant locking in
- sriov_add_vfs/sriov_del_vfs for complete serialization
-Message-ID: <20260226134052.GA13050@p1gen4-pw042f0m>
-References: <20260225202434.18737-1-ionut.nechita@windriver.com>
- <20260225202434.18737-2-ionut.nechita@windriver.com>
+	s=arc-20240116; t=1772113448; c=relaxed/simple;
+	bh=gYACJLn3/0GZSiDl9hZ0qOJ1DMoWtAfWBCr6MWFZTqM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ECFykKy3hWCTgs/A+1V3dUBnwy4bCG6gYNYU8es1yZd5dQNFGyEPQMNEuiDc2QeSGPha+DlGDrMndnhb0nh8HCYQWK0cOOpspx4hfR8N4ij1vR638pBaBDK4A+2HNlk+RyId2EsIKLcVNOhuHTckkQ+5n2jtTTKEzUioyD0e3zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TUGBuzDP; arc=none smtp.client-ip=209.85.128.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-4836fc075d2so1082455e9.0
+        for <stable@vger.kernel.org>; Thu, 26 Feb 2026 05:44:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1772113444; x=1772718244; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RiW9GHemN6Ann66iA0XbJEcnWOl2O4mI5KnopxyGsJg=;
+        b=TUGBuzDPnS5sqEqtfQ+EAnxTogsw/t+YZtVmDG/HrwWHCq7j+R4zYzBeTSb20KL9hT
+         khffNIFWqnKzdHY9UAh13yCHtjA+u4+ymOejC6PFjDn5gLDX8zT2o+wmzgjmoZ/44EVK
+         9tWzpHd074Q0wzOqwqe6r8tuWkQWmG37xHb6FfrwptotAyxC7eTVE4kISnP5E6Rb0V0D
+         mVrfJ9KMRDHWp0/ghS/fx+SFacIzfFdXrdtF+3MQepvPeqPT/fxO7QvWlXylsZZ61k2G
+         3sq5W63DVJYr//3s8n2Vea+nGm0vivOmyJfhCOeSTKdzcV1HSbI9AsO/+EoUaOEWPtb/
+         SSDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772113444; x=1772718244;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RiW9GHemN6Ann66iA0XbJEcnWOl2O4mI5KnopxyGsJg=;
+        b=viVhdmvJcgkFp45ECHekBrmgOd51zH8X0sdvzVR/wjzV+zba4SUru/8Cds4veOL3DM
+         om+VLhwOrPKiMsaXCNNj2dzbTnloWnOA8azt0YjQinOUjxpgi0mU9RkZgZ9YvfT89acQ
+         01pUZgH3Tz9lQq7SW8PbHuepXbUd21x6z5E4qFbZ1+I/pqAeoSKLLYezL8hIFV2C2LqF
+         9rl6a/f49lNIBymrj28fr2iFhfH9uxHs85ZUq2gho93Xe/Ns9eVAYcWGpHjgivw/zKXD
+         vKytt8KZab/yZUlLxmNHRcsJC5rjdezkMFjuz+DhA3/w/l2A0b/vXW3rgjMJ0SAQvUmf
+         da+g==
+X-Forwarded-Encrypted: i=1; AJvYcCW2Dr822sSkKHxFxKtfSvotZrovSmBY00xaAlpPRDFRvLUBLtLNmpeMTixVhUp3qZ5VfyZ5ts8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcYICrLOqxR7xYqQCOo1DsyUi9CNsSfUnKvJjXZKIwsGaH8Y8E
+	H3jVPq6EnIN5duo8jLAZDW7pSFjR1DbLIoRZJyateF1/0lWKPg1gVPX6B3mHXR3Z288=
+X-Gm-Gg: ATEYQzx1m4kB4rnC1EancPB3iaPU0JVJlB/WwHncmbhPM2rsaMYlqrWyGuCCd8yOcSO
+	z/qkbefsNZEphIAzewSvnFMrZJun/SlniGBD7+R8TgoTIKvETIOVxBLa1xGp7aRf02fR/hQP9QI
+	HkW/iGqYUpRjkgxtt2B3NEQ8e2K/UGV5tNdYBwuAmepLtkP0xWk8MJCsdg2ueolGqEJiHpIpsyh
+	b/UtiQ5woGtjGzkAbokTFuOBHWTaeKyOEXf8n3kb3IGypOxUFX1S3i9JpcFWeNFzKlBrinKC6mT
+	GR/+PizyzujLLOsAZpibDJp0nuk4AHMFl39phii6GLsKjR+Uq4CK9XI8DD0JE2NzfkLIvr1OCHI
+	Act+f5f8bW5+OkVw/gceMa1sQWlbbl2wVaYeYfFVtxBft4B5+hQc2E5fV7ImWsrOIU/fsnT0btk
+	FV4hjxwbsKolFmobh8lY2duf2NfKYoVWkpYLBcVUkhKREoCAIJ1f/E9eigqdn8BA4iZiFo
+X-Received: by 2002:a05:600c:34cb:b0:477:a16e:fec5 with SMTP id 5b1f17b1804b1-483a9555ad9mr192713905e9.0.1772113444133;
+        Thu, 26 Feb 2026 05:44:04 -0800 (PST)
+Received: from ?IPV6:2001:1a48:8:903:1ed6:4f73:ce38:f9d4? ([2001:1a48:8:903:1ed6:4f73:ce38:f9d4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd6f3124sm141938035e9.1.2026.02.26.05.44.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Feb 2026 05:44:03 -0800 (PST)
+Message-ID: <e759dd9b-0857-4155-b570-cd002155f123@suse.com>
+Date: Thu, 26 Feb 2026 14:44:02 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260225202434.18737-2-ionut.nechita@windriver.com>
-Sender: Benjamin Block <bblock@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: DvPWJn3ZgTygi4SYrUIl9MfbtT4yi3fi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDEyMyBTYWx0ZWRfX5QXDFr9MaSr3
- LpuVYBOV/PgMhZwsw+LMUcltH48RrFTe0dH2bXTp45ncuWiTvYa000XvKCvIDpArzOAk8U8Hzrz
- ibpqDhkExZa7VBsKpFqQH6q23WiNRKelAXwyABGZ6xI2xwrJQk0Kpy5RL5M9E25y26QVuY8Yj6b
- lQFLBdwIfvoyAU5+7+BI7Dqa+646ugU+vZy3IM/446YO2RCkvMULE2lwOuj1uYRSNHPA5Q202/O
- kt2y8smdxkMswijlvnfX9Zsa1MAL11rjGsZPCcVhxFkXo6z2Hc6aFwriaZcJsB/MbvqgeFPtNVT
- 5sZrQYnM1yiKz9gepUkIVURntTR5t61Ejh6kCZLQKyzNXjqQRQWmAUZQd8CFHcOt9H+4nuA6jaS
- ZhDBKOOqqNQe1vqDscyJ7wgcj76cO7DVdd0VTEjjLw/dwwXi45Uc+nbblicxQGHzUDhWTERprnJ
- GvjswCCPZW4lo8lPq7A==
-X-Authority-Analysis: v=2.4 cv=eNceTXp1 c=1 sm=1 tr=0 ts=69a04d6a cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=8nJEP1OIZ-IA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=t7CeM3EgAAAA:8 a=Gb5hSY02JU1MmV-but8A:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: mQi7RIAWRoQiojNv512PgMEhbY7_QUR4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-25_04,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 phishscore=0 suspectscore=0 adultscore=0
- bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602260123
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] memcg: fix slab accounting in refill_obj_stock() trylock
+ path
+Content-Language: en-US
+To: Shakeel Butt <shakeel.butt@linux.dev>, Hao Li <hao.li@linux.dev>
+Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+ vbabka@suse.cz, harry.yoo@oracle.com, muchun.song@linux.dev,
+ akpm@linux-foundation.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260226115145.62903-1-hao.li@linux.dev>
+ <aaBM0fN8fqER7Avf@linux.dev>
+From: Vlastimil Babka <vbabka@suse.com>
+In-Reply-To: <aaBM0fN8fqER7Avf@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[google.com,kernel.org,linux.ibm.com,nvidia.com,yahoo.com,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-219810-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-219811-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bblock@linux.ibm.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@suse.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,windriver.com:email]
-X-Rspamd-Queue-Id: A2F731A6EDC
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:mid,suse.com:dkim,linux.dev:email]
+X-Rspamd-Queue-Id: 911241A6FCC
 X-Rspamd-Action: no action
 
-On Wed, Feb 25, 2026 at 10:24:34PM +0200, ionut.nechita@windriver.com wrote:
-> From: Ionut Nechita <ionut.nechita@windriver.com>
+On 2/26/26 14:39, Shakeel Butt wrote:
+> On Thu, Feb 26, 2026 at 07:51:37PM +0800, Hao Li wrote:
+>> In the trylock path of refill_obj_stock(), mod_objcg_mlstate() should
+>> use the real alloc/free bytes (i.e., nr_acct) for accounting, rather
+>> than nr_bytes.
+>> 
+>> Fixes: 200577f69f29 ("memcg: objcg stock trylock without irq disabling")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hao Li <hao.li@linux.dev>
 > 
---8<--
+> Thanks for the fix.
 > 
-> Instead, introduce owner tracking for pci_rescan_remove_lock via a new
-> pci_lock_rescan_remove_reentrant() helper. This function checks if the
-> current task already holds the lock:
->  - If the lock is not held: acquires it and returns true, providing
->    full serialization against concurrent hotplug events (including
->    platform-generated events on s390).
->  - If the lock is already held by the current task (reentrant call from
->    remove_store or sriov_numvfs_store paths): returns false without
->    re-acquiring, avoiding deadlock while the caller already provides
->    the necessary serialization.
->  - If the lock is held by another task (concurrent hotplug): blocks
->    until the lock is released, then acquires it, providing complete
->    serialization. This is the key improvement over a trylock approach.
-> 
---8<--
->
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index bccc7a4bdd794..467362c277f19 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -3509,19 +3509,38 @@ EXPORT_SYMBOL_GPL(pci_rescan_bus);
->   * routines should always be executed under this mutex.
->   */
->  DEFINE_MUTEX(pci_rescan_remove_lock);
-> +static struct task_struct *pci_rescan_remove_owner;
-                            ^
-                            const *pci_rescan_remove_owner
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Minor nitpick: you could declare this `const`; making it clear that this is
-not meant to be used to modify the task in any way.
-
->  void pci_lock_rescan_remove(void)
->  {
->  	mutex_lock(&pci_rescan_remove_lock);
-> +	pci_rescan_remove_owner = current;
->  }
->  EXPORT_SYMBOL_GPL(pci_lock_rescan_remove);
->  
->  void pci_unlock_rescan_remove(void)
->  {
-> +	pci_rescan_remove_owner = NULL;
->  	mutex_unlock(&pci_rescan_remove_lock);
->  }
->  EXPORT_SYMBOL_GPL(pci_unlock_rescan_remove);
->  
-> +bool pci_lock_rescan_remove_reentrant(void)
-> +{
-> +	if (pci_rescan_remove_owner == current)
-> +		return false;
-> +	pci_lock_rescan_remove();
-> +	return true;
-> +}
-> +EXPORT_SYMBOL_GPL(pci_lock_rescan_remove_reentrant);
-
-Otherwise this looks good to me.
-
-I've run tests on s390 with hot-unplug from within Linux and externally
-triggered, driver unbind/unload, s390 PCI recovery, and some other minor
-tests.
-No lockdep splats, no other warnings/splats; it looks good to me.
-
-
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Tested-by: Benjamin Block <bblock@linux.ibm.com>
-
--- 
-Best Regards, Benjamin Block        /        Linux on IBM Z Kernel Development
-IBM Deutschland Research & Development GmbH    /   https://www.ibm.com/privacy
-Vors. Aufs.-R.: Wolfgang Wendt         /        Geschäftsführung: David Faller
-Sitz der Ges.: Ehningen     /     Registergericht: AmtsG Stuttgart, HRB 243294
+What are the user-visible effects of the bug?
 
