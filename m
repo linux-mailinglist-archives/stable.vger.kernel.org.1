@@ -1,197 +1,148 @@
-Return-Path: <stable+bounces-219765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219766-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AkVAUD0n2nIfAQAu9opvQ
-	(envelope-from <stable+bounces-219765-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 08:20:32 +0100
+	id OOC2HP71n2kyfAQAu9opvQ
+	(envelope-from <stable+bounces-219766-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 08:27:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A6D1A1C53
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 08:20:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D96D1A1D9D
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 08:27:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AFDB2300F298
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 07:20:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 79F1D301CCA7
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 07:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4777B38E11E;
-	Thu, 26 Feb 2026 07:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7579338F24D;
+	Thu, 26 Feb 2026 07:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mTFWwLnc";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WkYJIlv6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YrPHXMMi"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F6838BF94
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 07:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E9438E5E9;
+	Thu, 26 Feb 2026 07:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772090425; cv=none; b=eXqLxJ64Veetg7M6IhMY6nZvV+gNPoJ37hji8lku3yHLLtKO+FAPEeLWzlOA60xN7wU3FxuoKwpMZO3Ti+0JdQ/fvosiJjlZ4qwXm7b26GLGkFXkRM6bPM2SB70R+Ibmcyf/6fK0VllmAhoXgNJ+u31Bm3NleTLR4z0eH80T4pU=
+	t=1772090874; cv=none; b=DYVpasetSWUsWu/d1oiu9aCoIB6f/JYiSlOhVXQYK49YFESht/UfhpQ97OhX3qo7GWDRUNg603SyfBftf8ArwyobMQgtbqe3yBy53VKuKzpHGDpRNw7i56rjSdX+ca90TCtotd8289RNXH11G0UOIAeYy7R/QVVbSF7Nw0ADOeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772090425; c=relaxed/simple;
-	bh=NX1q0YIwIDIBod4zBMuz6cN7+56ua5lfz/lw6/gneYM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=AAlGAgzW+r/wAjXcjEuliYDl3FalnQAXkfBLslKwqdev0+WEWURUhrY39g0rMG4pJwIfr2Q9XZmirkjTUYAvimJbcrGHvvCH0YU8ZsAh8jFEgl+4ubXuzpRiNW5IbCFYFMWq/8kNFwvsJ1YqTzPIQc9iP4CtEXX0WkhKEdgAr1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mTFWwLnc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WkYJIlv6; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q4UrWH3433525
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 07:20:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	uLoU54AaeC8QyX1TAF9QPbqh4JmXg8/ZE3JffoY4dU4=; b=mTFWwLnc5U+i6NVO
-	M6O2v+0OnfAQ0pPDnIxu4PzA0fx4HefohDnQA+Y1jJOGeHmdjYvYkAvTeYhqZtH4
-	I2CcBMzOw+6hn2NOtnYIIamreKQ4fbBbp3vj7UYVdbvU7DOSiVWpH5ArQmxBP+G1
-	QwyofrdbBG/tGhpJQuh6AaT2VcoFtRIVR+ccI1fUm4lA4Bs9gz1kZ4vGPyKYci4e
-	/tmQWwPWprrEzzhzezH4diezo/nK87ns2sHNZgIs2Uhxj2h6cnKUVL8aAKG1In9O
-	6zluPc0smlvHXypr8AB+0YUQJwOx+wEd6H6kRu5GWCioxH41B8MO4lPdieZdJWOA
-	3SRO5Q==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cjc0g8y37-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 07:20:23 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3568090851aso2214676a91.1
-        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 23:20:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772090423; x=1772695223; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uLoU54AaeC8QyX1TAF9QPbqh4JmXg8/ZE3JffoY4dU4=;
-        b=WkYJIlv61AY7/Qj8UHeMN2OGeU6Ck86ftEDBxBdW18orGCGz7LpbtR108WTuLwFCax
-         EeLcj/BX4eVppADS83TObUj11frBztWW6FsVYZ59cHrm/J6vkhO/Tefw1bZ7xBzRPLGm
-         4l77E/vbR6gcp291QYRUgv7Jpj0+eJ6CCIScEIsxXVCg7ZqvB1btm35jGrdiltkN9q8u
-         4hpXEPMjFYUDrl4yUjPWlVg0+sw8FAxhhYcOoXjz1jhdfULwLSmFfsRiqPFpQtoI188c
-         ji4a9FUiVroagDFzIApgXEyBtjnxsJEiOzXc+9eQlqBssowQDEsQqJJKzjxwfsfVJpPl
-         xIVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772090423; x=1772695223;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uLoU54AaeC8QyX1TAF9QPbqh4JmXg8/ZE3JffoY4dU4=;
-        b=U+yN4lDiZTpAWUDpswEGt3bmMTzTab3GcTM0rqQW4smmxQV7vRLUOjv/1FY9I5pSLV
-         PQcwZrDlK32PxrccrXelAzWyULoPetcbNOhM/JUghCAOHuWkKPGIWa4acyt1qt8rhW0O
-         NNveOnvtNMHHi7rhyj9etB8EFH3XrGeRcbZukNdl5eoxcIVLBqN9DthbKD+EC5mU6Rqw
-         IHpGcRKNJWZa4/xIxpSWW5IidCW/wtsRYCisaaHB6OH7XqCGW+/HPCig677fi/7t5+RW
-         hqedxGjH24KSXEk5TAUC3/OtR5y9+YjwqcQKH/fMAwq6VHZ49AOZd5aIp8Vpu1IgoFmn
-         IZRw==
-X-Forwarded-Encrypted: i=1; AJvYcCViBXcCS7HLn66U7Fu0D2kdy7mid+FW/CP700h9ixs+OXh7kZqmoGLjyswt8q351sRbDhDtcdk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yywe1fk7rVsxLc+m33RIKjXY/8/GveIXRDk7TWZon3KJQDFytz3
-	dHFCx8MGcIF7DQIU41umNOGcivcH9rDtCKdHkUner0PkVb4jd2iDE8XoDVzQTNmuV01N4mb3r8W
-	3hDzDXSr6Z6K3UZFbXmpHCmOmN4XZIT1pxa2k4M/Q8ohEAWM0mvWzdsFwdMk=
-X-Gm-Gg: ATEYQzzWcwVF+28c4X5PTSXfzkZHKAs9sQleUa+O7geLE2Ec8IO6AyR7AZSAQTkkypV
-	s6kKhuc/Xr5cCLA9Kzcvnmingq2JRKFrO5Nib98HwN62S3Ow89N8VqXXiRHjSEmvl8ebKcssYm0
-	OBCNZaX3XcMIBPK7WjgQSJMEGG1eeF/VJtwTTJpN33zYV4LU9wBp7LllF0u0ijRzzdW5nM2lZWR
-	u4GzIoESHehZwxHtg3rY+YxNUQC4vxYfDwPSTRBEiC9MkPfpPk2WqzuOpZh3Fhth/JcJSKzVi3+
-	/G93A8u7xHMth91S5wAoOrGj43yYuETnnzVoNUYiDaPKtIDLU8jR8qqE2mfjy0m1XOYFYcrgZ31
-	qekdONkFzbFysTKsfOFJduLY=
-X-Received: by 2002:a17:90a:c2cf:b0:356:1edc:b6e with SMTP id 98e67ed59e1d1-35928a6c00amr2606810a91.8.1772090422585;
-        Wed, 25 Feb 2026 23:20:22 -0800 (PST)
-X-Received: by 2002:a17:90a:c2cf:b0:356:1edc:b6e with SMTP id 98e67ed59e1d1-35928a6c00amr2606784a91.8.1772090421872;
-        Wed, 25 Feb 2026 23:20:21 -0800 (PST)
-Received: from [192.168.1.2] ([2401:4900:8fe5:3076:521d:50c0:367d:1d7b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3593dcc9c37sm1099694a91.8.2026.02.25.23.20.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 23:20:21 -0800 (PST)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-X-Google-Original-From: Manivannan Sadhasivam <mani@kernel.org>
-To: kwilczynski@kernel.org, Daniel Hodges <git@danielhodges.dev>
-Cc: kishon@kernel.org, bhelgaas@google.com, mhi@lists.linux.dev,
-        linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260206200529.10784-1-git@danielhodges.dev>
-References: <20260206200529.10784-1-git@danielhodges.dev>
-Subject: Re: [PATCH] PCI: epf-mhi: return 0 on success instead of positive
- jiffies
-Message-Id: <177209041798.86372.5318911333192648470.b4-ty@kernel.org>
-Date: Thu, 26 Feb 2026 12:50:17 +0530
+	s=arc-20240116; t=1772090874; c=relaxed/simple;
+	bh=ejKY8cckU0ZMHpQ2P4ITpVBIoo3BVhnF6hFc7Qr3r3I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S53qizKqhhJsQjvDrTVKYXLX8e+X77D46bH+dotGYmer+0uGfiWOdfOdAE3K6CjUVw7nOtJFOTxBAqlT2YKazghTcWdEdYKl1t85474fXZmwwAcl5v/Ek5P1yV632VvQ9AOW90gaGfZuQQ0/xD1LzM/7PI5xwCvHhNDhd1xJceM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YrPHXMMi; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772090871; x=1803626871;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ejKY8cckU0ZMHpQ2P4ITpVBIoo3BVhnF6hFc7Qr3r3I=;
+  b=YrPHXMMimudjNW7xyZy/sxvur4WpVI1hrbE9UpUGv8G6tz+fCVBrs3mD
+   PoiV88qxghtc0nIIQSrUNMxoX6CooPU3otrDf/6lPTyNKMFgUZP74EKKr
+   S7mYek5vsg6IB5A90/PMrQ23ylxAzQxiCsV5lngf4+aaQ8AfzT6VWHSLj
+   AbDbpbULiJkjXV6ewnnZHKbD+zbKR95W42ctJNYDD4a1oEpwa3dZ0+rt3
+   DCHku/2by7AIpIS+q9OUNeRfBlqOaTRvxdU+n1uwnnP4AcyHMwUn/mPYS
+   jgsNQ6pYNBSwEaoYO47WFGQvrE+mG5NEE+H8PhO0JRkvCW5s4uu3fK/5W
+   A==;
+X-CSE-ConnectionGUID: 6lV3yfX9TaqU1NmngZXhmQ==
+X-CSE-MsgGUID: wJsScsgjQu+xAFFrSJmY0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="73054258"
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
+   d="scan'208";a="73054258"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 23:27:50 -0800
+X-CSE-ConnectionGUID: VDCYjIxuTk+8jwXAp1dydA==
+X-CSE-MsgGUID: SuaDiaT7RMi3x+CI0z2d1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
+   d="scan'208";a="254242969"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.167])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 23:27:49 -0800
+Date: Thu, 26 Feb 2026 09:27:46 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Brian Mak <makb@juniper.net>
+Cc: Lee Jones <lee@kernel.org>, Herve Codina <herve.codina@bootlin.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mfd: core: Preserve OF node when ACPI handle is present
+Message-ID: <aZ_18m0gYBDEpSlt@smile.fi.intel.com>
+References: <20260225232105.454931-1-makb@juniper.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Authority-Analysis: v=2.4 cv=XI49iAhE c=1 sm=1 tr=0 ts=699ff437 cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=VwQbUJbxAAAA:8
- a=kPnkl4ryUGSNtqIeIPIA:9 a=QEXdDO2ut3YA:10 a=rl5im9kqc5Lf4LNbBjHf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDA2NCBTYWx0ZWRfX33OJR02Rme+2
- WIeGUku+mTbMF+I61tSnq/iyv0uaLg3ApE66umV/zy2dJLqc6nVpPhGow7goh6YFkiVdBUVq1wY
- +VG/VlMY1knHVd8cNkmzpfB+75DKJp16dg+aX08bmHOx9fOKv6fAmT0aWsyBt3KtYdV8atM8HRR
- KQqdyhWntUDSqHf2KUuLjffAp4a87dmpCFKTSECg1C4CFlEcyOf1owx13AHg5jS3PBwQ14aq5hr
- QN+hpxJX4BUhV6NeUveLemo6sW+kZsjzc5pVk42pw11HJHYtV7I3wU+R0Sxr3TYkbAhXa04KWaj
- jHhPQwdMpXjOyEuPnwmZVFaYC0loxCzBHG3m7q0bQ2D9saMOwjpz/dQsuJaN/Jao1MoyjaKp+YK
- QkqIM3J3wprhURScTaMBTG+eyib0Nr/F99Re9ZiaD/AfwxpHK7nwZuefKhr16mP92ZYteqtcgWE
- 8wIK35B18MulW85HfZg==
-X-Proofpoint-ORIG-GUID: uMHIW2Md67en339U_Phxhs70tVgxWQJW
-X-Proofpoint-GUID: uMHIW2Md67en339U_Phxhs70tVgxWQJW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-25_04,2026-02-25_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
- clxscore=1015 spamscore=0 malwarescore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602260064
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225232105.454931-1-makb@juniper.net>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_MATCH_TO(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219765-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:dkim];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[manivannan.sadhasivam@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-219766-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 43A6D1A1C53
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim]
+X-Rspamd-Queue-Id: 1D96D1A1D9D
 X-Rspamd-Action: no action
 
+On Wed, Feb 25, 2026 at 03:21:05PM -0800, Brian Mak wrote:
+> Switch device_set_node back to ACPI_COMPANION_SET, so that the ACPI
 
-On Fri, 06 Feb 2026 15:05:29 -0500, Daniel Hodges wrote:
-> wait_for_completion_timeout() returns the number of jiffies remaining
-> on success (positive value) or 0 on timeout. The pci_epf_mhi_edma_read()
-> and pci_epf_mhi_edma_write() functions use the return value directly as
-> their own return value, only converting timeout (0) to -ETIMEDOUT.
-> 
-> On success, they return the positive jiffies value. The callers in
-> drivers/bus/mhi/ep/ring.c check for errors with "if (ret < 0)" for
-> read_sync and "if (ret)" for write_sync. This causes write_sync success
-> cases to be incorrectly treated as errors since the positive jiffies
-> value is non-zero.
-> 
-> [...]
+device_set_node()
+ACPI_COMPANION_SET() // but see below.
 
-Applied, thanks!
+> fwnode does not overwrite the of_node with NULL.
 
-[1/1] PCI: epf-mhi: return 0 on success instead of positive jiffies
-      commit: f6797680fe312ae6d32a773eb4d33400f24555c2
+> This allows MFD children with both OF nodes and ACPI handles to have OF
+> nodes again.
 
-Best regards,
+Do you have a real use case? Can you elaborate more (platform, drivers
+being involved, et cetera)?
+
+...
+
+> -	device_set_node(&pdev->dev, acpi_fwnode_handle(adev ?: parent));
+> +	ACPI_COMPANION_SET(&pdev->dev, adev ?: parent);
+
+As a quick fix this may be fine, but it needs a big FIXME explaining that this
+is actually a design limitation of fwnode that doesn't allow proper sharing
+and stacking.
+
+Bouncing back to ACPI_COMPANION_SET() also doesn't feel right as it hides
+the real thing here, and real thing is the primary/secondary fwnode types
+that we need to care of. Just call set_primary_fwnode() directly. It helps
+also to get rid of ACPI_COMPANION_SET() calls where it may be replaced with
+simple device_set_node().
+
 -- 
-Manivannan Sadhasivam <mani@kernel.org>
+With Best Regards,
+Andy Shevchenko
+
 
 
