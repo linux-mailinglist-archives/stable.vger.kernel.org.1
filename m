@@ -1,283 +1,520 @@
-Return-Path: <stable+bounces-219848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHxEERmhoGlVlAQAu9opvQ
-	(envelope-from <stable+bounces-219848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 20:38:01 +0100
+	id WEG3GG2ioGlVlAQAu9opvQ
+	(envelope-from <stable+bounces-219849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 20:43:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74CE1AE776
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 20:38:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A591AE958
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 20:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BD6B030A04C8
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 19:32:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96CC030226A5
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 19:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9697A3A0B37;
-	Thu, 26 Feb 2026 19:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF47F4508E5;
+	Thu, 26 Feb 2026 19:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZSzmlYxZ"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="Hl0B8VYL"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252BD44D032;
-	Thu, 26 Feb 2026 19:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.156.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772134304; cv=fail; b=k+S5tKdJleycXu+dTON7HmQxdrOF+7i3+h+kS+oZcAHLugLAXrF1h1tmC+smZ4TpY7XALFuHENsmNkWO36OE3QvDwWzL+S/aQp10qQppB/73gXsQLNba/exCLH0tZGkChiWqsXF2Hlcd5PRU+w4/O2WYz4RnQULg+q1DTM0Jm+0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772134304; c=relaxed/simple;
-	bh=Qb+kRHf0tm7JkmksUim7zLWe5Incs2yZHUkDbMYnS/A=;
-	h=From:To:CC:Date:Message-ID:References:In-Reply-To:Content-Type:
-	 MIME-Version:Subject; b=LYzlItKuZw2bjIqWom/PClb6/f9/5nZ7XD2Z0vJKPPbV5a3RoUhGpPqpd+ec5Dyiau4wrpNy5YKxiQ93XOaK3nRAXDphlEwNId1valkS7GnfNtDO4eukIvv70gEjujWEydSqnKVsBTC8qtMdRuv2QGxggvcrcYY8M3Z01Ta6b/4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com; spf=pass smtp.mailfrom=ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZSzmlYxZ; arc=fail smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QG2DRq3273855;
-	Thu, 26 Feb 2026 19:31:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-id:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	pp1; bh=Qb+kRHf0tm7JkmksUim7zLWe5Incs2yZHUkDbMYnS/A=; b=ZSzmlYxZ
-	uA8TWXezWIDJ64d0v0KVx4yD802fuWYSWMJW5wFqVmHuDK/P6PBr7UY1VOs9mwJy
-	JGjqcJiQysYiyQCrG44S3MHJXBBeH3MV0/bmmQN7N+KP0BpB7Yn/UdEz8yT+5u0h
-	AP1pMNnJhJ+y1jelS2DwbFxkmOVienVMYVNKtYsV/a6kLI+q9yHGs7NEt8lsggY3
-	5FLb+OgxaJHybJ835i8L/kYI6Vy1ZJCpG+GmHsHQU0VDh82oYzDM2xJsbjdyew1q
-	h9+vvz8Kd+KSS6H8axnhlK7R2prOWmHDBU4K28TyBtcT8Ev3LtUTnIBvEtC1GpM+
-	0D16w/6B0XgemQ==
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011007.outbound.protection.outlook.com [52.101.52.7])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4728qsh-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 19:31:26 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SQSqX5BdZFokvr9AB7eGd/Ol40/hd4djBfVpEiz9cUxZwJleoe+Z+ePE7YSF2RTcPiLZNrUq5gpKjPnwyHbXYrJCadKmEiXJ8fVm7K9D1uslqS2zM+4TGcSpsjblAmIL/3jPvEGwSQR6CFGXaqOuoViul0PqNxvccqvxgZCaSX+zMac3zdkXreJSpSqaDntJ+W9Irke7D8Nls52HqU/kfNeffcaWz/jvdqNgBs9wEEiEdW3JVIvOY7x7nPwNkJ9xVBcTZjiITje7KUqqw6KkbRABcrVMLQG9h6QaI4xI6SVc3Don5982qp7n03XlGicwnj4SVlFNnoNrMH4WNHv/DA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Qb+kRHf0tm7JkmksUim7zLWe5Incs2yZHUkDbMYnS/A=;
- b=mVe8dCrQSC/GbIxRFC7E9VW+uoeLjRaA3A9XsDo0U8c10l6OBtnoIODrYMIgVfvdUdDVoYJDPoBfK5MyPiZqjMCZL0CeHfS4lA9cUeP2K7kx7buTmyYOPF/5dJanEwuqHmjqQZG+hB6HwjSn8YnU3i9URgMPmi2JeMh+Y8Z+ztis3eSvQRUZOVu2QyzEcqFaaO3aE12sDDqnDTJg5zw8YN+yqdsP7oi6+kQ/U52/Y1DrIYJXqmdQ+SNGgzCHq038h9ymL0fauMYRubJEB6xM1L2R0rIGuBWXPTTPpBUHli9ffyZzDTYKwRIDoFEEALgWdmJdExIXLYUfl9Uyo0kmtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ibm.com; dmarc=pass action=none header.from=ibm.com; dkim=pass
- header.d=ibm.com; arc=none
-Received: from SA1PR15MB5819.namprd15.prod.outlook.com (2603:10b6:806:338::8)
- by BY1PR15MB5960.namprd15.prod.outlook.com (2603:10b6:a03:530::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Thu, 26 Feb
- 2026 19:31:17 +0000
-Received: from SA1PR15MB5819.namprd15.prod.outlook.com
- ([fe80::920c:d2ba:5432:b539]) by SA1PR15MB5819.namprd15.prod.outlook.com
- ([fe80::920c:d2ba:5432:b539%7]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
- 19:31:17 +0000
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-To: "hristo@venev.name" <hristo@venev.name>
-CC: Alex Markuze <amarkuze@redhat.com>,
-        "ceph-devel@vger.kernel.org"
-	<ceph-devel@vger.kernel.org>,
-        "idryomov@gmail.com" <idryomov@gmail.com>,
-        "slava@dubeyko.com" <slava@dubeyko.com>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Thread-Topic: [EXTERNAL] RE:  [PATCH] ceph: Do not skip the first folio of the
- next object in writeback
-Thread-Index: AQHcppgDS668W704B0iRyTKXxOujMrWT6I8AgAF3MwA=
-Date: Thu, 26 Feb 2026 19:31:16 +0000
-Message-ID: <daf3f64ab55d5c6e6c4bf612db609e5505795d05.camel@ibm.com>
-References: <20260225170758.2014172-1-hristo@venev.name>
-			 <50447e5d0d4e3bf993d05dc9da9dde1c20371378.camel@ibm.com>
-		 <4c074e71fd58851a84596c4798b9378a3006d551.camel@venev.name>
-	 <1d321c24a2c4045e8bd79922a94fb4264a40f7de.camel@ibm.com>
-In-Reply-To: <1d321c24a2c4045e8bd79922a94fb4264a40f7de.camel@ibm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR15MB5819:EE_|BY1PR15MB5960:EE_
-x-ms-office365-filtering-correlation-id: f6af37dc-6766-485a-dccf-08de756d9c7b
-x-ld-processed: fcf67057-50c9-4ad4-98f3-ffca64add9e9,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|10070799003|38070700021;
-x-microsoft-antispam-message-info:
- msdnh/aae6cyX9aD0Hd/6OVcAcr11zODLGEblr7AGygHPpogboXCXSIW1Pn4YN7xebkYDZTYaPGbttThwCsSx+GBiX7bbjjw2CrVAkVcF9YgIOWZN3j/juWSC1/qAxASbAy8mIML/f8nwzW5Cg9aDfneo1rMnn2+LqEwhYXLwzfH4BPh9BToBhwgCEhCIJ4zaZf8Z5D95ZZ1agbg9TDb5yVcx6a9jNI9WjxqECPQDE4Wc3BeeTOEsE5Z65ghPVtNh027VjdgrSBAwy+KTusmyCz8i26YKT4alEffosDmpYZAOq1hNLxTGb2wAIGdnYkYfPhciHwKVM1E1tQ2nhVKk2L/N8xx3I0lTVskWx9E1TFYRk3ZwK55SFh+1qRDsR7Bx6ZfRLv9q1tJIqGNdb4z5Y/qB9deuRloBpg1Nf4aQCk/RfqNe0FPNpfcAgjcOvHGrqvZLUsMDBqsXw4tsM+tHHliTpmp9hk7DYmpuPMi84cYP+atcBA8aGx9hdcRzOPgwkv5H2YV3AhM7LB9OY85l6YOZpb/BUoYGbm6vj5+hGCn6WCOO1D2ALkoiq/29W36ksZ+Bz2EaXXd+Rktn1CssIEV3bhs6z/n0K2dVBFd0qhBc2iVwg1AaHZQdeErCvoS0AWhdB6HMOu+118tDzl/LE89uS3ykY1cw6yRHWGtfGBjWHEo2s1T2cNnFDZqa2C0SdWOqwv+4UP6cqTkRZkTYXkO7rV+XgVtMZYaFsf6k1Nt6LIP4qrOKQgZ8COjGsZCGpCsCSaG0tk/pFqJvtqdrhNFxyUT+cpRQQOVfdTjguo=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR15MB5819.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(10070799003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?UmlIQzdvak5oQVVQN0hqRVh0eTdJK1RsZ2U0aEw0M1NXdy9Pakl1NHNyL3lM?=
- =?utf-8?B?dEE4UEVYR3QvT2cwd0xSak4vY3RmajF2MCs4amFkL1UyQ0w3Yys2QTZZclBm?=
- =?utf-8?B?K0o0N3VReXlHL01CY3BDQlZ0Wit5bnVudXdZSzJndTJvTFhtY2FZSzJmNGVa?=
- =?utf-8?B?TTZQOUIwMjFJQ1Z0TmdYYkZWZ2hxRjBhcUgyR01yOWxCNFdyMkhidUtjQ2Ns?=
- =?utf-8?B?cm12UW0xMFIvV1Byc0tDekFMV2d0VjMwaVFQSUZieWU3U29SUGVsTnorcHd4?=
- =?utf-8?B?UmM2OWxlbkhrVWhsc3I3V25EeFRrQ3FxWGRKZ2N3TERGUUZ3eFlCVjNBcjBw?=
- =?utf-8?B?WFBHNmZNNHFMWkEwU3pOdlo0UDQrbWRyQVhoRjVPMjZpNlZUVGI0QVlYRXc1?=
- =?utf-8?B?R200aGh5ZUpudVJBS1RKQkhJdkNtR3I2L2hxNXV4clNjQlRzbGxvUjZ6WnJO?=
- =?utf-8?B?QkczYktKdTRUc1BXaVpyL091NFNwcnpvQkR3S3MvaVFEWFJPRklMUVBWTFZW?=
- =?utf-8?B?NFdGdzhLNjRCeCs1YXJ4SUo0NWs2b0lRQ2xPOURnOWRsblVYTDY1d2s5ODJh?=
- =?utf-8?B?YlZRamV0Wk83TlY0ZVRyd3hRSTVjbUFRRittRFgrdGZHYjVSeVVwM0Vwb0Iw?=
- =?utf-8?B?bUFid2FqT08wcVZHdlFjOCtFeHIrYnZLWCtybGMvS1VjU050N0lFQkRyZnlT?=
- =?utf-8?B?MzlQT3p6ZDB0TENsSTc3dXR4R0lTeGZocDZZcjZUbytKck1pT1RVUjNxZTRh?=
- =?utf-8?B?b3lFWXphd1hpSmEvSFBwTXBJSElQNnUwMEZpZUEwRUoxS0NMbnlTTFhQdXdt?=
- =?utf-8?B?VGdFZFJ6U2hxVm9ERHQvTHB0T29tc0dlL2oxSHlxVlZRWWQ5UFJtQUM2M0pR?=
- =?utf-8?B?emZDSnlEZWpNWmRxWUJGblpXdFRDVkt0NXg0ZmU2blN2UWd5eHJBUWlPQXlG?=
- =?utf-8?B?ZktVczdoWnlmMlJLNDhrbmJQS3R3TGNCOWdnRnhGQkZlSURnT1luWklTVEkv?=
- =?utf-8?B?UWpEZ0xWQWVtQmVXeXdpNGFvT1RMNk15aEZUQnRNbGpNNGR4TkF1WFZ5MUh0?=
- =?utf-8?B?eGN2dEI3YXJ1MlExR2M0cVhKMHlXS3dwc0VpTmdtVWpKNk4yUUtHZ1NvakV4?=
- =?utf-8?B?OUEwS3FVS3oyb3JqREhObElVQ05yRW91aTZoSTFnclpEZkV5bkwzeFNjaWlR?=
- =?utf-8?B?eWlaSldYMlVTNkZPNG5GNmJxQUxGRDVpSGs3citNcEZ2M21JNVZwK3lmZnhq?=
- =?utf-8?B?QXNlRzZoZHRIdWl6Qm0rOVgwZWV0WUVsL1VyOHQ1djFQUlBab2lLbXlJOTBs?=
- =?utf-8?B?UHhaTTNmSW95Y3hqbzAwNUFkZm1rQUMwWjRObHJuZ3RYWUJhNzVYQlIxU0Vt?=
- =?utf-8?B?VjJ2SWVxUW8wS3pJeWdkZVZlU1oyaWVMU3NtNzFmUUMzcGFlUkVnRjNIL1RM?=
- =?utf-8?B?RVFvcEZHRDZIcFZtRDdmNmRTaTMvanRLQ2NmL1Nxbm03VGE0MUl4bW1QYTlY?=
- =?utf-8?B?aDE5d0xOdGQyMXhqMVJqS2VvcFRRMktkZjF2cXVzSE9FRVpQSENXM21acURT?=
- =?utf-8?B?K2s1QlozZ0FzYnJWcTRxQmI2bE1Ca1loRTNNUEZaVWtUZWJ6OWk2d2J1V2FH?=
- =?utf-8?B?NjMrTi9RMU9yWE1OYnNDaGhqRDNRV3kwMUoyRVUrMHpGM1MrSWI0bkd2TEJE?=
- =?utf-8?B?RVFKZlFXUllyOXpMOUZubEUvUXJ4dHdyWmVWTEFONGRIUi9LWFR2V2tGQ2p0?=
- =?utf-8?B?Qm5KeWZaQ2ZFNk1XbE5VZXQ3b1VlSldLOUlVWC84M0J1NDl2emo4VTI2cFUx?=
- =?utf-8?B?MUFFbU92MVUyeWVvdWdxV3ltSC9qTGV5S2dFbXk4T3VRRUVaZGZicmV1bzZD?=
- =?utf-8?B?ZmFEdVlVT2V1a2tNU0JFSzRERnZHYnAxai9sUHdOL2RiS0cwL0JMeDIya0F0?=
- =?utf-8?B?WjdFODVyaHdodnV4NXozZEpIb21TT0xCV3lWbUVmbTg1dldTV0hmK0k2Q1BB?=
- =?utf-8?B?RVgxa1dYMUpIUzBjM2ZwZEdwc2FNV2tacVg5WkRZVmFLMUtXS1lxbHcwc2tq?=
- =?utf-8?B?STh2L096bTdabkpqeGJBY1Y4V2hQdlNobGpJVlFXRElCVE9rUU5DRXJ5QlRJ?=
- =?utf-8?B?OC9KNjJCSEFyV0xMNjJTWWlXN2RqTXMreit0d1Y2cUNPOXdMa0kvalFOeEov?=
- =?utf-8?B?SG4vV2srbk9jY1F4ZmR1QUpJS2ZiU3UrRHdHMGF1ZkdRQ0dIN2taZVN2VytE?=
- =?utf-8?B?SzlhZXErbGtRZUZRYnFvUmtxRjRJRkxwcmsrMjFMZDVpZlV2SVZ5MXJSamlk?=
- =?utf-8?B?MXRWU2ZaU20waUVOU0hiT1cralVYeitidjNVcUZwdWJlYkNBemsrM2dpL2FN?=
- =?utf-8?Q?0PUDS1hIgCNg8iEKzg0vsBtENxk/IdGR3EM+G?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <66DA22ABA5F52149991D17F11663643B@namprd15.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BD642883B;
+	Thu, 26 Feb 2026 19:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772134651; cv=none; b=YNdNLL797WzrOZdPpk9bOYWV9bHhO3Qlq1YFnoX9I2JQ7/S1p6rKt6WvsfUWtuf3vzBvEqQAJWTDCGctwkW2E4VcSof5nEYKz/v2IzEOguG75OFJtZh7GlOTnB+ApDBQ0x5jNSS7KmLKYomXh7GgDPQSYbz9Kq+Wz3Yi2KbNTwM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772134651; c=relaxed/simple;
+	bh=e4XJai9zpE7Ju12u/jWYL80yU5qqFEzNm+MC3T4lOqQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O09VvJGq0+SL4NPYitjFSgpt2/jNxsSNTMw8XMtlP5hsumTi6EpAAnves+y8tM8v6iW5D18g7z5fYqFBbjYKJDnGD7qWwv6qkbZNnD1kJGVOaVKlgMMWKbruS83UYJIZ2+Se72AFn0AMiJvUWjXfDYQIt9Av1N48UamcFUhw13s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=Hl0B8VYL; arc=none smtp.client-ip=148.163.129.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 666662ACD14;
+	Thu, 26 Feb 2026 19:37:21 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C92C1B00093;
+	Thu, 26 Feb 2026 19:37:13 +0000 (UTC)
+Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 2A61213C2B0;
+	Thu, 26 Feb 2026 11:37:11 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2A61213C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1772134631;
+	bh=e4XJai9zpE7Ju12u/jWYL80yU5qqFEzNm+MC3T4lOqQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Hl0B8VYLOsnMEfc7jZ6/LNdPwda67mDHWtTw+VH+O0PBQ/I+rq/JbdioKasDAAjfQ
+	 UpdKw+8GY4A9stYbkt0b2OT6UipSlUDz1EpYv9vgP0hztBht9QUzq28GkP7WZTBNE4
+	 SfBEzjXB27Rdt0L6PbQYssGGRVykeBpdi0Gylxxo=
+Message-ID: <e6d6d4ad-475a-7bad-0dc9-6a920ed7f8ed@candelatech.com>
+Date: Thu, 26 Feb 2026 11:37:10 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: ibm.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR15MB5819.namprd15.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6af37dc-6766-485a-dccf-08de756d9c7b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Feb 2026 19:31:17.0080
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: fcf67057-50c9-4ad4-98f3-ffca64add9e9
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8up5lkiQYB2RD1MIxz6DV3GkeUBh/RyLR5eW8s4+YTes2ad5guCCFbQbi331ACDrRq9JYA1TYIqYm83OlsShuQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR15MB5960
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: jsB0ZnSlKbmzoVBeO-O29r0MapxXAImv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE3NSBTYWx0ZWRfX0dWtiJ5dSQkf
- PadoyivNm89GAxrXpobleHT1jtyqy+JuSCbi+SuqOrHIKSWYyuzGLffArnJgCAC9uXERpRNp3b5
- vYJm3+lnKdhZyWAcPn1f0QH2hsMjaorV6H3hpNe7HR21mirXftt5drLlw+yYwAVxB+atSYD3MpE
- OASqFkyWktfAnw6iBPlpUV1SGiIFkjxcTU5z3Im99jS3Z2lbrZ2J5J+ldB//ItAtOKqthy6diFy
- Rti6jDctxbkOo/7qpEO7snTI2MX12F3zk0hS0b9/IUljcyo4NC1dWwZ81iz/KhmlgxMA5XZsL6X
- fBamg7izZQis8GGQyP/ShLJv6mLVyjXkKpeKrORaovvtDudVPalc4n0bc9XvoQQvs5iGDuOHfBM
- /jHGUD17UUXhnb96865F+Xq4iryGN58X0Ebv/iuIUnDy4s4hEJRnekSJVVXScl9qtpvkRbvPYkC
- Ey3LJf/n7PQ09mLkjoA==
-X-Authority-Analysis: v=2.4 cv=R7wO2NRX c=1 sm=1 tr=0 ts=69a09f8f cx=c_pps
- a=St7v3kIWLLX4ycmTPR678g==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=GVT9W4Wiak6UpZ1B:21 a=xqWC_Br6kY4A:10
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=swV2VNnKAqt2baWD6EoA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: XSIgG_BPCo93AcMU8tfwOXOgi3RL9JRK
-Subject: RE:  [PATCH] ceph: Do not skip the first folio of the next object in
- writeback
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-26_02,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1015 impostorscore=0 phishscore=0 spamscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602260175
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v3] wifi: iwlwifi: prevent NAPI processing after firmware
+ error
+Content-Language: en-US
+To: Cole Leavitt <cole@unwrap.rs>, johannes.berg@intel.com,
+ miriam.rachel.korenblit@intel.com
+Cc: linux-wireless@vger.kernel.org, stable@vger.kernel.org
+References: <20260214181018.6091-1-cole@unwrap.rs>
+ <20260214184352.11512-1-cole@unwrap.rs>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20260214184352.11512-1-cole@unwrap.rs>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MDID: 1772134634-sOFDASqYgAb7
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1772134634;sOFDASqYgAb7;<greearb@candelatech.com>;874a6e8d4b105f853a4d4b73ba2c07da
+X-PPE-TRUSTED: V=1;DIR=OUT;
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.94 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,reject];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219848-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219849-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[candelatech.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[redhat.com,vger.kernel.org,gmail.com,dubeyko.com];
-	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Slava.Dubeyko@ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: B74CE1AE776
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[candelatech.com:mid,candelatech.com:dkim,candelatech.com:url,candelatech.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F2A591AE958
 X-Rspamd-Action: no action
 
-T24gV2VkLCAyMDI2LTAyLTI1IGF0IDIxOjA4ICswMDAwLCBWaWFjaGVzbGF2IER1YmV5a28gd3Jv
-dGU6DQo+IE9uIFdlZCwgMjAyNi0wMi0yNSBhdCAyMjo0NyArMDIwMCwgSHJpc3RvIFZlbmV2IHdy
-b3RlOg0KPiA+IE9uIFdlZCwgMjAyNi0wMi0yNSBhdCAyMDoyNCArMDAwMCwgVmlhY2hlc2xhdiBE
-dWJleWtvIHdyb3RlOg0KPiA+ID4gWW91IG1lbnRpb25lZCBpbiB0aGUgdGlja2V0IHRoYXQgeW91
-IGRpZCBzb21lIHRlc3RpbmcuIFdoaWNoDQo+ID4gPiBwYXJ0aWN1bGFyIHRlc3RpbmcNCj4gPiA+
-IGhhcyBiZWVuIGRvbmU/IEhhdmUgeW91IHJ1biB4ZnN0c2VzdHMvZnN0ZXN0cyBmb3IgdGhlIGZp
-eD8NCj4gPiANCj4gPiBJIG9ubHkgcmFuIHRoZSByZXByb2R1Y2VyIHNjcmlwdHMgaW4gdGhlIGlz
-c3VlLCBhcyB3ZWxsIGFzIHNvbWUgYmFzaWMNCj4gPiBzbW9rZSB0ZXN0cyBsaWtlICJkb2VzIG15
-IGhvbWUgZGlyZWN0b3J5IHN0aWxsIHdvcmsgaWYgSSBhY2Nlc3MgaXQgZnJvbQ0KPiA+IHR3byBj
-bGllbnRzIi4gRG8geW91IGhhdmUgQ0kgdGhhdCBjYW4gcnVuIHhmc3Rlc3RzL2ZzdGVzdHM/DQo+
-IA0KPiBJIGNhbiBydW4geGZzdGVzdHMvZnN0ZXN0cyBmb3IgeW91ciBwYXRjaC4gQnV0IG15IENl
-cGggY2x1c3RlciBpcyBjdXJyZW50bHkgYnVzeQ0KPiB3aXRoIHRoZSBpbnZlc3RpZ2F0aW9uIG9m
-IGtlcm5lbCBjcmFzaC4gSXQgaXMgcmVhbGx5IGltcG9ydGFudCB0byBjaGVjayB0aGUNCj4geGZz
-dGVzdHMvZnN0ZXN0cyBydW4gZm9yIHlvdXIgcGF0Y2ggdG8gYmUgc3VyZSB0aGF0IHdlIGRvbid0
-IGJyZWFrIGFub3RoZXIgdGVzdC0NCj4gY2FzZXMuIEkgdGhpbmsgSSBjYW4gc3RhcnQgYW5vdGhl
-ciBDZXBoIGNsdXN0ZXIgYW5kIHRvIGNoZWNrIHlvdXIgcGF0Y2ggdGhlcmUuDQo+IA0KPiBJIGRv
-bid0IGhhdmUgYW55IG1hZ2ljIG9uIG15IHNpZGUuIEkgc2ltcGx5IG1vdW50IENlcGggY2x1c3Rl
-ciBieSBrZXJuZWwgY2xpZW50DQo+IGFuZCBzdGFydCB4ZnN0ZXN0cyBpbnNpZGUgb2YgVk0uIDop
-DQo+IA0KPiA+IA0KPiA+ID4gVGhlIGNlcGhfY2hlY2tfcGFnZV9iZWZvcmVfd3JpdGUoKSBleGVj
-dXRlcyB0aHJlZSBjaGVja3M6DQo+ID4gPiAoMSkgSXQgcmV0dXJucyAtRTJCSUcgaWYgd2UgaGF2
-ZSBlbmQgb2Ygc3RyaXAgdW5pdC4gU28sIHlvdXIgZml4DQo+ID4gPiBzb3VuZHMgbGlrZQ0KPiA+
-ID4gcmVhbGx5IGdvb2QgY2F0Y2guDQo+ID4gPiAoMikgSXQgcmV0dXJucyAtRU5PREFUQSBpZiBm
-b2xpbyBpcyBiZXlvbmQgb2YgZW5kIG9mIGZpbGUuIEFuZCB3ZQ0KPiA+ID4gY2xlYXINCj4gPiA+
-IGRpcnRpbmVzcyBvZiB0aGUgZm9saW8uIEZpbmFsbHksIHdlIGNhbiBleGNsdWRlIGl0IGZyb20g
-dGhlIGRpcnR5DQo+ID4gPiBiYXRjaCBhbmQNCj4gPiA+IGZvcmdldCBhYm91dCB0aGlzIGZvbGlv
-Lg0KPiA+ID4gKDMpIEl0IHJldHVybnMgLUVOT0RBVEEgaWYgZm9saW8gZG9lc24ndCBiZWxvbmcg
-dG8gY3VycmVudCBzbmFwDQo+ID4gPiBjb250ZXh0LiBTbywgd2UNCj4gPiA+IGtlZXAgdGhlIGZv
-bGlvIGRpcnR5IGFuZCBleGNsdWRlIGl0IGZyb20gdGhlIGJhdGNoLiBNYXliZSwgZXZlcnl0aGlu
-Zw0KPiA+ID4gaXMgY29ycmVjdA0KPiA+ID4gaGVyZS4gQnV0IEkgYW0gc2xpZ2h0bHkgd29ycmll
-ZCBhYm91dCB0aGlzIGNhc2UuDQo+ID4gDQo+ID4gSWYgdGhlIHBhZ2Ugc25hcHNob3QgaXMgbmV3
-ZXIgdGhhbiB0aGUgd3JpdGViYWNrIHNuYXBzaG90LCB0aGlzIG1lYW5zDQo+ID4gdGhhdCBpbiB0
-aGUgd3JpdGViYWNrIHNuYXBzaG90IHRoZSBwYWdlIHdhcyBjbGVhbiwgc28gd2UgZG9uJ3Qgd2Fu
-dCB0bw0KPiA+IGZsdXNoIGl0PyBCdXQgd2hhdCBpZiB0aGUgcGFnZSBzbmFwc2hvdCBpcyBvbGRl
-cj8gSSBoYXZlIG5ldmVyIHVzZWQNCj4gPiBzbmFwc2hvdHMsIHNvIEkgZG9uJ3QgcmVhbGx5IGtu
-b3cuDQo+IA0KPiBZZWFoLCBpdCByZXF1aXJlcyBzb21lIGludmVzdGlnYXRpb24uDQo+IA0KDQpG
-cmFua2x5IHNwZWFraW5nLCBJIGhhdmUgdHJvdWJsZXMgdG8gYXBwbHkgeW91ciBwYXRjaCBvbiA2
-LjE5IGtlcm5lbCB2ZXJzaW9uOg0KDQpnaXQgYW0NCjIwMjYwMjI1X2hyaXN0b19jZXBoX2RvX25v
-dF9za2lwX3RoZV9maXJzdF9mb2xpb19vZl90aGVfbmV4dF9vYmplY3RfaW5fd3JpdGViYWNrDQou
-bWJ4DQpBcHBseWluZzogY2VwaDogRG8gbm90IHNraXAgdGhlIGZpcnN0IGZvbGlvIG9mIHRoZSBu
-ZXh0IG9iamVjdCBpbiB3cml0ZWJhY2sNCmVycm9yOiBwYXRjaCBmYWlsZWQ6IGZzL2NlcGgvYWRk
-ci5jOjEzMjYNCmVycm9yOiBmcy9jZXBoL2FkZHIuYzogcGF0Y2ggZG9lcyBub3QgYXBwbHkNClBh
-dGNoIGZhaWxlZCBhdCAwMDAxIGNlcGg6IERvIG5vdCBza2lwIHRoZSBmaXJzdCBmb2xpbyBvZiB0
-aGUgbmV4dCBvYmplY3QgaW4NCndyaXRlYmFjaw0KaGludDogVXNlICdnaXQgYW0gLS1zaG93LWN1
-cnJlbnQtcGF0Y2g9ZGlmZicgdG8gc2VlIHRoZSBmYWlsZWQgcGF0Y2gNCmhpbnQ6IFdoZW4geW91
-IGhhdmUgcmVzb2x2ZWQgdGhpcyBwcm9ibGVtLCBydW4gImdpdCBhbSAtLWNvbnRpbnVlIi4NCmhp
-bnQ6IElmIHlvdSBwcmVmZXIgdG8gc2tpcCB0aGlzIHBhdGNoLCBydW4gImdpdCBhbSAtLXNraXAi
-IGluc3RlYWQuDQpoaW50OiBUbyByZXN0b3JlIHRoZSBvcmlnaW5hbCBicmFuY2ggYW5kIHN0b3Ag
-cGF0Y2hpbmcsIHJ1biAiZ2l0IGFtIC0tYWJvcnQiLg0KaGludDogRGlzYWJsZSB0aGlzIG1lc3Nh
-Z2Ugd2l0aCAiZ2l0IGNvbmZpZyBzZXQgYWR2aWNlLm1lcmdlQ29uZmxpY3QgZmFsc2UiDQoNCldo
-aWNoIGtlcm5lbCB2ZXJzaW9uIGRvIHlvdSBoYXZlIG9uIHlvdXIgc2lkZT8gQXJlIHlvdSBjYXBh
-YmxlIHRvIGFwcGx5IHlvdXINCnBhdGNoIGZyb20gdGhlIGVtYWlsPw0KDQpUaGFua3MsDQpTbGF2
-YS4NCg==
+On 2/14/26 10:43, Cole Leavitt wrote:
+> After a firmware error is detected and STATUS_FW_ERROR is set, NAPI can
+> still be actively polling or get scheduled from a prior interrupt. The
+> NAPI poll functions (both legacy and MSIX variants) have no check for
+> STATUS_FW_ERROR and will continue processing stale RX ring entries from
+> dying firmware. This can dispatch TX completion notifications containing
+> corrupt SSN values to iwl_mld_handle_tx_resp_notif(), which passes them
+> to iwl_trans_reclaim(). If the corrupt SSN causes reclaim to walk TX
+> queue entries that were already freed by a prior correct reclaim, the
+> result is an skb use-after-free or double-free.
+
+Hello Cole,
+
+We've been testing with this patch, and today managed to see its logic trigger.
+The system had a cascade of other errors leading to use-after-free that does
+not appear to be related to the skb use-after free, but I can at least confirm your
+patch can be triggered.  Here are logs around this.  I believe in this case, firmware
+didn't actually bubble up a crash notification/interrupt, but probably the driver detected timeout
+and faked a crash.
+
+Feb 26 11:09:35 ct523c-de7c kernel: workqueue: blk_mq_requeue_work hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
+Feb 26 11:09:36 ct523c-de7c kernel: workqueue: gc_worker [nf_conntrack] hogged CPU for >10000us 515 times, consider switching to WQ_UNBOUND
+Feb 26 11:09:39 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Error sending SYSTEM_STATISTICS_CMD: time out after 2000ms.
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Current CMD queue read_ptr 92 write_ptr 93
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Start IWL Error Log Dump:
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Transport status: 0x0000004A, valid: 6
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Loaded firmware version: 101.6ef20b19.0 gl-c0-fm-c0-101.ucode
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000084 | NMI_INTERRUPT_UNKNOWN
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x000002F0 | trm_hw_status0
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | trm_hw_status1
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x002C438C | branchlink2
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00009C04 | interruptlink1
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00009C04 | interruptlink2
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00009C3C | data1
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x01000000 | data2
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | data3
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xD040FE38 | beacon time
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x3B6411CD | tsf low
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0000026B | tsf hi
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | time gp1
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0616DB18 | time gp2
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000001 | uCode revision type
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000065 | uCode version major
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x6EF20B19 | uCode version minor
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000472 | hw version
+Feb 26 11:09:40 ct523c-de7c kernel: ------------[ cut here ]------------
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi: NAPI MSIX poll[0] invoked after FW error
+Feb 26 11:09:40 ct523c-de7c kernel: WARNING: CPU: 3 PID: 36 at drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c:1058 iwl_pcie_napi_poll_msix+0x29e/0x310 
+[iwlwifi]
+Feb 26 11:09:40 ct523c-de7c kernel: Modules linked in: vrf nf_conntrack_netlink nf_conntrack nfnetlink nf_defrag_ipv6 nf_defrag_ipv4 8021q garp mrp stp llc 
+macvlan pktgen rfcomm rpcrdma rdma_cm iw_cm ib_cm ib_core qrtr bnep intel_rapl_msr iTCO_wdt intel_pmc_bxt ee1004 iTCO_vendor_support iwlmld coretemp 
+intel_rapl_common intel_uncore_frequency intel_uncore_frequency_common snd_hda_codec_intelhdmi snd_hda_codec_hdmi intel_tcc_cooling x86_pkg_temp_thermal 
+snd_hda_codec_alc662 snd_hda_codec_realtek_lib intel_powerclamp intel_wmi_thunderbolt snd_hda_codec_generic snd_hda_intel snd_intel_dspcfg snd_hda_codec 
+mac80211 snd_hda_core snd_hwdep snd_seq btusb btbcm snd_seq_device btmtk btrtl btintel snd_pcm iwlwifi bluetooth snd_timer cfg80211 i2c_i801 snd i2c_smbus 
+soundcore i2c_mux mei_pxp mei_hdcp intel_pch_thermal intel_pmc_core pmt_telemetry pmt_discovery pmt_class intel_pmc_ssram_telemetry intel_vsec acpi_pad bfq nfsd 
+sch_fq_codel auth_rpcgss nfs_acl lockd grace nfs_localio fuse sunrpc raid1 dm_raid raid456 async_raid6_recov async_memcpy async_pq
+Feb 26 11:09:40 ct523c-de7c kernel:  async_xor xor async_tx raid6_pq i915 drm_buddy intel_gtt drm_client_lib drm_display_helper drm_kms_helper cec rc_core ttm 
+agpgart ixgbe mdio igb libie_fwlog i2c_algo_bit dca drm hwmon mei_wdt i2c_core intel_oc_wdt video wmi scsi_dh_rdac scsi_dh_emc scsi_dh_alua dm_multipath [last 
+unloaded: nfnetlink]
+Feb 26 11:09:40 ct523c-de7c kernel: CPU: 3 UID: 0 PID: 36 Comm: ksoftirqd/3 Kdump: loaded Not tainted 6.18.9+ #18 PREEMPT(full)
+Feb 26 11:09:40 ct523c-de7c kernel: Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/21/2023
+Feb 26 11:09:40 ct523c-de7c kernel: RIP: 0010:iwl_pcie_napi_poll_msix+0x29e/0x310 [iwlwifi]
+Feb 26 11:09:40 ct523c-de7c kernel: Code: 00 00 fc ff df 48 89 fa 48 c1 ea 03 0f b6 04 02 84 c0 74 04 3c 03 7e 74 8b b3 48 ff ff ff 48 c7 c7 a0 d2 19 a2 e8 62 
+00 0f df <0f> 0b eb 96 4c 89 e7 e8 d6 92 9f df e9 0b fe ff ff e8 cc 92 9f df
+Feb 26 11:09:40 ct523c-de7c kernel: RSP: 0018:ffff888120fe7b70 EFLAGS: 00010286
+Feb 26 11:09:40 ct523c-de7c kernel: RAX: 0000000000000000 RBX: ffff888182e100b8 RCX: 0000000000000001
+Feb 26 11:09:40 ct523c-de7c kernel: RDX: 0000000000000027 RSI: 0000000000000004 RDI: ffff88841dba4e48
+Feb 26 11:09:40 ct523c-de7c kernel: RBP: ffff888132504028 R08: 0000000000000001 R09: ffffed1083b749c9
+Feb 26 11:09:40 ct523c-de7c kernel: R10: ffff88841dba4e4b R11: 0000000000072ee8 R12: ffff888132504090
+Feb 26 11:09:40 ct523c-de7c kernel: R13: ffff888132504d90 R14: 0000000000000040 R15: ffff888134b480b8
+Feb 26 11:09:40 ct523c-de7c kernel: FS:  0000000000000000(0000) GS:ffff8884974c7000(0000) knlGS:0000000000000000
+Feb 26 11:09:40 ct523c-de7c kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+Feb 26 11:09:40 ct523c-de7c kernel: CR2: 00007fd5beb80028 CR3: 000000013e2d4001 CR4: 00000000003706f0
+Feb 26 11:09:40 ct523c-de7c kernel: Call Trace:
+Feb 26 11:09:40 ct523c-de7c kernel:  <TASK>
+Feb 26 11:09:40 ct523c-de7c kernel:  __napi_poll.constprop.0+0xa0/0x580
+Feb 26 11:09:40 ct523c-de7c kernel:  net_rx_action+0x84d/0xe40
+Feb 26 11:09:40 ct523c-de7c kernel:  ? __napi_poll.constprop.0+0x580/0x580
+Feb 26 11:09:40 ct523c-de7c kernel:  ? do_raw_spin_lock+0x12c/0x270
+Feb 26 11:09:40 ct523c-de7c kernel:  ? run_timer_softirq+0xf2/0x1b0
+Feb 26 11:09:40 ct523c-de7c kernel:  ? lock_release+0xce/0x290
+Feb 26 11:09:40 ct523c-de7c kernel:  ? trace_irq_enable.constprop.0+0xbe/0x100
+Feb 26 11:09:40 ct523c-de7c kernel:  handle_softirqs+0x1c6/0x810
+Feb 26 11:09:40 ct523c-de7c kernel:  run_ksoftirqd+0x2d/0x50
+Feb 26 11:09:40 ct523c-de7c kernel:  smpboot_thread_fn+0x338/0x8c0
+Feb 26 11:09:40 ct523c-de7c kernel:  ? sort_range+0x20/0x20
+Feb 26 11:09:40 ct523c-de7c kernel:  kthread+0x3b7/0x770
+Feb 26 11:09:40 ct523c-de7c kernel:  ? kthread_is_per_cpu+0xb0/0xb0
+Feb 26 11:09:40 ct523c-de7c kernel:  ? ret_from_fork+0x17/0x3a0
+Feb 26 11:09:40 ct523c-de7c kernel:  ? lock_release+0xce/0x290
+Feb 26 11:09:40 ct523c-de7c kernel:  ? kthread_is_per_cpu+0xb0/0xb0
+Feb 26 11:09:40 ct523c-de7c kernel:  ret_from_fork+0x28b/0x3a0
+Feb 26 11:09:40 ct523c-de7c kernel:  ? kthread_is_per_cpu+0xb0/0xb0
+Feb 26 11:09:40 ct523c-de7c kernel:  ret_from_fork_asm+0x11/0x20
+Feb 26 11:09:40 ct523c-de7c kernel:  </TASK>
+Feb 26 11:09:40 ct523c-de7c kernel: irq event stamp: 36429934
+Feb 26 11:09:40 ct523c-de7c kernel: hardirqs last  enabled at (36429940): [<ffffffff816116ee>] __up_console_sem+0x5e/0x70
+Feb 26 11:09:40 ct523c-de7c kernel: hardirqs last disabled at (36429945): [<ffffffff816116d3>] __up_console_sem+0x43/0x70
+Feb 26 11:09:40 ct523c-de7c kernel: softirqs last  enabled at (36428910): [<ffffffff81471d3d>] run_ksoftirqd+0x2d/0x50
+Feb 26 11:09:40 ct523c-de7c kernel: softirqs last disabled at (36428915): [<ffffffff81471d3d>] run_ksoftirqd+0x2d/0x50
+Feb 26 11:09:40 ct523c-de7c kernel: ---[ end trace 0000000000000000 ]---
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00C80002 | board version
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x036D001C | hcmd
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xF6F38000 | isr0
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x01400000 | isr1
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x48F00002 | isr2
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00C00008 | isr3
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x18200000 | isr4
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x036D001C | last cmd Id
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00009C3C | wait_event
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x10000010 | l2p_control
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | l2p_duration
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | l2p_mhvalid
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | l2p_addr_match
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000009 | lmpm_pmg_sel
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | timestamp
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00009018 | flow_handler
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Start IWL Error Log Dump:
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Transport status: 0x0000004A, valid: 6
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Loaded firmware version: 101.6ef20b19.0 gl-c0-fm-c0-101.ucode
+Feb 26 11:09:40 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000084 | NMI_INTERRUPT_UNKNOWN
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x000002F0 | trm_hw_status0
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | trm_hw_status1
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x002C438C | branchlink2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x002B8AD0 | interruptlink1
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x002B8AD0 | interruptlink2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x002A5822 | data1
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x01000000 | data2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | data3
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xD040FE37 | beacon time
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x3B6411CE | tsf low
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0000026B | tsf hi
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | time gp1
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0616DB19 | time gp2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000001 | uCode revision type
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000065 | uCode version major
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x6EF20B19 | uCode version minor
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000472 | hw version
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00C80002 | board version
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x804AFC12 | hcmd
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00020000 | isr0
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | isr1
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x48F00002 | isr2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00C0001C | isr3
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | isr4
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | last cmd Id
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x002A5822 | wait_event
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x10000010 | l2p_control
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | l2p_duration
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | l2p_mhvalid
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | l2p_addr_match
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000028 | lmpm_pmg_sel
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | timestamp
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00009018 | flow_handler
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Start IWL Error Log Dump:
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Transport status: 0x0000004A, valid: 7
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x20000066 | NMI_INTERRUPT_HOST
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | umac branchlink1
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xC00808AA | umac branchlink2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x80287BFE | umac interruptlink1
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0102163E | umac interruptlink2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x01000000 | umac data1
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0102163E | umac data2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | umac data3
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000065 | umac major
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x6EF20B19 | umac minor
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0616DB0F | frame pointer
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xD00D6258 | stack pointer
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x005C020F | last host cmd
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000400 | isr status reg
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: TCM1 status:
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000070 | error ID
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00001D2E | tcm branchlink2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0000211C | tcm interruptlink1
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0000211C | tcm interruptlink2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x40000000 | tcm data1
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xDEADBEEF | tcm data2
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xDEADBEEF | tcm data3
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00001DAC | tcm log PC
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00803FF0 | tcm frame pointer
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00803F5C | tcm stack pointer
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | tcm msg ID
+Feb 26 11:09:41 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x4000001F | tcm ISR status
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x000002F0 | tcm HW status[0]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | tcm HW status[1]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | tcm HW status[2]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x40008300 | tcm HW status[3]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | tcm HW status[4]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | tcm SW status[0]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: RCM1 status:
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000070 | error ID
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00001E2E | rcm branchlink2
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x000027A0 | rcm interruptlink1
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x000027A0 | rcm interruptlink2
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x20000000 | rcm data1
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xDEADBEEF | rcm data2
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xDEADBEEF | rcm data3
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00001E98 | rcm log PC
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00803FF0 | rcm frame pointer
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00803F5C | rcm stack pointer
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | rcm msg ID
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x2006F000 | rcm ISR status
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00020400 | frame HW status
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | LMAC-to-RCM request mbox
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | RCM-to-LMAC request mbox
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | MAC header control
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | MAC header addr1 low
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x003C0000 | MAC header info
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | MAC header error
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: TCM2 status:
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000070 | error ID
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00001D2E | tcm branchlink2
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0000211C | tcm interruptlink1
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0000211C | tcm interruptlink2
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x40000000 | tcm data1
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xDEADBEEF | tcm data2
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xDEADBEEF | tcm data3
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00001DAC | tcm log PC
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00803FF0 | tcm frame pointer
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00803F5C | tcm stack pointer
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | tcm msg ID
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x60000000 | tcm ISR status
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x000002F0 | tcm HW status[0]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | tcm HW status[1]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | tcm HW status[2]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00008000 | tcm HW status[3]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | tcm HW status[4]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | tcm SW status[0]
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: RCM2 status:
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000070 | error ID
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00001E2E | rcm branchlink2
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x000027A0 | rcm interruptlink1
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x000027A0 | rcm interruptlink2
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x20000000 | rcm data1
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xDEADBEEF | rcm data2
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0xDEADBEEF | rcm data3
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00001E98 | rcm log PC
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00803FF0 | rcm frame pointer
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00803F5C | rcm stack pointer
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | rcm msg ID
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x20000000 | rcm ISR status
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00020400 | frame HW status
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | LMAC-to-RCM request mbox
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | RCM-to-LMAC request mbox
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | MAC header control
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | MAC header addr1 low
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x003C0000 | MAC header info
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | MAC header error
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: IML/ROM dump:
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000B03 | IML/ROM error/state
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0000EEE3 | IML/ROM data1
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Fseq Registers:
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x60000000 | FSEQ_ERROR_CODE
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x80B10006 | FSEQ_TOP_INIT_VERSION
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00570000 | FSEQ_CNVIO_INIT_VERSION
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0000AA14 | FSEQ_OTP_VERSION
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x0000000F | FSEQ_TOP_CONTENT_VERSION
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x02001910 | FSEQ_CNVI_ID
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x02001910 | FSEQ_CNVR_ID
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x02001910 | CNVI_AUX_MISC_CHIP
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x02001910 | CNVR_AUX_MISC_CHIP
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x8F0F1BEF | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00000000 | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00570000 | FSEQ_PREV_CNVIO_INIT_VERSION
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00B10006 | FSEQ_WIFI_FSEQ_VERSION
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x00B10005 | FSEQ_BT_FSEQ_VERSION
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x000000DC | FSEQ_CLASS_TP_VERSION
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: UMAC CURRENT PC: 0x8028b720
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: LMAC1 CURRENT PC: 0xd0
+Feb 26 11:09:42 ct523c-de7c kernel: iwlwifi 0000:28:00.0: LMAC2 CURRENT PC: 0xd0
+Feb 26 11:09:43 ct523c-de7c kernel: iwlwifi 0000:28:00.0: UMAC CURRENT PC 1: 0x8028b722
+Feb 26 11:09:43 ct523c-de7c kernel: iwlwifi 0000:28:00.0: TCM1 CURRENT PC: 0xd0
+Feb 26 11:09:43 ct523c-de7c kernel: iwlwifi 0000:28:00.0: RCM1 CURRENT PC: 0xd0
+Feb 26 11:09:43 ct523c-de7c kernel: iwlwifi 0000:28:00.0: RCM2 CURRENT PC: 0xd0
+Feb 26 11:09:43 ct523c-de7c kernel: iwlwifi 0000:28:00.0: Function Scratch status:
+Feb 26 11:09:43 ct523c-de7c kernel: iwlwifi 0000:28:00.0: 0x01010100 | Func Scratch
+Feb 26 11:09:43 ct523c-de7c kernel: iwlwifi 0000:28:00.0: WRT: Collecting data: ini trigger 4 fired (delay=0ms).
+
+
+Thanks,
+Ben
+
+> 
+> The race window opens when the MSIX IRQ handler schedules NAPI (lines
+> 2319-2321 in rx.c) before processing the error bit (lines 2382-2396),
+> or when NAPI is already running on another CPU from a previous interrupt
+> when STATUS_FW_ERROR gets set on the current CPU.
+> 
+> Add STATUS_FW_ERROR checks to both NAPI poll functions to prevent
+> processing stale RX data after firmware error, and add early-return
+> guards in the TX response and compressed BA notification handlers as
+> defense-in-depth. Each check uses WARN_ONCE to log if the race is
+> actually hit, which aids diagnosis of the hard-to-reproduce skb
+> use-after-free reported on Intel BE200.
+> 
+> Note that _iwl_trans_pcie_gen2_stop_device() already calls
+> iwl_pcie_rx_napi_sync() to quiesce NAPI during device teardown, but that
+> runs much later in the restart sequence. These checks close the window
+> between error detection and device stop.
+> 
+> Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+> ---
+> Changes since v1:
+>    - Added Fixes: tag and Cc: stable@vger.kernel.org
+> 
+> Tested on Intel BE200 (FW 101.6e695a70.0) by forcing NMI via debugfs.
+> The WARN_ONCE fires reliably:
+> 
+>    iwlwifi: NAPI MSIX poll[0] invoked after FW error
+>    WARNING: drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c:1058
+>             at iwl_pcie_napi_poll_msix+0xff/0x130 [iwlwifi], CPU#22
+> 
+> Confirming NAPI poll is invoked after STATUS_FW_ERROR is set. Without
+> this patch, that poll processes stale RX ring data from dead firmware.
+> 
+>   drivers/net/wireless/intel/iwlwifi/mld/tx.c   | 19 ++++++++++++++++++
+>   .../wireless/intel/iwlwifi/pcie/gen1_2/rx.c   | 20 +++++++++++++++++++
+>   2 files changed, 39 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+> index 3b4b575aadaa..3e99f3ded9bc 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+> @@ -1071,6 +1071,18 @@ void iwl_mld_handle_tx_resp_notif(struct iwl_mld *mld,
+>   	bool mgmt = false;
+>   	bool tx_failure = (status & TX_STATUS_MSK) != TX_STATUS_SUCCESS;
+>   
+> +	/* Firmware is dead — the TX response may contain corrupt SSN values
+> +	 * from a dying firmware DMA. Processing it could cause
+> +	 * iwl_trans_reclaim() to free the wrong TX queue entries, leading to
+> +	 * skb use-after-free or double-free.
+> +	 */
+> +	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
+> +		WARN_ONCE(1,
+> +			  "iwlwifi: TX resp notif (sta=%d txq=%d) after FW error\n",
+> +			  sta_id, txq_id);
+> +		return;
+> +	}
+> +
+>   	if (IWL_FW_CHECK(mld, tx_resp->frame_count != 1,
+>   			 "Invalid tx_resp notif frame_count (%d)\n",
+>   			 tx_resp->frame_count))
+> @@ -1349,6 +1361,13 @@ void iwl_mld_handle_compressed_ba_notif(struct iwl_mld *mld,
+>   	u8 sta_id = ba_res->sta_id;
+>   	struct ieee80211_link_sta *link_sta;
+>   
+> +	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
+> +		WARN_ONCE(1,
+> +			  "iwlwifi: BA notif (sta=%d) after FW error\n",
+> +			  sta_id);
+> +		return;
+> +	}
+> +
+>   	if (!tfd_cnt)
+>   		return;
+>   
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
+> index 619a9505e6d9..ba18d35fa55d 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
+> @@ -1015,6 +1015,18 @@ static int iwl_pcie_napi_poll(struct napi_struct *napi, int budget)
+>   	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
+>   	trans = trans_pcie->trans;
+>   
+> +	/* Stop processing RX if firmware has crashed. Stale notifications
+> +	 * from dying firmware (e.g. TX completions with corrupt SSN values)
+> +	 * can cause use-after-free in reclaim paths.
+> +	 */
+> +	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status))) {
+> +		WARN_ONCE(1,
+> +			  "iwlwifi: NAPI poll[%d] invoked after FW error\n",
+> +			  rxq->id);
+> +		napi_complete_done(napi, 0);
+> +		return 0;
+> +	}
+> +
+>   	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
+>   
+>   	IWL_DEBUG_ISR(trans, "[%d] handled %d, budget %d\n",
+> @@ -1042,6 +1054,14 @@ static int iwl_pcie_napi_poll_msix(struct napi_struct *napi, int budget)
+>   	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
+>   	trans = trans_pcie->trans;
+>   
+> +	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status))) {
+> +		WARN_ONCE(1,
+> +			  "iwlwifi: NAPI MSIX poll[%d] invoked after FW error\n",
+> +			  rxq->id);
+> +		napi_complete_done(napi, 0);
+> +		return 0;
+> +	}
+> +
+>   	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
+>   	IWL_DEBUG_ISR(trans, "[%d] handled %d, budget %d\n", rxq->id, ret,
+>   		      budget);
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
+
 
