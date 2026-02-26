@@ -1,92 +1,92 @@
-Return-Path: <stable+bounces-219748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNhoDYvFn2kRdwQAu9opvQ
-	(envelope-from <stable+bounces-219748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 05:01:15 +0100
+	id kJwJOLvFn2kRdwQAu9opvQ
+	(envelope-from <stable+bounces-219749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 05:02:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4AA1A0BE6
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 05:01:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB151A0BFC
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 05:02:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C31F53042B5F
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 04:00:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77B6430A1545
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 04:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C815E38947D;
-	Thu, 26 Feb 2026 04:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B561B38947D;
+	Thu, 26 Feb 2026 04:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="VMAceVJ2"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Nji0txb6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
+Received: from mail-vk1-f225.google.com (mail-vk1-f225.google.com [209.85.221.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7502630F927
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 04:00:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0373815C4
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 04:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772078426; cv=none; b=oecSs5H3oJWankUJHEoPf7SNHxC8UW6lmZ5w1fFqQXMO5L87iKAj6ec30u+0W8NoZA/gZQCbD+l7tZoNJ9TdmAvtnlAMTEuB/IGi1B63VrGFHac+QjB+MiwcUbV6LLPBl3d5fr3CK0aEXFmqB9PzhcL/7tcjH39yM+rUATF2fvI=
+	t=1772078445; cv=none; b=V55sH8m0tz81D2ip5/rFvNHw9E+DML+C3jFo9YDvia6PSv00i1dnw4SAny397fGLdalYhefCFKnawnC2CLpMAr0YDt6bdwctU9XGNiGDBUD7wqYTY0wL7PockqZYKqPuSmYww9rptB1qDBIvQOORjLWLjRIvUnYw6poPGdPD29M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772078426; c=relaxed/simple;
-	bh=p4ObQhsGaquv0/UOLFNM3wnBoRUtCqhdQS05+BaaZZM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NWDvQHY8GC2BOuAL4t/I92yxThqOBnGTMS3JUm1bV15bHrUP2X1e+quMSUJ4QjP8ig5tIgDFOsM8Gy6uR7/dQkBVWccWnJGlGd2E2PzuyiQNnJ6WmNB2TxTvuxUgT0bVZM+65kp01qVUOlb2WCLwjdrBCCRD8Mb0jWnFqZ7mpQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=VMAceVJ2; arc=none smtp.client-ip=209.85.214.225
+	s=arc-20240116; t=1772078445; c=relaxed/simple;
+	bh=OCwdj7Oh5C+efhQCrlN1d+zmPFTrH4fhSIEXXLkQ4sM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YhfTBRXAutY0E2KVw+bwNeb/yoHQ29bJZDD8RQwZQS2q6ZS+Kamg0BYAv027H9wqmcWAgsyElWq/VKOJ/pQxaiN09lXeteeLZl09cMhCDAPCMjcHg8u3B5AXfpzhQ4JvyGVltp4xn08YX2qGU3LX25o7UVHSBNPbFyHz2xBF0OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Nji0txb6; arc=none smtp.client-ip=209.85.221.225
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2aae38670daso268875ad.3
-        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 20:00:25 -0800 (PST)
+Received: by mail-vk1-f225.google.com with SMTP id 71dfb90a1353d-56a96ef0feaso4770e0c.2
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 20:00:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772078425; x=1772683225;
+        d=1e100.net; s=20230601; t=1772078443; x=1772683243;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=95I2cawC7z6ZKTb4xOnbEbjbg0EhuyvB5ErtjRNQPtM=;
-        b=dHHQfVJcTkyNjNY2TxveUIDfgiqwHAKuQHrpEKmsE/v2DzW+S0EGiefVHWbbqh9Whn
-         0jenN6WHe5h0pn4oNTiDFcUG3RxKtOrY8E/wA4ltZf4XWs4cACk728iL2oPnaP9l8Pw8
-         Wksr1McH5o+hUuPO+Vw6FrzsG88xhzH4Hsb4p5yQJohx08+pyC5SQrcyRcm4ee1UiBsu
-         xFL7wOn9IounAuxAapaCWwcj2pWBgFcYBbxDqTqgc0L7V9yLHxwXSDJiWnyhY7RcVB0D
-         v5OSW6tAyzuEoralAPrnYLiAluCdIERY0SaOVeZ/C3pMF7+l5MjHoknuncCFcWARY+57
-         xjiQ==
-X-Gm-Message-State: AOJu0YwxSuBSl2yM3zzNyUxdx9Id3uzpKYUFr/+TaExpJVw01LGbeGvL
-	kOCxNzUXX5W6VSXk//2pJTGqsqsBSlwJ9cI1YQRkNP2w1p4koHXuUllEdc//Tr0HippPVUSDE+R
-	v5VDdFAyKlbzb0cqo4cCIYA5EtDKbVAFtQBrDWt9P8rv+nr4FMDJ9XEJ6PCBoypOVNnpvWthQBw
-	t1oSTjDP0N9fRoMsLfQwcAQLBa+2SxxQDgIm5VjaK2DDMeJV4eWTeu7O0j2exPuAMZYINEbyind
-	E4JjzgRuKeJGqbfje495jqcMSejFUI=
-X-Gm-Gg: ATEYQzxol40/Wua22S//bc+rV8UXtScxzOPFrIBMVdUu7zIC6HX7axXoVGKVLfgI6TQ
-	6kwT5gZauQYwAaanZToJcRCOx5G3xj/Rgiia3GBg8GHh8VFc5OPSAMAGn+c9hUyDedAH3N9aBLs
-	CntTD2QeOmAiFV0DYyKDooOx+HuTVIvnDce0+uW4SImPnHd9km41COrFaLr8ufd6NVQIyEZSj9c
-	JIHf6SBD+lNMU5SxWGXovQKRuKlteToxL8AagXJAdGzHw3tBUPTUNmM9d4WLNuO+2q5tU4qe4Vk
-	Du5+xlaDliX9Q6KqwLMepWZpQHX40KlPQF6H5MC3P3U+nginYDAwwWpPOP44dicnX54pw0lhygj
-	HoqXK+HscFBeEnpsExkXpeMARFLNHyaLTAa2cNuVo7h0k0FvVi4akpH5hOFHHQjOsVSlMDc3eYz
-	H4Tfn5TkY7ZEGpdWVxeqyYcvmaqSYMwdwCh/t/oRA5+HFKiSuqgAquvfeAAsgLbujlHLLAjbHAQ
-	LQR
-X-Received: by 2002:a17:903:234e:b0:2a9:5fa7:3d9b with SMTP id d9443c01a7336-2ad7452f60emr110624765ad.7.1772078424646;
-        Wed, 25 Feb 2026 20:00:24 -0800 (PST)
+        bh=ygNO1gCaOojuV3uvydJE9/w7V+rMBG5fJx8eoEfJcQI=;
+        b=uFSJ1DJJK/QBtwhQKLKOPe7v1D6ctF9QrVnhEfNX4uWvBYNp0KMpQldnWbvzdnXxgn
+         pwqBNu8/OlHUU3jAiUmLKWo9/s7+Qd0FKOGA8ygmokfPsE3/k3QxNv6FDtag/6bAueVC
+         MRZKg3qxsJCyRXQIMTPOEx2D2L7iNG24tf/ntBFOyl8tN10u6jYdE3TDw334uNHo7Q5U
+         qC0CDimrDkaCCcUKawB8RrEUMDrvBJz0qQByiAeF/2PfM8lI5iy55YLfwVAJY9iHKOiI
+         Kd5yIwEWHiQT8oGn4wowUJrqanuD0LDf7G7TBs7fRuXF8J1vGxkWLPCpXXWrWG+pMNfp
+         PGgQ==
+X-Gm-Message-State: AOJu0YzoORtFq0WmIxjql9d7s0Cf9vzRGUTuW+CPnQ61r4obkRdGnk0F
+	FYeTLCmLbXPhZU+5fdoOqcxm//lRU7XikYayd+twbqY8Uwfd79VWN8kH4KxUBPe3cvfueHarzrj
+	VIMU5rfFajp6te4nOp6L3nUVhsAkr5FllWxczFYlsBBkZzFdeMoPtfpNCtSNzuF/neJm/GbmGrY
+	YnxlEBKqx7Fr7ZhiKhQwm+TnQTK/TpGJpbg8LKK2cIahO4X+nHGD8ejU/JyeQ1fLeaR7ne0O5gZ
+	owFR0i/xL3ANnkmkBMqOPQF/1CZ6gQ=
+X-Gm-Gg: ATEYQzzfARa7dca72BI/SEd1Dt8grxzF1dagFcSa48FvOuN4TEwvE0M4ocVCBXfOgGF
+	Fvfbj3ustUoT+t6K/S5a/V2zo1CsxPhyy1B9yNCHz05yEIR65yJO8C7mQV8pPUloFr+5Eeq573O
+	iXzujwsBn9nIpkLROZmjDNxWUI7DEAOBswvfVNWRRUj3AZ/hVfqyYj0DOw/fB7CfdzXXoBSuYTn
+	Zlq93UvZzu5coPdJcgVlfs1ZBBMkJb+NgNn2GKhKVh3H46+cU9CZlU023evWVXu1wQyv0y22e8q
+	dnjuim3/cl2Xk0KxuYLJ07Vmal1qsmezUhHjGz9MnymPkfUCu0leqq4ZVZUqkR4V3jM+eb+riGY
+	ESaXMym7pADtmvgtNUPvxvCsHfOxo5Znr9whx4muQgUWl/doeuedrDB41YVz/Pfws7z0cvIUKVX
+	JD0BFUaDlGuy8+dquV9OOhssTYbwXNDavjliduINsx2Lyo8IX9CsZ3C+A4nTsMh/n/yIoJ3yEjM
+	05b
+X-Received: by 2002:a05:6122:680d:10b0:566:3608:f8db with SMTP id 71dfb90a1353d-568e486959amr3209072e0c.2.1772078442578;
+        Wed, 25 Feb 2026 20:00:42 -0800 (PST)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-118.dlp.protect.broadcom.com. [144.49.247.118])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2adfb5dbafesm1249385ad.34.2026.02.25.20.00.24
+        by smtp-relay.gmail.com with ESMTPS id 71dfb90a1353d-56a91b8c47fsm143286e0c.2.2026.02.25.20.00.41
         for <stable@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 25 Feb 2026 20:00:24 -0800 (PST)
+        Wed, 25 Feb 2026 20:00:42 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8cb50fb0abdso33280585a.1
-        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 20:00:23 -0800 (PST)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8954937be97so5114686d6.1
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 20:00:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1772078423; x=1772683223; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1772078441; x=1772683241; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=95I2cawC7z6ZKTb4xOnbEbjbg0EhuyvB5ErtjRNQPtM=;
-        b=VMAceVJ28AOsolKJpepNBUmjjVV/MQuJa++lYVe9qCwmjLZsQOSzYOYppv7AlJ01TL
-         U60lmM1ZCC8lFJ+eMj+lCJguR5SCzFOqJpgEJQm0KPReNybP4T2/ZdwGAuV6DKMnP7xW
-         jxuEzEKRSOFkpNaxkGbYP41bxxFlhxGfyX0d0=
-X-Received: by 2002:a05:620a:6910:b0:8cb:52c2:6f19 with SMTP id af79cd13be357-8cb8ca764b3mr1787884085a.7.1772078422581;
-        Wed, 25 Feb 2026 20:00:22 -0800 (PST)
-X-Received: by 2002:a05:620a:6910:b0:8cb:52c2:6f19 with SMTP id af79cd13be357-8cb8ca764b3mr1787874285a.7.1772078421559;
-        Wed, 25 Feb 2026 20:00:21 -0800 (PST)
+        bh=ygNO1gCaOojuV3uvydJE9/w7V+rMBG5fJx8eoEfJcQI=;
+        b=Nji0txb62+D4NDlmPaxgOitqy7XSmkh0f7umFdeip6Y+5CkGbR3UDVyM5PuP9EKNAw
+         rSOCfgcT/pmppZWKjNLdkxP6BnjiKDXQqu1YC9ypEuTz2FZBkRgejdchvfitCTgnsZVv
+         d6moqnDNnhZ2sHHHxC96Flhk/fOYmqZipiRwc=
+X-Received: by 2002:a05:6214:8011:b0:899:b749:d40b with SMTP id 6a1803df08f44-899b749d509mr48891356d6.0.1772078440681;
+        Wed, 25 Feb 2026 20:00:40 -0800 (PST)
+X-Received: by 2002:a05:6214:8011:b0:899:b749:d40b with SMTP id 6a1803df08f44-899b749d509mr48890886d6.0.1772078439948;
+        Wed, 25 Feb 2026 20:00:39 -0800 (PST)
 Received: from keerthanak-ph5-dev.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6541f1sm103331185a.3.2026.02.25.20.00.18
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf67814bsm118473585a.17.2026.02.25.20.00.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 20:00:20 -0800 (PST)
+        Wed, 25 Feb 2026 20:00:39 -0800 (PST)
 From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -108,9 +108,9 @@ Cc: davem@davemloft.net,
 	Sasha Levin <sashal@kernel.org>,
 	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
 	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v3 v6.1-v6.6] ipv6: use RCU in ip6_xmit()
-Date: Thu, 26 Feb 2026 03:55:08 +0000
-Message-ID: <20260226035508.3222136-1-keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v3 v5.10-v5.15 ] ipv6: use RCU in ip6_xmit()
+Date: Thu, 26 Feb 2026 03:55:28 +0000
+Message-ID: <20260226035528.3222150-1-keerthana.kalyanasundaram@broadcom.com>
 X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -126,13 +126,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219748-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219749-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:mid,broadcom.com:dkim,broadcom.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	MIME_TRACE(0.00)[0:+];
@@ -145,10 +145,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[broadcom.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 7E4AA1A0BE6
+X-Rspamd-Queue-Id: 5FB151A0BFC
 X-Rspamd-Action: no action
 
 From: Eric Dumazet <edumazet@google.com>
@@ -167,17 +167,17 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 ---
-Changes in v3:
-- Updated authors
+Changes in v2:
+- None
 
  net/ipv6/ip6_output.c | 35 +++++++++++++++++++++--------------
  1 file changed, 21 insertions(+), 14 deletions(-)
 
 diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index f7a225da8525..4ea4da0e71c9 100644
+index 426330b8d..3411da42a 100644
 --- a/net/ipv6/ip6_output.c
 +++ b/net/ipv6/ip6_output.c
-@@ -258,35 +258,36 @@ bool ip6_autoflowlabel(struct net *net, const struct ipv6_pinfo *np)
+@@ -255,33 +255,34 @@ bool ip6_autoflowlabel(struct net *net, const struct ipv6_pinfo *np)
  int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
  	     __u32 mark, struct ipv6_txoptions *opt, int tclass, u32 priority)
  {
@@ -187,8 +187,6 @@ index f7a225da8525..4ea4da0e71c9 100644
  	struct dst_entry *dst = skb_dst(skb);
 -	struct net_device *dev = dst->dev;
  	struct inet6_dev *idev = ip6_dst_idev(dst);
- 	struct hop_jumbo_hdr *hop_jumbo;
- 	int hoplen = sizeof(*hop_jumbo);
 +	struct net *net = sock_net(sk);
  	unsigned int head_room;
 +	struct net_device *dev;
@@ -202,7 +200,7 @@ index f7a225da8525..4ea4da0e71c9 100644
 +	rcu_read_lock();
 +
 +	dev = dst_dev_rcu(dst);
- 	head_room = sizeof(struct ipv6hdr) + hoplen + LL_RESERVED_SPACE(dev);
+ 	head_room = sizeof(struct ipv6hdr) + LL_RESERVED_SPACE(dev);
  	if (opt)
  		head_room += opt->opt_nflen + opt->opt_flen;
  
@@ -222,7 +220,7 @@ index f7a225da8525..4ea4da0e71c9 100644
  	}
  
  	if (opt) {
-@@ -348,17 +349,21 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
+@@ -329,17 +330,21 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
  		 * skb to its handler for processing
  		 */
  		skb = l3mdev_ip6_out((struct sock *)sk, skb);
@@ -249,7 +247,7 @@ index f7a225da8525..4ea4da0e71c9 100644
  	skb->dev = dev;
  	/* ipv6_local_error() does not require socket lock,
  	 * we promote our socket to non const
-@@ -367,7 +372,9 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
+@@ -348,7 +353,9 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
  
  	IP6_INC_STATS(net, idev, IPSTATS_MIB_FRAGFAILS);
  	kfree_skb(skb);
@@ -261,6 +259,6 @@ index f7a225da8525..4ea4da0e71c9 100644
  EXPORT_SYMBOL(ip6_xmit);
  
 -- 
-2.43.7
+2.40.4
 
 
