@@ -1,183 +1,285 @@
-Return-Path: <stable+bounces-219782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EI/mOAoVoGlifgQAu9opvQ
-	(envelope-from <stable+bounces-219782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 10:40:26 +0100
+	id iL0BCckYoGmzfgQAu9opvQ
+	(envelope-from <stable+bounces-219783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 10:56:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2191A39C2
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 10:40:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FAC81A3D2C
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 10:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DDC53301492D
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 09:37:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE0BC3142A1A
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 09:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10212314A8D;
-	Thu, 26 Feb 2026 09:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2961E39447F;
+	Thu, 26 Feb 2026 09:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JtldNkl8"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="Z5bkXRIk"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1640314D15;
-	Thu, 26 Feb 2026 09:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928AA399036;
+	Thu, 26 Feb 2026 09:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772098629; cv=none; b=em0P4o8niEBP/oBg+4PMDiUTkd+eLZVn3FeSbdRkdRci4YqBG9hhfLaok9E+++8nJqTMipJcLNMrpy4niW+R/TlyxfHraQ25uZgqkgzxwR7ZYIKlOeluagiX4fEa9Sp/E3Q3qBDk9m85GxfXA9L3hCZd1w+B4E6/CdynH+a1w8A=
+	t=1772099094; cv=none; b=jAPggMiZGn5V5PblLfnongm5lvrwA1Bwy4Ns7cqnJoRKwFZdLxgNjVqjz7nwjPxKoZ1BU/9H/isR1SwLXqoEPvMZ865eLIhLuthEdMA0xVF9Av+ZkGCAacYsqCgASDULXPutVA4VjVDYcy80AqTFufZMQEJO9OYZGDNu2hp2kEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772098629; c=relaxed/simple;
-	bh=H6GZiImvNP0gAy6tyvxgg+R5ARJ5SpM+azXA7QuHdhA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A/EqLZkoyC8dAR/YO6TUj5OJ2C3YpCRnscf1b8ElIjFN9NHIzCjrUpysU/MdACoOsqCKKU289yp3eAsSoedyck7Bah4vCixz/NI39Nxdv36B7xlU+N2iiOvYo6Rmi89AIvcldkl7Yv+cIYD4nPWnrT9BlvJyqtOk+/7YF4DXBLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JtldNkl8; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PNK3pR3519625;
-	Thu, 26 Feb 2026 09:37:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:sender:subject:to; s=pp1;
-	 bh=znsqjWpdh2QklVYbeWYpph8yYSRcfRYvBWqRy+n3mKs=; b=JtldNkl8eHs4
-	2FzQC+YuKFJm+1PF00N6efaNSkvdp2wf4ivapmzWjCQLlwzG538oLNEA0rF/Ceen
-	qDBtmHao9vCQgv5n0zw5KjFIUdehykkMfGtq8rMMnlfjQNxJ4a0IrmRoAegAm9o9
-	iXgvm1qManQKtIdVf5QHTNGOwyd5kSPr8JlDeHiMgpRWEhxtHIikRLuaiexTlX9B
-	WKqySLl/RxDCpcLpr+2NgsGgVXHB+OcX0XEO8URZ/+Aa0aG8lUfsXAeIEHhtsFNL
-	+8MqsxkovrhAcaAUPMImqYQ4tfMywAVFbGC49Ge+XbkyxTbsn561KyXQWxbiFNFp
-	GkWTHdrNWw==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4725jfr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 09:37:05 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61Q6drOZ015750;
-	Thu, 26 Feb 2026 09:37:03 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfq1stj7c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 09:37:03 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61Q9avZr48103764
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Feb 2026 09:36:57 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C80432004D;
-	Thu, 26 Feb 2026 09:36:57 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B5C422004B;
-	Thu, 26 Feb 2026 09:36:57 +0000 (GMT)
-Received: from p1gen4-pw042f0m (unknown [9.52.223.163])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 26 Feb 2026 09:36:57 +0000 (GMT)
-Received: from bblock by p1gen4-pw042f0m with local (Exim 4.99.1)
-	(envelope-from <bblock@linux.ibm.com>)
-	id 1vvXnl-00000000QGz-1uhY;
-	Thu, 26 Feb 2026 10:36:57 +0100
-Date: Thu, 26 Feb 2026 10:36:57 +0100
-From: Benjamin Block <bblock@linux.ibm.com>
-To: ionut.nechita@windriver.com
-Cc: bhelgaas@google.com, helgaas@kernel.org, sebott@linux.ibm.com,
-        schnelle@linux.ibm.com, alifm@linux.ibm.com, julianr@linux.ibm.com,
-        dtatulea@nvidia.com, ionut_n2001@yahoo.com, sunlightlinux@gmail.com,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/1] PCI/IOV: Add reentrant locking in
- sriov_add_vfs/sriov_del_vfs
-Message-ID: <20260226093657.GA47077@p1gen4-pw042f0m>
-References: <20260225202434.18737-1-ionut.nechita@windriver.com>
+	s=arc-20240116; t=1772099094; c=relaxed/simple;
+	bh=E7N92gzXpH05h23WdhX6bsUGcMmNWSNLUuFYwgCc9uA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FcFMBMQ+2w5VUHuP90HH07dmHHJ60F95OeRHNTA/o1USnRKzbDIlUR+5ZrAEY9k5I8SFX01GRFbcSqWTal1wMxbfjL2phuMgais06A2uiqKhe56jw7+3Ain8GckcOkJX08Kh7h1DBKHBmcthXgmr+sL/++xG2d+AHWZtNU4Jn7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=Z5bkXRIk; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1772099090;
+	bh=C+isJdGDTiiQ6TnD/DAtbrRXRdlm8oylfOj/2zTVcd0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=Z5bkXRIkAL9O5K2+Wmwig9R5HkrtZ2cpw+nZqMppE0F8grMS6uUYqEttKRE6BH877
+	 YY59sZuuRj2OdAhNEqZQdnkr9R9tnl8M2B0EsunBSaOwyGHjnB/v6btGxxJBMLSnPN
+	 UYTlfLz+B+WMI2/d2a4zzLXpvsL5eYXVvBhck9bE=
+Received: from [127.0.0.1] (2607-8700-5500-e873-0000-0000-0000-1001.16clouds.com [IPv6:2607:8700:5500:e873::1001])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id D5F361A4242;
+	Thu, 26 Feb 2026 04:44:45 -0500 (EST)
+Message-ID: <343022ca4deda29affa70f399d238049078d8832.camel@xry111.site>
+Subject: Re: [PATCH] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
+From: Xi Ruoyao <xry111@xry111.site>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>, WANG Rui <wangrui@loongson.cn>, 
+ Mingcong Bai <jeffbai@aosc.io>, Zixing Liu <liushuyu@aosc.io>, "H . Peter
+ Anvin" <hpa@zytor.com>, 	stable@vger.kernel.org, "Peter Zijlstra (Intel)"
+ <peterz@infradead.org>,  Menglong Dong <menglong8.dong@gmail.com>, Bibo Mao
+ <maobibo@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>,  Hanlu Li
+ <lihanlu@loongson.cn>, Nathan Chancellor <nathan@kernel.org>, Jiaxun Yang	
+ <jiaxun.yang@flygoat.com>, Ard Biesheuvel <ardb@kernel.org>, Wentao Guan	
+ <guanwentao@uniontech.com>, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Date: Thu, 26 Feb 2026 17:44:44 +0800
+In-Reply-To: <CAAhV-H4pUw_OOSbQOLO5pZUmkYU1F0_13GAMzKmkzedBPdYOAA@mail.gmail.com>
+References: <20260225104607.3803060-1-xry111@xry111.site>
+	 <CAAhV-H4pUw_OOSbQOLO5pZUmkYU1F0_13GAMzKmkzedBPdYOAA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260225202434.18737-1-ionut.nechita@windriver.com>
-Sender: Benjamin Block <bblock@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: d8MjlFZH7UB5Sux_-LAI0kLb5rBZ6i3w
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDA4MiBTYWx0ZWRfXwN3fzUfAicJt
- fIkCQEcmCmT1YqWw7gWmy4emosNFyblCP9hQbprZoyKpp0WS1hU9ZTMbkwk9TyQoRQnm97ehCRR
- 00ZeWgXDvYso1IVg8lIVvtm15gaUtF7HdkXfdU7Jg9LA7PPThWIvVJfoz+Y1st7GnhKGl74HulA
- SONY1OmcY0nIOIi9GsaFq5rzLsWwiiW8viWSk+Vnl4pzI8jPexWD3fR3ZtkEzj0PiKWc+sMPbaR
- eXq0L1wg0niobXfZp0tfY0/xBVItOz8RXaESqaoLVV22YpxUV4xYKa6wXEhx38KlRP5hame5kte
- UjUlWBYCA8jeZ0LmgFhHrLS2t3GGVih0FO4FOqPnq6r/LQEnUx45wwRAGWezFu6sTxnmY096efd
- Z7Z+BuB4pqSBcLKotKsVjqk0PBXs6be1XEJ9+YRZb2N1x7W8WYEh5mzg80IfakIUKtgdcEAwvsM
- AEr785pfAtJVYxWshSQ==
-X-Authority-Analysis: v=2.4 cv=R7wO2NRX c=1 sm=1 tr=0 ts=69a01441 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=8nJEP1OIZ-IA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=t7CeM3EgAAAA:8 a=Um52qBV4cRY_e17fMekA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: -c_u1tUD_uOs79revI-QwVmvAD6QTi5O
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-25_04,2026-02-25_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1015 impostorscore=0 phishscore=0 spamscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602260082
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[google.com,kernel.org,linux.ibm.com,nvidia.com,yahoo.com,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-219782-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219783-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bblock@linux.ibm.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[xen0n.name,loongson.cn,aosc.io,zytor.com,vger.kernel.org,infradead.org,gmail.com,kernel.org,flygoat.com,uniontech.com,lists.linux.dev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_TWELVE(0.00)[12];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.985];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[xry111.site:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,windriver.com:email]
-X-Rspamd-Queue-Id: 4A2191A39C2
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,loongson.cn:email,xry111.site:mid,xry111.site:dkim,xry111.site:email]
+X-Rspamd-Queue-Id: 6FAC81A3D2C
 X-Rspamd-Action: no action
 
-Hey Ionut,
+On Thu, 2026-02-26 at 17:22 +0800, Huacai Chen wrote:
+> Hi, Ruoyao,
+>=20
+> On Wed, Feb 25, 2026 at 6:46=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wr=
+ote:
+> >=20
+> > With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
+> > of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
+> > empty.=C2=A0 This is not valid, as the current DWARF specification mand=
+ates
+> > the first byte of the EH frame to be the version number 1.=C2=A0 It cau=
+ses
+> > some unwinders to complain, for example the ClickHouse query profiler
+> > spams the log with messages:
+> >=20
+> > =C2=A0=C2=A0=C2=A0 clickhouse-server[365854]: libunwind: unsupported .e=
+h_frame_hdr
+> > =C2=A0=C2=A0=C2=A0 version: 127 at 7ffffffb0000
+> >=20
+> > Here "127" is just the byte located at the p_vaddr (0, i.e. the
+> > beginning of the vDSO) of the empty GNU_EH_FRAME segment.
+> > Cross-checking with /proc/365854/maps has also proven 7ffffffb0000 is
+> > the start of vDSO in the process VM image.
+> >=20
+> > In LoongArch the -fno-asynchronous-unwind-tables option seems just a
+> > MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specifi=
+c
+> > "genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
+> > use -fno-asynchronous-unwind-tables").=C2=A0 IIUC it indicates some inh=
+erent
+> > limitation of the MIPS ELF ABI and has nothing to do with LoongArch.=C2=
+=A0 So
+> > we can simply flip it over to -fasynchronous-unwind-tables and pass
+> > --eh-frame-hdr for linking the vDSO, allowing the profilers to unwind t=
+he
+> > stack for statistics even if the sample point is taken when the PC is i=
+n
+> > the vDSO.
+> >=20
+> > However simply adjusting the options above would exploit an issue: when
+> > the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
+> > falled back to a machine-specific routine to match the code pattern of
+> > rt_sigreturn and extract the registers saved in the sigframe if the cod=
+e
+> > pattern is matched.=C2=A0 As unwinding from signal handlers is vital fo=
+r
+> > libgcc to support pthread cancellation etc., the fall-back routine had
+> > been silently keeping the LoongArch Linux systems functioning since
+> > Linux 5.19.=C2=A0 But when we start to emit GNU_EH_FRAME with the corre=
+ct
+> > format, fall-back routine will no longer be used and libgcc will fail
+> > to unwind the sigframe, and unwinding from signal handlers will no
+> > longer work, causing dozens of glibc test failures.=C2=A0 To make it po=
+ssible
+> > to unwind from signal handlers again, it's necessary to code the unwind
+> > info in __vdso_rt_sigreturn via .cfi_* directives.
+> >=20
+> > The offsets in the .cfi_* directives depend on the layout of struct
+> > sigframe, notably the offset of sigcontect in the sigframe.=C2=A0 To us=
+e the
+> > offset in the assembly file, factor out struct sigframe into a header t=
+o
+> > allow asm-offsets.c to output the offset for assembly.
+> >=20
+> > To work around a long-term issue in the libgcc unwinder (the pc is
+> > unconditionally substracted by 1: doing so is technically incorrect for
+> > a signal frame), a nop instruction is included with the two real
+> > instructions in __vdso_rt_sigreturn in the same FDE PC range.=C2=A0 The=
+ same
+> > hack has been used on x86 for a long time.
+> >=20
+> > Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> > ---
+> > =C2=A0arch/loongarch/include/asm/sigframe.h | 22 ++++++++++++++
+> > =C2=A0arch/loongarch/kernel/asm-offsets.c=C2=A0=C2=A0 |=C2=A0 2 ++
+> > =C2=A0arch/loongarch/kernel/signal.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 |=C2=A0 6 +---
+> > =C2=A0arch/loongarch/vdso/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0 4 +--
+> > =C2=A0arch/loongarch/vdso/sigreturn.S=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 | 44 ++++++++++++++++++++++++---
+> > =C2=A05 files changed, 67 insertions(+), 11 deletions(-)
+> > =C2=A0create mode 100644 arch/loongarch/include/asm/sigframe.h
+> >=20
+> > diff --git a/arch/loongarch/include/asm/sigframe.h b/arch/loongarch/inc=
+lude/asm/sigframe.h
+> > new file mode 100644
+> > index 000000000000..6889bcf5dc88
+> > --- /dev/null
+> > +++ b/arch/loongarch/include/asm/sigframe.h
+> > @@ -0,0 +1,22 @@
+> > +/* SPDX-License-Identifier: GPL-2.0+ */
+> > +/*
+> > + * Separated from arch/loongarch/kernel/signal.c:
+> > + *
+> > + * Author: Hanlu Li <lihanlu@loongson.cn>
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Huacai Chen <chenhu=
+acai@loongson.cn>
+> > + * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
+> > + *
+> > + * Derived from MIPS:
+> > + * Copyright (C) 1991, 1992=C2=A0 Linus Torvalds
+> > + * Copyright (C) 1994 - 2000=C2=A0 Ralf Baechle
+> > + * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
+> > + * Copyright (C) 2014, Imagination Technologies Ltd.
+> > + */
+> I think we don't need to copy so many lines here, they are enough in sign=
+al.c.
 
-On Wed, Feb 25, 2026 at 10:24:33PM +0200, ionut.nechita@windriver.com wrote:
-> This is v3 of the patch adding owner-tracked reentrant locking for
-> pci_rescan_remove_lock in sriov_add_vfs() and sriov_del_vfs(), to
-> serialize VF addition/removal against concurrent hotplug events
-> (including platform-generated events on s390) without deadlocking
-> on paths that already hold the lock.
-> 
-> Rebased on linux-next (next-20260225).
-> 
-> No code changes from v2. Only added collected tags.
-> 
-> Changes in v3:
->  - Rebased on linux-next (next-20260225)
->  - Added Tested-by from Dragos Tatulea (NVIDIA)
->  - Added Reviewed-by from Benjamin Block (IBM)
+Will remove them in V2.
 
-I am reviewing/testing the patch, but I have not given you my Reviewed-by yet.
+> > +
+> > +#include <uapi/asm/ucontext.h>
+> Is it a requirement that the UAPI header should be the first?
 
--- 
-Best Regards, Benjamin Block        /        Linux on IBM Z Kernel Development
-IBM Deutschland Research & Development GmbH    /   https://www.ibm.com/privacy
-Vors. Aufs.-R.: Wolfgang Wendt         /        Geschäftsführung: David Faller
-Sitz der Ges.: Ehningen     /     Registergericht: AmtsG Stuttgart, HRB 243294
+I don't think so, and it seems the uapi/ component isn't needed here (as
+Kbuild passes -Iarch/$(ARCH)/include/uapi).  I'd remove the uapi/
+component and move it after siginfo.h following the alphabetical order.
+
+> > +#include <asm/siginfo.h>
+
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * HACK: The dwarf2 unwind r=
+outine will subtract 1 from the return
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * address to get an address=
+ in the middle of the persumed call
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * instruction.=C2=A0 While =
+in libgcc there exists a logic to avoid
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * subtracting 1 for the sig=
+nal frame (a frame with the 'S'
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * augmentation that we've a=
+lready added via .cfi_signal_frame),
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * unfortunately it doesn't =
+really work: the check of signal frame
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * is at libgcc/unwind-dw2:1=
+008 in GCC 15.2.0, but the flag it
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * checks will only get upda=
+ted by the extract_cie_info call at line
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * 1025.=C2=A0 So include a =
+nop before the real start to make up for it.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * This is also the reason w=
+e don't use SYM_FUNC_START.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 nop
+> This hack is out of my knowledge, can "nop" be after SYM_START()?
+
+I guess we can do it if:
+
+diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.=
+c
+index e297d54ea638..b2c7f5754818 100644
+--- a/arch/loongarch/kernel/signal.c
++++ b/arch/loongarch/kernel/signal.c
+@@ -1009,7 +1009,7 @@ static void handle_signal(struct ksignal *ksig, struc=
+t pt_regs *regs)
+=20
+ 	rseq_signal_deliver(ksig, regs);
+=20
+-	ret =3D setup_rt_frame(vdso + current->thread.vdso->offset_sigreturn, ksi=
+g, regs, oldset);
++	ret =3D setup_rt_frame(vdso + current->thread.vdso->offset_sigreturn + 4,=
+ ksig, regs, oldset);
+=20
+ 	signal_setup_done(ret, ksig, 0);
+ }
+
+I.e. the FDE must include one instruction before what we set up as the
+return address of the signal handler.  But I don't think this would be
+prettier.
+>=20
+
+--=20
+Xi Ruoyao <xry111@xry111.site>
 
