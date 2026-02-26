@@ -1,133 +1,184 @@
-Return-Path: <stable+bounces-219773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAKRMdD9n2n3fAQAu9opvQ
-	(envelope-from <stable+bounces-219773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 09:01:20 +0100
+	id 0IYXCowBoGlrfQQAu9opvQ
+	(envelope-from <stable+bounces-219774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 09:17:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375D11A232F
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 09:01:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CA11A2627
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 09:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7AF713099145
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 08:00:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6ABF3041790
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 08:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744083921E8;
-	Thu, 26 Feb 2026 08:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43F83064AE;
+	Thu, 26 Feb 2026 08:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TY55YMad"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JWKt/VXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D2438F92B;
-	Thu, 26 Feb 2026 08:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F882BDC0B;
+	Thu, 26 Feb 2026 08:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772092801; cv=none; b=JzbUd0waLhNQV7jKhzp2cYEDD1NJDGiWhATZsZMave2URfEvq0xD6Vqx/EWqSLFaZWp+0voPB3UhRyE+tvHKnV5pkDLAtYEKZflLCjKmIIIJ/YkCRf+Me1TJGUW6aG5XRjvnTF/E+kckgnmG8kmhlME8DePnkgC6i0NijA3qpjA=
+	t=1772093820; cv=none; b=ueoT9xMc6ykp3Fme2sA0rhNOY/jzwUvnRGVsdKnicF/PrIpRR7TYGdd4rpDwA7XrOKF0gFxK59Dcq+PKKRPVOZ5A9R2aIdqYkWW/ZorpajYfKXOpv/jKv6Jcvfwb5yt7XfWqQozkQWVjtGvj71ZXIvHgfMfrhswj1gUBmCLYmLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772092801; c=relaxed/simple;
-	bh=OxUA/HKHa6M8YsD678+VwxX0wvygG/XYGujEnxOR5kI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=egA/C5f3vAcYAPb00/zxeDpAS7Dy83EF5UvY01MLUvyNsUqkbTH0OEePPEP4vgTnKYI17wQnuGbR7AV1U00zWvaojhXILofUhe9nzb32vV8RSf5BhKOfOXQF8hJSpTWAzD8RPut5FX7S+Nw1EXIN+Iwb1yO0u4ja6lc1vUsXWF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TY55YMad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6E7C19422;
-	Thu, 26 Feb 2026 07:59:59 +0000 (UTC)
+	s=arc-20240116; t=1772093820; c=relaxed/simple;
+	bh=+gGBp2tFSvf9ce8ZvXdjbIa0L0e347XIZ5YgOecuN1E=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sln4x5WX9a6DgPxRspT/M3ptlivzMyxgOFJHeTQ4bqjL8vjWxqvbl9gAzwuXBzhOluXKTcJW9mVnWUwHEh3FiTUSHsssRPM67+mvhULkEb/DnFf01g/uJFJqNC+xdwcOAGWY6fWROB3OiSTT/7bWAENYFaQf40YV0HcyskOdbp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JWKt/VXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21243C19422;
+	Thu, 26 Feb 2026 08:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772092800;
-	bh=OxUA/HKHa6M8YsD678+VwxX0wvygG/XYGujEnxOR5kI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TY55YMaddycepVTow/cdH3CDljHX6p0U9otFd+fUlysIMTqhz+hWFZ3SC+W/HBiN1
-	 9Dted4TS+xLrl528CtqvOekC2gLmbLkjB5dpAlvxABYunQXKG3vH2lniAmQ7IGq+We
-	 a1YoPI+JGpJv4XEwmiCzSia3wlsPTuFtG93/dlXOoHe2QTUszTfYuVpNjK7na27D1M
-	 JZ4VhfyhnPaZpfuMB1ykowx5EnC4dUJ/6nVqn4KErAJEo0rKGp8aWVrA/JOYKORnil
-	 HUf1SjPWy0BlSWW9FihA2VmcYqjH316TUzKFwKcckO9Q3bqqatH3twVFtlHiJ6PgOm
-	 IOxdLwCDk6GjQ==
-Message-ID: <2925f3d4-ee22-4dea-958b-fbcab94f76a9@kernel.org>
-Date: Thu, 26 Feb 2026 16:59:57 +0900
+	s=k20201202; t=1772093820;
+	bh=+gGBp2tFSvf9ce8ZvXdjbIa0L0e347XIZ5YgOecuN1E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JWKt/VXIwAnGoCw1JoMUNsqfRXjZWNLQOkcf74f8OPA44n2im9gOibpDVlNRLX6LE
+	 uXPzxdOwtjPFwo9k6Y3b4kAIpG4tiK87QuZdI9Y+eoP5hSkWjxUfGZC4C50GZkF0D4
+	 DmIBadyVsRFjM9WPu+KY1j65NlY/RAczskDdlSiFU0pHXVjGDSu7k1i9W83rqELOTI
+	 jmob44SWNaGvdXpx9FH0EmELozbMhEZiCXJdKSqsoFoUBaIX5BgKCBfGywzucl68im
+	 R/3LGzhznoBoq9HkFMYDUqDKygSANei0fyfoaZfN+DGP33urN8dz5QaSvBd7Ptiiky
+	 8xNcIB5ZWazmw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vvWYL-0000000DyCT-2KqH;
+	Thu, 26 Feb 2026 08:16:57 +0000
+Date: Thu, 26 Feb 2026 08:16:57 +0000
+Message-ID: <875x7jex6u.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Will Deacon <will@kernel.org>
+Cc: Ben Horgan <ben.horgan@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Hyesoo Yu <hyesoo.yu@samsung.com>,
+	Quentin Perret <qperret@google.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: Force the use of CNTVCT_EL0 in __delay()
+In-Reply-To: <aZ95V8XIYYysd13m@willie-the-truck>
+References: <20260213141619.1791283-1-maz@kernel.org>
+	<aZw3EGs4rbQvbAzV@e134344.arm.com>
+	<86ldgja5v3.wl-maz@kernel.org>
+	<aZ95V8XIYYysd13m@willie-the-truck>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 767/781] ata: libata-scsi: avoid Non-NCQ command
- starvation
-To: Jiri Slaby <jirislaby@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
- Igor Pylypiv <ipylypiv@google.com>, Niklas Cassel <cassel@kernel.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- John Garry <john.g.garry@oracle.com>
-References: <20260225012359.695468795@linuxfoundation.org>
- <20260225012418.528826275@linuxfoundation.org>
- <4bbeb69d-698f-4fe7-86d0-67c6f7e2ebdf@kernel.org>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <4bbeb69d-698f-4fe7-86d0-67c6f7e2ebdf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: will@kernel.org, ben.horgan@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, catalin.marinas@arm.com, hyesoo.yu@samsung.com, qperret@google.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219773-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219774-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dlemoal@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 375D11A232F
+X-Rspamd-Queue-Id: A0CA11A2627
 X-Rspamd-Action: no action
 
-On 2/26/26 16:45, Jiri Slaby wrote:
-> On 25. 02. 26, 2:24, Greg Kroah-Hartman wrote:
->> 6.19-stable review patch.  If anyone has any objections, please let me know.
->>
->> ------------------
->>
->> From: Damien Le Moal <dlemoal@kernel.org>
->>
->> commit 0ea84089dbf62a92dc7889c79e6b18fc89260808 upstream.
+On Wed, 25 Feb 2026 22:36:07 +0000,
+Will Deacon <will@kernel.org> wrote:
 > 
-> Hi, this one is broken and needs (very fresh) fixes according to our 
-> tooling:
+> On Mon, Feb 23, 2026 at 02:31:44PM +0000, Marc Zyngier wrote:
+> > Crucially, arch_counter_get_cntvct_stable() does disable preemption,
+> > and we should preserve it. Something like this:
+> > 
+> > diff --git a/arch/arm64/lib/delay.c b/arch/arm64/lib/delay.c
+> > index d02341303899e..25fb593f95b0c 100644
+> > --- a/arch/arm64/lib/delay.c
+> > +++ b/arch/arm64/lib/delay.c
+> > @@ -32,7 +32,16 @@ static inline unsigned long xloops_to_cycles(unsigned long xloops)
+> >   * Note that userspace cannot change the offset behind our back either,
+> >   * as the vcpu mutex is held as long as KVM_RUN is in progress.
+> >   */
+> > -#define __delay_cycles()	__arch_counter_get_cntvct_stable()
+> > +static cycles_t __delay_cycles(void)
+> > +{
+> > +	cycles_t val;
+> > +
+> > +	preempt_disable();
+> > +	val = __arch_counter_get_cntvct_stable();
+> > +	preenpt_enable();
+> > +
+> > +	return val;
+> > +}
+> 
+> (nit: arch_counter_get_cntvct_stable() uses the _notrace() variants of
+>  the preempt disable/enable helpers)
 
-This is not exactly clear to me what you are saying here. What is broken ? What
-is your tooling saying ? Are the original patches broken ? Or are the backports
-broken ?
-
-Be a little more descriptive please.
+That's because arch_counter_get_cntvct_stable() itself is notrace.
+I'm not sure we need this function to be notrace as well, but I'll
+change that and we can revisit it.
 
 > 
-> eddb98ad9364 ata: libata-eh: correctly handle deferred qc timeouts
-> 55db00992663 ata: libata-core: fix cancellation of a port deferred qc work
+> >  void __delay(unsigned long cycles)
+> >  {
+> > 
+> > The question is whether there is a material benefit in replicating the
+> > arch_timer_read_counter() indirection for the virtual counter in order
+> > to not pay the price of preempt_disable() when we're on a non-broken
+> > system (hopefully the vast majority of implementations).
 > 
-> thanks,
+> That sounds nice, especially as we can assume (for now) that CPUs
+> implementing WFIT don't need the cntvct workarounds. However, I can't
+> really figure out how to implement it after reminding myself of all the
+> fun we had trying to use a static key for these workarounds in the past.
+>
+> If a CPU being onlined has a timer erratum, we wouldn't be able to
+> migrate any tasks in the middle of a preempt-enabled delay loop onto
+> it. :/
 
+Why would it be any different than, say, sched_clock(), which
+ultimately uses arch_timer_read_counter()? We already rely on this
+indirection to do the right thing everywhere, and I don't recall we
+have any issue with this.
+
+Anyway, I'll shortly post what I have and we can discuss whether this
+is the correct approach.
+
+Thanks,
+
+	M.
 
 -- 
-Damien Le Moal
-Western Digital Research
+Jazz isn't dead. It just smells funny.
 
