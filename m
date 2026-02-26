@@ -1,185 +1,169 @@
-Return-Path: <stable+bounces-219778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219779-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CQvMBUNoGnbfQQAu9opvQ
-	(envelope-from <stable+bounces-219778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 10:06:29 +0100
+	id CJQvIKAPoGnbfQQAu9opvQ
+	(envelope-from <stable+bounces-219779-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 10:17:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23ACF1A31DE
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 10:06:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D859C1A33D1
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 10:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A49253075EB6
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 09:05:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 097D83105600
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 09:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DED396D34;
-	Thu, 26 Feb 2026 09:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDB039B4AD;
+	Thu, 26 Feb 2026 09:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Aaq7/Zgs"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EB8396D36;
-	Thu, 26 Feb 2026 09:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4837395DAD
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 09:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772096721; cv=none; b=XK2LoXcXGEdwqfUQC2jNGXbzikM7VJDC+bm8wmLPh3LUJNUE8LtubacAIUw8oG7ShH+u/CoUn/4Fr3FM+RdycJNecyOlqlAlJv9XyQkYNe/fLpvQc2+fhzlzlmPmnFbVwwvhUQoBfA2c/KGxGS4YWRMKakDMPSVmd46QZ0AwS/Y=
+	t=1772097169; cv=none; b=LzmBSvKyRtmNtEnTBWbUkKHfhHXtZzIdzgdlkHWyrHTL5FMl+0uCSD6FfqLw8M7c0S5U4SJp0wL+TTt5YRpU+YyzmYIRSv1SgxnZy1CLqO6baTMtdRKndCvca9zQiq0eurS+IK2iFsu31MDHoXWAqRMRY2oSd+WBpvVnNGSWb1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772096721; c=relaxed/simple;
-	bh=8GctGznDx1m8vlDMQUlw+5vjbSc1rOsvy2MQg45nMQU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=C+MmjipeeZ2sJmXRw2VDC/p/+j0cyqiWS+d5nb8N8mU3rW+dtdve8OWMob+aEZdCH95WVUrIB+zzeTPdBn5yaanP/TT2pdHl+H+nTE43h2+JbPMNkZ+35UoQ5uA4Mzc5OTRur/mAuJkLisNv24ZCJx+X7rTAipHF+r9uNHcbPSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.224.196])
-	by frasgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fM57J2QYYz1HCHS;
-	Thu, 26 Feb 2026 17:02:04 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id AF78C40565;
-	Thu, 26 Feb 2026 17:05:15 +0800 (CST)
-Received: from [10.204.63.22] (unknown [10.204.63.22])
-	by APP2 (Coremail) with SMTP id GxC2BwBHEWzBDKBpZGSCBA--.22824S2;
-	Thu, 26 Feb 2026 10:05:15 +0100 (CET)
-Message-ID: <0fde824faace320c6d3ef6137bf50cee0289c6c0.camel@huaweicloud.com>
-Subject: Re: [PATCH v5] ima_fs: Avoid creating measurement lists for
- unsupported hash algos
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: Mimi Zohar <zohar@linux.ibm.com>, dima@arista.com, Roberto Sassu
- <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
- Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>,  "Serge E. Hallyn" <serge@hallyn.com>,
- Silvia Sisinni <silvia.sisinni@polito.it>, Enrico Bravi
- <enrico.bravi@polito.it>
-Cc: Jonathan McDowell <noodles@earth.li>, linux-integrity@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Dmitry Safonov <0x7f454c46@gmail.com>
-Date: Thu, 26 Feb 2026 10:05:03 +0100
-In-Reply-To: <6808b1a8fcb014e6c7c18241d39155f5c12edc31.camel@linux.ibm.com>
-References: <20260223-ima-oob-v5-1-91cc1064e767@arista.com>
-	 <6808b1a8fcb014e6c7c18241d39155f5c12edc31.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	s=arc-20240116; t=1772097169; c=relaxed/simple;
+	bh=blMXsWAvuofUkGygXR2xg4VS4c6FdlmUnwcyorXruTo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m36gKcoxRAcFA3Zze/ksLGfCBv/MRX2qmrrJ8R+HLYvy5qdqkRE+kCwMASCJ3OG8peH1y4dSwPmJgDjJlmW13BwuaRfggJCgniQjV/IbSgMJixhp0CmPpFpN4UMiYxHckUYOgAnbQh8tpnBoXe+HaPKPLOzyjGRN0JjdvAztCz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Aaq7/Zgs; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772097166; x=1803633166;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=blMXsWAvuofUkGygXR2xg4VS4c6FdlmUnwcyorXruTo=;
+  b=Aaq7/ZgsdbfB7KgOHY16a+3qxRpL0SEztBzzDeiTIT7XnCpi5aShMvKZ
+   zPlYitfXHcFvyO2/zRxu7KpeGT1Hu0UfhKTLXbJM+Ccds6CqjeL7CsBe1
+   5Nho9ve0/A4hMuCNAhZYBNT+dvTA5q+g03XIIFuz3H2KLDojJW7W/98EO
+   ehiAvKJ3Rp2HHRxv4a/MqEi6XkZ7yOB5oS1NEOrBZQZk+2Jv4J+BVvQ1c
+   HSD8LvWiWOHIfBbjqSeGFNScRpD5Lv/QORGruTt4wDKmnTtC5oGeoF7mc
+   dwAvieh7/rsurC4T48qHGQ0ubWSLhqjn3xQHyaPpnTuhKoRlEmpeh+3ly
+   Q==;
+X-CSE-ConnectionGUID: fbgaHTFgQnuI4X10GyEGCA==
+X-CSE-MsgGUID: B4moeO43Q++D2OAiVZ97zw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="73065115"
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
+   d="scan'208";a="73065115"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 01:12:45 -0800
+X-CSE-ConnectionGUID: SuBJDBysQ32+DR0sRD4BBg==
+X-CSE-MsgGUID: ToLYcNFdS0q2cG3BEaoPUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
+   d="scan'208";a="216648273"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.224])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 01:12:43 -0800
+Date: Thu, 26 Feb 2026 11:12:39 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jouni =?iso-8859-1?Q?H=F6gander?= <jouni.hogander@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	Animesh Manna <animesh.manna@intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>, stable@vger.kernel.org,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Subject: Re: [PATCH] drm/i915/alpm: ALPM disable fixes
+Message-ID: <aaAOhwxyLDggl08O@intel.com>
+References: <20260212062731.397801-1-jouni.hogander@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:GxC2BwBHEWzBDKBpZGSCBA--.22824S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kr4rtryrWFWUJw1ktrW5KFg_yoW8KrW8pF
-	WfZryDuas3JFW7trs3KF18uF4Sk3yakw1UGrn5JFyUA3WkWrZ5KrsFkF1YkFWvkr1Fya40
-	qr4aqF9xA3Z8taDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUoY
-	FADUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAQBGmfvCAGBwAAs9
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260212062731.397801-1-jouni.hogander@intel.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.25 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_MATCH_TO(1.00)[];
+	R_MIXED_CHARSET(0.91)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219778-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[huaweicloud.com];
-	FREEMAIL_TO(0.00)[linux.ibm.com,arista.com,huawei.com,gmail.com,oracle.com,paul-moore.com,namei.org,hallyn.com,polito.it];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[earth.li,vger.kernel.org,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219779-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[roberto.sassu@huaweicloud.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.988];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[ville.syrjala@linux.intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huaweicloud.com:mid,arista.com:email]
-X-Rspamd-Queue-Id: 23ACF1A31DE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: D859C1A33D1
 X-Rspamd-Action: no action
 
-On Wed, 2026-02-25 at 15:36 -0500, Mimi Zohar wrote:
-> On Mon, 2026-02-23 at 14:56 +0000, Dmitry Safonov via B4 Relay wrote:
-> > From: Dmitry Safonov <dima@arista.com>
-> >=20
-> > ima_tpm_chip->allocated_banks[i].crypto_id is initialized to
-> > HASH_ALGO__LAST if the TPM algorithm is not supported. However there
-> > are places relying on the algorithm to be valid because it is accessed
-> > by hash_algo_name[].
->=20
-> If the TPM algorithm is not supported by whom? the kernel?  HASH_ALGO__LA=
-ST is
-> defined in linux/hash_info.h.  If the crypto algorithm is not supported b=
-y the
-> kernel, then the kernel won't be able to calculate the hash to extend the=
- TPM.
+On Thu, Feb 12, 2026 at 08:27:31AM +0200, Jouni Högander wrote:
+> PORT_ALPM_CTL is supposed to be written only before link training. Remove
+> writing it from ALPM disable.
+> 
+> Also clearing ALPM_CTL_ALPM_AUX_LESS_ENABLE and is not about disabling ALPM
+> but switching to AUX-Wake ALPM. Stop touching this bit on ALPM disable.
 
-Yes, by the kernel. True, that is why we do a padded SHA1.
+There's another open coded variant of this in intel_alpm_lobf_disable(),
+and that thing also gets passed the wrong crtc_state (new instead of
+old).
 
-> > @@ -404,16 +398,24 @@ static int __init create_securityfs_measurement_l=
-ists(void)
-> >  		char file_name[NAME_MAX + 1];
-> >  		struct dentry *dentry;
-> > =20
-> > -		sprintf(file_name, "ascii_runtime_measurements_%s",
-> > -			hash_algo_name[algo]);
-> > +		if (algo =3D=3D HASH_ALGO__LAST)
-> > +			sprintf(file_name, "ascii_runtime_measurements_tpm_alg_%x",
-> > +				ima_tpm_chip->allocated_banks[i].alg_id);
-> > +		else
-> > +			sprintf(file_name, "ascii_runtime_measurements_%s",
-> > +				hash_algo_name[algo]);
-> >  		dentry =3D securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
-> >  						ima_dir, (void *)(uintptr_t)i,
-> >  						&ima_ascii_measurements_ops);
-> >  		if (IS_ERR(dentry))
-> >  			return PTR_ERR(dentry);
-> > =20
-> > -		sprintf(file_name, "binary_runtime_measurements_%s",
-> > -			hash_algo_name[algo]);
-> > +		if (algo =3D=3D HASH_ALGO__LAST)
-> > +			sprintf(file_name, "binary_runtime_measurements_tpm_alg_%x",
-> > +				ima_tpm_chip->allocated_banks[i].alg_id);
->=20
-> There's no point in creating either of the securityfs files if the kernel
-> doesn't support the hash algorithm.
+Also LOBF enable is now being done from two places (intel_alpm_lobf_enable()
+and intel_psr_enable_source()). How those two interact is anyone's guess.
 
-It is not useful per se, but since it is an information that it is
-produced and maintained by IMA, we can print it. And second, it will
-expose the fact that there is an unsupported algorithm (in the case of
-SHA3-256, the fix is add to the TPM - crypto subsystem mapping in tpm2-
-cmd.c).
+> 
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7153
+> Fixes: 1ccbf135862b ("drm/i915/psr: Enable ALPM on source side for eDP Panel replay")
+> Cc: Animesh Manna <animesh.manna@intel.com>
+> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v6.10+
+> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+> ---
+>  drivers/gpu/drm/i915/display/intel_alpm.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/display/intel_alpm.c b/drivers/gpu/drm/i915/display/intel_alpm.c
+> index e0a4a59dc025..b3334bc4d0f9 100644
+> --- a/drivers/gpu/drm/i915/display/intel_alpm.c
+> +++ b/drivers/gpu/drm/i915/display/intel_alpm.c
+> @@ -604,12 +604,7 @@ void intel_alpm_disable(struct intel_dp *intel_dp)
+>  	mutex_lock(&intel_dp->alpm.lock);
+>  
+>  	intel_de_rmw(display, ALPM_CTL(display, cpu_transcoder),
+> -		     ALPM_CTL_ALPM_ENABLE | ALPM_CTL_LOBF_ENABLE |
+> -		     ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
+> -
+> -	intel_de_rmw(display,
+> -		     PORT_ALPM_CTL(cpu_transcoder),
+> -		     PORT_ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
+> +		     ALPM_CTL_ALPM_ENABLE | ALPM_CTL_LOBF_ENABLE, 0);
+>  
+>  	drm_dbg_kms(display->drm, "Disabling ALPM\n");
+>  	mutex_unlock(&intel_dp->alpm.lock);
+> -- 
+> 2.43.0
 
-Roberto
-
-> Mimi
->=20
->=20
-> > +		else
-> > +			sprintf(file_name, "binary_runtime_measurements_%s",
-> > +				hash_algo_name[algo]);
-> >  		dentry =3D securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
-> >  						ima_dir, (void *)(uintptr_t)i,
-> >  						&ima_measurements_ops);
->=20
->=20
-
+-- 
+Ville Syrjälä
+Intel
 
