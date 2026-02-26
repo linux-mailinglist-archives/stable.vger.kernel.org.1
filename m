@@ -1,201 +1,135 @@
-Return-Path: <stable+bounces-219832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BJSNERyoGlZjwQAu9opvQ
-	(envelope-from <stable+bounces-219832-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 17:18:12 +0100
+	id gLIUMfF7oGmMkAQAu9opvQ
+	(envelope-from <stable+bounces-219834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 17:59:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3299B1A9F48
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 17:18:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FBC1AB81E
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 17:59:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA73B330014C
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:06:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 100EC3195386
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9718F43E9F6;
-	Thu, 26 Feb 2026 15:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C625744CF52;
+	Thu, 26 Feb 2026 16:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="NG02SaEA";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vZUpkvzU";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="HfOhQgRY";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ou9/ol6P"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LcVNHYIH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862544279E2
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 15:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4EB4279EE
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 16:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772121488; cv=none; b=Gqv9g1yM/w2dWZGDgO8rNUg55ih2y2Mb1peMRWI8AWNf2osdKh/hE9GZb7693dNnrkkMefJ0MraC/gpmh/MaHsPd1rLN33O6q2N3xBboJZG4oqXy+JkgnJR96qMCjoBEIoimkT5R2/koTQND6pobeXjxEQKQnbselzFOiiDSnFM=
+	t=1772122678; cv=none; b=Iy1SOr/kfYxVLuO3rtguyT6C0KmzCRvteOspgQuFVwDq7CN6UP6yi4jzEvQoZ2azpYS98OfCGVNTRc4gueHJJXWCoXUvlvnMDu7CdNEbIT26dMSA4P+i8oGBfSbw1P4ngofHwiJEB3fYtBA8p7P6LEnJzDGianunaToPsjqGDT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772121488; c=relaxed/simple;
-	bh=+3rgpsLVX9mZ19UFhL39bQlgBOJHDwAAlzpTDofRvBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j7mhMNVX739nghytJi/RPN+nUMYo6+ZWFt1u/UJHYgWuFGzVzBoA1XYy9UDg2+Wq5Lev7I93vxm5Zv/e+Wfm+dGZLE2oli73vtnBfnF6cfkk5jbqnjQO+n7dERqvTh5b3E9zfKxNxjg1HTzMNdiI55322aT6ehhBFSmpHhetwsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=NG02SaEA; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=vZUpkvzU; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=HfOhQgRY; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ou9/ol6P; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7BEE64D3A3;
-	Thu, 26 Feb 2026 15:57:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772121475; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/i2DZUCnLiSh6tyQFm0xCUt8fe3VYUbhBSYNeIXhkxg=;
-	b=NG02SaEAsXx+lDCSiB3amx64tqbg8TG1jtqSbe9w2ZAcGzD8OPQMQbk3OyqBnVHljB8ER3
-	jwp0HDKJ5svhCCUfz9+fnrHIY0J6hxiHZvIOdeKoVHnyhkP+esATYtGuvhR9kjBcF3c8qe
-	Jknj16VXc6/8W8zcnAZxMt/eClONpUo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772121475;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/i2DZUCnLiSh6tyQFm0xCUt8fe3VYUbhBSYNeIXhkxg=;
-	b=vZUpkvzU+q6hT29J0iw8lo0GnI9doWRm/MlSCNeFBZeVo2njjviIYge35511ZWhXUq3ifp
-	vW7Pcr2AotFSEkCA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HfOhQgRY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ou9/ol6P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772121474; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/i2DZUCnLiSh6tyQFm0xCUt8fe3VYUbhBSYNeIXhkxg=;
-	b=HfOhQgRYpIlp1Uv3yeURbbMHZIL6QVp0rbyUaqGhZyTtpKnoTpYgNp0taGnBc0EmVJvLX1
-	iUO8Gb3N1niWZTU2N+uxoZn/WDVluRQcRoNsSSF6XS8dtU5p8DG1vqLi2xJSz0vFLzWVb7
-	pxEU0/euYzt/JwCJlN+uH7u1llAiL3o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772121474;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/i2DZUCnLiSh6tyQFm0xCUt8fe3VYUbhBSYNeIXhkxg=;
-	b=ou9/ol6P/TAzf69n7/tN9yd3xUIGBxpNMRWF7raz3J8Jzul6LTg5BJuzyRLbLWWhk2GV/x
-	p7hDo7WQr7RC+WBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 703EB3EA62;
-	Thu, 26 Feb 2026 15:57:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id p7RfG4JtoGnNegAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 26 Feb 2026 15:57:54 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 28214A0A27; Thu, 26 Feb 2026 16:57:39 +0100 (CET)
-Date: Thu, 26 Feb 2026 16:57:39 +0100
-From: Jan Kara <jack@suse.cz>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>, 
-	patches@lists.linux.dev, stable@vger.kernel.org, Jakub Acs <acsjakub@amazon.de>, 
-	Christian Brauner <brauner@kernel.org>, viro@zeniv.linux.org.uk, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.19-5.15] fsnotify: Shutdown fsnotify before
- destroying sb's dcache
-Message-ID: <xsb2gj3d7vokquylyk3zsnzugjlojnzqyamvyouz5usqn7g2rk@ab56trnvkoq7>
-References: <20260214212452.782265-1-sashal@kernel.org>
- <20260214212452.782265-85-sashal@kernel.org>
- <CAOQ4uxgKwp2FSAUwqhHN-kTBcy0DsFmLstGUY+zJWppOzTAmHA@mail.gmail.com>
- <z6nyopsvzubwxowiqxdg2yt5v6yu4i3uzlflvryjwuk2su7z4m@35ikyzqbxb46>
- <aaBUCU50P-GYMnne@laps>
+	s=arc-20240116; t=1772122678; c=relaxed/simple;
+	bh=Knp6wnhpWJMojlwQMsPPfiQVNGdDbd7c6ZWcXNeIGeE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HGdIy5OtwSGGb9WFd6kL0LPAld3PApbLPjSDrYyx621hmdj3D3WzWUlWU1/UnuLPtsKyZa3d2dGfKKURI5so2vpMdaxOBYbYtrtmcFc/8WBXjSKN0iLw1Sq72JKEOxsonm/DTD6/PW49KuvcWrOKhxXwj8FuAwk9wEapMpcfTjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LcVNHYIH; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 593741A147E;
+	Thu, 26 Feb 2026 16:17:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 130E85FDE9;
+	Thu, 26 Feb 2026 16:17:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D11BB103693AF;
+	Thu, 26 Feb 2026 17:17:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1772122667; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=2lxLb7hEAgiLLYrfqBAXfJR0rppZEYHpa8Yprgn7TsU=;
+	b=LcVNHYIHAgLnVrWlXzK8Fp4CEOpIlaqaJFVANV07dGm8rtPkGMUNktktIeG65ECFz3QTdl
+	fJv132Et4htLiLYz7ZGREOw3Jt3plGe51JF8x/GC0CqorPNrgsyPksAXlo/yWzNiYDvakW
+	f89U/BXfzOTtbKyg5Szpj6ySotZQOpsZRKMx73+8bFXzqnhmw9ipdihVz6wDrQjhyDjkJR
+	NPqusQbtp1O3IjwKdxlE5tu4djRkObGZH4PsUG0A1nio5tlrAUMxH0yDb1dEsKknRgicgZ
+	mP8mNL4lyY4trOlDwD95ZjiOD8PYNFRhFUgsnAMtQx3I6v7fYuU79TbNyFmhXw==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 0/3] drm/bridge: ti-sn65dsi83: two fixes + add test pattern
+Date: Thu, 26 Feb 2026 17:16:43 +0100
+Message-Id: <20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-0-2e15f5a9a6a0@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aaBUCU50P-GYMnne@laps>
-X-Spam-Flag: NO
-X-Spam-Score: -4.01
-X-Spam-Level: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOtxoGkC/x3M3QqDMAxA4VeRXC9QK3Y/rzJ2UUy6BSSTJspAf
+ HfLLj84nB2Mq7DBo9uh8iYmX23oLx1Mn6xvRqFmiCGmEGNCFzRNI5ncBqQ1zzhvZFjkx4ZZCZ3
+ NccnuXBXLWEq6cn8PYYL2XCr/y7Z8vo7jBLSZpJB/AAAA
+X-Change-ID: 20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-f5ff67e1900c
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>, Marek Vasut <marex@denx.de>, 
+ Linus Walleij <linusw@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[suse.cz,gmail.com,lists.linux.dev,vger.kernel.org,amazon.de,kernel.org,zeniv.linux.org.uk];
-	TAGGED_FROM(0.00)[bounces-219832-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,suse.cz:dkim,suse.com:email];
-	DMARC_NA(0.00)[suse.cz];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219834-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,kontron.de,denx.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bootlin.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 3299B1A9F48
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:mid,bootlin.com:dkim,bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 43FBC1AB81E
 X-Rspamd-Action: no action
 
-On Thu 26-02-26 09:09:13, Sasha Levin wrote:
-> On Tue, Feb 17, 2026 at 11:00:42AM +0100, Jan Kara wrote:
-> > On Sun 15-02-26 09:11:30, Amir Goldstein wrote:
-> > > On Sat, Feb 14, 2026 at 11:27 PM Sasha Levin <sashal@kernel.org> wrote:
-> > > >
-> > > > From: Jan Kara <jack@suse.cz>
-> > > >
-> > > > [ Upstream commit 74bd284537b3447c651588101c32a203e4fe1a32 ]
-> > > >
-> > > > Currently fsnotify_sb_delete() was called after we have evicted
-> > > > superblock's dcache and inode cache. This was done mainly so that we
-> > > > iterate as few inodes as possible when removing inode marks. However, as
-> > > > Jakub reported, this is problematic because for some filesystems
-> > > > encoding of file handles uses sb->s_root which gets cleared as part of
-> > > > dcache eviction. And either delayed fsnotify events or reading fdinfo
-> > > > for fsnotify group with marks on fs being unmounted may trigger encoding
-> > > > of file handles during unmount.
-> > > 
-> > > In retrospect, the text "Now that we iterate inode connectors..."
-> > > would have helped LLM (as well as human) patch backports understand
-> > > that this is NOT a standalone patch.
-> > 
-> > Good point :)
-> > 
-> > > Sasha,
-> > > 
-> > > I am very for backporting this fix, but need to backport the series
-> > > https://lore.kernel.org/linux-fsdevel/20260121135513.12008-1-jack@suse.cz/
-> > 
-> > Yes. Without commits 94bd01253c3d5 ("fsnotify: Track inode connectors for a
-> > superblock") and a05fc7edd988c ("fsnotify: Use connector list for
-> > destroying inode marks") the reordering alone can cause large latencies
-> > during filesystem unmount.
-> 
-> Looks like going even to 6.18 requires a bunch of dependencies, so a backport
-> would be appreciated :)
+This series fixes two bugs in the driver code and adds support for enabling
+the test pattern output from userspace.
 
-Well, given nobody hit the race in practice (not even syzbot) and I don't
-know of a way to even theoretically trigger this without CAP_SYS_ADMIN, I
-don't think significant effort in fixing this is really warranted...
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Luca Ceresoli (3):
+      drm/bridge: ti-sn65dsi83: fix CHA_DSI_CLK_RANGE rounding
+      drm/bridge: ti-sn65dsi83: halve horizontal syncs for dual LVDS output
+      drm/bridge: ti-sn65dsi83: add test pattern generation support
 
-								Honza
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
+---
+base-commit: 36d9579fed6c9429aa172f77bd28c58696ce8e2b
+change-id: 20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-f5ff67e1900c
+
+Best regards,
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Luca Ceresoli <luca.ceresoli@bootlin.com>
+
 
