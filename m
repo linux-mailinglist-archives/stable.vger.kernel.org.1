@@ -1,64 +1,103 @@
-Return-Path: <stable+bounces-219799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219800-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAakMBc7oGmagwQAu9opvQ
-	(envelope-from <stable+bounces-219799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 13:22:47 +0100
+	id wK2rBNg9oGmrhAQAu9opvQ
+	(envelope-from <stable+bounces-219800-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 13:34:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370131A5A5F
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 13:22:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DB01A5BCB
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 13:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECFCF3069DDB
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 12:22:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A9913033532
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 12:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2290B283159;
-	Thu, 26 Feb 2026 12:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0FA133B94B;
+	Thu, 26 Feb 2026 12:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DS/rZe74"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mgPm+JZv";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="EBXzpnbe";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mgPm+JZv";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="EBXzpnbe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D855C261B70;
-	Thu, 26 Feb 2026 12:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3799A376BCE
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 12:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772108561; cv=none; b=iKyf1RdvQ39ntjPSfWUs4Z95B8w+4xk8RtUQwmFqsAPrP5a/aguKgyhiroFqYfjoX0bNR5I0aq9/KLnDfAgf3gs1d4OeJrTVeBAL5crgX837le8mnYLvu0bT2ID52nCKqKOJrIEa322af8UECidqF2nSIOiRIVvdM/oQkC1d6VA=
+	t=1772109255; cv=none; b=jsW3PbFhgkyLbMQcFBhY1J5RfXYVtAFLS3jLzXtvMtKVCdYfrnalKa/HX/rBD+2pZeao5fylYpp00Hl2qhAV7PJEuQWSSJlrX3ujJVxkjzwVFW/GaVXRPF7Ibvw5mzokkAkykKYwbCikotSeEbanFmC6gVbSCRJWQ4Tr6iajy40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772108561; c=relaxed/simple;
-	bh=pDUQ3U6u0AZuQaoY38Nd1cd4YlhwPhZcnTqYdko34JY=;
+	s=arc-20240116; t=1772109255; c=relaxed/simple;
+	bh=xu3zELdMHUdOQZFbtYqY5IEikUk3BeFI+3/elu4smuI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jNB66dIPsakHH3BpF2yo/GoS8ijsfj8b1wdKZ+7Qj2fYRM2ubp7stgvqEAz7PLhoSG4izWsqgdCTLnqKKzucVlE38WSqDZsPdv5c3e7xRDaoQojwzfWXKv/5opr7cc9LxrrgGRDLmKfaK8lwXCCAdD3i3KiAtDgdhzwU655EZ3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DS/rZe74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CFBC19423;
-	Thu, 26 Feb 2026 12:22:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772108561;
-	bh=pDUQ3U6u0AZuQaoY38Nd1cd4YlhwPhZcnTqYdko34JY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DS/rZe74nTK2sp+eRtG3gH6PgJCBD+6pREJb6cUfNrmEGz6NVlzNMzz/KkDUqqBsQ
-	 m8MhOxTAGR9AfLcopMURyf3MHNggcmBVaEXLPVk/C79LJ/+RYlQfOTDHc6OtE01HOq
-	 JU0rC/VzNlZ01sTPZokTPc/r3FeaWZ3SkobJBp4IjY6AidGn10ZmX/BIh6ag3dX555
-	 SesML7a/5YdRUbWTFdC+UwFFJiNhHwbxJW2OwyENc2ARuEloGW8qgnFeNJLoOElSQl
-	 +RQPd/DJJT5Ur6/gcdFisX1MJFeJXEju+JcN+8ct3oCA+55+bT5VWnuMxkTzL5YhGL
-	 aqXrky7xd+kKA==
-Date: Thu, 26 Feb 2026 13:22:37 +0100
-From: Benjamin Tissoires <bentiss@kernel.org>
-To: Lee Jones <lee@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>, David Rheinsberg <david@readahead.eu>, 
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] HID: uhid: Fix out-of-bounds write caused by raw
- events mismanagement
-Message-ID: <aaA6fioiB9_aiBrA@plouf>
-References: <20260211164025.171242-1-lee@kernel.org>
- <aZmsTQeeGf26FqvY@plouf>
- <172q4775-616s-p7s4-7n80-p8579n0r3516@xreary.bet>
- <47ro00po-r74n-870q-q178-67s8rpsss12q@xreary.bet>
- <aZ3IKiL91Ya7_iIM@plouf>
- <r6574n79-563r-9rrp-0n92-784532r67o63@xreary.bet>
- <20260226111816.GA8023@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TUPqciO3SjAVR6JrOd7duSB3J/T+CrEeU9BS2pePo5qL/km1+PILmRxEOQ8f/DTjVKpUvD/lxAWZupJswZxYUMtJN96SwdaFmdC1b+HdJOMUsWhPmvHpWv/OoxET2YLdcoPyZR6MCbr5fuirFjn/7RN667q9tB7FInZMs6vwY50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mgPm+JZv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=EBXzpnbe; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mgPm+JZv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=EBXzpnbe; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7D59B3FDCB;
+	Thu, 26 Feb 2026 12:34:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772109251; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hepTeBzqgzqQ878odYHWHK4hPoTuIBdn/QWdbRFv0cY=;
+	b=mgPm+JZvJlJGeNRo6S3kDCA1SLJdlFa9VJHDE0hSkx3x5aS/Ai2pVX/R5th9x+qCJdyNkd
+	P5vBcLLXjEnW6RWl3vSf6tepHN+/bzT5BPl3u9RO2mq2KNoHzSgF+2Z6QsEnpCG8+kJgSc
+	Bzx8+Yed+jS4Bz4ssxjLY3L0NZpxFF0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772109251;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hepTeBzqgzqQ878odYHWHK4hPoTuIBdn/QWdbRFv0cY=;
+	b=EBXzpnbekk+rRnqQiYjV2febmsj8E2+6yAlSAE/ybIbQ8qFZjxHSPzySKqclf7UmlAE4LU
+	obcrIJzui/234ICg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772109251; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hepTeBzqgzqQ878odYHWHK4hPoTuIBdn/QWdbRFv0cY=;
+	b=mgPm+JZvJlJGeNRo6S3kDCA1SLJdlFa9VJHDE0hSkx3x5aS/Ai2pVX/R5th9x+qCJdyNkd
+	P5vBcLLXjEnW6RWl3vSf6tepHN+/bzT5BPl3u9RO2mq2KNoHzSgF+2Z6QsEnpCG8+kJgSc
+	Bzx8+Yed+jS4Bz4ssxjLY3L0NZpxFF0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772109251;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hepTeBzqgzqQ878odYHWHK4hPoTuIBdn/QWdbRFv0cY=;
+	b=EBXzpnbekk+rRnqQiYjV2febmsj8E2+6yAlSAE/ybIbQ8qFZjxHSPzySKqclf7UmlAE4LU
+	obcrIJzui/234ICg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 664EA3EA62;
+	Thu, 26 Feb 2026 12:34:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id w6LzGMM9oGnDHwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 26 Feb 2026 12:34:11 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 2A296A0A27; Thu, 26 Feb 2026 13:34:11 +0100 (CET)
+Date: Thu, 26 Feb 2026 13:34:11 +0100
+From: Jan Kara <jack@suse.cz>
+To: Li Chen <me@linux.beauty>
+Cc: Theodore Ts'o <tytso@mit.edu>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.cz>, linux-ext4@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] ext4: publish jinode after initialization
+Message-ID: <ge2sjh7x7x4axtkpkghgudgv6krcuan4i7lep6p7uw23f7aq2k@ldljqssvaub4>
+References: <20260225082617.147957-1-me@linux.beauty>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,69 +106,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260226111816.GA8023@google.com>
+In-Reply-To: <20260225082617.147957-1-me@linux.beauty>
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
+X-Spam-Level: 
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219799-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	TAGGED_FROM(0.00)[bounces-219800-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[suse.cz];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,suse.cz:dkim,linux.beauty:email];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bentiss@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 370131A5A5F
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: A1DB01A5BCB
 X-Rspamd-Action: no action
 
-On Feb 26 2026, Lee Jones wrote:
-> On Tue, 24 Feb 2026, Jiri Kosina wrote:
+On Wed 25-02-26 16:26:16, Li Chen wrote:
+> ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
+> It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
+> allowing a reader to observe a non-NULL jinode with i_vfs_inode
+> still unset.
 > 
-> > On Tue, 24 Feb 2026, Benjamin Tissoires wrote:
-> > 
-> > > Long story short: that patch is too intrusive as it makes assumption on
-> > > the behavior of the device. We need to understand where/if the bug was
-> > > spotted and fix the caller of hid_hw_raw_request, not the uhid
-> > > implementation.
-> > 
-> > Thanks a lot for the analysis, Benjamin!
-> > 
-> > I asked about that here:
-> > 
-> > 	https://lore.kernel.org/all/172q4775-616s-p7s4-7n80-p8579n0r3516@xreary.bet/
-> > 
-> > So let's wait for Lee to clarify. Until that, the patch stays out of the 
-> > branch.
+> The fast commit flush path can then pass this jinode to
+> jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
+> may crash.
 > 
-> Thanks to both of you for looking into this.  I appreciate your efforts.
+> Below is the crash I observe:
+> ```
+> BUG: unable to handle page fault for address: 000000010beb47f4
+> PGD 110e51067 P4D 110e51067 PUD 0
+> Oops: Oops: 0000 [#1] SMP NOPTI
+> CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+> RIP: 0010:xas_find_marked+0x3d/0x2e0
+> Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
+> RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
+> RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
+> RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
+> RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
+> R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
+> R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
+> FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
+> CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
+> PKRU: 55555554
+> Call Trace:
+> <TASK>
+> filemap_get_folios_tag+0x87/0x2a0
+> __filemap_fdatawait_range+0x5f/0xd0
+> ? srso_alias_return_thunk+0x5/0xfbef5
+> ? __schedule+0x3e7/0x10c0
+> ? srso_alias_return_thunk+0x5/0xfbef5
+> ? srso_alias_return_thunk+0x5/0xfbef5
+> ? srso_alias_return_thunk+0x5/0xfbef5
+> ? preempt_count_sub+0x5f/0x80
+> ? srso_alias_return_thunk+0x5/0xfbef5
+> ? cap_safe_nice+0x37/0x70
+> ? srso_alias_return_thunk+0x5/0xfbef5
+> ? preempt_count_sub+0x5f/0x80
+> ? srso_alias_return_thunk+0x5/0xfbef5
+> filemap_fdatawait_range_keep_errors+0x12/0x40
+> ext4_fc_commit+0x697/0x8b0
+> ? ext4_file_write_iter+0x64b/0x950
+> ? srso_alias_return_thunk+0x5/0xfbef5
+> ? preempt_count_sub+0x5f/0x80
+> ? srso_alias_return_thunk+0x5/0xfbef5
+> ? vfs_write+0x356/0x480
+> ? srso_alias_return_thunk+0x5/0xfbef5
+> ? preempt_count_sub+0x5f/0x80
+> ext4_sync_file+0xf7/0x370
+> do_fsync+0x3b/0x80
+> ? syscall_trace_enter+0x108/0x1d0
+> __x64_sys_fdatasync+0x16/0x20
+> do_syscall_64+0x62/0x2c0
+> entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> ...
+> ```
 > 
-> This is very much real world.
+> Fix this by initializing the jbd2_inode first.
+> Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
+> initialization. Readers use READ_ONCE() to fetch the pointer.
 > 
-> Is there a way to add an errata for the PS3 controller?
-> 
+> Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Li Chen <me@linux.beauty>
 
-Unfortunatelly no. uhid merely emulates what a device can do, and HID is
-a convention. So if we were to have a special case to PS3 controllers,
-we would then start having to maintain an endless list of quirks when
-the issue is *not* in uhid, but in the processing of the device after
-(maybe in hid-core?).
+Thanks! Looks good to me now. Feel free to add:
 
-Cheers,
-Benjamin
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+> Changes since v2 (as suggested by Jan Kara:
+> - Drop READ_ONCE() changes in ext4_jbd2_inode_add_*() and ext4_clear_inode().
+> - Inline READ_ONCE(ei->jinode) in ext4_fc_flush_data().
+> 
+>  fs/ext4/fast_commit.c |  4 ++--
+>  fs/ext4/inode.c       | 15 +++++++++++----
+>  2 files changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+> index f575751f1cae..6e949c21842d 100644
+> --- a/fs/ext4/fast_commit.c
+> +++ b/fs/ext4/fast_commit.c
+> @@ -975,13 +975,13 @@ static int ext4_fc_flush_data(journal_t *journal)
+>  	int ret = 0;
+>  
+>  	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
+> -		ret = jbd2_submit_inode_data(journal, ei->jinode);
+> +		ret = jbd2_submit_inode_data(journal, READ_ONCE(ei->jinode));
+>  		if (ret)
+>  			return ret;
+>  	}
+>  
+>  	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
+> -		ret = jbd2_wait_inode_data(journal, ei->jinode);
+> +		ret = jbd2_wait_inode_data(journal, READ_ONCE(ei->jinode));
+>  		if (ret)
+>  			return ret;
+>  	}
+> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+> index da96db5f2345..d99296d7315f 100644
+> --- a/fs/ext4/inode.c
+> +++ b/fs/ext4/inode.c
+> @@ -128,6 +128,8 @@ void ext4_inode_csum_set(struct inode *inode, struct ext4_inode *raw,
+>  static inline int ext4_begin_ordered_truncate(struct inode *inode,
+>  					      loff_t new_size)
+>  {
+> +	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
+> +
+>  	trace_ext4_begin_ordered_truncate(inode, new_size);
+>  	/*
+>  	 * If jinode is zero, then we never opened the file for
+> @@ -135,10 +137,10 @@ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+>  	 * jbd2_journal_begin_ordered_truncate() since there's no
+>  	 * outstanding writes we need to flush.
+>  	 */
+> -	if (!EXT4_I(inode)->jinode)
+> +	if (!jinode)
+>  		return 0;
+>  	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
+> -						   EXT4_I(inode)->jinode,
+> +						   jinode,
+>  						   new_size);
+>  }
+>  
+> @@ -4478,8 +4480,13 @@ int ext4_inode_attach_jinode(struct inode *inode)
+>  			spin_unlock(&inode->i_lock);
+>  			return -ENOMEM;
+>  		}
+> -		ei->jinode = jinode;
+> -		jbd2_journal_init_jbd_inode(ei->jinode, inode);
+> +		jbd2_journal_init_jbd_inode(jinode, inode);
+> +		/*
+> +		 * Publish ->jinode only after it is fully initialized so that
+> +		 * readers never observe a partially initialized jbd2_inode.
+> +		 */
+> +		smp_wmb();
+> +		WRITE_ONCE(ei->jinode, jinode);
+>  		jinode = NULL;
+>  	}
+>  	spin_unlock(&inode->i_lock);
+> -- 
+> 2.52.0
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
