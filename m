@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 7hb0CqmBoGn/kQQAu9opvQ
-	(envelope-from <stable+bounces-219835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 18:23:53 +0100
+	id SJuYJPWBoGn/kQQAu9opvQ
+	(envelope-from <stable+bounces-219833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 18:25:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D53D1AC4BF
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 18:23:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 423F71AC577
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 18:25:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 169FA31F2CD4
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:45:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 98C0A335FFF4
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 16:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C45433CE80;
-	Thu, 26 Feb 2026 16:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CE744CF4D;
+	Thu, 26 Feb 2026 16:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Th4jixQk"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vWjKSWbG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FC235FF50
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 16:17:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A3D426D22
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 16:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772122679; cv=none; b=cO340JH56ONQZVuFyZNHDmKPmPinjXIHtM2D1ek1B7Sf0eOLxfFStLkOF7RUIQER1jrsUD81eEg9vshmtaMJ6LOe9P7DNN6W/XS3bAIuQWIGjH7SDMA+hx8ygdRnnNF8//FOlSPBF2ksjVV7B8Ggj9/VuWgLDyvAjtiQ4+2ILLY=
+	t=1772122678; cv=none; b=C7u6nAsRZ24wU7sbOv51/LguNarQuccMIS/ihN/IdyGkFVHtbvT2KJNK6GMhdG8ybKn9/oGvJ843eITgfTWTDD8boGFcG1nPHfwSAuquzBSRaFvgH0RKdzjx1cjRosfniih31NxoTMwdp56gAc9cl5AUAnU4HfeKMZoZ1giVTS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772122679; c=relaxed/simple;
-	bh=QjDfBOjj+v9+tm8usbQFDuQsLWjBDEFBxE2wtwecyhA=;
+	s=arc-20240116; t=1772122678; c=relaxed/simple;
+	bh=d+mBtfaENeIFoLUn/a2Cq0yMb0XxlFe7Pa/fBOqtdCk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WyOYqV86od7eCSnLK8vBmCxgPX4XgAQXRyhDRBgbs6HM8lOQe0zjn29UWS10i55hZ29DPIr1Y2if1uX3MR6xMT20duLhVW1eyG/YD2WLL0v7g8KW33vczBKPeJ51nqdlTswlYsTv2WbcsbKFbtQ+YxbmTZM45W3GptNlq43Ixow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Th4jixQk; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=pK4xcd3nF2BCPmrAz899CvZv9XX71FT8/5ibbtIlIJbYM5yGWxMeaQGVGmDU/TV+varH0yaDEuh6DlRDA24MCLaRuOqa1GmkGRR87krXM6zKwSEaN3QgAmGupBlG9j3L8rfrUlIgXzjZ3EvJHDu9oRhZwg33TqRWzo02+T8m+Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vWjKSWbG; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 594801A156C;
-	Thu, 26 Feb 2026 16:17:51 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B19584E41230;
+	Thu, 26 Feb 2026 16:17:54 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F0D45FDE9;
-	Thu, 26 Feb 2026 16:17:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3694F103693C1;
-	Thu, 26 Feb 2026 17:17:48 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 870F25FDE9;
+	Thu, 26 Feb 2026 16:17:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9B12F103693EF;
+	Thu, 26 Feb 2026 17:17:50 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772122670; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1772122673; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=8XkrbW1hnirnZLGMwEegjlBI4fLIXypAXffpHsh+X60=;
-	b=Th4jixQkyCmPeaFtAecWi2A1PmjmPfSM0/peoVmRNauB/hxMWa35AID7i4yYTPH0KYkW5r
-	Wd8p3MN0TZEPQvnXHN59vEeMDXm+UI3cYTmT92WA4TNLw9oRdeepM1VeHKAnv1PJr0Gd6N
-	T9GlU8wkQY+sBYZcrAGO3geU06L11B7dDTZ+iBILinZ4uV5syAGPvjS9U4vEA9h4M00DWX
-	dsonptG6TrQu2O5QuVcCtn5gLVV7HcrAdPaqdhuRl8k6gjTQJG67CctyrmxcE/QTkHyo11
-	mslwaDbfPHVY7Wu+G1Pzpl9M/klUA5MrjNj/+co8lWM2xagL1ak19s+zWdRQqQ==
+	bh=J7rzqyCwEJE4QXCmYRXeLF0zeRFmIwZ7a/ILMFOO6lk=;
+	b=vWjKSWbGaHRLu3pK8EgSpxFFj8Twa/amgqR7pjMNa/N4VH+zHuLyp0fNwGyGZuuQMFJE/M
+	AU165sADWJr6Q2JYK4bkmYXs++Q3vyPe0zx2SS6LgDsqvzVNnJjGODa705WpLPN5HeIfgR
+	3FHdedKuzs0tL4PpbiJ/WMBaaVSbDvZEno9caipVzsmTWLpp/F4NmOMI8OqNDq5e3+hPBQ
+	Kiydg2dcv0cz8aiEZoYkBZDmNxSsjkF0C8Ng+E0llsheA6zXiAgTl9XTF4635QOFWtwSPf
+	+741P1lxczB9Wr8cVbZ3W3f/TDG3y4sUSA0ls0qtwGmypQ2MTZBhTFsg2Va6qA==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Thu, 26 Feb 2026 17:16:44 +0100
-Subject: [PATCH 1/3] drm/bridge: ti-sn65dsi83: fix CHA_DSI_CLK_RANGE
- rounding
+Date: Thu, 26 Feb 2026 17:16:45 +0100
+Subject: [PATCH 2/3] drm/bridge: ti-sn65dsi83: halve horizontal syncs for
+ dual LVDS output
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-1-2e15f5a9a6a0@bootlin.com>
+Message-Id: <20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-2-2e15f5a9a6a0@bootlin.com>
 References: <20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-0-2e15f5a9a6a0@bootlin.com>
 In-Reply-To: <20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-0-2e15f5a9a6a0@bootlin.com>
 To: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -85,74 +85,92 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219835-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219833-lists,stable=lfdr.de];
 	FREEMAIL_TO(0.00)[intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,kontron.de,denx.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[bootlin.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8D53D1AC4BF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bootlin.com:mid,bootlin.com:dkim,bootlin.com:email]
+X-Rspamd-Queue-Id: 423F71AC577
 X-Rspamd-Action: no action
 
-The DSI frequency must be in the range:
+Dual LVDS output (available on the SN65DSI84) requires HSYNC_PULSE_WIDTH
+and HORIZONTAL_BACK_PORCH to be divided by two with respect to the values
+used for single LVDS output.
 
-  (CHA_DSI_CLK_RANGE * 5 MHz) <= DSI freq < ((CHA_DSI_CLK_RANGE + 1) * 5 MHz)
+While not clearly stated in the datasheet, this is needed according to the
+DSI Tuner [0] output. It also makes sense intuitively because in dual LVDS
+output two pixels at a time are output and so the output clock is half of
+the pixel clock.
 
-So the register value shouldpoint to the lower range value, but
-DIV_ROUND_UP() rounds the division to the higher range value, resulting in
-an excess of 1 (unless the frequency is an exact multiple of 5 MHz).
+Some dual-LVDS panels refuse to show any picture without this fix.
 
-For example for a 437100000 MHz clock CHA_DSI_CLK_RANGE should be 87 (0x57):
+Divide by two HORIZONTAL_FRONT_PORCH too, even though this register is used
+only for test pattern generation which is not currently implemented by this
+driver.
 
-  (87 * 5 = 435) <= 437.1 < (88 * 5 = 440)
-
-but current code returns 88 (0x58).
-
-Fix the computation by removing the DIV_ROUND_UP().
+[0] https://www.ti.com/tool/DSI-TUNER
 
 Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi83.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-index f6736b4457bb..d2a81175d279 100644
+index d2a81175d279..17a885244e1e 100644
 --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
 +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -351,9 +351,9 @@ static u8 sn65dsi83_get_dsi_range(struct sn65dsi83 *ctx,
- 	 *  DSI_CLK = mode clock * bpp / dsi_data_lanes / 2
- 	 * the 2 is there because the bus is DDR.
- 	 */
--	return DIV_ROUND_UP(clamp((unsigned int)mode->clock *
--			    mipi_dsi_pixel_format_to_bpp(ctx->dsi->format) /
--			    ctx->dsi->lanes / 2, 40000U, 500000U), 5000U);
-+	return clamp((unsigned int)mode->clock *
-+		     mipi_dsi_pixel_format_to_bpp(ctx->dsi->format) /
-+		     ctx->dsi->lanes / 2, 40000U, 500000U) / 5000U;
- }
- 
- static u8 sn65dsi83_get_dsi_div(struct sn65dsi83 *ctx)
+@@ -517,6 +517,7 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
+ 					struct drm_atomic_state *state)
+ {
+ 	struct sn65dsi83 *ctx = bridge_to_sn65dsi83(bridge);
++	const unsigned int dual_factor = ctx->lvds_dual_link ? 2 : 1;
+ 	const struct drm_bridge_state *bridge_state;
+ 	const struct drm_crtc_state *crtc_state;
+ 	const struct drm_display_mode *mode;
+@@ -653,18 +654,18 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
+ 	/* 32 + 1 pixel clock to ensure proper operation */
+ 	le16val = cpu_to_le16(32 + 1);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_SYNC_DELAY_LOW, &le16val, 2);
+-	le16val = cpu_to_le16(mode->hsync_end - mode->hsync_start);
++	le16val = cpu_to_le16((mode->hsync_end - mode->hsync_start) / dual_factor);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_HSYNC_PULSE_WIDTH_LOW,
+ 			  &le16val, 2);
+ 	le16val = cpu_to_le16(mode->vsync_end - mode->vsync_start);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_VSYNC_PULSE_WIDTH_LOW,
+ 			  &le16val, 2);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_BACK_PORCH,
+-		     mode->htotal - mode->hsync_end);
++		     (mode->htotal - mode->hsync_end) / dual_factor);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_BACK_PORCH,
+ 		     mode->vtotal - mode->vsync_end);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_FRONT_PORCH,
+-		     mode->hsync_start - mode->hdisplay);
++		     (mode->hsync_start - mode->hdisplay) / dual_factor);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_FRONT_PORCH,
+ 		     mode->vsync_start - mode->vdisplay);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_TEST_PATTERN, 0x00);
 
 -- 
 2.53.0
