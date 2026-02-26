@@ -1,115 +1,243 @@
-Return-Path: <stable+bounces-219864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wLj4JGa/oGk1mQQAu9opvQ
-	(envelope-from <stable+bounces-219864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 22:47:18 +0100
+	id eAY1LkTDoGnHmQQAu9opvQ
+	(envelope-from <stable+bounces-219865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 23:03:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F051B0071
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 22:47:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324121B025A
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 23:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C701300680A
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 21:47:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B119303C847
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 22:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C55447A0B4;
-	Thu, 26 Feb 2026 21:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEFA3D4125;
+	Thu, 26 Feb 2026 22:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fq1AS2DC"
+	dkim=pass (2048-bit key) header.d=p2p.industries header.i=@p2p.industries header.b="G8YU9yg+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706753D1CA5;
-	Thu, 26 Feb 2026 21:47:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C283921E6
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 22:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772142432; cv=none; b=Vv4EPhkAXIhNY0FYAWeXtkjrnOowMdwJUwgL9DnKf93QNfyjFONmV9rxy5LZCt0BN5cqwq4WU+Tlul8931mVN1wurZuU1pREj+ixslUn8M5l9HyLogV+H3XI+ycyEL0IEbI+ExTsRywQ0xH3rHe+3gQnckMYhYjAUwSsXrBOwdg=
+	t=1772143426; cv=none; b=k+Auoyym6AzkpdNNItxsAWRS/z6qsIRIEkiP3i8GLSKUCaeHSNB8hIEDlG3ufyRQIZ7U17EVN5/lw58goBxQc5agqaVJZIfTseoHp3dSSOjB1PFQnXZHEcavKyeG6VckJDSEYFqeiM0UseIjDy19lK1YJQnUXQnG2ZRcg1tKABw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772142432; c=relaxed/simple;
-	bh=wvao/W1n8ixelWi/yHBw/ra73ktqsrn9Enzu3HauzIs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QHkriinOQLL5OdN3pH2Bden6kazDFvHhC7EvYol0HY6yMOCxLAip4bbE6lhzOdw2sHFkEpxMKsCtejPefsvNO4YDskGHCpiUXcyc1CKPGVRciEqBm9JWht9/K8g5SsCq4SEg9dflzinitoRUTKAAEaqkacvQIQ1CRQMrVwLca+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fq1AS2DC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E33C116C6;
-	Thu, 26 Feb 2026 21:47:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772142431;
-	bh=wvao/W1n8ixelWi/yHBw/ra73ktqsrn9Enzu3HauzIs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fq1AS2DCwz8P/rY5ZGgWg4vS6UbQ7mgI6oESy2iwEyrRL3ISkq0dZg1A13B6FpkgE
-	 B791dknlD85cWFpfPbmdPPUkk/ZSFwoceTdjEDVcx9Ehlo+KuA8Q6a3rr2xYBKinrD
-	 UNyL9e/s++nlJwUywb3sHo3fae3lsFk1oAzo+flw=
-Date: Thu, 26 Feb 2026 13:47:03 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: achill@achill.org, akpm@linux-foundation.org, broonie@kernel.org,
-	conor@kernel.org, f.fainelli@gmail.com, hargar@microsoft.com,
-	jonathanh@nvidia.com, linux-kernel@vger.kernel.org,
-	linux@roeck-us.net, lkft-triage@lists.linaro.org,
-	patches@kernelci.org, patches@lists.linux.dev, pavel@nabladev.com,
-	rwarsow@gmx.de, shuah@kernel.org, sr@sladewatkins.com,
-	stable@vger.kernel.org, sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: [PATCH 6.19 000/781] 6.19.4-rc2 review
-Message-ID: <2026022640-ranked-resigned-83a9@gregkh>
-References: <20260225155341.094945851@linuxfoundation.org>
- <20260226201056.28728-1-ojeda@kernel.org>
+	s=arc-20240116; t=1772143426; c=relaxed/simple;
+	bh=CZRe1iUMVr9qEn5m2f/i37y/YNNPSFYQrbyg6aoEQlk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XiCd2GCwJQlBaY3iLL2j6qFQmVq5EGx8sZSyTD9z3Q2l7/+ygOHccpbRBYDhDLjqGCNzbPDQIGYe1XjhU/urRBdVBQvrXHh5VhV/7nq2KXy4/GPOhIkJANBjjtfRkC2Yqdz0A31Jef0Br1j469pNUUFrG4GC7/Kx7heLRaXYcWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=p2p.industries; spf=pass smtp.mailfrom=p2p.industries; dkim=pass (2048-bit key) header.d=p2p.industries header.i=@p2p.industries header.b=G8YU9yg+; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=p2p.industries
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=p2p.industries
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48372efa020so11352305e9.2
+        for <stable@vger.kernel.org>; Thu, 26 Feb 2026 14:03:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=p2p.industries; s=google; t=1772143423; x=1772748223; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0wS4lSteamMcGZXwonWy8V0zK3HIHohZFVD96e3qpm0=;
+        b=G8YU9yg+iENfTlWHXChHtzGtpmiHiNfRjFfo/5xk+vnAx5sLfmY+b9vyPiJpKVHcI9
+         gZ9rxlQtk6+pNteREvwz510PpPFvG5IcJxzlfb17/7kDhnrqy/F2rcQ6AktERid1mb10
+         HrpQj61dDdR20DUX4r0COsaz/qCD5weahUg345N6Vf1jaCNXVAQfb3/Iek9ZfC1rPpff
+         dtr/haLGqxqEYoj1pa0RpSlR6v68KJLanMnnJEfpgzYFAZkSiizA0D3RAqBiF0bCH/2T
+         2/IRj7wg4e40PZiV3zNLl2gMScFrIhiFp9E8oGaF+9DhRQSOcVX6fhxIQQBn+3NJRSEx
+         0ilw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772143423; x=1772748223;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0wS4lSteamMcGZXwonWy8V0zK3HIHohZFVD96e3qpm0=;
+        b=NG2SgKm85JgNJA80Vgd7GFr7UqzY0GkkKA93WlUOLhg3JxZiMf1SyPz5572a/X+MvQ
+         tWXH/gf2VCaZPVAqUgjCkJlpXVDWdiPQ46fsouCOBvsutZY0AEwYzY/pt6OqUEaUlrJv
+         i4Sw8hpJJIYVJZsg3216Quc7pxtuWxiX6DSXmgWtAYp2xttYRHBFmP7DsuXdqa04o2Fw
+         YLXWbMlhXiXX8zA79UGSSGHO+CcMOs0ZoP9y6pJ/oG87uNgWCC/VSJ83aUO/l7R67Lq5
+         hE1vR0gH2sYHyCrXELs30c73F+83Oj5g+LJIsprtzcI13sRmFK/oqM0L5otfNeYyri/t
+         LhCg==
+X-Forwarded-Encrypted: i=1; AJvYcCXCOKjBfN1OS+98loPF7FblCguvfmXuzAtwhNIaesyLdA86rZxPNm8fq19AhIqkv/dvflbsk8E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySltB2rKv3KxgDeG3YkL4Rnolgcgz0de1P7f9yvSgsD//iIN67
+	+ea2W3iYkGLgN1avnAhw9ubC+ZmpLyWHtM2KEfrLE8YAqgmTIDqUFdcBCE9eGmS9r7sET85j0R0
+	rQblV4LVI6+Bw
+X-Gm-Gg: ATEYQzwIe0QhHT6CXaSdrvxR1zwnu1EeXTfU7+zLVOTEhKHLpGbinxv3euDIpQfHnpv
+	eaflZZ3sBtmg4+HZOq5LOs9mKPuFSoYmHvTzBKrfSLqqaDxq0/xbibbk1XRxToMJkFp7QfLeC+d
+	d2iciaBvRz6HnIT/hlXnaxb3fThXdd7qEzMMNbB6Cpdc/1rZ6yrGMfJp2Xd675bGdCV+gYoqfOK
+	1o7wa5CbzXyDR0P8ftQIKxST+Kaostv4XwmVjIsEAd9gt/mrEC+68oL9QW0x/9iOVXRh9zO2yAN
+	ktkNUohJ2Knucb3VFh0e4GQWGcBmyJZn0d4C1TmbVRR+2lRaCM/5FKO66tx7LDDFx6JJ4PmI2CU
+	BTef+CNecAU15RA1eD2xC88jLnVc+x6kwoI+gACdw5ScNxJtPkS/Au87RL6BvkIIAXvFFzIg8cm
+	fBL4FCVZoofee4
+X-Received: by 2002:a05:600c:828c:b0:482:dbd7:a1c1 with SMTP id 5b1f17b1804b1-483c9c23c72mr5227085e9.34.1772143423478;
+        Thu, 26 Feb 2026 14:03:43 -0800 (PST)
+Received: from nixos ([2a02:168:646f:0:cfbc:1fa2:92d:8540])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd750607sm171813145e9.10.2026.02.26.14.03.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 14:03:43 -0800 (PST)
+From: Hannes Furmans <hannes@p2p.industries>
+X-Google-Original-From: Hannes Furmans <hannes@stillwind.ai>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: io-uring@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Hannes Furmans <hannes@stillwind.ai>
+Subject: [PATCH] io_uring/net: don't fail linked ops when done_io > 0
+Date: Thu, 26 Feb 2026 23:03:10 +0100
+Message-ID: <20260226220310.758404-1-hannes@stillwind.ai>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226201056.28728-1-ojeda@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[p2p.industries,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[p2p.industries:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-219865-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219864-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.879];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[p2p.industries:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[hannes@p2p.industries,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 40F051B0071
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,p2p.industries:dkim]
+X-Rspamd-Queue-Id: 324121B025A
 X-Rspamd-Action: no action
 
-On Thu, Feb 26, 2026 at 09:10:56PM +0100, Miguel Ojeda wrote:
-> The drm/tyr build error (`COMMON_CLK`) is now fixed, from 6.19.1:
-> 
->   https://lore.kernel.org/stable/20260215023627.56245-1-ojeda@kernel.org/
-> 
-> The fixes for the other build error (`COMPAT`) and the warning
-> (`unwrap_or`) have not arrived yet.
+When io_uring recv/send with MSG_WAITALL accumulates partial data
+through done_io and then encounters an error or EOF, req_set_fail()
+sets REQ_F_FAIL despite the CQE result being positive (done_io bytes).
+io_disarm_next() then sees REQ_F_FAIL and cancels all linked operations
+with -ECANCELED, even though the user-visible result indicates success.
 
-So should this be backported?  If so, how far back?
+This manifests in two code paths:
 
-thanks,
+1) Direct completion: io_recv/io_send fall through to req_set_fail()
+   when ret < min_ret, even if done_io > 0. The CQE shows done_io
+   (positive) but REQ_F_FAIL severs the link chain.
 
-greg k-h
+2) io-wq fallback: after APOLL_MAX_RETRY (128) poll retries, the
+   request moves to io-wq. io_recv returns IOU_RETRY from the
+   MSG_WAITALL retry path, io-wq fails the request with -EAGAIN, and
+   io_req_defer_failed -> io_sendrecv_fail overwrites cqe.res with
+   done_io but leaves REQ_F_FAIL set.
+
+Fix this by:
+- Not calling req_set_fail() when done_io > 0 in io_recv, io_recvmsg,
+  io_send, io_sendmsg, io_send_zc, io_sendmsg_zc
+- Clearing REQ_F_FAIL in io_sendrecv_fail() when done_io > 0
+
+This makes MSG_WAITALL partial completions consistent with
+non-MSG_WAITALL behavior, where positive results never sever the
+IO_LINK chain.
+
+Reproducer: MSG_WAITALL recv via IO_LINK -> write on a UNIX socketpair
+where the sender closes after partial data. The recv CQE shows positive
+bytes but the linked write gets -ECANCELED.
+
+Fixes: 0031275d119e ("io_uring: call req_set_fail_links() on short send[msg]()/recv[msg]() with MSG_WAITALL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hannes Furmans <hannes@stillwind.ai>
+---
+ io_uring/net.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
+
+diff --git a/io_uring/net.c b/io_uring/net.c
+index 8576c6cb2236..ebe51db34af8 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -576,7 +576,8 @@ int io_sendmsg(struct io_kiocb *req, unsigned int issue_flags)
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+-		req_set_fail(req);
++		if (!sr->done_io)
++			req_set_fail(req);
+ 	}
+ 	io_req_msg_cleanup(req, issue_flags);
+ 	if (ret >= 0)
+@@ -688,7 +689,8 @@ int io_send(struct io_kiocb *req, unsigned int issue_flags)
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+-		req_set_fail(req);
++		if (!sr->done_io)
++			req_set_fail(req);
+ 	}
+ 	if (ret >= 0)
+ 		ret += sr->done_io;
+@@ -1074,7 +1076,8 @@ int io_recvmsg(struct io_kiocb *req, unsigned int issue_flags)
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+-		req_set_fail(req);
++		if (!sr->done_io)
++			req_set_fail(req);
+ 	} else if ((flags & MSG_WAITALL) && (kmsg->msg.msg_flags & (MSG_TRUNC | MSG_CTRUNC))) {
+ 		req_set_fail(req);
+ 	}
+@@ -1220,7 +1223,8 @@ int io_recv(struct io_kiocb *req, unsigned int issue_flags)
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+-		req_set_fail(req);
++		if (!sr->done_io)
++			req_set_fail(req);
+ 	} else if ((flags & MSG_WAITALL) && (kmsg->msg.msg_flags & (MSG_TRUNC | MSG_CTRUNC))) {
+ out_free:
+ 		req_set_fail(req);
+@@ -1498,7 +1502,8 @@ int io_send_zc(struct io_kiocb *req, unsigned int issue_flags)
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+-		req_set_fail(req);
++		if (!zc->done_io)
++			req_set_fail(req);
+ 	}
+ 
+ 	if (ret >= 0)
+@@ -1570,7 +1575,8 @@ int io_sendmsg_zc(struct io_kiocb *req, unsigned int issue_flags)
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+-		req_set_fail(req);
++		if (!sr->done_io)
++			req_set_fail(req);
+ 	}
+ 
+ 	if (ret >= 0)
+@@ -1595,8 +1601,10 @@ void io_sendrecv_fail(struct io_kiocb *req)
+ {
+ 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
+ 
+-	if (sr->done_io)
++	if (sr->done_io) {
+ 		req->cqe.res = sr->done_io;
++		req->flags &= ~REQ_F_FAIL;
++	}
+ 
+ 	if ((req->flags & REQ_F_NEED_CLEANUP) &&
+ 	    (req->opcode == IORING_OP_SEND_ZC || req->opcode == IORING_OP_SENDMSG_ZC))
+-- 
+2.53.0
+
 
