@@ -1,128 +1,118 @@
-Return-Path: <stable+bounces-219742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219743-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDHmKhKkn2lfdAQAu9opvQ
-	(envelope-from <stable+bounces-219742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 02:38:26 +0100
+	id SIyAHuiln2mHdAQAu9opvQ
+	(envelope-from <stable+bounces-219743-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 02:46:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C3419FDE7
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 02:38:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3EB119FEB6
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 02:46:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6ADE4300A643
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 01:38:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B17153025915
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 01:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9654B36F42C;
-	Thu, 26 Feb 2026 01:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLQNozUT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1610371067;
+	Thu, 26 Feb 2026 01:44:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE6222A4E9;
-	Thu, 26 Feb 2026 01:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7AC4C81;
+	Thu, 26 Feb 2026 01:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772069899; cv=none; b=P1/KjAg1XDPGndRAkDF93PDkVp7WbqWUTxZPI91Q5brQ0J4CsE1TKYeEKXTM30C6XcEDw3ahihXyPjylMjsVN4zqYXQaz5y7mKMfmTUTsZqw6pigp+T3m/ut5lK/BvQr26ZPHnXqOZa62xdpxWLNmkzw6678wDKlGNJTfip9184=
+	t=1772070249; cv=none; b=LauOA8dWj/jnh2s88apNbM2M34QfSVTfEfWxB71mqOrd2VE3NUeXsy/v7pnxzzoHdoA/mVUBF5o4bLsb8Di9K0x4MyJF6PH3uij8IrnyRcxaRdkjCVYP7xcE8MJbBM+aBADW0CuD5+9u6l2YnmuY9kcvQs11yxkgf7UaML6d/f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772069899; c=relaxed/simple;
-	bh=eoBtqfiCcTvPh8JuPuhuSDJFW//KmTf+hr21rg56gl4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F41udy1N1GmfYtSiwh2fS9p2djRtHvZytJAY+kcGG8ukCKjggFVnDPVQ/f9nTFpeiOeIKPlNiBWTZ8Ibzr4JvMHg8rOwr2rcMaqgOn50NpA8Szo9pdMLlLU7crq808jpp76nEvIGt0uTAHI4tvuUrpIC2dxFRIQZIgQ6XbIFj6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLQNozUT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53C3C116D0;
-	Thu, 26 Feb 2026 01:38:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772069898;
-	bh=eoBtqfiCcTvPh8JuPuhuSDJFW//KmTf+hr21rg56gl4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OLQNozUTaCptxXJdDhdheU8m29InXke5A7E2SfpRxWGcnEODYca6Iej68mG+oys2s
-	 cQpZ1iNm9QygG/vsWxu3jEnxWrV2tatjzLuiFzh6JhL0oH3nAK/1iRW8e8G72iusLi
-	 68prDQoKrY7ylNz4xE0r5zfjTjPNNkBOSoUvJBdk=
-Date: Wed, 25 Feb 2026 17:38:11 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Yaxing Guo <guoyaxing@bosc.ac.cn>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] uio: uio_pci_generic_sva: fix double free of
- devm_kzalloc() memory
-Message-ID: <2026022555-improper-fanatic-cd10@gregkh>
-References: <20260226011632.4186353-1-lgs201920130244@gmail.com>
+	s=arc-20240116; t=1772070249; c=relaxed/simple;
+	bh=mOiR9z4zzE5tI/yoyfPnX7sL3vgpbAMXx8SQypu1v48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TOXp/AnZzjLhkaiB7Rq7ErGwDvCvahIi2P2CG2xsEYnxNi/CU69Id/9lka2K5cZWWdHG1hvtiQaBnO+qtIvFk8rjVzG7pTL4DK9+IL8a1y52KnEfoSlhoUphLte10SIVfsYg/eyaFwlzohDpg5kxkPtLtiU9u74fO9J6fdQdUSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 9b300e8012b411f1a21c59e7364eecb8-20260226
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:c96f9365-1a39-45ba-9b9a-bd52d1b672ba,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:89c9d04,CLOUDID:ead962309c554e0364c7908400c21514,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|817|898,TC:nil,Content:-
+	10|-8|-5|14|50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil
+	,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 9b300e8012b411f1a21c59e7364eecb8-20260226
+X-User: zhangheng@kylinos.cn
+Received: from [172.25.120.76] [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zhangheng@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 164723633; Thu, 26 Feb 2026 09:43:53 +0800
+Message-ID: <18b43378-0bbc-435d-93ad-370e051e8416@kylinos.cn>
+Date: Thu, 26 Feb 2026 09:43:56 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226011632.4186353-1-lgs201920130244@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ALSA: hda/realtek: add quirk for Acer Nitro ANV15-51
+To: Takashi Iwai <tiwai@suse.de>
+Cc: perex@perex.cz, tiwai@suse.com, sbinding@opensource.cirrus.com,
+ kailang@realtek.com, chris.chiu@canonical.com, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260209134149.3076957-1-zhangheng@kylinos.cn>
+ <87bjhy0xd1.wl-tiwai@suse.de>
+From: zhangheng <zhangheng@kylinos.cn>
+In-Reply-To: <87bjhy0xd1.wl-tiwai@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219742-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:mid];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[kylinos.cn];
+	FROM_NEQ_ENVFROM(0.00)[zhangheng@kylinos.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D7C3419FDE7
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219743-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: D3EB119FEB6
 X-Rspamd-Action: no action
 
-On Thu, Feb 26, 2026 at 09:16:32AM +0800, Guangshuo Li wrote:
-> uio_pci_sva allocates struct uio_pci_sva_dev with devm_kzalloc() in
-> probe(), but then calls kfree(udev) both on the probe() error path
-> (label out_free) and again in remove().
-> 
-> Because devm_kzalloc() allocations are devres-managed and are freed
-> automatically when the device is detached (including after a failing
-> probe() and during driver unbind), the explicit kfree() can lead to a
-> double free.
-> 
-> If probe() fails after devm_kzalloc(), the error path frees udev and
-> devres cleanup will free it again when the core unwinds the partially
-> bound device.  On normal driver removal, remove() frees udev and devres
-> will free it again when the device is detached.
-> 
-> Fix by removing the manual kfree() calls and dropping the now-unused
-> label.
-> 
-> Fixes: 3397c3cd859a2 ("uio: Add SVA support for PCI devices via uio_pci_generic_sva.c")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
-> v3:
->   - Add changelog below the --- line describing changes since v2.
-> 
-> v2:
->   - Reflow commit message to keep lines within 75 characters.
-
-You forgot my question of "how was this found and tested"?
-
-thanks,
-
-greg k-h
+> Can LED be controlled dynamically by writing to a sysfs file in
+> /sys/class/leds/*? e.g.
+>
+>    % cat /sys/class/leds/platform::micmute/brightness
+>    1
+>    % echo 0 > /sys/class/leds/platform::micmute/brightness
+>
+> If the direct write changes the actual LED status, it's not about the
+> sound driver problem, but possibly some plumbing in user-space via
+> UCM, etc.
+After testing, it is normal, so there should be no problem with the 
+driver. Therefore, I think this patch can be merged as soon as possible.
+>
+> thanks,
+>
+> Takashi
 
