@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-219758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219757-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNljGBzon2lLewQAu9opvQ
-	(envelope-from <stable+bounces-219758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 07:28:44 +0100
+	id +J88EtPnn2lLewQAu9opvQ
+	(envelope-from <stable+bounces-219757-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 07:27:31 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09FAB1A1504
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 07:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B838D1A14EC
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 07:27:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B3543306D8BB
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 06:28:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9D6D7306776E
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 06:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010F6389DF0;
-	Thu, 26 Feb 2026 06:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCB238B7B4;
+	Thu, 26 Feb 2026 06:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="anXfZJur"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="kN/pM4AU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail115-24.sinamail.sina.com.cn (mail115-24.sinamail.sina.com.cn [218.30.115.24])
+Received: from mail115-76.sinamail.sina.com.cn (mail115-76.sinamail.sina.com.cn [218.30.115.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28BC17A2EA
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 06:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79502389DF0
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 06:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772087318; cv=none; b=r4je5J9vvPp9Fru4jRREXFQVfvrMJp6ws+zOsjrTp+2241HWK90lT1CJgnjCrGF6GdOHcwUwjGpdJavUgUUCmwu3Me7UaeLcWY5KRRv6N2OoDT0jyGzIVZKGOL/BEcxtdUJVOHbS0Us8feNzh3ZzAW7RYkQv/UgsqIcHI7fqd9k=
+	t=1772087246; cv=none; b=BQm6iicNLDxTmVAcstSQm0jTkA5cbw51C6jhXUUybSXaq7vfmkkn5KeZrDBlOGHaJpfR8Kp7OPmzY2BOIa4/gx0LhwPVvw5fCGp17z+fCht0u5MGp3lJFKpHr5FtKtVaNiduBn28s3TZip39cR78rQVlDfyp+4/EvpguV5Qcyyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772087318; c=relaxed/simple;
-	bh=YWJx2iwectzVDSFFlBXYzcYdQaa7y7sUiwn4RbmmyEg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a4QfvtRu1V70EHEM30SUl4uZAdROQSVi8nHyudB247JnQIz6BTNDAKT8RuJJzwkxT/ylLBjpJceBEU1WdaDgS0RoHxq+jnCKlRFyobOF1+t9quxq08qQO+I6vXxJR38to5bjLHj5hZxQ4ubkCaka9LKGv/EmYftD8QZkSRmD7gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=anXfZJur; arc=none smtp.client-ip=218.30.115.24
+	s=arc-20240116; t=1772087246; c=relaxed/simple;
+	bh=yoBeoacMbK1NAn82kU0drfaAQYOiincR4WZfeQfH/ZE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YYnNQUKfn4Vc+l3fumGxpJ9zrd870hcVzmAgpeYJIH6sKHDpUnJJ2TE+cwrG6rofiVkOeTCr6IsD90oO/lwDH0NBiTUHC/1AlRCzXj13UTdWOFw4zHl1w/kPyJStH0wmzs3bbJHxZ6xZ2hUeMEqOm7XugRPdt8cTb7dTLrU9STg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=kN/pM4AU; arc=none smtp.client-ip=218.30.115.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1772087316;
-	bh=MqeqQg/vs2MGaUssukynotamsBqbwPSc/1lh8gDzQnQ=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1772087243;
+	bh=+ll0j7P6gB1YHU/QPLWIwnmbPeyItOm5mPcLbuIqgOg=;
 	h=From:Subject:Date:Message-Id;
-	b=anXfZJur+tX/LAsS0/gCXqKFINjCKPenOxXh3Dbohl1YLyPvLdbEZ6txVcHsrdurg
-	 n9sJX51CdKx9ljiG1H3+LODtTqK7NkvwBZNQ2sCVqlN6QSRHQS1MncexvCbRfGh6k8
-	 NNhUQI8ZfoV+UXLgSCZXZocbIRFpzF7g9+fSMm74=
+	b=kN/pM4AUY1gJkuXPs4ybFSYHr2L2J5vMvlBU5YR/D0TpbGh3B8kmoagE0mVFfATl4
+	 z7IARP+m3WXsfeRKgR7y52YGSmWDEk6kQWJpma/Vxjo9fA6gQzIrUn3abEc73L7TOm
+	 xTURmDuxVGOvlzLT1Uw4iFhE9O9CA8IErWxfYH+A=
 X-SMAIL-HELO: NTT-kernel-dev
 Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
 	by sina.cn (10.185.250.22) with ESMTP
-	id 699FE77E00003D67; Thu, 26 Feb 2026 14:26:08 +0800 (CST)
+	id 699FE7C00000554F; Thu, 26 Feb 2026 14:27:20 +0800 (CST)
 X-Sender: jianqkang@sina.cn
 X-Auth-ID: jianqkang@sina.cn
 Authentication-Results: sina.cn;
 	 spf=none smtp.mailfrom=jianqkang@sina.cn;
 	 dkim=none header.i=none;
 	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 8123827602223
-X-SMAIL-UIID: 67AC7A49CAFB47ABBF0506D125387A64-20260226-142608-1
+X-SMAIL-MID: 5292787602219
+X-SMAIL-UIID: 3D228B6872754FE994F61C7BCD9CC217-20260226-142720-1
 From: Jianqiang kang <jianqkang@sina.cn>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -59,9 +59,9 @@ Cc: patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	asml.silence@gmail.com,
 	io-uring@vger.kernel.org
-Subject: [PATCH 6.1.y] io_uring/io-wq: check IO_WQ_BIT_EXIT inside work run loop
-Date: Thu, 26 Feb 2026 14:26:06 +0800
-Message-Id: <20260226062606.357657-1-jianqkang@sina.cn>
+Subject: [PATCH 5.15.y] io_uring/io-wq: check IO_WQ_BIT_EXIT inside work run loop
+Date: Thu, 26 Feb 2026 14:27:11 +0800
+Message-Id: <20260226062711.426301-1-jianqkang@sina.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,13 +78,13 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
 	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-219758-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219757-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -96,11 +96,11 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DKIM_TRACE(0.00)[sina.cn:+];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.991];
+	NEURAL_HAM(-0.00)[-0.992];
 	FREEMAIL_FROM(0.00)[sina.cn];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sina.cn:mid,sina.cn:dkim,sina.cn:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: 09FAB1A1504
+X-Rspamd-Queue-Id: B838D1A14EC
 X-Rspamd-Action: no action
 
 From: Jens Axboe <axboe@kernel.dk>
@@ -176,7 +176,7 @@ Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index 04265bf8d319..958e619776f0 100644
+index c5d249f5d214..926890f5086e 100644
 --- a/io_uring/io-wq.c
 +++ b/io_uring/io-wq.c
 @@ -554,9 +554,9 @@ static void io_worker_handle_work(struct io_worker *worker)
@@ -188,7 +188,7 @@ index 04265bf8d319..958e619776f0 100644
  	do {
 +		bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
  		struct io_wq_work *work;
- 
+ get_next:
  		/*
 -- 
 2.34.1
