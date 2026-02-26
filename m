@@ -1,266 +1,209 @@
-Return-Path: <stable+bounces-219854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIniNniloGk9lQQAu9opvQ
-	(envelope-from <stable+bounces-219854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 20:56:40 +0100
+	id UG69EHWooGnilQQAu9opvQ
+	(envelope-from <stable+bounces-219855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 21:09:25 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED851AEC52
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 20:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B701AEDDB
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 21:09:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 28D3F3010495
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 19:55:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A54F13012BE8
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 20:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEAC451069;
-	Thu, 26 Feb 2026 19:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA43F45349B;
+	Thu, 26 Feb 2026 20:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pzKRGkER"
+	dkim=pass (4096-bit key) header.d=venev.name header.i=@venev.name header.b="UytnPd9e"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from a1-bg02.venev.name (a1-bg02.venev.name [213.240.239.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A69320CCC;
-	Thu, 26 Feb 2026 19:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.158.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772135723; cv=fail; b=FoiofIx6lo+w4xrt/sIhBwJEdoaldWSRrN3FyW8aE9MTs+yO877/evAYq8t7vcb1fQwxCogVbfixRiyGFI+0vBjPUuGWRwtJ/XFHddMNjGR+guSNsjmm3+Ccc62hD3Z2Wg4Al8zevNdXNaQBe6UaWXTsAwExe7kqoGgib8wwDD4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772135723; c=relaxed/simple;
-	bh=voz3DQn40Kb8Yc/vNERuOpCEe8lnePDC61Vp5fDNgBE=;
-	h=From:To:CC:Date:Message-ID:References:In-Reply-To:Content-Type:
-	 MIME-Version:Subject; b=THXHhEN6cG9Nl6tJ8+LUzGNtKOzC8uA7qvcbKUHCxTo78CzLFE+ZNxIVno65sxBo5SihHKHGM7JbzWOwNLScIkw6Mvvp4fLtiKIOMmtKnhxKpmM1ZmZo/wFwlbshKjJ5jzOF8T0tg7DvQQXnXzskiLElqA9RqzREB97cTuf3nt8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com; spf=pass smtp.mailfrom=ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pzKRGkER; arc=fail smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QD59kL2523183;
-	Thu, 26 Feb 2026 19:55:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-id:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	pp1; bh=voz3DQn40Kb8Yc/vNERuOpCEe8lnePDC61Vp5fDNgBE=; b=pzKRGkER
-	Hwn3L7Gji2JIa/UQVIkHs3neUm5AXQzTix3mshopCy7YiZ9I6+2e2Mq8CgN3yPkL
-	GZxAtnGafIhAJ3rY513W8iripXW/nGmzAUfjrMqX8GK1C39EmNrfzCX7Ul5JU+sI
-	d1q+W3gLUsAX8HVoDF0ZNCosXb+4C/Bzfb9hwjoBdjRGPhZLXRL1LSkxrqUXJ9l9
-	FhcLDDzFnFTOrDOWYQMha5jXCCMs2ewepK4eQORfylyeVpMVjApIBwcHL/BjKrYq
-	yxDRTP394tYFaastLYaHt7HVpTcvw6LdjK8elO+sewhR/8xmt+kh8IkCkSv0wH9G
-	4MD+oHE7J7M6Ww==
-Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013054.outbound.protection.outlook.com [40.93.196.54])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf24gr1qk-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 19:55:15 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QHQefIsFuQC0b7qzRxgsc2ymZomQl9l5fZNcRFQXmjLdoXm7bZm+t8XNnviEpM1AC1Gb8ybZLK6WlbznMLgmAb9a5vFgl0syVwFAresDXvvioRYlP8m9qcm+ujc8aRda9H8DyUUVkc5y2pFzOGoMEBhB8fm8jE59rl7qyPmKdODe+xSIxuUonc2kENNjMO1e0TsTOMuJ276BYv3ywUSj3eCEw8x6d5cB1xiHbz88/HMRSukEsAEDbQ2llkFvoTAN/z2Ti21Nd9LSyNY6Pz/dXrYnGmkSQo5Pimec9vfm1ZMj7ZawwLnTZoyyG8Ok9kv48eQYg4xfX7dNGv9nm+CfcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=voz3DQn40Kb8Yc/vNERuOpCEe8lnePDC61Vp5fDNgBE=;
- b=vSAV8oAF3wk1R4yMbr56BC6BBiODOmIyQXAtVl5AcFHpwQQ56owabXAfYdBPLfMa4lI0eA1YpU5j3QsxyU91qxe5EaDUIGfgnUc8L/TzrfyirhRhGNbpsH6QMdmc7jQ4xq9eCB7oNwAxGoGybTM2tk6kVlpgEii5rDqvLIxzWJ/Yn1cJKgCYWt+B2L7o0FcYboTuTjxAHqF1cZdQBVZ+F+maFTJyZ8u1pD1NZveKkmb4LPAYjhOuccUziNzDGXyAuidJyKpq8036oZBoj37yacvoGqOPGefgd63iAmm+AYBPFObYuBQgCrKA2is/EgV4jMFa6tn5A5cIj2Hntt3rUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ibm.com; dmarc=pass action=none header.from=ibm.com; dkim=pass
- header.d=ibm.com; arc=none
-Received: from SA1PR15MB5819.namprd15.prod.outlook.com (2603:10b6:806:338::8)
- by SJ4PPF6D7B23F3F.namprd15.prod.outlook.com (2603:10b6:a0f:fc02::8a6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Thu, 26 Feb
- 2026 19:55:12 +0000
-Received: from SA1PR15MB5819.namprd15.prod.outlook.com
- ([fe80::920c:d2ba:5432:b539]) by SA1PR15MB5819.namprd15.prod.outlook.com
- ([fe80::920c:d2ba:5432:b539%7]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
- 19:55:12 +0000
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-To: "hristo@venev.name" <hristo@venev.name>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Alex Markuze
-	<amarkuze@redhat.com>,
-        "ceph-devel@vger.kernel.org"
-	<ceph-devel@vger.kernel.org>,
-        "slava@dubeyko.com" <slava@dubeyko.com>,
-        "idryomov@gmail.com" <idryomov@gmail.com>
-Thread-Topic: [EXTERNAL] Re:  [PATCH] ceph: Do not skip the first folio of the
- next object in writeback
-Thread-Index: AQHcppgDS668W704B0iRyTKXxOujMrWT6I8AgAF3MwCAAAMxgIAAA36A
-Date: Thu, 26 Feb 2026 19:55:12 +0000
-Message-ID: <c1c033c44edf8d20b0a9dd8944a2f21bec942c1e.camel@ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D866C368964;
+	Thu, 26 Feb 2026 20:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.240.239.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772136562; cv=none; b=FTCORbe3Bvp8qRIdVIn7V/GQG/ZJvH9mqr2VJVnR4MyB9R7hTM+VOsUyQj3iCphyNwCSgpeyDBOjc2m5dqeYfOeNwSJvwpyK2Jph+y1T4fpQjzwQ/A8g9Dk8z1KwtpCgJ4Tw88kVXnQdNKTr7Ij32zo9oFtayOnqU30qPwwns0I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772136562; c=relaxed/simple;
+	bh=nBSy1LovVwxyrlD8UpAllqMlA6RwAoMmp6BfHrshVVw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HOAZRoyZ8TdGvr0VxGn/IeENJLfb1gT2PP7a/DVoccLV7cajHozJzNXBzoEVK4B2aWQbnao65Stc8P8OF/FtuhONPp+y9xxoCmxDRAhUC/cPC8JTo95hNJsD+9IlbLiaSALQtsHo7nOpK6LVXmGd147SwHOgxUPQlowKmMQ0Bfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=venev.name; spf=pass smtp.mailfrom=venev.name; dkim=pass (4096-bit key) header.d=venev.name header.i=@venev.name header.b=UytnPd9e; arc=none smtp.client-ip=213.240.239.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=venev.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=venev.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=venev.name;
+	s=default; h=Content-Transfer-Encoding:Content-Type:Date:To:From:Subject:
+	Message-ID:Reply-To:Sender; bh=mYtPKyqwIlJVBSgoG1JcsrSrVbRIZLx025OtxUJHIdc=; 
+	b=UytnPd9eJQPzfMIfWnsa/vjiCbMwE6tSlQ9QqbsAaW6NX6/2bplXCYias3eTHUD7mGO5oDM9HDJ
+	PQMpVFPnKebibEyWCUSp6MsJFyQaN8frmWri/1gTh+H5JZyYvoM01yBkLxWGoyxEkiNSS6ixfWFkL
+	ESm0bmbxrmlDZ8GFCVbsWp0kZ3gmQN9RQ9IbExegfmeh9oWk5g5+A1i+lKbUQ5n8TcUce8E3Nx5w/
+	WKnWLkqhSbmcwoKkV268V/3yLDwFTZ90eULr68529UYyOinH9I+bp/5Kb/QJGdtm3vJhnbFRzW8jj
+	VDxBp7xzhiPHFd6zWCzl7uR0v7z59LvnLiKktfx28NIA3qE/c24S4OlZnV/BFAos3XbwhEuW13egd
+	DIPCnG/qU5ZeZ5wtGoxrD9JsqLtHbAgF5kRmpwEHW5lP0raWeHJeMcVLDUtfn4UlCFZDZC94YmMMf
+	jfftx6ye9TZf++QaUrzEsNoNYxu0iMlxcFbcDFdhLRa5jpdIMj6tQ4/11qolY5O3YucC2IXsTx6ED
+	vkOfCr6UtbyXiYiQxBuGErnG4aGguRQiYIYxKbF1P9MYG0u8drRMkPiOkRxgbWF4xlevkBnxnYYMN
+	Z6e7HaPyc3lpxa2c6Hi969+Ni5LkSQwAXq0vmZ7/yIvlZj6V8SvsydMTz/H10JHUdHsgU=;
+Received: from a1-bg02.venev.name ([213.240.239.49] helo=pmx1.venev.name)
+	by a1-bg02.venev.name with esmtps
+	id 1vvhfZ-0000000AdVb-05uV
+	(TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	(envelope-from <hristo@venev.name>);
+	Thu, 26 Feb 2026 20:09:09 +0000
+Received: from box.m.venev.name ([213.240.239.49])
+	by pmx1.venev.name with ESMTPSA
+	id 3yftAGWooGnsriYAdB6GMg
+	(envelope-from <hristo@venev.name>); Thu, 26 Feb 2026 20:09:09 +0000
+Message-ID: <e714d8106a492077707cd31df96401a08caef6fe.camel@venev.name>
+Subject: Re:  [PATCH] ceph: Do not skip the first folio of the next object
+ in writeback
+From: Hristo Venev <hristo@venev.name>
+To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, Alex Markuze	
+ <amarkuze@redhat.com>, "ceph-devel@vger.kernel.org"
+ <ceph-devel@vger.kernel.org>,  "slava@dubeyko.com"	 <slava@dubeyko.com>,
+ "idryomov@gmail.com" <idryomov@gmail.com>
+Date: Thu, 26 Feb 2026 22:09:08 +0200
+In-Reply-To: <c1c033c44edf8d20b0a9dd8944a2f21bec942c1e.camel@ibm.com>
 References: <20260225170758.2014172-1-hristo@venev.name>
-					 <50447e5d0d4e3bf993d05dc9da9dde1c20371378.camel@ibm.com>
-				 <4c074e71fd58851a84596c4798b9378a3006d551.camel@venev.name>
-			 <1d321c24a2c4045e8bd79922a94fb4264a40f7de.camel@ibm.com>
-		 <daf3f64ab55d5c6e6c4bf612db609e5505795d05.camel@ibm.com>
-	 <b7c3c502da0d135fe1d57014f9f1074f8a2d4ceb.camel@venev.name>
-In-Reply-To: <b7c3c502da0d135fe1d57014f9f1074f8a2d4ceb.camel@venev.name>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR15MB5819:EE_|SJ4PPF6D7B23F3F:EE_
-x-ms-office365-filtering-correlation-id: 33b4d16e-3e0f-421c-ed59-08de7570f3d1
-x-ld-processed: fcf67057-50c9-4ad4-98f3-ffca64add9e9,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|10070799003|366016|376014|1800799024|7053199007|38070700021;
-x-microsoft-antispam-message-info:
- M65Vw01sGjdd/3nFzIz1Hb680wxe0gljMZEYkAqFg8iOGkp900n1s6Usb2H7o35euUl/JnqL8z/3sNqlHpgtU58UCiRdn1bj0MhObsrhUESXDymhPaxEy7/58ehhaWyCG7L/xoNfGELXhR+dZcInbh/nf5pKfh7RvGPqY/xM3khkm0ZVdVGNgszJyAwbhTET2DQWP2KBzq9hvQ9vdZOYI7rKZu07OpVQXrDuKfNq0Fynf7CavQKo+TPMBZzSQLWTV/io3Te+N55LBB8KNGWJzTOA/jeyX1Qzp9A+Br4OOcjk2j8e5GVQ7UQZ/GzfBeR3TOVciwvOh42MsuW9f5eN9V3fLTd6k4lC9oQdNpMiaUR52/9eFdUNSlvMhd4lL/7e1R8enbOrvuvWXnZR1LEJJ87qYuYTDh+jFeR05+WLF/T+VFBu/uBF1ujx/1dvEDpjD1Kx7D0m75MEhGCt1kidfNuUpa0p/2yxfHtg+Q2iY6eC2K+z83QCP1eQOOP824R8hvt7urw4tZzZzgS+6nAN4/3JDqzlNLw6OWaVu6M3F3naozteeUVsege/wG1UiOEzYZKC9du5DHRGzGq1Clz/Zqj8+ucGhT1SMCiakyIWHlTaTvKA7HbZF4pgUQnMuswdNmfzeRTr/39ivzfPcvbPRCEAUJV4VFD7ZTjoefu3h+Y3emQEG/cELd0+gfktKO3PoRSkAG6PPDkaDBPJ3s4ind6811jyfSiiIPW/Z/NUmvI7WLVr5rQ5f/h6OcP4vLoT
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR15MB5819.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024)(7053199007)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?a28ydUExM05FN3RWZGtkQzE5WVJzcU5CNjVSRkVYc2ptZm1rZDc5d3ZxK3Q4?=
- =?utf-8?B?Uk9kZzFURWNLM2kxbytDNXR2b05CMFEzSDN2VGZKS095TU9Zdm53dEdVeEVz?=
- =?utf-8?B?TkF0MEt5S29YQUhIUExGM0J3cE9OSTdWdGFjRzI5MnFTYjVqVEZ4SEFOVWVm?=
- =?utf-8?B?eUtrVHFBaDJFWkNqZm5ZV2g4V1R3aXZhQlNmdE9xU1E4RGFtYmErTjlZVElS?=
- =?utf-8?B?MGZHMXdkdThmc0xoWEFZYTY1QnJqN1E0RWpYajV3M3M1VlJzdlRSOWRhU1VK?=
- =?utf-8?B?aFhkTTN5U29DQnR3ZlZoR0UycU9LSnl2U1laSTh1em1vdk1QKzFmZDUzNi94?=
- =?utf-8?B?VUpoTnhRbDVmRW5Sb3dlTTB0MEhTaTNpalFQOUdmRjh4dkMxbVVqSTlLQWdF?=
- =?utf-8?B?cUxCS21OVmV0VUVOM09kSEpGU3VUMC8zRHNZQ1hPaldON0EwNU9QMkE3M01C?=
- =?utf-8?B?S01EMnNONDN5U1RnYk52M2tPV3BPMWFUL3dSQXcrUmNvZy9sVExCZjZsM1Nw?=
- =?utf-8?B?a2hFMVptMVJpRFVhSGcrWDk0VlE2czY4TmVHb1BTbUNIempFKzNBRWg5SWVY?=
- =?utf-8?B?VHd1WnJQZWVxTU9XcittRk8zNUxEL1laVjhxdXIxcmtadS8xQTkrRzl4dXg1?=
- =?utf-8?B?L0MvdkxhV0NTUlhlWjlCK3VBeFhoZ0h0eWw2RGMyTS9HWUdQb0pNQjRPaXRN?=
- =?utf-8?B?Y05KOVZCSmJhYTVUM2FEUDZwbk1DdjBWaU9aM2o4R2JNenBZVnVZSUFIUk43?=
- =?utf-8?B?RWFWZWVnMFkxSUIrbDQ0Y0QxdkptWW14ZHdxcHJvS285YmZJOGZHODV1cnUy?=
- =?utf-8?B?dmFzWTVST1Y4anJTejJOYmNldEpneVFSMUlHQ3NLRENFVEN3WjlzaWphUE5X?=
- =?utf-8?B?dFFVR0hKVFRMcnFSdms5YnQxRGY1WUNSWFNpam4vdGpWK2lJTlBPNEZNR3BG?=
- =?utf-8?B?WkNlbUdoeTNjbVdTL2xqUG1BVTN4SmQweHBGYWZxdlk5dTNBTzdKREgyL1N6?=
- =?utf-8?B?aDdJZDB4SEZ0c3pTS0Y3WUdsY0xTWXJZSnpMN2hCcTIxV0ZKaVlzcGNEcUVz?=
- =?utf-8?B?cWwwdlJuNVYydWFVU0FQY2gyOTdhWmxzVDk1ejlpSC9DdjZ4c1hrVDNEUXYv?=
- =?utf-8?B?WmJBa0t2ZkoyNmlGM3M3NURPc2JoNkxtZU1TNmxNWmVGK0xicllLb1hYek1h?=
- =?utf-8?B?S0k0RUtTcFg3dERwdkJRNzZ1Y2h5TFNvTFlUV2V1RWIwYmxuc1NkcTJGMlRm?=
- =?utf-8?B?bHRzTElnMU5iVmdmOFZOOC9WN2ZBa1E4RHFWYmxEdUZOcVVJTFMwQmNIbEVN?=
- =?utf-8?B?WGpQa0ZyU3FvSzNSTU9wR0NWYkFDRjlwVjhqSUNtcGhCQjJGVUltSWJwN3ph?=
- =?utf-8?B?V2xjbmp2WVVsR2RFL3duYnM0TlU3OTZpelhRS3NtRnNLOWowSWI4bStpVWYy?=
- =?utf-8?B?MDVZelRBV0xFNW5BajhMT0U5SGlFeDVXMnNRT0RtLzgxVVo3dENwWHlrSWJC?=
- =?utf-8?B?d0RBZ2FiTDZ6WWRCN3F5UXlJTjdJNkhCNVZQdXNzaWEvUkszQUJHQldwNVFy?=
- =?utf-8?B?QVA4Mkd2MVJTVUwrSXNVejg5dWVaR1FyTEJrR1E2d3FpZXEzWDRKVmw4NGFp?=
- =?utf-8?B?Titzb3JaK2pMeitiSTVzWWVpN24vR3dkR2g1a3l4TmtKdnNha25wKzV4Z3lU?=
- =?utf-8?B?RTE4dFVFMTVHVnRRMmpYZHUrQncxSWFmVnFFNGxISW53a3dKL2NQQnZMMVVk?=
- =?utf-8?B?ZzRxRjU2OHIyQjAydExtbCtqMWlnUmVTRjF6bzBvbEJLUDJrTGc4ck1iVnFz?=
- =?utf-8?B?ZE9JLzNvTHdFK3VxK2dXOENXNjRPSFFIMGtlYkJpcVdGYXVvckRubWlSOW1F?=
- =?utf-8?B?YmdPTjVZR0h1YVN6TDBMRjhudGZWdUx0N014VEFRcnE3VElzWmNsL01waUVW?=
- =?utf-8?B?amNKYmg1bkF4czcxbk5NUGYvRm90MjBNcExnWW9KR0UxRjZlcVRpUWE0K1pj?=
- =?utf-8?B?MWJqNGt6UjNrNlZzQ3NJYW9OQWN0R0Raa3dLR0pVWjVGd2g0U3Z5QkFHR0RZ?=
- =?utf-8?B?TnM1UEFENjNIZkFwRTBxMzYvU1lrenEvcnZvNEpIVGdBc2hXM2pibXNiKzRK?=
- =?utf-8?B?Z0VvWXNYOWdBaTNQQnZMRnBpMm9VSGpTWjNvenkwYXpudk10U1ZhY2I5MTM1?=
- =?utf-8?B?bzYvQ1JHT2FhNVVRVVhQRFNHU2Q4ejdIc2N5N0pRSTM1ZE03dHU2SEY1aXBk?=
- =?utf-8?B?Y1BKam9scDE0VkZxVG5DeTRkck1UQmNyR1Z5dkY4Ry9wSThGYU5SU1o3a2J2?=
- =?utf-8?B?a0Y4SlJxV2ZDZGZuSURnN0FuaURURGZrQ1hkRjI0dllUM08wRlFPOFJNcU44?=
- =?utf-8?Q?sBlv+SrPdD3oY9hbTt36nSHAkiKY5q24krLwP?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F153A7990BCF15489BCDDB014A480E3F@namprd15.prod.outlook.com>
-Content-Transfer-Encoding: base64
+						 <50447e5d0d4e3bf993d05dc9da9dde1c20371378.camel@ibm.com>
+					 <4c074e71fd58851a84596c4798b9378a3006d551.camel@venev.name>
+				 <1d321c24a2c4045e8bd79922a94fb4264a40f7de.camel@ibm.com>
+			 <daf3f64ab55d5c6e6c4bf612db609e5505795d05.camel@ibm.com>
+		 <b7c3c502da0d135fe1d57014f9f1074f8a2d4ceb.camel@venev.name>
+	 <c1c033c44edf8d20b0a9dd8944a2f21bec942c1e.camel@ibm.com>
+Autocrypt: addr=hristo@venev.name; prefer-encrypt=mutual;
+ keydata=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
+ AjQ6o01lu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: ibm.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR15MB5819.namprd15.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33b4d16e-3e0f-421c-ed59-08de7570f3d1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Feb 2026 19:55:12.0495
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: fcf67057-50c9-4ad4-98f3-ffca64add9e9
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AyU0JBMwy96oJW2KxL8l8fgLOjWcbFH43zRTeg9NHHnNxs6/tVg32FKXvRMzki+uMQeVXp4xRvSJKpWp1M06gw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ4PPF6D7B23F3F
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=TNRIilla c=1 sm=1 tr=0 ts=69a0a523 cx=c_pps
- a=S/uo/C2bPHUhgLefKkPNaQ==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=GVT9W4Wiak6UpZ1B:21 a=xqWC_Br6kY4A:10
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=u9lmIOSemw-4eJ9u6GEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: jhbPdR_baHVuGiOGKPV-UoQms6AkJ8G-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE4MCBTYWx0ZWRfX5uKpjSssXTMX
- nzU1qV1ZzepFZSaSp/EQU/vJL8XZ2SIoy2bEv5Va9kxG87+3V51t/6eVx7IE8UKUoYEilpJE8Zq
- JxV18zcOZlI6kwzPbAhQX0gSDBerk3ffW/vr99ff8JC+0UHrGMDv/20pJsjoGe0IuQzEPmFXZfP
- KJJr93As/PS4FlYoSMY5UnmTzc9MMy/SUlW8yIVwEeIt6Qp+4kezhQ71QAFYfkQHOlGwg2dWTjC
- E+p0gNgvV3Tm8MHnHokzdthY30HVQm9QtJaekNz2vx/UuVK6DWvOT0eYUy0LzX2PXCYxmyQn4kB
- UCuYVEgdVPFVmL9Y50u9jd1ZTF9LJ0GV1Fsq7gak6dq4UxlJgHpsc1H0OeXPGsjs/ro9IRapQ2z
- DEnzxlI0N3GefRkREfrrkJiQw4eYC+qA8EdmrFlXLQRy/mswzOj+X0bKa/GSh5Ch1m4rhmGAQW/
- dt6K3C+c3jzr1xR3laQ==
-X-Proofpoint-ORIG-GUID: xljlEfM72pEjOArBtIYmqTRYgBwkv56h
-Subject: RE:  [PATCH] ceph: Do not skip the first folio of the next object in
- writeback
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-26_02,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- spamscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602260180
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.94 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,reject];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[venev.name,quarantine];
+	R_DKIM_ALLOW(-0.20)[venev.name:s=default];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219854-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,dubeyko.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-219855-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,dubeyko.com,gmail.com];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Slava.Dubeyko@ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[venev.name:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hristo@venev.name,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 8ED851AEC52
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[box:email,venev.name:mid,venev.name:dkim,venev.name:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B1B701AEDDB
 X-Rspamd-Action: no action
 
-T24gVGh1LCAyMDI2LTAyLTI2IGF0IDIxOjQyICswMjAwLCBIcmlzdG8gVmVuZXYgd3JvdGU6DQo+
-IE9uIFRodSwgMjAyNi0wMi0yNiBhdCAxOTozMSArMDAwMCwgVmlhY2hlc2xhdiBEdWJleWtvIHdy
-b3RlOg0KPiA+IEZyYW5rbHkgc3BlYWtpbmcsIEkgaGF2ZSB0cm91YmxlcyB0byBhcHBseSB5b3Vy
-IHBhdGNoIG9uIDYuMTkga2VybmVsDQo+ID4gdmVyc2lvbjoNCj4gPiANCj4gPiBnaXQgYW0NCj4g
-PiAyMDI2MDIyNV9ocmlzdG9fY2VwaF9kb19ub3Rfc2tpcF90aGVfZmlyc3RfZm9saW9fb2ZfdGhl
-X25leHRfb2JqZWN0X2kNCj4gPiBuX3dyaXRlYmFjaw0KPiA+IC5tYngNCj4gPiBBcHBseWluZzog
-Y2VwaDogRG8gbm90IHNraXAgdGhlIGZpcnN0IGZvbGlvIG9mIHRoZSBuZXh0IG9iamVjdCBpbg0K
-PiA+IHdyaXRlYmFjaw0KPiA+IGVycm9yOiBwYXRjaCBmYWlsZWQ6IGZzL2NlcGgvYWRkci5jOjEz
-MjYNCj4gPiBlcnJvcjogZnMvY2VwaC9hZGRyLmM6IHBhdGNoIGRvZXMgbm90IGFwcGx5DQo+ID4g
-UGF0Y2ggZmFpbGVkIGF0IDAwMDEgY2VwaDogRG8gbm90IHNraXAgdGhlIGZpcnN0IGZvbGlvIG9m
-IHRoZSBuZXh0DQo+ID4gb2JqZWN0IGluDQo+ID4gd3JpdGViYWNrDQo+ID4gaGludDogVXNlICdn
-aXQgYW0gLS1zaG93LWN1cnJlbnQtcGF0Y2g9ZGlmZicgdG8gc2VlIHRoZSBmYWlsZWQgcGF0Y2gN
-Cj4gPiBoaW50OiBXaGVuIHlvdSBoYXZlIHJlc29sdmVkIHRoaXMgcHJvYmxlbSwgcnVuICJnaXQg
-YW0gLS1jb250aW51ZSIuDQo+ID4gaGludDogSWYgeW91IHByZWZlciB0byBza2lwIHRoaXMgcGF0
-Y2gsIHJ1biAiZ2l0IGFtIC0tc2tpcCIgaW5zdGVhZC4NCj4gPiBoaW50OiBUbyByZXN0b3JlIHRo
-ZSBvcmlnaW5hbCBicmFuY2ggYW5kIHN0b3AgcGF0Y2hpbmcsIHJ1biAiZ2l0IGFtIC0NCj4gPiAt
-YWJvcnQiLg0KPiA+IGhpbnQ6IERpc2FibGUgdGhpcyBtZXNzYWdlIHdpdGggImdpdCBjb25maWcg
-c2V0IGFkdmljZS5tZXJnZUNvbmZsaWN0DQo+ID4gZmFsc2UiDQo+ID4gDQo+ID4gV2hpY2gga2Vy
-bmVsIHZlcnNpb24gZG8geW91IGhhdmUgb24geW91ciBzaWRlPyBBcmUgeW91IGNhcGFibGUgdG8N
-Cj4gPiBhcHBseSB5b3VyDQo+ID4gcGF0Y2ggZnJvbSB0aGUgZW1haWw/DQo+IA0KPiBUaGlzIHBh
-dGNoIGlzIGJhc2VkIG9uIDdkZmY5OWIzNTQ2MCwgd2hpY2ggd2FzIG1hc3RlciBhdCB0aGUgdGlt
-ZS4gRm9yDQo+IG1lIGl0IGFsc28gYXBwbGllcyBjbGVhbmx5IG9uIHY3LjAtcmMxLCBhcyB3ZWxs
-IGFzIG9uIGNlcGgtZm9yLTcuMC1yYzEuDQo+IA0KPiBUaGUgcGF0Y2ggSSB1cGxvYWRlZCB0byB0
-aGUgaXNzdWUgdHJhY2tlciBpcyBiYXNlZCBvbiA2LjE4LiBJdCBzaG91bGQNCj4gYWxzbyBhcHBs
-eSBjbGVhbmx5IG9uIDYuMTkuIFRoZSBjb25mbGljdCBzZWVtcyB0byBiZSBjYXVzZWQgYnkgY29t
-bWl0DQo+IGZhNTg5YWNhYWMwOC4NCj4gDQo+ID4gDQoNCkRvIHlvdSBtZWFuIHRoYXQgeW91IGNh
-biBhcHBseSB0aGUgcGF0Y2ggYWZ0ZXIgJ2dpdCBmb3JtYXQtcGF0Y2gnIGNvbW1hbmQ/DQoNCkFy
-ZSB5b3UgY2FwYWJsZSB0byBleGVjdXRlIHN1Y2Nlc3NmdWxseSB0aGlzIHNlcXVlbmNlPw0KDQpi
-NCBhbQ0KaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvY2VwaC1kZXZlbC8yMDI2MDIyNTE3MDc1OC4y
-MDE0MTcyLTEtaHJpc3RvQHZlbmV2Lm5hbWUvVC8jdQ0KZ2l0IGFtDQoyMDI2MDIyNV9ocmlzdG9f
-Y2VwaF9kb19ub3Rfc2tpcF90aGVfZmlyc3RfZm9saW9fb2ZfdGhlX25leHRfb2JqZWN0X2luX3dy
-aXRlYmFjaw0KLm1ieA0KDQpQb3RlbnRpYWxseSwgSSBjb3VsZCBoYXZlIHNvbWUgaXNzdWUgb24g
-bXkgc2lkZS4NCg0KVGhhbmtzLA0KU2xhdmEuDQo=
+On Thu, 2026-02-26 at 19:55 +0000, Viacheslav Dubeyko wrote:
+> Are you capable to execute successfully this sequence?
+>=20
+> b4 am
+> https://lore.kernel.org/ceph-devel/20260225170758.2014172-1-hristo@venev.=
+name/T/#u
+> git am
+> 20260225_hristo_ceph_do_not_skip_the_first_folio_of_the_next_object_i
+> n_writeback
+> .mbx
+
+It applies for me on v7.0-rc1:
+
+
+hristo@box ~/sw/linux $ git checkout v7.0-rc1
+HEAD is now at 6de23f81a5e08 Linux 7.0-rc1
+hristo@box ~/sw/linux $ b4 am 'https://lore.kernel.org/ceph-devel/202602251=
+70758.2014172-1-hristo@venev.name/T/#u'
+Analyzing 7 messages in the thread
+Analyzing 0 code-review messages
+Checking attestation on all messages, may take a moment...
+---
+  =E2=9C=93 [PATCH] ceph: Do not skip the first folio of the next object in=
+ writeback
+  ---
+  =E2=9C=93 Signed: DKIM/venev.name
+---
+Total patches: 1
+---
+ Link: https://lore.kernel.org/r/20260225170758.2014172-1-hristo@venev.name
+ Base: applies clean to current tree
+       git checkout -b 20260225_hristo_venev_name HEAD
+       git am ./20260225_hristo_ceph_do_not_skip_the_first_folio_of_the_nex=
+t_object_in_writeback.mbx
+hristo@box ~/sw/linux $ git am ./20260225_hristo_ceph_do_not_skip_the_first=
+_folio_of_the_next_object_in_writeback.mbx
+Applying: ceph: Do not skip the first folio of the next object in writeback
+hristo@box ~/sw/linux $ git show | head
+commit 14f494cefd0a49abf41d455b4c3a30d78ba1f91b
+Author: Hristo Venev <hristo@venev.name>
+Date:   Wed Feb 25 19:07:56 2026 +0200
+
+    ceph: Do not skip the first folio of the next object in writeback
+   =20
+    When `ceph_process_folio_batch` encounters a folio past the end of the
+    current object, it should leave it in the batch so that it is picked up
+    in the next iteration.
+   =20
+hristo@box ~/sw/linux $ sha256sum ./20260225_hristo_ceph_do_not_skip_the_fi=
+rst_folio_of_the_next_object_in_writeback.mbx=20
+a623e1f8f06000efd86b078114ba41c4f079b5c140cdc8342e6993bb9d299851  ./2026022=
+5_hristo_ceph_do_not_skip_the_first_folio_of_the_next_object_in_writeback.m=
+bx
+
+> Potentially, I could have some issue on my side.
+>=20
+> Thanks,
+> Slava.
 
