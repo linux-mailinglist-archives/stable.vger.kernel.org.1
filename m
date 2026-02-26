@@ -1,198 +1,192 @@
-Return-Path: <stable+bounces-219787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eO0TDjIdoGmzfgQAu9opvQ
-	(envelope-from <stable+bounces-219787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 11:15:14 +0100
+	id eMywFFchoGkDfwQAu9opvQ
+	(envelope-from <stable+bounces-219788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 11:32:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D471A41A4
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 11:15:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E861A452D
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 11:32:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10D893007CB1
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 10:15:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6B4ED300E5D7
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 10:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839A13A0EBB;
-	Thu, 26 Feb 2026 10:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5E43A1A5D;
+	Thu, 26 Feb 2026 10:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F17dWZXn"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="chDrl1W+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7E43A0B1C
-	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 10:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B627F3921C3
+	for <stable@vger.kernel.org>; Thu, 26 Feb 2026 10:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772100909; cv=pass; b=BDl/F9g7wLtkQAUEg+ac1Q37v7mVjHoGekfuNVVpMGHJFLo5C6iNg0mRTqga2uoDUF4ieHTqhkjFzZPPAcBEQjLW8R+eY4eVF1KlvYL7Sdtj562QHwIO25Ni4Xm+GJUKVTOZu5/wVfOzC1okzJll46YI6BcSI9c5HihSs7KNyZ0=
+	t=1772101883; cv=pass; b=dLlNMeAaTDvhaa2SLdsaEkrERAFStm70DKeqp/9ZSoTcFUADrrye8MSRJN/Qm6dZf9JMWBT4qI1ETaqKVVnJ5b9BxY/YwX9KmS/h1jx6r8gWixPZJaKaL1cZwt1TE8WF74WYjAqXVi9WCr7f0ajp/ixdbyUwRne3zZMqtu67H7E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772100909; c=relaxed/simple;
-	bh=tcfsb19Wmb3McbX91tb496Zb905WaaM6x2v3wHSTyRw=;
+	s=arc-20240116; t=1772101883; c=relaxed/simple;
+	bh=anYMqxwpR+nu7UEQOFNVZ3X5XYdS3eWHbk0GKrFqOOI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MtqDPwUeZcXzlGM300S+Y4b0hGtXbo+/uQiu/KWTd4brMrsoGh2QGo3I8M1+TPqvz48KmiDMOY21P8UmSpc/eG/nSD0jA0DeYyXSWGQq72QiTqr8hWS21XsPFlbHBZXxf+5nKBMzy2jEtjzA7Vk4ZeIXSodPHZd2JSzrEUdaaJc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F17dWZXn; arc=pass smtp.client-ip=74.125.224.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-64ad8435f46so678299d50.1
-        for <stable@vger.kernel.org>; Thu, 26 Feb 2026 02:15:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772100907; cv=none;
+	 To:Cc:Content-Type; b=ppoFpKxz9UCPqAJCrdtv6MsR+TDzvTTQit0jvTC5HNJzri+Vbh9q3kn4IBfbiQMAorl2CUXc22+X5KQ+5e93XcNJ+ekiNxlELVMY6YAOoVyZroEmnNzBLvIz/jNJj7UoesRYOZM9STx72d4Qm+T94I2XaPAYpVQ2KbUDakqkOJg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=chDrl1W+; arc=pass smtp.client-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1271195d2a7so503818c88.0
+        for <stable@vger.kernel.org>; Thu, 26 Feb 2026 02:31:20 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772101880; cv=none;
         d=google.com; s=arc-20240605;
-        b=HlNdM2rSI0p4EaYt4TBP0HBR/d8JPsydCDVgy9muWQ7gyVvn65O2CXcfBfErYtaEmM
-         9cZIEOMsbqu9ZbiGmBqQQ2tCk/HLqUpHb1AAeXcWJNzhAt704zzze8oRfHgRAI30qFxD
-         hL95356GgX0aUBPJkjottoQ9grpl6HD+vupEksaUAd6Zm5JUWWf5b9qgimEztOLakhCp
-         ayXYfBTDQJPxqo0ERdMC7GmIDXvfajQttZXBBWq3in5T8jwM7IIMu6aFBjhzMJgSheQi
-         fUrChy22L3y1IOFTFfG+fVAjyeS0k2M+LAhx8afJ+006F4WYXk6vjkh0e0C/BuALWybM
-         5OEA==
+        b=RfbC5Veg7FZH3kYO1RTDUFPUzxAQtuJNaA8w5liaBN64i5brKkE9jotL4nMQtZHlQm
+         jMoreWnnIYSKCrxVCGCtCObaRifSZmK+yXxawRlMmEFII1J3tcfaoBN0v2p7bLyaaUMA
+         sCpfxr70X5le/5Qr9tMGp137P+FGO1KjclNsVbrD02axSZnlz/9zfibpNF+T6Sejam7h
+         5S77EEaLULDx3ajvbGlJjVU3qea4/4cDkr5dkqc/5uKfZQrAn/3WPtM3d6QYVdYywIVM
+         m0VSFZixuaLK22/XF+qM3gVkvRIRUisICciqEQBVec3UF+hXkwTv9s0kblxH9qsruXe7
+         UuyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=D2S2ck2OTwevdx4H8sprHvjm0zbAGFrPm+nHEgDwTiE=;
-        fh=QRZsSB80q7MaXqpPipQAuaH0TWvwwoiwUOcLc39/ySI=;
-        b=S2KviyVjrwbJoRF6DXzv/7CmuoW/BKeMUYe3oy0daJhXFsuMn7UgupEb+H0ffxOVgh
-         xRjkJFdynavF8hyg+3TpvdhAuRl4WPW2KCdqVQw9W6WsbVnL2I85c+SSLB4FQnHHcThg
-         FoX9lF6glGX1bktY5CW0WzP8VKQiu3iV49qdrqIBk8zcY/J9yPUaR8kS+xv8KY/6aCl0
-         7XByI8+v8oXjv8WnO8LbXygmTcO3Q8aiygjdAg7r+UrRdFPKto0iR5QEpInA5CyAfVOf
-         UFZnPJzJTKfnpZhrjlifWXEL8iRLw9MxPUf25h4p7cMHnVfqNOTQ6Ugk9rSEyNTQYAhE
-         e+jw==;
+        bh=y6Xg9HxlpIibWsVNQjKHCybD682gjh649PRqD1j7+c4=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=eN+loDSjkhKncbj9gWKrdj6CvztzaO36PSsB84jNIB7lJLXQawkRUpDrWUwRzQoKKX
+         Yn0fzkAubsiZBDV8FRktmepbDpiftbGGm06rR1elDWpb0loXV3fjyKXXYNIX4jgc/W3m
+         Zlb5rf8Hl3CevgYtfvPbwQS74HQ+FVAki0OXtuDvu06fHbnNQt+AFrtiVmD6H3eZy74w
+         mkNIGyBtd/WL9DcC21TIYqHlHdGHJ+/kYBvS2JKQJ+A4TSev66fxR00h0AkvqQHXtStA
+         xlI8vcwP0+xu/vr+cBDxtGTpF5eLsxXotnzBFeAmoZwkoXVcCV3yO1N/E0hPZ5YIuhlK
+         Al0w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772100907; x=1772705707; darn=vger.kernel.org;
+        d=futuring-girl.com; s=google; t=1772101880; x=1772706680; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=D2S2ck2OTwevdx4H8sprHvjm0zbAGFrPm+nHEgDwTiE=;
-        b=F17dWZXnNm5dvBwL1J3PoBgE5C973MH1sb5iI7ll+Js5++e4ReyslfuKnw0UtYGH+R
-         VrEq1H2xpRQd3J8BgntdLm7NtAvH8UuB77MOauMAjTSNLqkp0naC1xtF9DmBtJ+ZdNwC
-         BP5/qGru26v75yRTOg6qeSQarK3I/sk0XvlDjRJvaaFzmj4AxXyzmFRNOODKAYmlbdzO
-         Iuw6qehLYoN2WHm64vq/V8j1laYY6XqvphPM7VuP8+/Pn2GtoA3xlq7XDyKRnFQIf+W/
-         TSncYOmH2C8xO03Wh/vOe9sY2pT0DVnWJF+SWcdp7ubUvGpt0exmexdDcYy6NfQNQybI
-         ZpAw==
+        bh=y6Xg9HxlpIibWsVNQjKHCybD682gjh649PRqD1j7+c4=;
+        b=chDrl1W+iKwbdE26IZJGc2ERV0JFJFFVCfdK98UjEFZPWwAd1CaRbqXepVgCTTK6gy
+         gPScu8w5MbUrt3IymITe1Y4la6R0dXVFE5cxp2pyKGcNM+aHV5tqDu7P1zE7NJk0sKOu
+         4zl1FgeQGCgW9H0khRvf9GVOctrYoXRge128WKFHeytkzZPjHSg0VjpiVhc5XdmI3bYi
+         vOyZ+cFZQT7zqc3Ol4lNFnr+qw8l4nxWZ7sj6zlSGzr3uX11iOXdrALzeUgNEz/wHr73
+         It+PdnYNEAgopqjsZrKB//MnvV9vHVzuVS9PVBYz45dBBAFIVl52amS48adZ5HvV5hXU
+         K0xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772100907; x=1772705707;
+        d=1e100.net; s=20230601; t=1772101880; x=1772706680;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=D2S2ck2OTwevdx4H8sprHvjm0zbAGFrPm+nHEgDwTiE=;
-        b=HGPrbpFIVTFJMA0vWcTibB05H0DnYMxqQTHm0Vlgd4H5frH/5l7bW7e01Fe6i0S/X1
-         rUw9j0w1VE8LD7x5dBMgD6XEYIoO6G1EU72C20yQxLPBG6V+CNQ+oMl9gVha85VWQ9j5
-         MZWjAEiqCdVmT2l0aHfGGsv5liNy6ukbjw832/CU+nhDeatp178fTejRXpuqe5ou1x62
-         F4Mj5nASeOrOap1QWa+dM0h4UjmQ3P76fzNYzhNB1hDhN22IUa0XdTq14DIANYelVIfB
-         xgkJ9rLQld8+mHbN7yON3NL6q0OKnNol7F2LEhdBkdCPxEa43ekEDwEAwc7uRZlytUrB
-         thGg==
-X-Forwarded-Encrypted: i=1; AJvYcCUW1kFq+UurdPsRAhyUEnPye6B/8Khajp9Bc1yVovEc4Ucg1Z4mKovybIXne1Hkk7skz4j429U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz++Dw14GKNjzrOfscJRnwQ20jvdlmssdHxL9s0ZrydBV8/vjwK
-	7Fm9pGAWiGX7xQfqBpBLaYov17pELq9EkKeX9wMjoU3DPFNckSH63OEKUViSNhKwwylxO05Ad12
-	blxLNPvKw/EVobSAaUm1yi0ylUGA+58I=
-X-Gm-Gg: ATEYQzzfm6mKC4yIXN0rCT/25IRDVAVyubdOz+1sMsUTOiTEDnBnj7u3mC8grm9gZDm
-	TSZyA+rt5aDKjXA/FbsH2KdcjaCyGx0bRqMBKbHHPQPy2iYMOmP/wEOiv6OnhIXGAs0VNtYbruY
-	oHGDJc+ELIjtn5k9NAXbEw8/npAAeEnIdtAdKY/E5G0qWnHZBUG2FSGroxMLECD3jEg4VosaCz+
-	l3AF1OB0Pg+DZJ6CrVUyd2LoZJxjny+FiR+Jbb3d7y1yL0blDXNlfcfu2cGpT5roS9Ck0fE/MXj
-	ETAxsDRJ33t+WA5jx06ekC2VprQYCe4sD1YslV6CkKhW
-X-Received: by 2002:a05:690e:1304:b0:649:b851:4a1 with SMTP id
- 956f58d0204a3-64cb261e534mr2950603d50.86.1772100907088; Thu, 26 Feb 2026
- 02:15:07 -0800 (PST)
+        bh=y6Xg9HxlpIibWsVNQjKHCybD682gjh649PRqD1j7+c4=;
+        b=fMhXRiouub3x4/1lFPqmhkR+403g4J0bMnVFZwJSupQ5h1s5J7VNZYuR3i/PjqR9Xp
+         MZXSEr83CTXDVKAv+6Y7iSGGs8LXtY58Q/NqQ9fixrVgJFCP23MukMLx0YUgiyNjWxVU
+         JwRGGgROSNEpmYyo6iX5wfu9BuqlPCzJOgmg0mHKU7MpCvxaWPrgYAGgWBB10a/jZl8v
+         cHSEMHuLHb/+DE3/QN3EWX31VaqjU1dvtVr/YYLrqcPyURMfZb/6lNB2euv3cDfHRxAO
+         q80qZQmUmbJkMAs/sI2z4Gc3pzFTuzV7JZldGxhJ+qBWU9RIbZdnUdJrmHwuIMs4ggiA
+         e9fA==
+X-Gm-Message-State: AOJu0Yxwl+BVbNH0RhORM/u4t9GEyCsk/Mt4NRIQUMYbK6UtjQR/Ki0g
+	TzXa5+23+pbQUKdiU8XW0ekMun4Eug69yuZlrP7Qx4WUxYwCK+nPA99XIFM095HrSuWqQvrGgqK
+	hGVtkpVAoUYpchSBVzbWreM4dw6Toy1ghGXIR+2RQVQ==
+X-Gm-Gg: ATEYQzzlqQt6hf0Aj2w4Frfc0p+y31qlBBEtUaibPmDZZevB4Bqn496JOTaPSj1TVpy
+	cXx9JnM+iubM5daeQVYKUxDY2knmoNP4rY/sehzVHkCR5TDfjzs6pOGLJWug5z7gr1mMCGFtN0I
+	N6C/KDLJLpaPU+kAAYM474rogJ+YnTMz4T/h1TC4vQxeeB3w9sBQ84JH2gDkbrgEJO12jzmRTdk
+	Ws1hkL665d7/TRi7qWCMuwRgEDv7Nl5j4nxKLW4z+QmbCsrYPwbuXwIYjfnqMyV7w9/GVASi0tX
+	9UlVjv7wshV3vCcXvLa2OWEtXworMzhCc2HlPsrx
+X-Received: by 2002:a05:7022:322:b0:127:337e:3301 with SMTP id
+ a92af1059eb24-1278694d544mr1508180c88.12.1772101879559; Thu, 26 Feb 2026
+ 02:31:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260226011632.4186353-1-lgs201920130244@gmail.com> <2026022555-improper-fanatic-cd10@gregkh>
-In-Reply-To: <2026022555-improper-fanatic-cd10@gregkh>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Thu, 26 Feb 2026 18:14:54 +0800
-X-Gm-Features: AaiRm504D78DlLbIwpZzyr2omqQbZOc4f4my3Tr_yLvb_Cea-wkRjNG1-eCP-pA
-Message-ID: <CANUHTR8hzrnM6s_ysGea3kO8crbeq_onzgcfDTV6UAMB9QFogA@mail.gmail.com>
-Subject: Re: [PATCH v3] uio: uio_pci_generic_sva: fix double free of
- devm_kzalloc() memory
+References: <20260225155341.094945851@linuxfoundation.org>
+In-Reply-To: <20260225155341.094945851@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Thu, 26 Feb 2026 19:31:03 +0900
+X-Gm-Features: AaiRm51FIIwYhOs-UxDvDGXiVZilXoc6wP4paS67hi--k9N-ihe-yynb-S9YUzY
+Message-ID: <CAKL4bV52Tq8Q50Gn-zyd6Gdnm_c7YB02dsxQRYeujWkRyPdKCw@mail.gmail.com>
+Subject: Re: [PATCH 6.19 000/781] 6.19.4-rc2 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Yaxing Guo <guoyaxing@bosc.ac.cn>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[futuring-girl.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[futuring-girl.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219787-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219788-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[takeshi.ogasawara@futuring-girl.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[futuring-girl.com:+];
+	NEURAL_HAM(-0.00)[-0.993];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 89D471A41A4
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,thinkpadx1gen10j0764:email,mail.gmail.com:mid,futuring-girl.com:email,futuring-girl.com:dkim]
+X-Rspamd-Queue-Id: C5E861A452D
 X-Rspamd-Action: no action
 
-Hi Greg,
+Hi Greg
 
-Thanks for the reminder.
-
-This was found by a static analysis tool I designed. After a manual
-review, I confirmed the issue and sent the fix.
-
-Would you prefer that I include the =E2=80=9Chow it was found and tested=E2=
-=80=9D
-information in the commit message?
-
-Thanks,
-
-Guangshuo
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> =E4=BA=8E2026=E5=B9=B42=E6=
-=9C=8826=E6=97=A5=E5=91=A8=E5=9B=9B 09:38=E5=86=99=E9=81=93=EF=BC=9A
+On Thu, Feb 26, 2026 at 1:22=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Thu, Feb 26, 2026 at 09:16:32AM +0800, Guangshuo Li wrote:
-> > uio_pci_sva allocates struct uio_pci_sva_dev with devm_kzalloc() in
-> > probe(), but then calls kfree(udev) both on the probe() error path
-> > (label out_free) and again in remove().
-> >
-> > Because devm_kzalloc() allocations are devres-managed and are freed
-> > automatically when the device is detached (including after a failing
-> > probe() and during driver unbind), the explicit kfree() can lead to a
-> > double free.
-> >
-> > If probe() fails after devm_kzalloc(), the error path frees udev and
-> > devres cleanup will free it again when the core unwinds the partially
-> > bound device.  On normal driver removal, remove() frees udev and devres
-> > will free it again when the device is detached.
-> >
-> > Fix by removing the manual kfree() calls and dropping the now-unused
-> > label.
-> >
-> > Fixes: 3397c3cd859a2 ("uio: Add SVA support for PCI devices via uio_pci=
-_generic_sva.c")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> > ---
-> > v3:
-> >   - Add changelog below the --- line describing changes since v2.
-> >
-> > v2:
-> >   - Reflow commit message to keep lines within 75 characters.
+> This is the start of the stable review cycle for the 6.19.4 release.
+> There are 781 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> You forgot my question of "how was this found and tested"?
+> Responses should be made by Fri, 27 Feb 2026 15:52:18 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.19.4-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.19.y
+> and the diffstat can be found below.
 >
 > thanks,
 >
 > greg k-h
+>
+
+6.19.4-rc2 tested.
+
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
+
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+[    0.000000] Linux version 6.19.4-rc2rv-gcb2d80377c4e
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20260209, GNU ld (GNU
+Binutils) 2.46) #1 SMP PREEMPT_DYNAMIC Thu Feb 26 17:16:20 JST 2026
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
