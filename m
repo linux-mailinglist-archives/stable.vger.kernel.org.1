@@ -1,210 +1,148 @@
-Return-Path: <stable+bounces-219993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGSJEqrmoWmUwwQAu9opvQ
-	(envelope-from <stable+bounces-219993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 19:47:06 +0100
+	id QJPkOKjnoWlRxAQAu9opvQ
+	(envelope-from <stable+bounces-219994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 19:51:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E98F01BC2A3
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 19:47:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8019C1BC2F6
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 19:51:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D12ED301F6AF
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 18:47:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7D53A3019814
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 18:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA40C3A1A5B;
-	Fri, 27 Feb 2026 18:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B7A3A1CF9;
+	Fri, 27 Feb 2026 18:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="O2b/IYYl"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="MdxcoxYm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mail1.manjaro.org (mail1.manjaro.org [142.132.176.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DCE37BE9B;
-	Fri, 27 Feb 2026 18:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E3F3A1A57;
+	Fri, 27 Feb 2026 18:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=142.132.176.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772218020; cv=none; b=tf3t0WlNpuuY0K2a4ogNHLkADvZjfpLMFHv5sDkQVENIZV5tcAryjXyDsouHnDCPCjlfw19UDbSlm85ID0sojGIyx+xwDNe6Ozu1jSyY3dKkcV1YcxIPs6/U1OmUaIXruQfwxopS0RF+y13nUdYZ6ZUgYEq+bHA7wEBxtk/bWR8=
+	t=1772218278; cv=none; b=d21RbaPq2vyQTWLRjnVgOYDehC2P5tmjeMUTizgG6Lm91Pcm1CEKBftVewvukcUDjlXdjyOCEdSblm+CF2svZ6ePqTm6M711PUNwTxJlE33XtxD6d2L9xX2fxEjJwA/kFg6qhR0iWUMqaBoBtabp3avo17SXhnB/JxJmK9Vcx2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772218020; c=relaxed/simple;
-	bh=l5FLOa8OoBz6WlZAnlSDLhYDFS0I1GI+IauNHm9Rwz8=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=jSMtax5x4DGFAP3+LPLx+/M6r6feVuz6zTxaTfIJd4B9UVCWYIuNIEu4GF1SMgWTAnHuKKYjxXDtRIOlKMOklp56argyN7HrNcoI0a06jY2DJ+1qbhJBpadSu+89mGUSVDUdo2eLCcbzNsbeAvGaO+8851CTNSSMD1Zci1zS+eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=O2b/IYYl; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61RGFkei2346005;
-	Fri, 27 Feb 2026 18:46:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=xESYnA
-	wH+wG85a8XL7co7q9y7OKCMGEvMH95ZhSfjuw=; b=O2b/IYYlyjAqYZaNLoKGaI
-	nR7DsDhb5STIB/Yo2PK9vSeUUSma65gp+DhSIcZSQSm9wXs8Ofr3JKOQSMrLWhMc
-	p6j5gkovJXh0Rm/5ds4vE8LmIu2Clk8KTJexN20fs0DzJ3F2cp4H9uBNMdN9/7Bh
-	s5S2JikIwMjvd0aUbcP4AkyuH6YyurVGCcZ+fWnhjFGcL9GlHVlpZPFxi2kiv+XG
-	xGnc5YmLLO/tEniuqPFjDxlPV8uMl3rwfCpdRMd2aRrEAQzpJuRcKtjXTeCxv9id
-	zs1fo5s6qd6p4TcruAA0sH5FTVOLNBrK8SQRLLsgLfoybossZXWZVNQbBzThblXA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ch8593k5g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Feb 2026 18:46:36 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61RFtm7O003397;
-	Fri, 27 Feb 2026 18:46:35 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfs8kbda9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Feb 2026 18:46:35 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61RIkYe128836470
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Feb 2026 18:46:35 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D717A5804E;
-	Fri, 27 Feb 2026 18:46:34 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 541AC5803F;
-	Fri, 27 Feb 2026 18:46:33 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.86.1])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 27 Feb 2026 18:46:33 +0000 (GMT)
-Message-ID: <dee902ad4fcbc60ed2051cb0d165232ad27c45b1.camel@linux.ibm.com>
-Subject: Re: [PATCH v5] ima_fs: Avoid creating measurement lists for
- unsupported hash algos
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Roberto Sassu <roberto.sassu@huaweicloud.com>, dima@arista.com,
-        Roberto
- Sassu <roberto.sassu@huawei.com>,
-        Dmitry Kasatkin
- <dmitry.kasatkin@gmail.com>,
-        Eric Snowberg	 <eric.snowberg@oracle.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris	 <jmorris@namei.org>,
-        "Serge
- E. Hallyn" <serge@hallyn.com>,
-        Silvia Sisinni	 <silvia.sisinni@polito.it>,
-        Enrico Bravi <enrico.bravi@polito.it>
-Cc: Jonathan McDowell <noodles@earth.li>, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Dmitry Safonov <0x7f454c46@gmail.com>
-In-Reply-To: <0fde824faace320c6d3ef6137bf50cee0289c6c0.camel@huaweicloud.com>
-References: <20260223-ima-oob-v5-1-91cc1064e767@arista.com>
-		 <6808b1a8fcb014e6c7c18241d39155f5c12edc31.camel@linux.ibm.com>
-	 <0fde824faace320c6d3ef6137bf50cee0289c6c0.camel@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 27 Feb 2026 13:46:32 -0500
+	s=arc-20240116; t=1772218278; c=relaxed/simple;
+	bh=6NwCqR4Dptp89r49YrGoc8zwxP3f29Y/sZQ/FjoS1js=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sIanHw8dShpGIWDMMf5rfXUWdCvSCh7Q85wPbSrX8sapkhb7gRjmVTt4SQhC9Kc2xgiG2vdB2Ik4wi63e8G5pQD3QvoI+i0XuX/croPZkHAe/g4TrlIaQONxEwhH98IMGLPcdWVsDR8qgncDYZ6nt84mBNNUwg4emt6IaBFw050=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=MdxcoxYm; arc=none smtp.client-ip=142.132.176.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B6F2041F8B;
+	Fri, 27 Feb 2026 19:51:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=dkim;
+	t=1772218274; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=jgwlh8QKIjyXE+L3WRPk37ZeQTkkboOydjCCWnLLQT8=;
+	b=MdxcoxYmGns33o6GA3qLo++97gnkwvNMVwowIyOchBSQhrMBir/93B9l8V/bVGwtnucf5+
+	qbvqF17BNIo67gOgwrfgN9rglObui4BgObTeZ+YuC/h9YgwB2rzX/JaZ94p8e4KMkrhXwx
+	nlhay43Yr/YRq8oS09ap0DAXjMdycgY1jlAs1s4ZV9JIBYihfvFnqFHm47lcJJHtTxgeJ5
+	DT9irEifqQJIUJNhNrlIvHdRhOba0uajq5Fcwx0dRlWh6xFB+xznk2rT24HXHEAQTav72H
+	kvHG4vkjYeXzilKAkMqFQNJgMkBknqTTmQmsnYqxicPw8biP4fPpLUeRlnW2MQ==
+Message-ID: <0f744313-d13b-4de3-9cf1-de97e9b8fb3d@manjaro.org>
+Date: Fri, 27 Feb 2026 19:51:09 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDE2NCBTYWx0ZWRfX4ikwkWiOr3fo
- hpqqs/f4JxcIUyNSDJs1RzIc5LW8Z3FlwFpkvcEfX6HM95YQtinMlqJlukIs+LWzp9umfKA1E/q
- uLwXHimTzsRWFRN8jpsUOSC/3hFBUOlqJtkrn5oEL21c3iYEwTMY5C0P8yo3FZZoWJCQUU8XnGx
- ITyS/24JkId3LHIXNP3gQXP8XnVX4LNs9DZUJj5mbQRkkdKm94K5V0cXH93aEBs8XOwwt9lqkGs
- lUjRfmbxFlGMHW9FPSnOVNy8lOTwRpBD3scOWzoVZpODdtl+DRr4F+reVwcKC+bHpz000C0NkEZ
- pvWaH2Q/u/1mv34TYNGLPEY2u5I9Tt2OhyNfOjni7aTyrU3BTe/F+fElgPI2P+PvlWY6pI+ze/7
- 74iXfKOap0o2EPPrIX/9wiXChGgkfciFBA8A/5tUbHd5IrOTUN2W82XvecTt4mBl3oxsMmrywsA
- cix4pUeBS2lAdrTkxmw==
-X-Proofpoint-GUID: z9aNJUq5O6kg8zV9KGrsBKHK2KOghGe_
-X-Authority-Analysis: v=2.4 cv=S4HUAYsP c=1 sm=1 tr=0 ts=69a1e68c cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=f3jowhlJtBf6sRR6YjgA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: CsXVBNFM2kpkLJjWF4jEexV7Pk31WOaY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-27_03,2026-02-27_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 impostorscore=0 malwarescore=0 bulkscore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602270164
+User-Agent: Mozilla Thunderbird
+Subject: Re: Linux 6.19.4 - Oops, regression
+To: Genes Lists <lists@sapience.com>, Greg KH <gregkh@linuxfoundation.org>
+Cc: "Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>,
+ akpm@linux-foundation.org, jslaby@suse.cz, linux-kernel@vger.kernel.org,
+ lwn@lwn.net, stable@vger.kernel.org, torvalds@linux-foundation.org
+References: <2026022657-clambake-mountable-8175@gregkh>
+ <eb2d1da9-0b4b-4887-83a4-0e2a65e703aa@moonlit-rail.com>
+ <2026022612-buckskin-surfacing-d854@gregkh>
+ <bb9ab61c-3bed-4c3d-baf0-0bce4e142292@moonlit-rail.com>
+ <67d9f732a55a31f3073675164e8d7ada46da3dbe.camel@sapience.com>
+ <0a77c13e74493b786c5fe4e1ebdf55b14e5ff496.camel@sapience.com>
+ <2026022750-everyone-huff-8fd0@gregkh>
+ <95fea1bd0ded180bb79285ec8416053c614150f8.camel@sapience.com>
+ <afe24af8ae3913f8988dc551629e8f598313a29d.camel@sapience.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
+Organization: Manjaro Community
+In-Reply-To: <afe24af8ae3913f8988dc551629e8f598313a29d.camel@sapience.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.54 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MIXED_CHARSET(0.63)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[manjaro.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[manjaro.org:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219993-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[huaweicloud.com,arista.com,huawei.com,gmail.com,oracle.com,paul-moore.com,namei.org,hallyn.com,polito.it];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[earth.li,vger.kernel.org,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-219994-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zohar@linux.ibm.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[manjaro.org:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[philm@manjaro.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: E98F01BC2A3
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[manjaro.org:mid,manjaro.org:dkim]
+X-Rspamd-Queue-Id: 8019C1BC2F6
 X-Rspamd-Action: no action
 
+On 2/27/26 15:44, Genes Lists wrote:
+> On Fri, 2026-02-27 at 08:59 -0500, Genes Lists wrote:
+>> On Fri, 2026-02-27 at 08:32 -0500, Greg KH wrote:
+>>> On Fri, Feb 27, 2026 at 08:18:52AM -0500, Genes Lists wrote:
+>>>> On Fri, 2026-02-27 at 07:09 -0500, Genes Lists wrote:
+>>>>> On Fri, 2026-02-27 at 01:26 -0500, Kris Karas (Bug Reporting)
+>>>>> w...
+> ...
+>>
+>> Sorry if was not clear.  Only 6.19.4 has kernel crash.
+>> The summary is:
+>> ...
+>> - 6.19.4 - crashes whenever nftables is invoked.
+>>    Does not matter which userspace nftables is used, older or newer
+> ...
+>> I will report back soon as have finished testing 6.19.4 with commit
+>> f175b46d9134
+> I confirm that
+>
+>     6.19.4 plus git cherry-pick f175b46d9134f708358b5404730c6dfa200fbf3c
+>
+> works fine and resolves the crash in nf_tables_abort_release seen in
+> 6.19.4.
+>
+> gene
+>
+>
+>
+>
+>
+Most likely 6.18.14 might be affected here as well. Same patch was added 
+there also: 
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/diff/releases/6.18.14/netfilter-nft_set_rbtree-translate-rbtree-to-array-f.patch?id=08f2c72545fd46526226105230449470db503ecf
 
-> > > @@ -404,16 +398,24 @@ static int __init create_securityfs_measurement=
-_lists(void)
-> > >  		char file_name[NAME_MAX + 1];
-> > >  		struct dentry *dentry;
-> > > =20
-> > > -		sprintf(file_name, "ascii_runtime_measurements_%s",
-> > > -			hash_algo_name[algo]);
-> > > +		if (algo =3D=3D HASH_ALGO__LAST)
-> > > +			sprintf(file_name, "ascii_runtime_measurements_tpm_alg_%x",
-> > > +				ima_tpm_chip->allocated_banks[i].alg_id);
-> > > +		else
-> > > +			sprintf(file_name, "ascii_runtime_measurements_%s",
-> > > +				hash_algo_name[algo]);
-> > >  		dentry =3D securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
-> > >  						ima_dir, (void *)(uintptr_t)i,
-> > >  						&ima_ascii_measurements_ops);
-> > >  		if (IS_ERR(dentry))
-> > >  			return PTR_ERR(dentry);
-> > > =20
-> > > -		sprintf(file_name, "binary_runtime_measurements_%s",
-> > > -			hash_algo_name[algo]);
-> > > +		if (algo =3D=3D HASH_ALGO__LAST)
-> > > +			sprintf(file_name, "binary_runtime_measurements_tpm_alg_%x",
-> > > +				ima_tpm_chip->allocated_banks[i].alg_id);
-> >=20
-> > There's no point in creating either of the securityfs files if the kern=
-el
-> > doesn't support the hash algorithm.
->=20
-> It is not useful per se, but since it is an information that it is
-> produced and maintained by IMA, we can print it. And second, it will
-> expose the fact that there is an unsupported algorithm (in the case of
-> SHA3-256, the fix is add to the TPM - crypto subsystem mapping in tpm2-
-> cmd.c).
+-- 
+Best, Philip
 
-Yes, agreed.
-
-Dmitry, the Subject line implies the measurement lists aren't being created=
-, yet
-you're actually creating them.  Please update the patch description before =
-re-
-posting.
-
-thanks,
-
-Mimi
 
