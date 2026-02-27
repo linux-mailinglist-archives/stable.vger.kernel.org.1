@@ -1,193 +1,252 @@
-Return-Path: <stable+bounces-219949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8FXaL3WJoWmtuAQAu9opvQ
-	(envelope-from <stable+bounces-219949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:09:25 +0100
+	id KI8cIq6KoWnAuAQAu9opvQ
+	(envelope-from <stable+bounces-219950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:14:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B021B6F2D
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:09:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B201B6FCA
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:14:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B2D2303E4A8
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 12:09:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF372304E0C5
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 12:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89D03A0E97;
-	Fri, 27 Feb 2026 12:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDE63ECBD9;
+	Fri, 27 Feb 2026 12:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="OqFyo7MY";
-	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="LHReFFx/"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="QaUCd0vR"
 X-Original-To: stable@vger.kernel.org
-Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62245313E31;
-	Fri, 27 Feb 2026 12:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=72.84.236.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772194142; cv=fail; b=DSNeM8ZSbaCrTbQR31RlM6GNKcomBkeaWSZtvxDn7M+aHQc8hI3Cf7PfRtpfrPfeosyLDWJ6rGWhl/UodL84KPN2fcoDONO469kyubqhv6zbs0pJJNr/JfGvBuVAKyVNTEd4N6yivCSgk8AOajl7LJAH6XwmpPOUNCQqg/HA0U0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772194142; c=relaxed/simple;
-	bh=NdAqzqQBhbDAelzCm7JyiB2DI8nPTe7kXccb8l58unY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CWU4gKa7i4GUD5n4x0f3f2f2lsnUo2ACIqtay+/BLFeoYHeB2YEd4jcc+rJevYER5HMYym8w6rI4tjo2JNOkyJuQqZXkMrEggz0CDSsYnsbzGao8rN/i3EQWnrVzXbP0lNb4EPcXdKs+NhbHNEXBJSm0FGX4nKq+5hco++blUIM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com; spf=pass smtp.mailfrom=sapience.com; dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b=OqFyo7MY; dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b=LHReFFx/; arc=fail smtp.client-ip=72.84.236.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sapience.com
-Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
-   signature) header.d=sapience.com header.i=@sapience.com 
-   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
-   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
-Received: from smtp.sapience.com (srv8.prv.sapience.com [10.164.28.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(No client certificate requested)
-	by s1.sapience.com (Postfix) with ESMTPS id 57532480AD5;
-	Fri, 27 Feb 2026 07:09:00 -0500 (EST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
- i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1772194140;
- h=message-id : subject : from : to : cc : date : in-reply-to :
- references : content-type : mime-version : from;
- bh=7Bc/mBgP+hkcJxfUgFkJnt+eN7XZprBmrRE8B9lziDg=;
- b=OqFyo7MYifVzokOFV2Gh/AcjSwHsJMQ2unv7VXt8XGtwArGihP6eIgwEZFG48/z42dUCj
- jPq3NK13w3hhjWlAQ==
-ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1772194140;
-	cv=none; b=tChmMxRJSixV8iAZIQAc88Wg8ZUZOhrrvrtQPLXWy6F+0Q6qpG0b8jbBx1uhmF2tfczOkF43LWk1dVYcWWRE21mLPK7KLo6GLzJZMe2/FG2tltqRaX9ckm5rt1MX6ErwZKUh0ryoDuNGZ4DdUkgRJ3yvMFjsQ0El+MkRBRI8hEIpw0Jq6mmZhQpI7to1gNPiWBpJu0dthI7u0rz929MwsAETDFjB6ZO+mMWFHiVd7yNiWBUaUw4VVYMwAcKgp2Wa2PAfpcMm2pcn1AHHy0l1+SCfH+QJA5oxL1YbMbCWEUR4fYMezKCF0uZnAd111CBLTc+rcQ87Bs7l91xpPEm/NQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
-	t=1772194140; c=relaxed/simple;
-	bh=NdAqzqQBhbDAelzCm7JyiB2DI8nPTe7kXccb8l58unY=;
-	h=DKIM-Signature:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Autocrypt:Content-Type:User-Agent:
-	 MIME-Version; b=cYXlsxlramCCqUatb32ZGDgv22VPRsR8EMonDLsqOkzw7xqjHvO+uL+lGUVxBcIHOJ4kfEoqZBI0ylCLi8z6ObZU66A2Ag6IqbcC4FP4B8KTkWGGWHMLHo8rs5QbwHQJEra3Uo6fW80GUlY3CjJMhU9RLdVNgwp+jy8xoGVj6iDiiYFUTtqshEisjerHQhl2eqIi6Ki67JNWErbBJSA4JXshKhyZtcf69P+NgSZ3S/dEDjb7CspHLZR5ySnQISGG/n+6TK8NurFqlhbwhStJnIlr6nxMCrukc81UQt1HG96IMZVpn+cEwY4oA3yPvFKIaldTwYB1hUK/X550BGT3dQ==
-ARC-Authentication-Results: i=1; arc-srv8.sapience.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
- i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1772194140;
- h=message-id : subject : from : to : cc : date : in-reply-to :
- references : content-type : mime-version : from;
- bh=7Bc/mBgP+hkcJxfUgFkJnt+eN7XZprBmrRE8B9lziDg=;
- b=LHReFFx/qn5ceqnBG76w9i+8cpXM4BnMuS91KmXHalwqrqz+nQkSmtorB2ZXjlL0fduQX
- hmt9DrPsUpkT5QRVptk3eJm5hxscIqtmLAb7TofFoMR6FCXKar/xJPADilhNZesVi+XdNfi
- z5K9z5KK8wIsFeM/BQtyhX/7EwhgYcRn0/63AoWWs6RzkOhfD6zzPXRaFjbJ9RYLifFutHd
- jerWmYNIAjxOKOXHHzFFR5Cc0W3FAmO89pwIhy3JDqLIVxRn3++NPF5ZnHqWXaz/1Ojqmg/
- 2OgtuDPcpgNhJTsQ6/+630k1j81A3oOuzq1pSM+LeHvhELjahckxcpn5EpCw==
-Received: by smtp.sapience.com (Postfix) id 34C83280457;
-	Fri, 27 Feb 2026 07:09:00 -0500 (EST)
-Message-ID: <67d9f732a55a31f3073675164e8d7ada46da3dbe.camel@sapience.com>
-Subject: Re: Linux 6.19.4 - Oops, regression
-From: Genes Lists <lists@sapience.com>
-To: "Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>, Greg KH
-	 <gregkh@linuxfoundation.org>
-Cc: akpm@linux-foundation.org, jslaby@suse.cz, linux-kernel@vger.kernel.org,
- 	lwn@lwn.net, stable@vger.kernel.org, torvalds@linux-foundation.org
-Date: Fri, 27 Feb 2026 07:09:00 -0500
-In-Reply-To: <bb9ab61c-3bed-4c3d-baf0-0bce4e142292@moonlit-rail.com>
-References: <2026022657-clambake-mountable-8175@gregkh>
-	 <eb2d1da9-0b4b-4887-83a4-0e2a65e703aa@moonlit-rail.com>
-	 <2026022612-buckskin-surfacing-d854@gregkh>
-	 <bb9ab61c-3bed-4c3d-baf0-0bce4e142292@moonlit-rail.com>
-Autocrypt: addr=lists@sapience.com; prefer-encrypt=mutual;
- keydata=mDMEXSY9GRYJKwYBBAHaRw8BAQdAwzFfmp+m0ldl2vgmbtPC/XN7/k5vscpADq3BmRy5R
- 7y0LU1haWwgTGlzdHMgKEwwIDIwMTkwNzEwKSA8bGlzdHNAc2FwaWVuY2UuY29tPoiWBBMWCAA+Ah
- sBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEE5YMoUxcbEgQOvOMKc+dlCv6PxQAFAmPJfooFCRl
- vRHEACgkQc+dlCv6PxQAc/wEA/Dbmg91DOGXll0OW1GKaZQGQDl7fHibMOKRGC6X/emoA+wQR5FIz
- BnV/PrXbao8LS/h0tSkeXgPsYxrzvfZInIAC
-Content-Type: multipart/signed; micalg="pgp-sha384";
-	protocol="application/pgp-signature"; boundary="=-kYquzTJF+yQ0cNPJv0N1"
-User-Agent: Evolution 3.58.3 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DE136BCC5
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 12:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772194431; cv=none; b=Y8uoqNW87Cw5yBIGPD4TKv4OqdafpNMTNXJi+Fn3fG7Dk8UAwDDQzq3UpUh/cv8woScthkcuJXZLsFhhvdb5cguGuSprSWrWAopiMIdrwdOmJoBnGMbkm72rBXjYbGDL2GzPY39zCLIkmHBESn0KOqz1jD+YPFfF/fkS67tua30=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772194431; c=relaxed/simple;
+	bh=fuw5TqW0uCYgMUPW4G72GmVyI0XkEmW5jQki0ebvHN4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 References; b=K0Gj4SNOpsEqcH8L+XTBGOuixzlomQ9m1gPlDnhxxv8VlsTU/tLB7EDNXIwErHJrY/1vVcLMfM4+nQZfTCofFVtafotJAEWdLD+sli/xkIfpdhJhU054TLtKiiWxWUkM1BjhT6Njq4MosNlcRVOaubdQ2p/9Rnoj7ff/34C1sG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=QaUCd0vR; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260227121341epoutp014f5ee4a9b6bfeb393dbe2abc1f41d028~YGW-KrGkr1058810588epoutp01_
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 12:13:41 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260227121341epoutp014f5ee4a9b6bfeb393dbe2abc1f41d028~YGW-KrGkr1058810588epoutp01_
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1772194421;
+	bh=GmKOooTu6Yy+DuO6Xz9QOh3O4n8UAd3CYEIsndynAZg=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=QaUCd0vRtlDCk4WSwsBxqgjeqvN7ESPr2DOFRF4xuBMWZWcbG19o2iFJlF9liUrLe
+	 2rKESwXImUJb/bD2TuLDD5NwzourGu5rW7zBsLvwmRNEF/m+yoqkc/C2TMmUPnOj8g
+	 C4LEVDStHGTbP2PGTX2+Haq9Q0k6AS1sWPEV1UOU=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20260227121340epcas5p111092699baab5569f97fae5359f8ea41~YGW_EZj6b1088610886epcas5p1V;
+	Fri, 27 Feb 2026 12:13:40 +0000 (GMT)
+Received: from epcas5p3.samsung.com (unknown [182.195.38.94]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4fMnKv188tz3hhT3; Fri, 27 Feb
+	2026 12:13:39 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20260227121338epcas5p4baebb406db37f07223545b2f85751bf2~YGW8kxQ2F0654806548epcas5p41;
+	Fri, 27 Feb 2026 12:13:38 +0000 (GMT)
+Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260227121336epsmtip18c4d77b7d34df0d5c550292966be153f~YGW6Wvejz1055710557epsmtip1z;
+	Fri, 27 Feb 2026 12:13:36 +0000 (GMT)
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, akash.m5@samsung.com,
+	hongpooh.kim@samsung.com, eomji.oh@samsung.com, h10.kim@samsung.com,
+	shijie.cai@samsung.com, alim.akhtar@samsung.com, muhammed.ali@samsung.com,
+	thiagu.r@samsung.com, pritam.sutar@samsung.com, Selvarasu Ganesan
+	<selvarasu.g@samsung.com>, stable@vger.kernel.org
+Subject: [PATCH v3] usb: dwc3: gadget: Prevent EP resource conflicts during
+ StartTransfer
+Date: Fri, 27 Feb 2026 17:42:33 +0530
+Message-ID: <20260227121236.963-1-selvarasu.g@samsung.com>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260227121338epcas5p4baebb406db37f07223545b2f85751bf2
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260227121338epcas5p4baebb406db37f07223545b2f85751bf2
+References: <CGME20260227121338epcas5p4baebb406db37f07223545b2f85751bf2@epcas5p4.samsung.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[sapience.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[sapience.com:s=dk-ed25519-220413,sapience.com:s=dk-rsa-220413];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
+	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	TAGGED_FROM(0.00)[bounces-219950-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:mid,samsung.com:dkim,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219949-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[sapience.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[samsung.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[selvarasu.g@samsung.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lists@sapience.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sapience.com:mid,sapience.com:dkim]
-X-Rspamd-Queue-Id: 03B021B6F2D
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[8]
+X-Rspamd-Queue-Id: E5B201B6FCA
 X-Rspamd-Action: no action
 
+The below “No resource for ep” warning appears when a StartTransfer
+command is issued for bulk or interrupt endpoints in
+`dwc3_gadget_ep_enable` while a previous StartTransfer on the same
+endpoint is still in progress. The gadget functions drivers can invoke
+`usb_ep_enable` (which triggers a new StartTransfer command) before the
+earlier transfer has completed. Because the previous StartTransfer is
+still active, `dwc3_gadget_ep_disable` can skip the required
+`EndTransfer` due to `DWC3_EP_DELAY_STOP`, leading to the endpoint
+resources are busy for previous StartTransfer and warning ("No resource
+for ep") from dwc3 driver.
 
---=-kYquzTJF+yQ0cNPJv0N1
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Additionally, a race condition exists between dwc3_gadget_ep_disable()
+and dwc3_gadget_ep_queue() when manipulating dep->flags. When
+dwc3_gadget_ep_disable() calls dwc3_gadget_giveback(), the dwc->lock is
+temporarily released. If dwc3_gadget_ep_queue() runs in that window, it
+may set the DWC3_EP_TRANSFER_STARTED flag as part of
+dwc3_send_gadget_ep_cmd(). When ep_disable resumes, it unconditionally
+clears all flags except those explicitly masked, potentially clearing
+DWC3_EP_TRANSFER_STARTED even though a new transfer has started. This
+leads to "No resource for ep" warnings on subsequent StartTransfer
+attempts.
 
-On Fri, 2026-02-27 at 01:26 -0500, Kris Karas (Bug Reporting) wrote:
-> Greg KH wrote:
-> > ...
->=20
-> Bisect complete (from 6.19.3 to 6.19.4)
->=20
-> > e308d4e35ce1e26cd67070a7035ad265662ab9e5 is the first bad commit
-> > commit e308d4e35ce1e26cd67070a7035ad265662ab9e5
->=20
-> Kris
->=20
-> P.S.=C2=A0 I ran the bisect from 7.0-rc1, so many reboots there, and
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 it is fine.=C2=A0 The bug only seems=
- to affect 6.x
+The underlying framework issue is that usb_ep_disable() is expected to
+complete pending requests before returning, but is allowed to be called
+from interrupt context where sleeping to wait for completion is not
+possible.
 
-In my case, 7.0-rc1 also boots just fine, but when attempting to load
-the nftables rules,=C2=A0nft gives an error and rules are not loaded. The
-same rules work fine in 6.19.3.
+As temporary workarounds for this framework limitation:
 
-Do you anything similar?
+1. In __dwc3_gadget_ep_enable(), add a check for the
+   DWC3_EP_TRANSFER_STARTED flag before issuing a new StartTransfer.
+   This prevents a second StartTransfer on an already busy endpoint,
+   eliminating the resource conflict.
 
-  Linux version 7.0.0-rc1-custom-1-00124-g3f4a08e64442 ...
-  ...
-=C2=A0 In file included from /etc/nftables.conf:134:2-44:
-=C2=A0 ./etc/nftables.d/set_filter.conf:1746:7-21: Error:
-=C2=A0 Could not process rule: File exists
-                 xx.xxx.xxx.x/23,
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0^^^^^^^^^^^^^=
-^^
+2. In __dwc3_gadget_ep_disable(), preserve the DWC3_EP_TRANSFER_STARTED
+   flag when masking dep->flags if it is actually set, preventing the
+   race with dwc3_gadget_ep_queue() from corrupting the flag state.
 
-The line falls somewhere in the middle of list of set elements that are
-all ip addresses.
+These changes eliminate the "No resource for ep" warnings and potential
+kernel panics caused by panic_on_warn.
 
-Reported here [1]
+dwc3 13200000.dwc3: No resource for ep1out
+WARNING: CPU: 0 PID: 700 at drivers/usb/dwc3/gadget.c:398 dwc3_send_gadget_ep_cmd+0x2f8/0x76c
+Call trace:
+dwc3_send_gadget_ep_cmd+0x2f8/0x76c
+__dwc3_gadget_ep_enable+0x490/0x7c0
+dwc3_gadget_ep_enable+0x6c/0xe4
+usb_ep_enable+0x5c/0x15c
+mp_eth_stop+0xd4/0x11c
+__dev_close_many+0x160/0x1c8
+__dev_change_flags+0xfc/0x220
+dev_change_flags+0x24/0x70
+devinet_ioctl+0x434/0x524
+inet_ioctl+0xa8/0x224
+sock_do_ioctl+0x74/0x128
+sock_ioctl+0x3bc/0x468
+__arm64_sys_ioctl+0xa8/0xe4
+invoke_syscall+0x58/0x10c
+el0_svc_common+0xa8/0xdc
+do_el0_svc+0x1c/0x28
+el0_svc+0x38/0x88
+el0t_64_sync_handler+0x70/0xbc
+el0t_64_sync+0x1a8/0x1ac
 
-gene
+Cc: stable@vger.kernel.org
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+---
 
+Note: No Fixes tag is added because this is a workaround for the
+gadget framework issue where the gadget framework calls usb_ep_disable()
+in interrupt context without ensuring endpoint flushing completes.
+A proper fix requires refactoring the framework to make sure
+usb_ep_disable is invoked in process context.
 
-=C2=A0[1]https://lore.kernel.org/lkml/a529a6a9a2755d45765f20b58c5c11e2f790e=
-acb.camel@sapience.com/
+Changes in v3:
+ - Revised the commit message to detail the real gadget framework issue
+   pointed out by the reviewer.
+ - Merged the two fixes for the same ep wringing into one patch.
+Link to v2: https://lore.kernel.org/linux-usb/20251117155920.643-1-selvarasu.g@samsung.com/
 
---=-kYquzTJF+yQ0cNPJv0N1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Changes in v2:
+- Removed change-id.
+- Updated commit message.
+Link to v1: https://lore.kernel.org/linux-usb/20251117152812.622-1-selvarasu.g@samsung.com/
+---
+ drivers/usb/dwc3/gadget.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 0a688904ce8c5..3af1bbfe3d92b 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -971,8 +971,9 @@ static int __dwc3_gadget_ep_enable(struct dwc3_ep *dep, unsigned int action)
+ 	 * Issue StartTransfer here with no-op TRB so we can always rely on No
+ 	 * Response Update Transfer command.
+ 	 */
+-	if (usb_endpoint_xfer_bulk(desc) ||
+-			usb_endpoint_xfer_int(desc)) {
++	if ((usb_endpoint_xfer_bulk(desc) ||
++			usb_endpoint_xfer_int(desc)) &&
++			!(dep->flags & DWC3_EP_TRANSFER_STARTED)) {
+ 		struct dwc3_gadget_ep_cmd_params params;
+ 		struct dwc3_trb	*trb;
+ 		dma_addr_t trb_dma;
+@@ -1096,6 +1097,23 @@ static int __dwc3_gadget_ep_disable(struct dwc3_ep *dep)
+ 	 */
+ 	if (dep->flags & DWC3_EP_DELAY_STOP)
+ 		mask |= (DWC3_EP_DELAY_STOP | DWC3_EP_TRANSFER_STARTED);
++
++	/*
++	 * When dwc3_gadget_ep_disable() calls dwc3_gadget_giveback(),
++	 * the dwc->lock is temporarily released. If dwc3_gadget_ep_queue()
++	 * runs in that window it may set the DWC3_EP_TRANSFER_STARTED flag as
++	 * part of dwc3_send_gadget_ep_cmd. The original code cleared the flag
++	 * unconditionally in the mask operation, which could overwrite the
++	 * concurrent modification.
++	 *
++	 * As a workaround for the interrupt context constraint where we cannot
++	 * wait for endpoint flushing, preserve the DWC3_EP_TRANSFER_STARTED
++	 * flag if it is set, avoiding resource conflicts until the framework
++	 * is fixed to properly synchronize endpoint lifecycle management.
++	 */
++	if (dep->flags & DWC3_EP_TRANSFER_STARTED)
++		mask |= DWC3_EP_TRANSFER_STARTED;
++
+ 	dep->flags &= mask;
+ 
+ 	/* Clear out the ep descriptors for non-ep0 */
+-- 
+2.34.1
 
-iHUEABYJAB0WIQRByXNdQO2KDRJ2iXo5BdB0L6Ze2wUCaaGJXAAKCRA5BdB0L6Ze
-21plAQCfvThBAm3mxxhRRIznnWn2U3qnveoX+FTSSM+d5m8KBQD9Erhm3mlMRH3I
-66YCe18KP8+yIbBsyd6C57h3lvR5HQw=
-=ixJv
------END PGP SIGNATURE-----
-
---=-kYquzTJF+yQ0cNPJv0N1--
 
