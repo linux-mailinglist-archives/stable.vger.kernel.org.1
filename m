@@ -1,129 +1,186 @@
-Return-Path: <stable+bounces-220020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UB28CCImommP0QQAu9opvQ
-	(envelope-from <stable+bounces-220020-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 00:17:54 +0100
+	id ECgUDhwpomn/0QQAu9opvQ
+	(envelope-from <stable+bounces-220021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 00:30:36 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C231BEF61
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 00:17:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9226A1BEFF9
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 00:30:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1FC1F306BC2C
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 23:17:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81248303D701
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 23:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF2E36D507;
-	Fri, 27 Feb 2026 23:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7359736CE01;
+	Fri, 27 Feb 2026 23:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uH2W4qb8"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="DzXPYawd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1AD372B51;
-	Fri, 27 Feb 2026 23:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A125F1C1F02
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 23:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772234271; cv=none; b=i8OlYoyTBwXig4Cr8keRHACMGFWcU8usjIGcjrtLFVsFtYmL4kNFlC80sQbYTAW4UWeffbraYrIwvXnoXD9mnag4iHQz0svO3+qzgG+5BYEuLetr8TrLH1O9Pk2vFBeZbFDxBd8q0AcSeepdxaSF9gIHTxzLTn4HSjJIOmRXJhU=
+	t=1772235032; cv=none; b=SStab/WOLP0xsIlaZBKXIoJRAfha2QQCDt01UxmzNA+pj11GZhUZQ7apbSCsk+QVDN2OjXK3qGxXYZr7+VFAKkfKTllKC5Fc1uaBl0kxGoVABCwXVIRU/jJtwr+o4Z8+YlmpolVEtvUbX55Gzp2DnUkXWRWongfRGup9iw+UjdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772234271; c=relaxed/simple;
-	bh=7uid9+rIYavideL2E1AJTnMG5FA/SHY6EUj9iPxChYw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rnWFGM462EZvrIN4/uLFYlsVoXdXqlKuN3Ws0+L/HKIKSJRg/77EQgm/+7M1ppKvyp04VvIyelyNShjNvz/wejtQrIqmI+UOotUIxfhU+tSUYuuWAXtnpayck4jN7q8Ga3bzhC7HontEI8JY4yfxjCxUcyoI4lmMdkxjnXV+54Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uH2W4qb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A627C116C6;
-	Fri, 27 Feb 2026 23:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772234270;
-	bh=7uid9+rIYavideL2E1AJTnMG5FA/SHY6EUj9iPxChYw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uH2W4qb8cnD3GcVObmF7wMykRODxu8Mn9s+bBaL67vPpNmFMNkPcT3PEuWVLsXQ9L
-	 jvhtQUwrxCgvOPj6lx6Yoe7WTUkVJK0kdE+jWuceb+GZgRIsT9OMuGujaCvgw/UHJP
-	 cJ6V/+g3OCvbrs/7VuIfMYys6q97iyZ0bELDPwN8jtsRmbq4vhdEDBpB9aRFjCXRyx
-	 b196a4wuwOHCjtD6nrWDl00n+m8qP0ohsgiCMRvC/mhuwV5RxXBbnJDLrOPj944h5V
-	 yCbK69lgn+SGSHu4ZnA22SuYUkwUbD+kUkeXI7FdeckjjAMrBkhauc6Uux/gF4Sajr
-	 PNHbH24adYxyA==
-Date: Fri, 27 Feb 2026 16:17:46 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.19 215/781] ALSA: pcm: Relax __free() variable
- declarations
-Message-ID: <20260227231746.GA1772942@ax162>
-References: <20260225012359.695468795@linuxfoundation.org>
- <20260225012404.989195256@linuxfoundation.org>
+	s=arc-20240116; t=1772235032; c=relaxed/simple;
+	bh=eD3b4NhYV+l0KpPtrNorEZzPjLU56VLV2CVDQSNIBPo=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=ZmJ701dBurAvXxYXDT673ZOL0eN+HDepFRkMlY1P98LiG1FjYevf5fDzN19lVxgo8TNVHfSu4riexayLhRABC9wfnl/i7wIBTLIRD9Y7mTAUxwsmkMY5XCVTdAEHODQ//y9L0olgZ+G/ilMsG3IEo7dnsUAkqGS1dSV9yLRjGVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=DzXPYawd; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4fN4Lq030Cz9tC6;
+	Sat, 28 Feb 2026 00:30:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1772235027;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=e1nPChna7+RYo6iyruU4iBM9ZttxYDzT2FfpsVz1MfM=;
+	b=DzXPYawd8LZwbqPIyEHIfKj4aQjz2yRkLDtg4sI9rz0pJQOUKsdL01ypRX/mlP6lLs9acU
+	KmEzHgabR3n+VNHxZz3qPYD3ZwCDfGxtcfACqa56tO9QyyZOT3vxspMAdlsVWfFyhaYud3
+	HqogZa5iClak7Cl848TE21Kw0LOdGaHLuv/kpdsUh03wyfxEltrqeZT7cwMYcES7d7N8W0
+	MDAW95ibISNPm948A100zuAs+Pa0VPoUHmGVZzc9OEK25/KjSwKYEk8QT9i2xtA+Vfo0mi
+	wfWnZVztwlgLvLQIcyMrso4VzGus/7Tqg356ChqXDsIcLwQmu4GRrYxAvcLwCA==
+Subject: Re: 6.18.14: VirtualBox modules don't build anymore; bisected
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, jpoimboe@kernel.org
+References: <62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org>
+ <2026022741-mahogany-coveted-acfa@gregkh>
+From: Rainer Fiebig <jrf@mailbox.org>
+Autocrypt: addr=jrf@mailbox.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <adc83809-3eea-2bbd-c162-48662acab5ed@mailbox.org>
+Date: Sat, 28 Feb 2026 00:30:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225012404.989195256@linuxfoundation.org>
+In-Reply-To: <2026022741-mahogany-coveted-acfa@gregkh>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: 1ac2c258e3f53a9760a
+X-MBO-RS-META: 3r991arxi1tj7mrnjj1fscnh4a5t4zpw
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-220021-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220020-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[jrf@mailbox.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mailbox.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: 71C231BEF61
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailbox.org:mid,mailbox.org:dkim]
+X-Rspamd-Queue-Id: 9226A1BEFF9
 X-Rspamd-Action: no action
 
-On Tue, Feb 24, 2026 at 05:15:24PM -0800, Greg Kroah-Hartman wrote:
-> 6.19-stable review patch.  If anyone has any objections, please let me know.
+Am 27.02.26 um 21:12 schrieb Greg KH:
+> On Fri, Feb 27, 2026 at 04:33:34PM +0100, Rainer Fiebig wrote:
+>> In case this hasn't been reported already: with 6.18.14 the
+>> VirtualBox-7.1.16 modules won't build during the boot process, as they
+>> usually do.  Bisecting between 6.18.13/14 led to this:
+>>
+>> f056c340b73962ebaffe93997b582bdf16dc6270 is the first bad commit
+>> commit f056c340b73962ebaffe93997b582bdf16dc6270 (HEAD)
+>> Author: Josh Poimboeuf <jpoimboe@kernel.org>
+>> Date:   Tue Feb 10 13:45:22 2026 -0800
+>>
+>>     kbuild: Add objtool to top-level clean target
+>>
+>>     [ Upstream commit 68b4fe32d73789dea23e356f468de67c8367ef8f ]
+>>
+>>     Objtool is an integral part of the build, make sure it gets cleaned
+>>     by "make clean" and "make mrproper".
+>> [...]
+>>
+>>
+>> The script I use for building my kernels includes "make mrproper" before
+>> compiling and "make clean" after the kernel and modules have been
+>> installed.
+>>
+>> Perhaps it would be more appropriate to report this to the
+>> VirtualBox-devs but I won't do that because the registration procedure
+>> asks for too many private data.
 > 
-> ------------------
-> 
-> From: Takashi Iwai <tiwai@suse.de>
-> 
-> [ Upstream commit f3d233daf011abbad2f6ebd0e545b42d2f378a4f ]
-> 
-> We used to have a variable declaration with __free() initialized with
-> NULL.  This was to keep the old coding style rule, but recently it's
-> relaxed and rather recommends to follow the new rule to declare in
-> place of use for __free() -- which avoids potential deadlocks or UAFs
-> with nested cleanups.
-> 
-> Although the current code has no bug, per se, let's follow the new
-> standard and move the declaration to the place of assignment (or
-> directly assign the allocated result) instead of NULL initializations.
-> 
-> Fixes: ae9213984864 ("ALSA: pcm: Use automatic cleanup of kfree()")
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> Link: https://patch.msgid.link/20251216140634.171890-4-tiwai@suse.de
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> We obviously can not do anything about external modules, so if you rely
+> on these, you are going to have to work with them on this, sorry.
 
-Please apply commit 0585c53b2154 ("ALSA: pcm: Revert bufs move in
-snd_pcm_xfern_frames_ioctl()") to all branches that took this change to
-fix the build with older supported versions of clang.
+Alright, tough luck.  But that a patch-release of an LTS-kernel breaks
+VirtualBox is really a first - at least as far as I can remember.  So, I
+think I'll create an experimental branch and revert that commit, as I've
+never missed it before.
 
-  https://storage.tuxsuite.com/public/clangbuiltlinux/nathan/builds/3AEpAuS5jtheTnTL9iDLNAiYTw3/build.log
+Rainer
 
-Cheers,
-Nathan
 
