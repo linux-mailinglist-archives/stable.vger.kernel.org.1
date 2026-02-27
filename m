@@ -1,144 +1,180 @@
-Return-Path: <stable+bounces-220007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MJADbb8oWl4yAQAu9opvQ
-	(envelope-from <stable+bounces-220007-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 21:21:10 +0100
+	id iExXJFcAoml4yAQAu9opvQ
+	(envelope-from <stable+bounces-220008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 21:36:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E051BD8C5
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 21:21:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B891BDB7D
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 21:36:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CCFE03035F6F
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 20:17:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB587300F165
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 20:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F61413236;
-	Fri, 27 Feb 2026 20:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D19477E2B;
+	Fri, 27 Feb 2026 20:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVD5BozJ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KFjCaMb8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82BC31B131;
-	Fri, 27 Feb 2026 20:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772223447; cv=none; b=bZxxrv271PiH06ClFRXDUkW+Yqp/3QMyHv5YrMhpMwdLQ5l648rLA7QeL6Oh3JhrLxu4KlJoSh3a7xAMswXWDLtfW4CO+JG/Zm7oZ2IiFufelHN0PORhKQnrmyg4HY0UQu6ycE2x0hv06eT5IqqWH8xPXyj901Fc3RFEiYYrNSA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772223447; c=relaxed/simple;
-	bh=s0SN7GHDBZTG4PRpuVU2uADRSwcJQhnHFXyvIsBpLRw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mBgzh+vsZpDeu4uONojDoaySF2VJ2yIVQvxzbwpJu7n0WJYW4nFQciInaJz5SoOe54DlyUBhqsJ7yKHdnmTQY3pRBmF8kTcGbM0N2Voae78N2d5fZMGXDM8cdRoNubHYlAw63hykjD6NiKe3pZRBPCuv9du8Bf0P9cJq4TakF2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVD5BozJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33758C116C6;
-	Fri, 27 Feb 2026 20:17:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772223447;
-	bh=s0SN7GHDBZTG4PRpuVU2uADRSwcJQhnHFXyvIsBpLRw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RVD5BozJtQb8QUxDkd6XVejbrEwvUXNeScBYDVwvDF4DlzzXZLwSBq17/MzimzoFW
-	 s9hbOvTe1qlMehv2Hfj9lCVm+1GvQo8Yr/oKOouqkU2UnIJC08w70eB1cFvq0u5Etj
-	 LWqe6x1l6WOPxxX/hc2xg59EUZKLgo8zrWcI5f1E=
-Date: Fri, 27 Feb 2026 15:17:16 -0500
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>
-Cc: Genes Lists <lists@sapience.com>,
-	"Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>,
-	akpm@linux-foundation.org, jslaby@suse.cz,
-	linux-kernel@vger.kernel.org, lwn@lwn.net, stable@vger.kernel.org,
-	torvalds@linux-foundation.org
-Subject: Re: Linux 6.19.4 - Oops, regression
-Message-ID: <2026022756-observant-moonstone-88c2@gregkh>
-References: <2026022657-clambake-mountable-8175@gregkh>
- <eb2d1da9-0b4b-4887-83a4-0e2a65e703aa@moonlit-rail.com>
- <2026022612-buckskin-surfacing-d854@gregkh>
- <bb9ab61c-3bed-4c3d-baf0-0bce4e142292@moonlit-rail.com>
- <67d9f732a55a31f3073675164e8d7ada46da3dbe.camel@sapience.com>
- <0a77c13e74493b786c5fe4e1ebdf55b14e5ff496.camel@sapience.com>
- <2026022750-everyone-huff-8fd0@gregkh>
- <95fea1bd0ded180bb79285ec8416053c614150f8.camel@sapience.com>
- <afe24af8ae3913f8988dc551629e8f598313a29d.camel@sapience.com>
- <0f744313-d13b-4de3-9cf1-de97e9b8fb3d@manjaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4C1449EA6
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 20:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772224596; cv=pass; b=Bs+bm7jnFbHV8q4LQiqLEp6NzQMdn0fBXkrOPnR3HD8GjvSvfZenh4upK2NmvPbagBhsQhn0DU3kqrFJW881lid/M4f22Wwogb/2Mxy9fWfPesZHz7c2rhN0umj9m/X3IHEB1+8fOIdtvwxv4X8GxedC1xa3ashmtrOoroQ+kbg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772224596; c=relaxed/simple;
+	bh=GXPvU3yHGoGQr/QUWqXmSjT1rRuT8EpCRKuAZQSJr4w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X5k+BEEWAj63ZjJp0ReFJq8Mu0FoiUIQVBYYGc5ti5ERclm+8EOSusXt+FXJ5TEHijVPegxAs4p6s7ch3f4G3gWpb0rGQbLZfn1sK+zw1Nm84WWD8tQGyzcs8r8k8Wv20X7PVW89YOAmHEDgngTPXfVyU6v3ymFMEUVdMY99qDg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KFjCaMb8; arc=pass smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-483abed83b6so20184595e9.0
+        for <stable@vger.kernel.org>; Fri, 27 Feb 2026 12:36:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772224594; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eHV6CVpsQxBfohWSlFPlHTA/lpzS9xUjuJdAk/A/7lMq2eGnhMCOWMOezZ+Owy9vPo
+         ECHAuPOcW/zqnUKLxWyznZ1cEcKWB8dvB8SYoXUtmt6zV8ozoHB+6MWBJ96pU5gTGehf
+         7NHixInXKHZfuGVlUn9pmC45JZG6rybnpzkPXPV15moyMWaLWZOmt+36pWG6SOFhhDcI
+         xaiMINDyXJDbGwlblDzywhVTzBZV+OHsbFA+VQe7olo7204OK7kpH13xusHNnPLQ407M
+         F1vOLcIovzKx80r56aqhuRVPjsvMTmh4oKQWCnUwSRXeIw/wPa8siJM1DaX3Q0eGzNX4
+         NHCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GXPvU3yHGoGQr/QUWqXmSjT1rRuT8EpCRKuAZQSJr4w=;
+        fh=DNsGArJjDlv76Za+WFjivH5d5qT0eTGwgIHoPS9bR6c=;
+        b=c14enkcHM6PWFpXkjUBis8MC/GoRWyOQ+1cTxSg35WigdcnOJVeIYwT9gBxz4hXNd8
+         G5MVBP2pZQjLenDQfdx5JdBZpi1P7jDHsvRWS8bHpbdwh1HDNeKKmqNKJYsZe1jvZEVk
+         Ec8ueJ8YJrOlRUNeeiePdLmY6gqDq4lqOn59nPVjeDL2MJXukemkz9YjJkpho4PaqyC9
+         JN9nsBJn3vUv6bMibw5tTNkd1x+sb1y1R5EgMsHxP5ol3xy6Iwf6LGNdKvdr4+HnRoq5
+         KdDjFBSCHXlGqFbnoPTYa4X/Do97PAeMEOWiokzbqdPDMsmeveyagEXM28G92XwZPqw6
+         FhUg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772224594; x=1772829394; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GXPvU3yHGoGQr/QUWqXmSjT1rRuT8EpCRKuAZQSJr4w=;
+        b=KFjCaMb8I5AAEGgeQMgsZLULxczkwMf9T4dRaiyG1b5XL5D3+MrvBSXoaJKwJlma5N
+         GNN0U1vgWUesJG2FU+l2Sa2AEYGBB4Oi+tYtJsgkMOvzC958i6oT4kv1ajk38xP/8paU
+         fjLaL7fSi4l1SbTIfVNgWKzqBD/Ws1Wxctwchxjq+uIuGGXz+lI0kb4QIZ+cgZWcLQQR
+         8ZVxFEKpfMa3rhKpIbxd1WhCnMmJOreD01RyKzPlhN4W02d+7fMP+vSqdKdnsMhyYXdB
+         XNO7sV1OhRzJyIEXPhXGz1Sd+DOxQVH2XK69uqskT2wvrfVlOiVIwMZWBmdoHNrA50ck
+         cF/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772224594; x=1772829394;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GXPvU3yHGoGQr/QUWqXmSjT1rRuT8EpCRKuAZQSJr4w=;
+        b=VUxyaFsQne5n9H0moapzd+cL9Y1ZFdJzhh7lP7Mr53N/f6W81tqVj1VyYKRpRy9T8r
+         J5D9hSLPLJNuflLRLyALOmSL31ueHrGhY2P3IqEnvUJfkYkOyr58fDsfsVMCdfAOlcGk
+         21g0dc4drUJbXcB/K6i0ddmFHpluvFmuKO9v6u+PGNQtWoD4y9qpD4YYmv8d+u33vXCn
+         iKol8JMRyH6LQm9OMANHnay5hTes/8+aPhdSi7G0eTr1nfNXSRTyRkC7LS+V3s2Z9NoB
+         1Kqg7j4YzThwcz85IokAFvUy46eTlk79mZBFQck/K0iRg2+KJSJ2K4oStJO3dh3ABcsN
+         JyQA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyllatZjRbF+/gBok1QsVIircENw+SPKmSRKJL5X3OxiEZ+e/OgkqVIrVP4y/WAha1BnowY0I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNk9YvQMEJUVL1RcwQyw2ovxsenROpG7AEy1Z+B54RxQKtitjA
+	2sj/RSNUD5agQ1a7zIvWGgpfVk780H7s2/Fdlt6CHFWmNo3d/mGyifJ4Cbg7VGZxJsdbSHHaXQ+
+	qKzcSe4RMoWaUb+Y0ANvp/ke/41HfpiraTbemg5HX
+X-Gm-Gg: ATEYQzyrWq06dSg8MaeOO04b8dSJkE7mndtwsBiHTKIN2OImkSEabkLdLUm9GRy6EG3
+	+5h33LODXYY1tuPQpNLRw0HGPhRrHdhM70JQGQvAeLoYsViIZ16j6luHm4Z/wdtjLb9naYzXQBX
+	qcQ8gcbf9OX9YK2C1rBZ/N5kkTHSUSbM0cX4M9icO/mP96M+5/Kz2nIaBkEELoOhliApnaouioY
+	nTd08VqzJW5rLYYQpNIprA5hpLvmit7o4ewLRtMz/g9OyER4ukWtdEv9UXClh7WfJymhm7lYtR5
+	HEOlr30SON9AQSGKnt7d8u/WrEJ/f47RE5pLUhuKNF9F1J/5
+X-Received: by 2002:a05:600c:4715:b0:47e:e7e5:ff32 with SMTP id
+ 5b1f17b1804b1-483c9bfaf59mr58287215e9.34.1772224593291; Fri, 27 Feb 2026
+ 12:36:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0f744313-d13b-4de3-9cf1-de97e9b8fb3d@manjaro.org>
+References: <20260227-create-workqueue-v3-0-87de133f7849@google.com>
+ <20260227-create-workqueue-v3-1-87de133f7849@google.com> <aaHPs-nULPEt_wJB@slm.duckdns.org>
+ <aaHp_pGBxA4pNiXJ@google.com> <aaHrxzWIFFUjzWhu@slm.duckdns.org>
+ <aaHuXEO64ONKMW4O@google.com> <aaHvcvbmkl7oSFOR@slm.duckdns.org>
+ <aaHwSxIaTqLWndkw@google.com> <aaH0e5YKnH7x1gCB@slm.duckdns.org>
+In-Reply-To: <aaH0e5YKnH7x1gCB@slm.duckdns.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 27 Feb 2026 21:36:22 +0100
+X-Gm-Features: AaiRm506Ib-Fl2WN6TaIOR3S0tdq8UlbZS-JTeVYbkG7Q8VPGCiBJPP-KBkw-q0
+Message-ID: <CAH5fLgh5M=HQ8XRNnpqMxHU5q-T5OYVGCLq46aqOP5dxOYDMuw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] rust: workqueue: restrict delayed work to global wqs
+To: Tejun Heo <tj@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Boqun Feng <boqun@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, Tamir Duberstein <tamird@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220007-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220008-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,umich.edu,collabora.com,nvidia.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D4E051BD8C5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 18B891BDB7D
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 07:51:09PM +0100, Philip Müller wrote:
-> On 2/27/26 15:44, Genes Lists wrote:
-> > On Fri, 2026-02-27 at 08:59 -0500, Genes Lists wrote:
-> > > On Fri, 2026-02-27 at 08:32 -0500, Greg KH wrote:
-> > > > On Fri, Feb 27, 2026 at 08:18:52AM -0500, Genes Lists wrote:
-> > > > > On Fri, 2026-02-27 at 07:09 -0500, Genes Lists wrote:
-> > > > > > On Fri, 2026-02-27 at 01:26 -0500, Kris Karas (Bug Reporting)
-> > > > > > w...
-> > ...
-> > > 
-> > > Sorry if was not clear.  Only 6.19.4 has kernel crash.
-> > > The summary is:
-> > > ...
-> > > - 6.19.4 - crashes whenever nftables is invoked.
-> > >    Does not matter which userspace nftables is used, older or newer
-> > ...
-> > > I will report back soon as have finished testing 6.19.4 with commit
-> > > f175b46d9134
-> > I confirm that
-> > 
-> >     6.19.4 plus git cherry-pick f175b46d9134f708358b5404730c6dfa200fbf3c
-> > 
-> > works fine and resolves the crash in nf_tables_abort_release seen in
-> > 6.19.4.
-> > 
-> > gene
-> > 
-> > 
-> > 
-> > 
-> > 
-> Most likely 6.18.14 might be affected here as well. Same patch was added
-> there also: https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/diff/releases/6.18.14/netfilter-nft_set_rbtree-translate-rbtree-to-array-f.patch?id=08f2c72545fd46526226105230449470db503ecf
+On Fri, Feb 27, 2026 at 8:46=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote:
+>
+> On Fri, Feb 27, 2026 at 07:28:11PM +0000, Alice Ryhl wrote:
+> > > delayed_work is just pointing to the wq pointer. On destroy_workqueue=
+(), we
+> > > can shut it down and free all the supporting stuff while leaving zomb=
+ie wq
+> > > struct which noops execution and let the whole thing go away when ref=
+s reach
+> > > zero?
+> >
+> > But isn't that a problem for e.g. self-freeing work? If we don't run th=
+e
+> > work, then its memory is just leaked.
+>
+> Yeah, good point. Maybe we should just keep the whole thing up while
+> removing it from sysfs. Would that work?
 
-Thanks all, yes, I'll go add this to both trees and do a quick release
-to resolve this.
+We can but there are two variants of that:
 
-greg k-h
+If destroy_workqueue() waits for delayed work, then it may take a long time=
+.
+
+If destroy_workqueue() does not wait for delayed work, then I'm
+worried about bugs resulting from module unload and similar.
+
+Alice
 
