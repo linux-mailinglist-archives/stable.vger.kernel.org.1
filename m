@@ -1,160 +1,132 @@
-Return-Path: <stable+bounces-219953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OD4BFVWQoWlZuQQAu9opvQ
-	(envelope-from <stable+bounces-219953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:38:45 +0100
+	id kAmSBsySoWnhuQQAu9opvQ
+	(envelope-from <stable+bounces-219954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:49:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608A41B739B
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:38:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDCF1B759A
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:49:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C31C63062533
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 12:35:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A607301F19B
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 12:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21F53382E2;
-	Fri, 27 Feb 2026 12:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F5E2441A6;
+	Fri, 27 Feb 2026 12:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="QC7/1Sde"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Z81e2zqJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC3D21772A;
-	Fri, 27 Feb 2026 12:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C4131961B
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 12:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772195701; cv=none; b=ZFubfu0jPUhs5KPcz5tXRzZ6kW/m67R+k1jERNMaSldbCPN26iaChWWApBS6LrxUhC8J/+dkumeOoAtaaYPE1dHor5Lbr9PA1KFWtwg8bYMf15SdHbxsxOPK51pUzpcmdgCev20NidH4o7GvjkQasDJ6noGAsvLXUc90f2VvQe0=
+	t=1772196553; cv=none; b=fyE2Cg3XPI0pNxXFZc5+SQD5+8a95+Rr+cF1lWJBTqV4JqlmEaza1UOyPhRXg4tB49h7/WygW0uHQTgE2rrbaSvI+KhQR8jKVx8flYl3gTjY/VfniOFr5NPZcsZQeRtEW/FOuG+CV6LCgm+YV3GFCrGLuuAJAmCjJnQ2MlBQl6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772195701; c=relaxed/simple;
-	bh=PF+KLnHGLB4nY8I6vRi5QBVHE0+7l1mH+xftGEdB2k8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ow+EoAp+NTTjZiVRCBTeCdKetIEQV3KPNHtUn8YndCqhmgb1J5k97jweZHpRymsEfwU55Byzi3LqtWT2n5srz36PYZ6d3KggB7rI+tnPF96q+ApbH4Il4LPnYQq8dLn2bjO9saCO2cumcYkKe7fxe1eNAX0vhWMVx90xL7UXRzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=QC7/1Sde; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1772195135;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=suZXatTYQjgVAeYejv328Jw4MDmakt3EYEveDE7v2sM=;
-	b=QC7/1SdeQ2U/OwtRPyBbq+QhdGXuCy2oPPWMMOnAp/gtvVHu+x3tzMhp1ehh4Usg6P9t2b
-	yBR4Q4xmkjoLHvGRjEErTln704sqbb//Lp7ILPeedall3qV9/Rr3/kab4nb8xm2kwYkFKw
-	cQ2N1oRBJacJ+MVaS2Eqc+l5sW6JyUY=
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: "Igor M. Liplianin" <liplianin@me.by>,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	syzbot+d99f3a288cc7d8ef60fb@syzkaller.appspotmail.com,
+	s=arc-20240116; t=1772196553; c=relaxed/simple;
+	bh=bSFRJZJ310hkH0mXmm7xxXeHEk1fR5P3Y1Odh6ava2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Y47FtCpOc9OjTn7tbD/Zs0X++eB8ZFEJn0s8Gg47/4q3OTlOInAT/HFgb/uZWOFJsR82vA3f0PH+wVCOj/Ux20QJP76MYAVSxhcXoUJqDSs+qoFORNTo4AI3LE0KChTH5iPVkA8yrgVaKe6darJWr5lpNjGjWZ7ONPJEFVtcQIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Z81e2zqJ; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=UmmffV71sbbvZ4GQqm2PxnvbMPlyEsIZdwYLM2swre8=; b=Z81e2zqJXBgdBKdbfbGaB+gzti
+	vGlaZpD/QQDVrkhyTgF1lrh9piWnOMla1g1uohuzjAk3R3NOmvwkNHXpc63wJUkGjCNgzJu8lVxKU
+	ZZJA+auE6VF9IoKHBQQ0ZKFylW3leJWSO36q9LUMK6umQ7FeV9fWBhL+njiS2nrT1dU6nThBEmrAL
+	WhYzJhWKjo20tODFqoWs+bi3uqE8e0xt9uZurB2kjDmcYa9bc0nFTcZOdP8fE5HIjq9y3Fkh3gEaS
+	ZQDNc3dZauMcmcUlu5ccNM4dWqGjIrJqKvG83Z2bafV4nbBXxkfXOFG3mk7xKMo9oXyK6IXAlctXa
+	zz19krWQ==;
+Received: from [90.240.106.137] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1vvxHE-006WMl-3v; Fri, 27 Feb 2026 13:49:04 +0100
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+To: dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] media: dw2102: Fix null-ptr-deref in su3000_i2c_transfer()
-Date: Fri, 27 Feb 2026 15:25:33 +0300
-Message-ID: <20260227122535.16232-1-arefev@swemel.ru>
+Subject: [PATCH] drm/ttm: Fix ttm_pool_beneficial_order() return type
+Date: Fri, 27 Feb 2026 12:49:01 +0000
+Message-ID: <20260227124901.3177-1-tvrtko.ursulin@igalia.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.64 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[swemel.ru,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[swemel.ru:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-219954-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219953-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[swemel.ru:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arefev@swemel.ru,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable,d99f3a288cc7d8ef60fb];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 608A41B739B
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[tvrtko.ursulin@igalia.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.freedesktop.org:email]
+X-Rspamd-Queue-Id: 6CDCF1B759A
 X-Rspamd-Action: no action
 
-general protection fault, probably for non-canonical address
-KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-...
-Call Trace:
- <TASK>
- __i2c_transfer+0x868/0x2080 drivers/i2c/i2c-core-base.c:-1
- i2c_transfer+0x250/0x390 drivers/i2c/i2c-core-base.c:2328
- i2cdev_ioctl_rdwr+0x3b0/0x690 drivers/i2c/i2c-dev.c:297
- i2cdev_ioctl+0x646/0x7e0 drivers/i2c/i2c-dev.c:458
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:871 [inline]
- __se_sys_ioctl+0xfd/0x170 fs/ioctl.c:857
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x55/0xb0 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x68/0xd2
-RIP: 0033:0x7f1bc3f8ebe9
+Fix a nasty copy and paste bug, where the incorrect boolean return type of
+the ttm_pool_beneficial_order() helper had a consequence of avoiding
+direct reclaim too eagerly for drivers which use this feature (currently
+amdgpu).
 
-The user transmits messages of invalid length via ioctl, some of which may
-be zero length. This causes the i2cdev_ioctl_rdwr() function to allocate 
-zero-length memory for msgs[i].buf when executing memdup_user(), resulting
-in a ZERO_SIZE_PTR error. The i2cdev_ioctl_rdwr() function does not handle
-this situation for this adapter, resulting in a null-ptr-deref error when
-accessing msgs[i].buf in su3000_i2c_transfer().
-
-Adding the necessary checks to su3000_i2c_transfer() resolves the
-ZERO_SIZE_PTR error.
-
-Fixes: d2ffc447cabb ("[media] dw2102: add support for Geniatech SU3000 USB DVB-S2 card")
-Reported-by: syzbot+d99f3a288cc7d8ef60fb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d99f3a288cc7d8ef60fb
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: 7e9c548d3709 ("drm/ttm: Allow drivers to specify maximum beneficial TTM pool size")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.19+
 ---
- drivers/media/usb/dvb-usb/dw2102.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/ttm/ttm_pool_internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
-index 4fecf2f965e9..ad9c0374b4cb 100644
---- a/drivers/media/usb/dvb-usb/dw2102.c
-+++ b/drivers/media/usb/dvb-usb/dw2102.c
-@@ -737,6 +737,10 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 	while (j < num) {
- 		switch (msg[j].addr) {
- 		case SU3000_STREAM_CTRL:
-+			if (msg[j].len < 1) {
-+				num = -EOPNOTSUPP;
-+				break;
-+			}
- 			state->data[0] = msg[j].buf[0] + 0x36;
- 			state->data[1] = 3;
- 			state->data[2] = 0;
-@@ -745,6 +749,10 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				err("i2c transfer failed.");
- 			break;
- 		case DW2102_RC_QUERY:
-+			if (msg[j].len < 2) {
-+				num = -EOPNOTSUPP;
-+				break;
-+			}
- 			state->data[0] = 0x10;
- 			if (dvb_usb_generic_rw(d, state->data, 1,
- 					       state->data, 2, 0) < 0)
+diff --git a/drivers/gpu/drm/ttm/ttm_pool_internal.h b/drivers/gpu/drm/ttm/ttm_pool_internal.h
+index 82c4b7e56a99..24c179fd69d1 100644
+--- a/drivers/gpu/drm/ttm/ttm_pool_internal.h
++++ b/drivers/gpu/drm/ttm/ttm_pool_internal.h
+@@ -17,7 +17,7 @@ static inline bool ttm_pool_uses_dma32(struct ttm_pool *pool)
+ 	return pool->alloc_flags & TTM_ALLOCATION_POOL_USE_DMA32;
+ }
+ 
+-static inline bool ttm_pool_beneficial_order(struct ttm_pool *pool)
++static inline unsigned int ttm_pool_beneficial_order(struct ttm_pool *pool)
+ {
+ 	return pool->alloc_flags & 0xff;
+ }
 -- 
-2.43.0
+2.52.0
 
 
