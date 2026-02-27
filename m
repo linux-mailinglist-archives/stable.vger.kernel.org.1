@@ -1,148 +1,225 @@
-Return-Path: <stable+bounces-219994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219995-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJPkOKjnoWlRxAQAu9opvQ
-	(envelope-from <stable+bounces-219994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 19:51:20 +0100
+	id eJHyHIPpoWmSxAQAu9opvQ
+	(envelope-from <stable+bounces-219995-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 19:59:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8019C1BC2F6
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 19:51:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4C11BC38D
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 19:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7D53A3019814
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 18:51:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE4B0305E992
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 18:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B7A3A1CF9;
-	Fri, 27 Feb 2026 18:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C443ACA40;
+	Fri, 27 Feb 2026 18:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="MdxcoxYm"
+	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="j5dI/umw";
+	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="KPOXrE//"
 X-Original-To: stable@vger.kernel.org
-Received: from mail1.manjaro.org (mail1.manjaro.org [142.132.176.110])
+Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E3F3A1A57;
-	Fri, 27 Feb 2026 18:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=142.132.176.110
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772218278; cv=none; b=d21RbaPq2vyQTWLRjnVgOYDehC2P5tmjeMUTizgG6Lm91Pcm1CEKBftVewvukcUDjlXdjyOCEdSblm+CF2svZ6ePqTm6M711PUNwTxJlE33XtxD6d2L9xX2fxEjJwA/kFg6qhR0iWUMqaBoBtabp3avo17SXhnB/JxJmK9Vcx2w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772218278; c=relaxed/simple;
-	bh=6NwCqR4Dptp89r49YrGoc8zwxP3f29Y/sZQ/FjoS1js=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sIanHw8dShpGIWDMMf5rfXUWdCvSCh7Q85wPbSrX8sapkhb7gRjmVTt4SQhC9Kc2xgiG2vdB2Ik4wi63e8G5pQD3QvoI+i0XuX/croPZkHAe/g4TrlIaQONxEwhH98IMGLPcdWVsDR8qgncDYZ6nt84mBNNUwg4emt6IaBFw050=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=MdxcoxYm; arc=none smtp.client-ip=142.132.176.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B6F2041F8B;
-	Fri, 27 Feb 2026 19:51:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=dkim;
-	t=1772218274; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=jgwlh8QKIjyXE+L3WRPk37ZeQTkkboOydjCCWnLLQT8=;
-	b=MdxcoxYmGns33o6GA3qLo++97gnkwvNMVwowIyOchBSQhrMBir/93B9l8V/bVGwtnucf5+
-	qbvqF17BNIo67gOgwrfgN9rglObui4BgObTeZ+YuC/h9YgwB2rzX/JaZ94p8e4KMkrhXwx
-	nlhay43Yr/YRq8oS09ap0DAXjMdycgY1jlAs1s4ZV9JIBYihfvFnqFHm47lcJJHtTxgeJ5
-	DT9irEifqQJIUJNhNrlIvHdRhOba0uajq5Fcwx0dRlWh6xFB+xznk2rT24HXHEAQTav72H
-	kvHG4vkjYeXzilKAkMqFQNJgMkBknqTTmQmsnYqxicPw8biP4fPpLUeRlnW2MQ==
-Message-ID: <0f744313-d13b-4de3-9cf1-de97e9b8fb3d@manjaro.org>
-Date: Fri, 27 Feb 2026 19:51:09 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92573A7F5F;
+	Fri, 27 Feb 2026 18:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=72.84.236.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772218735; cv=fail; b=XU458Gcgk8F3exRSUmiXb6iUAV/ma0aKCLDfcsu/H3S+78hhQLQorzO39MWZ1mT1z0Xzf41aD16ESmedn21TB7PzvhutMzNroCx03XvliiUMS9xEfeZOXBVzSrulHehEj8IEIqUDSzW6/HJIRJ9hkZUIUEwJ70cogZib3RhpgMk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772218735; c=relaxed/simple;
+	bh=tIYP4+utRzFc1yoc4fWT3Uoem9MLQquNeA6VEEGNMUM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mXNGSSdqoHrP77hMUwFZM12wQeupGRCFTXiqnOntkKgHgP6/WbbVboXN+cZlzzbdISHCHI2fYCtOIICfuhFfyK7f0RmEJ7Z6QLmgKBvrqCgd1+mBJt+jq4CLl90QbRwv6judtCNql/YOeDPTzpBsfeyXslAa39bWZ6MuS30K/b8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com; spf=pass smtp.mailfrom=sapience.com; dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b=j5dI/umw; dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b=KPOXrE//; arc=fail smtp.client-ip=72.84.236.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sapience.com
+Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
+   signature) header.d=sapience.com header.i=@sapience.com 
+   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
+   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
+Received: from smtp.sapience.com (srv8.prv.sapience.com [10.164.28.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by s1.sapience.com (Postfix) with ESMTPS id 1312E480A33;
+	Fri, 27 Feb 2026 13:58:53 -0500 (EST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1772218732;
+ h=message-id : subject : from : to : cc : date : in-reply-to :
+ references : content-type : mime-version : from;
+ bh=NGbsjSbPcFusC9feVYLBdka34A/NbvkjNOFFBprU3tU=;
+ b=j5dI/umwJRvE/i2mYEz84baWVP6gw0s5oHBIUOhXlig3aqdZ2X7/kiw/1DZBlwK1+bOOx
+ sj+mOz7V99VR45KDw==
+ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1772218732;
+	cv=none; b=Vmkmt28ffuHrgdL9tYLz4Yu0tOMyJTZvondOy/6FeNOrw3WBB53Kwgx/x0bsTqVU6q9u+VVj3hmbErkbit3yayQERKJrmaUu3rD9Oj7GQBo+cV3+CYBXCwukyG9RigJiSKQ8GUABDQJT7XC0e5dYB8iOrN5z60/9ud1fZp+cImyB/EPpP21PRDkhdfxQHTz0H6T0tzScNRimJ2pNJJdHu/X3Eez8sSEq9nL+oIoFoUAbHQB0Qtcoia/XRyd2mP2faWvDF2LYIcW251wqnv4ySTnlH1BjuVEEqhpcfVXs7s3u3J0aalbcFxag1WUAmHXiu7NAMSMGooDMZRFeMIzz8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
+	t=1772218732; c=relaxed/simple;
+	bh=tIYP4+utRzFc1yoc4fWT3Uoem9MLQquNeA6VEEGNMUM=;
+	h=DKIM-Signature:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Autocrypt:Content-Type:User-Agent:
+	 MIME-Version; b=ygquy55Fq+J944SZOgtDzTyNawOcZ93hTXBTqKm+36JlR4Je2Tgz3yrZQDo8grci/3/QYnJpMySB7CohblfGn8BZh/AtpiDpI/BeH+KDuB+ji0KkCr4wQDctSvt6fV497f/gSl8BEAuefW2XSvSwpJZhKDw+qD+UPcXLjv9BVShRrwjY95SjZIJI4SobZ/H2NeOaTvC4H3FE4xHKk+U7wiuCcc+RxBNl4r0gelWohtWgLyIpbKks8GMvFJyRUPc3X2fk3GAeZZLE4ZrBCw7iuHKxW7hgCnyh1LdINfiLAJkMIavGdJ2BRGd9KHXQ6OBU9oM58sQTjbjEohOg4zUewg==
+ARC-Authentication-Results: i=1; arc-srv8.sapience.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1772218732;
+ h=message-id : subject : from : to : cc : date : in-reply-to :
+ references : content-type : mime-version : from;
+ bh=NGbsjSbPcFusC9feVYLBdka34A/NbvkjNOFFBprU3tU=;
+ b=KPOXrE//6ChLnK3NHal3But3XdsHu5laGeEPVR2qNIgbxVQ572v4KAky3UBG3HKimDgAr
+ U8RN30oS3puLkDE5YoDqWM7/jn0bkfgVL84jE+F9KI92NyhBcC59gIpHF3Uh4g36oDvSVKB
+ gga6lPDNkwio+xX4DSUjFN+BNUbkvxasoGWKTKTRrHdHoXzsE9IUYEPqu3lliy+Dvgfqktk
+ IqJOvS5DqUmufZmhJWyD0L7JtPyJTclsZl4K+Bu2ANNGAyeGAvKTDhAEKeCZk3CJ0eBTp9E
+ G3vDQaQh35PT7YlJh2tGHOM/urt8E3MqpQxcT1Ksd4e5iqLOGy6P5QmHcWhw==
+Received: by smtp.sapience.com (Postfix) id D5FE8280010;
+	Fri, 27 Feb 2026 13:58:52 -0500 (EST)
+Message-ID: <06b6a53bff1a5db07a29dec6441995d97b20cfa5.camel@sapience.com>
+Subject: Re: [REGRESSION] 6.19.4 stable netfilter / nftables -> resolved
+From: Genes Lists <lists@sapience.com>
+To: Florian Westphal <fw@strlen.de>, Thorsten Leemhuis
+	 <regressions@leemhuis.info>
+Cc: linux-kernel@vger.kernel.org, coreteam@netfilter.org, 
+	netfilter-devel@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ regressions@lists.linux.dev, "Kris Karas (Bug Reporting)"
+ <bugs-a21@moonlit-rail.com>
+Date: Fri, 27 Feb 2026 13:58:52 -0500
+In-Reply-To: <aaFSOkhkjowYB2YJ@strlen.de>
+References: <a529a6a9a2755d45765f20b58c5c11e2f790eacb.camel@sapience.com>
+	 <45f03b0b-fe8f-4942-bad1-3fbde03d4be1@leemhuis.info>
+	 <aaFSOkhkjowYB2YJ@strlen.de>
+Autocrypt: addr=lists@sapience.com; prefer-encrypt=mutual;
+ keydata=mDMEXSY9GRYJKwYBBAHaRw8BAQdAwzFfmp+m0ldl2vgmbtPC/XN7/k5vscpADq3BmRy5R
+ 7y0LU1haWwgTGlzdHMgKEwwIDIwMTkwNzEwKSA8bGlzdHNAc2FwaWVuY2UuY29tPoiWBBMWCAA+Ah
+ sBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEE5YMoUxcbEgQOvOMKc+dlCv6PxQAFAmPJfooFCRl
+ vRHEACgkQc+dlCv6PxQAc/wEA/Dbmg91DOGXll0OW1GKaZQGQDl7fHibMOKRGC6X/emoA+wQR5FIz
+ BnV/PrXbao8LS/h0tSkeXgPsYxrzvfZInIAC
+Content-Type: multipart/signed; micalg="pgp-sha384";
+	protocol="application/pgp-signature"; boundary="=-zm2RUZeaEdy7KEcSo7EL"
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Linux 6.19.4 - Oops, regression
-To: Genes Lists <lists@sapience.com>, Greg KH <gregkh@linuxfoundation.org>
-Cc: "Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>,
- akpm@linux-foundation.org, jslaby@suse.cz, linux-kernel@vger.kernel.org,
- lwn@lwn.net, stable@vger.kernel.org, torvalds@linux-foundation.org
-References: <2026022657-clambake-mountable-8175@gregkh>
- <eb2d1da9-0b4b-4887-83a4-0e2a65e703aa@moonlit-rail.com>
- <2026022612-buckskin-surfacing-d854@gregkh>
- <bb9ab61c-3bed-4c3d-baf0-0bce4e142292@moonlit-rail.com>
- <67d9f732a55a31f3073675164e8d7ada46da3dbe.camel@sapience.com>
- <0a77c13e74493b786c5fe4e1ebdf55b14e5ff496.camel@sapience.com>
- <2026022750-everyone-huff-8fd0@gregkh>
- <95fea1bd0ded180bb79285ec8416053c614150f8.camel@sapience.com>
- <afe24af8ae3913f8988dc551629e8f598313a29d.camel@sapience.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
-Organization: Manjaro Community
-In-Reply-To: <afe24af8ae3913f8988dc551629e8f598313a29d.camel@sapience.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.54 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MIXED_CHARSET(0.63)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[manjaro.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[manjaro.org:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[sapience.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[sapience.com:s=dk-ed25519-220413,sapience.com:s=dk-rsa-220413];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219995-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[sapience.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219994-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[manjaro.org:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[philm@manjaro.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lists@sapience.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[manjaro.org:mid,manjaro.org:dkim]
-X-Rspamd-Queue-Id: 8019C1BC2F6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,leemhuis.info:email,sapience.com:mid,sapience.com:dkim]
+X-Rspamd-Queue-Id: AB4C11BC38D
 X-Rspamd-Action: no action
 
-On 2/27/26 15:44, Genes Lists wrote:
-> On Fri, 2026-02-27 at 08:59 -0500, Genes Lists wrote:
->> On Fri, 2026-02-27 at 08:32 -0500, Greg KH wrote:
->>> On Fri, Feb 27, 2026 at 08:18:52AM -0500, Genes Lists wrote:
->>>> On Fri, 2026-02-27 at 07:09 -0500, Genes Lists wrote:
->>>>> On Fri, 2026-02-27 at 01:26 -0500, Kris Karas (Bug Reporting)
->>>>> w...
-> ...
->>
->> Sorry if was not clear.  Only 6.19.4 has kernel crash.
->> The summary is:
->> ...
->> - 6.19.4 - crashes whenever nftables is invoked.
->>    Does not matter which userspace nftables is used, older or newer
-> ...
->> I will report back soon as have finished testing 6.19.4 with commit
->> f175b46d9134
-> I confirm that
->
->     6.19.4 plus git cherry-pick f175b46d9134f708358b5404730c6dfa200fbf3c
->
-> works fine and resolves the crash in nf_tables_abort_release seen in
-> 6.19.4.
->
-> gene
->
->
->
->
->
-Most likely 6.18.14 might be affected here as well. Same patch was added 
-there also: 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/diff/releases/6.18.14/netfilter-nft_set_rbtree-translate-rbtree-to-array-f.patch?id=08f2c72545fd46526226105230449470db503ecf
 
--- 
-Best, Philip
+--=-zm2RUZeaEdy7KEcSo7EL
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, 2026-02-27 at 09:13 +0100, Florian Westphal wrote:
+> Thorsten Leemhuis <regressions@leemhuis.info> wrote:
+> > On 2/27/26 04:46, Genes Lists wrote:
+> > > I have a problem with nftables not working on 6.19.4=20
+> >=20
+> > Thx for the report. A problem that from a brief look seems to be
+> > similar
+> > ist already discussed and was bisected in this thread:
+> >=20
+> > https://lore.kernel.org/all/bb9ab61c-3bed-4c3d-baf0-
+> > 0bce4e142292@moonlit-rail.com/
+>=20
+> Thanks for this pointer.
+>=20
+> Can someone check if 'git cherry-pick
+> f175b46d9134f708358b5404730c6dfa200fbf3c'
+> makes things work again post 6.19.4?
+>=20
+> Its a missing indirect dependency.
+
+Summary now that all is resolved.
+
+There were, coincidently, 2 separate issues.
+Pure serendipity they happened together.
+
+ a) kernel 6.19.4 netfilter oops [1]
+    which is fixed by  =20
+	f175b46d9134f708358b5404730c6dfa200fbf3c
+=20
+ b) nftables with large sets=C2=A0
+    nft reports spurious error:
+    rule could not be loaded: File exists
+    After which no rules are loaded.
+
+    Fixed in nftables git repo by commit:
+    ---
+    commit e83e32c8d1cd228d751fb92b756306c6eb6c0759
+    Author: Pablo Neira Ayuso <pablo@netfilter.org>
+    Date:   Mon Jan 12 12:59:26 2026 +0100
+
+    mnl: restore create element command with large batches
+   =20
+    The rework to reduce memory consumption has introduced a
+    bug that result in spurious EEXIST with large batches.
+    ---
+
+    This happens with kernels=C2=A0:
+    - 6.19.4 + netfilter commit f175b46d9134f7
+    - 7.0-rc1
+    - linux-next
+=20
+    It does not seem to happen with older kernels (assuming I=C2=A0
+    did not mess up the testing!)
+
+    I confirmed this 2nd issue is resolved in both=C2=A0
+    - nftables git head and
+    - v1.1.6 plus
+      git cherry-pick=C2=A0\
+       a9ead6a808dbe637ae7b9f54598f0dff9582d34d \
+       e83e32c8d1cd228d751fb92b756306c6eb6c0759
+
+
+thanks all.
+
+gene
+
+
+[1]=C2=A0
+https://lore.kernel.org/all/bb9ab61c-3bed-4c3d-baf0-0bce4e142292@moonlit-ra=
+il.com/
+
+--=-zm2RUZeaEdy7KEcSo7EL
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYJAB0WIQRByXNdQO2KDRJ2iXo5BdB0L6Ze2wUCaaHpbAAKCRA5BdB0L6Ze
+20UJAQCk+p3hTfdJNSn2aE7ZTsJe1KU8cUDrmutpcGCcWC7SoQEA6+w8h6gWCcE6
+ZzC1UcYaLqPQ++pib/Q1sm74p0eQGgs=
+=mKho
+-----END PGP SIGNATURE-----
+
+--=-zm2RUZeaEdy7KEcSo7EL--
 
