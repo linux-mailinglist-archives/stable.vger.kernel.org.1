@@ -1,272 +1,247 @@
-Return-Path: <stable+bounces-219918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GOADSAvoWnTqwQAu9opvQ
-	(envelope-from <stable+bounces-219918-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 06:44:00 +0100
+	id mAdXJ1A0oWmFrAQAu9opvQ
+	(envelope-from <stable+bounces-219919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 07:06:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C751B2F54
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 06:43:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 185FB1B3068
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 07:06:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7397F3084BC9
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 05:43:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E728C306C46B
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 06:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBAA3DA7EE;
-	Fri, 27 Feb 2026 05:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C0553E8C4D;
+	Fri, 27 Feb 2026 06:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QZiHFZH/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MCnW9BY0"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD58333725;
-	Fri, 27 Feb 2026 05:42:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772170980; cv=none; b=jdwliek1ewMccgM9CgYbsIDww6mbn1gSKQXXUu1CQWqRsHhZgItnoV65hmJWXMMarSOX4ZI1Mtc+ppRzkWvbXSSPtpMKCwWiZc9bPdI9GOIiiuE+ObRNRf8rHpVmp2YjCftQGMXc9BSsn1T2XvGCoE5Djj0aId9oxcoyNy9+3j8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772170980; c=relaxed/simple;
-	bh=UEFYHfqMWFpDiSnQ2ZxTCTNSUX+TOxmPK4EN9foOkkY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=r1qszyLYV29PjzWZlfoks2QDiETcUVKKnhj5Rv2h8pi2ryWwwBDoQTSo1I+N+En/86Myvy6zBKeW8Cesnrqfm2o+9e7+F+mo93v/eGbyaB6YQgKV+w46tNZgNJpKk9dGoY3ax8Z6EEW7ssoXdgeA2s77HSmW5Oikn/a59YY72Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QZiHFZH/; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=3P
-	V+nFQl72KJIa+ap8G2QRJx7vnWLumEZixOEyBdyH4=; b=QZiHFZH/nJwoGVezg2
-	Jc40EX6AD7MmmYuL3z0mT8Ralhtk7rARLwtLodMTgpAZcYQB13WE0oy1KWkThqly
-	BQzU+Lhdm7Ssydu8++48Dr5bSuDkTHG3EkHiqW0J9qSUc1PoNjgH6TRKFoete5Cs
-	LWtzCn20QA7XlS3hSsPPv1mgs=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgD3H+q_LqFpzaxOTQ--.788S2;
-	Fri, 27 Feb 2026 13:42:24 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Han Guangjiang <hanguangjiang@lixiang.com>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Robert Garcia <rob_garcia@163.com>,
-	Liang Jie <liangjie@lixiang.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	cgroups@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.12.y] blk-throttle: fix access race during throttle policy activation
-Date: Fri, 27 Feb 2026 13:42:23 +0800
-Message-Id: <20260227054223.1552598-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E57AD4B;
+	Fri, 27 Feb 2026 06:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772172364; cv=fail; b=IQjLHVuB5phz4Vl2lsfCz+AKxQj7tiXIugNEWwbULTMKvupKt5L412KAO3U8vAAmxqYEicoGl1rEQCNe7iSX3k6LaxjpB+9YdUZN3p2XLWQUIOGbfbJ/vpGBepKt4Tmq1NxZkR42tUWVBygZMoPB9Tf0TFwVCIeO3A2jNwVViYY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772172364; c=relaxed/simple;
+	bh=rwi+YOs8BB6yDSf9jBxH9I0BkcyGn08GPCyMAWLHmxk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=dBPAg10GZHFkBcRJ6uQJkFmgItNkFZmyvLL8ySAUUaGhRwbfFB57fJZtE5fF4K/IgzTypvHf0hMTMOWO0hftajRWfpckITl59HdnsFwfpVZ6dGZFbMfFcpaL8npb68q3UTKfrI9xlDqIFjQB5d0IjXi8dfuQNYU+toYDwSupn4M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MCnW9BY0; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772172363; x=1803708363;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=rwi+YOs8BB6yDSf9jBxH9I0BkcyGn08GPCyMAWLHmxk=;
+  b=MCnW9BY0cXID+krFG35qIXgaZkLb03XKsUcz6m2jy7sR79CUgMU9rj9C
+   +m7tUuqW/flXnlHdu/SEhiDz2VdsYV7IsG4AYJgvbOj30TCaf8MI7fPhL
+   qGG/5aU779HW5nvCw8z6MAMc892vYGyNB2xhtRAnNiqwZsAXPw6iBZTlY
+   fkBTPIwRJ+rINxpulY94AzaPa7JW2kYOKLRxUCzB0UdQGBq7iVQ7LNJ9h
+   +P0ZvfNFDzx8QKrwSZnWZRfTD9exjQdka8T/XF5Egrt0h0ToXy8rIWQwJ
+   Oh+CVFBpPCEfJ8tBmo0eOT5V/gkzdbvDuhWc55Yq1GozmaJid2NOUWlnz
+   A==;
+X-CSE-ConnectionGUID: ogln+PLiQHONqXqbOwQT1A==
+X-CSE-MsgGUID: 9sqF3rotSNOEMfpFxjTEuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="60826030"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
+   d="scan'208";a="60826030"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 22:06:03 -0800
+X-CSE-ConnectionGUID: +BSPRR+hTKC+rFcP2cDcuw==
+X-CSE-MsgGUID: zpb98CjwRA6SDaCnL1cDng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
+   d="scan'208";a="216706226"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 22:06:02 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 26 Feb 2026 22:06:01 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 26 Feb 2026 22:06:01 -0800
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.2) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 26 Feb 2026 22:06:01 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gt7qtD3OElSqWsKSRMyLRdQ0UKWfD4cRfINk+fITLyq6q9W9TPPeWHv924YxBsiG7vX5mwmzt0hM1zKgMwfVOgw10jmMQce7fkBJduPL0hZgf67vtXCKYO7CNx4aytwXNy06B68n9MTmH1dXSW6WYJ6M4cQ4IoVO3zj+ZjBrQqosyI+KNfO0wmZ5dVHXbr0j1BcPmr2IzG0EYJb69nADVb9TNsk1pXPG8Ho4PecjkRlyfeEDWKqPeyswyOvJJlv51tmtNYGLPhbBa7rwjODg9EcxLbNhgE3pwOMv2T1Ne+heTRpHKc1F4WSBm++FeTi9v2s9dXSmcXi5jnL1zVrPew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rwi+YOs8BB6yDSf9jBxH9I0BkcyGn08GPCyMAWLHmxk=;
+ b=K4QfKUKaukBCghNFJXHl1m+80DrJrll9XbBxrM1wUPK6s5bGClrBNUOeDcEvVwoYJ4Pp35aLofroC/VBhHHuCzymNnTAYI1ELFgtrLk+E/sgFLQ+NXduuf5A4h4a9KNPq7XNKWGGA+hfyJ7dniPQK5nPXp0rDCsuEOjq31bioEL4UHDgqkhEihzuoF2IQYEkv1dlIXsMM/qTO8NYHbSnq2tzh+ITXdASDkhtJ0eMpqxOY78+ojjHNs/7sPQU0frl5J37uW5Zi3gVCmMzrk6QfWg7zslO0KsMOd0EQLTf9RR8Qd3E0V6D5tTPeW/bb+Fxg9JIVREsfPgfkMFLVsD6cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
+ by BL3PR11MB6433.namprd11.prod.outlook.com (2603:10b6:208:3b9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Fri, 27 Feb
+ 2026 06:05:59 +0000
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919]) by IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919%4]) with mapi id 15.20.9632.017; Fri, 27 Feb 2026
+ 06:05:58 +0000
+From: "Rinitha, SX" <sx.rinitha@intel.com>
+To: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "Loktionov, Aleksandr"
+	<aleksandr.loktionov@intel.com>, Jakub Staniszewski
+	<jakub.staniszewski@linux.intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-net 1/2] ice: reintroduce retry
+ mechanism for indirect AQ
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-net 1/2] ice: reintroduce retry
+ mechanism for indirect AQ
+Thread-Index: AQHchMRIc3k/TrwpA0qpa98jskoXy7WWST0A
+Date: Fri, 27 Feb 2026 06:05:58 +0000
+Message-ID: <IA1PR11MB62418AACCD42A9E3FAE30FFB8B73A@IA1PR11MB6241.namprd11.prod.outlook.com>
+References: <20260113193817.582-1-dawid.osuchowski@linux.intel.com>
+ <20260113193817.582-2-dawid.osuchowski@linux.intel.com>
+In-Reply-To: <20260113193817.582-2-dawid.osuchowski@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|BL3PR11MB6433:EE_
+x-ms-office365-filtering-correlation-id: 24edc5e3-8ed9-4f72-b46b-08de75c646b5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|10070799003|38070700021;
+x-microsoft-antispam-message-info: +C3oNjPcpCx50fBAGrr44zbB4I0qsuvkLdypLtXxKW6RJHB0K4r1bqhKgHmKhsoF246HuW8vsWnulvB3voI4uBZmk3aYztpBm3yz85bKTSKVSqIGW3jFkMDFEkI/YX8Et5XldguWbvZNaUj0wxRzKsZSjvVHMB6LNtx4Fz2fnWSVllm+Hg6P0NCLKtsUnTEib2PI5XBbiKIDn3weguqMAzYB1BrASjmm8s42haAZYF6UJX1p/TtL2u/kYPgJgy2CqT6ibFuiLpo1S5k1sW8f/lVAgdEUTbd2wCW5r4m2kbE4BCZFcN0IVCRwbyI3Co2wv/oou0BTY/2axXio3X5q64VSO2v78N4F/9b7AgiPuBeJhxkxBtxIRys68SsoyAFqCdJ6Zb6XFs0XDcNGEZDgD96ffTGStXIRT+rer/q/skBGWDaMeKrvSEblh4ZHOveHNweczBghW16STQLcj+cJ2kRRBxfNAglgDgIkUdTU8xjji0n940Vgdtr+SGc7iqiZ1Y9lDZvUS0kXC/1Y6j5DpDMd8z4OX8izJH4hwDB++c4XJsqCUtXUr+5CKkgHks8PZaCFLQShiFl3lWOjy41hOdxMUwVqXJV0l9NwpZKanMZQywUVjtkhk+qH7ZvinDsU81I2uxwRl7Ek+DfGaZEaYbVP/Qa+cr/D6XWKa+ONoTAn/oV0ZPpYm//qnjAlvoUo5FL2E3gipKnmYALEVijv2Ax8zozrP+r+ASsnwbUiXayzdFv5AQ8xuGGt2Ql+rUM88ta5EdLiTzGBkkzxs6Owy9/yBv+KbQXOBO0grp+Tfe8=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(10070799003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?PZ7pXCCa9/lqAP6mRSmj5RIIhplNzP31SxCnTN5/UYB7fTtCQN5wquN7wOZw?=
+ =?us-ascii?Q?2kViNdCJ5aFQ+dkuxH2UQKo1Je6LsYQdprok6JRb38+mX0MQdx99DutQBK34?=
+ =?us-ascii?Q?JhFkrsgQCOukATZFpBsdxsW6yh9wJoPNmhhKoB8mD8gIM+VvqtyCTMHJtZ1p?=
+ =?us-ascii?Q?yVw5jiN/sCEm6AT9lGD3bmIImz0uUjKB/+POsDppKRcVCqsMVf4bXBEZE6Pt?=
+ =?us-ascii?Q?o+88Kri7FRJBl5aqrIbrDRSytSpyNAo11nhvyVy6fgXHHq5LpuNWWIR/8GT9?=
+ =?us-ascii?Q?tKaQoUU80l8bJDiMo1cZYApLgalwK9yz0NRf1vyO7ybrRBSY7MBNjb/cj3Gl?=
+ =?us-ascii?Q?SOVkFXyIkllfHAdd/2AqGrngPjkUJ8e43Wz0LMulgM6v44S0B/WVX6V38LRY?=
+ =?us-ascii?Q?KbjzpQOa3y8cbAVB4mu4rYxP5t3aL21NLWjBVNtFX5ccVkj3UCl6xTIFwhKg?=
+ =?us-ascii?Q?nSr3YUZW1QM/8M+AR6jkBsvlpmHw+7Weg8Ts1rlvHtXaPGmg3keQE9wCWN/g?=
+ =?us-ascii?Q?BBYDAtAI9VhRjLAmF6iO9I+nF/HlCKiHYepU+wKO+j1SF4ODSFWMUJaRLVBv?=
+ =?us-ascii?Q?1MohS0a41kcM7rHRpo3beWzoQ9IIZaNIzfvr/Udupci3uRgDeg50DWU1BxLY?=
+ =?us-ascii?Q?VykoeedvvA+bTpet47MXYBfPW3Zj0f6perxTJxvU4VmcKtA03AhbPw1q8WO5?=
+ =?us-ascii?Q?xzWCPhr703Pmf3da+YMGMnInc+362N7f26x4ElQ0oIikprZEvEtie8GUfImW?=
+ =?us-ascii?Q?YI7AHBttI+BG8iSQbl13Gtt8kytmzKTIWEkfWd7Ar+IECqQLZ6GwAsNLSjgS?=
+ =?us-ascii?Q?fcqa1OXcJ2/MuBqRDjyCqtM+bS5qaCJRK9mL7HhrT1agRYNXGaX3FWMOor+n?=
+ =?us-ascii?Q?pZsudxjCbDESdGY7z0kQEwV80O+h9IceSqW2lUJ3wS9wm8RfwhfbzUFn6Czo?=
+ =?us-ascii?Q?/0wBjA5N/MMDThVywqRZ3MFPu/Q6Yl9EbnEYxmxQWCVd5JyxRJ+JoUKDjojY?=
+ =?us-ascii?Q?kuk6YNY+yZW/duge/5QNCCQLLJmQRPj8gT8zsF12qiSxON25vGwt6wg1V5H8?=
+ =?us-ascii?Q?gkGMMW/bwh+XuFIqkuWG3z+b6KZ0/p7GtjfFJsOsn86QVusBSH2F8eJSRcEi?=
+ =?us-ascii?Q?No3eubp9VEY+WuRW+h6cA0kCBkh2YheYaI3GuUjNIFWE7JqnE01qRR1gc2hh?=
+ =?us-ascii?Q?AVSccUhIJ2wIpCTxmvYTDNPFow7Ig6lwalWngCOEKQWz4ECTaUCnT83924lI?=
+ =?us-ascii?Q?WMGUGFkQc3Om678MHc0eZHuw04PXECx236bBP/3WVZQtNUYv/ilTmg3QJNXn?=
+ =?us-ascii?Q?PmOp3zNtokgIDGx8oIqvfl/9lgxPVXw0UG5GBHM+fHeTXltyWfAMsFyhkU84?=
+ =?us-ascii?Q?6VFfcAYO9GHpGZs0+wTB+cD5Bk6sqaNZktyVu8Tyigb5N9mRqeyZSL+ru1Nc?=
+ =?us-ascii?Q?d5tiw2JUcxkb5hyxemQApFezRkDqFliUE2pzTF2V/x9pX0+xFFmEoWQbEu5f?=
+ =?us-ascii?Q?xYdYP4WzM0wSd5F0TjjIdXyLC/1m/1qjfmDV28kbDjoLnIontGdjdknvsllD?=
+ =?us-ascii?Q?GYVCkRqxQaMIF9aF+0s7TrP2hFs74uwBS25YZGcuXgPNW5HcVcGYYbLwpi0Y?=
+ =?us-ascii?Q?MceSe+VTUN64YBqLWCDdmrOSbDHBDxxRAUxge3xNO7kKUiJxTaYvgCQiknjQ?=
+ =?us-ascii?Q?dWTbxxu4aK4S+r7nMvOJZudZA6KmcmdSK2nTX3cHed2PfHwPFUE7l46cgTmE?=
+ =?us-ascii?Q?Um7EEY3q1TCHb5qG2wZ2KZAYmUAYTOvIU7APp8NWxYNGirf549r/+Gnnc79Y?=
+x-ms-exchange-antispam-messagedata-1: LfTnLlxwsZu3MQ==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgD3H+q_LqFpzaxOTQ--.788S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtF4rCr1DWF4DJrWxuF1UGFg_yoWxJr45pr
-	W3WF15Kr4vqFsrWF45Jw43XFWrKw4kAay5G393J3yayF4j9w18t3WrAry8ArW8AFs3GF43
-	Ar4Dtr40kF1UCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UxnYwUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAQB+6WmhLsC-HAAA3T
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24edc5e3-8ed9-4f72-b46b-08de75c646b5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2026 06:05:58.3413
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: RJtJvrzyGlPtHUjB6+lFyXHOZAkvfCWdXCo9+aG66RCI0NfE2RKO4KNXmfBJEHA0mUOIBzY/afdsm8N5blMVoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6433
+X-OriginatorOrg: intel.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219918-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.dk,163.com,lixiang.com,huawei.com,kernel.org,toxicpanda.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219919-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sx.rinitha@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,lixiang.com:email]
-X-Rspamd-Queue-Id: D3C751B2F54
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 185FB1B3068
 X-Rspamd-Action: no action
 
-From: Han Guangjiang <hanguangjiang@lixiang.com>
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of D=
+awid Osuchowski
+> Sent: 14 January 2026 01:08
+> To: intel-wired-lan@lists.osuosl.org
+> Cc: netdev@vger.kernel.org; stable@vger.kernel.org; Loktionov, Aleksandr =
+<aleksandr.loktionov@intel.com>; Jakub Staniszewski <jakub.staniszewski@lin=
+ux.intel.com>; Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Dawid Os=
+uchowski <dawid.osuchowski@linux.intel.com>
+> Subject: [Intel-wired-lan] [PATCH iwl-net 1/2] ice: reintroduce retry mec=
+hanism for indirect AQ
+>
+> From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+>
+> Add retry mechanism for indirect Admin Queue (AQ) commands. To do so we n=
+eed to keep the command buffer.
+>
+> This technically reverts commit 43a630e37e25
+> ("ice: remove unused buffer copy code in ice_sq_send_cmd_retry()"), but c=
+ombines it with a fix in the logic by using a kmemdup() call, making it mor=
+e robust and less likely to break in the future due to programmer error.
+>
+> Cc: Michal Schmidt <mschmidt@redhat.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 3056df93f7a8 ("ice: Re-send some AQ commands, as result of EBUSY A=
+Q error")
+> Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+> Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+> Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> ---
+> Ccing Michal, given they are the author of the "reverted" commit.
+>
+> drivers/net/ethernet/intel/ice/ice_common.c | 12 +++++++++---
+> 1 file changed, 9 insertions(+), 3 deletions(-)
+>
 
-[ Upstream commit bd9fd5be6bc0836820500f68fff144609fbd85a9 ]
-
-On repeated cold boots we occasionally hit a NULL pointer crash in
-blk_should_throtl() when throttling is consulted before the throttle
-policy is fully enabled for the queue. Checking only q->td != NULL is
-insufficient during early initialization, so blkg_to_pd() for the
-throttle policy can still return NULL and blkg_to_tg() becomes NULL,
-which later gets dereferenced.
-
- Unable to handle kernel NULL pointer dereference
- at virtual address 0000000000000156
- ...
- pc : submit_bio_noacct+0x14c/0x4c8
- lr : submit_bio_noacct+0x48/0x4c8
- sp : ffff800087f0b690
- x29: ffff800087f0b690 x28: 0000000000005f90 x27: ffff00068af393c0
- x26: 0000000000080000 x25: 000000000002fbc0 x24: ffff000684ddcc70
- x23: 0000000000000000 x22: 0000000000000000 x21: 0000000000000000
- x20: 0000000000080000 x19: ffff000684ddcd08 x18: ffffffffffffffff
- x17: 0000000000000000 x16: ffff80008132a550 x15: 0000ffff98020fff
- x14: 0000000000000000 x13: 1fffe000d11d7021 x12: ffff000688eb810c
- x11: ffff00077ec4bb80 x10: ffff000688dcb720 x9 : ffff80008068ef60
- x8 : 00000a6fb8a86e85 x7 : 000000000000111e x6 : 0000000000000002
- x5 : 0000000000000246 x4 : 0000000000015cff x3 : 0000000000394500
- x2 : ffff000682e35e40 x1 : 0000000000364940 x0 : 000000000000001a
- Call trace:
-  submit_bio_noacct+0x14c/0x4c8
-  verity_map+0x178/0x2c8
-  __map_bio+0x228/0x250
-  dm_submit_bio+0x1c4/0x678
-  __submit_bio+0x170/0x230
-  submit_bio_noacct_nocheck+0x16c/0x388
-  submit_bio_noacct+0x16c/0x4c8
-  submit_bio+0xb4/0x210
-  f2fs_submit_read_bio+0x4c/0xf0
-  f2fs_mpage_readpages+0x3b0/0x5f0
-  f2fs_readahead+0x90/0xe8
-
-Tighten blk_throtl_activated() to also require that the throttle policy
-bit is set on the queue:
-
-  return q->td != NULL &&
-         test_bit(blkcg_policy_throtl.plid, q->blkcg_pols);
-
-This prevents blk_should_throtl() from accessing throttle group state
-until policy data has been attached to blkgs.
-
-Fixes: a3166c51702b ("blk-throttle: delay initialization until configuration")
-Co-developed-by: Liang Jie <liangjie@lixiang.com>
-Signed-off-by: Liang Jie <liangjie@lixiang.com>
-Signed-off-by: Han Guangjiang <hanguangjiang@lixiang.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- block/blk-cgroup.c   |  6 ------
- block/blk-cgroup.h   |  6 ++++++
- block/blk-throttle.c |  6 +-----
- block/blk-throttle.h | 18 +++++++++++-------
- 4 files changed, 18 insertions(+), 18 deletions(-)
-
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 5a5525d10a5e..3f7cb9d891aa 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -110,12 +110,6 @@ static struct cgroup_subsys_state *blkcg_css(void)
- 	return task_css(current, io_cgrp_id);
- }
- 
--static bool blkcg_policy_enabled(struct request_queue *q,
--				 const struct blkcg_policy *pol)
--{
--	return pol && test_bit(pol->plid, q->blkcg_pols);
--}
--
- static void blkg_free_workfn(struct work_struct *work)
- {
- 	struct blkcg_gq *blkg = container_of(work, struct blkcg_gq,
-diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
-index b9e3265c1eb3..112bf11d0fad 100644
---- a/block/blk-cgroup.h
-+++ b/block/blk-cgroup.h
-@@ -455,6 +455,12 @@ static inline bool blk_cgroup_mergeable(struct request *rq, struct bio *bio)
- 		bio_issue_as_root_blkg(rq->bio) == bio_issue_as_root_blkg(bio);
- }
- 
-+static inline bool blkcg_policy_enabled(struct request_queue *q,
-+				const struct blkcg_policy *pol)
-+{
-+	return pol && test_bit(pol->plid, q->blkcg_pols);
-+}
-+
- void blk_cgroup_bio_start(struct bio *bio);
- void blkcg_add_delay(struct blkcg_gq *blkg, u64 now, u64 delta);
- #else	/* CONFIG_BLK_CGROUP */
-diff --git a/block/blk-throttle.c b/block/blk-throttle.c
-index 4aa66c07d2e8..bdf363868ac0 100644
---- a/block/blk-throttle.c
-+++ b/block/blk-throttle.c
-@@ -1209,17 +1209,13 @@ static int blk_throtl_init(struct gendisk *disk)
- 	INIT_WORK(&td->dispatch_work, blk_throtl_dispatch_work_fn);
- 	throtl_service_queue_init(&td->service_queue);
- 
--	/*
--	 * Freeze queue before activating policy, to synchronize with IO path,
--	 * which is protected by 'q_usage_counter'.
--	 */
- 	blk_mq_freeze_queue(disk->queue);
- 	blk_mq_quiesce_queue(disk->queue);
- 
- 	q->td = td;
- 	td->queue = q;
- 
--	/* activate policy */
-+	/* activate policy, blk_throtl_activated() will return true */
- 	ret = blkcg_activate_policy(disk, &blkcg_policy_throtl);
- 	if (ret) {
- 		q->td = NULL;
-diff --git a/block/blk-throttle.h b/block/blk-throttle.h
-index 1a36d1278eea..e1b5343cd43f 100644
---- a/block/blk-throttle.h
-+++ b/block/blk-throttle.h
-@@ -154,7 +154,13 @@ void blk_throtl_cancel_bios(struct gendisk *disk);
- 
- static inline bool blk_throtl_activated(struct request_queue *q)
- {
--	return q->td != NULL;
-+	/*
-+	 * q->td guarantees that the blk-throttle module is already loaded,
-+	 * and the plid of blk-throttle is assigned.
-+	 * blkcg_policy_enabled() guarantees that the policy is activated
-+	 * in the request_queue.
-+	 */
-+	return q->td != NULL && blkcg_policy_enabled(q, &blkcg_policy_throtl);
- }
- 
- static inline bool blk_should_throtl(struct bio *bio)
-@@ -162,11 +168,6 @@ static inline bool blk_should_throtl(struct bio *bio)
- 	struct throtl_grp *tg;
- 	int rw = bio_data_dir(bio);
- 
--	/*
--	 * This is called under bio_queue_enter(), and it's synchronized with
--	 * the activation of blk-throtl, which is protected by
--	 * blk_mq_freeze_queue().
--	 */
- 	if (!blk_throtl_activated(bio->bi_bdev->bd_queue))
- 		return false;
- 
-@@ -192,7 +193,10 @@ static inline bool blk_should_throtl(struct bio *bio)
- 
- static inline bool blk_throtl_bio(struct bio *bio)
- {
--
-+	/*
-+	 * block throttling takes effect if the policy is activated
-+	 * in the bio's request_queue.
-+	 */
- 	if (!blk_should_throtl(bio))
- 		return false;
- 
--- 
-2.34.1
-
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 
