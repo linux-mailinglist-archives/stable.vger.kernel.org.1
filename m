@@ -1,78 +1,69 @@
-Return-Path: <stable+bounces-219939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219940-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0IUYN9BioWnIsQQAu9opvQ
-	(envelope-from <stable+bounces-219939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 10:24:32 +0100
+	id 8Mx3FuBpoWkOswQAu9opvQ
+	(envelope-from <stable+bounces-219940-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 10:54:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514A81B543B
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 10:24:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81571B59F8
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 10:54:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06263311EB53
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 09:20:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9850B3090202
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 09:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C0838B7D1;
-	Fri, 27 Feb 2026 09:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F362F3815DE;
+	Fri, 27 Feb 2026 09:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b="a19n42Vv";
-	dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b="E4B7JXH6"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="SIYTU0p7"
 X-Original-To: stable@vger.kernel.org
-Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [194.59.206.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAD538A721;
-	Fri, 27 Feb 2026 09:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5F436CE03;
+	Fri, 27 Feb 2026 09:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.59.206.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772184002; cv=none; b=i5wcTP2YQGufsw+8LduCiYwC7/rlOzlImMHQNm6u/2NdZYyQaqvsw5KtrIxYVEfBrCm92tHk8taNDQH3jsEUH3v3aGPo71ZjQnerefF95z4dRHJ/OygMXdF6kJCADHsZwXDczdhsKmlHw3DoS6pt2AtmnDk2uu+bvybSI04Hfls=
+	t=1772186062; cv=none; b=gPZThIsLMyYWoa8Ntph5Y6XSS4QFrnaKIy8NjxV0Ngvc/GuU2Z3Y2vHvI4Y1n/nnEyP/Rr3Aa75CiwkBHfxdMyRqHV6uH93O46M1AVSijFjji9S+atI+vmT9frH8IyutrpQl3goGOR7Vv0leU8VL6KfT2USzLMSWQmrtj91Y7jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772184002; c=relaxed/simple;
-	bh=52FSEcDd5oAKtEs/Gkr465MLhbFHmP5Omk7jgrGcxAg=;
+	s=arc-20240116; t=1772186062; c=relaxed/simple;
+	bh=JEJTB5bNA2IqKg7kkoqkWEK6Z50IbTkVOuyUFMUaZQs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tf/vhhvu2PpC5n/qBIR4foUQiP7yD0CNuKnJvO1CLPhuNuXp7qBM9Ang5C3k2PC1PWKrgVN8nVVXr9qwBnlNVHwO6liNzrCbOJon6ydPv52B6aeRSNb8fon/CG/zQhK4rVp5yaV7IOAbw+xyg8XC3LZR4dmj0ht4OYX3t1qBD+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b=a19n42Vv; dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b=E4B7JXH6; arc=none smtp.client-ip=203.29.242.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
-	s=201606; t=1772183998;
-	bh=52FSEcDd5oAKtEs/Gkr465MLhbFHmP5Omk7jgrGcxAg=;
+	 In-Reply-To:Content-Type; b=Pw5zhz4Ix/tdI91LqfLsBwQYgpmdK5zSUR1dhHJVONCzOKF5Em8Z68Fwrj873SJeAHEdiooJ0oWZBzzkVRq/SgGUiVvRCzuPzkoxj4tpKALRYbzoi5dUUD9+SAJu326OQAt13MuibGlpUa+En6lXn9StbEFD0yOLju+IDBmLV4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=SIYTU0p7; arc=none smtp.client-ip=194.59.206.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from relay02-mors.netcup.net (localhost [127.0.0.1])
+	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4fMkF54vvtz49CK;
+	Fri, 27 Feb 2026 10:54:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1772186057;
+	bh=JEJTB5bNA2IqKg7kkoqkWEK6Z50IbTkVOuyUFMUaZQs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=a19n42VveTPnmO1MOwHm+PlM5HNs7HhoKaM5Pf4SJGoNYN7YlnXsAuTgX8LyMLoYM
-	 Yq0pQ1ycZHdB5vJIfEC4C7dk1F8w4h79n/2jgNgd0SXib5CVyh4dHP8RNI+U895WKA
-	 VU7+s0chN6hY7rg1MkK78cG2aRTe1jyVZPOBgJwhzKAPEHAxJdxm0icaxnEYwXezxY
-	 Kyya9q/fxAHae93MTCkdL3z6vBAtzzQ8G8YZXOTDehkqMw9pQ3fG5fV23ia8FVp3Bh
-	 HXmtfxwnEOYpAqByEgGqa57TdgNvEBjcYFmCf/ez6UylvJLbEhT7TOR4jen1o4hCsc
-	 Xod6K+owczj1g0MJ12YDeOdaW8fW3nWPx09yAyAdngFaBjUaVkM4htHH+sqxXKeO1y
-	 prkblPOuREiMM9xIqQfdAETxpLiJP0wFeAODAUWjXeVTmf7jffuvHUlpI2tdIe4RYG
-	 aTEkBL4r8Ntc9wsvzCpugQhcbfPsDjZ1QZTyS1HujwA3zm68vqi5SE/KNraTSbmsdT
-	 7NQKXz6ZnDndRSCeqHyIaB5MZFb7W2n8JSmNKn/FQTTKttPHvgGbQXJIb/LBBU8nL8
-	 pWEmHIiQQTPfnC/VRPGcU8R9IOS9bSOFZRMCsDqAxSSJTfitX7fFQNa0zCKzP4UB5s
-	 NFBeL1q2mwFFHXHYEc3ohM1s=
-Received: by sphereful.davidgow.net (Postfix, from userid 119)
-	id BE4551E7A31; Fri, 27 Feb 2026 17:19:58 +0800 (AWST)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
-	s=201606; t=1772183996;
-	bh=52FSEcDd5oAKtEs/Gkr465MLhbFHmP5Omk7jgrGcxAg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=E4B7JXH6gAxvwzrFixGhE33glyDyT/NJH3pWbK85bP3X4edIjLby+jI3IUKtvhzrC
-	 iabKpbXT5qnVoEm1nKru7gJRZDizg6vzKkSRUpkZ+yMVHqUh5Grrv+pz2xUKS3EIbB
-	 AH1rJCRBZe8235kzrun3ay9ow2zOdUqRV5OXDIa8KQ9hWtsRA8fQGGBA5pRfhcsrPE
-	 YlMqsjd4nSATK3EAo42Ek5uNhToYO3D8V2gs4vCAKgKTeqomacXHsKJ4cKcKbTYVoV
-	 xpwQMd6BsrDUTRhh8upr5/n7MDJKphm6gLFCeZzQvFE2tISOBZ+Gwh9+H8oT1AmMPh
-	 Qw3hbvOdL1GBVsS0XcHQrIl1pTmqZ104n6OV0UC5zJuQcDHd5nr6zsSm7g+LRmQxQi
-	 STuMP11yWEYHrQ8hVAP8H2BA7JtRqjrxpD5+eev1mQvbB56IsfXt71CTjgKEtvcPNN
-	 ympswz9BaTSiuRNwXZ72z9baCFOdQr6m63OjEItBP36NJaL1nmE3al7g+u10BCDQzl
-	 XUlwoWyt9qJ51ZIUfAizggc2APOeaA1B6vSzEij53bLdAk0lQFCXsEwiBgwrA6M6Vr
-	 L7Bd89jzsH/gKYaxajwrslpwk6NfMCBzq6QaTUePhRBAurlATgrw/L+BgvJkaHjJcz
-	 niPZIkoD2T6JSUzCJnSOlj54=
-Received: from [IPV6:2001:8003:8824:9e00:6d16:7ef9:c827:387c] (unknown [IPv6:2001:8003:8824:9e00:6d16:7ef9:c827:387c])
-	by sphereful.davidgow.net (Postfix) with ESMTPSA id D66781E7A28;
-	Fri, 27 Feb 2026 17:19:56 +0800 (AWST)
-Message-ID: <e7885b51-3481-4499-a3d2-88087d8b5200@davidgow.net>
-Date: Fri, 27 Feb 2026 17:19:54 +0800
+	b=SIYTU0p7WQQrvQPKq9UJvs7+lo4Bdw6+S+yP/hQ/CdeUVvnHqc/MzQTaArU3il2sN
+	 yXzHNpUPVsjNqZXnXHFeanMWj3tB9ywjKtfy3P9iU2p3S35Yfj45F6hoCz6NYgjyHs
+	 vyMpyQrhJgP/KrysTyH+VyoxidI5+lr8CLJPk5+eY5A4Pd9mRI05Jxh44Gv4FIPT/c
+	 dlEalmK1VPVLTkL7xx89DXm7+AydtYpTkd1S3CcFj56KJgsR5kBFRtqDWzlfppEbou
+	 9lGRaAXe+/AmkplxQ2gWwS1gqWtHV4yTG5qgsadpJT/GJAhby1ATI/ShVaWAhGdW16
+	 WDdc9Yj0r489g==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4fMkF54BsYz7vxJ;
+	Fri, 27 Feb 2026 10:54:17 +0100 (CET)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fMkF510Kjz8sbC;
+	Fri, 27 Feb 2026 10:54:17 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 5039461786;
+	Fri, 27 Feb 2026 10:54:16 +0100 (CET)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <418f30b5-06ae-471f-bf5f-f14f3f75deff@leemhuis.info>
+Date: Fri, 27 Feb 2026 10:54:13 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,102 +71,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] lib/crypto: tests: Depend on library options rather than
- selecting them
-To: Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
- "Jason A . Donenfeld" <Jason@zx2c4.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, kunit-dev@googlegroups.com,
- linux-kselftest@vger.kernel.org, Brendan Higgins
- <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, stable@vger.kernel.org
-References: <20260226191749.39397-1-ebiggers@kernel.org>
-Content-Language: fr
-From: David Gow <david@davidgow.net>
-In-Reply-To: <20260226191749.39397-1-ebiggers@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: Regression: Missing check in nfsd_permission() causes -ENOLCK No
+ locks available
+To: Tj <tj.iam.tj@proton.me>, 1128861@bugs.debian.org,
+ Neil Brown <neilb@suse.de>
+Cc: linux-nfs@vger.kernel.org, Olga Kornievskaia <okorniev@redhat.com>,
+ stable@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>,
+ Jeff Layton <jlayton@kernel.org>,
+ Linux NFS Mailing List <linux-nfs@vger.kernel.org>
+References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: <177218605665.3127215.6362207666060754103@mxe9fb.netcup.net>
+X-NC-CID: 2qkeduFVg/8fbJJvJbazbisUR09+48lXIaxci0UUPW39xtckrcQ=
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[davidgow.net,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[davidgow.net:s=201606];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,zx2c4.com,gondor.apana.org.au,googlegroups.com,linux.dev,gmail.com,linux-m68k.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219939-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[davidgow.net:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
+	TAGGED_FROM(0.00)[bounces-219940-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,leemhuis.info:mid,leemhuis.info:dkim];
+	DMARC_NA(0.00)[leemhuis.info];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@davidgow.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,davidgow.net:mid,davidgow.net:dkim,davidgow.net:email,linux-m68k.org:email]
-X-Rspamd-Queue-Id: 514A81B543B
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: C81571B59F8
 X-Rspamd-Action: no action
 
-Le 27/02/2026 à 3:17 AM, 'Eric Biggers' via KUnit Development a écrit :
-> The convention for KUnit tests is to have the test kconfig options
-> visible only when the code they depend on is already enabled.  This way
-> only the tests that are relevant to the particular kernel build can be
-> enabled, either manually or via KUNIT_ALL_TESTS.
-> 
-> Update lib/crypto/tests/Kconfig to follow that convention, i.e. depend
-> on the corresponding library options rather than selecting them.  This
-> fixes an issue where enabling KUNIT_ALL_TESTS enabled non-test code.
-> 
-> This does mean that it becomes more difficult to enable *all* the crypto
-> library tests (which is what I do as a maintainer of the code), since
-> doing so will now require enabling other options that select the
-> libraries.  Regardless, we should follow the standard KUnit convention.
-> 
-> Note: currently most of the crypto library options are selected by
-> visible options in crypto/Kconfig, which can be used to enable them
-> without too much trouble.  If in the future we end up with more cases
-> like CRYPTO_LIB_CURVE25519 which is selected only by WIREGUARD (thus
-> making CRYPTO_LIB_CURVE25519_KUNIT_TEST effectively depend on WIREGUARD
-> after this commit), we could consider adding a new kconfig option that
-> enables all the library code specifically for testing.
-> 
-> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Closes: https://lore.kernel.org/r/CAMuHMdVFRQZXCKJBOBDJtpENvpVO39AxGMUFWVQdM6xKTpnYYw@mail.gmail.com
-> Fixes: 4dcf6caddaa0 ("lib/crypto: tests: Add KUnit tests for SHA-224 and SHA-256")
-> Fixes: 571eaeddb67d ("lib/crypto: tests: Add KUnit tests for SHA-384 and SHA-512")
-> Fixes: 6dd4d9f7919e ("lib/crypto: tests: Add KUnit tests for Poly1305")
-> Fixes: 66b130607908 ("lib/crypto: tests: Add KUnit tests for SHA-1 and HMAC-SHA1")
-> Fixes: d6b6aac0cdb4 ("lib/crypto: tests: Add KUnit tests for MD5 and HMAC-MD5")
-> Fixes: afc4e4a5f122 ("lib/crypto: tests: Migrate Curve25519 self-test to KUnit")
-> Fixes: 6401fd334ddf ("lib/crypto: tests: Add KUnit tests for BLAKE2b")
-> Fixes: 15c64c47e484 ("lib/crypto: tests: Add SHA3 kunit tests")
-> Fixes: b3aed551b3fc ("lib/crypto: tests: Add KUnit tests for POLYVAL")
-> Fixes: ed894faccb8d ("lib/crypto: tests: Add KUnit tests for ML-DSA verification")
-> Fixes: 7246fe6cd644 ("lib/crypto: tests: Add KUnit tests for NH")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> ---
+[CCing a few people and lists]
 
-Thanks -- I do think this is better, as we do run KUnit tests on pretty 
-minimal configurations.
+On 2/24/26 03:09, Tj wrote:
+> Upstream commit 4cc9b9f2bf4dfe13fe573 "nfsd: refine and rename 
+> NFSD_MAY_LOCK" and
+>   stable v6.12.54 commit 18744bc56b0ec
 
-One suggestion would be to have a crypto/.kunitconfig file which enables 
-all of these: you could then run the crypto tests with:
-./tools/testing/kunit/kunit.py run --kunitconfig crypto/
+In case anyone just like me is wondering: the latter is a backport of
+the former.
 
-Reviewed-by: David Gow <david@davidgow.net>
+>  (re)moves checks from  fs/nfsd/vfs.c::nfsd_permission().>   This causes NFS clients to see
+> 
+> $ flock -e -w 4 /srv/NAS/test/debian-13.3.0-amd64-netinst.iso sleep 1
+> flock: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso: No locks available
 
-Cheers,
--- David
+Does this happen on mainline (e.g. 7.0-rc1) as well?
+
+Ciao, Thorsten
+
+> Keeping the check in nfsd_permission() whilst also copying it to 
+> fs/nfsd/nfsfh.c::__fh_verify() resolves the issue.
+> 
+> This was discovered on the Debian openQA infrastructure server when 
+> upgrading kernel from v6.12.48 to later v6.12.y where worker hosts (with 
+> any earlier or later kernel version) pass NFSv3 mounted ISO images to 
+> qemu-system-x86_64 and it reports:
+> 
+> !!! : qemu-system-x86_64: -device 
+> scsi-cd,id=cd0-device,drive=cd0-overlay0,serial=cd0: Failed to get 
+> "consistent read" lock: No locks available
+> QEMU: Is another process using the image 
+> [/var/lib/openqa/pool/2/20260223-1-debian-testing-amd64-netinst.iso]?
+> 
+> A simple reproducer with the server using:
+> 
+> # cat /etc/exports.d/test.exports
+> /srv/NAS/test 
+> fdff::/64(fsid=0,rw,no_root_squash,sync,no_subtree_check,auth_nlm)
+> 
+> and clients using:
+> 
+> # mount -t nfs [fdff::2]:/srv/NAS/test /srv/NAS/test -o 
+> proto=tcp6,ro,fsc,soft
+> 
+> will trigger the error as shown above:
+> 
+> $ flock -e -w 4 /srv/NAS/test/debian-13.3.0-amd64-netinst.iso sleep 1
+> flock: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso: No locks available
+> 
+> A simple test program calling fcntl() with the same arguments QEMU uses 
+> also fails in the same way.
+> 
+> $ ./nfs3_range_lock_test 
+> /srv/NAS/test/debian-13.3.0-amd64-netinst.{iso,overlay}
+> Opened base file: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso
+> Opened overlay file: /srv/NAS/test/debian-13.3.0-amd64-netinst.overlay
+> Attempting lock at 4 on /srv/NAS/test/debian-13.3.0-amd64-netinst.iso
+> fcntl(fd, F_GETLK, &fl) failed on base: No locks available
+> Attempting lock at 8 on /srv/NAS/test/debian-13.3.0-amd64-netinst.overlay
+> fcntl(fd, F_GETLK, &fl) failed on overlay: No locks available
+> 
+> 
 
 
