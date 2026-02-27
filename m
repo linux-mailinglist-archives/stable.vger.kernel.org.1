@@ -1,144 +1,186 @@
-Return-Path: <stable+bounces-219955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NBpD6aToWmvuQQAu9opvQ
-	(envelope-from <stable+bounces-219955-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:52:54 +0100
+	id OL7NJ2KYoWl8ugQAu9opvQ
+	(envelope-from <stable+bounces-219956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 14:13:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936B51B7602
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:52:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB021B77EE
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 14:13:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25691306376B
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 12:51:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8A645302E56B
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FBA23B9600;
-	Fri, 27 Feb 2026 12:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F415621771C;
+	Fri, 27 Feb 2026 13:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.b="WnNnk6ta"
+	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="4fZanwKf";
+	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="U9Oi9Qxl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCF4368971
-	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 12:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772196702; cv=none; b=Z8Ftt+4yfQD8XgNEkcaEftQ57jc1IvhxwOv0Mn+zy3bC0+dNhkcPIb7W6NabX7DxYHeYlWszHcaXqGuV6UM8ILtL37uNTa6Q3p5dg/cqjhAsAR1kVqm+kXlFRq/sDzWNrrtwyLLScOfpWTDbTL3K2FdpZWJ3U3cNJbyPfXvY7VA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772196702; c=relaxed/simple;
-	bh=UiOExHwzPgH+a46X6Lafnzd0iwNqcF99JpO1VfaFk6g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QkKOtPEV7IEAnhwmX7hE5MRUZQ+dSaDFSUfIvjI2s6S3jR2THWIjnjZZH7LdGvXjBxkftPh23J1Bzqf93T9+TsYw77gDpIMfvIKrs8Z0uJTg1GeK1GXnk4RvfcFQYmn+WDupziLzY3nFdmjepSy/CKd7E4YPCLKljPn3eVzY3fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.b=WnNnk6ta; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8cb20bcff5aso189898185a.3
-        for <stable@vger.kernel.org>; Fri, 27 Feb 2026 04:51:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1772196698; x=1772801498; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aJsL5ft8+uR36go2nZZ3KkNMsYpE/8dDd7y8kbPIygc=;
-        b=WnNnk6taGLfSyse3NXarTcsKgYa9cign4AIBk6jLFihgslnu/ip9PoeXd0aLpRQOjD
-         4Su8CqDUo40VEjt4MhjXyMgeLB7GpElOIhhHptbwOMYb86DfJJXU+JNSG5cFcmqtrvEq
-         jzyEHuc7Evzb/SOoZXnywGvZ2pq1V6ew5UsIdX0MCsmeVvc75+UvT2TVY+W6Z/5Ir/ca
-         BG4bUEea2pvYIQSX0UcjmUGrQsUEW6emjbJCqjYveT3UCC//KRSiDLKL6IKqmKcq2lNh
-         SUuoW9LPPn33FLTZd+dastxxDZzch7J0/+zKHAvPkJ7OcECChyP2WARTCkDZOTYtsNKn
-         J+Vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772196698; x=1772801498;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aJsL5ft8+uR36go2nZZ3KkNMsYpE/8dDd7y8kbPIygc=;
-        b=dpmyD+FkDn899jZYc7nY2lTd+jwtoY86uSLoCMH7732CAJLGxwirEaekGi8bjAxrtu
-         rN8i7jQ2qisHJfHRQxD8VOBTDA9R21cUC8eBeJNUP51SvR1mKMvQKDxrzYh8g5VSg6Pr
-         WgTXOVCi+YVJrI9z1gYvL/7SAAMm/C4TTHhEBf/T+n7UTsjiotFD5erETIF3WOXWHQ9J
-         LTPAvBH4RMbmUgzBzB+QKvE3U2WbZ1fDp/gw8vtnZ3HUjCDeLw+vMrnygLQtnq1Wj1o9
-         +ytHZA6pwV8W2tm7k09aC6D5SiCW1pbThYSWdum933qO01urmIWE0eSfjAuxBGet4Hdc
-         L72g==
-X-Forwarded-Encrypted: i=1; AJvYcCV2Z16RSOzvtafVEfOXR3F0HThJsi7AElHHN/Y5t3uUwq73+GGvfUjB0dNtMScjbXIPAM4B0CI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEyvkRRtldfGPUg5dmJ6jw83ZjXKGFRS1k3lUj27G2UM3b78Z5
-	0mC8XvdlbdRii+8yh49w99q2HyS8DNeHuI7IuKNdn75hbD9b4z4KDcF6kyfG97/1vsI=
-X-Gm-Gg: ATEYQzyFAat6xSVTxK5EwvNzFztQjtnPTxoZwglBVfs/19oyqqTYGmdHBVti60UKgXJ
-	AIs13iawc+Qm1vQvo/da63X1Spvj0JVF8g1yw+3fBD65xd4ZrLaAd5mDyE6Lctz05pGSb2nE8e0
-	I5WTey5ks+44RHHMCMtmY1Ra5/xGmmE5y+bs5tCG31huDAWuYhIVE0nB/gCottiTAImTOIGJAEJ
-	NLOMHmzOzRq7eB3XB3bf2zby0jS0C7aZhwqeELucVtNEEiYhTCdL0BYiPBgrBxxX6IfXvtCnuu6
-	MzSsd/TPOdt0rUb/zbq3RLKCbvv/+RIqJ+bSeyverUCzgjtPtU31ud2Y80X8fyeS29W0b8Jz2XM
-	Qgu2EcXdQcgLOxoMNLiwFvlOO0Ohj3n9ZvecMXVH0dNyDmJ3Zr2En1cBesAUy8H2QQzlONOjQrJ
-	zFZkGhBEZNW4SqKlz1DWH5zA==
-X-Received: by 2002:a05:620a:318d:b0:8ca:3c67:891a with SMTP id af79cd13be357-8cbc8e0515cmr303454985a.52.1772196697812;
-        Fri, 27 Feb 2026 04:51:37 -0800 (PST)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf68b014sm472521085a.21.2026.02.27.04.51.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 04:51:36 -0800 (PST)
-Date: Fri, 27 Feb 2026 07:51:33 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Hao Li <hao.li@linux.dev>
-Cc: mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	vbabka@suse.cz, harry.yoo@oracle.com, muchun.song@linux.dev,
-	akpm@linux-foundation.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] memcg: fix slab accounting in refill_obj_stock() trylock
- path
-Message-ID: <aaGTVWumz4jYEx9L@cmpxchg.org>
-References: <20260226115145.62903-1-hao.li@linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FDF334683;
+	Fri, 27 Feb 2026 13:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=72.84.236.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772197981; cv=fail; b=SbgvThvZu7GIebk/d2mqcG2tB+Difvga3I3z0/YYVJZK74VlLPEMUZEU0PKFvplxy+MowS7SAxux2a3qvQuLivFjaNpMaYvNqEhFn+ajzwXlmxEwamlOt/6mgAgN1UfZ5m1h53ME06+6e4lDK8Jiof6Z248u9UaKfLQEtHfUUIk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772197981; c=relaxed/simple;
+	bh=66brhFRBz338PGN0olefuSynj+xI4prDr13fFivWvS4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rekNQAtsAbJGa4Bf/8H9tagYuuzSRRK1SUWWjT/WgX8mMqVxsuqGbNDrp6rDo4gfJMpHnpq92eJGMIa17dU4XMh5cH5XNANhiQxZJD2+KsJliTdACrcaJHWAFirD5970YJ6XQ2o7yZnXnIh41njksECfj7FxhtH1pXYyk3+uuIY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com; spf=pass smtp.mailfrom=sapience.com; dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b=4fZanwKf; dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b=U9Oi9Qxl; arc=fail smtp.client-ip=72.84.236.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sapience.com
+Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
+   signature) header.d=sapience.com header.i=@sapience.com 
+   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
+   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
+Received: from smtp.sapience.com (srv8.prv.sapience.com [10.164.28.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by s1.sapience.com (Postfix) with ESMTPS id BB8D0480AF2;
+	Fri, 27 Feb 2026 08:12:59 -0500 (EST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1772197979;
+ h=message-id : subject : from : to : cc : date : in-reply-to :
+ references : content-type : mime-version : from;
+ bh=tNy7bNq5Bi8ob3Qjmrq03i+Ph2cnpnZSAkwXqBQ6qdQ=;
+ b=4fZanwKfMi2TbnjyXAFVU/C8Ryv+5F7bELYg/98QvjgBrT4fVGvhijX6xXqqb7ynZUld5
+ wI7K2n9dlKEkbUnDg==
+ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1772197979;
+	cv=none; b=IIWchx0m3JS+JTFJkLxiH0H+qVQVcM417Y03wXEOGuQM8VUOTcbDMa3qXAP9ZMjnF+M1PeTX0NDyo9JoPknWAC7f2C9p1YaUESh0g/CDcApE5LdVVP7ZnltLIwcTucTPZaVUEYTCGjnO9nZsTSTwk75IC+TCtRPlpEBOX1HJvhd1abKXodz0QzlvForXGj2m93ooVg8xsZ30ddRsMbXDfHjnzcze1tAor6NldhTg5Hs0sArTiDEXFpxSUK2jkDex7Sn+tyvtkrwHP1fDMk2/NeHBINl3D6l196R8Zf74tGb5cpWCtvwoXtyI4c6cPosy4KDVYJxo0w4uLU8BTJo97Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
+	t=1772197979; c=relaxed/simple;
+	bh=66brhFRBz338PGN0olefuSynj+xI4prDr13fFivWvS4=;
+	h=DKIM-Signature:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Autocrypt:Content-Type:User-Agent:
+	 MIME-Version; b=SBJHNbT3m2i+0+FWjW+WeKJCnyxLcejo8MSa2klJt20y9PWSwGAkVp+hXFegGHeCPCSwzRyhngkLLupdY03lZbJgxz7qgk9ADwHmZtYKkDZvXZ42SXQ+kg3GHHPXjpD5I8OHRpxZX68Qsd62wvSEFdJonSb/KfQDQjWR47M1WWEEYNPpcyrhBYE+b2HSLYt3tZxSPeFPU5iG9hO3/TWoZEMYKzRNxomIkMD7UL5BeRjUxJoR8ubmmcm79v7AF8/AS/5SFlKQ2peZap3H9RQficRefnBjB6/JO+H64zPFsFfF0tl/v+wW6kVNaBWH0pxnf9zo/kMOiZ36tMaXfc4XnQ==
+ARC-Authentication-Results: i=1; arc-srv8.sapience.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1772197979;
+ h=message-id : subject : from : to : cc : date : in-reply-to :
+ references : content-type : mime-version : from;
+ bh=tNy7bNq5Bi8ob3Qjmrq03i+Ph2cnpnZSAkwXqBQ6qdQ=;
+ b=U9Oi9QxleUn+27c0fI2aTm07VFQD/NBOJaCluaPfak4wi28Lf4r6BkqK1TVEUHreqDUIN
+ 6E3wVdjeoH0LZfwHlHMepgQesC1S3DqM5juDxxJRh06f8hQr9nMvV+oLjxXmnRmsFb7uZtq
+ Q7oKtg/6BiWUoTeiTkp4VOPnpyxK+ur18d0qteeguOzLqNknYmNTfE897fDbYlMmU/3tOsb
+ DDVh27hMB3RrhDNjNLVt7NNa9TCADFM5R0Q/gkdJcGb+QZMax3LovHiRlXIDZBJoeB2UU1l
+ vr3Adi68th7e8Q7KwFv5hr9+4P6l4M8DMHwdO3JspjvBOY5BmRGPqEHJU0ig==
+Received: by smtp.sapience.com (Postfix) id 8D823280010;
+	Fri, 27 Feb 2026 08:12:59 -0500 (EST)
+Message-ID: <10537f2b74da2b8a5cb8dc939f723291db39ff84.camel@sapience.com>
+Subject: Re: [REGRESSION] 6.19.4 stable netfilter / nftables [resolved]
+From: Genes Lists <lists@sapience.com>
+To: Thorsten Leemhuis <regressions@leemhuis.info>, 
+	linux-kernel@vger.kernel.org, coreteam@netfilter.org, 
+	netfilter-devel@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, "Kris Karas (Bug
+ Reporting)" <bugs-a21@moonlit-rail.com>
+Date: Fri, 27 Feb 2026 08:12:59 -0500
+In-Reply-To: <143e1a402ad78dd7076516a6ceb637f378310b16.camel@sapience.com>
+References: <a529a6a9a2755d45765f20b58c5c11e2f790eacb.camel@sapience.com>
+		 <45f03b0b-fe8f-4942-bad1-3fbde03d4be1@leemhuis.info>
+	 <143e1a402ad78dd7076516a6ceb637f378310b16.camel@sapience.com>
+Autocrypt: addr=lists@sapience.com; prefer-encrypt=mutual;
+ keydata=mDMEXSY9GRYJKwYBBAHaRw8BAQdAwzFfmp+m0ldl2vgmbtPC/XN7/k5vscpADq3BmRy5R
+ 7y0LU1haWwgTGlzdHMgKEwwIDIwMTkwNzEwKSA8bGlzdHNAc2FwaWVuY2UuY29tPoiWBBMWCAA+Ah
+ sBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEE5YMoUxcbEgQOvOMKc+dlCv6PxQAFAmPJfooFCRl
+ vRHEACgkQc+dlCv6PxQAc/wEA/Dbmg91DOGXll0OW1GKaZQGQDl7fHibMOKRGC6X/emoA+wQR5FIz
+ BnV/PrXbao8LS/h0tSkeXgPsYxrzvfZInIAC
+Content-Type: multipart/signed; micalg="pgp-sha384";
+	protocol="application/pgp-signature"; boundary="=-nKNztZjYbaV7lLx9h1x4"
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226115145.62903-1-hao.li@linux.dev>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[cmpxchg.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[cmpxchg.org:s=google];
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[sapience.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[sapience.com:s=dk-ed25519-220413,sapience.com:s=dk-rsa-220413];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219955-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[cmpxchg.org:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219956-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[sapience.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hannes@cmpxchg.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lists@sapience.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,cmpxchg.org:mid,cmpxchg.org:dkim,cmpxchg.org:email]
-X-Rspamd-Queue-Id: 936B51B7602
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2EB021B77EE
 X-Rspamd-Action: no action
 
-On Thu, Feb 26, 2026 at 07:51:37PM +0800, Hao Li wrote:
-> In the trylock path of refill_obj_stock(), mod_objcg_mlstate() should
-> use the real alloc/free bytes (i.e., nr_acct) for accounting, rather
-> than nr_bytes.
-> 
-> Fixes: 200577f69f29 ("memcg: objcg stock trylock without irq disabling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hao Li <hao.li@linux.dev>
 
-Oops. Yes, I suppose the contended case is quite rare (this is CPU
-local), so I'm not surprised this went unnoticed for so long.
+--=-nKNztZjYbaV7lLx9h1x4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+On Fri, 2026-02-27 at 07:23 -0500, Genes Lists wrote:
+> On Fri, 2026-02-27 at 09:00 +0100, Thorsten Leemhuis wrote:
+> > Lo!
+> >=20
+>=20
+> Repeating the nft error message here for simplicity:
+>=20
+> =C2=A0Linux version 7.0.0-rc1-custom-1-00124-g3f4a08e64442 ...
+> =C2=A0 ...
+> =C2=A0 In file included from /etc/nftables.conf:134:2-44:
+> =C2=A0 ./etc/nftables.d/set_filter.conf:1746:7-21: Error:
+> =C2=A0 Could not process rule: File exists
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 xx.xxx.xxx.x/23,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^^^^^^
+>=20
+
+Resolved by updating userspace.
+
+I can reproduce this error on non-production machine and found this
+error is resolved by re-bulding updated nftables, libmnl and libnftnl:
+
+With these versions nft rules now load without error:
+
+=C2=A0- nftables commit de904e22faa2e450d0d4802e1d9bc22013044f93
+ - libmnl   commit 54dea548d796653534645c6e3c8577eaf7d77411
+=C2=A0- libnftnl commit 5c5a8385dc974ea7887119963022ae988e2a16cc
+
+All were compiled on machine running 6.19.4.
+
+
+
+--=-nKNztZjYbaV7lLx9h1x4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYJAB0WIQRByXNdQO2KDRJ2iXo5BdB0L6Ze2wUCaaGYWwAKCRA5BdB0L6Ze
+2128AP45F4qYOvqxCKPBvV1mtaAFEuQ4d9oMwNl3H2wsPiR4rAD8Cwu6uyLQP7ZG
+o6UaDhz9s6lVYna3ObRxYBk1ifJYgAs=
+=XoXk
+-----END PGP SIGNATURE-----
+
+--=-nKNztZjYbaV7lLx9h1x4--
 
