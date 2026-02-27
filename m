@@ -1,180 +1,140 @@
-Return-Path: <stable+bounces-220008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iExXJFcAoml4yAQAu9opvQ
-	(envelope-from <stable+bounces-220008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 21:36:39 +0100
+	id +JVuA+MEomkGyQQAu9opvQ
+	(envelope-from <stable+bounces-220009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 21:56:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B891BDB7D
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 21:36:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 916401BE00F
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 21:56:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB587300F165
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 20:36:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 425FE30AA06B
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 20:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D19477E2B;
-	Fri, 27 Feb 2026 20:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6382D37416E;
+	Fri, 27 Feb 2026 20:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KFjCaMb8"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="lDsUIogg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4C1449EA6
-	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 20:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772224596; cv=pass; b=Bs+bm7jnFbHV8q4LQiqLEp6NzQMdn0fBXkrOPnR3HD8GjvSvfZenh4upK2NmvPbagBhsQhn0DU3kqrFJW881lid/M4f22Wwogb/2Mxy9fWfPesZHz7c2rhN0umj9m/X3IHEB1+8fOIdtvwxv4X8GxedC1xa3ashmtrOoroQ+kbg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772224596; c=relaxed/simple;
-	bh=GXPvU3yHGoGQr/QUWqXmSjT1rRuT8EpCRKuAZQSJr4w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X5k+BEEWAj63ZjJp0ReFJq8Mu0FoiUIQVBYYGc5ti5ERclm+8EOSusXt+FXJ5TEHijVPegxAs4p6s7ch3f4G3gWpb0rGQbLZfn1sK+zw1Nm84WWD8tQGyzcs8r8k8Wv20X7PVW89YOAmHEDgngTPXfVyU6v3ymFMEUVdMY99qDg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KFjCaMb8; arc=pass smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-483abed83b6so20184595e9.0
-        for <stable@vger.kernel.org>; Fri, 27 Feb 2026 12:36:35 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772224594; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eHV6CVpsQxBfohWSlFPlHTA/lpzS9xUjuJdAk/A/7lMq2eGnhMCOWMOezZ+Owy9vPo
-         ECHAuPOcW/zqnUKLxWyznZ1cEcKWB8dvB8SYoXUtmt6zV8ozoHB+6MWBJ96pU5gTGehf
-         7NHixInXKHZfuGVlUn9pmC45JZG6rybnpzkPXPV15moyMWaLWZOmt+36pWG6SOFhhDcI
-         xaiMINDyXJDbGwlblDzywhVTzBZV+OHsbFA+VQe7olo7204OK7kpH13xusHNnPLQ407M
-         F1vOLcIovzKx80r56aqhuRVPjsvMTmh4oKQWCnUwSRXeIw/wPa8siJM1DaX3Q0eGzNX4
-         NHCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GXPvU3yHGoGQr/QUWqXmSjT1rRuT8EpCRKuAZQSJr4w=;
-        fh=DNsGArJjDlv76Za+WFjivH5d5qT0eTGwgIHoPS9bR6c=;
-        b=c14enkcHM6PWFpXkjUBis8MC/GoRWyOQ+1cTxSg35WigdcnOJVeIYwT9gBxz4hXNd8
-         G5MVBP2pZQjLenDQfdx5JdBZpi1P7jDHsvRWS8bHpbdwh1HDNeKKmqNKJYsZe1jvZEVk
-         Ec8ueJ8YJrOlRUNeeiePdLmY6gqDq4lqOn59nPVjeDL2MJXukemkz9YjJkpho4PaqyC9
-         JN9nsBJn3vUv6bMibw5tTNkd1x+sb1y1R5EgMsHxP5ol3xy6Iwf6LGNdKvdr4+HnRoq5
-         KdDjFBSCHXlGqFbnoPTYa4X/Do97PAeMEOWiokzbqdPDMsmeveyagEXM28G92XwZPqw6
-         FhUg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772224594; x=1772829394; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GXPvU3yHGoGQr/QUWqXmSjT1rRuT8EpCRKuAZQSJr4w=;
-        b=KFjCaMb8I5AAEGgeQMgsZLULxczkwMf9T4dRaiyG1b5XL5D3+MrvBSXoaJKwJlma5N
-         GNN0U1vgWUesJG2FU+l2Sa2AEYGBB4Oi+tYtJsgkMOvzC958i6oT4kv1ajk38xP/8paU
-         fjLaL7fSi4l1SbTIfVNgWKzqBD/Ws1Wxctwchxjq+uIuGGXz+lI0kb4QIZ+cgZWcLQQR
-         8ZVxFEKpfMa3rhKpIbxd1WhCnMmJOreD01RyKzPlhN4W02d+7fMP+vSqdKdnsMhyYXdB
-         XNO7sV1OhRzJyIEXPhXGz1Sd+DOxQVH2XK69uqskT2wvrfVlOiVIwMZWBmdoHNrA50ck
-         cF/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772224594; x=1772829394;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GXPvU3yHGoGQr/QUWqXmSjT1rRuT8EpCRKuAZQSJr4w=;
-        b=VUxyaFsQne5n9H0moapzd+cL9Y1ZFdJzhh7lP7Mr53N/f6W81tqVj1VyYKRpRy9T8r
-         J5D9hSLPLJNuflLRLyALOmSL31ueHrGhY2P3IqEnvUJfkYkOyr58fDsfsVMCdfAOlcGk
-         21g0dc4drUJbXcB/K6i0ddmFHpluvFmuKO9v6u+PGNQtWoD4y9qpD4YYmv8d+u33vXCn
-         iKol8JMRyH6LQm9OMANHnay5hTes/8+aPhdSi7G0eTr1nfNXSRTyRkC7LS+V3s2Z9NoB
-         1Kqg7j4YzThwcz85IokAFvUy46eTlk79mZBFQck/K0iRg2+KJSJ2K4oStJO3dh3ABcsN
-         JyQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyllatZjRbF+/gBok1QsVIircENw+SPKmSRKJL5X3OxiEZ+e/OgkqVIrVP4y/WAha1BnowY0I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNk9YvQMEJUVL1RcwQyw2ovxsenROpG7AEy1Z+B54RxQKtitjA
-	2sj/RSNUD5agQ1a7zIvWGgpfVk780H7s2/Fdlt6CHFWmNo3d/mGyifJ4Cbg7VGZxJsdbSHHaXQ+
-	qKzcSe4RMoWaUb+Y0ANvp/ke/41HfpiraTbemg5HX
-X-Gm-Gg: ATEYQzyrWq06dSg8MaeOO04b8dSJkE7mndtwsBiHTKIN2OImkSEabkLdLUm9GRy6EG3
-	+5h33LODXYY1tuPQpNLRw0HGPhRrHdhM70JQGQvAeLoYsViIZ16j6luHm4Z/wdtjLb9naYzXQBX
-	qcQ8gcbf9OX9YK2C1rBZ/N5kkTHSUSbM0cX4M9icO/mP96M+5/Kz2nIaBkEELoOhliApnaouioY
-	nTd08VqzJW5rLYYQpNIprA5hpLvmit7o4ewLRtMz/g9OyER4ukWtdEv9UXClh7WfJymhm7lYtR5
-	HEOlr30SON9AQSGKnt7d8u/WrEJ/f47RE5pLUhuKNF9F1J/5
-X-Received: by 2002:a05:600c:4715:b0:47e:e7e5:ff32 with SMTP id
- 5b1f17b1804b1-483c9bfaf59mr58287215e9.34.1772224593291; Fri, 27 Feb 2026
- 12:36:33 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271E944DB92;
+	Fri, 27 Feb 2026 20:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772225741; cv=none; b=JqowmmTurpUUQYPYEDPxEEGPUnuC5ejNCxOxo/QYtqIFqKhfrzQ6BVAXDpRAT8BrsROxW1jb77VfpGv21vc+o4nsm9ZwwnXh0pbxElZjXqraFYwPPxmvz4mTbchIECD7vDng55m4NM1JMyLNtHTV/nG+wBQ4t25GWxkeJrUheX4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772225741; c=relaxed/simple;
+	bh=yKbnfJ00/4NIPvfXd2Gsg6mgWCrwgN9yr3Iz6Xs78MM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZwiUb/+AvfAko/5yiaBiIBN+wSGCLL5wxRneI1g/8TO1Wt/RAq6MroCD+hP0QwSaSt8dpuDWDb5DOpXe6lrrAcRhDLWEZifQ8YLapgGXZngEUF53cVGyHPiMilKEKL+0ZLH839cIU38LzGnNPXngYrzBtzOhXScF6ZOpRqwQQqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=lDsUIogg; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 789BD40E0184;
+	Fri, 27 Feb 2026 20:55:35 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id muIcxaNBuyCk; Fri, 27 Feb 2026 20:55:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1772225731; bh=9iDNfKsXTTJOyzMt+chboBAv/ve22A1BTcLTExG5kqU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lDsUIoggBBBAJ3aTUws1Ow4EAfrml0WxUZab22HzNWYxM4ATZUqvhUPobkP65B6Ag
+	 Kmo2CG7Kc/IpWsBxfUiGA0nPj4fnQh9Frfmm0YrXpBDXaB/53idX/xAxygpAK+8Hdw
+	 FH09paWWWPn5vpRvXUYQOL7ykmw7JrytUqUcVNd5GxXlvIYmkuOm51wQlBAn3ppQt+
+	 raadcqGYUM0KzwFZDxXnEP1MTjY3iIbI1mwd7gqIV5GqpJx2CAB86rrXWJbFaJc8oF
+	 joz6up2K5znESNIdmqq01qOz9cymPvcRCPUYqeQw/irEGFXRCq+iLiORd5y12Kqsfo
+	 REZBz14ytXNM627kRqlcgVyD/EmY6+jZ007GaOSrH0hrPam3mQ0i3Twz3zw+/qyp0h
+	 LoOYMli8DBHYecdrw5+ZtijKh7TlAy82sbnJyTfeA8rj4CY9EkF903tHCBrx9eEHxr
+	 n6sRckxA/KEyOCT2mf3QM122Qsj2FcYllbZioBRuYzayd6we+IgP/i7kFvNtj/Tkzh
+	 08ApRmyWjdq04e8qjv/OwH9znQ62X4Gc3irFuwjqInmnQIE8gUDPFvWXmfPRuK/X6s
+	 E7KPACpbHiHI0T87Q8JLKjkfAXnfdQArkvjg4f3lrG2fYBs9zp8pVIyE30VKTWf4T8
+	 D6R8qyHOIRiPkdhQl8yIsBng=
+Received: from zn.tnic (pd9530d5e.dip0.t-ipconnect.de [217.83.13.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 7EA1740E015D;
+	Fri, 27 Feb 2026 20:55:21 +0000 (UTC)
+Date: Fri, 27 Feb 2026 21:55:15 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Changyuan Lyu <changyuanl@google.com>
+Cc: thomas.lendacky@amd.com, ardb@kernel.org, dave.hansen@linux.intel.com,
+	kevinhui@meta.com, linux-kernel@vger.kernel.org, mingo@redhat.com,
+	stable@vger.kernel.org, tglx@linutronix.de, x86@kernel.org
+Subject: Re: [PATCH] x86/boot/sev: Move SEV decompressor variables into the
+ .data section
+Message-ID: <20260227205515.GFaaIEs0S_aZoVGekj@fat_crate.local>
+References: <5648b7de5b0a5d0dfef3785f9582b718678c6448.1770217260.git.thomas.lendacky@amd.com>
+ <20260226191612.1962381-1-changyuanl@google.com>
+ <19F7B76A-8DC7-4CA9-9646-90931AF78CD7@alien8.de>
+ <CAGzOjsopYTEoNqdtO3w58wyuDcqW4QjJUHH5K0niEfj20bZBMQ@mail.gmail.com>
+ <4D33D340-F46C-4744-90F8-7B71C72FEDC8@alien8.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260227-create-workqueue-v3-0-87de133f7849@google.com>
- <20260227-create-workqueue-v3-1-87de133f7849@google.com> <aaHPs-nULPEt_wJB@slm.duckdns.org>
- <aaHp_pGBxA4pNiXJ@google.com> <aaHrxzWIFFUjzWhu@slm.duckdns.org>
- <aaHuXEO64ONKMW4O@google.com> <aaHvcvbmkl7oSFOR@slm.duckdns.org>
- <aaHwSxIaTqLWndkw@google.com> <aaH0e5YKnH7x1gCB@slm.duckdns.org>
-In-Reply-To: <aaH0e5YKnH7x1gCB@slm.duckdns.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 27 Feb 2026 21:36:22 +0100
-X-Gm-Features: AaiRm506Ib-Fl2WN6TaIOR3S0tdq8UlbZS-JTeVYbkG7Q8VPGCiBJPP-KBkw-q0
-Message-ID: <CAH5fLgh5M=HQ8XRNnpqMxHU5q-T5OYVGCLq46aqOP5dxOYDMuw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] rust: workqueue: restrict delayed work to global wqs
-To: Tejun Heo <tj@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Boqun Feng <boqun@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>, Tamir Duberstein <tamird@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4D33D340-F46C-4744-90F8-7B71C72FEDC8@alien8.de>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220008-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220009-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,umich.edu,collabora.com,nvidia.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DKIM_TRACE(0.00)[alien8.de:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 18B891BDB7D
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 916401BE00F
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 8:46=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote:
->
-> On Fri, Feb 27, 2026 at 07:28:11PM +0000, Alice Ryhl wrote:
-> > > delayed_work is just pointing to the wq pointer. On destroy_workqueue=
-(), we
-> > > can shut it down and free all the supporting stuff while leaving zomb=
-ie wq
-> > > struct which noops execution and let the whole thing go away when ref=
-s reach
-> > > zero?
+On Thu, Feb 26, 2026 at 07:38:44PM +0000, Borislav Petkov wrote:
+> On February 26, 2026 7:29:56 PM UTC, Changyuan Lyu <changyuanl@google.com> wrote:
 > >
-> > But isn't that a problem for e.g. self-freeing work? If we don't run th=
-e
-> > work, then its memory is just leaked.
->
-> Yeah, good point. Maybe we should just keep the whole thing up while
-> removing it from sysfs. Would that work?
+> >I rebased this patch to e3c81bae4f282a6be56bc22e05e2ce3dd92ae301
+> >and tested with the steps in
+> >https://lore.kernel.org/all/20260226060714.1636773-1-changyuanl@google.com/.
+> >This fix works for my use case (direct kernel boot without UEFI).
+> >
+> >Tested-by: Changyuan Lyu <changyuanl@google.com>
+> 
+> Thanks.
 
-We can but there are two variants of that:
+Seems to work here too. Will queue next week.
 
-If destroy_workqueue() waits for delayed work, then it may take a long time=
-.
+Thx.
 
-If destroy_workqueue() does not wait for delayed work, then I'm
-worried about bugs resulting from module unload and similar.
+-- 
+Regards/Gruss,
+    Boris.
 
-Alice
+https://people.kernel.org/tglx/notes-about-netiquette
 
