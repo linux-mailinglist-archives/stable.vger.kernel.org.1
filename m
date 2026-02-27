@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-219891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBWCLnf6oGlXogQAu9opvQ
-	(envelope-from <stable+bounces-219891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 02:59:19 +0100
+	id 4AmYAB7/oGmqowQAu9opvQ
+	(envelope-from <stable+bounces-219892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 03:19:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B6F1B1B6C
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 02:59:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B06A1B1FA5
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 03:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EAAE6304B44E
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 01:57:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 041F1304C979
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 02:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EC02C033C;
-	Fri, 27 Feb 2026 01:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A30286D4D;
+	Fri, 27 Feb 2026 02:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XihaBDqH"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="kAD/csUa"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from mail115-63.sinamail.sina.com.cn (mail115-63.sinamail.sina.com.cn [218.30.115.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037C32BEC55;
-	Fri, 27 Feb 2026 01:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8312EA473
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 02:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.63
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772157455; cv=none; b=aLcEJrJRP5nd3kDDI1nTWH/UnCegBvrwSp6UXYbHlyLP6hdpiTkVvzKejBdSrZS1xMiuoRIbGwtckra01zuX77YyrNmfaG0B5iibqficceivI2sI4WVVQwipNJThK5tCl5fyRNxIJI/vAHg1zzfNlKXCQ6D4y+8El8+9J0px+R8=
+	t=1772158737; cv=none; b=MRIFFZrli3SOKLK4y/Dja2ssg3S7Z//YdyH4xbkGZb15Y98OuJV2M+OAr2t1YaWhx1Jg4DTHxPkw7JiRu2bkig6l2O3tqr7nondM1SzooSgZ3cP5eDDPG7puUTKtxK69SB8a3LTKRuze9WkZiA0H1bp9wYGkqwql1CUoeKAv0EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772157455; c=relaxed/simple;
-	bh=H/vCX3vRyMzvEV0CDlcLSqDHuryxbwtGhllo+DLM+pY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zf8ACRtP+PXA+Xoltm5IbMKMtP1QnqsPZulWtm7675I5bOTK78H3epjTyt98RyVQpua6MKL78bfRPMtOp8jO5oAQyzFbqlQ1HwOLHjw7oD3UeJxhSZ65wEO8RnIaAW22KgmBGBdmJLCXZ9D9wTSbjmV3b9qlSmdhvaDSrUq2dxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XihaBDqH; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Po
-	ZRk2Z6MjzIOIinjNuVstv21/HMOoHWfX8CYuyImG4=; b=XihaBDqHLgT4LESX/O
-	sRERKPIPSIWQ4K8yGxXwY/eJNXvB+WvqqWkEpboYrCR1AwWGToChSPUx08ZCA/Fi
-	iwTAW8zzeTk7GXIueN2twaP8QM5T/MbW/Os7reUSa/2kKimdY3aFkWMS/BbB871r
-	OKALq5+HAaO+NnYJzPk9mnRbE=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnr+Hs+aBpD3WwNg--.22325S2;
-	Fri, 27 Feb 2026 09:57:01 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
+	s=arc-20240116; t=1772158737; c=relaxed/simple;
+	bh=yoBeoacMbK1NAn82kU0drfaAQYOiincR4WZfeQfH/ZE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ClvqnRE2N08bewknXoqxEIwJM4BKWQ5Ra65lgTXhg9jRZLO6dmvv/XVIYiMVDfddqn9FwVClaSX18NuaSLWA7uzfQnHGNoKfXhigaK0cRlBJErVxD95rSTy7jLQ1wLi0LF94yJOP+ZDn4Vw1iJA2iafgJBNa4TC6UEK8AfVn+tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=kAD/csUa; arc=none smtp.client-ip=218.30.115.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1772158734;
+	bh=+ll0j7P6gB1YHU/QPLWIwnmbPeyItOm5mPcLbuIqgOg=;
+	h=From:Subject:Date:Message-Id;
+	b=kAD/csUa70XJSbgSuc1Wk3iqb1/gW+9NEqLvGY1El63d4L8vao75gPGNjv6nCWkas
+	 5qcI+hnVzeUuyQwSndCPRiRIeeOxnLFUydVGHh64d0CZjVEgfi1GoM2mKWK5eTvD8s
+	 rtIteWLVP/bKJT39hidlGJj3GNr/qDoNbsRUO8Tk=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.22) with ESMTP
+	id 69A0FF0700000E95; Fri, 27 Feb 2026 10:18:50 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 5772687602230
+X-SMAIL-UIID: BCC5C971CE1645018EB779524CAFFB85-20260227-101850-1
+From: Jianqiang kang <jianqkang@sina.cn>
 To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Qu Wenruo <wqu@suse.com>,
-	Jan Kara <jack@suse.cz>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.12.y] btrfs: do not strictly require dirty metadata threshold for metadata writepages
-Date: Fri, 27 Feb 2026 09:56:58 +0800
-Message-Id: <20260227015658.1116424-1-black.hawk@163.com>
+	stable@vger.kernel.org,
+	axboe@kernel.dk
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	asml.silence@gmail.com,
+	io-uring@vger.kernel.org
+Subject: [PATCH 5.10.y] io_uring/io-wq: check IO_WQ_BIT_EXIT inside work run loop
+Date: Fri, 27 Feb 2026 10:18:47 +0800
+Message-Id: <20260227021847.1242260-1-jianqkang@sina.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,206 +70,125 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnr+Hs+aBpD3WwNg--.22325S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Xry7KF4rWr15CrWrWw43Awb_yoWxWFWrpF
-	WakwnxJw4DX3WUWrZ3uayqv34SvrZ7J3y7Cr95G3ySvFnxCryIgryj9r10vFW8JrWxGrWa
-	vr4Yya48X3WqyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_OJ5DUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+Q081Wmg+e1bqQAA3y
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219891-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,suse.com,suse.cz,bur.io,163.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219892-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
+	FREEMAIL_FROM(0.00)[sina.cn];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sina.cn:+];
+	NEURAL_HAM(-0.00)[-0.992];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.cz:email,bur.io:email]
-X-Rspamd-Queue-Id: E6B6F1B1B6C
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7B06A1B1FA5
 X-Rspamd-Action: no action
 
-From: Qu Wenruo <wqu@suse.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 4e159150a9a56d66d247f4b5510bed46fe58aa1c ]
+[ Upstream commit 10dc959398175736e495f71c771f8641e1ca1907 ]
 
-[BUG]
-There is an internal report that over 1000 processes are
-waiting at the io_schedule_timeout() of balance_dirty_pages(), causing
-a system hang and trigger a kernel coredump.
+Currently this is checked before running the pending work. Normally this
+is quite fine, as work items either end up blocking (which will create a
+new worker for other items), or they complete fairly quickly. But syzbot
+reports an issue where io-wq takes seemingly forever to exit, and with a
+bit of debugging, this turns out to be because it queues a bunch of big
+(2GB - 4096b) reads with a /dev/msr* file. Since this file type doesn't
+support ->read_iter(), loop_rw_iter() ends up handling them. Each read
+returns 16MB of data read, which takes 20 (!!) seconds. With a bunch of
+these pending, processing the whole chain can take a long time. Easily
+longer than the syzbot uninterruptible sleep timeout of 140 seconds.
+This then triggers a complaint off the io-wq exit path:
 
-The kernel is v6.4 kernel based, but the root problem still applies to
-any upstream kernel before v6.18.
+INFO: task syz.4.135:6326 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+      Blocked by coredump.
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz.4.135       state:D stack:26824 pid:6326  tgid:6324  ppid:5957   task_flags:0x400548 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5256 [inline]
+ __schedule+0x1139/0x6150 kernel/sched/core.c:6863
+ __schedule_loop kernel/sched/core.c:6945 [inline]
+ schedule+0xe7/0x3a0 kernel/sched/core.c:6960
+ schedule_timeout+0x257/0x290 kernel/time/sleep_timeout.c:75
+ do_wait_for_common kernel/sched/completion.c:100 [inline]
+ __wait_for_common+0x2fc/0x4e0 kernel/sched/completion.c:121
+ io_wq_exit_workers io_uring/io-wq.c:1328 [inline]
+ io_wq_put_and_exit+0x271/0x8a0 io_uring/io-wq.c:1356
+ io_uring_clean_tctx+0x10d/0x190 io_uring/tctx.c:203
+ io_uring_cancel_generic+0x69c/0x9a0 io_uring/cancel.c:651
+ io_uring_files_cancel include/linux/io_uring.h:19 [inline]
+ do_exit+0x2ce/0x2bd0 kernel/exit.c:911
+ do_group_exit+0xd3/0x2a0 kernel/exit.c:1112
+ get_signal+0x2671/0x26d0 kernel/signal.c:3034
+ arch_do_signal_or_restart+0x8f/0x7e0 arch/x86/kernel/signal.c:337
+ __exit_to_user_mode_loop kernel/entry/common.c:41 [inline]
+ exit_to_user_mode_loop+0x8c/0x540 kernel/entry/common.c:75
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
+ do_syscall_64+0x4ee/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa02738f749
+RSP: 002b:00007fa0281ae0e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffe00 RBX: 00007fa0275e6098 RCX: 00007fa02738f749
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007fa0275e6098
+RBP: 00007fa0275e6090 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa0275e6128 R14: 00007fff14e4fcb0 R15: 00007fff14e4fd98
 
-[CAUSE]
-From Jan Kara for his wisdom on the dirty page balance behavior first.
+There's really nothing wrong here, outside of processing these reads
+will take a LONG time. However, we can speed up the exit by checking the
+IO_WQ_BIT_EXIT inside the io_worker_handle_work() loop, as syzbot will
+exit the ring after queueing up all of these reads. Then once the first
+item is processed, io-wq will simply cancel the rest. That should avoid
+syzbot running into this complaint again.
 
-  This cgroup dirty limit was what was actually playing the role here
-  because the cgroup had only a small amount of memory and so the dirty
-  limit for it was something like 16MB.
-
-  Dirty throttling is responsible for enforcing that nobody can dirty
-  (significantly) more dirty memory than there's dirty limit. Thus when
-  a task is dirtying pages it periodically enters into balance_dirty_pages()
-  and we let it sleep there to slow down the dirtying.
-
-  When the system is over dirty limit already (either globally or within
-  a cgroup of the running task), we will not let the task exit from
-  balance_dirty_pages() until the number of dirty pages drops below the
-  limit.
-
-  So in this particular case, as I already mentioned, there was a cgroup
-  with relatively small amount of memory and as a result with dirty limit
-  set at 16MB. A task from that cgroup has dirtied about 28MB worth of
-  pages in btrfs btree inode and these were practically the only dirty
-  pages in that cgroup.
-
-So that means the only way to reduce the dirty pages of that cgroup is
-to writeback the dirty pages of btrfs btree inode, and only after that
-those processes can exit balance_dirty_pages().
-
-Now back to the btrfs part, btree_writepages() is responsible for
-writing back dirty btree inode pages.
-
-The problem here is, there is a btrfs internal threshold that if the
-btree inode's dirty bytes are below the 32M threshold, it will not
-do any writeback.
-
-This behavior is to batch as much metadata as possible so we won't write
-back those tree blocks and then later re-COW them again for another
-modification.
-
-This internal 32MiB is higher than the existing dirty page size (28MiB),
-meaning no writeback will happen, causing a deadlock between btrfs and
-cgroup:
-
-- Btrfs doesn't want to write back btree inode until more dirty pages
-
-- Cgroup/MM doesn't want more dirty pages for btrfs btree inode
-  Thus any process touching that btree inode is put into sleep until
-  the number of dirty pages is reduced.
-
-Thanks Jan Kara a lot for the analysis of the root cause.
-
-[ENHANCEMENT]
-Since kernel commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
-btree_inode"), btrfs btree inode pages will only be charged to the root
-cgroup which should have a much larger limit than btrfs' 32MiB
-threshold.
-So it should not affect newer kernels.
-
-But for all current LTS kernels, they are all affected by this problem,
-and backporting the whole AS_KERNEL_FILE may not be a good idea.
-
-Even for newer kernels I still think it's a good idea to get
-rid of the internal threshold at btree_writepages(), since for most cases
-cgroup/MM has a better view of full system memory usage than btrfs' fixed
-threshold.
-
-For internal callers using btrfs_btree_balance_dirty() since that
-function is already doing internal threshold check, we don't need to
-bother them.
-
-But for external callers of btree_writepages(), just respect their
-requests and write back whatever they want, ignoring the internal
-btrfs threshold to avoid such deadlock on btree inode dirty page
-balancing.
-
-CC: stable@vger.kernel.org
-CC: Jan Kara <jack@suse.cz>
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ The context change is due to the commit 5e121ae687b8
-("btrfs: use buffer xarray for extent buffer writeback operations")
-in v6.16 which is irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/68a2decc.050a0220.e29e5.0099.GAE@google.com/
+Reported-by: syzbot+4eb282331cab6d5b6588@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Minor conflict resolved. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 ---
- fs/btrfs/disk-io.c   | 22 ----------------------
- fs/btrfs/extent_io.c |  3 +--
- fs/btrfs/extent_io.h |  3 +--
- 3 files changed, 2 insertions(+), 26 deletions(-)
+ io_uring/io-wq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 034cd7b1d0f5..a03b7a217314 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -498,28 +498,6 @@ static int btree_migrate_folio(struct address_space *mapping,
- #define btree_migrate_folio NULL
- #endif
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index c5d249f5d214..926890f5086e 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -554,9 +554,9 @@ static void io_worker_handle_work(struct io_worker *worker)
+ 	struct io_wqe_acct *acct = io_wqe_get_acct(worker);
+ 	struct io_wqe *wqe = worker->wqe;
+ 	struct io_wq *wq = wqe->wq;
+-	bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
  
--static int btree_writepages(struct address_space *mapping,
--			    struct writeback_control *wbc)
--{
--	int ret;
--
--	if (wbc->sync_mode == WB_SYNC_NONE) {
--		struct btrfs_fs_info *fs_info;
--
--		if (wbc->for_kupdate)
--			return 0;
--
--		fs_info = inode_to_fs_info(mapping->host);
--		/* this is a bit racy, but that's ok */
--		ret = __percpu_counter_compare(&fs_info->dirty_metadata_bytes,
--					     BTRFS_DIRTY_METADATA_THRESH,
--					     fs_info->dirty_metadata_batch);
--		if (ret < 0)
--			return 0;
--	}
--	return btree_write_cache_pages(mapping, wbc);
--}
--
- static bool btree_release_folio(struct folio *folio, gfp_t gfp_flags)
- {
- 	if (folio_test_writeback(folio) || folio_test_dirty(folio))
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 1e855c5854ce..2e8dc928621c 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2088,8 +2088,7 @@ static int submit_eb_page(struct folio *folio, struct btrfs_eb_write_context *ct
- 	return 1;
- }
- 
--int btree_write_cache_pages(struct address_space *mapping,
--				   struct writeback_control *wbc)
-+int btree_writepages(struct address_space *mapping, struct writeback_control *wbc)
- {
- 	struct btrfs_eb_write_context ctx = { .wbc = wbc };
- 	struct btrfs_fs_info *fs_info = inode_to_fs_info(mapping->host);
-diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index 039a73731135..c63ccfb9fc37 100644
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -244,8 +244,7 @@ void extent_write_locked_range(struct inode *inode, const struct folio *locked_f
- 			       u64 start, u64 end, struct writeback_control *wbc,
- 			       bool pages_dirty);
- int btrfs_writepages(struct address_space *mapping, struct writeback_control *wbc);
--int btree_write_cache_pages(struct address_space *mapping,
--			    struct writeback_control *wbc);
-+int btree_writepages(struct address_space *mapping, struct writeback_control *wbc);
- void btrfs_readahead(struct readahead_control *rac);
- int set_folio_extent_mapped(struct folio *folio);
- int set_page_extent_mapped(struct page *page);
+ 	do {
++		bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
+ 		struct io_wq_work *work;
+ get_next:
+ 		/*
 -- 
 2.34.1
 
