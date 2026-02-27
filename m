@@ -1,229 +1,239 @@
-Return-Path: <stable+bounces-219888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OnoJD/0oGk8oQQAu9opvQ
-	(envelope-from <stable+bounces-219888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 02:32:47 +0100
+	id yNDwICH3oGk8oQQAu9opvQ
+	(envelope-from <stable+bounces-219889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 02:45:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF0B1B1838
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 02:32:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E14B61B19AB
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 02:45:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A4D430910BB
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 01:32:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 354E230528A8
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 01:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BCB9264612;
-	Fri, 27 Feb 2026 01:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7DA272803;
+	Fri, 27 Feb 2026 01:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GtwbXpUD"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JJy1o4QL"
 X-Original-To: stable@vger.kernel.org
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013028.outbound.protection.outlook.com [52.101.72.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5F021ADA4;
-	Fri, 27 Feb 2026 01:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772155919; cv=fail; b=HQLIXQcK+ICdr1FugvvLKuAyysBgtUxOhhGvRQM9+i+AJ5PajtRE/QIiI8stfjB9IwR1BbXr8EF8TQDfl16FglhOEAHIuicrO78V2+9yeCmqkXyHK/iU9XWSvHcmSXLUno9j9wtN1iLg9KWGWB9O2XWRVdzZ28vuErMLu5cGl8k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772155919; c=relaxed/simple;
-	bh=bs+/Kjpj0D42QAylqmSF50WPkGlum3Ijt7C2lc80NIo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=f1d27xtYKk8be0AV0FNRM4ZHGhQ8fToIbNSiuXYj5Bfdvid/yvbgKDieHclU8zdvU2eBKvNog2YSwhZJDy1HJ0jnQQ9awk9YSwGfAoVapQ83P+eepiu6vtDIb6NZzNiJEjaCMoXALhc/79WW1Vuuv6n7CyAvX+XcPpWI8Ew4+W8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GtwbXpUD; arc=fail smtp.client-ip=52.101.72.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qn05KyLu4MnLwO3Hx5Q4Sr5100enwDuTsoRJAVWjGmzaJ7d/c5eVu9N+RkJN5+UcXZLCeKGzVpET4RP2bqAuuEi9F28hJbDh6t2/BeUmDYzMH6PQTuKlpznPZa8CMAmu6RTnqwcshHN8BlqH2B4IN2bcyrQnN31m3QLhUTOsO2OqgD0L9TI345vyYxQMMKIcmWyaZkpBxj3CE8koV6LCrQCZuiBcgI3GiZtn22hQ61MQfooDVRHoT6d8eJs7izUV3xL3xRS6doHxFCN7BpTUL649ThYtry1UoT8V7/GTULgCnr4P2pN9cVyrbBo7tWZjU34yror5uD9iBgenvM+tKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6dn6XFBJ4vGUtFINhHoiWQcojKZgqBCP+S4/E3N++9k=;
- b=ZdywUnPXgq4tKFv53qegw5/6gZhfYz/FgZrxqEefgAsCwxEzCHxm2PK2uLK5ppBiiSvY0EP6o1BK7dLJIkXb5HPkcoNlDgplkMlCwaCTNJlLTr5aDsF9Em9J9uVItzpU8nz2QvjXT3ClnhYIcbS9JJ8x0uNI+7a9S9xccozUyJQXMEI63O3IjjNLu0hGhKSb4WBxdzUy4zKvhSfhFQbRTJcq1B5ONIBZQnIlZic2deY+kCmk89BwJ4zrgQpqzFs8e2buyGNBhgThJXl8ddui5obNPEd7no4aXKsBuML5DSjZEOq5AYU1LLGI16GMt1cvUESctlilzProuKQBbcUKzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6dn6XFBJ4vGUtFINhHoiWQcojKZgqBCP+S4/E3N++9k=;
- b=GtwbXpUD9mgeVqLS61qnbLIOFHcitHT0spX6IndPSlKxWQNs7g78d20EbmfTBd2rndYlrGPqo0Y6N3Fow9FUpuyB6MMdz04Pv0PZ4qKe7fl6QTjUHuxuZYQ5ew7EIZlh7MIydzHcKuj3iVEmRGZIQ4eTmA9hfFYGx4hQuFLCcSbFUTpi9bAO4R/w8Jz+G/XCoRa1WSjC1+kojTvSPIMLUkdmwROIpk9hOhuHExUWb9+fm2ItgOfOwOjZAzIWpgD0G/bFGNGLZhT5AHvlcsjR9vjgojb699uRwuua7IpKGqhR2SAkPFDjzeuCELWGaD8LItrwlb1lkYSoUDWzsZfgeA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by VI1PR04MB7101.eurprd04.prod.outlook.com (2603:10a6:800:12e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.13; Fri, 27 Feb
- 2026 01:31:54 +0000
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
- 01:31:54 +0000
-Date: Fri, 27 Feb 2026 03:31:51 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Paul Moses <p@1g4.org>, Victor Nogueira <victor@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH net v8 1/1] net/sched: act_gate: snapshot parameters with
- RCU on replace
-Message-ID: <20260227013151.qaw4hvb4fyt5roeq@skbuf>
-References: <20260223150512.2251594-1-p@1g4.org>
- <20260223150512.2251594-2-p@1g4.org>
- <CAM0EoMmr0SUf7U3CTqd=MSYX=D60zYOfBS-L=GJOsWB-cxZHcg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM0EoMmr0SUf7U3CTqd=MSYX=D60zYOfBS-L=GJOsWB-cxZHcg@mail.gmail.com>
-X-ClientProxiedBy: VI1PR06CA0128.eurprd06.prod.outlook.com
- (2603:10a6:803:a0::21) To AM9PR04MB8585.eurprd04.prod.outlook.com
- (2603:10a6:20b:438::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D5828D8E8
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 01:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772156701; cv=none; b=O4zfODFbSXnyGoDK42fxabt80baXUESvwFZJDMiHw6VsRw2Px3siHYzOpaWPeXRfF5QKZkISVB4xGv8YjIifw88NDhn/aloAdtlqkxf9LmWTP/V2oJnnsnGdyqwVJioq19INNrCIy2e3xgwWHG5SojiuQHqoeg46WGqqgDt/nwg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772156701; c=relaxed/simple;
+	bh=NTY89IdzpzMF/vamWnS8uagHAc6qdvmbw2nDVuvCKx8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IuaxcWdAEXOGuZS5QAQbF2Izy9Z4y3Cya5d6IrPCD3SwrKERO9e17RjHTQrZEw4GacF3hq2yzRuernfCMqam/1aG++I8nIP0J6Cd8FB5BfY/Mp7bLQSvUMHNdSIPcMPE1E1SZblNBlWKSKMTi/fYBxw5q1rBA2UnYhmMG2IHXeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JJy1o4QL; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2adb1c1f9d4so41695ad.0
+        for <stable@vger.kernel.org>; Thu, 26 Feb 2026 17:44:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772156699; x=1772761499; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=OfQIDC/J7NEbWJLcNCVG4ViZ9Wlry/rF6niI+P+JhNI=;
+        b=JJy1o4QLjsIvYjdXcRswLOcXKvJD8d1mOa8zqKMCdXyySc13qwL7YPYvIkS3nvzxfX
+         R4nuGNDWUCA/966Z0Yc8fbEAzIg/HdwMlwokJYB+Nx8MJ4waaNmI+6C3yawasQpA6Qv9
+         Okls9xP7iHK1tnUUKF6Cbsnjnl4oZWULbvUcMJ1MTXf0zERsG+NZ3+/t34hxSR2SavYY
+         Y/hkDs3jFqoR0HnaAqnfS//KifjJB+ICKrEgU0+RiU48w/R4z3b9tDCaFltdBi1XGauB
+         vBndKRN6x+OouKawPR5ZoJHTZiSx2ht9lf3Jp1CDMX9tMd0tLRkyAOKP/dV8MEWajq8Y
+         Bopw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772156699; x=1772761499;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OfQIDC/J7NEbWJLcNCVG4ViZ9Wlry/rF6niI+P+JhNI=;
+        b=j3Dh+9EDloOwyWZ85xdJXUByQbN1IcRlIjDcWhCmu9ifBnpR35nHRvJdOQZLWwCifS
+         lOV7F2n0CwUeSHkZMyD8Yly3HOXcMLIUyD3uC0wnpEvIBUhSfoSLhntBOZqFJc5XpeBp
+         KZUdb8dgcX036m4VXpQUMmwAkdh+Fbh+GN8X9o4rPT+UudZJ+j33G2vzAwKoOaI5lGlZ
+         EOu4FPYzg2+KDZRq2LVZBajEdUSuG35+GbjhqUUb7cH3JCDvaBhRIXlOBWMZ+67no4N0
+         m8nK5my+fcTtqjXC4QCxH7ZsYFFLEkU0Lsku6MyHde56u+psKlI0SF0lShZCOziE12Qt
+         Mxtg==
+X-Forwarded-Encrypted: i=1; AJvYcCUOX/d3Vdk7XUaXZ8jJ7DdyBHUMqCwLmSsYMYn2J+vgAOdVqXtvqsSEt3Qv4MTfG3oWLfQJSjo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzj5+0A/wE4zcgtUhG3A/WwT/QAzwUgjiWugWwYNTZ756VozblP
+	VTD61c5PxlVkc3pgE/4KuA5qZ/NqEViCj6bbCO0US9rAuarg0VLc1i/XYa/bmlLrjA==
+X-Gm-Gg: ATEYQzzACoeuWNNza3O6ZIzsC1Td0Zl22o3GFouSehLDe72nVgNSNi5LcRZmkhIevid
+	FvgtkG8CJC3R+QABaEAbKNBe7vFf8oqde3loMDrvEAB6i9bMzbCwBA04Q44Y4a4IOF9wU0CDQ7O
+	Wp4g5HtodFAWemS6/VwrOFlKiGv1PEXkLfaEQ60y/MZASzyYOWm9QheAnJiVkEIlFsMYnmXyD3t
+	RQJ1NGS6fmQmxo5B6323Px8k4A/Gu1ZkGCK2slsXJACqPQgJARYqcc4YU8nUUeIc0JQNNfVCY8a
+	QfIotfShvjnPGQj2hl66hWHMSDHISm6Jmk8L76rT1DWwK1Nqll4wRQYBgoXKf5CUnvIRVfHGSUf
+	hIEY3a69boeSc2ibygFsp3j+9PcE+Rf1/zjYLopDUWy7C2Wg9dMKuMNemtuLj4kGXsB8WWTKQ8v
+	gBaxiVAiKEnkPK37VBVVM48SH9jxLMZg6URga0EdLvXyuJz9neOtWCABA/0TR4sw==
+X-Received: by 2002:a17:902:dad0:b0:2a7:9532:1a2b with SMTP id d9443c01a7336-2adf77c6b5fmr4035125ad.20.1772156698800;
+        Thu, 26 Feb 2026 17:44:58 -0800 (PST)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739d8c7aesm4658070b3a.21.2026.02.26.17.44.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 17:44:58 -0800 (PST)
+Date: Fri, 27 Feb 2026 01:44:54 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: "Tian, Kevin" <kevin.tian@intel.com>, 
+	Baolu Lu <baolu.lu@linux.intel.com>, "Guo, Jinhui" <guojinhui.liam@bytedance.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, "dwmw2@infradead.org" <dwmw2@infradead.org>, 
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>, "joro@8bytes.org" <joro@8bytes.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"will@kernel.org" <will@kernel.org>, Alex Williamson <alex@shazbot.org>
+Subject: Re: [PATCH v2 2/2] iommu/vt-d: Flush dev-IOTLB only when PCIe device
+ is accessible in scalable mode
+Message-ID: <2ydt4k7saucrkg6pxedfozdg5dsrkfhx5bpqkrdgwrob2dsi4j@tc63xjaw6ltt>
+References: <BN9PR11MB5276FCF5D751DE7432A32BBB8CB2A@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <20260210233912.GA93504@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|VI1PR04MB7101:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7d2791aa-092d-4f10-9b35-08de759ffd1d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|366016|376014|10070799003|7416014;
-X-Microsoft-Antispam-Message-Info:
-	MgCe1LE87t8qmj6OwMJz1e7GzZqJRq7ZmEjBg9IAlxfIZcC5s/UtdJp9OYdbAN35LrAdNPtHvFI6nE+Z9cG/7yDjwnf3FtdT7406DI+8VNE1lRIshP7GMefhasOObU0of6TRYHzgH7wip00bo16sbrOr508oMigAmGrBGGnupFOiYJdg6tgvS1K16ciA4kzUfu8s4FEg7AxMvbQ0Rfs1VsELWgg4/V2CCY34e2Tb4irn6FAPtUDPn6ZLFRzAHGM7/C2KFv1XG73ca8N0K9OYte4C8Le0Z7Uu4ie3FjD/YpI0YHo//exiKYpQ03zBVm1HMrFmPYwzB0uuCK7/uqIURGel7aUx6rWW4ESHcNqTGiqejmiDtcX75q3ewroscQG56VOyccyW7OFt5xxROHdvYzYUIy82XgbF/6h7CGJ5I98+HoPRvk/PdHDLpPjg1QnxWi7hJVqEcRdqaCxTWkPYuECnT3SIljZK4FxITZ/riJdGKdkY3fDiGkoSg6CS72qYxRGPJAMuYyDkMzIX97Nosn7dXwykPJrTsGYSaA048Bi8g6nCTKaMjUb0gwYm3ge4h95pxSZAVDcG5kGs3co0QImQYoiKIJO0V/NqfL0LsRcRG9LBnMeOP8o1eJtYS/D52SkU/yQfHY387qHogOGShvldsvEkDjkNTOtvopxPca3rzBhLZHr9gq1L8Q6u8c8N8/I2QY8ckMjGkGBXQP8G1OHF/GqtVZKVakdWul2FbOE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(376014)(10070799003)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MVZoWGYxeTNFZnpOTDlHWnZvZ1I0c2pXc0pYV3BYVm5NTzhyU3RCN21HNUxr?=
- =?utf-8?B?bFFvZ3JzQlRWQkQxMUVPQ3I1ZTFVOWp5TWk3Rld3bXVEbFZlWTVzR2E2VjlP?=
- =?utf-8?B?YjkrZytQTmNhVkM0UjJFQ2V1d08rSVN3aGlGZVRiaTBWMjMzNWExWVZQVW5k?=
- =?utf-8?B?S1ZISllXREZzdzRObUMxVC9QS2N6ZUUxelR3MkNjcWJYLzdKNFlLcis0Rm1E?=
- =?utf-8?B?aEpqcGcrY3BWY3ZPajQyQmxNenVvMGJoNGNoeFUvWXZJWVlEVTVNbEdRMlZO?=
- =?utf-8?B?anNZZnNWTmdjUWFaL0g3OEw0aDdIaFlsNGd1UWVJV1V0WFQ3NldoVVBoblV2?=
- =?utf-8?B?eFpRdDR0M2xTWVo4eEZSUENDSjFWM0c5WnpwaWcxdktVWlExdk9wVW5TaTF0?=
- =?utf-8?B?L0swZEpEZUZ0YXFyeDdudTcvcEEwNW9BazZIL3NzTkhvNlM0RlN0U2hGSVRw?=
- =?utf-8?B?NHRhUXZ3TmNpTjhLNkVxWHNXQ1k1SzBDTVpKbzdFUUJDOVlqK2tDaDFrdzJK?=
- =?utf-8?B?OHRnY2ZXU1JPRUZNR1FoQW9sZllINXZzVXFpWG9hK2Y5ZzBDNnZBTWV2YTlQ?=
- =?utf-8?B?STZJcWxITkdlcld4RVFwbG1WdHRvOGpCaERSWFRUT2tTcWtTSGdDQ25zUFlX?=
- =?utf-8?B?dy9hVStrZUJpMGJET2NVUmJUMldud1Z4RTlYaFI2YnpBbjhHWVMySThSYzVo?=
- =?utf-8?B?YUJSU1RzUFhTd3NWa2xNcTMwRERTc3hjWGpnclNlNFZDR2s2UzQzWlpqNzNL?=
- =?utf-8?B?WWJtU1B6MjBOcGp0cXBHTjJqUm1LNlA1YUxSQUdSWDVkRmdqYndlaUIxYVRv?=
- =?utf-8?B?U1dPbVMxcVlNb1Z0QXI2ZVFiYTRnMUVKZWxBQjF5M0I4T2hIRTNOSTdXUlZ1?=
- =?utf-8?B?OFJGcVdqN3lxRmwva3BGblJzaVd2OTVWTjZsTmZsRkpHZ293VmFWYXFUeEY5?=
- =?utf-8?B?TGdiZEFjbEluTTVDZ0hzVS8remFFajIzbElwRGlobXoramhqZTltMVZmZmQ3?=
- =?utf-8?B?VjhsNVRrS3NSODNOdFYxSjcrUnRmNlRWNnZYbUIxZEpocGhEd1l4T1kva0hh?=
- =?utf-8?B?T1lBWnh3ZmpVRmI5TGRsM0plU0M5RnhLb0ZUenZMK1NWbWdjOS9FS3RFOW1S?=
- =?utf-8?B?dXNsaG52SEFPMXUra1V4ZUZsTGJ1TVh3Y1BuSVE5RkVGL2xLMkVyQngzMWhn?=
- =?utf-8?B?SzNPZURVRkF3cDFYNmowNGNNTEozeWNPaWJ5Y1dWVDB1U1pqUHVDKzdnSHQ0?=
- =?utf-8?B?WlNrNVB5eWhHRThmS0wzeGxUaGloWDJFWnRhaVAycFFRMUdOZ2ZOK28vWjcz?=
- =?utf-8?B?cENYTHAwY0o0Tjc1aTNDVmJTWFJnVmo0TmpmNXdTc3JLdHM3V2NTUHRBemJP?=
- =?utf-8?B?ZXROc0kvT1REMVVZRmlTSXJGTHZyYXZ4QzZSenhTekdSUjZsaDBBam1tc1Ev?=
- =?utf-8?B?bFhrTjc3NmZrZWZjM1hQVHhIQTN0NmpCQzJOcksycVIxS2pZc2UyZnBiNDV4?=
- =?utf-8?B?dHdNSDZRcE83T2dtNDNUQmZjdXZTZGgyYlZNUG10dG9DUFIrc1RtaC9wbjFh?=
- =?utf-8?B?bUNJNVVkRWJlaVJlcTd4N0JuQWtIVjRjUEI2SjBEcklvcDFQRmlwbElWWVMw?=
- =?utf-8?B?ZHdHZ1NjWWp1SUtEN1BKSFI4SXNrTTkvb0g1N3MzcER2UHFGTFU5ZWN6VUp0?=
- =?utf-8?B?aENjVDVxRFgzaVdYRVBFTmdLL2xEZmtTSVpKOVRtS3JzWElGU1pYWnJPWUJE?=
- =?utf-8?B?UDJLd0lFTVF3WTRpUGwvSThDM1JsUjdxa09BV0k1ZHQ3QWUwU2MxMWVWWGN3?=
- =?utf-8?B?ZGVDQUtCVXVRK3BDaDlwNlE5S2c4QVErdXFYc3VEcXU0UkhYMWppRjllaWN5?=
- =?utf-8?B?a0laV01WMTNvN2NZL0d0VGVRT0dsK1hEaUJWNzJwYXdmRHcrZUh1bzFoeVNK?=
- =?utf-8?B?cm4ybytiSy83U1FPbnZVUDBPQnlQamIxRHpsL0N3OWtYYTNQbWVuWDFCZ2pl?=
- =?utf-8?B?Y3VMOTFsZmFpbHhEditlWWJCTUpwOTk4MTNaa0FpaG90V3BrMVZsbENyb0pT?=
- =?utf-8?B?akhmSkhIaWh0Y3NZSFJ3MVBuZEF5ajdqdjBzM0ZWNEdOckRoc0twazBrVlRN?=
- =?utf-8?B?VmEvalJWN09sYzY2cHROZ0N6bW9jcjZWbzNWdXhVeUh4UVhGQVBmMmNTS3NM?=
- =?utf-8?B?YU5XUTFMZml3c3NObTZWMUI5bURBUjdTWWN0TzNaa3Q5L0RHL3g1dUpUMTBZ?=
- =?utf-8?B?MThxUzhHUGxaUzdDSnZLekxsV1BGRWtlRVFSQXc0Y0pyVUNkSUd3NmJscDVr?=
- =?utf-8?B?WDhrbkU1VW91OXl5ZitOdFJyWXJpb2lsQ05JbGx0U2RjRHFMc1NXUGlJSXBZ?=
- =?utf-8?Q?MXOQ4UFoRSUZd4d8/upaKYXQMZ9TViHhctBAF7gY/3CrH?=
-X-MS-Exchange-AntiSpam-MessageData-1: tDRCzCy2SLezSYTbwrMLUtFNVZVCzC/RI6I=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d2791aa-092d-4f10-9b35-08de759ffd1d
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 01:31:54.3628
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: URoQzbefSvd4EZMAmd08WcxGtmmIvYlMqErmIbWTb9mF3pEgHfPJZruGpJV4Xv+yhwRHwPMUjzBwgTSah9tPgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7101
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260210233912.GA93504@bhelgaas>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
-	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219888-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219889-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[1g4.org,mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[nxp.com:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vladimir.oltean@nxp.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[skhawaja@google.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[1g4.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,nxp.com:dkim]
-X-Rspamd-Queue-Id: 3DF0B1B1838
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,bytedance.com:email]
+X-Rspamd-Queue-Id: E14B61B19AB
 X-Rspamd-Action: no action
 
-On Wed, Feb 25, 2026 at 08:55:30AM -0500, Jamal Hadi Salim wrote:
-> On Mon, Feb 23, 2026 at 10:05â€¯AM Paul Moses <p@1g4.org> wrote:
-> >
-> > The gate action can be replaced while the hrtimer callback or dump path is
-> > walking the schedule list.
-> >
-> > Convert the parameters to an RCU-protected snapshot and swap updates under
-> > tcf_lock, freeing the previous snapshot via call_rcu(). When REPLACE omits
-> > the entry list, preserve the existing schedule so the effective state is
-> > unchanged.
-> >
-> > Fixes: a51c328df310 ("net: qos: introduce a gate control flow action")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Paul Moses <p@1g4.org>
-> 
-> Looks good - but can we have Vlad (added to Cc) review this as well in
-> case it breaks anything in the offload case? More specifically,
-> regarding an update policy..
-> 
-> cheers,
-> jamal
+On Tue, Feb 10, 2026 at 05:39:12PM -0600, Bjorn Helgaas wrote:
+>[+cc Alex, beginning of thread:
+>https://lore.kernel.org/all/20251211035946.2071-1-guojinhui.liam@bytedance.com/]
+>
+>On Wed, Dec 24, 2025 at 03:08:49AM +0000, Tian, Kevin wrote:
+>> +Bjorn for guidance.
+>
+>Sorry for the late response.
+>
+>> quick context - previously intel-iommu driver fixed a lockup issue in surprise
+>> removal, by checking pci_dev_is_disconnected(). But Jinhui still observed the
+>> lockup issue in a setup where no interrupt is raised to pci core upon surprise
+>> removal (so pci_dev_is_disconnected() is false), hence suggesting to replace
+>> the check with pci_device_is_present() instead.
+>
+>I think checking pci_dev_is_disconnected() or pci_device_is_present()
+>in drivers is usually bad practice because it's always racy, as you've
+>already pointed out.
+>
+>I don't think it's possible to avoid Invalidate Completion Timeouts in
+>general, so I think the real solution is to figure out how to
+>gracefully handle them without running into the lockup detection.
+>
+>I assume the lockup is the loop in qi_submit_sync() where we wait for
+>QI_DONE with interrupts disabled.  Maybe we need something like
+>watchdog_hardlockup_touch_cpu() there, along with a timeout in that
+>loop?
 
-I've regression-tested this with tools/testing/selftests/drivers/net/ocelot/psfp.sh
-and haven't noticed issues.
+Looking at the AMD IOMMU driver, it has 100ms timeout in wait_on_sem()
+that basically waits for the completion until the timeout occurs. Is
+this the expected behaviour as per specification, or should the IOMMU
+wait for the Invalidation Completion Timeout?
 
-However, that doesn't test very much of the action possibilities - no dynamic gate
-parameters change (as part of standalone action or bound to filter).
+Reading the specs (notes of PCIe r7.0, sec 10.1.1, Figure 10-4), it
+seems the device is allowed to send translated TLPs, targetting the
+address regions being invalidated, until the Invalidation Completion
+Timeout (which could be 1-2 minutes as Bjorn shared below).
 
-The ocelot/felix driver doesn't offload standalone actions (TC_SETUP_ACT) so it
-doesn't notice changes made to the action using the "tc action" command.
-
-If I make changes to the "tc gate" action parameters using "tc filter replace ...",
-then I trigger the "The stream is added on this port" extack error in the offload
-driver, which seems to not have been written to handle parameter changes very well.
-
-I don't get any lockdep warnings on tcfa_lock, if that's of interest.
-
-To the extent that the testing above is relevant:
-
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+>
+>The PCIe r7.0, sec 10.3.1, implementation note suggests the timeout
+>might be in the 1-2 minute range, which is pretty extreme, but if we
+>can at least handle timeouts gracefully, we can think about ways to
+>make them less likely, e.g., by coordinating with FLR and VFIO detach
+>(maybe the sort of thing Alex alluded to at
+>https://lore.kernel.org/all/20251223153534.0968cc15.alex@shazbot.org).
+>
+>> Bjorn, is it a common practice to fix it directly/only in drivers or should the
+>> pci core be notified e.g. simulating a late removal event? By searching the
+>> code looks it's the former, but better confirm with you before picking this
+>> fix...
+>
+>I don't know exactly what it would look like to simulate a late
+>removal event, but it sounds like some kind of complicated
+>infrastructure that would still be only a 90% solution, which I
+>wouldn't recommend.
+>
+>> > From: Baolu Lu <baolu.lu@linux.intel.com>
+>> > Sent: Tuesday, December 23, 2025 12:06 PM
+>> >
+>> > On 12/22/25 19:19, Jinhui Guo wrote:
+>> > > On Thu, Dec 18, 2025 08:04:20AM +0000, Tian, Kevin wrote:
+>> > >>> From: Jinhui Guo<guojinhui.liam@bytedance.com>
+>> > >>> Sent: Thursday, December 11, 2025 12:00 PM
+>> > >>>
+>> > >>> Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
+>> > >>> request when device is disconnected") relies on
+>> > >>> pci_dev_is_disconnected() to skip ATS invalidation for
+>> > >>> safely-removed devices, but it does not cover link-down caused
+>> > >>> by faults, which can still hard-lock the system.
+>> > >> According to the commit msg it actually tries to fix the hard lockup
+>> > >> with surprise removal. For safe removal the device is not removed
+>> > >> before invalidation is done:
+>> > >>
+>> > >> "
+>> > >>      For safe removal, device wouldn't be removed until the whole software
+>> > >>      handling process is done, it wouldn't trigger the hard lock up issue
+>> > >>      caused by too long ATS Invalidation timeout wait.
+>> > >> "
+>> > >>
+>> > >> Can you help articulate the problem especially about the part
+>> > >> 'link-down caused by faults"? What are those faults? How are
+>> > >> they different from the said surprise removal in the commit
+>> > >> msg to not set pci_dev_is_disconnected()?
+>> > >>
+>> > > Hi, kevin, sorry for the delayed reply.
+>> > >
+>> > > A normal or surprise removal of a PCIe device on a hot-plug port normally
+>> > > triggers an interrupt from the PCIe switch.
+>> > >
+>> > > We have, however, observed cases where no interrupt is generated when
+>> > the
+>> > > device suddenly loses its link; the behaviour is identical to setting the
+>> > > Link Disable bit in the switch’s Link Control register (offset 10h). Exactly
+>> > > what goes wrong in the LTSSM between the PCIe switch and the endpoint
+>> > remains
+>> > > unknown.
+>> >
+>> > In this scenario, the hardware has effectively vanished, yet the device
+>> > driver remains bound and the IOMMU resources haven't been released. I’m
+>> > just curious if this stale state could trigger issues in other places
+>> > before the kernel fully realizes the device is gone? I’m not objecting
+>> > to the fix. I'm just interested in whether this 'zombie' state creates
+>> > risks elsewhere.
+>> >
 
