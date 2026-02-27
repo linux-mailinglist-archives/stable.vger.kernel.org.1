@@ -1,189 +1,205 @@
-Return-Path: <stable+bounces-219904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAJjK/IVoWnoqAQAu9opvQ
-	(envelope-from <stable+bounces-219904-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 04:56:34 +0100
+	id qNpfE54YoWlDqQQAu9opvQ
+	(envelope-from <stable+bounces-219905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 05:07:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA8C1B2703
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 04:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBEE1B2804
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 05:07:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EC2A30E83FA
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 03:56:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3BB72311C324
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 04:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7179933C1B3;
-	Fri, 27 Feb 2026 03:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97F83446B1;
+	Fri, 27 Feb 2026 04:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJk1ta4A"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WU1fUeuE";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TWddbqBf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FFC33A9CC;
-	Fri, 27 Feb 2026 03:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15A93446AA
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 04:06:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772164588; cv=none; b=BrzqO5azsN+NiPPkZOnWrHLl+F6F0F3J37vaelbJ40w+VTx4HfUCJCeWf08cy9lzU8zVP5X1SKVcKAZPDJFhP9CbVvhVr6rYxl26VBwN5yJ6eHtd2NOPPWXhx7jM99WiHgtiQ+4Kz8PMKj86CsF+gISi3NMrFeRmUHXFw/UyRWE=
+	t=1772165207; cv=none; b=jQGMfSBZB/iQEh0rkbW3jwgN7QAd9TfCjfan0/yWDjUjVjYYFhVcYefgTxjKm5057apJTzoc4NS688FXOpwmvOgoJRTg8SioqSDp5kl3LsCcrGQFEtg7cUjboQfZHHuwqJ3LoYLiXkQdrIfK6VhNpCoW5yGHU/4YeCy+1GIG30s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772164588; c=relaxed/simple;
-	bh=z5xjxIuCEpexUDITWJ0ilvcIxUSMlU5ufgnavoF6tA0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvHQc1wFqG9Ocso/qyQjyY6pEUpnV4e+9YHIHu5i7Utkm1FVrGOxy3rLaap2TPjAIO84t5i5qKO/m28T5a28OY4QAguuxU8/7WUDGnxFks/6xFG7xQM9O8c1nf5RQxGYfT7DVj6+62JGQi56CKsN2Uc92yjJBJFmiCvjkbKXMw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJk1ta4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A928C116C6;
-	Fri, 27 Feb 2026 03:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772164587;
-	bh=z5xjxIuCEpexUDITWJ0ilvcIxUSMlU5ufgnavoF6tA0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJk1ta4ASdK91McYHdy5oBfPe9radvFqWvayT8OODWfwrt9QgxRP0NcGE8mKFP0OK
-	 5DpKFIIDVaYYx3CIXX7ko3X6nD11zA66J09yrufa+G1vETQuMzoC7hSeDM7hhxvgpf
-	 S+Jbec0bFt3uOT1XVJqEbHoV1G9L/SGEa4KV9hS62VLK+NO39ixsViQVXC+eftNLeX
-	 gQ/kuzGvptBEEsG8BRmva3yZaExaaC3IsvCkb9tJOtbkG+wt6hnZiQiPAOsX3m7BTH
-	 Qp1ngEDRNpQzgkoxV3xVXdTXtq/eWqU/SUFruliEGlnWkWsyKppBZygxfBqsB4IYdd
-	 SW4ztcJJpjzAA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: anthony.l.nguyen@intel.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andrew+netdev@lunn.ch,
-	avigailx.dahan@intel.com,
-	boolli@google.com,
-	aaron.ma@canonical.com,
-	decot@google.com,
-	willemb@google.com,
-	przemyslaw.kitszel@intel.com,
-	sridhar.samudrala@intel.com,
-	aleksandr.loktionov@intel.com,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	sreedevi.joshi@intel.com,
-	Samuel.salin@intel.com,
-	netdev@vger.kernel.org,
-	sx.rinitha@intel.com,
-	joshua.a.hay@intel.com,
-	tglx@kernel.org,
-	dima.ruinskiy@intel.com,
-	emil.s.tantilov@intel.com,
-	david.m.ertman@intel.com,
-	stable@vger.kernel.org,
-	brianvv@google.com,
-	pmenzel@molgen.mpg.de,
-	edumazet@google.com,
-	horms@kernel.org,
-	piotr.kwapulinski@intel.com,
-	joe@dama.to,
-	rafal.romanowski@intel.com,
-	brett.creeley@amd.com,
-	mschmidt@redhat.com,
-	jacob.e.keller@intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	vitaly.lifshits@intel.com,
-	jedrzej.jagielski@intel.com
-Subject: Re: [net,v2,02/12] idpf: skip deallocating bufq_sets from rx_qgrp if it is NULL
-Date: Thu, 26 Feb 2026 19:56:25 -0800
-Message-ID: <20260227035625.2632753-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225211546.1949260-3-anthony.l.nguyen@intel.com>
-References: <20260225211546.1949260-3-anthony.l.nguyen@intel.com>
+	s=arc-20240116; t=1772165207; c=relaxed/simple;
+	bh=7dR00TzkZQLFxImS9g2i2+Oam7+hqlJzCG/IgXEyfOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rJpBJ5hL4+d2HCBiuQ7g59xmS3CAGf7LTEMu2ZiuDRBjRM9rZ3HX01oO7I3RD4s9AlcX7qDjeWQUQNH9YXeiIstG0jRESmR6t85MqeAA73J28B0Sx97doso3mbPbaAtbNccvzrxkeY1E0jyyJsY87/DFQwda5VSBSxQFSQNuHtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WU1fUeuE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TWddbqBf; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61R2K2wT1600819
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 04:06:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=VdQjHF+RYM7rSSLaFwhLHU5/
+	U+N3CFTxtk5vUawx9aU=; b=WU1fUeuEZi2nZWztsaD8Isc6submU+vTizHM0Nrh
+	ZwEdt0mouZWw0y0gQN2m1K3JLpCqP6kh/QNnbmNW2ToliDbNFZZ2SIJ66atSoonx
+	imB7dRoxB9OSI75LJSlhUjcRJqE5sDGLvzP5GU0EAlVxE2T+4TAxk8rIB6S0CYxR
+	zE+hG3lu6Ft23SRuROKjVl0i+8wqgyuENgndQ830k9OGdGujdywClUGMkMimVTtS
+	54T615IJV5C7wPW5hibVLHFRqpUCp7NmyiNTRhij1JZ2BtLDCcDvmhnPm0RjIIwB
+	zuj7I1T/ZfwzGP2YbEjhoAgweMtKbq3stEAjlM0GIvN9YQ==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cjt99t1c1-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 04:06:43 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8c70d16d5a9so1080220685a.3
+        for <stable@vger.kernel.org>; Thu, 26 Feb 2026 20:06:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772165203; x=1772770003; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VdQjHF+RYM7rSSLaFwhLHU5/U+N3CFTxtk5vUawx9aU=;
+        b=TWddbqBf1Q5fRjDCEeAxJRqBJ5rOfNGR6MqRysNT1VQw1bUObAnVsO51EyLktKJVmI
+         A+1m54hJWlPcGRZPaHAuqhDXNxMYnnXykuKxyKKyo1roThzejx5XVaHjrbrI70TYRb1M
+         CeovG5Hj+N+aTOpIS7nhj472NHeJF/tnaLmB1WGjdKgW7wvLssbXjNMPlAMKs1QElYC0
+         PlKAD0V/ff6d2TCjZV/I8HxRTdZoCtwBlq8VzXk8umBPnrnS43/au2jyq6tJyTmlQk3G
+         9xY8UaxHW9lITTuaqTUbzD+qqgtwKYI7eUpui1ht7ggurgbjH+wOsKHO2HyzgzFXNK52
+         /qmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772165203; x=1772770003;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VdQjHF+RYM7rSSLaFwhLHU5/U+N3CFTxtk5vUawx9aU=;
+        b=UzgMdS2H/KlcgLXGSKx5JEhEB4FPWBUPnNb1+OsXtLOqDQ5GS1GNvnCXWoHLRgUoKC
+         XzwEkrbICILhs0oLE48jvksm4EKuO9t/EWI8gsAKOpU31tNns9vkD6K+JSIcH7+jEz/n
+         DBhy4+7cTKe5S/uFpTkGFfV55KfQDOP46BbnRP5266R9TXSy6wqcdPvPCdGjuaY8Sxp2
+         iPmcJo3tXfX7D40wtIHWmJIkNL9qNrWxVYcuXBaiJoqeOuI6atUrrYmyF3n0mMPRUs0s
+         sxoi3hKrhEMXCQwTrGEvtJ4W40PeRiOFjIWXi2S1iU4SSBlKELFfiL/+pjOdLGX91VyX
+         fvWw==
+X-Gm-Message-State: AOJu0YyRmlc0AWvYk/sQr1A8TBIPnFl9higckkudkwTvMzyFj0uA1qjr
+	Jq+L2CQBd+N8KO0vGU4B+jZNKHVtHbeSs0FA4JaBAmmDHN7/JBMGCBj3sjDtifx3z2zESUfsSj6
+	1gWZ2OYca1r7cWJfnTCCOLHEJz4MB2zXS0+3mvFzXSgHucjtkQt3glC7jvFs=
+X-Gm-Gg: ATEYQzy9YbfI75M5tuISnBr7fm0gd0zoSEoYihscfm3ecvKHj8iXVsJx7ZSFOx5+ITX
+	WtK7xulbK77i93fxDYDNjUsT8So1LShyCPwEPQXMyq6Y/6A2FLdqgUUSZaAt0ZcRf1OA5Uj3ptC
+	1hNzf/Vn+L5hXbrn3ZDJCPWXz8J9fapKphy+BrJ0q5tzsd6kQ0tMaaZoNj8OKQY5dCI6k8HtZrr
+	Bhc3QbN4ATss+kUZ8rXMoRmTkD4Yo2hbBVqP474Fr5all6LS7MJjevzCsTrSEAIRfFa+w3lvqmR
+	PBIdyOL0Q+7LVZ/F/866l1OzrfFafIb6cTz+wictCSOOZiUrsAoesfGGjpZxYxY6BuBldZgO367
+	k96YCxaw8arslMwhSQJIJNwQ6zKX2wo4H+94IKFOqUypLZ+aVQ7TSWattVd9EqTy3Q8HpcfvmM1
+	Plo77D/XDSCfocXzSTcVpmBAKMb+ZH3H3RWpI=
+X-Received: by 2002:a05:620a:d85:b0:8cb:43a3:8b6f with SMTP id af79cd13be357-8cbc8e1afe4mr166989785a.67.1772165202899;
+        Thu, 26 Feb 2026 20:06:42 -0800 (PST)
+X-Received: by 2002:a05:620a:d85:b0:8cb:43a3:8b6f with SMTP id af79cd13be357-8cbc8e1afe4mr166987785a.67.1772165202451;
+        Thu, 26 Feb 2026 20:06:42 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-389f3016de6sm11487841fa.38.2026.02.26.20.06.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 20:06:41 -0800 (PST)
+Date: Fri, 27 Feb 2026 06:06:38 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: stable@vger.kernel.org, Rob Clark <robin.clark@oss.qualcomm.com>,
+        Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
+        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Jonathan Marek <jonathan@marek.ca>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] drm/msm: Fix dma_free_attrs() buffer size
+Message-ID: <n4pb4fvxp5toiy3ozrzozml75nkhgb3v4vmljpcx4oyp7kkgic@dhzvtsxhwode>
+References: <20260226095714.12126-2-fourier.thomas@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260226095714.12126-2-fourier.thomas@gmail.com>
+X-Authority-Analysis: v=2.4 cv=IZWKmGqa c=1 sm=1 tr=0 ts=69a11853 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=yVL_GmymfDenR9L41UUA:9 a=CjuIK1q_8ugA:10
+ a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-GUID: TGVQKrPQiJyb7QInyOObeaBBDXM78a33
+X-Proofpoint-ORIG-GUID: TGVQKrPQiJyb7QInyOObeaBBDXM78a33
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDAyOCBTYWx0ZWRfXxBwpMccPzl0r
+ NAG4R4ljo4qqv7uYeJj8TG9gZDSU0rsox7kQPTpPxR0nLM0/u4s8W5/aMDvDXe7OsIekSVWKXZg
+ I1LDRthIAt2fSgsKqrSupnbGV7RgObFxl/P796YB/9rRxqzaSzeLIHV8lH8hMOtTcMzX4VyznR6
+ rfmHkHVKR1TV676undbufIionnQ+YuWzP19V8pi6OkpX7jfzp1aQyKTpeo+pD8heA9nbwsI51Gq
+ wuPFgt/xwEbdB4VT5SlacapVK143zrX10jLhgNFxv3Tpbrduf3fumpuaE+AsP2Ii7YpPfQxMmzl
+ 0IFQcJW9pwn2yJWkxQHAT8eUixcO0iyDAkLdT0FuKte8ynCmMzWyGvX0eBU6Wgm81rTLbMNF4x1
+ sWPJksiiJj4ZTXFkCRJxAPOsDHBADUyYNwzezpmEUy4s1nl2SJzQufTWXuXnBEormOPQR4abxdc
+ eWSVIeteFQc2XBlnMCA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-26_04,2026-02-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 spamscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602270028
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[36];
-	TAGGED_FROM(0.00)[bounces-219904-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219905-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[vger.kernel.org,oss.qualcomm.com,poorly.run,kernel.org,linux.dev,gmail.com,somainline.org,ffwll.ch,marek.ca,lists.freedesktop.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.988];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:url]
-X-Rspamd-Queue-Id: 0EA8C1B2703
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 9BBEE1B2804
 X-Rspamd-Action: no action
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Thu, Feb 26, 2026 at 10:57:11AM +0100, Thomas Fourier wrote:
+> The gpummu->table buffer is alloc'd with size TABLE_SIZE + 32 in
+> a2xx_gpummu_new() but freed with size TABLE_SIZE in
+> a2xx_gpummu_destroy().
+> 
+> Change the free size to match the allocation.
+> 
+> Fixes: c2052a4e5c99 ("drm/msm: implement a2xx mmu")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+> ---
+> v1->v2:
+>   - Fix subject prefix
+> 
+>  drivers/gpu/drm/msm/adreno/a2xx_gpummu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-idpf: skip deallocating bufq_sets from rx_qgrp if it is NULL
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-This patch adds a NULL check for rx_qgrp->splitq.bufq_sets to prevent
-kernel panic when idpf_rxq_group_alloc() fails during initialization and
-the error path calls idpf_rxq_sw_queue_rel(). The panic was occurring
-during device opening when adding to a bonding interface.
 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> index 761a77510467..59aafadae3d0 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> @@ -1341,6 +1341,9 @@ static void idpf_txq_group_rel(struct idpf_q_vec_rsrc *rsrc)
->   */
->  static void idpf_rxq_sw_queue_rel(struct idpf_rxq_group *rx_qgrp)
->  {
-> +	if (!rx_qgrp->splitq.bufq_sets)
-> +		return;
-> +
->  	for (unsigned int i = 0; i < rx_qgrp->splitq.num_bufq_sets; i++) {
->  		struct idpf_bufq_set *bufq_set = &rx_qgrp->splitq.bufq_sets[i];
->
->  		for (unsigned int j = 0; j < bufq_set->num_refillqs; j++) {
->  			kfree(bufq_set->refillqs[j].ring);
->  			bufq_set->refillqs[j].ring = NULL;
-                           ^^^^^^
-This patch adds a NULL check for bufq_sets, but does the same issue
-exist for refillqs?
-
-Looking at idpf_rxq_group_alloc() in the same file, it first sets
-bufq_set->num_refillqs to a non-zero value, then attempts to allocate
-refillqs:
-
-idpf_rxq_group_alloc() {
-    ...
-    bufq_set->num_refillqs = num_rxq;
-    bufq_set->refillqs = kcalloc(bufq_set->num_refillqs,
-                                  sizeof(struct idpf_sw_queue),
-                                  GFP_KERNEL);
-    if (!bufq_set->refillqs) {
-        err = -ENOMEM;
-        goto err_alloc;
-    }
-    ...
-}
-
-If this allocation fails, bufq_set->refillqs is NULL but
-bufq_set->num_refillqs is non-zero. The error path calls
-idpf_rxq_sw_queue_rel() which now passes the bufq_sets check but then
-dereferences bufq_set->refillqs[j].ring in the inner loop.
-
-The inner loop condition (j < bufq_set->num_refillqs) would be true,
-causing the same NULL pointer dereference the patch is meant to prevent.
-
-Would this need a similar check before the inner loop, similar to the
-bufq_sets check added in this patch?
+-- 
+With best wishes
+Dmitry
 
