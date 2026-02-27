@@ -1,182 +1,140 @@
-Return-Path: <stable+bounces-219957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219958-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEd2J3GZoWl8ugQAu9opvQ
-	(envelope-from <stable+bounces-219957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 14:17:37 +0100
+	id UP9CHRKaoWl8ugQAu9opvQ
+	(envelope-from <stable+bounces-219958-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 14:20:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 376981B7861
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 14:17:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C508D1B78C2
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 14:20:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75DB230FE8F4
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:16:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 322F930C6197
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D561F30A9;
-	Fri, 27 Feb 2026 13:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F888221DB5;
+	Fri, 27 Feb 2026 13:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="wcEt44fN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uUcQxu/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D751A9F86
-	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 13:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772198214; cv=pass; b=BQLm5YzfOY68B8p/sSNKVV99pJPe4VoiObENkmkbHnAwiI+l3j0EFQEhaW+BTaXmNz7NrWg/ZW8HCoMv/hzUArpu2uo2HOViNQxFxtNy5A3owpy9gjXKqpDMwp7DMJBBQXodEKtD913UjeijNMxLNqMyIyhEq5Hr3gCN/CGaH2E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772198214; c=relaxed/simple;
-	bh=GDaA+XJaA19YoQAlSYfbtQ/U8ksfTNOAogcuVv/TBF4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CcBipR4oX1pbH3vof6T7lgG+oYbsbL3b+b9oAAsyB3rcmaS2X2S7HswghAM8SXuHMli+mcD/2mo0H6FVBz8IedIaPddM69x0SOQFP02Wsw7kOWYeB63UKDybWptbbFaU8MffOKk2HxFdREMbfZWhA2bpfjAqfvvEG5nDKTWFHas=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=wcEt44fN; arc=pass smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3590d548576so1139000a91.2
-        for <stable@vger.kernel.org>; Fri, 27 Feb 2026 05:16:53 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772198213; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LfDlwIx+1OH1Rbcg+3t1tZ1MyiPPz9TAX4ye/yXfsMh5yJSt4qQUJUpuLw3rD2IVit
-         xlPGkf6elvFn/N9DUGM/ViKOSUUg8aoBU9rmuhH8N2Q9+2hg51ldMQHkdsbICu8JYr4O
-         TCcqu5VEpDjWv7PcROFyGF+xJKgyaGSwTLbKpYAQ6muPuvOdC4/09dRSx93I3//I5oPk
-         MjLOJjQQWF23jVHnfelKfPzZIAUrni1Sp9agE67V0PsGgakg9++958wovzYR9Ai41VxF
-         J/q/lyRwLsZeBgQEv7vtsRtHPfuMRJ7eRyoWLlDeUHZvnwAOP11MPDIu4OnCT9tSIEKN
-         SY5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GDaA+XJaA19YoQAlSYfbtQ/U8ksfTNOAogcuVv/TBF4=;
-        fh=F+aGxGLH4ubfLXqakq9YQNeJB1NHrIUUJgaPTOCEKbA=;
-        b=d6G3axvHticIk9p+8YjapQW3SoFMKhWhfHgx4auyMKMpql4AI80TOryFBtP37g0I+d
-         kzL2FxBJ/aPbDP/bJIDlzwSArhcUgQnY0uNAbd2iUlTOiRyB96wvUD3jictP/24Idkjm
-         x1qok+SHBIJrBtuemVTkxPJ6+8e55HbaesYyv6HAdGyTxX3Ymt2NUwYfHGD+XIN0Zi9X
-         bIyUOVibhOSYDim02dU40SHNERBOQKGZ2lv4cwT4Io0lM1aScI69MK4lRmEq0/GTxk02
-         zQPPQDk7ybPUMKIwWJxsybunZjKOu8PCDX3l+aQBHIBlsLCya98eZ9l59r7zZzi27Bw5
-         a3GA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1772198213; x=1772803013; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GDaA+XJaA19YoQAlSYfbtQ/U8ksfTNOAogcuVv/TBF4=;
-        b=wcEt44fNSYxHu4VEgpx6m7v0QIASghwvaT9qWQbowiOuywzOJKh3xLi94v1vhyzdpZ
-         svL48MLuzhDCQVEo6qIKrMQNt3AskDm/Mj7/dub7xIiJU91Kpmp0fv5stFUVSwcbruV8
-         EJzYVriccF3q5icnIoC2gLlRr0lw04VRK7DS8tPyVgZGIg1SWhM1UsWRuzLXSm3pT3qH
-         kkPClft3zuP8EDWOSKes79GgHmYVoT01kPD1rSLKRAquq6L5xjlb3MADnjASIvqyLo2O
-         aIYHL9HoFnZcGOy+RQHnHP5RqmjF1Is9GdxZcC5c04yckNLbLLcUNRzBnycW5Bn88oym
-         3QkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772198213; x=1772803013;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GDaA+XJaA19YoQAlSYfbtQ/U8ksfTNOAogcuVv/TBF4=;
-        b=NYpDqHoUnLJ7Xp69gtNRpAGJCyhLXRujW35FL+9XqxvnM9ldyBPejkqCLe3DsvlLzZ
-         V3IEUnUfBLnudknR+8PEyX4H3IJMxq6Zu4CpuX5Iu/vjBj+qzcuevn9ywir37QW/DFZk
-         ImHiH4d4WejQJk8AvEIjWjm2IsIznOCVf2AY0CnBc2mJwYO02XM6nC1kTGYsPHFYvK8A
-         GXSlsf9WXovi8IP3JuV9AAkE9HFxpvFmdNikEfqJ/QldkcuNMwnksLYMWrMcx6WhDeL9
-         3mV8NjthRR+Isqz+tOqqkHKH19y3z3GTcRUHJxwqt5kgj4V447bP2xy6zpsSWlcGZUah
-         w2FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqPPl6BKIYP8601/CGn7vn5KtpOHt79EuItg24qXDmGQzo9Eb5rU1j11UrielR8+CtIrGYLdQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5YxTGPH0HTABLcTxBYl9fbBj0qpYR7n78viCQmGcitnl30IV9
-	n+4M3ke8XjA5QMWGZVGLuE7uKpFcDuaY0I2UCqwsWwbg7dHAhYVs2/oTKl8YCFJo3WrxXSYS0U/
-	B6j4sEwTrUxBvBlL9LOvO5R3M++xfjYZS3ln9pCH3
-X-Gm-Gg: ATEYQzz6Dq3Dx8rJHZOp42L+EzmbZljM04UV1Hs+87R0fKBmYpgMSy5zWJtkVvymzll
-	dqh5pogR5eFu2qgJko1wAX9U/+bB99FR62AHyZTGtitY/7mGe4ftPkUvmf81wbbdMJraWpkLQnX
-	+BMnvYbPokRe8r0cwdViS86J/gRdKQjOqsO1j/5Fql40WuR5cQGq45sS2BZzLQ0qD1zX/hCb78I
-	anIFBEKmW8np+iclYeMn3B4g/a8T2XG9OIU0qO/X85Isogh5R8d6f7q1BilZTRrCHSnPTLwVTp0
-	jzXaj+wnpZyDyl4=
-X-Received: by 2002:a17:90b:38cf:b0:356:2bda:a857 with SMTP id
- 98e67ed59e1d1-35965c9d127mr3060071a91.18.1772198213005; Fri, 27 Feb 2026
- 05:16:53 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC9C1C7012;
+	Fri, 27 Feb 2026 13:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772198264; cv=none; b=XeG++CRXMiaigL2/X36K4e4svNqOKUAi8D/24tIdG9b/oeuThdZpa5F7x6BKXoOxYUMg8YYheQXh7925nbjsjEZMFoV4BatbqovD6j3a2eOGfXe3YRCMVs+87tx8bJp07nEKFdvr6WcsX1FSef/VPk4zRampBbaX3j6LTLenKe8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772198264; c=relaxed/simple;
+	bh=S2Sibz6/0nDeA3rNpG7lVnE8z3GwQoWM4z58psFAnQI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=REUY0OTVTm3yi+TqZr8ww2EX2A1H21fG0xkfJKZVC20Fu+p/UlmMs9ZEpwMTylIWzAJxpN3CmtN0pCV2NqX40/2co2QQ2u4lM+rXy7FivbvXqtByK7SDR30qnW6XupymsGwttniFIwdPMtiRwQLmQsQTPef2y1ZNnVSJTESoV4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uUcQxu/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5071DC116C6;
+	Fri, 27 Feb 2026 13:17:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1772198263;
+	bh=S2Sibz6/0nDeA3rNpG7lVnE8z3GwQoWM4z58psFAnQI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=2uUcQxu/pKTPdmOqWSM//JAWGzm0dFO4tDdEmqktfTmiSGPRZsQoMmW63cBUZIK4d
+	 0+SJpbo7SvUKdcPbEPaBrBL6WCztG4mABiFwPWDCue9lb79C/RLOImf8T97mpknxDu
+	 Z8nKn8l+ys4hdD6Ai4W7UBYcm4CMmoBtvJBw9mLE=
+Date: Fri, 27 Feb 2026 05:17:32 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Genes Lists <lists@sapience.com>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
+	linux-kernel@vger.kernel.org, coreteam@netfilter.org,
+	netfilter-devel@vger.kernel.org,
+	Pablo Neira Ayuso <pablo@netfilter.org>, stable@vger.kernel.org,
+	regressions@lists.linux.dev,
+	"Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>
+Subject: Re: [REGRESSION] 6.19.4 stable netfilter / nftables [resolved]
+Message-ID: <2026022755-quail-graveyard-93e8@gregkh>
+References: <a529a6a9a2755d45765f20b58c5c11e2f790eacb.camel@sapience.com>
+ <45f03b0b-fe8f-4942-bad1-3fbde03d4be1@leemhuis.info>
+ <143e1a402ad78dd7076516a6ceb637f378310b16.camel@sapience.com>
+ <10537f2b74da2b8a5cb8dc939f723291db39ff84.camel@sapience.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260223150512.2251594-1-p@1g4.org> <20260223150512.2251594-2-p@1g4.org>
- <CAM0EoMmr0SUf7U3CTqd=MSYX=D60zYOfBS-L=GJOsWB-cxZHcg@mail.gmail.com>
- <20260227013151.qaw4hvb4fyt5roeq@skbuf> <px_b8_2gC-ZLFXok9C1Cjh3OAR-3fh7q3tMvB6ddv9V_IR2UOe0ANtPfCbh_s3xFARel2DT6Yg5cVJe3LPmgLpgDgGfqTrJuPa0OADyxdts=@1g4.org>
-In-Reply-To: <px_b8_2gC-ZLFXok9C1Cjh3OAR-3fh7q3tMvB6ddv9V_IR2UOe0ANtPfCbh_s3xFARel2DT6Yg5cVJe3LPmgLpgDgGfqTrJuPa0OADyxdts=@1g4.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 27 Feb 2026 08:16:41 -0500
-X-Gm-Features: AaiRm501mvb8cKgXrBcKkwVqLRI4xO1kMuzIWg1rjrI6m_S9GMPSEI5hVakE9Uk
-Message-ID: <CAM0EoM=jY=w7Chj1=oecLfEkyXgbydX63ykywbXoYHrCLafRoQ@mail.gmail.com>
-Subject: Re: [PATCH net v8 1/1] net/sched: act_gate: snapshot parameters with
- RCU on replace
-To: Paul Moses <p@1g4.org>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Victor Nogueira <victor@mojatatu.com>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Vladimir Oltean <olteanv@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <10537f2b74da2b8a5cb8dc939f723291db39ff84.camel@sapience.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[mojatatu-com.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[mojatatu.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219957-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[mojatatu-com.20230601.gappssmtp.com:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jhs@mojatatu.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[nxp.com,mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-219958-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,1g4.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 376981B7861
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C508D1B78C2
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 7:07=E2=80=AFAM Paul Moses <p@1g4.org> wrote:
->
-> > The ocelot/felix driver doesn't offload standalone actions (TC_SETUP_AC=
-T) so it
-> > doesn't notice changes made to the action using the "tc action" command=
-.
-> >
-> > If I make changes to the "tc gate" action parameters using "tc filter r=
-eplace ...",
-> > then I trigger the "The stream is added on this port" extack error in t=
-he offload
-> > driver, which seems to not have been written to handle parameter change=
-s very well.
->
-> Thanks for testing. Just to confirm: unpatched kernel returns the same er=
-ror?
->
+On Fri, Feb 27, 2026 at 08:12:59AM -0500, Genes Lists wrote:
+> On Fri, 2026-02-27 at 07:23 -0500, Genes Lists wrote:
+> > On Fri, 2026-02-27 at 09:00 +0100, Thorsten Leemhuis wrote:
+> > > Lo!
+> > > 
+> > 
+> > Repeating the nft error message here for simplicity:
+> > 
+> >  Linux version 7.0.0-rc1-custom-1-00124-g3f4a08e64442 ...
+> >   ...
+> >   In file included from /etc/nftables.conf:134:2-44:
+> >   ./etc/nftables.d/set_filter.conf:1746:7-21: Error:
+> >   Could not process rule: File exists
+> >                  xx.xxx.xxx.x/23,
+> >                  ^^^^^^^^^^^^^^^
+> > 
+> 
+> Resolved by updating userspace.
+> 
+> I can reproduce this error on non-production machine and found this
+> error is resolved by re-bulding updated nftables, libmnl and libnftnl:
+> 
+> With these versions nft rules now load without error:
+> 
+>  - nftables commit de904e22faa2e450d0d4802e1d9bc22013044f93
+>  - libmnl   commit 54dea548d796653534645c6e3c8577eaf7d77411
+>  - libnftnl commit 5c5a8385dc974ea7887119963022ae988e2a16cc
+> 
+> All were compiled on machine running 6.19.4.
 
-Yes, it just means that Vladmir's hardware doesnt like replacement of
-an existing rule, therefore it gets rejected with that message (error
-code -EEXIST). Yes, the message is not the best it can be but could be
-fixed later.
-Thanks Vladmir for spending the time.
+Odd, that shouldn't be an issue, as why would the kernel version you
+build this on matter?
 
-And for this patch....
+What about trying commit f175b46d9134 ("netfilter: nf_tables: add
+.abort_skip_removal flag for set types")?
 
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+thanks,
 
-cheers,
-jamal
+greg k-h
 
