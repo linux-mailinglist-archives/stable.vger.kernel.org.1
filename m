@@ -1,67 +1,59 @@
-Return-Path: <stable+bounces-219892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219893-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AmYAB7/oGmqowQAu9opvQ
-	(envelope-from <stable+bounces-219892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 03:19:10 +0100
+	id QFUCE90BoWlVpQQAu9opvQ
+	(envelope-from <stable+bounces-219893-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 03:30:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B06A1B1FA5
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 03:19:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB9C1B20D5
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 03:30:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 041F1304C979
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 02:18:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71073304D258
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 02:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A30286D4D;
-	Fri, 27 Feb 2026 02:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1852D3231;
+	Fri, 27 Feb 2026 02:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="kAD/csUa"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HgBqOf6V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail115-63.sinamail.sina.com.cn (mail115-63.sinamail.sina.com.cn [218.30.115.63])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8312EA473
-	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 02:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4E92C0298
+	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 02:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772158737; cv=none; b=MRIFFZrli3SOKLK4y/Dja2ssg3S7Z//YdyH4xbkGZb15Y98OuJV2M+OAr2t1YaWhx1Jg4DTHxPkw7JiRu2bkig6l2O3tqr7nondM1SzooSgZ3cP5eDDPG7puUTKtxK69SB8a3LTKRuze9WkZiA0H1bp9wYGkqwql1CUoeKAv0EA=
+	t=1772159420; cv=none; b=FoEF3+w4yore+Tz77cjqUH+l7ahjcc1nG3lISGu2HSwlYHy6OVwKRIZybOWoS5Nh/uoKjYArYgCxRcFp1f1bRzoigvCw886KkT62J19+wEc18EugqonmBzc4GaA7z4e0grsRzyjYt20z30bYDadmnnEve9ymXoAqEX7n6aa1lhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772158737; c=relaxed/simple;
-	bh=yoBeoacMbK1NAn82kU0drfaAQYOiincR4WZfeQfH/ZE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ClvqnRE2N08bewknXoqxEIwJM4BKWQ5Ra65lgTXhg9jRZLO6dmvv/XVIYiMVDfddqn9FwVClaSX18NuaSLWA7uzfQnHGNoKfXhigaK0cRlBJErVxD95rSTy7jLQ1wLi0LF94yJOP+ZDn4Vw1iJA2iafgJBNa4TC6UEK8AfVn+tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=kAD/csUa; arc=none smtp.client-ip=218.30.115.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1772158734;
-	bh=+ll0j7P6gB1YHU/QPLWIwnmbPeyItOm5mPcLbuIqgOg=;
-	h=From:Subject:Date:Message-Id;
-	b=kAD/csUa70XJSbgSuc1Wk3iqb1/gW+9NEqLvGY1El63d4L8vao75gPGNjv6nCWkas
-	 5qcI+hnVzeUuyQwSndCPRiRIeeOxnLFUydVGHh64d0CZjVEgfi1GoM2mKWK5eTvD8s
-	 rtIteWLVP/bKJT39hidlGJj3GNr/qDoNbsRUO8Tk=
-X-SMAIL-HELO: NTT-kernel-dev
-Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.22) with ESMTP
-	id 69A0FF0700000E95; Fri, 27 Feb 2026 10:18:50 +0800 (CST)
-X-Sender: jianqkang@sina.cn
-X-Auth-ID: jianqkang@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=jianqkang@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 5772687602230
-X-SMAIL-UIID: BCC5C971CE1645018EB779524CAFFB85-20260227-101850-1
-From: Jianqiang kang <jianqkang@sina.cn>
+	s=arc-20240116; t=1772159420; c=relaxed/simple;
+	bh=pQ0MFWAxCxFLIZNr76cL3VIHJBTqVratI5ShPt7AhAM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rDbb/cDWX65KAuWIL1+pcTQWA2c0kuSlwmJi1g3KdICdHCLkHD2azjC8JK8Ko+VfF6w15BWGMlGSvGvQwOaoiQlA0jofcG5mEw+Ov/YgSITX3gQAzib8M5fob6hupshN9tTm3zIsdYuvTuu74XNAuHGLzG44weHliA0F8xTMacI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HgBqOf6V; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Lw
+	jabNB3JnR2Q0SZOOjUX3FitX+XlP+BsG4D3eosGpc=; b=HgBqOf6VCPEzqm818m
+	VTvIcBA3gbjm58Y0y65QE2cqrc/yAD//qUaLMNqAkp23uVLMyVOlG7dxDyLybMM6
+	W8nYqdXkOz7GEYEmCaak6knIvwr/yPS9+yqn8Jt1SpA7IVkSCZqkcBa5+8bH7tyz
+	K2ow3KGTnLYkB939Yveg9BTc8=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgAnmZGTAaFpctbSQg--.72S2;
+	Fri, 27 Feb 2026 10:29:41 +0800 (CST)
+From: Wenshan Lan <jetlan9@163.com>
 To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	axboe@kernel.dk
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	asml.silence@gmail.com,
-	io-uring@vger.kernel.org
-Subject: [PATCH 5.10.y] io_uring/io-wq: check IO_WQ_BIT_EXIT inside work run loop
-Date: Fri, 27 Feb 2026 10:18:47 +0800
-Message-Id: <20260227021847.1242260-1-jianqkang@sina.cn>
+	stable@vger.kernel.org
+Cc: Paul Greenwalt <paul.greenwalt@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rinitha S <sx.rinitha@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.12.y] ice: fix devlink reload call trace
+Date: Fri, 27 Feb 2026 10:29:14 +0800
+Message-Id: <20260227022914.1378328-1-jetlan9@163.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,126 +62,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgAnmZGTAaFpctbSQg--.72S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGw1rGFWDuw18GFWfuw13twb_yoW5Wr4fpF
+	W8C34YkF1rXr4S9w4DWa18uF15Wa95J3s09Fs7Cw4rZ3WDCrn0vrnrtFya9FykCw4IqFWa
+	yr40kw1jkas8ZwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_ID7rUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC7BUo8GmhAZXaaQAA3O
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
-	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-219893-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[intel.com,molgen.mpg.de,163.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219892-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[sina.cn];
-	TO_DN_NONE(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[sina.cn:+];
-	NEURAL_HAM(-0.00)[-0.992];
+	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7B06A1B1FA5
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,mpg.de:email]
+X-Rspamd-Queue-Id: 7AB9C1B20D5
 X-Rspamd-Action: no action
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-[ Upstream commit 10dc959398175736e495f71c771f8641e1ca1907 ]
+[ Upstream commit d3f867e7a04678640ebcbfb81893c59f4af48586 ]
 
-Currently this is checked before running the pending work. Normally this
-is quite fine, as work items either end up blocking (which will create a
-new worker for other items), or they complete fairly quickly. But syzbot
-reports an issue where io-wq takes seemingly forever to exit, and with a
-bit of debugging, this turns out to be because it queues a bunch of big
-(2GB - 4096b) reads with a /dev/msr* file. Since this file type doesn't
-support ->read_iter(), loop_rw_iter() ends up handling them. Each read
-returns 16MB of data read, which takes 20 (!!) seconds. With a bunch of
-these pending, processing the whole chain can take a long time. Easily
-longer than the syzbot uninterruptible sleep timeout of 140 seconds.
-This then triggers a complaint off the io-wq exit path:
+Commit 4da71a77fc3b ("ice: read internal temperature sensor") introduced
+internal temperature sensor reading via HWMON. ice_hwmon_init() was added
+to ice_init_feature() and ice_hwmon_exit() was added to ice_remove(). As a
+result if devlink reload is used to reinit the device and then the driver
+is removed, a call trace can occur.
 
-INFO: task syz.4.135:6326 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-      Blocked by coredump.
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.4.135       state:D stack:26824 pid:6326  tgid:6324  ppid:5957   task_flags:0x400548 flags:0x00080000
+BUG: unable to handle page fault for address: ffffffffc0fd4b5d
 Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5256 [inline]
- __schedule+0x1139/0x6150 kernel/sched/core.c:6863
- __schedule_loop kernel/sched/core.c:6945 [inline]
- schedule+0xe7/0x3a0 kernel/sched/core.c:6960
- schedule_timeout+0x257/0x290 kernel/time/sleep_timeout.c:75
- do_wait_for_common kernel/sched/completion.c:100 [inline]
- __wait_for_common+0x2fc/0x4e0 kernel/sched/completion.c:121
- io_wq_exit_workers io_uring/io-wq.c:1328 [inline]
- io_wq_put_and_exit+0x271/0x8a0 io_uring/io-wq.c:1356
- io_uring_clean_tctx+0x10d/0x190 io_uring/tctx.c:203
- io_uring_cancel_generic+0x69c/0x9a0 io_uring/cancel.c:651
- io_uring_files_cancel include/linux/io_uring.h:19 [inline]
- do_exit+0x2ce/0x2bd0 kernel/exit.c:911
- do_group_exit+0xd3/0x2a0 kernel/exit.c:1112
- get_signal+0x2671/0x26d0 kernel/signal.c:3034
- arch_do_signal_or_restart+0x8f/0x7e0 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:41 [inline]
- exit_to_user_mode_loop+0x8c/0x540 kernel/entry/common.c:75
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
- do_syscall_64+0x4ee/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa02738f749
-RSP: 002b:00007fa0281ae0e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-RAX: fffffffffffffe00 RBX: 00007fa0275e6098 RCX: 00007fa02738f749
-RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007fa0275e6098
-RBP: 00007fa0275e6090 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa0275e6128 R14: 00007fff14e4fcb0 R15: 00007fff14e4fd98
+ string+0x48/0xe0
+ vsnprintf+0x1f9/0x650
+ sprintf+0x62/0x80
+ name_show+0x1f/0x30
+ dev_attr_show+0x19/0x60
 
-There's really nothing wrong here, outside of processing these reads
-will take a LONG time. However, we can speed up the exit by checking the
-IO_WQ_BIT_EXIT inside the io_worker_handle_work() loop, as syzbot will
-exit the ring after queueing up all of these reads. Then once the first
-item is processed, io-wq will simply cancel the rest. That should avoid
-syzbot running into this complaint again.
+The call trace repeats approximately every 10 minutes when system
+monitoring tools (e.g., sadc) attempt to read the orphaned hwmon sysfs
+attributes that reference freed module memory.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/68a2decc.050a0220.e29e5.0099.GAE@google.com/
-Reported-by: syzbot+4eb282331cab6d5b6588@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ Minor conflict resolved. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+The sequence is:
+1. Driver load, ice_hwmon_init() gets called from ice_init_feature()
+2. Devlink reload down, flow does not call ice_remove()
+3. Devlink reload up, ice_hwmon_init() gets called from
+   ice_init_feature() resulting in a second instance
+4. Driver unload, ice_hwmon_exit() called from ice_remove() leaving the
+   first hwmon instance orphaned with dangling pointer
+
+Fix this by moving ice_hwmon_exit() from ice_remove() to
+ice_deinit_features() to ensure proper cleanup symmetry with
+ice_hwmon_init().
+
+Fixes: 4da71a77fc3b ("ice: read internal temperature sensor")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[ Adjust context. The context change is irrelevant to the current patch
+logic. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 ---
- io_uring/io-wq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index c5d249f5d214..926890f5086e 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -554,9 +554,9 @@ static void io_worker_handle_work(struct io_worker *worker)
- 	struct io_wqe_acct *acct = io_wqe_get_acct(worker);
- 	struct io_wqe *wqe = worker->wqe;
- 	struct io_wq *wq = wqe->wq;
--	bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 8e0f180ec38e..8683883e23b1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -4920,6 +4920,7 @@ static void ice_deinit_features(struct ice_pf *pf)
+ 		ice_dpll_deinit(pf);
+ 	if (pf->eswitch_mode == DEVLINK_ESWITCH_MODE_SWITCHDEV)
+ 		xa_destroy(&pf->eswitch.reprs);
++	ice_hwmon_exit(pf);
+ }
  
- 	do {
-+		bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
- 		struct io_wq_work *work;
- get_next:
- 		/*
+ static void ice_init_wakeup(struct ice_pf *pf)
+@@ -5451,8 +5452,6 @@ static void ice_remove(struct pci_dev *pdev)
+ 		ice_free_vfs(pf);
+ 	}
+ 
+-	ice_hwmon_exit(pf);
+-
+ 	ice_service_task_stop(pf);
+ 	ice_aq_cancel_waiting_tasks(pf);
+ 	set_bit(ICE_DOWN, pf->state);
 -- 
-2.34.1
+2.43.0
 
 
