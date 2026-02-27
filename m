@@ -1,153 +1,156 @@
-Return-Path: <stable+bounces-219987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCoKN+LJoWmqwQQAu9opvQ
-	(envelope-from <stable+bounces-219987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 17:44:18 +0100
+	id uHJ+OP7MoWn3wQQAu9opvQ
+	(envelope-from <stable+bounces-219988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 17:57:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156101BAF36
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 17:44:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BCFE1BB18F
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 17:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8DF563004419
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 16:44:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 14895303D895
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 16:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503283491C8;
-	Fri, 27 Feb 2026 16:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACE4356A2B;
+	Fri, 27 Feb 2026 16:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bv0q08lc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FxkH39tu"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9807329E53
-	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 16:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02AD348452;
+	Fri, 27 Feb 2026 16:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772210654; cv=none; b=L4ntag704+H3U9859viEogR8YP0g99h0TzChDQdqZGDFCvGuArqAHusPNkuFDJf/VZZi3iV3zTFPlsRLilIljTv8jIxmnpA/hr7P87UPl6FGuhdZDNEg7z/nBd6zXdTR44TzT6/hxMwDvsOBqPtgTiyZFqZyAsTvTbMaVW4XLCg=
+	t=1772211446; cv=none; b=NWVFjxi/mk+A9X9Uq7UZASuWvz1BUHn18gLpGL3TGyzpCsGgryAY/7ZyOi/UB+ZcMzixK1IMxM9gNf4Ny6SkywlFlLG1pNgi0iGl9ZtH0/ma6P5TSI93fHU1T+tmqecPz/WLJr10Vy/VEm8nQ5YekUfPok7ywTUWV48MVcWwzlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772210654; c=relaxed/simple;
-	bh=iFkp1QKVkUBs7h3tg9Xx7HNiMzOyEyGW7spIFTjBYgA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iDn3K1e0Ej4KN9rgnxHgRTZByGCXPpmUYpcglNsUFa9KNmK+vUwJfFjUkt2oauDoJhaQe1A+O6YRszs2fS2zUZWPXeHvzzbbJ56/nc6kvTuME6UwEhXxJOAJZGa623lY4o81wD7B7kDWzBAt741HIOUfzaoiFxS4BwT+yLSFt8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bv0q08lc; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772210653; x=1803746653;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=iFkp1QKVkUBs7h3tg9Xx7HNiMzOyEyGW7spIFTjBYgA=;
-  b=Bv0q08lcUbh7HtmaVcJackkuuhoVFT0DEOVsvZbWRIay0LSduVIAjmD6
-   JamAHRYcrUt/5tyoLi0bGItl+y3qAj3CF/IY+6uTL1ctyJkDaQ1sxAYeR
-   aPOsG7zVxRq+cSNNJWO/Ji0HxMUvUl54sqpHIpxRIby4NKd80S+eK8hbB
-   gohdLJb+5isGLiFfiNbzZrKSkldnBUJdl3+LinkTeSZw9C6gv5ZS4WvXu
-   xysGSjZVUH/HFpg9SuKittsaad2j4QyX964voopiPOFDmC3Hw2XPlJ5x8
-   zC9Gg28WFj5js/mTBHqmP0Z8OyEpOLHIGFhBpnVwTTARah4Bkj8/G/zFV
-   w==;
-X-CSE-ConnectionGUID: 9cilB9wgQEi9YH+4xOAy+Q==
-X-CSE-MsgGUID: RwcZS/BsTaqTTiCtX+K1qg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11714"; a="90698334"
-X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; 
-   d="scan'208";a="90698334"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2026 08:44:12 -0800
-X-CSE-ConnectionGUID: XVJHUtRrQc+mlhHpyIOMmQ==
-X-CSE-MsgGUID: Z/ooLAG1RUWnwnyl5ypSlQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; 
-   d="scan'208";a="221936786"
-Received: from mdroper-desk1.fm.intel.com ([10.1.39.133])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2026 08:44:12 -0800
-From: Matt Roper <matthew.d.roper@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: matthew.d.roper@intel.com,
-	Aradhya Bhatia <aradhya.bhatia@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/xe/xe2_hpg: Correct implementation of Wa_16025250150
-Date: Fri, 27 Feb 2026 08:43:41 -0800
-Message-ID: <20260227164341.3600098-2-matthew.d.roper@intel.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1772211446; c=relaxed/simple;
+	bh=YaAGaUWYb4yFijxgt+6ck3PmrcCbR3kRSfqJVEaGCuQ=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=tyHS1TUWGfwgURlR1hzJa2Oix9H1EZcZmkwP3N4EwmeJt5nAjeX962LUmPGR8zmSSvIECtRGJa4KOXiEBtg4tB9HJdCVobGAaPswml/lAsRyOcdx9C/Cg7b/0gir7IrWgyNnW4XxiVY6FXiqXi0n3qplxtjExQNtFqT2exC3gcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FxkH39tu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4CFC116C6;
+	Fri, 27 Feb 2026 16:57:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772211446;
+	bh=YaAGaUWYb4yFijxgt+6ck3PmrcCbR3kRSfqJVEaGCuQ=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=FxkH39tuG5VpcSKWV0HyWM7ZzZZk6wNfJeN447Ssrpq6XReCkqMOj9f/2SBnAtFvi
+	 oXOWjo8Drnny+jTFklpXwOyV2QnbFJ4RVV71iXopL2mDifysDc85DgTVV94sPAiAoZ
+	 B/Cs+kECZ1GXQ9clGPv/ANf7zRq6mV5wdKkhWzRzrgv+Q6gb0bFYlR0nN00i9XrWMM
+	 W/wugxJXRiiQLtozYNZoLXJ2ivXZknN8JFGRbxzxi1Ze/kAAbOcXiNMgm/CC7deiJ2
+	 ubYf9zGPVaE9Kej8l1LaNxif16cO3hsQ3kyoF28+ekD5OHphNTVHE4H3AzKMpK1qdr
+	 o471mq5LErfsw==
+Date: Fri, 27 Feb 2026 10:57:25 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: David Airlie <airlied@gmail.com>, devicetree@vger.kernel.org, 
+ freedreno@lists.freedesktop.org, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Jessica Zhang <jesszhan0024@gmail.com>, 
+ Kuogee Hsieh <quic_khsieh@quicinc.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Rob Clark <robin.clark@oss.qualcomm.com>, Abel Vesa <abelvesa@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Sean Paul <sean@poorly.run>, 
+ linux-arm-msm@vger.kernel.org, Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: Abel Vesa <abel.vesa@oss.qualcomm.com>
+In-Reply-To: <20260227-glymur-fix-dp-bindings-reg-clocks-v1-1-99f7b42b43aa@oss.qualcomm.com>
+References: <20260227-glymur-fix-dp-bindings-reg-clocks-v1-1-99f7b42b43aa@oss.qualcomm.com>
+Message-Id: <177221144530.237949.10314173375793939491.robh@kernel.org>
+Subject: Re: [PATCH] dt-bindings: display: msm: Fix reg ranges and clocks
+ on Glymur
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,lists.freedesktop.org,somainline.org,kernel.org,quicinc.com,oss.qualcomm.com,linux.dev,suse.de,poorly.run,ffwll.ch,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-219988-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219987-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[matthew.d.roper@intel.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 156101BAF36
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 5BCFE1BB18F
 X-Rspamd-Action: no action
 
-Wa_16025250150 asks us to set five register fields of the register to
-0x1 each.  However we were just OR'ing this into the existing register
-value (which has a default of 0x4 for each nibble-sized field) resulting
-in final field values of 0x5 instead of the desired 0x1.  Correct the
-RTP programming (use FIELD_SET instead of SET) to ensure each field is
-assigned to exactly the value we want.
 
-Cc: Aradhya Bhatia <aradhya.bhatia@intel.com>
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Fixes: 7654d51f1fd8 ("drm/xe/xe2hpg: Add Wa_16025250150")
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
----
- drivers/gpu/drm/xe/xe_wa.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+On Fri, 27 Feb 2026 16:23:00 +0200, Abel Vesa wrote:
+> The Glymur platform has four DisplayPort controllers. All the
+> controllers support four streams (MST). However, the first three only
+> have two streams wired up physically to the display subsystem, while the
+> fourth controller has only one stream (SST).
+> 
+> So add a dedicated clause for Glymur compatible to enforce reg ranges to
+> describing all four streams while allowing either one pixel clock, for the
+> third DP controller, or two pixel clocks, for the rest of them.
+> 
+> Cc: stable@vger.kernel.org # v6.19
+> Fixes: 8f63bf908213 ("dt-bindings: display: msm: Document the Glymur DiplayPort controller")
+> Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+> ---
+>  .../bindings/display/msm/dp-controller.yaml         | 21 ++++++++++++++++++++-
+>  1 file changed, 20 insertions(+), 1 deletion(-)
+> 
 
-diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
-index 26950b8a7543..183c5c86c35a 100644
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -249,12 +249,13 @@ static const struct xe_rtp_entry_sr gt_was[] = {
- 
- 	{ XE_RTP_NAME("16025250150"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION(2001)),
--	  XE_RTP_ACTIONS(SET(LSN_VC_REG2,
--			     LSN_LNI_WGT(1) |
--			     LSN_LNE_WGT(1) |
--			     LSN_DIM_X_WGT(1) |
--			     LSN_DIM_Y_WGT(1) |
--			     LSN_DIM_Z_WGT(1)))
-+	  XE_RTP_ACTIONS(FIELD_SET(LSN_VC_REG2,
-+				   LSN_LNI_WGT_MASK | LSN_LNE_WGT_MASK |
-+				   LSN_DIM_X_WGT_MASK | LSN_DIM_Y_WGT_MASK |
-+				   LSN_DIM_Z_WGT_MASK,
-+				   LSN_LNI_WGT(1) | LSN_LNE_WGT(1) |
-+				   LSN_DIM_X_WGT(1) | LSN_DIM_Y_WGT(1) |
-+				   LSN_DIM_Z_WGT(1)))
- 	},
- 
- 	/* Xe3_LPG */
--- 
-2.53.0
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/msm/qcom,glymur-mdss.example.dtb: displayport-controller@ae90000 (qcom,glymur-dp): reg: [[183042048, 512], [183042560, 512], [183043072, 1536], [183046144, 1024], [183047168, 1024]] is too short
+	from schema $id: http://devicetree.org/schemas/display/msm/dp-controller.yaml
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.kernel.org/project/devicetree/patch/20260227-glymur-fix-dp-bindings-reg-clocks-v1-1-99f7b42b43aa@oss.qualcomm.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 
