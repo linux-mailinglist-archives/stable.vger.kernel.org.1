@@ -1,118 +1,193 @@
-Return-Path: <stable+bounces-219948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mC+AJhiJoWmVuAQAu9opvQ
-	(envelope-from <stable+bounces-219948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:07:52 +0100
+	id 8FXaL3WJoWmtuAQAu9opvQ
+	(envelope-from <stable+bounces-219949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:09:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F1F1B6ED2
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:07:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B021B6F2D
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 13:09:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7D1183050CBE
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 12:07:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B2D2303E4A8
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 12:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE393A0E97;
-	Fri, 27 Feb 2026 12:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89D03A0E97;
+	Fri, 27 Feb 2026 12:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="WbTjrk/y"
+	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="OqFyo7MY";
+	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="LHReFFx/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
+Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FEB3ECBE5
-	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 12:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772194069; cv=none; b=rJwlvFTYl2oCBcvlzy/fa+LTvpc7HKaMl9llgOzDxuIa36jRxv00CTFsT8UNszELVuCEIOoM+OBf+GYrBD4WatPKqrpOnEziMMNpVegpTRyvN/w7VfNmFI/7i0wzVGUkBLpSwwiEzGaXBX7MBfYrj9p8PQU0IdFWoYN8gtuwq24=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772194069; c=relaxed/simple;
-	bh=jsxDa2cjEDGqNh6pk9vrCNSPq95Oixrv/Y//SByYdG8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MUISytWjxaxFN/2aZ076bI8qg/2ryCjc7BkfsgLSuUpX5db0P93wYXOkzd0wOWwhcDBHoaGIJXHOyLml6fBDoWawA1HfBIxJKkFCn2ReIcMOxjWRRAzwlPhtuYnYH9wmqT2LaAHBIPfL+7vNijFPSYdrjscsAgN3ukAUh9Chp38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=WbTjrk/y; arc=none smtp.client-ip=85.9.206.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1772194056; x=1772453256;
-	bh=jsxDa2cjEDGqNh6pk9vrCNSPq95Oixrv/Y//SByYdG8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=WbTjrk/y+wxh3Gg85XeaF//KDSYmd9Sh09LP4btYjFMghKHCYXd0BwZYibqom2wLT
-	 JdQhgLRll3OvnhVHhKdnfphAwQw7hhr80hzBxFCeONK7kAzUToItnhrmo/lSFmVTMU
-	 prCVteE3pKFnUqrCGfdEcxpuOBAhS7rGwipevec4A/LJq9EsUdW6EJJtrXHmdhSDSW
-	 apHgRoAIwCSJ+FSyEa0AyNx0NZ6voiWAqf8OiD4G/H7dA5ReWM7bBopH2fbG/94ODb
-	 xRgPcLiOXqZVXUPrLYIFtmMiUeqGGpw4rICXuqNxuEFhQTcZqSh9iQVMvXzW5j+478
-	 +lnSqh2QxKVjg==
-Date: Fri, 27 Feb 2026 12:07:30 +0000
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-From: Paul Moses <p@1g4.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Victor Nogueira <victor@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH net v8 1/1] net/sched: act_gate: snapshot parameters with RCU on replace
-Message-ID: <px_b8_2gC-ZLFXok9C1Cjh3OAR-3fh7q3tMvB6ddv9V_IR2UOe0ANtPfCbh_s3xFARel2DT6Yg5cVJe3LPmgLpgDgGfqTrJuPa0OADyxdts=@1g4.org>
-In-Reply-To: <20260227013151.qaw4hvb4fyt5roeq@skbuf>
-References: <20260223150512.2251594-1-p@1g4.org> <20260223150512.2251594-2-p@1g4.org> <CAM0EoMmr0SUf7U3CTqd=MSYX=D60zYOfBS-L=GJOsWB-cxZHcg@mail.gmail.com> <20260227013151.qaw4hvb4fyt5roeq@skbuf>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 234b2a4dd7c0867d8a0afb78ee285997c20d982a
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62245313E31;
+	Fri, 27 Feb 2026 12:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=72.84.236.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772194142; cv=fail; b=DSNeM8ZSbaCrTbQR31RlM6GNKcomBkeaWSZtvxDn7M+aHQc8hI3Cf7PfRtpfrPfeosyLDWJ6rGWhl/UodL84KPN2fcoDONO469kyubqhv6zbs0pJJNr/JfGvBuVAKyVNTEd4N6yivCSgk8AOajl7LJAH6XwmpPOUNCQqg/HA0U0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772194142; c=relaxed/simple;
+	bh=NdAqzqQBhbDAelzCm7JyiB2DI8nPTe7kXccb8l58unY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CWU4gKa7i4GUD5n4x0f3f2f2lsnUo2ACIqtay+/BLFeoYHeB2YEd4jcc+rJevYER5HMYym8w6rI4tjo2JNOkyJuQqZXkMrEggz0CDSsYnsbzGao8rN/i3EQWnrVzXbP0lNb4EPcXdKs+NhbHNEXBJSm0FGX4nKq+5hco++blUIM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com; spf=pass smtp.mailfrom=sapience.com; dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b=OqFyo7MY; dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b=LHReFFx/; arc=fail smtp.client-ip=72.84.236.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sapience.com
+Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
+   signature) header.d=sapience.com header.i=@sapience.com 
+   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
+   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
+Received: from smtp.sapience.com (srv8.prv.sapience.com [10.164.28.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by s1.sapience.com (Postfix) with ESMTPS id 57532480AD5;
+	Fri, 27 Feb 2026 07:09:00 -0500 (EST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1772194140;
+ h=message-id : subject : from : to : cc : date : in-reply-to :
+ references : content-type : mime-version : from;
+ bh=7Bc/mBgP+hkcJxfUgFkJnt+eN7XZprBmrRE8B9lziDg=;
+ b=OqFyo7MYifVzokOFV2Gh/AcjSwHsJMQ2unv7VXt8XGtwArGihP6eIgwEZFG48/z42dUCj
+ jPq3NK13w3hhjWlAQ==
+ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1772194140;
+	cv=none; b=tChmMxRJSixV8iAZIQAc88Wg8ZUZOhrrvrtQPLXWy6F+0Q6qpG0b8jbBx1uhmF2tfczOkF43LWk1dVYcWWRE21mLPK7KLo6GLzJZMe2/FG2tltqRaX9ckm5rt1MX6ErwZKUh0ryoDuNGZ4DdUkgRJ3yvMFjsQ0El+MkRBRI8hEIpw0Jq6mmZhQpI7to1gNPiWBpJu0dthI7u0rz929MwsAETDFjB6ZO+mMWFHiVd7yNiWBUaUw4VVYMwAcKgp2Wa2PAfpcMm2pcn1AHHy0l1+SCfH+QJA5oxL1YbMbCWEUR4fYMezKCF0uZnAd111CBLTc+rcQ87Bs7l91xpPEm/NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
+	t=1772194140; c=relaxed/simple;
+	bh=NdAqzqQBhbDAelzCm7JyiB2DI8nPTe7kXccb8l58unY=;
+	h=DKIM-Signature:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Autocrypt:Content-Type:User-Agent:
+	 MIME-Version; b=cYXlsxlramCCqUatb32ZGDgv22VPRsR8EMonDLsqOkzw7xqjHvO+uL+lGUVxBcIHOJ4kfEoqZBI0ylCLi8z6ObZU66A2Ag6IqbcC4FP4B8KTkWGGWHMLHo8rs5QbwHQJEra3Uo6fW80GUlY3CjJMhU9RLdVNgwp+jy8xoGVj6iDiiYFUTtqshEisjerHQhl2eqIi6Ki67JNWErbBJSA4JXshKhyZtcf69P+NgSZ3S/dEDjb7CspHLZR5ySnQISGG/n+6TK8NurFqlhbwhStJnIlr6nxMCrukc81UQt1HG96IMZVpn+cEwY4oA3yPvFKIaldTwYB1hUK/X550BGT3dQ==
+ARC-Authentication-Results: i=1; arc-srv8.sapience.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1772194140;
+ h=message-id : subject : from : to : cc : date : in-reply-to :
+ references : content-type : mime-version : from;
+ bh=7Bc/mBgP+hkcJxfUgFkJnt+eN7XZprBmrRE8B9lziDg=;
+ b=LHReFFx/qn5ceqnBG76w9i+8cpXM4BnMuS91KmXHalwqrqz+nQkSmtorB2ZXjlL0fduQX
+ hmt9DrPsUpkT5QRVptk3eJm5hxscIqtmLAb7TofFoMR6FCXKar/xJPADilhNZesVi+XdNfi
+ z5K9z5KK8wIsFeM/BQtyhX/7EwhgYcRn0/63AoWWs6RzkOhfD6zzPXRaFjbJ9RYLifFutHd
+ jerWmYNIAjxOKOXHHzFFR5Cc0W3FAmO89pwIhy3JDqLIVxRn3++NPF5ZnHqWXaz/1Ojqmg/
+ 2OgtuDPcpgNhJTsQ6/+630k1j81A3oOuzq1pSM+LeHvhELjahckxcpn5EpCw==
+Received: by smtp.sapience.com (Postfix) id 34C83280457;
+	Fri, 27 Feb 2026 07:09:00 -0500 (EST)
+Message-ID: <67d9f732a55a31f3073675164e8d7ada46da3dbe.camel@sapience.com>
+Subject: Re: Linux 6.19.4 - Oops, regression
+From: Genes Lists <lists@sapience.com>
+To: "Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>, Greg KH
+	 <gregkh@linuxfoundation.org>
+Cc: akpm@linux-foundation.org, jslaby@suse.cz, linux-kernel@vger.kernel.org,
+ 	lwn@lwn.net, stable@vger.kernel.org, torvalds@linux-foundation.org
+Date: Fri, 27 Feb 2026 07:09:00 -0500
+In-Reply-To: <bb9ab61c-3bed-4c3d-baf0-0bce4e142292@moonlit-rail.com>
+References: <2026022657-clambake-mountable-8175@gregkh>
+	 <eb2d1da9-0b4b-4887-83a4-0e2a65e703aa@moonlit-rail.com>
+	 <2026022612-buckskin-surfacing-d854@gregkh>
+	 <bb9ab61c-3bed-4c3d-baf0-0bce4e142292@moonlit-rail.com>
+Autocrypt: addr=lists@sapience.com; prefer-encrypt=mutual;
+ keydata=mDMEXSY9GRYJKwYBBAHaRw8BAQdAwzFfmp+m0ldl2vgmbtPC/XN7/k5vscpADq3BmRy5R
+ 7y0LU1haWwgTGlzdHMgKEwwIDIwMTkwNzEwKSA8bGlzdHNAc2FwaWVuY2UuY29tPoiWBBMWCAA+Ah
+ sBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEE5YMoUxcbEgQOvOMKc+dlCv6PxQAFAmPJfooFCRl
+ vRHEACgkQc+dlCv6PxQAc/wEA/Dbmg91DOGXll0OW1GKaZQGQDl7fHibMOKRGC6X/emoA+wQR5FIz
+ BnV/PrXbao8LS/h0tSkeXgPsYxrzvfZInIAC
+Content-Type: multipart/signed; micalg="pgp-sha384";
+	protocol="application/pgp-signature"; boundary="=-kYquzTJF+yQ0cNPJv0N1"
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[sapience.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[sapience.com:s=dk-ed25519-220413,sapience.com:s=dk-rsa-220413];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219948-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219949-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[sapience.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[1g4.org:+];
+	FROM_NEQ_ENVFROM(0.00)[lists@sapience.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,1g4.org:mid,1g4.org:dkim]
-X-Rspamd-Queue-Id: 18F1F1B6ED2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sapience.com:mid,sapience.com:dkim]
+X-Rspamd-Queue-Id: 03B021B6F2D
 X-Rspamd-Action: no action
 
-> The ocelot/felix driver doesn't offload standalone actions (TC_SETUP_ACT)=
- so it
-> doesn't notice changes made to the action using the "tc action" command.
+
+--=-kYquzTJF+yQ0cNPJv0N1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, 2026-02-27 at 01:26 -0500, Kris Karas (Bug Reporting) wrote:
+> Greg KH wrote:
+> > ...
 >=20
-> If I make changes to the "tc gate" action parameters using "tc filter rep=
-lace ...",
-> then I trigger the "The stream is added on this port" extack error in the=
- offload
-> driver, which seems to not have been written to handle parameter changes =
-very well.
+> Bisect complete (from 6.19.3 to 6.19.4)
+>=20
+> > e308d4e35ce1e26cd67070a7035ad265662ab9e5 is the first bad commit
+> > commit e308d4e35ce1e26cd67070a7035ad265662ab9e5
+>=20
+> Kris
+>=20
+> P.S.=C2=A0 I ran the bisect from 7.0-rc1, so many reboots there, and
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 it is fine.=C2=A0 The bug only seems=
+ to affect 6.x
 
-Thanks for testing. Just to confirm: unpatched kernel returns the same erro=
-r?
+In my case, 7.0-rc1 also boots just fine, but when attempting to load
+the nftables rules,=C2=A0nft gives an error and rules are not loaded. The
+same rules work fine in 6.19.3.
 
-Thanks
-Paul
+Do you anything similar?
+
+  Linux version 7.0.0-rc1-custom-1-00124-g3f4a08e64442 ...
+  ...
+=C2=A0 In file included from /etc/nftables.conf:134:2-44:
+=C2=A0 ./etc/nftables.d/set_filter.conf:1746:7-21: Error:
+=C2=A0 Could not process rule: File exists
+                 xx.xxx.xxx.x/23,
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0^^^^^^^^^^^^^=
+^^
+
+The line falls somewhere in the middle of list of set elements that are
+all ip addresses.
+
+Reported here [1]
+
+gene
 
 
+=C2=A0[1]https://lore.kernel.org/lkml/a529a6a9a2755d45765f20b58c5c11e2f790e=
+acb.camel@sapience.com/
 
+--=-kYquzTJF+yQ0cNPJv0N1
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYJAB0WIQRByXNdQO2KDRJ2iXo5BdB0L6Ze2wUCaaGJXAAKCRA5BdB0L6Ze
+21plAQCfvThBAm3mxxhRRIznnWn2U3qnveoX+FTSSM+d5m8KBQD9Erhm3mlMRH3I
+66YCe18KP8+yIbBsyd6C57h3lvR5HQw=
+=ixJv
+-----END PGP SIGNATURE-----
+
+--=-kYquzTJF+yQ0cNPJv0N1--
 
