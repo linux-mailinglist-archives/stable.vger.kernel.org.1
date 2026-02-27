@@ -1,205 +1,224 @@
-Return-Path: <stable+bounces-219905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNpfE54YoWlDqQQAu9opvQ
-	(envelope-from <stable+bounces-219905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 05:07:58 +0100
+	id EDG2EmckoWkyqgQAu9opvQ
+	(envelope-from <stable+bounces-219907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 05:58:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BBEE1B2804
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 05:07:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A396D1B2C42
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 05:58:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BB72311C324
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 04:06:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2210E30DD56C
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 04:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97F83446B1;
-	Fri, 27 Feb 2026 04:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681E1362123;
+	Fri, 27 Feb 2026 04:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WU1fUeuE";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TWddbqBf"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=moonlit-rail.com header.i=@moonlit-rail.com header.b="IBzyUY7x";
+	dkim=permerror (0-bit key) header.d=moonlit-rail.com header.i=@moonlit-rail.com header.b="l7fYdS6Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from hua.moonlit-rail.com (hua.moonlit-rail.com [45.79.167.250])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15A93446AA
-	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 04:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A013290B5;
+	Fri, 27 Feb 2026 04:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.167.250
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772165207; cv=none; b=jQGMfSBZB/iQEh0rkbW3jwgN7QAd9TfCjfan0/yWDjUjVjYYFhVcYefgTxjKm5057apJTzoc4NS688FXOpwmvOgoJRTg8SioqSDp5kl3LsCcrGQFEtg7cUjboQfZHHuwqJ3LoYLiXkQdrIfK6VhNpCoW5yGHU/4YeCy+1GIG30s=
+	t=1772168291; cv=none; b=PvK3tKpuMNTxcZy7iXY/26QxDRMCQLzmOt4iJ2ZZviEfPInQLMqOz31p3I8aD2g64GY0lkZZKJ81IAKE/O0u+CJU5KAHlkBtxx8xyHA5J0E0ryNXuHZp9tjUaEumeEbOl8dlfU2n7PNU5AWRJRVlrYSJB2m59sHBC2sGdIoe8hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772165207; c=relaxed/simple;
-	bh=7dR00TzkZQLFxImS9g2i2+Oam7+hqlJzCG/IgXEyfOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rJpBJ5hL4+d2HCBiuQ7g59xmS3CAGf7LTEMu2ZiuDRBjRM9rZ3HX01oO7I3RD4s9AlcX7qDjeWQUQNH9YXeiIstG0jRESmR6t85MqeAA73J28B0Sx97doso3mbPbaAtbNccvzrxkeY1E0jyyJsY87/DFQwda5VSBSxQFSQNuHtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WU1fUeuE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TWddbqBf; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61R2K2wT1600819
-	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 04:06:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=VdQjHF+RYM7rSSLaFwhLHU5/
-	U+N3CFTxtk5vUawx9aU=; b=WU1fUeuEZi2nZWztsaD8Isc6submU+vTizHM0Nrh
-	ZwEdt0mouZWw0y0gQN2m1K3JLpCqP6kh/QNnbmNW2ToliDbNFZZ2SIJ66atSoonx
-	imB7dRoxB9OSI75LJSlhUjcRJqE5sDGLvzP5GU0EAlVxE2T+4TAxk8rIB6S0CYxR
-	zE+hG3lu6Ft23SRuROKjVl0i+8wqgyuENgndQ830k9OGdGujdywClUGMkMimVTtS
-	54T615IJV5C7wPW5hibVLHFRqpUCp7NmyiNTRhij1JZ2BtLDCcDvmhnPm0RjIIwB
-	zuj7I1T/ZfwzGP2YbEjhoAgweMtKbq3stEAjlM0GIvN9YQ==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cjt99t1c1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 04:06:43 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8c70d16d5a9so1080220685a.3
-        for <stable@vger.kernel.org>; Thu, 26 Feb 2026 20:06:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772165203; x=1772770003; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VdQjHF+RYM7rSSLaFwhLHU5/U+N3CFTxtk5vUawx9aU=;
-        b=TWddbqBf1Q5fRjDCEeAxJRqBJ5rOfNGR6MqRysNT1VQw1bUObAnVsO51EyLktKJVmI
-         A+1m54hJWlPcGRZPaHAuqhDXNxMYnnXykuKxyKKyo1roThzejx5XVaHjrbrI70TYRb1M
-         CeovG5Hj+N+aTOpIS7nhj472NHeJF/tnaLmB1WGjdKgW7wvLssbXjNMPlAMKs1QElYC0
-         PlKAD0V/ff6d2TCjZV/I8HxRTdZoCtwBlq8VzXk8umBPnrnS43/au2jyq6tJyTmlQk3G
-         9xY8UaxHW9lITTuaqTUbzD+qqgtwKYI7eUpui1ht7ggurgbjH+wOsKHO2HyzgzFXNK52
-         /qmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772165203; x=1772770003;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VdQjHF+RYM7rSSLaFwhLHU5/U+N3CFTxtk5vUawx9aU=;
-        b=UzgMdS2H/KlcgLXGSKx5JEhEB4FPWBUPnNb1+OsXtLOqDQ5GS1GNvnCXWoHLRgUoKC
-         XzwEkrbICILhs0oLE48jvksm4EKuO9t/EWI8gsAKOpU31tNns9vkD6K+JSIcH7+jEz/n
-         DBhy4+7cTKe5S/uFpTkGFfV55KfQDOP46BbnRP5266R9TXSy6wqcdPvPCdGjuaY8Sxp2
-         iPmcJo3tXfX7D40wtIHWmJIkNL9qNrWxVYcuXBaiJoqeOuI6atUrrYmyF3n0mMPRUs0s
-         sxoi3hKrhEMXCQwTrGEvtJ4W40PeRiOFjIWXi2S1iU4SSBlKELFfiL/+pjOdLGX91VyX
-         fvWw==
-X-Gm-Message-State: AOJu0YyRmlc0AWvYk/sQr1A8TBIPnFl9higckkudkwTvMzyFj0uA1qjr
-	Jq+L2CQBd+N8KO0vGU4B+jZNKHVtHbeSs0FA4JaBAmmDHN7/JBMGCBj3sjDtifx3z2zESUfsSj6
-	1gWZ2OYca1r7cWJfnTCCOLHEJz4MB2zXS0+3mvFzXSgHucjtkQt3glC7jvFs=
-X-Gm-Gg: ATEYQzy9YbfI75M5tuISnBr7fm0gd0zoSEoYihscfm3ecvKHj8iXVsJx7ZSFOx5+ITX
-	WtK7xulbK77i93fxDYDNjUsT8So1LShyCPwEPQXMyq6Y/6A2FLdqgUUSZaAt0ZcRf1OA5Uj3ptC
-	1hNzf/Vn+L5hXbrn3ZDJCPWXz8J9fapKphy+BrJ0q5tzsd6kQ0tMaaZoNj8OKQY5dCI6k8HtZrr
-	Bhc3QbN4ATss+kUZ8rXMoRmTkD4Yo2hbBVqP474Fr5all6LS7MJjevzCsTrSEAIRfFa+w3lvqmR
-	PBIdyOL0Q+7LVZ/F/866l1OzrfFafIb6cTz+wictCSOOZiUrsAoesfGGjpZxYxY6BuBldZgO367
-	k96YCxaw8arslMwhSQJIJNwQ6zKX2wo4H+94IKFOqUypLZ+aVQ7TSWattVd9EqTy3Q8HpcfvmM1
-	Plo77D/XDSCfocXzSTcVpmBAKMb+ZH3H3RWpI=
-X-Received: by 2002:a05:620a:d85:b0:8cb:43a3:8b6f with SMTP id af79cd13be357-8cbc8e1afe4mr166989785a.67.1772165202899;
-        Thu, 26 Feb 2026 20:06:42 -0800 (PST)
-X-Received: by 2002:a05:620a:d85:b0:8cb:43a3:8b6f with SMTP id af79cd13be357-8cbc8e1afe4mr166987785a.67.1772165202451;
-        Thu, 26 Feb 2026 20:06:42 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-389f3016de6sm11487841fa.38.2026.02.26.20.06.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 20:06:41 -0800 (PST)
-Date: Fri, 27 Feb 2026 06:06:38 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: stable@vger.kernel.org, Rob Clark <robin.clark@oss.qualcomm.com>,
-        Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
-        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jonathan Marek <jonathan@marek.ca>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] drm/msm: Fix dma_free_attrs() buffer size
-Message-ID: <n4pb4fvxp5toiy3ozrzozml75nkhgb3v4vmljpcx4oyp7kkgic@dhzvtsxhwode>
-References: <20260226095714.12126-2-fourier.thomas@gmail.com>
+	s=arc-20240116; t=1772168291; c=relaxed/simple;
+	bh=7WTEYsfKRK+FAjDteikPL4IN19BC+NWZFx/2o8xFHiM=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=SrZxnKh2XwYlXxMzJotHu+mXDkTpTs8u1IP3PBzmzWiLCWiCjccZUz8CJTosvdTIC6rsdIt9n3acQVVHyJIdr7xStnPfzudT4ynyq7kxSOm6ROD+4G97/vpWc+FaKElNjJz7w5zMIawlFmHct+kjq1m5zOzsgNKfVoX1+p4/qn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonlit-rail.com; spf=pass smtp.mailfrom=moonlit-rail.com; dkim=pass (2048-bit key) header.d=moonlit-rail.com header.i=@moonlit-rail.com header.b=IBzyUY7x; dkim=permerror (0-bit key) header.d=moonlit-rail.com header.i=@moonlit-rail.com header.b=l7fYdS6Q; arc=none smtp.client-ip=45.79.167.250
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonlit-rail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=moonlit-rail.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=moonlit-rail.com; s=rsa2021a; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:Subject:References:Cc:To:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+NYI3sC2Rh8Ca1+y95noCqHR8Z4CPLuvLt0BLd+Eomg=; t=1772167562; x=1774759562; 
+	b=IBzyUY7xUmltV/I+SOKbFz5OJOdi/Ml88OIP4mkFEWYRadgdRSNj2LbiaYN+NHWDZcTXltMkmCv
+	U9adlPjQV/3VVSiyGQl17E5IqBLdSIEvuRzLibes/ejlbkH6nrZqb3gDexJG9udEVXQ1Tz+MmwbHU
+	yp53DaaIp1Hi+rUw7FEUZn4/9pW4y6I0lE4ejWWZvlHBHjCFmC5lFJ2YbDJ/Uu8FqAmHaiqXkdIo5
+	wEyAN/872MmiNbOTJfgmkq7BloYDy8Uz5EXBb2WQMMNYbpZL9yeYvMY+vWTh48k3Ba2Tf7L8zKz01
+	e6i6FarNKqN6WmHwqFYV6eS1yJ3yfsKi7IHw==;
+DKIM-Signature: v=1; a=ed25519-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=moonlit-rail.com; s=edd2021a; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:Subject:References:Cc:To:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+NYI3sC2Rh8Ca1+y95noCqHR8Z4CPLuvLt0BLd+Eomg=; t=1772167562; x=1774759562; 
+	b=l7fYdS6Qj2vj3mwoaH8OyS4EuEIgidNHyd6u1EVAZoCAjH3C5HxzxI7I/YlrdvRiyynxIhpIV4L
+	mTwWYzgAFAA==;
+Message-ID: <eb2d1da9-0b4b-4887-83a4-0e2a65e703aa@moonlit-rail.com>
+Date: Thu, 26 Feb 2026 23:46:02 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226095714.12126-2-fourier.thomas@gmail.com>
-X-Authority-Analysis: v=2.4 cv=IZWKmGqa c=1 sm=1 tr=0 ts=69a11853 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=yVL_GmymfDenR9L41UUA:9 a=CjuIK1q_8ugA:10
- a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-GUID: TGVQKrPQiJyb7QInyOObeaBBDXM78a33
-X-Proofpoint-ORIG-GUID: TGVQKrPQiJyb7QInyOObeaBBDXM78a33
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDAyOCBTYWx0ZWRfXxBwpMccPzl0r
- NAG4R4ljo4qqv7uYeJj8TG9gZDSU0rsox7kQPTpPxR0nLM0/u4s8W5/aMDvDXe7OsIekSVWKXZg
- I1LDRthIAt2fSgsKqrSupnbGV7RgObFxl/P796YB/9rRxqzaSzeLIHV8lH8hMOtTcMzX4VyznR6
- rfmHkHVKR1TV676undbufIionnQ+YuWzP19V8pi6OkpX7jfzp1aQyKTpeo+pD8heA9nbwsI51Gq
- wuPFgt/xwEbdB4VT5SlacapVK143zrX10jLhgNFxv3Tpbrduf3fumpuaE+AsP2Ii7YpPfQxMmzl
- 0IFQcJW9pwn2yJWkxQHAT8eUixcO0iyDAkLdT0FuKte8ynCmMzWyGvX0eBU6Wgm81rTLbMNF4x1
- sWPJksiiJj4ZTXFkCRJxAPOsDHBADUyYNwzezpmEUy4s1nl2SJzQufTWXuXnBEormOPQR4abxdc
- eWSVIeteFQc2XBlnMCA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-26_04,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
- priorityscore=1501 suspectscore=0 malwarescore=0 spamscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602270028
+User-Agent: Mozilla Thunderbird
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org, jslaby@suse.cz, linux-kernel@vger.kernel.org,
+ lwn@lwn.net, stable@vger.kernel.org, torvalds@linux-foundation.org
+References: <2026022657-clambake-mountable-8175@gregkh>
+Subject: Re: Linux 6.19.4 - Oops, regression
+From: "Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>
+Content-Language: en-US, en-GB
+In-Reply-To: <2026022657-clambake-mountable-8175@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_DKIM_REJECT(1.00)[moonlit-rail.com:s=rsa2021a,moonlit-rail.com:s=edd2021a];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[moonlit-rail.com : SPF not aligned (strict),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219905-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,oss.qualcomm.com,poorly.run,kernel.org,linux.dev,gmail.com,somainline.org,ffwll.ch,marek.ca,lists.freedesktop.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim];
+	DKIM_TRACE(0.00)[moonlit-rail.com:-];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219907-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 9BBEE1B2804
+	FROM_NEQ_ENVFROM(0.00)[bugs-a21@moonlit-rail.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[moonlit-rail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A396D1B2C42
 X-Rspamd-Action: no action
 
-On Thu, Feb 26, 2026 at 10:57:11AM +0100, Thomas Fourier wrote:
-> The gpummu->table buffer is alloc'd with size TABLE_SIZE + 32 in
-> a2xx_gpummu_new() but freed with size TABLE_SIZE in
-> a2xx_gpummu_destroy().
-> 
-> Change the free size to match the allocation.
-> 
-> Fixes: c2052a4e5c99 ("drm/msm: implement a2xx mmu")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-> ---
-> v1->v2:
->   - Fix subject prefix
-> 
->  drivers/gpu/drm/msm/adreno/a2xx_gpummu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+GregKH wrote:
+> I'm announcing the release of the 6.19.4 kernel.
+> All users of the 6.19 kernel series must upgrade.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Just tried 6.19.4 (and 6.18.14) and am getting a repeatable Oops right 
+when networking is initialized, likely when nft is loading its ruleset 
+from /etc/nftables/*.conf
+
+Once the nft Oops triggers, other processes start to throw errors with 
+memory allocate/free, resulting very quickly in an unusable system. I 
+have several systems that run iptables, which are unaffected, notably my 
+border router with 400+ rules. I have three systems running nftables, 
+one of which is affected, the affected one having the more sophisticated 
+nft ruleset (bridging, 802.1Q, etc).
+
+Kris
+
+---------- Snip ----------
+
+Here's the output from dmesg:
+> 8021q: adding VLAN 0 to HW filter on device eth0
+> ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade 
+> rev:0 func:0 (0x1001)
+> igb 0000:0a:00.0 eth0: igb: eth0 NIC Link is Up 1000 Mbps Full Duplex, 
+> Flow Control: RX
+> BUG: unable to handle page fault for address: 000000010000001d
+> #PF: supervisor read access in kernel mode
+> #PF: error_code(0x0000) - not-present page
+> PGD 126bd2067 P4D 126bd2067 PUD 0
+> Oops: Oops: 0000 [#1] SMP
+> CPU: 12 UID: 0 PID: 1184 Comm: nft Not tainted 6.19.4 #1 PREEMPTLAZY
+> Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./X470 
+> Taichi, BIOS P10.41 04/14/2025
+> RIP: 0010:__kmalloc_noprof+0x1d0/0x3c0
+> Code: 2e 85 5b 01 48 8b 50 08 48 83 78 10 00 48 8b 38 0f 84 b7 01 00 
+> 00 48 85 ff 0f 84 ae 01 00 00 41 8b 41 30 49 8b 31 48 8d 4a 20 <48> 8b 
+> 1c 07 48 89 f8 65 48 0f c7 0e 75 c1 41 8b 41 30 0f 0d 0c 03
+> RSP: 0018:ffffc9000111f5e0 EFLAGS: 00010202
+> RAX: 0000000000000020 RBX: ffff88810592e200 RCX: 0000000000042a4c
+> RDX: 0000000000042a2c RSI: ffffffff82af08e0 RDI: 00000000fffffffd
+> RBP: ffffc9000111f620 R08: 0000000000000030 R09: ffff888100044300
+> R10: 0000000000400dc0 R11: 0000000000000030 R12: 0000000000000000
+> R13: ffffc9000111f70e R14: ffffffffa06737f4 R15: ffffc9000111f7b8
+> FS:  00007fc46c393740(0000) GS:ffff88907c036000(0000) 
+> knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000000010000001d CR3: 0000000126bd5000 CR4: 0000000000350ef0
+> Call Trace:
+> <TASK>
+> ? nla_memcpy+0x29/0x60
+> nft_set_elem_init+0x44/0x140 [nf_tables]
+> nft_add_set_elem+0xa77/0x14e0 [nf_tables]
+> ? vsnprintf+0x3ac/0x5a0
+> ? __nft_trans_set_add+0xb6/0x120 [nf_tables]
+> ? nla_strcmp+0x10/0x60
+> nf_tables_newsetelem+0x19e/0x270 [nf_tables]
+> nfnetlink_rcv_batch+0x582/0x8e0
+> ? netlink_alloc_large_skb+0x3a/0xa0
+> ? __alloc_frozen_pages_noprof+0x148/0x280
+> nfnetlink_rcv+0x172/0x190
+> netlink_unicast+0x1d4/0x2b0
+> netlink_sendmsg+0x1ed/0x410
+> __sock_sendmsg+0x2b/0x40
+> ____sys_sendmsg+0x1fb/0x220
+> ? copy_msghdr_from_user+0xe5/0x170
+> ___sys_sendmsg+0x78/0xc0
+> ? security_capable+0x25/0x50
+> ? release_sock+0x14/0x80
+> ? sk_setsockopt+0x36c/0x1590
+> ? __handle_mm_fault+0x975/0x1660
+> ? do_sock_getsockopt+0x1a2/0x1d0
+> __sys_sendmsg+0x66/0xc0
+> do_syscall_64+0x4e/0xe30
+> entry_SYSCALL_64_after_hwframe+0x4b/0x53
+> RIP: 0033:0x7fc46c0981f7
+> Code: 08 74 44 b8 04 00 00 00 48 8b 15 ec 6b 16 00 64 89 02 48 c7 c2 
+> ff ff ff ff 48 83 c4 10 48 89 d0 5b c3 90 48 8b 44 24 20 0f 05 <48> 63 
+> d0 3d 00 f0 ff ff 77 0f 48 83 c4 10 48 89 d0 5b c3 66 0f 1f
+> RSP: 002b:00007ffec97ae5f0 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+> RAX: ffffffffffffffda RBX: 0000000009146b20 RCX: 00007fc46c0981f7
+> RDX: 0000000000000000 RSI: 00007ffec97bf6d0 RDI: 0000000000000003
+> RBP: 00007ffec97bf7c0 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffec97bf810
+> R13: 0000000000013800 R14: 0000000000000003 R15: 00007ffec97ae640
+> </TASK>
+> Modules linked in: nft_meta_bridge nf_conntrack_bridge nft_log 
+> nft_limit nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_ct tap 
+> nf_tables ip_set ip6table_security iptable_security ip6table_raw 
+> iptable_raw ip6table_mangle iptabl
+> e_mangle ip6table_nat iptable_nat ip6table_filter ip6_tables 
+> iptable_filter ip_tables btusb btrtl btintel btbcm btmtk bluetooth 
+> sd_mod iwlmvm uas usb_storage mac80211 iwlwifi ahci 
+> snd_hda_codec_alc882 libahci snd_hda_codec_realtek
+> _lib cfg80211 igb libata rfkill snd_hda_codec_generic i2c_algo_bit 
+> snd_hda_intel snd_intel_dspcfg snd_hda_codec snd_hda_core snd_hwdep 
+> snd_pcm snd_timer snd soundcore ee1004 acpi_cpufreq gpio_amdpt 
+> gpio_generic processor joydev bi
+> nfmt_misc
+> CR2: 000000010000001d
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:__kmalloc_noprof+0x1d0/0x3c0
+> Code: 2e 85 5b 01 48 8b 50 08 48 83 78 10 00 48 8b 38 0f 84 b7 01 00 
+> 00 48 85 ff 0f 84 ae 01 00 00 41 8b 41 30 49 8b 31 48 8d 4a 20 <48> 8b 
+> 1c 07 48 89 f8 65 48 0f c7 0e 75 c1 41 8b 41 30 0f 0d 0c 03
+> RSP: 0018:ffffc9000111f5e0 EFLAGS: 00010202
+> RAX: 0000000000000020 RBX: ffff88810592e200 RCX: 0000000000042a4c
+> RDX: 0000000000042a2c RSI: ffffffff82af08e0 RDI: 00000000fffffffd
+> RBP: ffffc9000111f620 R08: 0000000000000030 R09: ffff888100044300
+> R10: 0000000000400dc0 R11: 0000000000000030 R12: 0000000000000000
+> R13: ffffc9000111f70e R14: ffffffffa06737f4 R15: ffffc9000111f7b8
+> FS:  00007fc46c393740(0000) GS:ffff88907c036000(0000) 
+> knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000000010000001d CR3: 0000000126bd5000 CR4: 0000000000350ef0
+> note: nft[1184] exited with irqs disabled 
 
 
--- 
-With best wishes
-Dmitry
 
