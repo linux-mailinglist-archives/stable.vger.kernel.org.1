@@ -1,156 +1,122 @@
-Return-Path: <stable+bounces-219988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHJ+OP7MoWn3wQQAu9opvQ
-	(envelope-from <stable+bounces-219988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 17:57:34 +0100
+	id cJAeCdzQoWkfwgQAu9opvQ
+	(envelope-from <stable+bounces-219989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 18:14:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCFE1BB18F
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 17:57:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DDA1BB47B
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 18:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14895303D895
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 16:57:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6FD9311EB56
+	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 17:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACE4356A2B;
-	Fri, 27 Feb 2026 16:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B556735D5F8;
+	Fri, 27 Feb 2026 17:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FxkH39tu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s5vrgOoN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02AD348452;
-	Fri, 27 Feb 2026 16:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767D52C2349;
+	Fri, 27 Feb 2026 17:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772211446; cv=none; b=NWVFjxi/mk+A9X9Uq7UZASuWvz1BUHn18gLpGL3TGyzpCsGgryAY/7ZyOi/UB+ZcMzixK1IMxM9gNf4Ny6SkywlFlLG1pNgi0iGl9ZtH0/ma6P5TSI93fHU1T+tmqecPz/WLJr10Vy/VEm8nQ5YekUfPok7ywTUWV48MVcWwzlg=
+	t=1772212149; cv=none; b=QzyRxgQq8+1LRnpUA1xv/BnKd8WBvLen01X2KVcUNb3ErajryD2etj5HleYGOqwtQAT/8+aWAoR/R8luAOXtrCbMniFf6gnMIbaVYgNCYOCN+teD3MT4f+rr7DP8lwCCH34Mu46/3WxmPTRkuTLUhyaBJpXdu0G29dwyoZG/Ess=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772211446; c=relaxed/simple;
-	bh=YaAGaUWYb4yFijxgt+6ck3PmrcCbR3kRSfqJVEaGCuQ=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=tyHS1TUWGfwgURlR1hzJa2Oix9H1EZcZmkwP3N4EwmeJt5nAjeX962LUmPGR8zmSSvIECtRGJa4KOXiEBtg4tB9HJdCVobGAaPswml/lAsRyOcdx9C/Cg7b/0gir7IrWgyNnW4XxiVY6FXiqXi0n3qplxtjExQNtFqT2exC3gcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FxkH39tu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4CFC116C6;
-	Fri, 27 Feb 2026 16:57:26 +0000 (UTC)
+	s=arc-20240116; t=1772212149; c=relaxed/simple;
+	bh=1KAqzA+8uV1poJl6va51WArWnnZz8PlW6lqjGx93yZU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pi8aciYOs1ElnnbW3fPBsCxn3kFiJSSsi0uP2PJKZcwE8iQ9+F+pdjxwIv/eXWBcDm7BbACUwuGWq84XbGagbpsEHLrJGLcIhJJIZ79GsZbqmW4+0RBNpNXDrntQFDJmnxPeNasE4L97xnpGsVI8lSApD8LmFyYuwOtZY5o19Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s5vrgOoN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11CDC116C6;
+	Fri, 27 Feb 2026 17:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772211446;
-	bh=YaAGaUWYb4yFijxgt+6ck3PmrcCbR3kRSfqJVEaGCuQ=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=FxkH39tuG5VpcSKWV0HyWM7ZzZZk6wNfJeN447Ssrpq6XReCkqMOj9f/2SBnAtFvi
-	 oXOWjo8Drnny+jTFklpXwOyV2QnbFJ4RVV71iXopL2mDifysDc85DgTVV94sPAiAoZ
-	 B/Cs+kECZ1GXQ9clGPv/ANf7zRq6mV5wdKkhWzRzrgv+Q6gb0bFYlR0nN00i9XrWMM
-	 W/wugxJXRiiQLtozYNZoLXJ2ivXZknN8JFGRbxzxi1Ze/kAAbOcXiNMgm/CC7deiJ2
-	 ubYf9zGPVaE9Kej8l1LaNxif16cO3hsQ3kyoF28+ekD5OHphNTVHE4H3AzKMpK1qdr
-	 o471mq5LErfsw==
-Date: Fri, 27 Feb 2026 10:57:25 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1772212149;
+	bh=1KAqzA+8uV1poJl6va51WArWnnZz8PlW6lqjGx93yZU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s5vrgOoNFZRn6r17oo6ZnPu4in2RySHro2gEKyq2gHCFPo4mT0vGT7VDHABNFfVqD
+	 tJ4JeqsEhmVthfTExHl81tgvd8Ur4u/twkqpqcshWu27PdyFIEm3NAH8sGMOTeifPU
+	 0mhp2U/4nKAiu4lKnaCHIsju/4ilXiaxfDhlfUliXz3v0rXIAXSGBmejwoAlMNthEC
+	 pP2FS9kU4PspfktVWDf/xLrlHia4TFOAEkOnK2b1HOoC6whKVKIeLUSZp0YkVes4xY
+	 WGO5kAzj8oKF+hLVg9OcrtkiEBntZ2/yojytgq4vTU/n3Z/ilBBMbRNK7VsYBHNBe8
+	 6knRk8HXDdbdA==
+Date: Fri, 27 Feb 2026 07:09:07 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Boqun Feng <boqun@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] rust: workqueue: restrict delayed work to global
+ wqs
+Message-ID: <aaHPs-nULPEt_wJB@slm.duckdns.org>
+References: <20260227-create-workqueue-v3-0-87de133f7849@google.com>
+ <20260227-create-workqueue-v3-1-87de133f7849@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: David Airlie <airlied@gmail.com>, devicetree@vger.kernel.org, 
- freedreno@lists.freedesktop.org, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Jessica Zhang <jesszhan0024@gmail.com>, 
- Kuogee Hsieh <quic_khsieh@quicinc.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, 
- Rob Clark <robin.clark@oss.qualcomm.com>, Abel Vesa <abelvesa@kernel.org>, 
- Thomas Zimmermann <tzimmermann@suse.de>, Sean Paul <sean@poorly.run>, 
- linux-arm-msm@vger.kernel.org, Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-To: Abel Vesa <abel.vesa@oss.qualcomm.com>
-In-Reply-To: <20260227-glymur-fix-dp-bindings-reg-clocks-v1-1-99f7b42b43aa@oss.qualcomm.com>
-References: <20260227-glymur-fix-dp-bindings-reg-clocks-v1-1-99f7b42b43aa@oss.qualcomm.com>
-Message-Id: <177221144530.237949.10314173375793939491.robh@kernel.org>
-Subject: Re: [PATCH] dt-bindings: display: msm: Fix reg ranges and clocks
- on Glymur
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227-create-workqueue-v3-1-87de133f7849@google.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,lists.freedesktop.org,somainline.org,kernel.org,quicinc.com,oss.qualcomm.com,linux.dev,suse.de,poorly.run,ffwll.ch,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-219988-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219989-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,umich.edu,collabora.com,nvidia.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 5BCFE1BB18F
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,slm.duckdns.org:mid]
+X-Rspamd-Queue-Id: 78DDA1BB47B
 X-Rspamd-Action: no action
 
+On Fri, Feb 27, 2026 at 02:53:20PM +0000, Alice Ryhl wrote:
+> When a workqueue is shut down, delayed work that is pending but not
+> scheduled does not get properly cleaned up, so it's not safe to use
+> `enqueue_delayed` on a workqueue that might be destroyed. To fix this,
+> restricted `enqueue_delayed` to static queues.
 
-On Fri, 27 Feb 2026 16:23:00 +0200, Abel Vesa wrote:
-> The Glymur platform has four DisplayPort controllers. All the
-> controllers support four streams (MST). However, the first three only
-> have two streams wired up physically to the display subsystem, while the
-> fourth controller has only one stream (SST).
-> 
-> So add a dedicated clause for Glymur compatible to enforce reg ranges to
-> describing all four streams while allowing either one pixel clock, for the
-> third DP controller, or two pixel clocks, for the rest of them.
-> 
-> Cc: stable@vger.kernel.org # v6.19
-> Fixes: 8f63bf908213 ("dt-bindings: display: msm: Document the Glymur DiplayPort controller")
-> Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-> ---
->  .../bindings/display/msm/dp-controller.yaml         | 21 ++++++++++++++++++++-
->  1 file changed, 20 insertions(+), 1 deletion(-)
-> 
+C being C, we've been just chalking this up as "user error", but please feel
+free to add per-workqueue percpu ref for pending delayed work items if
+that'd help. That shouldn't be noticeably expensive and should help
+straighten this out for rust hopefully.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Thanks.
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/msm/qcom,glymur-mdss.example.dtb: displayport-controller@ae90000 (qcom,glymur-dp): reg: [[183042048, 512], [183042560, 512], [183043072, 1536], [183046144, 1024], [183047168, 1024]] is too short
-	from schema $id: http://devicetree.org/schemas/display/msm/dp-controller.yaml
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.kernel.org/project/devicetree/patch/20260227-glymur-fix-dp-bindings-reg-clocks-v1-1-99f7b42b43aa@oss.qualcomm.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+-- 
+tejun
 
