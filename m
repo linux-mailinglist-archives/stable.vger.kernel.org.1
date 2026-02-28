@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2ItgO99co2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:23:43 +0100
+	id gCcuNE5Yo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:04:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AC71C8FAC
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:23:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0083E1C8BF5
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:04:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8735C35CE14E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:45:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 49FDB309493F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBE14B8DC3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4624B8DC8;
 	Sat, 28 Feb 2026 17:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mpOVC/4F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgo2XCWm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23814ADDA5;
-	Sat, 28 Feb 2026 17:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8C74ADDB6;
+	Sat, 28 Feb 2026 17:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301315; cv=none; b=G/CT8gjlN1H1+3BtcqcdAsKeUU8cMGupD1lSFr+mpHWRobLdvGyWiiTcQWVlUqbzFfBYQQOitjCyP4v48q9sEFThbbQvc4r1NeFGhfpD/fFLJZR6OTW9ds6ttBpilsbJfB+KDE3D5kRSr0vMZd6pZm34nirx0TleVLLphe+Anqs=
+	t=1772301316; cv=none; b=qbkrzXWnStJYNo2x9Hcly21fqUHeITpzELYnrIJay7lH8/wefJrD36DM+E1UXPeT76BtNeEpBgkHQ90w0CiKFZr5xxyIyXQPvSoOVl00V/rJC00pr4NXsNDppOGYLqaVzyq/o/ROL6BiiZlJu4sHqD1sI0iarTAPZLkAIak5Rsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301315; c=relaxed/simple;
-	bh=OssYHVtpqWoKQFKjafrGzXcfF6y3P6GuD0ExBSD0byU=;
+	s=arc-20240116; t=1772301316; c=relaxed/simple;
+	bh=jTY4FYVwDJIGe5KfCtsL6WWiMnwR77HoDz51E9tumDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4UpKMwEDdtoKuDlg4hHzh5TDPri3aqqu1iKan0tRttpffrzmocDR25lUaw5Cj5e9Em02sKDJINY82qAkDyQT4/sbb21XPK1zV94K7FTiczqcGNmRzaZy69EFULycB3KKGqQqq24yg4zvwT3c4cFakiBLBpafRx3RNcDezlt7cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mpOVC/4F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B69EC19423;
+	 MIME-Version:Content-Type; b=ALDLd9XFW4p5F1b/9EQTJjjaIDqAAHal7ezED0SAtjq5VVlhWr6f3qaSl5GNYYm29nls38WgZOZWfVDKHsylHOlAPzERzsLY466qoO2jMRrmyuo8a4A99TZH6rpZ1G94GpxrHefXV2UJj3fOIYfRmmYE9LC7RKGf+9lLCGdQPY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgo2XCWm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81F1C19423;
 	Sat, 28 Feb 2026 17:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301315;
-	bh=OssYHVtpqWoKQFKjafrGzXcfF6y3P6GuD0ExBSD0byU=;
+	s=k20201202; t=1772301316;
+	bh=jTY4FYVwDJIGe5KfCtsL6WWiMnwR77HoDz51E9tumDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mpOVC/4FCc2HCJEWOWEGSMJlhJbXm8NPLhpMTgPfw8yoFgU+h5lrSZeYWgLzlJLf0
-	 zw64Xekd8hSR3yPNbdOb4BzTyX9ujT6s8/vCmMNzNr9Sd1ccu0a4Zkd/RoKjvFD7ax
-	 Su5dyw409q5ekS2ikiyIyS7Yu4AZ5zRjI69XuZVMrUbfl1Xjq6GVpim6aoFBZpvH8+
-	 0R8kmeTkj2hHSaHCNZWq8uQC/+1uRwkCRgXqynHLTp1VNBieE4mGpJBCKCnvFwtobu
-	 zSqLe0soeofIWmgq6VrrSRoMp7eX+3RZrW52O4x7EFzfv7xTY4/JBV51O6P3C+3tQ5
-	 OJ0n1QL6mdT0Q==
+	b=cgo2XCWmD+I34SeR33+0xvvvNghIGQWhuKqmAvp03Xu8F6rY+kMiH1hpFA4zXTvzP
+	 UMQBderF7iKeNrgZwx0DvDrO5WZEs5cbOgN8j2enKByKfRmoEJyM+28+RTiIvEUcFF
+	 xbLsGa2N6Wie4eLhQTGbdwaH9160tlDCqvLwnug+jHe1QjAH2y/yJM6oEGUZO8er/2
+	 mfT2GNUz8i/Io1TuGNZ/RYtoa9SzcknYFUE++UiEG2lMv6uc2kUpiuIHNKQtm3X4nx
+	 EoGSzVQ99aqkH7+oF+5YR6UTUEll9jgfIs43H6Zof+dVu33QITG7ikVFlscCTH3P6n
+	 SX1cEwCak7+Jw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Oliver Neukum <oneukum@suse.com>,
+Cc: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
 	stable@vger.kernel.org,
 	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 501/752] HID: hid-pl: handle probe errors
-Date: Sat, 28 Feb 2026 12:43:32 -0500
-Message-ID: <20260228174750.1542406-501-sashal@kernel.org>
+Subject: [PATCH 6.18 502/752] HID: magicmouse: Do not crash on missing msc->input
+Date: Sat, 28 Feb 2026 12:43:33 -0500
+Message-ID: <20260228174750.1542406-502-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -62,76 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220970-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220971-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: 83AC71C8FAC
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 0083E1C8BF5
 X-Rspamd-Action: no action
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Günther Noack <gnoack@google.com>
 
-[ Upstream commit 3756a272d2cf356d2203da8474d173257f5f8521 ]
+[ Upstream commit 17abd396548035fbd6179ee1a431bd75d49676a7 ]
 
-Errors in init must be reported back or we'll
-follow a NULL pointer the first time FF is used.
+Fake USB devices can send their own report descriptors for which the
+input_mapping() hook does not get called.  In this case, msc->input stays NULL,
+leading to a crash at a later time.
 
-Fixes: 20eb127906709 ("hid: force feedback driver for PantherLord USB/PS2 2in1 Adapter")
+Detect this condition in the input_configured() hook and reject the device.
+
+This is not supposed to happen with actual magic mouse devices, but can be
+provoked by imposing as a magic mouse USB device.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Günther Noack <gnoack@google.com>
 Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-pl.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/hid/hid-magicmouse.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hid/hid-pl.c b/drivers/hid/hid-pl.c
-index 3c8827081deae..dc11d5322fc0f 100644
---- a/drivers/hid/hid-pl.c
-+++ b/drivers/hid/hid-pl.c
-@@ -194,9 +194,14 @@ static int pl_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 		goto err;
- 	}
+diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
+index 7d4a25c6de0eb..91f621ceb924b 100644
+--- a/drivers/hid/hid-magicmouse.c
++++ b/drivers/hid/hid-magicmouse.c
+@@ -725,6 +725,11 @@ static int magicmouse_input_configured(struct hid_device *hdev,
+ 	struct magicmouse_sc *msc = hid_get_drvdata(hdev);
+ 	int ret;
  
--	plff_init(hdev);
-+	ret = plff_init(hdev);
-+	if (ret)
-+		goto stop;
- 
- 	return 0;
++	if (!msc->input) {
++		hid_err(hdev, "magicmouse setup input failed (no input)");
++		return -EINVAL;
++	}
 +
-+stop:
-+	hid_hw_stop(hdev);
- err:
- 	return ret;
- }
+ 	ret = magicmouse_setup_input(msc->input, hdev);
+ 	if (ret) {
+ 		hid_err(hdev, "magicmouse setup input failed (%d)\n", ret);
 -- 
 2.51.0
 
