@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GHMDGk0o2mX+QQAu9opvQ
-	(envelope-from <stable+bounces-220230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:31:05 +0100
+	id AINKMnA0o2nP+QQAu9opvQ
+	(envelope-from <stable+bounces-220231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:31:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5588F1C5E4B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:31:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4CB1C5E52
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3305A30D1423
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:56:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 059AB3112F24
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E9E175A8A;
-	Sat, 28 Feb 2026 17:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DE54F799B;
+	Sat, 28 Feb 2026 17:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WmuzygYE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOJeT4Mq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED505175A80;
-	Sat, 28 Feb 2026 17:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F6747CC92;
+	Sat, 28 Feb 2026 17:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300135; cv=none; b=DvyPjUO1eY8Hg0CZ9FGuVB78WxCabkUjjyby9haCoj/VS0uEeiF4s0IFhy3dqSDYmYTT0koogMhlrzsfaMgLrCkSejyxNoKnGC/MSI50dafGJdqmFk+J3YFaLSDh7YjFUFdXGAEGjQufGcb/6ayK9viSkNBae9NzGL4omy0BdJ4=
+	t=1772300136; cv=none; b=GE2XD7CTICg3t3IokjqrXPksSiYQLC9fL5U+kJU8VplZbV9FNgjqQLkPFno/qlGe8avKq+0lbCjjqVFBaXuXS0S+3cXpXi4U22F7VubMYNBzwmGwpVEEEO/dspFDVaere449m3cGOHxMwMbH7mgHq1p8zDA3pHVdwy+bYVUu3yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300135; c=relaxed/simple;
-	bh=K/186z1y6c+vK5de+7Iw8hyg8iSR5DBLjUV9OQvskRE=;
+	s=arc-20240116; t=1772300136; c=relaxed/simple;
+	bh=diWvckYIFXeOe6phtc9YGTOKJ+joKOgIt1D2BRCZP48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f88xt9C97gjIamkPLXnty2oy59MJGjJNv7m3Qx222AXxMKvTI6S05a+t+jqvwuZ5TEtO5ojsawipHlzBCtIFfrhlM+CzbIax04fjF4nDl7pwKga6Y3+kA6wk/jDULSjmvhzUjZcQ114Wpj5AaQfr8YDKagtiVt4wHW5Do1LzEeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WmuzygYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD5BC19425;
-	Sat, 28 Feb 2026 17:35:34 +0000 (UTC)
+	 MIME-Version; b=bJ+lFs8U0H80x8SeVuH5CkJ1N6EocftPIgVpQXuzlzKqd2xRJKkxbzkCDWR9kzbHavP/FsTLlCxjHI1BjLvJW1+AMr5EIhUfU2rui66eJ4PTdwKhURsWfdkGhWtf+DntS+P0gAAXmHz152pbrVz8A9RjltmWc+XsoCxUnYMquoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOJeT4Mq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F0EC19423;
+	Sat, 28 Feb 2026 17:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300134;
-	bh=K/186z1y6c+vK5de+7Iw8hyg8iSR5DBLjUV9OQvskRE=;
+	s=k20201202; t=1772300135;
+	bh=diWvckYIFXeOe6phtc9YGTOKJ+joKOgIt1D2BRCZP48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmuzygYEy63shX9nEhF3wNBl0Vw0o3P/pxcNmIAGDDo4uXb80mkXEAxL0rrqMb+z4
-	 mcFakPhASnLi6KX2axo4gUT8nOViggG6NJUPtqTqmuHSB08hIfHx3kY9OyeVMcPZqN
-	 sr/oJPh9QMNUnS3BOrMYPy1eKJb6pwwA5f26co9i6zN8T66RctPJeBpj/a0tPPesSw
-	 A4qV6/Nwgq/xtdhLEzIwamlvv1FynqmGrKbIgqM+K9lzpYeeTtmQYKsL7U415RTx/X
-	 FUaf8fS+Z3ycihykwEiEuJlZaVLu9Mvl190zsMvOyHcfMVQ0ionqEQaJoD68CSCJWL
-	 qhDI/Bmz0XiNw==
+	b=IOJeT4MqFws2Wx7mwFVMmdUkrEC8A3f+QPiKvKMNy8KLzbJWC9gYSFwPoFj9Wo7q9
+	 HXwbq8r5xgy9yqqK9kjnfDjBWU9aiY+fg24GoNRqtsqxunhuWDEJiodyNq3eg4uq1q
+	 XLT7XhlS6tsMbHQ6SEYql+k5UXBhCWbZkLFZg0IKCKUeTKe3InfN8vvuSpo5+/VxWC
+	 V21Vs7T4nWhDC2M8DMtsDUZHZRFgipctr6BptH81FSANn9BcGOc6GY/WTC9swd4tgO
+	 8X6YFuu0WzxhvmsV9Wfxg0vbylMI12jtP4ea369AhzJ/FbI61E45LPQoVAvEQKndqE
+	 RkNpFohRrofNQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 152/844] media: omap3isp: isp_video_mbus_to_pix/pix_to_mbus fixes
-Date: Sat, 28 Feb 2026 12:21:05 -0500
-Message-ID: <20260228173244.1509663-153-sashal@kernel.org>
+Subject: [PATCH 6.19 153/844] media: omap3isp: isppreview: always clamp in preview_try_format()
+Date: Sat, 28 Feb 2026 12:21:06 -0500
+Message-ID: <20260228173244.1509663-154-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,11 +72,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220230-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220231-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -90,56 +90,66 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable,cisco];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5588F1C5E4B
+X-Rspamd-Queue-Id: 1C4CB1C5E52
 X-Rspamd-Action: no action
 
 From: Hans Verkuil <hverkuil+cisco@kernel.org>
 
-[ Upstream commit 44c03802a5191626996ee9db4bac090b164ca340 ]
+[ Upstream commit 17e1e1641f74a89824d4de3aa38c78daa5686cc1 ]
 
-The isp_video_mbus_to_pix/pix_to_mbus functions did not take
-the last empty entry { 0, } of the formats array into account.
+If prev->input != PREVIEW_INPUT_MEMORY the width and height weren't
+clamped. Just always clamp.
 
-As a result, isp_video_mbus_to_pix would accept code 0 and
-isp_video_pix_to_mbus would select code 0 if no match was found.
+This fixes a v4l2-compliance error:
+
+	fail: v4l2-test-subdevs.cpp(171): fse.max_width == ~0U || fse.max_height == ~0U
+	fail: v4l2-test-subdevs.cpp(270): ret && ret != ENOTTY
+test Try VIDIOC_SUBDEV_ENUM_MBUS_CODE/FRAME_SIZE/FRAME_INTERVAL: FAIL
 
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/ti/omap3isp/ispvideo.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../media/platform/ti/omap3isp/isppreview.c   | 21 +++++++------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/platform/ti/omap3isp/ispvideo.c b/drivers/media/platform/ti/omap3isp/ispvideo.c
-index 0e7f0bf2b3463..68e6a24be5614 100644
---- a/drivers/media/platform/ti/omap3isp/ispvideo.c
-+++ b/drivers/media/platform/ti/omap3isp/ispvideo.c
-@@ -148,12 +148,12 @@ static unsigned int isp_video_mbus_to_pix(const struct isp_video *video,
- 	pix->width = mbus->width;
- 	pix->height = mbus->height;
+diff --git a/drivers/media/platform/ti/omap3isp/isppreview.c b/drivers/media/platform/ti/omap3isp/isppreview.c
+index e383a57654de8..5c492b31b5160 100644
+--- a/drivers/media/platform/ti/omap3isp/isppreview.c
++++ b/drivers/media/platform/ti/omap3isp/isppreview.c
+@@ -1742,22 +1742,17 @@ static void preview_try_format(struct isp_prev_device *prev,
  
--	for (i = 0; i < ARRAY_SIZE(formats); ++i) {
-+	for (i = 0; i < ARRAY_SIZE(formats) - 1; ++i) {
- 		if (formats[i].code == mbus->code)
- 			break;
- 	}
+ 	switch (pad) {
+ 	case PREV_PAD_SINK:
+-		/* When reading data from the CCDC, the input size has already
+-		 * been mangled by the CCDC output pad so it can be accepted
+-		 * as-is.
+-		 *
+-		 * When reading data from memory, clamp the requested width and
+-		 * height. The TRM doesn't specify a minimum input height, make
++		/*
++		 * Clamp the requested width and height.
++		 * The TRM doesn't specify a minimum input height, make
+ 		 * sure we got enough lines to enable the noise filter and color
+ 		 * filter array interpolation.
+ 		 */
+-		if (prev->input == PREVIEW_INPUT_MEMORY) {
+-			fmt->width = clamp_t(u32, fmt->width, PREV_MIN_IN_WIDTH,
+-					     preview_max_out_width(prev));
+-			fmt->height = clamp_t(u32, fmt->height,
+-					      PREV_MIN_IN_HEIGHT,
+-					      PREV_MAX_IN_HEIGHT);
+-		}
++		fmt->width = clamp_t(u32, fmt->width, PREV_MIN_IN_WIDTH,
++				     preview_max_out_width(prev));
++		fmt->height = clamp_t(u32, fmt->height,
++				      PREV_MIN_IN_HEIGHT,
++				      PREV_MAX_IN_HEIGHT);
  
--	if (WARN_ON(i == ARRAY_SIZE(formats)))
-+	if (WARN_ON(i == ARRAY_SIZE(formats) - 1))
- 		return 0;
+ 		fmt->colorspace = V4L2_COLORSPACE_SRGB;
  
- 	min_bpl = pix->width * formats[i].bpp;
-@@ -191,7 +191,7 @@ static void isp_video_pix_to_mbus(const struct v4l2_pix_format *pix,
- 	/* Skip the last format in the loop so that it will be selected if no
- 	 * match is found.
- 	 */
--	for (i = 0; i < ARRAY_SIZE(formats) - 1; ++i) {
-+	for (i = 0; i < ARRAY_SIZE(formats) - 2; ++i) {
- 		if (formats[i].pixelformat == pix->pixelformat)
- 			break;
- 	}
 -- 
 2.51.0
 
