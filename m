@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-221012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGYtMQ5do2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-221012-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:24:30 +0100
+	id qIP4MBFYo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-221013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:03:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3898E1C9002
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:24:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C540E1C8BA6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 060083448B01
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:45:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1762A30E96B7
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D6F47CC89;
-	Sat, 28 Feb 2026 17:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924994BCAA4;
+	Sat, 28 Feb 2026 17:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rgq9T6CR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KW/U5ZaA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6656C4BCAA0;
-	Sat, 28 Feb 2026 17:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565DF29E114;
+	Sat, 28 Feb 2026 17:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301355; cv=none; b=gZng4HIx26dRCfVhzzfqtkUC24eUm7ro9tlvOLmCAtA/xPYpwfg8qwfx348A2dTx++8ITkGP0MQS7WzVo33tWfzggvnKqre7GdprXboSevNpbtd0aYI1sSy6PM+tw/0knCqDrQq6iuuK7wM3Jn+aDLwtbrerZO5WP9FdU9zKtfA=
+	t=1772301356; cv=none; b=SlM4N2Kk2LZNInOujnxy5TxrbZ1WVXFqJUDrICTrB2ncnsJfq5ep/YINuyP4em3I4O/Z78aKClZt9UWz5PfMjz1HS2+LW5c1HcdGU1287QhZh4CrlD+dx0aO20akbSigClSdp8xWBTkhiqKaiIIURukE6oZcPupeUhBA6Un5LsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301355; c=relaxed/simple;
-	bh=9cr3n3gmMpWWaSZjZA2afqSrWBNC6bCrHzSRJ4+2g74=;
+	s=arc-20240116; t=1772301356; c=relaxed/simple;
+	bh=7dU/V+2XQLzBWq9sNnZn08HsxV6n76VONcvRUq7usoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ho78vK+8xCVJW48wwzyZORLXKIemrPB9RFQKy0v0wgK3LABZmxtV5YK6FFgGCT3rCUYTxMSryxk8FKk7odJ3Ou0IqafEmc0RweG+iADTIAGpXar4hy8quWQ+R1mSD0XEPHCB/47qnwX/WAj5KMBeITOTl41Q3ecfYbae7u51REY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rgq9T6CR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08F4C19423;
-	Sat, 28 Feb 2026 17:55:54 +0000 (UTC)
+	 MIME-Version; b=CtwxSUDbKjiz+dUAId2YymlEIOGyhItN/mAU5aIfj8NGOEt1OWbN+UHCLF87PYiLhLvy3PxsEwNyMAjrF/wOirU9ttiQ/OMg2YzIP7X1BskcA6VzpUn0RQFXOjuk9xEs4zP+rfMrF7i4r4QMhSwcM8zgo1KZtEMADK8pQ04qIE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KW/U5ZaA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A19C19423;
+	Sat, 28 Feb 2026 17:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301355;
-	bh=9cr3n3gmMpWWaSZjZA2afqSrWBNC6bCrHzSRJ4+2g74=;
+	s=k20201202; t=1772301356;
+	bh=7dU/V+2XQLzBWq9sNnZn08HsxV6n76VONcvRUq7usoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rgq9T6CR1RFcHZvjYx/WB08+6wSuBTzOCN7QFfN7pc31LfG2rVX9SJtPg413HsuWp
-	 dBSF5P/38W5JAyBKtnWL2xzPwgVBKCb20eB15Fd4NuU0MDeDhnac9hJQcpR8aaiifz
-	 UGoGqgTCZPqQT2bPS+IvEueHDNPfUdtrg+vueSvd6T9LActMu1yEPO1KineS0YNBjn
-	 6q50Dj0dQKYvwdcVjg2dAFMzCgI0SwU7QlZS/YOG6pr2aLob2Zvrbc6yxiUi+Foo9/
-	 sP01+466UH+84i0kSfEJ1XRsauRH1TgLIJECWClQkw1/k7HPA/BL1xhCxl73zab4FL
-	 wkBXke4eKCMxQ==
+	b=KW/U5ZaAwgeR0Qwr11mcaFO4BtRIBij7o2evQi4gcBzkPY/ig9dcnDxUKF1QALFXM
+	 Wm6GhcQwk1WDp41gojIdDhPhwbmHBIKUdVOULs5F483l80CY8p/QXK5RVfXC7LcldZ
+	 x6UYXbug5IeC1ctquBGclP4KeFq0Wai1n+b55YaUli9wYdO+GMqSEtvQOkOkzlHEtf
+	 ckj6apqyLoly9ttnaOstZScH8TI/cDLf4v3UL3iidm4qnUEtv+kkxXpND9HfYuefu0
+	 /Cn/9k5gICREG0O5zFRMo+/dsS2eU/Y1XMJgck5i9Wbu6OTRJxKqyJQqSQLVGjUf+3
+	 1MJUwIgxix19g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Wentao Liang <vulab@iscas.ac.cn>,
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
 	stable@vger.kernel.org,
-	Nishanth Menon <nm@ti.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 543/752] soc: ti: pruss: Fix double free in pruss_clk_mux_setup()
-Date: Sat, 28 Feb 2026 12:44:14 -0500
-Message-ID: <20260228174750.1542406-543-sashal@kernel.org>
+Subject: [PATCH 6.18 544/752] KVM: nSVM: Always use vmcb01 in VMLOAD/VMSAVE emulation
+Date: Sat, 28 Feb 2026 12:44:15 -0500
+Message-ID: <20260228174750.1542406-544-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -71,18 +72,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221012-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221013-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -91,52 +92,55 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:email,msgid.link:url,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 3898E1C9002
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: C540E1C8BA6
 X-Rspamd-Action: no action
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-[ Upstream commit 80db65d4acfb9ff12d00172aed39ea8b98261aad ]
+[ Upstream commit 127ccae2c185f62e6ecb4bf24f9cb307e9b9c619 ]
 
-In the pruss_clk_mux_setup(), the devm_add_action_or_reset() indirectly
-calls pruss_of_free_clk_provider(), which calls of_node_put(clk_mux_np)
-on the error path. However, after the devm_add_action_or_reset()
-returns, the of_node_put(clk_mux_np) is called again, causing a double
-free.
+Commit cc3ed80ae69f ("KVM: nSVM: always use vmcb01 to for vmsave/vmload
+of guest state") made KVM always use vmcb01 for the fields controlled by
+VMSAVE/VMLOAD, but it missed updating the VMLOAD/VMSAVE emulation code
+to always use vmcb01.
 
-Fix by returning directly, to avoid the duplicate of_node_put().
+As a result, if VMSAVE/VMLOAD is executed by an L2 guest and is not
+intercepted by L1, KVM will mistakenly use vmcb02. Always use vmcb01
+instead of the current VMCB.
 
-Fixes: ba59c9b43c86 ("soc: ti: pruss: support CORECLK_MUX and IEPCLK_MUX")
+Fixes: cc3ed80ae69f ("KVM: nSVM: always use vmcb01 to for vmsave/vmload of guest state")
+Cc: Maxim Levitsky <mlevitsk@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20260113014716.2464741-1-vulab@iscas.ac.cn
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20260110004821.3411245-2-yosry.ahmed@linux.dev
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/pruss.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/svm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
-index 038576805bfa0..0fd59c73f585d 100644
---- a/drivers/soc/ti/pruss.c
-+++ b/drivers/soc/ti/pruss.c
-@@ -366,12 +366,10 @@ static int pruss_clk_mux_setup(struct pruss *pruss, struct clk *clk_mux,
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index d758bff6e068b..eed104207a11a 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2094,12 +2094,13 @@ static int vmload_vmsave_interception(struct kvm_vcpu *vcpu, bool vmload)
  
- 	ret = devm_add_action_or_reset(dev, pruss_of_free_clk_provider,
- 				       clk_mux_np);
--	if (ret) {
-+	if (ret)
- 		dev_err(dev, "failed to add clkmux free action %d", ret);
--		goto put_clk_mux_np;
--	}
+ 	ret = kvm_skip_emulated_instruction(vcpu);
  
--	return 0;
-+	return ret;
++	/* KVM always performs VMLOAD/VMSAVE on VMCB01 (see __svm_vcpu_run()) */
+ 	if (vmload) {
+-		svm_copy_vmloadsave_state(svm->vmcb, vmcb12);
++		svm_copy_vmloadsave_state(svm->vmcb01.ptr, vmcb12);
+ 		svm->sysenter_eip_hi = 0;
+ 		svm->sysenter_esp_hi = 0;
+ 	} else {
+-		svm_copy_vmloadsave_state(vmcb12, svm->vmcb);
++		svm_copy_vmloadsave_state(vmcb12, svm->vmcb01.ptr);
+ 	}
  
- put_clk_mux_np:
- 	of_node_put(clk_mux_np);
+ 	kvm_vcpu_unmap(vcpu, &map);
 -- 
 2.51.0
 
