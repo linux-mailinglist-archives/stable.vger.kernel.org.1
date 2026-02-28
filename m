@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-220539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EA8+IM5No2nw/QQAu9opvQ
-	(envelope-from <stable+bounces-220539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:19:26 +0100
+	id GJq6KZc8o2nv+gQAu9opvQ
+	(envelope-from <stable+bounces-220540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:05:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB021C834E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:19:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F20C1C6998
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EE8632BF1E9
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:44:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 24539318D71E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AAD3D0E8F;
-	Sat, 28 Feb 2026 17:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3DA3D061B;
+	Sat, 28 Feb 2026 17:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pla6L91G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="msqdqyL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588053D0E84;
-	Sat, 28 Feb 2026 17:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2773D0E9F;
+	Sat, 28 Feb 2026 17:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300422; cv=none; b=nfNpBPkdbAMIEoZrPGFaeYIPXSVq7d60y5IuOPGW7RRvogmY/Nnhnf8fqswv+WOcdhu/JiNvWYmPIn43mSqN1tF9FgYlvJ4s6R5FYHrVZOian7BiJmErkc2QyyIUfGqlpFllqEudZTxHOKhx4rwXn6vcRcJs8ewqDZHUD+zcrNA=
+	t=1772300423; cv=none; b=HfhLFhhi6JL+vkwpuX4ZWTsNoGdwfahiq8DUXLWyva5hc14eU8Q6kymeLzK1T1yvNMuMWyRjjZf235BApxryxXYliLe3dsXXr2IMdaTcCsk5Zdw61gj4RMhDWb27GWnxEiGmBJ+Mr1R/GbPgCt04qn4lXhy4LVDstMcs2KIVv8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300422; c=relaxed/simple;
-	bh=K+vWixumeWL2fRMPBy/mNqW6qNoi92HvkM4bZ8OqI4w=;
+	s=arc-20240116; t=1772300423; c=relaxed/simple;
+	bh=GKG4WXJ0g5xS0f6lnaAyKIggdj/G7+BuJYBs6t6nw3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUST2S/cW9LnGayzWSoBWqyIHDoILZ+GRSXgTH7Kq42UnAYP+ZWWwg4NyBhionESeppW9iifhG4J8YBcuf8BP5CohlOZU/RSye2mimdQU7dZi9NIEPapcTENa/VargwjRR/d7JE/jfg2J6qVvdA0cOOtbVqbVMxo7kMPSZthcac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pla6L91G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D98C116D0;
-	Sat, 28 Feb 2026 17:40:21 +0000 (UTC)
+	 MIME-Version; b=D0ESmRtu5dwpbBahex0jdKeqarjHLPs8UjuRngUnkVEyuFr5vtp9PA48MPDq3jIaQrrrhtU6j1GkZjiFoti7z/IXW0Pl/Snu136b208GN1hp6g5Q9HB3uGqk6L353ZdAF1KkThhIgwEaFyjcD8Vz8JJJEhUBoekloFqBhBZk2rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=msqdqyL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4982CC19425;
+	Sat, 28 Feb 2026 17:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300422;
-	bh=K+vWixumeWL2fRMPBy/mNqW6qNoi92HvkM4bZ8OqI4w=;
+	s=k20201202; t=1772300423;
+	bh=GKG4WXJ0g5xS0f6lnaAyKIggdj/G7+BuJYBs6t6nw3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pla6L91GaFffA92lJd+HkREUrCuZV1FSsCSTR0NDuElr6Gbz4auodxcugLkuWvNyp
-	 EEqK9HFBBAJy8F5nc4glNtPHLFNZM08qQjqXpWEX8KjOU7hVN28mNaoSgb1ER0JvOw
-	 vbV8lSEj3E1fW1fxH9xZdJafbyyAHpGPIRTSh2X+5erEQiCfF7ep0tcq5+ZkYwUc8f
-	 Cagz9PujMzJ3AE0USqseyLn+znrXBBDo3Zk+Vo6vRtro5cO2qZzCGxbyMVgjR6ITjH
-	 56sPN0aUIOcP6znlRJe0fAjbX+T9oZrsMLgyg28jtcnkqZmNaTS2BQjw2LLAUn7TPP
-	 49QnfwB0IAQiw==
+	b=msqdqyL3hdphKnv5RM4ehse4A+KlFgPku775Gor4Z2U2f2BBkwfbQGuuOiGQHUpbJ
+	 CwwKeo/0gDqOMFr5U4xuYBX5KNGCpqPHEfzNRLQGHRf2lipTqdJZMu8z35oIiVeCkA
+	 RWs/eo1VKEF4T1lbk2pr+b1ZPmplwK7JVouGaJu3NTzhNm7mL/PFHDBCsR4eGaNfoP
+	 fChk+AJBzxdYTJiXK84hEdAnnFF9q2RnoqtLVyxsti903Yp/kZXUB9yTCXzl6N9b6H
+	 U0y47ckeSJxvzPtimV01l1+AEMcgTtkz45RXxqX5Md1qknZJJ4ZmAAh9lRNuVLH5xR
+	 HQh9nNRSFXnDQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	syzbot <syzkaller@googlegroups.com>,
+Cc: Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Jakub Kicinski <kicinski@meta.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 460/844] udplite: Fix null-ptr-deref in __udp_enqueue_schedule_skb().
-Date: Sat, 28 Feb 2026 12:26:13 -0500
-Message-ID: <20260228173244.1509663-461-sashal@kernel.org>
+Subject: [PATCH 6.19 461/844] bnxt_en: Fix RSS context delete logic
+Date: Sat, 28 Feb 2026 12:26:14 -0500
+Message-ID: <20260228173244.1509663-462-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -68,155 +70,95 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220539-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220540-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,googlegroups.com:email]
-X-Rspamd-Queue-Id: DAB021C834E
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,broadcom.com:email,meta.com:email]
+X-Rspamd-Queue-Id: 2F20C1C6998
 X-Rspamd-Action: no action
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-[ Upstream commit 470c7ca2b4c3e3a51feeb952b7f97a775b5c49cd ]
+[ Upstream commit e123d9302d223767bd910bfbcfe607bae909f8ac ]
 
-syzbot reported null-ptr-deref of udp_sk(sk)->udp_prod_queue. [0]
+We need to free the corresponding RSS context VNIC
+in FW everytime an RSS context is deleted in driver.
+Commit 667ac333dbb7 added a check to delete the VNIC
+in FW only when netif_running() is true to help delete
+RSS contexts with interface down.
 
-Since the cited commit, udp_lib_init_sock() can fail, as can
-udp_init_sock() and udpv6_init_sock().
+Having that condition will make the driver leak VNICs
+in FW whenever close() happens with active RSS contexts.
+On the subsequent open(), as part of RSS context restoration,
+we will end up trying to create extra VNICs for which we
+did not make any reservation. FW can fail this request,
+thereby making us lose active RSS contexts.
 
-Let's handle the error in udplite_sk_init() and udplitev6_sk_init().
+Suppose an RSS context is deleted already and we try to
+process a delete request again, then the HWRM functions
+will check for validity of the request and they simply
+return if the resource is already freed. So, even for
+delete-when-down cases, netif_running() check is not
+necessary.
 
-[0]:
-BUG: KASAN: null-ptr-deref in instrument_atomic_read include/linux/instrumented.h:82 [inline]
-BUG: KASAN: null-ptr-deref in atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
-BUG: KASAN: null-ptr-deref in __udp_enqueue_schedule_skb+0x151/0x1480 net/ipv4/udp.c:1719
-Read of size 4 at addr 0000000000000008 by task syz.2.18/2944
+Remove the netif_running() condition check when deleting
+an RSS context.
 
-CPU: 1 UID: 0 PID: 2944 Comm: syz.2.18 Not tainted syzkaller #0 PREEMPTLAZY
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Call Trace:
- <IRQ>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- kasan_report+0xa2/0xe0 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:-1 [inline]
- kasan_check_range+0x264/0x2c0 mm/kasan/generic.c:200
- instrument_atomic_read include/linux/instrumented.h:82 [inline]
- atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
- __udp_enqueue_schedule_skb+0x151/0x1480 net/ipv4/udp.c:1719
- __udpv6_queue_rcv_skb net/ipv6/udp.c:795 [inline]
- udpv6_queue_rcv_one_skb+0xa2e/0x1ad0 net/ipv6/udp.c:906
- udp6_unicast_rcv_skb+0x227/0x380 net/ipv6/udp.c:1064
- ip6_protocol_deliver_rcu+0xe17/0x1540 net/ipv6/ip6_input.c:438
- ip6_input_finish+0x191/0x350 net/ipv6/ip6_input.c:489
- NF_HOOK+0x354/0x3f0 include/linux/netfilter.h:318
- ip6_input+0x16c/0x2b0 net/ipv6/ip6_input.c:500
- NF_HOOK+0x354/0x3f0 include/linux/netfilter.h:318
- __netif_receive_skb_one_core net/core/dev.c:6149 [inline]
- __netif_receive_skb+0xd3/0x370 net/core/dev.c:6262
- process_backlog+0x4d6/0x1160 net/core/dev.c:6614
- __napi_poll+0xae/0x320 net/core/dev.c:7678
- napi_poll net/core/dev.c:7741 [inline]
- net_rx_action+0x60d/0xdc0 net/core/dev.c:7893
- handle_softirqs+0x209/0x8d0 kernel/softirq.c:622
- do_softirq+0x52/0x90 kernel/softirq.c:523
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0xe7/0x120 kernel/softirq.c:450
- local_bh_enable include/linux/bottom_half.h:33 [inline]
- rcu_read_unlock_bh include/linux/rcupdate.h:924 [inline]
- __dev_queue_xmit+0x109c/0x2dc0 net/core/dev.c:4856
- __ip6_finish_output net/ipv6/ip6_output.c:-1 [inline]
- ip6_finish_output+0x158/0x4e0 net/ipv6/ip6_output.c:219
- NF_HOOK_COND include/linux/netfilter.h:307 [inline]
- ip6_output+0x342/0x580 net/ipv6/ip6_output.c:246
- ip6_send_skb+0x1d7/0x3c0 net/ipv6/ip6_output.c:1984
- udp_v6_send_skb+0x9a5/0x1770 net/ipv6/udp.c:1442
- udp_v6_push_pending_frames+0xa2/0x140 net/ipv6/udp.c:1469
- udpv6_sendmsg+0xfe0/0x2830 net/ipv6/udp.c:1759
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg+0xe5/0x270 net/socket.c:742
- __sys_sendto+0x3eb/0x580 net/socket.c:2206
- __do_sys_sendto net/socket.c:2213 [inline]
- __se_sys_sendto net/socket.c:2209 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2209
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd2/0xf20 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7f67b4d9c629
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f67b5c98028 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f67b5015fa0 RCX: 00007f67b4d9c629
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00007f67b4e32b39 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000040000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f67b5016038 R14: 00007f67b5015fa0 R15: 00007ffe3cb66dd8
- </TASK>
-
-Fixes: b650bf0977d3 ("udp: remove busylock and add per NUMA queues")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260219173142.310741-1-kuniyu@google.com
+Reported-by: Jakub Kicinski <kicinski@meta.com>
+Fixes: 667ac333dbb7 ("eth: bnxt: allow deleting RSS contexts when the device is down")
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20260219185313.2682148-2-michael.chan@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udplite.c | 3 +--
- net/ipv6/udplite.c | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/udplite.c b/net/ipv4/udplite.c
-index d3e621a11a1aa..826e9e79eb19c 100644
---- a/net/ipv4/udplite.c
-+++ b/net/ipv4/udplite.c
-@@ -20,10 +20,9 @@ EXPORT_SYMBOL(udplite_table);
- /* Designate sk as UDP-Lite socket */
- static int udplite_sk_init(struct sock *sk)
- {
--	udp_init_sock(sk);
- 	pr_warn_once("UDP-Lite is deprecated and scheduled to be removed in 2025, "
- 		     "please contact the netdev mailing list\n");
--	return 0;
-+	return udp_init_sock(sk);
- }
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 8419d1eb4035d..64832289e18d0 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -10827,12 +10827,10 @@ void bnxt_del_one_rss_ctx(struct bnxt *bp, struct bnxt_rss_ctx *rss_ctx,
+ 	struct bnxt_ntuple_filter *ntp_fltr;
+ 	int i;
  
- static int udplite_rcv(struct sk_buff *skb)
-diff --git a/net/ipv6/udplite.c b/net/ipv6/udplite.c
-index 2cec542437f74..e867721cda4d3 100644
---- a/net/ipv6/udplite.c
-+++ b/net/ipv6/udplite.c
-@@ -16,10 +16,9 @@
- 
- static int udplitev6_sk_init(struct sock *sk)
- {
--	udpv6_init_sock(sk);
- 	pr_warn_once("UDP-Lite is deprecated and scheduled to be removed in 2025, "
- 		     "please contact the netdev mailing list\n");
--	return 0;
-+	return udpv6_init_sock(sk);
- }
- 
- static int udplitev6_rcv(struct sk_buff *skb)
+-	if (netif_running(bp->dev)) {
+-		bnxt_hwrm_vnic_free_one(bp, &rss_ctx->vnic);
+-		for (i = 0; i < BNXT_MAX_CTX_PER_VNIC; i++) {
+-			if (vnic->fw_rss_cos_lb_ctx[i] != INVALID_HW_RING_ID)
+-				bnxt_hwrm_vnic_ctx_free_one(bp, vnic, i);
+-		}
++	bnxt_hwrm_vnic_free_one(bp, &rss_ctx->vnic);
++	for (i = 0; i < BNXT_MAX_CTX_PER_VNIC; i++) {
++		if (vnic->fw_rss_cos_lb_ctx[i] != INVALID_HW_RING_ID)
++			bnxt_hwrm_vnic_ctx_free_one(bp, vnic, i);
+ 	}
+ 	if (!all)
+ 		return;
 -- 
 2.51.0
 
