@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uH6cCSBAo2kR+wQAu9opvQ
-	(envelope-from <stable+bounces-220604-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:21:04 +0100
+	id 2A68AkQ7o2nO+gQAu9opvQ
+	(envelope-from <stable+bounces-220605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:00:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A1B1C6DF6
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:21:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4EBF1C67FA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE8543132DFE
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:53:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3010430B5A8B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286CF3E3169;
-	Sat, 28 Feb 2026 17:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0604734D4F1;
+	Sat, 28 Feb 2026 17:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSHPldJX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oqTTa888"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4CE3E3162;
-	Sat, 28 Feb 2026 17:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4463E317B;
+	Sat, 28 Feb 2026 17:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300487; cv=none; b=mIT58pdbp9SBJHKLt9Y/MnLVHZQknRvlN7Hwc/xCo7AA1/gXdZONZzGCkKZGgj4B7IPxs3JyH31Ob0yHF5k/lQ2J28qI3GzoEwxQb0uVCSERTg1I0+tBMwXtVkX6aRpDNclfr/2bKTNcbXm1ezEitgKHFYcX6LNn+BVs1+9R60I=
+	t=1772300488; cv=none; b=MaiaJ76DPnfp/dOIvsyf59AoITApAf3QXvR1LVSRvPEFCJP5aW3oeZxTTAndLb8gpuVmp1e8CQP0CS4hsxEKui4kILfonUFwGohGdjYVuKaxT6H5PSVdnLBkrV0OnoNwwC30hWQLKvp1nwCA33GfU2FEB0gYQJ0xQoK+Er9iRIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300487; c=relaxed/simple;
-	bh=rSrXcnCrRrby3HXDaclTuPm6p5hszZnn4GCrBaiQyfA=;
+	s=arc-20240116; t=1772300488; c=relaxed/simple;
+	bh=hPSoMhZ8J+PtXAVYzZfG4+vY13vMdHJHn1PTtmsVAqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7Wf9S8P0RpOQ09ZK9I7ZGCgxQ42HREwZ4Ql5Db1d4zlL/8kQ5i3TdE5lg54LmiNL+B//Rd1nYr+qrf9/3R2V6vsj155i9gSQ7JAScPrvKRJSSyUsWXElF6YoZzGDFUoxgrcdTZ7/zixZYP+w6dQVCGp4dhaUqKTkfOA5Xy7XXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSHPldJX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C54DC19424;
+	 MIME-Version; b=urNjUf6vGr8aruuqBcnHbk35x+d2nfLisxIPmIc+FEo/QhvtGfu2+S7R8aQoS2ufFDVBgA0VUhnsZapZLCDqKWzPH7HmSlNAt8AE9Bs5v+41UFCugT/H2z6llQoYtDtvjgasmkg9CWgo1OIh49b4bGUZMoczj5yJDR+AdaBeGuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oqTTa888; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14262C116D0;
 	Sat, 28 Feb 2026 17:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300487;
-	bh=rSrXcnCrRrby3HXDaclTuPm6p5hszZnn4GCrBaiQyfA=;
+	s=k20201202; t=1772300488;
+	bh=hPSoMhZ8J+PtXAVYzZfG4+vY13vMdHJHn1PTtmsVAqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GSHPldJX1qs4q2w5Tob+P8PshLSEQtL7oC+/TTuMcXYdjdOP2ubs1/UQVcoaqX34m
-	 mYFxJ1GNsJKu4YQFKLd8fUtTUqJoNZLeYrutAJzEs1B2LtHHuGxm4KN0kElOzQkY2m
-	 YcGSuVIKJ/Ia9XtC41JsJUtxBcLtILLrXz/3ZF7ucw8Tw3OUK5NfZ95n0IYwx1ULNR
-	 wHRslkXnjVAoQikNPAYDNoGljengKnEt0bDOmOTWVvRzxGVrhD+vpgq88Ekdm4xOHR
-	 2/82wjQ/AdFxbYh3PbiBu0FjWhhe78Yqe30vPe+JnlOxtKYrQHKexH91xUZeFhut6n
-	 og4CmYIIIDwaw==
+	b=oqTTa888qC9NhtU/sXCKhQGU5fixpS+VguWxo9nGmcgAxPtK0Oj6W1oQamaDAfbuT
+	 viXj0FiU0wXdoV9qi8/EeyL5ludsX9vG9l4LVxVbibo73x/rVxFCoKfR5C8YXqLn1H
+	 gBGymbjdPLrg/VvgySE2BnBB1aOhi+wyRdk79PADLU5mp7kd9zMy9IgA0+Xgn3kyiU
+	 UytB1888FcmwJXMaEwz18b/ep+gmYo6pFP5x9O34vHfSTgG2SCReumdshn09pfzTbp
+	 vSZlweFL2tFI6MkaHFQa6kGsJbZsZqOWk30kjwXr68vVGc+vQNjvvqHgIXq4pidXlO
+	 V/AmAmQhdm4jQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>,
+Cc: Shawn Lin <shawn.lin@rock-chips.com>,
 	Manivannan Sadhasivam <mani@kernel.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 525/844] Revert "PCI: dw-rockchip: Don't wait for link since we can detect Link Up"
-Date: Sat, 28 Feb 2026 12:27:18 -0500
-Message-ID: <20260228173244.1509663-526-sashal@kernel.org>
+Subject: [PATCH 6.19 526/844] PCI: dwc: Add L1 Substates context to ltssm_status of debugfs
+Date: Sat, 28 Feb 2026 12:27:19 -0500
+Message-ID: <20260228173244.1509663-527-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,18 +71,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220604-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220605-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -92,79 +91,58 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: B6A1B1C6DF6
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,rock-chips.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: A4EBF1C67FA
 X-Rspamd-Action: no action
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit fc6298086bfacaa7003b0bd1da4e4f42b29f7d77 ]
+[ Upstream commit 679ec639f29cbdaf36bd79bf3e98240fffa335ee ]
 
-This reverts commit ec9fd499b9c60a187ac8d6414c3c343c77d32e42.
+DWC core couldn't distinguish LTSSM state among L1.0, L1.1 and L1.2. But
+the vendor glue driver may implement additional logic to convey this
+information. So add two pseudo definitions for vendor glue drivers to
+translate their internal L1 Substates for debugfs to show.
 
-While this fake hotplugging was a nice idea, it has shown that this feature
-does not handle PCIe switches correctly:
-pci_bus 0004:43: busn_res: can not insert [bus 43-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci_bus 0004:43: busn_res: [bus 43-41] end is updated to 43
-pci_bus 0004:43: busn_res: can not insert [bus 43] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci 0004:42:00.0: devices behind bridge are unusable because [bus 43] cannot be assigned for them
-pci_bus 0004:44: busn_res: can not insert [bus 44-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci_bus 0004:44: busn_res: [bus 44-41] end is updated to 44
-pci_bus 0004:44: busn_res: can not insert [bus 44] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci 0004:42:02.0: devices behind bridge are unusable because [bus 44] cannot be assigned for them
-pci_bus 0004:45: busn_res: can not insert [bus 45-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci_bus 0004:45: busn_res: [bus 45-41] end is updated to 45
-pci_bus 0004:45: busn_res: can not insert [bus 45] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci 0004:42:06.0: devices behind bridge are unusable because [bus 45] cannot be assigned for them
-pci_bus 0004:46: busn_res: can not insert [bus 46-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci_bus 0004:46: busn_res: [bus 46-41] end is updated to 46
-pci_bus 0004:46: busn_res: can not insert [bus 46] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci 0004:42:0e.0: devices behind bridge are unusable because [bus 46] cannot be assigned for them
-pci_bus 0004:42: busn_res: [bus 42-41] end is updated to 46
-pci_bus 0004:42: busn_res: can not insert [bus 42-46] under [bus 41] (conflicts with (null) [bus 41])
-pci 0004:41:00.0: devices behind bridge are unusable because [bus 42-46] cannot be assigned for them
-pcieport 0004:40:00.0: bridge has subordinate 41 but max busn 46
-
-During the initial scan, PCI core doesn't see the switch and since the Root
-Port is not hot plug capable, the secondary bus number gets assigned as the
-subordinate bus number. This means, the PCI core assumes that only one bus
-will appear behind the Root Port since the Root Port is not hot plug
-capable.
-
-This works perfectly fine for PCIe endpoints connected to the Root Port,
-since they don't extend the bus. However, if a PCIe switch is connected,
-then there is a problem when the downstream busses starts showing up and
-the PCI core doesn't extend the subordinate bus number and bridge resources
-after initial scan during boot.
-
-The long term plan is to migrate this driver to the upcoming pwrctrl APIs
-that are supposed to handle this problem elegantly.
-
-Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
 Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Tested-by: Shawn Lin <shawn.lin@rock-chips.com>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251222064207.3246632-9-cassel@kernel.org
+Link: https://patch.msgid.link/1765503205-22184-1-git-send-email-shawn.lin@rock-chips.com
+Stable-dep-of: 180c3cfe3678 ("Revert "PCI: dw-rockchip: Enumerate endpoints based on dll_link_up IRQ"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-dw-rockchip.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-designware-debugfs.c | 2 ++
+ drivers/pci/controller/dwc/pcie-designware.h         | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-index a3daac74d3f18..59396db3f4812 100644
---- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-+++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-@@ -588,7 +588,6 @@ static int rockchip_pcie_configure_rc(struct platform_device *pdev,
+diff --git a/drivers/pci/controller/dwc/pcie-designware-debugfs.c b/drivers/pci/controller/dwc/pcie-designware-debugfs.c
+index 0fbf86c0b97e0..df98fee69892b 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-debugfs.c
++++ b/drivers/pci/controller/dwc/pcie-designware-debugfs.c
+@@ -485,6 +485,8 @@ static const char *ltssm_status_string(enum dw_pcie_ltssm ltssm)
+ 	DW_PCIE_LTSSM_NAME(DW_PCIE_LTSSM_RCVRY_EQ1);
+ 	DW_PCIE_LTSSM_NAME(DW_PCIE_LTSSM_RCVRY_EQ2);
+ 	DW_PCIE_LTSSM_NAME(DW_PCIE_LTSSM_RCVRY_EQ3);
++	DW_PCIE_LTSSM_NAME(DW_PCIE_LTSSM_L1_1);
++	DW_PCIE_LTSSM_NAME(DW_PCIE_LTSSM_L1_2);
+ 	default:
+ 		str = "DW_PCIE_LTSSM_UNKNOWN";
+ 		break;
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index 5c429b62cb086..ed1801dd8e39a 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -392,6 +392,10 @@ enum dw_pcie_ltssm {
+ 	DW_PCIE_LTSSM_RCVRY_EQ2 = 0x22,
+ 	DW_PCIE_LTSSM_RCVRY_EQ3 = 0x23,
  
- 	pp = &rockchip->pci.pp;
- 	pp->ops = &rockchip_pcie_host_ops;
--	pp->use_linkup_irq = true;
++	/* Vendor glue drivers provide pseudo L1 substates from get_ltssm() */
++	DW_PCIE_LTSSM_L1_1 = 0x141,
++	DW_PCIE_LTSSM_L1_2 = 0x142,
++
+ 	DW_PCIE_LTSSM_UNKNOWN = 0xFFFFFFFF,
+ };
  
- 	ret = dw_pcie_host_init(pp);
- 	if (ret) {
 -- 
 2.51.0
 
