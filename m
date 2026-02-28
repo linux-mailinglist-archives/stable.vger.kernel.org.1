@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-220420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220421-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IH/WFrk5o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220420-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:45 +0100
+	id 8JSSGmY6o2mU+gQAu9opvQ
+	(envelope-from <stable+bounces-220421-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:56:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F441C65FA
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877341C66EF
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:56:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1F6132A68DA
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:25:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7E0633192B01
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486203B1B00;
-	Sat, 28 Feb 2026 17:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED353B1B1F;
+	Sat, 28 Feb 2026 17:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZEThMD1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKrI1+Vz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA263B1AF5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E8E3B1B16;
 	Sat, 28 Feb 2026 17:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300311; cv=none; b=LmndeAjcXMm62lnq9HQ/LBlEiDRODE2jbNR7CKz4ADVJRPcM416R2Nbu5WEhHAx1KCamQR0x1P3JHP3faH/QmD0Z7ASqq9hB6NJ75+Opgt9y4Ksg2INF3z7OLczT0FHUw4cS5520QuddNSRGgx5JEF+Jap2I5Acp0+UhXitzfpQ=
+	t=1772300312; cv=none; b=mzjBweF7ExaT7E4D8EVj67QzqO58JHdLbQFrgNc7+5M39V5Hd5pWsckV0HrvPrySo4yhrwfTCURNQg3KMM/1Q8lKywKLQtnC5F4G4ycOsEZLV0uUXbhPgndYd3OYupRaEm6L/wSPnTnqTRf6LIY9ARnKkPK2ZmCgTI5ZJNewtLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300311; c=relaxed/simple;
-	bh=5rN1791otkXld9s0yk37EK1HmhIuksVPV/oWgb5wLiE=;
+	s=arc-20240116; t=1772300312; c=relaxed/simple;
+	bh=1lQuTfa/eJydjZkTVhAkq5sataUOWFIScvI3T0Fsi8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N/IV7jeej2eA+gdjK7HWDg2XBpvd6gTeGkwSHx4x+eCK+ndzBcUkJPqRLQsvMrhlufuj3SB6JkF30wsre5DRJAJ3ZeFePiJ1fcrSsYup+WBanIGBm7e+q8JLpnUaTPNc8QQmf8+ZrWyHCjPDvuIx/QHE4fBDwpDFhE9pTJWiY0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZEThMD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A70BC19425;
-	Sat, 28 Feb 2026 17:38:30 +0000 (UTC)
+	 MIME-Version; b=tre+ZMKN+ZZVd1AzOVe9376OZ3dzKvSijcKz5tBQ8kQMWhYF1OSVd1akccEVNWfg/RhXzU39HOY2JYogJ8K0dYkQv2/2uJOqIqXtE/70EKO3RCT++QFVOPC0tP9USYc2ZW1ZyhzPqwBoSnDWN4H8drO1Sv8Ux6MVoNgAVU5y/Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKrI1+Vz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F847C19423;
+	Sat, 28 Feb 2026 17:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300310;
-	bh=5rN1791otkXld9s0yk37EK1HmhIuksVPV/oWgb5wLiE=;
+	s=k20201202; t=1772300311;
+	bh=1lQuTfa/eJydjZkTVhAkq5sataUOWFIScvI3T0Fsi8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZEThMD1UFSRyIxZNo4LOoeLgyRT5n7bbFDd8foRNs6j0sntx8xIk1q6XeiLN08nq
-	 aXk/b5v+LPZbHY16bJjgEUVPuZm4NIaEp5eYUI7DAfzIxoQV/i+GlzRhql9YngShYP
-	 54GhnS2A9m8oj2EgvA7dqLsatZ6Iohfiqcndst/MQGPZ0TV5m1nIv4yHBxjixZPaZg
-	 y3sHg/2jeSW0KYr5vF55xYZ26YLEPzhaYPR45Cj/C1ZnStMWxPb/sKP0PYXwXVdp/x
-	 mRo8NTpIs/2g4kf3VDdCzgwbm5+9iAt8sBtjnEYaWNysLtwQtMdVJnvCiHkQGSqX4u
-	 iaI+v/BMUsXgQ==
+	b=XKrI1+Vz4Div1Bl+8TiadwS4ZjOdmW4L/FOqUFUWBej5isGbeTXy2x+qmjqyO9aSt
+	 z+UhtxcAFc6cXE1h00jyF4HFrGhrUpzwvN7N4AS7Iyr7kvka/N0T9dafbkRx+eHlTs
+	 HXyCcubtSd/eMj60SqC7uepfXVw9uYspq42Wu0TcOr23Uo+7Dz5jrxeT1T1YpEpfvD
+	 2JeyZbYsA/tfikUPbIRAAxHEG1h5eN2OQaUpy0VoSxE+IuUGrh/2Y2oAqoe5hyHpzy
+	 /JgFT+rspK5JvhyJD/KYWpAmQodczAzRQnuxnM7UwdxLjkQN9mTHyzzyEGSxGQeqS8
+	 RqHjSlHQNtkJg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
+Cc: Longfang Liu <liulongfang@huawei.com>,
+	Alex Williamson <alex@shazbot.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 341/844] RDMA/rtrs-clt: For conn rejection use actual err number
-Date: Sat, 28 Feb 2026 12:24:14 -0500
-Message-ID: <20260228173244.1509663-342-sashal@kernel.org>
+Subject: [PATCH 6.19 342/844] hisi_acc_vfio_pci: fix the queue parameter anomaly issue
+Date: Sat, 28 Feb 2026 12:24:15 -0500
+Message-ID: <20260228173244.1509663-343-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,73 +67,68 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220421-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220420-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 83F441C65FA
+X-Rspamd-Queue-Id: 877341C66EF
 X-Rspamd-Action: no action
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: Longfang Liu <liulongfang@huawei.com>
 
-[ Upstream commit fc290630702b530c2969061e7ef0d869a5b6dc4f ]
+[ Upstream commit c3cbc276c2a33b04fc78a86cdb2ddce094cb3614 ]
 
-When the connection establishment request is rejected from the server
-side, then the actual error number sent back should be used.
+When the number of QPs initialized by the device, as read via vft, is zero,
+it indicates either an abnormal device configuration or an abnormal read
+result.
+Returning 0 directly in this case would allow the live migration operation
+to complete successfully, leading to incorrect parameter configuration after
+migration and preventing the service from recovering normal functionality.
+Therefore, in such situations, an error should be returned to roll back the
+live migration operation.
 
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Link: https://patch.msgid.link/20260107161517.56357-10-haris.iqbal@ionos.com
-Reviewed-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Reviewed-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+Link: https://lore.kernel.org/r/20260122020205.2884497-5-liulongfang@huawei.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-clt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-index 2b397a544cb93..8fa1d72bd20a4 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-@@ -1923,7 +1923,7 @@ static int rtrs_rdma_conn_rejected(struct rtrs_clt_con *con,
- 	struct rtrs_path *s = con->c.path;
- 	const struct rtrs_msg_conn_rsp *msg;
- 	const char *rej_msg;
--	int status, errno;
-+	int status, errno = -ECONNRESET;
- 	u8 data_len;
- 
- 	status = ev->status;
-@@ -1945,7 +1945,7 @@ static int rtrs_rdma_conn_rejected(struct rtrs_clt_con *con,
- 			  status, rej_msg);
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+index 8a05fb91929fb..2b8ac97cef2d2 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+@@ -426,7 +426,7 @@ static int vf_qm_check_match(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 	ret = qm_get_vft(vf_qm, &vf_qm->qp_base);
+ 	if (ret <= 0) {
+ 		dev_err(dev, "failed to get vft qp nums\n");
+-		return ret;
++		return ret < 0 ? ret : -EINVAL;
  	}
  
--	return -ECONNRESET;
-+	return errno;
- }
- 
- void rtrs_clt_close_conns(struct rtrs_clt_path *clt_path, bool wait)
+ 	if (ret != vf_data->qp_num) {
 -- 
 2.51.0
 
