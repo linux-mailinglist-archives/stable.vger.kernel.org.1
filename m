@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANayDbdCo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:32:07 +0100
+	id UKRmHY9Bo2lC+wQAu9opvQ
+	(envelope-from <stable+bounces-220748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:27:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54381C7190
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:32:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 355AF1C700F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:27:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9C1AD3142C3E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:17:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 991C131101E6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F4335F5E0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E723235F5F3;
 	Sat, 28 Feb 2026 17:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KoptyfAW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iIyI+nQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08047401D2B;
-	Sat, 28 Feb 2026 17:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A912B35F5EC;
+	Sat, 28 Feb 2026 17:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300628; cv=none; b=n6ur+Wg3evtyDEKI/ZWtkcdUMgOiOUAatA54qInxqo30i8of1K0wqvnwHK3zRQukgLBcRWA2Iu2rQE+IY4C6zmVz/StcYI72kJjYiW1lvAcwfLv3T8qvUpfY6RxqHUHG2sI/6DPTaI6tH4uNwG93euObXCe3m5u2QibiYXFbApI=
+	t=1772300628; cv=none; b=igxHc1S04AnoL2RXvsuNuM//ChppmoeVi/CXD4fWEWZI0ViZgdJ5sZP8h/F6isYffqIanFfsNyFG6eSRCeKjJFH+eclny3VK6sgMCHHY7pbsjRdvmrYpLpzaqPA+Q1zPuVS+HocCJsiVodJk+j+d07PMoOkfAAz7neKnjlKAqs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300628; c=relaxed/simple;
-	bh=ztlT3saRJbDT5bqLP6NFt7aq6pAsT7FeK9qce3Gfwuk=;
+	bh=DxwOjVHa6ljGNxDzcQvadqF7PJ2KfWO294/LSSF1MBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9w9lzpnsWXI7Yihl8sKsAzrBrCQNdz29k/w0tsOj+hdoaci1Tcw/rCkgiqkiJSQaHuvtCVP7KDW61lHORL3Ky1Du11gQOBLz7s8KE4k3zoIxBLCqUIoFBacIQYj/urrIa4ArNExIHVRSc8N0I3bQG7TAUWOn91fiKrLY00a6cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KoptyfAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC8AC116D0;
-	Sat, 28 Feb 2026 17:43:46 +0000 (UTC)
+	 MIME-Version; b=lQQJz9SZ02gDd4uRQiPsEs2E5bPyo/Akd4q6CRiVif/Tsnk4xVfgbZRUPBYrkf3tRQa9L1dGQ2MmJesYxAL64O+4rVQYlc7DJpHZHd1vt4fUUg9oA2ITk8PXSM2VnNK/m5dxBhNIEHogPBVrFcLQkeI6MXhcaXOmFT5GwUBKEro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iIyI+nQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E225CC19424;
+	Sat, 28 Feb 2026 17:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300627;
-	bh=ztlT3saRJbDT5bqLP6NFt7aq6pAsT7FeK9qce3Gfwuk=;
+	s=k20201202; t=1772300628;
+	bh=DxwOjVHa6ljGNxDzcQvadqF7PJ2KfWO294/LSSF1MBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KoptyfAWfUuylq6kNLWJte0xaLdhVi1V+6q/ZPsXoEL58N2U48nNy5luYGFhXV0YP
-	 Fy4+Dbm8uSoAl4bP0wcXXDI3qg21sVlSAee8asYXlqsHAsJvTjvyslkjVRNB4mgG8h
-	 K7nKpk14eKXw1wkUf1kk3BXK6HvW46IB3iFVSfI5nJz1DO9wiHy6sZLI2uzMMHBvdq
-	 kmn1eLkrMr+zVVs9fjd+2xmWBB7ELGcOzh2EeGjThkP8IiBfWuar7JjSTH+GIneXL2
-	 5OKl/eSWIVBODVheo0LePXCDJ5FqObhDmXejpIg+Ik7eFY7XPqcA3Hu/M4HaEX/2za
-	 6tceS9HlkWZwg==
+	b=iIyI+nQcbd3NE0dikim5V0+RTwDeLxP8K/9bCPTNVTJL5KBWuB6kgV5W+EEJvdZJW
+	 Y5IfKINafJJMfHWOJss8kPu9O3rbiP3WKAXJe35/ecHGmlMJrwJeWQEV6AgJqBkZ96
+	 RRrg7NkWKCbsG7k7QkAOwoLR3vEK04XKuTIfI6VMEIBzeWsHsqGJa8HiBto8R+6qgy
+	 WXpj8h5FeDBAOinI2YLTC/s15VTZk6CX0pcdHpDmX14G7SEVN44nh1Y8AOkYl5wpAe
+	 +5JfCavdIaDryCudMySQcn3hHkFe9RjZ/KDONnJq95lbEZxNMn2e8Mw5JKFSbeiXLL
+	 k0l20Rbn32zFw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexey Charkov <alchark@gmail.com>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
+Cc: Shawn Lin <shawn.lin@rock-chips.com>,
+	Andrew Powers-Holmes <aholmes@omnom.net>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 668/844] arm64: dts: rockchip: Explicitly request UFS reset pin on RK3576
-Date: Sat, 28 Feb 2026 12:29:41 -0500
-Message-ID: <20260228173244.1509663-669-sashal@kernel.org>
+Subject: [PATCH 6.19 669/844] arm64: dts: rockchip: Fix rk356x PCIe range mappings
+Date: Sat, 28 Feb 2026 12:29:42 -0500
+Message-ID: <20260228173244.1509663-670-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,20 +72,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,cherry.de,sntech.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-220748-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220747-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -93,101 +92,68 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sntech.de:email,2a2d0000:email,cherry.de:email]
-X-Rspamd-Queue-Id: D54381C7190
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,rock-chips.com:email,msgid.link:url,sntech.de:email,fe260000:email,omnom.net:email,fe280000:email]
+X-Rspamd-Queue-Id: 355AF1C700F
 X-Rspamd-Action: no action
 
-From: Alexey Charkov <alchark@gmail.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit 79a3286e61829fc43abdd6e3beb31b24930c7af6 ]
+[ Upstream commit f63ea193a404481f080ca2958f73e9f364682db9 ]
 
-Rockchip RK3576 UFS controller uses a dedicated pin to reset the connected
-UFS device, which can operate either in a hardware controlled mode or as a
-GPIO pin.
+The pcie bus address should be mapped 1:1 to the cpu side MMIO address, so
+that there is no same address allocated from normal system memory. Otherwise
+it's broken if the same address assigned to the EP for DMA purpose.Fix it to
+sync with the vendor BSP.
 
-Power-on default is GPIO mode, but the boot ROM reconfigures it to a
-hardware controlled mode if it uses UFS to load the next boot stage.
-
-Given that existing bindings (and rk3576.dtsi) expect a GPIO-controlled
-device reset, request the required pin config explicitly.
-
-The pin is requested with pull-down enabled, which is in line with the
-SoC power-on default and helps ensure that the attached UFS chip stays
-in reset until the driver takes over the control of the respective
-GPIO line.
-
-This doesn't appear to affect Linux, but it does affect U-boot:
-
-Before:
-=> md.l 0x2604b398
-2604b398: 00000011 00000000 00000000 00000000  ................
-< ... snip ... >
-=> ufs init
-ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=[3, 3], lane[2, 2], pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate = 2
-=> md.l 0x2604b398
-2604b398: 00000011 00000000 00000000 00000000  ................
-
-After:
-=> md.l 0x2604b398
-2604b398: 00000011 00000000 00000000 00000000  ................
-< ... snip ...>
-=> ufs init
-ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=[3, 3], lane[2, 2], pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate = 2
-=> md.l 0x2604b398
-2604b398: 00000010 00000000 00000000 00000000  ................
-
-(0x2604b398 is the respective pin mux register, with its BIT0 driving the
-mode of UFS_RST: unset = GPIO, set = hardware controlled UFS_RST)
-
-This helps ensure that GPIO-driven device reset actually fires when the
-system requests it, not when whatever black box magic inside the UFSHC
-decides to reset the flash chip.
-
+Fixes: 568a67e742df ("arm64: dts: rockchip: Fix rk356x PCIe register and range mappings")
+Fixes: 66b51ea7d70f ("arm64: dts: rockchip: Add rk3568 PCIe2x1 controller")
 Cc: stable@vger.kernel.org
-Fixes: c75e5e010fef ("scsi: arm64: dts: rockchip: Add UFS support for RK3576 SoC")
-Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-Signed-off-by: Alexey Charkov <alchark@gmail.com>
-Link: https://patch.msgid.link/20260121-ufs-rst-v3-1-35839bcb4ca7@gmail.com
+Cc: Andrew Powers-Holmes <aholmes@omnom.net>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://patch.msgid.link/1767600929-195341-1-git-send-email-shawn.lin@rock-chips.com
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi | 7 +++++++
- arch/arm64/boot/dts/rockchip/rk3576.dtsi         | 2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3568.dtsi      | 4 ++--
+ arch/arm64/boot/dts/rockchip/rk356x-base.dtsi | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi b/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
-index 0b0851a7e4ea9..98c9f8013158c 100644
---- a/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
-@@ -5228,6 +5228,13 @@ ufs_rst: ufs-rst {
- 				/* ufs_rstn */
- 				<4 RK_PD0 1 &pcfg_pull_none>;
- 		};
-+
-+		/omit-if-no-ref/
-+		ufs_rstgpio: ufs-rstgpio {
-+			rockchip,pins =
-+				/* ufs_rstn */
-+				<4 RK_PD0 RK_FUNC_GPIO &pcfg_pull_down>;
-+		};
- 	};
- 
- 	ufs_testdata0 {
-diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-index c72343e7a0456..70e67d4dccb8a 100644
---- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-@@ -1826,7 +1826,7 @@ ufshc: ufshc@2a2d0000 {
- 			assigned-clock-parents = <&cru CLK_REF_MPHY_26M>;
- 			interrupts = <GIC_SPI 361 IRQ_TYPE_LEVEL_HIGH>;
- 			power-domains = <&power RK3576_PD_USB>;
--			pinctrl-0 = <&ufs_refclk>;
-+			pinctrl-0 = <&ufs_refclk &ufs_rstgpio>;
- 			pinctrl-names = "default";
- 			resets = <&cru SRST_A_UFS_BIU>, <&cru SRST_A_UFS_SYS>,
- 				 <&cru SRST_A_UFS>, <&cru SRST_P_UFS_GRF>;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+index e719a3df126c5..658097ed69714 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+@@ -185,7 +185,7 @@ pcie3x1: pcie@fe270000 {
+ 		      <0x0 0xf2000000 0x0 0x00100000>;
+ 		ranges = <0x01000000 0x0 0xf2100000 0x0 0xf2100000 0x0 0x00100000>,
+ 			 <0x02000000 0x0 0xf2200000 0x0 0xf2200000 0x0 0x01e00000>,
+-			 <0x03000000 0x0 0x40000000 0x3 0x40000000 0x0 0x40000000>;
++			 <0x03000000 0x3 0x40000000 0x3 0x40000000 0x0 0x40000000>;
+ 		reg-names = "dbi", "apb", "config";
+ 		resets = <&cru SRST_PCIE30X1_POWERUP>;
+ 		reset-names = "pipe";
+@@ -238,7 +238,7 @@ pcie3x2: pcie@fe280000 {
+ 		      <0x0 0xf0000000 0x0 0x00100000>;
+ 		ranges = <0x01000000 0x0 0xf0100000 0x0 0xf0100000 0x0 0x00100000>,
+ 			 <0x02000000 0x0 0xf0200000 0x0 0xf0200000 0x0 0x01e00000>,
+-			 <0x03000000 0x0 0x40000000 0x3 0x80000000 0x0 0x40000000>;
++			 <0x03000000 0x3 0x80000000 0x3 0x80000000 0x0 0x40000000>;
+ 		reg-names = "dbi", "apb", "config";
+ 		resets = <&cru SRST_PCIE30X2_POWERUP>;
+ 		reset-names = "pipe";
+diff --git a/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi b/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
+index 8893b7b6cc9ff..a2c4957a58992 100644
+--- a/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
+@@ -1022,7 +1022,7 @@ pcie2x1: pcie@fe260000 {
+ 		power-domains = <&power RK3568_PD_PIPE>;
+ 		ranges = <0x01000000 0x0 0xf4100000 0x0 0xf4100000 0x0 0x00100000>,
+ 			 <0x02000000 0x0 0xf4200000 0x0 0xf4200000 0x0 0x01e00000>,
+-			 <0x03000000 0x0 0x40000000 0x3 0x00000000 0x0 0x40000000>;
++			 <0x03000000 0x3 0x00000000 0x3 0x00000000 0x0 0x40000000>;
+ 		resets = <&cru SRST_PCIE20_POWERUP>;
+ 		reset-names = "pipe";
+ 		#address-cells = <3>;
 -- 
 2.51.0
 
