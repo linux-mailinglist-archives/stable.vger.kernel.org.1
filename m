@@ -1,70 +1,67 @@
-Return-Path: <stable+bounces-220101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gI+QBZIoo2k++AQAu9opvQ
-	(envelope-from <stable+bounces-220101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:40:34 +0100
+	id WFumKPMno2kr+AQAu9opvQ
+	(envelope-from <stable+bounces-220102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:37:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DDA91C503B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:40:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854151C4FA6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 388F5308BECD
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:35:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C930307ACC9
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1923547B413;
-	Sat, 28 Feb 2026 17:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A8047B43F;
+	Sat, 28 Feb 2026 17:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4Y56Ajc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iybTeFrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4F046AEF1;
-	Sat, 28 Feb 2026 17:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3530C450902;
+	Sat, 28 Feb 2026 17:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300007; cv=none; b=OoyUTvYevpBUJ4KWCmwkw5X/4gj4DJm6v43WvEjubuZottYfObfXljG4WFhzqT8KS2d/FYxPtbxMHClkZaZDiTIi6ov5KNxn3xylxnifcasvCdMJL5HM8MPdGbyZ8fhkhGonJ1/BhbmXbSkLBJ9aSjxlHO66CrOcHxjDH6goU7g=
+	t=1772300009; cv=none; b=c5sQbageXmUu8O9Np5JX5VO6OMzj4HiemXTLnm4shxYI4d0nHsYszcUcZjuRPBqw5a8JBRETAVPJFtgrZVJSc/fVxkImRYzFulu172oPDmmS1mxl1zBPemAIdNam9+ff6BsUOXr48v0+Pd5aSsnPc9aU5Y/S8QIOgi9wPUkxb48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300007; c=relaxed/simple;
-	bh=5DLthrwaQ4P8bCT3/l3haLmoSWFTHHexrJJVVVyJFYI=;
+	s=arc-20240116; t=1772300009; c=relaxed/simple;
+	bh=5heWpwcKAHRgxqAbeBFY0hVw+1VaYDXdi1vvfst4SY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y96rw9RKfa4TiH6vG+kplc0nUV3Di7CMJWJF1NMpOtqWLFrm5xKNnZURfEfeJ4gkID7VaBAw2ehjLvo9ObtH7ZsxYttcLfpS1tcsuwK5uSAcLsepUI3kVhFbZt0BPWHHr1criqAvoPFY/BUET/2IaK+uaUl1a+VEYS0LMGYm/mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4Y56Ajc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9476C19423;
-	Sat, 28 Feb 2026 17:33:25 +0000 (UTC)
+	 MIME-Version; b=WgawUUb/krrzP5hhc9yMTAlaMR1Vcu6n7Ch3vjnFUE2JC+kLCINgQb4fXr6P83p10cLJzce4clAytU6C8r5zZkkEvCms6esp0gMjqhYHcoGALCBnQKVsnDKF+/VHtuLF48jghc63DTemsYHl/OokmRrtMTrPjNyCn9piN1GejHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iybTeFrx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABECDC2BCAF;
+	Sat, 28 Feb 2026 17:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300007;
-	bh=5DLthrwaQ4P8bCT3/l3haLmoSWFTHHexrJJVVVyJFYI=;
+	s=k20201202; t=1772300009;
+	bh=5heWpwcKAHRgxqAbeBFY0hVw+1VaYDXdi1vvfst4SY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4Y56AjckbpHTsvZ651IA1MDdRUUhMZ8mw+YX23J7cQreEXxPfO4yLIfV2dacLqjj
-	 +65QfSUQTWauvXomaCqcqT1Qa1pdFjbsw4uTSSv7WYr8+KehbWQohZwecfbL/ZTFEG
-	 INBJepPP8M7POQvxph+3kJqUhZUNV50ePDs9/XXvOumNSvigONXBtmRUd5aXSope9A
-	 tBiKKUHoZnle3g3une4UuX4VymxmQB0GrXhbzzZu11s3EHmwwGx+IFON73YVTkohXH
-	 ym8bO9mxcxEOJkMvjEsX3FlzwY9tUR78sKeYFwFktvrKThG1j6GXskUJV9iyLgUeu3
-	 mTQ4c3NWmQ/7Q==
+	b=iybTeFrx+v5UldbmXXKH1MI5M8V7ALTNlQO0E3np8OvwYgh7eMyDPCA7a6wpSfqxx
+	 46jzE2zxECcnBsAqqkySWofyopjp/AG2dzpcj1xUq3eIy6mSdtt2xtCvrJvccAi6Fh
+	 fKokqXDsuwhN2MjrWU11Wv7y9W/FZuuMhWkrEUn1swBv+91jYyNOqf4F1ogoiiXlNQ
+	 MRs051IUagi8acDy9EhT6tUsu95rGZRMPnY8A3XgppCaMo9iI8T1zIakA2WaEg0g+H
+	 xo3cA6q6EXp2i/hRTnsj7JXBWBQKyf102n/P6BS+PZCet8zTsBrsqqA4qpWIMR6JcU
+	 vHn7xTbnBhNtA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sandipan Das <sandipan.das@amd.com>,
-	Suyash Mahar <smahar@meta.com>,
-	Ian Rogers <irogers@google.com>,
+Cc: James Clark <james.clark@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ananth Narayan <ananth.narayan@amd.com>,
+	Ian Rogers <irogers@google.com>,
 	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
 	Jiri Olsa <jolsa@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 023/844] perf vendor events amd: Fix Zen 5 MAB allocation events
-Date: Sat, 28 Feb 2026 12:18:56 -0500
-Message-ID: <20260228173244.1509663-24-sashal@kernel.org>
+Subject: [PATCH 6.19 024/844] perf jevents: Handle deleted JSONS in out of source builds
+Date: Sat, 28 Feb 2026 12:18:57 -0500
+Message-ID: <20260228173244.1509663-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -83,18 +80,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220101-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220102-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -104,68 +101,83 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,arm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,meta.com:email]
-X-Rspamd-Queue-Id: 2DDA91C503B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,intel.com:email,infradead.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: 854151C4FA6
 X-Rspamd-Action: no action
 
-From: Sandipan Das <sandipan.das@amd.com>
+From: James Clark <james.clark@linaro.org>
 
-[ Upstream commit 76b2cf07a6d2a836108f9c2486d76599f7adf6e8 ]
+[ Upstream commit 297c9d96e3085116c5cde18170dba716a1f2591e ]
 
-The unit masks for PMCx041 vary across different generations of Zen
-processors.
+Make the source folders a dependency for the generated folder root so
+that whenever a file is deleted from the source it will force a new
+fresh copy of all the JSON files and avoid stale deleted files.
 
-Fix the Zen 5 events based on PMCx041 as they incorrectly use the same
-unit masks as that of Zen 4.
+JSON_DIRS_OUTPUT_ROOT needs to be a dependency of LEGACY_CACHE_JSON so
+that the root folder doesn't get cleaned after the legacy JSON is
+generated. But this is a no-op with in-source builds as
+JSON_DIRS_OUTPUT_ROOT is unset.
 
-Fixes: 45c072f2537ab07b ("perf vendor events amd: Add Zen 5 core events")
-Reported-by: Suyash Mahar <smahar@meta.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+JSON_DIRS is added as a dependency of PMU_EVENTS_C which also forces a
+re-build for in source builds when JSON files are deleted. This could
+have also resulted in stale builds, but never a broken one.
+
+Closes: https://lore.kernel.org/linux-next/aW5XSAo88_LBPSYI@sirena.org.uk/
+Fixes: 4bb55de4ff03db3e ("perf jevents: Support copying the source json files to OUTPUT")
+Reported-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: James Clark <james.clark@linaro.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ananth Narayan <ananth.narayan@amd.com>
+Cc: Ian Rogers <irogers@google.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/arch/x86/amdzen5/load-store.json | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/pmu-events/Build | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/pmu-events/arch/x86/amdzen5/load-store.json b/tools/perf/pmu-events/arch/x86/amdzen5/load-store.json
-index ff6627a778057..06bbaea159259 100644
---- a/tools/perf/pmu-events/arch/x86/amdzen5/load-store.json
-+++ b/tools/perf/pmu-events/arch/x86/amdzen5/load-store.json
-@@ -70,19 +70,19 @@
-     "EventName": "ls_mab_alloc.load_store_allocations",
-     "EventCode": "0x41",
-     "BriefDescription": "Miss Address Buffer (MAB) entries allocated by a Load-Store (LS) pipe for load-store allocations.",
--    "UMask": "0x3f"
-+    "UMask": "0x07"
-   },
-   {
-     "EventName": "ls_mab_alloc.hardware_prefetcher_allocations",
-     "EventCode": "0x41",
-     "BriefDescription": "Miss Address Buffer (MAB) entries allocated by a Load-Store (LS) pipe for hardware prefetcher allocations.",
--    "UMask": "0x40"
-+    "UMask": "0x08"
-   },
-   {
-     "EventName": "ls_mab_alloc.all_allocations",
-     "EventCode": "0x41",
-     "BriefDescription": "Miss Address Buffer (MAB) entries allocated by a Load-Store (LS) pipe for all types of allocations.",
--    "UMask": "0x7f"
-+    "UMask": "0x0f"
-   },
-   {
-     "EventName": "ls_dmnd_fills_from_sys.local_l2",
+diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
+index a46ab7b612dfc..4f9ef624ba70d 100644
+--- a/tools/perf/pmu-events/Build
++++ b/tools/perf/pmu-events/Build
+@@ -1,5 +1,6 @@
+ pmu-events-y	+= pmu-events.o
+ JSON		=  $(shell find pmu-events/arch -name '*.json' -o -name '*.csv')
++JSON_DIRS	=  $(shell find pmu-events/arch -type d)
+ JDIR_TEST	=  pmu-events/arch/test
+ JSON_TEST	=  $(shell [ -d $(JDIR_TEST) ] &&			\
+ 			find $(JDIR_TEST) -name '*.json')
+@@ -31,16 +32,23 @@ $(PMU_EVENTS_C): $(EMPTY_PMU_EVENTS_C)
+ else
+ # Copy checked-in json to OUTPUT for generation if it's an out of source build
+ ifneq ($(OUTPUT),)
+-$(OUTPUT)pmu-events/arch/%: pmu-events/arch/%
++# Remove all output directories when any source directory timestamp changes
++# so there are no stale deleted files
++JSON_DIRS_ROOT = $(OUTPUT)pmu-events/arch/
++$(JSON_DIRS_ROOT): $(JSON_DIRS)
++	$(Q)$(call echo-cmd,gen)rm -rf $@
++	$(Q)mkdir -p $@
++
++$(OUTPUT)pmu-events/arch/%: pmu-events/arch/% $(JSON_DIRS_ROOT)
+ 	$(call rule_mkdir)
+ 	$(Q)$(call echo-cmd,gen)cp $< $@
+ endif
+ 
+-$(LEGACY_CACHE_JSON): $(LEGACY_CACHE_PY)
++$(LEGACY_CACHE_JSON): $(LEGACY_CACHE_PY) $(JSON_DIRS_ROOT)
+ 	$(call rule_mkdir)
+ 	$(Q)$(call echo-cmd,gen)$(PYTHON) $(LEGACY_CACHE_PY) > $@
+ 
+-GEN_JSON = $(patsubst %,$(OUTPUT)%,$(JSON)) $(LEGACY_CACHE_JSON)
++GEN_JSON = $(patsubst %,$(OUTPUT)%,$(JSON)) $(LEGACY_CACHE_JSON) $(JSON_DIRS)
+ 
+ $(METRIC_TEST_LOG): $(METRIC_TEST_PY) $(METRIC_PY)
+ 	$(call rule_mkdir)
 -- 
 2.51.0
 
