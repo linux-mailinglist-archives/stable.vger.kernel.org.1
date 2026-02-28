@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-220391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCCTLnA5o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:52:32 +0100
+	id mGbBK3s5o2mU+gQAu9opvQ
+	(envelope-from <stable+bounces-220392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:52:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D816A1C658D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:52:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8ED51C659B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:52:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4070531A5546
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:20:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9BB9331A6D0B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A098C3A8E37;
-	Sat, 28 Feb 2026 17:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664603AAB86;
+	Sat, 28 Feb 2026 17:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vjd62ETT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lD5GRwkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645FC3A8E2E;
-	Sat, 28 Feb 2026 17:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298E5480955;
+	Sat, 28 Feb 2026 17:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300284; cv=none; b=gUnJHf83KGei3ohXe2DWYkjy/hsSLUDGzLeBWTuj01LvvtzNmfg0rjVPrG49Rqg48sUeH6CeGjNQ8I4j0wxhmOm1TO4aiJN7k42UgBCokBgClKp/CUiM/m++AjDR0Dx0jgwnubdr8Sr1XusZGN570Ht0QhY1IxsATf0YQ25FKUc=
+	t=1772300285; cv=none; b=ZPHLLOV/w29rx9u9Cqq5VprV81/n2Z2XE5xyLhs0JsCqdX6GNKrs4dl4EjqxL64w6VKCnpNs/I1Q9iR7P4Oc/97IVBXcksOEwN5SPd2EcSHBzVAHIWW3W0R/XkNPZ8uWEK1xwgj9dEGcuCcBxfYprIt79s/FsHYkDrCYj2uDQDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300284; c=relaxed/simple;
-	bh=xRWtLbm0zjBdLRyDSj+VAA8imS9R2w3IqEL1uvlgr3c=;
+	s=arc-20240116; t=1772300285; c=relaxed/simple;
+	bh=WLc9+IuJ4Y6+DvZ7a5Qw5UhvfVOKCcCk+tw0ilC13LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLDDpVQWuHM3j73XP/u7+BoTTT6XVLNFjscDfhGOjP6mP+T3vevOV6FoApu4RbAqW8zwhI/dILFLekyun50Z+w/S3SMqSoemgJ3sN10WassfQjJ8v4ufDbc4pYo3sfVokj4ngfpwIxhsJ4+53ajIf4VxKr7dvWpf1489BYY3IdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vjd62ETT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9864FC116D0;
-	Sat, 28 Feb 2026 17:38:03 +0000 (UTC)
+	 MIME-Version; b=Zg2FssfQ0dEw2nnnrludeZe0+xEA5BLMpFpmsHakPlDkDBsYElIzA/SaLxOItaIQHxi7lx6GOGUaFkcNbvAaOqLpWgci+G1xnyjzeaJXpC2d5vmFYtuQC7zpGcNcJZ93vxWX5N9cNzJIG3ooj9agEeC8XJv2ZIJq6dA/ySzTbKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lD5GRwkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8906CC116D0;
+	Sat, 28 Feb 2026 17:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300284;
-	bh=xRWtLbm0zjBdLRyDSj+VAA8imS9R2w3IqEL1uvlgr3c=;
+	s=k20201202; t=1772300285;
+	bh=WLc9+IuJ4Y6+DvZ7a5Qw5UhvfVOKCcCk+tw0ilC13LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vjd62ETTXD6YDw+ZhsapA499u2jnmRNjvDDe+eTYOwrpI8JmLug2wUYFdzLouhg5C
-	 BJ/ftYNF4/fEx96yL3j3n0jCWsE2dDU3XUvYRJBNdNjKU2kjH9ZRT3MyExA92fvXOT
-	 Y4GTLD0UDc3pO6jqB4B8G3Bem3MwPJ0aRhsbqHZh88doY1aAhOjUlGpFioO6doggZv
-	 LnScZ0y2MGzoCfpWXkrHBVpLANou4WY9tdPnYTT5h2THkNwlffdnMtZsj8h7AtAnFR
-	 FnENsUKaUq+YCfYt0ahVk4C/7gArkA8mwWhPajta0xRL+stYIokoVufkG2FYEOTnnx
-	 T2mG06W/tdD3g==
+	b=lD5GRwkBi7TvozRmMTFz/By6L/aBmK7qe6RqSE/dwYKLxnAzuzLeDVltKV1JAZmvg
+	 jO3GEh8NMHcNRzLxZP1yCOj+3nqek2pGGVDGQXaBN1PXzAVjzeoSuw1A91X2+W5Dmd
+	 VsPRJ91dq2Y4dN+wyW54XY/I0KJV+NEbi6CFuD7+vzfuNfp0N6cDw9UInBhZXmoN2P
+	 tx3awMVRVi37fBIjs2HILgaOVw98V/hoRAv+RQf+N1iCgiJBa9FmYtYoVuuMt4A6fo
+	 GmjUEiowA9bTvV8XFEylJDN83Gbnagbr/PGz3n75YVXYkz+cdZ77JYRFCR0mDJCVTi
+	 IMNyttwZe4+BQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ziyi Guo <n7l8m4@u.northwestern.edu>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 312/844] wifi: iwlegacy: add missing mutex protection in il3945_store_measurement()
-Date: Sat, 28 Feb 2026 12:23:45 -0500
-Message-ID: <20260228173244.1509663-313-sashal@kernel.org>
+Subject: [PATCH 6.19 313/844] wifi: rtw89: pci: validate release report content before using for RTL8922DE
+Date: Sat, 28 Feb 2026 12:23:46 -0500
+Message-ID: <20260228173244.1509663-314-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -70,72 +68,66 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[u.northwestern.edu,wp.pl,intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220391-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-220392-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D816A1C658D
+X-Rspamd-Queue-Id: D8ED51C659B
 X-Rspamd-Action: no action
 
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 4dd1dda65265ecbc9f43ffc08e333684cf715152 ]
+[ Upstream commit 5f93d611b33a05bd03d6843c8efe8cb6a1992620 ]
 
-il3945_store_measurement() calls il3945_get_measurement() which internally
-calls il_send_cmd_sync() without holding il->mutex. However,
-il_send_cmd_sync() has lockdep_assert_held(&il->mutex) indicating that
-callers must hold this lock.
+The commit 957eda596c76
+("wifi: rtw89: pci: validate sequence number of TX release report")
+does validation on existing chips, which somehow a release report of SKB
+becomes malformed. As no clear cause found, add rules ahead for RTL8922DE
+to avoid crash if it happens.
 
-Other sysfs store functions in the same file properly acquire the mutex:
-- il3945_store_flags() acquires mutex at 3945-mac.c:3110
-- il3945_store_filter_flags() acquires mutex at 3945-mac.c:3144
-
-Add mutex_lock()/mutex_unlock() around the il3945_get_measurement() call
-in the sysfs store function to fix the missing lock protection.
-
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Link: https://patch.msgid.link/20260125193005.1090429-1-n7l8m4@u.northwestern.edu
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260123013957.16418-11-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlegacy/3945-mac.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/realtek/rtw89/pci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/3945-mac.c b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-index 104748fcdc33e..54991f31c52c5 100644
---- a/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-@@ -3224,7 +3224,9 @@ il3945_store_measurement(struct device *d, struct device_attribute *attr,
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 093960d7279f8..b8135cf15d13c 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -604,8 +604,10 @@ static void rtw89_pci_release_rpp(struct rtw89_dev *rtwdev, void *rpp)
  
- 	D_INFO("Invoking measurement of type %d on " "channel %d (for '%s')\n",
- 	       type, params.channel, buf);
-+	mutex_lock(&il->mutex);
- 	il3945_get_measurement(il, &params, type);
-+	mutex_unlock(&il->mutex);
+ 	info->parse_rpp(rtwdev, rpp, &rpp_info);
  
- 	return count;
- }
+-	if (unlikely(rpp_info.txch == RTW89_TXCH_CH12)) {
+-		rtw89_warn(rtwdev, "should no fwcmd release report\n");
++	if (unlikely(rpp_info.txch >= RTW89_TXCH_NUM ||
++		     info->tx_dma_ch_mask & BIT(rpp_info.txch))) {
++		rtw89_warn(rtwdev, "should no release report on txch %d\n",
++			   rpp_info.txch);
+ 		return;
+ 	}
+ 
 -- 
 2.51.0
 
