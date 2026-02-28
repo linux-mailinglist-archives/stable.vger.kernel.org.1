@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-220205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEkTJRAso2kr+AQAu9opvQ
-	(envelope-from <stable+bounces-220205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:55:28 +0100
+	id wPazEjIso2kr+AQAu9opvQ
+	(envelope-from <stable+bounces-220206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:56:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB481C5366
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B47BD1C53B3
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:56:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 031FE30FAB2D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:53:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91B953112B09
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15C24D90B8;
-	Sat, 28 Feb 2026 17:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA32E4D90D1;
+	Sat, 28 Feb 2026 17:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hABZIGlt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TyH0UAce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933144D90B1;
-	Sat, 28 Feb 2026 17:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4E14D90CC;
+	Sat, 28 Feb 2026 17:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300110; cv=none; b=pWeFm5W/g0g34vbpXevVx+oJaLORFybcxOKpjY64wrP+seCqB0+HGmdib3RherXK3oS6gZslaFibz+kc2g1UtmvfHcgpx81fSADqEPl+xwXt30Xiz6h8TjvbM6J4UzwzLifY+1IqhiWoiPNzP77P8MgRXz6+ileim1qoOpy6C04=
+	t=1772300111; cv=none; b=XO80sIF25MKwwu43zvE+mRS4inplYKtnGhfeLUTKDpn1Qj247tgBpc6zvOir9ISBqP2dgBMKQBJit3ETjOlOLchBzgFjJ6n0EVzg18vd4miHVptaUPu1vaGDw28PTiTDeCrmTzdRMzOlun1ZcQXygyvWp8pL5pRrgqtRQ6ifF4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300110; c=relaxed/simple;
-	bh=LXPnYFyjecgtFc/ffRpGlEF9xDMmt3tX7KpNWgiAbYc=;
+	s=arc-20240116; t=1772300111; c=relaxed/simple;
+	bh=Kjivy1/YxcWIrWPJjkwYGfoTheQc5bVZ6kO0ti60zlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+a+VX52QsM5HJrjIPrvXsXa3WR2HqpK9dbBt6ffLows/39fMzEtcYjKj2OcppI5mE6lNALcBFEdmO17AvqL2J0zlZwaf/1LhnWuaU2MAJFIhcDr5GqyAClrlK///IRp/MSYefCinJ8hUiXRK7t1HNhHLNilhpwkrULurx+zKE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hABZIGlt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC352C19423;
-	Sat, 28 Feb 2026 17:35:09 +0000 (UTC)
+	 MIME-Version; b=gEQtABeMVpObz/+D5F746kIvh9SY+DvqoXDbyaymu4Nz0HZ94Gag09lI+9td001cl1AVLGGcl3+jkgoYUUuHvKbNpKNhYenb0Aa36nN8XJpdyR1ug5KzQ8Q7G7LHaI/awvUvZHNbybtMrhH53PqCJQkDWlo/xSuUyGFsjKAAUHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TyH0UAce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA263C19423;
+	Sat, 28 Feb 2026 17:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300110;
-	bh=LXPnYFyjecgtFc/ffRpGlEF9xDMmt3tX7KpNWgiAbYc=;
+	s=k20201202; t=1772300111;
+	bh=Kjivy1/YxcWIrWPJjkwYGfoTheQc5bVZ6kO0ti60zlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hABZIGltr0Huw9E9Plr2omWdLW8DY5y2DjFxZj04+5LKkRZVhBSicw7Dp+mIsMjl/
-	 kFM9LvdsudLeLHBZZbm6e67asXzyKYeYdZk08CAqPKf/brfq2bYD2UfAeB3IEJ+knw
-	 fqxRBwtkc929ymeEoFc1RfRKSLqx1wtuW2HBXd1d65WyFb6spT/bZadsfvzIyDR7m8
-	 fZd7G9Ok8MqKn83zcGRLvinHFk0+mUWO0a5alXB6BR9pqqD9zqQJIWuqma7vOAb9f8
-	 jqOvBBJld8aTRfbsEoceBMfgm52q1B9stH6Ek5A9i4Tq7CdEO7TRymQqm/QVgrSczl
-	 R25P+2hARAwOg==
+	b=TyH0UAceZElPYcQIuakOkkO6/V3HotwBbBvTsGkuW5Ck0q7kgCiuhuamAVtUWJHu5
+	 lKVlS5GsWuVEw0MY0nJESw6W6rYvNLlDFxNKUSCDcs6lhXO2SF3MS3ogaudq9Hflxl
+	 fytDEA1/Ognj2tnFWX1hA9HdfhsGidYPxx9uCMhxepJeRdsEs/xjtz+RqzsYG3uewp
+	 tVVa4THoSUOkngyxloOukEOMUljLKq1U3O965eSJuRi8hZrMFnI3g4e3TStrJ15EaW
+	 QnscTAphKzM4KYMZJ4OqTNmQ17r6UdmS5XFyb1F1XnoCVc7b/MEavrdR/2OgYEbR4F
+	 SFrTpEXgyA9RA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Langyan Ye <yelangyan@huaqin.corp-partner.google.com>,
+Cc: Alexey Klimov <alexey.klimov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 127/844] drm/panel-edp: Add CSW MNE007QB3-1
-Date: Sat, 28 Feb 2026 12:20:40 -0500
-Message-ID: <20260228173244.1509663-128-sashal@kernel.org>
+Subject: [PATCH 6.19 128/844] gpu/panel-edp: add AUO panel entry for B140HAN06.4
+Date: Sat, 28 Feb 2026 12:20:41 -0500
+Message-ID: <20260228173244.1509663-129-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,80 +69,80 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220205-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220206-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,chromium.org:email]
-X-Rspamd-Queue-Id: EBB481C5366
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: B47BD1C53B3
 X-Rspamd-Action: no action
 
-From: Langyan Ye <yelangyan@huaqin.corp-partner.google.com>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit b1ea3babb67dcb8b0881c2ab49dfba88b1445856 ]
+[ Upstream commit 2976aeb0de77da599ad37691963efbdcb07435ce ]
 
-Add support for the CSW MNE007QB3-1, pleace the EDID here for
-subsequent reference.
+Add an eDP panel entry for AUO B140HAN06.4 that is also used in
+some variants of Lenovo Flex 5G with Qcom SC8180 SoC.
 
-00 ff ff ff ff ff ff 00 0e 77 7c 14 00 00 00 00
-00 23 01 04 a5 1e 13 78 07 ee 95 a3 54 4c 99 26
-0f 50 54 00 00 00 01 01 01 01 01 01 01 01 01 01
-01 01 01 01 01 01 35 3c 80 a0 70 b0 23 40 30 20
-36 00 2d bc 10 00 00 18 2b 30 80 a0 70 b0 23 40
-30 20 36 00 2d bc 10 00 00 18 00 00 00 fd 00 28
-3c 4a 4a 0f 01 0a 20 20 20 20 20 20 00 00 00 fc
-00 4d 4e 45 30 30 37 51 42 33 2d 31 0a 20 01 5b
+The raw edid of the panel is:
 
-70 20 79 02 00 21 00 1d c8 0b 5d 07 80 07 b0 04
-00 3d 8a 54 cd a4 99 66 62 0f 02 45 54 40 5e 40
-5e 00 44 12 78 2e 00 06 00 44 40 5e 40 5e 81 00
-20 74 1a 00 00 03 01 28 3c 00 00 00 00 00 00 3c
-00 00 00 00 8d 00 e3 05 04 00 e6 06 01 00 60 60
-ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 68 90
+00 ff ff ff ff ff ff 00 06 af 3d 64 00 00 00 00
+2b 1d 01 04 a5 1f 11 78 03 b8 1a a6 54 4a 9b 26
+0e 52 55 00 00 00 01 01 01 01 01 01 01 01 01 01
+01 01 01 01 01 01 14 37 80 b8 70 38 24 40 10 10
+3e 00 35 ae 10 00 00 18 10 2c 80 b8 70 38 24 40
+10 10 3e 00 35 ae 10 00 00 18 00 00 00 fe 00 41
+55 4f 0a 20 20 20 20 20 20 20 20 20 00 00 00 fe
+00 42 31 34 30 48 41 4e 30 36 2e 34 20 0a 00 eb
 
-Signed-off-by: Langyan Ye <yelangyan@huaqin.corp-partner.google.com>
+I do not have access to the datasheet and but it is tested on above
+mentioned laptop for a few weeks and seems to work just fine with
+timing info of similar panels.
+
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patch.msgid.link/20251127121601.1608379-1-yelangyan@huaqin.corp-partner.google.com
+Link: https://patch.msgid.link/20251203074555.690613-1-alexey.klimov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  drivers/gpu/drm/panel/panel-edp.c | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index 415b894890ad7..023fbbb10eb4f 100644
+index 023fbbb10eb4f..2c35970377431 100644
 --- a/drivers/gpu/drm/panel/panel-edp.c
 +++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -2033,6 +2033,7 @@ static const struct edp_panel_entry edp_panels[] = {
- 	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1462, &delay_200_500_e50, "MNE007QS5-2"),
- 	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1468, &delay_200_500_e50, "MNE007QB2-2"),
- 	EDP_PANEL_ENTRY('C', 'S', 'W', 0x146e, &delay_80_500_e50_d50, "MNE007QB3-1"),
-+	EDP_PANEL_ENTRY('C', 'S', 'W', 0x147c, &delay_200_500_e50_d100, "MNE007QB3-1"),
- 	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1519, &delay_200_500_e80_d50, "MNF601BS1-3"),
- 
- 	EDP_PANEL_ENTRY('E', 'T', 'C', 0x0000, &delay_50_500_e200_d200_po2e335, "LP079QX1-SP0V"),
+@@ -1904,6 +1904,7 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x615c, &delay_200_500_e50, "B116XAN06.1"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x635c, &delay_200_500_e50, "B116XAN06.3"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x639c, &delay_200_500_e50, "B140HAK02.7"),
++	EDP_PANEL_ENTRY('A', 'U', 'O', 0x643d, &delay_200_500_e50, "B140HAN06.4"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x723c, &delay_200_500_e50, "B140XTN07.2"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x73aa, &delay_200_500_e50, "B116XTN02.3"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x8594, &delay_200_500_e50, "B133UAN01.0"),
 -- 
 2.51.0
 
