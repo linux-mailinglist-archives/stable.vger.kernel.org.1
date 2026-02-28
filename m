@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HhkNVIyo2kE+QQAu9opvQ
-	(envelope-from <stable+bounces-220338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:22:10 +0100
+	id cBxOIM00o2nP+QQAu9opvQ
+	(envelope-from <stable+bounces-220339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:32:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781501C5B6A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:22:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8691C5EF5
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:32:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7C76230E260D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:12:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 880CE30C9977
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64B8359A63;
-	Sat, 28 Feb 2026 17:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76E8359A82;
+	Sat, 28 Feb 2026 17:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rSBh/ovp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETiRpB33"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9289D347FCC;
-	Sat, 28 Feb 2026 17:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87ABC359A78;
+	Sat, 28 Feb 2026 17:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300237; cv=none; b=Yd2nFgFfQePqu2UuQzc4zXTq/vJRSkQLunozBd0I4I6zU4WV7p0vBot5LYsaYsU7lD1dwHh7KNFdn8Tmfe8wBmYRtZXpNxcxNpBcx+qH+ToWWuxm6DcPdqF3bc+r0aFjd3uNoSw7CetilHaOm52fPkwVGV8GUV8y8RuflR8mkl0=
+	t=1772300238; cv=none; b=oukA/FaMH+luBNwA1ND2E6jYHqLC4mHQRJ2Hl5Yp8ZMY9CqHjp7MVtmZTHizUN2HYxjvoyB17hxqii1wwnTs2PlGCh4OikuMtjnIIgxMm8wCobunzyvMDw1oPHZixbMtLK1Td/PjeyTURs77H1a8p82orLXG4HBzKtqzLnma36E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300237; c=relaxed/simple;
-	bh=awD29nvx2aphOkit+4HOtUSGi40fwC+8DL/sgkv8urc=;
+	s=arc-20240116; t=1772300238; c=relaxed/simple;
+	bh=5aKzeXcYaYo4MCLQ1Ws0WHCxrUeX6gnyX7HcxQxb8KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfZr3A0zfGVbFZXmFcWHx4yQ/y1TxJDQKACTNGYDUHobGpRgwmOGdqetSinJtYtD/cH5a6e0sEhI4S0PSaNSbxXzKmU79CLHDu1JoJ4CaAhAmIVissY/5x23GcSvmMk/GMCJF2aqmItGUNYalb8Q2UVaOPT+HldycEgazZhXazs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rSBh/ovp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF21EC19425;
-	Sat, 28 Feb 2026 17:37:16 +0000 (UTC)
+	 MIME-Version; b=rm96ciCUdgvUIkg9W5ZBWmhv9DrDf3GXqBA/Pj3pjFk1M+uLFFrJUNEJGnyqjipWctetTpU7l9jo2y0nQvJhxNL160fptKP8zaDsHITKBtqde71ubc26hkFrhjp/0U4prFSd1sEe6TgAZIbXg4jbfI3ZMP6Ya0a3O9oWpUtJi60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETiRpB33; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB47AC19424;
+	Sat, 28 Feb 2026 17:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300237;
-	bh=awD29nvx2aphOkit+4HOtUSGi40fwC+8DL/sgkv8urc=;
+	s=k20201202; t=1772300238;
+	bh=5aKzeXcYaYo4MCLQ1Ws0WHCxrUeX6gnyX7HcxQxb8KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSBh/ovpr2/PF5kPXWO8w9r75am40nOCgNUAUHVWLaE/tSDA83BWhKap/pKoyIjHO
-	 tP7TewFEKJnkBVqRILZOEmtsB6QK9/23jBAhMqaGPQ/7TKvlXTuEOuz9u/o23prYsb
-	 EUg6VJ2PrLyj4+RqKxtHLp7bgMtJqD3kgMCzS3I8aGK9lCt1fKWgTm16XsrvpM4leV
-	 HlGtprjvC7mozEWTGDgTXarEmSgrMpArEtMGvvyZ46mt2KUcyqQaAWjG750kbDrrmy
-	 HkiuxP0TQWFnXMYaUpscWMvNfC0pbjYY+THPLXG99DgUzj1CBLaP6N7ocIYu5GmIq6
-	 V85IWnh0cNK4A==
+	b=ETiRpB33UY4ZskLNZ4SXjSsPuR/b7iX+bfi9UrpcaMNTLPyBzksKaKV5z/zEhuEvV
+	 QmFsRmUDwRuFzasBQX2I6cTyvCcITtcgRWlG0Tk8obohOUDeiFYnNRls+upxhSpOar
+	 1uvRm4+61/5p9ktodqjJdJNWgbumgDDJJokbqF8jsK/FF85ZdUv16GSupELyBXcBQV
+	 Zf9iPxyvyy7IrieB9PJJ/Cn5FKGdNwgl6fipX0ZpaerbkO8mL4WLkdJB79P7yQtphm
+	 5GO1YI2U3FTh9uFBgWNfkId5ShzVKy+8mNeohNPxOxR4KtmvVoR2WZrzhmeAH6LwcN
+	 acKR47ytYelBg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ian Rogers <irogers@google.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 260/844] wifi: rtw88: Fix inadvertent sharing of struct ieee80211_supported_band data
-Date: Sat, 28 Feb 2026 12:22:53 -0500
-Message-ID: <20260228173244.1509663-261-sashal@kernel.org>
+Subject: [PATCH 6.19 261/844] PCI: cadence: Avoid signed 64-bit truncation and invalid sort
+Date: Sat, 28 Feb 2026 12:22:54 -0500
+Message-ID: <20260228173244.1509663-262-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,115 +72,80 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-220339-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220338-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 781501C5B6A
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EE8691C5EF5
 X-Rspamd-Action: no action
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit fcac0f23d4d20b11014a39f8e2527cdc12ec9c82 ]
+[ Upstream commit 0297dce758a021ccf2c0f4e164d5403ef722961c ]
 
-Internally wiphy writes to individual channels in this structure,
-so we must not share one static definition of channel list between
-multiple device instances, because that causes hard to debug
-breakage.
+The cdns_pcie_host_dma_ranges_cmp() element comparison function used by
+list_sort() is of type list_cmp_func_t, so it returns a 32-bit int.
 
-For example, with two rtw88 driven devices in the system, channel
-information may get incoherent, preventing channel use.
+cdns_pcie_host_dma_ranges_cmp() computes a resource_size_t difference that
+may be a 64-bit value, and truncating that difference to a 32-bit return
+value may change the sign and result in an invalid sort order.
 
-Copied from commit 0ae36391c804 ("wifi: rtw89: Fix inadverent sharing
-of struct ieee80211_supported_band data").
+Avoid the truncation and invalid sort order by returning -1, 0, or 1.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/e94ad653-2b6d-4284-a33c-8c694f88955b@gmail.com
+Signed-off-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20251209223756.2321578-1-irogers@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 34 +++++++++++++++++++----
- 1 file changed, 29 insertions(+), 5 deletions(-)
+ .../controller/cadence/pcie-cadence-host-common.c    | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 6f35357e73246..dde2ea6a00e06 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1658,16 +1658,41 @@ static u16 rtw_get_max_scan_ie_len(struct rtw_dev *rtwdev)
- 	return len;
- }
- 
-+static struct ieee80211_supported_band *
-+rtw_sband_dup(struct rtw_dev *rtwdev,
-+	      const struct ieee80211_supported_band *sband)
-+{
-+	struct ieee80211_supported_band *dup;
-+
-+	dup = devm_kmemdup(rtwdev->dev, sband, sizeof(*sband), GFP_KERNEL);
-+	if (!dup)
-+		return NULL;
-+
-+	dup->channels = devm_kmemdup_array(rtwdev->dev, sband->channels,
-+					   sband->n_channels,
-+					   sizeof(*sband->channels),
-+					   GFP_KERNEL);
-+	if (!dup->channels)
-+		return NULL;
-+
-+	dup->bitrates = devm_kmemdup_array(rtwdev->dev, sband->bitrates,
-+					   sband->n_bitrates,
-+					   sizeof(*sband->bitrates),
-+					   GFP_KERNEL);
-+	if (!dup->bitrates)
-+		return NULL;
-+
-+	return dup;
-+}
-+
- static void rtw_set_supported_band(struct ieee80211_hw *hw,
- 				   const struct rtw_chip_info *chip)
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-host-common.c b/drivers/pci/controller/cadence/pcie-cadence-host-common.c
+index 15415d7f35ee9..2b0211870f02a 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-host-common.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-host-common.c
+@@ -173,11 +173,21 @@ int cdns_pcie_host_dma_ranges_cmp(void *priv, const struct list_head *a,
+ 				  const struct list_head *b)
  {
- 	struct ieee80211_supported_band *sband;
- 	struct rtw_dev *rtwdev = hw->priv;
--	struct device *dev = rtwdev->dev;
+ 	struct resource_entry *entry1, *entry2;
++	u64 size1, size2;
  
- 	if (chip->band & RTW_BAND_2G) {
--		sband = devm_kmemdup(dev, &rtw_band_2ghz, sizeof(*sband),
--				     GFP_KERNEL);
-+		sband = rtw_sband_dup(rtwdev, &rtw_band_2ghz);
- 		if (!sband)
- 			goto err_out;
- 		if (chip->ht_supported)
-@@ -1676,8 +1701,7 @@ static void rtw_set_supported_band(struct ieee80211_hw *hw,
- 	}
+ 	entry1 = container_of(a, struct resource_entry, node);
+ 	entry2 = container_of(b, struct resource_entry, node);
  
- 	if (chip->band & RTW_BAND_5G) {
--		sband = devm_kmemdup(dev, &rtw_band_5ghz, sizeof(*sband),
--				     GFP_KERNEL);
-+		sband = rtw_sband_dup(rtwdev, &rtw_band_5ghz);
- 		if (!sband)
- 			goto err_out;
- 		if (chip->ht_supported)
+-	return resource_size(entry2->res) - resource_size(entry1->res);
++	size1 = resource_size(entry1->res);
++	size2 = resource_size(entry2->res);
++
++	if (size1 > size2)
++		return -1;
++
++	if (size1 < size2)
++		return 1;
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(cdns_pcie_host_dma_ranges_cmp);
+ 
 -- 
 2.51.0
 
