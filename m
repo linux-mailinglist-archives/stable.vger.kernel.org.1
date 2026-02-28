@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-220822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220823-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CH+hGIFDo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:35:29 +0100
+	id eHt5FclYo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220823-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:06:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03251C7281
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:35:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B68D1C8C65
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:06:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A14630AF87B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:28:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 615B4301466B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662FA414BFB;
-	Sat, 28 Feb 2026 17:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563DA416510;
+	Sat, 28 Feb 2026 17:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/8dahUg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S13CKTwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279DE414BFE;
-	Sat, 28 Feb 2026 17:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1654A416505;
+	Sat, 28 Feb 2026 17:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300708; cv=none; b=Y4WpGkb/oaoz9t9gsMYLMIAf1yH7MF0ntiU9TZpofAly8GeCr2h3k3ntf5/7B4XXBCSYBwFAcA71K8GXRD/nM0m8WTjriQeJVjaRvybJUxHAS3PnPV7jZk6PC/7mfG12iVLe8OCfKdb/DEYWL9qF79NNhTxg87wtLHhmZK2d29M=
+	t=1772300709; cv=none; b=QncT2NtQYhJGqFFa6SqfHrsVlE+pvUzVrUHIesHizBoYZ8TufkdVSq6EMaZNUaX8RaP+Qb6vuIKnrjiXrDJB9VL6dxVGJHbz+5J0h5ND8Y5E+xgDdh5vVDaT/j7kvgtPa4s3hDvjiaaTmuL0e3gaVZSVRzoQx5vj0z8tV6DxtrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300708; c=relaxed/simple;
-	bh=0okS24yR1p0q9G0akiBZoBKuecrrZL4S4vPF8LVJtuk=;
+	s=arc-20240116; t=1772300709; c=relaxed/simple;
+	bh=+Ste2ttJfZAd6L9l4wmVUyZ5HJ1zQqi8hqqC0X2Ssoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ax0IIQGdkIrpzQDzRl1Pm+R4z5EEWC9a2V5uyxObKrcQFYAboyJNXTSnYvYtAJKb6hyxLGNOjI/ffUctookGkhWxSQWOaTMIrdBjdlWTvr1kO+Y3BNwRJt7PNdJuo+QKiqrWNcVk+Qb8hBSxRkUSbbU5AZzxZO5WVRILbb+nnE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/8dahUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0308DC19423;
-	Sat, 28 Feb 2026 17:45:06 +0000 (UTC)
+	 MIME-Version; b=CStrQZwb5FmqkQjvtqAet2YNufWvBqlTv+2tWuCelvUOoftaULN7jve5so/8RqPYUfXgrSigt9/21/GLCFDC9aPasm2iy6ypE+dEOstxNyPzRNoDexKGgO5YAotzs6SjaxHWWhTAR+L6dVyT2EqbsH+B76YAxqFFOdzE5ga0XYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S13CKTwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF4FC19423;
+	Sat, 28 Feb 2026 17:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300708;
-	bh=0okS24yR1p0q9G0akiBZoBKuecrrZL4S4vPF8LVJtuk=;
+	s=k20201202; t=1772300709;
+	bh=+Ste2ttJfZAd6L9l4wmVUyZ5HJ1zQqi8hqqC0X2Ssoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/8dahUgb2Bv3+HqdTNo8x3GjGgoG+d9Q45IB0R/sHkWDT+ONSworfbTprfpm0qPv
-	 PjnkY/R7KwzU6jjdEbC6TI6LhIn+30PonjLRdqOTCfJzz4+XKvW/RL3hGLN45oSRrq
-	 1qt5nqleypQ+FyZ5WAL9pkvzDA/kFRqu+oZB75BtQZ7KwdOhLHvdBC8BYAFOH8ACpm
-	 fWBTXj9ofzYdrumAV41/R9EgcpJ0ilDFcLzvieo6yIQJzuT7Kqli7NXktkPVh5ByDP
-	 fsM0cD2rnRbVdj3yaPyjWfExgxR2ffOx1S7GY2sSDvjn4cz9tLKFNRGy0ntYye51y8
-	 tzVT/AQRuFybg==
+	b=S13CKTwjuFfVlA+LG/p4SjQdue+VuljfHRj7/m1LxX1Lxfao5U9yWMbwIVzfsN36S
+	 UjOjoy9qo+2u10/B50+++Nlso2jML9aMVM8IIzGi05Y43z0m6weRIGbFoqwTSpFPJj
+	 8CEcCTG3FnIi3pe8dGWGN02U7m+zJpGTz59WwXn5lsdE1ixIhEBLsmHEJXjbYgdycZ
+	 jecP6rTPIc6+QQgt7Fjvr6iiQsw8pDnV3P7xM42t/kSztYdR3+WeEtPD2FnGWOA/yT
+	 FSu9IXQhYSb/UJ+DvjhnLuU9KKgB+obbCoOYRtb0EtsYOw1FZNlDfvzxESiFa5cMEi
+	 gBCnCuOsYFJDA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hans Zhang <zhanghuabing@ecosda.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
+Cc: Johan Hovold <johan@kernel.org>,
+	Andrew Davis <afd@ti.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 743/844] PCI: dwc: Fix msg_atu_index assignment
-Date: Sat, 28 Feb 2026 12:30:56 -0500
-Message-ID: <20260228173244.1509663-744-sashal@kernel.org>
+Subject: [PATCH 6.19 744/844] mux: mmio: fix regmap leak on probe failure
+Date: Sat, 28 Feb 2026 12:30:57 -0500
+Message-ID: <20260228173244.1509663-745-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,93 +68,69 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220822-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220823-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email,msgid.link:url,rock-chips.com:email,ecosda.com:email]
-X-Rspamd-Queue-Id: D03251C7281
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,ti.com:email]
+X-Rspamd-Queue-Id: 9B68D1C8C65
 X-Rspamd-Action: no action
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 58fbf08935d9c4396417e5887df89a4e681fa7e3 ]
+[ Upstream commit 3c4ae63073d84abee5d81ce46d86a94e9dae9c89 ]
 
-When dw_pcie_iatu_setup() configures outbound address translation for both
-type PCIE_ATU_TYPE_MEM and PCIE_ATU_TYPE_IO, the iATU index to use is
-incremented before calling dw_pcie_prog_outbound_atu().
+The mmio regmap that may be allocated during probe is never freed.
 
-However for msg_atu_index, the index is not incremented before use,
-causing the iATU index to be the same as the last configured iATU index,
-which means that it will incorrectly use the same iATU index that is
-already in use, breaking outbound address translation.
+Switch to using the device managed allocator so that the regmap is
+released on probe failures (e.g. probe deferral) and on driver unbind.
 
-In total there are three problems with this code:
--It assigns msg_atu_index the same index that was used for the last
- outbound address translation window, rather than incrementing the index
- before assignment.
--The index should only be incremented (and msg_atu_index assigned) if the
- use_atu_msg feature is actually requested/in use (pp->use_atu_msg is set).
--If the use_atu_msg feature is requested/in use, and there are no outbound
- iATUs available, the code should return an error, as otherwise when this
- this feature is used, it will use an iATU index that is out of bounds.
-
-Fixes: e1a4ec1a9520 ("PCI: dwc: Add generic MSG TLP support for sending PME_Turn_Off when system suspend")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hans Zhang <zhanghuabing@ecosda.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260127151038.1484881-6-cassel@kernel.org
+Fixes: 61de83fd8256 ("mux: mmio: Do not use syscon helper to build regmap")
+Cc: stable@vger.kernel.org	# 6.16
+Cc: Andrew Davis <afd@ti.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Andrew Davis <afd@ti.com>
+Link: https://patch.msgid.link/20251127134702.1915-1-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-host.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/mux/mmio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index af2eeed55f9e5..53125b97530b6 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -946,7 +946,14 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
- 		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
- 			 pci->num_ob_windows);
- 
--	pp->msg_atu_index = i;
-+	if (pp->use_atu_msg) {
-+		if (pci->num_ob_windows > ++i) {
-+			pp->msg_atu_index = i;
-+		} else {
-+			dev_err(pci->dev, "Cannot add outbound window for MSG TLP\n");
-+			return -ENOMEM;
-+		}
-+	}
- 
- 	i = 0;
- 	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
+diff --git a/drivers/mux/mmio.c b/drivers/mux/mmio.c
+index 3409af1ffb80f..0611ef28bb69a 100644
+--- a/drivers/mux/mmio.c
++++ b/drivers/mux/mmio.c
+@@ -72,7 +72,7 @@ static int mux_mmio_probe(struct platform_device *pdev)
+ 		if (IS_ERR(base))
+ 			regmap = ERR_PTR(-ENODEV);
+ 		else
+-			regmap = regmap_init_mmio(dev, base, &mux_mmio_regmap_cfg);
++			regmap = devm_regmap_init_mmio(dev, base, &mux_mmio_regmap_cfg);
+ 		/* Fallback to checking the parent node on "real" errors. */
+ 		if (IS_ERR(regmap) && regmap != ERR_PTR(-EPROBE_DEFER)) {
+ 			regmap = dev_get_regmap(dev->parent, NULL);
 -- 
 2.51.0
 
