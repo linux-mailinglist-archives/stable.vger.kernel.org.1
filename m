@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-220266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBEkJlYvo2me+AQAu9opvQ
-	(envelope-from <stable+bounces-220266-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:09:26 +0100
+	id MBFdFlovo2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:09:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39151C57A2
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:09:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F611C57AA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0726B321AE1C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:02:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 477B2322391C
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22ECA47DD62;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BAD37F054;
 	Sat, 28 Feb 2026 17:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QifdZsQN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tt8D1Tu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89D137D7BB;
-	Sat, 28 Feb 2026 17:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B6137F04A;
+	Sat, 28 Feb 2026 17:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300169; cv=none; b=Qr/XtAF4mxsVgmnM37Q4GGFXVo879Kg6oN2HvZZ1fKR34wl3/Uxi8VVrC+PMov4AhFkRfsm59Cwlgt1JDIAUkcDz0dVNu2aPwzs8jjZox6Ov62WOu4aKtL09Nq6Ys7r5Jm1edIYS/1iUfH+JB4M81rX1fcHsmFUbH3VBXw6qoPw=
+	t=1772300170; cv=none; b=gy1hubwtD+DSvDw144djuy5wv0ikhv5qiCJbnLwCxba0NQA3aOrcObczbUOACxryrO2je5uqW9IU4wcx6ltNtXff+QIMFGMnDI/df8WaE8OD6wNAclvFwhKZivt6buOZcJWeMlN1THc3QrjiNNA5lD05JCeyaLRtKjrPgT9KfmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300169; c=relaxed/simple;
-	bh=t/qWvLiiZTN9YhktCj57n4lM8XQf8ni+1HTIecX0v1Y=;
+	s=arc-20240116; t=1772300170; c=relaxed/simple;
+	bh=kH2Q4tjC6AD30/OuYaSFbeXe/W8j/TLTaXSK7hAfnPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acMsHo08Zjh8lPzQ+DGHo837hXDKsiKSA2owVRc6wJ/7FaIpnQhAYUhJ/0KUtgTkrEdWd4R2kobjm+eMPEQrQE2gf6RooToEvSo9BAB6BcM1IBFYJSfdZM3BoE3/t2DWNWyEaIYbY4p5/NkCKzmgbE64bMs2OQTx4DesSVfBu0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QifdZsQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D8AC116D0;
-	Sat, 28 Feb 2026 17:36:08 +0000 (UTC)
+	 MIME-Version; b=QJ3cOmmmfPrN1QmZDiF+3Krv5WiXfnOUiGoQSesFqeYXIUCjx7ApxO/J33EA9tzeFYDJpurtPSlsZ54/wMtZNxRu7AESzUqNDBy0BctjquDPG9cDcQUOEc+GoqSPXp3xHYYD4Aq0E5IEPURVs6oqXmZGcZtqFp4LOpzZ4HHtEbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tt8D1Tu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E13C19424;
+	Sat, 28 Feb 2026 17:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300169;
-	bh=t/qWvLiiZTN9YhktCj57n4lM8XQf8ni+1HTIecX0v1Y=;
+	s=k20201202; t=1772300170;
+	bh=kH2Q4tjC6AD30/OuYaSFbeXe/W8j/TLTaXSK7hAfnPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QifdZsQNmIG8cZyG44OKQ3h+DdbdH8q2u2DsKKx84czuMd2Iynel+ZDCgRxaFxQmN
-	 WiJ2uGLbuj0yZwHTXoSsxB3OOjfCrRwEvwLUYWDtu/j9vrDjZorUpAc1l9D1wbV3mD
-	 cEWoAz2Ifi7rgyTmfhoMfIIaZkD0sN2elBwWNU/jWVo4JWGYbfuKCgui4qFBLBq+Ss
-	 18Bdt7SuwOfheSWWWs2C3JqiWsRJC/KBIPhCA9DS69gylXRsoj8WyExUSu2yk9jGz1
-	 LnaGkqngvNbn/JKJC65iZ8/j5phd2irfISZlBoWcMKL72nv/+Nm01jDV35FAPhjS4Y
-	 QoVob4CNoXqug==
+	b=Tt8D1Tu4yUI7eg4GKeLGszUwz6mS2s8mnmG1zOZni4zG14ZlbFULGnyooUjNXMmQj
+	 v9ZvYU1qDlv52sIRtmtVlSntCLtvTBtEdNfpGufmGXRe+GIJbxNTAgzf91jbkDTwnk
+	 +2bLgIBHIzmAw5yoLNWJU/G7E6+ortlPG0Jk94HBu4OkpP3ORx1jwmycNIX9yyM6TB
+	 VhlF7QtBmA02rcy0LCk7cMT8oOdekvbpxehHW36ELpRPv78+JguQNzmUuyzQaUPO8K
+	 zsLgCve34Ps4M/kMMGcChrH1uvOlG96+I0VMTEzn6nUoNxTQQVzw6du1r8tJan+jZ0
+	 kBr2UeQSNEuxw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Bingbu Cao <bingbu.cao@linux.intel.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+Cc: Bharat Dev Burman <bharat.singh7924@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 188/844] media: ipu6: Always close firmware stream
-Date: Sat, 28 Feb 2026 12:21:41 -0500
-Message-ID: <20260228173244.1509663-189-sashal@kernel.org>
+Subject: [PATCH 6.19 189/844] ALSA: hda/realtek: add HP Victus 16-e0xxx mute LED quirk
+Date: Sat, 28 Feb 2026 12:21:42 -0500
+Message-ID: <20260228173244.1509663-190-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,73 +66,110 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220266-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,suse.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220267-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: F39151C57A2
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D0F611C57AA
 X-Rspamd-Action: no action
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Bharat Dev Burman <bharat.singh7924@gmail.com>
 
-[ Upstream commit 2b08b7007e55bd1793a58478d3ecea4fd95849a5 ]
+[ Upstream commit 72919c57a055f6d7b79d66731dc398e9b433f47c ]
 
-Close the firmware stream even when disabling a stream on an upstream
-sub-device fails. This allows the firmware to release resources related to
-a stream that is stopped in any case.
+HP Victus 16-e0xxx with ALC245 codec does not handle the toggling of
+the mute LED.
+This patch adds a quirk entry for subsystem ID 0x88eb using a new
+ALC245_FIXUP_HP_MUTE_LED_V2_COEFBIT fixup, enabling correct mute LED
+behavior.
 
-Suggested-by: Bingbu Cao <bingbu.cao@linux.intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Bingbu Cao <bingbu.cao@intel.com>
-Tested-by: Mehdi Djait <mehdi.djait@linux.intel.com> # Dell XPS 9315
-Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Bharat Dev Burman <bharat.singh7924@gmail.com>
+Link: https://patch.msgid.link/20260112184253.33376-1-bharat.singh7924@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6-isys-video.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/hda/codecs/realtek/alc269.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-video.c b/drivers/media/pci/intel/ipu6/ipu6-isys-video.c
-index 919b77107cef7..54d861aca0088 100644
---- a/drivers/media/pci/intel/ipu6/ipu6-isys-video.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-isys-video.c
-@@ -1036,11 +1036,10 @@ int ipu6_isys_video_set_streaming(struct ipu6_isys_video *av, int state,
- 			sd->name, r_pad->index, stream_mask);
- 		ret = v4l2_subdev_disable_streams(sd, r_pad->index,
- 						  stream_mask);
--		if (ret) {
-+		if (ret)
- 			dev_err(dev, "stream off %s failed with %d\n", sd->name,
- 				ret);
--			return ret;
--		}
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 1964494321006..c9f59e62ee022 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -1551,6 +1551,22 @@ static void alc245_fixup_hp_mute_led_v1_coefbit(struct hda_codec *codec,
+ 	}
+ }
+ 
++static void alc245_fixup_hp_mute_led_v2_coefbit(struct hda_codec *codec,
++					  const struct hda_fixup *fix,
++					  int action)
++{
++	struct alc_spec *spec = codec->spec;
 +
- 		close_streaming_firmware(av);
- 	} else {
- 		ret = start_stream_firmware(av, bl);
++	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
++		spec->mute_led_polarity = 0;
++		spec->mute_led_coef.idx = 0x0b;
++		spec->mute_led_coef.mask = 1 << 3;
++		spec->mute_led_coef.on = 1 << 3;
++		spec->mute_led_coef.off = 0;
++		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
++	}
++}
++
+ /* turn on/off mic-mute LED per capture hook by coef bit */
+ static int coef_micmute_led_set(struct led_classdev *led_cdev,
+ 				enum led_brightness brightness)
+@@ -3828,6 +3844,7 @@ enum {
+ 	ALC287_FIXUP_YOGA7_14ARB7_I2C,
+ 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
+ 	ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT,
++	ALC245_FIXUP_HP_MUTE_LED_V2_COEFBIT,
+ 	ALC245_FIXUP_HP_X360_MUTE_LEDS,
+ 	ALC287_FIXUP_THINKPAD_I2S_SPK,
+ 	ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD,
+@@ -6165,6 +6182,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc245_fixup_hp_mute_led_v1_coefbit,
+ 	},
++	[ALC245_FIXUP_HP_MUTE_LED_V2_COEFBIT] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc245_fixup_hp_mute_led_v2_coefbit,
++	},
+ 	[ALC245_FIXUP_HP_X360_MUTE_LEDS] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc245_fixup_hp_mute_led_coefbit,
+@@ -6654,6 +6675,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8898, "HP EliteBook 845 G8 Notebook PC", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x103c, 0x88d0, "HP Pavilion 15-eh1xxx (mainboard 88D0)", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x88dd, "HP Pavilion 15z-ec200", ALC285_FIXUP_HP_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x88eb, "HP Victus 16-e0xxx", ALC245_FIXUP_HP_MUTE_LED_V2_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8902, "HP OMEN 16", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x890e, "HP 255 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8919, "HP Pavilion Aero Laptop 13-be0xxx", ALC287_FIXUP_HP_GPIO_LED),
 -- 
 2.51.0
 
