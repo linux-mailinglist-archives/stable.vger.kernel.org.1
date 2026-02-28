@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-220582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Kx2HlU/o2kR+wQAu9opvQ
-	(envelope-from <stable+bounces-220582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:17:41 +0100
+	id +DmhBGM/o2kR+wQAu9opvQ
+	(envelope-from <stable+bounces-220583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:17:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32A71C6CB3
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 675891C6CC3
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4475368ABF8
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:50:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1D583292914
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A3C3DEAA4;
-	Sat, 28 Feb 2026 17:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC5D3DF2C0;
+	Sat, 28 Feb 2026 17:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hKj+f8Rm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gxT1YWKP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB25C3DEA9D;
-	Sat, 28 Feb 2026 17:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC6D3DE166;
+	Sat, 28 Feb 2026 17:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300464; cv=none; b=IrfDkn7XFUPGV25oogvpzpz16aZIlxFepXDEz9Jw6dUcmr2+4DYWpiSOdWyzUCvJ/sonNXYRkx7PSBpAV+jmVSVOyyQBc8Bg2FcN8Rsf1QLx+FQrosv90kBHdmkTbyMx5dNS8ZIAQQ5W/uYXnGXuHpI0KjUAlbpcnamFoz+NWFE=
+	t=1772300465; cv=none; b=MkJILXwzapw9U171zxbC9h24NqmJfjhUhmi0/pPep0kMhuj4oH61niF0vJYg4owDt6x/NUC7MXiVncJY0IjW9izuipyf68i0ON8ohn6v6Fj6/izPmlqbpyQhbDA7YusJK3lJC+GT2nhcUWVelpxafb7zemGJ9qzhhcTPjR+KVgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300464; c=relaxed/simple;
-	bh=NjVMZIFF01Ct9/8k1rhQgQ8mLN3iYbuKfSR59VHi294=;
+	s=arc-20240116; t=1772300465; c=relaxed/simple;
+	bh=VszvAGQGexyAPXulfykvBTiopVRWbgzyGHF2T03Iu68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=le3AbO57d4mZaC0sOCTY5mh2I5qn7DTYHvyyYvdzX3OB3cnGpeekbTr4V/aJ9hbVs1vYELvn81M/t8l8c58MPmZErACtQYdJOToHVGFxIVzVj9McwZKo+KgarM8q2TsJWxpu3pJ0sTuVSQkrIWutOGh20/HW0dvjGeWApgEH65Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hKj+f8Rm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7D7C116D0;
-	Sat, 28 Feb 2026 17:41:03 +0000 (UTC)
+	 MIME-Version; b=svYjhNtrBdmgpjWy4t3EExwNsQn4Oyt74IlrqVBKJmBtEG9IpyRc51daztbawXOuJXXUvQkhGe/C2vMrdEeIsRadRg7cmbT9OotqwoZy1F6sBK2Adf8bbGiRdt+ANpMvHECJEkKNTgcHr/EDFTDLc7DZWD2IffWyzbpS+AJf7Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gxT1YWKP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8295C19425;
+	Sat, 28 Feb 2026 17:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300464;
-	bh=NjVMZIFF01Ct9/8k1rhQgQ8mLN3iYbuKfSR59VHi294=;
+	s=k20201202; t=1772300465;
+	bh=VszvAGQGexyAPXulfykvBTiopVRWbgzyGHF2T03Iu68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKj+f8RmN8TwedLYoZ8XorqkdCxWJg0hUaO381KfV9DoYkK17zfk0oAEdAzSfwvDv
-	 w27cUEGQDWqyJVisK6i8BYZc7KxVpJxHYK5RdqaxTlsizmefKFDIgRYomC5KGw7qgW
-	 chtEvW6sV+pzg0cDAfTMn+CApcM75qXiMOIi0AsgWdjuOg0yXlG+GkFKQa1ShTqUAN
-	 Q+NMCME89oY/FZw7a33i/Wlus2g0hegkFk3mAKY/EHfSGIjbSsR2X1kTqtIvM0FJjw
-	 VbmMrPKZuAsyQYXxQoh5qUF9kfKBlm2TR5j1UVamXHPOfeVe+g0LI14ebl/q/8ZkC2
-	 OtChCADGIpCQg==
+	b=gxT1YWKPxatP8aT+MXaHrJc8XL8Rno9q6GcVZ90mkZ5wOkeCTwlvo9faVkgEgubhA
+	 M5DwBSuPV94TAi1kMOkfZATum9rqaD8IgLQeugR4aes7DDll184HAigJ7PIRkR+3Vq
+	 6DYYhGuqgl3vSUtLZvanD3f9voaaZWJSaVb6f9hJ43fBB9Z9eIdgD9sGFJiSzZ1yBf
+	 tSGdslOuuRsuQoIggBccAfdRfJlyqKJLVSj2Hy7G7gGvcIc8HolmXAzpnNXJdgIZ+A
+	 BoGAl+B7BvoHyzuf0G5PA/Z0g8vyZpk1op4c/XAB5DobLTXltAceWGhLj4B/2C9t/n
+	 OWkwcFLYEg2rw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vahagn Vardanian <vahagn@redrays.io>,
-	Florian Westphal <fw@strlen.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 503/844] netfilter: nf_conntrack_h323: fix OOB read in decode_choice()
-Date: Sat, 28 Feb 2026 12:26:56 -0500
-Message-ID: <20260228173244.1509663-504-sashal@kernel.org>
+Subject: [PATCH 6.19 504/844] x86/acpi/boot: Correct acpi_is_processor_usable() check again
+Date: Sat, 28 Feb 2026 12:26:57 -0500
+Message-ID: <20260228173244.1509663-505-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,21 +69,22 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220582-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,alien8.de,kernel.org,linux.intel.com];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220583-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,70 +93,139 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,strlen.de:email,redrays.io:email]
-X-Rspamd-Queue-Id: F32A71C6CB3
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,alien8.de:email]
+X-Rspamd-Queue-Id: 675891C6CC3
 X-Rspamd-Action: no action
 
-From: Vahagn Vardanian <vahagn@redrays.io>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit baed0d9ba91d4f390da12d5039128ee897253d60 ]
+[ Upstream commit adbf61cc47cb72b102682e690ad323e1eda652c2 ]
 
-In decode_choice(), the boundary check before get_len() uses the
-variable `len`, which is still 0 from its initialization at the top of
-the function:
+ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
+used in conjunction with the "Enabled" MADT LAPIC flag to determine if
+a CPU can be enabled/hotplugged by the OS after boot.
 
-    unsigned int type, ext, len = 0;
-    ...
-    if (ext || (son->attr & OPEN)) {
-        BYTE_ALIGN(bs);
-        if (nf_h323_error_boundary(bs, len, 0))  /* len is 0 here */
-            return H323_ERROR_BOUND;
-        len = get_len(bs);                        /* OOB read */
+Before the new bit was defined, the "Enabled" bit was explicitly
+described like this (ACPI v6.0 wording provided):
 
-When the bitstream is exactly consumed (bs->cur == bs->end), the check
-nf_h323_error_boundary(bs, 0, 0) evaluates to (bs->cur + 0 > bs->end),
-which is false.  The subsequent get_len() call then dereferences
-*bs->cur++, reading 1 byte past the end of the buffer.  If that byte
-has bit 7 set, get_len() reads a second byte as well.
+  "If zero, this processor is unusable, and the operating system
+  support will not attempt to use it"
 
-This can be triggered remotely by sending a crafted Q.931 SETUP message
-with a User-User Information Element containing exactly 2 bytes of
-PER-encoded data ({0x08, 0x00}) to port 1720 through a firewall with
-the nf_conntrack_h323 helper active.  The decoder fully consumes the
-PER buffer before reaching this code path, resulting in a 1-2 byte
-heap-buffer-overflow read confirmed by AddressSanitizer.
+This means that CPU hotplug (based on MADT) is not possible. Many BIOS
+implementations follow this guidance. They may include LAPIC entries in
+MADT for unavailable CPUs, but since these entries are marked with
+"Enabled=0" it is expected that the OS will completely ignore these
+entries.
 
-Fix this by checking for 2 bytes (the maximum that get_len() may read)
-instead of the uninitialized `len`.  This matches the pattern used at
-every other get_len() call site in the same file, where the caller
-checks for 2 bytes of available data before calling get_len().
+However, QEMU will do the same (include entries with "Enabled=0") for
+the purpose of allowing CPU hotplug within the guest.
 
-Fixes: ec8a8f3c31dd ("netfilter: nf_ct_h323: Extend nf_h323_error_boundary to work on bits as well")
-Signed-off-by: Vahagn Vardanian <vahagn@redrays.io>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/20260225130619.1248-2-fw@strlen.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Comment from QEMU function pc_madt_cpu_entry():
+
+  /* ACPI spec says that LAPIC entry for non present
+   * CPU may be omitted from MADT or it must be marked
+   * as disabled. However omitting non present CPU from
+   * MADT breaks hotplug on linux. So possible CPUs
+   * should be put in MADT but kept disabled.
+   */
+
+Recent Linux topology changes broke the QEMU use case. A following fix
+for the QEMU use case broke bare metal topology enumeration.
+
+Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
+for guests and to maintain the ACPI spec behavior for bare metal.
+
+Remove an unnecessary check added to fix a bare metal case introduced by
+the QEMU "fix".
+
+  [ bp: Change logic as Michal suggested. ]
+  [ mingo: Removed misapplied -stable tag. ]
+
+Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check")
+Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present package")
+Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.com
+Reported-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_h323_asn1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
+ arch/x86/kernel/cpu/topology.c | 15 ---------------
+ 2 files changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-index 540d97715bd23..62aa22a078769 100644
---- a/net/netfilter/nf_conntrack_h323_asn1.c
-+++ b/net/netfilter/nf_conntrack_h323_asn1.c
-@@ -796,7 +796,7 @@ static int decode_choice(struct bitstr *bs, const struct field_t *f,
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 9fa321a95eb33..d6138b2b633a3 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -35,6 +35,7 @@
+ #include <asm/smp.h>
+ #include <asm/i8259.h>
+ #include <asm/setup.h>
++#include <asm/hypervisor.h>
  
- 	if (ext || (son->attr & OPEN)) {
- 		BYTE_ALIGN(bs);
--		if (nf_h323_error_boundary(bs, len, 0))
-+		if (nf_h323_error_boundary(bs, 2, 0))
- 			return H323_ERROR_BOUND;
- 		len = get_len(bs);
- 		if (nf_h323_error_boundary(bs, len, 0))
+ #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
+ static int __initdata acpi_force = 0;
+@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_flags)
+ 	if (lapic_flags & ACPI_MADT_ENABLED)
+ 		return true;
+ 
+-	if (!acpi_support_online_capable ||
+-	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
+-		return true;
++	if (acpi_support_online_capable)
++		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
+ 
+-	return false;
++	/*
++	 * QEMU expects legacy "Enabled=0" LAPIC entries to be counted as usable
++	 * in order to support CPU hotplug in guests.
++	 */
++	return !hypervisor_is_type(X86_HYPER_NATIVE);
+ }
+ 
+ static int __init
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index f55ea3cdbf88e..23190a786d310 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -27,7 +27,6 @@
+ #include <xen/xen.h>
+ 
+ #include <asm/apic.h>
+-#include <asm/hypervisor.h>
+ #include <asm/io_apic.h>
+ #include <asm/mpspec.h>
+ #include <asm/msr.h>
+@@ -236,20 +235,6 @@ static __init void topo_register_apic(u32 apic_id, u32 acpi_id, bool present)
+ 		cpuid_to_apicid[cpu] = apic_id;
+ 		topo_set_cpuids(cpu, apic_id, acpi_id);
+ 	} else {
+-		u32 pkgid = topo_apicid(apic_id, TOPO_PKG_DOMAIN);
+-
+-		/*
+-		 * Check for present APICs in the same package when running
+-		 * on bare metal. Allow the bogosity in a guest.
+-		 */
+-		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
+-		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
+-			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
+-				     apic_id);
+-			topo_info.nr_rejected_cpus++;
+-			return;
+-		}
+-
+ 		topo_info.nr_disabled_cpus++;
+ 	}
+ 
 -- 
 2.51.0
 
