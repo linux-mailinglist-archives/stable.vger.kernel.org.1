@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-220801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIJgBZhXo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220801-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:01:12 +0100
+	id MEifBp9Xo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:01:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEC41C8B21
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:01:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6711C8B30
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:01:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 222DB3206E14
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:25:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D620231C0D3E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD34940E97C;
-	Sat, 28 Feb 2026 17:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD1F40F364;
+	Sat, 28 Feb 2026 17:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rq0pWXuG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNu9vZHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F27240E977;
-	Sat, 28 Feb 2026 17:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF888494A04;
+	Sat, 28 Feb 2026 17:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300686; cv=none; b=Juny5XgRd7ve0TKm9RvDJxGtfwFNnOKIZR/svBgnV+9MIJ5dL94VRcsuZQjuuEeyHZ/893g+ZVYCTnCJfx8+LePVg/eg0WqDZcKArcirVtqpWv7jirAM2mEW7w+7DPdqpi8P/O2CGi7DUPMcHAacyjK9OxuuY/sZwReLvm/lccw=
+	t=1772300687; cv=none; b=OrnO7Cb68XsC6NsNy1JPuMHSo7bop3JtAtSJDd/TNxooox0eVeM37GZt9eZDlXyKJIwUJtOeUii7nIzvZhpkBXGnAuxtE5bP+pH1ydPYZdwnuU0RYMT/r2VTlFySNrHjBtk0LvaQoUqZ/XcMcstyOQGP6tZHcgbyO9VI+xvMZtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300686; c=relaxed/simple;
-	bh=rjXJLCBeCGvltKD9acB4is1H3g18LgE0Z3h2wPRvfwI=;
+	s=arc-20240116; t=1772300687; c=relaxed/simple;
+	bh=1cbUP4+f5t1+aDgDls9jn2QhrK4hzb6Zn4PR9dAMTyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGOLA0h8Z/LKAYIqjXmuBTjaB4zYBt6VHEpwt+f3OVUap/35o6PGTrTDUj0yFTerJH0lMYubSUtLNU168UeGCaPv5ueKnMrE1xpuJ9qHq/IYIPKKVwTS3Vu3B6WmxKYaMYCqVQMVaeGKUCl2oBaJ9A+7CZYIz+b5lkV4I2ZLgWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rq0pWXuG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DD3C116D0;
-	Sat, 28 Feb 2026 17:44:45 +0000 (UTC)
+	 MIME-Version; b=BoJK+rD+7paBD0Y72DwM7kOGXvG0D9MM/onAabQZLo427rpZYdDDNwVyPeqpkzaqNozPmA8FjKLY+MkcTHlmbtba8aw/UHFl1EQVf2f8A8+MAztrfDjc0NQcrDQNCxzsIgEl6n3LZtDQibM7/hAUWl7v7bL9gQnvoZRQswJq6V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNu9vZHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C8DC116D0;
+	Sat, 28 Feb 2026 17:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300686;
-	bh=rjXJLCBeCGvltKD9acB4is1H3g18LgE0Z3h2wPRvfwI=;
+	s=k20201202; t=1772300687;
+	bh=1cbUP4+f5t1+aDgDls9jn2QhrK4hzb6Zn4PR9dAMTyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rq0pWXuGA2yZvc/GivoDBc13ocgCQv8HONqYXrc+8EXHXQHnG0NNVwa3/CWaow/Vq
-	 6AA8bHpbf+JBQIJihpp70hylSCfZqS90RhksfwCx3iyBAHF2X9iFCtpGHvTCN610/0
-	 5Lf7kIc8mgW1UEGila3T9358ED0Gvg6IXbZDzSLHGXtI+wkcPwhLHuLThDF+d0Hs54
-	 1IKG9/qzsMr4wHtXWfALyfoA3L2+5GLht76lGBcnAmA/5gFbwWWd0ehqdnp6MqZsA7
-	 mDMWkWfkrFetAkfXnPFJYabVwwcoHNv6lQhNg/lR3vLRu5+3fU8NdSOhsGCxooxGWs
-	 VNiN+dkTlbQRg==
+	b=UNu9vZHwQcXLK3wfARChmOip4+0ElJBfT8Kenn3TOAcCLo8cIVpFZmFiOsAVg35OM
+	 uUi9U/qi8n6A8rWsP/4SokFXRwZlJLy0RcOGEACEwfiM0PxAPXgFMEsN21QqI0m/0h
+	 pIL2U0s78Ym9vKut7Z8j8I43ygfTH3DGW7YZPicS2ISITp7IdcZbfVy4H7n8djW8r8
+	 uewtwSr3Iyn3EJe/970bgGEI/ZR7gv4TgtGpjZk1uCJlmz8yq/jPT7CtJkKsKjfm2L
+	 tu+qwpKkzxbmJEr+Mrh8aIEp6urOGLprRQsgwihgMXqu1e13i8bacHxw4w9IULyGh9
+	 iMM3traghJ22w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-	Baoquan He <bhe@redhat.com>,
-	Coiby Xu <coxu@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
+Cc: Evangelos Petrongonas <epetron@amazon.de>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 722/844] crash_dump: fix dm_crypt keys locking and ref leak
-Date: Sat, 28 Feb 2026 12:30:35 -0500
-Message-ID: <20260228173244.1509663-723-sashal@kernel.org>
+Subject: [PATCH 6.19 723/844] kho: skip memoryless NUMA nodes when reserving scratch areas
+Date: Sat, 28 Feb 2026 12:30:36 -0500
+Message-ID: <20260228173244.1509663-724-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220801-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220802-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -96,106 +96,67 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 1EEC41C8B21
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,soleen.com:email]
+X-Rspamd-Queue-Id: 1C6711C8B30
 X-Rspamd-Action: no action
 
-From: Vasily Gorbik <gor@linux.ibm.com>
+From: Evangelos Petrongonas <epetron@amazon.de>
 
-[ Upstream commit 96a54b8ffc8c4567c32fe0b6996669f1132b026d ]
+[ Upstream commit 427b2535f51342de3156babc6bdc3f3b7dd2c707 ]
 
-crash_load_dm_crypt_keys() reads dm-crypt volume keys from the user
-keyring.  It uses user_key_payload_locked() without holding key->sem,
-which makes lockdep complain when kexec_file_load() assembles the crash
-image:
+kho_reserve_scratch() iterates over all online NUMA nodes to allocate
+per-node scratch memory.  On systems with memoryless NUMA nodes (nodes
+that have CPUs but no memory), memblock_alloc_range_nid() fails because
+there is no memory available on that node.  This causes KHO initialization
+to fail and kho_enable to be set to false.
 
-  =============================
-  WARNING: suspicious RCU usage
-  -----------------------------
-  ./include/keys/user-type.h:53 suspicious rcu_dereference_protected() usage!
+Some ARM64 systems have NUMA topologies where certain nodes contain only
+CPUs without any associated memory.  These configurations are valid and
+should not prevent KHO from functioning.
 
-  other info that might help us debug this:
+Fix this by only counting nodes that have memory (N_MEMORY state) and skip
+memoryless nodes in the per-node scratch allocation loop.
 
-  rcu_scheduler_active = 2, debug_locks = 1
-  no locks held by kexec/4875.
-
-  stack backtrace:
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x80
-   lockdep_rcu_suspicious.cold+0x4e/0x96
-   crash_load_dm_crypt_keys+0x314/0x390
-   bzImage64_load+0x116/0x9a0
-   ? __lock_acquire+0x464/0x1ba0
-   __do_sys_kexec_file_load+0x26a/0x4f0
-   do_syscall_64+0xbd/0x430
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-In addition, the key returned by request_key() is never key_put()'d,
-leaking a key reference on each load attempt.
-
-Take key->sem while copying the payload and drop the key reference
-afterwards.
-
-Link: https://lkml.kernel.org/r/patch.git-2d4d76083a5c.your-ad-here.call-01769426386-ext-2560@work.hours
-Fixes: 479e58549b0f ("crash_dump: store dm crypt keys in kdump reserved memory")
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Coiby Xu <coxu@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
+Link: https://lkml.kernel.org/r/20260120175913.34368-1-epetron@amazon.de
+Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers").
+Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Alexander Graf <graf@amazon.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/crash_dump_dm_crypt.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ kernel/liveupdate/kexec_handover.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/crash_dump_dm_crypt.c b/kernel/crash_dump_dm_crypt.c
-index 401423ba477da..abb307a23de33 100644
---- a/kernel/crash_dump_dm_crypt.c
-+++ b/kernel/crash_dump_dm_crypt.c
-@@ -143,6 +143,7 @@ static int read_key_from_user_keying(struct dm_crypt_key *dm_key)
- {
- 	const struct user_key_payload *ukp;
- 	struct key *key;
-+	int ret = 0;
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 90d411a59f76d..fcbbfcd3365f6 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -645,7 +645,7 @@ static void __init kho_reserve_scratch(void)
+ 	scratch_size_update();
  
- 	kexec_dprintk("Requesting logon key %s", dm_key->key_desc);
- 	key = request_key(&key_type_logon, dm_key->key_desc, NULL);
-@@ -152,20 +153,28 @@ static int read_key_from_user_keying(struct dm_crypt_key *dm_key)
- 		return PTR_ERR(key);
- 	}
+ 	/* FIXME: deal with node hot-plug/remove */
+-	kho_scratch_cnt = num_online_nodes() + 2;
++	kho_scratch_cnt = nodes_weight(node_states[N_MEMORY]) + 2;
+ 	size = kho_scratch_cnt * sizeof(*kho_scratch);
+ 	kho_scratch = memblock_alloc(size, PAGE_SIZE);
+ 	if (!kho_scratch)
+@@ -675,7 +675,11 @@ static void __init kho_reserve_scratch(void)
+ 	kho_scratch[i].size = size;
+ 	i++;
  
-+	down_read(&key->sem);
- 	ukp = user_key_payload_locked(key);
--	if (!ukp)
--		return -EKEYREVOKED;
-+	if (!ukp) {
-+		ret = -EKEYREVOKED;
-+		goto out;
-+	}
- 
- 	if (ukp->datalen > KEY_SIZE_MAX) {
- 		pr_err("Key size %u exceeds maximum (%u)\n", ukp->datalen, KEY_SIZE_MAX);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto out;
- 	}
- 
- 	memcpy(dm_key->data, ukp->data, ukp->datalen);
- 	dm_key->key_size = ukp->datalen;
- 	kexec_dprintk("Get dm crypt key (size=%u) %s: %8ph\n", dm_key->key_size,
- 		      dm_key->key_desc, dm_key->data);
--	return 0;
-+
-+out:
-+	up_read(&key->sem);
-+	key_put(key);
-+	return ret;
- }
- 
- struct config_key {
+-	for_each_online_node(nid) {
++	/*
++	 * Loop over nodes that have both memory and are online. Skip
++	 * memoryless nodes, as we can not allocate scratch areas there.
++	 */
++	for_each_node_state(nid, N_MEMORY) {
+ 		size = scratch_size_node(nid);
+ 		addr = memblock_alloc_range_nid(size, CMA_MIN_ALIGNMENT_BYTES,
+ 						0, MEMBLOCK_ALLOC_ACCESSIBLE,
 -- 
 2.51.0
 
