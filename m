@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-220786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHm9NpFEo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:40:01 +0100
+	id eMFoCCREo2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:38:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4F51C73A9
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:40:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B541C7339
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:38:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 44DF1317E301
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:23:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C293E30834F1
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A75940BDB2;
-	Sat, 28 Feb 2026 17:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3583E40BDCD;
+	Sat, 28 Feb 2026 17:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K1heH1P3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udNrmW6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEC440BDAA;
-	Sat, 28 Feb 2026 17:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF9640BDC5;
+	Sat, 28 Feb 2026 17:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300670; cv=none; b=YTHDOIOTq+DdZwkRUbDaFdP9vLHcS4zk7MPKRe9GgC8OQWnnRkThb19uOt6tC7dr8kFaIwqIAN/UNv0zKQtFvoA/owk8xaUpY0ST6THfzVuVFnOuD9ohS+9LG4djFr1jCMf/RAifPhDCbNa/Pouu17EeWAn9SThxZSbp2cj6tf0=
+	t=1772300671; cv=none; b=kaX+B+1N1zzRPhFQMivRCRTK8II/OWI5b6vhHWErNLpGzOThqYxlqtsaOz1WmrW7qFtH+icnyzz5s7vvRrWCwOF1iVBlkB9NlDPLsVPEK4COhYrKTSzMJFw4Axu0gWtSOwVaCLuP0JIsSaBkel9mSK3J6SN2vB0N4ErMEFmoqTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300670; c=relaxed/simple;
-	bh=wkeDulKa8F111M35HYlkOg2bAaaqRdcXiuwCNUn7jwg=;
+	s=arc-20240116; t=1772300671; c=relaxed/simple;
+	bh=R4y3wwuLIU2aPt/uQFe46IIl65jyVzKx2e0SZu1jYeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRB+FnMR+zmEmK0hKRxCoMTkyqOJxz62EfqKith6Ajx23Cf0nXGj4CgmFNeGIwu0/sLkh+jpYhgFH0ucW/b51ztyazQh03gd1W86lVEstR0v1X4XDXW/gqiaWFj0UYCOEYKRpnImxnIZQ7Hf0/DTD9cmG69Ih2r9fYeVQ6tzOgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K1heH1P3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B414C116D0;
+	 MIME-Version; b=ofYN07GPfTj0ND4jFUWXGj2TobQ+B8Om7e3QGTLfxnDnFKOrtI4DaZEET160S3ZOfPReof2jPibjgH1z+oF85vsHUhLiY05hWnPud43vd/FpfOVzuMHJ1uCKHksw5DlxBWVXxzbUQFCDG1NLbLSHTgpccS3PdFOHOlS6SYv5HEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udNrmW6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016FEC19425;
 	Sat, 28 Feb 2026 17:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300669;
-	bh=wkeDulKa8F111M35HYlkOg2bAaaqRdcXiuwCNUn7jwg=;
+	s=k20201202; t=1772300670;
+	bh=R4y3wwuLIU2aPt/uQFe46IIl65jyVzKx2e0SZu1jYeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K1heH1P3KJykwgxdhQ5aFca1Vx7BV2ITypLeUymu2Mkx5qkpha6bWs5drDrOjhd19
-	 0KKljnKethFWSfPW4yaUKuuv0co/7tXtiWppY4VAdUfq3iurT3FLlv62euYngFPVon
-	 am7ytTfRo07rXDy+itJiFDLPMK9x21QzI1uw8TJPQMNyLJ1n+tty/77dwV+qVan6cY
-	 bboXEutCMr9aLbYisT4WqsCwdN65YTnglrEbMVsn80z+NGtsQ8PowpzNU2XPwMc8Ci
-	 2XGhEfqBizJnpiDjH0JcyjWG/jRnwP1/NwRsmjibR1wwUaX79DrKYfXUxZO1RE4Kph
-	 D0fG+L/A60P8g==
+	b=udNrmW6h98iTcRlb+8L/jx0nS/94NO2KMkkNqAn2Ov+JqqCRnIi9Xoe4V8b8pm/3N
+	 Dcs+TP0P3r127Ts19HMi51cn2wCV7nLaUZur3Y2kHkDJHMN52pcSqty8L2T0QBXKzF
+	 gUl3ZsFOlKSasNz2sVUFyPhnvzhWVPOkiysmcD0d7nhKqn3Y6nrmclpxR2Cj8eOQNp
+	 ENZKUUSexdlR5FhK9jCIK1yZar5oTzEFyisrqlANpZPe6sjJ3BMoxgXu0gj8mUnaQ3
+	 x0KGTxz/hg1nmP2ePJJjdTtiqzJ9XzsqG+lEzcXIXE/ayFo3W+EGDXZzuz9c7gxUb4
+	 83xKkLhxs0LMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Marzinski <bmarzins@redhat.com>,
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	David Spickett <david.spickett@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 707/844] dm mpath: make pg_init_delay_msecs settable
-Date: Sat, 28 Feb 2026 12:30:20 -0500
-Message-ID: <20260228173244.1509663-708-sashal@kernel.org>
+Subject: [PATCH 6.19 708/844] arm64: poe: fix stale POR_EL0 values for ptrace
+Date: Sat, 28 Feb 2026 12:30:21 -0500
+Message-ID: <20260228173244.1509663-709-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,74 +70,76 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220787-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220786-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7B4F51C73A9
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 84B541C7339
 X-Rspamd-Action: no action
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Joey Gouly <joey.gouly@arm.com>
 
-[ Upstream commit 218b16992a37ea97b9e09b7659a25a864fb9976f ]
+[ Upstream commit 1f3b950492db411e6c30ee0076b61ef2694c100a ]
 
-"pg_init_delay_msecs X" can be passed as a feature in the multipath
-table and is used to set m->pg_init_delay_msecs in parse_features().
-However, alloc_multipath_stage2(), which is called after
-parse_features(), resets m->pg_init_delay_msecs to its default value.
-Instead, set m->pg_init_delay_msecs in alloc_multipath(), which is
-called before parse_features(), to avoid overwriting a value passed in
-by the table.
+If a process wrote to POR_EL0 and then crashed before a context switch
+happened, the coredump would contain an incorrect value for POR_EL0.
 
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+The value read in poe_get() would be a stale value left in thread.por_el0.  Fix
+this by reading the value from the system register, if the target thread is the
+current thread.
+
+This matches what gcs/fpsimd do.
+
+Fixes: 175198199262 ("arm64/ptrace: add support for FEAT_POE")
+Reported-by: David Spickett <david.spickett@arm.com>
 Cc: stable@vger.kernel.org
+Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-mpath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kernel/ptrace.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/md/dm-mpath.c b/drivers/md/dm-mpath.c
-index b739894f01807..aa9a88a9aa768 100644
---- a/drivers/md/dm-mpath.c
-+++ b/drivers/md/dm-mpath.c
-@@ -225,6 +225,7 @@ static struct multipath *alloc_multipath(struct dm_target *ti)
- 		mutex_init(&m->work_mutex);
+diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
+index 6c5ff6807d4cc..64ff87f023113 100644
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -1484,6 +1484,9 @@ static int poe_get(struct task_struct *target,
+ 	if (!system_supports_poe())
+ 		return -EINVAL;
  
- 		m->queue_mode = DM_TYPE_NONE;
-+		m->pg_init_delay_msecs = DM_PG_INIT_DELAY_DEFAULT;
- 
- 		m->ti = ti;
- 		ti->private = m;
-@@ -251,7 +252,6 @@ static int alloc_multipath_stage2(struct dm_target *ti, struct multipath *m)
- 	set_bit(MPATHF_QUEUE_IO, &m->flags);
- 	atomic_set(&m->pg_init_in_progress, 0);
- 	atomic_set(&m->pg_init_count, 0);
--	m->pg_init_delay_msecs = DM_PG_INIT_DELAY_DEFAULT;
- 	init_waitqueue_head(&m->pg_init_wait);
- 	init_waitqueue_head(&m->probe_wait);
- 
++	if (target == current)
++		current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
++
+ 	return membuf_write(&to, &target->thread.por_el0,
+ 			    sizeof(target->thread.por_el0));
+ }
 -- 
 2.51.0
 
