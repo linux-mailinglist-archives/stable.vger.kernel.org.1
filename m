@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-220521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIKPCXg9o2nv+gQAu9opvQ
-	(envelope-from <stable+bounces-220521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:09:44 +0100
+	id GLIiGNdMo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:15:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5122C1C6A7D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:09:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0C41C8175
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C522632529F0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:41:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 363B932532C0
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC1F481AA8;
-	Sat, 28 Feb 2026 17:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2FC3CD9F5;
+	Sat, 28 Feb 2026 17:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O53EaLrz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EyilbVrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F20D3CD1BE;
-	Sat, 28 Feb 2026 17:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FC73CD9EB;
+	Sat, 28 Feb 2026 17:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300405; cv=none; b=R91ZXz87Jmq2/OhDnwZd1KuUc6xeUB3jcsnHbAZg3zyAlljqz6/wjeqIiQfHSH54vQEyNDCImG+IHoKcgo1tqkvUMakuJOirv/iGOFOKGHH2cmvStHw/oRBi3VPyf5RDfW0L7uMIf7fXvdwt8AzrjSBKDif2ATwgfQUUiTx+LyU=
+	t=1772300405; cv=none; b=dJDDuZvzTAR/HKz1qhZaibvjdFHotXDNv6eP4bo7mw/AOjtAkRhWNa/ZStPD1b2SBmT6tKTFu42ev/msLwmOn9hd6glmAJw/HVyzF9/U+1fkiltykxZdZxTlUzyokSzWv2Pq2Jgs/LHXUwGbQNd1HP6DnhkMrYbsl7G8kPHfhvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300405; c=relaxed/simple;
-	bh=nGfWN/RyvxmqAuCr2FHXkxLg68q650iTb5z6WbxzE9w=;
+	bh=9JOA6572BYDqfDjY//bb7H4d1r4XQRYQMbcpDHSnCOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGLrmilgM9tPpCVh9yAF3Cpo1m+minkfSyEKjo8zASVjRcSFloc/BYW8RWC63NNF80x22Ur1skic1RX6GRA63Y4jRwOyPJoCzHHYPvFhrwrPLAOibwB3wOy7AqxL8OxAIApQFq55ybPAC4nxry+Y21uF+zMe07D++Z0nduN3Wio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O53EaLrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F96C116D0;
+	 MIME-Version; b=SpSb9jNbh5wb3R9BShlCxAbBbxrqBuXWGPlSZ2qJfGuaa063pJYH3kaMDhhwcesA+DxlvvtsiCt2KoVWJvexVy9ARwRuwNb0sc5ACgdZJYpV1MSVhmnFW3/eJD7iIqhJoGwtDsE2wB1At4NW79mevO4vH7rSu9O/UGFgYXMxJDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EyilbVrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00502C19425;
 	Sat, 28 Feb 2026 17:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300404;
-	bh=nGfWN/RyvxmqAuCr2FHXkxLg68q650iTb5z6WbxzE9w=;
+	s=k20201202; t=1772300405;
+	bh=9JOA6572BYDqfDjY//bb7H4d1r4XQRYQMbcpDHSnCOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O53EaLrzlMs0u83WZlP8Rj6sAYU/7w6Cmyv41czsa+sGUAPpzWCLfR43wfFfPtdLO
-	 oB3Qzgf66ysr3qIkdpBGF5No4wlVUNaoyCfpiOmySnNYffyKZGGbIFPnx606uDAhqd
-	 9t61nRqmekGeDZXtSHZ3HCPKUXOqqTzerBMqB2KsFB8e5FTUl7Yy/JMnHMdw31n9mo
-	 1kW47DzCWQ4JGO6yckc0Z8zJnyYSRIcb5NOnvwHuMtf8K/XRYvwO4qJdmnT+RYeX8E
-	 7H62nWUs+iDSXcyoBV6FX9ZJba+hC1Fn9ZXO2jeiZLy7fkpbmYpGJ4GE4VQbBPJdw+
-	 2uJRpPu8Q+w4A==
+	b=EyilbVrNglLOg+OWxGZ0fECbxxFVKuBzL32kIXKAvp4PShzozdvym3fvebw65LSEk
+	 w+wkNDdBylY1LTqHMhaqIShLcd24Vfl9lO8ASWmbpzF/fLBQ5Z6/fJSthk3LPTt6mv
+	 o30kUIuYAHO/MNOPoP0y2I5r7kEez1oENE1enNjg9pP/FGVEAkpTue+2xQzncP4Fa7
+	 /E4iDQZJyPRpAkntH4on1mOrwqWnipAbY/wMeQyh6Y9jioNfqk0AZI/6MwbU0iNaVX
+	 YxleJxnUXHW4fB6dqOrzIPzEoopTzF/EOwEqK6WC8LW+Soecqa7ZTcDEBTvaxyGoTH
+	 Od2nl/7RyCeyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Victor Zhao <Victor.Zhao@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Tomas Melin <tomas.melin@vaisala.com>,
+	Harini T <harini.t@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 442/844] drm/amdgpu: avoid sdma ring reset in sriov
-Date: Sat, 28 Feb 2026 12:25:55 -0500
-Message-ID: <20260228173244.1509663-443-sashal@kernel.org>
+Subject: [PATCH 6.19 443/844] rtc: zynqmp: correct frequency value
+Date: Sat, 28 Feb 2026 12:25:56 -0500
+Message-ID: <20260228173244.1509663-444-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,66 +69,69 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220521-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220522-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 5122C1C6A7D
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,bootlin.com:email]
+X-Rspamd-Queue-Id: 7A0C41C8175
 X-Rspamd-Action: no action
 
-From: Victor Zhao <Victor.Zhao@amd.com>
+From: Tomas Melin <tomas.melin@vaisala.com>
 
-[ Upstream commit 5cc7bbd9f1b74d9fe2f7ac08d6ba0477e8d2d65f ]
+[ Upstream commit 2724fb4d429cbb724dcb6fa17953040918ebe3a2 ]
 
-sdma ring reset is not supported in SRIOV. kfd driver does not check
-reset mask, and could queue sdma ring reset during unmap_queues_cpsch.
+Fix calibration value in case a clock reference is provided.
+The actual calibration value written into register is
+frequency - 1.
 
-Avoid the ring reset for sriov.
-
-Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Harini T <harini.t@amd.com>
+Tested-by: Harini T <harini.t@amd.com>
+Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Link: https://patch.msgid.link/20260122-zynqmp-rtc-updates-v4-1-d4edb966b499@vaisala.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c | 3 +++
+ drivers/rtc/rtc-zynqmp.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-index 8b8a04138711c..321310ba2c08e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-@@ -558,6 +558,9 @@ int amdgpu_sdma_reset_engine(struct amdgpu_device *adev, uint32_t instance_id,
- 	struct amdgpu_ring *gfx_ring = &sdma_instance->ring;
- 	struct amdgpu_ring *page_ring = &sdma_instance->page;
- 
-+	if (amdgpu_sriov_vf(adev))
-+		return -EOPNOTSUPP;
+diff --git a/drivers/rtc/rtc-zynqmp.c b/drivers/rtc/rtc-zynqmp.c
+index 3baa2b481d9f2..856bc1678e7d3 100644
+--- a/drivers/rtc/rtc-zynqmp.c
++++ b/drivers/rtc/rtc-zynqmp.c
+@@ -345,7 +345,10 @@ static int xlnx_rtc_probe(struct platform_device *pdev)
+ 					   &xrtcdev->freq);
+ 		if (ret)
+ 			xrtcdev->freq = RTC_CALIB_DEF;
++	} else {
++		xrtcdev->freq--;
+ 	}
 +
- 	mutex_lock(&sdma_instance->engine_reset_mutex);
- 
- 	if (!caller_handles_kernel_queues) {
+ 	ret = readl(xrtcdev->reg_base + RTC_CALIB_RD);
+ 	if (!ret)
+ 		writel(xrtcdev->freq, (xrtcdev->reg_base + RTC_CALIB_WR));
 -- 
 2.51.0
 
