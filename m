@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-220738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOxoCJtBo2lC+wQAu9opvQ
-	(envelope-from <stable+bounces-220738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:27:23 +0100
+	id mABFBKtBo2lC+wQAu9opvQ
+	(envelope-from <stable+bounces-220739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:27:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8381C7016
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:27:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6451C703A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:27:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CFBE6312F33B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:15:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A957B3087D6A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56219401480;
-	Sat, 28 Feb 2026 17:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3948A49218A;
+	Sat, 28 Feb 2026 17:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XdP4ND62"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHeoM1Bs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182094014A7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC99633E35A;
 	Sat, 28 Feb 2026 17:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300619; cv=none; b=syU4DXWa42k4IwPrAWSDSTxRG/n/+SePC0AXHi0vTTgVtxriXNruFQjb33x5PKlPV9n4YMHiviWzlk+nuhsEAO8JLfziwFHTCIb1xl+p9GGZ1boYSytF1xFSVHtANTqvLcAaOuH6zsD8uTuJpZufqQkx338uOa/z5+zHVbs78vA=
+	t=1772300620; cv=none; b=LPwRTJpjXc/gTEIgcxVr0eCQujF0CLDHqj6A8BENrOz5in456B/P81I+NmBRUwErnWDg7XrzWcmbk2ayhFRJYfzNBZCduuMfwiDyIJ3wJzYff2ZdZaVJgrX9/KSNxc0yEZ3phxufnfAr0VphTzK1RHOy7yro5dKf8184QKEe1sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300619; c=relaxed/simple;
-	bh=WuxCK1wydY82CCy7fyUfGoYlroN8zPTI2IvEl3U21/U=;
+	s=arc-20240116; t=1772300620; c=relaxed/simple;
+	bh=QR45+H+PlYDCm+HpbNLhOxLuXNzrpI9pZ2tdfedIGM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdI9SRtJDRLGd4Fed4lvF+gnOPB/GUj2YgBCsjV7NZmiJODAKqM1jc44ktNWAox8ZOIVN9XCgUBIGCz+iK9nZK0UCug+9hnNtbr6ep5jzaUXXLjAsk8g+ObeD/fJ++jkqxuH11z6eb/G0mQkXlR6guIYaA0ysm3RHPt8Xmhhr/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XdP4ND62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C23C19423;
-	Sat, 28 Feb 2026 17:43:38 +0000 (UTC)
+	 MIME-Version; b=dQ094bKfmKMO1xrYn9aBOJ8ZuKmgraFpUCs+uILahljPXmNKrOjPUM2pUb3IOY4nXx9curFE9dYaSklPN/YzrANEu9n+gzOZ8PNJRhRVsqflRqn3iY6eatN0fBPsRN3IqrKElQ0A8G+zgzxOPghmRujCEVkRSr1GTKPdpwZFMmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHeoM1Bs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9CEC19424;
+	Sat, 28 Feb 2026 17:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772300619;
-	bh=WuxCK1wydY82CCy7fyUfGoYlroN8zPTI2IvEl3U21/U=;
+	bh=QR45+H+PlYDCm+HpbNLhOxLuXNzrpI9pZ2tdfedIGM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdP4ND62rV0uC+//Gt2sJE8EhVXDZ1/uAJy8r6MVqy+HydGy8XId+x9RJ3fzck9ZH
-	 WJIaikWLHBOowKSeHeG4jVvujNabaEv3soBvIcmKWEOVECzHOgkI1JCx5GIfTLadbC
-	 P23HwIZMQ9TWwiGqh6cPeXSeEwX3lKMRNgpAG/eg2hTrOceUAh3skBIGZclR78Fot8
-	 MFhd5CKHh0hoFDMZhQlRxJ3+CGSNPgh6cZDTdYuSO+KPJ4C/JwvGH7rOVdvXQaq8i2
-	 Mdj2bJA2+um9G33Hr4ZkgD20kLJZTu0b3UNJXI+8q0NaKCa6qgDuDIaKu2SrSxASpd
-	 3dyWRLtqFwDdA==
+	b=HHeoM1BsHyykMRER+RvPA4XRwLBeWQab1NkvhxrVGVhZ34iqFJAGJ9H2WjNl+qms7
+	 O3ix+OJ7sBEGG6/d11wEf5ZJioEeQSjAXryReqXLJ1inyjTnwclpjT2bPvrlToSMVQ
+	 DQIOKiL3q0jLPP3BfvAph4f1yVVa5Tcff9eFTst+hAl5UZ8APe8ut6gnyoiD566ZzN
+	 MwFWhCzQD6lIcU7QzpkAH6FjV90rniWDaqQoVri8D4bBdAe9owm0TlTkuLj6aqy4iS
+	 47zy3re0NQgKpcDvi+PL8N2O2pRxQEH84q9LXRDwj0iuj2218hj3fhZliib3qmIS3U
+	 X5y4N5MAxGRYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yi Liu <yi.l.liu@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+Cc: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 659/844] iommu/vt-d: Flush piotlb for SVM and Nested domain
-Date: Sat, 28 Feb 2026 12:29:32 -0500
-Message-ID: <20260228173244.1509663-660-sashal@kernel.org>
+Subject: [PATCH 6.19 660/844] KVM: arm64: nv: Return correct RES0 bits for FGT registers
+Date: Sat, 28 Feb 2026 12:29:33 -0500
+Message-ID: <20260228173244.1509663-661-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,81 +67,74 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220738-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220739-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: CA8381C7016
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: AE6451C703A
 X-Rspamd-Action: no action
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 
-[ Upstream commit 04b1b069f151e793767755f58b51670bff00cbc1 ]
+[ Upstream commit 2eb80a2eee18762a33aa770d742d64fe47852c7e ]
 
-Besides the paging domains that use FS, SVM and Nested domains need to
-use piotlb invalidation descriptor as well.
+We had extended the sysreg masking infrastructure to more general
+registers, instead of restricting it to VNCR-backed registers, since
+commit a0162020095e ("KVM: arm64: Extend masking facility to arbitrary
+registers"). Fix kvm_get_sysreg_res0() to reflect this fact.
 
-Fixes: b33125296b50 ("iommu/vt-d: Create unique domain ops for each stage")
+Note that we're sure that we only deal with FGT registers in
+kvm_get_sysreg_res0(), the
+
+	if (sr < __VNCR_START__)
+
+is actually a never false, which should probably be removed later.
+
+Fixes: 69c19e047dfe ("KVM: arm64: Add TCR2_EL2 to the sysreg arrays")
+Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+Link: https://patch.msgid.link/20260121101631.41037-1-zenghui.yu@linux.dev
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20251223065824.6164-1-yi.l.liu@intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/cache.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/emulate-nested.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/cache.c b/drivers/iommu/intel/cache.c
-index 265e7290256b5..385ae5cfb30d4 100644
---- a/drivers/iommu/intel/cache.c
-+++ b/drivers/iommu/intel/cache.c
-@@ -363,6 +363,13 @@ static void qi_batch_add_pasid_dev_iotlb(struct intel_iommu *iommu, u16 sid, u16
- 	qi_batch_increment_index(iommu, batch);
+diff --git a/arch/arm64/kvm/emulate-nested.c b/arch/arm64/kvm/emulate-nested.c
+index 834f13fb1fb7d..2d04fb56746ea 100644
+--- a/arch/arm64/kvm/emulate-nested.c
++++ b/arch/arm64/kvm/emulate-nested.c
+@@ -2428,7 +2428,7 @@ static u64 kvm_get_sysreg_res0(struct kvm *kvm, enum vcpu_sysreg sr)
+ 
+ 	masks = kvm->arch.sysreg_masks;
+ 
+-	return masks->mask[sr - __VNCR_START__].res0;
++	return masks->mask[sr - __SANITISED_REG_START__].res0;
  }
  
-+static bool intel_domain_use_piotlb(struct dmar_domain *domain)
-+{
-+	return domain->domain.type == IOMMU_DOMAIN_SVA ||
-+			domain->domain.type == IOMMU_DOMAIN_NESTED ||
-+			intel_domain_is_fs_paging(domain);
-+}
-+
- static void cache_tag_flush_iotlb(struct dmar_domain *domain, struct cache_tag *tag,
- 				  unsigned long addr, unsigned long pages,
- 				  unsigned long mask, int ih)
-@@ -370,7 +377,7 @@ static void cache_tag_flush_iotlb(struct dmar_domain *domain, struct cache_tag *
- 	struct intel_iommu *iommu = tag->iommu;
- 	u64 type = DMA_TLB_PSI_FLUSH;
- 
--	if (intel_domain_is_fs_paging(domain)) {
-+	if (intel_domain_use_piotlb(domain)) {
- 		qi_batch_add_piotlb(iommu, tag->domain_id, tag->pasid, addr,
- 				    pages, ih, domain->qi_batch);
- 		return;
+ static bool check_fgt_bit(struct kvm_vcpu *vcpu, enum vcpu_sysreg sr,
 -- 
 2.51.0
 
