@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-220168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGfTCzYyo2kE+QQAu9opvQ
-	(envelope-from <stable+bounces-220168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:21:42 +0100
+	id MKw7BlUto2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:00:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507D21C5B4B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:21:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FF91C5531
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 62DF6311DFCB
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:46:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03DB83108E8A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3E24A13A9;
-	Sat, 28 Feb 2026 17:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9712A4A2E0D;
+	Sat, 28 Feb 2026 17:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rHnTbfuP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BSoMNi6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A584A13A1;
-	Sat, 28 Feb 2026 17:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589BA496903;
+	Sat, 28 Feb 2026 17:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300075; cv=none; b=FolTesQ91FLm/NeWBUAAPe6XvkdA2on6aXvx/zmjb5oPfXJIm4kUJGG92arionJVj/A/yETxZXXfnXnnKBiPuI2zq+ycWrLwC8jjWeB8RlA6PkuAJgLgBV2yIqpYUDhwkoUQF6SYS0n4driYiKM7XtSd4IEy6ERSQKy4Fx6/OOI=
+	t=1772300077; cv=none; b=CwTTgbK8AqZi7KEePoSflmA63/0tyDivOHF5imp5PCQmne7ncTccHjOEEXi3F1UEHLzNRuRO9b7vgkVgDiMExpkSY68ML0oabwj6yj0dR4aHsH6RXM3kWrnS7/O+6dyvZmg+h15RFLwk46sXqdBraKZttkCSWA55J/dHIxCeZOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300075; c=relaxed/simple;
-	bh=y120UP/A72i4KPCXXzfD+Gijbl0GECCbaubnP5MiEKM=;
+	s=arc-20240116; t=1772300077; c=relaxed/simple;
+	bh=36eFDMC+F8u+wuAGtj38JKzg3v6qAA/eyc8rh47FPEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oG0UaecktPOlutr3ypE8tTUxyOKAgLg8ZIZe1y6JGIw2fYuaW4ucvxweXl8VX83uCTz5PhXP55v5PkdBZYYYCmZ57ORv+CGYiFERaCJOQVP/tjNL6o/XQIHtavZknGgaLdMDdL+di2Wa+do5+ofu6IKM19pDyzuK86COTM7l1vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rHnTbfuP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19863C116D0;
+	 MIME-Version; b=TB2l1/ASPPihMF5AcuoCTWJU36qjr685YDe6tKT113950hUDT/IOsBqCjiKmfblj0MWGJoNqLIJsBXmGoh1TydkMN8cVV9PYP7iuWvgWvDaO42pi+IYdsCxulPOyFrLnBZhhZHZ6VSK922H0sE5JyqtnVvUlkTDCXNlHSePPjB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BSoMNi6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F04C116D0;
 	Sat, 28 Feb 2026 17:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300075;
-	bh=y120UP/A72i4KPCXXzfD+Gijbl0GECCbaubnP5MiEKM=;
+	s=k20201202; t=1772300077;
+	bh=36eFDMC+F8u+wuAGtj38JKzg3v6qAA/eyc8rh47FPEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rHnTbfuPu+HJoWF+fNx6Y0gOpAG7he3n8F3CYLeOIpRegQaEmZw8DQF4zRfCG+Lfa
-	 i0EgO5kG8V6ltlgG+3Gb7eflTTzrckLoCoCO7jvu8gAy/qf/PQg7vAFFFppeLtza/y
-	 c4dsFhh6w0jq8oihUXiSxVXKJ7W50wE7DWbfvSP5iNE2WIByWESp5nXVoyKSMAD9l2
-	 dZU2Tj4sN9+ew4AvyiNP5B3dPH1+/K6Fnr/jWbcnA8kilXdyQgt7ZIuumtpxWTi+hz
-	 zfyvr6f5RjQ9EUpp8BB/uUTeIOQsWnlhGnCWt4dY0EN+eLmnJLtTisJ8hmCWi/Feld
-	 DSqTkVqTlSjOQ==
+	b=BSoMNi6KS/cTVQdWyCs2RuYzRf6QPhZBriAUCrxD+BSnXgrL4bBBfNkpdAxjdIzil
+	 JGADP0XYhKf/Kpq56Z4cTz3gU5tYNA+zojYow9WXbdVsfhPf5EJG8+1LH3Ov6DpYKk
+	 pkk6AdwO4BYWEpzNow9BfdySPonCe+G86VwmNGwf/+jXRT5gBnlFIHsOvKYkkjgAHB
+	 xvcX74aPjIqV9SS7gCCRTBDNJZVuu00K/wWBbeEPN19iOVvOPlnVVov8b4kZU0ZVh/
+	 aKhOiT+jTmSOC3miotva4o/lDRXh5YSUaAPQuih/kBJkqOMuRerzy7wp30FfTVozRK
+	 HWT/yX0ULLD7A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sam James <sam@gentoo.org>,
-	Andreas Larsson <andreas@gaisler.com>,
+Cc: Cupertino Miranda <cupertino.miranda@oracle.com>,
+	Andrew Pinski <andrew.pinski@oss.qualcomm.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	David Faust <david.faust@oracle.com>,
+	Jose Marchesi <jose.marchesi@oracle.com>,
+	Elena Zannoni <elena.zannoni@oracle.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 090/844] sparc: don't reference obsolete termio struct for TC* constants
-Date: Sat, 28 Feb 2026 12:20:03 -0500
-Message-ID: <20260228173244.1509663-91-sashal@kernel.org>
+Subject: [PATCH 6.19 091/844] bpf: verifier improvement in 32bit shift sign extension pattern
+Date: Sat, 28 Feb 2026 12:20:04 -0500
+Message-ID: <20260228173244.1509663-92-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,77 +72,100 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220168-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[oracle.com,oss.qualcomm.com,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220169-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gaisler.com:email]
-X-Rspamd-Queue-Id: 507D21C5B4B
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,gnu.org:url]
+X-Rspamd-Queue-Id: 97FF91C5531
 X-Rspamd-Action: no action
 
-From: Sam James <sam@gentoo.org>
+From: Cupertino Miranda <cupertino.miranda@oracle.com>
 
-[ Upstream commit be0bccffcde3308150d2a90e55fc10e249098909 ]
+[ Upstream commit d18dec4b8990048ce75f0ece32bb96b3fbd3f422 ]
 
-Similar in nature to commit ab107276607a ("powerpc: Fix struct termio related ioctl macros").
+This patch improves the verifier to correctly compute bounds for
+sign extension compiler pattern composed of left shift by 32bits
+followed by a sign right shift by 32bits.  Pattern in the verifier was
+limitted to positive value bounds and would reset bound computation for
+negative values.  New code allows both positive and negative values for
+sign extension without compromising bound computation and verifier to
+pass.
 
-glibc-2.42 drops the legacy termio struct, but the ioctls.h header still
-defines some TC* constants in terms of termio (via sizeof). Hardcode the
-values instead.
+This change is required by GCC which generate such pattern, and was
+detected in the context of systemd, as described in the following GCC
+bugzilla: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=119731
 
-This fixes building Python for example, which falls over like:
-  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
+Three new tests were added in verifier_subreg.c.
 
-Link: https://bugs.gentoo.org/961769
-Link: https://bugs.gentoo.org/962600
-Signed-off-by: Sam James <sam@gentoo.org>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Cupertino Miranda  <cupertino.miranda@oracle.com>
+Signed-off-by: Andrew Pinski  <andrew.pinski@oss.qualcomm.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Cc: David Faust  <david.faust@oracle.com>
+Cc: Jose Marchesi  <jose.marchesi@oracle.com>
+Cc: Elena Zannoni  <elena.zannoni@oracle.com>
+Link: https://lore.kernel.org/r/20251202180220.11128-2-cupertino.miranda@oracle.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/include/uapi/asm/ioctls.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/bpf/verifier.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/arch/sparc/include/uapi/asm/ioctls.h b/arch/sparc/include/uapi/asm/ioctls.h
-index 7fd2f5873c9e7..a8bbdf9877a41 100644
---- a/arch/sparc/include/uapi/asm/ioctls.h
-+++ b/arch/sparc/include/uapi/asm/ioctls.h
-@@ -5,10 +5,10 @@
- #include <asm/ioctl.h>
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index fe01edfcc34c6..7069e9f527eaa 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -15305,21 +15305,17 @@ static void __scalar64_min_max_lsh(struct bpf_reg_state *dst_reg,
+ 				   u64 umin_val, u64 umax_val)
+ {
+ 	/* Special case <<32 because it is a common compiler pattern to sign
+-	 * extend subreg by doing <<32 s>>32. In this case if 32bit bounds are
+-	 * positive we know this shift will also be positive so we can track
+-	 * bounds correctly. Otherwise we lose all sign bit information except
+-	 * what we can pick up from var_off. Perhaps we can generalize this
+-	 * later to shifts of any length.
++	 * extend subreg by doing <<32 s>>32. smin/smax assignments are correct
++	 * because s32 bounds don't flip sign when shifting to the left by
++	 * 32bits.
+ 	 */
+-	if (umin_val == 32 && umax_val == 32 && dst_reg->s32_max_value >= 0)
++	if (umin_val == 32 && umax_val == 32) {
+ 		dst_reg->smax_value = (s64)dst_reg->s32_max_value << 32;
+-	else
+-		dst_reg->smax_value = S64_MAX;
+-
+-	if (umin_val == 32 && umax_val == 32 && dst_reg->s32_min_value >= 0)
+ 		dst_reg->smin_value = (s64)dst_reg->s32_min_value << 32;
+-	else
++	} else {
++		dst_reg->smax_value = S64_MAX;
+ 		dst_reg->smin_value = S64_MIN;
++	}
  
- /* Big T */
--#define TCGETA		_IOR('T', 1, struct termio)
--#define TCSETA		_IOW('T', 2, struct termio)
--#define TCSETAW		_IOW('T', 3, struct termio)
--#define TCSETAF		_IOW('T', 4, struct termio)
-+#define TCGETA          0x40125401 /* _IOR('T', 1, struct termio) */
-+#define TCSETA          0x80125402 /* _IOW('T', 2, struct termio) */
-+#define TCSETAW         0x80125403 /* _IOW('T', 3, struct termio) */
-+#define TCSETAF         0x80125404 /* _IOW('T', 4, struct termio) */
- #define TCSBRK		_IO('T', 5)
- #define TCXONC		_IO('T', 6)
- #define TCFLSH		_IO('T', 7)
+ 	/* If we might shift our top bit out, then we know nothing */
+ 	if (dst_reg->umax_value > 1ULL << (63 - umax_val)) {
 -- 
 2.51.0
 
