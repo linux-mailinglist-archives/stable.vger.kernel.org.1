@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220893-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CG6+JdFFo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:45:21 +0100
+	id 2F6JKx1Go2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220893-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:46:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8831C7539
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:45:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122FD1C75A2
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 520D33083DC7
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:37:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9D1133BBDBA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60178424E64;
-	Sat, 28 Feb 2026 17:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F99C352FA1;
+	Sat, 28 Feb 2026 17:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N6JdFSCv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RT2O0sxh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22094424E5C;
-	Sat, 28 Feb 2026 17:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C75424E78;
+	Sat, 28 Feb 2026 17:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300782; cv=none; b=EsyzBRcIa9R02KNeNnTzMl06x76mhYsA+W72PnNX4uRCSR3u3qd8XMZEEI5vwx+OoZHNH1NkJrIdtc4e15kwNmsFKfZRUgIZdk3W+KQsA4AyA6RQYLwmhyPSihB5RcCihahDwMo+TT8IfISpv34F792HAQrYObud0SW5PWxbXp8=
+	t=1772300783; cv=none; b=d00Pvj+wrui8E0ioLwFYCm86qvLcA7CK510gBs257xVSMwwm7lCNJKX0lnwllPKIJgpUywbEORnMHRi7wH1FVcTr2DQ8T72mHtvX6GopDUX7zdTX2UCq0Wg55kRBH+bdxKVqWYrg8HDNCYPVlcJu3dhxDMcQ0d/xbAaBKJRt5pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300782; c=relaxed/simple;
-	bh=oTP09YI/Pkrs6Rd3W3Jt/xedViZH/Wz+wk5aZE2TSg4=;
+	s=arc-20240116; t=1772300783; c=relaxed/simple;
+	bh=uHYavhVPPsvJNwy5w2zPvNAhQLb38Qw9M/j+w5Q7EOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwSl1H7OYCL7YUgvZiQl/RkQe8H4Kuy5qZnpd4TVaes/EbKpSbOZ12nk36zGq5YqSYGQYkemZeWuAw2g0qvq8g6QUv+JA7TuM2f7qSMWG3pFOdN6/VZt2j/U6tACqbGst8UgdOKiZqE38blV/EWOe782KloSnzRz9wJ3hkTk9D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N6JdFSCv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681C3C116D0;
-	Sat, 28 Feb 2026 17:46:21 +0000 (UTC)
+	 MIME-Version; b=cbqruoOSDoPf1RfAUHH0/I5co/Mnzwpa2LlYCWmQEQwSeqGRJVJ5xN/JcdhZkrTUmVqXthiirMyKo4wolyBhTMgnSQV8cbyucZLDdf/vI97/P7ktpbqmtbORbdGx1ICj54NtVjGf+wTqEKSoYbwg7C3oXzOlJDG2AHidpX5vFj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RT2O0sxh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C21C19423;
+	Sat, 28 Feb 2026 17:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772300782;
-	bh=oTP09YI/Pkrs6Rd3W3Jt/xedViZH/Wz+wk5aZE2TSg4=;
+	bh=uHYavhVPPsvJNwy5w2zPvNAhQLb38Qw9M/j+w5Q7EOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N6JdFSCvGlMKvHs/VbMubiM3WAAxgGxBgaLJtousV6dftfBOnUnYnLU4quV/9FMTE
-	 sN+PoKSzZLasEV5LN3/UpK7iPh8rW1nMdWczWGI5aNk36w+7CGNvKpQnidmU09MNHh
-	 RUo9i488/F2EqjVsGuST2NpqolGh3AncCceXP+3lXIiRbV4JdMmzm/2KUYz4Lmf5WK
-	 xfptG7NIltWURhrxUyGjAfGIK2v+8x/+JK1o7IBRQiRdOUD6+VOP+ycXU580AnJ0+S
-	 CQ9RsA8aH39xZWQIJ8+vk/k+HPfW8iq07uSAX8BONghkmJ77TkDdmFuI95e9hFK/UE
-	 qSat0q45vr9OA==
+	b=RT2O0sxhVND+7T/SXLXsJUlZgTrLd83BfDeX1tu/lPLKU0xRxCv3Lh6a1yXd5IBWe
+	 dYoU5S5HbXw+c15FQOxMoiwLAFP5XYktR6gpU0T/M+zAlqzDOKnsSe8F+b+KR88DMH
+	 rZtp4OrcVco0Co7IEuJ5TVGqX1Bj0Tk8eB6Zpd6Viobbt/2Anahv5p3Nj4ng9AGMlF
+	 /zQZsqjz3IF7rBZrzgQ0DgTn+s4P0hrTn6e6ZWxlP+o7ssy6SHbdmzOyp2VG6oUjMN
+	 6J2BPoILvl0o74H0Han0s4lIdFL1xBcVV7ns7hPT5lob6qnNMCmAAXpRHNi9Ru+X6I
+	 PKsqeMC7LfqRw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Pavel Begunkov <asml.silence@gmail.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 813/844] io_uring/zcrx: fix sgtable leak on mapping failures
-Date: Sat, 28 Feb 2026 12:32:06 -0500
-Message-ID: <20260228173244.1509663-814-sashal@kernel.org>
+Subject: [PATCH 6.19 814/844] io_uring/zcrx: fix post open error handling
+Date: Sat, 28 Feb 2026 12:32:07 -0500
+Message-ID: <20260228173244.1509663-815-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -73,14 +73,14 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[gmail.com,kernel.dk,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220892-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220893-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -93,45 +93,67 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3B8831C7539
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 122FD1C75A2
 X-Rspamd-Action: no action
 
 From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit a983aae397767e9da931128ff2b5bf9066513ce3 ]
+[ Upstream commit 5d540e4508950c674d6feef1d95463d039bbf4f5 ]
 
-In an unlikely case when io_populate_area_dma() fails, which could only
-happen on a PAGE_POOL_32BIT_ARCH_WITH_64BIT_DMA machine,
-io_zcrx_map_area() will have an initialised and not freed table. It was
-supposed to be cleaned up in the error path, but !is_mapped prevents
-that.
+Closing a queue doesn't guarantee that all associated page pools are
+terminated right away, let the refcounting do the work instead of
+releasing the zcrx ctx directly.
 
-Fixes: 439a98b972fbb ("io_uring/zcrx: deduplicate area mapping")
 Cc: stable@vger.kernel.org
-Reported-by: Jens Axboe <axboe@kernel.dk>
+Fixes: e0793de24a9f6 ("io_uring/zcrx: set pp memory provider for an rx queue")
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/zcrx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ io_uring/zcrx.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 3d398283cf340..b133c85793c9c 100644
+index b133c85793c9c..84e37900c0682 100644
 --- a/io_uring/zcrx.c
 +++ b/io_uring/zcrx.c
-@@ -288,6 +288,9 @@ static int io_zcrx_map_area(struct io_zcrx_ifq *ifq, struct io_zcrx_area *area)
+@@ -515,9 +515,6 @@ static void io_close_queue(struct io_zcrx_ifq *ifq)
+ 		.mp_priv = ifq,
+ 	};
+ 
+-	if (ifq->if_rxq == -1)
+-		return;
+-
+ 	scoped_guard(mutex, &ifq->pp_lock) {
+ 		netdev = ifq->netdev;
+ 		netdev_tracker = ifq->netdev_tracker;
+@@ -525,7 +522,8 @@ static void io_close_queue(struct io_zcrx_ifq *ifq)
  	}
  
- 	ret = io_populate_area_dma(ifq, area);
-+	if (ret && !area->mem.is_dmabuf)
-+		dma_unmap_sgtable(ifq->dev, &area->mem.page_sg_table,
-+				  DMA_FROM_DEVICE, IO_DMA_ATTR);
- 	if (ret == 0)
- 		area->is_mapped = true;
+ 	if (netdev) {
+-		net_mp_close_rxq(netdev, ifq->if_rxq, &p);
++		if (ifq->if_rxq != -1)
++			net_mp_close_rxq(netdev, ifq->if_rxq, &p);
+ 		netdev_put(netdev, &netdev_tracker);
+ 	}
+ 	ifq->if_rxq = -1;
+@@ -833,13 +831,12 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
+ 	}
+ 	return 0;
+ netdev_put_unlock:
+-	netdev_put(ifq->netdev, &ifq->netdev_tracker);
+ 	netdev_unlock(ifq->netdev);
+ err:
+ 	scoped_guard(mutex, &ctx->mmap_lock)
+ 		xa_erase(&ctx->zcrx_ctxs, id);
+ ifq_free:
+-	io_zcrx_ifq_free(ifq);
++	zcrx_unregister(ifq);
  	return ret;
+ }
+ 
 -- 
 2.51.0
 
