@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJVDFucto2me+AQAu9opvQ
-	(envelope-from <stable+bounces-220228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:03:19 +0100
+	id +Px7OVw0o2nP+QQAu9opvQ
+	(envelope-from <stable+bounces-220229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75371C55F6
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:03:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026521C5E34
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 049DA311673C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:56:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 67DC230DE9C0
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89DC54F7993;
-	Sat, 28 Feb 2026 17:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A32F175A6E;
+	Sat, 28 Feb 2026 17:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFsynSqH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H5oBOAsb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8004F798E;
-	Sat, 28 Feb 2026 17:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FB6175A64;
+	Sat, 28 Feb 2026 17:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300133; cv=none; b=LYrHPnTdnLebJHSm3MtnKeaGOpZ0tHPbRppXPuHZvkYkXAeoKBGRS6ygZGpM4FaqEFnG4pPII/EOWI5FRcO0+MeUzt4CQCW5iYoltQ1GW5fsPevVnfUxJwMatw1T+ioT3HN7ml8/nBMeFVZZcR7JR35RokUxX3P9KvbpB1r98U0=
+	t=1772300134; cv=none; b=m3UhnIlriwPLcwUJlMXgK4lbZGtHHn5dMjrGzcmIxbQWkujborMQTUxIJYsJAQ+kz+lnhbEKG1P7eztjb/Sj/4zlq1/FToW3Wout6zz46F2LzYMYBfMET8jRPpRXrO7uix3NpHx8nBOLfvNM4LhnqAjZXLJIABLI0WVKgr40Dk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300133; c=relaxed/simple;
-	bh=70Z/ufDjf1kcofKyMtayteHWgkEdvEWGI2H+qggGxyE=;
+	s=arc-20240116; t=1772300134; c=relaxed/simple;
+	bh=9GRg/vEWRTZndN1XDb01T9HHR2UThmDcPOMlOFyB4SY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NoXRuy4f8o6tV3qO6m1XqxPKmXnBz5SJLi5klyT+sFzVclVNd0NnKZpHyj+Kgz9hABygccujJWFP45wNPxNklP+sy/73FN960SIdqLQ5jXXQAqVy2Dd1qSfFxp12gMWMR3NDnbgKM3JplTGcnWf77vFirm7rtpDTQrSb1JiwJSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFsynSqH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E1FC116D0;
-	Sat, 28 Feb 2026 17:35:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T7C8oWIPAv8XEE9pKr/bEm2xYJdIxBG7Lb5bNHOoEaaQxyUqQNGZGSSy9IRzQnq9K2OBzoz3DHXQPLnoKYP/RoJE88DjQrBdQ8PhnOhlzM0PQypefau5G87EovP9FAnfUEQr4E0FgM8EXiIlkwZG7yD94otjDzc6Mpv0xKxxRVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H5oBOAsb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BA8C116D0;
+	Sat, 28 Feb 2026 17:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300133;
-	bh=70Z/ufDjf1kcofKyMtayteHWgkEdvEWGI2H+qggGxyE=;
+	s=k20201202; t=1772300134;
+	bh=9GRg/vEWRTZndN1XDb01T9HHR2UThmDcPOMlOFyB4SY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFsynSqH8myl8G//ZTeNUk20vLVsofpdNOQoDETfECZ5KaZuXOODtvGCXMH8hzGyb
-	 jwcOFTipPOn8LZCmtJ/k1FTx+MRdwaDAyJh72tN2Z8XGB6NS8s37pK5NOnI04dKsXj
-	 9cClYF3SF/OL0X7qGrSt43djQZkXR3yBrYlulDgdEEMkYCjxR1n6LSovrv7lr0aB+F
-	 819KLqIG8IJTQgd2NN6EDb4fZgIoZJyVLNQrt0q7QjmYrn4AQ6fcXDIqwWRPCr7qb2
-	 5Kzk31X3nyvZxGXVP1RX1gYBGRUUak4qoNdy+pDLs0YlkuEgreKJm7+TPsTgr9uRcx
-	 6q/2kGixZ1JFQ==
+	b=H5oBOAsbbu8cN9k2Bsrb4acI8AQ5sXAy5HRHqeil5Mn5xwPF1/U0AsPOnV1MP4Suw
+	 /btEgDLya1+KCjX1z9uF8RsLJHGFS36woYSb02mU9OnKI/V/5CU6ZuWgOjrhjyzH+0
+	 7ND4CyBFnftMSwUwpD80yKJN4NvmLEwwemcYchYiOhjZrSvvXoP2ngzZBK1q7MPx6I
+	 Fj4txk/wRWtTvrKk+eyEdw6CpLW0SmHKQQuOH/7lzfZc/27C69K5Re/vQkqd0BDMg3
+	 lA3S7UoPQ6Hl8DyrR7ne6sOPhiPz4ubzNCb4I7vGYpIHEkOaZc6ZlTosdcAKWKGvpe
+	 98lfgU5NIhlhw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Xiaolei Wang <xiaolei.wang@windriver.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 150/844] ALSA: hda/realtek - Enable Mute LED for Lenovo platform
-Date: Sat, 28 Feb 2026 12:21:03 -0500
-Message-ID: <20260228173244.1509663-151-sashal@kernel.org>
+Subject: [PATCH 6.19 151/844] drm/v3d: Set DMA segment size to avoid debug warnings
+Date: Sat, 28 Feb 2026 12:21:04 -0500
+Message-ID: <20260228173244.1509663-152-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -62,151 +62,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220228-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220229-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C75371C55F6
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 026521C5E34
 X-Rspamd-Action: no action
 
-From: Kailang Yang <kailang@realtek.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit 5de5db35350d9c4def1de2ae273e224a4eee5ed1 ]
+[ Upstream commit 9eb018828b1b30dfba689c060735c50fc5b9f704 ]
 
-Enable SPK Mute Led and Mic Mute Led for Lenovo platform.
+When using V3D rendering with CONFIG_DMA_API_DEBUG enabled, the
+kernel occasionally reports a segment size mismatch. This is because
+'max_seg_size' is not set. The kernel defaults to 64K. setting
+'max_seg_size' to the maximum will prevent 'debug_dma_map_sg()'
+from complaining about the over-mapping of the V3D segment length.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://patch.msgid.link/8a99edffee044e13b6e348d1b69c2b57@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+DMA-API: v3d 1002000000.v3d: mapping sg segment longer than device
+ claims to support [len=8290304] [max=65536]
+WARNING: CPU: 0 PID: 493 at kernel/dma/debug.c:1179 debug_dma_map_sg+0x330/0x388
+CPU: 0 UID: 0 PID: 493 Comm: Xorg Not tainted 6.12.53-yocto-standard #1
+Hardware name: Raspberry Pi 5 Model B Rev 1.0 (DT)
+pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : debug_dma_map_sg+0x330/0x388
+lr : debug_dma_map_sg+0x330/0x388
+sp : ffff8000829a3ac0
+x29: ffff8000829a3ac0 x28: 0000000000000001 x27: ffff8000813fe000
+x26: ffffc1ffc0000000 x25: ffff00010fdeb760 x24: 0000000000000000
+x23: ffff8000816a9bf0 x22: 0000000000000001 x21: 0000000000000002
+x20: 0000000000000002 x19: ffff00010185e810 x18: ffffffffffffffff
+x17: 69766564206e6168 x16: 74207265676e6f6c x15: 20746e656d676573
+x14: 20677320676e6970 x13: 5d34303334393134 x12: 0000000000000000
+x11: 00000000000000c0 x10: 00000000000009c0 x9 : ffff8000800e0b7c
+x8 : ffff00010a315ca0 x7 : ffff8000816a5110 x6 : 0000000000000001
+x5 : 000000000000002b x4 : 0000000000000002 x3 : 0000000000000008
+x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff00010a315280
+Call trace:
+ debug_dma_map_sg+0x330/0x388
+ __dma_map_sg_attrs+0xc0/0x278
+ dma_map_sgtable+0x30/0x58
+ drm_gem_shmem_get_pages_sgt+0xb4/0x140
+ v3d_bo_create_finish+0x28/0x130 [v3d]
+ v3d_create_bo_ioctl+0x54/0x180 [v3d]
+ drm_ioctl_kernel+0xc8/0x140
+ drm_ioctl+0x2d4/0x4d8
+
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Link: https://patch.msgid.link/20251203130323.2247072-1-xiaolei.wang@windriver.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 57 +++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+ drivers/gpu/drm/v3d/v3d_drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 15203c5855eb5..1964494321006 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -1616,6 +1616,20 @@ static void alc295_fixup_hp_mute_led_coefbit11(struct hda_codec *codec,
- 	}
- }
+diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
+index e8a46c8bad8a2..f469de456f9bb 100644
+--- a/drivers/gpu/drm/v3d/v3d_drv.c
++++ b/drivers/gpu/drm/v3d/v3d_drv.c
+@@ -378,6 +378,8 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto clk_disable;
  
-+static void alc233_fixup_lenovo_coef_micmute_led(struct hda_codec *codec,
-+				const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
++	dma_set_max_seg_size(&pdev->dev, UINT_MAX);
 +
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		spec->mic_led_coef.idx = 0x10;
-+		spec->mic_led_coef.mask = 1 << 13;
-+		spec->mic_led_coef.on = 0;
-+		spec->mic_led_coef.off = 1 << 13;
-+		snd_hda_gen_add_micmute_led_cdev(codec, coef_micmute_led_set);
-+	}
-+}
-+
- static void alc285_fixup_hp_mute_led(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
- {
-@@ -1918,6 +1932,39 @@ static void alc280_fixup_hp_gpio2_mic_hotkey(struct hda_codec *codec,
- 	}
- }
+ 	v3d->va_width = 30 + V3D_GET_FIELD(mmu_debug, V3D_MMU_VA_WIDTH);
  
-+/* GPIO2 = mic mute hotkey
-+ * GPIO3 = mic mute LED
-+ */
-+static void alc233_fixup_lenovo_gpio2_mic_hotkey(struct hda_codec *codec,
-+					     const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+
-+	alc233_fixup_lenovo_coef_micmute_led(codec, fix, action);
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		alc_update_coef_idx(codec, 0x10, 1<<2, 1<<2);
-+		if (alc_register_micmute_input_device(codec) != 0)
-+			return;
-+
-+		spec->gpio_mask |= 0x04;
-+		spec->gpio_dir |= 0x0;
-+		snd_hda_codec_write_cache(codec, codec->core.afg, 0,
-+					  AC_VERB_SET_GPIO_UNSOLICITED_RSP_MASK, 0x04);
-+		snd_hda_jack_detect_enable_callback(codec, codec->core.afg,
-+						    gpio2_mic_hotkey_event);
-+		return;
-+	}
-+
-+	if (!spec->kb_dev)
-+		return;
-+
-+	switch (action) {
-+	case HDA_FIXUP_ACT_FREE:
-+		input_unregister_device(spec->kb_dev);
-+		spec->kb_dev = NULL;
-+	}
-+}
-+
- /* Line2 = mic mute hotkey
-  * GPIO2 = mic mute LED
-  */
-@@ -3816,6 +3863,7 @@ enum {
- 	ALC245_FIXUP_HP_TAS2781_I2C_MUTE_LED,
- 	ALC288_FIXUP_SURFACE_SWAP_DACS,
- 	ALC236_FIXUP_HP_MUTE_LED_MICMUTE_GPIO,
-+	ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY,
- };
- 
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -6306,6 +6354,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc288_fixup_surface_swap_dacs,
- 	},
-+        [ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY] = {
-+                .type = HDA_FIXUP_FUNC,
-+                .v.func = alc233_fixup_lenovo_gpio2_mic_hotkey,
-+        },
- };
- 
- static const struct hda_quirk alc269_fixup_tbl[] = {
-@@ -7213,7 +7265,12 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3176, "ThinkCentre Station", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x17aa, 0x3178, "ThinkCentre Station", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x17aa, 0x31af, "ThinkCentre Station", ALC623_FIXUP_LENOVO_THINKSTATION_P340),
-+	SND_PCI_QUIRK(0x17aa, 0x3341, "Lenovo ThinkCentre M90 Gen4", ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY),
-+	SND_PCI_QUIRK(0x17aa, 0x3342, "Lenovo ThinkCentre M90 Gen4", ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY),
-+	SND_PCI_QUIRK(0x17aa, 0x3343, "Lenovo ThinkCentre M70 Gen4", ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY),
-+	SND_PCI_QUIRK(0x17aa, 0x3344, "Lenovo ThinkCentre M70 Gen4", ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY),
- 	SND_PCI_QUIRK(0x17aa, 0x334b, "Lenovo ThinkCentre M70 Gen5", ALC283_FIXUP_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x17aa, 0x334f, "Lenovo ThinkCentre M90a Gen5", ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY),
- 	SND_PCI_QUIRK(0x17aa, 0x3384, "ThinkCentre M90a PRO", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
- 	SND_PCI_QUIRK(0x17aa, 0x3386, "ThinkCentre M90a Gen6", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
- 	SND_PCI_QUIRK(0x17aa, 0x3387, "ThinkCentre M70a Gen6", ALC233_FIXUP_LENOVO_L2MH_LOW_ENLED),
+ 	ident1 = V3D_READ(V3D_HUB_IDENT1);
 -- 
 2.51.0
 
