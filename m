@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOwqKiAto2me+AQAu9opvQ
-	(envelope-from <stable+bounces-220200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:00:00 +0100
+	id QGwTE4Yro2mF+AQAu9opvQ
+	(envelope-from <stable+bounces-220201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:53:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4CA1C54E8
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:00:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9FD1C52AD
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:53:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7828230FB11D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:52:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A740D3068149
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C91B4D2EDA;
-	Sat, 28 Feb 2026 17:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587D04D2EF3;
+	Sat, 28 Feb 2026 17:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pY6uR1/O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mROXQa4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4244D2ECB;
-	Sat, 28 Feb 2026 17:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC444CA26C;
+	Sat, 28 Feb 2026 17:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300106; cv=none; b=fJj3G89dqIa2MG0lGmc0bg6g3Q42zgTboPys3n1IKj+OBeBZvA3scHSL/SvthNKRzYClheayvYTJZMGO5r4FRGNBkxoNMO4fQqkmJltMZaEXL1F0/q034j29VoqOT/9mSRU2iMQizVlxmptkpZZ2AAg5tYLHA/hb27S+C8egM2s=
+	t=1772300107; cv=none; b=PIokPMotF3EevgfOj1SCtywX7L1uWW8joMd/MRiUcT/84bvPWTHDTzg0QcK2pN0r6xoqv2z38PtoYwi341s9cT7E3OogQrI8+/+1P65L26hcTMc/H27NFR3HhPdPnf1gfkk8yoBZ0niAHUVNNKhsGKO5V/e2a8CybszUVGwkTk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300106; c=relaxed/simple;
-	bh=Mt4jFdGJyq8egqIKlvbkD1pcSAEmCL3DQ1jiF/WWx/I=;
+	s=arc-20240116; t=1772300107; c=relaxed/simple;
+	bh=Q2NV62oJ9Rk/vMU9B7uyWbpa6IUD0HHYXjbz4QRK468=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbSO7wXtvWEeLxt6n6zYotGe79vWps2jC7PTeWPOOOQlEa17dmZA0wJ6CjWoWNDd4HuLSfDJh0YqRe/m6AvjVokvY+iCwVuKHMycZvroaya3xFORQMu3s99BqkEiSbFBduX+NOcVHkmmt3eoQaLlpzwN6mmGTpgldoGe5s9nScY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pY6uR1/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6FBC116D0;
-	Sat, 28 Feb 2026 17:35:05 +0000 (UTC)
+	 MIME-Version; b=BumdZBPVoeGdBEk+XktUi6RuexOIvkOJoXybS41DuPCXX4b89oyMhs58WnifXtFI/T8Dueqn+WGYir5RWDv2yYmsipphEhUM+GOgOf5Is6XVBniegco1Rlg/CzwRTI3NX4jZPNsQtajSSZAuV7FFNpQGSZUwXQg/WmmHbXo2jr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mROXQa4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6492FC19425;
+	Sat, 28 Feb 2026 17:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300106;
-	bh=Mt4jFdGJyq8egqIKlvbkD1pcSAEmCL3DQ1jiF/WWx/I=;
+	s=k20201202; t=1772300107;
+	bh=Q2NV62oJ9Rk/vMU9B7uyWbpa6IUD0HHYXjbz4QRK468=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pY6uR1/O+6GQ/bc06OQu84gca9yAWUSXkj3v/0HuWAhYhZ+KztRQ8S9Mbkoy93O0v
-	 8NGFClWS9ntL4HHI/pb9iTGBlz3au7WPMMPdd7J6bUZN6A631y+doQ4tGJl9XJhuX6
-	 14Kj7HOTx22gsh/h5FRbOZ4xQ2APZ8D6PtTzP4zOEVsV68C/dv7gc7rBBpDGXhxqtD
-	 YEPp/wRtDbSXXgQ7huPb/67X6vHgaTJI8H+wJOBVDKBFbj1HYJN8Vj241GYcp2URWQ
-	 VVnegc9cSojqc5TLA97pkHnAeqnfO38fnnEVolHIfs5SrseGeDnvIPjTxITp5VjySr
-	 DTWVcmF+TW9gw==
+	b=mROXQa4z70cL4KsxQCjDl1jvvYgi32EJci9/hE0lom6GRekfxrA9682O02+AdQUE0
+	 92kK35oh27FSKgaUVe1jaiJiXeKk0Cku5+iklN45L4xR6TdbI7vZWV8cDAjRVrrS3L
+	 pHf0MifBWs/yQ8jUXTk8yqYAC8YaTuCoJqBw+9hzGX5jqp3l5BOi0PP//w6m1JXzeD
+	 x6LA+3U8B6DbztKwW1OcjrPICyIMwvytwOzn3GDO6VQGF/z7zBbTBBSCKG0LLiyHW/
+	 Qd5ObXauPpInUTz7fqYc7Yt30Ex+DUyEGR5qKlp/gCm/FXk5tny2G3uN3mjo347B8s
+	 rkG8WP9R6Gu8w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Matt Roper <matthew.d.roper@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 122/844] drm/xe/ggtt: Use scope-based runtime pm
-Date: Sat, 28 Feb 2026 12:20:35 -0500
-Message-ID: <20260228173244.1509663-123-sashal@kernel.org>
+Subject: [PATCH 6.19 123/844] drm/xe: Covert return of -EBUSY to -ENOMEM in VM bind IOCTL
+Date: Sat, 28 Feb 2026 12:20:36 -0500
+Message-ID: <20260228173244.1509663-124-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,18 +71,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220200-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220201-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -92,40 +92,50 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 4F4CA1C54E8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 9E9FD1C52AD
 X-Rspamd-Action: no action
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 8a579f4b2476fd1df07e2bca9fedc82a39a56a65 ]
+[ Upstream commit 6028f59620927aee2e15a424004012ae05c50684 ]
 
-Switch the GGTT code to scope-based runtime PM for consistency with
-other parts of the driver.
+xe_vma_userptr_pin_pages can return -EBUSY but -EBUSY has special
+meaning in VM bind IOCTLs that user fence is pending that is attached to
+the VMA. Convert -EBUSY to -ENOMEM in this case as -EBUSY in practice
+means we are low or out of memory.
 
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Link: https://patch.msgid.link/20251118164338.3572146-51-matthew.d.roper@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Link: https://patch.msgid.link/20251122012502.382587-2-matthew.brost@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_ggtt.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_vm.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_ggtt.c b/drivers/gpu/drm/xe/xe_ggtt.c
-index 793d7324a395d..9e6b4e9835424 100644
---- a/drivers/gpu/drm/xe/xe_ggtt.c
-+++ b/drivers/gpu/drm/xe/xe_ggtt.c
-@@ -396,9 +396,8 @@ static void ggtt_node_remove_work_func(struct work_struct *work)
- 						 delayed_removal_work);
- 	struct xe_device *xe = tile_to_xe(node->ggtt->tile);
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 095bb197e8b05..9781209dd26ed 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -2451,8 +2451,17 @@ static struct xe_vma *new_vma(struct xe_vm *vm, struct drm_gpuva_op_map *op,
+ 		if (IS_ERR(vma))
+ 			return vma;
  
--	xe_pm_runtime_get(xe);
-+	guard(xe_pm_runtime)(xe);
- 	ggtt_node_remove(node);
--	xe_pm_runtime_put(xe);
- }
- 
- /**
+-		if (xe_vma_is_userptr(vma))
++		if (xe_vma_is_userptr(vma)) {
+ 			err = xe_vma_userptr_pin_pages(to_userptr_vma(vma));
++			/*
++			 * -EBUSY has dedicated meaning that a user fence
++			 * attached to the VMA is busy, in practice
++			 * xe_vma_userptr_pin_pages can only fail with -EBUSY if
++			 * we are low on memory so convert this to -ENOMEM.
++			 */
++			if (err == -EBUSY)
++				err = -ENOMEM;
++		}
+ 	}
+ 	if (err) {
+ 		prep_vma_destroy(vm, vma, false);
 -- 
 2.51.0
 
