@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCKBOGk/o2kR+wQAu9opvQ
-	(envelope-from <stable+bounces-220584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:18:01 +0100
+	id eOxkBJ5Po2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:27:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0F51C6CD1
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:18:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7019F1C85A4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 009473382701
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:50:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B421B319A24F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5330A3DF2DE;
-	Sat, 28 Feb 2026 17:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C2B3DF2F6;
+	Sat, 28 Feb 2026 17:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p33qvdKL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmIiuByW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1612D3DF2D6;
-	Sat, 28 Feb 2026 17:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9483DF2ED;
+	Sat, 28 Feb 2026 17:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300467; cv=none; b=TspaNUWIJLmhoMEKpp85eb+u7c5r46tdjB/VGyq3ecgHmXFwg55o+UAS0ylcAHj4ArTOqDXRRsshXBguV1aMHEZPWF+v+yW6Cw4gdqLL2I0xs7nqbHPsD8nqeE8QM27jLip13soFqOlA6bY2Iu5yfNg9z8xKtC/ihPU4RkjtKI0=
+	t=1772300468; cv=none; b=GHExJsv60r9zxXWkXiBXcv51v6u1AASngznaklusPB7dLcxYxNy8746A0mjAJSRbrh846hGVjW/v7jRtlpYTm+3p/R+XuUHnbm6N2lHUhRawiRe7gA1hEXVQUPmIK2+/m5829iIrnPn8w3QiKfCsoof3I9O5G3bRqHOnhSdLg/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300467; c=relaxed/simple;
-	bh=g/ldiWZ7ZtRtUsTGWptXHCGhnyIJmR/pakE7Kon9wQU=;
+	s=arc-20240116; t=1772300468; c=relaxed/simple;
+	bh=lq9pbET41eTADkA04/3fMhGAUFXStKN4jarW1nJnt7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSmfGPEwEPvPFCY4pXi2jsdt3bmpaRGslWz81OKSlWIwc+6a/uroXpl8NYE6p4OjsNahcE8MiNH1I9X5MCC+iyyfR5WtNq4+KGzsTg5fWhNYvcvSLTe266plMcWWXkEia513x13T8hnuh0LAJzpmkDfjQOi9W5D7YLkg2OAvmOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p33qvdKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2133FC19425;
+	 MIME-Version; b=b7ABc5g9G+6RudVrpXStxXQqSNmNMs811c3dG2n4Kt9/0LmI2Kztqxy788p2xrTk+1e0UNth3caw1LPLyFadT/iLKg1/jjRF3dRGQCOnX1Uodr/8nVIuh/sBlQuCFNPRoJMrlSb97BwbpfAfnkwi63lqyom4c8+cIZ7BXj0sm5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmIiuByW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032DAC116D0;
 	Sat, 28 Feb 2026 17:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300466;
-	bh=g/ldiWZ7ZtRtUsTGWptXHCGhnyIJmR/pakE7Kon9wQU=;
+	s=k20201202; t=1772300467;
+	bh=lq9pbET41eTADkA04/3fMhGAUFXStKN4jarW1nJnt7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p33qvdKLsrUzJUzUqojWN4n2HROfuea6GbiENnd9MBrs3GuhagK+EdjMl54FfUydo
-	 yvo3Vagbu+ESW92fyon4hBYdj/NN1cKY6ZgF3D/azIzLhtntyrtKUfG3yELSFG1m1Z
-	 KYAq+ZXee+yKLGyczZkstn/hoAIBDR7MIcXekbvRziNySakTK0dI74mkVkmxh7dUNv
-	 Qn06f5eU/e6iplUR9VTADnjXTb1XjcITU+xuKL7roC71PQ0gl8jYFNstcymyeqjSQQ
-	 Uj6C01/WcPFiOLpM92pEX3pWrfhrnp1lwhQvscJSukcYwN3OLINxxgsnSzMLOptdXW
-	 nW/H5AMcyExAA==
+	b=YmIiuByWzaKq4IyOSTTT20n+pnyagG2VFULPl51Tafdoy+sHgrHZQPfzW9psK+b4i
+	 kdK3k6LT39sT4/UGY52ikIqjE2XOJK43Ds4gY9sJVs5/bPyJRaUTsghLfeo5xK45KX
+	 SAxA1zs3cZQpie1xnLbr0Vl7jOef8UYjsDsPincz3JY6215WBa+TIgER/sjNUWjbpv
+	 jnJunVvJZdz+FkU/0wbRnq3Jq40WviXV2EzqNz2Vs4L7/SP9KDm5xyjg0fERmsqeao
+	 NI4SpwVCNm4F84Ki+3XogJuTM+mDO1BIV378dRYbIn2981hN7rZnzrgEz6/YXi2K98
+	 qQAMJfbUorGsA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gui-Dong Han <hanguidong02@gmail.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+Cc: Chris Brandt <chris.brandt@renesas.com>,
+	Hugo Villeneuve <hugo@hugovil.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 505/844] rpmsg: core: fix race in driver_override_show() and use core helper
-Date: Sat, 28 Feb 2026 12:26:58 -0500
-Message-ID: <20260228173244.1509663-506-sashal@kernel.org>
+Subject: [PATCH 6.19 506/844] clk: renesas: rzg2l: Fix intin variable size
+Date: Sat, 28 Feb 2026 12:26:59 -0500
+Message-ID: <20260228173244.1509663-507-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,153 +67,70 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,linaro.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220584-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220585-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: 6B0F51C6CD1
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[glider.be:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email,hugovil.com:email]
+X-Rspamd-Queue-Id: 7019F1C85A4
 X-Rspamd-Action: no action
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Chris Brandt <chris.brandt@renesas.com>
 
-[ Upstream commit 42023d4b6d2661a40ee2dcf7e1a3528a35c638ca ]
+[ Upstream commit a00655d98cd885472c311f01dff3e668d1288d0a ]
 
-The driver_override_show function reads the driver_override string
-without holding the device_lock. However, the store function modifies
-and frees the string while holding the device_lock. This creates a race
-condition where the string can be freed by the store function while
-being read by the show function, leading to a use-after-free.
+INTIN is a 12-bit register value, so u8 is too small.
 
-To fix this, replace the rpmsg_string_attr macro with explicit show and
-store functions. The new driver_override_store uses the standard
-driver_set_override helper. Since the introduction of
-driver_set_override, the comments in include/linux/rpmsg.h have stated
-that this helper must be used to set or clear driver_override, but the
-implementation was not updated until now.
-
-Because driver_set_override modifies and frees the string while holding
-the device_lock, the new driver_override_show now correctly holds the
-device_lock during the read operation to prevent the race.
-
-Additionally, since rpmsg_string_attr has only ever been used for
-driver_override, removing the macro simplifies the code.
-
-Fixes: 39e47767ec9b ("rpmsg: Add driver_override device attribute for rpmsg_device")
+Fixes: 1561380ee72f ("clk: renesas: rzg2l: Add FOUTPOSTDIV clk support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://lore.kernel.org/r/20251202174948.12693-1-hanguidong02@gmail.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Reported-by: Hugo Villeneuve <hugo@hugovil.com>
+Closes: https://lore.kernel.org/20251107113058.f334957151d1a8dd94dd740b@hugovil.com
+Signed-off-by: Chris Brandt <chris.brandt@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251114193711.3277912-1-chris.brandt@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/rpmsg_core.c | 66 ++++++++++++++++----------------------
- 1 file changed, 27 insertions(+), 39 deletions(-)
+ drivers/clk/renesas/rzg2l-cpg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-index 5d661681a9b6c..96964745065b1 100644
---- a/drivers/rpmsg/rpmsg_core.c
-+++ b/drivers/rpmsg/rpmsg_core.c
-@@ -352,50 +352,38 @@ field##_show(struct device *dev,					\
- }									\
- static DEVICE_ATTR_RO(field);
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index c20ea1212b360..de58a960a922b 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -122,8 +122,8 @@ struct div_hw_data {
  
--#define rpmsg_string_attr(field, member)				\
--static ssize_t								\
--field##_store(struct device *dev, struct device_attribute *attr,	\
--	      const char *buf, size_t sz)				\
--{									\
--	struct rpmsg_device *rpdev = to_rpmsg_device(dev);		\
--	const char *old;						\
--	char *new;							\
--									\
--	new = kstrndup(buf, sz, GFP_KERNEL);				\
--	if (!new)							\
--		return -ENOMEM;						\
--	new[strcspn(new, "\n")] = '\0';					\
--									\
--	device_lock(dev);						\
--	old = rpdev->member;						\
--	if (strlen(new)) {						\
--		rpdev->member = new;					\
--	} else {							\
--		kfree(new);						\
--		rpdev->member = NULL;					\
--	}								\
--	device_unlock(dev);						\
--									\
--	kfree(old);							\
--									\
--	return sz;							\
--}									\
--static ssize_t								\
--field##_show(struct device *dev,					\
--	     struct device_attribute *attr, char *buf)			\
--{									\
--	struct rpmsg_device *rpdev = to_rpmsg_device(dev);		\
--									\
--	return sprintf(buf, "%s\n", rpdev->member);			\
--}									\
--static DEVICE_ATTR_RW(field)
--
- /* for more info, see Documentation/ABI/testing/sysfs-bus-rpmsg */
- rpmsg_show_attr(name, id.name, "%s\n");
- rpmsg_show_attr(src, src, "0x%x\n");
- rpmsg_show_attr(dst, dst, "0x%x\n");
- rpmsg_show_attr(announce, announce ? "true" : "false", "%s\n");
--rpmsg_string_attr(driver_override, driver_override);
-+
-+static ssize_t driver_override_store(struct device *dev,
-+				     struct device_attribute *attr,
-+				     const char *buf, size_t count)
-+{
-+	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
-+	int ret;
-+
-+	ret = driver_set_override(dev, &rpdev->driver_override, buf, count);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
-+static ssize_t driver_override_show(struct device *dev,
-+				    struct device_attribute *attr, char *buf)
-+{
-+	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
-+	ssize_t len;
-+
-+	device_lock(dev);
-+	len = sysfs_emit(buf, "%s\n", rpdev->driver_override);
-+	device_unlock(dev);
-+	return len;
-+}
-+static DEVICE_ATTR_RW(driver_override);
- 
- static ssize_t modalias_show(struct device *dev,
- 			     struct device_attribute *attr, char *buf)
+ struct rzg2l_pll5_param {
+ 	u32 pl5_fracin;
++	u16 pl5_intin;
+ 	u8 pl5_refdiv;
+-	u8 pl5_intin;
+ 	u8 pl5_postdiv1;
+ 	u8 pl5_postdiv2;
+ 	u8 pl5_spread;
 -- 
 2.51.0
 
