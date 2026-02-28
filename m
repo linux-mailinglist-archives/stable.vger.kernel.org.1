@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-220783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GDNFLv1Do2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:37:33 +0100
+	id yDarFKdCo2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:31:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D6E1C7315
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:37:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C22021C717B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 33572312D5AB
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:23:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 229D53178E5D
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56865363084;
-	Sat, 28 Feb 2026 17:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805133630A8;
+	Sat, 28 Feb 2026 17:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAJOqkwU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Am6GDfwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1911649253A;
-	Sat, 28 Feb 2026 17:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404B136309F;
+	Sat, 28 Feb 2026 17:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300667; cv=none; b=h8ZhSMQ84mN2oZaqAhso7IWamRghDYOQYurWoR9+9gcZD2cMgKTdKKCQYaF6kB45dNP9ok34zUi8KXM0pW3aWb6/geJs1cwLSjAZRjKgUgjlzjkD3/csqfotSF4GzcA7Kr95AXttFIzBAEqfwtrU1ShC2/mYtr89wIc05bi8dpU=
+	t=1772300668; cv=none; b=JIob8LDdJWGiRtvp8lObklDNz1PbXPjf+5pK2UssV5NebsiDLHY955yQrJM4NOVfDUmzQyjSEHhNldhL6IQnSi5qmyOmDjohBUdmyxRowmC3B8JOsXhhKfpG+075k8Ejrg+dpYHMKg+X+eABRUjNXfIefoG5x4+2cUhvTTSl2zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300667; c=relaxed/simple;
-	bh=w5jgtz5DSWUWiVF2tlEtWyl1qNtrBDZobr0H7JY9hkM=;
+	s=arc-20240116; t=1772300668; c=relaxed/simple;
+	bh=u2kxPBOwOLkphVOpPpRhqeDwmrywy8m72tKElHpBxYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ixxy/Jt4BuTYA+QiHMm6wOISr568pSsNLklEwdwxQeXbH94r6/DIcRb98Pt5C7Np67AzthrkhLh8B6ut/ofr+lyVs03VAP3jDtLcca1ckDQ7CMycp/osZrSHFPg/BO+Ybl6zM9DBBa5QgLXNPr78713R0PopPfGen1eAvq93khc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAJOqkwU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BDFBC116D0;
-	Sat, 28 Feb 2026 17:44:26 +0000 (UTC)
+	 MIME-Version; b=gbT8h/q+0BYXD7z6OR6Tnjs3B2LqugUlt2iD0JHwiRDhWCSfzcNS65CmkdeKJkz1uIeDaDBqmPsk59c9H4fwW8Zq9Z0mQxNGhx9kaiDgTNAQtSwuIANJvkaQsNAIdHBbNVeWIiWsLgEQ1wg4gtI4AT99bpQW23V+kRwNb7bb2RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Am6GDfwG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AA4C19423;
+	Sat, 28 Feb 2026 17:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300667;
-	bh=w5jgtz5DSWUWiVF2tlEtWyl1qNtrBDZobr0H7JY9hkM=;
+	s=k20201202; t=1772300668;
+	bh=u2kxPBOwOLkphVOpPpRhqeDwmrywy8m72tKElHpBxYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAJOqkwU6xkg0qgytiA6LOk1xIHt9sG5SfKbLQvNv27LKDHJTe0SV4WSix3Vpo4wU
-	 n8/61hxheYRO2uwn1bsnfeeNDC0qa098drqkw8CJ+qmRIESnyF75l2qzaogJUi+UdV
-	 01SCOcbFB2XLGjTz8w6twdAZdb6aVJ/+JjAwGyUI3OZFuiX9sX8OkzXVH618U1w01l
-	 6yIWvj4YZb48DjVbwqxEa3ukDhwOwN1lZNU6rG2NIiuzBBF4S8v0bTevsx2/KBf6/C
-	 Tuld0/F+sIwUe9HXKpqcSSO5k9jNthXUAXBpCoC1kVVDP5GIuSxLw4HeFahH29tEqs
-	 YhLn7tqQDYq/Q==
+	b=Am6GDfwGOSFMtxWCx4iAnNPewW4BLx/DF0voA0hv4d5lQYwyUze1YBLn9RiJOrqTy
+	 4aIydoRxXTFlg4046gCtXMXaridYZThgpdS6Ik5+svajHlbC/e+gHNs9GS4qZsPIpX
+	 iNDiSblcl2nGPytSFlSa4sAEWm5OEgAhGnCcfF0vmSg4vgDMQ0a6IHJEoaEiMWKjDk
+	 trkdlv51yo7vxGFCmQ8l2ilZsdnG8Q1v0qL9YMaIEA0ckTX9zzO+YBl+9hUvt5vCf5
+	 2PMQ2OpSX4AyqawjcmQkbLqkBsaEfPKbsOkywjZq9VbcDLj1VAPwcxCjcN1u86H+o4
+	 4oh1e5bemzSFg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
+Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Su Hui <suhui@nfschina.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 704/844] io_uring/net: don't continue send bundle if poll was required for retry
-Date: Sat, 28 Feb 2026 12:30:17 -0500
-Message-ID: <20260228173244.1509663-705-sashal@kernel.org>
+Subject: [PATCH 6.19 705/844] bus: fsl-mc: fix an error handling in fsl_mc_device_add()
+Date: Sat, 28 Feb 2026 12:30:18 -0500
+Message-ID: <20260228173244.1509663-706-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,76 +70,77 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220784-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220783-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kernel.dk:email]
-X-Rspamd-Queue-Id: 69D6E1C7315
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iscas.ac.cn:email,nxp.com:email,nfschina.com:email]
+X-Rspamd-Queue-Id: C22021C717B
 X-Rspamd-Action: no action
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 806ae939c41e5da1d94a1e2b31f5702e96b6c3e3 ]
+[ Upstream commit 52f527d0916bcdd7621a0c9e7e599b133294d495 ]
 
-If a send bundle has picked a bunch of buffers, then it needs to send
-all of those to be complete. This may require poll arming, if the send
-buffer ends up being full. Once a send bundle has been poll armed, no
-further bundles should be attempted.
+In fsl_mc_device_add(), device_initialize() is called first.
+put_device() should be called to drop the reference if error
+occurs. And other resources would be released via put_device
+-> fsl_mc_device_release. So remove redundant kfree() in
+error handling path.
 
-This allows a current bundle to complete even though it needs to go
-through polling to do so, but it will not allow another bundle to be
-started once that has happened. Ideally we would abort a bundle if it
-was only partially sent, but as some parts of it already went out on the
-wire, this obviously isn't feasible. Not continuing more bundle attempts
-post encountering a full socket buffer is the second best thing.
-
+Fixes: bbf9d17d9875 ("staging: fsl-mc: Freescale Management Complex (fsl-mc) bus driver")
 Cc: stable@vger.kernel.org
-Fixes: a05d1f625c7a ("io_uring/net: support bundles for send")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/b767348e-d89c-416e-acea-1ebbff3bea20@stanley.mountain/
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Suggested-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20260124102054.1613093-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 519ea055b7619..d9a4b83804a25 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -515,7 +515,11 @@ static inline bool io_send_finish(struct io_kiocb *req,
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index a97baf2cbcdd5..eb7b6c0ba9e7c 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -909,11 +909,7 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
+ 	return 0;
  
- 	cflags = io_put_kbufs(req, sel->val, sel->buf_list, io_bundle_nbufs(kmsg, sel->val));
+ error_cleanup_dev:
+-	kfree(mc_dev->regions);
+-	if (mc_bus)
+-		kfree(mc_bus);
+-	else
+-		kfree(mc_dev);
++	put_device(&mc_dev->dev);
  
--	if (bundle_finished || req->flags & REQ_F_BL_EMPTY)
-+	/*
-+	 * Don't start new bundles if the buffer list is empty, or if the
-+	 * current operation needed to go through polling to complete.
-+	 */
-+	if (bundle_finished || req->flags & (REQ_F_BL_EMPTY | REQ_F_POLLED))
- 		goto finish;
- 
- 	/*
+ 	return error;
+ }
 -- 
 2.51.0
 
