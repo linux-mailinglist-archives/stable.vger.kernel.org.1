@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-220673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGf1GNpCo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:32:42 +0100
+	id gDIwIo0+o2nv+gQAu9opvQ
+	(envelope-from <stable+bounces-220674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:14:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDEC41C71A6
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:32:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2EC1C6B99
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:14:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8331317B4EC
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:05:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7FE50313D533
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B68A3F5285;
-	Sat, 28 Feb 2026 17:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DE33F4AA0;
+	Sat, 28 Feb 2026 17:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U7hEfR0E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tiU7X14Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9793F527D;
-	Sat, 28 Feb 2026 17:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379853F5299;
+	Sat, 28 Feb 2026 17:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300555; cv=none; b=rGVtNbz5GhSrDZ61i7F/XLaGPXU3fkQmHrDCdrxmijXpPHrFeIYPXrVimmdoQqoufIcuoeJ9dHLGAIF4oOv3+t/3C7P1qUzKjfCs5QroDcZe8Kpm/kd+u8dpL/BrWkPRngWwMrRXK2zuKzRa5odPlug7rFJ0jhqyR1PrSoyM3sM=
+	t=1772300556; cv=none; b=e/nkkP6gvDf4quIJICDCUB01GSp8TDIbn8CZiR1LFUKP3xW2wa007oOSfKlg+iYEU6jP+QvrMCFS3CzMVhaGg9eYlYxBJSvmRjHjWmPxceqzV/VoEgyFJpHZgdxiVhR7UqlndvkSwLT9VOxHee5ryBbZRtiV48dgV/SUzOIQ1K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300555; c=relaxed/simple;
-	bh=j7XjfcggW9wTKQ9kVivPmHRe+sslZnI9iWCZg1j7h3o=;
+	s=arc-20240116; t=1772300556; c=relaxed/simple;
+	bh=zMaUWkm3qmMDz0eMNZ10dyiuX56BqHuh7Glw3mA865Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9CU/j5x8B1mKi1IdpBo3gk405mgxHdfWxIv9WM1xO/7QngbzT+UdEMJnbmpmUCUGszhIkHnCR8A03i6h4glFHNWAzMlXTVIT6qGtmh1xiUgbGRMM3mAoIR0I62k+PDgf1LE+WYvBLwzY0bwgJOzgmTwHLx6bnJ16HfS0l0UPpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7hEfR0E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A70C19423;
-	Sat, 28 Feb 2026 17:42:34 +0000 (UTC)
+	 MIME-Version; b=jKrguE07zPW9SWP/ftkM0pvudgauyQngUQZAdTIo+yHGNZ6naHiuQ63n9eIQObPwxEETuG1KQ+U3YCTVhvdLEDo5HmPNBJkcmpos6yK/LqxVMVBDzIGq+aDMRRNQ8Uasn0uGZjPXxmUNLstxl34UWVaNLazCNufBR9gZu74rdvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tiU7X14Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB91C19423;
+	Sat, 28 Feb 2026 17:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300555;
-	bh=j7XjfcggW9wTKQ9kVivPmHRe+sslZnI9iWCZg1j7h3o=;
+	s=k20201202; t=1772300556;
+	bh=zMaUWkm3qmMDz0eMNZ10dyiuX56BqHuh7Glw3mA865Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U7hEfR0EIocDsKhACI0IQjt9f1iimId25Y9XO7ew37mKVkvbHmXF+A09ti7m+xVwp
-	 3Ye35Y7G8l9b7X5/83QT5/pKhL1mYsit7yPQcyrNa0xZLwm0D4rSMi0TEkCsaR7qON
-	 ijjJhhypx6WBcA0KuYj3Zf8n7g6bU4a4x8h4SNCM3bMjBpBZZcJUi/DhaZceDw8lIy
-	 0ay1uDoj9RyVUHNFaBDfUWto4rTiqOk2I0+USVOxfgtz8NlcEeAR0B7la4PjcRiymL
-	 CGE5jVUYkeRzl+9/8VRFixfGPY1YM8fUoab9pFZBUw9syuVYPEIqKzQp4mH+uaFiQa
-	 IFSdyb7IMBQwQ==
+	b=tiU7X14YIizonEsz6dEs5N2jb6ZALG/5wmrewess3DMqDHn7UMbxtz/vXYtoUbhnY
+	 ge6bZXvp1FmQA/7ztzAk6tMyMzwJpKgmyY2H5Rdv72jNfASaASkj5frPofY4hT793q
+	 BngBFS/8G2Q20o9T69d7onI65Qa77MAjc2p+jwHxRJ1toocE2ZmzWFbVjZDtaJgWuJ
+	 q1KthEDzT/ZD0IT4tN9VmxxhGyMgSHUkp0g7dUwR6ClrgJxRr5J1S4u4CtMd5tvu37
+	 VnZq/JTdqWoj9+a7FJ/elVZTJK6vA4K7ex6Uf5WP5Gs4OBLgU0XxYqDmdr+Hvt0/Z9
+	 PZWZU2FtggwAA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,9 +52,9 @@ Cc: Bingbu Cao <bingbu.cao@intel.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 594/844] media: staging/ipu7: Ignore interrupts when device is suspended
-Date: Sat, 28 Feb 2026 12:28:27 -0500
-Message-ID: <20260228173244.1509663-595-sashal@kernel.org>
+Subject: [PATCH 6.19 595/844] media: staging/ipu7: Call synchronous RPM suspend in probe failure
+Date: Sat, 28 Feb 2026 12:28:28 -0500
+Message-ID: <20260228173244.1509663-596-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -83,9 +83,9 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220673-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220674-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -95,22 +95,22 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TAGGED_RCPT(0.00)[stable,cisco];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DDEC41C71A6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6B2EC1C6B99
 X-Rspamd-Action: no action
 
 From: Bingbu Cao <bingbu.cao@intel.com>
 
-[ Upstream commit 9ad65684b9285c5d66fb417d50e91a25ef8c994d ]
+[ Upstream commit 1433e6ccc25e9ea596683ab66e1c51f37fc7d491 ]
 
-IPU7 devices have shared interrupts with others. In some case when IPU7
-device is suspended, driver get unexpected interrupt and invalid irq
-status 0xffffffff from ISR_STATUS and PB LOCAL_STATUS registers as
-interrupt is triggered from other device on shared irq line.
+If firmware authentication failed during driver probe, driver call an
+asynchronous API to suspend the psys device but the bus device will be
+removed soon, thus runtime PM of bus device will be disabled soon, that
+will cancel the suspend request, so use synchronous suspend to make
+sure the runtime suspend before disabling its RPM.
 
-In order to avoid this issue use pm_runtime_get_if_active() to check if
-IPU7 device is resumed, ignore the invalid irq status and use
-synchronize_irq() in suspend.
+IPU7 hardware has constraints that the PSYS device must be powered off
+before ISYS, otherwise it will cause machine check error.
 
 Cc: Stable@vger.kernel.org
 Fixes: b7fe4c0019b1 ("media: staging/ipu7: add Intel IPU7 PCI device driver")
@@ -119,67 +119,22 @@ Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/ipu7/ipu7-buttress.c | 17 ++++++++++++++++-
- drivers/staging/media/ipu7/ipu7.c          |  4 ++++
- 2 files changed, 20 insertions(+), 1 deletion(-)
+ drivers/staging/media/ipu7/ipu7.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/ipu7/ipu7-buttress.c b/drivers/staging/media/ipu7/ipu7-buttress.c
-index e5707f5e300ba..40c6c8473357c 100644
---- a/drivers/staging/media/ipu7/ipu7-buttress.c
-+++ b/drivers/staging/media/ipu7/ipu7-buttress.c
-@@ -342,14 +342,23 @@ irqreturn_t ipu_buttress_isr(int irq, void *isp_ptr)
- 	u32 disable_irqs = 0;
- 	u32 irq_status;
- 	unsigned int i;
-+	int active;
- 
--	pm_runtime_get_noresume(dev);
-+	active = pm_runtime_get_if_active(dev);
-+	if (active <= 0)
-+		return IRQ_NONE;
- 
- 	pb_irq = readl(isp->pb_base + INTERRUPT_STATUS);
- 	writel(pb_irq, isp->pb_base + INTERRUPT_STATUS);
- 
- 	/* check btrs ATS, CFI and IMR errors, BIT(0) is unused for IPU */
- 	pb_local_irq = readl(isp->pb_base + BTRS_LOCAL_INTERRUPT_MASK);
-+	if (pb_local_irq == 0xffffffff) {
-+		dev_warn_once(dev, "invalid PB irq status\n");
-+		pm_runtime_put_noidle(dev);
-+		return IRQ_NONE;
-+	}
-+
- 	if (pb_local_irq & ~BIT(0)) {
- 		dev_warn(dev, "PB interrupt status 0x%x local 0x%x\n", pb_irq,
- 			 pb_local_irq);
-@@ -370,6 +379,12 @@ irqreturn_t ipu_buttress_isr(int irq, void *isp_ptr)
- 		return IRQ_NONE;
- 	}
- 
-+	if (irq_status == 0xffffffff) {
-+		dev_warn_once(dev, "invalid irq status 0x%08x\n", irq_status);
-+		pm_runtime_put_noidle(dev);
-+		return IRQ_NONE;
-+	}
-+
- 	do {
- 		writel(irq_status, isp->base + BUTTRESS_REG_IRQ_CLEAR);
- 
 diff --git a/drivers/staging/media/ipu7/ipu7.c b/drivers/staging/media/ipu7/ipu7.c
-index 5cddc09c72bf2..6c8c3eea44acb 100644
+index 6c8c3eea44acb..fa5a1867626f8 100644
 --- a/drivers/staging/media/ipu7/ipu7.c
 +++ b/drivers/staging/media/ipu7/ipu7.c
-@@ -2684,6 +2684,10 @@ static void ipu7_pci_reset_done(struct pci_dev *pdev)
-  */
- static int ipu7_suspend(struct device *dev)
- {
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+
-+	synchronize_irq(pdev->irq);
-+
- 	return 0;
- }
- 
+@@ -2620,7 +2620,7 @@ static int ipu7_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (!IS_ERR_OR_NULL(isp->isys) && !IS_ERR_OR_NULL(isp->isys->mmu))
+ 		ipu7_mmu_cleanup(isp->isys->mmu);
+ 	if (!IS_ERR_OR_NULL(isp->psys))
+-		pm_runtime_put(&isp->psys->auxdev.dev);
++		pm_runtime_put_sync(&isp->psys->auxdev.dev);
+ 	ipu7_bus_del_devices(pdev);
+ 	release_firmware(isp->cpd_fw);
+ buttress_exit:
 -- 
 2.51.0
 
