@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPcOJvc+o2kR+wQAu9opvQ
-	(envelope-from <stable+bounces-220677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:16:07 +0100
+	id SGcNDPtSo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:41:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F961C6C33
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:16:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B289F1C87DC
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:41:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BCE9930C020C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:05:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B745233DC59E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C82A3F529C;
-	Sat, 28 Feb 2026 17:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282963F6255;
+	Sat, 28 Feb 2026 17:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFDpGdSZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c5WSiGRz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7F23F5A7E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2623F624B;
 	Sat, 28 Feb 2026 17:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300559; cv=none; b=abKT/mkWHxGZk0rcicqE15z90wyFQS4W3kFL/U2FL1XgSYt1/FkD23uvak7IMtTwmz3uq0k/UQwq+VWuYVa8Y90SQvuj8tAOu5ipjw4tJSNDUTaU0htf4Jywq0ElSuyMKRNRRdc8i5R2Wf/2pnK1p2udc8npdiVnvLhCVOMk0Zg=
+	t=1772300559; cv=none; b=Ke6F3kcGl/U3SGdOOozJOjCzUWfMuJCdpONEEkOKYRdkaaud75YywDcIXI5VcGvIww5olhQTjr5wKi57Qxjnr6BG3ZKWwx26looUBtEx66LE4ptaZRZRpctjBBDdBNB3hAZrebMzUho0dtkZM0pN/mqqFJLqGSovXkPirrR/ycc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300559; c=relaxed/simple;
-	bh=xmQi6+YKV9ITXwuL3p4IK8mL4FzIuikf+SuQGHCJe74=;
+	bh=bhJ5Yb/Na+yEVffXP00Rs2919cK6E4A6fCdILB2J4UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KHC9y4Nz1yZYOiNSkeNNBk91n1JnGthZjknx/Ygd1YQmEMSB99UNOVcZCSaX27ef/Su/SLF+aRghPm4QEA7b2jiLt0Kx9rz4D/EcQAkGjWph5h3tL/fHx21iCdwTMjYvXI5St6t8Pmq5TL6XJtYhzQvnglR22kjqo6F71wkjUPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFDpGdSZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEC1C19424;
-	Sat, 28 Feb 2026 17:42:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FuHxJjkta8GEHrbz2C/3DJ5LhyTpj9CCQnkkTFupIfwQen8aHDDxeRCa/KR4LoHMOpgkH3TwlhOz39Qj2zXGz3dUwfN3HUB6dfodczMj8+bB5iieaRgbiDEJ8FhoVrn5Ya0Z8YdP9toS1SS7YD+qgodQeXzURBnuu0qP0NMh4+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c5WSiGRz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353D3C19425;
+	Sat, 28 Feb 2026 17:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300558;
-	bh=xmQi6+YKV9ITXwuL3p4IK8mL4FzIuikf+SuQGHCJe74=;
+	s=k20201202; t=1772300559;
+	bh=bhJ5Yb/Na+yEVffXP00Rs2919cK6E4A6fCdILB2J4UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dFDpGdSZa/Jt3poWhI0N3LY8QLSDiejQWinMe0NcgdGr84IxaSEZsTBoDagd1lFwU
-	 1UHWs3K/PQQ3TQbS08VG6Ywp2AcKp8vQn0K2zaN1PBmv7aB2oV2JmOiPrudQYwEp8k
-	 Yl7LMgRMiH9PY+x9xnxY++5M3YITrYydhxJgId+bg2PC45RWF7bPW+iS6r75ykbi+s
-	 qE7z01ejkcSfe6c0uakMk4IaIbjVih1kGWnwsBV5DLgujy2p9FRl9IMtFnBzRrDx1U
-	 tRV5PG2wzqml0Jfe0qUZKA+7X1Nh8FnLJ0rnzFjNoMVT4/Bwxnf+cZ8+EFG+MYIAh1
-	 q4+QcqX3cjcMA==
+	b=c5WSiGRzlal6s0hS2JfoRN/QY57rkYHNhziRmrjncOcBIKFvvn8HoiiGUW+QADJGh
+	 yiV0pg6HeBfr+4J9OwZsS4ZcFAasL5nlxBkfi+JM6wQqCpp1Xg6VMQSjd9aKgJ6vNZ
+	 FvAGgN01YbfAK6Ta7DGHg7YaqAk1qr+rsls8qJrY05WKN+4lZ2ukKB9IqCGdKlFv09
+	 /gkID0LdNRKnqv6rB4rhnOzja574Vwarci2dfa6a84lTLjEbPo7szusnYnogDrTAGz
+	 cpccEfsqbnNi+XwWTWHqjobArE6SuxvORLIwySjVz2AVKrTMTGzTNHk5PObojoqLHm
+	 MYMtpID6E6wGA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 598/844] platform/x86: ISST: Add missing write block check
-Date: Sat, 28 Feb 2026 12:28:31 -0500
-Message-ID: <20260228173244.1509663-599-sashal@kernel.org>
+Subject: [PATCH 6.19 599/844] platform/x86: ISST: Store and restore all domains data
+Date: Sat, 28 Feb 2026 12:28:32 -0500
+Message-ID: <20260228173244.1509663-600-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,13 +71,13 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220677-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220678-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,43 +91,126 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 36F961C6C33
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B289F1C87DC
 X-Rspamd-Action: no action
 
 From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 0e5aef2795008c80c515f6fa04e377c6e5715958 ]
+[ Upstream commit dc7901b5a1563a9c9eb29b3b0b0dac3162065cd8 ]
 
-If writes are blocked, then return error during SST-CP enable command.
-Add missing write block check in this code path.
+The suspend/resume callbacks currently only store and restore the
+configuration for power domain 0. However, other power domains may also
+have modified configurations that need to be preserved across suspend/
+resume cycles.
 
-Fixes: 8bed9ff7dbcc ("platform/x86: ISST: Process read/write blocked feature status")
+Extend the store/restore functionality to handle all power domains.
+
+Fixes: 91576acab020 ("platform/x86: ISST: Add suspend/resume callbacks")
 Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260107060256.1634188-2-srinivas.pandruvada@linux.intel.com
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260107060256.1634188-3-srinivas.pandruvada@linux.intel.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../intel/speed_select_if/isst_tpmi_core.c    | 54 +++++++++++--------
+ 1 file changed, 33 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-index 34bff2f65a835..f587709ddd473 100644
+index f587709ddd473..13b11c3a2ec4e 100644
 --- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
 +++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-@@ -612,6 +612,9 @@ static long isst_if_core_power_state(void __user *argp)
- 		return -EINVAL;
+@@ -1723,55 +1723,67 @@ EXPORT_SYMBOL_NS_GPL(tpmi_sst_dev_remove, "INTEL_TPMI_SST");
+ void tpmi_sst_dev_suspend(struct auxiliary_device *auxdev)
+ {
+ 	struct tpmi_sst_struct *tpmi_sst = auxiliary_get_drvdata(auxdev);
+-	struct tpmi_per_power_domain_info *power_domain_info;
++	struct tpmi_per_power_domain_info *power_domain_info, *pd_info;
+ 	struct oobmsm_plat_info *plat_info;
+ 	void __iomem *cp_base;
++	int num_resources, i;
  
- 	if (core_power.get_set) {
-+		if (power_domain_info->write_blocked)
-+			return -EPERM;
-+
- 		_write_cp_info("cp_enable", core_power.enable, SST_CP_CONTROL_OFFSET,
- 			       SST_CP_ENABLE_START, SST_CP_ENABLE_WIDTH, SST_MUL_FACTOR_NONE)
- 		_write_cp_info("cp_prio_type", core_power.priority_type, SST_CP_CONTROL_OFFSET,
+ 	plat_info = tpmi_get_platform_data(auxdev);
+ 	if (!plat_info)
+ 		return;
+ 
+ 	power_domain_info = tpmi_sst->power_domain_info[plat_info->partition];
++	num_resources = tpmi_sst->number_of_power_domains[plat_info->partition];
+ 
+-	cp_base = power_domain_info->sst_base + power_domain_info->sst_header.cp_offset;
+-	power_domain_info->saved_sst_cp_control = readq(cp_base + SST_CP_CONTROL_OFFSET);
+-
+-	memcpy_fromio(power_domain_info->saved_clos_configs, cp_base + SST_CLOS_CONFIG_0_OFFSET,
+-		      sizeof(power_domain_info->saved_clos_configs));
++	for (i = 0; i < num_resources; i++) {
++		pd_info = &power_domain_info[i];
++		if (!pd_info || !pd_info->sst_base)
++			continue;
+ 
+-	memcpy_fromio(power_domain_info->saved_clos_assocs, cp_base + SST_CLOS_ASSOC_0_OFFSET,
+-		      sizeof(power_domain_info->saved_clos_assocs));
++		cp_base = pd_info->sst_base + pd_info->sst_header.cp_offset;
++		pd_info->saved_sst_cp_control = readq(cp_base + SST_CP_CONTROL_OFFSET);
++		memcpy_fromio(pd_info->saved_clos_configs, cp_base + SST_CLOS_CONFIG_0_OFFSET,
++			      sizeof(pd_info->saved_clos_configs));
++		memcpy_fromio(pd_info->saved_clos_assocs, cp_base + SST_CLOS_ASSOC_0_OFFSET,
++			      sizeof(pd_info->saved_clos_assocs));
+ 
+-	power_domain_info->saved_pp_control = readq(power_domain_info->sst_base +
+-						    power_domain_info->sst_header.pp_offset +
+-						    SST_PP_CONTROL_OFFSET);
++		pd_info->saved_pp_control = readq(pd_info->sst_base +
++						  pd_info->sst_header.pp_offset +
++						  SST_PP_CONTROL_OFFSET);
++	}
+ }
+ EXPORT_SYMBOL_NS_GPL(tpmi_sst_dev_suspend, "INTEL_TPMI_SST");
+ 
+ void tpmi_sst_dev_resume(struct auxiliary_device *auxdev)
+ {
+ 	struct tpmi_sst_struct *tpmi_sst = auxiliary_get_drvdata(auxdev);
+-	struct tpmi_per_power_domain_info *power_domain_info;
++	struct tpmi_per_power_domain_info *power_domain_info, *pd_info;
+ 	struct oobmsm_plat_info *plat_info;
+ 	void __iomem *cp_base;
++	int num_resources, i;
+ 
+ 	plat_info = tpmi_get_platform_data(auxdev);
+ 	if (!plat_info)
+ 		return;
+ 
+ 	power_domain_info = tpmi_sst->power_domain_info[plat_info->partition];
++	num_resources = tpmi_sst->number_of_power_domains[plat_info->partition];
+ 
+-	cp_base = power_domain_info->sst_base + power_domain_info->sst_header.cp_offset;
+-	writeq(power_domain_info->saved_sst_cp_control, cp_base + SST_CP_CONTROL_OFFSET);
+-
+-	memcpy_toio(cp_base + SST_CLOS_CONFIG_0_OFFSET, power_domain_info->saved_clos_configs,
+-		    sizeof(power_domain_info->saved_clos_configs));
++	for (i = 0; i < num_resources; i++) {
++		pd_info = &power_domain_info[i];
++		if (!pd_info || !pd_info->sst_base)
++			continue;
+ 
+-	memcpy_toio(cp_base + SST_CLOS_ASSOC_0_OFFSET, power_domain_info->saved_clos_assocs,
+-		    sizeof(power_domain_info->saved_clos_assocs));
++		cp_base = pd_info->sst_base + pd_info->sst_header.cp_offset;
++		writeq(pd_info->saved_sst_cp_control, cp_base + SST_CP_CONTROL_OFFSET);
++		memcpy_toio(cp_base + SST_CLOS_CONFIG_0_OFFSET, pd_info->saved_clos_configs,
++			    sizeof(pd_info->saved_clos_configs));
++		memcpy_toio(cp_base + SST_CLOS_ASSOC_0_OFFSET, pd_info->saved_clos_assocs,
++			    sizeof(pd_info->saved_clos_assocs));
+ 
+-	writeq(power_domain_info->saved_pp_control, power_domain_info->sst_base +
+-				power_domain_info->sst_header.pp_offset + SST_PP_CONTROL_OFFSET);
++		writeq(pd_info->saved_pp_control, power_domain_info->sst_base +
++		       pd_info->sst_header.pp_offset + SST_PP_CONTROL_OFFSET);
++	}
+ }
+ EXPORT_SYMBOL_NS_GPL(tpmi_sst_dev_resume, "INTEL_TPMI_SST");
+ 
 -- 
 2.51.0
 
