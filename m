@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-220103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFLSGeQoo2kr+AQAu9opvQ
-	(envelope-from <stable+bounces-220103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:41:56 +0100
+	id iDy+Nssoo2kr+AQAu9opvQ
+	(envelope-from <stable+bounces-220104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:41:31 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259E61C50A9
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:41:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E0011C5076
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 20EAA30C68EA
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:35:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 145F030C9963
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2581047CC89;
-	Sat, 28 Feb 2026 17:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EDF47D924;
+	Sat, 28 Feb 2026 17:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ec2JHmwu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ritUV/BC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7A646AEF1;
-	Sat, 28 Feb 2026 17:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EC847CC9B;
+	Sat, 28 Feb 2026 17:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300010; cv=none; b=VMPrcJjlcUJFOV68eJkGEnLqZmrTc1rdGGZasydBAhhVTDS6ZmQFWn+1yR5VPzxwxTl8U/sK44p9nEQ/9FLIG9DisL3T1bAhMreTPTvcy2VnNMIl4zht6RXiY4hrlqUdavUBkki61/athsmh85nGlF8TW99/QmYbQss02Zj5fWw=
+	t=1772300012; cv=none; b=EZQdJ/qDbjtCAaIUhG1SXODN38qFsqRVBiFcyXSNw/BYLKg4Wfzd5Bxjjxl3T/302gsRdHaaw3VoP+yDMiXjZOySPsXJsQNbiJIOkuQpa2yB74kvEOKmeP9hFmAjPKRFuhYMaor3pXlV/+Rmrn1tgjl4e2Kc3d/fcAuLyuJ5DU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300010; c=relaxed/simple;
-	bh=Wm5Ozx2khlW+XZO3E5ippyq/P9BQL9xkCFfyFdNKLbE=;
+	s=arc-20240116; t=1772300012; c=relaxed/simple;
+	bh=arL/7RVLXJxrKVxhxcK9OJ/+zcoX0CjtV+x8HUGf0ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G34yyLNlhXAQthMKplMNaOj/4DktKpiytPVUwXVJafSB+7NBAGYvC1qrnGt4E3OktSlhbCmquk0MkIxumqF79kDfpWM/GSigF9rUjqyYZxeRsRA9WpNlN/i1S9MKgAFneLsg/t18I7uWtUpLCtvf+0FvRGQFKt3u8I/le6JEo3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ec2JHmwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C380C19423;
-	Sat, 28 Feb 2026 17:33:29 +0000 (UTC)
+	 MIME-Version; b=VhNVqjYY7nZv6yamfRdRZWoyA2DqzbBqT9fYJPxpBRJtRyKfSBSARPO4qgewHd5Aun+hddK76vtTdsHI7Opaw5mSp/FtAotebFEQ3GKW92ghTrmQ3KeackqOeebRPlQSuunFPMfQ7nAqrtDgVp19D/vuE+ZjDIY82w10a1BBLXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ritUV/BC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB84C2BCB3;
+	Sat, 28 Feb 2026 17:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300010;
-	bh=Wm5Ozx2khlW+XZO3E5ippyq/P9BQL9xkCFfyFdNKLbE=;
+	s=k20201202; t=1772300012;
+	bh=arL/7RVLXJxrKVxhxcK9OJ/+zcoX0CjtV+x8HUGf0ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ec2JHmwuYwqrV5pFORFXNjZLrbK85a0uDBBLs5M4K7asOYNW7WN0QnVwMdF4OsgCq
-	 hH/aY7w7xxaV/pZ8EEJORP9Brvo0Tydv25dlsA4QPimLZhmTC1fipgrr5xcngyPKsJ
-	 SWBEYn/6WC0NNh8k9+JhFQW7nkkI8a3S3pEcppEoAKDCRE8XzURa+s7PUtVSs7N7un
-	 tNI8quzxZ81Q/Pa1tgE0Kr3J3CUbQuI4jBv99FDA+/x/saf/bnqF5Y5NKeHbxpaHwv
-	 Jz0CG9IjjImljZDBUxNa+OpvkLI5d2bIK2kzyTYfdTTOVHgLP/z2aCydvCDg0NMseA
-	 AY+ZrlPLRCg/w==
+	b=ritUV/BClRe5EopSH+p/1AxrG1cPNBUw6oUjebWHzSarws8T61xMeJWXGjnQwopYY
+	 1x9LjxYbmzoX8deY1o4ahAQKOkn3r6UTEV8gL2lxZUz2mazhNcogG/iVHhvx6cuG4f
+	 +bMzb6nNgrpk79jjL+ZHyshGVErj6BASKWHDy861S7a20EkuEIh7YyLghWf4/mNX1j
+	 5DxSAa/WmjvCvMZ1qRcdryBEur6jPBL/0/hEUDCh/RcV6ZAmjDgxbN9SKecDObg41T
+	 APHRcR3qPKD+CDzsmeCp6JZrxeuTfRR4XS0hJejbOdWOMm+7r6bkbDdVKHkiLpHlcw
+	 93vabIoCAbj1A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -57,9 +57,9 @@ Cc: Ian Rogers <irogers@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 025/844] perf build: Remove NO_LIBCAP that controls nothing
-Date: Sat, 28 Feb 2026 12:18:58 -0500
-Message-ID: <20260228173244.1509663-26-sashal@kernel.org>
+Subject: [PATCH 6.19 026/844] libperf build: Always place libperf includes first
+Date: Sat, 28 Feb 2026 12:18:59 -0500
+Message-ID: <20260228173244.1509663-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -84,7 +84,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220103-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220104-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
@@ -99,26 +99,32 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: 259E61C50A9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,intel.com:email,linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6E0011C5076
 X-Rspamd-Action: no action
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 169343cc8ff2bd59758760d867bd26adae866a2b ]
+[ Upstream commit 8c5b40678c63be6b85f1c2dc8c8b89d632faf988 ]
 
-Using libcap was removed in commit e25ebda78e230283 ("perf cap: Tidy up
-and improve capability testing") and improve capability testing"),
-however, some build documentation and a use of the NO_LIBCAP=1 were
-lingering.
+When building tools/perf the CFLAGS can contain a directory for the
+installed headers.
 
-Remove these left over bits.
+As the headers may be being installed while building libperf.a this can
+cause headers to be partially installed and found in the include path
+while building an object file for libperf.a.
 
-Fixes: e25ebda78e230283 ("perf cap: Tidy up and improve capability testing")
+The installed header may reference other installed headers that are
+missing given the partial nature of the install and then the build fails
+with a missing header file.
+
+Avoid this by ensuring the libperf source headers are always first in
+the CFLAGS.
+
+Fixes: 3143504918105156 ("libperf: Make libperf.a part of the perf build")
 Signed-off-by: Ian Rogers <irogers@google.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: James Clark <james.clark@linaro.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
@@ -127,36 +133,24 @@ Cc: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Makefile.perf | 2 --
- tools/perf/tests/make    | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ tools/lib/perf/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index e6895626c1872..fbeb5c81c8072 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -86,8 +86,6 @@ include ../scripts/utilities.mak
- #
- # Define NO_LIBBPF if you do not want BPF support
- #
--# Define NO_LIBCAP if you do not want process capabilities considered by perf
--#
- # Define NO_SDT if you do not want to define SDT event in perf tools,
- # note that it doesn't disable SDT scanning support.
- #
-diff --git a/tools/perf/tests/make b/tools/perf/tests/make
-index 6641701e48285..c721cd1bcaa9a 100644
---- a/tools/perf/tests/make
-+++ b/tools/perf/tests/make
-@@ -122,7 +122,7 @@ make_minimal        += NO_DEMANGLE=1 NO_LIBELF=1 NO_BACKTRACE=1
- make_minimal        += NO_LIBNUMA=1 NO_LIBBIONIC=1 NO_LIBDW=1
- make_minimal        += NO_LIBDW_DWARF_UNWIND=1 NO_LIBBPF=1
- make_minimal        += NO_SDT=1 NO_JVMTI=1 NO_LIBZSTD=1
--make_minimal        += NO_LIBCAP=1 NO_CAPSTONE=1
-+make_minimal        += NO_CAPSTONE=1
+diff --git a/tools/lib/perf/Makefile b/tools/lib/perf/Makefile
+index 7fbb50b74c00b..5c64122bf5374 100644
+--- a/tools/lib/perf/Makefile
++++ b/tools/lib/perf/Makefile
+@@ -51,9 +51,9 @@ INCLUDES = \
+ -I$(srctree)/tools/include/uapi
  
- # $(run) contains all available tests
- run := make_pure
+ # Append required CFLAGS
++override CFLAGS := $(INCLUDES) $(CFLAGS)
+ override CFLAGS += -g -Werror -Wall
+ override CFLAGS += -fPIC
+-override CFLAGS += $(INCLUDES)
+ override CFLAGS += -fvisibility=hidden
+ override CFLAGS += $(EXTRA_WARNINGS)
+ override CFLAGS += $(EXTRA_CFLAGS)
 -- 
 2.51.0
 
