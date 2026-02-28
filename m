@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-220276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEkuGgI2o2nP+QQAu9opvQ
-	(envelope-from <stable+bounces-220276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:37:54 +0100
+	id gPDuBNUuo2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:07:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E6E1C60A7
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:37:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B841C56D1
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:07:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5748030BB959
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:03:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 114983097E18
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6210736B612;
-	Sat, 28 Feb 2026 17:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75727383C60;
+	Sat, 28 Feb 2026 17:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCxR/Lsm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jlGXbYh9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1985236B60B;
-	Sat, 28 Feb 2026 17:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346023824F2;
+	Sat, 28 Feb 2026 17:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300180; cv=none; b=J+HGlSMvIIzvWmHUzByh3G9ZtaJaJRfEj1fR/DcphRPoyeDMOhkBIwefNDBhJ8Q8ZF06GNlnNhVVd0vr6JYjMAxj7xfKd9P+K4BQEA4q0EjmbjNfNomdPi593Sem1FatlrfH+QZdNzqyMzuyY6b1yKYXLcf0OjAqbA8eCB/kwG0=
+	t=1772300181; cv=none; b=EBvbt6q1ar1M1g7zRR+uI9giXFE9kT92CWh3Qc18KUK5HmtW/irETAH7Vtvyve0GoOqgStFm6jf9Mhzzbh6UBKFslsrYlPHh6a1KMEzt8xbyMsQ/O5xLvBHAb/XmnIy24XimT//H0xmuQjtcHvXm+c6V6GDWRijcnGerg8mYu7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300180; c=relaxed/simple;
-	bh=8LwpH2G/OAuJqAxHNwAbNdqyYAbb/sILHyezwUQKXMA=;
+	s=arc-20240116; t=1772300181; c=relaxed/simple;
+	bh=NVcdXUyZAGeiHyWCwEX/200rlonoP5QqXLbrmsrer9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cpwf7AWEe3JQyo3vU88Up0tG9r6fEi09EZNHDNo+ReJpWWqVJhxne3FjN7oFkrtqpWjoZaoxjrd9YPxh01RhFos+4/p9axCmBpz9Jz36g0EqlxMw4F+78qnsqJVFDjcA2ISe1ROebDRTB6drlUa3OzhXgNMF9a2qoMXY8b99iS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eCxR/Lsm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E7CC116D0;
-	Sat, 28 Feb 2026 17:36:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ljCIPbvZcFHcPuf/BifDBPbcgxgM17idScSye5rIpMiikfja9UJAWZNk2+H+L74wPxMAaByjFTvtGhwz7LDZFijDU7aB1kUz5ZZaXA+cNe8/m2nRJJz9ODdx+TDyQRu4L3+LfgYdPHwpu7IMjqr5MzlUCmCxKNOg/izKtRm671k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jlGXbYh9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED5AC116D0;
+	Sat, 28 Feb 2026 17:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300180;
-	bh=8LwpH2G/OAuJqAxHNwAbNdqyYAbb/sILHyezwUQKXMA=;
+	s=k20201202; t=1772300181;
+	bh=NVcdXUyZAGeiHyWCwEX/200rlonoP5QqXLbrmsrer9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCxR/LsmjBEtKIy7kHRncLfyBTv8rN2cWacmfkpF8ME8gWrX9XEaNP2HD2iVwufyw
-	 D12FrRExcXwNRuO31vnOfXFkKaExaFkYjVXn6xAAzx98QQ68NUDl1MAiise5oDBNjZ
-	 fmPsvcGgkhX0RT9XfTLNzUwsWFjYJMc8OOP9KDU/YNdfijFHPHItbQ1gKMmn1Ff3t2
-	 K+E4pN865vY3MNBsuz9nuIGsOjhC6RI6VCkuXFVNzkXI07JByOLDLd6e+LLIwKJ3PV
-	 xwduJZ1win9BSEugc31RGtkFK3Yo7wqq6Lz08BG0/TSRA3Z7PkgxKGQGMf+S0DKevS
-	 c1s87QxVyUHIg==
+	b=jlGXbYh9smEOfMaTYib3TiS9hqLFqFDUTf5rVHaKc4QbRFCAbF6Ws+egF64OkbTho
+	 ymmXu1OEcQg7aTLUSYFOEaICApeDndLQqdtRNjh0om9AOJ0mCHC7mLHb2OP40tCmLk
+	 xRYXdUKl7kOMc7FFJY/8pFQ9QErJLIgDLIu9YJ5S5Bc8LZ7UJN97/hUt6Tq83RG8oM
+	 7YnV1rzDAE4BoB+WdwQYMAEfrJMFgDIdkgZ3ZmmB6EGHHVmak/JKnmF5EJ6cw5YJpq
+	 nKfIHuoncS7nceb8RtoU5anfbjIF5Am6ThuGpHT2YjzWYSlTUA95COD/U4432zNaD8
+	 EdvqX949WiLEg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
 	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 198/844] ASoC: soc-acpi-intel-ptl-match: use aggregated endpoint in ptl_rt722_l0_rt1320_l23
-Date: Sat, 28 Feb 2026 12:21:51 -0500
-Message-ID: <20260228173244.1509663-199-sashal@kernel.org>
+Subject: [PATCH 6.19 199/844] ASoC: sdw_utils: remove dai registered check
+Date: Sat, 28 Feb 2026 12:21:52 -0500
+Message-ID: <20260228173244.1509663-200-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -64,86 +65,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-220277-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220276-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 76E6E1C60A7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: A7B841C56D1
 X-Rspamd-Action: no action
 
 From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 4fbd3b2ec04dc6ef93090ec24733a5c5671fb71f ]
+[ Upstream commit 8d38c275f7ffe257d21bea224d4288eef183817d ]
 
-The rt722 amp and rt1320 amps are aggregated in this case.
+Checking for a registered DAI for non-existing endpoints causes the
+following error. The driver will always return -EPROBE_DEFER if the
+codec driver doesn't register the DAI of the unexist endpoint.
 
 Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://patch.msgid.link/20260119091749.1752088-3-yung-chuan.liao@linux.intel.com
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260120065658.1806027-1-yung-chuan.liao@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-ptl-match.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ sound/soc/sdw_utils/soc_sdw_utils.c | 15 ---------------
+ 1 file changed, 15 deletions(-)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-ptl-match.c b/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
-index e297c8ecedb72..1055fb4838f61 100644
---- a/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
-@@ -383,6 +383,15 @@ static const struct snd_soc_acpi_link_adr ptl_rt721_l3[] = {
- 	{},
- };
+diff --git a/sound/soc/sdw_utils/soc_sdw_utils.c b/sound/soc/sdw_utils/soc_sdw_utils.c
+index ccf149f949e8f..d03072cd13cb9 100644
+--- a/sound/soc/sdw_utils/soc_sdw_utils.c
++++ b/sound/soc/sdw_utils/soc_sdw_utils.c
+@@ -1421,29 +1421,14 @@ static int is_sdca_endpoint_present(struct device *dev,
+ 	const struct snd_soc_acpi_adr_device *adr_dev = &adr_link->adr_d[adr_index];
+ 	const struct snd_soc_acpi_endpoint *adr_end;
+ 	const struct asoc_sdw_dai_info *dai_info;
+-	struct snd_soc_dai_link_component *dlc;
+-	struct snd_soc_dai *codec_dai;
+ 	struct sdw_slave *slave;
+ 	struct device *sdw_dev;
+ 	const char *sdw_codec_name;
+ 	int ret, i;
  
-+static const struct snd_soc_acpi_adr_device rt722_0_agg_adr[] = {
-+	{
-+		.adr = 0x000030025d072201ull,
-+		.num_endpoints = ARRAY_SIZE(jack_amp_g1_dmic_endpoints),
-+		.endpoints = jack_amp_g1_dmic_endpoints,
-+		.name_prefix = "rt722"
-+	}
-+};
-+
- static const struct snd_soc_acpi_adr_device rt722_0_single_adr[] = {
- 	{
- 		.adr = 0x000030025d072201ull,
-@@ -536,8 +545,8 @@ static const struct snd_soc_acpi_link_adr ptl_rt722_l3[] = {
- static const struct snd_soc_acpi_link_adr ptl_rt722_l0_rt1320_l23[] = {
- 	{
- 		.mask = BIT(0),
--		.num_adr = ARRAY_SIZE(rt722_0_single_adr),
--		.adr_d = rt722_0_single_adr,
-+		.num_adr = ARRAY_SIZE(rt722_0_agg_adr),
-+		.adr_d = rt722_0_agg_adr,
- 	},
- 	{
- 		.mask = BIT(2),
+-	dlc = kzalloc(sizeof(*dlc), GFP_KERNEL);
+-	if (!dlc)
+-		return -ENOMEM;
+-
+ 	adr_end = &adr_dev->endpoints[end_index];
+ 	dai_info = &codec_info->dais[adr_end->num];
+ 
+-	dlc->dai_name = dai_info->dai_name;
+-	codec_dai = snd_soc_find_dai_with_mutex(dlc);
+-	if (!codec_dai) {
+-		dev_warn(dev, "codec dai %s not registered yet\n", dlc->dai_name);
+-		kfree(dlc);
+-		return -EPROBE_DEFER;
+-	}
+-	kfree(dlc);
+-
+ 	sdw_codec_name = _asoc_sdw_get_codec_name(dev, adr_link, adr_index);
+ 	if (!sdw_codec_name)
+ 		return -ENOMEM;
 -- 
 2.51.0
 
