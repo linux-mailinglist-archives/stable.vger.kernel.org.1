@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220502-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIZ/MQo6o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:55:06 +0100
+	id yJHmGRw6o2mU+gQAu9opvQ
+	(envelope-from <stable+bounces-220502-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:55:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8CB1C6668
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DDE1C6690
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:55:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F256A3218F7F
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:38:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6940831A7FA4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E1233B6E0;
-	Sat, 28 Feb 2026 17:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8993C97B3;
+	Sat, 28 Feb 2026 17:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MTcTCP54"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q5ambMn7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB633C8F78;
-	Sat, 28 Feb 2026 17:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AB63C97AA;
+	Sat, 28 Feb 2026 17:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300386; cv=none; b=duQqglijOLzhOcUfgSGiL/wQK/ECnXk+w6PvTyM3/sjBZIUybiUXbI2f0M9GHnAJ68g0g/hTSRTRx0RES2yuwYoZgciM/U86OOaCUgVpiLeveb5DxB22Pqw7YDSjFxi5ZsDTT68rudxrs1eqryBZXO9fE17ewbNeEVe1JivEHAA=
+	t=1772300386; cv=none; b=RNUpqOVhJuovjAML/+RCdtKhZVHmmoY81QbHJJKOSh8pKl4inZwaFnVdnw5lKZwz20in1iCnHQgGSODMTJKUYaUFMcqQRNKEapzPFImAiv45zZD02ZZBpnTBu+UjlLXPzn8EcjMakOs4PT9X1ZBPLhtILoyx5CyE6wDWzk/JIKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300386; c=relaxed/simple;
-	bh=rdw9fSOL60NnHL7PQnfza4CqIrfGPbXzoQmTbqEaQ/4=;
+	bh=6Qso9r6u69JTBCvIc5ianu2/g1XD02SfiWBTrKGkfMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VRJ3P18zjB3OZ+2U7XBtBCWq/pH4uLmUUZLKci3msHqNbfHWCvA06j6GMCKR7mI/2TKUqSqv7QSkj/MMriJ8u2Pjws6Mpk6KSNOENSsELo/UVY38Ds875Il1EUlSlmmRZFfYALTwM0fwqUeUQAHo8YO4KRDHWY49bSvWKbK9OBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MTcTCP54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAE4C116D0;
-	Sat, 28 Feb 2026 17:39:45 +0000 (UTC)
+	 MIME-Version; b=Wc5sBfSsxovb+g/gQa1GAt4in7uDK+Df0f9PWL5gU/TYVM6qjMrvdcjHQTOUwm5oBut7i3oQAGBVSo6DuxqaPN85G3GdkLVoTdCvXcdQTdO8vi5EjNfeLsSQoFmcKwL4K3cK+5Y//n8uoU/5E/aY8gd6RKg0/VfzkIOAR/d+zGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q5ambMn7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEABC116D0;
+	Sat, 28 Feb 2026 17:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300385;
-	bh=rdw9fSOL60NnHL7PQnfza4CqIrfGPbXzoQmTbqEaQ/4=;
+	s=k20201202; t=1772300386;
+	bh=6Qso9r6u69JTBCvIc5ianu2/g1XD02SfiWBTrKGkfMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTcTCP547oOfm5JnLBtygwdbi+pJVAOe2I6Grwjzud20HcRAbzXBIrBKrlEPnS1I1
-	 UUF9YSheSalTIVnnuPX53GuzDY4bLovvfuHwwL+eTWcZLV8HHBssCkvSz0Y8CBFmBa
-	 CfY6N1aw9X0hW6Yygtr1vplxUr+hjOlfFJdGlfBuq+IkHuFzrG2I1TMXuoMwLqjwth
-	 zepQGYo8bnRrfFWPkl4GVGV9U9oHsf4Mi8EbzYX7QT+rRlLdH8NPj4qEGzlRZOFUP9
-	 he2axz96J5PZCUmqhLboSzMmrFI+IWhJbQoyiaN7R007waWW/3iXL0cnjkIg/IjGQp
-	 eRm5s7Dl/mLoQ==
+	b=Q5ambMn7lLMBbTWEBNazXGfaLngcQnnxKrZ15KN4ZQyHqKGqyVCPsy6rgt968N8zM
+	 gkK/VXNdE1ctzxW7CVzxL6IaQXI0E+eO1auuQcJN37WfBv834aP/uOiRm51519tIPl
+	 uej8Elgnr7yrTBmdC6mFyAYPkx6biC8Y/DJJxDC1fRAnHaANI9/dXcki5MVbrW2szW
+	 cZrnLHoAMQ24IZ3ItxDxpQV5qT7JzS8ixf8XokgfDkVXwdHpfaCGzv313LFyRhPc/q
+	 GjAGQZyNeB09mZyTNIeKe99g7HdlVBD9ldohZhvr9IvBynmeOYEl/DHmPOZFe75hc2
+	 KLc+rAP6blq4g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Baojun Xu <baojun.xu@ti.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 422/844] regulator: core: Remove regulator supply_name length limit
-Date: Sat, 28 Feb 2026 12:25:35 -0500
-Message-ID: <20260228173244.1509663-423-sashal@kernel.org>
+Subject: [PATCH 6.19 423/844] ALSA: hda/tas2781: Ignore reset check for SPI device
+Date: Sat, 28 Feb 2026 12:25:36 -0500
+Message-ID: <20260228173244.1509663-424-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220501-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220502-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -92,68 +92,65 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4E8CB1C6668
+X-Rspamd-Queue-Id: E6DDE1C6690
 X-Rspamd-Action: no action
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Baojun Xu <baojun.xu@ti.com>
 
-[ Upstream commit e243cdd87b911ce9968b62e4ab2b680dfadc4341 ]
+[ Upstream commit 908ef80e31e4d3bd953a0088fe57640cd9ae7b3e ]
 
-When creating the regulator object, associated with a consumer device,
-the supply_name is string formatted into a statically sized buffer on
-the stack, then strdup()'ed onto the heap.
+In the SPI driver probe, the device should be in the default state, so the
+device status check is not necessary. It should be forced to do the
+firmware download as I2C device.
 
-Not only is the dance on the stack unnecessary, but when the device's
-name is long we might not fit the constructed supply_name in the fixed
-64 byte buffer on the stack.
-
-One such case can be seen on the Qualcomm Rb3Gen2 board, where we find a
-PCIe controller, with a PCIe switch, with a USB controller, with a USB
-hub, consuming a regulator. In this example the dev->kobj.name itself is
-62 characters long.
-
-Drop the temporary buffer on the stack and kasprintf() the string
-directly on the heap, both to simplify the code, and to remove the
-length limitation.
-
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260211-regulator-supply-name-length-v1-1-3875541c1576@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Baojun Xu <baojun.xu@ti.com>
+Link: https://patch.msgid.link/20260211030946.2330-1-baojun.xu@ti.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ .../hda/codecs/side-codecs/tas2781_hda_spi.c  | 20 +++++++------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 8ee33b777f6ce..838bbdcdede9a 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1949,8 +1949,6 @@ static const struct file_operations constraint_flags_fops = {
- #endif
- };
+diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
+index b9a55672bf15d..488e35dac9524 100644
+--- a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
++++ b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
+@@ -634,7 +634,7 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
+ 	struct tasdevice_priv *tas_priv = context;
+ 	struct tas2781_hda *tas_hda = dev_get_drvdata(tas_priv->dev);
+ 	struct hda_codec *codec = tas_priv->codec;
+-	int ret, val;
++	int ret;
  
--#define REG_STR_SIZE	64
--
- static void link_and_create_debugfs(struct regulator *regulator, struct regulator_dev *rdev,
- 				    struct device *dev)
- {
-@@ -1998,15 +1996,7 @@ static struct regulator *create_regulator(struct regulator_dev *rdev,
- 	lockdep_assert_held_once(&rdev->mutex.base);
+ 	pm_runtime_get_sync(tas_priv->dev);
+ 	guard(mutex)(&tas_priv->codec_lock);
+@@ -673,20 +673,14 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
+ 	tas_priv->rcabin.profile_cfg_id = 0;
  
- 	if (dev) {
--		char buf[REG_STR_SIZE];
--		int size;
--
--		size = snprintf(buf, REG_STR_SIZE, "%s-%s",
--				dev->kobj.name, supply_name);
--		if (size >= REG_STR_SIZE)
--			return NULL;
--
--		supply_name = kstrdup(buf, GFP_KERNEL);
-+		supply_name = kasprintf(GFP_KERNEL, "%s-%s", dev->kobj.name, supply_name);
- 		if (supply_name == NULL)
- 			return NULL;
- 	} else {
+ 	tas_priv->fw_state = TASDEVICE_DSP_FW_ALL_OK;
+-	ret = tasdevice_spi_dev_read(tas_priv, tas_priv->index,
+-		TAS2781_REG_CLK_CONFIG, &val);
+-	if (ret < 0)
+-		goto out;
+ 
+-	if (val == TAS2781_REG_CLK_CONFIG_RESET) {
+-		ret = tasdevice_prmg_load(tas_priv, 0);
+-		if (ret < 0) {
+-			dev_err(tas_priv->dev, "FW download failed = %d\n",
+-				ret);
+-			goto out;
+-		}
+-		tas_priv->fw_state = TASDEVICE_DSP_FW_ALL_OK;
++	ret = tasdevice_prmg_load(tas_priv, 0);
++	if (ret < 0) {
++		dev_err(tas_priv->dev, "FW download failed = %d\n", ret);
++		goto out;
+ 	}
++	tas_priv->fw_state = TASDEVICE_DSP_FW_ALL_OK;
++
+ 	if (tas_priv->fmw->nr_programs > 0)
+ 		tas_priv->tasdevice[tas_priv->index].cur_prog = 0;
+ 	if (tas_priv->fmw->nr_configurations > 0)
 -- 
 2.51.0
 
