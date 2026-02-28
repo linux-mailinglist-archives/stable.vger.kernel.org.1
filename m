@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-220328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFobGcVFo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:45:09 +0100
+	id WJm/MO4xo2kE+QQAu9opvQ
+	(envelope-from <stable+bounces-220329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:20:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5103E1C7522
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:45:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 636A91C5AED
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 16F21315F835
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:11:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4D361301DEF4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A1639732D;
-	Sat, 28 Feb 2026 17:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F4939733D;
+	Sat, 28 Feb 2026 17:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RygyuXdR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RVgvRl8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644CA397323;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16422397335;
 	Sat, 28 Feb 2026 17:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300229; cv=none; b=HZiJZ4JU30wdx2s5u0kRPMLtZZfJFp/cpE4/cKemxZev1ELe1nxssTkRyYYwOuMGE76dJt3VXColIkpEjACM7ocd1d2VhI7DTBDI15Tu/T2DoupNOced+gSefPPvY3jSY+r4Luc/NymSI+QyOnkEYawtG33p3zSR3Wumu/FBv+U=
+	t=1772300230; cv=none; b=uWQVXRYwGW0DTJA2N6lxgU8z+qjfqEvn7ooMWsWehS0emo8EO67S3Z8iDgOPtgddDDJIKtSpdqV2UzIsC/Te2z2fIOzpAQTyRzAWC061V8HhhR8pBL27sngbERK1NId5omJpRODtxBjFlz9bM0+9i+Y2h7MUMCUxVnyDO0w2N/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300229; c=relaxed/simple;
-	bh=8AXpm2e3DYVQcceKJcF6sK9d9mzDshF09g5BH3QvSVQ=;
+	s=arc-20240116; t=1772300230; c=relaxed/simple;
+	bh=CqTb2ncDZyCvY79JtpCtWTkhOpSciKWJvwe2gLjveiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZ09bgHk9M59KDiqBSbU/T7mgwBgpeMaMmklUEUAicS9KscZalpnb++ntmhLiWtHaaa0C6HXphS0r3grQIhrRTUnYO0qMRFYm+Yvtut4s3DS4m76f/JF2rCLBbH0kszGPFr7zRKCjdck1YnCJzl01U9/RUbes+RuhslXZqLpyvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RygyuXdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B90C19423;
-	Sat, 28 Feb 2026 17:37:08 +0000 (UTC)
+	 MIME-Version; b=ahCMDBGYjlaeDWfToxS4Q9IZ9gYMaVyVZ5qtiGan93XeAWlzq/DDBmUR9sX/iXZ2e9IOEpalhdmIXSxHNub9/BYfwMFf7YThv0y9b2XxXSE71zrS7mUBzudRAeQ6FhiDAM3s6Q+Hj4f38Vt5U92M94QjIGtVResZ6rIvipWiqIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RVgvRl8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46242C19424;
+	Sat, 28 Feb 2026 17:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772300229;
-	bh=8AXpm2e3DYVQcceKJcF6sK9d9mzDshF09g5BH3QvSVQ=;
+	bh=CqTb2ncDZyCvY79JtpCtWTkhOpSciKWJvwe2gLjveiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RygyuXdRWcmJ3OKzCTxdRUqqOXoPD6cxszVEmB2p+ULD9x4qDQzpAb8Sucr6pgllO
-	 RgSaoCckxEv4L+LQlJoI+tjwUQv+unCsbxrEAs6eZY+nculHiRQjcp/OrY/Ymf6Eis
-	 RuXF6nK17YtFKkEdZ5SEurekrOKJKBBHNxV7EhLzNBvcCBj6U8zZxQRzYI+Wa+JG2h
-	 4mU7eru2N0ZgGhB/dcH7ZF+bNYDTuC5rBZKLGSiIzqPNPu6TxM8+fUxkOLfEaGWm2n
-	 LKvP7VcjBhaXz6QGyW9tJWvLJ7SlEnHmCgC+jN4kNbT36dq6w4q1sVBIQW1tI7Wktm
-	 pW6XKKehUYAMg==
+	b=RVgvRl8r05+zhGH/DLg9CpaS3tRkb/XMYfRMrrlj8QE9y04YsUrYqHPlWy4VYGvp7
+	 tbOUUvbm3E1OPEpiLVvCMhuIOU3vakeayNpzYtA2ZsD869BYStoqyPqK/7al+GH1DV
+	 rzEPIhGO5tFpsugItgOukYWXxwZVc/FXpXXXYowedUGtUBY61oECCWzHMX1TECjc8K
+	 z4fnCe2M7gx43KaVPVmQk+6gFKo3/IMGrlE5OklzQVftLcqfjMn+3ddGIiiEYnt/FU
+	 SfBL7u62+cLxqc6m4j2Pq99OJNjv3/NCOApLmc8tilELkBwhxEhVOCeuWVKgiiMLct
+	 BvNm7kRIJpBJg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
+Cc: Roman Peshkichev <roman.peshkichev@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 250/844] PCI: dwc: Skip PME_Turn_Off broadcast and L2/L3 transition during suspend if link is not up
-Date: Sat, 28 Feb 2026 12:22:43 -0500
-Message-ID: <20260228173244.1509663-251-sashal@kernel.org>
+Subject: [PATCH 6.19 251/844] wifi: rtw88: fix DTIM period handling when conf->dtim_period is zero
+Date: Sat, 28 Feb 2026 12:22:44 -0500
+Message-ID: <20260228173244.1509663-252-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,80 +66,95 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220328-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220329-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,rock-chips.com:email,msgid.link:url,qualcomm.com:email,nxp.com:email]
-X-Rspamd-Queue-Id: 5103E1C7522
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:email]
+X-Rspamd-Queue-Id: 636A91C5AED
 X-Rspamd-Action: no action
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Roman Peshkichev <roman.peshkichev@gmail.com>
 
-[ Upstream commit cfd2fdfd0a8da2e5bbfdc4009b9c4b8bf164c937 ]
+[ Upstream commit 9f68fdcdc9dbf21be2a48feced90ff7f77d07443 ]
 
-During system suspend, if the PCIe link is not up, then there is no need
-to broadcast PME_Turn_Off message and wait for L2/L3 transition. So skip
-them.
+The function rtw_set_dtim_period() accepted an 'int' dtim_period parameter,
+while mac80211 provides dtim_period as 'u8' in struct ieee80211_bss_conf.
+In IBSS (ad-hoc) mode mac80211 may set dtim_period to 0.
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/20251218-pci-dwc-suspend-rework-v2-1-5a7778c6094a@oss.qualcomm.com
+The driver unconditionally wrote (dtim_period - 1) to
+REG_DTIM_COUNTER_ROOT, which resulted in 0xFF when dtim_period was 0. This
+caused delays in broadcast/multicast traffic processing and issues with
+ad-hoc operation.
+
+Convert the function parameter to u8 to match ieee80211_bss_conf and avoid
+the underflow by writing 0 when dtim_period is 0.
+
+Link: https://github.com/lwfinger/rtw88/issues/406
+Signed-off-by: Roman Peshkichev <roman.peshkichev@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251125180937.22977-1-roman.peshkichev@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-host.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 4 ++--
+ drivers/net/wireless/realtek/rtw88/main.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index 372207c33a857..250725ced9026 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -1158,8 +1158,11 @@ static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
- int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index d93d21656f26c..f72d12c3b2bc6 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -730,10 +730,10 @@ void rtw_set_rx_freq_band(struct rtw_rx_pkt_stat *pkt_stat, u8 channel)
+ }
+ EXPORT_SYMBOL(rtw_set_rx_freq_band);
+ 
+-void rtw_set_dtim_period(struct rtw_dev *rtwdev, int dtim_period)
++void rtw_set_dtim_period(struct rtw_dev *rtwdev, u8 dtim_period)
  {
- 	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-+	int ret = 0;
- 	u32 val;
--	int ret;
-+
-+	if (!dw_pcie_link_up(pci))
-+		goto stop_link;
+ 	rtw_write32_set(rtwdev, REG_TCR, BIT_TCR_UPDATE_TIMIE);
+-	rtw_write8(rtwdev, REG_DTIM_COUNTER_ROOT, dtim_period - 1);
++	rtw_write8(rtwdev, REG_DTIM_COUNTER_ROOT, dtim_period ? dtim_period - 1 : 0);
+ }
  
- 	/*
- 	 * If L1SS is supported, then do not put the link into L2 as some
-@@ -1194,6 +1197,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
- 	 */
- 	udelay(1);
+ void rtw_update_channel(struct rtw_dev *rtwdev, u8 center_channel,
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 43ed6d6b42919..1ab70214ce36e 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -2226,7 +2226,7 @@ enum nl80211_band rtw_hw_to_nl80211_band(enum rtw_supported_band hw_band)
+ }
  
-+stop_link:
- 	dw_pcie_stop_link(pci);
- 	if (pci->pp.ops->deinit)
- 		pci->pp.ops->deinit(&pci->pp);
+ void rtw_set_rx_freq_band(struct rtw_rx_pkt_stat *pkt_stat, u8 channel);
+-void rtw_set_dtim_period(struct rtw_dev *rtwdev, int dtim_period);
++void rtw_set_dtim_period(struct rtw_dev *rtwdev, u8 dtim_period);
+ void rtw_get_channel_params(struct cfg80211_chan_def *chandef,
+ 			    struct rtw_channel_params *ch_param);
+ bool check_hw_ready(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 target);
 -- 
 2.51.0
 
