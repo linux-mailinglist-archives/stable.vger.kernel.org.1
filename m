@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-220419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ADI+F146o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:56:30 +0100
+	id IH/WFrk5o2mU+gQAu9opvQ
+	(envelope-from <stable+bounces-220420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C4F1C66E1
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:56:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F441C65FA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEF9831FBC44
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:25:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1F6132A68DA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC9B480DD5;
-	Sat, 28 Feb 2026 17:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486203B1B00;
+	Sat, 28 Feb 2026 17:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ej/la0UB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZEThMD1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B123B11D1;
-	Sat, 28 Feb 2026 17:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA263B1AF5;
+	Sat, 28 Feb 2026 17:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300310; cv=none; b=in3+lxMwhnV14GJx9ZpToeqL1Qrdw9/FhtyibzKgpFjnqu/P1NXr4FmXJsUIWQaA3sKMCcVC8i0gokPPS/GBt/olVZDuolYsFn6+IHfYYOIAOkidAtE0/7hOJKhSkjQt72Hw+9jd5JuPuVFDW9kY/IMox9jf8mFpTHM3iG64GlY=
+	t=1772300311; cv=none; b=LmndeAjcXMm62lnq9HQ/LBlEiDRODE2jbNR7CKz4ADVJRPcM416R2Nbu5WEhHAx1KCamQR0x1P3JHP3faH/QmD0Z7ASqq9hB6NJ75+Opgt9y4Ksg2INF3z7OLczT0FHUw4cS5520QuddNSRGgx5JEF+Jap2I5Acp0+UhXitzfpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300310; c=relaxed/simple;
-	bh=ePR/Zj3d6jqJncBptWbqG1xkmpftdrwOe5ga0jt3hkc=;
+	s=arc-20240116; t=1772300311; c=relaxed/simple;
+	bh=5rN1791otkXld9s0yk37EK1HmhIuksVPV/oWgb5wLiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QnG6l4fuH/3ehE4wq6VtCbcETlV1wJpTU9807nlLbFQzBakVW7sMw/qA5F27r7RCPFD3310ZwUZkjj/tu2mccoLbGqFrwrjmDkzFIjOPBZ4tjlK9RVHLYfiomCjdVbu+gdmZd6si825+DLGA+czXcuYh7p0gx0gLvvBE79Y6yp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej/la0UB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D43DC116D0;
-	Sat, 28 Feb 2026 17:38:29 +0000 (UTC)
+	 MIME-Version; b=N/IV7jeej2eA+gdjK7HWDg2XBpvd6gTeGkwSHx4x+eCK+ndzBcUkJPqRLQsvMrhlufuj3SB6JkF30wsre5DRJAJ3ZeFePiJ1fcrSsYup+WBanIGBm7e+q8JLpnUaTPNc8QQmf8+ZrWyHCjPDvuIx/QHE4fBDwpDFhE9pTJWiY0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZEThMD1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A70BC19425;
+	Sat, 28 Feb 2026 17:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300309;
-	bh=ePR/Zj3d6jqJncBptWbqG1xkmpftdrwOe5ga0jt3hkc=;
+	s=k20201202; t=1772300310;
+	bh=5rN1791otkXld9s0yk37EK1HmhIuksVPV/oWgb5wLiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ej/la0UBfB4oOI12cemG1zkLsJE3z12MGEtC0fC9m9Z8o9RZsal4hrTsqOH12bMRN
-	 l0AFQbxv1jfOsW24JCdwXbyzJkJJdpF/rERoWH758wqkKyMTGCy8e4YWChjfyTBaD2
-	 kJr0Jm0GRPyFJ2d6bv7i0dabHELwdx8TlAOsJaJOS6aLHwD9mJr0psPVkai1m+I+rM
-	 g/AlCaY05AovFqMj+tq1JQCrhM7QCtnWZUXE+F2YwfXHUrZykCcfCtZiSHW0qm3EU/
-	 F3U3QgUfyp36lqzMzpwMkbHK5Ez3nxO4VPNEopHFEIh34h6CJXusNIg9nF07DrNWzV
-	 PfUpx/oNXyJkQ==
+	b=gZEThMD1UFSRyIxZNo4LOoeLgyRT5n7bbFDd8foRNs6j0sntx8xIk1q6XeiLN08nq
+	 aXk/b5v+LPZbHY16bJjgEUVPuZm4NIaEp5eYUI7DAfzIxoQV/i+GlzRhql9YngShYP
+	 54GhnS2A9m8oj2EgvA7dqLsatZ6Iohfiqcndst/MQGPZ0TV5m1nIv4yHBxjixZPaZg
+	 y3sHg/2jeSW0KYr5vF55xYZ26YLEPzhaYPR45Cj/C1ZnStMWxPb/sKP0PYXwXVdp/x
+	 mRo8NTpIs/2g4kf3VDdCzgwbm5+9iAt8sBtjnEYaWNysLtwQtMdVJnvCiHkQGSqX4u
+	 iaI+v/BMUsXgQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Longfang Liu <liulongfang@huawei.com>,
-	Alex Williamson <alex@shazbot.org>,
+Cc: Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 340/844] hisi_acc_vfio_pci: resolve duplicate migration states
-Date: Sat, 28 Feb 2026 12:24:13 -0500
-Message-ID: <20260228173244.1509663-341-sashal@kernel.org>
+Subject: [PATCH 6.19 341/844] RDMA/rtrs-clt: For conn rejection use actual err number
+Date: Sat, 28 Feb 2026 12:24:14 -0500
+Message-ID: <20260228173244.1509663-342-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,67 +69,73 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220419-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220420-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 84C4F1C66E1
+X-Rspamd-Queue-Id: 83F441C65FA
 X-Rspamd-Action: no action
 
-From: Longfang Liu <liulongfang@huawei.com>
+From: Md Haris Iqbal <haris.iqbal@ionos.com>
 
-[ Upstream commit 8c6ac1730a977234dff74cc1753b4a953f59be7b ]
+[ Upstream commit fc290630702b530c2969061e7ef0d869a5b6dc4f ]
 
-In special scenarios involving duplicate migrations, after the
-first migration is completed, if the original VF device is used
-again and then migrated to another destination, the state indicating
-data migration completion for the VF device is not reset.
-This results in the second migration to the destination being skipped
-without performing data migration.
-After the modification, it ensures that a complete data migration
-is performed after the subsequent migration.
+When the connection establishment request is rejected from the server
+side, then the actual error number sent back should be used.
 
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
-Link: https://lore.kernel.org/r/20260122020205.2884497-4-liulongfang@huawei.com
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Link: https://patch.msgid.link/20260107161517.56357-10-haris.iqbal@ionos.com
+Reviewed-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Reviewed-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index d1e8053640a98..8a05fb91929fb 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1570,6 +1570,7 @@ static int hisi_acc_vfio_pci_open_device(struct vfio_device *core_vdev)
- 		}
- 		hisi_acc_vdev->mig_state = VFIO_DEVICE_STATE_RUNNING;
- 		hisi_acc_vdev->dev_opened = true;
-+		hisi_acc_vdev->match_done = 0;
- 		mutex_unlock(&hisi_acc_vdev->open_mutex);
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+index 2b397a544cb93..8fa1d72bd20a4 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+@@ -1923,7 +1923,7 @@ static int rtrs_rdma_conn_rejected(struct rtrs_clt_con *con,
+ 	struct rtrs_path *s = con->c.path;
+ 	const struct rtrs_msg_conn_rsp *msg;
+ 	const char *rej_msg;
+-	int status, errno;
++	int status, errno = -ECONNRESET;
+ 	u8 data_len;
+ 
+ 	status = ev->status;
+@@ -1945,7 +1945,7 @@ static int rtrs_rdma_conn_rejected(struct rtrs_clt_con *con,
+ 			  status, rej_msg);
  	}
  
+-	return -ECONNRESET;
++	return errno;
+ }
+ 
+ void rtrs_clt_close_conns(struct rtrs_clt_path *clt_path, bool wait)
 -- 
 2.51.0
 
