@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-220269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLrwGsc1o2nP+QQAu9opvQ
-	(envelope-from <stable+bounces-220269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:36:55 +0100
+	id CDkMF4szo2mX+QQAu9opvQ
+	(envelope-from <stable+bounces-220270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:27:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754FD1C607A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:36:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B60921C5CF8
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 39DBC31243F6
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:02:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC8E231A3E03
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB841381CA5;
-	Sat, 28 Feb 2026 17:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B09381CC9;
+	Sat, 28 Feb 2026 17:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IL58wnAO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y3pPVPRT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF1847DD69;
-	Sat, 28 Feb 2026 17:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9905381CBF;
+	Sat, 28 Feb 2026 17:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300172; cv=none; b=q9EVWgSILVf0bDIN/frcRkfB87MnOCw1ei25DAxl47q10K1ZrOfwchewDdKNiFLOiZ2vf1+gip6i76guLdX7Y3U/yDN0aNk52sT6Qo4g+fOIT6liOXRJblQGEbqbNF5xpCkf1g84vecQ9B+/jwvaQUyfIKruszUxBeDrbRMw/DQ=
+	t=1772300173; cv=none; b=VGFYyT1S/WD0R6dlcicXNdDozq1UUS1wUjeCc0nD4NX3ZJwSZ3T6LfIKuWYlhxp+9yKhgikh27Got94cClGPS4vy7d0phRncEqMHZzC/ym+XjLDDosOnsA22RRpiML6dWM3K1nTkPRReyfzXKkOqeTCVrQYy5GtOqLDyCOcy3go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300172; c=relaxed/simple;
-	bh=BzE1gBPpCyLPPTAUrwMVtOT5vUOURwrYx36Nm0Pv+ho=;
+	s=arc-20240116; t=1772300173; c=relaxed/simple;
+	bh=eJtyVck8aATmjY54Z7ZJUhHhk9S7xobDAX5bxsj0qi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CCuVkMm4z4ORsSoR9+KnH3+TRwaNQlprz9N9eA3JuNbgRSwdXGYP5+jdksudcp7bwFILdiApK2G4aAupxOv/dDUa8W61xxgTnaRm9fGJRRYdXP8o4aScPapGAkYaMiABa8dccmaJ5cjFUT2Q3szH94zebddxMBMm2srwdeXf5Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IL58wnAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B569C19423;
-	Sat, 28 Feb 2026 17:36:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GszRTIbAsEXH5yCFlUlkZHa9N95OlxoUGdo9Zd7bFLTxlGLoreI0HiSAPKB7couX5pVetKv5B5/5+9AJvmKdHCpmv4mBsQAWqyJml1xCMvPhr80Pgza6hRTUOWq5hcBvxsGvEN3rMGWoLuc/RfBaCiJHwdKUAE0/nhO5ma4LB38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y3pPVPRT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D2AC19424;
+	Sat, 28 Feb 2026 17:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300172;
-	bh=BzE1gBPpCyLPPTAUrwMVtOT5vUOURwrYx36Nm0Pv+ho=;
+	s=k20201202; t=1772300173;
+	bh=eJtyVck8aATmjY54Z7ZJUhHhk9S7xobDAX5bxsj0qi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IL58wnAOIEtiIuy92TK6stXEWxhRADJzFi6EInF8cbxiCP6Y6gWRIDWEGlsms94XL
-	 97UZbDJiAtdnnhAyqi7o+c/B9wE4W09eOmfGKhrmSesDNmfHlFOjW8Tb1DBiCP3xND
-	 wW8JdDTCwuyN78ZsRVOZYRa43TPv3DLfdpevhH5J5D9up03r2gQsKSjmbTJ2jOyPUS
-	 xAQa+1chO3XNsG3huENefMydCNXVeYp+9HJ2vJ53omO8Cd1u2PXf4SDY50d/3iPW7x
-	 hw02s9nSUD+DFrfKpijMrPCr/qRrGL3ujkzOlG+ZCAh6AT0/pBUr1VJiic4DBb7GLK
-	 Mo31n1m5pmaBg==
+	b=Y3pPVPRTpQgda92c8qsQXnuPEhyA88PhIv59HNQ7WIjCqI7ZOimN4VPdPchq3kxS/
+	 I21CSDjfB681YLbB6cF6GQJ+PA/SKlJ8AW19dEZfjNem8p3SmhKcAw87kOx9wYOOID
+	 Df7oMIgPWFeHTnq0LDUTEvix3/UoLpA6AeHyuiy8qXV+oJ3jCwxPKtyDsey7kHC06u
+	 wGA1LN+wIOCe4lQGu89389rf+0vzuAlb5aj+N0VUonOVQm5VWlqrqLa34iEe3M+TrQ
+	 NXp0ZmUSCw0ufPo785Peax2fXLGH43k251Rj/QES6uWU1D2xcbErLEYwh8xjq67QZp
+	 KFr1ckidEQlFA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Donet Tom <donettom@linux.ibm.com>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philip Yang <yangp@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
 	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 191/844] drm/amdkfd: Relax size checking during queue buffer get
-Date: Sat, 28 Feb 2026 12:21:44 -0500
-Message-ID: <20260228173244.1509663-192-sashal@kernel.org>
+Subject: [PATCH 6.19 192/844] drm/amdkfd: Fix GART PTE for non-4K pagesize in svm_migrate_gart_map()
+Date: Sat, 28 Feb 2026 12:21:45 -0500
+Message-ID: <20260228173244.1509663-193-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -70,84 +71,75 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220269-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux.ibm.com,amd.com,gmail.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220270-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 754FD1C607A
+X-Rspamd-Queue-Id: B60921C5CF8
 X-Rspamd-Action: no action
 
 From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit 42ea9cf2f16b7131cb7302acb3dac510968f8bdc ]
+[ Upstream commit 6c160001661b6c4e20f5c31909c722741e14c2d8 ]
 
-HW-supported EOP buffer sizes are 4K and 32K. On systems that do not
-use 4K pages, the minimum buffer object (BO) allocation size is
-PAGE_SIZE (for example, 64K). During queue buffer acquisition, the driver
-currently checks the allocated BO size against the supported EOP buffer
-size. Since the allocated BO is larger than the expected size, this check
-fails, preventing queue creation.
+In svm_migrate_gart_map(), while migrating GART mapping, the number of
+bytes copied for the GART table only accounts for CPU pages. On non-4K
+systems, each CPU page can contain multiple GPU pages, and the GART
+requires one 8-byte PTE per GPU page. As a result, an incorrect size was
+passed to the DMA, causing only a partial update of the GART table.
 
-Relax the strict size validation and allow PAGE_SIZE-sized BOs to be used.
-Only the required 4K region of the buffer will be used as the EOP buffer
-and avoids queue creation failures on non-4K page systems.
+Fix this function to work correctly on non-4K page-size systems by
+accounting for the number of GPU pages per CPU page when calculating the
+number of bytes to be copied.
 
 Acked-by: Christian König <christian.koenig@amd.com>
-Suggested-by: Philip Yang <yangp@amd.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 Signed-off-by: Donet Tom <donettom@linux.ibm.com>
 Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
 Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_queue.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-index 80c4fa2b0975d..2822c90bd7be4 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-@@ -275,8 +275,8 @@ int kfd_queue_acquire_buffers(struct kfd_process_device *pdd, struct queue_prope
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+index 6ada7b4af7c68..5086caac3fd06 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+@@ -61,7 +61,7 @@ svm_migrate_gart_map(struct amdgpu_ring *ring, u64 npages,
+ 	*gart_addr = adev->gmc.gart_start;
  
- 	/* EOP buffer is not required for all ASICs */
- 	if (properties->eop_ring_buffer_address) {
--		if (properties->eop_ring_buffer_size != topo_dev->node_props.eop_buffer_size) {
--			pr_debug("queue eop bo size 0x%x not equal to node eop buf size 0x%x\n",
-+		if (properties->eop_ring_buffer_size < topo_dev->node_props.eop_buffer_size) {
-+			pr_debug("queue eop bo size 0x%x is less than node eop buf size 0x%x\n",
- 				properties->eop_ring_buffer_size,
- 				topo_dev->node_props.eop_buffer_size);
- 			err = -EINVAL;
-@@ -284,7 +284,7 @@ int kfd_queue_acquire_buffers(struct kfd_process_device *pdd, struct queue_prope
- 		}
- 		err = kfd_queue_buffer_get(vm, (void *)properties->eop_ring_buffer_address,
- 					   &properties->eop_buf_bo,
--					   properties->eop_ring_buffer_size);
-+					   ALIGN(properties->eop_ring_buffer_size, PAGE_SIZE));
- 		if (err)
- 			goto out_err_unreserve;
- 	}
+ 	num_dw = ALIGN(adev->mman.buffer_funcs->copy_num_dw, 8);
+-	num_bytes = npages * 8;
++	num_bytes = npages * 8 * AMDGPU_GPU_PAGES_IN_CPU_PAGE;
+ 
+ 	r = amdgpu_job_alloc_with_ib(adev, &adev->mman.high_pr,
+ 				     AMDGPU_FENCE_OWNER_UNDEFINED,
 -- 
 2.51.0
 
