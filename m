@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JPoMk41o2nP+QQAu9opvQ
-	(envelope-from <stable+bounces-220395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:34:54 +0100
+	id EA6KAjA0o2nP+QQAu9opvQ
+	(envelope-from <stable+bounces-220396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF961C5FD9
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:34:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 943AC1C5DF5
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DD7FF30764A5
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:21:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC27A3359D73
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F51D3AB430;
-	Sat, 28 Feb 2026 17:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1934C3AB445;
+	Sat, 28 Feb 2026 17:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pqu2AXX2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVIlfmK1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424753AB423;
-	Sat, 28 Feb 2026 17:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCA53AB43B;
+	Sat, 28 Feb 2026 17:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300288; cv=none; b=en9vsjQ7b9koMPXVkSzdrSqRZFi2rF5VhuwGsNPTM5yFq4k1FLftL6BRSNlKU4Tv9DSRCYz56hAHzhOhBk2McFQhjf9ZSnJ9yL83RdEEyb6IijQIWNvlJuvIALV9FuXW8IbvuxpUMUIlHs8Ot61xG1g3F1zqFpM78dAaVlOGHN0=
+	t=1772300288; cv=none; b=c/bzYksHblhAuXRba0wkTJJQDIMTwxnlAy0mBS4iI6XunifeWgu1tzhlC/vIpacEHzMvBA/AKwDBnZGgeS57iVtI9xf5AtuXPnnk38iEti9NMMqlqcfUvQMbRF4yeFoddcLGcXLcn4+nXBRwa+Vy8N+Jnkb16FSUtE8mtsOSZIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300288; c=relaxed/simple;
-	bh=5JgT2L3Zry9ZaKOHywsRUBM87mU0XvTZ6LuSRBXw7Wo=;
+	bh=+FuiE37p1GIm7r8cnuNB6Z3inMMRPCWdZVfvrWDVax0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZojLLZn1Ls1CB7/QeYotiu+RWqTb8JSJYhkYhvKmM1RJGVtU5ylkhPnuoidRhRj68NnwJJ886cbY6eNk+1nPmJAqo7nnmBAIElknvkO0McygGfAnvwrMIF1NR8hXCS5VnPa0WQ+aF+JCJ2XpHzBVkJ75m49pzBXsfiOjm7QwhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pqu2AXX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343B1C19424;
-	Sat, 28 Feb 2026 17:38:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QTMSD1xONsKwLVuxlxfKhEtYXX/xhjfGROav+jtxKWWnrxFHIhurl12wOBb6TuHgTWWSlJ2TT1pZhU55r0YUsYs2gFFys8M3p5RCPfgoxrv2aHQd/XYS6RdNJpdzk4vRoZwUou6Rz1KFbX+RRyFGU6JbMezULdfPrgZKfi34VRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVIlfmK1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A1CC116D0;
+	Sat, 28 Feb 2026 17:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300287;
-	bh=5JgT2L3Zry9ZaKOHywsRUBM87mU0XvTZ6LuSRBXw7Wo=;
+	s=k20201202; t=1772300288;
+	bh=+FuiE37p1GIm7r8cnuNB6Z3inMMRPCWdZVfvrWDVax0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqu2AXX2z1/9vgGerB7yc+mWCvxVae20TEpzy26NiR1XLcZguGbxiVkRanZCU8tVA
-	 0GJA4uwu4BwfnzjeYwvQrmwd2tEjWE8JUjwrakCJvAwFHZ6aJKxgxSWpJ8v6TGkLkF
-	 OGGAgJCZRNrCvSj4gdAWoxUfJZdEh4K+JEMI8wGEEiqGvbnfXWXUPB6Y0eOh1IOsR/
-	 UC3mne5VyY08BpcIuCgCo6F3Asse2twNplmZwjG7AfTF5rg5QbpN1wEplIUXBNNRTL
-	 TXXhqxl0t1cUCNrDQc9Oh9No4cYFr3Ve6Vi/wZAnKB52QJy4dCBuqLvUmIDDrW5HmD
-	 sdTcVVrIHi3+Q==
+	b=rVIlfmK1/km97MXnmPUK7MlzBlJDwZBhWzegXScOacqMJCYkpejFYHtmXYNCQw+bn
+	 usi8pnu17Zx526bOeEynuRvGz7J1DFbhmOlzJZWsWyJSjFNndW3FE3hfxCiXrPHaWe
+	 8EP/BGb6UrAx1uhlQznO8JW23FCEuNTwqSbjSaWIWK7OrwnJRXP9NHvRZHCX+2RaUe
+	 meZEKX/cdBpB4fUI0VHUtXaU09ukttiyVS6UyQBGXjSdAEOGV2Y/L2eHO82awQPWj9
+	 dbW2B4e4E+f8YOahdJY10hl92XJFmuSJdd197Og+bkog8vKf61YGIPsj2Q3SJsi/EF
+	 zZG1Dpuc4dfdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+Cc: =?UTF-8?q?Stefan=20S=C3=B8rensen?= <ssorensen@roku.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 316/844] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail when BT_EN is pulled up by hw
-Date: Sat, 28 Feb 2026 12:23:49 -0500
-Message-ID: <20260228173244.1509663-317-sashal@kernel.org>
+Subject: [PATCH 6.19 317/844] Bluetooth: hci_conn: Set link_policy on incoming ACL connections
+Date: Sat, 28 Feb 2026 12:23:50 -0500
+Message-ID: <20260228173244.1509663-318-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -63,121 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220395-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220396-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6EF961C5FD9
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 943AC1C5DF5
 X-Rspamd-Action: no action
 
-From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+From: Stefan Sørensen <ssorensen@roku.com>
 
-[ Upstream commit fce1a9244a0f85683be8530e623bc729f24c5067 ]
+[ Upstream commit 4bb091013ab0f2edfed3f58bebe658a798cbcc4d ]
 
-On QCS9075 and QCA8275 platforms, the BT_EN pin is always pulled up by hw
-and cannot be controlled by the host. As a result, in case of a firmware
-crash, the host cannot trigger a cold reset. Instead, the BT controller
-performs a warm restart on its own, without reloading the firmware.
+The connection link policy is only set when establishing an outgoing
+ACL connection causing connection idle modes not to be available on
+incoming connections. Move the setting of the link policy to the
+creation of the connection so all ACL connection will use the link
+policy set on the HCI device.
 
-This leads to the controller remaining in IBS_WAKE state, while the host
-expects it to be in sleep mode. The mismatch causes HCI reset commands
-to time out. Additionally, the driver does not clear internal flags
-QCA_SSR_TRIGGERED and QCA_IBS_DISABLED, which blocks the reset sequence.
-If the SSR duration exceeds 2 seconds, the host may enter TX sleep mode
-due to tx_idle_timeout, further preventing recovery. Also, memcoredump_flag
-is not cleared, so only the first SSR generates a coredump.
-
-Tell the driver that the BT controller has undergone a proper restart sequence:
-
-- Clear QCA_SSR_TRIGGERED and QCA_IBS_DISABLED flags after SSR.
-- Add a 50ms delay to allow the controller to complete its warm reset.
-- Reset tx_idle_timer to prevent the host from entering TX sleep mode.
-- Clear memcoredump_flag to allow multiple coredump captures.
-
-Apply these steps only when HCI_QUIRK_NON_PERSISTENT_SETUP is not set,
-which indicates that BT_EN is defined in DTS and cannot be toggled.
-
-Refer to the comment in include/net/bluetooth/hci.h for details on
-HCI_QUIRK_NON_PERSISTENT_SETUP.
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+Signed-off-by: Stefan Sørensen <ssorensen@roku.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ net/bluetooth/hci_conn.c | 1 +
+ net/bluetooth/hci_sync.c | 2 --
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 888176b0faa90..a3c217571c3c4 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1653,6 +1653,39 @@ static void qca_hw_error(struct hci_dev *hdev, u8 code)
- 		skb_queue_purge(&qca->rx_memdump_q);
- 	}
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 5a4374ccf8e84..98f0461b3dd7d 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1002,6 +1002,7 @@ static struct hci_conn *__hci_conn_add(struct hci_dev *hdev, int type,
+ 	switch (type) {
+ 	case ACL_LINK:
+ 		conn->pkt_type = hdev->pkt_type & ACL_PTYPE_MASK;
++		conn->link_policy = hdev->link_policy;
+ 		conn->mtu = hdev->acl_mtu;
+ 		break;
+ 	case LE_LINK:
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index cbc3a75d73262..334eb4376a266 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6897,8 +6897,6 @@ static int hci_acl_create_conn_sync(struct hci_dev *hdev, void *data)
  
-+	/*
-+	 * If the BT chip's bt_en pin is connected to a 3.3V power supply via
-+	 * hardware and always stays high, driver cannot control the bt_en pin.
-+	 * As a result, during SSR (SubSystem Restart), QCA_SSR_TRIGGERED and
-+	 * QCA_IBS_DISABLED flags cannot be cleared, which leads to a reset
-+	 * command timeout.
-+	 * Add an msleep delay to ensure controller completes the SSR process.
-+	 *
-+	 * Host will not download the firmware after SSR, controller to remain
-+	 * in the IBS_WAKE state, and the host needs to synchronize with it
-+	 *
-+	 * Since the bluetooth chip has been reset, clear the memdump state.
-+	 */
-+	if (!hci_test_quirk(hu->hdev, HCI_QUIRK_NON_PERSISTENT_SETUP)) {
-+		/*
-+		 * When the SSR (SubSystem Restart) duration exceeds 2 seconds,
-+		 * it triggers host tx_idle_delay, which sets host TX state
-+		 * to sleep. Reset tx_idle_timer after SSR to prevent
-+		 * host enter TX IBS_Sleep mode.
-+		 */
-+		mod_timer(&qca->tx_idle_timer, jiffies +
-+				  msecs_to_jiffies(qca->tx_idle_delay));
-+
-+		/* Controller reset completion time is 50ms */
-+		msleep(50);
-+
-+		clear_bit(QCA_SSR_TRIGGERED, &qca->flags);
-+		clear_bit(QCA_IBS_DISABLED, &qca->flags);
-+
-+		qca->tx_ibs_state = HCI_IBS_TX_AWAKE;
-+		qca->memdump_state = QCA_MEMDUMP_IDLE;
-+	}
-+
- 	clear_bit(QCA_HW_ERROR_EVENT, &qca->flags);
- }
+ 	conn->attempt++;
  
+-	conn->link_policy = hdev->link_policy;
+-
+ 	memset(&cp, 0, sizeof(cp));
+ 	bacpy(&cp.bdaddr, &conn->dst);
+ 	cp.pscan_rep_mode = 0x02;
 -- 
 2.51.0
 
