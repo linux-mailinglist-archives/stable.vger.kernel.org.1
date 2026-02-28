@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJVzGME0o2nP+QQAu9opvQ
-	(envelope-from <stable+bounces-220303-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:32:33 +0100
+	id KFGLLXowo2kE+QQAu9opvQ
+	(envelope-from <stable+bounces-220304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:14:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99491C5ED0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:32:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C8561C5912
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66D77337D23A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:07:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D6ACA309D451
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CAD38CFF8;
-	Sat, 28 Feb 2026 17:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D4F38D012;
+	Sat, 28 Feb 2026 17:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrXLm8y2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+j7nzrj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A33938CFF0;
-	Sat, 28 Feb 2026 17:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD94938D009;
+	Sat, 28 Feb 2026 17:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300207; cv=none; b=tbSBYLdbs+lu5mB1MrWLdk7YVFcsk19eYgkwNoBCaqaupb49Ln+0g+f2mfV92PnTwMjZ3BBvSAlPA54LpRVxCXcJvhs/bs6Vbx/AMZf0jaKGB+Vbty5QQTJY+B1mJvMpvXhlnjRPgEbqI6ND5ktXtIgdL5SRKq6hh3qM0/EfSu8=
+	t=1772300207; cv=none; b=R/jPc4JgB9m9BaZTNF2gdo5+iVGMTCZPam8g0RkuMbE6SYKZZBSQB8VL4hjX6Zq6zAQHW7iaFe/PBbVJcRM8XmoTjytiO5R8m++/wzij5/W8Y6DgYxNW/L2+uEv5sNEOwDTG6CHrE/wYdC438+0RoN/W6NF6v7i8bNS0W/bKkh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300207; c=relaxed/simple;
-	bh=uokOkRCSMVLxsGu3rqxKfmFg2fGZyt7kKmsiD3KiJqM=;
+	bh=HrE32cZx8Wn5/h1pkvX3+n4NaaYqY4QP3DhxJjCs4u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCYPXG+6ZehORA9leiAAh5JRFW3zWgDljpRaxj/t7y6YubmhlKkYwWGWq7hnPuUyRJRkbJakLbSezfseYkc59/XayMTpxQxfNBVjsDho+khCPsxAx2QCMLrpcgLNCMu715KIIk6WxClWpgXUjzjnSnCaCa+V5Sqlu5+mewjqyPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrXLm8y2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174CBC19423;
+	 MIME-Version; b=sLzph1+eguryzMHw5fy2Jtc9FnwYQEk52fqLIkfah6XV7HjLF9jLBkzwR31e1e/GhzpXt7Oz1XHO0rgN+WfYFZpXtAvL66AKXN1FbbiHrIrzCjGmT2xFShTn93YMkw0BrHb56frap0r/tqootcx2nbZH7yvOeBzr8ccfjaeKRPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+j7nzrj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0588DC2BC9E;
 	Sat, 28 Feb 2026 17:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300206;
-	bh=uokOkRCSMVLxsGu3rqxKfmFg2fGZyt7kKmsiD3KiJqM=;
+	s=k20201202; t=1772300207;
+	bh=HrE32cZx8Wn5/h1pkvX3+n4NaaYqY4QP3DhxJjCs4u0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrXLm8y2/GtRcoh60QQKXwLxKBEHT98Of7Yz9or3NLqUrzO8oeFGme3Z/Ji9BRI+S
-	 99KdACBB+TPL1fBbMBp7DppPi84i/0oFf46Pz1TecVJNE2/MYS8BweU4B3dkUNybed
-	 69vGfV2rMr1JeLqtCeEnP95HzG82AXp4xzdAVi/T2DrSlRr+PINbUaNiUFiI2WmhjZ
-	 xFpqqILpnQ9x/i+v6iVq5RIT4PLOSVeOmiL77JEFQLdKThuYZo5dhZaPHvu50rTwDj
-	 m20TKDHNXfUpK73Zmu1SNDZlxeOXt7d1oFP1qE9u0BPSbuDn4lykulF3aD4zJi/IP0
-	 qyA57hoiZ6a3g==
+	b=N+j7nzrjMrJ7litxdXDLWSkLJTAzXJmyb2aDOQOAGhlkpgJVBsR6t1iQcH1YtkmEu
+	 XerC3hpLzfOolJacsDS/KfIizKpOC0KAhdB89wi+PGCDqaWYIcRdWmKeccU9UEDaq4
+	 XFRQMvpZ/hoLWEFJIMM+7QM3TIhtky1Y+HJJ0HNdAE6GfDkGthkifzFG5GD21Xobs6
+	 xBuwToZm1WltVGm3DEo7kZVs+RgjUvLod83KnWZ6wyDyo8G1s8EF70gfFR8oFu+IP3
+	 K+3WxTggC4AprJ/Ad9zK3uihLS3teaocnMSbeN5jpdMG6bIv2MTxhQJBwuGxSg2eCY
+	 jBJ5sZvl627Ew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jinzhou Su <jinzhou.su@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Chen Ni <nichen@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 225/844] drm/amd/pm: Fix null pointer dereference issue
-Date: Sat, 28 Feb 2026 12:22:18 -0500
-Message-ID: <20260228173244.1509663-226-sashal@kernel.org>
+Subject: [PATCH 6.19 226/844] ASoC: codecs: max98390: Check return value of devm_gpiod_get_optional() in max98390_i2c_probe()
+Date: Sat, 28 Feb 2026 12:22:19 -0500
+Message-ID: <20260228173244.1509663-227-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,59 +71,66 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220303-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220304-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D99491C5ED0
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 8C8561C5912
 X-Rspamd-Action: no action
 
-From: Jinzhou Su <jinzhou.su@amd.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 1197366cca89a4c44c541ddedb8ce8bf0757993d ]
+[ Upstream commit a1d14d8364eac2611fe1391c73ff0e5b26064f0e ]
 
-If SMU is disabled, during RAS initialization,
-there will be null pointer dereference issue here.
+The devm_gpiod_get_optional() function may return an error pointer
+(ERR_PTR) in case of a genuine failure during GPIO acquisition,
+not just NULL which indicates the legitimate absence of an optional
+GPIO.
 
-Signed-off-by: Jinzhou Su <jinzhou.su@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Add an IS_ERR() check after the function call to catch such errors and
+propagate them to the probe function, ensuring the driver fails to load
+safely rather than proceeding with an invalid pointer.
+
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20260130091904.3426149-1-nichen@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c | 3 +++
+ sound/soc/codecs/max98390.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-index f51fa265230b3..2a0e826d0317d 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -618,6 +618,9 @@ int amdgpu_smu_ras_send_msg(struct amdgpu_device *adev, enum smu_message_type ms
- 	struct smu_context *smu = adev->powerplay.pp_handle;
- 	int ret = -EOPNOTSUPP;
+diff --git a/sound/soc/codecs/max98390.c b/sound/soc/codecs/max98390.c
+index 3dd4dd94bc371..ff58805e97d17 100644
+--- a/sound/soc/codecs/max98390.c
++++ b/sound/soc/codecs/max98390.c
+@@ -1067,6 +1067,9 @@ static int max98390_i2c_probe(struct i2c_client *i2c)
  
-+	if (!smu)
-+		return ret;
-+
- 	if (smu->ppt_funcs && smu->ppt_funcs->ras_send_msg)
- 		ret = smu->ppt_funcs->ras_send_msg(smu, msg, param, read_arg);
+ 	reset_gpio = devm_gpiod_get_optional(&i2c->dev,
+ 					     "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(reset_gpio))
++		return dev_err_probe(&i2c->dev, PTR_ERR(reset_gpio),
++				     "Failed to get reset gpio\n");
  
+ 	/* Power on device */
+ 	if (reset_gpio) {
 -- 
 2.51.0
 
