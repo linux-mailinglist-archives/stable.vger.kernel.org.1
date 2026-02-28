@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HRbOR8ro2kr+AQAu9opvQ
-	(envelope-from <stable+bounces-220160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:51:27 +0100
+	id oNz3IWkto2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:01:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6240A1C5252
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:51:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4FE1C553F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1EEA131D3AA0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:45:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C7373310433E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2AB495527;
-	Sat, 28 Feb 2026 17:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6414D33F8D6;
+	Sat, 28 Feb 2026 17:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BvqFzOZJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hWI/Fi4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC5B494A1E;
-	Sat, 28 Feb 2026 17:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E17495533;
+	Sat, 28 Feb 2026 17:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300068; cv=none; b=BPR6ucZSxS1yLZPmHN0LS3kw0VBEAMPrqlNJili8OW+5+D5Yj4aeCWM0MZ2OOJ4xZrS41rx3R9KCSqLhAxj8Gys3uDBLzHh0jHh3GKaU7r18yWunBTjhgqrV4zjHN22HdeR6CJDRHrT4OaTAlYrxam4lz7MLawB6ih4E4rMFw6I=
+	t=1772300069; cv=none; b=FCLlgFzGVufEnUzRH4mRE04Ft5ml7uzyINEDm5UvIIkCDhvYNYA4HyuRgBsjrC7qTUXbQhmXiFNfS9eUm5B+Hc0RvlAvpJIbD/d5Cm2sdsL5vJIcg/NzAiIeIidegk5nW2ioYFaSMNTQcwUSqbDnRX2zNpWnOVHltGKP5xzXBmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300068; c=relaxed/simple;
-	bh=Mcfvj2nZM5JB64KW50/Cmp3FQ/BWsJZ+wF1KoAyR0zo=;
+	s=arc-20240116; t=1772300069; c=relaxed/simple;
+	bh=2pipMRddz6ailbs3zM8XCtd8z26OQ4v2LeH8oipn5UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EyPAXQjknNuNvecKc5LBP0dNbPbuTDmfjnhJXt2wNggiCWvT0ViUDixsk8KwDTOqJxu9yWgt0VE3kBGT6xhr4Wqdhdo8T2vdAtml2vt9x4RB5E94rbWUAhL9tqwOjdnaV6yIiSUc/ipi3YDB/jUSikOMHdxALCdc4+swqFftEO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BvqFzOZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA43C116D0;
-	Sat, 28 Feb 2026 17:34:27 +0000 (UTC)
+	 MIME-Version; b=JHzvhsNZpWLbMSEaZlE3y/Y79ET0LIm0cvxFRA2iOdDgmjWV/idJiaB/le9KfbX+IQN461cIAG6SSTTF6KWZH1aZc3QC1D8TZxrN9Ds2GVIKgyD59GmTI8W2UpNc45r0YCl6Zjxrh0L0vJRVGEQNkLrXTxl20XxVaaGFk38G1mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hWI/Fi4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E94C4AF0B;
+	Sat, 28 Feb 2026 17:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300068;
-	bh=Mcfvj2nZM5JB64KW50/Cmp3FQ/BWsJZ+wF1KoAyR0zo=;
+	s=k20201202; t=1772300069;
+	bh=2pipMRddz6ailbs3zM8XCtd8z26OQ4v2LeH8oipn5UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BvqFzOZJ6BzJBpk554CNm/F5FySYKyHXH1osnflUoz7EtDYXxXr+pIP2RQU9NpLS3
-	 KaA5b5ZnyUqEDY30fK+9ZqA8jrKtH4FeSgZZXvZ9kfzc2EpT84bY3C48ERu7TrC6cN
-	 QIImDJsXQzDflCXAloOqi9QKJu0hx3oIr4Gp50+gmFQ329wej8jfpkYo6dCT9s7kDA
-	 SAikbG63IDpc0pJgAVcRCBPFe8qAhPsP4cTn+L8PZn6ZkV3u0EbK+QUMue7yPF+zGY
-	 859OZp4lMpEAS5cZDcjJC1jK7NSjzHgcQUES1QyMLcsZ4v46N+6eeVZ/SAiGVsc5I7
-	 SUV23tC2a8zRg==
+	b=hWI/Fi4cHHU97E+Us3UEjdk28loRMIZCK9tKLGak7LC0jeO1ncqEpJQRRIXe16QeT
+	 wCQn6ptnP2ZjdyGNnnCr71Qz1tWGT8k81K/r5NCGGJrDtMDMZFtNWA+gVyhNeI3S1u
+	 MvMKySD9jrduVLlkMnCGeCKTzLmVRLSBUFM+C9Vw8YJbPLBAU6V8QUi4uz2IIF1ktd
+	 Zj1cF2d6I4zDUe2dweNMzU5emxe0Rizkud1o4XkLqQMHpOIVrHX/lIWa7+Ivp7fINF
+	 Vwi9IJ+QAsF+QM64rT4O1Fzm8jSov1llwaydVwf3Guqwlet0lHeSdm4blZKV0yTXiV
+	 Ckmoj3F+sZuug==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jakob Riemenschneider <riemenschneiderjakob@gmail.com>,
-	Antheas Kapenekakis <antheas@antheas.dev>,
+Cc: Yicong Yang <yang.yicong@picoheart.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 082/844] ACPI: x86: s2idle: Invoke Microsoft _DSM Function 9 (Turn On Display)
-Date: Sat, 28 Feb 2026 12:19:55 -0500
-Message-ID: <20260228173244.1509663-83-sashal@kernel.org>
+Subject: [PATCH 6.19 083/844] ACPI: scan: Use async schedule function in acpi_scan_clear_dep_fn()
+Date: Sat, 28 Feb 2026 12:19:56 -0500
+Message-ID: <20260228173244.1509663-84-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,20 +71,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,antheas.dev,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-220161-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220160-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -93,83 +91,141 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,antheas.dev:email]
-X-Rspamd-Queue-Id: 6240A1C5252
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,picoheart.com:email,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 9A4FE1C553F
 X-Rspamd-Action: no action
 
-From: Jakob Riemenschneider <riemenschneiderjakob@gmail.com>
+From: Yicong Yang <yang.yicong@picoheart.com>
 
-[ Upstream commit 229ecbaac6b31f89c554b77eb407377a5eade7d4 ]
+[ Upstream commit 7cf28b3797a81b616bb7eb3e90cf131afc452919 ]
 
-Windows 11, version 22H2 introduced a new function index (Function 9) to
-the Microsoft LPS0 _DSM, titled "Turn On Display Notification".
+The device object rescan in acpi_scan_clear_dep_fn() is scheduled on a
+system workqueue which is not guaranteed to be finished before entering
+userspace. This may cause some key devices to be missing when userspace
+init task tries to find them. Two issues observed on RISCV platforms:
 
-According to Microsoft documentation, this function signals to the system
-firmware that the OS intends to turn on the display when exiting Modern
-Standby. This allows the firmware to release Power Limits (PLx) earlier.
+ - Kernel panic due to userspace init cannot have an opened
+   console.
 
-Crucially, this patch fixes a functional issue observed on the Lenovo Yoga
-Slim 7i Aura (15ILL9), where system fans and keyboard backlights fail to
-resume after suspend. Investigation linked shows the EC on this device
-turns off these components during sleep but requires the Function 9
-notification to wake them up again.
+   The console device scanning is queued by acpi_scan_clear_dep_queue()
+   and not finished by the time userspace init process running, thus by
+   the time userspace init runs, no console is present.
 
-This patch defines the new function index (ACPI_MS_TURN_ON_DISPLAY) and
-invokes it in acpi_s2idle_restore_early_lps0(). The execution order is
-updated to match the logic of an "intent" signal:
+ - Entering rescue shell due to the lack of root devices (PCIe nvme in
+   our case).
 
- 1. LPS0 Exit (Function 6)
- 2. Turn On Display Intent (Function 9)
- 3. Modern Standby Exit (Function 8)
- 4. Screen On (Function 4)
+   Same reason as above, the PCIe host bridge scanning is queued on
+   a system workqueue and finished after init process runs.
 
-Invoking Function 9 before the Modern Standby Exit ensures the firmware
-has time to restore power rails and functionality (like fans) before the
-software fully exits the sleep state.
+The reason is because both devices (console, PCIe host bridge) depend on
+riscv-aplic irqchip to serve their interrupts (console's wired interrupt
+and PCI's INTx interrupts). In order to keep the dependency, these
+devices are scanned and created after initializing riscv-aplic. The
+riscv-aplic is initialized in device_initcall() and a device scan work
+is queued via acpi_scan_clear_dep_queue(), which is close to the time
+userspace init process is run. Since system_dfl_wq is used in
+acpi_scan_clear_dep_queue() with no synchronization, the issues will
+happen if userspace init runs before these devices are ready.
 
-Link: https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/modern-standby-firmware-notifications#turn-on-display-notification-function-9
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220505
-Suggested-by: Antheas Kapenekakis <antheas@antheas.dev>
-Signed-off-by: Jakob Riemenschneider <riemenschneiderjakob@gmail.com>
-Link: https://patch.msgid.link/20260127200121.1292216-1-riemenschneiderjakob@gmail.com
+The solution is to wait for the queued work to complete before entering
+userspace init. One possible way would be to use a dedicated workqueue
+instead of system_dfl_wq, and explicitly flush it somewhere in the
+initcall stage before entering userspace. Another way is to use
+async_schedule_dev_nocall() for scanning these devices. It's designed
+for asynchronous initialization and will work in the same way as before
+because it's using a dedicated unbound workqueue as well, but the kernel
+init code calls async_synchronize_full() right before entering userspace
+init which will wait for the work to complete.
+
+Compared to a dedicated workqueue, the second approach is simpler
+because the async schedule framework takes care of all of the details.
+The ACPI code only needs to focus on its job. A dedicated workqueue for
+this could also be redundant because some platforms don't need
+acpi_scan_clear_dep_queue() for their device scanning.
+
+Signed-off-by: Yicong Yang <yang.yicong@picoheart.com>
+[ rjw: Subject adjustment, changelog edits ]
+Link: https://patch.msgid.link/20260128132848.93638-1-yang.yicong@picoheart.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/s2idle.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/acpi/scan.c | 41 +++++++++++++++--------------------------
+ 1 file changed, 15 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-index cc3c83e4cc23b..2189330ffc6d3 100644
---- a/drivers/acpi/x86/s2idle.c
-+++ b/drivers/acpi/x86/s2idle.c
-@@ -49,6 +49,7 @@ static const struct acpi_device_id lps0_device_ids[] = {
- #define ACPI_LPS0_EXIT		6
- #define ACPI_LPS0_MS_ENTRY      7
- #define ACPI_LPS0_MS_EXIT       8
-+#define ACPI_MS_TURN_ON_DISPLAY 9
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 416d87f9bd107..b78f6be2f9468 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -5,6 +5,7 @@
  
- /* AMD */
- #define ACPI_LPS0_DSM_UUID_AMD      "e3f32452-febc-43ce-9039-932122d37721"
-@@ -356,6 +357,8 @@ static const char *acpi_sleep_dsm_state_to_str(unsigned int state)
- 			return "lps0 ms entry";
- 		case ACPI_LPS0_MS_EXIT:
- 			return "lps0 ms exit";
-+		case ACPI_MS_TURN_ON_DISPLAY:
-+			return "lps0 ms turn on display";
- 		}
- 	} else {
- 		switch (state) {
-@@ -617,6 +620,9 @@ static void acpi_s2idle_restore_early_lps0(void)
- 	if (lps0_dsm_func_mask_microsoft > 0) {
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-+		/* Intent to turn on display */
-+		acpi_sleep_run_lps0_dsm(ACPI_MS_TURN_ON_DISPLAY,
-+				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
- 		/* Modern Standby exit */
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+ #define pr_fmt(fmt) "ACPI: " fmt
+ 
++#include <linux/async.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/slab.h>
+@@ -2360,46 +2361,34 @@ static int acpi_dev_get_next_consumer_dev_cb(struct acpi_dep_data *dep, void *da
+ 	return 0;
+ }
+ 
+-struct acpi_scan_clear_dep_work {
+-	struct work_struct work;
+-	struct acpi_device *adev;
+-};
+-
+-static void acpi_scan_clear_dep_fn(struct work_struct *work)
++static void acpi_scan_clear_dep_fn(void *dev, async_cookie_t cookie)
+ {
+-	struct acpi_scan_clear_dep_work *cdw;
+-
+-	cdw = container_of(work, struct acpi_scan_clear_dep_work, work);
++	struct acpi_device *adev = to_acpi_device(dev);
+ 
+ 	acpi_scan_lock_acquire();
+-	acpi_bus_attach(cdw->adev, (void *)true);
++	acpi_bus_attach(adev, (void *)true);
+ 	acpi_scan_lock_release();
+ 
+-	acpi_dev_put(cdw->adev);
+-	kfree(cdw);
++	acpi_dev_put(adev);
+ }
+ 
+ static bool acpi_scan_clear_dep_queue(struct acpi_device *adev)
+ {
+-	struct acpi_scan_clear_dep_work *cdw;
+-
+ 	if (adev->dep_unmet)
+ 		return false;
+ 
+-	cdw = kmalloc(sizeof(*cdw), GFP_KERNEL);
+-	if (!cdw)
+-		return false;
+-
+-	cdw->adev = adev;
+-	INIT_WORK(&cdw->work, acpi_scan_clear_dep_fn);
+ 	/*
+-	 * Since the work function may block on the lock until the entire
+-	 * initial enumeration of devices is complete, put it into the unbound
+-	 * workqueue.
++	 * Async schedule the deferred acpi_scan_clear_dep_fn() since:
++	 * - acpi_bus_attach() needs to hold acpi_scan_lock which cannot
++	 *   be acquired under acpi_dep_list_lock (held here)
++	 * - the deferred work at boot stage is ensured to be finished
++	 *   before userspace init task by the async_synchronize_full()
++	 *   barrier
++	 *
++	 * Use _nocall variant since it'll return on failure instead of
++	 * run the function synchronously.
+ 	 */
+-	queue_work(system_dfl_wq, &cdw->work);
+-
+-	return true;
++	return async_schedule_dev_nocall(acpi_scan_clear_dep_fn, &adev->dev);
+ }
+ 
+ static void acpi_scan_delete_dep_data(struct acpi_dep_data *dep)
 -- 
 2.51.0
 
