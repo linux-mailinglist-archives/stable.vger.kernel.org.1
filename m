@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-220365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220366-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPavKpY4o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220365-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:48:54 +0100
+	id mKveBcAzo2mX+QQAu9opvQ
+	(envelope-from <stable+bounces-220366-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:28:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C2D1C648A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:48:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC59E1C5D38
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:28:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D5AA931444D0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:17:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 08D9F30BDCD9
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BDF480331;
-	Sat, 28 Feb 2026 17:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F973A2AFA;
+	Sat, 28 Feb 2026 17:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WbyTYbKq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MeTGDh8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F823A126A;
-	Sat, 28 Feb 2026 17:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC583A2AF2;
+	Sat, 28 Feb 2026 17:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300262; cv=none; b=ezNnIx8FS4rmpHnTi+wzcPTQfjLfnAmKbhAuWTFdFF0oOohCaghOMVSz1vtckvG5zOcICqqG/Uy8s8Z0pZKN3gIc+EOwGg8EOUFWMmAsZAUAXxNMShSdCfLse9v4r/SPCVJ6tKhODAS6x2glHNqzPxDlaYCSmtzNHw1IdqEGJiI=
+	t=1772300263; cv=none; b=WaCBH7PRkvYGp2vc8vvsXb6jfLYZEm8HWGjCvYhfkxL7M09Eq1TM2f6Gds+RFQFX5ZGT4i4JT5+dkCg2TKdu0nCqah9jmStnsux6+OXE2YGZXF7Attsc0k5Z1CWSTGoCVilGOx4Iq5hjCaglo9HxuDpes1mzt2zaAPh2zPKlboE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300262; c=relaxed/simple;
-	bh=FZbg55rE1QtyCEP+zmNsooQMQIyxlLzDzWk3m6u9kuc=;
+	s=arc-20240116; t=1772300263; c=relaxed/simple;
+	bh=4Cwt2EojoRzLmJ1xvBNGTc8dzSl8uMY6zNPA2+D+51U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etGMm8vCAqsbCCBObpm/Z5te+Ss4eke821FH94aQZrF5CkK/LW+q0A/ncMuqWZ7P3X9N4zuJTzAQ0e/RJ+f5kqBcbj0hX5p2wLROGAHke98pJpTuqkX8JfQYloXwj9ku2U+isZZwhoXyeDis7614jOHkBHDLUOcLDdFEOBca2cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WbyTYbKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2BCC116D0;
-	Sat, 28 Feb 2026 17:37:41 +0000 (UTC)
+	 MIME-Version; b=JK4C+Q5He3UDA2ZY8ErViItGs6d1Z5r8tZLHdEgXTCw6zg6GW3JVcsfvqYBhDO0zINsPyaumhi5wpPQHfjLSV1yma5fOHsVQsMDB3VurzYwgBeoPMSggDVA26/v6Krgd5vtLolqv/2U+ixUhvTlmoK8J+FIlUO+/SVYd4BiubBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MeTGDh8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1B8C116D0;
+	Sat, 28 Feb 2026 17:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300261;
-	bh=FZbg55rE1QtyCEP+zmNsooQMQIyxlLzDzWk3m6u9kuc=;
+	s=k20201202; t=1772300262;
+	bh=4Cwt2EojoRzLmJ1xvBNGTc8dzSl8uMY6zNPA2+D+51U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WbyTYbKqsWyLpMsu1glt9sr2+sfgaY/5xOYWo7OrpjP2Gk188u6eBuk530ZjMX5k3
-	 a72cqSQXHnrN6WVWLiApiIYSQhTE1CfyNIL5/AF5IMimwQmjZ/Zxb+aJ7kYz2xCXfz
-	 C7HucETBuq8OYtsVsRhLX1iCATnsX6w9sVEqnBPA/yEV6qBanQp5/HqKdH4POI9FS+
-	 1f2UnFYbiEnSYGjVEZTVuBM5RuJNPP/nlHaH2OfhyD3+JyIAfR5Mr4UZMdbpKAX5Ij
-	 3zye576bIYvaiZDj/wcMGa+WouQW62/ItZ49NOaD3WK5vnDTXKFm6FVS7MqAhtowh5
-	 5MxCHBE5M/rWQ==
+	b=MeTGDh8fZ1jJx9FmX1CbUJ5SELOk54xMy5Qu4Haam/XiBnw79iOu0z0rygBF9ojEL
+	 i/z8u3qfRpQnWDB1d6i8LnNCwxF6GQHniXcXnnfarBaocHfNKjRl/6D/1a73vv13pY
+	 8Vk0c9QtOOpyesdi2jhg7MEoV3IaKg09yc+sr0NGrPT+WgqS5nDxvtrDqN8FLCHjyh
+	 paI4UNBUkPlM1cZ6fgcUjnHd7MX3zhPdsYwh327Atulop4+jXvqdKYilMRAp6+GAWo
+	 /LpvTuJtNP50Py64/u5juZ3d2iZ5zCmhkj79MLfiuHUnMPRuSCApvVg4ZYJlmefolP
+	 qxZoWE+6bCMOw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Li Chen <me@linux.beauty>,
+Cc: Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
 	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 287/844] ext4: mark group add fast-commit ineligible
-Date: Sat, 28 Feb 2026 12:23:20 -0500
-Message-ID: <20260228173244.1509663-288-sashal@kernel.org>
+Subject: [PATCH 6.19 288/844] ext4: move ext4_percpu_param_init() before ext4_mb_init()
+Date: Sat, 28 Feb 2026 12:23:21 -0500
+Message-ID: <20260228173244.1509663-289-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,94 +69,130 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220365-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220366-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D0C2D1C648A
+X-Rspamd-Queue-Id: AC59E1C5D38
 X-Rspamd-Action: no action
 
-From: Li Chen <me@linux.beauty>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 89b4336fd5ec78f51f9d3a1d100f3ffa3228e604 ]
+[ Upstream commit 270564513489d98b721a1e4a10017978d5213bff ]
 
-Fast commits only log operations that have dedicated replay support.
-Online resize via EXT4_IOC_GROUP_ADD updates the superblock and group
-descriptor metadata without going through the fast commit tracking
-paths.
-In practice these operations are rare and usually followed by further
-updates, but mixing them into a fast commit makes the overall
-semantics harder to reason about and risks replay gaps if new call
-sites appear.
+When running `kvm-xfstests -c ext4/1k -C 1 generic/383` with the
+`DOUBLE_CHECK` macro defined, the following panic is triggered:
 
-Teach ext4 to mark the filesystem fast-commit ineligible when
-ext4_ioctl_group_add() adds new block groups.
-This forces those transactions to fall back to a full commit,
-ensuring that the filesystem geometry updates are captured by the
-normal journal rather than partially encoded in fast commit TLVs.
-This change should not affect common workloads but makes online
-resize via GROUP_ADD safer and easier to reason about under fast
-commit.
+==================================================================
+EXT4-fs error (device vdc): ext4_validate_block_bitmap:423:
+                        comm mount: bg 0: bad block bitmap checksum
+BUG: unable to handle page fault for address: ff110000fa2cc000
+PGD 3e01067 P4D 3e02067 PUD 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 0 UID: 0 PID: 2386 Comm: mount Tainted: G W
+                        6.18.0-gba65a4e7120a-dirty #1152 PREEMPT(none)
+RIP: 0010:percpu_counter_add_batch+0x13/0xa0
+Call Trace:
+ <TASK>
+ ext4_mark_group_bitmap_corrupted+0xcb/0xe0
+ ext4_validate_block_bitmap+0x2a1/0x2f0
+ ext4_read_block_bitmap+0x33/0x50
+ mb_group_bb_bitmap_alloc+0x33/0x80
+ ext4_mb_add_groupinfo+0x190/0x250
+ ext4_mb_init_backend+0x87/0x290
+ ext4_mb_init+0x456/0x640
+ __ext4_fill_super+0x1072/0x1680
+ ext4_fill_super+0xd3/0x280
+ get_tree_bdev_flags+0x132/0x1d0
+ vfs_get_tree+0x29/0xd0
+ vfs_cmd_create+0x59/0xe0
+ __do_sys_fsconfig+0x4f6/0x6b0
+ do_syscall_64+0x50/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+==================================================================
 
-Testing:
-1. prepare:
-    dd if=/dev/zero of=/root/fc_resize.img bs=1M count=0 seek=256
-    mkfs.ext4 -O fast_commit -F /root/fc_resize.img
-    mkdir -p /mnt/fc_resize && mount -t ext4 -o loop /root/fc_resize.img /mnt/fc_resize
-2. Ran a helper that issues EXT4_IOC_GROUP_ADD on the mounted
-   filesystem and checked the resize ineligible reason:
-    ./group_add_helper /mnt/fc_resize
-    cat /proc/fs/ext4/loop0/fc_info
-   shows "Resize": > 0.
-3. Fsynced a file on the resized filesystem and verified that the fast
-   commit stats report at least one ineligible commit:
-    touch /mnt/fc_resize/file
-    /root/fsync_file /mnt/fc_resize/file
-    sync
-    cat /proc/fs/ext4/loop0/fc_info
-   shows fc stats ineligible > 0.
+This issue can be reproduced using the following commands:
+        mkfs.ext4 -F -q -b 1024 /dev/sda 5G
+        tune2fs -O quota,project /dev/sda
+        mount /dev/sda /tmp/test
 
-Signed-off-by: Li Chen <me@linux.beauty>
-Link: https://patch.msgid.link/20251211115146.897420-5-me@linux.beauty
+With DOUBLE_CHECK defined, mb_group_bb_bitmap_alloc() reads
+and validates the block bitmap. When the validation fails,
+ext4_mark_group_bitmap_corrupted() attempts to update
+sbi->s_freeclusters_counter. However, this percpu_counter has not been
+initialized yet at this point, which leads to the panic described above.
+
+Fix this by moving the execution of ext4_percpu_param_init() to occur
+before ext4_mb_init(), ensuring the per-CPU counters are initialized
+before they are used.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20251209133116.731350-1-libaokun@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ioctl.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/super.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
-index 7ce0fc40aec2f..5109b005e0286 100644
---- a/fs/ext4/ioctl.c
-+++ b/fs/ext4/ioctl.c
-@@ -966,6 +966,7 @@ static long ext4_ioctl_group_add(struct file *file,
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 87205660c5d02..5c2e931d8a533 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5604,6 +5604,10 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 			clear_opt2(sb, MB_OPTIMIZE_SCAN);
+ 	}
  
- 	err = ext4_group_add(sb, input);
- 	if (EXT4_SB(sb)->s_journal) {
-+		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_RESIZE, NULL);
- 		jbd2_journal_lock_updates(EXT4_SB(sb)->s_journal);
- 		err2 = jbd2_journal_flush(EXT4_SB(sb)->s_journal, 0);
- 		jbd2_journal_unlock_updates(EXT4_SB(sb)->s_journal);
++	err = ext4_percpu_param_init(sbi);
++	if (err)
++		goto failed_mount5;
++
+ 	err = ext4_mb_init(sb);
+ 	if (err) {
+ 		ext4_msg(sb, KERN_ERR, "failed to initialize mballoc (%d)",
+@@ -5619,10 +5623,6 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 		sbi->s_journal->j_commit_callback =
+ 			ext4_journal_commit_callback;
+ 
+-	err = ext4_percpu_param_init(sbi);
+-	if (err)
+-		goto failed_mount6;
+-
+ 	if (ext4_has_feature_flex_bg(sb))
+ 		if (!ext4_fill_flex_info(sb)) {
+ 			ext4_msg(sb, KERN_ERR,
+@@ -5704,8 +5704,8 @@ failed_mount8: __maybe_unused
+ failed_mount6:
+ 	ext4_mb_release(sb);
+ 	ext4_flex_groups_free(sbi);
+-	ext4_percpu_param_destroy(sbi);
+ failed_mount5:
++	ext4_percpu_param_destroy(sbi);
+ 	ext4_ext_release(sb);
+ 	ext4_release_system_zone(sb);
+ failed_mount4a:
 -- 
 2.51.0
 
