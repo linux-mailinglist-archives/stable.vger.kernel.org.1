@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EA6KAjA0o2nP+QQAu9opvQ
-	(envelope-from <stable+bounces-220396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:08 +0100
+	id OEdhJBlIo2l//AQAu9opvQ
+	(envelope-from <stable+bounces-220397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:55:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943AC1C5DF5
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B001C1C7893
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:55:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AC27A3359D73
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:21:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C7998311F43B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1934C3AB445;
-	Sat, 28 Feb 2026 17:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DA6480964;
+	Sat, 28 Feb 2026 17:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVIlfmK1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r6RmttdN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCA53AB43B;
-	Sat, 28 Feb 2026 17:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9FF3AB45D;
+	Sat, 28 Feb 2026 17:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300288; cv=none; b=c/bzYksHblhAuXRba0wkTJJQDIMTwxnlAy0mBS4iI6XunifeWgu1tzhlC/vIpacEHzMvBA/AKwDBnZGgeS57iVtI9xf5AtuXPnnk38iEti9NMMqlqcfUvQMbRF4yeFoddcLGcXLcn4+nXBRwa+Vy8N+Jnkb16FSUtE8mtsOSZIY=
+	t=1772300289; cv=none; b=ezjSAoCycPOa/rp6/rol5KHh/i+UDYB9khlp4F1GYsdUl/xRBJslqS4DeIW7NUKYpQgJ5X6lCmE0dnoZkt6BCb8meG7HwNnJxRLMcGeWByL0yMeB7+58XaRwOzyghzWCmEaNjRY7wezIfGOZ6vveXIn+znkHiVMoux5HG1qQi2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300288; c=relaxed/simple;
-	bh=+FuiE37p1GIm7r8cnuNB6Z3inMMRPCWdZVfvrWDVax0=;
+	s=arc-20240116; t=1772300289; c=relaxed/simple;
+	bh=eRepZaOczSFY2csbs4wBiKgRnSPTFjNzmPSi9otYBP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QTMSD1xONsKwLVuxlxfKhEtYXX/xhjfGROav+jtxKWWnrxFHIhurl12wOBb6TuHgTWWSlJ2TT1pZhU55r0YUsYs2gFFys8M3p5RCPfgoxrv2aHQd/XYS6RdNJpdzk4vRoZwUou6Rz1KFbX+RRyFGU6JbMezULdfPrgZKfi34VRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVIlfmK1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A1CC116D0;
+	 MIME-Version; b=Dsd+6IXkk9ev56hQI3VnBYbtiYNdeMBanusVPH6/Lp8W7JqJB9xEBmC5CVhBdeVVxeJeysAqPAeNoTHlUoUZZxyit5dmv0iGow2GhkBhYMtvdvWTbir6aaqOPljFQE4SBVATv5rL04VWIo5s6EyeyH9OWJZyu2p3H9Otq663jN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r6RmttdN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0045DC19423;
 	Sat, 28 Feb 2026 17:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300288;
-	bh=+FuiE37p1GIm7r8cnuNB6Z3inMMRPCWdZVfvrWDVax0=;
+	s=k20201202; t=1772300289;
+	bh=eRepZaOczSFY2csbs4wBiKgRnSPTFjNzmPSi9otYBP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rVIlfmK1/km97MXnmPUK7MlzBlJDwZBhWzegXScOacqMJCYkpejFYHtmXYNCQw+bn
-	 usi8pnu17Zx526bOeEynuRvGz7J1DFbhmOlzJZWsWyJSjFNndW3FE3hfxCiXrPHaWe
-	 8EP/BGb6UrAx1uhlQznO8JW23FCEuNTwqSbjSaWIWK7OrwnJRXP9NHvRZHCX+2RaUe
-	 meZEKX/cdBpB4fUI0VHUtXaU09ukttiyVS6UyQBGXjSdAEOGV2Y/L2eHO82awQPWj9
-	 dbW2B4e4E+f8YOahdJY10hl92XJFmuSJdd197Og+bkog8vKf61YGIPsj2Q3SJsi/EF
-	 zZG1Dpuc4dfdw==
+	b=r6RmttdN08BWSBJSNymbVQDKWP2+3lO8U7c/R5uIQQvJNdSh41APDAW35BIt7UB0G
+	 LjoCV/Ni0aQdXMo29NCpA8uK4d5C3fV1PjbmB1Lb8TJ2qzNsbMOdSxjzvMx195u/qI
+	 q7P/Yp0eL5pZzKJJhaY1KEXA0NnQON5vno/0bfQubunFPqZYZGnknIYwzG7dYeDki+
+	 qVKSLFY/JPLyXmZumiqSe4P7Kcy5MhJm3P4dW7Otth2z0tXl4vfoyjEkbnTSnRnfxx
+	 /carbagUWThn4Hyn8CV8/zbAqQRFBj9G89C2SOjq0ySiO9TWXwgDxQ/zotdfwEr1k3
+	 a+iG+PQDQmjAQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Stefan=20S=C3=B8rensen?= <ssorensen@roku.com>,
+Cc: Techie Ernie <techieernie@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 317/844] Bluetooth: hci_conn: Set link_policy on incoming ACL connections
-Date: Sat, 28 Feb 2026 12:23:50 -0500
-Message-ID: <20260228173244.1509663-318-sashal@kernel.org>
+Subject: [PATCH 6.19 318/844] Bluetooth: btusb: Add USB ID 0489:e112 for Realtek 8851BE
+Date: Sat, 28 Feb 2026 12:23:51 -0500
+Message-ID: <20260228173244.1509663-319-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -62,82 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220396-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_CC(0.00)[gmail.com,intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220397-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 943AC1C5DF5
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: B001C1C7893
 X-Rspamd-Action: no action
 
-From: Stefan Sørensen <ssorensen@roku.com>
+From: Techie Ernie <techieernie@gmail.com>
 
-[ Upstream commit 4bb091013ab0f2edfed3f58bebe658a798cbcc4d ]
+[ Upstream commit e07094a51ad8faf98ea64320799ce550828e97cd ]
 
-The connection link policy is only set when establishing an outgoing
-ACL connection causing connection idle modes not to be available on
-incoming connections. Move the setting of the link policy to the
-creation of the connection so all ACL connection will use the link
-policy set on the HCI device.
+Add USB ID 0489:e112 for the Realtek 8851BE Bluetooth adapter.
+Without this entry, the device is not handled correctly by btusb and Bluetooth fails to initialise.
+Adding the ID enables proper Realtek initialization for Bluetooth to work on various motherboards using this Bluetooth adapter.
 
-Signed-off-by: Stefan Sørensen <ssorensen@roku.com>
+The device identifies as:
+  Bus 001 Device XXX: ID 0489:e112 Foxconn / Hon Hai Bluetooth Radio
+
+Tested on Realtek 8851BE. Bluetooth works after this change is made.
+
+Signed-off-by: Techie Ernie <techieernie@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 1 +
- net/bluetooth/hci_sync.c | 2 --
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 5a4374ccf8e84..98f0461b3dd7d 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1002,6 +1002,7 @@ static struct hci_conn *__hci_conn_add(struct hci_dev *hdev, int type,
- 	switch (type) {
- 	case ACL_LINK:
- 		conn->pkt_type = hdev->pkt_type & ACL_PTYPE_MASK;
-+		conn->link_policy = hdev->link_policy;
- 		conn->mtu = hdev->acl_mtu;
- 		break;
- 	case LE_LINK:
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index cbc3a75d73262..334eb4376a266 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6897,8 +6897,6 @@ static int hci_acl_create_conn_sync(struct hci_dev *hdev, void *data)
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index ef08567a7487c..66e266e93cc12 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -521,6 +521,8 @@ static const struct usb_device_id quirks_table[] = {
+ 	{ USB_DEVICE(0x0bda, 0xb850), .driver_info = BTUSB_REALTEK },
+ 	{ USB_DEVICE(0x13d3, 0x3600), .driver_info = BTUSB_REALTEK },
+ 	{ USB_DEVICE(0x13d3, 0x3601), .driver_info = BTUSB_REALTEK },
++	{ USB_DEVICE(0x0489, 0xe112), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
  
- 	conn->attempt++;
- 
--	conn->link_policy = hdev->link_policy;
--
- 	memset(&cp, 0, sizeof(cp));
- 	bacpy(&cp.bdaddr, &conn->dst);
- 	cp.pscan_rep_mode = 0x02;
+ 	/* Realtek 8851BU Bluetooth devices */
+ 	{ USB_DEVICE(0x3625, 0x010b), .driver_info = BTUSB_REALTEK |
 -- 
 2.51.0
 
