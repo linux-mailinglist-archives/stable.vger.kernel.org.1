@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Hu4Nosto2me+AQAu9opvQ
-	(envelope-from <stable+bounces-220185-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:01:47 +0100
+	id yHLVNdUto2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:03:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 990A91C5563
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:01:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DB61C55E0
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:03:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AE3C530EE49B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:50:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C662731A782E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F344C0425;
-	Sat, 28 Feb 2026 17:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BED04C0435;
+	Sat, 28 Feb 2026 17:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LgHiC//i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hGAY53nJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F134C0414;
-	Sat, 28 Feb 2026 17:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA904C042E;
+	Sat, 28 Feb 2026 17:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300092; cv=none; b=Oq/ww5WaxpP8ZrU8xA+0stFiRNXGxSsXmgSJfPg9oGyRQUCmfb5icnZErLiyFXotZOyO1sdl1Cgbgpmidm1Qa/Y0m1aegL1OI/ZP6+FxErUl7QVCEtarTu6a2wkhwDzweAjRBwSG6Qx5BiA+xL3KJXpciFr6zBN9gnwybOhZMjg=
+	t=1772300093; cv=none; b=E9hEiDsalss57+He3i7+xy1+MHKK+tQGnZsnWHEPDE/gV702FPOen7+PLncpP2bJ6hFo1gpriJqu7DC53nAGojWlOJwhCCh03puv9Pt0fyTRCQMk08y2alsCxNPL+IJxdAA7TXifQkdzk6SsiZEnhrlRPu89GT0Zyl8AEhQaHEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300092; c=relaxed/simple;
-	bh=5OS9MRJeSPsiwJmaYcDdz4TVLeyQSuvgfYTBYkHqbjs=;
+	s=arc-20240116; t=1772300093; c=relaxed/simple;
+	bh=Ix2tqAtDfLsARaykkaLnpch4kUaJMJ6GE7Rk6SrSrnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ssYT1MMn8fyInCuJZRUwkFUKVPVOVwpFKBOzA+YTk2upI+pqC8krYIPsxtaPgVPXKXMG45JBXFF5q820QaDuryyC61kEJXq1DtbUZ7klP3ynpfGSPat8j5xIkamEgxVwq/fAiNkljho4ACfoZhpd5guWmGGaW8WD8gIOZkIq4D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LgHiC//i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7CAC116D0;
-	Sat, 28 Feb 2026 17:34:51 +0000 (UTC)
+	 MIME-Version; b=qYGMAtYyzEji5PXpoCdU4WDl3F7RNovIXCaueQEmKR/GvfFkwd8G3JKCXD90023SpynJokv7mR5FqeHMNSIr7+HnQME2FemW77389pW3qcRwkHlnDn40uNyN+SbcKRlXeqQzwxqUOoi8ZrrGAWP11bHzPlN2Ws29qonB6VD3Yjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hGAY53nJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6933BC19423;
+	Sat, 28 Feb 2026 17:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300092;
-	bh=5OS9MRJeSPsiwJmaYcDdz4TVLeyQSuvgfYTBYkHqbjs=;
+	s=k20201202; t=1772300093;
+	bh=Ix2tqAtDfLsARaykkaLnpch4kUaJMJ6GE7Rk6SrSrnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgHiC//iYb3UsGI9nuGzvQCZ/F7vlwqKRlVvfWgJDPza9x9vulA/MNy3F9lqabmcj
-	 s2VN778zxhwLG1cJt2Xoq3HoEKzcvHMl/CdDHmy6NpEHmycU71qZy1U0QF4F8H2DD2
-	 1/sxsZ7bLaOQm5tte2VVs4lDV4uzXK/aEJXOIVCFJ7kFjuzSsqqKmM2sMv5ivbJZE4
-	 zvWeWofdjcx7HNa1AUn6BhwU2Id8VTEImK2hd9wyBtKKWDT4wkmFbCy0u/CjqO7PCQ
-	 4jB3SI/7103X5h4Ej2VmTvmJHfBYB1FkSegfy4jaqnyvbabHxV47rx8rd6UUNQFzyf
-	 vlfqmdy/dJexA==
+	b=hGAY53nJKJZ+plk62JEKoWdbtIjfpDcGkAwSl6+0uWj7UyncoRveT2iTZqUCn6zvc
+	 8lBl+jvhgZ/TiO7Cr23dbURI+txD5WOrbEXEluDd6rhtUUbyeAEMgDlPkBqXU+xHcx
+	 IlzANQ26IGYgRBXBmUquaj6cFYAZbgzGgHa7pB8sh6StHl01efLgyJL8CwYjm9HRs+
+	 ns+apv45jhYgYOSLbQHMG4IymqKBoxJ+3uwaqF+t2xJpNO3KNLDD3iPse/ZezikHXS
+	 mIYPcDkNs/N4JHkzZCPUXSpi+5pT0TtyFO1BCLFwaOCLSChddfU3mxHCInh41viBL/
+	 EINJ0Q/X0WC9A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
+Cc: Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 107/844] bpftool: Fix dependencies for static build
-Date: Sat, 28 Feb 2026 12:20:20 -0500
-Message-ID: <20260228173244.1509663-108-sashal@kernel.org>
+Subject: [PATCH 6.19 108/844] crypto: hisilicon/qm - move the barrier before writing to the mailbox register
+Date: Sat, 28 Feb 2026 12:20:21 -0500
+Message-ID: <20260228173244.1509663-109-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,18 +71,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220185-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220186-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -92,54 +92,46 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 990A91C5563
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email]
+X-Rspamd-Queue-Id: 49DB61C55E0
 X-Rspamd-Action: no action
 
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit 08a7491843224f8b96518fbe70d9e48163046054 ]
+[ Upstream commit ebf35d8f9368816c930f5d70783a72716fab5e19 ]
 
-When building selftests/bpf with EXTRA_LDFLAGS=-static the follwoing
-error happens:
+Before sending the data via the mailbox to the hardware, to ensure
+that the data accessed by the hardware is the most up-to-date,
+a write barrier should be added before writing to the mailbox register.
+The current memory barrier is placed after writing to the register,
+the barrier order should be modified to be before writing to the register.
 
-  LINK    /ws/linux/tools/testing/selftests/bpf/tools/build/bpftool/bootstrap/bpftool
-/usr/bin/x86_64-linux-gnu-ld.bfd: /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libcrypto.a(libcrypto-lib-dso_dlfcn.o): in function `dlfcn_globallookup':
-   [...]
-/usr/bin/x86_64-linux-gnu-ld.bfd: /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libcrypto.a(libcrypto-lib-c_zlib.o): in function `zlib_oneshot_expand_block':
-(.text+0xc64): undefined reference to `uncompress'
-/usr/bin/x86_64-linux-gnu-ld.bfd: /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libcrypto.a(libcrypto-lib-c_zlib.o): in function `zlib_oneshot_compress_block':
-(.text+0xce4): undefined reference to `compress'
-collect2: error: ld returned 1 exit status
-make[1]: *** [Makefile:252: /ws/linux/tools/testing/selftests/bpf/tools/build/bpftool/bootstrap/bpftool] Error 1
-make: *** [Makefile:327: /ws/linux/tools/testing/selftests/bpf/tools/sbin/bpftool] Error 2
-make: *** Waiting for unfinished jobs....
-
-This is caused by wrong order of dependencies in the Makefile. Fix it.
-
-Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20260128211255.376933-1-ihor.solodrai@linux.dev
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/hisilicon/qm.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/bpf/bpftool/Makefile b/tools/bpf/bpftool/Makefile
-index 5442073a2e428..519ea5cb8ab1c 100644
---- a/tools/bpf/bpftool/Makefile
-+++ b/tools/bpf/bpftool/Makefile
-@@ -130,8 +130,8 @@ include $(FEATURES_DUMP)
- endif
- endif
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index b8e59f99f7007..cf58d0d01b199 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -609,9 +609,13 @@ static void qm_mb_write(struct hisi_qm *qm, const void *src)
+ 	}
  
--LIBS = $(LIBBPF) -lelf -lz -lcrypto
--LIBS_BOOTSTRAP = $(LIBBPF_BOOTSTRAP) -lelf -lz -lcrypto
-+LIBS = $(LIBBPF) -lelf -lcrypto -lz
-+LIBS_BOOTSTRAP = $(LIBBPF_BOOTSTRAP) -lelf -lcrypto -lz
- 
- ifeq ($(feature-libelf-zstd),1)
- LIBS += -lzstd
+ #if IS_ENABLED(CONFIG_ARM64)
++	/*
++	 * The dmb oshst instruction ensures that the data in the
++	 * mailbox is written before it is sent to the hardware.
++	 */
+ 	asm volatile("ldp %0, %1, %3\n"
+-		     "stp %0, %1, %2\n"
+ 		     "dmb oshst\n"
++		     "stp %0, %1, %2\n"
+ 		     : "=&r" (tmp0),
+ 		       "=&r" (tmp1),
+ 		       "+Q" (*((char __iomem *)fun_base))
 -- 
 2.51.0
 
