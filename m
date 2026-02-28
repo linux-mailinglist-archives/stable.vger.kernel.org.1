@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-220508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHSuNyQ5o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:51:16 +0100
+	id SLHLDVI6o2mU+gQAu9opvQ
+	(envelope-from <stable+bounces-220509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:56:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655E31C652C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:51:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0A11C66C7
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:56:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD4B5321A3C0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:39:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EBB1B325C8D6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41433CA783;
-	Sat, 28 Feb 2026 17:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0124481A90;
+	Sat, 28 Feb 2026 17:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fE90BElc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SztrSJAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AC63CA77A;
-	Sat, 28 Feb 2026 17:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12F93CA79F;
+	Sat, 28 Feb 2026 17:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300392; cv=none; b=IQEim4zs+7IfVRSNMuqvPlvMq66qXxYU9T+Si7sBubPJ8rOuXf8OxIioRc3R/Su3U2+j+K1byRqTw7JAFF4sfGGXmHUoOkICeus4A9kJLev45u4ISSZrwzmHRV/Q4YF/m9ioi+21ArTagTMCSKvPHKNbglMoDrmCC0COMYyNCIA=
+	t=1772300393; cv=none; b=mjdMDZmANoP6YcSaaVYvmqglUbqssd6unTbrgox3PmLz299Vtj4aIjwHFcXZIcVglFx8FTxxQxr2UQ3GXhbjf6JjUQ177frJeiQsKeUqVfHRpDsJld0eHElDLariDx7f373wI3/nI+UnwMGc9bJn2+jhFxIoS9PDxRIpb38wArA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300392; c=relaxed/simple;
-	bh=jGjwEs4qfs/Cs+UbuhuSh0oAOAqxAXQEo1nK2ljfwqk=;
+	s=arc-20240116; t=1772300393; c=relaxed/simple;
+	bh=8TGf0VU6GfG5Mi/G35xP1i+Vl1YCC2XhmyQds21Bc0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKey6zbZse9TwIsbcXki9zJvMTnBejhqwrBZ2x9EV+m//78wd4Oc1xvRGeKp1uXm5k5O1ikXpTA74HBNjtge8V1+Ye0n6m8IzBjTORs71XlN6t8oG3U0bcEJaW5v6UbGSTJCeiGFr/Uv54q9QFXhhTjr9ZF5N/5PjNz6j8AMCIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fE90BElc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D6FC19424;
-	Sat, 28 Feb 2026 17:39:51 +0000 (UTC)
+	 MIME-Version; b=PyHcv/o/qE5nfiGRL/AFpk8K9NxkP7cFXVDVQF1+uH7kK7QNxaR9clWHHSH2WwtfQgD8e4VkqOWmyAKbsYWlUi31RbOs+8Y6GSQgx3FmxJex2f/3TItanbuTpOeAHjqzhAR//Jir+uB3iSPb9DNOwUE2jL2ZtBC3wfHp7UxGDB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SztrSJAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEB0C19425;
+	Sat, 28 Feb 2026 17:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300392;
-	bh=jGjwEs4qfs/Cs+UbuhuSh0oAOAqxAXQEo1nK2ljfwqk=;
+	s=k20201202; t=1772300393;
+	bh=8TGf0VU6GfG5Mi/G35xP1i+Vl1YCC2XhmyQds21Bc0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fE90BElcAfb4gQFBobEV+N8sJjudJ91gAi8dDIKZMp53rQurjde4SBtFubiMusqdG
-	 zLuEpvE48NOKsJrcPCCNJSBzZAVwwQZJMV+PBfclbwagWNMJB+bkL5WDsE5ZeZkHls
-	 Cbqcq9uLHItoFr5jiR+lqpsdaEtkaGaUUFgIDVBgFCNDFoNGaR3+rkOk+ZC/3JQE1K
-	 LzQlnmrUsLj+oa0c5XgdGII5OGOCXc7e5raTta3fICi+hndCSfTkdVpaUjUCdTkX+8
-	 TmKPBKJntJ55gL2+QZeuQYoazoSx5esqbXfi7c/xtky/MVGJs4+BK4njSWZeZYCXKg
-	 romrPIvDzhf0Q==
+	b=SztrSJAA80ikq4QvDUS5tvIhnIrwUjq0RIqWkkcAQuD69VY7TFvc+hlXJXX+VgPOv
+	 JyR54nW1TqlWlvgItfjTVP5I1qMOtDb0mVIJlnUd9pnIDj3k9A6PP2A0C/9Ko2vGnH
+	 3bA1ShfTpo9N5VlrKTRovUO4c/D5+nvDwJpKwC3bcJl/MlsYcJBueQfNifkDPCzq7+
+	 Rg5VWXlR0Gr0yC8qW0Yt9Y9vcdHe/aO1waKwTlYhriIRKFWceEnmM4xd5+oBaM0zkm
+	 5FIc/Qi4HWe79G7UKgWrZluLX/ZbApOUYXzaIlCNSuc+l1Br26LRkQ60WXAGXCQ+/G
+	 9ua///FQ6a+fw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
+Cc: YiLing Chen <yi-lchen@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 429/844] ALSA: usb-audio: Update the number of packets properly at receiving
-Date: Sat, 28 Feb 2026 12:25:42 -0500
-Message-ID: <20260228173244.1509663-430-sashal@kernel.org>
+Subject: [PATCH 6.19 430/844] drm/amd/display: set enable_legacy_fast_update to false for DCN36
+Date: Sat, 28 Feb 2026 12:25:43 -0500
+Message-ID: <20260228173244.1509663-431-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,63 +70,64 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-220508-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220509-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 655E31C652C
+X-Rspamd-Queue-Id: BF0A11C66C7
 X-Rspamd-Action: no action
 
-From: Takashi Iwai <tiwai@suse.de>
+From: YiLing Chen <yi-lchen@amd.com>
 
-[ Upstream commit cf044e44190234a41a788de1cdbb6c21f4a52e1e ]
+[ Upstream commit d0728aee5090853d0b9982757f5fb1b13e2e2b27 ]
 
-At receiving the packets from the implicit feedback source, we didn't
-update ctx->packets field but only the ctx->packet_size[] data.
-In exceptional cases, this might lead to unexpectedly superfluous data
-transfer (although this won't happen usually due to the nature of USB
-isochronous transfer).  Fix it to update the field properly.
+[Why/How]
+Align the default value of the flag with DCN35/351.
 
-Link: https://patch.msgid.link/20260216141209.1849200-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: YiLing Chen <yi-lchen@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/endpoint.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/endpoint.c b/sound/usb/endpoint.c
-index 8f9313857ee9d..27ade2aa16f5a 100644
---- a/sound/usb/endpoint.c
-+++ b/sound/usb/endpoint.c
-@@ -481,6 +481,7 @@ int snd_usb_queue_pending_output_urbs(struct snd_usb_endpoint *ep,
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
+index 6469d5fe2e6d4..a1132102afde4 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
+@@ -769,7 +769,7 @@ static const struct dc_debug_options debug_defaults_drv = {
+ };
  
- 		/* copy over the length information */
- 		if (implicit_fb) {
-+			ctx->packets = packet->packets;
- 			for (i = 0; i < packet->packets; i++)
- 				ctx->packet_size[i] = packet->packet_size[i];
- 		}
+ static const struct dc_check_config config_defaults = {
+-	.enable_legacy_fast_update = true,
++	.enable_legacy_fast_update = false,
+ };
+ 
+ static const struct dc_panel_config panel_config_defaults = {
 -- 
 2.51.0
 
