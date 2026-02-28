@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-220885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220886-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECMEN95Fo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220885-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:45:34 +0100
+	id QF1+DP9Ho2l//AQAu9opvQ
+	(envelope-from <stable+bounces-220886-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:54:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E12D1C7556
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:45:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C891B1C784D
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0566334B8A73
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:37:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CEE433091662
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C116423563;
-	Sat, 28 Feb 2026 17:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2502342357B;
+	Sat, 28 Feb 2026 17:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eKQ6NWJv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CUtJrKE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D93C48C409;
-	Sat, 28 Feb 2026 17:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA859423573;
+	Sat, 28 Feb 2026 17:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300776; cv=none; b=OLYfR25pB+ALy1mmxvm7rhOfRpY4yF+ro4x4wI5MNM/gjUzFZHuZ3N9jXRIR6NSe598bh2UCXmGvCfs85T7Oh9cwOFFBY1GX8YGeadVYQIdGBQNlgOHDJhAOKqpg7Vtny47J+cEwrqSFtuRHKxg6FVXMBROoih/qABHVjHJ3LRE=
+	t=1772300776; cv=none; b=g6RvbWh4+jIyui0I61eq3JKnDzHG2pdLZU/fYgp0i7kJF29fUt4SE/RXwJQABQmxi5NjzvHudPTP2qwghq5+C9sRG1CwjzkXGGoXdT7TO4tbVbqh4JeZ6JEkeidrj26O6AM74T9ICc03XGf/fxF1L77r4sVz/OrbG3tjkwgF66Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300776; c=relaxed/simple;
-	bh=JjtGG2n/yeEkZ8iqF8FTMNX/ar1yKwTPTMTVOqLlhzg=;
+	bh=D22sXEeJMslmAAsbB8Dliwp+gkAeNSn++Ovxt/kE01Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOXI/W81DLFTvEzjxKNjR0PNtevjKX8/UZ5U8761fbt2mpdNDwig3hbGm2nSNcnhDn3r+3aaAx1Ja+Kd9whEYnQfY6lgN8Gywx+Xoiv5My9xSiKV7EZgjXt40ogz4Z6tvfMEt9tGglmR2AuGK+Oljhhd8Gzm30kCj2Ac1BFH6UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eKQ6NWJv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7170C19423;
-	Sat, 28 Feb 2026 17:46:14 +0000 (UTC)
+	 MIME-Version; b=bjmU2cqNZC3NqQBevN7o9IBdYPc4D8gBRTg1Q7Xm9lAl/RTOE4EtagbM4xFj+hXGsVKpqIFODwbEQIp1BRm8uE+zZ+o7tSXq/WthCKeWPeVA9l1DBu6rYLyil11MdAKmS6znaJydK+yujfwShSGWuZbegoTNiJjkCZ8QFrSd9XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CUtJrKE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB0BC116D0;
+	Sat, 28 Feb 2026 17:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300775;
-	bh=JjtGG2n/yeEkZ8iqF8FTMNX/ar1yKwTPTMTVOqLlhzg=;
+	s=k20201202; t=1772300776;
+	bh=D22sXEeJMslmAAsbB8Dliwp+gkAeNSn++Ovxt/kE01Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKQ6NWJvzuN/tf2Uvwsguy+oVWOhFEDH2JpwWOkcfnIjy/CcD4iKWY+4H4cvbMqAj
-	 qZcrGNmbUniqULiqzRGKdTrjEep7w2jJ729E33y97fjYm45g3/QrPRqr3tEkmy/m5b
-	 1YQf0Ih2BqVHe0F7dCQtvM/xy6LWOYfa/FxcmkhRkccZihOxFMBXAk0ehcZWcxqxEu
-	 WNgUtMYJUEKIsjTQ0d9DVeVe9ilM5i1igyn1+8EBzaziOEReDKWtvaxD20UT7u+rUm
-	 FXLAN1tsUHaR4JNO+ujvA2YxD3OlYYRdM2txGVqhVlSmxa+IYNTIrqADfKBbA3HrB9
-	 jGr1Eelh+E9yA==
+	b=CUtJrKE+98p4spnXgAAO5ukXYlN4SanPrPp1F6ezrqMj3vtdem6lEh8dAx8E4R2bC
+	 fhYzI69/tLGy1DMMOwdlNYB+q21/OWT7ylEAg6xkW9cftNZwyz6uTcoDY4lC5Ul4FK
+	 fFSRa5QcntePxhgJAa5KmjGMT7/PeQ38YxNlclRjrdAiLpK46JLhLe58rwrH/IWyhF
+	 E74oSr34LjVxBPIGz1JG9YN3td2+H88sO3sPb2OQCPVa69NOFjEbUy8crI02tL+hZp
+	 vnk9902LAt1wcHLky0F3vu5N15yP+INPKuxC9GPPdwu//7XHiFfC8c6Kj9B0f4IiLn
+	 V/LJTojrPnRJA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Cui Chao <cuichao1753@phytium.com.cn>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Gregory Price <gourry@gourry.net>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+Cc: Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Shixiong Ou <oushixiong@kylinos.cn>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 806/844] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
-Date: Sat, 28 Feb 2026 12:31:59 -0500
-Message-ID: <20260228173244.1509663-807-sashal@kernel.org>
+Subject: [PATCH 6.19 807/844] fbdev: Use device_create_with_groups() to fix sysfs groups registration race
+Date: Sat, 28 Feb 2026 12:32:00 -0500
+Message-ID: <20260228173244.1509663-808-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -70,115 +68,150 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220885-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,kylinos.cn,gmx.de,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-220886-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,gourry.net:email,phytium.com.cn:email]
-X-Rspamd-Queue-Id: 1E12D1C7556
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gmx.de:email]
+X-Rspamd-Queue-Id: C891B1C784D
 X-Rspamd-Action: no action
 
-From: Cui Chao <cuichao1753@phytium.com.cn>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-[ Upstream commit f043a93fff9e3e3e648b6525483f59104b0819fa ]
+[ Upstream commit 68eeb0871e986ae5462439dae881e3a27bcef85f ]
 
-In some physical memory layout designs, the address space of CFMW (CXL
-Fixed Memory Window) resides between multiple segments of system memory
-belonging to the same NUMA node. In numa_cleanup_meminfo, these multiple
-segments of system memory are merged into a larger numa_memblk. When
-identifying which NUMA node the CFMW belongs to, it may be incorrectly
-assigned to the NUMA node of the merged system memory.
+The fbdev sysfs attributes are registered after sending the uevent for
+the device creation, leaving a race window where e.g. udev rules may
+not be able to access the sysfs attributes because the registration is
+not done yet.
 
-When a CXL RAM region is created in userspace, the memory capacity of
-the newly created region is not added to the CFMW-dedicated NUMA node.
-Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
-containing RAM). This makes it impossible to clearly distinguish
-between the two types of memory, which may affect memory-tiering
-applications.
+Fix this by switching to device_create_with_groups(). This also results in
+a nice cleanup. After switching to device_create_with_groups() all that
+is left of fb_init_device() is setting the drvdata and that can be passed
+to device_create[_with_groups]() too. After which fb_init_device() can
+be completely removed.
 
-Example memory layout:
+Dropping fb_init_device() + fb_cleanup_device() in turn allows removing
+fb_info.class_flag as they were the only user of this field.
 
-Physical address space:
-    0x00000000 - 0x1FFFFFFF  System RAM (node0)
-    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
-    0x40000000 - 0x5FFFFFFF  System RAM (node0)
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
-
-After numa_cleanup_meminfo, the two node0 segments are merged into one:
-    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
-
-So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
-
-To address this scenario, accurately identifying the correct NUMA node
-can be achieved by checking whether the region belongs to both
-numa_meminfo and numa_reserved_meminfo.
-
-While this issue is only observed in a QEMU configuration, and no known
-end users are impacted by this problem, it is likely that some firmware
-implementation is leaving memory map holes in a CXL Fixed Memory Window.
-CXL hotplug depends on mapping free window capacity, and it seems to be
-only a coincidence to have not hit this problem yet.
-
-Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
-Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+Fixes: 5fc830d6aca1 ("fbdev: Register sysfs groups through device_add_group")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://patch.msgid.link/20260213060347.2389818-2-cuichao1753@phytium.com.cn
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Shixiong Ou <oushixiong@kylinos.cn>
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/numa_memblks.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/core/fbsysfs.c | 36 +++---------------------------
+ include/linux/fb.h                 |  1 -
+ 2 files changed, 3 insertions(+), 34 deletions(-)
 
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index 8f5735fda0a21..3f53464240e8d 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -570,15 +570,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
- int phys_to_target_node(u64 start)
+diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/core/fbsysfs.c
+index b8344c40073b4..baa2bae0fb5b3 100644
+--- a/drivers/video/fbdev/core/fbsysfs.c
++++ b/drivers/video/fbdev/core/fbsysfs.c
+@@ -12,8 +12,6 @@
+ 
+ #include "fb_internal.h"
+ 
+-#define FB_SYSFS_FLAG_ATTR 1
+-
+ static int activate(struct fb_info *fb_info, struct fb_var_screeninfo *var)
  {
- 	int nid = meminfo_to_nid(&numa_meminfo, start);
-+	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
+ 	int err;
+@@ -451,33 +449,7 @@ static struct attribute *fb_device_attrs[] = {
+ 	NULL,
+ };
  
- 	/*
--	 * Prefer online nodes, but if reserved memory might be
--	 * hot-added continue the search with reserved ranges.
-+	 * Prefer online nodes unless the address is also described
-+	 * by reserved ranges, in which case use the reserved nid.
- 	 */
--	if (nid != NUMA_NO_NODE)
-+	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
- 		return nid;
+-static const struct attribute_group fb_device_attr_group = {
+-	.attrs          = fb_device_attrs,
+-};
+-
+-static int fb_init_device(struct fb_info *fb_info)
+-{
+-	int ret;
+-
+-	dev_set_drvdata(fb_info->dev, fb_info);
+-
+-	fb_info->class_flag |= FB_SYSFS_FLAG_ATTR;
+-
+-	ret = device_add_group(fb_info->dev, &fb_device_attr_group);
+-	if (ret)
+-		fb_info->class_flag &= ~FB_SYSFS_FLAG_ATTR;
+-
+-	return 0;
+-}
+-
+-static void fb_cleanup_device(struct fb_info *fb_info)
+-{
+-	if (fb_info->class_flag & FB_SYSFS_FLAG_ATTR) {
+-		device_remove_group(fb_info->dev, &fb_device_attr_group);
+-
+-		fb_info->class_flag &= ~FB_SYSFS_FLAG_ATTR;
+-	}
+-}
++ATTRIBUTE_GROUPS(fb_device);
  
--	return meminfo_to_nid(&numa_reserved_meminfo, start);
-+	return reserved_nid;
+ int fb_device_create(struct fb_info *fb_info)
+ {
+@@ -485,14 +457,13 @@ int fb_device_create(struct fb_info *fb_info)
+ 	dev_t devt = MKDEV(FB_MAJOR, node);
+ 	int ret;
+ 
+-	fb_info->dev = device_create(fb_class, fb_info->device, devt, NULL, "fb%d", node);
++	fb_info->dev = device_create_with_groups(fb_class, fb_info->device, devt, fb_info,
++						 fb_device_groups, "fb%d", node);
+ 	if (IS_ERR(fb_info->dev)) {
+ 		/* Not fatal */
+ 		ret = PTR_ERR(fb_info->dev);
+ 		pr_warn("Unable to create device for framebuffer %d; error %d\n", node, ret);
+ 		fb_info->dev = NULL;
+-	} else {
+-		fb_init_device(fb_info);
+ 	}
+ 
+ 	return 0;
+@@ -505,7 +476,6 @@ void fb_device_destroy(struct fb_info *fb_info)
+ 	if (!fb_info->dev)
+ 		return;
+ 
+-	fb_cleanup_device(fb_info);
+ 	device_destroy(fb_class, devt);
+ 	fb_info->dev = NULL;
  }
- EXPORT_SYMBOL_GPL(phys_to_target_node);
- 
+diff --git a/include/linux/fb.h b/include/linux/fb.h
+index 05cc251035da9..c3302d5135466 100644
+--- a/include/linux/fb.h
++++ b/include/linux/fb.h
+@@ -497,7 +497,6 @@ struct fb_info {
+ #if defined(CONFIG_FB_DEVICE)
+ 	struct device *dev;		/* This is this fb device */
+ #endif
+-	int class_flag;                    /* private sysfs flags */
+ #ifdef CONFIG_FB_TILEBLITTING
+ 	struct fb_tile_ops *tileops;    /* Tile Blitting */
+ #endif
 -- 
 2.51.0
 
