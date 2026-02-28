@@ -1,205 +1,144 @@
-Return-Path: <stable+bounces-220060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GB33Co3FommU5QQAu9opvQ
-	(envelope-from <stable+bounces-220060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 11:38:05 +0100
+	id 0AhhFhfNomkj5gQAu9opvQ
+	(envelope-from <stable+bounces-220061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 12:10:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50DF1C227A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 11:38:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 068E21C27E6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 12:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 34850302FFF2
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 10:38:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21357301ECEA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 11:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC6D421EE9;
-	Sat, 28 Feb 2026 10:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDE042980A;
+	Sat, 28 Feb 2026 11:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="R4SqyUKV"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="he+9r9oU"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5933382E8
-	for <stable@vger.kernel.org>; Sat, 28 Feb 2026 10:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14AE2857CC;
+	Sat, 28 Feb 2026 11:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772275083; cv=none; b=kOekcfHeehm7tjV19TUHJAkYTLAChAYycOyXo1zNAhhCkLdpLiLh6OHKqef2nmDooyu5ZES2sN7RoQjJAV6PnTVXWcXIKHBvFvcR000AGK7Sv71fBV8fhtI2lIo6DNu4kJkwnP4IsueXtLAVyRep2mEwy5sFu+pdPjGtLRAtmv4=
+	t=1772276899; cv=none; b=uVza2ZGMciuIeR6eZ0syoS6xfEK67ojZpIUHSuUdZy/BKqAftmXlfpQMCJd/LPMolN7wZYPWHWrTNqU1DdPFObaQIshUE9NKDTg7ewHgX55zlf9/T9aV3VwYKae05xHgYdfWEJb4pXNYYsbNHNAntfm26pxNTaNmIOa1S3cJAO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772275083; c=relaxed/simple;
-	bh=/0MPf200MdT6aUs5qDYi12TSRXtEc/xRTFlXonZ/1HA=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=CZ+vLoYCBCMrsh/F3htFCZpDvQsl1AUMkmLCdmIUbypxW3FfO5vxpnZa1YIPioyUwj3pGRUCWlgLNKtj81/UayThCl5xQhKVS54y2Zt0t0IORj7SY398g2vr+cD7D9olVw1L+wPWQngv/0xN5eEmESjQKY9yJ9v4BAwtM6GKlb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=R4SqyUKV; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4fNM8v1L0nz9vNp;
-	Sat, 28 Feb 2026 11:37:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1772275071;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ADPZdLTrF/uf/xq9G8N2idASJ/e3mIgSiH0xm5u9HGs=;
-	b=R4SqyUKVyBcJsWbiXgWWaMUmsWsIyGRmah3bjgK4XtITTJhuvbgIsch/AsjRCbThrwGf0K
-	wu7VesRRGQ3NOgP3FEaSR37zt3ebm3i6gtwZM+xRxD47sP3qcV4/EzBRPzyKMWnjdeCSAZ
-	yBa9ZSsft0fT7T4VWIIjZuiwOwSd1525kgxLjhUWlrNR4YmmVDgkFffe6rCFyajMUEurrJ
-	r3hYc/xYHSoyG+bB/YUr18BxqrBYQ4cReSIVKvFV8Bfv8NINWQgjzWm4Q6A8qGcp8H96pP
-	7eeSqZNL4HDtsczR/qf5z7iv359UjVXAIIvI4X+6grI6iqlu1bc4d2x5Kaq0xg==
-Subject: Re: 6.18.14: VirtualBox modules don't build anymore; bisected
-To: Nathan Chancellor <nathan@kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, jpoimboe@kernel.org
-References: <62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org>
- <2026022741-mahogany-coveted-acfa@gregkh>
- <adc83809-3eea-2bbd-c162-48662acab5ed@mailbox.org>
- <2026022738-tricky-popper-c70e@gregkh> <20260228054850.GA2321895@ax162>
-From: Rainer Fiebig <jrf@mailbox.org>
-Autocrypt: addr=jrf@mailbox.org; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <7ebff519-8dd1-7c09-ed8a-bb85c1a52a14@mailbox.org>
-Date: Sat, 28 Feb 2026 11:37:51 +0100
+	s=arc-20240116; t=1772276899; c=relaxed/simple;
+	bh=cj+uB9iWQKjnvIgtf9VcdUBIoGqJZsYxujbsNl9X+Ok=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oity74DW5lX4PQq2wZWlSi7ohlZb2MkPfwOpNm07Xn2uwF4L5h1d9umcahX7KUwR3oCGpPOZw6WpvpElGRj5O/143EI7aw5RC77HVml9ZiSRlvTDFUbfA/u4Flms3SpLAlh64r/BNG81opUuzFIdywXTqzsae2YZg/PJEOMZCrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=he+9r9oU; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=xsscHip4dCdmr5IZSPcgdwtNxNMKm418IeeKDj4ChVU=; b=he+9r9oUxEfld2ipnq/QlVUxh0
+	PU4r88DmHXquioH5j0Ao//QuM3AQRYt0BFV5Ld5yn+qFRCc+DA2GNcDYOyBDMig3to7LTmHjxa/7d
+	tQMAcPy/f2JsBfx0P24qREH1irsZ5/c+kwJyWPZfjuSBHuNjZR54LRfwaXrM6Cn4tbJfx1cN9Viym
+	fNtompsx8riYo3D1fPccs66tuMWfGHgRutdk/6GroFDeh2wKE2HjAUdyITw+IE4QTqT785nyCBue+
+	FftYyTcFXisVxa3dZhU/LOmqGr7uQr9m98gE+zbIKG2KZdKX/lCQ/tsEcLgUviGBl7B4OWUJIwD6P
+	ZZwbcAMA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vwIBC-0000000686g-30ow;
+	Sat, 28 Feb 2026 11:08:14 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id A48DB3007C4; Sat, 28 Feb 2026 12:08:13 +0100 (CET)
+Date: Sat, 28 Feb 2026 12:08:13 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nsc@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Michal Suchanek <msuchanek@suse.de>,
+	Rainer Fiebig <jrf@mailbox.org>
+Subject: Re: [PATCH] kbuild: Leave objtool binary around with 'make clean'
+Message-ID: <20260228110813.GN1282955@noisy.programming.kicks-ass.net>
+References: <20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260228054850.GA2321895@ax162>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: iupushna1d1conuwiphgbbgczdxeceaz
-X-MBO-RS-ID: 6b4978eb23f17827826
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220060-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jrf@mailbox.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[mailbox.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[infradead.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mailbox.org:mid,mailbox.org:dkim]
-X-Rspamd-Queue-Id: C50DF1C227A
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220061-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,infradead.org:dkim,suse.de:email,mailbox.org:email]
+X-Rspamd-Queue-Id: 068E21C27E6
 X-Rspamd-Action: no action
 
-Am 28.02.26 um 06:48 schrieb Nathan Chancellor:
-> On Fri, Feb 27, 2026 at 08:29:05PM -0500, Greg KH wrote:
->> On Sat, Feb 28, 2026 at 12:30:29AM +0100, Rainer Fiebig wrote:
->>> Am 27.02.26 um 21:12 schrieb Greg KH:
->>>> On Fri, Feb 27, 2026 at 04:33:34PM +0100, Rainer Fiebig wrote:
->>>>> In case this hasn't been reported already: with 6.18.14 the
->>>>> VirtualBox-7.1.16 modules won't build during the boot process, as they
->>>>> usually do.  Bisecting between 6.18.13/14 led to this:
->>>>>
->>>>> f056c340b73962ebaffe93997b582bdf16dc6270 is the first bad commit
->>>>> commit f056c340b73962ebaffe93997b582bdf16dc6270 (HEAD)
->>>>> Author: Josh Poimboeuf <jpoimboe@kernel.org>
->>>>> Date:   Tue Feb 10 13:45:22 2026 -0800
->>>>>
->>>>>     kbuild: Add objtool to top-level clean target
->>>>>
->>>>>     [ Upstream commit 68b4fe32d73789dea23e356f468de67c8367ef8f ]
->>>>>
->>>>>     Objtool is an integral part of the build, make sure it gets cleaned
->>>>>     by "make clean" and "make mrproper".
->>>>> [...]
->>>>>
->>>>>
->>>>> The script I use for building my kernels includes "make mrproper" before
->>>>> compiling and "make clean" after the kernel and modules have been
->>>>> installed.
->>>>>
->>>>> Perhaps it would be more appropriate to report this to the
->>>>> VirtualBox-devs but I won't do that because the registration procedure
->>>>> asks for too many private data.
->>>>
->>>> We obviously can not do anything about external modules, so if you rely
->>>> on these, you are going to have to work with them on this, sorry.
->>>
->>> Alright, tough luck.  But that a patch-release of an LTS-kernel breaks
->>> VirtualBox is really a first - at least as far as I can remember.
->>
->> Then they have gotten really lucky :)
+On Fri, Feb 27, 2026 at 10:40:48PM -0700, Nathan Chancellor wrote:
+> The difference between 'make clean' and 'make mrproper' is documented in
+> 'make help' as:
 > 
-> I think this is firmly a Kbuild bug, as we broke the contract of
-> 'make clean' leaving around enough to build external modules:
+>   clean     - Remove most generated files but keep the config and
+>               enough build support to build external modules
+>   mrproper  - Remove all generated files + config + various backup files
 > 
->   https://lore.kernel.org/20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org/
+> After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
+> target"), running 'make clean' then attempting to build an external
+> module with the resulting build directory fails with
 > 
-> Kbuild is what runs objtool, not the external module itself. I don't
-> care much for external modules but this does not appear to be something
-> they have done or relied on.
+>   $ make ARCH=x86_64 O=build clean
+> 
+>   $ make -C build M=... MO=...
+>   ...
+>   /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
+> 
+> as 'make clean' removes the objtool binary.
+> 
+> Split the objtool clean target into mrproper and clean like Kbuild does
+> and remove all generated artifacts with 'make clean' except for the
+> objtool binary, which is removed with 'make mrproper'.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 68b4fe32d737 ("kbuild: Add objtool to top-level clean target")
+> Reported-by: Michal Suchanek <msuchanek@suse.de>
+> Closes: https://lore.kernel.org/20260225112633.6123-1-msuchanek@suse.de/
+> Reported-by: Rainer Fiebig <jrf@mailbox.org>
+> Closes: https://lore.kernel.org/62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org/
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> I realize that this will technically decend into tools/objtool twice
+> during cleaning when running mrproper but I don't think it is the end of
+> the world for a much simpler implementation.
+> 
+> I can take this via kbuild-fixes with a proper Ack or it can go through
+> -tip, does not matter to me.
 
-Thanks for the info!  I have the "make clean" step in my script because
-the repo gets backed up but I don't want the remnants of an old
-kernel-build in it then.  Good to know that a fix is under way.
+Feel free to take though kbuild-fixes:
 
-Rainer
-
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
