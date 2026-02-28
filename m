@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220465-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECPcE+w3o2lx+gQAu9opvQ
-	(envelope-from <stable+bounces-220464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:46:04 +0100
+	id QLHPEfM3o2lx+gQAu9opvQ
+	(envelope-from <stable+bounces-220465-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:46:11 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68361C639C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D14D91C63AA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:46:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18D573302A9C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:32:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D874332CD868
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C303BED0F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3AC63BED26;
 	Sat, 28 Feb 2026 17:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D7xR3V3Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s1IDYMUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFF53BED06;
-	Sat, 28 Feb 2026 17:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864BA3BED1C;
+	Sat, 28 Feb 2026 17:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300351; cv=none; b=RzTxsp00R7gXDpyVp4bMwDofku1eQEDa8c/EruaUXMOgaNCqSQkjRfl/9yBpY+EvdmXMwu6ke2bP1UM0ifuhR5DzSQlaKkZmU68tTYc7oUDUYqu/x1nOyknjFLmwpa5a3UGD9Dlj8SgF+MhPpzrBTKQyjvuooM/TP3UpHo7BYtY=
+	t=1772300352; cv=none; b=MI3y5zXTFBsNDUPzoUI9OwNmumsLGfD36rxnA5C9F1TRkM+V6JSjc90ujjK2nwtgzPaYlb6l2f5LSf0D8BUaFALuRf3opJM1QIs/PGGxnffHN1BfIHf6U7BgQN6NiA8Dii1Xey1qv5SUs0Ck3PXskUwiB2B2ou/sFH2xfZ+AjY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300351; c=relaxed/simple;
-	bh=TCTzgd/ixZeKmx5B74oVFbclG3zNxk6BZ936t2NpB1w=;
+	s=arc-20240116; t=1772300352; c=relaxed/simple;
+	bh=dB6FPpCoDZ1xiwuejfr7S5mzPXo8oS/VjLqIRF8hHqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eZdid4SDyTufRk2arN7tFNyntX9NPxHCeUpR28WGHfTqmvocb6KcTtZHd9lGe2/u6oMi+PlRRZnnTUISd07hDQ5L4pswXfqpynjaPjBa5fD8PX8O/lNTCVPcJF1b2pd7gDJDG6sXB+IuAkh/dwrJDAXC042eZdnQHTS83wBQmdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D7xR3V3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ED8C19425;
-	Sat, 28 Feb 2026 17:39:10 +0000 (UTC)
+	 MIME-Version; b=W/sDAr2oajDaMuAfOsVkQpPS0k5T8kbCf4ITahtDzAzw91cYQo8SqqxQr1ztrXIKWeM11nhbIcaaKpAUkGqMbLMFFAK8RDqh2dDhG1dE6L+DknWspC3r5bET9qokVHy/D3O+ocoSuJnVOp6hZKX29y6kn4k0GLBCceNPRgfwKO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s1IDYMUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21CDC116D0;
+	Sat, 28 Feb 2026 17:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300351;
-	bh=TCTzgd/ixZeKmx5B74oVFbclG3zNxk6BZ936t2NpB1w=;
+	s=k20201202; t=1772300352;
+	bh=dB6FPpCoDZ1xiwuejfr7S5mzPXo8oS/VjLqIRF8hHqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7xR3V3Z1NrhLD+1pN+pyEi7r1tS0nrmFnk2X9cZvZ/yZ8JKQvc+6kUlO7T4FTl8g
-	 RtmiM/5VorMUbcgh33CakP+d+tC795QcLTG02kc8eHoO/juV+AWoDbUKj68bVKxYbD
-	 TwodyxjL2ognjWFfJt8j3JB9TwFzfpF72mJjAfwobuHbwnc2PyfVcuASmNjTt4r3yQ
-	 D0aJXhtdYqIN+rsN+lv5z3s5UGv/ScNFky1lUS5W7wLI5Jzhum2YwwMS6jaS9hwncZ
-	 LJ8sGWwsEqKtuerrTvXCY/sQTBnKD50p4r2fFSxpjMdjZLj1j2LFvQ6f85QK1SEu0P
-	 V2Cp9rANjX3Tw==
+	b=s1IDYMUYnUsIRPtUqceY9m6cN5zPmxaAxVtG44SdC9Ix6egeLabM/rSQauPEIl1Ub
+	 hrlR5MXYWx5/LDkYYSP01K0Ms1HRo3BI4FoeKnInJVxsF0ePxS7kU5Gru803qHkfQ1
+	 yzIeoPKUdH+C0JoE34oUGQZBZvAGpiz31Bu2c3nKQJzA2vRGcWVK/HW3ay4hxFOyDu
+	 39DcGV6DHfPRg9iayFby5LoolwufsewOn3KhMJyCWjV80oFkzOh4DtHFATwoinQKyi
+	 AzEpE5a+PiI8dLLwIX+LldDz5Hgj8O0wcMIZYDgOByR8DvGQFRjaDZsY2H3s2Kr6m4
+	 LAHRfLx0YZ9tA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Sam Day <me@samcday.com>,
-	David Heidelberg <david@ixit.cz>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 385/844] usb: gadget: f_fs: fix DMA-BUF OUT queues
-Date: Sat, 28 Feb 2026 12:24:58 -0500
-Message-ID: <20260228173244.1509663-386-sashal@kernel.org>
+Subject: [PATCH 6.19 386/844] usb: gadget: f_fs: Fix ioctl error handling
+Date: Sat, 28 Feb 2026 12:24:59 -0500
+Message-ID: <20260228173244.1509663-387-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -77,14 +76,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220464-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220465-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
@@ -93,67 +92,78 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A68361C639C
+X-Rspamd-Queue-Id: D14D91C63AA
 X-Rspamd-Action: no action
 
 From: Sam Day <me@samcday.com>
 
-[ Upstream commit 0145e7acd29855dfba4a2f387d455b5d9a520f0e ]
+[ Upstream commit 8e4c1d06183c25022f6b0002a5cab84979ca6337 ]
 
-Currently, DMA_FROM_DEVICE is used when attaching DMABUFs to IN
-endpoints and DMA_TO_DEVICE for OUT endpoints. This is inverted from
-how it should be.
+When ffs_epfile_ioctl handles FUNCTIONFS_DMABUF_* ioctls, it's currently
+falling through when copy_from_user fails.
 
-The result is IOMMU read-only mappings placed on OUT queues,
-triggering arm-smmu write faults.
+However, this fallthrough isn't being checked properly, so the handler
+continues executing further than it should. It then tries the secondary
+dispatch where it ultimately gives up and returns -ENOTTY.
 
-Put differently, OUT endpoints flow data from host -> gadget, meaning
-the UDC peripheral needs to have write access to the buffer to fill it
-with the incoming data.
+The end result is invalid ioctl invocations will yield a -ENOTTY rather
+than an -EFAULT.
 
-This commit flips the directions and updates the implicit-sync helpers
-so IN endpoints act as readers and OUT endpoints as writers.
+It's a common pattern elsewhere in the kernel code to directly return
+-EFAULT when copy_from_user fails. So we update ffs_epfile_ioctl to do
+the same and fix this issue.
 
 Signed-off-by: Sam Day <me@samcday.com>
-Tested-by: David Heidelberg <david@ixit.cz>  # OnePlus 6T on sdm845-next-20251119
-Link: https://patch.msgid.link/20260108-ffs-dmabuf-ioctl-fix-v1-2-e51633891a81@samcday.com
+Link: https://patch.msgid.link/20260108-ffs-dmabuf-ioctl-fix-v1-1-e51633891a81@samcday.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/f_fs.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index fa467a40949d2..928f51fddc64e 100644
+index 928f51fddc64e..e75d5d8b5ac91 100644
 --- a/drivers/usb/gadget/function/f_fs.c
 +++ b/drivers/usb/gadget/function/f_fs.c
-@@ -1509,7 +1509,7 @@ static int ffs_dmabuf_attach(struct file *file, int fd)
- 		goto err_dmabuf_detach;
+@@ -1744,10 +1744,8 @@ static long ffs_epfile_ioctl(struct file *file, unsigned code,
+ 	{
+ 		int fd;
+ 
+-		if (copy_from_user(&fd, (void __user *)value, sizeof(fd))) {
+-			ret = -EFAULT;
+-			break;
+-		}
++		if (copy_from_user(&fd, (void __user *)value, sizeof(fd)))
++			return -EFAULT;
+ 
+ 		return ffs_dmabuf_attach(file, fd);
  	}
+@@ -1755,10 +1753,8 @@ static long ffs_epfile_ioctl(struct file *file, unsigned code,
+ 	{
+ 		int fd;
  
--	dir = epfile->in ? DMA_FROM_DEVICE : DMA_TO_DEVICE;
-+	dir = epfile->in ? DMA_TO_DEVICE : DMA_FROM_DEVICE;
+-		if (copy_from_user(&fd, (void __user *)value, sizeof(fd))) {
+-			ret = -EFAULT;
+-			break;
+-		}
++		if (copy_from_user(&fd, (void __user *)value, sizeof(fd)))
++			return -EFAULT;
  
- 	err = ffs_dma_resv_lock(dmabuf, nonblock);
- 	if (err)
-@@ -1639,7 +1639,7 @@ static int ffs_dmabuf_transfer(struct file *file,
- 	/* Make sure we don't have writers */
- 	timeout = nonblock ? 0 : msecs_to_jiffies(DMABUF_ENQUEUE_TIMEOUT_MS);
- 	retl = dma_resv_wait_timeout(dmabuf->resv,
--				     dma_resv_usage_rw(epfile->in),
-+				     dma_resv_usage_rw(!epfile->in),
- 				     true, timeout);
- 	if (retl == 0)
- 		retl = -EBUSY;
-@@ -1684,7 +1684,7 @@ static int ffs_dmabuf_transfer(struct file *file,
- 	dma_fence_init(&fence->base, &ffs_dmabuf_fence_ops,
- 		       &priv->lock, priv->context, seqno);
+ 		return ffs_dmabuf_detach(file, fd);
+ 	}
+@@ -1766,10 +1762,8 @@ static long ffs_epfile_ioctl(struct file *file, unsigned code,
+ 	{
+ 		struct usb_ffs_dmabuf_transfer_req req;
  
--	resv_dir = epfile->in ? DMA_RESV_USAGE_WRITE : DMA_RESV_USAGE_READ;
-+	resv_dir = epfile->in ? DMA_RESV_USAGE_READ : DMA_RESV_USAGE_WRITE;
+-		if (copy_from_user(&req, (void __user *)value, sizeof(req))) {
+-			ret = -EFAULT;
+-			break;
+-		}
++		if (copy_from_user(&req, (void __user *)value, sizeof(req)))
++			return -EFAULT;
  
- 	dma_resv_add_fence(dmabuf->resv, &fence->base, resv_dir);
- 	dma_resv_unlock(dmabuf->resv);
+ 		return ffs_dmabuf_transfer(file, &req);
+ 	}
 -- 
 2.51.0
 
