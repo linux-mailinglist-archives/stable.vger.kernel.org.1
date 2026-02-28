@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-220175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDttC4cto2me+AQAu9opvQ
-	(envelope-from <stable+bounces-220175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:01:43 +0100
+	id kH7VAkMto2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:00:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B84C1C555B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:01:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B1D1C551A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:00:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 093B6321781C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:48:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E1C1531D3D0B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9FD4ADDB2;
-	Sat, 28 Feb 2026 17:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5BC4B8DC6;
+	Sat, 28 Feb 2026 17:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mBPN/lWg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iB8Q+DXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E95A4ADDAB;
-	Sat, 28 Feb 2026 17:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCD94ADDBC;
+	Sat, 28 Feb 2026 17:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300083; cv=none; b=ipDRx/aECis2q8Wk1ut8blqUtPS7khKrrK8EIB8hX37PnDzKNUy5EtB4wlO3NMmKWUnxEZBSNfPHkkGhrr7eNPAD5dQSJs1mtNRKQOw3k/oc1s7jWejAsHRFP6uyRMhyH/3KngAXWXqXWlFDVPnBqq93hdgK3cIiX9MoveStjh8=
+	t=1772300084; cv=none; b=nQUuJt6LOptA7MUto4nVXXuIcDUhzGdj92EBHceDl0X2bvjeq3D2mzTN4hct3eAISQ6PGtT+qdaneAwBNVhaAs9K5SgzhtFwJ5F2y8QjlbwOIqwSvxZtJl/SzRTaZJMDJ2FZHFO2+XQ9Wn1mHHWxzReL2IPB5iNTz/Ksu+dG7P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300083; c=relaxed/simple;
-	bh=gwtE0C/HA4WXWj1SxfDqkRuaPdlFJr5XvrMKodsPQpI=;
+	s=arc-20240116; t=1772300084; c=relaxed/simple;
+	bh=Tt05porqRyRnssxdn9DZukO1OHEjo69i5bpT6YuJ088=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvtI6o2Smf5BDVQfJk8TuAuYF0/l50gw4gIeeemK4zn+tesdoyL2giyEfqLA0XKRr9bdfTpUyV71RnN+Ke2nKtgqZyTYHemghCwbdAqCP7/pQT6RuE+SQTNTjBtFJsB3+jlYVB+isNjgEZk/UXMeTfxQ15MkhYN6j6YuRGKRDCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mBPN/lWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3047AC19424;
-	Sat, 28 Feb 2026 17:34:42 +0000 (UTC)
+	 MIME-Version; b=qqBXz0kU2m+Av29v1mCQho0YJ8Yxs9vLUTmJ9wJUmXwquPhJgHNWA0bB2XqPfwhrcW8NgsCE72Rgm7vSj2YWa7vFsdjn1RNeaZpLcwD0lUUWdfesDLy1TAlkUTCXHO1YpDXkfYwnL51hvUlx7KhZYWfW3bemBNBwRdemeRzKdaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iB8Q+DXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C39C19424;
+	Sat, 28 Feb 2026 17:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772300083;
-	bh=gwtE0C/HA4WXWj1SxfDqkRuaPdlFJr5XvrMKodsPQpI=;
+	bh=Tt05porqRyRnssxdn9DZukO1OHEjo69i5bpT6YuJ088=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBPN/lWgssMcz+JkLuxx/piEYD5OYz4bFj1J3Asu95i643PYt6QHUi8ZvpOfGZtW6
-	 kMmIg4J0HOlw0cew1zDccUQs1sBQ1RCGiIerzSAzUlELEW4/H9+LD7Y+CrYPRIHwiQ
-	 mx27JWPhecK9exVV/c6mt0OeHdGgjf9vU8l8z18CUufMf7NCMo2FQV9aSjOzxec6zC
-	 RhsAdWtVOsB66o19qzimS453c0ev8HZ746y5VW/4fTgjdi0L07nBUnLYcLXmMwK0Tt
-	 nhz06QVdTNoWTCP41+prsdSwd55I9HkPNwjzXJEQoH4ZJFYYSJ8RMqPJ0JfCVxB0od
-	 OZnad38dhJgvw==
+	b=iB8Q+DXlOntdJ95eItB2rMV9H8nAi4f8oNXmzW9kQUCQrOk0U9pOJ9MU8Tjl9JCoc
+	 7MiPuJzTGbanP4euNr03NT5vOuNcm5E7mgtW+poPtH10uxQiRTeZ4rra3hwsrap/vi
+	 4om/R3/ouW84cSEJf+CImSJ0X3L7JPuseC6mYoF8wyQRjuqCGpj1zerr161YHI6q8l
+	 W5/IOlC+rqxf4maIareB4IH6n4X/rKUIyiWSfW+ICat9YINzIhPGbvuqdBdag2Ovx3
+	 CDBFpUUal8UxRNxqFRIb2oc7e1EV8iB2Rjtvsqv0FeObypx7i8b2Mxzw+WD0xJnTzj
+	 XL570wlaNw6Tg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Sami Tolvanen <samitolvanen@google.com>,
 	Yonghong Song <yonghong.song@linux.dev>,
-	Viktor Malik <vmalik@redhat.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 097/844] bpf: crypto: Use the correct destructor kfunc type
-Date: Sat, 28 Feb 2026 12:20:10 -0500
-Message-ID: <20260228173244.1509663-98-sashal@kernel.org>
+Subject: [PATCH 6.19 098/844] bpf: net_sched: Use the correct destructor kfunc type
+Date: Sat, 28 Feb 2026 12:20:11 -0500
+Message-ID: <20260228173244.1509663-99-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,89 +68,80 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220175-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220176-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 9B84C1C555B
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: 96B1D1C551A
 X-Rspamd-Action: no action
 
 From: Sami Tolvanen <samitolvanen@google.com>
 
-[ Upstream commit b40a5d724f29fc2eed23ff353808a9aae616b48a ]
+[ Upstream commit c99d97b46631c4bea0c14b7581b7a59214601e63 ]
 
 With CONFIG_CFI enabled, the kernel strictly enforces that indirect
-function calls use a function pointer type that matches the target
-function. I ran into the following type mismatch when running BPF
-self-tests:
-
-  CFI failure at bpf_obj_free_fields+0x190/0x238 (target:
-    bpf_crypto_ctx_release+0x0/0x94; expected type: 0xa488ebfc)
-  Internal error: Oops - CFI: 00000000f2008228 [#1]  SMP
-  ...
-
-As bpf_crypto_ctx_release() is also used in BPF programs and using
-a void pointer as the argument would make the verifier unhappy, add
-a simple stub function with the correct type and register it as the
-destructor kfunc instead.
+function calls use a function pointer type that matches the
+target function. As bpf_kfree_skb() signature differs from the
+btf_dtor_kfunc_t pointer type used for the destructor calls in
+bpf_obj_free_fields(), add a stub function with the correct type to
+fix the type mismatch.
 
 Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Tested-by: Viktor Malik <vmalik@redhat.com>
-Link: https://lore.kernel.org/r/20260110082548.113748-7-samitolvanen@google.com
+Link: https://lore.kernel.org/r/20260110082548.113748-8-samitolvanen@google.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/crypto.c | 8 +++++++-
+ net/sched/bpf_qdisc.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/crypto.c b/kernel/bpf/crypto.c
-index 83c4d9943084b..1d024fe7248ac 100644
---- a/kernel/bpf/crypto.c
-+++ b/kernel/bpf/crypto.c
-@@ -261,6 +261,12 @@ __bpf_kfunc void bpf_crypto_ctx_release(struct bpf_crypto_ctx *ctx)
- 		call_rcu(&ctx->rcu, crypto_free_cb);
+diff --git a/net/sched/bpf_qdisc.c b/net/sched/bpf_qdisc.c
+index adcb618a2bfca..e9bea9890777d 100644
+--- a/net/sched/bpf_qdisc.c
++++ b/net/sched/bpf_qdisc.c
+@@ -202,6 +202,12 @@ __bpf_kfunc void bpf_kfree_skb(struct sk_buff *skb)
+ 	kfree_skb(skb);
  }
  
-+__bpf_kfunc void bpf_crypto_ctx_release_dtor(void *ctx)
++__bpf_kfunc void bpf_kfree_skb_dtor(void *skb)
 +{
-+	bpf_crypto_ctx_release(ctx);
++	bpf_kfree_skb(skb);
 +}
-+CFI_NOSEAL(bpf_crypto_ctx_release_dtor);
++CFI_NOSEAL(bpf_kfree_skb_dtor);
 +
- static int bpf_crypto_crypt(const struct bpf_crypto_ctx *ctx,
- 			    const struct bpf_dynptr_kern *src,
- 			    const struct bpf_dynptr_kern *dst,
-@@ -368,7 +374,7 @@ static const struct btf_kfunc_id_set crypt_kfunc_set = {
+ /* bpf_qdisc_skb_drop - Drop an skb by adding it to a deferred free list.
+  * @skb: The skb whose reference to be released and dropped.
+  * @to_free_list: The list of skbs to be dropped.
+@@ -449,7 +455,7 @@ static struct bpf_struct_ops bpf_Qdisc_ops = {
+ 	.owner = THIS_MODULE,
+ };
  
- BTF_ID_LIST(bpf_crypto_dtor_ids)
- BTF_ID(struct, bpf_crypto_ctx)
--BTF_ID(func, bpf_crypto_ctx_release)
-+BTF_ID(func, bpf_crypto_ctx_release_dtor)
+-BTF_ID_LIST_SINGLE(bpf_sk_buff_dtor_ids, func, bpf_kfree_skb)
++BTF_ID_LIST_SINGLE(bpf_sk_buff_dtor_ids, func, bpf_kfree_skb_dtor)
  
- static int __init crypto_kfunc_init(void)
+ static int __init bpf_qdisc_kfunc_init(void)
  {
 -- 
 2.51.0
