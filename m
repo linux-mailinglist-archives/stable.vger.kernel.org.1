@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-220302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFfrMW4xo2kE+QQAu9opvQ
-	(envelope-from <stable+bounces-220302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:18:22 +0100
+	id IJVzGME0o2nP+QQAu9opvQ
+	(envelope-from <stable+bounces-220303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:32:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8521C5A32
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:18:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D99491C5ED0
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EDCA8313B310
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:07:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66D77337D23A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C03038C593;
-	Sat, 28 Feb 2026 17:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CAD38CFF8;
+	Sat, 28 Feb 2026 17:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q7C+NlKd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrXLm8y2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF6538B098;
-	Sat, 28 Feb 2026 17:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A33938CFF0;
+	Sat, 28 Feb 2026 17:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300206; cv=none; b=uRGcFSzUb0Z1/ZHWcxz3Sy+o6xDYzgqPr/tfjwFGObdiZq8E7R08dhrZhqeckD3gjGe5OjJ0Z4snaHrPenb/oE3s/s9gD3HemLXKoU7nm70EtohOcrPI2MJ5SMD5CzdSWwgUFgX5thuHEME4yXTiifl7NVyPfkjGPKuyHlFJwYw=
+	t=1772300207; cv=none; b=tbSBYLdbs+lu5mB1MrWLdk7YVFcsk19eYgkwNoBCaqaupb49Ln+0g+f2mfV92PnTwMjZ3BBvSAlPA54LpRVxCXcJvhs/bs6Vbx/AMZf0jaKGB+Vbty5QQTJY+B1mJvMpvXhlnjRPgEbqI6ND5ktXtIgdL5SRKq6hh3qM0/EfSu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300206; c=relaxed/simple;
-	bh=Hv4zTzC8AsZwjBE0dP/UIcpMsL4cPNvABgym2Z2/pp0=;
+	s=arc-20240116; t=1772300207; c=relaxed/simple;
+	bh=uokOkRCSMVLxsGu3rqxKfmFg2fGZyt7kKmsiD3KiJqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRZVl+t8143LE69waZt2KisY9Snd2vgVLKb2min4cYy+5GiQY6s8zG86FQTZZcsRJPGBcr6FVAWyZK9OmPL6BkkP8qSkw81Y0hO4n2nbTp68YJN4Cd7IndDjm09V/5S/Wms60fGtIYlQLIeFROW0Xte4IOgsHIlwaRCWn/O59sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q7C+NlKd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11488C19424;
-	Sat, 28 Feb 2026 17:36:44 +0000 (UTC)
+	 MIME-Version; b=SCYPXG+6ZehORA9leiAAh5JRFW3zWgDljpRaxj/t7y6YubmhlKkYwWGWq7hnPuUyRJRkbJakLbSezfseYkc59/XayMTpxQxfNBVjsDho+khCPsxAx2QCMLrpcgLNCMu715KIIk6WxClWpgXUjzjnSnCaCa+V5Sqlu5+mewjqyPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrXLm8y2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174CBC19423;
+	Sat, 28 Feb 2026 17:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300205;
-	bh=Hv4zTzC8AsZwjBE0dP/UIcpMsL4cPNvABgym2Z2/pp0=;
+	s=k20201202; t=1772300206;
+	bh=uokOkRCSMVLxsGu3rqxKfmFg2fGZyt7kKmsiD3KiJqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7C+NlKd4c0QR4XibfNHOlTrPA4sfuMh/kecbHuTJKCb69eJ9z599LgqGEAVZe0RF
-	 werc6iY+fqKtnuBXnksewuwS6zE3p1iUparRsaRCAGwVQrxefrIZrC6fdNfwdK4Ymj
-	 bCHnxg35ejl0Wk4MlnkeDOhA8GizJGqmAU1i2T95EtogkiorGwj7RPijb6/dD1joa9
-	 1p/ENEevX4kOQ8WtkwBJ7+oQjtIHZ/5JT8yNFDsBiP9dlw3X/OZ3K/yXkLhBT/PhTB
-	 4bebaYsFeV7mYdwm8KDaQmu2gsor1/k422NTID4WNhu3ovzEhX3N/CIABqQMoR2sxK
-	 kWni429JWprwQ==
+	b=lrXLm8y2/GtRcoh60QQKXwLxKBEHT98Of7Yz9or3NLqUrzO8oeFGme3Z/Ji9BRI+S
+	 99KdACBB+TPL1fBbMBp7DppPi84i/0oFf46Pz1TecVJNE2/MYS8BweU4B3dkUNybed
+	 69vGfV2rMr1JeLqtCeEnP95HzG82AXp4xzdAVi/T2DrSlRr+PINbUaNiUFiI2WmhjZ
+	 xFpqqILpnQ9x/i+v6iVq5RIT4PLOSVeOmiL77JEFQLdKThuYZo5dhZaPHvu50rTwDj
+	 m20TKDHNXfUpK73Zmu1SNDZlxeOXt7d1oFP1qE9u0BPSbuDn4lykulF3aD4zJi/IP0
+	 qyA57hoiZ6a3g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Santhosh Kumar K <s-k6@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Jinzhou Su <jinzhou.su@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 224/844] spi: cadence-qspi: Try hard to disable the clocks
-Date: Sat, 28 Feb 2026 12:22:17 -0500
-Message-ID: <20260228173244.1509663-225-sashal@kernel.org>
+Subject: [PATCH 6.19 225/844] drm/amd/pm: Fix null pointer dereference issue
+Date: Sat, 28 Feb 2026 12:22:18 -0500
+Message-ID: <20260228173244.1509663-226-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -68,83 +67,64 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220303-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220302-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.982];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,sang-engineering.com:email,ti.com:email,bootlin.com:email]
-X-Rspamd-Queue-Id: CD8521C5A32
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D99491C5ED0
 X-Rspamd-Action: no action
 
-From: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
+From: Jinzhou Su <jinzhou.su@amd.com>
 
-[ Upstream commit 612227b392eed94a3398dc03334a84a699a82276 ]
+[ Upstream commit 1197366cca89a4c44c541ddedb8ce8bf0757993d ]
 
-In the remove path, we should try hard to perform all steps as we simply
-cannot fail.
+If SMU is disabled, during RAS initialization,
+there will be null pointer dereference issue here.
 
-The "no runtime PM" quirk must only alter the state of the RPM core, but
-the clocks should still be disabled if that is possible. Move the
-disable call outside of the RPM quirk.
-
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
-Tested-by: Santhosh Kumar K <s-k6@ti.com>
-Link: https://patch.msgid.link/20260122-schneider-6-19-rc1-qspi-v4-9-f9c21419a3e6@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Jinzhou Su <jinzhou.su@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index ab74808debe98..51ed666a0fdd1 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -2040,6 +2040,7 @@ static void cqspi_remove(struct platform_device *pdev)
- 	const struct cqspi_driver_platdata *ddata;
- 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
- 	struct device *dev = &pdev->dev;
-+	int ret = 0;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+index f51fa265230b3..2a0e826d0317d 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -618,6 +618,9 @@ int amdgpu_smu_ras_send_msg(struct amdgpu_device *adev, enum smu_message_type ms
+ 	struct smu_context *smu = adev->powerplay.pp_handle;
+ 	int ret = -EOPNOTSUPP;
  
- 	ddata = of_device_get_match_data(dev);
- 
-@@ -2059,8 +2060,10 @@ static void cqspi_remove(struct platform_device *pdev)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
- 
- 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
--		if (pm_runtime_get_sync(&pdev->dev) >= 0)
--			clk_disable(cqspi->clk);
-+		ret = pm_runtime_get_sync(&pdev->dev);
++	if (!smu)
++		return ret;
 +
-+	if (ret >= 0)
-+		clk_disable(cqspi->clk);
+ 	if (smu->ppt_funcs && smu->ppt_funcs->ras_send_msg)
+ 		ret = smu->ppt_funcs->ras_send_msg(smu, msg, param, read_arg);
  
- 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
- 		pm_runtime_put_sync(&pdev->dev);
 -- 
 2.51.0
 
