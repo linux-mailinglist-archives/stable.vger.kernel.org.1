@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-220909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JN2NwdMo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:11:51 +0100
+	id YJRIJ7Vbo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:18:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410591C8003
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:11:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E938E1C8E9C
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D09A73180AE3
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:40:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2A9736777DE
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE8742908D;
-	Sat, 28 Feb 2026 17:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4C042B38B;
+	Sat, 28 Feb 2026 17:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lx3iMF5Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MiflLcv3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC9642A7B8;
-	Sat, 28 Feb 2026 17:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C341F42B381;
+	Sat, 28 Feb 2026 17:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300797; cv=none; b=IXNmh6leUZQkpkYaZZe4XxbDnpI2k/FK+zuDOXP3qKRmGG7I3BPGvm59JZ0iPkTH9Nn0WWKd0yMB9PABL4yrkASyUJT01uyVriwXSXBMZEsJ3F+BByShC75Nwt1HycDE0SVhCrfQLdlC5P6CekvGpxqGvqzakwSLdbaMGggieuQ=
+	t=1772300798; cv=none; b=Bx5kc/3faWcf9YAccZB8shApFZF5gGC5joxik6qa1CB+0Z/czHUtPlFzvqS1eGPxixbLNZ+8bQOmahx4BE5Vwe8o4186Y3Y7sQpQGdq6/IS/F44M1XylZs14gU7UsPs89ZQzb2nmDwaOqeCXjXIG/2z2JkBp0Cp6wWvr3t/93ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300797; c=relaxed/simple;
-	bh=FoIjzdS00i5VPlniV9Kw+gfba6hiPgszo8/fC9hnjXc=;
+	s=arc-20240116; t=1772300798; c=relaxed/simple;
+	bh=hltn4iAg83Z7gjNUIC0IGnvd9Mk/IAu0sNdAKc0pSVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjqE8AKKNRo8cbMi5tLzuPYYFXbt+hXRnXxNx8OH02+1Jh/MDvBwJYb2VeYqqgD2mmmvT+3KmjN+iCA1MbQag9Anc7PlQXFzVhI22I3cBkXLC53/Y9I1Mxxf2H/rVFphGaQ1a3M1jjeUElYC/++leIHdDAi9atBi4VlMstigK00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lx3iMF5Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E99CC19423;
-	Sat, 28 Feb 2026 17:46:36 +0000 (UTC)
+	 MIME-Version; b=Bb65We3lu60FTTgywoqkNoK3nYofK/2R8RyCLDTpiY2TXBqJhsIyv09jg4IbzsV+5ZcxJ5ii7a/HHq0IEZXSfdQ3kIAxcygZVT0qufZHABoFyXZPr+2WCGMfktra70DCxd3MW6XTTPFwGEB7cT+scvjhe6X0QFzBnn5wn3+HqYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MiflLcv3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E8AC116D0;
+	Sat, 28 Feb 2026 17:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300797;
-	bh=FoIjzdS00i5VPlniV9Kw+gfba6hiPgszo8/fC9hnjXc=;
+	s=k20201202; t=1772300798;
+	bh=hltn4iAg83Z7gjNUIC0IGnvd9Mk/IAu0sNdAKc0pSVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lx3iMF5YpLjv0q/ObAm9Z7z0RcKy3WhI/uJPV+9///1LO/2Q87jtRjwzBO+w/ANaQ
-	 3LK1PFh84jE1d41gHu3tFCKCnreY1JO4ETIdmERs0cBfkXfV7qxC5ARjAgfwfiZJDY
-	 aqSn7NH70zlBam+R3jEceu9LWORGwcyMbRR8RW+MPKPVCCO6z4OLW3sPeHdUDPHZZ8
-	 fwC9XqhYZmdGjoVmTysjVoAHdbqUslnrSjH9KEvxHhBHzJNENQ6LvyoMP/YluI9jpt
-	 KMuLCtOfeHC4ShVK7fO7BelGK6xiu+hgPXOss7xLDQaDZJM9rMZC0FJRl7LTufh5WN
-	 auCI/U49FOGGQ==
+	b=MiflLcv3dvUJUnaEc6Y5qfWGjntnn/SjM/rwSvtNf3RDalXrRYb3WIyNTKm6H/b7/
+	 MLimeRwqPqSnCkX06VPQMwxpNtdPB+UVGuyg5sCaukjOzL7023vPd6g0pvwScNkKym
+	 hDTlrnB1sxpq47M4S3AmtrYVFAdEjRzI2iWCjpoUKPcCxFhXoQLVV9JCteTF0hB7xE
+	 2DBRZ4XTKgrLovcCOKRTj2ONZs/C9J6+Gl/WstEHRLLgEVsl3ykJTnF4cxvCdJxJuW
+	 rTCFvnTZ0DYjSbQPnAjla5jX31yohW4Eoa10xdByvMEDlXB8nNJCY7grfE/HstEl1I
+	 h6jsEMQvM4yxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benno Lossin <lossin@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+Cc: Marc Zyngier <maz@kernel.org>,
+	Hyesoo Yu <hyesoo.yu@samsung.com>,
+	Quentin Perret <qperret@google.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 830/844] rust: pin-init: replace clippy `expect` with `allow`
-Date: Sat, 28 Feb 2026 12:32:23 -0500
-Message-ID: <20260228173244.1509663-831-sashal@kernel.org>
+Subject: [PATCH 6.19 831/844] arm64: Force the use of CNTVCT_EL0 in __delay()
+Date: Sat, 28 Feb 2026 12:32:24 -0500
+Message-ID: <20260228173244.1509663-832-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,109 +69,115 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220909-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220910-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 410591C8003
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email]
+X-Rspamd-Queue-Id: E938E1C8E9C
 X-Rspamd-Action: no action
 
-From: Benno Lossin <lossin@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit a58b8764aed9648357b1c5b6368c9943ba33b7f9 ]
+[ Upstream commit 29cc0f3aa7c64d3b3cb9d94c0a0984ba6717bf72 ]
 
-`clippy` has changed behavior in [1] (Rust 1.95) where it no longer
-warns about the `let_and_return` lint when a comment is placed between
-the let binding and the return expression. Nightly thus fails to build,
-because the expectation is no longer fulfilled.
+Quentin forwards a report from Hyesoo Yu, describing an interesting
+problem with the use of WFxT in __delay() when a vcpu is loaded and
+that KVM is *not* in VHE mode (either nVHE or hVHE).
 
-Thus replace the expectation with an `allow`.
+In this case, CNTVOFF_EL2 is set to a non-zero value to reflect the
+state of the guest virtual counter. At the same time, __delay() is
+using get_cycles() to read the counter value, which is indirected to
+reading CNTPCT_EL0.
 
-[ The errors were:
+The core of the issue is that WFxT is using the *virtual* counter,
+while the kernel is using the physical counter, and that the offset
+introduces a really bad discrepancy between the two.
 
-      error: this lint expectation is unfulfilled
-          --> rust/pin-init/src/lib.rs:1279:10
-           |
-      1279 | #[expect(clippy::let_and_return)]
-           |          ^^^^^^^^^^^^^^^^^^^^^^
-           |
-           = note: `-D unfulfilled-lint-expectations` implied by `-D warnings`
-           = help: to override `-D warnings` add `#[allow(unfulfilled_lint_expectations)]`
+Fix this by forcing the use of CNTVCT_EL0, making __delay() consistent
+irrespective of the value of CNTVOFF_EL2.
 
-      error: this lint expectation is unfulfilled
-          --> rust/pin-init/src/lib.rs:1295:10
-           |
-      1295 | #[expect(clippy::let_and_return)]
-           |          ^^^^^^^^^^^^^^^^^^^^^^
-
-    - Miguel ]
-
-Link: https://github.com/rust-lang/rust-clippy/pull/16461 [1]
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-Cc: stable@vger.kernel.org # Needed in 6.18.y and later.
-Link: https://patch.msgid.link/20260215132232.1549861-1-lossin@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reported-by: Hyesoo Yu <hyesoo.yu@samsung.com>
+Reported-by: Quentin Perret <qperret@google.com>
+Reviewed-by: Quentin Perret <qperret@google.com>
+Fixes: 7d26b0516a0d ("arm64: Use WFxT for __delay() when possible")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/ktosachvft2cgqd5qkukn275ugmhy6xrhxur4zqpdxlfr3qh5h@o3zrfnsq63od
+Cc: stable@vger.kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/pin-init/src/lib.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/lib/delay.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index 8dc9dd5ac6fd3..3da65db9e2dd3 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -1276,13 +1276,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
- ///
- /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
- ///   pointer must result in a valid `U`.
--#[expect(clippy::let_and_return)]
- pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T, E>) -> impl PinInit<U, E> {
-     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
-     // requirements.
-     let res = unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinned_init(ptr.cast::<T>())) };
-     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
-     // cycle when computing the type returned by this function)
-+    #[allow(clippy::let_and_return)]
-     res
+diff --git a/arch/arm64/lib/delay.c b/arch/arm64/lib/delay.c
+index cb2062e7e2340..d02341303899e 100644
+--- a/arch/arm64/lib/delay.c
++++ b/arch/arm64/lib/delay.c
+@@ -23,9 +23,20 @@ static inline unsigned long xloops_to_cycles(unsigned long xloops)
+ 	return (xloops * loops_per_jiffy * HZ) >> 32;
  }
  
-@@ -1292,13 +1292,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
- ///
- /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
- ///   pointer must result in a valid `U`.
--#[expect(clippy::let_and_return)]
- pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
-     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
-     // requirements.
-     let res = unsafe { init_from_closure(|ptr: *mut U| init.__init(ptr.cast::<T>())) };
-     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
-     // cycle when computing the type returned by this function)
-+    #[allow(clippy::let_and_return)]
-     res
- }
++/*
++ * Force the use of CNTVCT_EL0 in order to have the same base as WFxT.
++ * This avoids some annoying issues when CNTVOFF_EL2 is not reset 0 on a
++ * KVM host running at EL1 until we do a vcpu_put() on the vcpu. When
++ * running at EL2, the effective offset is always 0.
++ *
++ * Note that userspace cannot change the offset behind our back either,
++ * as the vcpu mutex is held as long as KVM_RUN is in progress.
++ */
++#define __delay_cycles()	__arch_counter_get_cntvct_stable()
++
+ void __delay(unsigned long cycles)
+ {
+-	cycles_t start = get_cycles();
++	cycles_t start = __delay_cycles();
  
+ 	if (alternative_has_cap_unlikely(ARM64_HAS_WFXT)) {
+ 		u64 end = start + cycles;
+@@ -35,17 +46,17 @@ void __delay(unsigned long cycles)
+ 		 * early, use a WFET loop to complete the delay.
+ 		 */
+ 		wfit(end);
+-		while ((get_cycles() - start) < cycles)
++		while ((__delay_cycles() - start) < cycles)
+ 			wfet(end);
+ 	} else 	if (arch_timer_evtstrm_available()) {
+ 		const cycles_t timer_evt_period =
+ 			USECS_TO_CYCLES(ARCH_TIMER_EVT_STREAM_PERIOD_US);
+ 
+-		while ((get_cycles() - start + timer_evt_period) < cycles)
++		while ((__delay_cycles() - start + timer_evt_period) < cycles)
+ 			wfe();
+ 	}
+ 
+-	while ((get_cycles() - start) < cycles)
++	while ((__delay_cycles() - start) < cycles)
+ 		cpu_relax();
+ }
+ EXPORT_SYMBOL(__delay);
 -- 
 2.51.0
 
