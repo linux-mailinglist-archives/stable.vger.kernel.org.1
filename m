@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-220908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJsQMZ5bo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:18:22 +0100
+	id 8JN2NwdMo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:11:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EBB31C8E8D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:18:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 410591C8003
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:11:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E721036E2A26
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:40:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D09A73180AE3
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4536142A7A5;
-	Sat, 28 Feb 2026 17:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE8742908D;
+	Sat, 28 Feb 2026 17:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sc+8xAOv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lx3iMF5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EFA42A79B;
-	Sat, 28 Feb 2026 17:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC9642A7B8;
+	Sat, 28 Feb 2026 17:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300797; cv=none; b=hmU3zzzqjZutwMonCVTa+g8Vln7/UD5uSHAcZrNE7zmU16T/gDQcKGDSYL5nhk5kDIps1fLcqq0LHYoSHMIIE2LEIewGvUCR89iWkiuyCyP1Ms6wKZ+fiwjjlopdAShuVV0CbEZi+BKwy3B0P5SHyG3/ZyyjQvorFTsa0CYFqww=
+	t=1772300797; cv=none; b=IXNmh6leUZQkpkYaZZe4XxbDnpI2k/FK+zuDOXP3qKRmGG7I3BPGvm59JZ0iPkTH9Nn0WWKd0yMB9PABL4yrkASyUJT01uyVriwXSXBMZEsJ3F+BByShC75Nwt1HycDE0SVhCrfQLdlC5P6CekvGpxqGvqzakwSLdbaMGggieuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300797; c=relaxed/simple;
-	bh=+iy7ptYSLkD1fYrg74BQKN/mzogfPzwxLiHBiEWfsOA=;
+	bh=FoIjzdS00i5VPlniV9Kw+gfba6hiPgszo8/fC9hnjXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eG1jzKWP5VYAeHMvF25mfP+7EMlJCq9eZ4CMp2MtVJHLnlJ4EPqfS9i3u2VpmdaLGMJ9idGIuriM3CR1OKZ8Y9r7Ksgir+dO3eG2pdtqVsruKj7zGha+X9hHbc+kt/Yg2zG73tWRJB8tXyg3VTDl1DaXFItFL3UC6HW2YfYwTXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sc+8xAOv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEEAC116D0;
-	Sat, 28 Feb 2026 17:46:35 +0000 (UTC)
+	 MIME-Version; b=cjqE8AKKNRo8cbMi5tLzuPYYFXbt+hXRnXxNx8OH02+1Jh/MDvBwJYb2VeYqqgD2mmmvT+3KmjN+iCA1MbQag9Anc7PlQXFzVhI22I3cBkXLC53/Y9I1Mxxf2H/rVFphGaQ1a3M1jjeUElYC/++leIHdDAi9atBi4VlMstigK00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lx3iMF5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E99CC19423;
+	Sat, 28 Feb 2026 17:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300796;
-	bh=+iy7ptYSLkD1fYrg74BQKN/mzogfPzwxLiHBiEWfsOA=;
+	s=k20201202; t=1772300797;
+	bh=FoIjzdS00i5VPlniV9Kw+gfba6hiPgszo8/fC9hnjXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sc+8xAOvb33lqZNTPgNA7h1/5pFruC6MwAci8/Rkmt8QqwUJEAw2GuC3M7OkAA1jP
-	 F3PPap9UKXOaF3gTIDYgc3lG7XZzyJuk9Kb4bk8qlMvnmnhJd9ucx/j0xa8MfmyhH4
-	 bH4cG5Jjed7GwwjQs4SWZHjLcCFE+2+/BQ03FmZBGHKZcXBJhm0NoOWVNiAfFSsRT/
-	 vUvB5bOc6W8OBdTiaWgCBLMDz01DAsY2WGTxB+ZSHMTuMmvna1pSdMUSUFktzDIuvh
-	 uqyL/JDaLzN+k84z9W7M5hR+6Lco6EdX8sKLA29r8AQAzvHLrR9XAFzK3UrkNzls5O
-	 ctyAn1ThOzD7g==
+	b=lx3iMF5YpLjv0q/ObAm9Z7z0RcKy3WhI/uJPV+9///1LO/2Q87jtRjwzBO+w/ANaQ
+	 3LK1PFh84jE1d41gHu3tFCKCnreY1JO4ETIdmERs0cBfkXfV7qxC5ARjAgfwfiZJDY
+	 aqSn7NH70zlBam+R3jEceu9LWORGwcyMbRR8RW+MPKPVCCO6z4OLW3sPeHdUDPHZZ8
+	 fwC9XqhYZmdGjoVmTysjVoAHdbqUslnrSjH9KEvxHhBHzJNENQ6LvyoMP/YluI9jpt
+	 KMuLCtOfeHC4ShVK7fO7BelGK6xiu+hgPXOss7xLDQaDZJM9rMZC0FJRl7LTufh5WN
+	 auCI/U49FOGGQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 829/844] rust: irq: add `'static` bounds to irq callbacks
-Date: Sat, 28 Feb 2026 12:32:22 -0500
-Message-ID: <20260228173244.1509663-830-sashal@kernel.org>
+Subject: [PATCH 6.19 830/844] rust: pin-init: replace clippy `expect` with `allow`
+Date: Sat, 28 Feb 2026 12:32:23 -0500
+Message-ID: <20260228173244.1509663-831-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -70,116 +67,109 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220908-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220909-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,garyguo.net:email,collabora.com:email]
-X-Rspamd-Queue-Id: 1EBB31C8E8D
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 410591C8003
 X-Rspamd-Action: no action
 
 From: Benno Lossin <lossin@kernel.org>
 
-[ Upstream commit 621609f1e5ca43a75edd497dd1c28bd84aa66433 ]
+[ Upstream commit a58b8764aed9648357b1c5b6368c9943ba33b7f9 ]
 
-These callback functions take a generic `T` that is used in the body as
-the generic argument in `Registration` and `ThreadedRegistration`. Those
-types require `T: 'static`, but due to a compiler bug this requirement
-isn't propagated to the function. Thus add the bound. This was caught in
-the upstream Rust CI [1].
+`clippy` has changed behavior in [1] (Rust 1.95) where it no longer
+warns about the `let_and_return` lint when a comment is placed between
+the let binding and the return expression. Nightly thus fails to build,
+because the expectation is no longer fulfilled.
 
-[ The three errors looked similar and will start appearing with Rust
-  1.95.0 (expected 2026-04-16). The first one was:
+Thus replace the expectation with an `allow`.
 
-      error[E0310]: the parameter type `T` may not live long enough
-      Error:    --> rust/kernel/irq/request.rs:266:43
-          |
-      266 |     let registration = unsafe { &*(ptr as *const Registration<T>) };
-          |                                           ^^^^^^^^^^^^^^^^^^^^^^
-          |                                           |
-          |                                           the parameter type `T` must be valid for the static lifetime...
-          |                                           ...so that the type `T` will meet its required lifetime bounds
-          |
-      help: consider adding an explicit lifetime bound
-          |
-      264 | unsafe extern "C" fn handle_irq_callback<T: Handler + 'static>(_irq: i32, ptr: *mut c_void) -> c_uint {
-          |                                                     +++++++++
+[ The errors were:
+
+      error: this lint expectation is unfulfilled
+          --> rust/pin-init/src/lib.rs:1279:10
+           |
+      1279 | #[expect(clippy::let_and_return)]
+           |          ^^^^^^^^^^^^^^^^^^^^^^
+           |
+           = note: `-D unfulfilled-lint-expectations` implied by `-D warnings`
+           = help: to override `-D warnings` add `#[allow(unfulfilled_lint_expectations)]`
+
+      error: this lint expectation is unfulfilled
+          --> rust/pin-init/src/lib.rs:1295:10
+           |
+      1295 | #[expect(clippy::let_and_return)]
+           |          ^^^^^^^^^^^^^^^^^^^^^^
 
     - Miguel ]
 
-Link: https://github.com/rust-lang/rust/pull/149389 [1]
+Link: https://github.com/rust-lang/rust-clippy/pull/16461 [1]
 Signed-off-by: Benno Lossin <lossin@kernel.org>
-Cc: stable@vger.kernel.org
-Fixes: 29e16fcd67ee ("rust: irq: add &Device<Bound> argument to irq callbacks")
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/rust-for-linux/20260217222425.8755-1-cole@unwrap.rs/
-Link: https://patch.msgid.link/20260214092740.3201946-1-lossin@kernel.org
+Cc: stable@vger.kernel.org # Needed in 6.18.y and later.
+Link: https://patch.msgid.link/20260215132232.1549861-1-lossin@kernel.org
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/irq/request.rs | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ rust/pin-init/src/lib.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
-index b150563fdef80..2ceeaeb0543a4 100644
---- a/rust/kernel/irq/request.rs
-+++ b/rust/kernel/irq/request.rs
-@@ -261,7 +261,10 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> Result {
- /// # Safety
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 8dc9dd5ac6fd3..3da65db9e2dd3 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -1276,13 +1276,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
  ///
- /// This function should be only used as the callback in `request_irq`.
--unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32, ptr: *mut c_void) -> c_uint {
-+unsafe extern "C" fn handle_irq_callback<T: Handler + 'static>(
-+    _irq: i32,
-+    ptr: *mut c_void,
-+) -> c_uint {
-     // SAFETY: `ptr` is a pointer to `Registration<T>` set in `Registration::new`
-     let registration = unsafe { &*(ptr as *const Registration<T>) };
-     // SAFETY: The irq callback is removed before the device is unbound, so the fact that the irq
-@@ -480,7 +483,7 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> Result {
- /// # Safety
+ /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
+ ///   pointer must result in a valid `U`.
+-#[expect(clippy::let_and_return)]
+ pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T, E>) -> impl PinInit<U, E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+     let res = unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinned_init(ptr.cast::<T>())) };
+     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
+     // cycle when computing the type returned by this function)
++    #[allow(clippy::let_and_return)]
+     res
+ }
+ 
+@@ -1292,13 +1292,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
  ///
- /// This function should be only used as the callback in `request_threaded_irq`.
--unsafe extern "C" fn handle_threaded_irq_callback<T: ThreadedHandler>(
-+unsafe extern "C" fn handle_threaded_irq_callback<T: ThreadedHandler + 'static>(
-     _irq: i32,
-     ptr: *mut c_void,
- ) -> c_uint {
-@@ -496,7 +499,10 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> Result {
- /// # Safety
- ///
- /// This function should be only used as the callback in `request_threaded_irq`.
--unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler>(_irq: i32, ptr: *mut c_void) -> c_uint {
-+unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler + 'static>(
-+    _irq: i32,
-+    ptr: *mut c_void,
-+) -> c_uint {
-     // SAFETY: `ptr` is a pointer to `ThreadedRegistration<T>` set in `ThreadedRegistration::new`
-     let registration = unsafe { &*(ptr as *const ThreadedRegistration<T>) };
-     // SAFETY: The irq callback is removed before the device is unbound, so the fact that the irq
+ /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
+ ///   pointer must result in a valid `U`.
+-#[expect(clippy::let_and_return)]
+ pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+     let res = unsafe { init_from_closure(|ptr: *mut U| init.__init(ptr.cast::<T>())) };
+     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
+     // cycle when computing the type returned by this function)
++    #[allow(clippy::let_and_return)]
+     res
+ }
+ 
 -- 
 2.51.0
 
