@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPDeLMpdo2lxBQUAu9opvQ
-	(envelope-from <stable+bounces-221182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:27:38 +0100
+	id CKzBB/xNo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-221183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:20:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2077B1C9154
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:27:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A331C83CC
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:20:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DDAB830B2BA7
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:48:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0832230E56EC
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB71373C0B;
-	Sat, 28 Feb 2026 17:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7AF373C16;
+	Sat, 28 Feb 2026 17:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XThuNM4F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sv2znecd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FE021B9F5;
-	Sat, 28 Feb 2026 17:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E859373C12;
+	Sat, 28 Feb 2026 17:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301539; cv=none; b=HKn9iyda4HLHiifML/9DsUTWw49jF68EYnsUK4iVhim18qV9TxSEyAqdsmxzoaLrkyGKsQ/ZSlWbYcqR727Yq8IaceHmagWCwut8AudjHzbg4wTXMw5ZFkZHv6blhq9Pay2zUU1ucHqBi8zfe3fntDrwwJUQBsewrALks2QbGz8=
+	t=1772301540; cv=none; b=Mh1H6z9+xKDqHeeKU8ZzDP64sHZpuAk4bAoBNbQqFf47fl+p+qZ1e0y9V1+qj84IFpcQDmipyEU9h9dRKwCnF14It7cVtaU227HYeoyb5pCnoCBPsZreexSAVZt93qeruaGNf+niahUG+n16Fmam0s6VC3AP/hqKQRhP/haUUnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301539; c=relaxed/simple;
-	bh=dKiC0icjXP1TlfS6TPltT1637LnsHXjHUdGIYuZnsoM=;
+	s=arc-20240116; t=1772301540; c=relaxed/simple;
+	bh=M8MWHRNU2U3V/ORthrQefka7sZGGqMMKX/UwrSEEr04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhHMB7MvUli41NWX1qFUQaSI6d9iJ6BgmbXgTeh0i3HB7vX6qvC7d8Ee/3bjZvc1fm7M2Lfl98mmfuz/0zbeFAhM9nnb1X6JiRRTBhOH9zg/VY1pHXqcOSmF8OClkL7F1U9Gb2GeqIoFj2dWlwcyKPSjmhM3NhwqJkBuUbgrkoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XThuNM4F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8341C19425;
-	Sat, 28 Feb 2026 17:58:58 +0000 (UTC)
+	 MIME-Version; b=hItUJlkSFKNFa26rQr3nWdmBvSuiNpCB2ppjXrZovdq2VR2PrN4YeLaFqKOf5cao1NJOC0Gt1jWKDEe9Px8EyoNq3l3SiHwj5lx6deMq5O2KiwZTeuTFq5Ap0v2BZrg9AKI4lmr1K4KH2qykbhMo9E7Kw++rsxmwG/FrH6IsMms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sv2znecd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CD9C19424;
+	Sat, 28 Feb 2026 17:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301539;
-	bh=dKiC0icjXP1TlfS6TPltT1637LnsHXjHUdGIYuZnsoM=;
+	s=k20201202; t=1772301540;
+	bh=M8MWHRNU2U3V/ORthrQefka7sZGGqMMKX/UwrSEEr04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XThuNM4Fk/49UvzqnlKAX/JD1ZLGxU2NXGo8g+IY7/3OJySjLZ2EDRPU4soqsAadd
-	 aXcvkOCaTDPICb9iwzXQURi+Rt8F6IneybifmnpeixJO5e+by3+xNk3asNIykXW9kQ
-	 nMNvTBgn4C9j9bviQfrT1AIiGNMfbwkojLtm4tk1ZylRiKjvL5rV5SfO+FaL0Wzonh
-	 Onfa64e+21Q13dsPeyHH0pImyR/Pi4cEvn8wT08A0D3vsVLnIst6q2unM0s7qMdS4f
-	 A70H/MwsstkV2x/cc9CZjAQelvrHMcVQPma4L6FgmRDNewC0DICrvaJpEOyXSrxdlq
-	 8jL0D6Slc8c1A==
+	b=sv2znecd/5iOwCa0wlUekZz4YT9+z37aDHc6t3bhOi+XQrsIosbSauhnN8gJzxjL2
+	 2TdcCshYfwZwETOA+LY/hycBEGcdUu0LrROfgvTX+vl+aNmNS/TpPE11+rDxn+JuCS
+	 lt/j7cCkZ/HX7uF++hl9UKHVwPvweOH7PONldBWgcJCx1h5NHKsoruvpmmb7XY7s9a
+	 02UBHgYnXmX5gkDgJaiwVVZoqP071t2gMExU2Iz0ODkFeExXjLK00dWOTErXJ2Up74
+	 Zi8qfOXVSeFuzpuQhnqbOAHUuK8wMcq8qwA61GnXIiyELLkv0UsPn6ErUpRQ/p3GBZ
+	 njtntpdTw7cmw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+Cc: Weigang He <geoffreyhe2@gmail.com>,
 	stable@vger.kernel.org,
 	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 721/752] fbdev: vt8500lcdfb: fix missing dma_free_coherent()
-Date: Sat, 28 Feb 2026 12:47:12 -0500
-Message-ID: <20260228174750.1542406-721-sashal@kernel.org>
+Subject: [PATCH 6.18 722/752] fbdev: of: display_timing: fix refcount leak in of_get_display_timings()
+Date: Sat, 28 Feb 2026 12:47:13 -0500
+Message-ID: <20260228174750.1542406-722-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -66,24 +66,23 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,gmx.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221182-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,gmx.de,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221183-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -93,50 +92,54 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email]
-X-Rspamd-Queue-Id: 2077B1C9154
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gmx.de:email]
+X-Rspamd-Queue-Id: B7A331C83CC
 X-Rspamd-Action: no action
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Weigang He <geoffreyhe2@gmail.com>
 
-[ Upstream commit 88b3b9924337336a31cefbe99a22ed09401be74a ]
+[ Upstream commit eacf9840ae1285a1ef47eb0ce16d786e542bd4d7 ]
 
-fbi->fb.screen_buffer is allocated with dma_alloc_coherent() but is not
-freed if the error path is reached.
+of_parse_phandle() returns a device_node with refcount incremented,
+which is stored in 'entry' and then copied to 'native_mode'. When the
+error paths at lines 184 or 192 jump to 'entryfail', native_mode's
+refcount is not decremented, causing a refcount leak.
 
-Fixes: e7b995371fe1 ("video: vt8500: Add devicetree support for vt8500-fb and wm8505-fb")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Fix this by changing the goto target from 'entryfail' to 'timingfail',
+which properly calls of_node_put(native_mode) before cleanup.
+
+Fixes: cc3f414cf2e4 ("video: add of helper for display timings/videomode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
 Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/vt8500lcdfb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/video/of_display_timing.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/vt8500lcdfb.c b/drivers/video/fbdev/vt8500lcdfb.c
-index b08a6fdc53fd2..85c7a99a7d648 100644
---- a/drivers/video/fbdev/vt8500lcdfb.c
-+++ b/drivers/video/fbdev/vt8500lcdfb.c
-@@ -369,7 +369,7 @@ static int vt8500lcd_probe(struct platform_device *pdev)
- 	if (fbi->palette_cpu == NULL) {
- 		dev_err(&pdev->dev, "Failed to allocate palette buffer\n");
- 		ret = -ENOMEM;
--		goto failed_free_io;
-+		goto failed_free_mem_virt;
+diff --git a/drivers/video/of_display_timing.c b/drivers/video/of_display_timing.c
+index a4cd446ac5a59..a6ec392253c3e 100644
+--- a/drivers/video/of_display_timing.c
++++ b/drivers/video/of_display_timing.c
+@@ -181,7 +181,7 @@ struct display_timings *of_get_display_timings(const struct device_node *np)
+ 	if (disp->num_timings == 0) {
+ 		/* should never happen, as entry was already found above */
+ 		pr_err("%pOF: no timings specified\n", np);
+-		goto entryfail;
++		goto timingfail;
  	}
  
- 	irq = platform_get_irq(pdev, 0);
-@@ -432,6 +432,9 @@ static int vt8500lcd_probe(struct platform_device *pdev)
- failed_free_palette:
- 	dma_free_coherent(&pdev->dev, fbi->palette_size,
- 			  fbi->palette_cpu, fbi->palette_phys);
-+failed_free_mem_virt:
-+	dma_free_coherent(&pdev->dev, fbi->fb.fix.smem_len,
-+			  fbi->fb.screen_buffer, fbi->fb.fix.smem_start);
- failed_free_io:
- 	iounmap(fbi->regbase);
- failed_free_res:
+ 	disp->timings = kcalloc(disp->num_timings,
+@@ -189,7 +189,7 @@ struct display_timings *of_get_display_timings(const struct device_node *np)
+ 				GFP_KERNEL);
+ 	if (!disp->timings) {
+ 		pr_err("%pOF: could not allocate timings array\n", np);
+-		goto entryfail;
++		goto timingfail;
+ 	}
+ 
+ 	disp->num_timings = 0;
 -- 
 2.51.0
 
