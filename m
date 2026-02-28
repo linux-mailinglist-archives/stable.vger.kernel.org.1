@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGwTE4Yro2mF+AQAu9opvQ
-	(envelope-from <stable+bounces-220201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:53:10 +0100
+	id ePplO6sro2mF+AQAu9opvQ
+	(envelope-from <stable+bounces-220202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:53:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9FD1C52AD
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:53:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56AB61C52D8
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A740D3068149
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:52:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE6C33093444
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587D04D2EF3;
-	Sat, 28 Feb 2026 17:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8104D8D8B;
+	Sat, 28 Feb 2026 17:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mROXQa4z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rf39c5oy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC444CA26C;
-	Sat, 28 Feb 2026 17:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F28C4D8D87;
+	Sat, 28 Feb 2026 17:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300107; cv=none; b=PIokPMotF3EevgfOj1SCtywX7L1uWW8joMd/MRiUcT/84bvPWTHDTzg0QcK2pN0r6xoqv2z38PtoYwi341s9cT7E3OogQrI8+/+1P65L26hcTMc/H27NFR3HhPdPnf1gfkk8yoBZ0niAHUVNNKhsGKO5V/e2a8CybszUVGwkTk0=
+	t=1772300108; cv=none; b=BJAmfZAeJ5UdDSbR0uRakeXag/d4/PlYMb03FR645ElhLDJtEBxm4QTpYL6D2XT7qiG8loYuwyl4xCvnoekrC40ABL2PRyLNEXPjKk02T1qGZexAba21UVuC2vh6PvyQOOczF1E5m1oOpWj0m0ih3lMKihldReOblO7Y+PMfPrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300107; c=relaxed/simple;
-	bh=Q2NV62oJ9Rk/vMU9B7uyWbpa6IUD0HHYXjbz4QRK468=;
+	s=arc-20240116; t=1772300108; c=relaxed/simple;
+	bh=V/p2T36y6sxgHGYF7MNGfb1Sl2dsCVVYF9H5KcDeDcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BumdZBPVoeGdBEk+XktUi6RuexOIvkOJoXybS41DuPCXX4b89oyMhs58WnifXtFI/T8Dueqn+WGYir5RWDv2yYmsipphEhUM+GOgOf5Is6XVBniegco1Rlg/CzwRTI3NX4jZPNsQtajSSZAuV7FFNpQGSZUwXQg/WmmHbXo2jr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mROXQa4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6492FC19425;
-	Sat, 28 Feb 2026 17:35:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o9J2zcptqvhBGNFO1ZZui6UG8Jhqlrwiz9LqHWm0Zu6m5XpwoqO+tLkueGPTMR4G20WgF8sXIfCvSMxpbYTX3SkldHV2WgiXt4kaqspIId79aXMewO/t78nlY03X8ijtkHbK+J8nAWnSDuyEqw0qxHkFAQ/7I6q6h0MxQKOZcmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rf39c5oy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D8CC19424;
+	Sat, 28 Feb 2026 17:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772300107;
-	bh=Q2NV62oJ9Rk/vMU9B7uyWbpa6IUD0HHYXjbz4QRK468=;
+	bh=V/p2T36y6sxgHGYF7MNGfb1Sl2dsCVVYF9H5KcDeDcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mROXQa4z70cL4KsxQCjDl1jvvYgi32EJci9/hE0lom6GRekfxrA9682O02+AdQUE0
-	 92kK35oh27FSKgaUVe1jaiJiXeKk0Cku5+iklN45L4xR6TdbI7vZWV8cDAjRVrrS3L
-	 pHf0MifBWs/yQ8jUXTk8yqYAC8YaTuCoJqBw+9hzGX5jqp3l5BOi0PP//w6m1JXzeD
-	 x6LA+3U8B6DbztKwW1OcjrPICyIMwvytwOzn3GDO6VQGF/z7zBbTBBSCKG0LLiyHW/
-	 Qd5ObXauPpInUTz7fqYc7Yt30Ex+DUyEGR5qKlp/gCm/FXk5tny2G3uN3mjo347B8s
-	 rkG8WP9R6Gu8w==
+	b=rf39c5oyim/4AyN3Jhljd3+MWyJqnt0uPT7IaHjuK8Mcp7gt4bpvAe42piLsTI/1T
+	 hD6lA3UcxZH0Q+KVbk8M5RFQfyFZl8msmbecPEBAkBvYyjHhj7CihVaDEgX+9eVm/i
+	 6domWo8isVa84NTG4zrxvXaM/VLMLj9YS6v+e2eEumht5/yHtYrwaiiMWyVC8NTpDJ
+	 hERLrfTIoFBhsqQgSjB9sIvp3uZWq6qXmv280iIaRgduXuvTIA1v6vx8jef0NWDAnG
+	 gbZAFZvutz+hxa9lAD32GC1QkAfOmskQygj/kKVyOWMMmMJsleVDbqI7vAzeBcG6v7
+	 rYh0i2kAXkVSw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 123/844] drm/xe: Covert return of -EBUSY to -ENOMEM in VM bind IOCTL
-Date: Sat, 28 Feb 2026 12:20:36 -0500
-Message-ID: <20260228173244.1509663-124-sashal@kernel.org>
+Subject: [PATCH 6.19 124/844] drm/xe/vm: Skip ufence association for CPU address mirror VMA during MAP
+Date: Sat, 28 Feb 2026 12:20:37 -0500
+Message-ID: <20260228173244.1509663-125-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -62,80 +63,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220201-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220202-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 9E9FD1C52AD
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 56AB61C52D8
 X-Rspamd-Action: no action
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-[ Upstream commit 6028f59620927aee2e15a424004012ae05c50684 ]
+[ Upstream commit 7f08cc5b3cc3bf6416f8b55bff906f67ed75637d ]
 
-xe_vma_userptr_pin_pages can return -EBUSY but -EBUSY has special
-meaning in VM bind IOCTLs that user fence is pending that is attached to
-the VMA. Convert -EBUSY to -ENOMEM in this case as -EBUSY in practice
-means we are low or out of memory.
+The MAP operation for a CPU address mirror VMA does not require ufence
+association because such mappings are not GPU-synchronized and do not
+participate in GPU job completion signaling.
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Link: https://patch.msgid.link/20251122012502.382587-2-matthew.brost@intel.com
+Remove the unnecessary ufence addition for this case to avoid -EBUSY
+failure in check_ufence of unbind ops.
+
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20251125075628.1182481-6-himal.prasad.ghimiray@intel.com
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_vm.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_vm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 095bb197e8b05..9781209dd26ed 100644
+index 9781209dd26ed..612fc5b2539cd 100644
 --- a/drivers/gpu/drm/xe/xe_vm.c
 +++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -2451,8 +2451,17 @@ static struct xe_vma *new_vma(struct xe_vm *vm, struct drm_gpuva_op_map *op,
- 		if (IS_ERR(vma))
- 			return vma;
- 
--		if (xe_vma_is_userptr(vma))
-+		if (xe_vma_is_userptr(vma)) {
- 			err = xe_vma_userptr_pin_pages(to_userptr_vma(vma));
-+			/*
-+			 * -EBUSY has dedicated meaning that a user fence
-+			 * attached to the VMA is busy, in practice
-+			 * xe_vma_userptr_pin_pages can only fail with -EBUSY if
-+			 * we are low on memory so convert this to -ENOMEM.
-+			 */
-+			if (err == -EBUSY)
-+				err = -ENOMEM;
-+		}
- 	}
- 	if (err) {
- 		prep_vma_destroy(vm, vma, false);
+@@ -3223,7 +3223,8 @@ static void op_add_ufence(struct xe_vm *vm, struct xe_vma_op *op,
+ {
+ 	switch (op->base.op) {
+ 	case DRM_GPUVA_OP_MAP:
+-		vma_add_ufence(op->map.vma, ufence);
++		if (!xe_vma_is_cpu_addr_mirror(op->map.vma))
++			vma_add_ufence(op->map.vma, ufence);
+ 		break;
+ 	case DRM_GPUVA_OP_REMAP:
+ 		if (op->remap.prev)
 -- 
 2.51.0
 
