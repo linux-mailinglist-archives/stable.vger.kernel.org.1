@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-220511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMXYNmY6o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:56:38 +0100
+	id eKtsAbY5o2mU+gQAu9opvQ
+	(envelope-from <stable+bounces-220512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C831C66F5
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:56:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF191C65F2
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41DBF32B2FF7
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:39:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D524830FC121
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C813CAF99;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD2F481A96;
 	Sat, 28 Feb 2026 17:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETgk1PxZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQm+Zbwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAB13CAF90;
-	Sat, 28 Feb 2026 17:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEED3CA79B;
+	Sat, 28 Feb 2026 17:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300395; cv=none; b=M5hP6LxYmqEKDA2KuXWtiR79WJbi+Dt27K/hZH7zh/0ArAeWkQ7UidcKspPHx/YrZTnProUJilGolmfNPaZTZcQyhIuNkDaYP7yhWoLIkSpiFtnoFHX/6axURP4HJGl3QjyNJ63T236oSQza+LKCajKC1dqUWmAda3G0ruKg4aA=
+	t=1772300396; cv=none; b=FnWEoEQU2OXVNYW3GddgnWzuzGmw1dOMGdSRKLp7aDVrPMhBROX4KQ2cohUSEpSnPD6fGfeEjxGTQE+Ho5uk3/rWqtTyvHPE6lauMlj+7uBO+p9G1OT94dTVpZYTHRbsFlUsU3LCfAmL52eAuR8XGK3MzX4v8eM4yqKMS6I0xh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300395; c=relaxed/simple;
-	bh=tdLRcPDYUfZm78vFyiDv0xPCoGYLygU2PRZY3oEzq2Y=;
+	s=arc-20240116; t=1772300396; c=relaxed/simple;
+	bh=M2hlIiwEZWSkqOgs9cGI/Zl461ZEg2wPTS4lRx17/Ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2sPdSh9F8ukkZHG9Yww8QQICplenvNqPg1CFJ2eIdmkPIFebH8Jsa6NM3KxPuoq5oNGPrRQw+EAOq+xFRrS5UWoIKPuwtIeKvCnq+1apjbQ4FrGjIdIxi4+LhDURJysioh23A61IqadVLJBl5DTty6VRociKHGoIh8WkUAzB0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETgk1PxZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54B2C116D0;
-	Sat, 28 Feb 2026 17:39:54 +0000 (UTC)
+	 MIME-Version; b=faBqJAPxlWx/DXIY3Zg9E6CoHyPVmAcIr3VceYphg/VILtYgCOuOcQa2kTh6AHYpIP/90yeMwRp7fJmjdcF9cxp/zIe72wzlzBgvU4KcfLMW33z0yDd8zGVZzyyJTG9WyUGY+nsnDTmqaxbT/66+QpbcPzpzwZBYiNsCj1Nrwo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQm+Zbwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD304C19425;
+	Sat, 28 Feb 2026 17:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300395;
-	bh=tdLRcPDYUfZm78vFyiDv0xPCoGYLygU2PRZY3oEzq2Y=;
+	s=k20201202; t=1772300396;
+	bh=M2hlIiwEZWSkqOgs9cGI/Zl461ZEg2wPTS4lRx17/Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ETgk1PxZPbX4ztyxDSm1j/gCSVubOvIZmaBen2YyS+kD38mDXYgKskq2UvTfX3LSh
-	 vVcgoXUnTKNDMgA2ug5zyBEe4w7PB2doT/qpvlWKFTwM7Ihi8wsigCtxh8Cacqb4Rh
-	 fGrzIdxx7i5p5ivvxAX7QA4NrFHIr62PwuJAVyYtP8gsOU1bgX8xK7WehP81HY4gyE
-	 1fqGH5wIsrSzUDxi1ZA82mplwb+uPUv1YAtSppv0Qc8c6/MdlDB3jHdj3tvP33mYzV
-	 1sMn1Pe2y7zqMJdsgoNHvFf240bAjuswchYSg3oVUWgonQB9Vxjooxv44gt5+xY6Nr
-	 4dOi+tGRxAx2Q==
+	b=oQm+ZbwaNjrcJhCLaguoxRVFVM0dRLFDfE42Ihc33SUw89Bx/6pb5K6nt942bPkTX
+	 miR9Sy154/dQBpE2NoLMncnEnIyBLNuJ7XDsISrFqzYxv2HpBhy7FICTgzUdw0NYp/
+	 QWHTtxrDEMSZjJULxDpEprLqLi1Piv+VZWwPBxlmZ3/vUE0GVgG+Gfx8kYA5+59cTf
+	 OvzHKu5ygE80BRlmFOEgY2wN77hs+l5FSP0khHNEewfRoiRx4cz1F7LzVmzmIk2gN0
+	 SdBB+QWvhjc2dS3JZwliMgv5rMrsby8f+1rt66W+Aiwd6GvDmy6kDcre/HtdOaOgzb
+	 ZGk5Sd5LObMMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Clay King <clayking@amd.com>,
-	Aric Cyr <aric.cyr@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Fabian Godehardt <fg@emlix.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 432/844] drm/amd/display: bypass post csc for additional color spaces in dal
-Date: Sat, 28 Feb 2026 12:25:45 -0500
-Message-ID: <20260228173244.1509663-433-sashal@kernel.org>
+Subject: [PATCH 6.19 433/844] spi: spidev: fix lock inversion between spi_lock and buf_lock
+Date: Sat, 28 Feb 2026 12:25:46 -0500
+Message-ID: <20260228173244.1509663-434-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,126 +67,244 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220512-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220511-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 78C831C66F5
+X-Rspamd-Queue-Id: BCF191C65F2
 X-Rspamd-Action: no action
 
-From: Clay King <clayking@amd.com>
+From: Fabian Godehardt <fg@emlix.com>
 
-[ Upstream commit 7d9ec9dc20ecdb1661f4538cd9112cd3d6a5f15a ]
+[ Upstream commit 40534d19ed2afb880ecf202dab26a8e7a5808d16 ]
 
-[Why]
-For RGB BT2020 full and limited color spaces, overlay adjustments were
-applied twice (once by MM and once by DAL). This results in incorrect
-colours and a noticeable difference between mpo and non-mpo cases.
+The spidev driver previously used two mutexes, spi_lock and buf_lock,
+but acquired them in different orders depending on the code path:
 
-[How]
-Add RGB BT2020 full and limited color spaces to list that bypasses post
-csc adjustment.
+  write()/read(): buf_lock -> spi_lock
+  ioctl():       spi_lock -> buf_lock
 
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Clay King <clayking@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This AB-BA locking pattern triggers lockdep warnings and can
+cause real deadlocks:
+
+  WARNING: possible circular locking dependency detected
+  spidev_ioctl() -> mutex_lock(&spidev->buf_lock)
+  spidev_sync_write() -> mutex_lock(&spidev->spi_lock)
+  *** DEADLOCK ***
+
+The issue is reproducible with a simple userspace program that
+performs write() and SPI_IOC_WR_MAX_SPEED_HZ ioctl() calls from
+separate threads on the same spidev file descriptor.
+
+Fix this by simplifying the locking model and removing the lock
+inversion entirely. spidev_sync() no longer performs any locking,
+and all callers serialize access using spi_lock.
+
+buf_lock is removed since its functionality is fully covered by
+spi_lock, eliminating the possibility of lock ordering issues.
+
+This removes the lock inversion and prevents deadlocks without
+changing userspace ABI or behaviour.
+
+Signed-off-by: Fabian Godehardt <fg@emlix.com>
+Link: https://patch.msgid.link/20260211072616.489522-1-fg@emlix.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c  | 21 ++++++++++++++++---
- .../drm/amd/display/dc/dpp/dcn30/dcn30_dpp.h  |  4 ++++
- .../amd/display/dc/dpp/dcn401/dcn401_dpp.c    |  6 +++---
- 3 files changed, 25 insertions(+), 6 deletions(-)
+ drivers/spi/spidev.c | 63 ++++++++++++++++----------------------------
+ 1 file changed, 22 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-index ef4a161171814..c7923531da83d 100644
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-@@ -376,10 +376,10 @@ void dpp3_cnv_setup (
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 9a0160f6dc3dc..f28528ed1c24e 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -74,7 +74,6 @@ struct spidev_data {
+ 	struct list_head	device_entry;
  
- 		tbl_entry.color_space = input_color_space;
- 
--		if (color_space >= COLOR_SPACE_YCBCR601)
--			select = INPUT_CSC_SELECT_ICSC;
--		else
-+		if (dpp3_should_bypass_post_csc_for_colorspace(color_space))
- 			select = INPUT_CSC_SELECT_BYPASS;
-+		else
-+			select = INPUT_CSC_SELECT_ICSC;
- 
- 		dpp3_program_post_csc(dpp_base, color_space, select,
- 				      &tbl_entry);
-@@ -1541,3 +1541,18 @@ bool dpp3_construct(
- 	return true;
+ 	/* TX/RX buffers are NULL unless this device is open (users > 0) */
+-	struct mutex		buf_lock;
+ 	unsigned		users;
+ 	u8			*tx_buffer;
+ 	u8			*rx_buffer;
+@@ -102,24 +101,6 @@ spidev_sync_unlocked(struct spi_device *spi, struct spi_message *message)
+ 	return status;
  }
  
-+bool dpp3_should_bypass_post_csc_for_colorspace(enum dc_color_space dc_color_space)
-+{
-+	switch (dc_color_space) {
-+	case COLOR_SPACE_UNKNOWN:
-+	case COLOR_SPACE_SRGB:
-+	case COLOR_SPACE_XR_RGB:
-+	case COLOR_SPACE_SRGB_LIMITED:
-+	case COLOR_SPACE_MSREF_SCRGB:
-+	case COLOR_SPACE_2020_RGB_FULLRANGE:
-+	case COLOR_SPACE_2020_RGB_LIMITEDRANGE:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.h b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.h
-index d4a70b4379eaf..6a61b99d6a798 100644
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.h
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.h
-@@ -644,4 +644,8 @@ void dpp3_program_cm_dealpha(
+-static ssize_t
+-spidev_sync(struct spidev_data *spidev, struct spi_message *message)
+-{
+-	ssize_t status;
+-	struct spi_device *spi;
+-
+-	mutex_lock(&spidev->spi_lock);
+-	spi = spidev->spi;
+-
+-	if (spi == NULL)
+-		status = -ESHUTDOWN;
+-	else
+-		status = spidev_sync_unlocked(spi, message);
+-
+-	mutex_unlock(&spidev->spi_lock);
+-	return status;
+-}
+-
+ static inline ssize_t
+ spidev_sync_write(struct spidev_data *spidev, size_t len)
+ {
+@@ -132,7 +113,8 @@ spidev_sync_write(struct spidev_data *spidev, size_t len)
  
- void dpp3_cm_get_gamut_remap(struct dpp *dpp_base,
- 			     struct dpp_grph_csc_adjustment *adjust);
+ 	spi_message_init(&m);
+ 	spi_message_add_tail(&t, &m);
+-	return spidev_sync(spidev, &m);
 +
-+bool dpp3_should_bypass_post_csc_for_colorspace(
-+		enum dc_color_space dc_color_space);
++	return spidev_sync_unlocked(spidev->spi, &m);
+ }
+ 
+ static inline ssize_t
+@@ -147,7 +129,8 @@ spidev_sync_read(struct spidev_data *spidev, size_t len)
+ 
+ 	spi_message_init(&m);
+ 	spi_message_add_tail(&t, &m);
+-	return spidev_sync(spidev, &m);
 +
- #endif /* __DC_HWSS_DCN30_H__ */
-diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp.c
-index 96c2c853de42c..2d6a646462e21 100644
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp.c
-@@ -206,10 +206,10 @@ void dpp401_dpp_setup(
++	return spidev_sync_unlocked(spidev->spi, &m);
+ }
  
- 		tbl_entry.color_space = input_color_space;
+ /*-------------------------------------------------------------------------*/
+@@ -157,7 +140,7 @@ static ssize_t
+ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
+ {
+ 	struct spidev_data	*spidev;
+-	ssize_t			status;
++	ssize_t			status = -ESHUTDOWN;
  
--		if (color_space >= COLOR_SPACE_YCBCR601)
--			select = INPUT_CSC_SELECT_ICSC;
--		else
-+		if (dpp3_should_bypass_post_csc_for_colorspace(color_space))
- 			select = INPUT_CSC_SELECT_BYPASS;
-+		else
-+			select = INPUT_CSC_SELECT_ICSC;
+ 	/* chipselect only toggles at start or end of operation */
+ 	if (count > bufsiz)
+@@ -165,7 +148,11 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
  
- 		dpp3_program_post_csc(dpp_base, color_space, select,
- 			&tbl_entry);
+ 	spidev = filp->private_data;
+ 
+-	mutex_lock(&spidev->buf_lock);
++	mutex_lock(&spidev->spi_lock);
++
++	if (spidev->spi == NULL)
++		goto err_spi_removed;
++
+ 	status = spidev_sync_read(spidev, count);
+ 	if (status > 0) {
+ 		unsigned long	missing;
+@@ -176,7 +163,9 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
+ 		else
+ 			status = status - missing;
+ 	}
+-	mutex_unlock(&spidev->buf_lock);
++
++err_spi_removed:
++	mutex_unlock(&spidev->spi_lock);
+ 
+ 	return status;
+ }
+@@ -187,7 +176,7 @@ spidev_write(struct file *filp, const char __user *buf,
+ 		size_t count, loff_t *f_pos)
+ {
+ 	struct spidev_data	*spidev;
+-	ssize_t			status;
++	ssize_t			status = -ESHUTDOWN;
+ 	unsigned long		missing;
+ 
+ 	/* chipselect only toggles at start or end of operation */
+@@ -196,13 +185,19 @@ spidev_write(struct file *filp, const char __user *buf,
+ 
+ 	spidev = filp->private_data;
+ 
+-	mutex_lock(&spidev->buf_lock);
++	mutex_lock(&spidev->spi_lock);
++
++	if (spidev->spi == NULL)
++		goto err_spi_removed;
++
+ 	missing = copy_from_user(spidev->tx_buffer, buf, count);
+ 	if (missing == 0)
+ 		status = spidev_sync_write(spidev, count);
+ 	else
+ 		status = -EFAULT;
+-	mutex_unlock(&spidev->buf_lock);
++
++err_spi_removed:
++	mutex_unlock(&spidev->spi_lock);
+ 
+ 	return status;
+ }
+@@ -379,14 +374,6 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 
+ 	ctlr = spi->controller;
+ 
+-	/* use the buffer lock here for triple duty:
+-	 *  - prevent I/O (from us) so calling spi_setup() is safe;
+-	 *  - prevent concurrent SPI_IOC_WR_* from morphing
+-	 *    data fields while SPI_IOC_RD_* reads them;
+-	 *  - SPI_IOC_MESSAGE needs the buffer locked "normally".
+-	 */
+-	mutex_lock(&spidev->buf_lock);
+-
+ 	switch (cmd) {
+ 	/* read requests */
+ 	case SPI_IOC_RD_MODE:
+@@ -510,7 +497,6 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		break;
+ 	}
+ 
+-	mutex_unlock(&spidev->buf_lock);
+ 	spi_dev_put(spi);
+ 	mutex_unlock(&spidev->spi_lock);
+ 	return retval;
+@@ -541,9 +527,6 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
+ 		return -ESHUTDOWN;
+ 	}
+ 
+-	/* SPI_IOC_MESSAGE needs the buffer locked "normally" */
+-	mutex_lock(&spidev->buf_lock);
+-
+ 	/* Check message and copy into scratch area */
+ 	ioc = spidev_get_ioc_message(cmd, u_ioc, &n_ioc);
+ 	if (IS_ERR(ioc)) {
+@@ -564,7 +547,6 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
+ 	kfree(ioc);
+ 
+ done:
+-	mutex_unlock(&spidev->buf_lock);
+ 	spi_dev_put(spi);
+ 	mutex_unlock(&spidev->spi_lock);
+ 	return retval;
+@@ -802,7 +784,6 @@ static int spidev_probe(struct spi_device *spi)
+ 	/* Initialize the driver data */
+ 	spidev->spi = spi;
+ 	mutex_init(&spidev->spi_lock);
+-	mutex_init(&spidev->buf_lock);
+ 
+ 	INIT_LIST_HEAD(&spidev->device_entry);
+ 
 -- 
 2.51.0
 
