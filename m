@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-220122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220123-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPRdDPspo2kr+AQAu9opvQ
-	(envelope-from <stable+bounces-220122-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:46:35 +0100
+	id SEoNMwEqo2kr+AQAu9opvQ
+	(envelope-from <stable+bounces-220123-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:46:41 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0621C5173
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:46:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C1F1C5181
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9E87B31008B9
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:38:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50B58310247F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2494548097F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CBD480DD2;
 	Sat, 28 Feb 2026 17:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luPk9op3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2IIWYqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB88480979;
-	Sat, 28 Feb 2026 17:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC2B33A01E;
+	Sat, 28 Feb 2026 17:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300032; cv=none; b=IMbPD7p7MA5o+ZLqUBDDVXcA9ODO3UUU3t0evEHvfqSTpO9W/GhJ9zf+/SflZ5k3GwDbE7XmJiNErOKMVeRsy2UwDRHh64g0lxe/5aT22Du8AGz4GiqYFE5GiVnEhnGo8I5CYv8Z8vTktbPgcca4UOyVj7IUhWeaXgXDs2KJmFw=
+	t=1772300033; cv=none; b=dKr8dXyH2mc7BVwfzk2ehF/fcIBLak3GpzZDOpz9p3OPl6DyKpAJxRsva8Cqj0oq7EBom9Fr01cYlf64d9OwZIHDHmWhgT5Pb5pIO1hd5w1bVLe/MAt1bVCZ6u8dW+rMiHorTySBIsWt1SD31sUIZsBkVB+MCRpTcxKVWbiapm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300032; c=relaxed/simple;
-	bh=HfdzIhtm/P1ivjYx+JiI04y9xYn3VxaKtR7qwfHK22Q=;
+	s=arc-20240116; t=1772300033; c=relaxed/simple;
+	bh=iv7VVudKM1I3hlT9k5+PCMCP6tgXzG9LZ2Dv/FdCcbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KaZ7ndEO1LgQgEEppTybz3hEHroCJbjyiOL28y61XbGr0qQoVPZl0wgY1IH79vXfeyn9dZzSn46dSfPH3YcZJ9xwiwnTUXF5aU1QnIPM1HukcKT+9Flo8hU3jIUtlGk5x2bV6J6U6QwsjWz64/Oz49W84BNfe6agxzuFsDr1xLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luPk9op3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D3EC2BC87;
-	Sat, 28 Feb 2026 17:33:51 +0000 (UTC)
+	 MIME-Version; b=WMoAcjFzsktvT5Q5aAkHjF8ctvhS9nUwx/0jslV0hlwccoDrtjM21hb640lHr740ZUrw13JR4+RM/z5hagL9SmoFxrn5XfMedFzNKLda0PCqC9aeo5naBeBm8LSjLm4t6Pjw7A68Fbnbtg8cbJ3PaFiYndPDsMaEQIwG4DLOuc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2IIWYqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3853C2BC9E;
+	Sat, 28 Feb 2026 17:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300032;
-	bh=HfdzIhtm/P1ivjYx+JiI04y9xYn3VxaKtR7qwfHK22Q=;
+	s=k20201202; t=1772300033;
+	bh=iv7VVudKM1I3hlT9k5+PCMCP6tgXzG9LZ2Dv/FdCcbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=luPk9op3YEbiisEcfN++v/TMwgcgWobD/kWifiZtbd8Lw9ZkXf6Rds32nADJdKDK/
-	 QY6KQ8g7NBpg/WxcXW9JpcRfpYedRBn/LyHV7iJYgKA3je1UYmmP1xc3GoayL5F1GH
-	 U5rrRmEihIicTs+xpnkX3l0eu3asXW2zxLD9WgBi3E24ZCtbQFkMAgX0dbHpjPx+eN
-	 ZjHUrjCq7i8X6WxMd3rmVmBcopJoMhagzGwoD8fFD+TNqbbTEe4ffzyHn8CCqmHP1h
-	 uuDpj+G/F+ZbQFKFNtg0G4bWkXLEKNFfjUzdOplhPqN2KC+Zi7NDtZQgLyeWC6MAjQ
-	 +qlic40IBOfRQ==
+	b=S2IIWYqIf5BpIWUo3NvABgdA1tcvEfwbelncS8UOOEg7ZnWgEr+5kvE5qF/tDycpk
+	 Lzp14zcKWDRXkbkIYg5qvTihEk+74peOOTGUhoI0RoxoMxo1wgbZhyBt2fZxp661RY
+	 HUAfmBZ8lmBoPhil43L1RvGV4h/jUsqropZYijdMHSVD7HLy/sIsIBSnZ5IfAJe9FY
+	 9O2tuRFQxXHNw+ERAfkQXUg0++gTk3xGaq/4vZ9fwPPN3a5RzNZdN/BVsAaA8XIbrf
+	 zV1bAuWCafd8CB0Z/dOWTJsFhC6cz7r1y9b5aD0ShB4xQJZWDaMe+szv3jFTInzJHw
+	 7hUrSG0h5/yvA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: Adrian Hunter <adrian.hunter@intel.com>,
 	Frank Li <Frank.Li@nxp.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 044/844] i3c: mipi-i3c-hci: Stop reading Extended Capabilities if capability ID is 0
-Date: Sat, 28 Feb 2026 12:19:17 -0500
-Message-ID: <20260228173244.1509663-45-sashal@kernel.org>
+Subject: [PATCH 6.19 045/844] i3c: mipi-i3c-hci: Reset RING_OPERATION1 fields during init
+Date: Sat, 28 Feb 2026 12:19:18 -0500
+Message-ID: <20260228173244.1509663-46-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220122-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220123-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -94,38 +94,46 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:email,intel.com:email,nxp.com:email]
-X-Rspamd-Queue-Id: AE0621C5173
+X-Rspamd-Queue-Id: 82C1F1C5181
 X-Rspamd-Action: no action
 
 From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 0818e4aa8fdeeed5973e0a8faeddc9da599fc897 ]
+[ Upstream commit 78f63ae4a82db173f93adca462e63d11ba06b126 ]
 
-Extended Capability ID value 0 is special.  It signifies the end of the
-list.  Stop reading Extended Capabilities if capability ID is 0.
+The MIPI I3C HCI specification does not define reset values for
+RING_OPERATION1 fields, and some controllers (e.g., Intel) do not clear
+them during a software reset.  Ensure the ring pointers are explicitly
+set to zero during bus initialization to avoid inconsistent state.
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260106164416.67074-3-adrian.hunter@intel.com
+Link: https://patch.msgid.link/20260113072702.16268-2-adrian.hunter@intel.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/ext_caps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/ext_caps.c b/drivers/i3c/master/mipi-i3c-hci/ext_caps.c
-index 7714f00ea9cc0..533a495e14c86 100644
---- a/drivers/i3c/master/mipi-i3c-hci/ext_caps.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/ext_caps.c
-@@ -272,7 +272,7 @@ int i3c_hci_parse_ext_caps(struct i3c_hci *hci)
- 		cap_length = FIELD_GET(CAP_HEADER_LENGTH, cap_header);
- 		dev_dbg(&hci->master.dev, "id=0x%02x length=%d",
- 			cap_id, cap_length);
--		if (!cap_length)
-+		if (!cap_id || !cap_length)
- 			break;
- 		if (curr_cap + cap_length * 4 >= end) {
- 			dev_err(&hci->master.dev,
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index c401a9425cdc5..951abfea5a6fd 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -342,6 +342,14 @@ static int hci_dma_init(struct i3c_hci *hci)
+ 		rh_reg_write(INTR_SIGNAL_ENABLE, regval);
+ 
+ ring_ready:
++		/*
++		 * The MIPI I3C HCI specification does not document reset values for
++		 * RING_OPERATION1 fields and some controllers (e.g. Intel controllers)
++		 * do not reset the values, so ensure the ring pointers are set to zero
++		 * here.
++		 */
++		rh_reg_write(RING_OPERATION1, 0);
++
+ 		rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE |
+ 					   RING_CTRL_RUN_STOP);
+ 	}
 -- 
 2.51.0
 
