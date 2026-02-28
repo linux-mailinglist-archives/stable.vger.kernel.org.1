@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJXyOH1Wo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:56:29 +0100
+	id WGhPCYpWo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:56:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669481C8A24
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:56:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A031D1C8A32
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:56:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2F4034C6474
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:27:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5C3E34E7D51
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85724128C4;
-	Sat, 28 Feb 2026 17:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0569B495500;
+	Sat, 28 Feb 2026 17:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GWe36I4n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HehLMOPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62874128B8;
-	Sat, 28 Feb 2026 17:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B945B352927;
+	Sat, 28 Feb 2026 17:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300699; cv=none; b=JSzpVISNcQeqowjqH7z6AgPoz0PP2lATgqNCdHrVrVy2g3AgLxH3kIzyjlepxzyf/0ireG9G1p+tXONhz86SIAFcywY5XoL481vTJN0klY6ht831N/G7zRFXlrlPT4+eDZ/V5vlqSunNzRiOQCfGkCyYJMySJw8so966cU1/suc=
+	t=1772300700; cv=none; b=AdENbF2A16N8M0V84P5fUAtVwCYkr/e6b5/pNXJLNLwbkX0Q5nlnAxgRU820kRBOGegzj5d5kngwhd/cjtis4w6dfT46ORayjkhGT2DZksjth6nTWC8IS85+wCAJU0FErcXUaXg61pkqCYM+YmQMFerYJeqIiluIXsAU4qUnot4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300699; c=relaxed/simple;
-	bh=3gm6q3lXq5wpQLGyI1ry515LPwMSLEfQoxZvlknDrTk=;
+	s=arc-20240116; t=1772300700; c=relaxed/simple;
+	bh=S7eFNdkVrO8QDXkHBh+Sia2xcyU4ekGamgMGgDtYibg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WXqq5UaqYU5yOo/QvHfzJ2aBSbDXheORd/TIiee6kdKf4Wm/sPx1lTaatWMcpOvm8+SdTkwHqECdeBJhdIUc2/j104GaW0rD9kfcH1ouUaPZm+2VkRX2kiIV+v8Rij5T8ibb4scwAzDxdTPXFXcVgfHE93ms8IDlvWNoD3rR+oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GWe36I4n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC229C2BC87;
-	Sat, 28 Feb 2026 17:44:58 +0000 (UTC)
+	 MIME-Version; b=ImfK8Rgfex5MW0PbPJgqrc3KDvwaeO4Hk24qYjz2jrKhMwt1JPBaMH2/qpyZ+B6vdW2WXwEZgJj+bWeZ/PcCoi1eUCUAsg5E9clDcwJObNculTr1NmENm6V8rE85YFp2Oslj8brsGq4ySAyrevRFRxIWDRkuzOkiD+LkUEjWI08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HehLMOPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF41EC19425;
+	Sat, 28 Feb 2026 17:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300699;
-	bh=3gm6q3lXq5wpQLGyI1ry515LPwMSLEfQoxZvlknDrTk=;
+	s=k20201202; t=1772300700;
+	bh=S7eFNdkVrO8QDXkHBh+Sia2xcyU4ekGamgMGgDtYibg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWe36I4n06mD1M744CWOSuUUr0bj1fEJfTRaX5aZJP7fc2+rxaq+ZvWi95fZvnoCM
-	 MDHm+sfyvM8WXvHPMqmLVgqpZFyyJ3rKVdozQmqWtNzZPnO8Myhk//17aexU7Cv6do
-	 M2rN8kai+H6O4yFsZzy1J7B0StKbwd5jIHhpRSr8+rIWxD9kMuortMTiKZfzI5/hRi
-	 iEirMF38RUudpuGesa+VWssP+ApS2KShqmTfRGwnrHkXNaseowm85Ajy3h8rWOEZLY
-	 2bOfLjRLilwMOKD8rI3qrHDN4DXvNpM9utAOdc9nanVvRboOF+6THNIh3PjHs9BQ1R
-	 +0HK0dbZ0rUbg==
+	b=HehLMOPmqP9/bsJ+haageM84kMz1sDcz/k2/VvEhnqWrvlBZj9bvqQcJ9NA6ITmuJ
+	 +elZ8PQt7aA388CwHwQ/K9UK91VG/JMAwudwdpBfoG/Y3seoICQMXJQDppCCjLRPuT
+	 BUjY//zXc9CgHusV7Wnp14JAZ/S0NQuIMugBtpBi9ixQRKCtN+ckhOE3KNRYpY53Fp
+	 v32wtHNlF7y/RipQAo6TbrD/4l/dS5vW3fXJY9TPTD35OW1nn0NZwxbxLM9weD0Q6J
+	 EWFAQsGMf2fZKKcdXHF+InpWmxYhr8dRHUjQjXOtY1HESd6X0juGALVH/kVYVv1N7G
+	 60119u4JROVqQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 735/844] remoteproc: imx_rproc: Fix invalid loaded resource table detection
-Date: Sat, 28 Feb 2026 12:30:48 -0500
-Message-ID: <20260228173244.1509663-736-sashal@kernel.org>
+Subject: [PATCH 6.19 736/844] perf/arm-cmn: Reject unsupported hardware configurations
+Date: Sat, 28 Feb 2026 12:30:49 -0500
+Message-ID: <20260228173244.1509663-737-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220814-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220815-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -93,59 +93,77 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,nxp.com:email]
-X-Rspamd-Queue-Id: 669481C8A24
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,amperecomputing.com:email]
+X-Rspamd-Queue-Id: A031D1C8A32
 X-Rspamd-Action: no action
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 26aa5295010ffaebcf8f1991c53fa7cf2ee1b20d ]
+[ Upstream commit 36c0de02575ce59dfd879eb4ef63d53a68bbf9ce ]
 
-imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
-resource table even when the current firmware does not provide one.
+So far we've been fairly lax about accepting both unknown CMN models
+(at least with a warning), and unknown revisions of those which we
+do know, as although things do frequently change between releases,
+typically enough remains the same to be somewhat useful for at least
+some basic bringup checks. However, we also make assumptions of the
+maximum supported sizes and numbers of things in various places, and
+there's no guarantee that something new might not be bigger and lead
+to nasty array overflows. Make sure we only try to run on things that
+actually match our assumptions and so will not risk memory corruption.
 
-When the device tree contains a "rsc-table" entry, priv->rsc_table is
-non-NULL and denotes where a resource table would be located if one is
-present in memory. However, when the current firmware has no resource
-table, rproc->table_ptr is NULL. The function still returns
-priv->rsc_table, and the remoteproc core interprets this as a valid loaded
-resource table.
+We have at least always failed on completely unknown node types, so
+update that error message for clarity and consistency too.
 
-Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
-there is no resource table for the current firmware (i.e. when
-rproc->table_ptr is NULL). This aligns the function's semantics with the
-remoteproc core: a loaded resource table is only reported when a valid
-table_ptr exists.
-
-With this change, starting firmware without a resource table no longer
-triggers a crash.
-
-Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table")
 Cc: stable@vger.kernel.org
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://lore.kernel.org/r/20260129-imx-rproc-fix-v3-1-fc4e41e6e750@nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: 7819e05a0dce ("perf/arm-cmn: Revamp model detection")
+Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_rproc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/perf/arm-cmn.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 33f21ab24c921..d93bf5134d6f0 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -609,6 +609,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
- {
- 	struct imx_rproc *priv = rproc->priv;
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index 651edd73bfcb1..4fbafc4b79843 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -2422,6 +2422,15 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 			arm_cmn_init_node_info(cmn, reg & CMN_CHILD_NODE_ADDR, dn);
+ 			dn->portid_bits = xp->portid_bits;
+ 			dn->deviceid_bits = xp->deviceid_bits;
++			/*
++			 * Logical IDs are assigned from 0 per node type, so as
++			 * soon as we see one bigger than expected, we can assume
++			 * there are more than we can cope with.
++			 */
++			if (dn->logid > CMN_MAX_NODES_PER_EVENT) {
++				dev_err(cmn->dev, "Node ID invalid for supported CMN versions: %d\n", dn->logid);
++				return -ENODEV;
++			}
  
-+	/* No resource table in the firmware */
-+	if (!rproc->table_ptr)
-+		return NULL;
-+
- 	if (priv->rsc_table)
- 		return (struct resource_table *)priv->rsc_table;
+ 			switch (dn->type) {
+ 			case CMN_TYPE_DTC:
+@@ -2471,7 +2480,7 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 				break;
+ 			/* Something has gone horribly wrong */
+ 			default:
+-				dev_err(cmn->dev, "invalid device node type: 0x%x\n", dn->type);
++				dev_err(cmn->dev, "Device node type invalid for supported CMN versions: 0x%x\n", dn->type);
+ 				return -ENODEV;
+ 			}
+ 		}
+@@ -2499,6 +2508,10 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 		cmn->mesh_x = cmn->num_xps;
+ 	cmn->mesh_y = cmn->num_xps / cmn->mesh_x;
  
++	if (max(cmn->mesh_x, cmn->mesh_y) > CMN_MAX_DIMENSION) {
++		dev_err(cmn->dev, "Mesh size invalid for supported CMN versions: %dx%d\n", cmn->mesh_x, cmn->mesh_y);
++		return -ENODEV;
++	}
+ 	/* 1x1 config plays havoc with XP event encodings */
+ 	if (cmn->num_xps == 1)
+ 		dev_warn(cmn->dev, "1x1 config not fully supported, translate XP events manually\n");
 -- 
 2.51.0
 
