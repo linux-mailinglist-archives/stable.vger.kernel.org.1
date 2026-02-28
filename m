@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-220614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPtKDodAo2kR+wQAu9opvQ
-	(envelope-from <stable+bounces-220614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:22:47 +0100
+	id KMVtE7xQo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:31:56 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4011C6E8F
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C66111C8692
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:31:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 145CA3442D2C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:55:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C74583788F81
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8A43E5585;
-	Sat, 28 Feb 2026 17:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457B93E5598;
+	Sat, 28 Feb 2026 17:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RgFCyxPA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IwyNQYxf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2973E557D;
-	Sat, 28 Feb 2026 17:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A873E558F;
+	Sat, 28 Feb 2026 17:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300497; cv=none; b=dJUmI4oTQ1ol1LPjt6D7eMqVEuhm5wX6/H2DvHTuQx4iuFanizfazOhvTzXgOUW+SecMvlNBtu6m6oAOTbULmY4EVu4lRmb2TYqI2jQ62hT8ueXqTwBqpyYrGtnJkbc6thTZCplATF4NUEF1CQCYUPOK3+Pry6wXAL/LUePb3uA=
+	t=1772300499; cv=none; b=HvEt93gLXOmu49kE9EWKwSgxs/goCh1fFJ6nMk6jkHlQ6ygCKKAOIL2CpiMBL6u/vHnu58JUoHb0O5I91PkugWPCsPx+wfDW+/f1wYgHRh50DPrzkjTG0nZHaL8QtGnpVr6meJY70S0gmxmx/Ic7YLWAGb2UVExZjgQHQxRS9AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300497; c=relaxed/simple;
-	bh=FbUwHqWJZ1clU++cKGaAtloRHsD74SCvaxpYluc92Qg=;
+	s=arc-20240116; t=1772300499; c=relaxed/simple;
+	bh=lcawo1snmYO4JkAn7IB+DhZ12UD686+CTTT4COmR6yE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3KwSWSL7uwo0Ta+RmUC9qpTyGVe3Vd5hxBI4D4SSeRqo5IrM/YerMmRtoW7uyEiefgNrJ4E8wZzBtqFmrypA8UER8j/i2aoAfOSRiLaIllMQUSJZz3u6J3HsJujC2lE/8I+QeCcXWTfkaCwcmqdyOh5mtRzoS/WBDhQ+DlX5QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RgFCyxPA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E9DC19425;
-	Sat, 28 Feb 2026 17:41:36 +0000 (UTC)
+	 MIME-Version; b=FtWuyL+2REAE9DwfgoQ/Fd+DealnYVjHtpXoAK7hN+f3RAz7GkvPzXQ9ROB0cF2ME/PrLYkazIlR3NJsVvaeUrLlm1tuQHY7+BPhog6T+4VIgTNRYMcX7GmrnMsDomRw72tYas5lukpaCRyNg/VkknDL6eRFzrn1FtfjiHvtlPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IwyNQYxf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03926C116D0;
+	Sat, 28 Feb 2026 17:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300497;
-	bh=FbUwHqWJZ1clU++cKGaAtloRHsD74SCvaxpYluc92Qg=;
+	s=k20201202; t=1772300498;
+	bh=lcawo1snmYO4JkAn7IB+DhZ12UD686+CTTT4COmR6yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgFCyxPAVziZYRjns7YfVJ8Gz40rhoEm7iobZwnPMop0kzUfF1kTngVo8VryjvkhA
-	 yn9x3nToH3z32qGqx/i+iF4O0rDWn+iZHVi9wlybOSGf7hbYjoKizMloUuad86K+wT
-	 Jh1hVAhviy5ZnSQauz5h0etnbsfTqKNyxBJPUVjC0jv83U/AfIUvkcYWRCbbBu7vsh
-	 eF5QVMjDmW75Y/WcSRbiAE1OS5v24gTy/h4jvjRQ2bwSrw+1Vnez1vhCs3IOWHjyc5
-	 VJiZxCkNrSigsq0iYZ8yLeWwy3ICzxWAhz40OTROQcxBoDUAo+mOtMSLVjMqVULD3t
-	 lRxKAxsZ5Uozw==
+	b=IwyNQYxfMl4ZjAaLdEpqYQas04OtobQqKGKRlsi8+nPo5D0RB7FUGfkqlYWe0N1Gq
+	 b5yD03ONIXrRjhNrpqDCscj4AfpOyKKkQv0UIYhGWxbH5LkLbaqYKq8eKghRHi2lwf
+	 gz9u5ajUoqGXwHCNGac0j3dc0INSr4OjR7FZLwRMdkQDKu0yJqwxnLvHDzYqRWBqBi
+	 1x5MJkZhQlBj5LgLXRVvvG6h+BN99tSCF/E3oLr93vXArqnxpCCyMjRTHVJEGWc+W5
+	 l0tbFnB0E/KxbKXiJzp9iuE3fydene4rbNR1sJ4ELBR1pkEWboyaM7CrGEYFRHLi1W
+	 tIyss/u0yGjjw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Abel Vesa <abel.vesa@linaro.org>,
+Cc: Alexey Minnekhanov <alexeymin@postmarketos.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 535/844] phy: qcom: edp: Make the number of clocks flexible
-Date: Sat, 28 Feb 2026 12:27:28 -0500
-Message-ID: <20260228173244.1509663-536-sashal@kernel.org>
+Subject: [PATCH 6.19 536/844] arm64: dts: qcom: sdm630: Add missing MDSS reset
+Date: Sat, 28 Feb 2026 12:27:29 -0500
+Message-ID: <20260228173244.1509663-537-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,111 +68,77 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220614-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220615-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url,linaro.org:email]
-X-Rspamd-Queue-Id: 8E4011C6E8F
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,c900000:email,postmarketos.org:email]
+X-Rspamd-Queue-Id: C66111C8692
 X-Rspamd-Action: no action
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Alexey Minnekhanov <alexeymin@postmarketos.org>
 
-[ Upstream commit 7d51b709262c5aa31d2b9cd31444112c1b2dae03 ]
+[ Upstream commit 0c1d1591f898d54eaa4c8f2a1535ab21bf4e42e4 ]
 
-On X Elite, the DP PHY needs another clock called ref, while all other
-platforms do not.
+If the OS does not support recovering the state left by the
+bootloader it needs a way to reset display hardware, so that it can
+start from a clean state. Add a reference to the relevant reset.
 
-The current X Elite devices supported upstream work fine without this
-clock, because the boot firmware leaves this clock enabled. But we should
-not rely on that. Also, even though this change breaks the ABI, it is
-needed in order to make the driver disables this clock along with the
-other ones, for a proper bring-down of the entire PHY.
+It fixes display init issue appeared in Linux v6.17: without reset
+device boots into black screen and you need to turn display off/on
+to "fix" it. Also sometimes it can boot into solid blue color
+with these messages in kernel log:
 
-So in order to handle these clocks on different platforms, make the driver
-get all the clocks regardless of how many there are provided.
+  hw recovery is not complete for ctl:2
+  [drm:dpu_encoder_phys_vid_prepare_for_kickoff:569] [dpu error]enc33
+      intf1 ctl 2 reset failure: -22
+  [drm:dpu_encoder_frame_done_timeout:2727] [dpu error]enc33 frame
+      done timeout
 
-Cc: stable@vger.kernel.org # v6.10
-Fixes: db83c107dc29 ("phy: qcom: edp: Add v6 specific ops and X1E80100 platform support")
+Fixes: 0e789b491ba0 ("pmdomain: core: Leave powered-on genpds on until sync_state")
+Cc: stable@vger.kernel.org # 6.17
+Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://patch.msgid.link/20251224-phy-qcom-edp-add-missing-refclk-v5-2-3f45d349b5ac@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/r/20251116-sdm660-mdss-reset-v2-3-6219bec0a97f@postmarketos.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-edp.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm630.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-edp.c b/drivers/phy/qualcomm/phy-qcom-edp.c
-index f1b51018683d5..06a08c9ea0f70 100644
---- a/drivers/phy/qualcomm/phy-qcom-edp.c
-+++ b/drivers/phy/qualcomm/phy-qcom-edp.c
-@@ -103,7 +103,9 @@ struct qcom_edp {
+diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+index b383e480a394d..876a6871745cf 100644
+--- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+@@ -1563,6 +1563,7 @@ mdss: display-subsystem@c900000 {
+ 			reg-names = "mdss_phys", "vbif_phys";
  
- 	struct phy_configure_opts_dp dp_opts;
+ 			power-domains = <&mmcc MDSS_GDSC>;
++			resets = <&mmcc MDSS_BCR>;
  
--	struct clk_bulk_data clks[2];
-+	struct clk_bulk_data *clks;
-+	int num_clks;
-+
- 	struct regulator_bulk_data supplies[2];
- 
- 	bool is_edp;
-@@ -218,7 +220,7 @@ static int qcom_edp_phy_init(struct phy *phy)
- 	if (ret)
- 		return ret;
- 
--	ret = clk_bulk_prepare_enable(ARRAY_SIZE(edp->clks), edp->clks);
-+	ret = clk_bulk_prepare_enable(edp->num_clks, edp->clks);
- 	if (ret)
- 		goto out_disable_supplies;
- 
-@@ -885,7 +887,7 @@ static int qcom_edp_phy_exit(struct phy *phy)
- {
- 	struct qcom_edp *edp = phy_get_drvdata(phy);
- 
--	clk_bulk_disable_unprepare(ARRAY_SIZE(edp->clks), edp->clks);
-+	clk_bulk_disable_unprepare(edp->num_clks, edp->clks);
- 	regulator_bulk_disable(ARRAY_SIZE(edp->supplies), edp->supplies);
- 
- 	return 0;
-@@ -1092,11 +1094,9 @@ static int qcom_edp_phy_probe(struct platform_device *pdev)
- 	if (IS_ERR(edp->pll))
- 		return PTR_ERR(edp->pll);
- 
--	edp->clks[0].id = "aux";
--	edp->clks[1].id = "cfg_ahb";
--	ret = devm_clk_bulk_get(dev, ARRAY_SIZE(edp->clks), edp->clks);
--	if (ret)
--		return ret;
-+	edp->num_clks = devm_clk_bulk_get_all(dev, &edp->clks);
-+	if (edp->num_clks < 0)
-+		return dev_err_probe(dev, edp->num_clks, "failed to get clocks\n");
- 
- 	edp->supplies[0].supply = "vdda-phy";
- 	edp->supplies[1].supply = "vdda-pll";
+ 			clocks = <&mmcc MDSS_AHB_CLK>,
+ 				 <&mmcc MDSS_AXI_CLK>,
 -- 
 2.51.0
 
