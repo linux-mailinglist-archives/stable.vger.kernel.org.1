@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-220528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLi5CP46o2nO+gQAu9opvQ
-	(envelope-from <stable+bounces-220528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:59:10 +0100
+	id oK5RNzE8o2nO+gQAu9opvQ
+	(envelope-from <stable+bounces-220529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:04:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7B61C67BE
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:59:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD9E1C690E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0014230991F0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:42:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D2EA73074BCD
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC853CEB04;
-	Sat, 28 Feb 2026 17:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCA73CEAE4;
+	Sat, 28 Feb 2026 17:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GM/tx2LT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j8xjT1xd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34D23CEAFC;
-	Sat, 28 Feb 2026 17:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A203CEB14;
+	Sat, 28 Feb 2026 17:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300411; cv=none; b=Okogn+HynCrnpx5jKBxyzLZAX85HWqH5mqQ67h9gffQIaj2h3PGTQ7lrgwNyyvHtOgoHlhYuSrja9j2AJxQEYWj7Y4koixzycDjAMtbykvUSSk23UL2yt+9NYeX3ghpd4qhnfHrUR3AbbrO+cbkUfgX5a7X0xpT/3w6uiMQQLhc=
+	t=1772300412; cv=none; b=X1cxV+foDwJAoiAiKOiVOSPJiNNqOf1QYHAD5eeTgCmEpsIssxje9uZ8pxNp1Tndx6cRukGXgcfUkumK9tnNT8/dWpDGX7lvzWH6ZwgoFbtzUcg0n+NSSsPB71G1eIPdVZ86lL16gZxX74MgUO1yEvGuCF0ZZIPdQsJbTj0J0cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300411; c=relaxed/simple;
-	bh=f+9w+xIfsNKQxYYkTRobj6+SBwpLWJTstDUHok5rPqQ=;
+	s=arc-20240116; t=1772300412; c=relaxed/simple;
+	bh=SrC1HFLWc/goT+GjWOISSRyEcH/2eDN1Im7wikqoMHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpbhCpZdXWOLLKcD2NUyNDTa4GIc1AHLos6QZwXWmS/1HmTy6g5wwylcfcSWvs7EH3AiHLG4kMamcr8Gp2OHgxx07jWek7zFqvFDRPO18jxwB/NR7CZT7MHxS2YIkishD2JLb5TccCDb/gYltn3Es24DbXj+BMYyISFjQGFcufk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GM/tx2LT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5E7C19423;
+	 MIME-Version; b=O2FJ5s2OVlrvxYJR1yubJkMswk4zDJ39VWjUlpt45xKHJrZopbn8cV+fokGm4UfXh1w1vHb7eixAr7v3zaU+O89GhRveHrAd5JJKgFCajSrySuetC53VURQzS7MHWuB86x67NX6QWA7jePm9EFT+MZOFIRo8M55Cx7+Asw/SpnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j8xjT1xd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80C1C116D0;
 	Sat, 28 Feb 2026 17:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300411;
-	bh=f+9w+xIfsNKQxYYkTRobj6+SBwpLWJTstDUHok5rPqQ=;
+	s=k20201202; t=1772300412;
+	bh=SrC1HFLWc/goT+GjWOISSRyEcH/2eDN1Im7wikqoMHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GM/tx2LT9fgAV2sudR7/Vze15lqiJK/qgRpzHA0k8RPCvCLEKaAq8ytMs5UNDBvTm
-	 c5+feLtVZ+vNL1KWJ37x4hdbLFolOrwLAk144G4OOIs7OuCb2/QrpwkziDTVNMDNGL
-	 MNCKCHT6j0D2m10Q3cX3Vnh2xr0tySZm4za+6B6oGc5PlIGBs3jxAO1a92xWGgz5Eu
-	 OozckL7GYM1oEukJjkT0hat8fJCEs5xYXy9Z5CYD2ehFFC9Eh2Kej56z/kKR+nrCE8
-	 PK31YutYbaFM3q11OutsIN+2LEvlwrnbT+8xwyXK8FlK8ly4CD3WNJT4MQxS0fETrP
-	 laTQFsVxAehbg==
+	b=j8xjT1xdkoF+R02YuJD1nOPrCVjeGxlvWcGBiiwuwR0SAh3dWXjdd2P7nOTA0uSKO
+	 aTu3lfGognugZqWEE/bU85WowR7KhJp2jrQfx3H9rYEszDXo+0foRQX4SQwn58eBHE
+	 Y2iUwQr5EahU9fSnk9aLqm6DLsCR8mrX4s0g4Aczt51oV/FzE69N7yqRbVUnSnyIGE
+	 Hrb6Xig83Dyk/xmakFHbXAYS19Xq36crhZ+B15ZpiIIeyR9y1kPl6nmTx2OsoIWElH
+	 rkDxi2TzR0KIagb+pg+1RRSbl3MI90jSHNAsu9S/6JTcLLt6CkmhlVsPmGw3yeZc+v
+	 deNfMzVBnu4Hg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Matt Johnston <matt@codeconstruct.com.au>,
-	Corey Minyard <corey@minyard.net>,
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 449/844] ipmi: ipmb: initialise event handler read bytes
-Date: Sat, 28 Feb 2026 12:26:02 -0500
-Message-ID: <20260228173244.1509663-450-sashal@kernel.org>
+Subject: [PATCH 6.19 450/844] xfrm: always flush state and policy upon NETDEV_UNREGISTER event
+Date: Sat, 28 Feb 2026 12:26:03 -0500
+Message-ID: <20260228173244.1509663-451-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,74 +68,140 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220528-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220529-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.980];
+	TAGGED_RCPT(0.00)[stable,881d65229ca4f9ae8c84];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,codeconstruct.com.au:email]
-X-Rspamd-Queue-Id: 8D7B61C67BE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,secunet.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 3DD9E1C690E
 X-Rspamd-Action: no action
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 9f235ccecd03c436cb1683eac16b12f119e54aa9 ]
+[ Upstream commit 4efa91a28576054aae0e6dad9cba8fed8293aef8 ]
 
-IPMB doesn't use i2c reads, but the handler needs to set a value.
-Otherwise an i2c read will return an uninitialised value from the bus
-driver.
+syzbot is reporting that "struct xfrm_state" refcount is leaking.
 
-Fixes: 63c4eb347164 ("ipmi:ipmb: Add initial support for IPMI over IPMB")
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Message-ID: <20260113-ipmb-read-init-v1-1-a9cbce7b94e3@codeconstruct.com.au>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+  unregister_netdevice: waiting for netdevsim0 to become free. Usage count = 2
+  ref_tracker: netdev@ffff888052f24618 has 1/1 users at
+       __netdev_tracker_alloc include/linux/netdevice.h:4400 [inline]
+       netdev_tracker_alloc include/linux/netdevice.h:4412 [inline]
+       xfrm_dev_state_add+0x3a5/0x1080 net/xfrm/xfrm_device.c:316
+       xfrm_state_construct net/xfrm/xfrm_user.c:986 [inline]
+       xfrm_add_sa+0x34ff/0x5fa0 net/xfrm/xfrm_user.c:1022
+       xfrm_user_rcv_msg+0x58e/0xc00 net/xfrm/xfrm_user.c:3507
+       netlink_rcv_skb+0x158/0x420 net/netlink/af_netlink.c:2550
+       xfrm_netlink_rcv+0x71/0x90 net/xfrm/xfrm_user.c:3529
+       netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+       netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1344
+       netlink_sendmsg+0x8c8/0xdd0 net/netlink/af_netlink.c:1894
+       sock_sendmsg_nosec net/socket.c:727 [inline]
+       __sock_sendmsg net/socket.c:742 [inline]
+       ____sys_sendmsg+0xa5d/0xc30 net/socket.c:2592
+       ___sys_sendmsg+0x134/0x1d0 net/socket.c:2646
+       __sys_sendmsg+0x16d/0x220 net/socket.c:2678
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+This is because commit d77e38e612a0 ("xfrm: Add an IPsec hardware
+offloading API") implemented xfrm_dev_unregister() as no-op despite
+xfrm_dev_state_add() from xfrm_state_construct() acquires a reference
+to "struct net_device".
+I guess that that commit expected that NETDEV_DOWN event is fired before
+NETDEV_UNREGISTER event fires, and also assumed that xfrm_dev_state_add()
+is called only if (dev->features & NETIF_F_HW_ESP) != 0.
+
+Sabrina Dubroca identified steps to reproduce the same symptoms as below.
+
+  echo 0 > /sys/bus/netdevsim/new_device
+  dev=$(ls -1 /sys/bus/netdevsim/devices/netdevsim0/net/)
+  ip xfrm state add src 192.168.13.1 dst 192.168.13.2 proto esp \
+     spi 0x1000 mode tunnel aead 'rfc4106(gcm(aes))' $key 128   \
+     offload crypto dev $dev dir out
+  ethtool -K $dev esp-hw-offload off
+  echo 0 > /sys/bus/netdevsim/del_device
+
+Like these steps indicate, the NETIF_F_HW_ESP bit can be cleared after
+xfrm_dev_state_add() acquired a reference to "struct net_device".
+Also, xfrm_dev_state_add() does not check for the NETIF_F_HW_ESP bit
+when acquiring a reference to "struct net_device".
+
+Commit 03891f820c21 ("xfrm: handle NETDEV_UNREGISTER for xfrm device")
+re-introduced the NETDEV_UNREGISTER event to xfrm_dev_event(), but that
+commit for unknown reason chose to share xfrm_dev_down() between the
+NETDEV_DOWN event and the NETDEV_UNREGISTER event.
+I guess that that commit missed the behavior in the previous paragraph.
+
+Therefore, we need to re-introduce xfrm_dev_unregister() in order to
+release the reference to "struct net_device" by unconditionally flushing
+state and policy.
+
+Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
+Fixes: d77e38e612a0 ("xfrm: Add an IPsec hardware offloading API")
+Cc: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_ipmb.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/xfrm/xfrm_device.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/ipmi/ipmi_ipmb.c b/drivers/char/ipmi/ipmi_ipmb.c
-index 3a51e58b24875..28818952a7a4b 100644
---- a/drivers/char/ipmi/ipmi_ipmb.c
-+++ b/drivers/char/ipmi/ipmi_ipmb.c
-@@ -202,11 +202,16 @@ static int ipmi_ipmb_slave_cb(struct i2c_client *client,
- 		break;
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index 52ae0e034d29e..550457e4c4f01 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -544,6 +544,14 @@ static int xfrm_dev_down(struct net_device *dev)
+ 	return NOTIFY_DONE;
+ }
  
- 	case I2C_SLAVE_READ_REQUESTED:
-+		*val = 0xff;
-+		ipmi_ipmb_check_msg_done(iidev);
-+		break;
++static int xfrm_dev_unregister(struct net_device *dev)
++{
++	xfrm_dev_state_flush(dev_net(dev), dev, true);
++	xfrm_dev_policy_flush(dev_net(dev), dev, true);
 +
- 	case I2C_SLAVE_STOP:
- 		ipmi_ipmb_check_msg_done(iidev);
- 		break;
++	return NOTIFY_DONE;
++}
++
+ static int xfrm_dev_event(struct notifier_block *this, unsigned long event, void *ptr)
+ {
+ 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
+@@ -556,8 +564,10 @@ static int xfrm_dev_event(struct notifier_block *this, unsigned long event, void
+ 		return xfrm_api_check(dev);
  
- 	case I2C_SLAVE_READ_PROCESSED:
-+		*val = 0xff;
- 		break;
+ 	case NETDEV_DOWN:
+-	case NETDEV_UNREGISTER:
+ 		return xfrm_dev_down(dev);
++
++	case NETDEV_UNREGISTER:
++		return xfrm_dev_unregister(dev);
  	}
- 
+ 	return NOTIFY_DONE;
+ }
 -- 
 2.51.0
 
