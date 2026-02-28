@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UO3rKww7o2nO+gQAu9opvQ
-	(envelope-from <stable+bounces-220498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:59:24 +0100
+	id 0FrpBBVMo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:12:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4299A1C67CD
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:59:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 518B51C8011
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AB15A31DB5F4
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:37:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 144373135282
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BECC3C861A;
-	Sat, 28 Feb 2026 17:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784C93C8F46;
+	Sat, 28 Feb 2026 17:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TE2PGgmc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MirafwV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F64E3C8612;
-	Sat, 28 Feb 2026 17:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7EC481A81;
+	Sat, 28 Feb 2026 17:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300383; cv=none; b=BoJYRLLgP8H4nswi6tzGfV/gVFh9KWp246bmo7zfzz8G4gThS8oz1u3yacnfQKAr4D3PIbgYtksPp6cLMZk9o/HMpKxEBrpsj9ftY3kGMf6IxiBW0aqkm9ciwXrNXBIZcEwhkenm+hZmxCvbWm3o3iNaQ0xO1TkacNZTnYzvQ/4=
+	t=1772300384; cv=none; b=VOHIOgoDn6AINVRucoTyx77nFLHqXeRilWOylJhhKIsrFnm3QbvtQOsPzjARIJH7uobgK9JhPMuXHNzNwzg3WR2ER4upk8acDD9s5bHz+UH1aDDpx4ItjI1h/4G7GhdXEJs5b252EqgUgKHnqJKR1bmmqm5CFSy7GOQ7hSqbZz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300383; c=relaxed/simple;
-	bh=FESLrKIy69xsfGW/tTxfnfUnMZGuw9zNEDOrNDVSBQ8=;
+	s=arc-20240116; t=1772300384; c=relaxed/simple;
+	bh=DnlNZrpKdXMCrmj9gg1iXz58tbdOuYJMJUcu+H4F/CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WlmlQVkaaN8xp9Q1cM3drKVhkLM42DW7TH0tTCNLJD5Eq1QYARZmX2qFvgv8DOD8nusab/DOOMrY8t7PFhJjEmDD8Fb36kAk30WfFFq1JlPCtIQ3pSwDEwb5ujW1JocgMm7G49KDLebLaMDtFtWaLk6sLS6X8tS4krsHAQJIzkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TE2PGgmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD112C116D0;
-	Sat, 28 Feb 2026 17:39:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MSqa2e7d06P5kaw1BdclGIRxN3UsXi7ybCv62TjSpfyX8S2mnBEf1+1OU9pFzTb5bbhQJVchPba+ziMJnAcqdoZluBfrEIqSQ61Ahrbjnc5bZbtTMrjkMWD+8PeQeHz0/bd7EMw83pf1L4mjGmbfp/Uo4BDCtP4C8Sv3uW8K3Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MirafwV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86786C19425;
+	Sat, 28 Feb 2026 17:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300383;
-	bh=FESLrKIy69xsfGW/tTxfnfUnMZGuw9zNEDOrNDVSBQ8=;
+	s=k20201202; t=1772300384;
+	bh=DnlNZrpKdXMCrmj9gg1iXz58tbdOuYJMJUcu+H4F/CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TE2PGgmc/6og8rA0vC5XKRvs1OOesnvyz4DKzgbjLIxoGwkun2ONEF+YM6LfOpgMd
-	 +Dk0tcWn4iaM/B6+EQi0vaXuuZGytSD1TPLZGzT9WYqu0KDI252JaJjXV7KfoLLIFy
-	 2TYzKMzVu84YKk9hGUQvkj8AbJlXxcBDu3+SAybDh4RhefJOIgGt5XDZ9fCagfG7Ts
-	 OjmkLwOAmjOA+HsFjJ34PVS3gzT/2u6vs7iw86alhYyDBNnodKckrhyZ7onXk0XGNt
-	 /Ok8uGkLDALG25vZIdQHvXO0tXLo8g87IcyzaduLanYkIanLESlnM1MflEIDkt367v
-	 tOcnSHM5VqPlA==
+	b=MirafwV2ESGkYmlFSTm7x9O1POtz1J2kEaGy/kL/DRWXm2tIKo8dGGEFC61PL/s8J
+	 KoW5XLBSAqLrUkLrrNiwmbBcMZddajgFrSJfzZQabzH8Vg8o+w951wXBZ+QZ7C9NJb
+	 3se/MPNOLY8mXQV+gFeymeGzMb+RxNkwlvywT8YSVLG0yFRosLIXjA3yVyB65ZVoAc
+	 Bg/kglwg6qirlOiOsGPZ/1LjP/Wzb/DHX1tsVv+b1KOfkeIDQqyZo8uggQl987qXbR
+	 RNDM8dUxiG7Zif+FIp/yNoSZdxR2ADkgF8tUzHTd0TxvoCICY3OM69MDWiCAD+qMLh
+	 H8KT43PbdrITw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mukesh R <mrathor@linux.microsoft.com>,
+Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
 	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 419/844] x86/hyperv: Move hv crash init after hypercall pg setup
-Date: Sat, 28 Feb 2026 12:25:32 -0500
-Message-ID: <20260228173244.1509663-420-sashal@kernel.org>
+Subject: [PATCH 6.19 420/844] mshv: clear eventfd counter on irqfd shutdown
+Date: Sat, 28 Feb 2026 12:25:33 -0500
+Message-ID: <20260228173244.1509663-421-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -62,80 +62,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220498-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220499-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4299A1C67CD
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email]
+X-Rspamd-Queue-Id: 518B51C8011
 X-Rspamd-Action: no action
 
-From: Mukesh R <mrathor@linux.microsoft.com>
+From: Carlos López <clopez@suse.de>
 
-[ Upstream commit c3a6ae7ea2d3f507cbddb5818ccc65b9d84d6dc7 ]
+[ Upstream commit 2b4246153e2184e3a3b4edc8cc35337d7a2455a6 ]
 
-hv_root_crash_init() is not setting up the hypervisor crash collection
-for baremetal cases because when it's called, hypervisor page is not
-setup.
+While unhooking from the irqfd waitqueue, clear the internal eventfd
+counter by using eventfd_ctx_remove_wait_queue() instead of
+remove_wait_queue(), preventing potential spurious interrupts. This
+removes the need to store a pointer into the workqueue, as the eventfd
+already keeps track of it.
 
-Fix is simple, just move the crash init call after the hypercall
-page setup.
+This mimicks what other similar subsystems do on their equivalent paths
+with their irqfds (KVM, Xen, ACRN support, etc).
 
-Signed-off-by: Mukesh Rathor <mrathor@linux.microsoft.com>
+Signed-off-by: Carlos López <clopez@suse.de>
 Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/hv_init.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hv/mshv_eventfd.c | 5 ++---
+ drivers/hv/mshv_eventfd.h | 1 -
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
-index 14de43f4bc6c1..7f3301bd081ec 100644
---- a/arch/x86/hyperv/hv_init.c
-+++ b/arch/x86/hyperv/hv_init.c
-@@ -558,7 +558,6 @@ void __init hyperv_init(void)
- 		memunmap(src);
+diff --git a/drivers/hv/mshv_eventfd.c b/drivers/hv/mshv_eventfd.c
+index 6d176ed8ae516..188923fce40b4 100644
+--- a/drivers/hv/mshv_eventfd.c
++++ b/drivers/hv/mshv_eventfd.c
+@@ -248,12 +248,13 @@ static void mshv_irqfd_shutdown(struct work_struct *work)
+ {
+ 	struct mshv_irqfd *irqfd =
+ 			container_of(work, struct mshv_irqfd, irqfd_shutdown);
++	u64 cnt;
  
- 		hv_remap_tsc_clocksource();
--		hv_root_crash_init();
- 		hv_sleep_notifiers_register();
- 	} else {
- 		hypercall_msr.guest_physical_address = vmalloc_to_pfn(hv_hypercall_pg);
-@@ -567,6 +566,9 @@ void __init hyperv_init(void)
- 
- 	hv_set_hypercall_pg(hv_hypercall_pg);
- 
-+	if (hv_root_partition())        /* after set hypercall pg */
-+		hv_root_crash_init();
-+
- skip_hypercall_pg_init:
  	/*
- 	 * hyperv_init() is called before LAPIC is initialized: see
+ 	 * Synchronize with the wait-queue and unhook ourselves to prevent
+ 	 * further events.
+ 	 */
+-	remove_wait_queue(irqfd->irqfd_wqh, &irqfd->irqfd_wait);
++	eventfd_ctx_remove_wait_queue(irqfd->irqfd_eventfd_ctx, &irqfd->irqfd_wait, &cnt);
+ 
+ 	if (irqfd->irqfd_resampler) {
+ 		mshv_irqfd_resampler_shutdown(irqfd);
+@@ -372,8 +373,6 @@ static void mshv_irqfd_queue_proc(struct file *file, wait_queue_head_t *wqh,
+ 	struct mshv_irqfd *irqfd =
+ 			container_of(polltbl, struct mshv_irqfd, irqfd_polltbl);
+ 
+-	irqfd->irqfd_wqh = wqh;
+-
+ 	/*
+ 	 * TODO: Ensure there isn't already an exclusive, priority waiter, e.g.
+ 	 * that the irqfd isn't already bound to another partition.  Only the
+diff --git a/drivers/hv/mshv_eventfd.h b/drivers/hv/mshv_eventfd.h
+index 332e7670a3442..464c6b81ab336 100644
+--- a/drivers/hv/mshv_eventfd.h
++++ b/drivers/hv/mshv_eventfd.h
+@@ -32,7 +32,6 @@ struct mshv_irqfd {
+ 	struct mshv_lapic_irq		     irqfd_lapic_irq;
+ 	struct hlist_node		     irqfd_hnode;
+ 	poll_table			     irqfd_polltbl;
+-	wait_queue_head_t		    *irqfd_wqh;
+ 	wait_queue_entry_t		     irqfd_wait;
+ 	struct work_struct		     irqfd_shutdown;
+ 	struct mshv_irqfd_resampler	    *irqfd_resampler;
 -- 
 2.51.0
 
