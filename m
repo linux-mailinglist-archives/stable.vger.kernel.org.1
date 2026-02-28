@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mABFBKtBo2lC+wQAu9opvQ
-	(envelope-from <stable+bounces-220739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:27:39 +0100
+	id YF9VDo9Do2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:35:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6451C703A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:27:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 630E01C72A6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A957B3087D6A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:15:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A299C31918DE
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3948A49218A;
-	Sat, 28 Feb 2026 17:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0916C401D34;
+	Sat, 28 Feb 2026 17:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHeoM1Bs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QeI3rUr/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC99633E35A;
-	Sat, 28 Feb 2026 17:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0277401D2B;
+	Sat, 28 Feb 2026 17:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300620; cv=none; b=LPwRTJpjXc/gTEIgcxVr0eCQujF0CLDHqj6A8BENrOz5in456B/P81I+NmBRUwErnWDg7XrzWcmbk2ayhFRJYfzNBZCduuMfwiDyIJ3wJzYff2ZdZaVJgrX9/KSNxc0yEZ3phxufnfAr0VphTzK1RHOy7yro5dKf8184QKEe1sk=
+	t=1772300620; cv=none; b=HvPPCu7HzfIcxFyCSeovks7yiG4YEtQEl1qSnPFy1TUQn39h9gtDNhqG6X77F0/3GByoTAT0Mtkm+1K8giCCPVa3qxNETiEvaFE3lmy9rA9dAxyJGbuYfXDTjmHBPKcHNoj6hO62s4nvTeD9sMjjazJ1zQMbah6e5bbniUYY+X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300620; c=relaxed/simple;
-	bh=QR45+H+PlYDCm+HpbNLhOxLuXNzrpI9pZ2tdfedIGM8=;
+	bh=D69dLqnG4kE0GPvxaIQ4APaQPnLIBI7aapXZ5ZXWLI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQ094bKfmKMO1xrYn9aBOJ8ZuKmgraFpUCs+uILahljPXmNKrOjPUM2pUb3IOY4nXx9curFE9dYaSklPN/YzrANEu9n+gzOZ8PNJRhRVsqflRqn3iY6eatN0fBPsRN3IqrKElQ0A8G+zgzxOPghmRujCEVkRSr1GTKPdpwZFMmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHeoM1Bs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9CEC19424;
-	Sat, 28 Feb 2026 17:43:39 +0000 (UTC)
+	 MIME-Version; b=ZZPvKMJeO3DXz751XQLGePgHg8iajqLPP759xlmLeHxe6RlZLimFbsB1HL0k6UJjwgzcKiwA71/QEAJNo9TDDriT5Q6jg2FAPbEqlqbhgkt4GVk/yn3pMgpsIhIVVPWx64TDa/1aM7FDQGf2FiHf1q/4DaNHMPJC7kOHsfLog28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QeI3rUr/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C50C116D0;
+	Sat, 28 Feb 2026 17:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300619;
-	bh=QR45+H+PlYDCm+HpbNLhOxLuXNzrpI9pZ2tdfedIGM8=;
+	s=k20201202; t=1772300620;
+	bh=D69dLqnG4kE0GPvxaIQ4APaQPnLIBI7aapXZ5ZXWLI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HHeoM1BsHyykMRER+RvPA4XRwLBeWQab1NkvhxrVGVhZ34iqFJAGJ9H2WjNl+qms7
-	 O3ix+OJ7sBEGG6/d11wEf5ZJioEeQSjAXryReqXLJ1inyjTnwclpjT2bPvrlToSMVQ
-	 DQIOKiL3q0jLPP3BfvAph4f1yVVa5Tcff9eFTst+hAl5UZ8APe8ut6gnyoiD566ZzN
-	 MwFWhCzQD6lIcU7QzpkAH6FjV90rniWDaqQoVri8D4bBdAe9owm0TlTkuLj6aqy4iS
-	 47zy3re0NQgKpcDvi+PL8N2O2pRxQEH84q9LXRDwj0iuj2218hj3fhZliib3qmIS3U
-	 X5y4N5MAxGRYw==
+	b=QeI3rUr/A6I0buPeai/H/ikMWhiGnV55gPMoDQfIP9NciKDVb0dttI2+MwLVFFz16
+	 DQFWqo1i5eHDm8jh9lkU6m71u65PzYc76w081tKlZIN81/QgjcRnAOEnLMsXT9faTR
+	 s0u9eNYhQ8tup82AAZWxyvmUJBhoZhduOzE5xz4n6sDGRTSAkyHcpacR9VC7ocrYhj
+	 qJPIrztz/MSSvZH9SgF+ePUue6StwtVz14AswRwPq7hLTdSdmd4WDqZ1T0pDpuEiiF
+	 AqJDKIctuf5ztIaIDho0TgldLpTL7J/zF9MdFpmGxPVf3KPRkXC14MHBOIxmG8ecNs
+	 CdYAwK7KfzSXw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>,
-	Marc Zyngier <maz@kernel.org>,
+Cc: Douglas Anderson <dianders@chromium.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 660/844] KVM: arm64: nv: Return correct RES0 bits for FGT registers
-Date: Sat, 28 Feb 2026 12:29:33 -0500
-Message-ID: <20260228173244.1509663-661-sashal@kernel.org>
+Subject: [PATCH 6.19 661/844] mfd: core: Add locking around 'mfd_of_node_list'
+Date: Sat, 28 Feb 2026 12:29:34 -0500
+Message-ID: <20260228173244.1509663-662-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,18 +71,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220739-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220740-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -92,49 +92,103 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linux.dev:email]
-X-Rspamd-Queue-Id: AE6451C703A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 630E01C72A6
 X-Rspamd-Action: no action
 
-From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 2eb80a2eee18762a33aa770d742d64fe47852c7e ]
+[ Upstream commit 20117c92bcf9c11afd64d7481d8f94fdf410726e ]
 
-We had extended the sysreg masking infrastructure to more general
-registers, instead of restricting it to VNCR-backed registers, since
-commit a0162020095e ("KVM: arm64: Extend masking facility to arbitrary
-registers"). Fix kvm_get_sysreg_res0() to reflect this fact.
+Manipulating a list in the kernel isn't safe without some sort of
+mutual exclusion. Add a mutex any time we access / modify
+'mfd_of_node_list' to prevent possible crashes.
 
-Note that we're sure that we only deal with FGT registers in
-kvm_get_sysreg_res0(), the
-
-	if (sr < __VNCR_START__)
-
-is actually a never false, which should probably be removed later.
-
-Fixes: 69c19e047dfe ("KVM: arm64: Add TCR2_EL2 to the sysreg arrays")
-Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
-Link: https://patch.msgid.link/20260121101631.41037-1-zenghui.yu@linux.dev
-Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
+Fixes: 466a62d7642f ("mfd: core: Make a best effort attempt to match devices with the correct of_nodes")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patch.msgid.link/20251210113002.1.I6ceaca2cfb7eb25737012b166671f516696be4fd@changeid
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/emulate-nested.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/mfd-core.c | 36 ++++++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/kvm/emulate-nested.c b/arch/arm64/kvm/emulate-nested.c
-index 834f13fb1fb7d..2d04fb56746ea 100644
---- a/arch/arm64/kvm/emulate-nested.c
-+++ b/arch/arm64/kvm/emulate-nested.c
-@@ -2428,7 +2428,7 @@ static u64 kvm_get_sysreg_res0(struct kvm *kvm, enum vcpu_sysreg sr)
+diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
+index 7d14a1e7631ee..c55223ce4327a 100644
+--- a/drivers/mfd/mfd-core.c
++++ b/drivers/mfd/mfd-core.c
+@@ -22,6 +22,7 @@
+ #include <linux/regulator/consumer.h>
  
- 	masks = kvm->arch.sysreg_masks;
+ static LIST_HEAD(mfd_of_node_list);
++static DEFINE_MUTEX(mfd_of_node_mutex);
  
--	return masks->mask[sr - __VNCR_START__].res0;
-+	return masks->mask[sr - __SANITISED_REG_START__].res0;
- }
+ struct mfd_of_node_entry {
+ 	struct list_head list;
+@@ -105,9 +106,11 @@ static int mfd_match_of_node_to_dev(struct platform_device *pdev,
+ 	u64 of_node_addr;
  
- static bool check_fgt_bit(struct kvm_vcpu *vcpu, enum vcpu_sysreg sr,
+ 	/* Skip if OF node has previously been allocated to a device */
+-	list_for_each_entry(of_entry, &mfd_of_node_list, list)
+-		if (of_entry->np == np)
+-			return -EAGAIN;
++	scoped_guard(mutex, &mfd_of_node_mutex) {
++		list_for_each_entry(of_entry, &mfd_of_node_list, list)
++			if (of_entry->np == np)
++				return -EAGAIN;
++	}
+ 
+ 	if (!cell->use_of_reg)
+ 		/* No of_reg defined - allocate first free compatible match */
+@@ -129,7 +132,8 @@ static int mfd_match_of_node_to_dev(struct platform_device *pdev,
+ 
+ 	of_entry->dev = &pdev->dev;
+ 	of_entry->np = np;
+-	list_add_tail(&of_entry->list, &mfd_of_node_list);
++	scoped_guard(mutex, &mfd_of_node_mutex)
++		list_add_tail(&of_entry->list, &mfd_of_node_list);
+ 
+ 	of_node_get(np);
+ 	device_set_node(&pdev->dev, of_fwnode_handle(np));
+@@ -286,11 +290,13 @@ static int mfd_add_device(struct device *parent, int id,
+ 	if (cell->swnode)
+ 		device_remove_software_node(&pdev->dev);
+ fail_of_entry:
+-	list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
+-		if (of_entry->dev == &pdev->dev) {
+-			list_del(&of_entry->list);
+-			kfree(of_entry);
+-		}
++	scoped_guard(mutex, &mfd_of_node_mutex) {
++		list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
++			if (of_entry->dev == &pdev->dev) {
++				list_del(&of_entry->list);
++				kfree(of_entry);
++			}
++	}
+ fail_alias:
+ 	regulator_bulk_unregister_supply_alias(&pdev->dev,
+ 					       cell->parent_supplies,
+@@ -360,11 +366,13 @@ static int mfd_remove_devices_fn(struct device *dev, void *data)
+ 	if (cell->swnode)
+ 		device_remove_software_node(&pdev->dev);
+ 
+-	list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
+-		if (of_entry->dev == &pdev->dev) {
+-			list_del(&of_entry->list);
+-			kfree(of_entry);
+-		}
++	scoped_guard(mutex, &mfd_of_node_mutex) {
++		list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
++			if (of_entry->dev == &pdev->dev) {
++				list_del(&of_entry->list);
++				kfree(of_entry);
++			}
++	}
+ 
+ 	regulator_bulk_unregister_supply_alias(dev, cell->parent_supplies,
+ 					       cell->num_parent_supplies);
 -- 
 2.51.0
 
