@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-220081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QF1DAegmo2kr+AQAu9opvQ
-	(envelope-from <stable+bounces-220081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:33:28 +0100
+	id 2GUlOAMno2kr+AQAu9opvQ
+	(envelope-from <stable+bounces-220082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:33:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688D71C4E92
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:33:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 605241C4EA9
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CBCD33078FD5
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:33:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E7E73090EBD
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E8C33AD9B;
-	Sat, 28 Feb 2026 17:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8228033DEE1;
+	Sat, 28 Feb 2026 17:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aznwyzf7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1ZtdQcx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B874033A70A;
-	Sat, 28 Feb 2026 17:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448EC328B78;
+	Sat, 28 Feb 2026 17:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772299970; cv=none; b=slq8u/D7s08cczeAxYQ7ul4ITFbxVWMt2Z/dvo/nrIvRjB4x2X2j+JJnQxn6BpRUokE/eL7AKEhFEGLaOEvJWoKQJQ4NWEp1u8hb1MjoeJqA8B/5HoHMwZxZNIzoz7OmBCARmAVo0iOPNsy4hYRNrMWxC3CTGFnGa1rVpgxBoVg=
+	t=1772299972; cv=none; b=M9gCU+rQOE9bbmBlAhmKs4iN0qblE6kXGM6wlcT1E3Qh660ASQbjGf/vmUVa4HQ9dGXEmuwzFfiEO3tjirIcs7d1zC0a0JgrGkFCVBnaPd7XID/KDeFLSzav27S7CIaIcVdHYx/W5Y8nEFyqy8uBJU9hx/nTQaRUIDAE98K1KPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772299970; c=relaxed/simple;
-	bh=BEp7I0nN80wTiulCvdpv1dALxHl+3lpsc3Fl/imuoZI=;
+	s=arc-20240116; t=1772299972; c=relaxed/simple;
+	bh=mkR6AfW5Utma/fNsPijcJRYNsIfaMc2bi3R9oseisdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QEJ3gm4QqqrreUhO+5RUN0hQw67LpGjt9CucnO1kv9d8NQ+epJfx+GUcUMtZxdoqRI0ufAY6RCaFXK4V0kZYx3AXcweN9hLkZ/sY94tvBt9x0mvL1JsZ6X0kialCRKrBDuzZF5BeoHe+RvxoV/Y/GwQTjXKeN4+tkZWYO1gOHTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aznwyzf7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA605C19425;
-	Sat, 28 Feb 2026 17:32:49 +0000 (UTC)
+	 MIME-Version; b=qDZTg9oTbV4vza1mdw6MgKhZ5F0YD/tWOnvLHkeiHCkiwgRFjq1Zkf9nBSo/WAgaFOQKWMKU/vOI5Am/B7uTsz+hefOMRTNHMc1aP0AZbntvzXEW5Bth7aTEe4h/bstRY8ZYr02ixOPQjybZtbvbwe7huXx5qkokB8lgx1RY9qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1ZtdQcx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA69FC19423;
+	Sat, 28 Feb 2026 17:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772299970;
-	bh=BEp7I0nN80wTiulCvdpv1dALxHl+3lpsc3Fl/imuoZI=;
+	s=k20201202; t=1772299971;
+	bh=mkR6AfW5Utma/fNsPijcJRYNsIfaMc2bi3R9oseisdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aznwyzf7u3E77Zd3SBkQxwb9iHN/Q+G49NEVSRn4scbtM10O7SrYd9IHJnU2g8LEp
-	 ucIV+fF+YLm8x3jx8K66dvbMk/zKBnZ5PTOcIOETTKf6G+W6frZblOU0GKZyxww3X7
-	 h1ukAuySTjZKIg7XwD+sRCVvmqDNzoBDbDNff4OVlSsCrkujo1eVpTo9Yzb3+FxBj1
-	 v2UkRdcrVPIy2q5EQ48t52qhh7X6Ia2AlqtgMJXIDRNkegMuHqNySbzYyYXCfxsxBi
-	 FLlC+uDB8OCrgDxmgSjyHF+QQT9ZKVg2/NaB2f5+DXYBAafhhs5PGb/qMZqpnprmfq
-	 WQXVVlF1VAYYQ==
+	b=m1ZtdQcxYR61pv5DZpOvn4ZbrRFJzytREYjtHXn6hJd1PvYhbJAwqLLzjA250yO3W
+	 Bsbsq+GkKHnbNmRMM8IUouZbdzLRifGHcswp9fe6zdk0bZQzBbp/1dV9kNZZHS8GxC
+	 EJ8VQXL3GsnNwHPkLZqgS8/iCDcv/fBy4fOgzfcfmYW/NgMpXaMy1DYpoNC2j+1Pwk
+	 dsOy26Ak1cw/i4gzkSYvphKDicFYSJShqXSsNczIYhwDOUYSRkBfpt2Ypgpbuhzhu+
+	 1WTghdtdoJbOYPYjp1B+iINhV/CmcRalp+0qCW2FgdIiweDyr2qkOrBhnevl7oUfZX
+	 duXyOmY6uJ76g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+Cc: Thomas Richter <tmricht@linux.ibm.com>,
+	Ian Rogers <irogers@google.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Jan Polensky <japo@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 003/844] Revert "mmc: rtsx_pci_sdmmc: increase power-on settling delay to 5ms"
-Date: Sat, 28 Feb 2026 12:18:36 -0500
-Message-ID: <20260228173244.1509663-4-sashal@kernel.org>
+Subject: [PATCH 6.19 004/844] perf test: Fix test case perf evlist tests for s390x
+Date: Sat, 28 Feb 2026 12:18:37 -0500
+Message-ID: <20260228173244.1509663-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -78,9 +84,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220081-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220082-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
@@ -92,42 +98,67 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: 688D71C4E92
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 605241C4EA9
 X-Rspamd-Action: no action
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit ff112f1ecd10b72004eac05bae395e1c65f0c63c ]
+[ Upstream commit b04d2b9199129f4f0c992a518c0fb78c2efc1064 ]
 
-This reverts commit aced969e9bf3701dc75cfca57c78c031b7875b9d.
+Perf test case 78: perf evlist tests fails on s390.
 
-It was determined that this was not the correct "fix", so should be
-reverted.
+The failure is causes by grouping events cycles and instructions because
+sampling does only support event cycles.  Change the group to software
+events to fix this.
 
-Fixes: aced969e9bf3 ("mmc: rtsx_pci_sdmmc: increase power-on settling delay to 5ms")
-Cc: Matthew Schwartz <matthew.schwartz@linux.dev>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Output before:
+  # ./perf test 78
+  78: perf evlist tests              : FAILED!
+  #
+
+Output after:
+  # ./perf test 78
+  78: perf evlist tests              : Ok
+  #
+
+Fixes: db452961de939225 ("perf tests evlist: Add basic evlist test")
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Jan Polensky <japo@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/rtsx_pci_sdmmc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/tests/shell/evlist.sh | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
-index b6cf1803c7d27..4db3328f46dfb 100644
---- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-@@ -937,7 +937,7 @@ static int sd_power_on(struct realtek_pci_sdmmc *host, unsigned char power_mode)
- 	if (err < 0)
- 		return err;
+diff --git a/tools/perf/tests/shell/evlist.sh b/tools/perf/tests/shell/evlist.sh
+index 140f099e75c1e..5632be3917109 100755
+--- a/tools/perf/tests/shell/evlist.sh
++++ b/tools/perf/tests/shell/evlist.sh
+@@ -38,13 +38,14 @@ test_evlist_simple() {
  
--	mdelay(5);
-+	mdelay(1);
+ test_evlist_group() {
+ 	echo "Group evlist test"
+-	if ! perf record -e "{cycles,instructions}" -o "${perfdata}" true 2> /dev/null
++	if ! perf record -e "{cpu-clock,task-clock}" -o "${perfdata}" \
++		-- perf test -w noploop 2> /dev/null
+ 	then
+ 		echo "Group evlist [Skipped event group recording failed]"
+ 		return
+ 	fi
  
- 	err = rtsx_pci_write_register(pcr, CARD_OE, SD_OUTPUT_EN, SD_OUTPUT_EN);
- 	if (err < 0)
+-	if ! perf evlist -i "${perfdata}" -g | grep -q "{.*cycles.*,.*instructions.*}"
++	if ! perf evlist -i "${perfdata}" -g | grep -q "{.*cpu-clock.*,.*task-clock.*}"
+ 	then
+ 		echo "Group evlist [Failed to list event group]"
+ 		err=1
 -- 
 2.51.0
 
