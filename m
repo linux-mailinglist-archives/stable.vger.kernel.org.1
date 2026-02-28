@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-220223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGlAJO0xo2kE+QQAu9opvQ
-	(envelope-from <stable+bounces-220223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:20:29 +0100
+	id 0GZ6K/Qxo2kE+QQAu9opvQ
+	(envelope-from <stable+bounces-220224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:20:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 026411C5AE5
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:20:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E801C5AF4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:20:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E61330FAF08
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:55:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 261BF31A5853
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3444A4E379C;
-	Sat, 28 Feb 2026 17:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468764EA373;
+	Sat, 28 Feb 2026 17:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lbq6Ihyo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+2VK+l6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9204E3797;
-	Sat, 28 Feb 2026 17:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C243EBF04;
+	Sat, 28 Feb 2026 17:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300129; cv=none; b=b7Jw6bVwoiRIL0KwA+VLTv3g3VjyQTAWiThTYyKqUHV9NUaFAd3YQATDvg+vB3VN3qqA0+ijW5Wh4bg9DZ9luDokr3Mm2alUEml+0x79etIwFzhKx6Btw132WUKnYbRRHa+HN3JK1+n5KvJk0r/iPlkya1Yca7+BrcN0f7DNCEo=
+	t=1772300130; cv=none; b=eGYiEspdPFpQBRk30xd+Yio2ijyTy2WVzcPnKaVKoU588L2BD60zE4ecP321oeIBOa49QG/5sF+gU3rh03RX3VNZIJCv5nz7QpbHtKUqS5HZZY39bx9SCMv+V85O6seVt2pKnl0WsnmVrDO/uzI0sULGtIwo3RLxHSejpjRaosU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300129; c=relaxed/simple;
-	bh=iIt6d5bJBWv/HXppUH7hgW+elfsL6jgbAZ6J2R5Bz/A=;
+	s=arc-20240116; t=1772300130; c=relaxed/simple;
+	bh=t10jh7auqoVFgMP5n7zmmJ4OCC6qifmcq7N6D2hKXAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPGWNH41c4oMBOKdY/zVgcDHuxgWgd9YbKdZy88Me8QH8qeL8OSYd0hsZPu/iVFIfKrYyXiKcRpbbXWWWtL/J7VJvupuundW3UM+qOa5fmvTFjFnWDi60vJSsiGepd6xZf2iane/Va2wA+o7onttKwa6OftYM88a88yzAVM2W1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lbq6Ihyo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2227C116D0;
-	Sat, 28 Feb 2026 17:35:27 +0000 (UTC)
+	 MIME-Version; b=jQQJTULXpLnJWVzFHVU7i+8ZWobDhDpVFwHIcr3lG8YwPBlj9Pe3C4BTr8BRyPV4X6j1OhscWRIu4JFKcihfZga6gQTA4gfCwjCnE3mZuenkXZ1HFLJJGZRnF006rvytFyJ4Y8vIQqQHEHFjewZUbsbFFTefMGCLjajFvAzDr5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+2VK+l6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCDAC116D0;
+	Sat, 28 Feb 2026 17:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300128;
-	bh=iIt6d5bJBWv/HXppUH7hgW+elfsL6jgbAZ6J2R5Bz/A=;
+	s=k20201202; t=1772300129;
+	bh=t10jh7auqoVFgMP5n7zmmJ4OCC6qifmcq7N6D2hKXAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lbq6Ihyo/DbmQ+SJIhkg2jsBvZxXZY6+XNGo9rBlRihmrSw0WQnKrTCscJcUMRbB8
-	 HOm5ZqahRIQawG069ppAQp+IRj0PCkSf4v7NZcWVCfewyRlikEXBU3KjqxKKvBZLQx
-	 E4nM4iw/1ez6PvkF6XdX7MG4I0F3Rv4zXSXmUK3LvVKLk6hUBM378Nosl85Vm7zMO8
-	 udjL4s/ujwXGH/6mlc1/0Ew4FISP5x8vFNLMCSyfG/lGm8oyGq0Crc5h4MDOGA1hcg
-	 I5uILN4P50BLyHOBbaNagMVUyuikCL37IQwopWglNRKY5uPntgIfQe/7QMOlbsm2MN
-	 wTR4E40ZsBbdw==
+	b=X+2VK+l6mUgtozbDWvCHxPo1sWomFjXyN+CoSsybAvwE2Fq2DKIUaNRph+GWwD+UW
+	 fwoiqLH/YHZV/wc2zJhSS3iK5ly3GgVLNc0D1kLZDHGyFjHs4VLGXkb2HLAkBna3uD
+	 o4ftCaYLxMjq+kYrnrf2L9ZZL1jgWQuyKYn2jWKb8LPf6UJd8kiyKRv4K7XdbejCV/
+	 MX3YW7FMsF7WJ7pHXIhIbzLx1re8sJolJdVUyAQPMffknfysBV8wKIEW+UH0faji/A
+	 PqIQK0fjb9w3OJA+q50uiJWjHcvzda+refk5+zc5T0cwoLfMlsoLIpQSFaHPy9t5oS
+	 LMyMDXiWOe2DA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Hans Verkuil <hverkuil@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 145/844] ASoC: SOF: ipc4: Support for sending payload along with LARGE_CONFIG_GET
-Date: Sat, 28 Feb 2026 12:20:58 -0500
-Message-ID: <20260228173244.1509663-146-sashal@kernel.org>
+Subject: [PATCH 6.19 146/844] media: dvb-core: dmxdevfilter must always flush bufs
+Date: Sat, 28 Feb 2026 12:20:59 -0500
+Message-ID: <20260228173244.1509663-147-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,156 +67,138 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220223-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[xs4all.nl,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-220224-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 026411C5AE5
+	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xs4all.nl:email]
+X-Rspamd-Queue-Id: 18E801C5AF4
 X-Rspamd-Action: no action
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-[ Upstream commit d96cb0b86d6e8bbbbfa425771606f6c1aebc318e ]
+[ Upstream commit c4e620eccbef76aa5564ebb295e23d6540e27215 ]
 
-There are message types when we would need to send a payload along with
-the LARGE_CONFIG_GET message to provide information to the firmware on
-what data is requested.
-Such cases are the ALSA Kcontrol related messages when the high level
-param_id tells only the type of the control, but the ID/index of the exact
-control is specified in the payload area.
+Currently the buffers are being filled until full, which works fine
+for the transport stream, but not when reading sections, those have
+to be returned to userspace immediately, otherwise dvbv5-scan will
+just wait forever.
 
-The caller must place the payload for TX before calling the set_get_data()
-and this payload will be sent alongside with the message to the firmware.
+Add a 'flush' argument to dvb_vb2_fill_buffer to indicate whether
+the buffer must be flushed or wait until it is full.
 
-The data area will be overwritten by the received data from firmware.
-
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Link: https://patch.msgid.link/20251217143945.2667-7-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 42 insertions(+), 2 deletions(-)
+ drivers/media/dvb-core/dmxdev.c  | 8 ++++----
+ drivers/media/dvb-core/dvb_vb2.c | 5 +++--
+ include/media/dvb_vb2.h          | 6 ++++--
+ 3 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/sof/ipc4.c b/sound/soc/sof/ipc4.c
-index a4a090e6724a6..20d723f48fff0 100644
---- a/sound/soc/sof/ipc4.c
-+++ b/sound/soc/sof/ipc4.c
-@@ -15,6 +15,7 @@
- #include "sof-audio.h"
- #include "ipc4-fw-reg.h"
- #include "ipc4-priv.h"
-+#include "ipc4-topology.h"
- #include "ipc4-telemetry.h"
- #include "ops.h"
+diff --git a/drivers/media/dvb-core/dmxdev.c b/drivers/media/dvb-core/dmxdev.c
+index 8c6f5aafda1d6..17184b3674904 100644
+--- a/drivers/media/dvb-core/dmxdev.c
++++ b/drivers/media/dvb-core/dmxdev.c
+@@ -397,11 +397,11 @@ static int dvb_dmxdev_section_callback(const u8 *buffer1, size_t buffer1_len,
+ 	if (dvb_vb2_is_streaming(&dmxdevfilter->vb2_ctx)) {
+ 		ret = dvb_vb2_fill_buffer(&dmxdevfilter->vb2_ctx,
+ 					  buffer1, buffer1_len,
+-					  buffer_flags);
++					  buffer_flags, true);
+ 		if (ret == buffer1_len)
+ 			ret = dvb_vb2_fill_buffer(&dmxdevfilter->vb2_ctx,
+ 						  buffer2, buffer2_len,
+-						  buffer_flags);
++						  buffer_flags, true);
+ 	} else {
+ 		ret = dvb_dmxdev_buffer_write(&dmxdevfilter->buffer,
+ 					      buffer1, buffer1_len);
+@@ -452,10 +452,10 @@ static int dvb_dmxdev_ts_callback(const u8 *buffer1, size_t buffer1_len,
  
-@@ -433,6 +434,23 @@ static int sof_ipc4_tx_msg(struct snd_sof_dev *sdev, void *msg_data, size_t msg_
- 	return ret;
- }
+ 	if (dvb_vb2_is_streaming(ctx)) {
+ 		ret = dvb_vb2_fill_buffer(ctx, buffer1, buffer1_len,
+-					  buffer_flags);
++					  buffer_flags, false);
+ 		if (ret == buffer1_len)
+ 			ret = dvb_vb2_fill_buffer(ctx, buffer2, buffer2_len,
+-						  buffer_flags);
++						  buffer_flags, false);
+ 	} else {
+ 		if (buffer->error) {
+ 			spin_unlock(&dmxdevfilter->dev->lock);
+diff --git a/drivers/media/dvb-core/dvb_vb2.c b/drivers/media/dvb-core/dvb_vb2.c
+index 29edaaff7a5c9..7444bbc2f24d9 100644
+--- a/drivers/media/dvb-core/dvb_vb2.c
++++ b/drivers/media/dvb-core/dvb_vb2.c
+@@ -249,7 +249,8 @@ int dvb_vb2_is_streaming(struct dvb_vb2_ctx *ctx)
  
-+static bool sof_ipc4_tx_payload_for_get_data(struct sof_ipc4_msg *tx)
-+{
-+	/*
-+	 * Messages that require TX payload with LARGE_CONFIG_GET.
-+	 * The TX payload is placed into the IPC message data section by caller,
-+	 * which needs to be copied to temporary buffer since the received data
-+	 * will overwrite it.
-+	 */
-+	switch (tx->extension & SOF_IPC4_MOD_EXT_MSG_PARAM_ID_MASK) {
-+	case SOF_IPC4_MOD_EXT_MSG_PARAM_ID(SOF_IPC4_SWITCH_CONTROL_PARAM_ID):
-+	case SOF_IPC4_MOD_EXT_MSG_PARAM_ID(SOF_IPC4_ENUM_CONTROL_PARAM_ID):
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- static int sof_ipc4_set_get_data(struct snd_sof_dev *sdev, void *data,
- 				 size_t payload_bytes, bool set)
+ int dvb_vb2_fill_buffer(struct dvb_vb2_ctx *ctx,
+ 			const unsigned char *src, int len,
+-			enum dmx_buffer_flags *buffer_flags)
++			enum dmx_buffer_flags *buffer_flags,
++			bool flush)
  {
-@@ -444,6 +462,8 @@ static int sof_ipc4_set_get_data(struct snd_sof_dev *sdev, void *data,
- 	struct sof_ipc4_msg tx = {{ 0 }};
- 	struct sof_ipc4_msg rx = {{ 0 }};
- 	size_t remaining = payload_bytes;
-+	void *tx_payload_for_get = NULL;
-+	size_t tx_data_size = 0;
- 	size_t offset = 0;
- 	size_t chunk_size;
- 	int ret;
-@@ -469,10 +489,20 @@ static int sof_ipc4_set_get_data(struct snd_sof_dev *sdev, void *data,
- 
- 	tx.extension |= SOF_IPC4_MOD_EXT_MSG_FIRST_BLOCK(1);
- 
-+	if (sof_ipc4_tx_payload_for_get_data(&tx)) {
-+		tx_data_size = min(ipc4_msg->data_size, payload_limit);
-+		tx_payload_for_get = kmemdup(ipc4_msg->data_ptr, tx_data_size,
-+					     GFP_KERNEL);
-+		if (!tx_payload_for_get)
-+			return -ENOMEM;
-+	}
-+
- 	/* ensure the DSP is in D0i0 before sending IPC */
- 	ret = snd_sof_dsp_set_power_state(sdev, &target_state);
--	if (ret < 0)
-+	if (ret < 0) {
-+		kfree(tx_payload_for_get);
- 		return ret;
-+	}
- 
- 	/* Serialise IPC TX */
- 	mutex_lock(&sdev->ipc->tx_mutex);
-@@ -506,7 +536,15 @@ static int sof_ipc4_set_get_data(struct snd_sof_dev *sdev, void *data,
- 			rx.data_size = chunk_size;
- 			rx.data_ptr = ipc4_msg->data_ptr + offset;
- 
--			tx_size = 0;
-+			if (tx_payload_for_get) {
-+				tx_size = tx_data_size;
-+				tx.data_size = tx_size;
-+				tx.data_ptr = tx_payload_for_get;
-+			} else {
-+				tx_size = 0;
-+				tx.data_size = 0;
-+				tx.data_ptr = NULL;
-+			}
- 			rx_size = chunk_size;
+ 	unsigned long flags = 0;
+ 	void *vbuf = NULL;
+@@ -306,7 +307,7 @@ int dvb_vb2_fill_buffer(struct dvb_vb2_ctx *ctx,
  		}
+ 	}
  
-@@ -553,6 +591,8 @@ static int sof_ipc4_set_get_data(struct snd_sof_dev *sdev, void *data,
+-	if (ctx->nonblocking && ctx->buf) {
++	if (flush && ctx->buf) {
+ 		vb2_set_plane_payload(&ctx->buf->vb, 0, ll);
+ 		vb2_buffer_done(&ctx->buf->vb, VB2_BUF_STATE_DONE);
+ 		list_del(&ctx->buf->list);
+diff --git a/include/media/dvb_vb2.h b/include/media/dvb_vb2.h
+index 8cb88452cd6c2..0fbbfc65157e6 100644
+--- a/include/media/dvb_vb2.h
++++ b/include/media/dvb_vb2.h
+@@ -124,7 +124,7 @@ static inline int dvb_vb2_release(struct dvb_vb2_ctx *ctx)
+ 	return 0;
+ };
+ #define dvb_vb2_is_streaming(ctx) (0)
+-#define dvb_vb2_fill_buffer(ctx, file, wait, flags) (0)
++#define dvb_vb2_fill_buffer(ctx, file, wait, flags, flush) (0)
  
- 	mutex_unlock(&sdev->ipc->tx_mutex);
+ static inline __poll_t dvb_vb2_poll(struct dvb_vb2_ctx *ctx,
+ 				    struct file *file,
+@@ -166,10 +166,12 @@ int dvb_vb2_is_streaming(struct dvb_vb2_ctx *ctx);
+  * @buffer_flags:
+  *		pointer to buffer flags as defined by &enum dmx_buffer_flags.
+  *		can be NULL.
++ * @flush:	flush the buffer, even if it isn't full.
+  */
+ int dvb_vb2_fill_buffer(struct dvb_vb2_ctx *ctx,
+ 			const unsigned char *src, int len,
+-			enum dmx_buffer_flags *buffer_flags);
++			enum dmx_buffer_flags *buffer_flags,
++			bool flush);
  
-+	kfree(tx_payload_for_get);
-+
- 	return ret;
- }
- 
+ /**
+  * dvb_vb2_poll - Wrapper to vb2_core_streamon() for Digital TV
 -- 
 2.51.0
 
