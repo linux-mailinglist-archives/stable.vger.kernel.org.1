@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-220674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDIwIo0+o2nv+gQAu9opvQ
-	(envelope-from <stable+bounces-220674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:14:21 +0100
+	id oMtcI5lSo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:39:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2EC1C6B99
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:14:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C7C1C87B1
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7FE50313D533
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:05:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 45F933234451
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DE33F4AA0;
-	Sat, 28 Feb 2026 17:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6613F5A53;
+	Sat, 28 Feb 2026 17:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tiU7X14Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJ3U3I/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379853F5299;
-	Sat, 28 Feb 2026 17:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424683F5A4D;
+	Sat, 28 Feb 2026 17:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300556; cv=none; b=e/nkkP6gvDf4quIJICDCUB01GSp8TDIbn8CZiR1LFUKP3xW2wa007oOSfKlg+iYEU6jP+QvrMCFS3CzMVhaGg9eYlYxBJSvmRjHjWmPxceqzV/VoEgyFJpHZgdxiVhR7UqlndvkSwLT9VOxHee5ryBbZRtiV48dgV/SUzOIQ1K8=
+	t=1772300557; cv=none; b=d0ERcPIWvEk+ddv1rQXSKAlv+co/8Srg/YD8gZZYiTqg7US4AtLIC9m2z369p57FLWn1cMU+ZnrQgd7yj54aYTi/Pjec3bDPOZtkixCfQCfQdZh09E5wYRDuFsElF2nDFxgLlKpQqL2q7mUpTxsYwFA+RgczBeRse9KCmOH175A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300556; c=relaxed/simple;
-	bh=zMaUWkm3qmMDz0eMNZ10dyiuX56BqHuh7Glw3mA865Y=;
+	s=arc-20240116; t=1772300557; c=relaxed/simple;
+	bh=fXRW22GKIGq9TiIb2fQM4Wiktdfuv2J/Mn6+4IMUBxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKrguE07zPW9SWP/ftkM0pvudgauyQngUQZAdTIo+yHGNZ6naHiuQ63n9eIQObPwxEETuG1KQ+U3YCTVhvdLEDo5HmPNBJkcmpos6yK/LqxVMVBDzIGq+aDMRRNQ8Uasn0uGZjPXxmUNLstxl34UWVaNLazCNufBR9gZu74rdvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tiU7X14Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB91C19423;
-	Sat, 28 Feb 2026 17:42:35 +0000 (UTC)
+	 MIME-Version; b=n3kERc8LoEBGMO7bQ0ApHfFvfVio0J78yuyeFMCGxV3L7y9q21GAPFcDBs2tiF5/+q4bQQm4dMjmL4c3WITxfs9Ywi6ulEQiOSB/DerBh2B+P8zXrdjDE/sjHp3rmssk4S0tr+NOX28gyF1tEfDKxkkgf1YtUdGAc3I65ZAX8m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UJ3U3I/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC10C19423;
+	Sat, 28 Feb 2026 17:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300556;
-	bh=zMaUWkm3qmMDz0eMNZ10dyiuX56BqHuh7Glw3mA865Y=;
+	s=k20201202; t=1772300557;
+	bh=fXRW22GKIGq9TiIb2fQM4Wiktdfuv2J/Mn6+4IMUBxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiU7X14YIizonEsz6dEs5N2jb6ZALG/5wmrewess3DMqDHn7UMbxtz/vXYtoUbhnY
-	 ge6bZXvp1FmQA/7ztzAk6tMyMzwJpKgmyY2H5Rdv72jNfASaASkj5frPofY4hT793q
-	 BngBFS/8G2Q20o9T69d7onI65Qa77MAjc2p+jwHxRJ1toocE2ZmzWFbVjZDtaJgWuJ
-	 q1KthEDzT/ZD0IT4tN9VmxxhGyMgSHUkp0g7dUwR6ClrgJxRr5J1S4u4CtMd5tvu37
-	 VnZq/JTdqWoj9+a7FJ/elVZTJK6vA4K7ex6Uf5WP5Gs4OBLgU0XxYqDmdr+Hvt0/Z9
-	 PZWZU2FtggwAA==
+	b=UJ3U3I/aL+z6ydmklzlbx81J0ClkwT9etLE5SnELUwC9kOoOpUeCt5X0Zb++lmgs1
+	 S9AqtI+Ah7PcT9VaWMHiEE3BkZ16GI2X3Iie3KSTBl7XeZ+w7WvioGNMOzTdjHKaaH
+	 SyNO6K7pXPf3EfdmTDLxiipoKnzXfxi5aBN0XTYxg71yJJGCb42EXaMCksz0Y8FMQ0
+	 sI74k0xasjg+OGqGoV/LQh9SAB36xJIyDpkJy1EKEpJtrMOYbgwQl9gqFfJIy83cmS
+	 C+AD4DkunaTaYwA2+WIhWCdjBqigzd42Ibgr8K5Eq5xMI07HrTBuh5cHRGbspklX6K
+	 UPIR8watTIT9w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,9 +52,9 @@ Cc: Bingbu Cao <bingbu.cao@intel.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 595/844] media: staging/ipu7: Call synchronous RPM suspend in probe failure
-Date: Sat, 28 Feb 2026 12:28:28 -0500
-Message-ID: <20260228173244.1509663-596-sashal@kernel.org>
+Subject: [PATCH 6.19 596/844] media: staging/ipu7: Update CDPHY register settings
+Date: Sat, 28 Feb 2026 12:28:29 -0500
+Message-ID: <20260228173244.1509663-597-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -83,9 +83,9 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220674-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220675-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -95,46 +95,76 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TAGGED_RCPT(0.00)[stable,cisco];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6B2EC1C6B99
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B7C7C1C87B1
 X-Rspamd-Action: no action
 
 From: Bingbu Cao <bingbu.cao@intel.com>
 
-[ Upstream commit 1433e6ccc25e9ea596683ab66e1c51f37fc7d491 ]
+[ Upstream commit f7923e6bafcad686adb51cc100ba1860f8b43922 ]
 
-If firmware authentication failed during driver probe, driver call an
-asynchronous API to suspend the psys device but the bus device will be
-removed soon, thus runtime PM of bus device will be disabled soon, that
-will cancel the suspend request, so use synchronous suspend to make
-sure the runtime suspend before disabling its RPM.
-
-IPU7 hardware has constraints that the PSYS device must be powered off
-before ISYS, otherwise it will cause machine check error.
+Some CPHY settings needs to updated according to the latest guide from
+SNPS. This patch program 45ohm for tuning resistance to fix CPHY problem
+and update the ITMINRX and GMODE for CPHY.
 
 Cc: Stable@vger.kernel.org
-Fixes: b7fe4c0019b1 ("media: staging/ipu7: add Intel IPU7 PCI device driver")
+Fixes: a516d36bdc3d ("media: staging/ipu7: add IPU7 input system device driver")
 Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/ipu7/ipu7.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/media/ipu7/ipu7-isys-csi-phy.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/media/ipu7/ipu7.c b/drivers/staging/media/ipu7/ipu7.c
-index 6c8c3eea44acb..fa5a1867626f8 100644
---- a/drivers/staging/media/ipu7/ipu7.c
-+++ b/drivers/staging/media/ipu7/ipu7.c
-@@ -2620,7 +2620,7 @@ static int ipu7_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (!IS_ERR_OR_NULL(isp->isys) && !IS_ERR_OR_NULL(isp->isys->mmu))
- 		ipu7_mmu_cleanup(isp->isys->mmu);
- 	if (!IS_ERR_OR_NULL(isp->psys))
--		pm_runtime_put(&isp->psys->auxdev.dev);
-+		pm_runtime_put_sync(&isp->psys->auxdev.dev);
- 	ipu7_bus_del_devices(pdev);
- 	release_firmware(isp->cpd_fw);
- buttress_exit:
+diff --git a/drivers/staging/media/ipu7/ipu7-isys-csi-phy.c b/drivers/staging/media/ipu7/ipu7-isys-csi-phy.c
+index 2d57178835188..3f15af3b4c799 100644
+--- a/drivers/staging/media/ipu7/ipu7-isys-csi-phy.c
++++ b/drivers/staging/media/ipu7/ipu7-isys-csi-phy.c
+@@ -124,6 +124,7 @@ static const struct cdr_fbk_cap_prog_params table7[] = {
+ 	{ 1350, 1589, 4 },
+ 	{ 1590, 1949, 5 },
+ 	{ 1950, 2499, 6 },
++	{ 2500, 3500, 7 },
+ 	{ }
+ };
+ 
+@@ -838,9 +839,10 @@ static void ipu7_isys_cphy_config(struct ipu7_isys *isys, u8 id, u8 lanes,
+ 		dwc_phy_write_mask(isys, id, reg + 0x400 * i,
+ 				   reset_thresh, 9, 11);
+ 
++	/* Tuning ITMINRX to 2 for CPHY */
+ 	reg = CORE_DIG_CLANE_0_RW_LP_0;
+ 	for (i = 0; i < trios; i++)
+-		dwc_phy_write_mask(isys, id, reg + 0x400 * i, 1, 12, 15);
++		dwc_phy_write_mask(isys, id, reg + 0x400 * i, 2, 12, 15);
+ 
+ 	reg = CORE_DIG_CLANE_0_RW_LP_2;
+ 	for (i = 0; i < trios; i++)
+@@ -860,7 +862,11 @@ static void ipu7_isys_cphy_config(struct ipu7_isys *isys, u8 id, u8 lanes,
+ 	for (i = 0; i < (lanes + 1); i++) {
+ 		reg = CORE_DIG_IOCTRL_RW_AFE_LANE0_CTRL_2_9 + 0x400 * i;
+ 		dwc_phy_write_mask(isys, id, reg, 4U, 0, 2);
+-		dwc_phy_write_mask(isys, id, reg, 0U, 3, 4);
++		/* Set GMODE to 2 when CPHY >= 1.5Gsps */
++		if (mbps >= 1500)
++			dwc_phy_write_mask(isys, id, reg, 2U, 3, 4);
++		else
++			dwc_phy_write_mask(isys, id, reg, 0U, 3, 4);
+ 
+ 		reg = CORE_DIG_IOCTRL_RW_AFE_LANE0_CTRL_2_7 + 0x400 * i;
+ 		dwc_phy_write_mask(isys, id, reg, cap_prog, 10, 12);
+@@ -930,8 +936,9 @@ static int ipu7_isys_phy_config(struct ipu7_isys *isys, u8 id, u8 lanes,
+ 			   7, 12, 14);
+ 	dwc_phy_write_mask(isys, id, CORE_DIG_IOCTRL_RW_AFE_CB_CTRL_2_7,
+ 			   0, 8, 10);
++	/* resistance tuning: 1 for 45ohm, 0 for 50ohm */
+ 	dwc_phy_write_mask(isys, id, CORE_DIG_IOCTRL_RW_AFE_CB_CTRL_2_5,
+-			   0, 8, 8);
++			   1, 8, 8);
+ 
+ 	if (aggregation)
+ 		phy_mode = isys->csi2[0].phy_mode;
 -- 
 2.51.0
 
