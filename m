@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKNzEAlbo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:15:53 +0100
+	id EOSOLCtIo2l//AQAu9opvQ
+	(envelope-from <stable+bounces-220891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:55:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733611C8E3B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:15:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD491C78BD
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:55:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EB243381E46
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:37:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3399D30D34F3
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45BB42435A;
-	Sat, 28 Feb 2026 17:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A332C424E4B;
+	Sat, 28 Feb 2026 17:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sX+/hb9n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="df1LMhA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6769E42434F;
-	Sat, 28 Feb 2026 17:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662B4424E41;
+	Sat, 28 Feb 2026 17:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300780; cv=none; b=saaD26w4lSz+CXveRkxcJZWoeM4c/WUMscu2zmjEPTwFXiKuIL6bCWMPZaes+4+MX4cW1YoYUf+wmcD+T8MPHQM46FPgDmoLh0amvygfo73opSZbirAeuWr5rZ/h1iWX7LQGwr3wZuXbzJbau0qVOFTKvzzCvJ2RxEoryVfmAPM=
+	t=1772300781; cv=none; b=bMW+ViT/DkuP/LXs6Czqe7bvCM7jojecc0Cd/kSdaTZuNFDzIHqQ2xc0sB0I3glgYil9fD9Z33f57oqkb9gM++JPHDSf9L2Dyj01gcSRCJsHjzVHXQ1odVqdGw3YpyphrmNhajWB85w8kgyxxI8Wg60zYKh5bOeFuk1kOyON6qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300780; c=relaxed/simple;
-	bh=V2tvp4dZtMlmn6CDDyghQpc2R+K7b9K7s10vy4//yF8=;
+	s=arc-20240116; t=1772300781; c=relaxed/simple;
+	bh=RzykjqbxI860RyMl76kUWU06jUsyYYPYyBd7OBFoEjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pAF1MKRY5Zw1K3OLN6ZQTAYeogch5RnZ7NjEdA8Uvp/xCWO54r9IMUavDbBsmVEDDt933pHKh3ymrg/PYcjfdaDWVtzZtJbf/S1/77ZSsMXMH3jTlmtkEKP8nuoslT9J4TmdLi9PjIjC54MoCa8H2LRuKIV9DtVGTfWicdFvRRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sX+/hb9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF81C19423;
-	Sat, 28 Feb 2026 17:46:19 +0000 (UTC)
+	 MIME-Version; b=OiP318rqkhv+Ai+l/oIPJkvszFpgcfVUadR/QJL/r4tjQgBzAFK8OxdSaDJirx31TbBKvgRXTBj9fqRNKMoTf8V9Y7bw3UELdLuK+UOjP8F4bXrqSG76U46r59W5Jb0dGHQXgnQLwEY5ZjwD9+1ddkDK4NdYCV1BRj1jqASFRHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=df1LMhA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECE1C19423;
+	Sat, 28 Feb 2026 17:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300780;
-	bh=V2tvp4dZtMlmn6CDDyghQpc2R+K7b9K7s10vy4//yF8=;
+	s=k20201202; t=1772300781;
+	bh=RzykjqbxI860RyMl76kUWU06jUsyYYPYyBd7OBFoEjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sX+/hb9nzcnOSLlowikUEGpdEL+PWz6lishRMXgYAv9qnOdra0jNSJUtocoQBiTj0
-	 GrH3Cx/YCgmAKFCyYAVztiEzEFUf5i6eZHxTWxsJYh7z7h7T7h8sB8LC/vOnG2D0Ot
-	 KLHji79nqx4dkIIQ7Q4MEDKgZ7C44leRDdWkUhZWwG1p33l5mgQreCaUVLNz9Con0z
-	 EeSZm1Cl52D6vyssWTHJDiWqByJI7FcTAg+Y8PwKWk5anJbzIxq+1sDiZa+26HegME
-	 K8QKUjX8BQpvKJDegdV1lN8voGIf1RBjuFDMc4uK1sfQgnbOYSOQrwD0WLX+TMKjHJ
-	 4iuL814MpgTnQ==
+	b=df1LMhA9lge7qC64QJ3mJSuEQfHOQ9jITxBdNMxYV+2cheM+Tm7Mvp3cufdj4h1vE
+	 QEEXadFFfwvIC+Zc5IHHo8Le9mD2zmHfWZHpA/DthT8H5rK6Hv0DUpEfpOF6IVpIoF
+	 n7qcoSGxQWrMN6THxuS76L6y8yuaFiiBw8B9e2SXH8mSIIk1wg/93PLD+IyvQiF4ya
+	 xTa999JIqtuKaeru9cZZ/3jUD/SUHXjPal1wW79PRI2r2lq7T97UDa7IoHoOUfiJpT
+	 1wQVCJBQG1A7bdUP3yULB5VgFICKEjdzTq5kbQnWCB0zi8kXyW4NNHggcP1+fZ9Qa0
+	 q3sY7ZT3FMwGw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	stable@kernel.org,
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
 	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 811/844] fbdev: ffb: fix corrupted video output on Sun FFB1
-Date: Sat, 28 Feb 2026 12:32:04 -0500
-Message-ID: <20260228173244.1509663-812-sashal@kernel.org>
+Subject: [PATCH 6.19 812/844] fbcon: Remove struct fbcon_display.inverse
+Date: Sat, 28 Feb 2026 12:32:05 -0500
+Message-ID: <20260228173244.1509663-813-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -63,105 +62,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[exactco.de,kernel.org,gmx.de];
-	TAGGED_FROM(0.00)[bounces-220890-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[suse.de,gmx.de,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220891-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email,instagram.com:url,chaos.social:url,1e:email]
-X-Rspamd-Queue-Id: 733611C8E3B
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gmx.de:email,suse.de:email]
+X-Rspamd-Queue-Id: 4CD491C78BD
 X-Rspamd-Action: no action
 
-From: René Rebe <rene@exactco.de>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit b28da0d092461ac239ff034a8ac3129320177ba3 ]
+[ Upstream commit 30baedeeeab524172abc0b58cb101e8df86b5be8 ]
 
-Fix Sun FFB1 corrupted video out ([1] and [2]) by disabling overlay and
-initializing window mode to a known state. The issue never appeared on
-my FFB2+/vertical nor Elite3D/M6. It could also depend on the PROM
-version.
+The field inverse in struct fbcon_display is unused. Remove it.
 
-/SUNW,ffb@1e,0: FFB at 000001fc00000000, type 11, DAC pnum[236c] rev[10] manuf_rev[4]
-X (II) /dev/fb0: Detected FFB1, Z-buffer, Single-buffered.
-X (II) /dev/fb0: BT9068 (PAC1) ramdac detected (with normal cursor control)
-X (II) /dev/fb0: Detected Creator/Creator3D
-
-[1] https://www.instagram.com/p/DUTcSmSjSem/
-[2] https://chaos.social/@ReneRebe/116023241660154102
-
-Signed-off-by: René Rebe <rene@exactco.de>
-Cc: stable@kernel.org
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: <stable@vger.kernel.org> # v6.0+
 Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/ffb.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/ffb.c b/drivers/video/fbdev/ffb.c
-index 34b6abff9493e..da531b4cb4513 100644
---- a/drivers/video/fbdev/ffb.c
-+++ b/drivers/video/fbdev/ffb.c
-@@ -335,6 +335,9 @@ struct ffb_dac {
- };
- 
- #define FFB_DAC_UCTRL		0x1001 /* User Control */
-+#define FFB_DAC_UCTRL_OVENAB	0x00000008 /* Overlay Enable */
-+#define FFB_DAC_UCTRL_WMODE	0x00000030 /* Window Mode */
-+#define FFB_DAC_UCTRL_WM_COMB	0x00000000 /* Window Mode = Combined */
- #define FFB_DAC_UCTRL_MANREV	0x00000f00 /* 4-bit Manufacturing Revision */
- #define FFB_DAC_UCTRL_MANREV_SHIFT 8
- #define FFB_DAC_TGEN		0x6000 /* Timing Generator */
-@@ -425,7 +428,7 @@ static void ffb_switch_from_graph(struct ffb_par *par)
- {
- 	struct ffb_fbc __iomem *fbc = par->fbc;
- 	struct ffb_dac __iomem *dac = par->dac;
--	unsigned long flags;
-+	unsigned long flags, uctrl;
- 
- 	spin_lock_irqsave(&par->lock, flags);
- 	FFBWait(par);
-@@ -450,6 +453,15 @@ static void ffb_switch_from_graph(struct ffb_par *par)
- 		upa_writel((FFB_DAC_CUR_CTRL_P0 |
- 			    FFB_DAC_CUR_CTRL_P1), &dac->value2);
- 
-+	/* Disable overlay and window modes. */
-+	upa_writel(FFB_DAC_UCTRL, &dac->type);
-+	uctrl = upa_readl(&dac->value);
-+	uctrl &= ~FFB_DAC_UCTRL_WMODE;
-+	uctrl |= FFB_DAC_UCTRL_WM_COMB;
-+	uctrl &= ~FFB_DAC_UCTRL_OVENAB;
-+	upa_writel(FFB_DAC_UCTRL, &dac->type);
-+	upa_writel(uctrl, &dac->value);
-+
- 	spin_unlock_irqrestore(&par->lock, flags);
- }
- 
+diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
+index 44ea4ae4bba0d..9cabafd2d91ca 100644
+--- a/drivers/video/fbdev/core/fbcon.h
++++ b/drivers/video/fbdev/core/fbcon.h
+@@ -30,7 +30,6 @@ struct fbcon_display {
+ #ifdef CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION
+     u_short scrollmode;             /* Scroll Method, use fb_scrollmode() */
+ #endif
+-    u_short inverse;                /* != 0 text black on white as default */
+     short yscroll;                  /* Hardware scrolling */
+     int vrows;                      /* number of virtual rows */
+     int cursor_shape;
 -- 
 2.51.0
 
