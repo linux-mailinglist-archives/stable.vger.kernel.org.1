@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-220603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220604-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AOQDV87o2nO+gQAu9opvQ
-	(envelope-from <stable+bounces-220603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:00:47 +0100
+	id uH6cCSBAo2kR+wQAu9opvQ
+	(envelope-from <stable+bounces-220604-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:21:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16921C6826
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:00:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A1B1C6DF6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4882930A8B6E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:53:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE8543132DFE
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7EB3E3151;
-	Sat, 28 Feb 2026 17:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286CF3E3169;
+	Sat, 28 Feb 2026 17:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqsktQ9C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSHPldJX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EB23E3147;
-	Sat, 28 Feb 2026 17:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4CE3E3162;
+	Sat, 28 Feb 2026 17:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300487; cv=none; b=fTxY2JVJm9pWEvuLbsQTmDRLwnqjsB3YzZ0F9tv5o1B6g9+gMu+TOaWmQmAZ0kruAn2P61AnI8h2mLnQisvQgh06F1/gABW4ng2tygRsZ4TvhzkGPjf4XD2zQRGsaxH8hH8K+FJsO+HkkK7AB+or4wqTjvRBmH1L0jGpHa279s4=
+	t=1772300487; cv=none; b=mIT58pdbp9SBJHKLt9Y/MnLVHZQknRvlN7Hwc/xCo7AA1/gXdZONZzGCkKZGgj4B7IPxs3JyH31Ob0yHF5k/lQ2J28qI3GzoEwxQb0uVCSERTg1I0+tBMwXtVkX6aRpDNclfr/2bKTNcbXm1ezEitgKHFYcX6LNn+BVs1+9R60I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300487; c=relaxed/simple;
-	bh=kV156b6234C9zhtVhVOBCETWGG2U4H/YWhUB6BkccCU=;
+	bh=rSrXcnCrRrby3HXDaclTuPm6p5hszZnn4GCrBaiQyfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cIWpOkwpniCnipEjzsFVierebwlcMIlF4dkz/6kY8XkBm7SMOcsD0jCiGQqUG21nmZbi5IF7NXSQRn9krW4VNRdrVYgU65DKU4Pg4xYcuQblQxA27NkT9YcuhwZgd8uLeFELcJJ47wdizqQql0WPI7GnJFJzoDZMH0HG8byzLL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqsktQ9C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FAEC19425;
-	Sat, 28 Feb 2026 17:41:25 +0000 (UTC)
+	 MIME-Version; b=c7Wf9S8P0RpOQ09ZK9I7ZGCgxQ42HREwZ4Ql5Db1d4zlL/8kQ5i3TdE5lg54LmiNL+B//Rd1nYr+qrf9/3R2V6vsj155i9gSQ7JAScPrvKRJSSyUsWXElF6YoZzGDFUoxgrcdTZ7/zixZYP+w6dQVCGp4dhaUqKTkfOA5Xy7XXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSHPldJX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C54DC19424;
+	Sat, 28 Feb 2026 17:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300486;
-	bh=kV156b6234C9zhtVhVOBCETWGG2U4H/YWhUB6BkccCU=;
+	s=k20201202; t=1772300487;
+	bh=rSrXcnCrRrby3HXDaclTuPm6p5hszZnn4GCrBaiQyfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqsktQ9Cl5gJovgzqZepZ+Reigv0SepyEWsc1kZnrLXvZQWUab0ZgDXUKzkuyupSF
-	 pSC5PrwGA1LDAgycvzn0vyXBdLcK7sTdscKBO3Md8BuOwEdMqGQJIUZhWWXe6KnE3a
-	 ROrKVWGDAInhU0Un33oJ2r5Sj/xiVib6yVd0bIzXyNi4NLGDul9Oza92SAypgv+weM
-	 9cuApeEWrlrSm6F/5WY1Ijg9/ojEZPVaWW38nrKw6A5penhCsN5Yqjedn/+Up3wyYs
-	 Gnx2PwxHp4oHEL0LVUJATGCShYq2+YO6gZoupr646uICiFtADTcOzUhBFVCsY7g3Rd
-	 Du3aRbB583brg==
+	b=GSHPldJX1qs4q2w5Tob+P8PshLSEQtL7oC+/TTuMcXYdjdOP2ubs1/UQVcoaqX34m
+	 mYFxJ1GNsJKu4YQFKLd8fUtTUqJoNZLeYrutAJzEs1B2LtHHuGxm4KN0kElOzQkY2m
+	 YcGSuVIKJ/Ia9XtC41JsJUtxBcLtILLrXz/3ZF7ucw8Tw3OUK5NfZ95n0IYwx1ULNR
+	 wHRslkXnjVAoQikNPAYDNoGljengKnEt0bDOmOTWVvRzxGVrhD+vpgq88Ekdm4xOHR
+	 2/82wjQ/AdFxbYh3PbiBu0FjWhhe78Yqe30vPe+JnlOxtKYrQHKexH91xUZeFhut6n
+	 og4CmYIIIDwaw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+Cc: Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 524/844] drm/xe: Fix ggtt fb alignment
-Date: Sat, 28 Feb 2026 12:27:17 -0500
-Message-ID: <20260228173244.1509663-525-sashal@kernel.org>
+Subject: [PATCH 6.19 525/844] Revert "PCI: dw-rockchip: Don't wait for link since we can detect Link Up"
+Date: Sat, 28 Feb 2026 12:27:18 -0500
+Message-ID: <20260228173244.1509663-526-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -64,76 +63,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[igalia.com,linux.intel.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220603-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220604-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,msgid.link:url,igalia.com:email]
-X-Rspamd-Queue-Id: D16921C6826
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: B6A1B1C6DF6
 X-Rspamd-Action: no action
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit a61bf068f1fe359203f1af191cb523b77dc32752 ]
+[ Upstream commit fc6298086bfacaa7003b0bd1da4e4f42b29f7d77 ]
 
-Pass the correct alignment from intel_fb_pin_to_ggtt() down to
-__xe_pin_fb_vma().
+This reverts commit ec9fd499b9c60a187ac8d6414c3c343c77d32e42.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Closes: https://lore.kernel.org/intel-xe/aNL_RgLy13fXJbYx@intel.com/
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Fixes: b0228a337de8 ("drm/xe/display: align framebuffers according to hw requirements")
-Cc: <stable@vger.kernel.org> # v6.13+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patch.msgid.link/20251208181550.6618-1-tursulin@igalia.com
+While this fake hotplugging was a nice idea, it has shown that this feature
+does not handle PCIe switches correctly:
+pci_bus 0004:43: busn_res: can not insert [bus 43-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:43: busn_res: [bus 43-41] end is updated to 43
+pci_bus 0004:43: busn_res: can not insert [bus 43] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:00.0: devices behind bridge are unusable because [bus 43] cannot be assigned for them
+pci_bus 0004:44: busn_res: can not insert [bus 44-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:44: busn_res: [bus 44-41] end is updated to 44
+pci_bus 0004:44: busn_res: can not insert [bus 44] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:02.0: devices behind bridge are unusable because [bus 44] cannot be assigned for them
+pci_bus 0004:45: busn_res: can not insert [bus 45-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:45: busn_res: [bus 45-41] end is updated to 45
+pci_bus 0004:45: busn_res: can not insert [bus 45] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:06.0: devices behind bridge are unusable because [bus 45] cannot be assigned for them
+pci_bus 0004:46: busn_res: can not insert [bus 46-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:46: busn_res: [bus 46-41] end is updated to 46
+pci_bus 0004:46: busn_res: can not insert [bus 46] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:0e.0: devices behind bridge are unusable because [bus 46] cannot be assigned for them
+pci_bus 0004:42: busn_res: [bus 42-41] end is updated to 46
+pci_bus 0004:42: busn_res: can not insert [bus 42-46] under [bus 41] (conflicts with (null) [bus 41])
+pci 0004:41:00.0: devices behind bridge are unusable because [bus 42-46] cannot be assigned for them
+pcieport 0004:40:00.0: bridge has subordinate 41 but max busn 46
+
+During the initial scan, PCI core doesn't see the switch and since the Root
+Port is not hot plug capable, the secondary bus number gets assigned as the
+subordinate bus number. This means, the PCI core assumes that only one bus
+will appear behind the Root Port since the Root Port is not hot plug
+capable.
+
+This works perfectly fine for PCIe endpoints connected to the Root Port,
+since they don't extend the bus. However, if a PCIe switch is connected,
+then there is a problem when the downstream busses starts showing up and
+the PCI core doesn't extend the subordinate bus number and bridge resources
+after initial scan during boot.
+
+The long term plan is to migrate this driver to the upcoming pwrctrl APIs
+that are supposed to handle this problem elegantly.
+
+Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Tested-by: Shawn Lin <shawn.lin@rock-chips.com>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251222064207.3246632-9-cassel@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/display/xe_fb_pin.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_fb_pin.c b/drivers/gpu/drm/xe/display/xe_fb_pin.c
-index 1fd4a815e784b..b18d15cc3c53d 100644
---- a/drivers/gpu/drm/xe/display/xe_fb_pin.c
-+++ b/drivers/gpu/drm/xe/display/xe_fb_pin.c
-@@ -378,7 +378,7 @@ intel_fb_pin_to_ggtt(const struct drm_framebuffer *fb,
- {
- 	*out_flags = 0;
+diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+index a3daac74d3f18..59396db3f4812 100644
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -588,7 +588,6 @@ static int rockchip_pcie_configure_rc(struct platform_device *pdev,
  
--	return __xe_pin_fb_vma(to_intel_framebuffer(fb), view, phys_alignment);
-+	return __xe_pin_fb_vma(to_intel_framebuffer(fb), view, alignment);
- }
+ 	pp = &rockchip->pci.pp;
+ 	pp->ops = &rockchip_pcie_host_ops;
+-	pp->use_linkup_irq = true;
  
- void intel_fb_unpin_vma(struct i915_vma *vma, unsigned long flags)
+ 	ret = dw_pcie_host_init(pp);
+ 	if (ret) {
 -- 
 2.51.0
 
