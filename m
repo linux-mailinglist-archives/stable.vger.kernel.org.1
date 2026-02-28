@@ -1,59 +1,82 @@
-Return-Path: <stable+bounces-220839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gATrEoNGo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:48:19 +0100
+	id cA4nGVRZo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:08:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5DD1C75F7
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:48:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D36C61C8CDE
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 673363085EDD
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1AEDD31E8AD4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913D04170DD;
-	Sat, 28 Feb 2026 17:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749E64182CC;
+	Sat, 28 Feb 2026 17:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5aD8a2c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pK0qNJUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BCC41791F;
-	Sat, 28 Feb 2026 17:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3641F4182C9;
+	Sat, 28 Feb 2026 17:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300724; cv=none; b=CgP9hgAThVpFQlgHqbWRg/L0QFPhrlulKYZPfIwxmICwX1EJPieyXgoyfPO2Ifxp+LyDlxmafcN2ZcRdPqHYvd/L/XSUgm7PgkybJuV4ReYYNiDPQlE3YG6+Bw2It6tPo3VpfNTYxEwL4FgOaq32UinK3ObsTDzXIYgU63kj1Co=
+	t=1772300727; cv=none; b=c/A53rixDOMWL63mRzy/3kkoRrOsV569zQWSPNaGO46nAlJ4FYYxxiFg7zvrv0TArZ0vDfWDy60KOw/9u1IaY/T47yn7V60dI1XJN7EDSJPveCxPxj7emYq2uH9aTcEj7Y7iXgdn3VXCKHeJx6HSWtnqPb3fJMKeq+VdWqSMj7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300724; c=relaxed/simple;
-	bh=qoKGMMA8c2XybmlNisuifTOpQXuhT19rXE7/Qukienc=;
+	s=arc-20240116; t=1772300727; c=relaxed/simple;
+	bh=YtJ83uoawKQ7DjuY7+NET7ElXZ6UcnKZpJ0Fl0lpTgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqQy9Q9H7UhKFA8XU7aye912qes7hVJ6KybVCho2KFMpRU+626EeThli/CjngkXBn3wmx6UHPfSsRXT7PxpKBE8Lo9HX65wIysZTUCAQvKXNEo+wd74TJlFvR+X/xFrxV8F9/1/1gNBgbbEBlWo6ghUQqUPJNoAYshLyoLdMuJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5aD8a2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D95C116D0;
-	Sat, 28 Feb 2026 17:45:23 +0000 (UTC)
+	 MIME-Version; b=nj84dw/LQmKo84+qHFRmUQv0VU6CFrcaaeuukEQ9zXpJUJ2A0RBHDKomnj5AsxZxm1VC+aciGzOo8bHx1TFp+zpOcRfggvD1V2H5zBs2CaqcwjTIAxinwSVKy3agG9peyEoHoG9QMZ3SVdzGze2nwjTcPmqwRsai7vi7cuLLt98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pK0qNJUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5602EC19425;
+	Sat, 28 Feb 2026 17:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300724;
-	bh=qoKGMMA8c2XybmlNisuifTOpQXuhT19rXE7/Qukienc=;
+	s=k20201202; t=1772300727;
+	bh=YtJ83uoawKQ7DjuY7+NET7ElXZ6UcnKZpJ0Fl0lpTgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e5aD8a2c3MfdrB2AdnWXGys4z2b0NG6xOY7BtP6FzsBu7sAJkMDl7+3/wdl1crnOc
-	 2kbLjOALTqsWiFLhkHFHiRTcr33NdQ21o0I7/Hwtb/CKeEMH18esLsfv1LQMLDv5KL
-	 /5cI/oW7P940ma8pIEqO0tOKBcv190B9+he/b3Jogeu5G4HX2jUSawzPFwnvTT8cbR
-	 Xk/ciM8Imv8EIpmkdYs2/LIo/OC+J1IzF0MlKjeVH+Dc04b4dxFz8Q+l4SsPwzOIer
-	 YPCIdQwG4jPK2/YPkR8tQo+w6k0PzlB5sAV52Gq3/b3NMqT3w8syasAy4OfgPnZDqj
-	 PFNbW/h3plKEQ==
+	b=pK0qNJUtoLRuqqtCVANEh+WairZI9/UxW6Tzb2i0VJADicOwAm3luX8C7xBrS/EEK
+	 TaY2U04WIZdGtUcHIwfUCwmd/AFL1eMssD6U7sLNmqpPlnQqBllZ9tHQ1G7nYO+oF1
+	 7MOijnD9gZIkl8lIgcaTIGvCFMzfRYzPHJMLpk9nOX2j+i1pDP+uvBxF+2wIJW0bUU
+	 gq5rMVbBzWb8tg0e2hQk5+MAWu98n/cFpEfcu26LXQFbSmYIYof4YubFFfFIxaMdUj
+	 RD1PCGqyWfvVaSqKq/6KkQ+AffPY8MjQ3uZiWWTlbSyw8gJIhEiHiPd5cOuM37nJ9L
+	 h/+DKkeUSZOGQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gui-Dong Han <hanguidong02@gmail.com>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	Guenter Roeck <linux@roeck-us.net>,
+Cc: Alan Maguire <alan.maguire@oracle.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Marco Elver <elver@google.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+	Bart van Assche <bvanassche@acm.org>,
+	Daniel Borkman <daniel@iogearbox.net>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Hao Luo <haoluo@google.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Jason A. Donenfeld" <jason@zx2c4.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	KP Singh <kpsingh@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Naman Jain <namjain@linux.microsoft.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 760/844] hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler optimization induced race
-Date: Sat, 28 Feb 2026 12:31:13 -0500
-Message-ID: <20260228173244.1509663-761-sashal@kernel.org>
+Subject: [PATCH 6.19 761/844] kcsan, compiler_types: avoid duplicate type issues in BPF Type Format
+Date: Sat, 28 Feb 2026 12:31:14 -0500
+Message-ID: <20260228173244.1509663-762-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,134 +90,147 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,decadent.org.uk,roeck-us.net,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220839-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[oracle.com,linux.ibm.com,google.com,linux.dev,kernel.org,gmail.com,acm.org,iogearbox.net,zytor.com,zx2c4.com,linux.microsoft.com,infradead.org,fomichev.me,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	TAGGED_FROM(0.00)[bounces-220840-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,decadent.org.uk:email]
-X-Rspamd-Queue-Id: CC5DD1C75F7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D36C61C8CDE
 X-Rspamd-Action: no action
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-[ Upstream commit 007be4327e443d79c9dd9e56dc16c36f6395d208 ]
+[ Upstream commit 9dc052234da736f7749f19ab6936342ec7dbe3ac ]
 
-Simply copying shared data to a local variable cannot prevent data
-races. The compiler is allowed to optimize away the local copy and
-re-read the shared memory, causing a Time-of-Check Time-of-Use (TOCTOU)
-issue if the data changes between the check and the usage.
+Enabling KCSAN is causing a large number of duplicate types in BTF for
+core kernel structs like task_struct [1].  This is due to the definition
+in include/linux/compiler_types.h
 
-To enforce the use of the local variable, use READ_ONCE() when reading
-the shared data and WRITE_ONCE() when updating it. Apply these macros to
-the three identified locations (curr_sense, adc, and fault) where local
-variables are used for error validation, ensuring the value remains
-consistent.
+`#ifdef __SANITIZE_THREAD__
+...
+`#define __data_racy volatile
+..
+`#else
+...
+`#define __data_racy
+...
+`#endif
 
-Reported-by: Ben Hutchings <ben@decadent.org.uk>
-Closes: https://lore.kernel.org/all/6fe17868327207e8b850cf9f88b7dc58b2021f73.camel@decadent.org.uk/
-Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
-Fixes: b8d5acdcf525 ("hwmon: (max16065) Use local variable to avoid TOCTOU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://lore.kernel.org/r/20260203121443.5482-1-hanguidong02@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Because some objects in the kernel are compiled without KCSAN flags
+(KCSAN_SANITIZE) we sometimes get the empty __data_racy annotation for
+objects; as a result we get multiple conflicting representations of the
+associated structs in DWARF, and these lead to multiple instances of core
+kernel types in BTF since they cannot be deduplicated due to the
+additional modifier in some instances.
+
+Moving the __data_racy definition under CONFIG_KCSAN avoids this problem,
+since the volatile modifier will be present for both KCSAN and
+KCSAN_SANITIZE objects in a CONFIG_KCSAN=y kernel.
+
+Link: https://lkml.kernel.org/r/20260116091730.324322-1-alan.maguire@oracle.com
+Fixes: 31f605a308e6 ("kcsan, compiler_types: Introduce __data_racy type qualifier")
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Reported-by: Nilay Shroff <nilay@linux.ibm.com>
+Tested-by: Nilay Shroff <nilay@linux.ibm.com>
+Suggested-by: Marco Elver <elver@google.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: Bart van Assche <bvanassche@acm.org>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Cc: Hao Luo <haoluo@google.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Jason A. Donenfeld <jason@zx2c4.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Naman Jain <namjain@linux.microsoft.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: "Paul E . McKenney" <paulmck@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max16065.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ include/linux/compiler_types.h | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
-index 4c9e7892a73c1..43fbb9b26b102 100644
---- a/drivers/hwmon/max16065.c
-+++ b/drivers/hwmon/max16065.c
-@@ -151,27 +151,27 @@ static struct max16065_data *max16065_update_device(struct device *dev)
- 		int i;
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index d3318a3c25777..86111a189a874 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -303,6 +303,22 @@ struct ftrace_likely_data {
+ # define __no_kasan_or_inline __always_inline
+ #endif
  
- 		for (i = 0; i < data->num_adc; i++)
--			data->adc[i]
--			  = max16065_read_adc(client, MAX16065_ADC(i));
-+			WRITE_ONCE(data->adc[i],
-+				   max16065_read_adc(client, MAX16065_ADC(i)));
++#ifdef CONFIG_KCSAN
++/*
++ * Type qualifier to mark variables where all data-racy accesses should be
++ * ignored by KCSAN. Note, the implementation simply marks these variables as
++ * volatile, since KCSAN will treat such accesses as "marked".
++ *
++ * Defined here because defining __data_racy as volatile for KCSAN objects only
++ * causes problems in BPF Type Format (BTF) generation since struct members
++ * of core kernel data structs will be volatile in some objects and not in
++ * others.  Instead define it globally for KCSAN kernels.
++ */
++# define __data_racy volatile
++#else
++# define __data_racy
++#endif
++
+ #ifdef __SANITIZE_THREAD__
+ /*
+  * Clang still emits instrumentation for __tsan_func_{entry,exit}() and builtin
+@@ -314,16 +330,9 @@ struct ftrace_likely_data {
+  * disable all instrumentation. See Kconfig.kcsan where this is mandatory.
+  */
+ # define __no_kcsan __no_sanitize_thread __disable_sanitizer_instrumentation
+-/*
+- * Type qualifier to mark variables where all data-racy accesses should be
+- * ignored by KCSAN. Note, the implementation simply marks these variables as
+- * volatile, since KCSAN will treat such accesses as "marked".
+- */
+-# define __data_racy volatile
+ # define __no_sanitize_or_inline __no_kcsan notrace __maybe_unused
+ #else
+ # define __no_kcsan
+-# define __data_racy
+ #endif
  
- 		if (data->have_current) {
--			data->adc[MAX16065_NUM_ADC]
--			  = max16065_read_adc(client, MAX16065_CSP_ADC);
--			data->curr_sense
--			  = i2c_smbus_read_byte_data(client,
--						     MAX16065_CURR_SENSE);
-+			WRITE_ONCE(data->adc[MAX16065_NUM_ADC],
-+				   max16065_read_adc(client, MAX16065_CSP_ADC));
-+			WRITE_ONCE(data->curr_sense,
-+				   i2c_smbus_read_byte_data(client, MAX16065_CURR_SENSE));
- 		}
- 
- 		for (i = 0; i < 2; i++)
--			data->fault[i]
--			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
-+			WRITE_ONCE(data->fault[i],
-+				   i2c_smbus_read_byte_data(client, MAX16065_FAULT(i)));
- 
- 		/*
- 		 * MAX16067 and MAX16068 have separate undervoltage and
- 		 * overvoltage alarm bits. Squash them together.
- 		 */
- 		if (data->chip == max16067 || data->chip == max16068)
--			data->fault[0] |= data->fault[1];
-+			WRITE_ONCE(data->fault[0],
-+				   data->fault[0] | data->fault[1]);
- 
- 		data->last_updated = jiffies;
- 		data->valid = true;
-@@ -185,7 +185,7 @@ static ssize_t max16065_alarm_show(struct device *dev,
- {
- 	struct sensor_device_attribute_2 *attr2 = to_sensor_dev_attr_2(da);
- 	struct max16065_data *data = max16065_update_device(dev);
--	int val = data->fault[attr2->nr];
-+	int val = READ_ONCE(data->fault[attr2->nr]);
- 
- 	if (val < 0)
- 		return val;
-@@ -203,7 +203,7 @@ static ssize_t max16065_input_show(struct device *dev,
- {
- 	struct sensor_device_attribute *attr = to_sensor_dev_attr(da);
- 	struct max16065_data *data = max16065_update_device(dev);
--	int adc = data->adc[attr->index];
-+	int adc = READ_ONCE(data->adc[attr->index]);
- 
- 	if (unlikely(adc < 0))
- 		return adc;
-@@ -216,7 +216,7 @@ static ssize_t max16065_current_show(struct device *dev,
- 				     struct device_attribute *da, char *buf)
- {
- 	struct max16065_data *data = max16065_update_device(dev);
--	int curr_sense = data->curr_sense;
-+	int curr_sense = READ_ONCE(data->curr_sense);
- 
- 	if (unlikely(curr_sense < 0))
- 		return curr_sense;
+ #ifdef __SANITIZE_MEMORY__
 -- 
 2.51.0
 
