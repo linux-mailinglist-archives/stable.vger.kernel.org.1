@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-220803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CkDNqhEo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:40:24 +0100
+	id eIjkKQxFo2kB/AQAu9opvQ
+	(envelope-from <stable+bounces-220804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:42:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684B41C73BF
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:40:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A971C745E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:42:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C437430F072D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:25:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A80C3193FC7
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F247740F382;
-	Sat, 28 Feb 2026 17:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D71340F39C;
+	Sat, 28 Feb 2026 17:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sHAYEnJe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GYkWXTcv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E3740F37A;
-	Sat, 28 Feb 2026 17:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B0540F397;
+	Sat, 28 Feb 2026 17:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300688; cv=none; b=T3gVOGK1EtoyVMFXoSkkyOtPbap5k4b3oIpRr9jZa5l7A5VhVmL6jBJDvZoUehgcF+13GtpsKSRLEzRyiIhYGWd05jP7w2iaeBQEi+HvefpAT4cIpUFbhuxuw7OG6aGXBXbdtbKNoPajs6lQKGrm75Wm59SfCwS90tr/K89zUsc=
+	t=1772300689; cv=none; b=O9x3N4aF7C+Ev+R0vyy6BNQV3n4h5Ql+zi+1DGUSKswgZOi0p9R5FoUKJwp76H4gKS+NXbCK5l/BuLVYVH0G6jC3f0T2IfZxd1SlVZrW9NIWXmqexXbp+T641eEZB8eHcgnYdoinBUN0BxX9ynYOPivmN5t4l/qSnk26U8AoPV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300688; c=relaxed/simple;
-	bh=ujKkFQFpaopOnq3N33y07y7T0GQ1Edd0brGyWkvGKrk=;
+	s=arc-20240116; t=1772300689; c=relaxed/simple;
+	bh=WZFSXAUJDe6g1AzSqwFAPL0xXDLsa7xxrDe5oto/pqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lb/WkGVu5CdYMb4ZVBjenwsbjTZvRXgFjHswVZjvufpqg9kIxHm1kuE7uHuGazjkPPCho61BVr7Izgf3EkrRGCn2xcfJJxiyNSFgpc8jh0DwzgqSP4t8KgNpfFnkV2Mej2RwwEf5vWcK5zYY9fvujK164wTUOEBEfwrViu6jZ5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sHAYEnJe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62AEC116D0;
-	Sat, 28 Feb 2026 17:44:47 +0000 (UTC)
+	 MIME-Version; b=jmOz1C0qGhE9wrg3U+xv2kDj+LEwEawM/o7dUi8MMT6RwuhEUqJBRXGtE+BWacw8ZvkFLW7fYqsDJo7lqT8pNAnsWr5tXteLsn5zp/uhsQnvNpuibuXufOHm15lI/9XIG/e3ZYjtxZX0WZq2EDdFpqQrg3oiiXK3t/35QpUZ/bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GYkWXTcv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE23CC19424;
+	Sat, 28 Feb 2026 17:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300688;
-	bh=ujKkFQFpaopOnq3N33y07y7T0GQ1Edd0brGyWkvGKrk=;
+	s=k20201202; t=1772300689;
+	bh=WZFSXAUJDe6g1AzSqwFAPL0xXDLsa7xxrDe5oto/pqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHAYEnJeWYyWTpA3qcMsrDJU0yU6RnmkW7E+h/YwXO8XR6fCqQVuYJfBli0pJwCMR
-	 kRaTUjy1GpUQWUiwA64Sd+64ExgScYk1tvLt9n0sjipbY/djPIeJw25aaDMOHvrloB
-	 3UNtX4gMZg/4uAJyW1hVDnVIWAtI4xnBki3+hYOb08Pit9yfbkFs+HAm+nkcFu8L4L
-	 7IdY/hYzOhv71iQvKkAncMsKCbqeeyyosYfuUlrzKT8Ccptdt9OgTjgeXK1b5ndpbs
-	 dyONSsYtOplrbe4u6laKoqP1XXXKQ3+yFKCg/txwjRW1N07WIimepk8gmTdVaIZpF2
-	 PyuQV6oqYvEFQ==
+	b=GYkWXTcvcL7vNeRpn01rw/bi59L2w+F57MQTm5r5lGCeNAOHwSo2S83qvkSDqD65M
+	 SEXLbu3MsBxVxuGd424V4PPoM2GkSS4sSVmLfsK9musnDGKAn2hHzsGZme01G2MfGS
+	 2rcSGzs0SaUORnXPBBgJDmAqAj2u6UZjpCzb+6G08zpLv77X7dSMTJ8qmFva+lj0e0
+	 qoRnZFZaAg4FrXvU1qz2PTXqkcfvNgESjTf6hA15PUMhU5t1ldijTuv1WPfCQd4vZc
+	 GvJt+1/SPplLfN0CTyO6zebHkdExDZ05C0RnLD1FSd1mrtKULDYhO2eEqLEEnaltzK
+	 933h9JPvE4W/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,9 +52,9 @@ Cc: Niklas Schnelle <schnelle@linux.ibm.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Gerd Bayer <gbayer@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 724/844] Revert "PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV"
-Date: Sat, 28 Feb 2026 12:30:37 -0500
-Message-ID: <20260228173244.1509663-725-sashal@kernel.org>
+Subject: [PATCH 6.19 725/844] PCI/IOV: Fix race between SR-IOV enable/disable and hotplug
+Date: Sat, 28 Feb 2026 12:30:38 -0500
+Message-ID: <20260228173244.1509663-726-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -73,13 +73,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220803-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220804-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -93,103 +93,68 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 684B41C73BF
+X-Rspamd-Queue-Id: 55A971C745E
 X-Rspamd-Action: no action
 
 From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 2fa119c0e5e528453ebae9e70740e8d2d8c0ed5a ]
+[ Upstream commit a5338e365c4559d7b4d7356116b0eb95b12e08d5 ]
 
-This reverts commit 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking
-when enabling/disabling SR-IOV"), which causes a deadlock by recursively
-taking pci_rescan_remove_lock when sriov_del_vfs() is called as part of
-pci_stop_and_remove_bus_device(). For example with the following sequence
-of commands:
+Commit 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking when
+enabling/disabling SR-IOV") tried to fix a race between the VF removal
+inside sriov_del_vfs() and concurrent hot unplug by taking the PCI
+rescan/remove lock in sriov_del_vfs(). Similarly the PCI rescan/remove lock
+was also taken in sriov_add_vfs() to protect addition of VFs.
 
-  $ echo <NUM> > /sys/bus/pci/devices/<pf>/sriov_numvfs
-  $ echo 1 > /sys/bus/pci/devices/<pf>/remove
+This approach however causes deadlock on trying to remove PFs with SR-IOV
+enabled because PFs disable SR-IOV during removal and this removal happens
+under the PCI rescan/remove lock. So the original fix had to be reverted.
 
-A trimmed trace of the deadlock on a mlx5 device is as below:
-
-  zsh/5715 is trying to acquire lock:
-  000002597926ef50 (pci_rescan_remove_lock){+.+.}-{3:3}, at: sriov_disable+0x34/0x140
-
-  but task is already holding lock:
-  000002597926ef50 (pci_rescan_remove_lock){+.+.}-{3:3}, at: pci_stop_and_remove_bus_device_locked+0x24/0x80
-  ...
-  Call Trace:
-   [<00000259778c4f90>] dump_stack_lvl+0xc0/0x110
-   [<00000259779c844e>] print_deadlock_bug+0x31e/0x330
-   [<00000259779c1908>] __lock_acquire+0x16c8/0x32f0
-   [<00000259779bffac>] lock_acquire+0x14c/0x350
-   [<00000259789643a6>] __mutex_lock_common+0xe6/0x1520
-   [<000002597896413c>] mutex_lock_nested+0x3c/0x50
-   [<00000259784a07e4>] sriov_disable+0x34/0x140
-   [<00000258f7d6dd80>] mlx5_sriov_disable+0x50/0x80 [mlx5_core]
-   [<00000258f7d5745e>] remove_one+0x5e/0xf0 [mlx5_core]
-   [<00000259784857fc>] pci_device_remove+0x3c/0xa0
-   [<000002597851012e>] device_release_driver_internal+0x18e/0x280
-   [<000002597847ae22>] pci_stop_bus_device+0x82/0xa0
-   [<000002597847afce>] pci_stop_and_remove_bus_device_locked+0x5e/0x80
-   [<00000259784972c2>] remove_store+0x72/0x90
-   [<0000025977e6661a>] kernfs_fop_write_iter+0x15a/0x200
-   [<0000025977d7241c>] vfs_write+0x24c/0x300
-   [<0000025977d72696>] ksys_write+0x86/0x110
-   [<000002597895b61c>] __do_syscall+0x14c/0x400
-   [<000002597896e0ee>] system_call+0x6e/0x90
-
-This alone is not a complete fix as it restores the issue the cited commit
-tried to solve. A new fix will be provided as a follow on.
+Instead of taking the PCI rescan/remove lock in sriov_add_vfs() and
+sriov_del_vfs(), fix the race that occurs with SR-IOV enable and disable vs
+hotplug higher up in the callchain by taking the lock in
+sriov_numvfs_store() before calling into the driver's sriov_configure()
+callback.
 
 Fixes: 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV")
 Reported-by: Benjamin Block <bblock@linux.ibm.com>
 Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Acked-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251216-revert_sriov_lock-v3-1-dac4925a7621@linux.ibm.com
+Link: https://patch.msgid.link/20251216-revert_sriov_lock-v3-2-dac4925a7621@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/iov.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/pci/iov.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
-index 00784a60ba80b..7de5b18647beb 100644
+index 7de5b18647beb..4a659c34935e1 100644
 --- a/drivers/pci/iov.c
 +++ b/drivers/pci/iov.c
-@@ -629,18 +629,15 @@ static int sriov_add_vfs(struct pci_dev *dev, u16 num_vfs)
- 	if (dev->no_vf_scan)
- 		return 0;
+@@ -495,7 +495,9 @@ static ssize_t sriov_numvfs_store(struct device *dev,
  
--	pci_lock_rescan_remove();
- 	for (i = 0; i < num_vfs; i++) {
- 		rc = pci_iov_add_virtfn(dev, i);
- 		if (rc)
- 			goto failed;
+ 	if (num_vfs == 0) {
+ 		/* disable VFs */
++		pci_lock_rescan_remove();
+ 		ret = pdev->driver->sriov_configure(pdev, 0);
++		pci_unlock_rescan_remove();
+ 		goto exit;
  	}
--	pci_unlock_rescan_remove();
- 	return 0;
- failed:
- 	while (i--)
- 		pci_iov_remove_virtfn(dev, i);
--	pci_unlock_rescan_remove();
  
- 	return rc;
- }
-@@ -765,10 +762,8 @@ static void sriov_del_vfs(struct pci_dev *dev)
- 	struct pci_sriov *iov = dev->sriov;
- 	int i;
+@@ -507,7 +509,9 @@ static ssize_t sriov_numvfs_store(struct device *dev,
+ 		goto exit;
+ 	}
  
--	pci_lock_rescan_remove();
- 	for (i = 0; i < iov->num_VFs; i++)
- 		pci_iov_remove_virtfn(dev, i);
--	pci_unlock_rescan_remove();
- }
++	pci_lock_rescan_remove();
+ 	ret = pdev->driver->sriov_configure(pdev, num_vfs);
++	pci_unlock_rescan_remove();
+ 	if (ret < 0)
+ 		goto exit;
  
- static void sriov_disable(struct pci_dev *dev)
 -- 
 2.51.0
 
