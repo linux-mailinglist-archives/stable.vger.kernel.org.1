@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220293-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJDBFU40o2mX+QQAu9opvQ
-	(envelope-from <stable+bounces-220292-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:38 +0100
+	id qDe5DFk0o2nP+QQAu9opvQ
+	(envelope-from <stable+bounces-220293-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4E81C5E17
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A46451C5E26
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B6BA31DCE9E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:05:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C721F32A1DBF
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49D13884B8;
-	Sat, 28 Feb 2026 17:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782ED3884D0;
+	Sat, 28 Feb 2026 17:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icfm2Pxx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gFbmIxoV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8033884AE;
-	Sat, 28 Feb 2026 17:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F293884C7;
+	Sat, 28 Feb 2026 17:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300196; cv=none; b=vEe4N9guw/WRL96DloUJHwJZCG3rsYjTHvUPcnLRTEGC3FCVXymbcmWNMq2btKoB8sWCKLVDmu49aNs5CriwtV5aehMOgrCE9Y6Q4rmQ/KEOWx3X5s4WBwNy8WhrYwUKljS3F/kSbTjPhSDGR4zubcYR8w3klIxOCbPChiPsUkU=
+	t=1772300197; cv=none; b=EQDc8Pmcou+RWzYiGxzBAkEmydiPv+xKuwIR0GtHs/MRQkHokUrYUeESQRBSIsJ3b0sDgeFp2vaEmhOHrobVwVk4sBdbpZGXpQwmPxvY7DVTLy0PYce+rVcMJonQt39JLh8es5G3D0OubFTLgkAwDGXhQs0CMk+qHnwalQ2vOiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300196; c=relaxed/simple;
-	bh=+3H8IVt5HZVV5uP2/2MSq726bFeBnOx18rf5R01kdFM=;
+	s=arc-20240116; t=1772300197; c=relaxed/simple;
+	bh=ihM/50EQk5ZYXzXdh2AxqEuLIbEdjM8Y4qOk8e9bSf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXbE30End1welI0Ohqn3UJFh8YfTBXiuJFFUs8dqotXYSYlXnryHjcAnG54U9SnvMIbMEf1S7GIdZHFQ1cSaOLbYA3sC9PYTRqZCKTyNyf34ASPbhZSV8QaazxXf/GbXft7XHUpHBQ6tLyCZ73Qxwga1wjWxkFTvWsrJfkTUVu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icfm2Pxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8CEC19423;
-	Sat, 28 Feb 2026 17:36:35 +0000 (UTC)
+	 MIME-Version; b=pwW9o1/ANztsYZbYg62/KRwO4LHlaBiPx3oQuWL2E08l264Sdk40lsrz32JbIymXcqGVWccdThsaO0JjPIlyVB4AaTN3Nqpd9FTinay6wRm/YCv1CIC1Z7tY+F5FZnKU8/uN8hA7r6DKyHsTjJuX/sEE9NYY11TD7PIC3K/C5ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gFbmIxoV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B8DC19424;
+	Sat, 28 Feb 2026 17:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300196;
-	bh=+3H8IVt5HZVV5uP2/2MSq726bFeBnOx18rf5R01kdFM=;
+	s=k20201202; t=1772300197;
+	bh=ihM/50EQk5ZYXzXdh2AxqEuLIbEdjM8Y4qOk8e9bSf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=icfm2PxxE9EHdXpT0wm0GSjgySdSIUTAgO3F8z/eY7OWAtt2HQG/kATnZg08/lokQ
-	 YoCuQyIXmCodMi15dkL/aaaTRSb1i6SYsHTOfIIiHs7vmjTpG1Qe5mYftr5EQugILN
-	 Afbfb1F4gOttop3jnGH7nQl/OpkUBypfBT0Y9htlzkIDfNzPIOgxLp5DvbGQnr2WLk
-	 dS3E+F80V7I9Fk1dSIr1QGZtbgPE590EGtQq1t10hxirWX6IyFU3t+SLo9MD5LKra1
-	 +U6QaDvXcc2Ha2ImoxAm38O0tXhUaxMuLhdIsple32/fB4Cy8lTACtO+FAjntXlGPo
-	 t9uPa6efeZQ3Q==
+	b=gFbmIxoVgeAoe0xvip0i86judlWrQq7JdvgVVSLu1jw1UBT8EJCzHh2CBMBMVVgb8
+	 A94xbuvrGOzBogP5Yb5m1/dduaVFI2eLakpXtD0Qdnyv5DH1Iy5hF9vOkMEBr3ql9H
+	 Ntaa9+oXOsvyTABurM78CrDPf74At2mWDWnk+JxKrsREB8iW0CN3FnbX0By5HvbmVm
+	 sX/NI52j4BtFNuuQ62dIueTZesshkjBhJ8Wnwe/ZcabsM92VoA4wXgNq9bQjSE0Vzo
+	 4EYOnMUiNBIMpr2cMsSp5KywguJGkKCJDv0Y7bLC/7NkuNWshoUzR7vQMmWY2Im/UF
+	 82S6M8m/7oBNA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Phillips <david@profile.sh>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: gongqi <550230171hxy@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 214/844] HID: elecom: Add support for ELECOM HUGE Plus M-HT1MRBK
-Date: Sat, 28 Feb 2026 12:22:07 -0500
-Message-ID: <20260228173244.1509663-215-sashal@kernel.org>
+Subject: [PATCH 6.19 215/844] ALSA: hda/conexant: Add headset mic fix for MECHREVO Wujie 15X Pro
+Date: Sat, 28 Feb 2026 12:22:08 -0500
+Message-ID: <20260228173244.1509663-216-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,18 +69,19 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220292-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,suse.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220293-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
@@ -92,142 +93,37 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9B4E81C5E17
+X-Rspamd-Queue-Id: A46451C5E26
 X-Rspamd-Action: no action
 
-From: David Phillips <david@profile.sh>
+From: gongqi <550230171hxy@gmail.com>
 
-[ Upstream commit b8e5fdf0bd022cd5493a5987ef66f5a24f8352d8 ]
+[ Upstream commit f2581ea2d9f30844c437e348a462027ea25c12e9 ]
 
-New model in the ELECOM HUGE trackball line that has 8 buttons but the
-report descriptor specifies only 5. The HUGE Plus supports connecting via
-Bluetooth, 2.4GHz wireless USB dongle, and directly via a USB-C cable.
-Each connection type reports a different device id, 01AA for cable,
-01AB for USB dongle, and 01AC for Bluetooth.
+The headset microphone on the MECHREVO Wujie 15X Pro requires the
+CXT_FIXUP_HEADSET_MIC quirk to function properly. Add the PCI SSID
+(0x1d05:0x3012) to the quirk table.
 
-This patch adds these device IDs and applies the fixups similar to the
-other ELECOM devices to get all 8 buttons working for all 3 connection
-types.
-
-For reference, the usbhid-dump output:
-001:013:001:DESCRIPTOR         1769085639.598405
- 05 01 09 02 A1 01 85 01 09 01 A1 00 05 09 19 01
- 29 05 15 00 25 01 75 01 95 05 81 02 75 03 95 01
- 81 01 05 01 09 30 09 31 16 01 80 26 FF 7F 75 10
- 95 02 81 06 09 38 15 81 25 7F 75 08 95 01 81 06
- 05 0C 0A 38 02 15 81 25 7F 75 08 95 01 81 06 C0
- C0 05 0C 09 01 A1 01 85 02 15 01 26 8C 02 19 01
- 2A 8C 02 75 10 95 01 81 00 C0 05 01 09 80 A1 01
- 85 03 09 82 09 81 09 83 15 00 25 01 19 01 29 03
- 75 01 95 03 81 02 95 05 81 01 C0 06 01 FF 09 00
- A1 01 85 08 09 00 15 00 26 FF 00 75 08 95 07 81
- 02 C0 06 02 FF 09 02 A1 01 85 06 09 02 15 00 26
- FF 00 75 08 95 07 B1 02 C0
-
-Signed-off-by: David Phillips <david@profile.sh>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: gongqi <550230171hxy@gmail.com>
+Link: https://patch.msgid.link/20260122155501.376199-5-550230171hxy@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/Kconfig      |  1 +
- drivers/hid/hid-elecom.c | 16 ++++++++++++++++
- drivers/hid/hid-ids.h    |  3 +++
- drivers/hid/hid-quirks.c |  3 +++
- 4 files changed, 23 insertions(+)
+ sound/hda/codecs/conexant.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index 920a64b66b25b..6ff4a3ad34cbf 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -369,6 +369,7 @@ config HID_ELECOM
- 	  - EX-G Trackballs (M-XT3DRBK, M-XT3URBK)
- 	  - DEFT Trackballs (M-DT1DRBK, M-DT1URBK, M-DT2DRBK, M-DT2URBK)
- 	  - HUGE Trackballs (M-HT1DRBK, M-HT1URBK)
-+	  - HUGE Plus Trackball (M-HT1MRBK)
- 
- config HID_ELO
- 	tristate "ELO USB 4000/4500 touchscreen"
-diff --git a/drivers/hid/hid-elecom.c b/drivers/hid/hid-elecom.c
-index 2003d2dcda7cc..37d88ce57f671 100644
---- a/drivers/hid/hid-elecom.c
-+++ b/drivers/hid/hid-elecom.c
-@@ -5,6 +5,7 @@
-  *  - EX-G Trackballs (M-XT3DRBK, M-XT3URBK, M-XT4DRBK)
-  *  - DEFT Trackballs (M-DT1DRBK, M-DT1URBK, M-DT2DRBK, M-DT2URBK)
-  *  - HUGE Trackballs (M-HT1DRBK, M-HT1URBK)
-+ *  - HUGE Plus Trackball (M-HT1MRBK)
-  *
-  *  Copyright (c) 2010 Richard Nauber <Richard.Nauber@gmail.com>
-  *  Copyright (c) 2016 Yuxuan Shui <yshuiv7@gmail.com>
-@@ -123,12 +124,25 @@ static const __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		 */
- 		mouse_button_fixup(hdev, rdesc, *rsize, 22, 30, 24, 16, 8);
- 		break;
-+	case USB_DEVICE_ID_ELECOM_M_HT1MRBK:
-+	case USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AB:
-+	case USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AC:
-+		/*
-+		 * Report descriptor format:
-+		 * 24: button bit count
-+		 * 28: padding bit count
-+		 * 22: button report size
-+		 * 16: button usage maximum
-+		 */
-+		mouse_button_fixup(hdev, rdesc, *rsize, 24, 28, 22, 16, 8);
-+		break;
- 	}
- 	return rdesc;
- }
- 
- static const struct hid_device_id elecom_devices[] = {
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_BM084) },
-+	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AC) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
-@@ -142,6 +156,8 @@ static const struct hid_device_id elecom_devices[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1URBK_019B) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1DRBK_010D) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1DRBK_011C) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AB) },
- 	{ }
- };
- MODULE_DEVICE_TABLE(hid, elecom_devices);
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 6d8b64872cefe..85ab1ac511096 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -466,6 +466,9 @@
- #define USB_DEVICE_ID_ELECOM_M_HT1URBK_019B	0x019b
- #define USB_DEVICE_ID_ELECOM_M_HT1DRBK_010D	0x010d
- #define USB_DEVICE_ID_ELECOM_M_HT1DRBK_011C	0x011c
-+#define USB_DEVICE_ID_ELECOM_M_HT1MRBK	0x01aa
-+#define USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AB	0x01ab
-+#define USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AC	0x01ac
- 
- #define USB_VENDOR_ID_DREAM_CHEEKY	0x1d34
- #define USB_DEVICE_ID_DREAM_CHEEKY_WN	0x0004
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 11438039cdb7f..3217e436c052c 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -420,6 +420,7 @@ static const struct hid_device_id hid_have_special_driver[] = {
- #if IS_ENABLED(CONFIG_HID_ELECOM)
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_BM084) },
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
-+	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AC) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK_00FC) },
-@@ -432,6 +433,8 @@ static const struct hid_device_id hid_have_special_driver[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1URBK_019B) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1DRBK_010D) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1DRBK_011C) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AB) },
- #endif
- #if IS_ENABLED(CONFIG_HID_ELO)
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELO, 0x0009) },
+diff --git a/sound/hda/codecs/conexant.c b/sound/hda/codecs/conexant.c
+index 0c517378a6d28..f71123a475464 100644
+--- a/sound/hda/codecs/conexant.c
++++ b/sound/hda/codecs/conexant.c
+@@ -1134,6 +1134,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK_VENDOR(0x17aa, "Thinkpad/Ideapad", CXT_FIXUP_LENOVO_XPAD_ACPI),
+ 	SND_PCI_QUIRK(0x1c06, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
+ 	SND_PCI_QUIRK(0x1c06, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
++	SND_PCI_QUIRK(0x1d05, 0x3012, "MECHREVO Wujie 15X Pro", CXT_FIXUP_HEADSET_MIC),
+ 	HDA_CODEC_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
+ 	HDA_CODEC_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
+ 	{}
 -- 
 2.51.0
 
