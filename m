@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-220361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLuSG2I4o2lx+gQAu9opvQ
-	(envelope-from <stable+bounces-220361-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:48:02 +0100
+	id MNlTIH8zo2mX+QQAu9opvQ
+	(envelope-from <stable+bounces-220362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:27:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42CB1C644F
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:48:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CD01C5CE9
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:27:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6943133DCF6A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:16:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ABC8931F13E0
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36FA39FEA3;
-	Sat, 28 Feb 2026 17:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719A6348875;
+	Sat, 28 Feb 2026 17:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0/koyQe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oogm0o/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665A939FE9B;
-	Sat, 28 Feb 2026 17:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3322739FEAB;
+	Sat, 28 Feb 2026 17:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300258; cv=none; b=ezdC333u2t78ZJZksM1FS6QBFhbkK8PS61VseklJvCberYJ2S8LerHYZlZZcrGCrkOkv/+lAhPHMHMjzvXo7Nlsgrpfy44FEkCSIDO2eDC9y3zc6yiS/IHFSuf9l82CFgAW7ydAb/i/oWgZc41JxcMx5oSkTCOuFqK7YmMp1VC8=
+	t=1772300259; cv=none; b=uzrqLIKG0u00YRqGG6utPCtHsxUBTp8Txp8quCrxaV71Lz3gVF/o2qvGf1GcFSLeWtLvMg3wixQxZ/mxLb3yPoGz7+zu3/GwirU0UBGKkdpt/EJ4O5QqOqmEpbjRmdMhyRMZPszVL3bCAHBcMOzDOMuVVw/u7vaWmTfMbcDmNL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300258; c=relaxed/simple;
-	bh=uOGOIZr61Qo5YmxJYttOr2GDOKOLciM0HyzmGKXTOvM=;
+	s=arc-20240116; t=1772300259; c=relaxed/simple;
+	bh=tXbNfB7hO5F8+9n9dk0VgnOyhPu7iYznsXMvifmgdsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOjWaSsqa6ayj9eyQ2MLe5q25PSaEFWgs2YraSvZTeyvAr7JYI3bqbM+jgyVQdu70K3XtPWcOw+CZeanw8nzGkIjxz5Nmmf7cFUO4Babd8KdeTiOAAp1+FcX1SAfU3x+WyM5aHF8MynPPHwi0TFEkLEu/Pt2pU9wdOfvamId6Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0/koyQe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B994C19423;
-	Sat, 28 Feb 2026 17:37:37 +0000 (UTC)
+	 MIME-Version; b=TrghWg5FoxJBBEcXZyWm61nFI/dhKaZJEBgzz+GJM8uSuvo4IMTjzaYMtYQQXTleqBzBOfga+Vuv/V2wyHaM2tPl1KRYo7g6dFlcIEGlZkf3LRE8md4ynp+qLFftYUAGSPc3DuL3irR2v8B6ZuVSvLgo8yXnBry00791lts/YXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oogm0o/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67BFBC116D0;
+	Sat, 28 Feb 2026 17:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300258;
-	bh=uOGOIZr61Qo5YmxJYttOr2GDOKOLciM0HyzmGKXTOvM=;
+	s=k20201202; t=1772300259;
+	bh=tXbNfB7hO5F8+9n9dk0VgnOyhPu7iYznsXMvifmgdsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0/koyQezxYN2sa92X37FggHeqElmUfxTZHK6wSWfpwCQmf/IeOui19hFApmuItQP
-	 +KwWKkIgKffruoGKo8jeW6ZfGxv5RakLI2l/Rl06DFi7b8eYPOeJKE5/1UAU6Vx/m0
-	 ++afw9wuZ4t6YUoD7QQMc+xOVY+zD89+2vBnuZ97rHLcSXzdTLdpNT+cSbMMD+ZWnU
-	 I/0IA7qrtDDOFoZCpnYZJE6emVvqE6kcfImUFhFmd4N3/Y2MgT5CXYDWoSL0uon2C8
-	 pLc0EQnlxcRO4FnRyNW1QCUyv0RUtqZ1YQNnjyLzT7OUTir0etkwQLkBGHDfGscLHP
-	 xHJmhR6vOHLiw==
+	b=Oogm0o/5Fzus8glYH4cNFR4rQTpyLqIetbLVBkReBd05jQoKEI6ql777C2gCCoAwe
+	 zPBgGXUZF51QZUNyoJxWuvtlhf8RXhVx7W2Ibwsn9sbU02FZw0/OMehaOAbSvkHQGL
+	 GL39WiHBeTS6byvQwmhJMKUOEAKukeMCNCJMhTtTaH3opXVfHbaCWwEFYsjoDn/4OP
+	 Ya539hGSSgFzsqUdq90ObOG6y5yDsX795txBUeoRcoEvBaShVW0kkceDhEnvO07ElI
+	 +u8ODZzfmozR/QA/yDu1CPkbIunH4XPLeEGWxD4K4Ogqv2k18v0SmZcpQbtNblU2AM
+	 YSY9SsV8J/vIw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 283/844] ipv6: annotate data-races in ip6_multipath_hash_{policy,fields}()
-Date: Sat, 28 Feb 2026 12:23:16 -0500
-Message-ID: <20260228173244.1509663-284-sashal@kernel.org>
+Subject: [PATCH 6.19 284/844] ipv6: annotate data-races over sysctl.flowlabel_reflect
+Date: Sat, 28 Feb 2026 12:23:17 -0500
+Message-ID: <20260228173244.1509663-285-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -73,11 +73,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220361-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220362-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -91,44 +91,72 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E42CB1C644F
+X-Rspamd-Queue-Id: 36CD01C5CE9
 X-Rspamd-Action: no action
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 03e9d91dd64e2f5ea632df5d59568d91757efc4d ]
+[ Upstream commit 5ade47c974b46eb2a1279185962a0ffa15dc5450 ]
 
-Add missing READ_ONCE() when reading sysctl values.
+Add missing READ_ONCE() when reading ipv6.sysctl.flowlabel_reflect,
+as its value can be changed under us.
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260115094141.3124990-5-edumazet@google.com
+Link: https://patch.msgid.link/20260115094141.3124990-6-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ipv6.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/af_inet6.c | 4 ++--
+ net/ipv6/icmp.c     | 3 ++-
+ net/ipv6/tcp_ipv6.c | 3 ++-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-index 6a933690e0ff5..e759a00dbde19 100644
---- a/include/net/ipv6.h
-+++ b/include/net/ipv6.h
-@@ -1010,11 +1010,11 @@ static inline int ip6_default_np_autolabel(struct net *net)
- #if IS_ENABLED(CONFIG_IPV6)
- static inline int ip6_multipath_hash_policy(const struct net *net)
- {
--	return net->ipv6.sysctl.multipath_hash_policy;
-+	return READ_ONCE(net->ipv6.sysctl.multipath_hash_policy);
- }
- static inline u32 ip6_multipath_hash_fields(const struct net *net)
- {
--	return net->ipv6.sysctl.multipath_hash_fields;
-+	return READ_ONCE(net->ipv6.sysctl.multipath_hash_fields);
- }
- #else
- static inline int ip6_multipath_hash_policy(const struct net *net)
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index d3534bdb805da..56d453a598ec6 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -224,8 +224,8 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 	inet6_set_bit(MC6_LOOP, sk);
+ 	inet6_set_bit(MC6_ALL, sk);
+ 	np->pmtudisc	= IPV6_PMTUDISC_WANT;
+-	inet6_assign_bit(REPFLOW, sk, net->ipv6.sysctl.flowlabel_reflect &
+-				     FLOWLABEL_REFLECT_ESTABLISHED);
++	inet6_assign_bit(REPFLOW, sk, READ_ONCE(net->ipv6.sysctl.flowlabel_reflect) &
++				      FLOWLABEL_REFLECT_ESTABLISHED);
+ 	sk->sk_ipv6only	= net->ipv6.sysctl.bindv6only;
+ 	sk->sk_txrehash = READ_ONCE(net->core.sysctl_txrehash);
+ 
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 55b1aa75ab802..0f41ca6f3d83e 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -953,7 +953,8 @@ static enum skb_drop_reason icmpv6_echo_reply(struct sk_buff *skb)
+ 	tmp_hdr.icmp6_type = type;
+ 
+ 	memset(&fl6, 0, sizeof(fl6));
+-	if (net->ipv6.sysctl.flowlabel_reflect & FLOWLABEL_REFLECT_ICMPV6_ECHO_REPLIES)
++	if (READ_ONCE(net->ipv6.sysctl.flowlabel_reflect) &
++	    FLOWLABEL_REFLECT_ICMPV6_ECHO_REPLIES)
+ 		fl6.flowlabel = ip6_flowlabel(ipv6_hdr(skb));
+ 
+ 	fl6.flowi6_proto = IPPROTO_ICMPV6;
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 280fe59785598..4ae664b05fa91 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1085,7 +1085,8 @@ static void tcp_v6_send_reset(const struct sock *sk, struct sk_buff *skb,
+ 			txhash = inet_twsk(sk)->tw_txhash;
+ 		}
+ 	} else {
+-		if (net->ipv6.sysctl.flowlabel_reflect & FLOWLABEL_REFLECT_TCP_RESET)
++		if (READ_ONCE(net->ipv6.sysctl.flowlabel_reflect) &
++		    FLOWLABEL_REFLECT_TCP_RESET)
+ 			label = ip6_flowlabel(ipv6h);
+ 	}
+ 
 -- 
 2.51.0
 
