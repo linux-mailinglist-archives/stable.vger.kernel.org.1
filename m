@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220290-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKHoOTE0o2mX+QQAu9opvQ
-	(envelope-from <stable+bounces-220289-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:09 +0100
+	id +BUYB60vo2nb+AQAu9opvQ
+	(envelope-from <stable+bounces-220290-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:10:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737CA1C5E02
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F931C580B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BFD853284377
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:05:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C50A930D011D
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF136386EB4;
-	Sat, 28 Feb 2026 17:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3DE386ECF;
+	Sat, 28 Feb 2026 17:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0hEPSo1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPzD1gCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93277386EA3;
-	Sat, 28 Feb 2026 17:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6F2386EC6;
+	Sat, 28 Feb 2026 17:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300193; cv=none; b=QwFFhaeFNassxPm6qRve21WSExnJuMYL4jDOF1YbU4N6LdMIQ4MJFN5oiuWKqRzRrgI7fWOS4OXESzU2ZM4FLXdzkefOs534sYNxcOi8CyH8KTCC3YY1lcbKXSPpnl2otnnJRJNqa3FrYa2yj/CRKD2DVOMmA7uqLf/MtyEZMm4=
+	t=1772300194; cv=none; b=RD193UhHonhYj0H1I4U25lHjcHyhpfCYSjI6Dq3EXZxCUyJ6/FgTRkr8z1mX6wVraxc2uJ5tYRgRkCqK5cyQzH5ixbTvohF/9h9po+oIiJCHkJ5eynZn27ZXbvvXwkGgmSnnJkFiil5fLZUfM/ObEZc9zgd0d1yqCZ0xbGYtqMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300193; c=relaxed/simple;
-	bh=CMEbP+rdVxf9RR+AzjzYLeY+N4AES/ai99H2uz96kp0=;
+	s=arc-20240116; t=1772300194; c=relaxed/simple;
+	bh=N17G3sxYWFycVNeydnt5jj9kJK1CfhUB6xGvl3w60Io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R6SSxMOquBjAxsxxtlUnNSSKkxHoB8h1AID4ZWRnJors3Et7IctrHr7ZCF+Sq1i7cdaCT1Szsd7672QR8Bmicv898HPfvMcfkHww9mVzl2v+2GjukyWW/3iO11GHyXXPHWdoOEWfhjwiFY4PLWcPXYlUfihKlv4kpmDwfuhZZw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0hEPSo1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF31C19423;
-	Sat, 28 Feb 2026 17:36:32 +0000 (UTC)
+	 MIME-Version; b=H5Eh5UIiH64xHeJAJ+qjxHfiUQ0BtxsqCCccSvPl6eq1KdndnS8a0SALpWkwS8JKsle1dpQzH0Rt3CAp2sAZQMmKq1611v9EUz0dUU/4Lq0sHxAopHbwPXlS4xQ0M+czC5H4w+V/5jEFLhP9j6c5/yaNz1q/ZvUdfPo7BPzrS1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XPzD1gCi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81C2C116D0;
+	Sat, 28 Feb 2026 17:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300193;
-	bh=CMEbP+rdVxf9RR+AzjzYLeY+N4AES/ai99H2uz96kp0=;
+	s=k20201202; t=1772300194;
+	bh=N17G3sxYWFycVNeydnt5jj9kJK1CfhUB6xGvl3w60Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0hEPSo1v0lry+qNE7B/CDlZw8egP8TmCqVWT23XUJTSs++l6CK2qUHtY8XbLoB+4
-	 fMytYHvX4yb4Ci9cZDczBM2/b9+Z67Lforg/uWAZkuK+SBCsrlFBIxqEec1wTCW/PO
-	 A7Q8gy7NpEHaYZjF5P+9Q9Gj5UvIIUJwA+Gq6VWrfTDFrGCm+ouhJRCHLh5HM9gnDU
-	 V227uk7qnPELrIbA1qSg6b0ftjWx766l766OM9RPKI6LiWU41MaoI3klKzLmRrYLIj
-	 QJTGoGKxCznzl3Ic6Plo44Y2OT1ykfFzXmGxQQa+oE27mVGjofFqLMdbAAQxs/NDvg
-	 xJLuu0YUwHgDQ==
+	b=XPzD1gCiUPgO/+DEhv6tLAI6WQfNjUW5Rrj7YX3IpJAJZoUtTZROQcwD8ZWnvDjGN
+	 KB2b7rA5zyuxUbNSENjs4ZYlx9308N8cZsBMiPdAecAoCEUBj+cr8w2Snik6OySfU6
+	 Zp61LS1zMmdcAdItjxbApXJpttug1ECkosmybs7aVPEThbPoprzdjrFX5qP3q1KNpy
+	 CshebIGZ2+Eq/NKnx+lGkpZJQ4+KzMJuJAL/LXv906oRvmJNacRz/43qmm8uzUi5Q3
+	 jfRVlA8inNTeNtThRIAKpEQPEMWpXZx/m8fbKD4jSt1yTTiMIpDL3p/PNgGLpCgOuY
+	 is70FzFOU7Byw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gangliang Xie <ganglxie@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Thorsten Schmelzer <tschmelzer@topcon.com>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 211/844] drm/amdgpu: mark invalid records with U64_MAX
-Date: Sat, 28 Feb 2026 12:22:04 -0500
-Message-ID: <20260228173244.1509663-212-sashal@kernel.org>
+Subject: [PATCH 6.19 212/844] HID: multitouch: add eGalaxTouch EXC3188 support
+Date: Sat, 28 Feb 2026 12:22:05 -0500
+Message-ID: <20260228173244.1509663-213-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -73,11 +73,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220289-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220290-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -91,50 +91,52 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 737CA1C5E02
+X-Rspamd-Queue-Id: B2F931C580B
 X-Rspamd-Action: no action
 
-From: Gangliang Xie <ganglxie@amd.com>
+From: Thorsten Schmelzer <tschmelzer@topcon.com>
 
-[ Upstream commit 0028b86b52f7609e36af635ef6cb908925306233 ]
+[ Upstream commit 8e4ac86b2ddd36fe501e20ecfcc080e536df1f48 ]
 
-set retired_page of invalid ras records to U64_MAX, and skip
-them when reading ras records
+Add support for the for the EXC3188 touchscreen from eGalaxy.
 
-Signed-off-by: Gangliang Xie <ganglxie@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Thorsten Schmelzer <tschmelzer@topcon.com>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index 6b069dc4bab06..ee4d08b0988d3 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -2777,6 +2777,10 @@ static int amdgpu_ras_badpages_read(struct amdgpu_device *adev,
- 			if (!data->bps[i].ts)
- 				continue;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 5a18cb41e6d79..6d8b64872cefe 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -437,6 +437,7 @@
+ #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_7349	0x7349
+ #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_73F7	0x73f7
+ #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001	0xa001
++#define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C000	0xc000
+ #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002	0xc002
  
-+			/* U64_MAX is used to mark the record as invalid */
-+			if (data->bps[i].retired_page == U64_MAX)
-+				continue;
-+
- 			bps[r].bp = data->bps[i].retired_page;
- 			r++;
- 			if (r >= count)
-@@ -3083,6 +3087,8 @@ static int __amdgpu_ras_restore_bad_pages(struct amdgpu_device *adev,
- 
- 		if (amdgpu_ras_check_bad_page_unlock(con,
- 			bps[j].retired_page << AMDGPU_GPU_PAGE_SHIFT)) {
-+			/* set to U64_MAX to mark it as invalid */
-+			data->bps[data->count].retired_page = U64_MAX;
- 			data->count++;
- 			data->space_left--;
- 			continue;
+ #define USB_VENDOR_ID_EDIFIER		0x2d99
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index f21850f7d89e4..7daa8f6d81870 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2212,6 +2212,9 @@ static const struct hid_device_id mt_devices[] = {
+ 	{ .driver_data = MT_CLS_EGALAX_SERIAL,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_DWAV,
+ 			USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001) },
++	{ .driver_data = MT_CLS_EGALAX_SERIAL,
++		MT_USB_DEVICE(USB_VENDOR_ID_DWAV,
++			USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C000) },
+ 	{ .driver_data = MT_CLS_EGALAX,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_DWAV,
+ 			USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002) },
 -- 
 2.51.0
 
