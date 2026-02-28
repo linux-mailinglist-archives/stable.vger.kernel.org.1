@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iANOK/oyo2kE+QQAu9opvQ
-	(envelope-from <stable+bounces-220184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:24:58 +0100
+	id 4Hu4Nosto2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:01:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C609A1C5C27
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:24:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 990A91C5563
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:01:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CE5A530C3119
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:49:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AE3C530EE49B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49704C0400;
-	Sat, 28 Feb 2026 17:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F344C0425;
+	Sat, 28 Feb 2026 17:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WT5vfDSY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LgHiC//i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663A84BCAD6;
-	Sat, 28 Feb 2026 17:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F134C0414;
+	Sat, 28 Feb 2026 17:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300091; cv=none; b=a5q8YWTRT/ICmtVZXYSikwazLaNdBxZIn/IfN+bAqrM9+L6BwYRTF7o0TRuGs6lSgckZV2iFKWwNyuMZhUTtKixrS/BcX5YAmJC7Ww76qZ6ZB1gLH4gHgXGtAH3gQuTpA267GcA4PEAo92VvnzmBV4hiLvsigxVPGNzUjuezAyA=
+	t=1772300092; cv=none; b=Oq/ww5WaxpP8ZrU8xA+0stFiRNXGxSsXmgSJfPg9oGyRQUCmfb5icnZErLiyFXotZOyO1sdl1Cgbgpmidm1Qa/Y0m1aegL1OI/ZP6+FxErUl7QVCEtarTu6a2wkhwDzweAjRBwSG6Qx5BiA+xL3KJXpciFr6zBN9gnwybOhZMjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300091; c=relaxed/simple;
-	bh=dnKOTn7uV2wDaoLtoSPJID9JuTwR5i5ibtM0JG+68U8=;
+	s=arc-20240116; t=1772300092; c=relaxed/simple;
+	bh=5OS9MRJeSPsiwJmaYcDdz4TVLeyQSuvgfYTBYkHqbjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJnj5+KHEC6t0XVwqF7txNkGfBHUZNFMHqvVAa81B4jc1/28ojur0Y56FG7rsOO+c6vUVGXerdB+9E78NsRwdYKwf81mRzPb9rcSOxUiSeSHQftFWwVicJ6YU2DicYrwcNmkwgQVKkBLs5GMe5nO1E8MGM9HFf+OMfyHdNCZjOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WT5vfDSY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04C7C2BC87;
-	Sat, 28 Feb 2026 17:34:50 +0000 (UTC)
+	 MIME-Version; b=ssYT1MMn8fyInCuJZRUwkFUKVPVOVwpFKBOzA+YTk2upI+pqC8krYIPsxtaPgVPXKXMG45JBXFF5q820QaDuryyC61kEJXq1DtbUZ7klP3ynpfGSPat8j5xIkamEgxVwq/fAiNkljho4ACfoZhpd5guWmGGaW8WD8gIOZkIq4D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LgHiC//i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7CAC116D0;
+	Sat, 28 Feb 2026 17:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300091;
-	bh=dnKOTn7uV2wDaoLtoSPJID9JuTwR5i5ibtM0JG+68U8=;
+	s=k20201202; t=1772300092;
+	bh=5OS9MRJeSPsiwJmaYcDdz4TVLeyQSuvgfYTBYkHqbjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WT5vfDSYkOH//HU1gFNJioiX+Xcou+blcrmAZQg22JsS2xEhs5z0NjSPfEEOHF0A9
-	 /bzB1nPNUQ1+g/TQD7IbAG6vPwU50fURENpoAg12/JddHD4MsIwfoorAc7ET/44mr9
-	 m9NJRzI0FOy7dE9Ubgu346p+IS0J+9GKJ11k+ySC/vYySWd0E6ukj1Ej71o0SiFU6m
-	 Z1evNlFmvh0LrxYJ9pIZ6uueXH9rKIXiyCHnPvf2Dm5DhCCK4xJhNzE5sr8brxA8Et
-	 UjEbEVap78as/yAdmooqOSYz2Tzd3UWxWcBEQQIJ05CE+/oFN/UlqDpKnjxT5rSWbi
-	 FB3O7+MbFOh9w==
+	b=LgHiC//iYb3UsGI9nuGzvQCZ/F7vlwqKRlVvfWgJDPza9x9vulA/MNy3F9lqabmcj
+	 s2VN778zxhwLG1cJt2Xoq3HoEKzcvHMl/CdDHmy6NpEHmycU71qZy1U0QF4F8H2DD2
+	 1/sxsZ7bLaOQm5tte2VVs4lDV4uzXK/aEJXOIVCFJ7kFjuzSsqqKmM2sMv5ivbJZE4
+	 zvWeWofdjcx7HNa1AUn6BhwU2Id8VTEImK2hd9wyBtKKWDT4wkmFbCy0u/CjqO7PCQ
+	 4jB3SI/7103X5h4Ej2VmTvmJHfBYB1FkSegfy4jaqnyvbabHxV47rx8rd6UUNQFzyf
+	 vlfqmdy/dJexA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Thomas Gleixner <tglx@kernel.org>,
+Cc: Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 106/844] PCI/MSI: Unmap MSI-X region on error
-Date: Sat, 28 Feb 2026 12:20:19 -0500
-Message-ID: <20260228173244.1509663-107-sashal@kernel.org>
+Subject: [PATCH 6.19 107/844] bpftool: Fix dependencies for static build
+Date: Sat, 28 Feb 2026 12:20:20 -0500
+Message-ID: <20260228173244.1509663-108-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,18 +71,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220184-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220185-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -92,51 +92,54 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C609A1C5C27
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: 990A91C5563
 X-Rspamd-Action: no action
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Ihor Solodrai <ihor.solodrai@linux.dev>
 
-[ Upstream commit 1a8d4c6ecb4c81261bcdf13556abd4a958eca202 ]
+[ Upstream commit 08a7491843224f8b96518fbe70d9e48163046054 ]
 
-msix_capability_init() fails to unmap the MSI-X region if
-msix_setup_interrupts() fails.
+When building selftests/bpf with EXTRA_LDFLAGS=-static the follwoing
+error happens:
 
-Add the missing iounmap() for that error path.
+  LINK    /ws/linux/tools/testing/selftests/bpf/tools/build/bpftool/bootstrap/bpftool
+/usr/bin/x86_64-linux-gnu-ld.bfd: /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libcrypto.a(libcrypto-lib-dso_dlfcn.o): in function `dlfcn_globallookup':
+   [...]
+/usr/bin/x86_64-linux-gnu-ld.bfd: /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libcrypto.a(libcrypto-lib-c_zlib.o): in function `zlib_oneshot_expand_block':
+(.text+0xc64): undefined reference to `uncompress'
+/usr/bin/x86_64-linux-gnu-ld.bfd: /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libcrypto.a(libcrypto-lib-c_zlib.o): in function `zlib_oneshot_compress_block':
+(.text+0xce4): undefined reference to `compress'
+collect2: error: ld returned 1 exit status
+make[1]: *** [Makefile:252: /ws/linux/tools/testing/selftests/bpf/tools/build/bpftool/bootstrap/bpftool] Error 1
+make: *** [Makefile:327: /ws/linux/tools/testing/selftests/bpf/tools/sbin/bpftool] Error 2
+make: *** Waiting for unfinished jobs....
 
-[ tglx: Massaged change log ]
+This is caused by wrong order of dependencies in the Makefile. Fix it.
 
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260125144452.2103812-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20260128211255.376933-1-ihor.solodrai@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/msi/msi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/bpf/bpftool/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
-index 34d664139f48f..e010ecd9f90dd 100644
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -737,7 +737,7 @@ static int msix_capability_init(struct pci_dev *dev, struct msix_entry *entries,
+diff --git a/tools/bpf/bpftool/Makefile b/tools/bpf/bpftool/Makefile
+index 5442073a2e428..519ea5cb8ab1c 100644
+--- a/tools/bpf/bpftool/Makefile
++++ b/tools/bpf/bpftool/Makefile
+@@ -130,8 +130,8 @@ include $(FEATURES_DUMP)
+ endif
+ endif
  
- 	ret = msix_setup_interrupts(dev, entries, nvec, affd);
- 	if (ret)
--		goto out_disable;
-+		goto out_unmap;
+-LIBS = $(LIBBPF) -lelf -lz -lcrypto
+-LIBS_BOOTSTRAP = $(LIBBPF_BOOTSTRAP) -lelf -lz -lcrypto
++LIBS = $(LIBBPF) -lelf -lcrypto -lz
++LIBS_BOOTSTRAP = $(LIBBPF_BOOTSTRAP) -lelf -lcrypto -lz
  
- 	/* Disable INTX */
- 	pci_intx_for_msi(dev, 0);
-@@ -758,6 +758,8 @@ static int msix_capability_init(struct pci_dev *dev, struct msix_entry *entries,
- 	pcibios_free_irq(dev);
- 	return 0;
- 
-+out_unmap:
-+	iounmap(dev->msix_base);
- out_disable:
- 	dev->msix_enabled = 0;
- 	pci_msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_MASKALL | PCI_MSIX_FLAGS_ENABLE, 0);
+ ifeq ($(feature-libelf-zstd),1)
+ LIBS += -lzstd
 -- 
 2.51.0
 
