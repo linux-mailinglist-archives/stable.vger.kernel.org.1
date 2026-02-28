@@ -1,263 +1,209 @@
-Return-Path: <stable+bounces-220043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220044-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENwrGjt/omlI3gQAu9opvQ
-	(envelope-from <stable+bounces-220043-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 06:38:03 +0100
+	id 2HZFDO1/oml33gQAu9opvQ
+	(envelope-from <stable+bounces-220044-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 06:41:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57141C06D0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 06:38:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DB11C0714
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 06:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F5B33072DA8
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 05:37:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36C173068D88
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 05:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A210C2F260C;
-	Sat, 28 Feb 2026 05:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245103009ED;
+	Sat, 28 Feb 2026 05:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MXQXUtp1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVTRs4NT"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2325A33ADB3;
-	Sat, 28 Feb 2026 05:37:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91AF19C553;
+	Sat, 28 Feb 2026 05:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772257044; cv=none; b=gsa+tTQTdDWa0IwF7jnYZKbXsw8CoQTkzZL5ZFAYA+3QO0PTMR8vhcRCHfBkGHo2ML0sq0Nn2v5szj+aI4XasJ7fDNFqi++/1ePQJQZ75aaQMljrkz4eZhh0WdpDPdCMpqvczkLJOsZUNDXp1DgRkh0QvFrx6zU7IjAst5mu+vA=
+	t=1772257255; cv=none; b=Ca7StPMmW3wHnNu9DKXAFW9NHpfLzktWtr3IknBbJuARJFC6utKeHuPQ7ARsTQd+xiFkohQam56ODACBnXcC859sxMMI58x6wLdIiitt8UyIhrbs+qT6cw4kPMtoMoT7N8hentMHRCfcpw0DOws8a01wlqj/XQaI35/iwyPdM9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772257044; c=relaxed/simple;
-	bh=Zf0G2TS1hZnEP/ac16XpA+MoRMoz8XBDzG7g7Kivs3c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=A+bh4ay7kOkTXdYYylL07TKS2pLfacUdhiRe4szf3oYrau385mLqS9vMK/6WxX8jSQUvCgXWalltPAq57IHXhW1LpVuxoCPa0UMbzqtHMjZAmohU+izJ1IML0xVO162EK7WhcrKbQ4pH7q9uEpZIznWKYsVhpyuzmZSa9s4rnmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MXQXUtp1; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772257044; x=1803793044;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Zf0G2TS1hZnEP/ac16XpA+MoRMoz8XBDzG7g7Kivs3c=;
-  b=MXQXUtp1kSig9LIbLMAjyej/bjfFg20/V2w6FQWdhxyg+3pWd3ImOW9Q
-   5QZ4tnwxLT0XvLUy49GDHlRGBbW7CFLh7uATK5xRDSkP1e20oeV7JYtoG
-   OBcW40GufNZDDXs/HM7lmDKSpWG4wKL26WfbZRGGRUu1Wjc5oJ13zklFY
-   P9aS5vc2zkpNlA5op8uNtlyE9MIM0qJ/heQIcGH7blfotL7qtH2ER61iu
-   ToiK5mXqBA373jkDQlXhHlr00oHqH5IT/PONCITqqAuiPlmsQfETAKvct
-   0OMiBY4Tn65QPEdRF3/iYTBag8Taf1Qf54Za+mykVnfnnU5Q4og4sy4oG
-   g==;
-X-CSE-ConnectionGUID: G47dTFk8QNifeCK7sVW1Hg==
-X-CSE-MsgGUID: CpwGISLbSrKOdco/dzR/qw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11714"; a="73307700"
-X-IronPort-AV: E=Sophos;i="6.21,315,1763452800"; 
-   d="scan'208";a="73307700"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2026 21:37:23 -0800
-X-CSE-ConnectionGUID: nJmVYBD+QI+Ak0nV+geRsQ==
-X-CSE-MsgGUID: 8dfOtU85RtCbBglGxXtD1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,315,1763452800"; 
-   d="scan'208";a="254921382"
-Received: from spr.sh.intel.com ([10.112.229.196])
-  by orviesa001.jf.intel.com with ESMTP; 27 Feb 2026 21:37:19 -0800
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Eranian Stephane <eranian@google.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	Dapeng Mi <dapeng1.mi@intel.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Falcon Thomas <thomas.falcon@intel.com>,
-	Xudong Hao <xudong.hao@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [RESEND Patch 2/2] perf/x86/intel: Add missing branch counters constraint apply
-Date: Sat, 28 Feb 2026 13:33:20 +0800
-Message-Id: <20260228053320.140406-2-dapeng1.mi@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260228053320.140406-1-dapeng1.mi@linux.intel.com>
-References: <20260228053320.140406-1-dapeng1.mi@linux.intel.com>
+	s=arc-20240116; t=1772257255; c=relaxed/simple;
+	bh=unWUnBCso7D379TXK3U7KKkypdtoBm8/+ETzM8K3S+8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=vB3G86+NuVobfXrdcqMyFk9hck09m0ygAMfkuBjTIYjvkqa6FGxzkAqx1ADngCloUDIEfMOemjgoo3NxsPmrLLg1Z/rs0rxE1YCdwqrQ2rhvAY+Mv5Ar2R9EwCNdMVTfpr8GGd6Rae/VZpVGZrhpxQpYMZf7JU+6q4L34r2jKas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVTRs4NT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDBCC116D0;
+	Sat, 28 Feb 2026 05:40:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772257255;
+	bh=unWUnBCso7D379TXK3U7KKkypdtoBm8/+ETzM8K3S+8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=WVTRs4NTjMG+0QqiBrZLylqqVWSLsdwZqh4C6+1mtjEYwCnTjEpLHQm7HH5rrLy1M
+	 V3JxqVChPpUMUZ8H2mm5xOSCP+LBbBVJla+sNLeDjpi8r7gbN7332FkQwn6n2MVB2K
+	 L4kFCGptSbnYP7Inu+Xr4zLxNtDwJeXNMczTZwOuYs95dJsUftkRL+ofazdENyC7CR
+	 ZRkT1Qv6Icy1eBQvVig9idmPTIIP/uGqTlkf5O7mBX0so9AiJkO0wxfi5dPrt31Lco
+	 5LYgM32dNg9iex9R+Kvfa9FdvNvZM3byAwYGzaSQi3afhe8otu76l01LAxOoAu/8aV
+	 kLEYmF6DsJLww==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Fri, 27 Feb 2026 22:40:48 -0700
+Subject: [PATCH] kbuild: Leave objtool binary around with 'make clean'
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNwQrCMAyA4VcZORvYKrjhq4iHNMs0ozbSbkUZe
+ 3erHr/L/2+QJalkODcbJCma1WJFd2iA7xRvgjpWg2vdqXWuRyqmI5qfF7OAXiOlNyZ5WKGAHIQ
+ iDkeWfvLMA3VQQ88kk75+k8v177z6WXj5lmHfP+67ReOGAAAA
+X-Change-ID: 20260227-avoid-objtool-binary-removal-clean-83ce7fbcc8a1
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Michal Suchanek <msuchanek@suse.de>, 
+ Rainer Fiebig <jrf@mailbox.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3715; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=unWUnBCso7D379TXK3U7KKkypdtoBm8/+ETzM8K3S+8=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJmL6p8enNxzSmPFuyKdPcotjv8m3Jrx7uX1JbU7+jLLl
+ u101Fz9uaOUhUGMi0FWTJGl+rHqcUPDOWcZb5yaBDOHlQlkCAMXpwBMJHQCI8MBkdX3T7qLLJRL
+ OrN2jxGzz5fEj0/vvL7ZvGCLYaLmLe1khv95Px6d6jl3+Np3tcVRV/d5PnFmf7GqsujZRe1fWcv
+ X/fdgBwA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220044-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220043-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,linux.intel.com:mid]
-X-Rspamd-Queue-Id: D57141C06D0
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailbox.org:email]
+X-Rspamd-Queue-Id: 87DB11C0714
 X-Rspamd-Action: no action
 
-When running the command:
-'perf record -e "{instructions,instructions:p}" -j any,counter sleep 1',
-a "shift-out-of-bounds" warning is reported on CWF.
+The difference between 'make clean' and 'make mrproper' is documented in
+'make help' as:
 
-[ 5231.981423][   C17] UBSAN: shift-out-of-bounds in /kbuild/src/consumer/arch/x86/events/intel/lbr.c:970:15
-[ 5231.981428][   C17] shift exponent 64 is too large for 64-bit type 'long long unsigned int'
-[ 5231.981436][   C17] CPU: 17 UID: 0 PID: 211871 Comm: sleep Tainted: G S      W           6.18.0-2025-12-09-intel-next-48166-g6cf574943ba3 #1 PREEMPT(none)
-[ 5231.981445][   C17] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
-[ 5231.981447][   C17] Hardware name: Intel Corporation AvenueCity/AvenueCity, BIOS BHSDCRB1.IPC.3544.P98.2508260307 08/26/2025
-[ 5231.981449][   C17] Call Trace:
-[ 5231.981453][   C17]  <NMI>
-[ 5231.981455][   C17]  dump_stack_lvl+0x4b/0x70
-[ 5231.981463][   C17]  ubsan_epilogue+0x5/0x2b
-[ 5231.981468][   C17]  __ubsan_handle_shift_out_of_bounds.cold+0x61/0xe6
-[ 5231.981472][   C17]  ? __entry_text_end+0x158b/0x102259
-[ 5231.981475][   C17]  intel_pmu_lbr_counters_reorder.isra.0.cold+0x2a/0xa7
-[ 5231.981480][   C17]  ? __task_pid_nr_ns+0x134/0x2a0
-[ 5231.981483][   C17]  ? __pfx_intel_pmu_lbr_counters_reorder.isra.0+0x10/0x10
-[ 5231.981486][   C17]  ? __pfx_perf_output_sample+0x10/0x10
-[ 5231.981489][   C17]  ? arch_perf_update_userpage+0x293/0x310
-[ 5231.981491][   C17]  ? __pfx_arch_perf_update_userpage+0x10/0x10
-[ 5231.981494][   C17]  ? local_clock_noinstr+0xd/0x100
-[ 5231.981498][   C17]  ? calc_timer_values+0x2cb/0x860
-[ 5231.981501][   C17]  ? perf_event_update_userpage+0x399/0x5b0
-[ 5231.981505][   C17]  ? __pfx_perf_event_update_userpage+0x10/0x10
-[ 5231.981508][   C17]  ? local_clock_noinstr+0xd/0x100
-[ 5231.981511][   C17]  ? __perf_event_account_interrupt+0x11c/0x540
-[ 5231.981514][   C17]  intel_pmu_lbr_save_brstack+0xc0/0x4c0
-[ 5231.981518][   C17]  setup_arch_pebs_sample_data+0x114b/0x2400
-[ 5231.981522][   C17]  ? __pfx_x86_perf_event_set_period+0x10/0x10
-[ 5231.981526][   C17]  intel_pmu_drain_arch_pebs+0x64d/0xcc0
-[ 5231.981530][   C17]  ? __pfx_intel_pmu_drain_arch_pebs+0x10/0x10
-[ 5231.981534][   C17]  ? unwind_next_frame+0x11c5/0x1df0
-[ 5231.981541][   C17]  ? intel_pmu_drain_bts_buffer+0xbf/0x6e0
-[ 5231.981545][   C17]  ? __pfx_intel_pmu_drain_bts_buffer+0x10/0x10
-[ 5231.981550][   C17]  handle_pmi_common+0x5c5/0xcb0
-[ 5231.981553][   C17]  ? __pfx_handle_pmi_common+0x10/0x10
-[ 5231.981556][   C17]  ? intel_idle+0x64/0xb0
-[ 5231.981560][   C17]  ? intel_bts_interrupt+0xe5/0x4c0
-[ 5231.981562][   C17]  ? __pfx_intel_bts_interrupt+0x10/0x10
-[ 5231.981565][   C17]  ? intel_pmu_lbr_filter+0x27f/0x910
-[ 5231.981568][   C17]  intel_pmu_handle_irq+0x2ed/0x600
-[ 5231.981571][   C17]  perf_event_nmi_handler+0x219/0x280
-[ 5231.981575][   C17]  ? __pfx_perf_event_nmi_handler+0x10/0x10
-[ 5231.981579][   C17]  ? unwind_next_frame+0x11c5/0x1df0
-[ 5231.981582][   C17]  nmi_handle.part.0+0x11b/0x3a0
-[ 5231.981585][   C17]  ? unwind_next_frame+0x11c5/0x1df0
-[ 5231.981588][   C17]  default_do_nmi+0x6b/0x180
-[ 5231.981591][   C17]  fred_exc_nmi+0x3e/0x80
-[ 5231.981594][   C17]  asm_fred_entrypoint_kernel+0x41/0x60
-[ 5231.981596][   C17] RIP: 0010:unwind_next_frame+0x11c5/0x1df0
-......
+  clean     - Remove most generated files but keep the config and
+              enough build support to build external modules
+  mrproper  - Remove all generated files + config + various backup files
 
-The warning occurs because the second "instructions:p" event, which
-involves branch counters sampling, is incorrectly programmed to fixed
-counter 0 instead of the general-purpose (GP) counters 0-3 that support
-branch counters sampling. Currently only GP counters 0~3 support branch
-counters sampling on CWF, any event involving branch counters sampling
-should be programed on GP counters 0~3. Since the counter index of fixed
-counter 0 is 32, it leads to the "src" value in below code is right
-shifted 64 bits and trigger the "shift-out-of-bounds" warning.
+After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
+target"), running 'make clean' then attempting to build an external
+module with the resulting build directory fails with
 
-cnt = (src >> (order[j] * LBR_INFO_BR_CNTR_BITS)) & LBR_INFO_BR_CNTR_MASK;
+  $ make ARCH=x86_64 O=build clean
 
-The root cause is the loss of the branch counters constraint for the
-last event in the branch counters sampling event group. This results in
-the second "instructions:p" event being programmed on fixed counter 0
-incorrectly instead of the appropriate GP counters 0~3.
+  $ make -C build M=... MO=...
+  ...
+  /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
 
-To address this, we apply the missing branch counters constraint for
-the last event in the group. Additionally, we introduce a new function,
-`intel_set_branch_counter_constr()`, to apply the branch counters
-constraint and avoid code duplication.
+as 'make clean' removes the objtool binary.
+
+Split the objtool clean target into mrproper and clean like Kbuild does
+and remove all generated artifacts with 'make clean' except for the
+objtool binary, which is removed with 'make mrproper'.
 
 Cc: stable@vger.kernel.org
-Reported-by: Xudong Hao <xudong.hao@intel.com>
-Fixes: 33744916196b ("perf/x86/intel: Support branch counters logging")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Fixes: 68b4fe32d737 ("kbuild: Add objtool to top-level clean target")
+Reported-by: Michal Suchanek <msuchanek@suse.de>
+Closes: https://lore.kernel.org/20260225112633.6123-1-msuchanek@suse.de/
+Reported-by: Rainer Fiebig <jrf@mailbox.org>
+Closes: https://lore.kernel.org/62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- arch/x86/events/intel/core.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+I realize that this will technically decend into tools/objtool twice
+during cleaning when running mrproper but I don't think it is the end of
+the world for a much simpler implementation.
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 4768236c054b..4b042d71104f 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4628,6 +4628,19 @@ static inline void intel_pmu_set_acr_caused_constr(struct perf_event *event,
- 		event->hw.dyn_constraint &= hybrid(event->pmu, acr_cause_mask64);
- }
+I can take this via kbuild-fixes with a proper Ack or it can go through
+-tip, does not matter to me.
+---
+ Makefile               | 8 ++++----
+ tools/objtool/Makefile | 6 ++++--
+ 2 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index e944c6e71e81..d76d706a5580 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1497,13 +1497,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
+ 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
+ endif
  
-+static inline int intel_set_branch_counter_constr(struct perf_event *event,
-+						  int *num)
-+{
-+	if (branch_sample_call_stack(event))
-+		return -EINVAL;
-+	if (branch_sample_counters(event)) {
-+		(*num)++;
-+		event->hw.dyn_constraint &= x86_pmu.lbr_counters;
-+	}
-+
-+	return 0;
-+}
-+
- static int intel_pmu_hw_config(struct perf_event *event)
- {
- 	int ret = x86_pmu_hw_config(event);
-@@ -4698,21 +4711,18 @@ static int intel_pmu_hw_config(struct perf_event *event)
- 		 * group, which requires the extra space to store the counters.
- 		 */
- 		leader = event->group_leader;
--		if (branch_sample_call_stack(leader))
-+		if (intel_set_branch_counter_constr(leader, &num))
- 			return -EINVAL;
--		if (branch_sample_counters(leader)) {
--			num++;
--			leader->hw.dyn_constraint &= x86_pmu.lbr_counters;
--		}
- 		leader->hw.flags |= PERF_X86_EVENT_BRANCH_COUNTERS;
+-PHONY += objtool_clean
++PHONY += objtool_clean objtool_mrproper
  
- 		for_each_sibling_event(sibling, leader) {
--			if (branch_sample_call_stack(sibling))
-+			if (intel_set_branch_counter_constr(sibling, &num))
-+				return -EINVAL;
-+		}
-+
-+		if (event != leader) {
-+			if (intel_set_branch_counter_constr(event, &num))
- 				return -EINVAL;
--			if (branch_sample_counters(sibling)) {
--				num++;
--				sibling->hw.dyn_constraint &= x86_pmu.lbr_counters;
--			}
- 		}
+ objtool_O = $(abspath $(objtree))/tools/objtool
  
- 		if (num > fls(x86_pmu.lbr_counters))
--- 
-2.34.1
+-objtool_clean:
++objtool_clean objtool_mrproper:
+ ifneq ($(wildcard $(objtool_O)),)
+-	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
++	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) $(patsubst objtool_%,%,$@)
+ endif
+ 
+ tools/: FORCE
+@@ -1686,7 +1686,7 @@ PHONY += $(mrproper-dirs) mrproper
+ $(mrproper-dirs):
+ 	$(Q)$(MAKE) $(clean)=$(patsubst _mrproper_%,%,$@)
+ 
+-mrproper: clean $(mrproper-dirs)
++mrproper: clean objtool_mrproper $(mrproper-dirs)
+ 	$(call cmd,rmfiles)
+ 	@find . $(RCS_FIND_IGNORE) \
+ 		\( -name '*.rmeta' \) \
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index 6964175abdfd..50d3e38e6137 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -142,13 +142,15 @@ $(LIBSUBCMD)-clean:
+ 	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
+ 
+ clean: $(LIBSUBCMD)-clean
+-	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
+ 	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
+ 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/cpu-feature-names.c $(OUTPUT)fixdep
+ 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
+ 	$(Q)$(RM) -- $(OUTPUT)FEATURE-DUMP.objtool
+ 	$(Q)$(RM) -r -- $(OUTPUT)feature
+ 
++mrproper: clean
++	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
++
+ FORCE:
+ 
+-.PHONY: clean FORCE
++.PHONY: clean mrproper FORCE
+
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260227-avoid-objtool-binary-removal-clean-83ce7fbcc8a1
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
 
 
