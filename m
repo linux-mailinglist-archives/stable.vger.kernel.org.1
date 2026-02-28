@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-221207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JpbI+Fdo2lxBQUAu9opvQ
-	(envelope-from <stable+bounces-221207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:28:01 +0100
+	id IJdPFxNKo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-221208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:03:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE261C916B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:28:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7F51C7D80
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:03:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2AEA3749E61
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:49:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D1DCA317A310
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E37637523A;
-	Sat, 28 Feb 2026 17:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B93375251;
+	Sat, 28 Feb 2026 17:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W8Ksfy6k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XFejJsLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F2F375249;
-	Sat, 28 Feb 2026 17:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538A6375241;
+	Sat, 28 Feb 2026 17:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301564; cv=none; b=WU2LfUPVaJq4xTd/XCdLNZrd+w8k4chi92fRDOkbn0iwaPbgR7jMToIUno28PcbRvqfQhFG+Mw7EpWfFCmFVO2xNWXoRsb5YYmPw0sSUufZx03yuGOgizb6MKMOr2qVCnTOln60HSShd5pxVkvRezmXfI0AARZe0oeHDSqzAV7M=
+	t=1772301565; cv=none; b=B9el3L7jPOvznIam8lqkIBuvkDRLjMmZmPEp53tzAy1wBQhdydvO3UbLJz2F/9+xkQOgzDLHaPIqx+KQJgzO87/QlZcWfmDYdr0f03E+5FJNs5SO7erKLMLcIbWDCnibmVIM+uwPBVxEWaxdIiDokFcVepqdOis4cC2g8Nzm0SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301564; c=relaxed/simple;
-	bh=cXUT2m/Buo3w8m1m3gfvVg09mDyDB+BPLUmn0QzseLo=;
+	s=arc-20240116; t=1772301565; c=relaxed/simple;
+	bh=dtV3Lrlv+tFenHcEPaB1+OGX3h/2+YPE7lEZIEDdyF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIa8cZ5Gd2EiHogCk4551wq/Gs0FldqKGVjmn8slUul1LyTD18m24YFWzzfIS62PSiqvT6x+RDc+7d69Bc+jFxC34NTLIZqmYKIjPK/JQecTziNx3JVF2MQPdW9qFe8yAFGKRzTj4kh2bPxH59E//+w0rJEDPXDv1/4asRujUlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8Ksfy6k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8E7C2BC87;
-	Sat, 28 Feb 2026 17:59:23 +0000 (UTC)
+	 MIME-Version; b=g6xT760eFoGZvCjH4Hui7y494cqQpPihlaYCh/q4/T849+5aqg2x0wSx6ngH/co30Ukw7dmPwJC2T2B5LRD93JDRfYbLTxxL6VDv0g+UeoB5ovGzP3h38gOYQhheufN9Ek8B4EJvl0OFBZLanXVlGuz8eWX1TXi3B3fdKaOhUjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XFejJsLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389F0C116D0;
+	Sat, 28 Feb 2026 17:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301564;
-	bh=cXUT2m/Buo3w8m1m3gfvVg09mDyDB+BPLUmn0QzseLo=;
+	s=k20201202; t=1772301565;
+	bh=dtV3Lrlv+tFenHcEPaB1+OGX3h/2+YPE7lEZIEDdyF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8Ksfy6kwr9472rD2SBT7YCkKVTCXk0ZXw1jccHmz1RXefS4TZWiOuZpYNG1mabSs
-	 IFqlhdU579oDxsbcUb56X+/CeyGvcH3RRo8s8MvmkETlF03IUROXgF6qtBdmX85h6B
-	 eCHRiXyVSAv+2RpAiHAEoOLjx+SG1ayaAZfepmvcU333TE9YfqZ3SzvgjkE6WHrFy9
-	 pMKRWQRN21unRtu0Hun0PVsov+67rX2rKXaU6CJYDBhmUy2EErCrke1Jtw+bZ5aT+K
-	 xoz9dSzqIgGn1KbNHG6a85tpwJO2aA3egZ2TwOCU8/QEQ7GLWYuUf2jjmtQqJA1zng
-	 dxkq9E/usXw3g==
+	b=XFejJsLDpk6YFflbxyv7en/q2UqMrEY3JFsfHUJDBXeYjjcRktgrxjXY3VjvgnZ8m
+	 75B+Ul4ZwcuD0USQmpQxh/Ft07vGs0PBHp7FkBPWCaBu0nv+MpK70XIZc2l7BcnjC3
+	 ZTukyCZ9YQu1pmSNOcNNzz23vDnw7P0Q0KViis+JQyhmbsPtyl4v1kZXPZVmI/jt4t
+	 3yBcenFtPVlnuAPcdr2q3QHCxnDz/t8WGGTe8leP8D2TLs3frnqQy2lnkLcs0jcnLp
+	 cOU9oZfsJuEY+kcvWUZ7c/iU2fJ4ANdklwUOHBsIFBpaih+ljqvokXBnDTBt3GDf5l
+	 cFlvcNQIWx3OQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Petr Pavlu <petr.pavlu@suse.com>,
+Cc: Philipp Stanner <phasta@kernel.org>,
 	stable@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Tom Zanussi <zanussi@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 747/752] tracing: Wake up poll waiters for hist files when removing an event
-Date: Sat, 28 Feb 2026 12:47:38 -0500
-Message-ID: <20260228174750.1542406-747-sashal@kernel.org>
+Subject: [PATCH 6.18 748/752] rust: list: Add unsafe blocks for container_of and safety comments
+Date: Sat, 28 Feb 2026 12:47:39 -0500
+Message-ID: <20260228174750.1542406-748-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -74,13 +73,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221207-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221208-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -88,77 +87,167 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,goodmis.org:email,efficios.com:email]
-X-Rspamd-Queue-Id: 1AE261C916B
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,impl_list_item_mod.rs:url,garyguo.net:email]
+X-Rspamd-Queue-Id: AF7F51C7D80
 X-Rspamd-Action: no action
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-[ Upstream commit 9678e53179aa7e907360f5b5b275769008a69b80 ]
+[ Upstream commit 97b281d7edb2ae662365be2809cd728470119720 ]
 
-The event_hist_poll() function attempts to verify whether an event file is
-being removed, but this check may not occur or could be unnecessarily
-delayed. This happens because hist_poll_wakeup() is currently invoked only
-from event_hist_trigger() when a hist command is triggered. If the event
-file is being removed, no associated hist command will be triggered and a
-waiter will be woken up only after an unrelated hist command is triggered.
+impl_list_item_mod.rs calls container_of! without unsafe blocks at a
+couple of places. Since container_of! is unsafe, the blocks are strictly
+necessary.
 
-Fix the issue by adding a call to hist_poll_wakeup() in
-remove_event_file_dir() after setting the EVENT_FILE_FL_FREED flag. This
-ensures that a task polling on a hist file is woken up and receives
-EPOLLERR.
+The problem was so far not visible because the "unsafe-op-in-unsafe-fn"
+check is a lint rather than a hard compiler error, and Rust suppresses
+lints triggered inside of a macro from another crate.
+
+Thus, the error becomes only visible once someone from within the kernel
+crate tries to use linked lists:
+
+    error[E0133]: call to unsafe function `core::ptr::mut_ptr::<impl *mut T>::byte_sub`
+    is unsafe and requires unsafe block
+       --> rust/kernel/lib.rs:252:29
+        |
+    252 |           let container_ptr = field_ptr.byte_sub(offset).cast::<$Container>();
+        |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+        |
+       ::: rust/kernel/drm/jq.rs:98:1
+        |
+    98  | / impl_list_item! {
+    99  | |     impl ListItem<0> for BasicItem { using ListLinks { self.links }; }
+    100 | | }
+        | |_- in this macro invocation
+        |
+    note: an unsafe function restricts its caller, but its body is safe by default
+       --> rust/kernel/list/impl_list_item_mod.rs:216:13
+        |
+    216 |               unsafe fn view_value(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
+        |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        |
+       ::: rust/kernel/drm/jq.rs:98:1
+        |
+    98  | / impl_list_item! {
+    99  | |     impl ListItem<0> for BasicItem { using ListLinks { self.links }; }
+    100 | | }
+        | |_- in this macro invocation
+        = note: requested on the command line with `-D unsafe-op-in-unsafe-fn`
+        = note: this error originates in the macro `$crate::container_of` which comes
+        from the expansion of the macro `impl_list_item`
+
+Therefore, add unsafe blocks to container_of! calls to fix the issue.
+
+[ As discussed, let's fix the build for those that want to use the
+  macro within the `kernel` crate now and we can discuss the proper
+  safety comments afterwards. Thus I removed the ones from the patch.
+
+  However, we cannot just avoid the comments with `CLIPPY=1`, so I
+  provided placeholders for now, like we did in the past. They were
+  also needed for an `unsafe impl`.
+
+  While I am not happy about it, it isn't worse than the current
+  status (the comments were meant to be there), and at least this
+  shows what is missing -- our pre-existing "good first issue" [1]
+  may motivate new contributors to complete them properly.
+
+  Finally, I moved one of the existing safety comments one line down
+  so that Clippy could locate it.
+
+  Link: https://github.com/Rust-for-Linux/linux/issues/351 [1]
+
+    - Miguel ]
 
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://patch.msgid.link/20260219162737.314231-3-petr.pavlu@suse.com
-Fixes: 1bd13edbbed6 ("tracing/hist: Add poll(POLLIN) support on hist file")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: c77f85b347dd ("rust: list: remove OFFSET constants")
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260216131613.45344-3-phasta@kernel.org
+[ Fixed formatting. Reworded to fix the lint suppression
+  explanation. Indent build error. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_events.h | 5 +++++
- kernel/trace/trace_events.c  | 3 +++
- 2 files changed, 8 insertions(+)
+ rust/kernel/list/impl_list_item_mod.rs | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 04307a19cde30..64ada9cc38864 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -682,6 +682,11 @@ static inline void hist_poll_wakeup(void)
+diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl_list_item_mod.rs
+index 202bc6f97c132..ee53d0387e63d 100644
+--- a/rust/kernel/list/impl_list_item_mod.rs
++++ b/rust/kernel/list/impl_list_item_mod.rs
+@@ -84,11 +84,12 @@ macro_rules! impl_has_list_links_self_ptr {
+         // right type.
+         unsafe impl$(<$($generics)*>)? $crate::list::HasSelfPtr<$item_type $(, $id)?> for $self {}
  
- #define hist_poll_wait(file, wait)	\
- 	poll_wait(file, &hist_poll_wq, wait)
-+
-+#else
-+static inline void hist_poll_wakeup(void)
-+{
-+}
- #endif
++        // SAFETY: TODO.
+         unsafe impl$(<$($generics)*>)? $crate::list::HasListLinks$(<$id>)? for $self {
+             #[inline]
+             unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut $crate::list::ListLinks$(<$id>)? {
+-                // SAFETY: The caller promises that the pointer is not dangling.
+                 let ptr: *mut $crate::list::ListLinksSelfPtr<$item_type $(, $id)?> =
++                    // SAFETY: The caller promises that the pointer is not dangling.
+                     unsafe { ::core::ptr::addr_of_mut!((*ptr)$(.$field)*) };
+                 ptr.cast()
+             }
+@@ -217,7 +218,7 @@ macro_rules! impl_list_item {
+                 // SAFETY: `me` originates from the most recent call to `prepare_to_insert`, so it
+                 // points at the field `$field` in a value of type `Self`. Thus, reversing that
+                 // operation is still in-bounds of the allocation.
+-                $crate::container_of!(me, Self, $($field).*)
++                unsafe { $crate::container_of!(me, Self, $($field).*) }
+             }
  
- #define __TRACE_EVENT_FLAGS(name, value)				\
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 5cf55a9c6fad4..e4ce7f856f630 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -1296,6 +1296,9 @@ static void remove_event_file_dir(struct trace_event_file *file)
- 	free_event_filter(file->filter);
- 	file->flags |= EVENT_FILE_FL_FREED;
- 	event_file_put(file);
-+
-+	/* Wake up hist poll waiters to notice the EVENT_FILE_FL_FREED flag. */
-+	hist_poll_wakeup();
- }
+             // GUARANTEES:
+@@ -242,7 +243,7 @@ macro_rules! impl_list_item {
+                 // SAFETY: `me` originates from the most recent call to `prepare_to_insert`, so it
+                 // points at the field `$field` in a value of type `Self`. Thus, reversing that
+                 // operation is still in-bounds of the allocation.
+-                $crate::container_of!(me, Self, $($field).*)
++                unsafe { $crate::container_of!(me, Self, $($field).*) }
+             }
+         }
+     )*};
+@@ -270,9 +271,12 @@ macro_rules! impl_list_item {
+                 // SAFETY: The caller promises that `me` points at a valid value of type `Self`.
+                 let links_field = unsafe { <Self as $crate::list::ListItem<$num>>::view_links(me) };
  
- /*
+-                let container = $crate::container_of!(
+-                    links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+-                );
++                // SAFETY: TODO.
++                let container = unsafe {
++                    $crate::container_of!(
++                        links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
++                    )
++                };
+ 
+                 // SAFETY: By the same reasoning above, `links_field` is a valid pointer.
+                 let self_ptr = unsafe {
+@@ -319,9 +323,12 @@ macro_rules! impl_list_item {
+             //   `ListArc` containing `Self` until the next call to `post_remove`. The value cannot
+             //   be destroyed while a `ListArc` reference exists.
+             unsafe fn view_value(links_field: *mut $crate::list::ListLinks<$num>) -> *const Self {
+-                let container = $crate::container_of!(
+-                    links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+-                );
++                // SAFETY: TODO.
++                let container = unsafe {
++                    $crate::container_of!(
++                        links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
++                    )
++                };
+ 
+                 // SAFETY: By the same reasoning above, `links_field` is a valid pointer.
+                 let self_ptr = unsafe {
 -- 
 2.51.0
 
