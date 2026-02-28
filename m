@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-220452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oH7QODU4o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220452-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:47:17 +0100
+	id 6M0MKYE3o2lx+gQAu9opvQ
+	(envelope-from <stable+bounces-220453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:44:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA1691C640C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:47:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 086B81C6348
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B97B431B003E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:30:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D72C932BE6A4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3443B8933;
-	Sat, 28 Feb 2026 17:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1816E3BA22C;
+	Sat, 28 Feb 2026 17:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pH1CneM6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sNosKOzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C7B3B892B;
-	Sat, 28 Feb 2026 17:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7A93B8925;
+	Sat, 28 Feb 2026 17:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300340; cv=none; b=EzAtoWQKqoJWQ8pOlSfHQR+AndJ1hxstv/FybFgddwud4ujVjUlSOpalO1Cg4Owu6DrdUqSKPMATgO3+oW9fU+nlLd2aEPfxnLzeGrDAOZAF4tDL+94xZIY4yT0Ufs6XXanXqlW+5/IJYktTmFx3sgXeWiS2985QiabznV5vE8M=
+	t=1772300341; cv=none; b=Oy1ZG//jcF/cz1awE/jaJrbDVPDU1CGpJdBSOQQfQ9r+JOrGQIsKMZuSvrzYebeBEmoCfGniWFYTpZDJNbEkxXbZQZCS5xcjmz3n9eAI0tEtmwnYOWjFg4vEj1P5MVWpYJb24bZeH367MrZP04zKrkZInVIlZP0zont83nTjQ0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300340; c=relaxed/simple;
-	bh=4B9zfesSIGCETB9yT7zZ8o1RykvPoYvqKhAu5noR5P0=;
+	s=arc-20240116; t=1772300341; c=relaxed/simple;
+	bh=QlgXHxLPUtH2sx/OHkgS6SP38Ze9WrPDAlWUKD10jUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rl3/b0omLlzy/HPrfqYpj5Z9B1QoUzhoigJEWDYcUsSA64RJ7rfBy26mU7Tw7kYB1gEnHdbbupBhQHB/HBQqKsSNgJupOSZxLBIoyZPtNHuIShZZgvQEjqFcOmnoEw8Z2kcofG17FeNaJiUMXSV6/wChOTySgGYLOjaGEWHuXTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pH1CneM6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79F5C2BC87;
-	Sat, 28 Feb 2026 17:38:59 +0000 (UTC)
+	 MIME-Version; b=k5E5sNJBWpSUrpT50faGBBlao6qu5e3OX58YAxS5j0qRowmUQBqJHjftODleiVtthUxKqRdJd4Kn1eM9pVwgVYkLSjdCvGSzcaEs3zN/V7KFxjcs/qGggOTyQQAbcBsoIwnqPn6Wvb8FSJ/XITmxLsirO08jme43/K5DmchZ0Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sNosKOzX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AA6C116D0;
+	Sat, 28 Feb 2026 17:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300340;
-	bh=4B9zfesSIGCETB9yT7zZ8o1RykvPoYvqKhAu5noR5P0=;
+	s=k20201202; t=1772300341;
+	bh=QlgXHxLPUtH2sx/OHkgS6SP38Ze9WrPDAlWUKD10jUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pH1CneM6NB0CYGHvwEo4Y5biUcELhwqzkJ7NBRvqDwonXA5Z3E11PggbBgpzaZD8h
-	 IBr5dHj6mjt1KYOkAA2J7wqDaZhqaT40n6dmaT1skdKRh4Zf+9C7+Q5UJOs7ohnwo+
-	 9f8giRK9hsMiqeSvqnEWSrkZeWxcncjLmjBk004OpM0mtMyFePqMt9B2YLa2QxRNYY
-	 LXDCnTVu4YElYcz6UE6L8VHXnOuZ4B1Uqjs+w2W82nPhJZpnCa4xrLwLLPPIDT3Opi
-	 7imr4b5eGAdwHFCLlO4KfHbzPsBt0ig0EXPOxgUiEktBNSUSzWSwiMsvgnP1PDWgum
-	 QKPJ4As7nnOJQ==
+	b=sNosKOzXBgEjre7oc9ioOnDiL8TzThBdddSPGUV/ufkMqOFsOvuoGXBMUXSXXHkSB
+	 VNLoTfnZTPM1TTHv0qKCnm6Eg5l4DKmt8vQpRNG/iNC0g/oyyJgSOLPTAbIdnJUHaN
+	 m3+LIm9syJOUAzlJmX6KWkLH/OeeSPlGMaibYndyqc+ZjApl73W6qdW2s3D/8pxaHI
+	 xkdS91uBVYykm2Awawtkvakgi1qcQrVUIxWzHDzXSrB5rv1aBLsOh8trgPPmJFsM8c
+	 4nF2h9NlJBeKzYz1U7y+ofQIz5i8jzVg6S1umEhGrLqQN0pxBx1l7LJOkAoZKMgT5n
+	 RKivWedo9bAFw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Romain Gantois <romain.gantois@bootlin.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
+Cc: Navaneeth K <knavaneeth786@gmail.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 373/844] fpga: of-fpga-region: Fail if any bridge is missing
-Date: Sat, 28 Feb 2026 12:24:46 -0500
-Message-ID: <20260228173244.1509663-374-sashal@kernel.org>
+Subject: [PATCH 6.19 374/844] most: core: fix resource leak in most_register_interface error paths
+Date: Sat, 28 Feb 2026 12:24:47 -0500
+Message-ID: <20260228173244.1509663-375-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,85 +68,100 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220452-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linaro.org,linuxfoundation.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-220453-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AA1691C640C
+X-Rspamd-Queue-Id: 086B81C6348
 X-Rspamd-Action: no action
 
-From: Romain Gantois <romain.gantois@bootlin.com>
+From: Navaneeth K <knavaneeth786@gmail.com>
 
-[ Upstream commit c141c8221bc5089de915d9f26044df892c343c7e ]
+[ Upstream commit 1f4c9d8a1021281750c6cda126d6f8a40cc24e71 ]
 
-When parsing the region bridge list from the "fpga-bridges" device tree
-property, the of-fpga-region driver will silently ignore bridges which fail
-to be obtained, for example due to a missing bridge driver or invalid
-phandle.
+The function most_register_interface() did not correctly release resources
+if it failed early (before registering the device). In these cases, it
+returned an error code immediately, leaking the memory allocated for the
+interface.
 
-This can lead to hardware issues if a region bridge stays coupled when
-partial programming is performed.
+Fix this by initializing the device early via device_initialize() and
+calling put_device() on all error paths.
 
-Fail if any of the bridges specified in "fpga-bridges" cannot be obtained.
+The most_register_interface() is expected to call put_device() on
+error which frees the resources allocated in the caller. The
+put_device() either calls release_mdev() or dim2_release(),
+depending on the caller.
 
-Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
-Link: https://lore.kernel.org/r/20251127-of-fpga-region-fail-if-bridges-not-found-v1-1-ca674f8d07eb@bootlin.com
-Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Switch to using device_add() instead of device_register() to handle
+the split initialization.
+
+Acked-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20251127165337.19172-1-knavaneeth786@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fpga/of-fpga-region.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/most/core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/fpga/of-fpga-region.c b/drivers/fpga/of-fpga-region.c
-index 43db4bb77138a..caa091224dc54 100644
---- a/drivers/fpga/of-fpga-region.c
-+++ b/drivers/fpga/of-fpga-region.c
-@@ -83,7 +83,7 @@ static struct fpga_manager *of_fpga_region_get_mgr(struct device_node *np)
-  * done with the bridges.
-  *
-  * Return: 0 for success (even if there are no bridges specified)
-- * or -EBUSY if any of the bridges are in use.
-+ * or an error code if any of the bridges are not available.
-  */
- static int of_fpga_region_get_bridges(struct fpga_region *region)
- {
-@@ -130,10 +130,10 @@ static int of_fpga_region_get_bridges(struct fpga_region *region)
- 						 &region->bridge_list);
- 		of_node_put(br);
+diff --git a/drivers/most/core.c b/drivers/most/core.c
+index da319d108ea1d..6277e6702ca8c 100644
+--- a/drivers/most/core.c
++++ b/drivers/most/core.c
+@@ -1286,15 +1286,19 @@ int most_register_interface(struct most_interface *iface)
+ 	    !iface->poison_channel || (iface->num_channels > MAX_CHANNELS))
+ 		return -EINVAL;
  
--		/* If any of the bridges are in use, give up */
--		if (ret == -EBUSY) {
-+		/* If any of the bridges are not available, give up */
-+		if (ret) {
- 			fpga_bridges_put(&region->bridge_list);
--			return -EBUSY;
-+			return ret;
- 		}
++	device_initialize(iface->dev);
++
+ 	id = ida_alloc(&mdev_id, GFP_KERNEL);
+ 	if (id < 0) {
+ 		dev_err(iface->dev, "Failed to allocate device ID\n");
++		put_device(iface->dev);
+ 		return id;
  	}
  
+ 	iface->p = kzalloc(sizeof(*iface->p), GFP_KERNEL);
+ 	if (!iface->p) {
+ 		ida_free(&mdev_id, id);
++		put_device(iface->dev);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -1304,7 +1308,7 @@ int most_register_interface(struct most_interface *iface)
+ 	iface->dev->bus = &mostbus;
+ 	iface->dev->groups = interface_attr_groups;
+ 	dev_set_drvdata(iface->dev, iface);
+-	if (device_register(iface->dev)) {
++	if (device_add(iface->dev)) {
+ 		dev_err(iface->dev, "Failed to register interface device\n");
+ 		kfree(iface->p);
+ 		put_device(iface->dev);
 -- 
 2.51.0
 
