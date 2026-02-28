@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-220373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDIuNTxHo2lM/AQAu9opvQ
-	(envelope-from <stable+bounces-220373-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:51:24 +0100
+	id gJmYNOg4o2mU+gQAu9opvQ
+	(envelope-from <stable+bounces-220374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:50:16 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA741C76D4
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:51:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5711C64F7
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:50:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 20BC731E5977
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:18:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C64C732256A2
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C836334A3DB;
-	Sat, 28 Feb 2026 17:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D452A3A441E;
+	Sat, 28 Feb 2026 17:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VgKAycxY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NS2RLEMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B0E35AC38;
-	Sat, 28 Feb 2026 17:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964FC3A4414;
+	Sat, 28 Feb 2026 17:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300268; cv=none; b=RZHZrxyDOStT6rWAsCzojctsCPiYVHFjz1GchM7JWyUPRtCkpgDTelQq3ItVUAGQJY5ORzx47s+nGZh6iurfmdRtr3JpLrOO940FmQk+EM9TYhevY/AJ/aS3O5/Va97QqHjRUVpdFp19HuAQ8Wc2IhOK/MQ1wUp3ZQmzf8HjDCs=
+	t=1772300269; cv=none; b=UaaXqZCOevlnOwOkeaNl1z7/3jf8+XQEwXDwKNFOuL82dMUTEz2mZtfMv23lGEVUHrmZllqwEt/YkDjp7jZPLKZBCfMIWNoy27HfkEGV3waLjkV5eITsp065PWRybYfGDsHKyf7PabM1wE4ffloNJFvPBuO151GQS3zU92fwLUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300268; c=relaxed/simple;
-	bh=Smv77XQEJ5/xq6cT/QFfKDsGNU3NpzZ+gFapQgA2lqQ=;
+	s=arc-20240116; t=1772300269; c=relaxed/simple;
+	bh=1q1EO47DTeDmZ2QDAtWP7XcJKLHjRpu8B3ciVouXU6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rH/1c6gyciWUw7ca7tShRrfN9vYVrW5tmFXMCPM38fb7dcVyB3Ch2Y78k/YXVfTCPruXPJpwlr4mW95W6B8ZEaTEBRngDF75Xd2FpZit2VpR+JLiREqymEPMakBDLvGQvAmKowFElTxbImmK2mDwpHGG2XyXnF3VboqiUqTR2BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VgKAycxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85ACC116D0;
-	Sat, 28 Feb 2026 17:37:47 +0000 (UTC)
+	 MIME-Version; b=F7XMT6KXz0CUtwGpe19Lvd95MlRt07/AaJ6QXa8omxdiobHYoFfQznxMGV5lWhv3GDCNZq+ZrIfdk57vsaWsyT5AXNql9Pp4uUEJYqWyIpJArppaxw/AztZQa8RWc+fd/HU99aVPWGzFIUvvkR/X+GmjKNY/gfWk2EHafxAqrNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NS2RLEMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF68C19425;
+	Sat, 28 Feb 2026 17:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300268;
-	bh=Smv77XQEJ5/xq6cT/QFfKDsGNU3NpzZ+gFapQgA2lqQ=;
+	s=k20201202; t=1772300269;
+	bh=1q1EO47DTeDmZ2QDAtWP7XcJKLHjRpu8B3ciVouXU6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgKAycxY70Eyyk5bZaNN0zy9GbRZheJwklgxori7bb4M1CpZJK3WtzKAMdEtP0Gu+
-	 QBaS/uTbp4dmmruS8tPUuRggXADmxK3cVFwl9ka6Ua1wjZ0L0cITjvHe7NgmFy/7YZ
-	 vS0skvFN5GqkGsuhJtiAlcUUj8pFJHkuNFU61MpntU5twF9Wmy/Q3XspvAVbO6VXBb
-	 d2/A6L3VDxiN8GeyQ4vWzMgzq7mt0dtZuZZABqUirx4NRr0ffRPbz1JVX4NXJZPwLC
-	 QAdL2PPIzlSraVKbtSSFAboPrhja3c6CS65LF2zxvj2Jn2fkY1rbJ7AI37aZJ26NXK
-	 FBOZah8xQYD5w==
+	b=NS2RLEMRZrAAzn26OQH99fe5AtmI803rzoA2R46yVAlKr2Foac45G+rP/5nKCIUm5
+	 ryQiMooSN3UHoqNJa9kfsFNcEmGT1oye8YzrkUg0eHaRVlnedY2pTx6D2vRIuZcbZD
+	 v45Ls7B5ZFTjanvwuGmikfuPkw49148kReK5hrdxlETfVnie5+IAqxkc2Ui6GiYkMS
+	 t9Gj4qCy3IF6B1rLfxi7WPFi6ePvKEi6ONNtqZPz031XLxHyfNtrQMgGWUSeZhZwQ8
+	 xXoyiniu9i1fpHMQCD63LohywrOG29Ot9PjAgMf/pFCa4NiXGkNqoB6Ohj4+zu0Dfa
+	 r3qb63Pgc1KHg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mingj Ye <insyelu@gmail.com>,
-	Hayes Wang <hayeswang@realtek.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 294/844] net: usb: r8152: fix transmit queue timeout
-Date: Sat, 28 Feb 2026 12:23:27 -0500
-Message-ID: <20260228173244.1509663-295-sashal@kernel.org>
+Subject: [PATCH 6.19 295/844] PCI: imx6: Add CLKREQ# override to enable REFCLK for i.MX95 PCIe
+Date: Sat, 28 Feb 2026 12:23:28 -0500
+Message-ID: <20260228173244.1509663-296-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -68,8 +69,8 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
@@ -77,61 +78,105 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220373-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220374-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,realtek.com:email]
-X-Rspamd-Queue-Id: 0AA741C76D4
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EB5711C64F7
 X-Rspamd-Action: no action
 
-From: Mingj Ye <insyelu@gmail.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 833dcd75d54f0bf5aa0a0781ff57456b421fbb40 ]
+[ Upstream commit 27a064aba2da6bc58fc36a6b8e889187ae3bf89d ]
 
-When the TX queue length reaches the threshold, the netdev watchdog
-immediately detects a TX queue timeout.
+The CLKREQ# is an open drain, active low signal that is driven low by
+the card to request reference clock. It's an optional signal added in
+PCIe CEM r4.0, sec 2. Thus, this signal wouldn't be driven low if it's
+not exposed on the slot.
 
-This patch updates the trans_start timestamp of the transmit queue
-on every asynchronous USB URB submission along the transmit path,
-ensuring that the network watchdog accurately reflects ongoing
-transmission activity.
+On the i.MX95 EVK board, REFCLK to the host and endpoint is gated by this
+CLKREQ# signal. So if the CLKREQ# signal is not driven by the endpoint, it
+will gate the REFCLK to host too, leading to operational failure.
 
-Signed-off-by: Mingj Ye <insyelu@gmail.com>
-Reviewed-by: Hayes Wang <hayeswang@realtek.com>
-Link: https://patch.msgid.link/20260120015949.84996-1-insyelu@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Hence, enable the REFCLK on this SoC by enabling the CLKREQ# override using
+imx95_pcie_clkreq_override() helper during probe. This override should only
+be cleared when the CLKREQ# signal is exposed on the slot.
+
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[mani: reworded description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251015030428.2980427-11-hongxing.zhu@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/controller/dwc/pci-imx6.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 2f3baa5f6e9c9..6b107cf5f37bd 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -2449,6 +2449,8 @@ static int r8152_tx_agg_fill(struct r8152 *tp, struct tx_agg *agg)
- 	ret = usb_submit_urb(agg->urb, GFP_ATOMIC);
- 	if (ret < 0)
- 		usb_autopm_put_interface_async(tp->intf);
-+	else
-+		netif_trans_update(tp->netdev);
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index f28e335bbbfaf..dd69af0f195ff 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -52,6 +52,8 @@
+ #define IMX95_PCIE_REF_CLKEN			BIT(23)
+ #define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
+ #define IMX95_PCIE_SS_RW_REG_1			0xf4
++#define IMX95_PCIE_CLKREQ_OVERRIDE_EN		BIT(8)
++#define IMX95_PCIE_CLKREQ_OVERRIDE_VAL		BIT(9)
+ #define IMX95_PCIE_SYS_AUX_PWR_DET		BIT(31)
  
- out_tx_fill:
- 	return ret;
+ #define IMX95_PE0_GEN_CTRL_1			0x1050
+@@ -706,6 +708,22 @@ static int imx7d_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+ 	return 0;
+ }
+ 
++static void imx95_pcie_clkreq_override(struct imx_pcie *imx_pcie, bool enable)
++{
++	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
++			   IMX95_PCIE_CLKREQ_OVERRIDE_EN,
++			   enable ? IMX95_PCIE_CLKREQ_OVERRIDE_EN : 0);
++	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
++			   IMX95_PCIE_CLKREQ_OVERRIDE_VAL,
++			   enable ? IMX95_PCIE_CLKREQ_OVERRIDE_VAL : 0);
++}
++
++static int imx95_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
++{
++	imx95_pcie_clkreq_override(imx_pcie, enable);
++	return 0;
++}
++
+ static int imx_pcie_clk_enable(struct imx_pcie *imx_pcie)
+ {
+ 	struct dw_pcie *pci = imx_pcie->pci;
+@@ -1916,6 +1934,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 		.core_reset = imx95_pcie_core_reset,
+ 		.init_phy = imx95_pcie_init_phy,
+ 		.wait_pll_lock = imx95_pcie_wait_for_phy_pll_lock,
++		.enable_ref_clk = imx95_pcie_enable_ref_clk,
+ 	},
+ 	[IMX8MQ_EP] = {
+ 		.variant = IMX8MQ_EP,
+@@ -1972,6 +1991,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 		.core_reset = imx95_pcie_core_reset,
+ 		.wait_pll_lock = imx95_pcie_wait_for_phy_pll_lock,
+ 		.epc_features = &imx95_pcie_epc_features,
++		.enable_ref_clk = imx95_pcie_enable_ref_clk,
+ 		.mode = DW_PCIE_EP_TYPE,
+ 	},
+ };
 -- 
 2.51.0
 
