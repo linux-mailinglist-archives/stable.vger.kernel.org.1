@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-220114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4C+oH9Apo2kr+AQAu9opvQ
-	(envelope-from <stable+bounces-220114-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:45:52 +0100
+	id aEcMK9soo2kr+AQAu9opvQ
+	(envelope-from <stable+bounces-220115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:41:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45D71C5142
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:45:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558501C5094
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:41:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1AB9E300BC9E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:36:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2370330A095A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FACB47ECF1;
-	Sat, 28 Feb 2026 17:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F1247F2C4;
+	Sat, 28 Feb 2026 17:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GBUOH1uu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PTSDz73A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6EF47ECE8;
-	Sat, 28 Feb 2026 17:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BEF47ECFE;
+	Sat, 28 Feb 2026 17:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300025; cv=none; b=guQ+5xGvn8n8TvLfYbNO5RKyQzwxTRc4xc4GY7SGRv+1i8+7G5JKdJ8+QUa7fJEh/uMEDjDMhUYjWFrKeSe7vsvfl05VHB/iwYnsqTMJrEY7ezlRkAOUtPaqqnzWWU6EoaCqgjruO28SncNbu0sil3exTYs1WiGqOYHfBlIoUgo=
+	t=1772300026; cv=none; b=Qa29c9WnPVkXoEcwHcTNGDJ8pJJx8lGTbWjCHIWdKpo4Ip7LrfCViR7nQO78ADcWsHwe5LdXqc1oE9RAnc3yxEYN6KuJcyjF9zyuil5T1sVBpkCZ15TtFmA37VchEPLqhWHP8AbR5XcWFLA2WMyr7vGc0ywubHuUxPzqgub36rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300025; c=relaxed/simple;
-	bh=EY/BGeOOCFFP9d7pnNT8svYATTIHoqhTE4sX02nGVNg=;
+	s=arc-20240116; t=1772300026; c=relaxed/simple;
+	bh=lgckruRzCqInsR1TwxzrE/g9fFUJVXK1HokDjmRbsYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oyu4PnxBROBLP6MmGFFV9MBhJ2KkSllPEU7KY9QOqKjcVQhLasCnl1GUk9aJgBBsmy2JPQllUqHRfm78wroZ+IX8cRKHR2YQF2Mi9D4Blgq/Za3crTqGuw6UTT8QmiGI9GS6V6KHAm7TSRfNwI9yBCc/xNugeOoAkXZRALrRQE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GBUOH1uu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CBDC116D0;
-	Sat, 28 Feb 2026 17:33:44 +0000 (UTC)
+	 MIME-Version; b=p24EV/HIJqt1MGGIRP3r6dg+9FDqbUYyK2kE/Lq9rwpR7/T9efKDRUtxwmNooiot4Bms0mP/tcZ43JqVYsXucQkh+MQxKfWYq0y5UTVHqovUgyQZ7z2DthjAAuqMTA3QmUjze/IjdwSt9JO3moV8lWrzEsMpvXJA197vfwnTJgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PTSDz73A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461D9C19425;
+	Sat, 28 Feb 2026 17:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300025;
-	bh=EY/BGeOOCFFP9d7pnNT8svYATTIHoqhTE4sX02nGVNg=;
+	s=k20201202; t=1772300026;
+	bh=lgckruRzCqInsR1TwxzrE/g9fFUJVXK1HokDjmRbsYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBUOH1uuu+sPK48Wl9xyQZeNy2ZZNi0ImLz/6KZsavTrqMvDqpoBDjx8yzhLKVLl5
-	 rhRea2BzEmFIwxA1zGeJ7ekntL7LVGueAuLvsIp+85g5TVMjbL6Vl9iumhKGMF9t9h
-	 SkqVb/lJpTKqVibWfm2hjjpNdfuiKtO2zjjmtFGrsydpu8LAqdU9xN3pjHJ5zMuyKN
-	 uvI/MYSehn65TiJvxbeQxbiIQxbBbPdPZeLmEny8kXsMB+r1pOdiUq8iddPAMOWCXn
-	 8z0wcjN1gcuKYjhzE3QSgEtMhdfVgPP7sQN2t9EpCewB5kll9ttIhR0dzdiSvyZ60U
-	 2QY08bPOIs8UA==
+	b=PTSDz73A83ptiKoY65VZpn3rSCu6ix3f44K9goywMJBjvUAgzpKe0dzuTmaTfqsWB
+	 bks+5RtZo5mUkMrppCLWkYFv7Lz5Shjv6Ww2773qbRIdQtFKkhhTUqHPlOucgaDPsQ
+	 BCwJljQJMEstnE4HzwDkh9oFpdYyQXHwjpSbBLBK3QjsCjbyxmKxSc/v+mBI+3K/yN
+	 1R+l5YGwp2KRlmTDnhGsMC9kP0MhOnAtLGrMq4YRqv1qfxLPpyl0ODL+WzUbJE4Ezb
+	 U5emMNZY+Iml0dnWfcip0stZJRQq9dUnC2H/a8EvW0b/YNc6OjmNF1gPOTwOUnbQBK
+	 55+I8iFVghSxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jeffrey Bencteux <jeff@bencteux.fr>,
-	Paul Moore <paul@paul-moore.com>,
+Cc: Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 036/844] audit: add fchmodat2() to change attributes class
-Date: Sat, 28 Feb 2026 12:19:09 -0500
-Message-ID: <20260228173244.1509663-37-sashal@kernel.org>
+Subject: [PATCH 6.19 037/844] hfsplus: fix volume corruption issue for generic/498
+Date: Sat, 28 Feb 2026 12:19:10 -0500
+Message-ID: <20260228173244.1509663-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,69 +69,177 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220114-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220115-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bencteux.fr:email,paul-moore.com:email]
-X-Rspamd-Queue-Id: D45D71C5142
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,fu-berlin.de:email,dubeyko.com:email,vivo.com:email]
+X-Rspamd-Queue-Id: 558501C5094
 X-Rspamd-Action: no action
 
-From: Jeffrey Bencteux <jeff@bencteux.fr>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 4f493a6079b588cf1f04ce5ed6cdad45ab0d53dc ]
+[ Upstream commit 9a8c4ad44721da4c48e1ff240ac76286c82837fe ]
 
-fchmodat2(), introduced in version 6.6 is currently not in the change
-attribute class of audit. Calling fchmodat2() to change a file
-attribute in the same fashion than chmod() or fchmodat() will bypass
-audit rules such as:
+The xfstests' test-case generic/498 leaves HFS+ volume
+in corrupted state:
 
--w /tmp/test -p rwa -k test_rwa
+sudo ./check generic/498
+FSTYP -- hfsplus
+PLATFORM -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc1+ #18 SMP PREEMPT_DYNAMIC Thu Dec 4 12:24:45 PST 2025
+MKFS_OPTIONS -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
 
-The current patch adds fchmodat2() to the change attributes class.
+generic/498 _check_generic_filesystem: filesystem on /dev/loop51 is inconsistent
+(see XFSTESTS-2/xfstests-dev/results//generic/498.full for details)
 
-Signed-off-by: Jeffrey Bencteux <jeff@bencteux.fr>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Ran: generic/498
+Failures: generic/498
+Failed 1 of 1 tests
+
+sudo fsck.hfsplus -d /dev/loop51
+** /dev/loop51
+Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+Executing fsck_hfs (version 540.1-Linux).
+** Checking non-journaled HFS Plus Volume.
+The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+Invalid leaf record count
+(It should be 16 instead of 2)
+** Checking multi-linked files.
+CheckHardLinks: found 1 pre-Leopard file inodes.
+** Checking catalog hierarchy.
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
+CBTStat = 0x8000 CatStat = 0x00000000
+** Repairing volume.
+** Rechecking volume.
+** Checking non-journaled HFS Plus Volume.
+The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking multi-linked files.
+CheckHardLinks: found 1 pre-Leopard file inodes.
+** Checking catalog hierarchy.
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume untitled was repaired successfully.
+
+The generic/498 test executes such steps on final phase:
+
+mkdir $SCRATCH_MNT/A
+mkdir $SCRATCH_MNT/B
+mkdir $SCRATCH_MNT/A/C
+touch $SCRATCH_MNT/B/foo
+$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/B/foo
+
+ln $SCRATCH_MNT/B/foo $SCRATCH_MNT/A/C/foo
+$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/A
+
+"Simulate a power failure and mount the filesystem
+to check that what we explicitly fsync'ed exists."
+
+_flakey_drop_and_remount
+
+The FSCK tool complains about "Invalid leaf record count".
+HFS+ b-tree header contains leaf_count field is updated
+by hfs_brec_insert() and hfs_brec_remove(). The hfs_brec_insert()
+is involved into hard link creation process. However,
+modified in-core leaf_count field is stored into HFS+
+b-tree header by hfs_btree_write() method. But,
+unfortunately, hfs_btree_write() hasn't been called
+by hfsplus_cat_write_inode() and hfsplus_file_fsync()
+stores not fully consistent state of the Catalog File's
+b-tree.
+
+This patch adds calling hfs_btree_write() method in
+the hfsplus_cat_write_inode() with the goal of
+storing consistent state of Catalog File's b-tree.
+Finally, it makes FSCK tool happy.
+
+sudo ./check generic/498
+FSTYP         -- hfsplus
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc1+ #22 SMP PREEMPT_DYNAMIC Sat Dec  6 17:01:31 PST 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/498 33s ...  31s
+Ran: generic/498
+Passed all 1 tests
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20251207035821.3863657-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/asm-generic/audit_change_attr.h | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/hfsplus/inode.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/audit_change_attr.h b/include/asm-generic/audit_change_attr.h
-index cc840537885fb..ddd90bbe40dfc 100644
---- a/include/asm-generic/audit_change_attr.h
-+++ b/include/asm-generic/audit_change_attr.h
-@@ -26,6 +26,9 @@ __NR_fremovexattr,
- __NR_fchownat,
- __NR_fchmodat,
- #endif
-+#ifdef __NR_fchmodat2
-+__NR_fchmodat2,
-+#endif
- #ifdef __NR_chown32
- __NR_chown32,
- __NR_fchown32,
+diff --git a/fs/hfsplus/inode.c b/fs/hfsplus/inode.c
+index c762bf909d1aa..6153e5cc6eb65 100644
+--- a/fs/hfsplus/inode.c
++++ b/fs/hfsplus/inode.c
+@@ -615,6 +615,7 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ int hfsplus_cat_write_inode(struct inode *inode)
+ {
+ 	struct inode *main_inode = inode;
++	struct hfs_btree *tree = HFSPLUS_SB(inode->i_sb)->cat_tree;
+ 	struct hfs_find_data fd;
+ 	hfsplus_cat_entry entry;
+ 	int res = 0;
+@@ -627,7 +628,7 @@ int hfsplus_cat_write_inode(struct inode *inode)
+ 	if (!main_inode->i_nlink)
+ 		return 0;
+ 
+-	if (hfs_find_init(HFSPLUS_SB(main_inode->i_sb)->cat_tree, &fd))
++	if (hfs_find_init(tree, &fd))
+ 		/* panic? */
+ 		return -EIO;
+ 
+@@ -692,6 +693,15 @@ int hfsplus_cat_write_inode(struct inode *inode)
+ 	set_bit(HFSPLUS_I_CAT_DIRTY, &HFSPLUS_I(inode)->flags);
+ out:
+ 	hfs_find_exit(&fd);
++
++	if (!res) {
++		res = hfs_btree_write(tree);
++		if (res) {
++			pr_err("b-tree write err: %d, ino %lu\n",
++			       res, inode->i_ino);
++		}
++	}
++
+ 	return res;
+ }
+ 
 -- 
 2.51.0
 
