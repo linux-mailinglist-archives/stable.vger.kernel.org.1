@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IE4WJnk1o2nP+QQAu9opvQ
-	(envelope-from <stable+bounces-220359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:35:37 +0100
+	id iCXFMtBGo2lM/AQAu9opvQ
+	(envelope-from <stable+bounces-220360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:49:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1184B1C602A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:35:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BA31C7658
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:49:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AE955316E7AF
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:16:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 70946318DAC0
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF2D347FFB;
-	Sat, 28 Feb 2026 17:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D7639FE85;
+	Sat, 28 Feb 2026 17:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aoYojGtS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epxD7boY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F36839F557;
-	Sat, 28 Feb 2026 17:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2E6480331;
+	Sat, 28 Feb 2026 17:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300256; cv=none; b=VgwLSPpo/BQXXO8fCBggsGuKUJOjfh87y7KWnope8ZV8pFgJB/qG83RpMAdHBFfs3XHLwmEBZAlwYg+UnQKpF/ufLYiVylctObMlcMYvpxraZujvkgvIqXqgi4pcDfYZ1HQ7hJbX52dGH0KBKmqcZ4PldW9ZNfqq91XcarV6vxQ=
+	t=1772300257; cv=none; b=dqFgNVfATGyXjUQx9/S7q+PHl0zMyir9DzL3zaFppUef6LxCnz83AcQLY4oHM/EeTcAQwrgDSCWNxk3zodg3yv3nWU1xE4a0PpuARii6QdvANL3slxrIv9GWQoDGbUEiUB48g8LyEs/o6CxNIraH5xd/jTeMM8syuAEKnjvgviA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300256; c=relaxed/simple;
-	bh=qAzAVjQg2F7q+HOQT07q23f09EcjIIYvY67EeBdClVU=;
+	s=arc-20240116; t=1772300257; c=relaxed/simple;
+	bh=S+vAKVZSypWTg0uCfcPyfYz9RZ+EQOAVcvk32yYo9cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rtc+hNxyO6p8Jx2XNplb9rVitP0Kc+JfuNyXsKR0Rf7EH5zrMii5X10smhtVc2x5unPgNHVu2umBn5U7pP0uEKd7xyx/w/nDCn/VYe9/enZQgpLQEfycDilYYaafAAmq9y4fvqATKMDN+BoPMj2erYR9wbTRJGPB0gTBfp23/nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aoYojGtS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC518C116D0;
-	Sat, 28 Feb 2026 17:37:35 +0000 (UTC)
+	 MIME-Version; b=sKn/71VL0qiDkgcrn4wshWeotxVNSZOz4tFwXAPM0jwPjQczWTa+TisHswmc+x+4Cn3C6Ywb+C/4K4jUQMjTweAQt6VHTZaxQEDR4vCZTQOUMHPQmDWDhiKF7QTyB5yrJHssH7B3xUe8t/yCiFoNtO7RUTZ4AcoJ88nwNY1pr7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epxD7boY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFCEC19424;
+	Sat, 28 Feb 2026 17:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300256;
-	bh=qAzAVjQg2F7q+HOQT07q23f09EcjIIYvY67EeBdClVU=;
+	s=k20201202; t=1772300257;
+	bh=S+vAKVZSypWTg0uCfcPyfYz9RZ+EQOAVcvk32yYo9cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aoYojGtSwuoqzQ3CA+Y5+iSW1TTj9DOXV7oGSUhSq/kM87NwXvF2geBE/SypHZx3n
-	 dCPPp3YvCSif1x6+mAJk5zP2+ObJGoMDgJ3sySSDJUaTingD4ohJVW66LmbHL+lEXC
-	 xAuDCRurUnvkQEzOVgObiq1J67AyoF0ndoil+brda2L3QoWRytXVYIkQmGd/yy+Fvn
-	 XWCG/QxMW0eW/4QRvjsUtugV0zfa57MkZs+EUgDdDQMygkd46oOKMORTeDV3YyfR2P
-	 lTt0jWoK4U7Ht2jBOI7GFhjiGrNEFescfYu8siOnO3G8VHZnQM5KkG8v8D8JRVT1M2
-	 QCtzWMUAtmzeQ==
+	b=epxD7boYJe050N2t3OkFg+OV/iCg59y7ilpXlwNe9ny05VWsxFPSVF4j5Rv/T65Lq
+	 RiP8zc3yThjh7Ut5Uu0Yi3sHUOzXlrfPy9CcaMPSI+i7XoPlUSl3UaGJV86ZlVlslo
+	 c3L2dBNydZyY6kr7ZJ+SWLAM7rT4z5h+qMJVKLjBWN+EAHkZ2JsiNMNzLNShzvbyu0
+	 FAfZzKj+TS/3Mf4Cw2dsBAFXgN2WLfQCSAFFjelVduod32YsDp+tsw9Lt+xfNoE6gn
+	 t3VFrBIg9wprCfxakaiYUJdhUYZ+h+T4lN1f+nSJOXyHEc7JtNgjHmtsX8mRx1vBPG
+	 IgYOalBna5hcg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 281/844] wifi: ath12k: fix mac phy capability parsing
-Date: Sat, 28 Feb 2026 12:23:14 -0500
-Message-ID: <20260228173244.1509663-282-sashal@kernel.org>
+Subject: [PATCH 6.19 282/844] wifi: cfg80211: allow only one NAN interface, also in multi radio
+Date: Sat, 28 Feb 2026 12:23:15 -0500
+Message-ID: <20260228173244.1509663-283-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,128 +71,71 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220359-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220360-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1184B1C602A
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: E6BA31C7658
 X-Rspamd-Action: no action
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit b5151c9b6e3a347416a4b4b55fc00195526d8771 ]
+[ Upstream commit e69fda4d07701373354e52b0321bd40311d743d0 ]
 
-Currently ath12k_pull_mac_phy_cap_svc_ready_ext() assumes only one band
-supported in each phy, hence it skips 5 GHz band if 2 GHz band support
-is detected. This does not work for device which gets only one phy but
-has both bands supported, such as QCC2072.
+According to Wi-Fi Aware (TM) 4.0 specification 2.8, A NAN device can
+have one NAN management interface. This applies also to multi radio
+devices.
+The current code allows a driver to support more than one NAN interface,
+if those are not in the same radio.
 
-Change to check each band individually to fix this issue.
+Fix it.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
-
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260112-ath12k-support-qcc2072-v2-6-fc8ce1e43969@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260107135129.fdaecec0fe8a.I246b5ba6e9da3ec1481ff197e47f6ce0793d7118@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ net/wireless/core.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 12f4d378f50d4..1613492b38350 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -496,6 +496,7 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 	struct ath12k_band_cap *cap_band;
- 	struct ath12k_pdev_cap *pdev_cap = &pdev->cap;
- 	struct ath12k_fw_pdev *fw_pdev;
-+	u32 supported_bands;
- 	u32 phy_map;
- 	u32 hw_idx, phy_idx = 0;
- 	int i;
-@@ -519,14 +520,19 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 		return -EINVAL;
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index a04f96dc9a1d7..16ccf6fb28b21 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -661,12 +661,8 @@ int wiphy_verify_iface_combinations(struct wiphy *wiphy,
+ 				    c->limits[j].max > 1))
+ 				return -EINVAL;
  
- 	mac_caps = wmi_mac_phy_caps + phy_idx;
-+	supported_bands = le32_to_cpu(mac_caps->supported_bands);
-+
-+	if (!(supported_bands & WMI_HOST_WLAN_2GHZ_CAP) &&
-+	    !(supported_bands & WMI_HOST_WLAN_5GHZ_CAP))
-+		return -EINVAL;
+-			/* Only a single NAN can be allowed, avoid this
+-			 * check for multi-radio global combination, since it
+-			 * hold the capabilities of all radio combinations.
+-			 */
+-			if (!combined_radio &&
+-			    WARN_ON(types & BIT(NL80211_IFTYPE_NAN) &&
++			/* Only a single NAN can be allowed */
++			if (WARN_ON(types & BIT(NL80211_IFTYPE_NAN) &&
+ 				    c->limits[j].max > 1))
+ 				return -EINVAL;
  
- 	pdev->pdev_id = ath12k_wmi_mac_phy_get_pdev_id(mac_caps);
- 	pdev->hw_link_id = ath12k_wmi_mac_phy_get_hw_link_id(mac_caps);
--	pdev_cap->supported_bands |= le32_to_cpu(mac_caps->supported_bands);
-+	pdev_cap->supported_bands |= supported_bands;
- 	pdev_cap->ampdu_density = le32_to_cpu(mac_caps->ampdu_density);
- 
- 	fw_pdev = &ab->fw_pdev[ab->fw_pdev_count];
--	fw_pdev->supported_bands = le32_to_cpu(mac_caps->supported_bands);
-+	fw_pdev->supported_bands = supported_bands;
- 	fw_pdev->pdev_id = ath12k_wmi_mac_phy_get_pdev_id(mac_caps);
- 	fw_pdev->phy_id = le32_to_cpu(mac_caps->phy_id);
- 	ab->fw_pdev_count++;
-@@ -535,10 +541,12 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 	 * band to band for a single radio, need to see how this should be
- 	 * handled.
- 	 */
--	if (le32_to_cpu(mac_caps->supported_bands) & WMI_HOST_WLAN_2GHZ_CAP) {
-+	if (supported_bands & WMI_HOST_WLAN_2GHZ_CAP) {
- 		pdev_cap->tx_chain_mask = le32_to_cpu(mac_caps->tx_chain_mask_2g);
- 		pdev_cap->rx_chain_mask = le32_to_cpu(mac_caps->rx_chain_mask_2g);
--	} else if (le32_to_cpu(mac_caps->supported_bands) & WMI_HOST_WLAN_5GHZ_CAP) {
-+	}
-+
-+	if (supported_bands & WMI_HOST_WLAN_5GHZ_CAP) {
- 		pdev_cap->vht_cap = le32_to_cpu(mac_caps->vht_cap_info_5g);
- 		pdev_cap->vht_mcs = le32_to_cpu(mac_caps->vht_supp_mcs_5g);
- 		pdev_cap->he_mcs = le32_to_cpu(mac_caps->he_supp_mcs_5g);
-@@ -548,8 +556,6 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 			WMI_NSS_RATIO_EN_DIS_GET(mac_caps->nss_ratio);
- 		pdev_cap->nss_ratio_info =
- 			WMI_NSS_RATIO_INFO_GET(mac_caps->nss_ratio);
--	} else {
--		return -EINVAL;
- 	}
- 
- 	/* tx/rx chainmask reported from fw depends on the actual hw chains used,
-@@ -565,7 +571,7 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 	pdev_cap->rx_chain_mask_shift =
- 			find_first_bit((unsigned long *)&pdev_cap->rx_chain_mask, 32);
- 
--	if (le32_to_cpu(mac_caps->supported_bands) & WMI_HOST_WLAN_2GHZ_CAP) {
-+	if (supported_bands & WMI_HOST_WLAN_2GHZ_CAP) {
- 		cap_band = &pdev_cap->band[NL80211_BAND_2GHZ];
- 		cap_band->phy_id = le32_to_cpu(mac_caps->phy_id);
- 		cap_band->max_bw_supported = le32_to_cpu(mac_caps->max_bw_supported_2g);
-@@ -585,7 +591,7 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 				le32_to_cpu(mac_caps->he_ppet2g.ppet16_ppet8_ru3_ru0[i]);
- 	}
- 
--	if (le32_to_cpu(mac_caps->supported_bands) & WMI_HOST_WLAN_5GHZ_CAP) {
-+	if (supported_bands & WMI_HOST_WLAN_5GHZ_CAP) {
- 		cap_band = &pdev_cap->band[NL80211_BAND_5GHZ];
- 		cap_band->phy_id = le32_to_cpu(mac_caps->phy_id);
- 		cap_band->max_bw_supported =
 -- 
 2.51.0
 
