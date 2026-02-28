@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WH4+JyBao2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:12:00 +0100
+	id QDXSDTxFo2kB/AQAu9opvQ
+	(envelope-from <stable+bounces-220864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:42:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19FE1C8D8C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:11:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9363F1C7498
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:42:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B74613392193
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:34:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ABE983310E1E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C561E4963C1;
-	Sat, 28 Feb 2026 17:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D830241DDDB;
+	Sat, 28 Feb 2026 17:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiCZXQvR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bd/ItxcL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A8541B918;
-	Sat, 28 Feb 2026 17:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B60241DDD2;
+	Sat, 28 Feb 2026 17:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300748; cv=none; b=QuZF+qjvCJoIFxW03RrmDZzfn/1MQOacN7Jb+tQiLIGsGAPCUPG9SxNUjhGapYs90UoCtn3cLUn9awE026oiGBd1JkM4zeSUeMWasmsyS6Tzbt6lYHMMNe/umPMsuab/0wp1Vap5vgivAbJUZgdm95lCp9Apmsq42JsMRFrUmio=
+	t=1772300749; cv=none; b=pR0bOnBLUFLHxD4Z4EIFSa71O/VdMmg5DiDCIzFnkInaQEVEq/mQVGpUEJvm6eym3yfOZjVlZaEoQ+A9hHwmypDo4RpRAGKAkePz+k5WRV8VxJFzwcELSo4dOUw/S9DIdY6jwPx/8T40s1NVpFjPf2JiweO7g2bmLFSgAqwDwCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300748; c=relaxed/simple;
-	bh=IFBb7akjpT9xHxJvEkyOMo+fidVQgV9jRlm3pQG56bo=;
+	s=arc-20240116; t=1772300749; c=relaxed/simple;
+	bh=JgNDxt1J+KIqE4bkKNZgfOq0qnpsrOurMpn2qfVfZXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESlBeIPNJ6aKlBCSl1YSv4A0O7FI04BjE2iRQHAfvB8Psi/0d1PhIfLBMTpEvvRB/mB2d3yWofZULaWVGagDmbrMiY3Aj+8rXDY1lgzOpREnZNejTC1d1ixG6HhP4Dhqk91f1z2OF5i5mG0DImy/TZwg/V4fabEzREBtQI7IHXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiCZXQvR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2546C2BC87;
-	Sat, 28 Feb 2026 17:45:47 +0000 (UTC)
+	 MIME-Version; b=Gw1YBGfBe3O+GxdG+s3Z7epOANlPxxYjX2Wbt+eGyofxHXxSVo4wyTeHz1F8rg6o/opJhHj+rmA9z3TKMMKABtKRU8a5zoIRXFO2KrsOgydz4qdo/5x6k3eDzL1q2Xg2fQ0ku5EYwbHu2NYS56ScEDM4/vFs5FHirLNWwd5XJ4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bd/ItxcL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A543AC116D0;
+	Sat, 28 Feb 2026 17:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300748;
-	bh=IFBb7akjpT9xHxJvEkyOMo+fidVQgV9jRlm3pQG56bo=;
+	s=k20201202; t=1772300749;
+	bh=JgNDxt1J+KIqE4bkKNZgfOq0qnpsrOurMpn2qfVfZXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CiCZXQvRn5ab9b3kOSsOXZPSHRB2YU7Lu5VekCDarOWZYoWUkWTXQxeNN2cfrRX9e
-	 aUNrSJh+9/0xFSSFd1pM5qF/TtuaBLEu0Y7RAvhgJz9eEMFCpLJk3/Vd2QSxDORxCG
-	 eaMqOStC9dO/Bk6BL0N9f6xqFDXK8p5CjFWK+dyGGNyXNLzlQUbCySSeK0Z48mO+ia
-	 ETVlZksihjuBcpbeI4y5SiFQs/AvL19dWDHpvRoUN/Y1G5VmURtWZuaz/jeXVnZQNj
-	 AaM217I7ENq253l2EGoS3BNM9qXwZSOgCUFjKRAKAwRrSA+pVcP0EZAElHS9cxPYGx
-	 kIW4PsNNOc9PQ==
+	b=Bd/ItxcL013tjaCNMY68RxXItt4of43FPAZ2u9h5useHRk8hvvC1a2N/a+e8KmM2c
+	 E5qMY8FDKWgFvzsbEBc1xbTGF2gIMy63TSFeXurxu6gUAHE5t6Js4JCYOzcypPs0PB
+	 BOEfqt8UAvXO9ei2qpsvf0adDVTggFiFuO48AdyTgSczNm3Eyi0HfbxrnL5GWHYd4f
+	 XpM1x2JpD+5INIZ1ZptKspiZmLohU7Dy2BqJeZ0lz173DlXlEmcKDctKFAKDVPEaPk
+	 0d+FBiagO71PDUKDCZjHym8Zfv5a6hpo2AX6Uo9uKSZeSzwdFVP3/Gn910oaJc+DV/
+	 cS2ejWk3fGTFw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+Cc: Sam Edwards <cfsworks@gmail.com>,
+	Sam Edwards <CFSworks@gmail.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 784/844] tracing: Reset last_boot_info if ring buffer is reset
-Date: Sat, 28 Feb 2026 12:31:37 -0500
-Message-ID: <20260228173244.1509663-785-sashal@kernel.org>
+Subject: [PATCH 6.19 785/844] ceph: do not propagate page array emplacement errors as batch errors
+Date: Sat, 28 Feb 2026 12:31:38 -0500
+Message-ID: <20260228173244.1509663-786-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,19 +72,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220863-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220864-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -92,71 +93,64 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,efficios.com:email]
-X-Rspamd-Queue-Id: F19FE1C8D8C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9363F1C7498
 X-Rspamd-Action: no action
 
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+From: Sam Edwards <cfsworks@gmail.com>
 
-[ Upstream commit 804c4a2209bcf6ed4c45386f033e4d0f7c5bfda5 ]
+[ Upstream commit 707104682e3c163f7c14cdd6b07a3e95fb374759 ]
 
-Commit 32dc0042528d ("tracing: Reset last-boot buffers when reading
-out all cpu buffers") resets the last_boot_info when user read out
-all data via trace_pipe* files. But it is not reset when user
-resets the buffer from other files. (e.g. write `trace` file)
+When fscrypt is enabled, move_dirty_folio_in_page_array() may fail
+because it needs to allocate bounce buffers to store the encrypted
+versions of each folio. Each folio beyond the first allocates its bounce
+buffer with GFP_NOWAIT. Failures are common (and expected) under this
+allocation mode; they should flush (not abort) the batch.
 
-Reset it when the corresponding ring buffer is reset too.
+However, ceph_process_folio_batch() uses the same `rc` variable for its
+own return code and for capturing the return codes of its routine calls;
+failing to reset `rc` back to 0 results in the error being propagated
+out to the main writeback loop, which cannot actually tolerate any
+errors here: once `ceph_wbc.pages` is allocated, it must be passed to
+ceph_submit_write() to be freed. If it survives until the next iteration
+(e.g. due to the goto being followed), ceph_allocate_page_array()'s
+BUG_ON() will oops the worker.
+
+Note that this failure mode is currently masked due to another bug
+(addressed next in this series) that prevents multiple encrypted folios
+from being selected for the same write.
+
+For now, just reset `rc` when redirtying the folio to prevent errors in
+move_dirty_folio_in_page_array() from propagating. Note that
+move_dirty_folio_in_page_array() is careful never to return errors on
+the first folio, so there is no need to check for that. After this
+change, ceph_process_folio_batch() no longer returns errors; its only
+remaining failure indicator is `locked_pages == 0`, which the caller
+already handles correctly.
 
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/177071302364.2293046.17895165659153977720.stgit@mhiramat.tok.corp.google.com
-Fixes: 32dc0042528d ("tracing: Reset last-boot buffers when reading out all cpu buffers")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method")
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ceph/addr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 8e9c1bfe3ebb3..cc93d0e1f1876 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4881,6 +4881,8 @@ static int tracing_single_release_tr(struct inode *inode, struct file *file)
- 	return single_release(inode, file);
- }
- 
-+static bool update_last_data_if_empty(struct trace_array *tr);
-+
- static int tracing_open(struct inode *inode, struct file *file)
- {
- 	struct trace_array *tr = inode->i_private;
-@@ -4905,6 +4907,8 @@ static int tracing_open(struct inode *inode, struct file *file)
- 			tracing_reset_online_cpus(trace_buf);
- 		else
- 			tracing_reset_cpu(trace_buf, cpu);
-+
-+		update_last_data_if_empty(tr);
- 	}
- 
- 	if (file->f_mode & FMODE_READ) {
-@@ -5971,6 +5975,7 @@ tracing_set_trace_read(struct file *filp, char __user *ubuf,
- int tracer_init(struct tracer *t, struct trace_array *tr)
- {
- 	tracing_reset_online_cpus(&tr->array_buffer);
-+	update_last_data_if_empty(tr);
- 	return t->init(tr);
- }
- 
-@@ -7789,6 +7794,7 @@ int tracing_set_clock(struct trace_array *tr, const char *clockstr)
- 		ring_buffer_set_clock(tr->max_buffer.buffer, trace_clocks[i].func);
- 	tracing_reset_online_cpus(&tr->max_buffer);
- #endif
-+	update_last_data_if_empty(tr);
- 
- 	if (tr->scratch && !(tr->flags & TRACE_ARRAY_FL_LAST_BOOT)) {
- 		struct trace_scratch *tscratch = tr->scratch;
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index faecd9025ee9c..3cfe3df6e6a22 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -1369,6 +1369,7 @@ int ceph_process_folio_batch(struct address_space *mapping,
+ 		rc = move_dirty_folio_in_page_array(mapping, wbc, ceph_wbc,
+ 				folio);
+ 		if (rc) {
++			rc = 0;
+ 			folio_redirty_for_writepage(wbc, folio);
+ 			folio_unlock(folio);
+ 			break;
 -- 
 2.51.0
 
