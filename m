@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-220270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDkMF4szo2mX+QQAu9opvQ
-	(envelope-from <stable+bounces-220270-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:27:23 +0100
+	id kJpXMtEwo2kE+QQAu9opvQ
+	(envelope-from <stable+bounces-220271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:15:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60921C5CF8
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:27:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00DA21C595D
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC8E231A3E03
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:02:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7F8603102DF8
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B09381CC9;
-	Sat, 28 Feb 2026 17:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFB5381CC3;
+	Sat, 28 Feb 2026 17:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y3pPVPRT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZU7meIA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9905381CBF;
-	Sat, 28 Feb 2026 17:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D444B381CDD;
+	Sat, 28 Feb 2026 17:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300173; cv=none; b=VGFYyT1S/WD0R6dlcicXNdDozq1UUS1wUjeCc0nD4NX3ZJwSZ3T6LfIKuWYlhxp+9yKhgikh27Got94cClGPS4vy7d0phRncEqMHZzC/ym+XjLDDosOnsA22RRpiML6dWM3K1nTkPRReyfzXKkOqeTCVrQYy5GtOqLDyCOcy3go=
+	t=1772300174; cv=none; b=JtWyDIIHXzQ/X5nzkVQaMt7ESbQZkxMn4L8pBnhGCoQu+U4pElUYCHWF/cHeN8RkcPubGmVHZfBIy+PEPa0tm82NE9IWqGTF848trejKaRMuxCFDQWvwK6eCeUGcvxE6L/yWwzTH8OuTU3vb15Jbj7MaJ4gcDNc0kuE7XBx0wKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300173; c=relaxed/simple;
-	bh=eJtyVck8aATmjY54Z7ZJUhHhk9S7xobDAX5bxsj0qi0=;
+	s=arc-20240116; t=1772300174; c=relaxed/simple;
+	bh=T9FGvJhnf/Nzrx56iXUJ+P2/8aqv2CDO+boMUZgDRfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GszRTIbAsEXH5yCFlUlkZHa9N95OlxoUGdo9Zd7bFLTxlGLoreI0HiSAPKB7couX5pVetKv5B5/5+9AJvmKdHCpmv4mBsQAWqyJml1xCMvPhr80Pgza6hRTUOWq5hcBvxsGvEN3rMGWoLuc/RfBaCiJHwdKUAE0/nhO5ma4LB38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y3pPVPRT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D2AC19424;
-	Sat, 28 Feb 2026 17:36:12 +0000 (UTC)
+	 MIME-Version; b=KcEwZEwqLqqEReTFogD8SJrse1Y4NBzF7gLGWzxReYS8Sumxakz/1tJ4Gkf9BxSW6+waeHUoZaX+s2aKf4Cto3Hs6Opwffpy0XNEI4NXiq6LAuleR8R6G+OvvUIam2IJRpEkEtWfzXdxe3MXSizYg0/xrvRnSQPkocPWF5KytaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZU7meIA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7112C19425;
+	Sat, 28 Feb 2026 17:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300173;
-	bh=eJtyVck8aATmjY54Z7ZJUhHhk9S7xobDAX5bxsj0qi0=;
+	s=k20201202; t=1772300174;
+	bh=T9FGvJhnf/Nzrx56iXUJ+P2/8aqv2CDO+boMUZgDRfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3pPVPRTpQgda92c8qsQXnuPEhyA88PhIv59HNQ7WIjCqI7ZOimN4VPdPchq3kxS/
-	 I21CSDjfB681YLbB6cF6GQJ+PA/SKlJ8AW19dEZfjNem8p3SmhKcAw87kOx9wYOOID
-	 Df7oMIgPWFeHTnq0LDUTEvix3/UoLpA6AeHyuiy8qXV+oJ3jCwxPKtyDsey7kHC06u
-	 wGA1LN+wIOCe4lQGu89389rf+0vzuAlb5aj+N0VUonOVQm5VWlqrqLa34iEe3M+TrQ
-	 NXp0ZmUSCw0ufPo785Peax2fXLGH43k251Rj/QES6uWU1D2xcbErLEYwh8xjq67QZp
-	 KFr1ckidEQlFA==
+	b=oZU7meIAVUCHRBfbjHzL1m3UCjtQEsAxQ1iimSberrQV+hR6e9RA6sQWJquUCcTFL
+	 1Opsq9SBEDegttA0+0IvQ0tXGHQrUwTLpgEfo4RW7G9ljAlVpC2EF00OJ/y4umqoxt
+	 1RujqgVOcPuEV6pPAczJtTZ79j4LaYsHV2ZLciItKh6S3scJrS4Jg4cKPi6DOEle21
+	 yLP3vPmUHq06t3kBZLlHvjhmurfsQmjpHxiWPQcMexfkJ8IvRCrsge+IP8Mnnk9yOY
+	 q5qP4txteYC6v40rph8/on9KswYz4Bt9A9Q4BrAGDlQ4Oz+k6HmNbMXSKPRe/Aq3A1
+	 pdEFFqAWF4nRw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Donet Tom <donettom@linux.ibm.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Xiao Kan <814091656@qq.com>,
+	Xiao Kan <xiao.kan@samsung.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 192/844] drm/amdkfd: Fix GART PTE for non-4K pagesize in svm_migrate_gart_map()
-Date: Sat, 28 Feb 2026 12:21:45 -0500
-Message-ID: <20260228173244.1509663-193-sashal@kernel.org>
+Subject: [PATCH 6.19 193/844] drm: Account property blob allocations to memcg
+Date: Sat, 28 Feb 2026 12:21:46 -0500
+Message-ID: <20260228173244.1509663-194-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,80 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,amd.com,gmail.com,kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-220270-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_CC(0.00)[qq.com,samsung.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220271-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: B60921C5CF8
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qq.com:email,samsung.com:email]
+X-Rspamd-Queue-Id: 00DA21C595D
 X-Rspamd-Action: no action
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Xiao Kan <814091656@qq.com>
 
-[ Upstream commit 6c160001661b6c4e20f5c31909c722741e14c2d8 ]
+[ Upstream commit 26b4309a3ab82a0697751cde52eb336c29c19035 ]
 
-In svm_migrate_gart_map(), while migrating GART mapping, the number of
-bytes copied for the GART table only accounts for CPU pages. On non-4K
-systems, each CPU page can contain multiple GPU pages, and the GART
-requires one 8-byte PTE per GPU page. As a result, an incorrect size was
-passed to the DMA, causing only a partial update of the GART table.
+DRM_IOCTL_MODE_CREATEPROPBLOB allows userspace to allocate arbitrary-sized
+property blobs backed by kernel memory.
 
-Fix this function to work correctly on non-4K page-size systems by
-accounting for the number of GPU pages per CPU page when calculating the
-number of bytes to be copied.
+Currently, the blob data allocation is not accounted to the allocating
+process's memory cgroup, allowing unprivileged users to trigger unbounded
+kernel memory consumption and potentially cause system-wide OOM.
 
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Mark the property blob data allocation with GFP_KERNEL_ACCOUNT so that the memory
+is properly charged to the caller's memcg. This ensures existing cgroup
+memory limits apply and prevents uncontrolled kernel memory growth without
+introducing additional policy or per-file limits.
+
+Signed-off-by: Xiao Kan <814091656@qq.com>
+Signed-off-by: Xiao Kan <xiao.kan@samsung.com>
+Link: https://patch.msgid.link/tencent_D12AA2DEDE6F359E1AF59405242FB7A5FD05@qq.com
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 2 +-
+ drivers/gpu/drm/drm_property.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-index 6ada7b4af7c68..5086caac3fd06 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-@@ -61,7 +61,7 @@ svm_migrate_gart_map(struct amdgpu_ring *ring, u64 npages,
- 	*gart_addr = adev->gmc.gart_start;
+diff --git a/drivers/gpu/drm/drm_property.c b/drivers/gpu/drm/drm_property.c
+index 596272149a359..3c88b5fbdf28c 100644
+--- a/drivers/gpu/drm/drm_property.c
++++ b/drivers/gpu/drm/drm_property.c
+@@ -562,7 +562,7 @@ drm_property_create_blob(struct drm_device *dev, size_t length,
+ 	if (!length || length > INT_MAX - sizeof(struct drm_property_blob))
+ 		return ERR_PTR(-EINVAL);
  
- 	num_dw = ALIGN(adev->mman.buffer_funcs->copy_num_dw, 8);
--	num_bytes = npages * 8;
-+	num_bytes = npages * 8 * AMDGPU_GPU_PAGES_IN_CPU_PAGE;
+-	blob = kvzalloc(sizeof(struct drm_property_blob)+length, GFP_KERNEL);
++	blob = kvzalloc(sizeof(struct drm_property_blob) + length, GFP_KERNEL_ACCOUNT);
+ 	if (!blob)
+ 		return ERR_PTR(-ENOMEM);
  
- 	r = amdgpu_job_alloc_with_ib(adev, &adev->mman.high_pr,
- 				     AMDGPU_FENCE_OWNER_UNDEFINED,
 -- 
 2.51.0
 
