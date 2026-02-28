@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-220817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAFeAZ9Yo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:05:35 +0100
+	id OKbRJ6ZYo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:05:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D291C8C40
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:05:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 015F81C8C56
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4407A355E372
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:27:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC3623138442
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF5F4138DF;
-	Sat, 28 Feb 2026 17:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F651413F46;
+	Sat, 28 Feb 2026 17:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/PwK+aA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JbTyLAbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD17E2D23A5;
-	Sat, 28 Feb 2026 17:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103C3413F36;
+	Sat, 28 Feb 2026 17:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300702; cv=none; b=nACSPsqjxPHDkEhOthzXaTRaVZj1mIhBVSSHAJdj/r64tkL4VzvKUK/NH3wSfP0/GOQbBOnGw/c/BBgGLIdLxRjOT51wMVrkMBW5QV6UE0KcWIsvFsoy5wOx1rZ3pvCsIyLIbZ2QQE47lg091gTNBafbsPiHtN40G476NbbFOmk=
+	t=1772300704; cv=none; b=q6jS78QqtBSeiXY8xkUcOu5DuMWefq02+q4KjjFQDm+qWqGQgM51VfjUGhyhvIO2PX8gYiV/J/iIiiHIE6j367KYRnl2NRcTTMtrBoip8GEFwBZnjEZ85zz98PFe/mZFjJ/gvkIXNKQD2pvndthByRPgeQ8pDuM04Bjkc6Ep7vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300702; c=relaxed/simple;
-	bh=0qRTXaOIE4LNkwWI98+IZd+MNx2AL1wQd1q54OWNNZY=;
+	s=arc-20240116; t=1772300704; c=relaxed/simple;
+	bh=7XtzJWyng5F+/9CAkuRi23pmTU+hujE5U5871cDjoEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0C/EoimvuyBb0j77tdH4y7ISlQzuBlMnU5/Fe/SDuizDy/jAKgaQ4xHDXmLTgKJMJQI4NWIyhjwwHU4o1bJS0T7Xy/Z/abFH9zkAJa0zRs1zoN5FbG7WQZUGDfHLyVy0LVNaqPkFh397Z7eJ2MQvA3CRKa0nHM9ZaiZ9arQo9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/PwK+aA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECED0C116D0;
-	Sat, 28 Feb 2026 17:45:01 +0000 (UTC)
+	 MIME-Version; b=Lzm7y9gLfgLTz/zwiWARCQNGwJDL+IH04amVX58W86LR8hl5kfwlnftyWWLncg84u+b1yhqmwwNemy+gwe6F+QVwq0Y3PdNghTwzrRXGJrVmQOXu4EhG12YTKzSrIsRhwwyme+UeC52rFgQzJliWtvTOefhdC80lF8ROjLbb0mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JbTyLAbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F33A2C116D0;
+	Sat, 28 Feb 2026 17:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300702;
-	bh=0qRTXaOIE4LNkwWI98+IZd+MNx2AL1wQd1q54OWNNZY=;
+	s=k20201202; t=1772300703;
+	bh=7XtzJWyng5F+/9CAkuRi23pmTU+hujE5U5871cDjoEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/PwK+aAH7hmufkQXq4/3oieFFX6x24aeulixvEWSyqKFmWg/teLNtFyjUFZzUs7g
-	 Omt7IRyXSYNrCexRQZIblj7fKVr5YnDkkYDa348KGd8KEbkuF4Etr0jXBDYNgl16f4
-	 mxosdPo8B+b4wLiakzTgbnyi1qtZPaR2WQ5p3R9yib1JMIs2Y9U+byax2BLDgGtqms
-	 6JQ57Me0MAgW2ghhApnfSd5U8xWgQm1dUadIlXuR35CAbxP9gvNmq6Bg2k5Sg3Djox
-	 RC/liQW00nHqEnbhCnmElNS064yXTWwVn6ugGJ4MgaKsxyh+49TjKAdCzNQbtpSWK+
-	 EXgSB42pshwHg==
+	b=JbTyLAbZqdQ8vhygTt1IvR3ocQnerMTXcwKdKxRvTLmhq1VnfBi5yGu4gDByP8Cas
+	 CBdiwU3rFdod+6tzDKkGqRrucnoL07fQCtUNNCDQfSSq03xHJvejdoWZyPv+wtiG1E
+	 QKhbO0ER8hOsMFSqIKKvzUyxmmfyhmdkoaoAhgsqXVe+2SdQb3opcD0S+KqvWO1Th1
+	 KAtYiB44vD4nPjBpdRJZJL806zLDWbfIpAkxBBNlEi2wsDnI3Cbrxuc1OzwQAUJbRS
+	 WeF8zQ/XlTPqyYDaJ9Lfr6GjBwILWHuwaXqFpGn3WFv3JuDMFVsVmq5eAt1RHFt07P
+	 gzS7QCfRRe8mw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Harry Yoo <harry.yoo@oracle.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Hao Li <hao.li@linux.dev>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 738/844] mm/slab: avoid allocating slabobj_ext array from its own slab
-Date: Sat, 28 Feb 2026 12:30:51 -0500
-Message-ID: <20260228173244.1509663-739-sashal@kernel.org>
+Subject: [PATCH 6.19 739/844] mm/slab: use unsigned long for orig_size to ensure proper metadata align
+Date: Sat, 28 Feb 2026 12:30:52 -0500
+Message-ID: <20260228173244.1509663-740-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -68,176 +67,134 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220817-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[oracle.com,gmail.com,suse.cz,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220818-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,msgid.link:url,intel.com:email,suse.cz:email,oracle.com:email]
-X-Rspamd-Queue-Id: 20D291C8C40
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: 015F81C8C56
 X-Rspamd-Action: no action
 
 From: Harry Yoo <harry.yoo@oracle.com>
 
-[ Upstream commit 280ea9c3154b2af7d841f992c9fc79e9d6534e03 ]
+[ Upstream commit b85f369b81aed457acbea4ad3314218254a72fd2 ]
 
-When allocating slabobj_ext array in alloc_slab_obj_exts(), the array
-can be allocated from the same slab we're allocating the array for.
-This led to obj_exts_in_slab() incorrectly returning true [1],
-although the array is not allocated from wasted space of the slab.
+When both KASAN and SLAB_STORE_USER are enabled, accesses to
+struct kasan_alloc_meta fields can be misaligned on 64-bit architectures.
+This occurs because orig_size is currently defined as unsigned int,
+which only guarantees 4-byte alignment. When struct kasan_alloc_meta is
+placed after orig_size, it may end up at a 4-byte boundary rather than
+the required 8-byte boundary on 64-bit systems.
 
-Vlastimil Babka observed that this problem should be fixed even when
-ignoring its incompatibility with obj_exts_in_slab(), because it creates
-slabs that are never freed as there is always at least one allocated
-object.
+Note that 64-bit architectures without HAVE_EFFICIENT_UNALIGNED_ACCESS
+are assumed to require 64-bit accesses to be 64-bit aligned.
+See HAVE_64BIT_ALIGNED_ACCESS and commit adab66b71abf ("Revert:
+"ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"") for more details.
 
-To avoid this, use the next kmalloc size or large kmalloc when
-the array can be allocated from the same cache we're allocating
-the array for.
+Change orig_size from unsigned int to unsigned long to ensure proper
+alignment for any subsequent metadata. This should not waste additional
+memory because kmalloc objects are already aligned to at least
+ARCH_KMALLOC_MINALIGN.
 
-In case of random kmalloc caches, there are multiple kmalloc caches
-for the same size and the cache is selected based on the caller address.
-Because it is fragile to ensure the same caller address is passed to
-kmalloc_slab(), kmalloc_noprof(), and kmalloc_node_noprof(), bump the
-size to (s->object_size + 1) when the sizes are equal, instead of
-directly comparing the kmem_cache pointers.
-
-Note that this doesn't happen when memory allocation profiling is
-disabled, as when the allocation of the array is triggered by memory
-cgroup (KMALLOC_CGROUP), the array is allocated from KMALLOC_NORMAL.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com [1]
+Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo
+Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 Cc: stable@vger.kernel.org
-Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
+Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc")
 Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Link: https://patch.msgid.link/20260126125714.88008-1-harry.yoo@oracle.com
-Reviewed-by: Hao Li <hao.li@linux.dev>
+Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo/
+Link: https://patch.msgid.link/20260113061845.159790-2-harry.yoo@oracle.com
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slub.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 53 insertions(+), 7 deletions(-)
+ mm/slub.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index e1583757331e7..9a7c2fec6208a 100644
+index 9a7c2fec6208a..78946116ecd2f 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -2095,6 +2095,49 @@ static inline void init_slab_obj_exts(struct slab *slab)
- 	slab->obj_exts = 0;
+@@ -857,7 +857,7 @@ static inline bool slab_update_freelist(struct kmem_cache *s, struct slab *slab,
+  * request size in the meta data area, for better debug and sanity check.
+  */
+ static inline void set_orig_size(struct kmem_cache *s,
+-				void *object, unsigned int orig_size)
++				void *object, unsigned long orig_size)
+ {
+ 	void *p = kasan_reset_tag(object);
+ 
+@@ -867,10 +867,10 @@ static inline void set_orig_size(struct kmem_cache *s,
+ 	p += get_info_end(s);
+ 	p += sizeof(struct track) * 2;
+ 
+-	*(unsigned int *)p = orig_size;
++	*(unsigned long *)p = orig_size;
  }
  
-+/*
-+ * Calculate the allocation size for slabobj_ext array.
-+ *
-+ * When memory allocation profiling is enabled, the obj_exts array
-+ * could be allocated from the same slab cache it's being allocated for.
-+ * This would prevent the slab from ever being freed because it would
-+ * always contain at least one allocated object (its own obj_exts array).
-+ *
-+ * To avoid this, increase the allocation size when we detect the array
-+ * may come from the same cache, forcing it to use a different cache.
-+ */
-+static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
-+					 struct slab *slab, gfp_t gfp)
-+{
-+	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
-+	struct kmem_cache *obj_exts_cache;
-+
-+	/*
-+	 * slabobj_ext array for KMALLOC_CGROUP allocations
-+	 * are served from KMALLOC_NORMAL caches.
-+	 */
-+	if (!mem_alloc_profiling_enabled())
-+		return sz;
-+
-+	if (sz > KMALLOC_MAX_CACHE_SIZE)
-+		return sz;
-+
-+	if (!is_kmalloc_normal(s))
-+		return sz;
-+
-+	obj_exts_cache = kmalloc_slab(sz, NULL, gfp, 0);
-+	/*
-+	 * We can't simply compare s with obj_exts_cache, because random kmalloc
-+	 * caches have multiple caches per size, selected by caller address.
-+	 * Since caller address may differ between kmalloc_slab() and actual
-+	 * allocation, bump size when sizes are equal.
-+	 */
-+	if (s->object_size == obj_exts_cache->object_size)
-+		return obj_exts_cache->object_size + 1;
-+
-+	return sz;
-+}
-+
- int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
- 		        gfp_t gfp, bool new_slab)
+-static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
++static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
  {
-@@ -2103,26 +2146,26 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
- 	unsigned long new_exts;
- 	unsigned long old_exts;
- 	struct slabobj_ext *vec;
-+	size_t sz;
+ 	void *p = kasan_reset_tag(object);
  
- 	gfp &= ~OBJCGS_CLEAR_MASK;
- 	/* Prevent recursive extension vector allocation */
- 	gfp |= __GFP_NO_OBJ_EXT;
+@@ -883,7 +883,7 @@ static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
+ 	p += get_info_end(s);
+ 	p += sizeof(struct track) * 2;
  
-+	sz = obj_exts_alloc_size(s, slab, gfp);
-+
- 	/*
- 	 * Note that allow_spin may be false during early boot and its
- 	 * restricted GFP_BOOT_MASK. Due to kmalloc_nolock() only supporting
- 	 * architectures with cmpxchg16b, early obj_exts will be missing for
- 	 * very early allocations on those.
- 	 */
--	if (unlikely(!allow_spin)) {
--		size_t sz = objects * sizeof(struct slabobj_ext);
--
-+	if (unlikely(!allow_spin))
- 		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
- 				     slab_nid(slab));
--	} else {
--		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
--				   slab_nid(slab));
--	}
-+	else
-+		vec = kmalloc_node(sz, gfp | __GFP_ZERO, slab_nid(slab));
-+
- 	if (!vec) {
- 		/*
- 		 * Try to mark vectors which failed to allocate.
-@@ -2136,6 +2179,9 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
- 		return -ENOMEM;
+-	return *(unsigned int *)p;
++	return *(unsigned long *)p;
+ }
+ 
+ #ifdef CONFIG_SLUB_DEBUG
+@@ -1198,7 +1198,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
+ 		off += 2 * sizeof(struct track);
+ 
+ 	if (slub_debug_orig_size(s))
+-		off += sizeof(unsigned int);
++		off += sizeof(unsigned long);
+ 
+ 	off += kasan_metadata_size(s, false);
+ 
+@@ -1394,7 +1394,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
+ 		off += 2 * sizeof(struct track);
+ 
+ 		if (s->flags & SLAB_KMALLOC)
+-			off += sizeof(unsigned int);
++			off += sizeof(unsigned long);
  	}
  
-+	VM_WARN_ON_ONCE(virt_to_slab(vec) != NULL &&
-+			virt_to_slab(vec)->slab_cache == s);
-+
- 	new_exts = (unsigned long)vec;
- 	if (unlikely(!allow_spin))
- 		new_exts |= OBJEXTS_NOSPIN_ALLOC;
+ 	off += kasan_metadata_size(s, false);
+@@ -8021,7 +8021,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 
+ 		/* Save the original kmalloc request size */
+ 		if (flags & SLAB_KMALLOC)
+-			size += sizeof(unsigned int);
++			size += sizeof(unsigned long);
+ 	}
+ #endif
+ 
 -- 
 2.51.0
 
