@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-220085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKSPAUUno2kr+AQAu9opvQ
-	(envelope-from <stable+bounces-220085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:35:01 +0100
+	id cOKAJ1wno2kr+AQAu9opvQ
+	(envelope-from <stable+bounces-220086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:35:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75EA01C4EED
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:35:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3741C4F02
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:35:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0AAE330B92BA
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:33:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0FA6630C2EC2
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087C7342511;
-	Sat, 28 Feb 2026 17:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F90325714;
+	Sat, 28 Feb 2026 17:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKB5ykSG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HzhBQx2y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CE934250D;
-	Sat, 28 Feb 2026 17:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FBE343D7B;
+	Sat, 28 Feb 2026 17:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772299977; cv=none; b=V6KFZfo08Psh6tkJtle0x0nZGqD6JSG+GyrqhTBwZtahRkjbenLOT4Z0eInwnkCL5WQ8QCX4PIgyHU+iYj1x3x9BYFpR2Tapw7I99t1ZzDYIH1rtBBtX9jCL/v5peDjAP8uZ3dYUKtWubEd/jekhlKoJmnKf0P7Ys9I0XmsZiF4=
+	t=1772299979; cv=none; b=Likia65YzqdDZzDwiwt3hyk9O6riC1d4RHp7q8YMONdAR8CR/ufzb6j+O944dYkLsmIurnMKqFYMi8moTr576mkAuvyk2c4dUYY9RLwcRIrT8SoD0m3uDSB7Btevx1DEU5UWFNJRfB4rYQ5FsGhxlAmDqk/vryGzkfPy3tgHthw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772299977; c=relaxed/simple;
-	bh=krid9cOIMHTsvZ7Qjdu//AWrJ+QyM9fIZuFb2ch7s6o=;
+	s=arc-20240116; t=1772299979; c=relaxed/simple;
+	bh=JXmZxW8aypecdTK3JC3PR3n01rbBlYd6dg87U+ITZNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBlb20Y6dDZQ6tEZBa1tchVkO/hYL5ps02vvAzjU7x31y1/ozUegkZh5n+6gWRc2Mgm/VXg5o6dpYK7vf3/xCcCd5zvSnF5lyjmuMPgtSp7xnnlCB7nGWdZMZ09VcnVDyfM2Msr+79NEXf/Pm1UL3dyHF4YFYJH0DWbOqveFFag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKB5ykSG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED57FC19423;
-	Sat, 28 Feb 2026 17:32:55 +0000 (UTC)
+	 MIME-Version; b=XK4OaiUFATde+YmacT6Oj5HQJ9HrMOfaWiOYDFMR1Mt5IAIA3vDJBuQXv8InZ/+BFAb7WN4ufMnchSL7Fwvm/bTI+UH9Qr7VaxGuUjjpEjAxYqXM8lAXgz9igLBoeaZcM78QqFrNBTwHONOahN/Wac1T5fkyM5a2BhTaqWPh368=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HzhBQx2y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B20C116D0;
+	Sat, 28 Feb 2026 17:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772299977;
-	bh=krid9cOIMHTsvZ7Qjdu//AWrJ+QyM9fIZuFb2ch7s6o=;
+	s=k20201202; t=1772299979;
+	bh=JXmZxW8aypecdTK3JC3PR3n01rbBlYd6dg87U+ITZNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKB5ykSGvHqRdhLsAf9ZlK63PHe0KCIXa2OF9xYsV+CCYIJb5/tIRZS3Oe7PRC453
-	 YysnhuW0ps1KIEBPqVxcl/huMNZv7cxPIdw12RkuD9eFs6Os0EjRQfw3hAHqdv9uuw
-	 L8XXt7l3bEbvyStjdTY+02wVhxA3F8xMS1+MRQBvpMsHRSgCP0QoNDOzS8pQr+4JJg
-	 hjc9jL6dHEK8WtMfNqy8cP8wU6SQP0ZMhD1GutL33fjeSrmF98CDGVWks374Zx44M+
-	 BoQed6j2GDG2KKMIELYmAPN06jLqm7ZBW751jeS/ubWZgnAh6H+hza2cMh7KvbjkQu
-	 f+oCkLu+jAAwQ==
+	b=HzhBQx2yELtticJs3v9P1FKRKIFrIHYpBTm9k+2Kdot6KblfAkC50OIBfjZhTnsbh
+	 SmKRR5ls9B5IWfoRhJFVNbb+zjjlgQfwJV0PHV2rVK3xWGObEaRErUeWUlGK1lvi63
+	 Q4RgQIHBWoMPlrLVmjdUQLyYE18bzKeEXANwvDd3fcCEM5MB1fEmXqfeDS5TrsH2du
+	 SAYk4joMn2btTq/QLvLp/w8xKhCmQD/rQf4hdxU+Uu8AkmyqkiTsnj1FX6Bi/RKfBa
+	 y/QkEeTMTAKmDjE4SO5opWFmpVSu6pjQCVXjdVzR9ixn58QJW8g84aXhPt4l6LZMq8
+	 8qeMGkpkEJpRA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -60,9 +60,9 @@ Cc: Ian Rogers <irogers@google.com>,
 	Tony Jones <tonyj@suse.de>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 007/844] perf unwind-libdw: Fix invalid reference counts
-Date: Sat, 28 Feb 2026 12:18:40 -0500
-Message-ID: <20260228173244.1509663-8-sashal@kernel.org>
+Subject: [PATCH 6.19 008/844] perf callchain: Fix srcline printing with inlines
+Date: Sat, 28 Feb 2026 12:18:41 -0500
+Message-ID: <20260228173244.1509663-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -89,7 +89,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[google.com,linaro.org,intel.com,linux.intel.com,gmail.com,redhat.com,kernel.org,infradead.org,oracle.com,suse.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220085-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220086-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[15];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -103,19 +103,21 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,linaro.org:email,infradead.org:email,oracle.com:email,al.map:url]
-X-Rspamd-Queue-Id: 75EA01C4EED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,oracle.com:email,infradead.org:email,linaro.org:email,intel.com:email]
+X-Rspamd-Queue-Id: 0E3741C4F02
 X-Rspamd-Action: no action
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit f815fc0c66e777c727689666cfb46b8d461c2f99 ]
+[ Upstream commit abec464767b5d26f0612250d511c18f420826ca1 ]
 
-The addition of addr_location__exit() causes use-after put on the maps
-and map references in the unwind info. Add the gets and then add the
-map_symbol__exit() calls.
+sample__fprintf_callchain() was using map__fprintf_srcline() which won't
+report inline line numbers.
 
-Fixes: 0dd5041c9a0eaf8c ("perf addr_location: Add init/exit/copy functions")
+Fix by using the srcline from the callchain and falling back to the map
+variant.
+
+Fixes: 25da4fab5f66e659 ("perf evsel: Move fprintf methods to separate source file")
 Reviewed-by: James Clark <james.clark@linaro.org>
 Signed-off-by: Ian Rogers <irogers@google.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
@@ -130,34 +132,28 @@ Cc: Tony Jones <tonyj@suse.de>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/unwind-libdw.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/perf/util/evsel_fprintf.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
-index ae70fb56a0572..3ff427a49e4c5 100644
---- a/tools/perf/util/unwind-libdw.c
-+++ b/tools/perf/util/unwind-libdw.c
-@@ -136,8 +136,8 @@ static int entry(u64 ip, struct unwind_info *ui)
- 	}
+diff --git a/tools/perf/util/evsel_fprintf.c b/tools/perf/util/evsel_fprintf.c
+index 10f1a03c28601..5521d00bff2c0 100644
+--- a/tools/perf/util/evsel_fprintf.c
++++ b/tools/perf/util/evsel_fprintf.c
+@@ -185,8 +185,12 @@ int sample__fprintf_callchain(struct perf_sample *sample, int left_alignment,
+ 			if (print_dso && (!sym || !sym->inlined))
+ 				printed += map__fprintf_dsoname_dsoff(map, print_dsoff, addr, fp);
  
- 	e->ip	  = ip;
--	e->ms.maps = al.maps;
--	e->ms.map = al.map;
-+	e->ms.maps = maps__get(al.maps);
-+	e->ms.map = map__get(al.map);
- 	e->ms.sym = al.sym;
+-			if (print_srcline)
+-				printed += map__fprintf_srcline(map, addr, "\n  ", fp);
++			if (print_srcline) {
++				if (node->srcline)
++					printed += fprintf(fp, "\n  %s", node->srcline);
++				else
++					printed += map__fprintf_srcline(map, addr, "\n  ", fp);
++			}
  
- 	pr_debug("unwind: %s:ip = 0x%" PRIx64 " (0x%" PRIx64 ")\n",
-@@ -325,6 +325,9 @@ int unwind__get_entries(unwind_entry_cb_t cb, void *arg,
- 	if (err)
- 		pr_debug("unwind: failed with '%s'\n", dwfl_errmsg(-1));
- 
-+	for (i = 0; i < ui->idx; i++)
-+		map_symbol__exit(&ui->entries[i].ms);
-+
- 	dwfl_end(ui->dwfl);
- 	free(ui);
- 	return 0;
+ 			if (sym && sym->inlined)
+ 				printed += fprintf(fp, " (inlined)");
 -- 
 2.51.0
 
