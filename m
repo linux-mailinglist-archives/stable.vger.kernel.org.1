@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220192-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MlyNE8zo2mX+QQAu9opvQ
-	(envelope-from <stable+bounces-220191-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:26:23 +0100
+	id sGkYBcgto2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220192-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:02:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3EB1C5C9E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:26:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A31A11C55C1
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E348931C5A49
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:51:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4D11F30BF31F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5354C77D7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8AA4C8FED;
 	Sat, 28 Feb 2026 17:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUSzzXcV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="btfSCLA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AA14C77D0;
-	Sat, 28 Feb 2026 17:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C2E4C8FE7;
+	Sat, 28 Feb 2026 17:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300097; cv=none; b=kMIlYXsOgvZhnIRRSpd+obPELXyIAVwbD6DvZiZtHFjqGiSAbrIcE/+kk+lgZWI/Nuv8XsKaGnsJC3YH25fo+R0QLawz+vEWWHSyWAgPdWFyEow5UeskTN+uTGKBpVoKYYWwoiKP9LeJxMVDPwfjd3Id4PYn6IdJSI6ZJTLqq8g=
+	t=1772300098; cv=none; b=bSOaZa/70JuUy5yW8Ny6anf31A7tSyrgL4udmR9t1mIDNneysmrAsSMuGmtj9im4z3TGMdvvMM+GFv7UF5CUmlIeXO8oeg2SmJzbC4erUrjmzyPE4h2mFjYtjKWkF/kc47AuVNMKq628o6mD6sZzf26LDyS6deLMF5xlVhBpPRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300097; c=relaxed/simple;
-	bh=rbgw5izTleVxv+iMLaezDmiKBi4xS3WfjILjsEfjiqo=;
+	s=arc-20240116; t=1772300098; c=relaxed/simple;
+	bh=npRQ0tXYpgs62t84J3RGWsOTLTpkojqnwhv4hiqG08s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTd79rfFA4+02+ZLrtoMvOAPcbG8hXNMcJSuDJ1yJVnaUJOZ+nsz+lF8kSDoukvMZocrIFDMcvvFr6/6r11COywJORAL8eu33DF8LQ5J9PZT+d+P5HXKQBWgpbe+uDUhGbwwBiYG8C7gvqtHBFQu9vnGfENZ0Ic2zaRWcpLSito=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUSzzXcV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BB3C116D0;
+	 MIME-Version; b=iHkDVTHRTxOLlnFD5nJHssUPlOnJG41Tq89l1cPSgHgzWj9g9aSRxfW/HFW70e4gI0IXw8BvnYElstiFE9ZHrnPNzYtjtJtVoOT4D71EN63THPjrVR73jG22Tej8l7J4tkwBPxMG24wf32oDuieutjXODWUvJAyeQ5o/1C2vhd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=btfSCLA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9DDC2BCAF;
 	Sat, 28 Feb 2026 17:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300097;
-	bh=rbgw5izTleVxv+iMLaezDmiKBi4xS3WfjILjsEfjiqo=;
+	s=k20201202; t=1772300098;
+	bh=npRQ0tXYpgs62t84J3RGWsOTLTpkojqnwhv4hiqG08s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gUSzzXcVStM3Qq45TTrEbolAO5lY8C6GP6yEmMk+19h6yq/LvSXNThr+lfQVsjaOX
-	 A7v4zVvuMnv+fSYZMTLxvAdO9z4RCMv19hEZ4Vd9vOUK10GV/j0zjkLJTPn+xVDBk5
-	 vzRHjkESrLFPza49C0joVKmYE2REqLEu/5sWnBlnmYFgSLhJhV33yFMRhx39H1vBsD
-	 n20qwIKGBlCrM6OWCcUzWaoJPcTJx9C03W1bH4WiLLOn5VM5BzUIbWEtolZW+QtsWs
-	 q7hRjFj9M3vnIjqkRZMw9nE65H51OvwaJ62i29TSSZL2uxToHLcuJAfiii/Q+MF0ru
-	 rCF6KbKqAKWkQ==
+	b=btfSCLA5z5gmWbIvTTfbWZ1Cjv6wl3OgviL5roAMkVZD/ubZX4BCIGr1q5eGkGmXb
+	 GuJBnUJYsc94cflkLGGJ0YkhXD3dNeEpRSxmV7LIVkDp6EiuuTYXsbHauBtwKPcrGA
+	 TmNjix+Hs5AK8v5JzVp8ubC7+7ZUQXx+KgxAPZP3lkH82XrsdZfCeTXsu7KzKx9dj5
+	 KlECEUEjZZFHVxSfklIkG5kLd2cXkO3ZBqsJ5sK5gtrHYo1UKxcUrxMs1oZLjwyhDY
+	 gy5CTbifYDEDVsYHOpS4gkRPL9nMM5FgjqZXcvSK1KJji478SWeihB0PBgGUSbqHAw
+	 Xn1i6MszFa34g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+Cc: Tomas Melin <tomas.melin@vaisala.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 113/844] firmware: arm_ffa: Unmap Rx/Tx buffers on init failure
-Date: Sat, 28 Feb 2026 12:20:26 -0500
-Message-ID: <20260228173244.1509663-114-sashal@kernel.org>
+Subject: [PATCH 6.19 114/844] Revert "arm64: zynqmp: Add an OP-TEE node to the device tree"
+Date: Sat, 28 Feb 2026 12:20:27 -0500
+Message-ID: <20260228173244.1509663-115-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,18 +71,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220191-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220192-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -92,41 +92,47 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EA3EB1C5C9E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,vaisala.com:email]
+X-Rspamd-Queue-Id: A31A11C55C1
 X-Rspamd-Action: no action
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Tomas Melin <tomas.melin@vaisala.com>
 
-[ Upstream commit 9fda364cb78c8b9e1abe4029f877300c94655742 ]
+[ Upstream commit c197179990124f991fca220d97fac56779a02c6d ]
 
-ffa_init() maps the Rx/Tx buffers via ffa_rxtx_map() but on the
-partition setup failure path it never unmaps them.
+This reverts commit 06d22ed6b6635b17551f386b50bb5aaff9b75fbe.
 
-Add the missing ffa_rxtx_unmap() call in the error path so that
-the Rx/Tx buffers are properly released before freeing the backing
-pages.
+OP-TEE logic in U-Boot automatically injects a reserved-memory
+node along with optee firmware node to kernel device tree.
+The injection logic is dependent on that there is no manually
+defined optee node. Having the node in zynqmp.dtsi effectively
+breaks OP-TEE's insertion of the reserved-memory node, causing
+memory access violations during runtime.
 
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Message-Id: <20251210031656.56194-1-lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/20251125-revert-zynqmp-optee-v1-1-d2ce4c0fcaf6@vaisala.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/xilinx/zynqmp.dtsi | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index c501c3104b3a4..11a702e7f641c 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -2093,6 +2093,7 @@ static int __init ffa_init(void)
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+index 938b014ca9231..b55c6b2e8e0e1 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
++++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+@@ -192,11 +192,6 @@ psci {
+ 	};
  
- 	pr_err("failed to setup partitions\n");
- 	ffa_notifications_cleanup();
-+	ffa_rxtx_unmap(drv_info->vm_id);
- free_pages:
- 	if (drv_info->tx_buffer)
- 		free_pages_exact(drv_info->tx_buffer, rxtx_bufsz);
+ 	firmware {
+-		optee: optee  {
+-			compatible = "linaro,optee-tz";
+-			method = "smc";
+-		};
+-
+ 		zynqmp_firmware: zynqmp-firmware {
+ 			compatible = "xlnx,zynqmp-firmware";
+ 			#power-domain-cells = <1>;
 -- 
 2.51.0
 
