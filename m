@@ -1,243 +1,135 @@
-Return-Path: <stable+bounces-221229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HhiBzB9o2noEgUAu9opvQ
-	(envelope-from <stable+bounces-221229-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 00:41:36 +0100
+	id 9dxvC3qBo2lEFgUAu9opvQ
+	(envelope-from <stable+bounces-221230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 00:59:54 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E4F1C9C07
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 00:41:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9061C9C53
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 00:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2491D301BA51
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 23:41:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 73DDE301BA5F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 23:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF3D368948;
-	Sat, 28 Feb 2026 23:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C73399025;
+	Sat, 28 Feb 2026 23:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="TTyJUxhH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="T28USL3F"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="RBycUBJz"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBA422FE0A;
-	Sat, 28 Feb 2026 23:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89298430B85;
+	Sat, 28 Feb 2026 23:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772322093; cv=none; b=MIuUxHCZLKzf8uGTUOVevw3Klrh2vStyWBnUsdReReO6FCcrbPooNQXiznITqF7/GDniJkJgqRaSgyHlFs/trvFpva+XgKcLQqwIXLARl4SzSR7OheoDrUPtj7GwnYXzwFMud7ZwTm9DKbc4B+walfSCAt6ZH8yBWiEWBgLdRmo=
+	t=1772323191; cv=none; b=esA7zR5q7/AuwLDih1rzyXhk93VE9MHiUzpsYX3NiMkX9Lfro8b09EuQKJhc3QcZq+6/6Wfs04GagZ0qPkMwUgHKsTlTMNe9f2Rp6XwX1d1MONdbFFDuX4C7Tj1cErLOLeXl+lcu7rSeYjl2DAEgMdFSc2+EYUCn+uF5a6corGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772322093; c=relaxed/simple;
-	bh=eKNZaC3XxAPvfv9hHSICGD9nR0lJKTbaPDsOeXAghxA=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=WjGuB+XPyfJRoLun5VzRNRattfbs5Al9u/CyRnkeHdotdwOkqXTMrD+1mRUYJdaDYRB9MrvXwF/fWbtosR0gOVrueVkx8eMrib610qx2C/64f9PyaWnyqIbvmGDVx/xeQfP48Iay/afyksYc0ABTHdFGUvdH3j6EXNqdCjltP4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=TTyJUxhH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=T28USL3F; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id BE1841D00125;
-	Sat, 28 Feb 2026 18:41:29 -0500 (EST)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-02.internal (MEProxy); Sat, 28 Feb 2026 18:41:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772322089;
-	 x=1772408489; bh=uuZmFrv9AWrdMZr6yL+vBRfXbPdj+HVHSytH9DSa6UM=; b=
-	TTyJUxhH/Uvh8u17qdw6UZhvOc3PBy/Vx3qz8rhh5j1v5p9JYc24QrWOvmOk2wLt
-	Zsnrlobv0Ucsvw5FU8fSyC8iVqExXUTx+DL6hDXhOSZy4xndQY/npjrOJKFWcXl+
-	Jvyzii7N5KKxU6+gx64cK9LXFFoLrACmgEJDZEmp+6sO/8NV+GuqpiYmwkzCPPyB
-	PGzg9Nmd5evj0noL06DlDvmVrMhLsnu2PWg4TpzkdO1c34RCC53WGvy7EfOe9ZXI
-	4Lcwy4eWoKq54FDgAWlExbcZAOwiJdfnE6mLTFzhgla7ZqJITzIvjP8YwfgsxiH7
-	y+bYZRQo55VTOjBXU3d1Tw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772322089; x=
-	1772408489; bh=uuZmFrv9AWrdMZr6yL+vBRfXbPdj+HVHSytH9DSa6UM=; b=T
-	28USL3FX9gih0C7TrRhO2eWaJP/ryjuyG6HFwoCUbuS0uz7EO0r+oyqKVJwjDxuV
-	yD1nTqSrwKxcs/f6LFsxYfjW9xbWP6Yk/Xdimh9V1JAefG/ml30gW3+/j0S3ka4t
-	5bZWr0+y6lafBrhZ0YdHtGs9F9N6B2QYmwxcc0N/anbxDOkXtmhiubtc+vDOmZ5U
-	A3GQkDfiOoSZqH6/jBWszPWfpJ5eeKoCNPop7nMjAkp9U1LTpTUiGHpux5P7ROfD
-	L2Ick7iFM0GaI9OBVVa2otHlAiLoPj80KOgz+w5ZPCSkWx9FRwb8Iv87pQpMKon3
-	Asu8576MUUpoaro5+3J2Q==
-X-ME-Sender: <xms:KH2jaV8VtC7gjFmKj_ooiXoCV8J-9oDqHG-yErK_J19oyaau_ckQ9g>
-    <xme:KH2jaaI64d7AOfKvSvGz9jjxZBV8kbR-28n_zih72FpootCwn1lu8Q4KnomJq3Bk-
-    wm0Q3IL1n3CF7q9Xr4bwBoWPjmOGYo45fVvG_lEU3Fk6-2LjyBWbbaT>
-X-ME-Received: <xmr:KH2jaYfGqZ7Mw-u4bNeEJrCiQkAa5_WXBcNeFlLKXfN6vypQ9KerPhfSXKYW6W5W4rly59mKZgR0giGsAuW4-S__KjIz9A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheefvdehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpedfuegrrhhr
-    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeeiffefteetgeehueetvdfhvdduvdetueeivdeiudduhffhfffhveeg
-    ueegheduudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
-    ohhmpdhnsggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epthgvrhhrrghluhhnrgeljeejsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhifrghr
-    shhofiesghhmgidruggvpdhrtghpthhtohepshgrshhhrghlsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphht
-    thhopehprghttghhvghssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepth
-    horhhvrghlughssehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthho
-    pegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
-X-ME-Proxy: <xmx:KH2jaXYoU0MxIoIrnDC1wNIOhuztZWY50Mh-X5V-iIJMDlAqlEEPjw>
-    <xmx:KH2jaeC2QfmDqthVOmMvMA1f-NcZ3q9Rwz_KUv-Ji5izt46Ws1vtEg>
-    <xmx:KH2jaaIkkRc_kaNThpffKCpHEYUj8-oxDu0ECh13krH_tRjzECPn3Q>
-    <xmx:KH2jaVoK0BdpxCOygcTHUHgBkjvXRfvWjPpYYTQuYp4KEDmiSP0Qnw>
-    <xmx:KX2jaUb9Kxm442sydkT-7jYbCeVan-KuP-4Dcc7B260FJWTbM35IEvBx>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 28 Feb 2026 18:41:26 -0500 (EST)
-Message-ID: <2a740a8d-e5f8-4922-bd2b-04bc76893bbc@pobox.com>
-Date: Sat, 28 Feb 2026 15:41:25 -0800
+	s=arc-20240116; t=1772323191; c=relaxed/simple;
+	bh=hKXMk9JqLxIF/o307cUGlK9XOB5P+KxCRqeDOLdx134=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=awIN2xRG9zohnm7qMgjjwEgwgGXFEK4mHS/j1dIZJVfuE2/8SqMXbG7enn1q2nkGVmsdBvoAEigjcf8orVBlOC+9H/SoegUKeFUH19ToJEvmd+d39y/fLoV3nsM4vkdqD3qy/n6EG5+QwbanUA7o2Rc0nQrTtpR93oK3u/24ln8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=RBycUBJz; arc=none smtp.client-ip=52.42.203.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1772323189; x=1803859189;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=hKXMk9JqLxIF/o307cUGlK9XOB5P+KxCRqeDOLdx134=;
+  b=RBycUBJzl1TnEirhzoDPyUP9699MSwRerISGm1K8Ukxqb5pjWYBbnP1O
+   5bgTEXuhiiMXxn/Ab2DImaA5ExD9+UNuOfe/Cn8RyO4JXTIdqnGxp4wMN
+   FNjl1M5ALJ6uAgnYBmmqMadcCd+vD9YaSfne1oR/JzlRg+AXyJQQJOsGe
+   ieLjzJ+PfG4EMmqJV/G6TLUzQESXHp3St3mydIeDv2DYeSoW2VUndo/vH
+   hugYKtfkoH5C/8D7pn0wK7vo9L+iz03MOF5IfFk+9Z5MYYkbegkrqOVY9
+   eeK3ZTnfQEa4VdKJNqH01OqRzAxsJELvr4fYLaFkpmSzVHr8AdFVcLmzb
+   w==;
+X-CSE-ConnectionGUID: UHUJOMCRSv23JoznsU88lg==
+X-CSE-MsgGUID: QEADJu9oSbqIMFSlYLgYag==
+X-IronPort-AV: E=Sophos;i="6.21,317,1763424000"; 
+   d="scan'208";a="14019297"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2026 23:59:46 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:21683]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.33.152:2525] with esmtp (Farcaster)
+ id 34b04a31-8249-412d-b8fd-6b389c0de126; Sat, 28 Feb 2026 23:59:46 +0000 (UTC)
+X-Farcaster-Flow-ID: 34b04a31-8249-412d-b8fd-6b389c0de126
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Sat, 28 Feb 2026 23:59:46 +0000
+Received: from dev-dsk-darnshah-1c-a4c7d5e9.eu-west-1.amazon.com (172.19.90.4)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Sat, 28 Feb 2026 23:59:44 +0000
+From: Darshit Shah <darnshah@amazon.de>
+To: <darnshah@amazon.de>
+CC: <Jonthan.Cameron@huawei.com>, <bhelgaas@google.com>, <darnir@gnu.org>,
+	<feng.tang@linux.alibaba.com>, <kbusch@kernel.org>, <kwilczynski@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<lukas@wunner.de>, <nh-open-source@amazon.com>, <olof@lixom.net>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v3] drivers/pci: Decouple DPC from AER service
+Date: Sat, 28 Feb 2026 23:59:38 +0000
+Message-ID: <20260228235940.47613-1-darnshah@amazon.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251211164257.81655-1-darnshah@amazon.de>
+References: <20251211164257.81655-1-darnshah@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Barry K. Nathan" <barryn@pobox.com>
-Subject: Re: [PATCH 6.19 000/844] 6.19.6-rc1 review
-To: Woody Suwalski <terraluna977@gmail.com>, Ronald Warsow <rwarsow@gmx.de>,
- Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260228173244.1509663-1-sashal@kernel.org>
- <601576c7-970a-4e9d-af5e-c818740be8e8@gmx.de>
- <879487cc-c667-8cc6-4775-02c7de3b8c27@gmail.com>
-Content-Language: en-US
-In-Reply-To: <879487cc-c667-8cc6-4775-02c7de3b8c27@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D044UWA002.ant.amazon.com (10.13.139.11) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[amazon.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[amazon.de:s=amazoncorp2];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221229-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,gmx.de,kernel.org,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[amazon.de:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221230-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FROM_NEQ_ENVFROM(0.00)[darnshah@amazon.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pobox.com:mid,pobox.com:dkim,pobox.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,messagingengine.com:dkim]
-X-Rspamd-Queue-Id: 36E4F1C9C07
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 8E9061C9C53
 X-Rspamd-Action: no action
 
-On 2/28/26 14:13, Woody Suwalski wrote:
-> Ronald Warsow wrote:
->> On 28.02.26 18:18, Sasha Levin wrote:
->>>
->>> This is the start of the stable review cycle for the 6.19.6 release.
->>> There are 844 patches in this series, all will be posted as a response
->>> to this one.  If anyone has any issues with these being applied, please
->>> let me know.
->>>
->>> Responses should be made by Mon Mar  2 05:32:25 PM UTC 2026.
->>> Anything received after that time might be too late.
->>>
->>> The whole patch series can be found in one patch at:
->>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable- 
->>> rc.git/patch/?id=linux-6.19.y&id2=v6.19.5
->>> or in the git tree and branch at:
->>> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable- 
->>> rc.git linux-6.19.y
->>> and the diffstat can be found below.
->>>
->>
->> It would be nice to have a download link to an patch-*.gz what Greg 
->> usually provides.
->>
->> ron
->>
-> I second this request. Trying to setup a build for  5.10.252-rc1 was 
-> tricky...
-> We need something similar to
-> 
-> https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/ 
-> patch-5.10.251-rc1.gz
-> 
-> Thanks, Woody
+Hi Bjorn,
 
-I didn't find things particularly difficult for 5.10.252-rc1 through
-6.12.75-rc1 (the "hardest" part was renaming the file after each
-download), but I get this while trying to apply the patches for
-6.18.16-rc1/6.19.6-rc1:
+I'd like to follow up on the v3 of the patch submitted earlier and see if
+we can merge them.
 
 
-patching file arch/powerpc/platforms/pseries/msi.c
-patching file arch/x86/kvm/x86.c
-(Patch is indented 2 spaces.)
-can't find file to patch at input line 41896
-Perhaps you used the wrong -p or --strip option?
-The text leading up to this was:
---------------------------
-|--
-|cgit 1.2.3-korg
-|
-|
-|From 1d0d76474aeadb174d9fbd27b9f2e9b5cfc124c6 Mon Sep 17 00:00:00 2001
-|From: Sean Christopherson <seanjc@google.com>
-|Date: Tue, 16 Dec 2025 08:17:54 -0800
-|Subject: KVM: nSVM: Remove a user-triggerable WARN on nested_svm_load_cr3()
-| succeeding
-|
-|[ Upstream commit fc3ba56385d03501eb582e4b86691ba378e556f9 ]
-|
-|Drop the WARN in svm_set_nested_state() on nested_svm_load_cr3() failing
-|as it is trivially easy to trigger from userspace by modifying CPUID after
-|loading CR3.  E.g. modifying the state restoration selftest like so:
-|
-|  --- tools/testing/selftests/kvm/x86/state_test.c
-|  +++ tools/testing/selftests/kvm/x86/state_test.c
---------------------------
-File to patch:
 
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
-As it turns out, GNU patch (v2.7.6 on Debian 12 bookworm, or v2.8 on
-Debian 13 trixie, I tested both) is misinterpreting part of the commit
-comment for vm-nsvm-remove-a-user-triggerable-warn-on-nested_sv.patch
-and trying to apply that part of the commit description as a patch.
-
-Pressing Enter twice at this prompt causes patch to skip this
-incorrectly detected hunk, and all of the actual patches end up being
-applied correctly, but it's still an unexpected surprise and I had to
-stop and figure out what was going on.
-
-With the way the stable rc patches are usually posted on kernel.org,
-the patch file would've omitted the commit comments, thus avoiding
-this problem.
-
--- 
--Barry K. Nathan  <barryn@pobox.com>
 
