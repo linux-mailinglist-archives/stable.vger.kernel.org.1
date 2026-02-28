@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-220726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DMqGGc/o2kR+wQAu9opvQ
-	(envelope-from <stable+bounces-220726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:17:59 +0100
+	id CCNkAjZBo2kR+wQAu9opvQ
+	(envelope-from <stable+bounces-220727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:25:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01781C6CCA
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:17:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 858E51C6F94
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:25:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8118130C5210
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:13:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AD90530A5705
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DCF3FF1B0;
-	Sat, 28 Feb 2026 17:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5243FF1CD;
+	Sat, 28 Feb 2026 17:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gbLZuSqh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AvcFglo9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873723FF1AB;
-	Sat, 28 Feb 2026 17:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39D43FF1C4;
+	Sat, 28 Feb 2026 17:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300607; cv=none; b=scrv8Vx7tKNpjIIJk+PRGIrjIQ29alFNIJbXKBSHFACL34koxLr7huAREtD2HENzM/5RiGb7cNw3fF+Zj35p/vRNO4zEQdNMqQSj7ZcWvTP29OKOJU/Aa8b3Lrv3kXIfkpzZFJzuXOVfwk++hWZo3m7vDnQhXR+797cFv2qdRJo=
+	t=1772300608; cv=none; b=H7nYV78X0ftg/VcwZh8IhhKsgZbkDt4GBkTVfxBQGT5fG4sPhuoASIApJ52kdFD8wqvwflbMtzQN7l38IjZYxq5NV1c/OejCV1WE021R2KuPZoHYz5Di5Ard9ANuS1su8pCFHSY+WlW7ym/7xY5OHPC0Iv5ISlksgQzvkScDmMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300607; c=relaxed/simple;
-	bh=acpezPzvl69WK9Iiw/Yx2kb/8Q2BHP9ENnwHM2ALXNE=;
+	s=arc-20240116; t=1772300608; c=relaxed/simple;
+	bh=rPZ0E3UF0nIX9XVviXncYcH4hqlHR+MaMB1bcTB+E+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fim4w+SlyLh5RiVG+WOEcp5dinzgj65oKuwjs+UE3QIdD76FxQ8CMuPFfEFk6RqouyxfFkgP027XWYt2blj7fCf3S7qjYNq/dfLLRVHM987BOLHwr5h3BWOAKnLFKMnxd/DGA3j2LFktaSUMW50b9n3wPXCM/1/tuLGD1Q5RAfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gbLZuSqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E52C19425;
-	Sat, 28 Feb 2026 17:43:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HfyLHvKn8D2RFR1XQwgqAzjC/Wo/K/AHPmoAKmvAjmJa7ngjx6DdTttwzRlJcTXwJg4WP+2G2hlQbb5sLAkHmLElcteU+cK+XwApLRWgjos5JkdFSEnKzppWnlqkAClh81/Y/LRiYCBxSJKF4NJh3bB0ob/MUN70GaNTRGRJMs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AvcFglo9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB98AC19424;
+	Sat, 28 Feb 2026 17:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300607;
-	bh=acpezPzvl69WK9Iiw/Yx2kb/8Q2BHP9ENnwHM2ALXNE=;
+	s=k20201202; t=1772300608;
+	bh=rPZ0E3UF0nIX9XVviXncYcH4hqlHR+MaMB1bcTB+E+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbLZuSqh3bzWJTRgRbH52ab1fjBQRByJdhbzgcb28GG84+rJswxNAcWEuWjQOYI86
-	 zojjFxa+JoWl9vjsAJaVluXOumBbPuMTDl7u6bQu2KQeNSR43kbo3H0DMaZjLlNxG7
-	 ljjakV7R1mP4dPp6Hf8VhPYQC3ek0nW01ya3JHDQa5m/m/QziS/CLjjattFkA2FmOt
-	 je4aLEih5n9s7+Nz0BQCyyjhQJK2LlBGwWfZJMcNBz8Y+PCpohwvuJXoLUBfQRfJQY
-	 +Z/16eWe48ccQNtN0/I2K0LUbQHYyPQfIyFguLLItSm8zScxHun2/IkMpfFM196MYo
-	 htLsPbEcI8XlA==
+	b=AvcFglo9n7914P5N+GkZ42frC5/yk0aU/0PAJU8zoc2a0bpvj6Tv9Nm1LDw0msf+Q
+	 2FYnLiqP2iMQbNww63whEdhps3rgqtaHbDnC7fV28W8KsM2cngx0OiLYXsFOTyjwlI
+	 I9DwjuFnWt45s4kVAbsZMwg6gB2DpjWAWpjcsZZripiG7Z/pCrzqCY4h8Gdz0WNHa2
+	 iHwjQssdK79P37sqMe8rBiw/Bg8iSszBopSxYEueREGEgjmI1PpOF1YvIwnBdD8TmW
+	 fLtf+sJ32WSoX1dIuxrHU4c4lIx5RVkBCegHPl7qOjF3WqE00HKCz3BBaxKr8zjdCK
+	 EMqbM/h+U0V5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Li Wang <liwang@redhat.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Sanjay Yadav <sanjay.kumar.yadav@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 647/844] selftests/mm/charge_reserved_hugetlb: drop mount size for hugetlbfs
-Date: Sat, 28 Feb 2026 12:29:20 -0500
-Message-ID: <20260228173244.1509663-648-sashal@kernel.org>
+Subject: [PATCH 6.19 648/844] drm/buddy: Prevent BUG_ON by validating rounded allocation
+Date: Sat, 28 Feb 2026 12:29:21 -0500
+Message-ID: <20260228173244.1509663-649-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,121 +64,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220726-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220727-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: D01781C6CCA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,gitlab.freedesktop.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 858E51C6F94
 X-Rspamd-Action: no action
 
-From: Li Wang <liwang@redhat.com>
+From: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
 
-[ Upstream commit 1aa1dd9cc595917882fb6db67725442956f79607 ]
+[ Upstream commit 5488a29596cdba93a60a79398dc9b69d5bdadf92 ]
 
-charge_reserved_hugetlb.sh mounts a hugetlbfs instance at /mnt/huge with a
-fixed size of 256M.  On systems with large base hugepages (e.g.  512MB),
-this is smaller than a single hugepage, so the hugetlbfs mount ends up
-with zero capacity (often visible as size=0 in mount output).
+When DRM_BUDDY_CONTIGUOUS_ALLOCATION is set, the requested size is
+rounded up to the next power-of-two via roundup_pow_of_two().
+Similarly, for non-contiguous allocations with large min_block_size,
+the size is aligned up via round_up(). Both operations can produce a
+rounded size that exceeds mm->size, which later triggers
+BUG_ON(order > mm->max_order).
 
-As a result, write_to_hugetlbfs fails with ENOMEM and the test can hang
-waiting for progress.
+Example scenarios:
+- 9G CONTIGUOUS allocation on 10G VRAM memory:
+  roundup_pow_of_two(9G) = 16G > 10G
+- 9G allocation with 8G min_block_size on 10G VRAM memory:
+  round_up(9G, 8G) = 16G > 10G
 
-=== Error log ===
-  # uname -r
-  6.12.0-xxx.el10.aarch64+64k
+Fix this by checking the rounded size against mm->size. For
+non-contiguous or range allocations where size > mm->size is invalid,
+return -EINVAL immediately. For contiguous allocations without range
+restrictions, allow the request to fall through to the existing
+__alloc_contig_try_harder() fallback.
 
-  #./charge_reserved_hugetlb.sh -cgroup-v2
-  # -----------------------------------------
-  ...
-  # nr hugepages = 10
-  # writing cgroup limit: 5368709120
-  # writing reseravation limit: 5368709120
-  ...
-  # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
-  # Waiting for hugetlb memory reservation to reach size 2684354560.
-  # 0
-  # Waiting for hugetlb memory reservation to reach size 2684354560.
-  # 0
-  ...
+This ensures invalid user input returns an error or uses the fallback
+path instead of hitting BUG_ON.
 
-  # mount |grep /mnt/huge
-  none on /mnt/huge type hugetlbfs (rw,relatime,seclabel,pagesize=512M,size=0)
+v2: (Matt A)
+- Add Fixes, Cc stable, and Closes tags for context
 
-  # grep -i huge /proc/meminfo
-  ...
-  HugePages_Total:      10
-  HugePages_Free:       10
-  HugePages_Rsvd:        0
-  HugePages_Surp:        0
-  Hugepagesize:     524288 kB
-  Hugetlb:         5242880 kB
-
-Drop the mount args with 'size=256M', so the filesystem capacity is sufficient
-regardless of HugeTLB page size.
-
-Link: https://lkml.kernel.org/r/20251221122639.3168038-3-liwang@redhat.com
-Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
-Signed-off-by: Li Wang <liwang@redhat.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6712
+Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
+Cc: <stable@vger.kernel.org> # v6.7+
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Suggested-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Link: https://patch.msgid.link/20260108113227.2101872-5-sanjay.kumar.yadav@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_buddy.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index e1fe16bcbbe88..fa6713892d82d 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -290,7 +290,7 @@ function run_test() {
-   setup_cgroup "hugetlb_cgroup_test" "$cgroup_limit" "$reservation_limit"
+diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+index 8308116058cc1..fd34d3755f7c5 100644
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -1156,6 +1156,15 @@ int drm_buddy_alloc_blocks(struct drm_buddy *mm,
+ 	order = fls(pages) - 1;
+ 	min_order = ilog2(min_block_size) - ilog2(mm->chunk_size);
  
-   mkdir -p /mnt/huge
--  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
-+  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
- 
-   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test" "$size" "$populate" \
-     "$write" "/mnt/huge/test" "$method" "$private" "$expect_failure" \
-@@ -344,7 +344,7 @@ function run_multiple_cgroup_test() {
-   setup_cgroup "hugetlb_cgroup_test2" "$cgroup_limit2" "$reservation_limit2"
- 
-   mkdir -p /mnt/huge
--  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
-+  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
- 
-   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test1" "$size1" \
-     "$populate1" "$write1" "/mnt/huge/test1" "$method" "$private" \
++	if (order > mm->max_order || size > mm->size) {
++		if ((flags & DRM_BUDDY_CONTIGUOUS_ALLOCATION) &&
++		    !(flags & DRM_BUDDY_RANGE_ALLOCATION))
++			return __alloc_contig_try_harder(mm, original_size,
++							 original_min_size, blocks);
++
++		return -EINVAL;
++	}
++
+ 	do {
+ 		order = min(order, (unsigned int)fls(pages) - 1);
+ 		BUG_ON(order > mm->max_order);
 -- 
 2.51.0
 
