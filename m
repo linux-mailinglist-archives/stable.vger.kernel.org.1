@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220331-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gO+RF4Exo2kE+QQAu9opvQ
-	(envelope-from <stable+bounces-220330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:18:41 +0100
+	id 4F24Ir81o2nP+QQAu9opvQ
+	(envelope-from <stable+bounces-220331-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:36:47 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE5C1C5A47
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:18:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BA71C6065
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:36:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B858033E8595
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:11:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B389D31C9D03
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FBD47F2CB;
-	Sat, 28 Feb 2026 17:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E7F397C81;
+	Sat, 28 Feb 2026 17:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EcjxBbNJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nk2PAqRf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F31346E70;
-	Sat, 28 Feb 2026 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6FA397C77;
+	Sat, 28 Feb 2026 17:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300230; cv=none; b=YSsuEBxXEODOCGHtB2Vx/Cj7ZimRcqF1DcSsi8I/LhxHAsy2I3QK69dukIPaWEs2riWZb0pEnaNGkxqPR6x3CUc/j3/nDokWocHq2xxbIY6j7FD2oCoSyj5VCscyEKbziDMtKCud+OYKVzFN1fYyVRlz0NmF5C74DfRPROb2blc=
+	t=1772300231; cv=none; b=ZwpHca5CEbS515Hkff7DBxTYSo7UdBhBwg9sU9mmdr+9g925SXgBOszBz5o9N+Nvh8qqB7aodWaQ4z2OxsIYJgQkWW40v+K8l3aT03pHOejLLhbs4jvoT4e3jMdR8EyfSCHc+hSduc+nogQZRN5iGqshbuNI3ILDYsD6TE4ikI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300230; c=relaxed/simple;
-	bh=my6dfp/GlCwi863JA+wggFe1YwcrV031OmpqAIPoVt4=;
+	s=arc-20240116; t=1772300231; c=relaxed/simple;
+	bh=PRhyiLXJEkJyR4tDp6iDYpalkIQVH02kJMwoKwrf8Oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdc0petmA/c7XedjFYb3lUS3Uk5boda86crH76K4ep1iOQwgVx5gAGmU8vrtOqFb/iEzAl4ABCDh80877BcA1KHaoFfB3gm1lV0K8aHK5qQNQNrXMjRd6rBqwAe8Shs2ZDOQ5sZgg6FYEcxd5iYFJImFMXhPJqCHho4Q1Agb5FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EcjxBbNJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235A7C116D0;
+	 MIME-Version; b=D4gzV2SLylgmr8IeNdD1Vc/YQE/0LQPN1Z78YGhpfATAjg3L7Tc5cGdzsIfF07Bnii9R7oNa7N9C8cv54/1r1/jdMxa0NOMAUQRg1abOlb/5zwUo/YMz9msKBsPsZgWtgt5Gfc4Mgyqfs9lkTMUl+4z8cexuka6eTOoIpIWFWDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nk2PAqRf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3239C19423;
 	Sat, 28 Feb 2026 17:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300230;
-	bh=my6dfp/GlCwi863JA+wggFe1YwcrV031OmpqAIPoVt4=;
+	s=k20201202; t=1772300231;
+	bh=PRhyiLXJEkJyR4tDp6iDYpalkIQVH02kJMwoKwrf8Oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EcjxBbNJNR0iQcy9C5pbsextZ+wSX/jo2f0F8/lXkIvFoLlcslAmFIvBFowmvAkXM
-	 L2oHMvTPL5vY6hyZEBcGu0gA5p1U3WdINL9Gw9mmcbKlPPE7iHtt19o3mBMRm1VFpn
-	 oGs4MunIntjSoTRT3nq1BSZ6ZdsLoLbbHCGlhpFNcCXy48brncDqlEeAHKMRvl4qNc
-	 yN5Uv2j8jsfSyrQqO28yLOIz3NiCydRSUfrG/9x0R8g2Elzs2M9L/PZQ7ZucSqQ0ky
-	 PC4hNbfI3svln64zucBswnTG6QD5+MBAsr8ViJ/HdpLoNFmmIrV6yxr7z5+WcRRtzg
-	 ZF7HuOHPhXsAw==
+	b=nk2PAqRfJpD4Z48RZhB25E/5VeYCY8pwZFSFGfFlrku7VUiaeumGjlcr8UEMC4/Tx
+	 BB7z+583VPBsxDebS7yebJVAGeCa19dlN9lkfU4ECuKo6WlXIsIne/zm67CcwMw5lX
+	 PfXfVBa9RsVGvDeSJYscQG8HJKJOvXqGWr4d/SW8eQEVh4ryVKcHBj04i5hUOe2Mbz
+	 iUqu88u5G6ZFj1pkUshoxLU8kw8+NyQpwEJDWc+JGC6+zbKcpG8oZiSuqO/74zNm2d
+	 qaxaTH+79R1gVra4jkxl5OIKbLV7o+Vlb7bgfgkNoEp42CnF1EmAAZjaAWOmlzZKp+
+	 rFTFk8tVh2TJA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jan Gerber <j@mailb.org>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 252/844] wifi: rtw89: 8852au: add support for TP TX30U Plus
-Date: Sat, 28 Feb 2026 12:22:45 -0500
-Message-ID: <20260228173244.1509663-253-sashal@kernel.org>
+Subject: [PATCH 6.19 253/844] wifi: rtw88: 8822b: Avoid WARNING in rtw8822b_config_trx_mode()
+Date: Sat, 28 Feb 2026 12:22:46 -0500
+Message-ID: <20260228173244.1509663-254-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,63 +69,111 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220330-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220331-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailb.org:email]
-X-Rspamd-Queue-Id: BEE5C1C5A47
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D6BA71C6065
 X-Rspamd-Action: no action
 
-From: Jan Gerber <j@mailb.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit a2f1fc9ab6fb0d5c9d701a516c342944258fb20e ]
+[ Upstream commit 44d1f624bbdd2d60319374ba85f7195a28d00c90 ]
 
-the device shows up like this and everything seams to work:
+rtw8822b_set_antenna() can be called from userspace when the chip is
+powered off. In that case a WARNING is triggered in
+rtw8822b_config_trx_mode() because trying to read the RF registers
+when the chip is powered off returns an unexpected value.
 
-Bus 004 Device 003: ID 3625:010d Realtek 802.11ax WLAN Adapter
+Call rtw8822b_config_trx_mode() in rtw8822b_set_antenna() only when
+the chip is powered on.
 
-Signed-off-by: Jan Gerber <j@mailb.org>
+------------[ cut here ]------------
+write RF mode table fail
+WARNING: CPU: 0 PID: 7183 at rtw8822b.c:824 rtw8822b_config_trx_mode.constprop.0+0x835/0x840 [rtw88_8822b]
+CPU: 0 UID: 0 PID: 7183 Comm: iw Tainted: G        W  OE       6.17.5-arch1-1 #1 PREEMPT(full)  01c39fc421df2af799dd5e9180b572af860b40c1
+Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: LENOVO 82KR/LNVNB161216, BIOS HBCN18WW 08/27/2021
+RIP: 0010:rtw8822b_config_trx_mode.constprop.0+0x835/0x840 [rtw88_8822b]
+Call Trace:
+ <TASK>
+ rtw8822b_set_antenna+0x57/0x70 [rtw88_8822b 370206f42e5890d8d5f48eb358b759efa37c422b]
+ rtw_ops_set_antenna+0x50/0x80 [rtw88_core 711c8fb4f686162be4625b1d0b8e8c6a5ac850fb]
+ ieee80211_set_antenna+0x60/0x100 [mac80211 f1845d85d2ecacf3b71867635a050ece90486cf3]
+ nl80211_set_wiphy+0x384/0xe00 [cfg80211 296485ee85696d2150309a6d21a7fbca83d3dbda]
+ ? netdev_run_todo+0x63/0x550
+ genl_family_rcv_msg_doit+0xfc/0x160
+ genl_rcv_msg+0x1aa/0x2b0
+ ? __pfx_nl80211_pre_doit+0x10/0x10 [cfg80211 296485ee85696d2150309a6d21a7fbca83d3dbda]
+ ? __pfx_nl80211_set_wiphy+0x10/0x10 [cfg80211 296485ee85696d2150309a6d21a7fbca83d3dbda]
+ ? __pfx_nl80211_post_doit+0x10/0x10 [cfg80211 296485ee85696d2150309a6d21a7fbca83d3dbda]
+ ? __pfx_genl_rcv_msg+0x10/0x10
+ netlink_rcv_skb+0x59/0x110
+ genl_rcv+0x28/0x40
+ netlink_unicast+0x285/0x3c0
+ ? __alloc_skb+0xdb/0x1a0
+ netlink_sendmsg+0x20d/0x430
+ ____sys_sendmsg+0x39f/0x3d0
+ ? import_iovec+0x2f/0x40
+ ___sys_sendmsg+0x99/0xe0
+ ? refill_obj_stock+0x12e/0x240
+ __sys_sendmsg+0x8a/0xf0
+ do_syscall_64+0x81/0x970
+ ? do_syscall_64+0x81/0x970
+ ? ksys_read+0x73/0xf0
+ ? do_syscall_64+0x81/0x970
+ ? count_memcg_events+0xc2/0x190
+ ? handle_mm_fault+0x1d7/0x2d0
+ ? do_user_addr_fault+0x21a/0x690
+ ? exc_page_fault+0x7e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ </TASK>
+---[ end trace 0000000000000000 ]---
+
+Link: https://github.com/lwfinger/rtw88/issues/366
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251212005515.2059533-1-j@mailb.org
+Link: https://patch.msgid.link/fb9a3444-9319-4aa2-8719-35a6308bf568@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852au.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852au.c b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-index ca782469c455d..74a976c984ad8 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-@@ -60,6 +60,8 @@ static const struct usb_device_id rtw_8852au_id_table[] = {
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0141, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3625, 0x010d, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3625, 0x010f, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
- 	{},
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 89b6485b229a8..4d88cc2f41485 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -1005,7 +1005,8 @@ static int rtw8822b_set_antenna(struct rtw_dev *rtwdev,
+ 	hal->antenna_tx = antenna_tx;
+ 	hal->antenna_rx = antenna_rx;
+ 
+-	rtw8822b_config_trx_mode(rtwdev, antenna_tx, antenna_rx, false);
++	if (test_bit(RTW_FLAG_POWERON, rtwdev->flags))
++		rtw8822b_config_trx_mode(rtwdev, antenna_tx, antenna_rx, false);
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
