@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-220864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDXSDTxFo2kB/AQAu9opvQ
-	(envelope-from <stable+bounces-220864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:42:52 +0100
+	id SF9OMmJHo2lM/AQAu9opvQ
+	(envelope-from <stable+bounces-220865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:52:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9363F1C7498
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:42:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8470A1C7715
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:52:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABE983310E1E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:34:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCAF5330349A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D830241DDDB;
-	Sat, 28 Feb 2026 17:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA8341DDF1;
+	Sat, 28 Feb 2026 17:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bd/ItxcL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqSOqbJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B60241DDD2;
-	Sat, 28 Feb 2026 17:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA8F41DDE9;
+	Sat, 28 Feb 2026 17:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300749; cv=none; b=pR0bOnBLUFLHxD4Z4EIFSa71O/VdMmg5DiDCIzFnkInaQEVEq/mQVGpUEJvm6eym3yfOZjVlZaEoQ+A9hHwmypDo4RpRAGKAkePz+k5WRV8VxJFzwcELSo4dOUw/S9DIdY6jwPx/8T40s1NVpFjPf2JiweO7g2bmLFSgAqwDwCM=
+	t=1772300750; cv=none; b=eI+XMKwXYexZmzyiRilx9/gQlmlQoF1Jodbz3gd8BR8Y8+9tR4DZYBxmt1fQRHHOvp2cvpv5A2OJ+TEPz3CwF3p2K/VXsUdCt2YdyzVF37e02Bdlbc0d2StUu77C5Pk0jYRlneGYmq7lv0Ov8PQMXxtZeRCr6zI08HPRel39I/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300749; c=relaxed/simple;
-	bh=JgNDxt1J+KIqE4bkKNZgfOq0qnpsrOurMpn2qfVfZXQ=;
+	s=arc-20240116; t=1772300750; c=relaxed/simple;
+	bh=1HhwZmIlQJ5cO9vDpfo4RUmluN7cuB9Xo3xbXrzw4ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gw1YBGfBe3O+GxdG+s3Z7epOANlPxxYjX2Wbt+eGyofxHXxSVo4wyTeHz1F8rg6o/opJhHj+rmA9z3TKMMKABtKRU8a5zoIRXFO2KrsOgydz4qdo/5x6k3eDzL1q2Xg2fQ0ku5EYwbHu2NYS56ScEDM4/vFs5FHirLNWwd5XJ4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bd/ItxcL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A543AC116D0;
-	Sat, 28 Feb 2026 17:45:48 +0000 (UTC)
+	 MIME-Version; b=BlGqY2VTE9LT/AEDyLX71mlDnH+okF4Nx2xfXOu4PtfpRdoKZ8WWCL8aZdOfau1fYTa+dYe7mRaResUQnzaflpsDUlx/yve1XWDK0qrwvMVbejhb7KEjdyVpTuukUhNzrEX0zOCoMDOdZCeHf+n8V2GFqCBrXZWSQ4b38ssbrSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqSOqbJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982C4C19423;
+	Sat, 28 Feb 2026 17:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300749;
-	bh=JgNDxt1J+KIqE4bkKNZgfOq0qnpsrOurMpn2qfVfZXQ=;
+	s=k20201202; t=1772300750;
+	bh=1HhwZmIlQJ5cO9vDpfo4RUmluN7cuB9Xo3xbXrzw4ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bd/ItxcL013tjaCNMY68RxXItt4of43FPAZ2u9h5useHRk8hvvC1a2N/a+e8KmM2c
-	 E5qMY8FDKWgFvzsbEBc1xbTGF2gIMy63TSFeXurxu6gUAHE5t6Js4JCYOzcypPs0PB
-	 BOEfqt8UAvXO9ei2qpsvf0adDVTggFiFuO48AdyTgSczNm3Eyi0HfbxrnL5GWHYd4f
-	 XpM1x2JpD+5INIZ1ZptKspiZmLohU7Dy2BqJeZ0lz173DlXlEmcKDctKFAKDVPEaPk
-	 0d+FBiagO71PDUKDCZjHym8Zfv5a6hpo2AX6Uo9uKSZeSzwdFVP3/Gn910oaJc+DV/
-	 cS2ejWk3fGTFw==
+	b=LqSOqbJctE2dgMXGh9pkKHh6L25NFkp+1OxyLo3fYbVlmblbo/OMgyV1sCMhrFJn3
+	 hdkpK3jjn1OfeuBl7r8EKNAHIAMlQZnPkqJfwkgbmGTKDBWAxlkXbOxuXXRJzX3atm
+	 QM/FSg20FwUtfleB7HZEZswZDwstqaNz1jzrF9pwtN7dn7eN/zaJ34W/qF0jwJ0TVa
+	 wV+C6kRiHpSj/07sMvHU1oJOd7qe7NpKlGicABSSdjDf6CfAn5wAVzS7+sbLWaYL9L
+	 K3HyN1BNWKIL7sjU3WxQMAmpAJ4cy55YpkIoltVi2+1cPR4yjOa3FW5DlFZc7vV5fs
+	 014XSL8tJbvkw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: Sam Edwards <cfsworks@gmail.com>,
 	Sam Edwards <CFSworks@gmail.com>,
 	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 785/844] ceph: do not propagate page array emplacement errors as batch errors
-Date: Sat, 28 Feb 2026 12:31:38 -0500
-Message-ID: <20260228173244.1509663-786-sashal@kernel.org>
+Subject: [PATCH 6.19 786/844] ceph: fix write storm on fscrypted files
+Date: Sat, 28 Feb 2026 12:31:39 -0500
+Message-ID: <20260228173244.1509663-787-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,7 +72,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220864-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220865-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -93,64 +93,68 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9363F1C7498
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8470A1C7715
 X-Rspamd-Action: no action
 
 From: Sam Edwards <cfsworks@gmail.com>
 
-[ Upstream commit 707104682e3c163f7c14cdd6b07a3e95fb374759 ]
+[ Upstream commit cac190c7674fea71620d754ffcdaaeed7c551dbc ]
 
-When fscrypt is enabled, move_dirty_folio_in_page_array() may fail
-because it needs to allocate bounce buffers to store the encrypted
-versions of each folio. Each folio beyond the first allocates its bounce
-buffer with GFP_NOWAIT. Failures are common (and expected) under this
-allocation mode; they should flush (not abort) the batch.
+CephFS stores file data across multiple RADOS objects. An object is the
+atomic unit of storage, so the writeback code must clean only folios
+that belong to the same object with each OSD request.
 
-However, ceph_process_folio_batch() uses the same `rc` variable for its
-own return code and for capturing the return codes of its routine calls;
-failing to reset `rc` back to 0 results in the error being propagated
-out to the main writeback loop, which cannot actually tolerate any
-errors here: once `ceph_wbc.pages` is allocated, it must be passed to
-ceph_submit_write() to be freed. If it survives until the next iteration
-(e.g. due to the goto being followed), ceph_allocate_page_array()'s
-BUG_ON() will oops the worker.
+CephFS also supports RAID0-style striping of file contents: if enabled,
+each object stores multiple unbroken "stripe units" covering different
+portions of the file; if disabled, a "stripe unit" is simply the whole
+object. The stripe unit is (usually) reported as the inode's block size.
 
-Note that this failure mode is currently masked due to another bug
-(addressed next in this series) that prevents multiple encrypted folios
-from being selected for the same write.
+Though the writeback logic could, in principle, lock all dirty folios
+belonging to the same object, its current design is to lock only a
+single stripe unit at a time. Ever since this code was first written,
+it has determined this size by checking the inode's block size.
+However, the relatively-new fscrypt support needed to reduce the block
+size for encrypted inodes to the crypto block size (see 'fixes' commit),
+which causes an unnecessarily high number of write operations (~1024x as
+many, with 4MiB objects) and correspondingly degraded performance.
 
-For now, just reset `rc` when redirtying the folio to prevent errors in
-move_dirty_folio_in_page_array() from propagating. Note that
-move_dirty_folio_in_page_array() is careful never to return errors on
-the first folio, so there is no need to check for that. After this
-change, ceph_process_folio_batch() no longer returns errors; its only
-remaining failure indicator is `locked_pages == 0`, which the caller
-already handles correctly.
+Fix this (and clarify intent) by using i_layout.stripe_unit directly in
+ceph_define_write_size() so that encrypted inodes are written back with
+the same number of operations as if they were unencrypted.
+
+This patch depends on the preceding commit ("ceph: do not propagate page
+array emplacement errors as batch errors") for correctness. While it
+applies cleanly on its own, applying it alone will introduce a
+regression. This dependency is only relevant for kernels where
+ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method") has
+been applied; stable kernels without that commit are unaffected.
 
 Cc: stable@vger.kernel.org
-Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method")
+Fixes: 94af0470924c ("ceph: add some fscrypt guardrails")
 Signed-off-by: Sam Edwards <CFSworks@gmail.com>
 Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/addr.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ceph/addr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index faecd9025ee9c..3cfe3df6e6a22 100644
+index 3cfe3df6e6a22..c6c853748942b 100644
 --- a/fs/ceph/addr.c
 +++ b/fs/ceph/addr.c
-@@ -1369,6 +1369,7 @@ int ceph_process_folio_batch(struct address_space *mapping,
- 		rc = move_dirty_folio_in_page_array(mapping, wbc, ceph_wbc,
- 				folio);
- 		if (rc) {
-+			rc = 0;
- 			folio_redirty_for_writepage(wbc, folio);
- 			folio_unlock(folio);
- 			break;
+@@ -1000,7 +1000,8 @@ unsigned int ceph_define_write_size(struct address_space *mapping)
+ {
+ 	struct inode *inode = mapping->host;
+ 	struct ceph_fs_client *fsc = ceph_inode_to_fs_client(inode);
+-	unsigned int wsize = i_blocksize(inode);
++	struct ceph_inode_info *ci = ceph_inode(inode);
++	unsigned int wsize = ci->i_layout.stripe_unit;
+ 
+ 	if (fsc->mount_options->wsize < wsize)
+ 		wsize = fsc->mount_options->wsize;
 -- 
 2.51.0
 
