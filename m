@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-220291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KIYEBwwo2nb+AQAu9opvQ
-	(envelope-from <stable+bounces-220291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:12:44 +0100
+	id mJDBFU40o2mX+QQAu9opvQ
+	(envelope-from <stable+bounces-220292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA5F1C587B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:12:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4E81C5E17
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70B7932911F0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:05:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B6BA31DCE9E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C4947DF9D;
-	Sat, 28 Feb 2026 17:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49D13884B8;
+	Sat, 28 Feb 2026 17:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udm5+xxE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icfm2Pxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84647386560;
-	Sat, 28 Feb 2026 17:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8033884AE;
+	Sat, 28 Feb 2026 17:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300195; cv=none; b=gSCZ77qwhvRHQvrYrpQdjtMNUkIoMm/56iiLk1DwSAcx4psFvCgKYLVHE7FWsyQBFj+QCPndv0oNC9JskRpoOWES4V9UvKY1N13ZXRjSw316ZX8oSIDJJt/aEey85E4M4OSXEOvE3mXLgFNIPlt24x9DCmXbbY1zzPyDBIqDgVY=
+	t=1772300196; cv=none; b=vEe4N9guw/WRL96DloUJHwJZCG3rsYjTHvUPcnLRTEGC3FCVXymbcmWNMq2btKoB8sWCKLVDmu49aNs5CriwtV5aehMOgrCE9Y6Q4rmQ/KEOWx3X5s4WBwNy8WhrYwUKljS3F/kSbTjPhSDGR4zubcYR8w3klIxOCbPChiPsUkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300195; c=relaxed/simple;
-	bh=jITFQ1PQ11OQ6l1VM/aZkKEbbySKJs4wjKHSH7MykMo=;
+	s=arc-20240116; t=1772300196; c=relaxed/simple;
+	bh=+3H8IVt5HZVV5uP2/2MSq726bFeBnOx18rf5R01kdFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OSBmgrYGzWKQLfF+yWAPAjEgsqKUYPbHynsWkyNzKCt49BPLsu+FkWWwqBSC1bpDpEZ6BbpYiHXdpUEhZEcly8GvN9uOhEhKmPlSvmkvUg7shp28jIyp6cor8Qf6itADTI9rfs+cX5B4sPNCEOyZXQYp8dl7fqPbsidc7p0eh3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udm5+xxE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4969C19425;
-	Sat, 28 Feb 2026 17:36:34 +0000 (UTC)
+	 MIME-Version; b=sXbE30End1welI0Ohqn3UJFh8YfTBXiuJFFUs8dqotXYSYlXnryHjcAnG54U9SnvMIbMEf1S7GIdZHFQ1cSaOLbYA3sC9PYTRqZCKTyNyf34ASPbhZSV8QaazxXf/GbXft7XHUpHBQ6tLyCZ73Qxwga1wjWxkFTvWsrJfkTUVu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icfm2Pxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8CEC19423;
+	Sat, 28 Feb 2026 17:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300195;
-	bh=jITFQ1PQ11OQ6l1VM/aZkKEbbySKJs4wjKHSH7MykMo=;
+	s=k20201202; t=1772300196;
+	bh=+3H8IVt5HZVV5uP2/2MSq726bFeBnOx18rf5R01kdFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udm5+xxEzxAUNgGx5JnX3An93+AEqEV4qRrW22jhrFdqBg/ypsGbftjMYvk/vaLff
-	 W1LLs0YZU1bQbXM0i4vAvADixO8jNpFi7jMqCDcDjy2bTL/vFcvBGZhvDfmhH0+Rk2
-	 A/tvmeEzQYfaxT3MBqbjwh3YSQV7gqTL6CgE8IWUhifRunfKgs7bcskTl2yPQDnfXW
-	 GO/fDqZ5bOXJpQWBp5GiqZWIUwLgGJcgfFgQ/xsPCfGuUWnNW/Po9iv5aVHec/XFEr
-	 TDU+xpAc6/7TZOVkjEEzxFqnlrGwvleRABq+2e7XWB7M7gVRI03sVbDacIabLLmf31
-	 wmtlaz8Y7yLSg==
+	b=icfm2PxxE9EHdXpT0wm0GSjgySdSIUTAgO3F8z/eY7OWAtt2HQG/kATnZg08/lokQ
+	 YoCuQyIXmCodMi15dkL/aaaTRSb1i6SYsHTOfIIiHs7vmjTpG1Qe5mYftr5EQugILN
+	 Afbfb1F4gOttop3jnGH7nQl/OpkUBypfBT0Y9htlzkIDfNzPIOgxLp5DvbGQnr2WLk
+	 dS3E+F80V7I9Fk1dSIr1QGZtbgPE590EGtQq1t10hxirWX6IyFU3t+SLo9MD5LKra1
+	 +U6QaDvXcc2Ha2ImoxAm38O0tXhUaxMuLhdIsple32/fB4Cy8lTACtO+FAjntXlGPo
+	 t9uPa6efeZQ3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Lili Orosz <lily@floofy.city>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+Cc: David Phillips <david@profile.sh>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 213/844] media: uvcvideo: Create an ID namespace for streaming output terminals
-Date: Sat, 28 Feb 2026 12:22:06 -0500
-Message-ID: <20260228173244.1509663-214-sashal@kernel.org>
+Subject: [PATCH 6.19 214/844] HID: elecom: Add support for ELECOM HUGE Plus M-HT1MRBK
+Date: Sat, 28 Feb 2026 12:22:07 -0500
+Message-ID: <20260228173244.1509663-215-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -68,211 +66,168 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220292-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220291-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,chromium.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,floofy.city:email,ideasonboard.com:email,uvc_entity.id:url]
-X-Rspamd-Queue-Id: 9CA5F1C587B
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9B4E81C5E17
 X-Rspamd-Action: no action
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: David Phillips <david@profile.sh>
 
-[ Upstream commit 3d9f32e02c2ed85338be627de672e2b81b88a836 ]
+[ Upstream commit b8e5fdf0bd022cd5493a5987ef66f5a24f8352d8 ]
 
-Some devices, such as the Grandstream GUV3100 and the LSK Meeting Eye
-for Business & Home, exhibit entity ID collisions between units and
-streaming output terminals.
+New model in the ELECOM HUGE trackball line that has 8 buttons but the
+report descriptor specifies only 5. The HUGE Plus supports connecting via
+Bluetooth, 2.4GHz wireless USB dongle, and directly via a USB-C cable.
+Each connection type reports a different device id, 01AA for cable,
+01AB for USB dongle, and 01AC for Bluetooth.
 
-The UVC specification requires unit and terminal IDs to be unique, and
-uses the ID to reference entities:
+This patch adds these device IDs and applies the fixups similar to the
+other ELECOM devices to get all 8 buttons working for all 3 connection
+types.
 
-- In control requests, to identify the target entity
-- In the UVC units and terminals descriptors' bSourceID field, to
-  identify source entities
-- In the UVC input header descriptor's bTerminalLink, to identify the
-  terminal associated with a streaming interface
+For reference, the usbhid-dump output:
+001:013:001:DESCRIPTOR         1769085639.598405
+ 05 01 09 02 A1 01 85 01 09 01 A1 00 05 09 19 01
+ 29 05 15 00 25 01 75 01 95 05 81 02 75 03 95 01
+ 81 01 05 01 09 30 09 31 16 01 80 26 FF 7F 75 10
+ 95 02 81 06 09 38 15 81 25 7F 75 08 95 01 81 06
+ 05 0C 0A 38 02 15 81 25 7F 75 08 95 01 81 06 C0
+ C0 05 0C 09 01 A1 01 85 02 15 01 26 8C 02 19 01
+ 2A 8C 02 75 10 95 01 81 00 C0 05 01 09 80 A1 01
+ 85 03 09 82 09 81 09 83 15 00 25 01 19 01 29 03
+ 75 01 95 03 81 02 95 05 81 01 C0 06 01 FF 09 00
+ A1 01 85 08 09 00 15 00 26 FF 00 75 08 95 07 81
+ 02 C0 06 02 FF 09 02 A1 01 85 06 09 02 15 00 26
+ FF 00 75 08 95 07 B1 02 C0
 
-Entity ID collisions break accessing controls and make the graph
-description in the UVC descriptors ambiguous. However, collisions where
-one of the entities is a streaming output terminal and the other entity
-is not a streaming terminal are less severe. Streaming output terminals
-have no controls, and, as they are the final entity in pipelines, they
-are never referenced in descriptors as source entities. They are
-referenced by ID only from innput header descriptors, which by
-definition only reference streaming terminals.
-
-For these reasons, we can work around the collision by giving streaming
-output terminals their own ID namespace. Do so by setting bit
-UVC_TERM_OUTPUT (15) in the uvc_entity.id field, which is normally never
-set as the ID is a 8-bit value.
-
-This ID change doesn't affect the entity name in the media controller
-graph as the name isn't constructed from the ID, so there should not be
-any impact on the uAPI.
-
-Although this change handles some ID collisions automagically, keep
-printing an error in uvc_alloc_new_entity() when a camera has invalid
-descriptors. Hopefully this message will help vendors fix their invalid
-descriptors.
-
-This new method of handling ID collisions includes a revert of commit
-758dbc756aad ("media: uvcvideo: Use heuristic to find stream entity")
-that attempted to fix the problem urgently due to regression reports.
-
-Suggested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Tested-by: Lili Orosz <lily@floofy.city>
-Co-developed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://patch.msgid.link/20251113210400.28618-1-laurent.pinchart@ideasonboard.com
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: David Phillips <david@profile.sh>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 54 ++++++++++++++++++------------
- drivers/media/usb/uvc/uvcvideo.h   |  3 +-
- 2 files changed, 35 insertions(+), 22 deletions(-)
+ drivers/hid/Kconfig      |  1 +
+ drivers/hid/hid-elecom.c | 16 ++++++++++++++++
+ drivers/hid/hid-ids.h    |  3 +++
+ drivers/hid/hid-quirks.c |  3 +++
+ 4 files changed, 23 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index ee4f54d683496..aa3e8d295e0f5 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -165,28 +165,17 @@ static struct uvc_entity *uvc_entity_by_reference(struct uvc_device *dev,
- 	return NULL;
- }
+diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+index 920a64b66b25b..6ff4a3ad34cbf 100644
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -369,6 +369,7 @@ config HID_ELECOM
+ 	  - EX-G Trackballs (M-XT3DRBK, M-XT3URBK)
+ 	  - DEFT Trackballs (M-DT1DRBK, M-DT1URBK, M-DT2DRBK, M-DT2URBK)
+ 	  - HUGE Trackballs (M-HT1DRBK, M-HT1URBK)
++	  - HUGE Plus Trackball (M-HT1MRBK)
  
--static struct uvc_streaming *uvc_stream_by_id(struct uvc_device *dev, int id)
-+static struct uvc_streaming *uvc_stream_for_terminal(struct uvc_device *dev,
-+						     struct uvc_entity *term)
- {
--	struct uvc_streaming *stream, *last_stream;
--	unsigned int count = 0;
-+	u16 id = UVC_HARDWARE_ENTITY_ID(term->id);
-+	struct uvc_streaming *stream;
- 
- 	list_for_each_entry(stream, &dev->streams, list) {
--		count += 1;
--		last_stream = stream;
- 		if (stream->header.bTerminalLink == id)
- 			return stream;
- 	}
- 
--	/*
--	 * If the streaming entity is referenced by an invalid ID, notify the
--	 * user and use heuristics to guess the correct entity.
--	 */
--	if (count == 1 && id == UVC_INVALID_ENTITY_ID) {
--		dev_warn(&dev->intf->dev,
--			 "UVC non compliance: Invalid USB header. The streaming entity has an invalid ID, guessing the correct one.");
--		return last_stream;
--	}
--
- 	return NULL;
- }
- 
-@@ -823,10 +812,12 @@ static struct uvc_entity *uvc_alloc_new_entity(struct uvc_device *dev, u16 type,
- 	}
- 
- 	/* Per UVC 1.1+ spec 3.7.2, the ID is unique. */
--	if (uvc_entity_by_id(dev, id)) {
--		dev_err(&dev->intf->dev, "Found multiple Units with ID %u\n", id);
-+	if (uvc_entity_by_id(dev, UVC_HARDWARE_ENTITY_ID(id)))
-+		dev_err(&dev->intf->dev, "Found multiple Units with ID %u\n",
-+			UVC_HARDWARE_ENTITY_ID(id));
-+
-+	if (uvc_entity_by_id(dev, id))
- 		id = UVC_INVALID_ENTITY_ID;
--	}
- 
- 	extra_size = roundup(extra_size, sizeof(*entity->pads));
- 	if (num_pads)
-@@ -982,6 +973,7 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
- 	struct usb_host_interface *alts = dev->intf->cur_altsetting;
- 	unsigned int i, n, p, len;
- 	const char *type_name;
-+	unsigned int id;
- 	u16 type;
- 
- 	switch (buffer[2]) {
-@@ -1120,8 +1112,28 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
- 			return 0;
- 		}
- 
-+		id = buffer[3];
-+
+ config HID_ELO
+ 	tristate "ELO USB 4000/4500 touchscreen"
+diff --git a/drivers/hid/hid-elecom.c b/drivers/hid/hid-elecom.c
+index 2003d2dcda7cc..37d88ce57f671 100644
+--- a/drivers/hid/hid-elecom.c
++++ b/drivers/hid/hid-elecom.c
+@@ -5,6 +5,7 @@
+  *  - EX-G Trackballs (M-XT3DRBK, M-XT3URBK, M-XT4DRBK)
+  *  - DEFT Trackballs (M-DT1DRBK, M-DT1URBK, M-DT2DRBK, M-DT2URBK)
+  *  - HUGE Trackballs (M-HT1DRBK, M-HT1URBK)
++ *  - HUGE Plus Trackball (M-HT1MRBK)
+  *
+  *  Copyright (c) 2010 Richard Nauber <Richard.Nauber@gmail.com>
+  *  Copyright (c) 2016 Yuxuan Shui <yshuiv7@gmail.com>
+@@ -123,12 +124,25 @@ static const __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		 */
+ 		mouse_button_fixup(hdev, rdesc, *rsize, 22, 30, 24, 16, 8);
+ 		break;
++	case USB_DEVICE_ID_ELECOM_M_HT1MRBK:
++	case USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AB:
++	case USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AC:
 +		/*
-+		 * Some devices, such as the Grandstream GUV3100, exhibit entity
-+		 * ID collisions between units and streaming output terminals.
-+		 * Move streaming output terminals to their own ID namespace by
-+		 * setting bit UVC_TERM_OUTPUT (15), above the ID's 8-bit value.
-+		 * The bit is ignored in uvc_stream_for_terminal() when looking
-+		 * up the streaming interface for the terminal.
-+		 *
-+		 * This hack is safe to enable unconditionally, as the ID is not
-+		 * used for any other purpose (streaming output terminals have
-+		 * no controls and are never referenced as sources in UVC
-+		 * descriptors). Other types output terminals can have controls,
-+		 * so limit usage of this separate namespace to streaming output
-+		 * terminals.
++		 * Report descriptor format:
++		 * 24: button bit count
++		 * 28: padding bit count
++		 * 22: button report size
++		 * 16: button usage maximum
 +		 */
-+		if (type & UVC_TT_STREAMING)
-+			id |= UVC_TERM_OUTPUT;
-+
- 		term = uvc_alloc_new_entity(dev, type | UVC_TERM_OUTPUT,
--					    buffer[3], 1, 0);
-+					    id, 1, 0);
- 		if (IS_ERR(term))
- 			return PTR_ERR(term);
++		mouse_button_fixup(hdev, rdesc, *rsize, 24, 28, 22, 16, 8);
++		break;
+ 	}
+ 	return rdesc;
+ }
  
-@@ -2118,8 +2130,8 @@ static int uvc_register_terms(struct uvc_device *dev,
- 		if (UVC_ENTITY_TYPE(term) != UVC_TT_STREAMING)
- 			continue;
+ static const struct hid_device_id elecom_devices[] = {
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_BM084) },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AC) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
+@@ -142,6 +156,8 @@ static const struct hid_device_id elecom_devices[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1URBK_019B) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1DRBK_010D) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1DRBK_011C) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AB) },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(hid, elecom_devices);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 6d8b64872cefe..85ab1ac511096 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -466,6 +466,9 @@
+ #define USB_DEVICE_ID_ELECOM_M_HT1URBK_019B	0x019b
+ #define USB_DEVICE_ID_ELECOM_M_HT1DRBK_010D	0x010d
+ #define USB_DEVICE_ID_ELECOM_M_HT1DRBK_011C	0x011c
++#define USB_DEVICE_ID_ELECOM_M_HT1MRBK	0x01aa
++#define USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AB	0x01ab
++#define USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AC	0x01ac
  
--		stream = uvc_stream_by_id(dev, term->id);
--		if (stream == NULL) {
-+		stream = uvc_stream_for_terminal(dev, term);
-+		if (!stream) {
- 			dev_info(&dev->intf->dev,
- 				 "No streaming interface found for terminal %u.",
- 				 term->id);
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index ed7bad31f75ca..3f2e832025e71 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -41,7 +41,8 @@
- #define UVC_EXT_GPIO_UNIT		0x7ffe
- #define UVC_EXT_GPIO_UNIT_ID		0x100
- 
--#define UVC_INVALID_ENTITY_ID          0xffff
-+#define UVC_HARDWARE_ENTITY_ID(id)	((id) & 0xff)
-+#define UVC_INVALID_ENTITY_ID		0xffff
- 
- /* ------------------------------------------------------------------------
-  * Driver specific constants.
+ #define USB_VENDOR_ID_DREAM_CHEEKY	0x1d34
+ #define USB_DEVICE_ID_DREAM_CHEEKY_WN	0x0004
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 11438039cdb7f..3217e436c052c 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -420,6 +420,7 @@ static const struct hid_device_id hid_have_special_driver[] = {
+ #if IS_ENABLED(CONFIG_HID_ELECOM)
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_BM084) },
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AC) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK_00FC) },
+@@ -432,6 +433,8 @@ static const struct hid_device_id hid_have_special_driver[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1URBK_019B) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1DRBK_010D) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1DRBK_011C) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1MRBK_01AB) },
+ #endif
+ #if IS_ENABLED(CONFIG_HID_ELO)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELO, 0x0009) },
 -- 
 2.51.0
 
