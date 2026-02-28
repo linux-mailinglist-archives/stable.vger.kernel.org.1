@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-220556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IGgFxNOo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:20:35 +0100
+	id 6Cs+OoY+o2nv+gQAu9opvQ
+	(envelope-from <stable+bounces-220557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:14:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5A61C83F1
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:20:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719621C6B88
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:14:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9BA6E310F536
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:46:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06D94320A791
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0403D6CA6;
-	Sat, 28 Feb 2026 17:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10E93D8353;
+	Sat, 28 Feb 2026 17:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENj86LYz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5ISElVL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1673D751D;
-	Sat, 28 Feb 2026 17:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A4F3D834B;
+	Sat, 28 Feb 2026 17:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300437; cv=none; b=YYKcrrWDUfn8Gyolr1hmyjyq5s2hoY5F0KoX3V0Zab4YQjzZr45w0w2WjAj6tAFohe8cdbSEbGLygYEHqoiumOmBUhE10JutX+BmXbn6T+5TMFFws5JfkRuXTfq0fyvba3SArLPWsG3tHvZIwLr2pOd649Valx7urMZHXKOBFMU=
+	t=1772300438; cv=none; b=V/aLY0290bRXCE1YYjL0U7FLGcz4pK1ydZroI2464lU6+e2z7jp5Ju9InDPTd7UckbzOTa+jqvZbvSmfG8YN/7wWVH22v5l0x9RRZr452Wo2dKJWo+9OHcJNc34OOIXtkpLavCnHarVQnK9WR5RUHdWO9gjq5ozGupVU+6hoyFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300437; c=relaxed/simple;
-	bh=9Blwvyplt0VKUoH7HlX+1l3YnzTFHwZ8qOvdIEe2KfY=;
+	s=arc-20240116; t=1772300438; c=relaxed/simple;
+	bh=0TTJkMOME3sDF9qX8M3Nezn4qaRZBmS/veqUDaC1Glw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSbyYyjS3Qd9g4hbMdA9sDCuYtVKcwaXpsZakoUMdo+ClaIZDA8Of55B4H1yWW9PKN4KZY1jK+8rAN2Vd1XIKr51gdwUZwMFGYM/nnWsLgNm60iQRLT6ae3b9hRG+J1Rt6WihdJBFtPKawvOjDBdFRemeiBceAwkuco8MT9XMCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENj86LYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D82C116D0;
-	Sat, 28 Feb 2026 17:40:36 +0000 (UTC)
+	 MIME-Version; b=lrJoAAS4C27SRgj74EPlw4Hl3Ypbj24JsDVcCaVQMrCfpaTzOw8huA7WJt0EU5bqKDD7jWRzQO90OtsjQuz9dhmD1Zj8KuWH9ZwDyBmog08zq2lRXmvPiFwME3x2rO8xh8h8+6taL3o2Y/3SoLKddxvY5tR4SRKAsoy/r8moMf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5ISElVL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8063C19424;
+	Sat, 28 Feb 2026 17:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300437;
-	bh=9Blwvyplt0VKUoH7HlX+1l3YnzTFHwZ8qOvdIEe2KfY=;
+	s=k20201202; t=1772300438;
+	bh=0TTJkMOME3sDF9qX8M3Nezn4qaRZBmS/veqUDaC1Glw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENj86LYzy2URA2Te6SFkV+R+NW9AFRM64vSGJbKubeNLKpOGv+Ve3pY2DqqQpS8s9
-	 QPTFTkNj5a8TBXR/+s+JzHXABPqSRCswtsr80+3d1PQWobGXVvy/e63a4e22PG9/r2
-	 GXK1SE+IppOH6SdTcAP2blLy8P4msrptlnrxrGo7EcUmIrGy41tXHSQzbGi0RZmEx6
-	 DdxsB4Wm8usUIXgJcv0vrP61uDEu35T4h2w7uob5h8x9ujrNX0HK/e54eebbRQ7cu+
-	 mxJ88E7SWnyurD5iwUqolj6h8IroUXoKF02H+VDd2fRnJ+w2a3GnXYdguko0u8Yzco
-	 FKPxUSkrmSXJQ==
+	b=V5ISElVLdv6aiUSoOv8Pg6MuF0z8o/nhO8aYkcj6beVC06wYgCyd8W1NFDIS0awoi
+	 E4qYX0q5bbcxQUGDTb0IbqBx5EEo5RnGBMZKBX22xkD7i8B3jAFqWfN7mc/IU4UKX6
+	 VT8jCu+aE8bq6rbh3l/3TkXjd9KXcI58s1sp24/Bt0upGX33KOi9i51esTGnbmxxFA
+	 3nnDM+gUsJ8yA4FfWDjCYSPyjLd6DprlH/cryJfOkp5jfLvRm3iMflH7Phkir+Y1un
+	 gSL2y/oF09ljep0Q+dVj74Gz7Nn9yYjjQVHzFHC/KS3PMxHxkgCkERYyUf7KtRY4SC
+	 r+bxnPh6lP9QQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hyunwoo Kim <imv4bel@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+	syzbot+52624bdfbf2746d37d70@syzkaller.appspotmail.com,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 477/844] tls: Fix race condition in tls_sw_cancel_work_tx()
-Date: Sat, 28 Feb 2026 12:26:30 -0500
-Message-ID: <20260228173244.1509663-478-sashal@kernel.org>
+Subject: [PATCH 6.19 478/844] kcm: fix zero-frag skb in frag_list on partial sendmsg error
+Date: Sat, 28 Feb 2026 12:26:31 -0500
+Message-ID: <20260228173244.1509663-479-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,88 +68,148 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220557-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,queasysnail.net];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220556-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,queasysnail.net:email,msgid.link:url]
-X-Rspamd-Queue-Id: 8C5A61C83F1
+	TAGGED_RCPT(0.00)[stable,52624bdfbf2746d37d70];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,shopee.com:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 719621C6B88
 X-Rspamd-Action: no action
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit 7bb09315f93dce6acc54bf59e5a95ba7365c2be4 ]
+[ Upstream commit ca220141fa8ebae09765a242076b2b77338106b0 ]
 
-This issue was discovered during a code audit.
+Syzkaller reported a warning in kcm_write_msgs() when processing a
+message with a zero-fragment skb in the frag_list.
 
-After cancel_delayed_work_sync() is called from tls_sk_proto_close(),
-tx_work_handler() can still be scheduled from paths such as the
-Delayed ACK handler or ksoftirqd.
-As a result, the tx_work_handler() worker may dereference a freed
-TLS object.
+When kcm_sendmsg() fills MAX_SKB_FRAGS fragments in the current skb,
+it allocates a new skb (tskb) and links it into the frag_list before
+copying data. If the copy subsequently fails (e.g. -EFAULT from
+user memory), tskb remains in the frag_list with zero fragments:
 
-The following is a simple race scenario:
+  head skb (msg being assembled, NOT yet in sk_write_queue)
+  +-----------+
+  | frags[17] |  (MAX_SKB_FRAGS, all filled with data)
+  | frag_list-+--> tskb
+  +-----------+    +----------+
+                   | frags[0] |  (empty! copy failed before filling)
+                   +----------+
 
-          cpu0                         cpu1
+For SOCK_SEQPACKET with partial data already copied, the error path
+saves this message via partial_message for later completion. For
+SOCK_SEQPACKET, sock_write_iter() automatically sets MSG_EOR, so a
+subsequent zero-length write(fd, NULL, 0) completes the message and
+queues it to sk_write_queue. kcm_write_msgs() then walks the
+frag_list and hits:
 
-tls_sk_proto_close()
-  tls_sw_cancel_work_tx()
-                                 tls_write_space()
-                                   tls_sw_write_space()
-                                     if (!test_and_set_bit(BIT_TX_SCHEDULED, &tx_ctx->tx_bitmask))
-    set_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask);
-    cancel_delayed_work_sync(&ctx->tx_work.work);
-                                     schedule_delayed_work(&tx_ctx->tx_work.work, 0);
+  WARN_ON(!skb_shinfo(skb)->nr_frags)
 
-To prevent this race condition, cancel_delayed_work_sync() is
-replaced with disable_delayed_work_sync().
+TCP has a similar pattern where skbs are enqueued before data copy
+and cleaned up on failure via tcp_remove_empty_skb(). KCM was
+missing the equivalent cleanup.
 
-Fixes: f87e62d45e51 ("net/tls: remove close callback sock unlock/lock around TX work flush")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/aZgsFO6nfylfvLE7@v4bel
+Fix this by tracking the predecessor skb (frag_prev) when allocating
+a new frag_list entry. On error, if the tail skb has zero frags,
+use frag_prev to unlink and free it in O(1) without walking the
+singly-linked frag_list. frag_prev is safe to dereference because
+the entire message chain is only held locally (or in kcm->seq_skb)
+and is not added to sk_write_queue until MSG_EOR, so the send path
+cannot free it underneath us.
+
+Also change the WARN_ON to WARN_ON_ONCE to avoid flooding the log
+if the condition is somehow hit repeatedly.
+
+There are currently no KCM selftests in the kernel tree; a simple
+reproducer is available at [1].
+
+[1] https://gist.github.com/mrpre/a94d431c757e8d6f168f4dd1a3749daa
+
+Reported-by: syzbot+52624bdfbf2746d37d70@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000269a1405a12fdc77@google.com/T/
+Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260219014256.370092-1-jiayuan.chen@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/kcm/kcmsock.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 9937d4c810f2b..b1fa62de9dab5 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2533,7 +2533,7 @@ void tls_sw_cancel_work_tx(struct tls_context *tls_ctx)
+diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
+index 5dd7e0509a48f..3912e75079f5e 100644
+--- a/net/kcm/kcmsock.c
++++ b/net/kcm/kcmsock.c
+@@ -628,7 +628,7 @@ static int kcm_write_msgs(struct kcm_sock *kcm)
+ 			skb = txm->frag_skb;
+ 		}
  
- 	set_bit(BIT_TX_CLOSING, &ctx->tx_bitmask);
- 	set_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask);
--	cancel_delayed_work_sync(&ctx->tx_work.work);
-+	disable_delayed_work_sync(&ctx->tx_work.work);
- }
+-		if (WARN_ON(!skb_shinfo(skb)->nr_frags) ||
++		if (WARN_ON_ONCE(!skb_shinfo(skb)->nr_frags) ||
+ 		    WARN_ON_ONCE(!skb_frag_page(&skb_shinfo(skb)->frags[0]))) {
+ 			ret = -EINVAL;
+ 			goto out;
+@@ -749,7 +749,7 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+ {
+ 	struct sock *sk = sock->sk;
+ 	struct kcm_sock *kcm = kcm_sk(sk);
+-	struct sk_buff *skb = NULL, *head = NULL;
++	struct sk_buff *skb = NULL, *head = NULL, *frag_prev = NULL;
+ 	size_t copy, copied = 0;
+ 	long timeo = sock_sndtimeo(sk, msg->msg_flags & MSG_DONTWAIT);
+ 	int eor = (sock->type == SOCK_DGRAM) ?
+@@ -824,6 +824,7 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+ 				else
+ 					skb->next = tskb;
  
- void tls_sw_release_resources_tx(struct sock *sk)
++				frag_prev = skb;
+ 				skb = tskb;
+ 				skb->ip_summed = CHECKSUM_UNNECESSARY;
+ 				continue;
+@@ -933,6 +934,22 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+ out_error:
+ 	kcm_push(kcm);
+ 
++	/* When MAX_SKB_FRAGS was reached, a new skb was allocated and
++	 * linked into the frag_list before data copy. If the copy
++	 * subsequently failed, this skb has zero frags. Remove it from
++	 * the frag_list to prevent kcm_write_msgs from later hitting
++	 * WARN_ON(!skb_shinfo(skb)->nr_frags).
++	 */
++	if (frag_prev && !skb_shinfo(skb)->nr_frags) {
++		if (head == frag_prev)
++			skb_shinfo(head)->frag_list = NULL;
++		else
++			frag_prev->next = NULL;
++		kfree_skb(skb);
++		/* Update skb as it may be saved in partial_message via goto */
++		skb = frag_prev;
++	}
++
+ 	if (sock->type == SOCK_SEQPACKET) {
+ 		/* Wrote some bytes before encountering an
+ 		 * error, return partial success.
 -- 
 2.51.0
 
