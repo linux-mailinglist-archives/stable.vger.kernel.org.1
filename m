@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-220647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GsnHoY9o2nv+gQAu9opvQ
-	(envelope-from <stable+bounces-220647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:09:58 +0100
+	id SExDI/NRo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:37:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAF21C6A93
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:09:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E43931C872D
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:37:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DD68530A7F8E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:00:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E70A367E5DB
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819283EEEE5;
-	Sat, 28 Feb 2026 17:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8983EDF19;
+	Sat, 28 Feb 2026 17:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RUl2hEgb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJ/zi3C8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E363EEEDD;
-	Sat, 28 Feb 2026 17:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224063EEEFA;
+	Sat, 28 Feb 2026 17:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300529; cv=none; b=QPTR3ZIdZrQe1MLNLYJVTLVo9wG2wIHQ731BGp47i2ccRGJhNhmdAMGLHmSKRG+1Yvq/hYwtCl/DDhRVt2VimzeBkOgoCPGhMJeJOc8cqZ7qjhyH4auDUExnhxzy5TJBwXx0jn8sGZwdKy79EU8clscaufRxcAHKWU51bLFKTh0=
+	t=1772300530; cv=none; b=GKGgG7tdkkDAarh1fO03bhT8x/ue0w4uFO1NWDqpC1VYLo5bD3cBEi5O+UUJdcCPovcHwDvA1u1DcsDgf95fUzEDO7IS0jCFHXNXRDRa4EmFw+B7JOvYPP7Wh8iaudBGaF1cL7i25Ej4MdaREnDTb6JXhJ+fTMYS657N0Z8CKho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300529; c=relaxed/simple;
-	bh=IS53KTBMWo9ydqeW1BFesdWD63Lb5PcC6ZpjJOHuW68=;
+	s=arc-20240116; t=1772300530; c=relaxed/simple;
+	bh=jTSiQC9oqbGfXKaSWS6H02vRGlzbFECj8Q/rj0mZThc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NukdcDSJTnWYX3jCxXmg35TMm6HkWkV08rsOgV7qy3y5mCx84/LAMBz5G0E9tyYDPue5buVlSLVlGSbKLNmS/nNCbdimK5HnyGtjq1eXecSXSm+ZxV9aU1id217XwDpZTc+gJRYTdYdnMqJQY7KskLnN9DW9vcnTqaJnacKtAE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RUl2hEgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B5AC19424;
-	Sat, 28 Feb 2026 17:42:08 +0000 (UTC)
+	 MIME-Version; b=jihl4hkS3+uyH1TTMla6wNLwf5zg4FOQSaO5+2lnRy3i4xXITTMPfv3RHt5oCpnoyyISMf9fKatx4YRLvcrWz0Q6VRCDe878aXQAC8mZgzVwK6u4tp9wAWpyd8itAKc+GoP9wxAyS2IsJ+pAaikndilu0As6V+pUZ4lenDUWg1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJ/zi3C8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C18CC116D0;
+	Sat, 28 Feb 2026 17:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300529;
-	bh=IS53KTBMWo9ydqeW1BFesdWD63Lb5PcC6ZpjJOHuW68=;
+	s=k20201202; t=1772300530;
+	bh=jTSiQC9oqbGfXKaSWS6H02vRGlzbFECj8Q/rj0mZThc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUl2hEgbI0ToHdwfx59xVuZZ7w57Pm3MDFQmWK6QeulnhQ0DYaZzt5fZtsNupWQDk
-	 /5Mrq9rY91BXR2rSkAr0wvtD/VEpyvbfCcJHOK78JQJa6no0ywa2Pcg5pVx9ZmcuIB
-	 V9DTIg0Rbo7tp3ICJpBWRJP9qtmIqaCKVLj6WzzBieg8A+FUOuI77vIiU6FSQouar5
-	 n5QvcBbtGzcAj1P3N8AOKTfxd8+roU6nflsxVDoeY8F69Q0+rGAtBvYubV9UDpMxOX
-	 JVzEJiI4koC8yAnlUC8uGKqUXic40h0AQjKBxzhsVZihK4jubHQk2P6+TB1QNFtvEe
-	 ir+VelTqBuF2A==
+	b=kJ/zi3C809uCdo8mxVIsGZGrQETXlWscnE3fyEMPG5IGLyM84FZagk/YZlYXh7bEE
+	 7sHimypY3leO1hv8BjnmPSKn57kkkDPqG2Pf96tp6mHUwwYQ0aZC6HguduA8IuQznp
+	 vlzzNzsTf7gBEIY5BAADe/lFUF7FZ9xep/7wBe5wLgDBABBFNZREVzplCBAa8NdvJK
+	 PpdZDz4oeRS4a+dcr5i+V1BGQaGRNf7HZlIDvpq+2gQSu+HrP4mMFd+nzJaY2WQRuy
+	 0yjjCkYsR8BMdHz3OFABxjqs0v5WcQAw9r+xXhFpZ3ZlDT0KUcJWEL+OfnSq7GY9i/
+	 mdHVQwDIZv2mQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Jianfeng Liu <liujianfeng1994@gmail.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+Cc: Zilin Guan <zilin@seu.edu.cn>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 568/844] media: verisilicon: AV1: Set IDR flag for intra_only frame type
-Date: Sat, 28 Feb 2026 12:28:01 -0500
-Message-ID: <20260228173244.1509663-569-sashal@kernel.org>
+Subject: [PATCH 6.19 569/844] media: tegra-video: Fix memory leak in __tegra_channel_try_format()
+Date: Sat, 28 Feb 2026 12:28:02 -0500
+Message-ID: <20260228173244.1509663-570-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,68 +67,104 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220648-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[collabora.com,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220647-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1CAF21C6A93
+	TAGGED_RCPT(0.00)[stable,cisco];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:email]
+X-Rspamd-Queue-Id: E43931C872D
 X-Rspamd-Action: no action
 
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 1c1b79f40ee4444fa1ac96079751608b724c6b2b ]
+[ Upstream commit 43e5302d22334f1183dec3e0d5d8007eefe2817c ]
 
-Intra_only frame could be considered as a key frame so Instantaneous
-Decoding Refresh (IDR) flag must be set of the both case and not only
-for key frames.
+The state object allocated by __v4l2_subdev_state_alloc() must be freed
+with __v4l2_subdev_state_free() when it is no longer needed.
 
-Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Reported-by: Jianfeng Liu <liujianfeng1994@gmail.com>
-Fixes: 727a400686a2c ("media: verisilicon: Add Rockchip AV1 decoder")
+In __tegra_channel_try_format(), two error paths return directly after
+v4l2_subdev_call() fails, without freeing the allocated 'sd_state'
+object. This violates the requirement and causes a memory leak.
+
+Fix this by introducing a cleanup label and using goto statements in the
+error paths to ensure that __v4l2_subdev_state_free() is always called
+before the function returns.
+
+Fixes: 56f64b82356b7 ("media: tegra-video: Use zero crop settings if subdev has no get_selection")
+Fixes: 1ebaeb09830f3 ("media: tegra-video: Add support for external sensor capture")
 Cc: stable@vger.kernel.org
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/media/tegra-video/vi.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c b/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c
-index f52b8208e6b93..500e94bcb0293 100644
---- a/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c
-+++ b/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c
-@@ -2018,7 +2018,7 @@ static void rockchip_vpu981_av1_dec_set_parameters(struct hantro_ctx *ctx)
- 			 !!(ctrls->frame->quantization.flags
- 			    & V4L2_AV1_QUANTIZATION_FLAG_DELTA_Q_PRESENT));
+diff --git a/drivers/staging/media/tegra-video/vi.c b/drivers/staging/media/tegra-video/vi.c
+index c9276ff76157f..14b327afe045e 100644
+--- a/drivers/staging/media/tegra-video/vi.c
++++ b/drivers/staging/media/tegra-video/vi.c
+@@ -438,7 +438,7 @@ static int __tegra_channel_try_format(struct tegra_vi_channel *chan,
+ 		.target = V4L2_SEL_TGT_CROP_BOUNDS,
+ 	};
+ 	struct v4l2_rect *try_crop;
+-	int ret;
++	int ret = 0;
  
--	hantro_reg_write(vpu, &av1_idr_pic_e, !ctrls->frame->frame_type);
-+	hantro_reg_write(vpu, &av1_idr_pic_e, IS_INTRA(ctrls->frame->frame_type));
- 	hantro_reg_write(vpu, &av1_quant_base_qindex, ctrls->frame->quantization.base_q_idx);
- 	hantro_reg_write(vpu, &av1_bit_depth_y_minus8, ctx->bit_depth - 8);
- 	hantro_reg_write(vpu, &av1_bit_depth_c_minus8, ctx->bit_depth - 8);
+ 	subdev = tegra_channel_get_remote_source_subdev(chan);
+ 	if (!subdev)
+@@ -482,8 +482,10 @@ static int __tegra_channel_try_format(struct tegra_vi_channel *chan,
+ 		} else {
+ 			ret = v4l2_subdev_call(subdev, pad, get_selection,
+ 					       NULL, &sdsel);
+-			if (ret)
+-				return -EINVAL;
++			if (ret) {
++				ret = -EINVAL;
++				goto out_free;
++			}
+ 
+ 			try_crop->width = sdsel.r.width;
+ 			try_crop->height = sdsel.r.height;
+@@ -495,14 +497,15 @@ static int __tegra_channel_try_format(struct tegra_vi_channel *chan,
+ 
+ 	ret = v4l2_subdev_call(subdev, pad, set_fmt, sd_state, &fmt);
+ 	if (ret < 0)
+-		return ret;
++		goto out_free;
+ 
+ 	v4l2_fill_pix_format(pix, &fmt.format);
+ 	chan->vi->ops->vi_fmt_align(pix, fmtinfo->bpp);
+ 
++out_free:
+ 	__v4l2_subdev_state_free(sd_state);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int tegra_channel_try_format(struct file *file, void *fh,
 -- 
 2.51.0
 
