@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-220587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IjoGuM6o2nO+gQAu9opvQ
-	(envelope-from <stable+bounces-220587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:58:43 +0100
+	id MGJqHLtPo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:27:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10351C6797
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:58:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E66DD1C85C4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:27:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A40863220CDF
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:51:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6014F31A48A8
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121F53DFC81;
-	Sat, 28 Feb 2026 17:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FD448A2DF;
+	Sat, 28 Feb 2026 17:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DFgsNxsN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VTUpppNz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A143DFC77;
-	Sat, 28 Feb 2026 17:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E193DFC9E;
+	Sat, 28 Feb 2026 17:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300469; cv=none; b=BhgX2YZexhb0lSw7ulKV7pbEWBnaa2Q8dvtWtLP4ckimeewv0sSbOtYua3JjZP9M1SkiW0dKSlXQ1nBz/TCHbhIOIorXSFVyswYGDm/3RueOKJI4FWQ6heCAurgIcortO5gZWzSPd3vK6v1GkZMd0Q7MrZUEk2iOZJfj/VNKujw=
+	t=1772300471; cv=none; b=YZzLHD3u567qsfrTTCmNwrfHbhqdVkBtkRqkYfcTlD3HOWGkRXsKEL7R/lKR5K0extLvf5+5Fox6xT7FglLFsZTrYKzC9VXfL9xfI4kbIhRffswC6jroeqcfDKPyaxdKd76pmyLifcIE0OIspqjS/c3snsB3DbM/QrWhEmNeyLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300469; c=relaxed/simple;
-	bh=6Y+xZCTR+Bzy3g0YLhogsNBKc2RpGqJPlFj0zQ0zzvA=;
+	s=arc-20240116; t=1772300471; c=relaxed/simple;
+	bh=FcnjzuTrYxOdD1uVVsCw+4SQEAEj0Gn+2o0dyJvm8ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0z+LT9R8AjHpdz+jOxVIGr464W/oLhp511p2AIc3dYYUiaJQBjpVK5jbkFI1gXV/iog3hDE8Hsa/y+GkGEIiXZBBaoQGhfOMQf0dLlIQ1mG3+zpIGQkyqtxLjZauMStsbcuZpacerEXLTXaUMnv4lG2XhMWP0AH1+VEoxtaljA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DFgsNxsN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BD2C19423;
-	Sat, 28 Feb 2026 17:41:08 +0000 (UTC)
+	 MIME-Version; b=GFW1pH9lqnmwKHFdu7mfQJ77SQz+cigRCmXE6IeR523GROUCPalxM02QLANoXVvbYlNvl18Jqz6doTpmPEe4C2R1dcaZ06dax9zrK5cNxfj/qGWKbG7SfN1Bg7t6WZedmhr5xEa4mQEmulQWdKiXgLNizVKMEtA0qj5/Sg/HP3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VTUpppNz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A52C116D0;
+	Sat, 28 Feb 2026 17:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300469;
-	bh=6Y+xZCTR+Bzy3g0YLhogsNBKc2RpGqJPlFj0zQ0zzvA=;
+	s=k20201202; t=1772300470;
+	bh=FcnjzuTrYxOdD1uVVsCw+4SQEAEj0Gn+2o0dyJvm8ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFgsNxsNpyY471OoMpunMOJ9FBJYB8ws4Gue+cKzxI0o+375SpeTdJpLwVGJowpYQ
-	 3N6ng6ApacXLuw0VCMBQxfap2HzRPye4XIxK8HNPuhXbdny7Fwc54jAP21qbdjQuk7
-	 HnxHQyLSYwHNl/A+N8W3S31PlNeSvGECuBe/nnCUUjaMaQ5NinbQjhn+yOO4/RkSvC
-	 KpKwr0XZtflQZYBjWziVwbDAxqEuiR/jmEdQMz9vAtkcvh6RleduDsybnEKexPuoN0
-	 FPPlXNP8WhtpUnZfLcCCl5xCfag390NXLiow6f3DEDFNKfgVaT0IUg4GiqGsSMkOo1
-	 A4wi0VhITiWOw==
+	b=VTUpppNzrXu8qIFRoaduKrzyPvZRjKrQj5G4nguGS+UIx/h5JxQN1wRncKQuuVGjb
+	 bDMpczKnUGJqH/a2Qbk1EY6I8JcneXKVMX1S3pcOK9vUuMYZ959U76KmqOCjjdTSKZ
+	 FXUY/wRnJz21gKhoPLQu6TGSwAkrvfxIq564gWnCrMYnilDR+9b7my0PCaMDRntsM2
+	 xicmO1LtQiZsO98ZR3KQmI4dInpl3VYyXeaeYrztAHevaZRhZpxWpnHnrG5cvzq3jG
+	 TY3uBijT2+GHBahYmsy0eXJ0mAy3rQbaP5yL8LrurCxE5ENHNjxvRIKiRJHesP2QdE
+	 JLZUOI1Vs9sFA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+Cc: Johan Hovold <johan@kernel.org>,
+	Yong Wu <yong.wu@mediatek.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 508/844] hfsplus: ensure sb->s_fs_info is always cleaned up
-Date: Sat, 28 Feb 2026 12:27:01 -0500
-Message-ID: <20260228173244.1509663-509-sashal@kernel.org>
+Subject: [PATCH 6.19 509/844] memory: mtk-smi: fix device leaks on common probe
+Date: Sat, 28 Feb 2026 12:27:02 -0500
+Message-ID: <20260228173244.1509663-510-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -68,106 +68,79 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,ibm.com,kernel.org,dubeyko.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220587-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,mediatek.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220588-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E10351C6797
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:email]
+X-Rspamd-Queue-Id: E66DD1C85C4
 X-Rspamd-Action: no action
 
-From: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 126fb0ce99431126b44a6c360192668c818f641f ]
+[ Upstream commit 6cfa038bddd710f544076ea2ef7792fc82fbedd6 ]
 
-When hfsplus was converted to the new mount api a bug was introduced by
-changing the allocation pattern of sb->s_fs_info. If setup_bdev_super()
-fails after a new superblock has been allocated by sget_fc(), but before
-hfsplus_fill_super() takes ownership of the filesystem-specific s_fs_info
-data it was leaked.
+Make sure to drop the reference taken when looking up the SMI device
+during common probe on late probe failure (e.g. probe deferral) and on
+driver unbind.
 
-Fix this by freeing sb->s_fs_info in hfsplus_kill_super().
-
-Cc: stable@vger.kernel.org
-Fixes: 432f7c78cb00 ("hfsplus: convert hfsplus to use the new mount api")
-Reported-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Tested-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20251201222843.82310-3-mehdi.benhadjkhelifa@gmail.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: 47404757702e ("memory: mtk-smi: Add device link for smi-sub-common")
+Fixes: 038ae37c510f ("memory: mtk-smi: add missing put_device() call in mtk_smi_device_link_common")
+Cc: stable@vger.kernel.org	# 5.16: 038ae37c510f
+Cc: stable@vger.kernel.org	# 5.16
+Cc: Yong Wu <yong.wu@mediatek.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251121164624.13685-2-johan@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/super.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/memory/mtk-smi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-index 7f327b777ece8..942b8ff01ad07 100644
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -350,8 +350,6 @@ static void hfsplus_put_super(struct super_block *sb)
- 	hfs_btree_close(sbi->ext_tree);
- 	kfree(sbi->s_vhdr_buf);
- 	kfree(sbi->s_backup_vhdr_buf);
--	call_rcu(&sbi->rcu, delayed_free);
--
- 	hfs_dbg("finished\n");
+diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
+index 733e22f695ab7..dd6150d200e89 100644
+--- a/drivers/memory/mtk-smi.c
++++ b/drivers/memory/mtk-smi.c
+@@ -674,6 +674,7 @@ static int mtk_smi_larb_probe(struct platform_device *pdev)
+ err_pm_disable:
+ 	pm_runtime_disable(dev);
+ 	device_link_remove(dev, larb->smi_common_dev);
++	put_device(larb->smi_common_dev);
+ 	return ret;
  }
  
-@@ -656,7 +654,6 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
- out_unload_nls:
- 	unload_nls(sbi->nls);
- 	unload_nls(nls);
--	kfree(sbi);
- 	return err;
+@@ -917,6 +918,7 @@ static void mtk_smi_common_remove(struct platform_device *pdev)
+ 	if (common->plat->type == MTK_SMI_GEN2_SUB_COMM)
+ 		device_link_remove(&pdev->dev, common->smi_common_dev);
+ 	pm_runtime_disable(&pdev->dev);
++	put_device(common->smi_common_dev);
  }
  
-@@ -715,10 +712,18 @@ static int hfsplus_init_fs_context(struct fs_context *fc)
- 	return 0;
- }
- 
-+static void hfsplus_kill_super(struct super_block *sb)
-+{
-+	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
-+
-+	kill_block_super(sb);
-+	call_rcu(&sbi->rcu, delayed_free);
-+}
-+
- static struct file_system_type hfsplus_fs_type = {
- 	.owner		= THIS_MODULE,
- 	.name		= "hfsplus",
--	.kill_sb	= kill_block_super,
-+	.kill_sb	= hfsplus_kill_super,
- 	.fs_flags	= FS_REQUIRES_DEV,
- 	.init_fs_context = hfsplus_init_fs_context,
- };
+ static int __maybe_unused mtk_smi_common_resume(struct device *dev)
 -- 
 2.51.0
 
