@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-220787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMFoCCREo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:38:12 +0100
+	id yN0KBC5Eo2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:38:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B541C7339
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:38:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 899491C7342
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C293E30834F1
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:23:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 016F6308E0C5
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3583E40BDCD;
-	Sat, 28 Feb 2026 17:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0E340C786;
+	Sat, 28 Feb 2026 17:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udNrmW6h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jt6xUg4K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF9640BDC5;
-	Sat, 28 Feb 2026 17:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4204949E5;
+	Sat, 28 Feb 2026 17:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300671; cv=none; b=kaX+B+1N1zzRPhFQMivRCRTK8II/OWI5b6vhHWErNLpGzOThqYxlqtsaOz1WmrW7qFtH+icnyzz5s7vvRrWCwOF1iVBlkB9NlDPLsVPEK4COhYrKTSzMJFw4Axu0gWtSOwVaCLuP0JIsSaBkel9mSK3J6SN2vB0N4ErMEFmoqTY=
+	t=1772300672; cv=none; b=Qa+q+AyvJ4dSncgcYCX9oIrTzZ9TMb5qe5rV59lNl9e7TTQoRIJobj537f89+md/UkXI+A+WfXR0O0W2iXopLgKmb16j1D0DuVfWiOC+PaEb0Mr4VbYIH+w6gkMqWRzw+351Kin6Yvh/ZzQ9WCIxGtivd7zZ1D+NmXS55SgkUJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300671; c=relaxed/simple;
-	bh=R4y3wwuLIU2aPt/uQFe46IIl65jyVzKx2e0SZu1jYeg=;
+	s=arc-20240116; t=1772300672; c=relaxed/simple;
+	bh=W6W7FBTM2KboxMZEwq13+hDQwWbf3XoBnHsc68k/l1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofYN07GPfTj0ND4jFUWXGj2TobQ+B8Om7e3QGTLfxnDnFKOrtI4DaZEET160S3ZOfPReof2jPibjgH1z+oF85vsHUhLiY05hWnPud43vd/FpfOVzuMHJ1uCKHksw5DlxBWVXxzbUQFCDG1NLbLSHTgpccS3PdFOHOlS6SYv5HEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udNrmW6h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016FEC19425;
-	Sat, 28 Feb 2026 17:44:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aM2zw+053FzVuFm6RJk9TbzkEuoyuZCPJijBU9gR5gW/VBUdVx9V5/GVm0HyTbKxATL7axjV7ufUr6rxXU6/O8CPzh9dBdham7p21APKgWFffxKspQh54RBw/6EA3tN9oGHFVU6Pvbu9zAWb5k+dkyQqytUgl+U0X8/JbMvs6eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jt6xUg4K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D648C116D0;
+	Sat, 28 Feb 2026 17:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300670;
-	bh=R4y3wwuLIU2aPt/uQFe46IIl65jyVzKx2e0SZu1jYeg=;
+	s=k20201202; t=1772300672;
+	bh=W6W7FBTM2KboxMZEwq13+hDQwWbf3XoBnHsc68k/l1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udNrmW6h98iTcRlb+8L/jx0nS/94NO2KMkkNqAn2Ov+JqqCRnIi9Xoe4V8b8pm/3N
-	 Dcs+TP0P3r127Ts19HMi51cn2wCV7nLaUZur3Y2kHkDJHMN52pcSqty8L2T0QBXKzF
-	 gUl3ZsFOlKSasNz2sVUFyPhnvzhWVPOkiysmcD0d7nhKqn3Y6nrmclpxR2Cj8eOQNp
-	 ENZKUUSexdlR5FhK9jCIK1yZar5oTzEFyisrqlANpZPe6sjJ3BMoxgXu0gj8mUnaQ3
-	 x0KGTxz/hg1nmP2ePJJjdTtiqzJ9XzsqG+lEzcXIXE/ayFo3W+EGDXZzuz9c7gxUb4
-	 83xKkLhxs0LMQ==
+	b=Jt6xUg4Kdg+IxrJK7QROuVyjKFUA5EA2dXl3B7IjZ90YqjhYduttK9Bu0Rf/WU/zo
+	 rkhIf4zrYNNnwODVeRC+lSzN1E+5+7mWBszV3bgIlwZe3AzUsA0AAStl8BmqSr0MW8
+	 a0SVwLCGSojNw2YBLM9mZ4AeXLaeP7zbAsVbybxi1Vev51nsoaGvKQbeF1kzFyzZKf
+	 oS2uRrd0eMk6/sC1mIRXQgrDtkb6F6cv/tHqM4l8uGGEzp1vLUZtLnNscIZCFZkBQg
+	 81B3jAg4xaq8Kh4TDh8uNJlP/xPL43UNVvvtSNagTbekPzLgsCNW8ciYX1kBz0o/Cu
+	 kVKjo8Kng0Xvw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	David Spickett <david.spickett@arm.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
+Cc: Leo Yan <leo.yan@arm.com>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Thomas Voegtle <tv@lio96.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 708/844] arm64: poe: fix stale POR_EL0 values for ptrace
-Date: Sat, 28 Feb 2026 12:30:21 -0500
-Message-ID: <20260228173244.1509663-709-sashal@kernel.org>
+Subject: [PATCH 6.19 709/844] tools: Fix bitfield dependency failure
+Date: Sat, 28 Feb 2026 12:30:22 -0500
+Message-ID: <20260228173244.1509663-710-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -65,81 +68,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220787-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220788-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 84B541C7339
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,arm.com:email,linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lio96.de:email]
+X-Rspamd-Queue-Id: 899491C7342
 X-Rspamd-Action: no action
 
-From: Joey Gouly <joey.gouly@arm.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 1f3b950492db411e6c30ee0076b61ef2694c100a ]
+[ Upstream commit a537c0da168a08b0b6a7f7bd9e75f4cc8d45ff57 ]
 
-If a process wrote to POR_EL0 and then crashed before a context switch
-happened, the coredump would contain an incorrect value for POR_EL0.
+A perf build failure was reported by Thomas Voegtle on stable kernel
+v6.6.120:
 
-The value read in poe_get() would be a stale value left in thread.por_el0.  Fix
-this by reading the value from the system register, if the target thread is the
-current thread.
+    CC      tests/sample-parsing.o
+    CC      util/intel-pt-decoder/intel-pt-pkt-decoder.o
+    CC      util/perf-regs-arch/perf_regs_csky.o
+    CC      util/arm-spe-decoder/arm-spe-pkt-decoder.o
+    CC      util/perf-regs-arch/perf_regs_loongarch.o
+  In file included from util/arm-spe-decoder/arm-spe-pkt-decoder.h:10,
+                   from util/arm-spe-decoder/arm-spe-pkt-decoder.c:14:
+  /local/git/linux-stable-rc/tools/include/linux/bitfield.h: In function ‘le16_encode_bits’:
+  /local/git/linux-stable-rc/tools/include/linux/bitfield.h:166:31: error: implicit declaration of
+  function ‘cpu_to_le16’; did you mean ‘htole16’? [-Werror=implicit-function-declaration]
+    ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
+                                 ^~~~~~~~~
+  /local/git/linux-stable-rc/tools/include/linux/bitfield.h:149:9: note: in definition of macro
+  ‘____MAKE_OP’
+    return to((v & field_mask(field)) * field_multiplier(field)); \
+           ^~
+  /local/git/linux-stable-rc/tools/include/linux/bitfield.h:170:1: note: in expansion of macro
+  ‘__MAKE_OP’
+   __MAKE_OP(16)
 
-This matches what gcs/fpsimd do.
+Fix this by including linux/kernel.h, which provides the required
+definitions.
 
-Fixes: 175198199262 ("arm64/ptrace: add support for FEAT_POE")
-Reported-by: David Spickett <david.spickett@arm.com>
+The issue was not found on the mainline due to the relevant C files have
+included kernel.h.  It'd be good to merge this change on mainline
+as well for robustness.
+
+Closes: https://lore.kernel.org/stable/3a44500b-d7c8-179f-61f6-e51cb50d3512@lio96.de/
+Fixes: 64d86c03e1441742 ("perf arm-spe: Extend branch operations")
+Reported-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Reported-by: Thomas Voegtle <tv@lio96.de>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Leo Yan <leo.yan@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/ptrace.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/include/linux/bitfield.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index 6c5ff6807d4cc..64ff87f023113 100644
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -1484,6 +1484,9 @@ static int poe_get(struct task_struct *target,
- 	if (!system_supports_poe())
- 		return -EINVAL;
+diff --git a/tools/include/linux/bitfield.h b/tools/include/linux/bitfield.h
+index 6093fa6db2600..ddf81f24956ba 100644
+--- a/tools/include/linux/bitfield.h
++++ b/tools/include/linux/bitfield.h
+@@ -8,6 +8,7 @@
+ #define _LINUX_BITFIELD_H
  
-+	if (target == current)
-+		current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
-+
- 	return membuf_write(&to, &target->thread.por_el0,
- 			    sizeof(target->thread.por_el0));
- }
+ #include <linux/build_bug.h>
++#include <linux/kernel.h>
+ #include <asm/byteorder.h>
+ 
+ /*
 -- 
 2.51.0
 
