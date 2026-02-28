@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-220921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLsJEz5Jo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220921-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:59:58 +0100
+	id qAW6KUhJo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:00:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EE51C7B51
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:59:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 501E21C7B8C
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0CABF311EBD2
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:41:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4AEC930F18C2
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A88F42E6F6;
-	Sat, 28 Feb 2026 17:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3408042E713;
+	Sat, 28 Feb 2026 17:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ICN6ft/e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2QZL8C+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFEB42E6ED;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B7542E709;
 	Sat, 28 Feb 2026 17:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300810; cv=none; b=NPoBOMvMBs0T9+dYVaU6VA8d/nulvPqMrPXdlICLvRgKbFWO6cCegBa5Fhv9sou/rbSeIRVuUsLWGCq8hTklIyTUxZgDEQ8CSbwl4rSuilE7KXPQec/s+q/HTsKbrxAcknu8FzXNY1aPl5rKT0PHHju6MANk004XF7i+2B9VVQ4=
+	t=1772300811; cv=none; b=UNOiyzbtdHNvp5jZLWm4cyg3OXphn7/mFfEFMYzdNqylCbCSyoagUjtYKsn4DyDIJHZjnPokuKEVm6muWfsxr/AyJGRvIU8Jk11sh7GaTETALZA89iFZDprZy3+SJ8A14BK9eOK9jtzP5Nm9o9yYj8VS63vLbDm4WxB0kBHh59I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300810; c=relaxed/simple;
-	bh=wlnoMeWexWJA2dF9SfOHwqItuv9hz4ScmW9Lp2Fq6Zc=;
+	s=arc-20240116; t=1772300811; c=relaxed/simple;
+	bh=kjYl48MKzqGpME0ktYz7rGI9bYGvuvntwezuXTvt6mA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ad6ARA9Coep8lu2grIzZEhHyMfssQSPtCMTE+Fd4X39/PL+ZeIKAYW3+ry298xBJz01BC0Rt8AjOqkqHqqVt7nU6LMme5Y3QhREOa3MYBCUJLtLNDYff8C8t2kq0xVhAdJOQbehPlUetS2iq9+Gnb2lwIce/NDiT7nLQllLuIHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ICN6ft/e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507B3C2BC87;
-	Sat, 28 Feb 2026 17:46:49 +0000 (UTC)
+	 MIME-Version; b=rgl39gWLq0Kdw+9Zt3xoWJJDPWdfgAxgWvFw5xbfQlY4jXxw/XJ1+aOHK17TNjTB7ua/WEVedsXo8lXygwkaMBCPiqJV7efcXuPs6nvMwTrMjNAXLXkHUWk7Xr9pDKE+G/EsOxKvIUqRK9MIPmX1ITu/FzRHl1AKiOwUEDYOXqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2QZL8C+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428B4C2BCB4;
+	Sat, 28 Feb 2026 17:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772300810;
-	bh=wlnoMeWexWJA2dF9SfOHwqItuv9hz4ScmW9Lp2Fq6Zc=;
+	bh=kjYl48MKzqGpME0ktYz7rGI9bYGvuvntwezuXTvt6mA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ICN6ft/eiMKLZdgQ3qVqUDV9BZ1VhZOF0jDGHjvx/tNXdfScTRyb6UkcASKU7Vj8L
-	 Oc6gi0urSyXf8V6+TcqfTCVGwz7/s4MqA0OjzoyEFFYiP4b7T5al2tjPnkTcNssAKx
-	 EE6EuhCHK7f6dz+2QGjd2XI1xt6Ui1bSS5Ip7XnKCXqKmCg+NCoun45dWoDJMOjr+c
-	 fMBHxCFR6EyX6jQZipSGHvuXLUom8RqGeLyhebOqHGYsJjwKGL5TQ7BBrE3tSyANg3
-	 3zs5u0ZJT1L5xNk20Jc+AScrRSDosOnsI+wpaVqJlFYGQFpr6wsxEY++sYoiJ6oeda
-	 8UuXlqkfiQnrA==
+	b=V2QZL8C+bcCE9zUdKOCA1evDantnd8VrNUhFDVOErncMcpY2UKIopVaT41BSDLyW4
+	 IQEayyjBtdygrCpN8EgeK7qsTrsgkRcXatqaY6c+PTl45ggm93TMfiSRy5qXr1LNsN
+	 DzZCnF5v3wdTKwZAAPSnqHUaoYEl8BJCpt1mRf4jf2sh4oqpVEr2M2f8n6ep++brDC
+	 v1Ss9VJQoIp56u0qqiPP7XkA41cwjoVcxlAJzms+dl/FkWvNCEp3F0s67h3dEJP0Ee
+	 X1qTv4jV6VrO8T1tNs3D+o9pLCHYVbCK5+envRf6/JeQRSs1+Wg3/ttQncnJTDGwBK
+	 AYneuonY/S2WQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 842/844] ALSA: pcm: Revert bufs move in snd_pcm_xfern_frames_ioctl()
-Date: Sat, 28 Feb 2026 12:32:35 -0500
-Message-ID: <20260228173244.1509663-843-sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Athul Krishna <athul.krishna.kr@protonmail.com>
+Subject: [PATCH 6.19 843/844] Revert "ACPI: processor: Update cpuidle driver check in __acpi_processor_start()"
+Date: Sat, 28 Feb 2026 12:32:36 -0500
+Message-ID: <20260228173244.1509663-844-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,19 +70,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220921-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_CC(0.00)[kernel.org,protonmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220922-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -92,81 +91,41 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: E7EE51C7B51
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 501E21C7B8C
 X-Rspamd-Action: no action
 
-From: Nathan Chancellor <nathan@kernel.org>
+This reverts commit 0089ce1c056aee547115bdc25c223f8f88c08498 which is
+upstream commit 6cfed39c2ce64ac024bbde458a9727105e0b8c66.
 
-[ Upstream commit 0585c53b21541cd6b17ad5ab41b371a0d52e358c ]
+This commit is causing a suspend regression on systems such as the Asus
+Zephyrus G14 (GA402RJ) with Ryzen 7 6700H: when suspending, the display
+turns off but the device fails to fully power down. This is not seen
+with v7.0-rc1 which indicates that there are changes missing. Therefore,
+revert this change.
 
-When building with clang older than 17 targeting architectures that use
-asm goto for their get_user() and put_user(), such as arm64, after
-commit f3d233daf011 ("ALSA: pcm: Relax __free() variable declarations"),
-there are bogus errors around skipping over a variable declared with the
-cleanup attribute:
-
-  sound/core/pcm_native.c:3308:6: error: cannot jump from this asm goto statement to one of its possible targets
-          if (put_user(result, &_xfern->result))
-              ^
-  ...
-  arch/arm64/include/asm/uaccess.h:298:2: note: expanded from macro '__put_mem_asm'
-          asm goto(
-          ^
-  sound/core/pcm_native.c:3295:6: note: possible target of asm goto statement
-          if (put_user(0, &_xfern->result))
-              ^
-  ...
-  sound/core/pcm_native.c:3300:8: note: jump exits scope of variable with __attribute__((cleanup))
-          void *bufs __free(kfree) =
-                ^
-
-clang-17 fixed a bug in clang's jump scope checker [1] where all labels
-in a function were checked as valid targets for all asm goto instances
-in a function, regardless of whether they were actual targets in a
-paricular asm goto's provided list of labels.
-
-To workaround this, revert the change done to
-snd_pcm_xfern_frames_ioctl() by commit f3d233daf011 ("ALSA: pcm: Relax
-__free() variable declarations") to avoid a variable declared with
-cleanup from existing between multiple uses of asm goto. There are no
-other uses of cleanup in this function so there should be low risk from
-moving this variable back to the top of the function.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1886 [1]
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512190802.i4Jzbcsl-lkp@intel.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20260106-pcm_native-revert-var-move-free-for-old-clang-v1-1-06a03693423d@kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/all/lA7Dz_m7_nCF8KkRyEOcSCLg799Mm9_DN2r9hx7ISjw32OoKiB1r_YjGHIFX8vgqxpOkVJ8d_yHb-VsGAvIWC942D4-zdWxAIP4_k6ZIQi8=@protonmail.com/
+Fixes: 0089ce1c056a ("ACPI: processor: Update cpuidle driver check in __acpi_processor_start()")
+Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_native.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/processor_driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 844ee1b4d286f..0a358d94b17c6 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -3291,6 +3291,7 @@ static int snd_pcm_xfern_frames_ioctl(struct snd_pcm_substream *substream,
- {
- 	struct snd_xfern xfern;
- 	struct snd_pcm_runtime *runtime = substream->runtime;
-+	void *bufs __free(kfree) = NULL;
- 	snd_pcm_sframes_t result;
+diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
+index 7644de24d2faa..65e779be64ffc 100644
+--- a/drivers/acpi/processor_driver.c
++++ b/drivers/acpi/processor_driver.c
+@@ -166,7 +166,7 @@ static int __acpi_processor_start(struct acpi_device *device)
+ 	if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
+ 		dev_dbg(&device->dev, "CPPC data invalid or not present\n");
  
- 	if (runtime->state == SNDRV_PCM_STATE_OPEN)
-@@ -3302,8 +3303,7 @@ static int snd_pcm_xfern_frames_ioctl(struct snd_pcm_substream *substream,
- 	if (copy_from_user(&xfern, _xfern, sizeof(xfern)))
- 		return -EFAULT;
+-	if (cpuidle_get_driver() == &acpi_idle_driver)
++	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
+ 		acpi_processor_power_init(pr);
  
--	void *bufs __free(kfree) =
--		memdup_array_user(xfern.bufs, runtime->channels, sizeof(void *));
-+	bufs = memdup_array_user(xfern.bufs, runtime->channels, sizeof(void *));
- 	if (IS_ERR(bufs))
- 		return PTR_ERR(bufs);
- 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+ 	acpi_pss_perf_init(pr);
 -- 
 2.51.0
 
