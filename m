@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-220504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4A+PK6k5o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:29 +0100
+	id wIKVNtw9o2nv+gQAu9opvQ
+	(envelope-from <stable+bounces-220505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:11:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64DF81C65E4
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0601C6AC1
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D38A730EAA19
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:38:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BD4B318C8C6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444D43C9FA9;
-	Sat, 28 Feb 2026 17:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF683C9FC5;
+	Sat, 28 Feb 2026 17:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5m8R+WN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pY6fRwDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067883C9FA2;
-	Sat, 28 Feb 2026 17:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123F73C9FBD;
+	Sat, 28 Feb 2026 17:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300389; cv=none; b=vDeefqqvQCQVeFqAsaTuJNX7FOi8vHTMa8mvoevpuyxLS7rPQnBeMca6KW77YxbdyJYv7yjuRoh2QWaXWVbNfim6l5zuvLyEsO/l7DoMmgDGhdBf/D4pkEuZNCCFJBCUY7aH4+IjrNb7Ri8/dur0KjpyIzYs6G+H8LeYOa+Enpw=
+	t=1772300390; cv=none; b=rObg2zKoYQZyLL9K+ZlxKpaqC33SM3S7tUXJd2TIIhg6Qw08Ha9m9Hy5PRawA+n+swgvyw6IHnJ7I/PVqb9lk/VSddSGARiNft0hN/Sqry0C/NwtrR5nAVstBpK7WK7GMj8UQGcoVV1XxR2PamIL+Ya7ldS0bi4wGhkY9eq2kbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300389; c=relaxed/simple;
-	bh=ywHQZgXUE2dXca+/1j2x1D1sumAvGLhLXQ8vjh723WM=;
+	s=arc-20240116; t=1772300390; c=relaxed/simple;
+	bh=4GxOB6SFmcshO8Wpj87J+ttVhAfcdXsZRNkgMnA72JA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUI2wZt4bdEvOeV/QxckKF60TFJYkeWmNbUSpPzmXlr41t8xqwdGCmPTjiAH/8e4jn6Too38hbMd423nYt56K6FflmjUACM485GDcPq5hsyeWxgSMcp4b+7WOLS1Cgrpwj3h12qBPet2cl7CGSIA8au15Acv4cGayrAG+CLETug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5m8R+WN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AB0C19423;
-	Sat, 28 Feb 2026 17:39:47 +0000 (UTC)
+	 MIME-Version; b=FpBgTkPc0lgikJ9gyfWtYlg7CbC9PqxhzhaT2lqpgpgmE7GuRqZq47x24qjwSUy9K7umZRDnHOoCqC+c+UP/iyM1nLjX3AI6Ydf2lCrk/ZB7TE6T8b0Yl1PWN3D7JnKJ99W6XxJm9/csRqJfx1sCkBB8J09dyHsWK9ajaHJeaTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pY6fRwDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D32EC19423;
+	Sat, 28 Feb 2026 17:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300388;
-	bh=ywHQZgXUE2dXca+/1j2x1D1sumAvGLhLXQ8vjh723WM=;
+	s=k20201202; t=1772300390;
+	bh=4GxOB6SFmcshO8Wpj87J+ttVhAfcdXsZRNkgMnA72JA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5m8R+WNYjg+aucrhvYBRcEqe11X8Zke9Qz4c9QcVg734z2icfsaUVpucyEhxAxAT
-	 c5Z1g+9N4BCTCG4J1iCc94IRy3kwSCu8AnQDii+DOvDfbFMu/1c0zyBczrMyHn49Vy
-	 fUhglpTFixGTDKIBCi2DswmkO5IrInWZBUKF+XHDBSkd8ETTzbnZeTw0EUzWiH+mTb
-	 Rx9e1n8rhjv6y5yJ1Z7LC/akwJU0zwJtmHwy0akPC5Vpm4k8tPp7/sAUImPwREMRm8
-	 RqbqpVVe0ZLWaFagQK6rCDEaKHVQs3m4nWfd/7KlhhZJ+c/h3Cs0THIwIHneU/ciCV
-	 99sHil4YuXcRg==
+	b=pY6fRwDerxCpkgE8Fh9oNQCbvZbo5kijxAvN4nCYa629/JtYgGs0Zw+HVX12lkYZ1
+	 SCb6g9YXLDFkAPNKxDPGQWyV/M3uxtRFayn75op8TMqmbd+ZhOwpiBDQeTz2iL90iB
+	 Mglb0JuEU714Zpa/yHroh4GD9mObxvLFPmhEy9a0xtdP1ZLhKyFU3RGMxFEbEsS6nd
+	 zmXNclPQbaNYXCEL7175KiMIK63cLZMxWlx2+lSHWBoOOZbnjmbR/HZ74ndMT7FPzs
+	 9rz8EaHuXmbRvFBHV0D4/A3AarDqRwXKDvyCh4tUMHaswC6bHrZ2AW+tQm7gwKPU8g
+	 mHCDCNTlb6beQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Wayne Lin <Wayne.Lin@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+Cc: Gangliang Xie <ganglxie@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Kent Russell <kent.russell@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 425/844] drm/amd/display: Avoid updating surface with the same surface under MPO
-Date: Sat, 28 Feb 2026 12:25:38 -0500
-Message-ID: <20260228173244.1509663-426-sashal@kernel.org>
+Subject: [PATCH 6.19 426/844] drm/amdgpu: return when ras table checksum is error
+Date: Sat, 28 Feb 2026 12:25:39 -0500
+Message-ID: <20260228173244.1509663-427-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,66 +71,66 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220504-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220505-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 64DF81C65E4
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5C0601C6AC1
 X-Rspamd-Action: no action
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Gangliang Xie <ganglxie@amd.com>
 
-[ Upstream commit 1a38ded4bc8ac09fd029ec656b1e2c98cc0d238c ]
+[ Upstream commit 044f8d3b1fac6ac89c560f61415000e6bdab3a03 ]
 
-[Why & How]
-Although it's dummy updates of surface update for committing stream
-updates, we should not have dummy_updates[j].surface all indicating
-to the same surface under multiple surfaces case. Otherwise,
-copy_surface_update_to_plane() in update_planes_and_stream_state()
-will update to the same surface only.
+end the function flow when ras table checksum is error
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Gangliang Xie <ganglxie@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index b6eee94861477..e84ec4365ca6b 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10961,7 +10961,7 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
- 			continue;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+index 64dd7a81bff5f..710a8fe79fccd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+@@ -1701,10 +1701,12 @@ int amdgpu_ras_eeprom_check(struct amdgpu_ras_eeprom_control *control)
  		}
- 		for (j = 0; j < status->plane_count; j++)
--			dummy_updates[j].surface = status->plane_states[0];
-+			dummy_updates[j].surface = status->plane_states[j];
  
- 		sort(dummy_updates, status->plane_count,
- 		     sizeof(*dummy_updates), dm_plane_layer_index_cmp, NULL);
+ 		res = __verify_ras_table_checksum(control);
+-		if (res)
++		if (res) {
+ 			dev_err(adev->dev,
+ 				"RAS table incorrect checksum or error:%d\n",
+ 				res);
++			return -EINVAL;
++		}
+ 
+ 		/* Warn if we are at 90% of the threshold or above
+ 		 */
 -- 
 2.51.0
 
