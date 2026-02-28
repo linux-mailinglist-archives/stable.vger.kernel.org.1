@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ADgNH5ZIo2l//AQAu9opvQ
-	(envelope-from <stable+bounces-220906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:57:10 +0100
+	id YNe2OZRGo2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:48:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A061C79DC
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:57:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0B51C760D
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:48:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09F7A326795D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:39:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06F1C305541B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3DC429084;
-	Sat, 28 Feb 2026 17:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76AD342A78E;
+	Sat, 28 Feb 2026 17:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4yrIJ0K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UIamdP1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F0A429E76;
-	Sat, 28 Feb 2026 17:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01D942A781;
+	Sat, 28 Feb 2026 17:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300794; cv=none; b=EQWYBk8Q7zre6WVqevCwv4Wqu05DiQ86BemQxpiXcubLTIbnVE9WA1A5wbV5UcSPsTacmkdj7ae8Bk0Qr1WjctE2wAnnc+2/hQ1akmSuxFefJT4IA4bQ7vZVCHXlRc16CwxW4vPkrATWFOMhUx1lHu3mVll4SIDNIkEAG5wruqI=
+	t=1772300795; cv=none; b=sCd6z7/FQ3UaYuM+jN3tt+qjTyQ0dBdewqNjQ9eDL2+VXLQYFfI8F4k7VI8VAYVptu5ktD66alaa6OSibfSrZ2vd+2X0D3Nrfb3jGSUolg3avMrPtzVdF5hlWIAfRaxGooQwzTUOSq4zxRddQLmZS1Lk3N3NQwzidG1KipkFS8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300794; c=relaxed/simple;
-	bh=49oIs/oTGfxRNFYKoZCt0EzCE9469vwMbZg/yGgoTnM=;
+	s=arc-20240116; t=1772300795; c=relaxed/simple;
+	bh=gbqZ++Duhupp4YG/TedHWSOdtQHqxkp2I7pBN0yhjOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J8UIK7WbmxQi4aigXmFnlCmKYznI1AuK3Xb3Xx+67FdcooGIrR6wjHPXqpZco2gXwZEpXxdVEflxZMRj3htqL7x4PGSst1xTUUJpNvOqRj/99BnnramYhjDHVKQ/UowaBtvEZaCzLDlFLPIBxltt0AhG7GXDXWuNAZb/IyeeQn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4yrIJ0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F811C19424;
-	Sat, 28 Feb 2026 17:46:33 +0000 (UTC)
+	 MIME-Version; b=rYyQUilkHgWYxa3pJBeXAjvVLlQUX1WeelLh8C7ZBPyPuV9FE7EHQe03AnbPGIMG4QP2yyQfp4euZN+s76CNv/QI9Wulfsj71BMBmf0byFvBbKaywRjThD/t4H1ovFCFscmSv92xxrvRDSaP0yqIguqH+vkcUw0fTRy/CUgjyf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UIamdP1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF189C19423;
+	Sat, 28 Feb 2026 17:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300794;
-	bh=49oIs/oTGfxRNFYKoZCt0EzCE9469vwMbZg/yGgoTnM=;
+	s=k20201202; t=1772300795;
+	bh=gbqZ++Duhupp4YG/TedHWSOdtQHqxkp2I7pBN0yhjOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4yrIJ0KoTXuYK2QKaUMz1BypxTYpS1iM4v49nqF7/hvwgtLu58dgCeEXM+095g9q
-	 t6zXLL3bvigmEMkC15CGAdg6VcdXhL+X35p0EgdGD/y1zC1b7AwMMw+YceyKBkyK8L
-	 6UlWAOSGY22hVkNvhnGxlGoVHF2fg0rFuZ/5Qou4rFxhNYlSuI2MpDfV7JfpFWMrHy
-	 bce3C7KJ5w/MoKjaieWhTkIj6WkKizHganuOJMTOT7WiYHJQ6i2oEN04tZJXgwiG22
-	 BVY98v2pkG12rj6xJ1rrWbMsd5MUONcTEO7WelliJd6f/pTHLoeIvjFiFnruiuUOm+
-	 TE99WhckBRfIg==
+	b=UIamdP1Z1u9nMN3+muvIkyRwMRE/6Qvyi9V4hL6XRU4HOZ2EUrjgKwtsJkW0keNOG
+	 Ml1SHXWCOQpLvPlNHdZkZscKatq9kAcd1gvx4fyXvxubCrgE4dSXwYfQ0bijmw97Co
+	 LC6/b8SNeZv6zZyy8IWtER2ciZrpkU6e+iOUz1W+qEC/tArQ/RZdrwpUEHr2mXvYx1
+	 I8SP8Vb+fg97oMaKc4phS6IZv8fQ3oPlAPCuSGNKzMyyg6vo/WhyoYi39NXMIInMgY
+	 CEgCGXFs5O5bm6MyUobck0euxxogsJNZLBwbolfSy7y7m8/4+EeOhOPQ+bRDIiDXyB
+	 uaf8+jxr/aT2g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Dave Young <dyoung@redhat.com>,
+Cc: Kai Aizen <kai@snailsploit.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 827/844] x86/kexec: Copy ACPI root pointer address from config table
-Date: Sat, 28 Feb 2026 12:32:20 -0500
-Message-ID: <20260228173244.1509663-828-sashal@kernel.org>
+Subject: [PATCH 6.19 828/844] io_uring/zcrx: fix user_ref race between scrub and refill paths
+Date: Sat, 28 Feb 2026 12:32:21 -0500
+Message-ID: <20260228173244.1509663-829-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,24 +67,26 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220906-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[snailsploit.com,gmail.com,kernel.dk,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220907-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,52 +94,78 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 43A061C79DC
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email]
+X-Rspamd-Queue-Id: 3C0B51C760D
 X-Rspamd-Action: no action
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Kai Aizen <kai@snailsploit.com>
 
-[ Upstream commit e00ac9e5afb5d80c0168ec88d8e8662a54af8249 ]
+[ Upstream commit 003049b1c4fb8aabb93febb7d1e49004f6ad653b ]
 
-Dave reports that kexec may fail when the first kernel boots via the EFI
-stub but without EFI runtime services, as in that case, the RSDP address
-field in struct bootparams is never assigned. Kexec copies this value
-into the version of struct bootparams that it provides to the incoming
-kernel, which may have no other means to locate the ACPI root pointer.
+The io_zcrx_put_niov_uref() function uses a non-atomic
+check-then-decrement pattern (atomic_read followed by separate
+atomic_dec) to manipulate user_refs. This is serialized against other
+callers by rq_lock, but io_zcrx_scrub() modifies the same counter with
+atomic_xchg() WITHOUT holding rq_lock.
 
-So take the value from the EFI config tables if no root pointer has been
-set in the first kernel's struct bootparams.
+On SMP systems, the following race exists:
 
-Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
-Cc: <stable@vger.kernel.org> # v6.1
-Reported-by: Dave Young <dyoung@redhat.com>
-Tested-by: Dave Young <dyoung@redhat.com>
-Link: https://lore.kernel.org/linux-efi/aZQg_tRQmdKNadCg@darkstar.users.ipa.redhat.com/
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+  CPU0 (refill, holds rq_lock)          CPU1 (scrub, no rq_lock)
+  put_niov_uref:
+    atomic_read(uref) - 1
+    // window opens
+                                        atomic_xchg(uref, 0) - 1
+                                        return_niov_freelist(niov) [PUSH #1]
+    // window closes
+    atomic_dec(uref) - wraps to -1
+    returns true
+    return_niov(niov)
+    return_niov_freelist(niov)           [PUSH #2: DOUBLE-FREE]
+
+The same niov is pushed to the freelist twice, causing free_count to
+exceed nr_iovs. Subsequent freelist pushes then perform an out-of-bounds
+write (a u32 value) past the kvmalloc'd freelist array into the adjacent
+slab object.
+
+Fix this by replacing the non-atomic read-then-dec in
+io_zcrx_put_niov_uref() with an atomic_try_cmpxchg loop that atomically
+tests and decrements user_refs. This makes the operation safe against
+concurrent atomic_xchg from scrub without requiring scrub to acquire
+rq_lock.
+
+Fixes: 34a3e60821ab ("io_uring/zcrx: implement zerocopy receive pp memory provider")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kai Aizen <kai@snailsploit.com>
+[pavel: removed a warning and a comment]
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/kexec-bzimage64.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ io_uring/zcrx.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/kexec-bzimage64.c b/arch/x86/kernel/kexec-bzimage64.c
-index c3244ac680d14..f3b451eb49be1 100644
---- a/arch/x86/kernel/kexec-bzimage64.c
-+++ b/arch/x86/kernel/kexec-bzimage64.c
-@@ -192,6 +192,13 @@ setup_efi_state(struct boot_params *params, unsigned long params_load_addr,
- 	struct efi_info *current_ei = &boot_params.efi_info;
- 	struct efi_info *ei = &params->efi_info;
- 
-+	if (!params->acpi_rsdp_addr) {
-+		if (efi.acpi20 != EFI_INVALID_TABLE_ADDR)
-+			params->acpi_rsdp_addr = efi.acpi20;
-+		else if (efi.acpi != EFI_INVALID_TABLE_ADDR)
-+			params->acpi_rsdp_addr = efi.acpi;
-+	}
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index d41aa01a26d31..93da8933a91fa 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -337,10 +337,14 @@ static inline atomic_t *io_get_user_counter(struct net_iov *niov)
+ static bool io_zcrx_put_niov_uref(struct net_iov *niov)
+ {
+ 	atomic_t *uref = io_get_user_counter(niov);
++	int old;
 +
- 	if (!efi_enabled(EFI_RUNTIME_SERVICES))
- 		return 0;
++	old = atomic_read(uref);
++	do {
++		if (unlikely(old == 0))
++			return false;
++	} while (!atomic_try_cmpxchg(uref, &old, old - 1));
+ 
+-	if (unlikely(!atomic_read(uref)))
+-		return false;
+-	atomic_dec(uref);
+ 	return true;
+ }
  
 -- 
 2.51.0
