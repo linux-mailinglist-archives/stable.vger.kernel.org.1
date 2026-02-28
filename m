@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-221063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBTxKYZNo2nw/QQAu9opvQ
-	(envelope-from <stable+bounces-221063-lists+stable=lfdr.de@vger.kernel.org>)
+	id KO9xJoZNo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-221064-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:18:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F99A1C82C4
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:18:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324591C82C5
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:18:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A0DA6338E807
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:46:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2BDC830848D8
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57EB301EEB;
-	Sat, 28 Feb 2026 17:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7971D301EF8;
+	Sat, 28 Feb 2026 17:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TrH0MZ/v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QR81EpcN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FDC301EE6;
-	Sat, 28 Feb 2026 17:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB66301EE6;
+	Sat, 28 Feb 2026 17:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301406; cv=none; b=SDQd35kk5s8wo5ww/NFuJb5cIPqP7oUtzs9u7FAi1RSEpCqZukv9ewctu8+1xvGZLh8eBIesqa5JMWoFiWE7lI7yU8YK9FOggGhM4iD1b0m1giPpXrTCn1gJODr+MvYTnCiPowIDfgj76gkOKQUXtvjgv9iNxzCXf/TdKaftQuo=
+	t=1772301409; cv=none; b=dTuS78dGbhk0qYk/faoQ2AHgChT9JSLSs0OAKfQmzcsQCZl9euYl9RgleQ7hnGEdfDA+6NHlLz0kf6Hwdp+E/SlPA4RJXV+4mdY2jRMRcrBIe2sk+1NP677HjGfn/Oi2Q0Pl6t1fzEiVlDitMWRJlPxK0SeIlmY81Y0dAYd73sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301406; c=relaxed/simple;
-	bh=DfTHN1u93uLIZw+bEt+LefiO8/Gp2UrF+x2t8RkN7SY=;
+	s=arc-20240116; t=1772301409; c=relaxed/simple;
+	bh=ztlT3saRJbDT5bqLP6NFt7aq6pAsT7FeK9qce3Gfwuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7yCg/m94hiBWZPNzUvZ2M71rgm/kW8k3I3xi8MjxdwfNXdp2lWTIHIu3ZSeyVMx2Z7osy0FzzACvVLD6oXArjKBjfTCWIhiELv5u2lIJcewOehvOmpZTLB6TQcbHCjTrMZO/ndcxHgqKzBD75AIy7KA4HrhlB0hjTx8wBjdUJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TrH0MZ/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E236C19423;
-	Sat, 28 Feb 2026 17:56:45 +0000 (UTC)
+	 MIME-Version; b=dlOvoiUFVjEPrVwOlD09cPYwnHn7iXilxQJNz8cQBm8Sc/7/SWT1ff1F14BTABye8yj2rqdbnjEoCMzucOCl2wcob2sZucPE8Z1gkzN0d7cuSCfMbnYiZnT3Rq+rGqBp3U4EcSpp7etG/Eh+V/Ota6/4JerS59iPEyKXboJzLro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QR81EpcN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740F2C19423;
+	Sat, 28 Feb 2026 17:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301406;
-	bh=DfTHN1u93uLIZw+bEt+LefiO8/Gp2UrF+x2t8RkN7SY=;
+	s=k20201202; t=1772301409;
+	bh=ztlT3saRJbDT5bqLP6NFt7aq6pAsT7FeK9qce3Gfwuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrH0MZ/vvEXB6JOoOv/HlLiryHKUgRE8XlFH15tmrQbhG04Ug/qgSHsHu1Y13Ed49
-	 +xOXMHCbTXlFRwuBIdp47vq6649etPDEFo4Kd2A49NrMrL9kwPN8KHQZ/VaVvxgHoC
-	 JfB9a1b/trAODjIdunGyD/xg+w7Z2SCNdu778VLRikSg6KyjDHkSVynIl0gmDDWIqf
-	 bMw0d/lhIdUbNF+JsmUSGFD3LYcvL31LCnrj5yf9XPdLrxUpU8nCFn9O1aNAsb4MqQ
-	 Cv/XN0hizjcDK9ZQbvBv4VKG0ELgpPOJaVNAminjbr91QYMz3gbZOUD2R5FHTMAuXA
-	 540ziuRIrx5vQ==
+	b=QR81EpcNHQhCgLgPIM/3YCXqAYQwpAEPwDjy6MH/H8zIyV04Rrjo4kcvXgv2cD/Nt
+	 yQz4PQlPVcujqENrdTuLtSurl+Qvv17go5sSw/chwd0x4Al0eR31GvbfdnFjAWHDrc
+	 +hTsb/VwHjjgbxVwFDebFCK0P3pf7F0RdwI5SrujsEqj26RJteRsF8N5utQL1A5DQk
+	 aZ06eX2mOXR7a1uCcyXI4LlnKx7/bVH/BOmxK6puI5N91HVK8HBjek/fMwoJmHZy0s
+	 F097CGz/8KrWXXxVlu83q/YM9SV2DKZdkLaoNwr3J7A2CTv8sImPSD+JBg0CIe8VWd
+	 BDKnBRodMj3mw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Johan Hovold <johan@kernel.org>,
+Cc: Alexey Charkov <alchark@gmail.com>,
 	stable@vger.kernel.org,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Lee Jones <lee@kernel.org>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 595/752] mfd: omap-usb-host: Fix OF populate on driver rebind
-Date: Sat, 28 Feb 2026 12:45:06 -0500
-Message-ID: <20260228174750.1542406-595-sashal@kernel.org>
+Subject: [PATCH 6.18 598/752] arm64: dts: rockchip: Explicitly request UFS reset pin on RK3576
+Date: Sat, 28 Feb 2026 12:45:09 -0500
+Message-ID: <20260228174750.1542406-598-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -72,19 +72,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221063-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,cherry.de,sntech.de,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221064-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -92,51 +93,101 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kemnade.info:email]
-X-Rspamd-Queue-Id: 1F99A1C82C4
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,sntech.de:email,cherry.de:email]
+X-Rspamd-Queue-Id: 324591C82C5
 X-Rspamd-Action: no action
 
-From: Johan Hovold <johan@kernel.org>
+From: Alexey Charkov <alchark@gmail.com>
 
-[ Upstream commit 24804ba508a3e240501c521685a1c4eb9f574f8e ]
+[ Upstream commit 79a3286e61829fc43abdd6e3beb31b24930c7af6 ]
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+Rockchip RK3576 UFS controller uses a dedicated pin to reset the connected
+UFS device, which can operate either in a hardware controlled mode or as a
+GPIO pin.
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
+Power-on default is GPIO mode, but the boot ROM reconfigures it to a
+hardware controlled mode if it uses UFS to load the next boot stage.
 
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org	# 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
-Link: https://patch.msgid.link/20251219110714.23919-1-johan@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Given that existing bindings (and rk3576.dtsi) expect a GPIO-controlled
+device reset, request the required pin config explicitly.
+
+The pin is requested with pull-down enabled, which is in line with the
+SoC power-on default and helps ensure that the attached UFS chip stays
+in reset until the driver takes over the control of the respective
+GPIO line.
+
+This doesn't appear to affect Linux, but it does affect U-boot:
+
+Before:
+=> md.l 0x2604b398
+2604b398: 00000011 00000000 00000000 00000000  ................
+< ... snip ... >
+=> ufs init
+ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=[3, 3], lane[2, 2], pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate = 2
+=> md.l 0x2604b398
+2604b398: 00000011 00000000 00000000 00000000  ................
+
+After:
+=> md.l 0x2604b398
+2604b398: 00000011 00000000 00000000 00000000  ................
+< ... snip ...>
+=> ufs init
+ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=[3, 3], lane[2, 2], pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate = 2
+=> md.l 0x2604b398
+2604b398: 00000010 00000000 00000000 00000000  ................
+
+(0x2604b398 is the respective pin mux register, with its BIT0 driving the
+mode of UFS_RST: unset = GPIO, set = hardware controlled UFS_RST)
+
+This helps ensure that GPIO-driven device reset actually fires when the
+system requests it, not when whatever black box magic inside the UFSHC
+decides to reset the flash chip.
+
+Cc: stable@vger.kernel.org
+Fixes: c75e5e010fef ("scsi: arm64: dts: rockchip: Add UFS support for RK3576 SoC")
+Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Alexey Charkov <alchark@gmail.com>
+Link: https://patch.msgid.link/20260121-ufs-rst-v3-1-35839bcb4ca7@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/omap-usb-host.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi | 7 +++++++
+ arch/arm64/boot/dts/rockchip/rk3576.dtsi         | 2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
-index a77b6fc790f2e..4d29a6e2ed87a 100644
---- a/drivers/mfd/omap-usb-host.c
-+++ b/drivers/mfd/omap-usb-host.c
-@@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
- {
- 	pm_runtime_disable(&pdev->dev);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi b/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
+index 0b0851a7e4ea9..98c9f8013158c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
+@@ -5228,6 +5228,13 @@ ufs_rst: ufs-rst {
+ 				/* ufs_rstn */
+ 				<4 RK_PD0 1 &pcfg_pull_none>;
+ 		};
++
++		/omit-if-no-ref/
++		ufs_rstgpio: ufs-rstgpio {
++			rockchip,pins =
++				/* ufs_rstn */
++				<4 RK_PD0 RK_FUNC_GPIO &pcfg_pull_down>;
++		};
+ 	};
  
--	/* remove children */
--	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
-+	if (pdev->dev.of_node)
-+		of_platform_depopulate(&pdev->dev);
-+	else
-+		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
- }
- 
- static const struct dev_pm_ops usbhsomap_dev_pm_ops = {
+ 	ufs_testdata0 {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+index c72343e7a0456..70e67d4dccb8a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+@@ -1826,7 +1826,7 @@ ufshc: ufshc@2a2d0000 {
+ 			assigned-clock-parents = <&cru CLK_REF_MPHY_26M>;
+ 			interrupts = <GIC_SPI 361 IRQ_TYPE_LEVEL_HIGH>;
+ 			power-domains = <&power RK3576_PD_USB>;
+-			pinctrl-0 = <&ufs_refclk>;
++			pinctrl-0 = <&ufs_refclk &ufs_rstgpio>;
+ 			pinctrl-names = "default";
+ 			resets = <&cru SRST_A_UFS_BIU>, <&cru SRST_A_UFS_SYS>,
+ 				 <&cru SRST_A_UFS>, <&cru SRST_P_UFS_GRF>;
 -- 
 2.51.0
 
