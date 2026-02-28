@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-220544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFhPCfg5o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:54:48 +0100
+	id WFGLEVFNo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:17:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C421C6644
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:54:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980991C8260
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:17:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B007933C08E0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:45:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9B7B35D2A7E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C003D245C;
-	Sat, 28 Feb 2026 17:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D133D247C;
+	Sat, 28 Feb 2026 17:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPZPSa+h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gEZrIwLM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B1B3D2452;
-	Sat, 28 Feb 2026 17:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8B13D2468;
+	Sat, 28 Feb 2026 17:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300427; cv=none; b=SIXah/L+4WzsCPN61+hXgXwnfvRXdR2l+indB+c1v/zDJZ4EZflohsRZauju/7l92k1IX7dQ2G1ZKY5qLBJnSWu+q39UQm6r+VCeBop6d08DhY0mb2chDOjp04NxmByAFNqOyShJ0LLGs8VKBXhSJgvAdEm7xhd72yIgPkMDI2k=
+	t=1772300428; cv=none; b=s3QdmucI3zHq70NDbuNKEQCm7r4eEfCWq7nrSqescxi/uOEvgqlIqvVTA5zzOJhcX0CXhDJovhmvaRkVjDoqU4wYAqfZECwPwmA7ks+Jpv+g3Z5B6k4iDItJSjUkjXkDJqI5dvYdakRqECVJlSpbRueiN5jX0ChQNgA9yqKmpXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300427; c=relaxed/simple;
-	bh=dLPGJNofiRNB53LoWfuvKRZy9fh8nZFlbeV2LQiNivc=;
+	s=arc-20240116; t=1772300428; c=relaxed/simple;
+	bh=Uir/nTXAjJY5kvnSsz0oWmIUwVbzB1gRI+aYvUOgwgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1oQbHN9x9X/wKbPoBYZpgBaPqBjEzxS+vZDlHD9PRXb8YE5nTzqqkVqR/tJXi1tRq2Hb5ZZwHRq6scS5HpNROU2z3QrnQ4KK4dlNyKQ2eKnI2HspmaL7HvF9mtsT89tr1UHder/9LI7bi8kFzNVceaCKH7RPZT4ozHYt8vwylA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XPZPSa+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C5BC116D0;
-	Sat, 28 Feb 2026 17:40:26 +0000 (UTC)
+	 MIME-Version; b=IdIkCtHEkW7R9J7nOJ4/09bI+BMMFrFFcn0wCtnPIP3bzTAB/fLH8HiljoOeP3qdhWd6bhewItEZiCS+Jsq8/WP0Y2ISC71z9JB29SzKqeXNO06CxEjTRQj8yMDPqZO74xVtPUoA5LLJ6M6z4y9radj8K4te4j0hIoBqTRlT13k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gEZrIwLM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F311C116D0;
+	Sat, 28 Feb 2026 17:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300427;
-	bh=dLPGJNofiRNB53LoWfuvKRZy9fh8nZFlbeV2LQiNivc=;
+	s=k20201202; t=1772300428;
+	bh=Uir/nTXAjJY5kvnSsz0oWmIUwVbzB1gRI+aYvUOgwgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPZPSa+hPDPro9iRvtV+yl2Mxx8Ir0G30tVjNlSge69z1An9pIUZYQGO0148H3azO
-	 9Vqk3Y2mLhLL7Eskrp2bDYIOzm6z8c4m6Qbnho2tThgmJegZP3Vpw+0GSzSyabp0kH
-	 pohbsmMJQ6XDk6DGul3XQeLbjV7PHcRDQEYpaspRAgACgnMz+2FUyKD9dm0NK93X5C
-	 2tcxzrNZcRbYf8MVCKByblMCm0g4HfJaikEWQZ/xKIf2BCtw7HDyr4L2wM179m0XI1
-	 /XEY1RAeKvf3dDTul6tL0XUmVCXFyV6D0CFGtzlFMS7bUvpKSA2aiD0/bzoRTx3ZoH
-	 qnfEJ8sQucwQA==
+	b=gEZrIwLMV5zRfSiHxFJARNE2FRf3Iux8ViarxlEBPFMIXZjOj01H72oIUNXnoYyGr
+	 WFHpinq341fpYNohzV9OQMDVJ5fIvGXb/KVM/R1fr29fBRXnXpCzyOYoTRVL6kACNw
+	 C0tTey+/CU0mikgj4Wk1FS2x99xtNSmfEuNB3mVPj967Ke0Hu+98bHsIPdVPpS9xUT
+	 XoBJHp/QFMCDQSXXldD6TGkzX5O9efF3Bm6pqFbDuNV5P2a1gt4pe+D7y5LGIWjfMU
+	 3r4MOiql6hL+ibzA60iy44oCRbgkMkj+iqzIldnfSKoraTEeC1BhG7swak+9i4tDlp
+	 KhyW6F/xmlqhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiri Pirko <jiri@nvidia.com>,
+Cc: Stian Halseth <stian@itx.no>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Nathaniel Roach <nroach44@nroach44.id.au>,
+	Han Gao <gaohan@iscas.ac.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 465/844] dma-mapping: avoid random addr value print out on error path
-Date: Sat, 28 Feb 2026 12:26:18 -0500
-Message-ID: <20260228173244.1509663-466-sashal@kernel.org>
+Subject: [PATCH 6.19 466/844] sparc: Fix page alignment in dma mapping
+Date: Sat, 28 Feb 2026 12:26:19 -0500
+Message-ID: <20260228173244.1509663-467-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,64 +69,88 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220544-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220545-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 92C421C6644
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 980991C8260
 X-Rspamd-Action: no action
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Stian Halseth <stian@itx.no>
 
-[ Upstream commit 47322c469d4a63ac45b705ca83680671ff71c975 ]
+[ Upstream commit d5b5e8149af0f5efed58653cbebf1cb3258ce49a ]
 
-dma_addr is unitialized in dma_direct_map_phys() when swiotlb is forced
-and DMA_ATTR_MMIO is set which leads to random value print out in
-warning. Fix that by just returning DMA_MAPPING_ERROR.
+'phys' may include an offset within the page, while previously used
+'base_paddr' was already page-aligned. This caused incorrect DMA mapping
+in dma_4u_map_phys and dma_4v_map_phys.
 
-Fixes: e53d29f957b3 ("dma-mapping: convert dma_direct_*map_page to be phys_addr_t based")
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Fix both functions by masking 'phys' with IO_PAGE_MASK, covering both
+generic SPARC code and sun4v.
+
+Fixes: 38c0d0ebf520 ("sparc: Use physical address DMA mapping")
+Reported-by: Stian Halseth <stian@itx.no>
+Closes: https://github.com/sparclinux/issues/issues/75
+Suggested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Stian Halseth <stian@itx.no>
+Tested-by: Nathaniel Roach <nroach44@nroach44.id.au>
+Tested-by: Han Gao <gaohan@iscas.ac.cn> # on SPARC Enterprise T5220
+[mszyprow: adjusted commit description a bit]
 Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260209153809.250835-2-jiri@resnulli.us
+Link: https://lore.kernel.org/r/20260218120056.3366-2-stian@itx.no
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/direct.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sparc/kernel/iommu.c     | 2 ++
+ arch/sparc/kernel/pci_sun4v.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
-index da2fadf45bcd6..62f0d9d0ba02e 100644
---- a/kernel/dma/direct.h
-+++ b/kernel/dma/direct.h
-@@ -88,7 +88,7 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
+diff --git a/arch/sparc/kernel/iommu.c b/arch/sparc/kernel/iommu.c
+index 46ef88bc9c26e..7613ab0ffb89d 100644
+--- a/arch/sparc/kernel/iommu.c
++++ b/arch/sparc/kernel/iommu.c
+@@ -312,6 +312,8 @@ static dma_addr_t dma_4u_map_phys(struct device *dev, phys_addr_t phys,
+ 	if (direction != DMA_TO_DEVICE)
+ 		iopte_protection |= IOPTE_WRITE;
  
- 	if (is_swiotlb_force_bounce(dev)) {
- 		if (attrs & DMA_ATTR_MMIO)
--			goto err_overflow;
-+			return DMA_MAPPING_ERROR;
++	phys &= IO_PAGE_MASK;
++
+ 	for (i = 0; i < npages; i++, base++, phys += IO_PAGE_SIZE)
+ 		iopte_val(*base) = iopte_protection | phys;
  
- 		return swiotlb_map(dev, phys, size, dir, attrs);
- 	}
+diff --git a/arch/sparc/kernel/pci_sun4v.c b/arch/sparc/kernel/pci_sun4v.c
+index 791f0a76665f6..58ca4148f86be 100644
+--- a/arch/sparc/kernel/pci_sun4v.c
++++ b/arch/sparc/kernel/pci_sun4v.c
+@@ -410,6 +410,8 @@ static dma_addr_t dma_4v_map_phys(struct device *dev, phys_addr_t phys,
+ 
+ 	iommu_batch_start(dev, prot, entry);
+ 
++	phys &= IO_PAGE_MASK;
++
+ 	for (i = 0; i < npages; i++, phys += IO_PAGE_SIZE) {
+ 		long err = iommu_batch_add(phys, mask);
+ 		if (unlikely(err < 0L))
 -- 
 2.51.0
 
