@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-220633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKyEGHM8o2nv+gQAu9opvQ
-	(envelope-from <stable+bounces-220633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:05:23 +0100
+	id SKVDJGBBo2kR+wQAu9opvQ
+	(envelope-from <stable+bounces-220634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:26:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D271C696C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:05:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4DE1C6FD3
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:26:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4302731157A4
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:58:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61A3B3675DD4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE4C3EAE79;
-	Sat, 28 Feb 2026 17:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CF93EAE94;
+	Sat, 28 Feb 2026 17:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c3sZlu6b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="di0wJn0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE6A3EAE71;
-	Sat, 28 Feb 2026 17:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0B23EAE8D;
+	Sat, 28 Feb 2026 17:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300516; cv=none; b=eftbr+F9QhscmUpAIatxVyUUriLzbYu5cjvwla6szKjhtDjtx3m2P426T4SyKcenX6R/WO0Zizs8+BEzv6Ilbigf9bWex6PWvQ9b0x+dBa5/LL61GjfmsI41KrZruQ1coXtY1XfDTy5qQ+mM2S9hyO0xnl5/swbx67a64fimVrY=
+	t=1772300517; cv=none; b=XIHMrkenP1LXUDgHMBTCbdi4RgVOZFPSoeHMWHj4XmLjK87d91IEtphIL+5cUzXIAtK3lHHYpAXmMqkvQbOr9pIw8JkfoncEcP/waUUm979tBDYLcBScrtgNGtCAVy5KINoAZc0LOtkV0HO101ALYe3f8ckoiA+F67peag7rMnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300516; c=relaxed/simple;
-	bh=XMJpDTLdhtk0HnBKXtLfwrh8DmxRCR19o+jYxY50M94=;
+	s=arc-20240116; t=1772300517; c=relaxed/simple;
+	bh=uo0zheTrvVxNjJYDzhSfBNrPEoWnK7upvG0njhOADD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IUG5sU5tOmZBo/cQVzsq6Tv4YRkt4k4ZwTOS4F40n8qtEAnBZBrueosrz/0i93RCawKbWeHMBUIQ+ld2LHvO3QX1dNVC7YlqEOmut9egj4lJmmgksGbwnqaia1FmuQcYGVqsH3UuaE3g4J/dqKHcKOXyWdg3Pbt2QaF7h5ixUr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c3sZlu6b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2E1C2BC9E;
-	Sat, 28 Feb 2026 17:41:55 +0000 (UTC)
+	 MIME-Version; b=JWjpHnTF5obMnT+4kmrnsa7MDt9JHu3Bz90lfV9gm/4QjI1tWPq5hXqmW1H53U12dtclIcgFmkwcRXA3YzrGrvbsa6+6m9R4TThC7OjtndLOwATiFwqgpqUOc55LyEGse9EDa36MQekmI4WWEcr5fIMB23nsVLV1VjcJBuDVVGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=di0wJn0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98DBC2BC87;
+	Sat, 28 Feb 2026 17:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300516;
-	bh=XMJpDTLdhtk0HnBKXtLfwrh8DmxRCR19o+jYxY50M94=;
+	s=k20201202; t=1772300517;
+	bh=uo0zheTrvVxNjJYDzhSfBNrPEoWnK7upvG0njhOADD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c3sZlu6b3XhzgwPyyBCRxFwsrwzUQswOx9EOWXwrkdJf5YWnVLuv47qkrrrK7k5if
-	 ssLtYdx/SDa3cWHcaJ5WRPeLoJaLFy8P2KbinEVdyWk03u0yIRaT+eGCtebNoFFG1Q
-	 q0KJiFnDIlrFnW8bOFID/D/GqV9s69tA1xegMem0MkBHdLhbDM+Nz8u4fbU+b0xAy4
-	 Uj9tpsGqarvgzyaxR6OT+PPzb0nKMD3JslIB9ZEiNOeWPtwDoiW5H31cXCzfaAR2NJ
-	 5KsYIHZ4/csAKjWmEJaiMxWN61ReeP8GCyMIiRx/dKhMg6uZK67RtUJHKiODkeMpn3
-	 IizJ5uk4GIsmg==
+	b=di0wJn0GVNXKDhtvgK0WAIBMG9ytov6uBQ3E0zxridn8S1M6ONZeojR+84Tt7V3lV
+	 j/sp06qeZFGoBI8PL9SndksW8/7SL+CUZUT7uKdkTXwW6BxgHsYVuu4wszs0FKcFSR
+	 MV7aLV5w7zWutzXWXyuaVaPXp/cWVQOgOGpIqYcZ9PDV8MmnJXzrV5hfOfankAufAG
+	 ILrtVEEJU/e7QKd2Hp3Z3Z8fUzsbCHDlKGw8SfW58Mq+GcOo/j6NARMijBqRFDFSjg
+	 90pZ7XCziHamtizaNV57MRgz6uvFvWf2jsU7eFTSwU/d61bGun4yAKIeHkOS8UPi/L
+	 CoFdAzxbbqZog==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
-	Breno Leitao <leitao@debian.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Will Deacon <will@kernel.org>,
+Cc: Nam Cao <namcao@linutronix.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 554/844] arm64: kernel: initialize missing kexec_buf->random field
-Date: Sat, 28 Feb 2026 12:27:47 -0500
-Message-ID: <20260228173244.1509663-555-sashal@kernel.org>
+Subject: [PATCH 6.19 555/844] powerpc/pseries: Fix MSI-X allocation failure when quota is exceeded
+Date: Sat, 28 Feb 2026 12:27:48 -0500
+Message-ID: <20260228173244.1509663-556-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -70,104 +68,189 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220633-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220634-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 08D271C696C
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linutronix.de:email]
+X-Rspamd-Queue-Id: 0A4DE1C6FD3
 X-Rspamd-Action: no action
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 15dd20dda979ebab72f6df97845828e78d63ab91 ]
+[ Upstream commit c0215e2d72debcd9cbc1c002fb012d50a3140387 ]
 
-Commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-introduced the kexec_buf->random field to enable random placement of
-kexec_buf.
+Nilay reported that since commit daaa574aba6f ("powerpc/pseries/msi: Switch
+to msi_create_parent_irq_domain()"), the NVMe driver cannot enable MSI-X
+when the device's MSI-X table size is larger than the firmware's MSI quota
+for the device.
 
-However, this field was never properly initialized for kexec images
-that do not need to be placed randomly, leading to the following UBSAN
-warning:
+This is because the commit changes how rtas_prepare_msi_irqs() is called:
 
-[  +0.364528] ------------[ cut here ]------------
-[  +0.000019] UBSAN: invalid-load in ./include/linux/kexec.h:210:12
-[  +0.000131] load of value 2 is not a valid value for type 'bool' (aka '_Bool')
-[  +0.000003] CPU: 4 UID: 0 PID: 927 Comm: kexec Not tainted 6.18.0-rc7+ #3 PREEMPT(full)
-[  +0.000002] Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
-[  +0.000000] Call trace:
-[  +0.000001]  show_stack+0x24/0x40 (C)
-[  +0.000006]  __dump_stack+0x28/0x48
-[  +0.000002]  dump_stack_lvl+0x7c/0xb0
-[  +0.000002]  dump_stack+0x18/0x34
-[  +0.000001]  ubsan_epilogue+0x10/0x50
-[  +0.000002]  __ubsan_handle_load_invalid_value+0xc8/0xd0
-[  +0.000003]  locate_mem_hole_callback+0x28c/0x2a0
-[  +0.000003]  kexec_locate_mem_hole+0xf4/0x2f0
-[  +0.000001]  kexec_add_buffer+0xa8/0x178
-[  +0.000002]  image_load+0xf0/0x258
-[  +0.000001]  __arm64_sys_kexec_file_load+0x510/0x718
-[  +0.000002]  invoke_syscall+0x68/0xe8
-[  +0.000001]  el0_svc_common+0xb0/0xf8
-[  +0.000002]  do_el0_svc+0x28/0x48
-[  +0.000001]  el0_svc+0x40/0xe8
-[  +0.000002]  el0t_64_sync_handler+0x84/0x140
-[  +0.000002]  el0t_64_sync+0x1bc/0x1c0
+  - Before, it is called when interrupts are allocated at the global
+    interrupt domain with nvec_in being the number of allocated interrupts.
+    rtas_prepare_msi_irqs() can return a positive number and the allocation
+    will be retried.
 
-To address this, initialise kexec_buf->random field properly.
+  - Now, it is called at the creation of per-device interrupt domain with
+    nvec_in being the number of interrupts that the device supports. If
+    rtas_prepare_msi_irqs() returns positive, domain creation just fails.
 
-Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-Suggested-by: Breno Leitao <leitao@debian.org>
+For Nilay's NVMe driver case, rtas_prepare_msi_irqs() returns a positive
+number (the quota). This causes per-device interrupt domain creation to
+fail and thus the NVMe driver cannot enable MSI-X.
+
+Rework to make this scenario works again:
+
+  - pseries_msi_ops_prepare() only prepares as many interrupts as the quota
+    permit.
+
+  - pseries_irq_domain_alloc() fails if the device's quota is exceeded.
+
+Now, if the quota is exceeded, pseries_msi_ops_prepare() will only prepare
+as allowed by the quota. If device drivers attempt to allocate more
+interrupts than the quota permits, pseries_irq_domain_alloc() will return
+an error code and msi_handle_pci_fail() will allow device drivers a retry.
+
+Reported-by: Nilay Shroff <nilay@linux.ibm.com>
+Closes: https://lore.kernel.org/linuxppc-dev/6af2c4c2-97f6-4758-be33-256638ef39e5@linux.ibm.com/
+Fixes: daaa574aba6f ("powerpc/pseries/msi: Switch to msi_create_parent_irq_domain()")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/all/oninomspajhxp4omtdapxnckxydbk2nzmrix7rggmpukpnzadw@c67o7njgdgm3/ [1]
-Link: https://lore.kernel.org/all/20250825180531.94bfb86a26a43127c0a1296f@linux-foundation.org/ [2]
-Link: https://lkml.kernel.org/r/20250826-akpm-v1-1-3c831f0e3799@debian.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
+Tested-by: Nilay Shroff <nilay@linux.ibm.com>
+Acked-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260107100230.1466093-1-namcao@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/kexec_image.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/msi.c | 44 ++++++++++++++++++++++++++--
+ 1 file changed, 41 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/kernel/kexec_image.c b/arch/arm64/kernel/kexec_image.c
-index 532d72ea42ee8..b70f4df15a1ae 100644
---- a/arch/arm64/kernel/kexec_image.c
-+++ b/arch/arm64/kernel/kexec_image.c
-@@ -41,7 +41,7 @@ static void *image_load(struct kimage *image,
- 	struct arm64_image_header *h;
- 	u64 flags, value;
- 	bool be_image, be_kernel;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	unsigned long text_offset, kernel_segment_number;
- 	struct kexec_segment *kernel_segment;
- 	int ret;
+diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
+index a82aaa786e9e0..edc30cda5dbcb 100644
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -19,6 +19,11 @@
+ 
+ #include "pseries.h"
+ 
++struct pseries_msi_device {
++	unsigned int msi_quota;
++	unsigned int msi_used;
++};
++
+ static int query_token, change_token;
+ 
+ #define RTAS_QUERY_FN		0
+@@ -433,8 +438,28 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
+ 	struct msi_domain_info *info = domain->host_data;
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+ 	int type = (info->flags & MSI_FLAG_PCI_MSIX) ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MSI;
++	int ret;
++
++	struct pseries_msi_device *pseries_dev __free(kfree)
++		= kmalloc(sizeof(*pseries_dev), GFP_KERNEL);
++	if (!pseries_dev)
++		return -ENOMEM;
++
++	while (1) {
++		ret = rtas_prepare_msi_irqs(pdev, nvec, type, arg);
++		if (!ret)
++			break;
++		else if (ret > 0)
++			nvec = ret;
++		else
++			return ret;
++	}
+ 
+-	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
++	pseries_dev->msi_quota = nvec;
++	pseries_dev->msi_used = 0;
++
++	arg->scratchpad[0].ptr = no_free_ptr(pseries_dev);
++	return 0;
+ }
+ 
+ /*
+@@ -443,9 +468,13 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
+  */
+ static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
+ {
++	struct pseries_msi_device *pseries_dev = arg->scratchpad[0].ptr;
+ 	struct pci_dev *pdev = to_pci_dev(domain->dev);
+ 
+ 	rtas_disable_msi(pdev);
++
++	WARN_ON(pseries_dev->msi_used);
++	kfree(pseries_dev);
+ }
+ 
+ static void pseries_msi_shutdown(struct irq_data *d)
+@@ -546,12 +575,18 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+ 				    unsigned int nr_irqs, void *arg)
+ {
+ 	struct pci_controller *phb = domain->host_data;
++	struct pseries_msi_device *pseries_dev;
+ 	msi_alloc_info_t *info = arg;
+ 	struct msi_desc *desc = info->desc;
+ 	struct pci_dev *pdev = msi_desc_to_pci_dev(desc);
+ 	int hwirq;
+ 	int i, ret;
+ 
++	pseries_dev = info->scratchpad[0].ptr;
++
++	if (pseries_dev->msi_used + nr_irqs > pseries_dev->msi_quota)
++		return -ENOSPC;
++
+ 	hwirq = rtas_query_irq_number(pci_get_pdn(pdev), desc->msi_index);
+ 	if (hwirq < 0) {
+ 		dev_err(&pdev->dev, "Failed to query HW IRQ: %d\n", hwirq);
+@@ -567,9 +602,10 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+ 			goto out;
+ 
+ 		irq_domain_set_hwirq_and_chip(domain, virq + i, hwirq + i,
+-					      &pseries_msi_irq_chip, domain->host_data);
++					      &pseries_msi_irq_chip, pseries_dev);
+ 	}
+ 
++	pseries_dev->msi_used++;
+ 	return 0;
+ 
+ out:
+@@ -582,9 +618,11 @@ static void pseries_irq_domain_free(struct irq_domain *domain, unsigned int virq
+ 				    unsigned int nr_irqs)
+ {
+ 	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
+-	struct pci_controller *phb = irq_data_get_irq_chip_data(d);
++	struct pseries_msi_device *pseries_dev = irq_data_get_irq_chip_data(d);
++	struct pci_controller *phb = domain->host_data;
+ 
+ 	pr_debug("%s bridge %pOF %d #%d\n", __func__, phb->dn, virq, nr_irqs);
++	pseries_dev->msi_used -= nr_irqs;
+ 	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
+ }
+ 
 -- 
 2.51.0
 
