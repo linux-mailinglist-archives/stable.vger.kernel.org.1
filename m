@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-220502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJHmGRw6o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:55:24 +0100
+	id GH34HAw5o2mU+gQAu9opvQ
+	(envelope-from <stable+bounces-220503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:50:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DDE1C6690
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:55:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58BB1C6525
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:50:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6940831A7FA4
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:38:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B1DF320765C
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8993C97B3;
-	Sat, 28 Feb 2026 17:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5653C97D8;
+	Sat, 28 Feb 2026 17:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q5ambMn7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9q99RXb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AB63C97AA;
-	Sat, 28 Feb 2026 17:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAD73C97CC;
+	Sat, 28 Feb 2026 17:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300386; cv=none; b=RNUpqOVhJuovjAML/+RCdtKhZVHmmoY81QbHJJKOSh8pKl4inZwaFnVdnw5lKZwz20in1iCnHQgGSODMTJKUYaUFMcqQRNKEapzPFImAiv45zZD02ZZBpnTBu+UjlLXPzn8EcjMakOs4PT9X1ZBPLhtILoyx5CyE6wDWzk/JIKw=
+	t=1772300387; cv=none; b=BBSuJoC/AUZqfBNoGxyZTDTxvxhIC3HCofPuSmt7akwZ/uW6WgFrEhW4JnDN08j9SwRcdeZWtKZS/NODL6x46UYBittb8jQZgYAg2Y4umgLsqmtzKsHZIf1ovwbLji/0hW3CTcC4B/HLIBDL1DNFfQR6TkePzWkhJBf3YWc0WM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300386; c=relaxed/simple;
-	bh=6Qso9r6u69JTBCvIc5ianu2/g1XD02SfiWBTrKGkfMM=;
+	s=arc-20240116; t=1772300387; c=relaxed/simple;
+	bh=BTDRynjVjWjEDGWUKmJuV6dDV3tt2Q+2Vr7hjJwaa1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wc5sBfSsxovb+g/gQa1GAt4in7uDK+Df0f9PWL5gU/TYVM6qjMrvdcjHQTOUwm5oBut7i3oQAGBVSo6DuxqaPN85G3GdkLVoTdCvXcdQTdO8vi5EjNfeLsSQoFmcKwL4K3cK+5Y//n8uoU/5E/aY8gd6RKg0/VfzkIOAR/d+zGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q5ambMn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEABC116D0;
+	 MIME-Version; b=MCtGQq7Yr0t6kMuxDbzlnAUX28u3WfE2MdbyYLtOUawM1Swg2fKHPg6VcWa72mUFj0m5GHLO9aeFVWndRVaqYCOJSSpB+dxuemmwk2jmVos1YvuguFKdXUio3SbAo7ab4XChP946dvOy+s33WjILtoamRzSwJ1nqjFLGycdT03I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9q99RXb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC98DC2BCB0;
 	Sat, 28 Feb 2026 17:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300386;
-	bh=6Qso9r6u69JTBCvIc5ianu2/g1XD02SfiWBTrKGkfMM=;
+	s=k20201202; t=1772300387;
+	bh=BTDRynjVjWjEDGWUKmJuV6dDV3tt2Q+2Vr7hjJwaa1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5ambMn7lLMBbTWEBNazXGfaLngcQnnxKrZ15KN4ZQyHqKGqyVCPsy6rgt968N8zM
-	 gkK/VXNdE1ctzxW7CVzxL6IaQXI0E+eO1auuQcJN37WfBv834aP/uOiRm51519tIPl
-	 uej8Elgnr7yrTBmdC6mFyAYPkx6biC8Y/DJJxDC1fRAnHaANI9/dXcki5MVbrW2szW
-	 cZrnLHoAMQ24IZ3ItxDxpQV5qT7JzS8ixf8XokgfDkVXwdHpfaCGzv313LFyRhPc/q
-	 GjAGQZyNeB09mZyTNIeKe99g7HdlVBD9ldohZhvr9IvBynmeOYEl/DHmPOZFe75hc2
-	 KLc+rAP6blq4g==
+	b=O9q99RXbYmEumK6CQfapBxsWsR9cl3NsPrh3rNV6MZTIe/aTWKOfOjgmRedTtd/cf
+	 RKTYTKvjdcvWBWTqD0gsha3TXorhtVGj64spMqLdkt8tcy9plU82WJkgeBfarTiUTJ
+	 N88SkR3WQacvOkPPUPmh/Cx7nq727zHgdz9g0zgEqfO5x4AixON0814mrctNLeXv95
+	 wMw4nt2g546mmgrtjjJxH2xhM+GKfg4+n7H/w70wUC0uXjIc1/ejV/tX5xmy3uXwvb
+	 UCsE5sBVJ9+5EdzbLwn80+6U5KpBo7OqJn4Z3HtWkh1JLcOugakGIFMZRR3fkqu8Df
+	 YATwhoUOQSo4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Baojun Xu <baojun.xu@ti.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Tom Chung <chiahsuan.chung@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 423/844] ALSA: hda/tas2781: Ignore reset check for SPI device
-Date: Sat, 28 Feb 2026 12:25:36 -0500
-Message-ID: <20260228173244.1509663-424-sashal@kernel.org>
+Subject: [PATCH 6.19 424/844] drm/amd/display: Fix system resume lag issue
+Date: Sat, 28 Feb 2026 12:25:37 -0500
+Message-ID: <20260228173244.1509663-425-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,90 +70,80 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220502-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220503-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E6DDE1C6690
+X-Rspamd-Queue-Id: B58BB1C6525
 X-Rspamd-Action: no action
 
-From: Baojun Xu <baojun.xu@ti.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit 908ef80e31e4d3bd953a0088fe57640cd9ae7b3e ]
+[ Upstream commit 64c94cd9be2e188ed07efeafa6a109bce638c967 ]
 
-In the SPI driver probe, the device should be in the default state, so the
-device status check is not necessary. It should be forced to do the
-firmware download as I2C device.
+[Why]
+System will try to apply idle power optimizations setting during
+system resume. But system power state is still in D3 state, and
+it will cause the idle power optimizations command not actually
+to be sent to DMUB and cause some platforms to go into IPS.
 
-Signed-off-by: Baojun Xu <baojun.xu@ti.com>
-Link: https://patch.msgid.link/20260211030946.2330-1-baojun.xu@ti.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[How]
+Set power state to D0 first before calling the
+dc_dmub_srv_apply_idle_power_optimizations(dm->dc, false)
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../hda/codecs/side-codecs/tas2781_hda_spi.c  | 20 +++++++------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-index b9a55672bf15d..488e35dac9524 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-@@ -634,7 +634,7 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
- 	struct tasdevice_priv *tas_priv = context;
- 	struct tas2781_hda *tas_hda = dev_get_drvdata(tas_priv->dev);
- 	struct hda_codec *codec = tas_priv->codec;
--	int ret, val;
-+	int ret;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 150cc3fc7b2a9..b6eee94861477 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3468,7 +3468,17 @@ static int dm_resume(struct amdgpu_ip_block *ip_block)
+ 	struct dc_commit_streams_params commit_params = {};
  
- 	pm_runtime_get_sync(tas_priv->dev);
- 	guard(mutex)(&tas_priv->codec_lock);
-@@ -673,20 +673,14 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
- 	tas_priv->rcabin.profile_cfg_id = 0;
- 
- 	tas_priv->fw_state = TASDEVICE_DSP_FW_ALL_OK;
--	ret = tasdevice_spi_dev_read(tas_priv, tas_priv->index,
--		TAS2781_REG_CLK_CONFIG, &val);
--	if (ret < 0)
--		goto out;
- 
--	if (val == TAS2781_REG_CLK_CONFIG_RESET) {
--		ret = tasdevice_prmg_load(tas_priv, 0);
--		if (ret < 0) {
--			dev_err(tas_priv->dev, "FW download failed = %d\n",
--				ret);
--			goto out;
--		}
--		tas_priv->fw_state = TASDEVICE_DSP_FW_ALL_OK;
-+	ret = tasdevice_prmg_load(tas_priv, 0);
-+	if (ret < 0) {
-+		dev_err(tas_priv->dev, "FW download failed = %d\n", ret);
-+		goto out;
- 	}
-+	tas_priv->fw_state = TASDEVICE_DSP_FW_ALL_OK;
+ 	if (dm->dc->caps.ips_support) {
++		if (!amdgpu_in_reset(adev))
++			mutex_lock(&dm->dc_lock);
 +
- 	if (tas_priv->fmw->nr_programs > 0)
- 		tas_priv->tasdevice[tas_priv->index].cur_prog = 0;
- 	if (tas_priv->fmw->nr_configurations > 0)
++		/* Need to set POWER_STATE_D0 first or it will not execute
++		 * idle_power_optimizations command to DMUB.
++		 */
++		dc_dmub_srv_set_power_state(dm->dc->ctx->dmub_srv, DC_ACPI_CM_POWER_STATE_D0);
+ 		dc_dmub_srv_apply_idle_power_optimizations(dm->dc, false);
++
++		if (!amdgpu_in_reset(adev))
++			mutex_unlock(&dm->dc_lock);
+ 	}
+ 
+ 	if (amdgpu_in_reset(adev)) {
 -- 
 2.51.0
 
