@@ -1,260 +1,243 @@
-Return-Path: <stable+bounces-221228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kKOmL71qo2mACgUAu9opvQ
-	(envelope-from <stable+bounces-221228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 23:22:53 +0100
+	id 8HhiBzB9o2noEgUAu9opvQ
+	(envelope-from <stable+bounces-221229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 00:41:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCDD1C979A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 23:22:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E4F1C9C07
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 00:41:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C34D43017266
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:22:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2491D301BA51
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 23:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618B135F5F1;
-	Sat, 28 Feb 2026 22:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF3D368948;
+	Sat, 28 Feb 2026 23:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YwVAXl7d"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="TTyJUxhH";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="T28USL3F"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BFD27B32C;
-	Sat, 28 Feb 2026 22:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBA422FE0A;
+	Sat, 28 Feb 2026 23:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772317368; cv=none; b=X8IRz+IRS9ILrfSAB4L61h2d0qmpVnZvq4DysTBpc1MzOLgSXBmTgR/EBTtjQunt9PTyBwptcSFt9XKMiDKsPUA1O12Ef3Oxyajh319jMAcYH2PhjGuuwNG6bit+2ZTK1Ox8YO2sPtnRKXLMS0CB1XuRzDusSbsXwbc+AKNs05c=
+	t=1772322093; cv=none; b=MIuUxHCZLKzf8uGTUOVevw3Klrh2vStyWBnUsdReReO6FCcrbPooNQXiznITqF7/GDniJkJgqRaSgyHlFs/trvFpva+XgKcLQqwIXLARl4SzSR7OheoDrUPtj7GwnYXzwFMud7ZwTm9DKbc4B+walfSCAt6ZH8yBWiEWBgLdRmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772317368; c=relaxed/simple;
-	bh=dCGL+6qA1GqcHDKB7r8Qlm3vwHhG+OZh6nquDpC8ACQ=;
-	h=Date:To:From:Subject:Message-Id; b=avBGWsxe67KAdn0TVRr5w6k5+NTHWlCG9rhYcXrINCnHNBGxSv44n0XufofqoN5g4Y2p7bndLe3jcAyZ07LSvXivUh8HxWx67UrK7ivvc5hFqiXRlZtMqT2LAhU+qn6fwh2RzIhtIwkRKM1pmfRbtoGFrcufGuByigLwmku41po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YwVAXl7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C53C19424;
-	Sat, 28 Feb 2026 22:22:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772317367;
-	bh=dCGL+6qA1GqcHDKB7r8Qlm3vwHhG+OZh6nquDpC8ACQ=;
-	h=Date:To:From:Subject:From;
-	b=YwVAXl7dR9p4mWC0fh6rsFMxqvO17mTGhWyBNVnxieg8sKjqrzL5J02ExoPIKE0LO
-	 tzYf1bT/7Ic3r9hzsDmGuO3sm66VY4Hn/gnF6n0RqGK2R2pIcpVIMmjodkzF75sdgB
-	 BbeYni1x6WhDLGjyBKM4+nou8HacEUOVh1ZgxziE=
-Date: Sat, 28 Feb 2026 14:22:46 -0800
-To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,venkat88@linux.ibm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,dvyukov@google.com,andreyknvl@gmail.com,ritesh.list@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-kasan-fix-double-free-for-kasan-pxds.patch added to mm-new branch
-Message-Id: <20260228222247.73C53C19424@smtp.kernel.org>
+	s=arc-20240116; t=1772322093; c=relaxed/simple;
+	bh=eKNZaC3XxAPvfv9hHSICGD9nR0lJKTbaPDsOeXAghxA=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=WjGuB+XPyfJRoLun5VzRNRattfbs5Al9u/CyRnkeHdotdwOkqXTMrD+1mRUYJdaDYRB9MrvXwF/fWbtosR0gOVrueVkx8eMrib610qx2C/64f9PyaWnyqIbvmGDVx/xeQfP48Iay/afyksYc0ABTHdFGUvdH3j6EXNqdCjltP4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=TTyJUxhH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=T28USL3F; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id BE1841D00125;
+	Sat, 28 Feb 2026 18:41:29 -0500 (EST)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-02.internal (MEProxy); Sat, 28 Feb 2026 18:41:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772322089;
+	 x=1772408489; bh=uuZmFrv9AWrdMZr6yL+vBRfXbPdj+HVHSytH9DSa6UM=; b=
+	TTyJUxhH/Uvh8u17qdw6UZhvOc3PBy/Vx3qz8rhh5j1v5p9JYc24QrWOvmOk2wLt
+	Zsnrlobv0Ucsvw5FU8fSyC8iVqExXUTx+DL6hDXhOSZy4xndQY/npjrOJKFWcXl+
+	Jvyzii7N5KKxU6+gx64cK9LXFFoLrACmgEJDZEmp+6sO/8NV+GuqpiYmwkzCPPyB
+	PGzg9Nmd5evj0noL06DlDvmVrMhLsnu2PWg4TpzkdO1c34RCC53WGvy7EfOe9ZXI
+	4Lcwy4eWoKq54FDgAWlExbcZAOwiJdfnE6mLTFzhgla7ZqJITzIvjP8YwfgsxiH7
+	y+bYZRQo55VTOjBXU3d1Tw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772322089; x=
+	1772408489; bh=uuZmFrv9AWrdMZr6yL+vBRfXbPdj+HVHSytH9DSa6UM=; b=T
+	28USL3FX9gih0C7TrRhO2eWaJP/ryjuyG6HFwoCUbuS0uz7EO0r+oyqKVJwjDxuV
+	yD1nTqSrwKxcs/f6LFsxYfjW9xbWP6Yk/Xdimh9V1JAefG/ml30gW3+/j0S3ka4t
+	5bZWr0+y6lafBrhZ0YdHtGs9F9N6B2QYmwxcc0N/anbxDOkXtmhiubtc+vDOmZ5U
+	A3GQkDfiOoSZqH6/jBWszPWfpJ5eeKoCNPop7nMjAkp9U1LTpTUiGHpux5P7ROfD
+	L2Ick7iFM0GaI9OBVVa2otHlAiLoPj80KOgz+w5ZPCSkWx9FRwb8Iv87pQpMKon3
+	Asu8576MUUpoaro5+3J2Q==
+X-ME-Sender: <xms:KH2jaV8VtC7gjFmKj_ooiXoCV8J-9oDqHG-yErK_J19oyaau_ckQ9g>
+    <xme:KH2jaaI64d7AOfKvSvGz9jjxZBV8kbR-28n_zih72FpootCwn1lu8Q4KnomJq3Bk-
+    wm0Q3IL1n3CF7q9Xr4bwBoWPjmOGYo45fVvG_lEU3Fk6-2LjyBWbbaT>
+X-ME-Received: <xmr:KH2jaYfGqZ7Mw-u4bNeEJrCiQkAa5_WXBcNeFlLKXfN6vypQ9KerPhfSXKYW6W5W4rly59mKZgR0giGsAuW4-S__KjIz9A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheefvdehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpedfuegrrhhr
+    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeeiffefteetgeehueetvdfhvdduvdetueeivdeiudduhffhfffhveeg
+    ueegheduudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
+    ohhmpdhnsggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epthgvrhhrrghluhhnrgeljeejsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhifrghr
+    shhofiesghhmgidruggvpdhrtghpthhtohepshgrshhhrghlsehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphht
+    thhopehprghttghhvghssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepth
+    horhhvrghlughssehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthho
+    pegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
+X-ME-Proxy: <xmx:KH2jaXYoU0MxIoIrnDC1wNIOhuztZWY50Mh-X5V-iIJMDlAqlEEPjw>
+    <xmx:KH2jaeC2QfmDqthVOmMvMA1f-NcZ3q9Rwz_KUv-Ji5izt46Ws1vtEg>
+    <xmx:KH2jaaIkkRc_kaNThpffKCpHEYUj8-oxDu0ECh13krH_tRjzECPn3Q>
+    <xmx:KH2jaVoK0BdpxCOygcTHUHgBkjvXRfvWjPpYYTQuYp4KEDmiSP0Qnw>
+    <xmx:KX2jaUb9Kxm442sydkT-7jYbCeVan-KuP-4Dcc7B260FJWTbM35IEvBx>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 28 Feb 2026 18:41:26 -0500 (EST)
+Message-ID: <2a740a8d-e5f8-4922-bd2b-04bc76893bbc@pobox.com>
+Date: Sat, 28 Feb 2026 15:41:25 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: "Barry K. Nathan" <barryn@pobox.com>
+Subject: Re: [PATCH 6.19 000/844] 6.19.6-rc1 review
+To: Woody Suwalski <terraluna977@gmail.com>, Ronald Warsow <rwarsow@gmx.de>,
+ Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260228173244.1509663-1-sashal@kernel.org>
+ <601576c7-970a-4e9d-af5e-c818740be8e8@gmx.de>
+ <879487cc-c667-8cc6-4775-02c7de3b8c27@gmail.com>
+Content-Language: en-US
+In-Reply-To: <879487cc-c667-8cc6-4775-02c7de3b8c27@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221228-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221229-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,gmx.de,kernel.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,arm.com,linux.ibm.com,gmail.com,google.com,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-0.889];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:email,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: 3DCDD1C979A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pobox.com:mid,pobox.com:dkim,pobox.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: 36E4F1C9C07
 X-Rspamd-Action: no action
 
+On 2/28/26 14:13, Woody Suwalski wrote:
+> Ronald Warsow wrote:
+>> On 28.02.26 18:18, Sasha Levin wrote:
+>>>
+>>> This is the start of the stable review cycle for the 6.19.6 release.
+>>> There are 844 patches in this series, all will be posted as a response
+>>> to this one.  If anyone has any issues with these being applied, please
+>>> let me know.
+>>>
+>>> Responses should be made by Mon Mar  2 05:32:25 PM UTC 2026.
+>>> Anything received after that time might be too late.
+>>>
+>>> The whole patch series can be found in one patch at:
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable- 
+>>> rc.git/patch/?id=linux-6.19.y&id2=v6.19.5
+>>> or in the git tree and branch at:
+>>> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable- 
+>>> rc.git linux-6.19.y
+>>> and the diffstat can be found below.
+>>>
+>>
+>> It would be nice to have a download link to an patch-*.gz what Greg 
+>> usually provides.
+>>
+>> ron
+>>
+> I second this request. Trying to setup a build for  5.10.252-rc1 was 
+> tricky...
+> We need something similar to
+> 
+> https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/ 
+> patch-5.10.251-rc1.gz
+> 
+> Thanks, Woody
 
-The patch titled
-     Subject: mm/kasan: fix double free for kasan pXds
-has been added to the -mm mm-new branch.  Its filename is
-     mm-kasan-fix-double-free-for-kasan-pxds.patch
+I didn't find things particularly difficult for 5.10.252-rc1 through
+6.12.75-rc1 (the "hardest" part was renaming the file after each
+download), but I get this while trying to apply the patches for
+6.18.16-rc1/6.19.6-rc1:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-kasan-fix-double-free-for-kasan-pxds.patch
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+patching file arch/powerpc/platforms/pseries/msi.c
+patching file arch/x86/kvm/x86.c
+(Patch is indented 2 spaces.)
+can't find file to patch at input line 41896
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|--
+|cgit 1.2.3-korg
+|
+|
+|From 1d0d76474aeadb174d9fbd27b9f2e9b5cfc124c6 Mon Sep 17 00:00:00 2001
+|From: Sean Christopherson <seanjc@google.com>
+|Date: Tue, 16 Dec 2025 08:17:54 -0800
+|Subject: KVM: nSVM: Remove a user-triggerable WARN on nested_svm_load_cr3()
+| succeeding
+|
+|[ Upstream commit fc3ba56385d03501eb582e4b86691ba378e556f9 ]
+|
+|Drop the WARN in svm_set_nested_state() on nested_svm_load_cr3() failing
+|as it is trivially easy to trigger from userspace by modifying CPUID after
+|loading CR3.  E.g. modifying the state restoration selftest like so:
+|
+|  --- tools/testing/selftests/kvm/x86/state_test.c
+|  +++ tools/testing/selftests/kvm/x86/state_test.c
+--------------------------
+File to patch:
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
 
-The mm-new branch of mm.git is not included in linux-next
+As it turns out, GNU patch (v2.7.6 on Debian 12 bookworm, or v2.8 on
+Debian 13 trixie, I tested both) is misinterpreting part of the commit
+comment for vm-nsvm-remove-a-user-triggerable-warn-on-nested_sv.patch
+and trying to apply that part of the commit description as a patch.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Pressing Enter twice at this prompt causes patch to skip this
+incorrectly detected hunk, and all of the actual patches end up being
+applied correctly, but it's still an unexpected surprise and I had to
+stop and figure out what was going on.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+With the way the stable rc patches are usually posted on kernel.org,
+the patch file would've omitted the commit comments, thus avoiding
+this problem.
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: mm/kasan: fix double free for kasan pXds
-Date: Tue, 24 Feb 2026 18:53:16 +0530
-
-kasan_free_pxd() assumes the page table is always struct page aligned. 
-But that's not always the case for all architectures.  E.g.  In case of
-powerpc with 64K pagesize, PUD table (of size 4096) comes from slab cache
-named pgtable-2^9.  Hence instead of page_to_virt(pxd_page()) let's just
-directly pass the start of the pxd table which is passed as the 1st
-argument.
-
-This fixes the below double free kasan issue seen with PMEM:
-
-radix-mmu: Mapped 0x0000047d10000000-0x0000047f90000000 with 2.00 MiB pages
-==================================================================
-BUG: KASAN: double-free in kasan_remove_zero_shadow+0x9c4/0xa20
-Free of addr c0000003c38e0000 by task ndctl/2164
-
-CPU: 34 UID: 0 PID: 2164 Comm: ndctl Not tainted 6.19.0-rc1-00048-gea1013c15392 #157 VOLUNTARY
-Hardware name: IBM,9080-HEX POWER10 (architected) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_012) hv:phyp pSeries
-Call Trace:
- dump_stack_lvl+0x88/0xc4 (unreliable)
- print_report+0x214/0x63c
- kasan_report_invalid_free+0xe4/0x110
- check_slab_allocation+0x100/0x150
- kmem_cache_free+0x128/0x6e0
- kasan_remove_zero_shadow+0x9c4/0xa20
- memunmap_pages+0x2b8/0x5c0
- devm_action_release+0x54/0x70
- release_nodes+0xc8/0x1a0
- devres_release_all+0xe0/0x140
- device_unbind_cleanup+0x30/0x120
- device_release_driver_internal+0x3e4/0x450
- unbind_store+0xfc/0x110
- drv_attr_store+0x78/0xb0
- sysfs_kf_write+0x114/0x140
- kernfs_fop_write_iter+0x264/0x3f0
- vfs_write+0x3bc/0x7d0
- ksys_write+0xa4/0x190
- system_call_exception+0x190/0x480
- system_call_vectored_common+0x15c/0x2ec
----- interrupt: 3000 at 0x7fff93b3d3f4
-NIP:  00007fff93b3d3f4 LR: 00007fff93b3d3f4 CTR: 0000000000000000
-REGS: c0000003f1b07e80 TRAP: 3000   Not tainted  (6.19.0-rc1-00048-gea1013c15392)
-MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 48888208  XER: 00000000
-<...>
-NIP [00007fff93b3d3f4] 0x7fff93b3d3f4
-LR [00007fff93b3d3f4] 0x7fff93b3d3f4
----- interrupt: 3000
-
- The buggy address belongs to the object at c0000003c38e0000
-  which belongs to the cache pgtable-2^9 of size 4096
- The buggy address is located 0 bytes inside of
-  4096-byte region [c0000003c38e0000, c0000003c38e1000)
-
- The buggy address belongs to the physical page:
- page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3c38c
- head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
- memcg:c0000003bfd63e01
- flags: 0x63ffff800000040(head|node=6|zone=0|lastcpupid=0x7ffff)
- page_type: f5(slab)
- raw: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
- raw: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
- head: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
- head: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
- head: 063ffff800000002 c00c000000f0e301 00000000ffffffff 00000000ffffffff
- head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
- page dumped because: kasan: bad access detected
-
-[  138.953636] [   T2164] Memory state around the buggy address:
-[  138.953643] [   T2164]  c0000003c38dff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953652] [   T2164]  c0000003c38dff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953661] [   T2164] >c0000003c38e0000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953669] [   T2164]                    ^
-[  138.953675] [   T2164]  c0000003c38e0080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953684] [   T2164]  c0000003c38e0100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953692] [   T2164] ==================================================================
-[  138.953701] [   T2164] Disabling lock debugging due to kernel taint
-
-Link: https://lkml.kernel.org/r/2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com
-Fixes: 0207df4fa1a8 ("kernel/memremap, kasan: make ZONE_DEVICE with work with KASAN")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/init.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/mm/kasan/init.c~mm-kasan-fix-double-free-for-kasan-pxds
-+++ a/mm/kasan/init.c
-@@ -292,7 +292,7 @@ static void kasan_free_pte(pte_t *pte_st
- 			return;
- 	}
- 
--	pte_free_kernel(&init_mm, (pte_t *)page_to_virt(pmd_page(*pmd)));
-+	pte_free_kernel(&init_mm, pte_start);
- 	pmd_clear(pmd);
- }
- 
-@@ -307,7 +307,7 @@ static void kasan_free_pmd(pmd_t *pmd_st
- 			return;
- 	}
- 
--	pmd_free(&init_mm, (pmd_t *)page_to_virt(pud_page(*pud)));
-+	pmd_free(&init_mm, pmd_start);
- 	pud_clear(pud);
- }
- 
-@@ -322,7 +322,7 @@ static void kasan_free_pud(pud_t *pud_st
- 			return;
- 	}
- 
--	pud_free(&init_mm, (pud_t *)page_to_virt(p4d_page(*p4d)));
-+	pud_free(&init_mm, pud_start);
- 	p4d_clear(p4d);
- }
- 
-@@ -337,7 +337,7 @@ static void kasan_free_p4d(p4d_t *p4d_st
- 			return;
- 	}
- 
--	p4d_free(&init_mm, (p4d_t *)page_to_virt(pgd_page(*pgd)));
-+	p4d_free(&init_mm, p4d_start);
- 	pgd_clear(pgd);
- }
- 
-_
-
-Patches currently in -mm which might be from ritesh.list@gmail.com are
-
-mm-hugetlbc-use-__pa-instead-of-virt_to_phys-in-early-bootmem-alloc-code.patch
-mm-kasan-fix-double-free-for-kasan-pxds.patch
-
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
