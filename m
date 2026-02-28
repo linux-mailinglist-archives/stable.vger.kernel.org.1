@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220548-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DMMK2NNo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:17:39 +0100
+	id eFQvGO88o2nv+gQAu9opvQ
+	(envelope-from <stable+bounces-220548-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:07:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A3E1C827E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:17:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98BFF1C69F8
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:07:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99F3D364BFE7
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:45:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F46B3400D06
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3303D47E8;
-	Sat, 28 Feb 2026 17:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0900B3D2452;
+	Sat, 28 Feb 2026 17:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3YoKf0+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/VKSl4l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9323D47E0;
-	Sat, 28 Feb 2026 17:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2053D47FB;
+	Sat, 28 Feb 2026 17:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300429; cv=none; b=SDng1VgSSmFAUYtpG4Dc+tFSjGN9qC1WOYcvFROojC2bHS6XwgZKKC454h9b/xCwIn3Oev35trDlh2m7DDbn0VrM4ADSW4t7v9TcSJ25V2VgzUKdKbfpxURntOIwdxpWjxUN2sDldxteyiDXlGQLwmxLSuCYtfAKwHdJiEAHow4=
+	t=1772300430; cv=none; b=CRpGfwZ8OHXyJ1Dg1EGS43i77vgMMLa8FZ2boZwXAfaBE+tjwBUuaZFIDZ2zO5gjiKEeLvusExrXCDrR5W8jo+w9Dpm2oVDWLXMGmZsdOt9BwzkIOPwU9DQvCzOQKQSMyGQ95fU/qQRtyuBy8mzqduJdkylTaKUJzNGd4DNABVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300429; c=relaxed/simple;
-	bh=V5zwxPQQmhoylxmdGBbyD7S0kz+77ermZOUg3JESav4=;
+	s=arc-20240116; t=1772300430; c=relaxed/simple;
+	bh=baLELUhdSxS/P2kMWgbDYgUhWZDPxAux4hCEsjWRBz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i6g28zUls4C1dWMiqGU5AD/MeQwAHsW6w2IYD03NqyHTmgwXGZGrdVjwKHEAUAlyAqq33XhorGHMqz1AgnAlTQgdfQGh8cFtHPqSDWNOfDztoTbhsHRtCc2+F1Gm3Ya5RVX2105wcE0snHHXXBpUAUIWXbeJA3VXLXquoFRGRzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3YoKf0+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDCAC116D0;
+	 MIME-Version; b=cF+tW/sBpnoJwF9NpfkEilA2JmPVjUMBGHNvAL9QUNRBx3Q+5pQ3oMJT6YA0CRhfrDwAW0K7bEChbk0l1jFmEWjdt0U7FuYvFkcM3ZVNJzcZWPQzdri0YfjK+9/j/dEjXY5PulrcOsGVgyrwgU+Z/VpBd6hE4YjGmLOCr9kP4rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/VKSl4l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B16C19423;
 	Sat, 28 Feb 2026 17:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300429;
-	bh=V5zwxPQQmhoylxmdGBbyD7S0kz+77ermZOUg3JESav4=;
+	s=k20201202; t=1772300430;
+	bh=baLELUhdSxS/P2kMWgbDYgUhWZDPxAux4hCEsjWRBz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I3YoKf0+2DCR3MO3dRUiGvBM9aldd2rBFYH6WPIJxzQgEaJeZnQ2AMWbHhd55YOwi
-	 IsuT4Vg3NLrrtnzPCRVJzQK4SPXCTtOdxYplwALU9WPN+2WOlLjpcoWC/gSm0XhIix
-	 sGM1GUgc5HkRGT9l47wbJIIdh3FaWk1UyyatNAhS2yl6qTK7j3/cm4Iwvfhi7qwLNA
-	 EQMYoO31HMstouJAbaOQ7c/6lkLLC4lyp6Ct5GiGE6vgbs1UzHjuOzynZdZVkiBhV6
-	 tEj7beZo0MrK4vm1fdocBFa63EHHR73odnYafNG9aju3aZGNsY2gLLeY+jpqAWNutn
-	 3TX53MZBnRDtA==
+	b=i/VKSl4lCD2bTFH0S/IHP4sTvqPSOXVRNBBfSUyBnCCsqA98lYgWWAkzZMKLGMvFZ
+	 PNKO+3D2+KSoG9+rKsh6858f2wOIQCecbV7Of8aPsQMKHExSJNNNeMjIhD2vGe+nkh
+	 V6eLXqyswxh3XArYx10M/H1oJkHr3eG/Igo4ssGLC55RcuzGcgPQDlMUNqUOlKthUo
+	 8/KEk6QNpVQaPreN+R/4fdpiY8CqPO68L/JQuIONohSXJ+/NP3H+Aq/Vb54UvAtF1r
+	 7wB5awQgVXx/rwf5+pMZPzQTqtxQDX2/xLVh00JBGJHoAcVnWwBpTZm/F5LsaEy+ft
+	 XrSyvlxb+Rr/A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Jason Donenfeld <Jason@zx2c4.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 468/844] wifi: brcmfmac: Fix potential kernel oops when probe fails
-Date: Sat, 28 Feb 2026 12:26:21 -0500
-Message-ID: <20260228173244.1509663-469-sashal@kernel.org>
+Subject: [PATCH 6.19 469/844] Remove WARN_ALL_UNSEEDED_RANDOM kernel config option
+Date: Sat, 28 Feb 2026 12:26:22 -0500
+Message-ID: <20260228173244.1509663-470-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,18 +71,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220547-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220548-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -92,95 +91,157 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,broadcom.com:email]
-X-Rspamd-Queue-Id: 13A3E1C827E
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,zx2c4.com:email]
+X-Rspamd-Queue-Id: 98BFF1C69F8
 X-Rspamd-Action: no action
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 243307a0d1b0d01538e202c00454c28b21d4432e ]
+[ Upstream commit 7dff99b354601dd01829e1511711846e04340a69 ]
 
-When probe of the sdio brcmfmac device fails for some reasons (i.e.
-missing firmware), the sdiodev->bus is set to error instead of NULL, thus
-the cleanup later in brcmf_sdio_remove() tries to free resources via
-invalid bus pointer. This happens because sdiodev->bus is set 2 times:
-first in brcmf_sdio_probe() and second time in brcmf_sdiod_probe(). Fix
-this by chaning the brcmf_sdio_probe() function to return the error code
-and set sdio->bus only there.
+This config option goes way back - it used to be an internal debug
+option to random.c (at that point called DEBUG_RANDOM_BOOT), then was
+renamed and exposed as a config option as CONFIG_WARN_UNSEEDED_RANDOM,
+and then further renamed to the current CONFIG_WARN_ALL_UNSEEDED_RANDOM.
 
-Fixes: 0ff0843310b7 ("wifi: brcmfmac: Add optional lpo clock enable support")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Acked-by: Arend van Spriel<arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20260203102133.1478331-1-m.szyprowski@samsung.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+It was all done with the best of intentions: the more limited
+rate-limited reports were reporting some cases, but if you wanted to see
+all the gory details, you'd enable this "ALL" option.
+
+However, it turns out - perhaps not surprisingly - that when people
+don't care about and fix the first rate-limited cases, they most
+certainly don't care about any others either, and so warning about all
+of them isn't actually helping anything.
+
+And the non-ratelimited reporting causes problems, where well-meaning
+people enable debug options, but the excessive flood of messages that
+nobody cares about will hide actual real information when things go
+wrong.
+
+I just got a kernel bug report (which had nothing to do with randomness)
+where two thirds of the the truncated dmesg was just variations of
+
+   random: get_random_u32 called from __get_random_u32_below+0x10/0x70 with crng_init=0
+
+and in the process early boot messages had been lost (in addition to
+making the messages that _hadn't_ been lost harder to read).
+
+The proper way to find these things for the hypothetical developer that
+cares - if such a person exists - is almost certainly with boot time
+tracing.  That gives you the option to get call graphs etc too, which is
+likely a requirement for fixing any problems anyway.
+
+See Documentation/trace/boottime-trace.rst for that option.
+
+And if we for some reason do want to re-introduce actual printing of
+these things, it will need to have some uniqueness filtering rather than
+this "just print it all" model.
+
+Fixes: cc1e127bfa95 ("random: remove ratelimiting for in-kernel unseeded randomness")
+Acked-by: Jason Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 7 +++----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c   | 7 ++++---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h   | 2 +-
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/char/random.c       | 12 +-----------
+ kernel/configs/debug.config |  1 -
+ lib/Kconfig.debug           | 27 ---------------------------
+ 3 files changed, 1 insertion(+), 39 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 6a3f187320fc4..13952dfeb3e30 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -951,11 +951,10 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
- 		goto out;
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index bab03c7c4194a..c36c76c2e88e0 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -96,8 +96,7 @@ static ATOMIC_NOTIFIER_HEAD(random_ready_notifier);
+ /* Control how we warn userspace. */
+ static struct ratelimit_state urandom_warning =
+ 	RATELIMIT_STATE_INIT_FLAGS("urandom_warning", HZ, 3, RATELIMIT_MSG_ON_RELEASE);
+-static int ratelimit_disable __read_mostly =
+-	IS_ENABLED(CONFIG_WARN_ALL_UNSEEDED_RANDOM);
++static int ratelimit_disable __read_mostly = 0;
+ module_param_named(ratelimit_disable, ratelimit_disable, int, 0644);
+ MODULE_PARM_DESC(ratelimit_disable, "Disable random ratelimit suppression");
  
- 	/* try to attach to the target device */
--	sdiodev->bus = brcmf_sdio_probe(sdiodev);
--	if (IS_ERR(sdiodev->bus)) {
--		ret = PTR_ERR(sdiodev->bus);
-+	ret = brcmf_sdio_probe(sdiodev);
-+	if (ret)
- 		goto out;
--	}
-+
- 	brcmf_sdiod_host_fixup(sdiodev->func2->card->host);
- out:
- 	if (ret)
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 8cf9d7e7c3f70..4e6ed02c15913 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -4445,7 +4445,7 @@ brcmf_sdio_prepare_fw_request(struct brcmf_sdio *bus)
- 	return fwreq;
+@@ -168,12 +167,6 @@ int __cold execute_with_initialized_rng(struct notifier_block *nb)
+ 	return ret;
  }
  
--struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
-+int brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
+-#define warn_unseeded_randomness() \
+-	if (IS_ENABLED(CONFIG_WARN_ALL_UNSEEDED_RANDOM) && !crng_ready()) \
+-		printk_deferred(KERN_NOTICE "random: %s called from %pS with crng_init=%d\n", \
+-				__func__, (void *)_RET_IP_, crng_init)
+-
+-
+ /*********************************************************************
+  *
+  * Fast key erasure RNG, the "crng".
+@@ -434,7 +427,6 @@ static void _get_random_bytes(void *buf, size_t len)
+  */
+ void get_random_bytes(void *buf, size_t len)
  {
- 	int ret;
- 	struct brcmf_sdio *bus;
-@@ -4551,11 +4551,12 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
- 		goto fail;
- 	}
- 
--	return bus;
-+	return 0;
- 
- fail:
- 	brcmf_sdio_remove(bus);
--	return ERR_PTR(ret);
-+	sdiodev->bus = NULL;
-+	return ret;
+-	warn_unseeded_randomness();
+ 	_get_random_bytes(buf, len);
  }
+ EXPORT_SYMBOL(get_random_bytes);
+@@ -523,8 +515,6 @@ type get_random_ ##type(void)							\
+ 	struct batch_ ##type *batch;						\
+ 	unsigned long next_gen;							\
+ 										\
+-	warn_unseeded_randomness();						\
+-										\
+ 	if  (!crng_ready()) {							\
+ 		_get_random_bytes(&ret, sizeof(ret));				\
+ 		return ret;							\
+diff --git a/kernel/configs/debug.config b/kernel/configs/debug.config
+index 9f6ab7dabf672..0a6c1763d976e 100644
+--- a/kernel/configs/debug.config
++++ b/kernel/configs/debug.config
+@@ -29,7 +29,6 @@ CONFIG_SECTION_MISMATCH_WARN_ONLY=y
+ # CONFIG_UBSAN_ALIGNMENT is not set
+ # CONFIG_UBSAN_DIV_ZERO is not set
+ # CONFIG_UBSAN_TRAP is not set
+-# CONFIG_WARN_ALL_UNSEEDED_RANDOM is not set
+ CONFIG_DEBUG_FS=y
+ CONFIG_DEBUG_FS_ALLOW_ALL=y
+ CONFIG_DEBUG_IRQFLAGS=y
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index cda3cf1fa302c..4bae3b389a9c5 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1687,33 +1687,6 @@ config STACKTRACE
+ 	  It is also used by various kernel debugging features that require
+ 	  stack trace generation.
  
- /* Detach and free everything */
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
-index 0d18ed15b4032..80180d5c6c879 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
-@@ -358,7 +358,7 @@ void brcmf_sdiod_freezer_uncount(struct brcmf_sdio_dev *sdiodev);
- int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev);
- int brcmf_sdiod_remove(struct brcmf_sdio_dev *sdiodev);
- 
--struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev);
-+int brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev);
- void brcmf_sdio_remove(struct brcmf_sdio *bus);
- void brcmf_sdio_isr(struct brcmf_sdio *bus, bool in_isr);
- 
+-config WARN_ALL_UNSEEDED_RANDOM
+-	bool "Warn for all uses of unseeded randomness"
+-	default n
+-	help
+-	  Some parts of the kernel contain bugs relating to their use of
+-	  cryptographically secure random numbers before it's actually possible
+-	  to generate those numbers securely. This setting ensures that these
+-	  flaws don't go unnoticed, by enabling a message, should this ever
+-	  occur. This will allow people with obscure setups to know when things
+-	  are going wrong, so that they might contact developers about fixing
+-	  it.
+-
+-	  Unfortunately, on some models of some architectures getting
+-	  a fully seeded CRNG is extremely difficult, and so this can
+-	  result in dmesg getting spammed for a surprisingly long
+-	  time.  This is really bad from a security perspective, and
+-	  so architecture maintainers really need to do what they can
+-	  to get the CRNG seeded sooner after the system is booted.
+-	  However, since users cannot do anything actionable to
+-	  address this, by default this option is disabled.
+-
+-	  Say Y here if you want to receive warnings for all uses of
+-	  unseeded randomness.  This will be of use primarily for
+-	  those developers interested in improving the security of
+-	  Linux kernels running on their architecture (or
+-	  subarchitecture).
+-
+ config DEBUG_KOBJECT
+ 	bool "kobject debugging"
+ 	depends on DEBUG_KERNEL
 -- 
 2.51.0
 
