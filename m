@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBlJNQQ0o2nP+QQAu9opvQ
-	(envelope-from <stable+bounces-220217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:29:24 +0100
+	id OKc6Exkxo2kE+QQAu9opvQ
+	(envelope-from <stable+bounces-220218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:16:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5AB1C5DAB
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:29:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78721C59C4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 080E730E73B0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:54:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B9C1B312CB0F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D544DC545;
-	Sat, 28 Feb 2026 17:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE88E4DC55D;
+	Sat, 28 Feb 2026 17:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GWj7djLj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgZJpFRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96534DC539;
-	Sat, 28 Feb 2026 17:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9061E47CC62;
+	Sat, 28 Feb 2026 17:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300122; cv=none; b=ntF9K2zvJPlVrb9Ao8ixaScjWG7C9h16K0swy9nKqFy2OXLVmPpdvB2gNmRARYFq8ST/AVhWa6SCOB6SzgsecWb2dJIw28FYoTLNH14NeuhO/giUTr+oA56U0J1Udq8BCfH7xBj7ksV8x/zBemn2werEh0HpTcJXe3zPy+/ydX0=
+	t=1772300123; cv=none; b=scHHG4ZWhO57M72QAs0xPnPFPrsUMWg9yTmIIcJWnpsnR3ONEyhEzvLnMTo3rdsMR8UcO4hXQSMdExSQwzSb9CzOUEWgz4afwYNF1tUkh4yYTrcbJSL1k8tsaq4RQ/tV54gFPSRsORflCNyvh+9Y7FFwB6FPrGPn9m2Gby21j9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300122; c=relaxed/simple;
-	bh=ioaz2LX6Riu+loomCejEGpzXL8egcwvTRFq/OvGpw7s=;
+	s=arc-20240116; t=1772300123; c=relaxed/simple;
+	bh=bzZk1TOgUSd5fSDGays6IuFF1nr/j71MGP5pJ4t2xL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXvzeAzisiEFuwKmBs3/NRV6pwhLHeoaN2Bi9NF/FqFK7sxoxwg9nUN5CcWVyj/75QSH4Ko+9U8ECdK2q/pcBiH7799SUGvB6GUywfmXCMAiSO8VwjPizTPSk4AnpKPB3vnOaEIBmOG0k2Rn30Q9s49b7ekxiKKW909xhq4Z4VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GWj7djLj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A83C19424;
-	Sat, 28 Feb 2026 17:35:21 +0000 (UTC)
+	 MIME-Version; b=tEASWTnJYi8N5/42lgJgrb16/j7l2ffU4rkKMnPsqMSmNhDOebTEMbLC54NXPg/ejjA7a9O84Xg+ljowmPYva45R2A4b8j68KinGCIqC0X8mJX3/WEJNC8C/al3C2Iety6ObVCKP048UA8KmFtYX2Are6ghnLYaiEHA7cY+Gi/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgZJpFRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D175CC2BC87;
+	Sat, 28 Feb 2026 17:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300122;
-	bh=ioaz2LX6Riu+loomCejEGpzXL8egcwvTRFq/OvGpw7s=;
+	s=k20201202; t=1772300123;
+	bh=bzZk1TOgUSd5fSDGays6IuFF1nr/j71MGP5pJ4t2xL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWj7djLjtA33okc1Ulzj5T5kPI5pyQ68/n+OtuujSYC8rmXA/ZKd4Gb4U+sLDUFYN
-	 xp4tYZ/KHGclwgvW9w2FgscdKkGuR4OP2sVN9llfvYTCV3xTHd/hmqhc11G6jbjMfs
-	 9QlaV+yeThqrC3D4Xu2e3jkZREzJYDFiC05AfN/emx8M1FV3hGLfeCMg0cEQynVEaf
-	 luo1QTQkrZPdl95jdkB+Nxq1xwSnvoq7li1nO1cUC1VH7gvkm0cByWH0vM+30Q37LF
-	 2HPjv0vRxFCMmuP3wlklWxwaRPeIY6wrF+ZrWxbSpp/cIhAfniyVkuJV6D/afG13yE
-	 MU3VK4+96hpAQ==
+	b=OgZJpFRbeZ4ACteRn5mvxrC2dZK6eqQltbYOGuDKJmelh1xjsnTK7fyYhJyNHHAa5
+	 Ps8kU12yXJ1UXOJ0kqCcdZIK/PJCiKeVVMW/5hJwyIP1p44jtSIue75frtRoXbB9iL
+	 kwT8LFxkAIKJq3SQFy9tD3FbkL1IZzs1bc/D9PHSoJnxlHIlqhU4v+BbADSr1GQ9aN
+	 barX4Vq/6mp4RcC0FJo5FQh1a2YsA+YMmqcTZ564hENSc8DIV5/K3biYYOw/asNwMy
+	 5qgisrVJG6GRB+J0SlQizZXKPBQxh6k9xK6wGi1t/38LPFg2s4/Q6I/GCas0JbVskW
+	 RHf+faHakgJIA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Jonathan Marek <jonathan@marek.ca>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 139/844] spi-geni-qcom: initialize mode related registers to 0
-Date: Sat, 28 Feb 2026 12:20:52 -0500
-Message-ID: <20260228173244.1509663-140-sashal@kernel.org>
+Subject: [PATCH 6.19 140/844] spi-geni-qcom: use xfer->bits_per_word for can_dma()
+Date: Sat, 28 Feb 2026 12:20:53 -0500
+Message-ID: <20260228173244.1509663-141-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,62 +71,73 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220217-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220218-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DE5AB1C5DAB
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,marek.ca:email]
+X-Rspamd-Queue-Id: B78721C59C4
 X-Rspamd-Action: no action
 
 From: Jonathan Marek <jonathan@marek.ca>
 
-[ Upstream commit 739062a9f1e9a77a9687c8fd30f8e5dd12ec70be ]
+[ Upstream commit fb2bbe3838728f572485706677590e4fc41eec5c ]
 
-setup_fifo_params assumes these will be zero, it won't write these
-registers if the initial mode is zero.
+mas->cur_bits_per_word may not reflect the value of xfer->bits_per_word
+when can_dma() is called. Use the right value instead.
 
 Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Link: https://patch.msgid.link/20251120211204.24078-4-jonathan@marek.ca
+Link: https://patch.msgid.link/20251120211204.24078-3-jonathan@marek.ca
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-geni-qcom.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-geni-qcom.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index a0d8d3425c6c6..9e9953469b3a0 100644
+index 9e9953469b3a0..5ab20d7955121 100644
 --- a/drivers/spi/spi-geni-qcom.c
 +++ b/drivers/spi/spi-geni-qcom.c
-@@ -724,6 +724,12 @@ static int spi_geni_init(struct spi_geni_master *mas)
- 	case 0:
- 		mas->cur_xfer_mode = GENI_SE_FIFO;
- 		geni_se_select_mode(se, GENI_SE_FIFO);
-+		/* setup_fifo_params assumes that these registers start with a zero value */
-+		writel(0, se->base + SE_SPI_LOOPBACK);
-+		writel(0, se->base + SE_SPI_DEMUX_SEL);
-+		writel(0, se->base + SE_SPI_CPHA);
-+		writel(0, se->base + SE_SPI_CPOL);
-+		writel(0, se->base + SE_SPI_DEMUX_OUTPUT_INV);
- 		ret = 0;
- 		break;
- 	}
+@@ -548,10 +548,10 @@ static u32 get_xfer_len_in_words(struct spi_transfer *xfer,
+ {
+ 	u32 len;
+ 
+-	if (!(mas->cur_bits_per_word % MIN_WORD_LEN))
+-		len = xfer->len * BITS_PER_BYTE / mas->cur_bits_per_word;
++	if (!(xfer->bits_per_word % MIN_WORD_LEN))
++		len = xfer->len * BITS_PER_BYTE / xfer->bits_per_word;
+ 	else
+-		len = xfer->len / (mas->cur_bits_per_word / BITS_PER_BYTE + 1);
++		len = xfer->len / (xfer->bits_per_word / BITS_PER_BYTE + 1);
+ 	len &= TRANS_LEN_MSK;
+ 
+ 	return len;
+@@ -571,7 +571,7 @@ static bool geni_can_dma(struct spi_controller *ctlr,
+ 		return true;
+ 
+ 	len = get_xfer_len_in_words(xfer, mas);
+-	fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits / mas->cur_bits_per_word;
++	fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits / xfer->bits_per_word;
+ 
+ 	if (len > fifo_size)
+ 		return true;
 -- 
 2.51.0
 
