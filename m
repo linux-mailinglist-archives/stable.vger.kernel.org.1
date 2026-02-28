@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-220845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QA0TJ6ZGo2lM/AQAu9opvQ
-	(envelope-from <stable+bounces-220845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:48:54 +0100
+	id 8BDBAYVZo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:09:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF311C7633
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:48:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6584C1C8D21
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:09:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 98D5430D3E9A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:31:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5FFEC31F2CDE
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7A641996B;
-	Sat, 28 Feb 2026 17:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1133419985;
+	Sat, 28 Feb 2026 17:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XhsCasab"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGQkTTMm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAD0419960;
-	Sat, 28 Feb 2026 17:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B84419969;
+	Sat, 28 Feb 2026 17:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300732; cv=none; b=Zv+aNHqjf3mI1Tls/lGE5eue3nsSrENUPF0FEy+3FLFoNiygF7w0yIf5cRgUlV2Lp6Xtyvy6pYPa+wlPTJT/1BaUdOWy7SVT2EJpDfuUDWefWUOgEnlA0hbNR3vJXflwy04QVHBjEwlqwhU477i7ucG/UQZOUxLdjwcOighY9jE=
+	t=1772300733; cv=none; b=q09rL1P0GjQQcJsjwq6U/spGvwn3m2/ofNLBLIpB18N+CT2eoBnNrD8k4212iDH6lmEHjOzfA5cdXdmZzk4g7AOXGIjd5/CXhmMxSOpHTbUBMS+nMuhMsLiOn6HO1Js0jtjrJqny69rXqANXPVEu9eJDtfrxG+ZKXlvrDGE2i+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300732; c=relaxed/simple;
-	bh=Hlmh0opQC9HK0eY7nsrWlsivURzKe8R1G54uAobADrI=;
+	s=arc-20240116; t=1772300733; c=relaxed/simple;
+	bh=6nj11AkLtWQxIa78AOEDTUX1bUEgcX2hoEIeXFyozq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtuDBxnK+LL05lkdSHx78BDCINJezSOY9xQXEK2DiuIzh8rXSq5WBvPdD+pvs9h0P1EslZyBc5thNXIV1qu/AHWz2ijqV5k+0pQSz6jNY8L4ibKF+eVeCMSJQ6+lez4DGNcnDPAxTzcUOVb3WHS/U9ZV4yKLDQc3HFwuBIEBG04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XhsCasab; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD10C116D0;
-	Sat, 28 Feb 2026 17:45:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=onNw+6g3e1FqC0GaDF0RlRhedDbhwy79SjSMZ9j5VnoReiOOEEeSxD8IqMrxHAGnuF3V+j2RNDImVOZG0kGFs+LVPb4aAkZoNgoffaqrFTJLiLNhv9OqfmnydSdJbTCKbntN/axeABzz4BPMY3OoX8eQnee1PQdVg8cM5nes3JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGQkTTMm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD2BC19423;
+	Sat, 28 Feb 2026 17:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300732;
-	bh=Hlmh0opQC9HK0eY7nsrWlsivURzKe8R1G54uAobADrI=;
+	s=k20201202; t=1772300733;
+	bh=6nj11AkLtWQxIa78AOEDTUX1bUEgcX2hoEIeXFyozq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhsCasabwh+5YoY15talFuA/xIdPYeq2xlUxTIeeUKVhyrZ1kGBcwp11xgsEE+QzY
-	 2R7FjhQrFQBch+owQ0LKQQTcPtZHMGfSqRZc9DvODCYLq+myYXV2riw/g/46EvI9lC
-	 A7DCl2KmTPkeLjNOfq1W3Pe6sB27PltA0n5Flxt77T7GEAxYli1AY6P92Xwi8vISXy
-	 LgEfc0K+2im7JH2np1biwZr30nMbcj2sRUsPnpcvadTAw2zbH9j36x9IhJwgEwJkWm
-	 BQKvZ60yXa8SKIZynQu8LCPCZwUFwG3AdtHGSbuVia8x/pEgedLJiHf9OXh7AdR1WK
-	 GK7K650sT8mPg==
+	b=GGQkTTMmGYScHBI/Lz3quJ6PPEasY8ULn7dE6SgKMlUv4aMOcHXwm4QbllZWgBQNn
+	 VNpQop7whIsHJaLgXldpq/ybTBdoJUHC7btMyIgP4Qac1L6TtTducrNp7nh8t4SnAu
+	 TNyyEUk2iQhgX15zhDtrEC3+M6SMviG0G+qEFApR64WpseuzIwpN6EJh/bSXoX3QK+
+	 8Y8mKZt/tzpXJR2M80170nNas4FV0VPWbotI/TM0V9J/ClPreV4912m3jKxlzgqvLk
+	 Lfz7/Gqf0pD9n4ga5ZInh+rw9RWe3PFza+bRaFmx7Uh9x3Rrxh597ogWDBXl5Yjz6q
+	 fM+GDQQZ8Zwaw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: ethanwu <ethanwu@synology.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 766/844] ceph: supply snapshot context in ceph_zero_partial_object()
-Date: Sat, 28 Feb 2026 12:31:19 -0500
-Message-ID: <20260228173244.1509663-767-sashal@kernel.org>
+Subject: [PATCH 6.19 767/844] drm/i915/quirks: Fix device id for QUIRK_EDP_LIMIT_RATE_HBR2 entry
+Date: Sat, 28 Feb 2026 12:31:20 -0500
+Message-ID: <20260228173244.1509663-768-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -63,118 +65,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[synology.com,ibm.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220845-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220846-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DCF311C7633
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 6584C1C8D21
 X-Rspamd-Action: no action
 
-From: ethanwu <ethanwu@synology.com>
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-[ Upstream commit f16bd3fa74a2084ee7e16a8a2be7e7399b970907 ]
+[ Upstream commit 510e7261a7bcd6232e90f0b6b9f93303bdd29f8a ]
 
-The ceph_zero_partial_object function was missing proper snapshot
-context for its OSD write operations, which could lead to data
-inconsistencies in snapshots.
+Update the device ID for Dell XPS 13 7390 2-in-1 in the quirk
+`QUIRK_EDP_LIMIT_RATE_HBR2` entry. The previous ID (0x8a12) was
+incorrect; the correct ID is 0x8a52.
 
-Reproducer:
-../src/vstart.sh --new -x --localhost --bluestore
-./bin/ceph auth caps client.fs_a mds 'allow rwps fsname=a' mon 'allow r fsname=a' osd 'allow rw tag cephfs data=a'
-mount -t ceph fs_a@.a=/ /mnt/mycephfs/ -o conf=./ceph.conf
-dd if=/dev/urandom of=/mnt/mycephfs/foo bs=64K count=1
-mkdir /mnt/mycephfs/.snap/snap1
-md5sum /mnt/mycephfs/.snap/snap1/foo
-fallocate -p -o 0 -l 4096 /mnt/mycephfs/foo
-echo 3 > /proc/sys/vm/drop/caches
-md5sum /mnt/mycephfs/.snap/snap1/foo # get different md5sum!!
-
-Cc: stable@vger.kernel.org
-Fixes: ad7a60de882ac ("ceph: punch hole support")
-Signed-off-by: ethanwu <ethanwu@synology.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Tested-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
+Fixes: 21c586d9233a ("drm/i915/dp: Add device specific quirk to limit eDP rate to HBR2")
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: <stable@vger.kernel.org> # v6.18+
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20251226043359.2553-1-ankit.k.nautiyal@intel.com
+(cherry picked from commit c7c30c4093cc11ff66672471f12599a555708343)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/file.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ceph/file.c b/fs/ceph/file.c
-index 983390069f737..9152b47227101 100644
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -2568,6 +2568,7 @@ static int ceph_zero_partial_object(struct inode *inode,
- 	struct ceph_inode_info *ci = ceph_inode(inode);
- 	struct ceph_fs_client *fsc = ceph_inode_to_fs_client(inode);
- 	struct ceph_osd_request *req;
-+	struct ceph_snap_context *snapc;
- 	int ret = 0;
- 	loff_t zero = 0;
- 	int op;
-@@ -2582,12 +2583,25 @@ static int ceph_zero_partial_object(struct inode *inode,
- 		op = CEPH_OSD_OP_ZERO;
- 	}
+diff --git a/drivers/gpu/drm/i915/display/intel_quirks.c b/drivers/gpu/drm/i915/display/intel_quirks.c
+index d2e16b79d6be1..1abbdd426e587 100644
+--- a/drivers/gpu/drm/i915/display/intel_quirks.c
++++ b/drivers/gpu/drm/i915/display/intel_quirks.c
+@@ -239,7 +239,7 @@ static struct intel_quirk intel_quirks[] = {
+ 	{ 0x0f31, 0x103c, 0x220f, quirk_invert_brightness },
  
-+	spin_lock(&ci->i_ceph_lock);
-+	if (__ceph_have_pending_cap_snap(ci)) {
-+		struct ceph_cap_snap *capsnap =
-+				list_last_entry(&ci->i_cap_snaps,
-+						struct ceph_cap_snap,
-+						ci_item);
-+		snapc = ceph_get_snap_context(capsnap->context);
-+	} else {
-+		BUG_ON(!ci->i_head_snapc);
-+		snapc = ceph_get_snap_context(ci->i_head_snapc);
-+	}
-+	spin_unlock(&ci->i_ceph_lock);
-+
- 	req = ceph_osdc_new_request(&fsc->client->osdc, &ci->i_layout,
- 					ceph_vino(inode),
- 					offset, length,
- 					0, 1, op,
- 					CEPH_OSD_FLAG_WRITE,
--					NULL, 0, 0, false);
-+					snapc, 0, 0, false);
- 	if (IS_ERR(req)) {
- 		ret = PTR_ERR(req);
- 		goto out;
-@@ -2601,6 +2615,7 @@ static int ceph_zero_partial_object(struct inode *inode,
- 	ceph_osdc_put_request(req);
+ 	/* Dell XPS 13 7390 2-in-1 */
+-	{ 0x8a12, 0x1028, 0x08b0, quirk_edp_limit_rate_hbr2 },
++	{ 0x8a52, 0x1028, 0x08b0, quirk_edp_limit_rate_hbr2 },
+ };
  
- out:
-+	ceph_put_snap_context(snapc);
- 	return ret;
- }
- 
+ static const struct intel_dpcd_quirk intel_dpcd_quirks[] = {
 -- 
 2.51.0
 
