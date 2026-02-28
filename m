@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-220354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PD0I001o2nP+QQAu9opvQ
-	(envelope-from <stable+bounces-220354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:34:53 +0100
+	id wKNeH5Qyo2kE+QQAu9opvQ
+	(envelope-from <stable+bounces-220355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:23:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA221C5FD2
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:34:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236371C5B9C
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:23:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B3E1331ACB8D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:15:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7328830BDA7C
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F413739D335;
-	Sat, 28 Feb 2026 17:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E0E39EE14;
+	Sat, 28 Feb 2026 17:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hFA2Mxyn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2jVH27t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54C939DBB9;
-	Sat, 28 Feb 2026 17:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7944439EE0A;
+	Sat, 28 Feb 2026 17:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300251; cv=none; b=e9PfMNV9ZePvaAWIr3z+sfmFAy+vKDvNU7mh8TGzgZiwjdTNMv3Y02hyWFRlBXL10KLLrLzQqK6hYme7YLkUbhYA8Sh2YXaKFBVqLrA8aQ1N9LbBxtseBgUpx4by7lIrY9MejgEBgQLGBPYlvWgk0CSJT0tqvyiM6W2uaAqG9Lg=
+	t=1772300252; cv=none; b=StddXXUD6oJADDkQbErf29lhY6D9Lq7bOixYtJeM+OSj371jqG6NWDj0k7NOa0JUxUhWPEuqf66rL2Ik2nTNbukivLigGugEx+A8Ve5hkNQlPjsYBumldXGkSd+o3rc1r53Fofy1k3nXMp3W71QZxAlkmuccx1BFVw33B/NJ9os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300251; c=relaxed/simple;
-	bh=lFIQsHIrqvNn21gjj9XgQaLlMHDAjX6d1NCnweCJJc8=;
+	s=arc-20240116; t=1772300252; c=relaxed/simple;
+	bh=mhbAl8sJyvyAjf4RPrZXtW5aXsE0+cHJpp8tFN+sMJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jySEppH6GmyeuxglNL8CvgiNzRSwg88LyW/J4Am/nk4afK0gGYlpUlb+NJo5laqpHqDORl0fTjqHcKHIktVq+Bj0o99dFHDlpN363fsqGmL/o3mBeZHZ7dk47PqPXfeUuZeMyNZpR0ISiRPaOIBm4jPU2+IOvZPiR02SaTEuIOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFA2Mxyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1A6C19425;
-	Sat, 28 Feb 2026 17:37:30 +0000 (UTC)
+	 MIME-Version; b=eYr5q9eHC6WON1s1IHk1V+fJsrXxRatVcUekMxHo96LzcsrG7RRlpfm1/5O3sVDrgH8WhlsRDTMwHdKdPZIYo23Rd53HI3BYPHYTiWHeCO7KXaJviec5P5ZQrO6vxlmkq+m14klvn0jRKVfaF8OUnd5lzO6MT8DyHcd8ixG3hdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2jVH27t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1B4C116D0;
+	Sat, 28 Feb 2026 17:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300251;
-	bh=lFIQsHIrqvNn21gjj9XgQaLlMHDAjX6d1NCnweCJJc8=;
+	s=k20201202; t=1772300252;
+	bh=mhbAl8sJyvyAjf4RPrZXtW5aXsE0+cHJpp8tFN+sMJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hFA2Mxyn/HIVaf8SeK5d0hjaKyTLKbgNT38NVqfj/K7rve8VZpDiONTO+6sWxI6N2
-	 6wQgwX0PtYlqHKi++cAxgKQTo9Qq6HxLTIGGRtcYrNxB2LshXeLy4MAIzoyzpEKgMd
-	 XyHrBGZFbTdBj5DFzR93bxfgADtW880aUIap9nKXyGweQyZ3+Vl9jUIJuK8YmlolNZ
-	 WJa95aO56TbqlT7AKo1oFBmhIYOwG8McONEZnwErtO7k7g3gqRgvKXOMgbzL5JlPQo
-	 /f+0v7cDc/4CiaHtUG3lWNeZWlrg8rWbuwFbOE8sIFBPHV1k3CksbwfTZOr/rrR0zv
-	 9+hb312txZtrg==
+	b=F2jVH27tCiRnK4HhYW4PdEbGd88Yn8W8SopGSXUjX8/ynJAKetYchns0Sd+DiNaXp
+	 32pYLMxUeD7lihm62223Pw0T8T3XnGBPV23opjrBptCGwc80mMY90tSG+8NR6QZVu8
+	 P5WCdMhuG7ac8rBQ76zGzB6Qk/MxQLz5DF3dmwf45a/9aEMa1QEgN1+FhA5QsrKtzB
+	 Gz1BEOpHswypWo23KPrBQnNDECyY3FH2PfLPe7/5B4qGw5lOQDcJLjXgY1TexFE3SK
+	 GC/ZI9E0H8i28/Zls7QrVVe9O1BUI62HUclz1o2mSegyifM47oUjSyuGklzApmCskZ
+	 ZiRPC20OVC6+g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shawn Lin <shawn.lin@rock-chips.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 276/844] PCI: dw-rockchip: Disable BAR 0 and BAR 1 for Root Port
-Date: Sat, 28 Feb 2026 12:23:09 -0500
-Message-ID: <20260228173244.1509663-277-sashal@kernel.org>
+Subject: [PATCH 6.19 277/844] wifi: rtw89: disable EHT protocol by chip capabilities
+Date: Sat, 28 Feb 2026 12:23:10 -0500
+Message-ID: <20260228173244.1509663-278-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,91 +71,106 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220354-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220355-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3EA221C5FD2
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 236371C5B9C
 X-Rspamd-Action: no action
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit b5d712e5b87fc56ff838684afb1bae359eb8069f ]
+[ Upstream commit 7fd36ffedeedc97c44a10249a3f12d471bb2dc26 ]
 
-Some Rockchip PCIe Root Ports report bogus size of 1GiB for the BAR
-memories and they cause below resource allocation issue during probe.
+For certain chip models, EHT protocol is disabled, and driver must follow
+the capabilities. Otherwise, chips become unusable.
 
-  pci 0000:00:00.0: [1d87:3588] type 01 class 0x060400 PCIe Root Port
-  pci 0000:00:00.0: BAR 0 [mem 0x00000000-0x3fffffff]
-  pci 0000:00:00.0: BAR 1 [mem 0x00000000-0x3fffffff]
-  pci 0000:00:00.0: ROM [mem 0x00000000-0x0000ffff pref]
-	...
-  pci 0000:00:00.0: BAR 0 [mem 0x900000000-0x93fffffff]: assigned
-  pci 0000:00:00.0: BAR 1 [mem size 0x40000000]: can't assign; no space
-  pci 0000:00:00.0: BAR 1 [mem size 0x40000000]: failed to assign
-  pci 0000:00:00.0: ROM [mem 0xf0200000-0xf020ffff pref]: assigned
-  pci 0000:00:00.0: BAR 0 [mem 0x900000000-0x93fffffff]: releasing
-  pci 0000:00:00.0: ROM [mem 0xf0200000-0xf020ffff pref]: releasing
-  pci 0000:00:00.0: BAR 0 [mem 0x900000000-0x93fffffff]: assigned
-  pci 0000:00:00.0: BAR 1 [mem size 0x40000000]: can't assign; no space
-  pci 0000:00:00.0: BAR 1 [mem size 0x40000000]: failed to assign
-
-Since there is no use of the Root Port BAR memories, disable both of them.
-
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-[mani: reworded the description and comment]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/1766570461-138256-1-git-send-email-shawn.lin@rock-chips.com
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260110022019.2254969-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-dw-rockchip.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.c | 2 +-
+ drivers/net/wireless/realtek/rtw89/core.h | 1 +
+ drivers/net/wireless/realtek/rtw89/fw.h   | 4 ++++
+ drivers/net/wireless/realtek/rtw89/mac.c  | 5 +++++
+ 4 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-index bf8ec3ca6f689..a3daac74d3f18 100644
---- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-+++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-@@ -80,6 +80,8 @@
- #define  PCIE_LINKUP_MASK		GENMASK(17, 16)
- #define  PCIE_LTSSM_STATUS_MASK		GENMASK(5, 0)
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index c5934e4eff711..4b86a7c4fe329 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -5238,7 +5238,7 @@ static void rtw89_init_eht_cap(struct rtw89_dev *rtwdev,
+ 	u8 val, val_mcs13;
+ 	int sts = 8;
  
-+#define PCIE_TYPE0_HDR_DBI2_OFFSET      0x100000
-+
- struct rockchip_pcie {
- 	struct dw_pcie pci;
- 	void __iomem *apb_base;
-@@ -292,6 +294,8 @@ static int rockchip_pcie_host_init(struct dw_pcie_rp *pp)
- 	if (irq < 0)
- 		return irq;
+-	if (chip->chip_gen == RTW89_CHIP_AX)
++	if (chip->chip_gen == RTW89_CHIP_AX || hal->no_eht)
+ 		return;
  
-+	pci->dbi_base2 = pci->dbi_base + PCIE_TYPE0_HDR_DBI2_OFFSET;
-+
- 	ret = rockchip_pcie_init_irq_domain(rockchip);
- 	if (ret < 0)
- 		dev_err(dev, "failed to init irq domain\n");
-@@ -302,6 +306,10 @@ static int rockchip_pcie_host_init(struct dw_pcie_rp *pp)
- 	rockchip_pcie_configure_l1ss(pci);
- 	rockchip_pcie_enable_l0s(pci);
+ 	if (hal->no_mcs_12_13)
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 92636cfc5ca58..a032a20d4c23b 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -5039,6 +5039,7 @@ struct rtw89_hal {
+ 	bool support_cckpd;
+ 	bool support_igi;
+ 	bool no_mcs_12_13;
++	bool no_eht;
  
-+	/* Disable Root Ports BAR0 and BAR1 as they report bogus size */
-+	dw_pcie_writel_dbi2(pci, PCI_BASE_ADDRESS_0, 0x0);
-+	dw_pcie_writel_dbi2(pci, PCI_BASE_ADDRESS_1, 0x0);
+ 	atomic_t roc_chanctx_idx;
+ 	u8 roc_link_index;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index cedb4a47a769c..ba7c332911310 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -42,6 +42,10 @@ struct rtw89_c2hreg_phycap {
+ #define RTW89_C2HREG_PHYCAP_W0_BW GENMASK(31, 24)
+ #define RTW89_C2HREG_PHYCAP_W1_TX_NSS GENMASK(7, 0)
+ #define RTW89_C2HREG_PHYCAP_W1_PROT GENMASK(15, 8)
++#define RTW89_C2HREG_PHYCAP_W1_PROT_11N 1
++#define RTW89_C2HREG_PHYCAP_W1_PROT_11AC 2
++#define RTW89_C2HREG_PHYCAP_W1_PROT_11AX 3
++#define RTW89_C2HREG_PHYCAP_W1_PROT_11BE 4
+ #define RTW89_C2HREG_PHYCAP_W1_NIC GENMASK(23, 16)
+ #define RTW89_C2HREG_PHYCAP_W1_WL_FUNC GENMASK(31, 24)
+ #define RTW89_C2HREG_PHYCAP_W2_HW_TYPE GENMASK(7, 0)
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 6734e5d5a5e22..fbce71cd5a05c 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -3061,6 +3061,7 @@ static int rtw89_mac_setup_phycap_part0(struct rtw89_dev *rtwdev)
+ 	struct rtw89_efuse *efuse = &rtwdev->efuse;
+ 	struct rtw89_mac_c2h_info c2h_info = {};
+ 	struct rtw89_hal *hal = &rtwdev->hal;
++	u8 protocol;
+ 	u8 tx_nss;
+ 	u8 rx_nss;
+ 	u8 tx_ant;
+@@ -3108,6 +3109,10 @@ static int rtw89_mac_setup_phycap_part0(struct rtw89_dev *rtwdev)
+ 	rtw89_debug(rtwdev, RTW89_DBG_FW, "TX path diversity=%d\n", hal->tx_path_diversity);
+ 	rtw89_debug(rtwdev, RTW89_DBG_FW, "Antenna diversity=%d\n", hal->ant_diversity);
+ 
++	protocol = u32_get_bits(phycap->w1, RTW89_C2HREG_PHYCAP_W1_PROT);
++	if (protocol < RTW89_C2HREG_PHYCAP_W1_PROT_11BE)
++		hal->no_eht = true;
 +
  	return 0;
  }
