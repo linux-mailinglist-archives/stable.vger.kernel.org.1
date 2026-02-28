@@ -1,322 +1,307 @@
-Return-Path: <stable+bounces-220031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMeBLZxBomlz1QQAu9opvQ
-	(envelope-from <stable+bounces-220031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 02:15:08 +0100
+	id 2KjzOtVAomlz1QQAu9opvQ
+	(envelope-from <stable+bounces-220028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 02:11:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B1C1BFAA8
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 02:15:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574C21BFA41
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 02:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C2CF3175ADF
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 01:12:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17B98307D7CD
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 01:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736802ED17B;
-	Sat, 28 Feb 2026 01:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1632D94AB;
+	Sat, 28 Feb 2026 01:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FIfN90wo"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ho7qDwsO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013042.outbound.protection.outlook.com [52.101.83.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AC22E6CDF
-	for <stable@vger.kernel.org>; Sat, 28 Feb 2026 01:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772241158; cv=none; b=XSHhTZOqh1T+LUAOn4nfbi7RIBToW0bCAmqc1Yfb9l5Ue6YpIrXecfDK0V79QUjXNqgZvLBwYrkD0do3drdNCdP3efBSJEtef2nJuaChw32AzNC9drdBDDEIB0GJ+D4OcTgFFR3KaM6zEBGBYMs5xxibb9qBbRfz1HQ2NcKYghI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772241158; c=relaxed/simple;
-	bh=/2IufbmKgS8EWPwFqYgpHFq+mUhoBXzmJsBRcVZFpMM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hAkQXKGkq0y8sD9NeSo1NJFvnNQqqIevOoUnsd3q3lvErVivqm5IMARv2rhBIqRdV51qpSdNFjObHu6iatV/Wr9P7kTUY6KImYYtTaXgjns+dg9k9ibnaDnzYlPQIR1eZfX4BtE3ZxPAqeJ3eyMEeqwj0X19TeFvAqTebxpxCpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FIfN90wo; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2add623cb27so17707235ad.3
-        for <stable@vger.kernel.org>; Fri, 27 Feb 2026 17:12:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772241156; x=1772845956; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T7pjsQqLYlC7MiskgqQ4KF6moeG8nJU49gJ0m6tNxws=;
-        b=FIfN90wog8N3TxFZVJK/OTJjyvjI/sRwUBh1pVhgSEjwav6YNSI5Kjmjjvd4Vdov7z
-         TluDmDq9Z77FO9ouLJ1n9dyed6ZLwzQEyKZXcu57rwQeJ8/8jglMPTDaqZtbl0tPMRrZ
-         DOM+IIRqso0Ec6SF92PQk3lBMNms3sQDfpLkp+hDbyqFFq/6d4y6kUKIVYz27G/0SPJO
-         UP3xMtqGwk5pB+wP4iQnENjYVY5uH6yX751Oxrx5zTotY4uuNcLN5hheKXgWLzzcgtb3
-         VHwNwta4Lz8Tu7mGE2vkpth1ie1wvgoqi+MKB/TD0vUsGBTMSEXHmaQFtAF3JRcUeBTz
-         b3qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772241156; x=1772845956;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=T7pjsQqLYlC7MiskgqQ4KF6moeG8nJU49gJ0m6tNxws=;
-        b=KNxuFwOdU2mkXe5nsAvwQPCGhnNA3WEc95+CDm4qGNyJoKb/6UElsVNJfxgW6C/MsA
-         CU/IPTk0+OhbH0xr221Cx/r1acOAtsl16CpycJyhFj82UV6gIB2ShVonzm2rIG+mcB6K
-         oFWkDD8AosaqYoEiW1N5lnLncOtTqOnkpdLWtrEMs+UBll2D1UY7sYkCRnthOfIYE4rH
-         7M7mBmwijJ/rUOjaR7UwZ/cIfR4RJTnRmgr2VHoUpR1xghNrHP6G+PEl9HHujhgkZ179
-         29Gk0gvz7fhNWghu6V2ZTHnVm1+siihSOFdG3Au1GScHztlkJhKZ+r3JYfW6kAwt302s
-         iS/w==
-X-Gm-Message-State: AOJu0YwfMab1cQLqrYJjOvRIqcVH4mjcPvCpPOlxU3yRi3Rbe8iqVo3K
-	9RipHqr2NzlkDZ0YEKOeus7uRy5923nRQas9+XJjx42rTEeBqv4/sf9WnlHtD9musiY=
-X-Gm-Gg: ATEYQzweIrPJkOP2PCX22pRn8A+FhZxyju2GQYHopC6t0/40RD99t9KW2pbuIyddq2b
-	umlRu92Yg2LZj0Tz1BzU023b+QvfZeaQcqUrfFu3Okrerj+63teB+8eM3esgXKIN/ATiCXskI+U
-	ein9uHaztDgEFrONUllwQywjWImHNrahJ5brhWssd7GLfiz4BmA2d81plqBaxA6xy1A2walyYwA
-	IAr77vHwRYuJboDPZL217zvOmqGUXi8yQ5QLpYdrVex1s+N7QYFnyLBL8gpy+Y6FjMkOQGBfoQL
-	9jpIW/mSYxOC0k9bc3WO+XuQQpZds0KklIuCrf5rpamLkPooq8y9RpGN/MJNGSR3K0C2/1CP99x
-	yJSyjkyPBRsRY8PtXpcTwb33hU1Dt7gzlkMIFHHQe2uWk4xVfXMdCY8S+upikDR3azlCyCEZZ1t
-	hQUIFQHx9JsIpKLqSym0aOOSSr81wH2izEm8ErB/U8fpBxsoH0TZCT6Q==
-X-Received: by 2002:a17:902:e84f:b0:2a9:62ce:1c0c with SMTP id d9443c01a7336-2ae2e251993mr44077005ad.6.1772241155506;
-        Fri, 27 Feb 2026 17:12:35 -0800 (PST)
-Received: from ryzen ([2601:644:8000:56f5::8bd])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6f46c2sm75772845ad.89.2026.02.27.17.12.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 17:12:34 -0800 (PST)
-From: Rosen Penev <rosenp@gmail.com>
-To: stable@vger.kernel.org
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	"Pan, Xinhui" <Xinhui.Pan@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Evan Quan <evan.quan@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Eliav Farber <farbere@amazon.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Zhigang Luo <Zhigang.Luo@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Bert Karwatzki <spasswolf@web.de>,
-	Ray Wu <ray.wu@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	amd-gfx@lists.freedesktop.org (open list:RADEON and AMDGPU DRM DRIVERS),
-	dri-devel@lists.freedesktop.org (open list:DRM DRIVERS),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH for 6.1 2/2] drm/amdgpu: clarify DC checks
-Date: Fri, 27 Feb 2026 17:12:13 -0800
-Message-ID: <20260228011213.423524-3-rosenp@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260228011213.423524-1-rosenp@gmail.com>
-References: <20260228011213.423524-1-rosenp@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBCE248880;
+	Sat, 28 Feb 2026 01:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772241085; cv=fail; b=sQ3yewR7PEFNn9ErQQ90xnJCSt1wBRW3XoNo1aHWUp2jPp79lN2nU3j9yq9G3MrkI5+8lgI2ZJSFoclaVAOEovbIyoog4kvvtd+iYPz2deIeK6PCnVAWD+yg4zxRVjLfdO8RpURsLg7JnL5eFqgKvXYJ452FTXwdtYkyp3KDR5Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772241085; c=relaxed/simple;
+	bh=HM05wGedMz2re3NyMWiZEVz6kTqKiSE6ndpd0QFaSe0=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=GN76wa1hcyvbXeu+ar2x3jg7Qx0rCrMAFYsUq8bWCGE7tow8EL0mwl+2LXb9k9fdLMn5OsyziZW8uBc+wyi3Mjr6OmXe2iF0xKotD7n78gX+wJae4hXQ76pOrlsjr77SPmf80PL8RLKPv1w/wEWuhTJ9tg/7+hmOphJ08dpEDFg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ho7qDwsO; arc=fail smtp.client-ip=52.101.83.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oVwtbboaicQTU3E1HJH4nuYUxJZQ3JQQontM+dH5TZ8d3RhRw1Ou2sLjP3gqvkPOhrfulE4qVH49qzwjyrHeI+t2HlanUNQMCn7Li1V5uMTg8X7pyBc+LZxiSMFavQUOox6X3xGI2RZV/SNIFLR0YJr6I7rjcu7fdDiofRCazQK9jTSzM7xtpYFYrNHf0ee+51GmZlsv5fxoDbOIRXSLm5ZsTn+8axSW6twHOmA6IGZuAExkN1GJEurUHhn5cVPtyRG2+mGE2JJyztiCkwssaprnh2FuwFhl/nJYOEZBF4ovBT63FRLDnqrQgNmfpRP/s9skQNoVO0ENe/VRf2un9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q2dcCUTTvXFe/Gl/yxTZPhDrwbF1H5VzVzxp+19vuAg=;
+ b=G8SPvNa7AdaZkTzoYKX37t6zXOaO8VYdhY53N1sWlCgKjPJ8lx0JfY0tnTN2/Td8exERLbJJn1kgS9QxfFYS8X76Up/+EI0cngd8BE+anah8UP3qytPE/SLgusS14UEY3N8xacq+BnuE+8H6tV07F9upkdMDgX5G5evJh+TXt36Ioy7W+LRpQj3xFkQwtMqhydoIpZ8+qDrp0YOTBW2s+Jz72J3flwaadl6Cmx6YB2L2JzefGY6z3669RhhiIcKmLHWur1d+DUtP1qk3V1Tnr0uXK2FNGqrQRdHtId6SyP0YcdR9pJZYore0mAbEsqV0/Bc7yeinyvva39xw9CkOpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q2dcCUTTvXFe/Gl/yxTZPhDrwbF1H5VzVzxp+19vuAg=;
+ b=ho7qDwsOjDGKxTUzF0ir8xJ8GmdMMBZX5DA4/h8wn/2zuoiN0drNxMvFNIjO6HffreqqU+5WdP6tp//KqhqyTousngYyiFPuICUZ2w38StR5Ivk4VUHabbmJS88YvVBiLNiF7lT32SPUBJpnSx5ginQFlZFHSo4Ok/zo5L3wwbtrQqtXjzbuXt30Gfw9dbiY5zv1SRIgze+/Z2TgwE+EQjlOm6vcNlPBnMsiFYRRaVwSoQ4rzJ4uQN+0CjBZjw6NI62GKLkLrpu4AlcNg6CgcKo/UHaJ9xrOWA9q8IWroP7niuIv/ZGKVnZr7BsuOdeD0EMK1Ij21T0ZJLLtIzc1wg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by AM9PR04MB8423.eurprd04.prod.outlook.com (2603:10a6:20b:3e3::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Sat, 28 Feb
+ 2026 01:11:19 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::4972:7eaa:b9f6:7b5e]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::4972:7eaa:b9f6:7b5e%7]) with mapi id 15.20.9632.017; Sat, 28 Feb 2026
+ 01:11:19 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Date: Sat, 28 Feb 2026 09:12:45 +0800
+Subject: [PATCH v2] pmdomain: imx: Fix i.MX8MP VC8000E power up sequence
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260228-imx8mp-vc8000e-pm-v2-1-fd255a0d5958@nxp.com>
+X-B4-Tracking: v=1; b=H4sIAAxBomkC/32NQQ6CMBBFr0Jm7ZhOLdC44h6GhZZRZlFoWtNgS
+ O9u5QAu30v++zskjsIJrs0OkbMkWZcK+tSAm+/Li1GmyqCV7hRpi+I36wNmZ5VSjMGj0b3lbjL
+ 20RqouxD5KdvRvI2VZ0nvNX6Oi0w/+6+WCQk7Rz2Zllx/0cOyhbNbPYyllC8I2holsAAAAA==
+X-Change-ID: 20260128-imx8mp-vc8000e-pm-4278e6d48b54
+To: Ulf Hansson <ulf.hansson@linaro.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
+ Jacky Bai <ping.bai@nxp.com>, Frank Li <frank.li@nxp.com>
+Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: SGXP274CA0021.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::33)
+ To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AM9PR04MB8423:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f226043-d6f8-4a80-4b4c-08de7666477c
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|376014|19092799006|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	ialZJFeVEV1WH4bkwTjEcfc4v/t635DraI6N1k+ZSeUubVGlogdb1OWCNAGDgaYdGXtdPdBnguUV6VUBLlCJAAISeHMiceap1+j+wQ8TujgzmxKhW+2CFENcOmIvB1SGa88YixEKn2XOsbUQjZkfDKjoCTGnhzdfx6LqddLaz2C6s6W/gNku9urE00lLOsCm4/jzEobz6CwlKzyvzTpeI1w8ol2v9rPT91kV3nV0xBtrdWCtaJfZYomNxSou0RlRvW7HvphdRIDimHk0NZbo9478P29Mq4iZfa1s9US58FgOixf9hY6wikH//4QdVhn83nmALRU3ffrFIOx/vGjdQ2/vFfISmm05kzECfl4afcLH98uaq7wBKuggAhc4WPYoQN3wB9yyvsyKfQEWUjXyK/uDq+VNpHO01s0d8Uk8IlaJ1PmqjaErK3A5DMF3n0pT35AjghPLxa9+/B+KxdC8dhpVK7k9RbgqQDq9ZmDuaAQzSG/P65msIL3hhmDBR98zbs5erfZUDawvKuSIfQcBRqIr45qTGH7Pm3Rr4I8SCpLymYKflva4rDAODJtsL6797j20F/8DPIVif6RnL/4mUCXB3Q6c3grIF/gW3P9iSyrvgaFXOHQt3pVk4M0lBwRxNMkEcnoP+uxCrk8VhAsP/7QewIA3yhrjbj4GKDefaqMD+SZcj784poSaDcWN6yF3zmsRyTxnbSMELDcWOiPAcVUgmVOmbCTMJNNw7CFe5PCXCLjxx3b4k0m5Bm8LU6o1
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(19092799006)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TXo0enJxRlZSOHRTN0Y1WEFtQ0YycWN2TEZqTm1Qc2Q2dG5MOFEzTEgzYnRB?=
+ =?utf-8?B?RFhLSnpVTHlOS1hLTmlDNHBQTXoxU2ZJNlNKdGQydWRaSlBtZUFtNytHRU9G?=
+ =?utf-8?B?RFVzUk9WWGo2ekcxNGl4WklWYWFPaGtCVU8zYzBzM1hyK0d4d1VZUXpMRTJv?=
+ =?utf-8?B?TFVla28vcWtRamN6MzFLOU1McmNBMlNyaG1BdHF5LzVsaFB1V1JqU1NtaEJV?=
+ =?utf-8?B?UVRhWnZmdmJzNGRaVDAyaE1ZY2dKQjZFbVh3UjAyb2dCZGJGazE0eXliSllG?=
+ =?utf-8?B?QVhWQ1NvdFg2T0ZBODVRSlVjYmRoMmY3QUlFL0U1WHNwRHl3WTlPMGFORmth?=
+ =?utf-8?B?TUVNUHYrdnBnU3YxMU9yYXZOTzNwc3R5aEdQL0xqSlV1QmtvZW9WdnBiUTRt?=
+ =?utf-8?B?ZHlIdHZEUHlmUHkvbUgvOTZOMU5mKzZ6S2dZZ09qTU9UdVBZTi9aZDJPU05P?=
+ =?utf-8?B?bmtXUzgrcmd0NlllZjFORVd3VDZITW5IbkhBT3EzQXpMU1hYT2VvSXg5NGpN?=
+ =?utf-8?B?b2UyTE5RNXFmeUovUzBoVTFwaGV3S1p5TzZUYmIvWFNsSzgrMU81SCsyTUZP?=
+ =?utf-8?B?UkRIQWtMaVEvdERFTFMwdnNKNTVsWW1qS0ZJeGdpaVN3SCt0WlZmQU01WldB?=
+ =?utf-8?B?SkNWdjdGNXMxVnhCb0dVSlpZVTlNQllQQkVwUGVLRnRxNXRlZkd0N1RsVjBM?=
+ =?utf-8?B?YlRNbDhxbXNtSFFYU1YzSmJGVG15K3o4ZlNyd0pncHhTRnJLaDlnS3Y5OEM2?=
+ =?utf-8?B?c2wzMWhsanZ3SlJKRlMzVCs3dU8xMlR0MnpXQ3FpbzNZbjBlUXdGMzJuUGg4?=
+ =?utf-8?B?MWVyNXp6ZWNFVHRYWno4cEdQcXBQSngwQ3RYZ0ZoSzQ3anNnbmlLenpEUEpi?=
+ =?utf-8?B?MTcwenNXb0p6Rzc1NG5lQXkxbnEzY2VsOEJweHd3SzFCdnJjRGpGTjFXd0Jq?=
+ =?utf-8?B?ZXdUWmtmRFVpS0d3bGI2aS9nYXp3TjhXMyt3czlXRVIvVWQvckhYRTVIaUhP?=
+ =?utf-8?B?Yy9pc0huTU5GNkNzYW9RRFE1TjJLTm9nYm9Cdit4Y3VQTU9lVlYrd0FqamE0?=
+ =?utf-8?B?WlFUcnN2d1VmRnBRdTIzK29lR3pjVU81L3FDYnB0bGNQckNibDBqL1dQVDY2?=
+ =?utf-8?B?WlM0dytkR1FlYnd5U3lWaks0VUhuUmJLS1d2RElIZXB2V2NVUXhCd3QzUW5J?=
+ =?utf-8?B?K1AxazlHMWRXUjhvL08wK1pOa056dk5GT0NJZEJKWWtML3FCWjlubWZBRThG?=
+ =?utf-8?B?d3NLc0ViZkN0dmtPTUlDdzRuS1Zsa1IwaEsrdWJ6TFArUU5PSnlDV1VjNTdu?=
+ =?utf-8?B?R1V5RDhZYWVQUHY5RU5VdmJZdGdOTEVEVXAxZlB4eXhtdkRKOUtPeU9yL0tK?=
+ =?utf-8?B?bktFL2ZPYlVlamxFa09TcTlzR05vcnJ4c2p2MXlXZkkwMUljYzhaU1FUZDNu?=
+ =?utf-8?B?VjBsQ3krdEVNTTBOUlBVd0FGVmR3WEpUdDVXZnVhVEg4WWs3ODMvR2RIK0pY?=
+ =?utf-8?B?R3lRR3FCVU5aTVJCRUV1b0s2Yks2RWIzcGtKZlp3Q0xPekJsc29qdDl3TG5o?=
+ =?utf-8?B?WlU0YXpkYWZvMHl3aWVTcGM1SjhTWEJxNi95Q2RxNVY4Z1dOMUZlZ2hwcGZz?=
+ =?utf-8?B?OXloQ1ZHbDlWMWVTVTgwYmdpbjVnMkt0K0c1L0Rxc0NRZjNKS25ZLzRvRmtI?=
+ =?utf-8?B?OCtrMUZoc1ZnUUZSRXFBeEFuMTEvNmJMd0xtSytBVTVSV3R1dlNCVndrdGMx?=
+ =?utf-8?B?eVgvU1BoRDdERjhYUWJLM1I2RW4wSGZJMlVWQUJWYnM1ZjFtamNsa3ZQS2kz?=
+ =?utf-8?B?dSsrQUUxYTh1MHNNYmorQXh2dmR2MmkrcDUyZEdFaTB1MDl3ejdSWmdwN2Z0?=
+ =?utf-8?B?aTk0cDltWEw1YWR0SG4zZGkzVVdhRkpXTFcxZ2NQZ0FEeUZ5VVZGVlYzeEky?=
+ =?utf-8?B?cnhlWW5LcTI2cEs5NFVvQ1pMUDRham9UNFVmcFZwcXI1U3lpTFM5V1pVVjVE?=
+ =?utf-8?B?SGM0alZjamltS0VSNVJtKzRMMFhCeTdrU0k5by9TWTY2L2hkV29hYkpxMEVG?=
+ =?utf-8?B?bG9yZnNKTmY3azAwNTFmTlVyd1FmV1loSDBhZ2pFZkFtTU5HRzR5cURBOTJo?=
+ =?utf-8?B?TXJpZGsvVHR1UXg3WVh0YVNJZUxwZk9LaVBtR2VDazRpZWNIR0RoazZrTXM4?=
+ =?utf-8?B?L0hYYWpBNG1tYnlaRTV6SXFOZUM1QVZCMUlibUxhaXlHdEFHdEJ0UzRIK1R6?=
+ =?utf-8?B?UnFqWWdYa2U5QWJ3ZGpPajE2MFpmbkRiVExPWXNJKzdHYlF2NDRzYVMweE1B?=
+ =?utf-8?B?L1ErMjJjT05WZ1BiUTljK2E4QVFDaEpRWnl0eGFKb3pNRU1zbjJEdz09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f226043-d6f8-4a80-4b4c-08de7666477c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2026 01:11:19.2559
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 18mPwb6sys+TayUpCUGFPEL4Mg664IXMFReJ0LVeX7IIrB7hkD1AHxBX8ytqAebmUvfqYxP5mlkwxWlsPcCyPQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8423
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [0.44 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220031-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,kernel.org,amazon.com,linuxfoundation.org,web.de,iscas.ac.cn,lists.freedesktop.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-220028-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linaro.org,pengutronix.de,gmail.com,nxp.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[peng.fan@oss.nxp.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 19B1C1BFAA8
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 574C21BFA41
 X-Rspamd-Action: no action
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit d09ef243035b75a6d403ebfeb7e87fa20d7e25c6 ]
+Per errata[1]:
+ERR050531: VPU_NOC power down handshake may hang during VC8000E/VPUMIX
+power up/down cycling.
+Description: VC8000E reset de-assertion edge and AXI clock may have a
+timing issue.
+Workaround: Set bit2 (vc8000e_clk_en) of BLK_CLK_EN_CSR to 0 to gate off
+both AXI clock and VC8000E clock sent to VC8000E and AXI clock sent to
+VPU_NOC m_v_2 interface during VC8000E power up(VC8000E reset is
+de-asserted by HW)
 
-There are several places where we don't want to check
-if a particular asic could support DC, but rather, if
-DC is enabled.  Set a flag if DC is enabled and check
-for that rather than if a device supports DC or not.
+Add a bool variable is_errata_err050531 in
+'struct imx8m_blk_ctrl_domain_data' to represent whether the workaround
+is needed. If is_errata_err050531 is true, first clear the clk before
+powering up gpc, then enable the clk after powering up gpc.
 
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+While at here, using imx8mm_vpu_power_notifier() is wrong, as it ungates
+the VPU clocks to provide the ADB clock, which is necessary on i.MX8MM,
+but on i.MX8MP there is a separate gate (bit 3) for the NoC. So add
+imx8mp_vpu_power_notifier() for i.MX8MP.
+
+[1] https://www.nxp.com/webapp/Download?colCode=IMX8MP_1P33A
+
+Fixes: a1a5f15f7f6cb ("soc: imx: imx8m-blk-ctrl: add i.MX8MP VPU blk ctrl")
+Cc: stable@vger.kernel.org
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu.h           |  1 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c      |  2 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c   |  2 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    | 32 ++++++++++---------
- drivers/gpu/drm/amd/amdgpu/amdgpu_display.c   |  4 +--
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c       |  2 +-
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  1 +
- .../gpu/drm/amd/pm/powerplay/amd_powerplay.c  |  2 +-
- 8 files changed, 25 insertions(+), 21 deletions(-)
+Changes in v2:
+- Add errata link in commit message
+- Add comment for is_errata_err050531
+- Link to v1: https://lore.kernel.org/r/20260128-imx8mp-vc8000e-pm-v1-1-6c171451c732@nxp.com
+---
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 45 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 43 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-index dcb5de01a220..c4287e09658f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-@@ -1071,6 +1071,7 @@ struct amdgpu_device {
- 	struct work_struct		reset_work;
- 
- 	bool                            job_hang;
-+	bool                            dc_enabled;
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index 19e992d2ee3b845bc9382bcd494a5d96f9c6ac44..1cd0a22ce3e533358dd7449da9989162b36c5fe6 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -54,6 +54,15 @@ struct imx8m_blk_ctrl_domain_data {
+ 	 * register.
+ 	 */
+ 	u32 mipi_phy_rst_mask;
++
++	/*
++	 * VC8000E reset de-assertion edge and AXI clock may have a timing issue.
++	 * Workaround: Set bit2 (vc8000e_clk_en) of BLK_CLK_EN_CSR to 0 to gate off
++	 * both AXI clock and VC8000E clock sent to VC8000E and AXI clock sent to
++	 * VPU_NOC m_v_2 interface during VC8000E power up(VC8000E reset is
++	 * de-asserted by HW)
++	 */
++	bool is_errata_err050531;
  };
  
- static inline struct amdgpu_device *drm_to_adev(struct drm_device *ddev)
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-index 5fa7f6d8aa30..9ced0c60ec8b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -857,7 +857,7 @@ int amdgpu_acpi_init(struct amdgpu_device *adev)
- 	struct amdgpu_atif *atif = &amdgpu_acpi_priv.atif;
+ #define DOMAIN_MAX_CLKS 4
+@@ -108,7 +117,11 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+ 		dev_err(bc->dev, "failed to enable clocks\n");
+ 		goto bus_put;
+ 	}
+-	regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
++
++	if (data->is_errata_err050531)
++		regmap_clear_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
++	else
++		regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
  
- 	if (atif->notifications.brightness_change) {
--		if (amdgpu_device_has_dc_support(adev)) {
-+		if (adev->dc_enabled) {
- #if defined(CONFIG_DRM_AMD_DC)
- 			struct amdgpu_display_manager *dm = &adev->dm;
+ 	/* power up upstream GPC domain */
+ 	ret = pm_runtime_get_sync(domain->power_dev);
+@@ -117,6 +130,9 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+ 		goto clk_disable;
+ 	}
  
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-index 3cca3f07f34d..11bfbf1d6a3d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-@@ -1981,7 +1981,7 @@ int amdgpu_debugfs_init(struct amdgpu_device *adev)
- 	amdgpu_ta_if_debugfs_init(adev);
++	if (data->is_errata_err050531)
++		regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
++
+ 	/* wait for reset to propagate */
+ 	udelay(5);
  
- #if defined(CONFIG_DRM_AMD_DC)
--	if (amdgpu_device_has_dc_support(adev))
-+	if (adev->dc_enabled)
- 		dtn_debugfs_init(adev);
- #endif
+@@ -514,9 +530,34 @@ static const struct imx8m_blk_ctrl_domain_data imx8mp_vpu_blk_ctl_domain_data[]
+ 	},
+ };
  
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 535cc74c5880..a43f18defa7a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4402,25 +4402,27 @@ int amdgpu_device_resume(struct drm_device *dev, bool fbcon)
- 
- 	amdgpu_ras_resume(adev);
- 
--	/*
--	 * Most of the connector probing functions try to acquire runtime pm
--	 * refs to ensure that the GPU is powered on when connector polling is
--	 * performed. Since we're calling this from a runtime PM callback,
--	 * trying to acquire rpm refs will cause us to deadlock.
--	 *
--	 * Since we're guaranteed to be holding the rpm lock, it's safe to
--	 * temporarily disable the rpm helpers so this doesn't deadlock us.
--	 */
-+	if (adev->mode_info.num_crtc) {
++static int imx8mp_vpu_power_notifier(struct notifier_block *nb,
++				     unsigned long action, void *data)
++{
++	struct imx8m_blk_ctrl *bc = container_of(nb, struct imx8m_blk_ctrl,
++						 power_nb);
++
++	if (action == GENPD_NOTIFY_ON) {
 +		/*
-+		 * Most of the connector probing functions try to acquire runtime pm
-+		 * refs to ensure that the GPU is powered on when connector polling is
-+		 * performed. Since we're calling this from a runtime PM callback,
-+		 * trying to acquire rpm refs will cause us to deadlock.
-+		 *
-+		 * Since we're guaranteed to be holding the rpm lock, it's safe to
-+		 * temporarily disable the rpm helpers so this doesn't deadlock us.
++		 * On power up we have no software backchannel to the GPC to
++		 * wait for the ADB handshake to happen, so we just delay for a
++		 * bit. On power down the GPC driver waits for the handshake.
 +		 */
- #ifdef CONFIG_PM
--	dev->dev->power.disable_depth++;
-+		dev->dev->power.disable_depth++;
- #endif
--	if (!amdgpu_device_has_dc_support(adev))
--		drm_helper_hpd_irq_event(dev);
--	else
--		drm_kms_helper_hotplug_event(dev);
-+		if (!adev->dc_enabled)
-+			drm_helper_hpd_irq_event(dev);
-+		else
-+			drm_kms_helper_hotplug_event(dev);
- #ifdef CONFIG_PM
--	dev->dev->power.disable_depth--;
-+		dev->dev->power.disable_depth--;
- #endif
++
++		udelay(5);
++
++		/* set "fuse" bits to enable the VPUs */
++		regmap_set_bits(bc->regmap, 0x8, 0xffffffff);
++		regmap_set_bits(bc->regmap, 0xc, 0xffffffff);
++		regmap_set_bits(bc->regmap, 0x10, 0xffffffff);
++		regmap_set_bits(bc->regmap, 0x14, 0xffffffff);
 +	}
- 	adev->in_suspend = false;
- 
- 	if (adev->enable_mes)
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-index 98cce09684f2..f9692e724409 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-@@ -534,7 +534,7 @@ uint32_t amdgpu_display_supported_domains(struct amdgpu_device *adev,
- 	 */
- 	if ((bo_flags & AMDGPU_GEM_CREATE_CPU_GTT_USWC) &&
- 	    amdgpu_bo_support_uswc(bo_flags) &&
--	    amdgpu_device_has_dc_support(adev) &&
-+	    adev->dc_enabled &&
- 	    adev->mode_info.gpu_vm_support)
- 		domain |= AMDGPU_GEM_DOMAIN_GTT;
- #endif
-@@ -1330,7 +1330,7 @@ int amdgpu_display_modeset_create_props(struct amdgpu_device *adev)
- 					 "dither",
- 					 amdgpu_dither_enum_list, sz);
- 
--	if (amdgpu_device_has_dc_support(adev)) {
-+	if (adev->dc_enabled) {
- 		adev->mode_info.abm_level_property =
- 			drm_property_create_range(adev_to_drm(adev), 0,
- 						  "abm level", 0, 4);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index 055e05b2cb22..3c01bb464248 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2530,7 +2530,7 @@ static int amdgpu_runtime_idle_check_display(struct device *dev)
- 		if (ret)
- 			return ret;
- 
--		if (amdgpu_device_has_dc_support(adev)) {
-+		if (adev->dc_enabled) {
- 			struct drm_crtc *crtc;
- 
- 			drm_for_each_crtc(crtc, drm_dev) {
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index f7fbc7932bb5..0d41a13c9019 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4842,6 +4842,7 @@ static int dm_early_init(void *handle)
- 		adev_to_drm(adev)->dev,
- 		&dev_attr_s3_debug);
- #endif
-+	adev->dc_enabled = true;
- 
- 	return 0;
- }
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-index ab8ae7464664..9bf85ca607c3 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-@@ -1567,7 +1567,7 @@ static void pp_pm_compute_clocks(void *handle)
- 	struct pp_hwmgr *hwmgr = handle;
- 	struct amdgpu_device *adev = hwmgr->adev;
- 
--	if (!amdgpu_device_has_dc_support(adev)) {
-+	if (!adev->dc_enabled) {
- 		amdgpu_dpm_get_active_displays(adev);
- 		adev->pm.pm_display_cfg.num_display = adev->pm.dpm.new_active_crtc_count;
- 		adev->pm.pm_display_cfg.vrefresh = amdgpu_dpm_get_vrefresh(adev);
++
++	return NOTIFY_OK;
++}
++
+ static const struct imx8m_blk_ctrl_data imx8mp_vpu_blk_ctl_dev_data = {
+ 	.max_reg = 0x18,
+-	.power_notifier_fn = imx8mm_vpu_power_notifier,
++	.power_notifier_fn = imx8mp_vpu_power_notifier,
+ 	.domains = imx8mp_vpu_blk_ctl_domain_data,
+ 	.num_domains = ARRAY_SIZE(imx8mp_vpu_blk_ctl_domain_data),
+ };
+
+---
+base-commit: 81f98c6c88ebd36df93d903bdfd3c8a10a722eef
+change-id: 20260128-imx8mp-vc8000e-pm-4278e6d48b54
+
+Best regards,
 -- 
-2.53.0
+Peng Fan <peng.fan@nxp.com>
 
 
