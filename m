@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-220126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +F6vEtEpo2kr+AQAu9opvQ
-	(envelope-from <stable+bounces-220126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:45:53 +0100
+	id QDJTAzAqo2kr+AQAu9opvQ
+	(envelope-from <stable+bounces-220127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:47:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00B01C5150
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:45:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DBB1C519E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C04B630AE6B2
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:38:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B416310EA75
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF1A834C155;
-	Sat, 28 Feb 2026 17:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2124481256;
+	Sat, 28 Feb 2026 17:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hgfCQbkF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q/m4Gzut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC3434C128;
-	Sat, 28 Feb 2026 17:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7497748124C;
+	Sat, 28 Feb 2026 17:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300036; cv=none; b=I6YxlbVjOj0wgJuoABV59KxTh+MZMEagdstxbUQrzF8VgGIG6cRnY2P0yuvlKiabLmJzpfltOH9a4de85HWQvUAUDeH0s+Ht2kRU0Qt1LfTHXM0tLzhxK45nxdNglOx5WjCnq6dzehdECXTWEYR4IP7ikrxk0gosUhy3UTXt9C8=
+	t=1772300037; cv=none; b=PPQTg+UhC54l7LjgAjz05tbKucA8UsVwK98AJIkHUUFbF5NuCFRTQIKD4NQ5uDyIAtM9+wm6r6xfvKfox5jN+tO3QxEPdWS/jt4MCt76NvdGfyfNDfRypsql/YvnHN/3A8W/t13XdS12utJRmmQo5+5Hg2E6T7hKfgtAgA5WRR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300036; c=relaxed/simple;
-	bh=qFxe7UMVks0SzFECFu0TKvPZLn9NTWwEwRkXjs1MK28=;
+	s=arc-20240116; t=1772300037; c=relaxed/simple;
+	bh=shKv+VDd4E1VGWSIsBcGikJ997ldocGnM8jUq154LlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fj/JjEdKRAZD+7aOBWY7G+vRMsU3AKz4DAJApTQnb1NSDMhFtFle1eO76UnLmJq0qbQywn04gxbZ7zsjOdVtsqnl6/QwlsBV30kGvG9kt4RiQsmPZs41c9TGiKm3qEb6heZyR4n5LMNiTCK6JnW4TGVgHPqCCtED89Ct6H3v/3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hgfCQbkF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7EC6C116D0;
-	Sat, 28 Feb 2026 17:33:55 +0000 (UTC)
+	 MIME-Version; b=afbUd+Y1taYXibnMbLHPsaHghruSjEY8OgFCQRdaaHym+ct6Ymt19HQXFELdHL8TC2v6sU7/0hcwuGHDttynHUx/jytMGBiEkWOT746W+w6eZ1p/bruM9JBDuTlg/MZ9EHmgNxiDfqg6Ud5uKaVJ54EoaamQjTYrQ4ycv83iYo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q/m4Gzut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9702FC19424;
+	Sat, 28 Feb 2026 17:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300036;
-	bh=qFxe7UMVks0SzFECFu0TKvPZLn9NTWwEwRkXjs1MK28=;
+	s=k20201202; t=1772300037;
+	bh=shKv+VDd4E1VGWSIsBcGikJ997ldocGnM8jUq154LlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hgfCQbkFIveFgOG5kcSRWNONWA5k8VtyfEoCk+Lk1TXuxbN93WlBsr1ilIXz4xklT
-	 9p1R1uqeYRjDe2cMu8FPoWbjRDKP1RncUSBYeIbfd4QsjZrslryoeoBEm8y7JTY28v
-	 buiSIZQUIuuQJE7H1QMHRm+yWRV9pGLZTk501fGsKSgbKVlcwuV+Iihvg4z+eoXyAg
-	 ErJFERHs2apVNXOHv218cr1McwRslSrKsL1ce0pX/PKB0ZlJNG7VCUqUxa+Xy1gGxe
-	 j2uER0kpiRZgBzzwYcIY3HaliiwllDvektK+PXt0nnzdthMZIcxYvlJpaKuzUjRLzH
-	 1QCFo431os46g==
+	b=q/m4GzutPo+MdStrTkHiZBhbLLHHzNSGIRL1W+GO7MrAqJ+x+ydC3P2xxdIFHjAjo
+	 aNuMkIi5vsLbJ6MRlFQW6uhaUD2ItOpIjIgofO22Wj2jIeCOty+MTU1iNSpfFLH6fS
+	 PcY4495GJ3skksR+ufL11jkSnVSDHAEjjVFkwEMt4VxJpzxUqyExisQUboyDc1Uk9b
+	 Ouir6AEJTDObdoKaL4dggRhxmomXF8ITA5sydL+7u0q1/6d1wByzTkS4e0RDVSU1N2
+	 S9HToHt1Z+uT3AkekyCgD9/iFLEgeHmvqWYAVBciRokJA6iqQ4xKEpBPDg3NsHhWza
+	 aud9vI1f0UoTQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ezrak1e <ezrakiez@gmail.com>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 048/844] dlm: validate length in dlm_search_rsb_tree
-Date: Sat, 28 Feb 2026 12:19:21 -0500
-Message-ID: <20260228173244.1509663-49-sashal@kernel.org>
+Subject: [PATCH 6.19 049/844] btrfs: don't BUG() on unexpected delayed ref type in run_one_delayed_ref()
+Date: Sat, 28 Feb 2026 12:19:22 -0500
+Message-ID: <20260228173244.1509663-50-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -68,68 +69,101 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,redhat.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220126-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220127-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E00B01C5150
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bur.io:email,suse.com:email]
+X-Rspamd-Queue-Id: 97DBB1C519E
 X-Rspamd-Action: no action
 
-From: Ezrak1e <ezrakiez@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 080e5563f878c64e697b89e7439d730d0daad882 ]
+[ Upstream commit c7d1d4ff56744074e005771aff193b927392d51f ]
 
-The len parameter in dlm_dump_rsb_name() is not validated and comes
-from network messages. When it exceeds DLM_RESNAME_MAXLEN, it can
-cause out-of-bounds write in dlm_search_rsb_tree().
+There is no need to BUG(), we can just return an error and log an error
+message.
 
-Add length validation to prevent potential buffer overflow.
-
-Signed-off-by: Ezrak1e <ezrakiez@gmail.com>
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/lock.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index c01a291db401b..a393ecaf3442a 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -626,7 +626,8 @@ int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name, int len,
- 			struct dlm_rsb **r_ret)
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index e4cae34620d19..1bf081243efb2 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -1761,32 +1761,36 @@ static int run_one_delayed_ref(struct btrfs_trans_handle *trans,
+ 			       struct btrfs_delayed_extent_op *extent_op,
+ 			       bool insert_reserved)
  {
- 	char key[DLM_RESNAME_MAXLEN] = {};
--
-+	if (len > DLM_RESNAME_MAXLEN)
-+		return -EINVAL;
- 	memcpy(key, name, len);
- 	*r_ret = rhashtable_lookup_fast(rhash, &key, dlm_rhash_rsb_params);
- 	if (*r_ret)
++	struct btrfs_fs_info *fs_info = trans->fs_info;
+ 	int ret = 0;
+ 
+ 	if (TRANS_ABORTED(trans)) {
+ 		if (insert_reserved) {
+ 			btrfs_pin_extent(trans, node->bytenr, node->num_bytes);
+-			free_head_ref_squota_rsv(trans->fs_info, href);
++			free_head_ref_squota_rsv(fs_info, href);
+ 		}
+ 		return 0;
+ 	}
+ 
+ 	if (node->type == BTRFS_TREE_BLOCK_REF_KEY ||
+-	    node->type == BTRFS_SHARED_BLOCK_REF_KEY)
++	    node->type == BTRFS_SHARED_BLOCK_REF_KEY) {
+ 		ret = run_delayed_tree_ref(trans, href, node, extent_op,
+ 					   insert_reserved);
+-	else if (node->type == BTRFS_EXTENT_DATA_REF_KEY ||
+-		 node->type == BTRFS_SHARED_DATA_REF_KEY)
++	} else if (node->type == BTRFS_EXTENT_DATA_REF_KEY ||
++		   node->type == BTRFS_SHARED_DATA_REF_KEY) {
+ 		ret = run_delayed_data_ref(trans, href, node, extent_op,
+ 					   insert_reserved);
+-	else if (node->type == BTRFS_EXTENT_OWNER_REF_KEY)
++	} else if (node->type == BTRFS_EXTENT_OWNER_REF_KEY) {
+ 		ret = 0;
+-	else
+-		BUG();
++	} else {
++		ret = -EUCLEAN;
++		btrfs_err(fs_info, "unexpected delayed ref node type: %u", node->type);
++	}
++
+ 	if (ret && insert_reserved)
+ 		btrfs_pin_extent(trans, node->bytenr, node->num_bytes);
+ 	if (ret < 0)
+-		btrfs_err(trans->fs_info,
++		btrfs_err(fs_info,
+ "failed to run delayed ref for logical %llu num_bytes %llu type %u action %u ref_mod %d: %d",
+ 			  node->bytenr, node->num_bytes, node->type,
+ 			  node->action, node->ref_mod, ret);
 -- 
 2.51.0
 
