@@ -1,182 +1,147 @@
-Return-Path: <stable+bounces-220036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220037-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMviEgRbomko2QQAu9opvQ
-	(envelope-from <stable+bounces-220036-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 04:03:32 +0100
+	id gAEqE85comlw2QQAu9opvQ
+	(envelope-from <stable+bounces-220037-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 04:11:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468A81C00EA
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 04:03:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D591C016A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 04:11:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DB239300BCAF
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 03:03:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 650383027106
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 03:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0112026461F;
-	Sat, 28 Feb 2026 03:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6432BFC60;
+	Sat, 28 Feb 2026 03:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Ig48obCr"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="i/IUwjHo"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5520520C463
-	for <stable@vger.kernel.org>; Sat, 28 Feb 2026 03:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EAD2C11E3
+	for <stable@vger.kernel.org>; Sat, 28 Feb 2026 03:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772247806; cv=none; b=KME6lAv7axVo+bkyKHb4jzgHvELCL7lf+qwc66UGhjJ6mmA53FuwZuwgMgy3ESNnE4bclRo2CobhjBvDei5c/8gFuidwgkGpSUly0n1+QR38rL2jn/FUEJQqzSgt/tlnynxl2qbpL7JoJ8xr0rpCoCLW3yMztHEdoS10yjopo8A=
+	t=1772248266; cv=none; b=f4Yap2Pko4YY+f1aJxrn3bIHm4yFGtGkGP6iZKY40EkPKIyNqQqssmJYaPrv+6RgM0IjYyMYBVl4sV6saZk1zwNCy7J+WLUvNPDwkHARBTz3ACtOV3HXx9b0RprowP33+XPyEr+BcVZzGAkYfvTa5GW/ExPrxVaogVx4OV2vaDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772247806; c=relaxed/simple;
-	bh=TIQWMik3HXq5YfMRn1WyJkl3HP3GPeRjmrgGfyBJexY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eEreQAgmYS4Rb2e+pMSnwYlTNgKb4h4QtR2hccHCYfcnsLLVnrOlv7cslVVffWb1rkYIhIzo2DxSCVhjhMHfYt/g9HfhR1ZIycoV6xc+bXznxu1o++1CrBqawCZ3EJp+Y7LHMuzNFQYcLLlmQyJff3/Z51Gtw3Y+nmVmXo3IzAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Ig48obCr; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=cB
-	mEGsm1wuXlR/n9xy+cQE4QTQq1MBXs7rJXjFGIyYU=; b=Ig48obCrQUpHRKvNuN
-	gyUneLgZ4+5sy1ytZqieSn8TZKMsQGcffMgjquY33j3SAhrKB2LCQukcFlw/s1jS
-	EjuJrM44oDzQllfrKTdRdMHg/USo3gOFawAI6nhPEwQoIqLmkeMsphws2ZtPCNEh
-	0g2V8e/czamsNy4IfRUiS0Ca8=
-Received: from ubuntu24.corp.ad.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAnyO7fWqJpnK0DNQ--.16668S2;
-	Sat, 28 Feb 2026 11:02:57 +0800 (CST)
-From: Wenshan Lan <jetlan9@163.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Guodong Xu <guodong@riscstar.com>,
-	Juan Li <lijuan@linux.spacemit.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.12.y] dmaengine: mmp_pdma: Fix race condition in mmp_pdma_residue()
-Date: Sat, 28 Feb 2026 11:02:47 +0800
-Message-ID: <20260228030247.4178-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1772248266; c=relaxed/simple;
+	bh=mNl1LbMGjYUbCzU4vQByzQJiBmXZeLfvhuiL59GXBDo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pwVfTmHhJi3b99lDQjkwyKhLBSNdswTJXDXsAd7kjwIRF+vKDY+qlDd9Vi0zjvi4XimYHg0tj4kAreDf0lP6/asPsOoEgwZzuiQ3nY0owjbxeaOrUmmqTzEQotNy+ksLr0ar85Cz3tyFRF9MbL789M2n3s2fdW+eYS1TfiO8VBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=i/IUwjHo; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <d9e30bef-621f-444a-a1b0-510c50927d9b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772248253;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PYQQLk8wpmk+sABOYPuHFRoK/LYQ6t6e9PEJlhNNQ1c=;
+	b=i/IUwjHoBmbin/bk4vmzAyNuXXnNsDly9+ntzJ+UD3h3i+ybef+o76so/8CXJDE5DIeaBh
+	KBLEDNWenb4Ov8Mc/yi3lIUejaCsiv3OD4dv8VHcyYBNonnljwaj+M/qAoUibHlR1xEpTo
+	K/3dqOsB2xj9dcW8neHDZYTamke2rrM=
+Date: Sat, 28 Feb 2026 11:10:30 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAnyO7fWqJpnK0DNQ--.16668S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CFWUuw4kGF15Zw4rXFyDAwb_yoW5JF4xpF
-	W5Ga45KrWqqr40vFsrC3W8Zr15Xrs0grW5urWjgws7Z345Xr1YvF1xCay2vFWDJry3ZFn8
-	AF43Jw1rC3yDGr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piFfOrUUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbCxALRmmmiWuLNugAA3J
+Subject: Re: [PATCH] mm/huge_memory: fix a folio_split() race condition with
+ folio_try_get()
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Hugh Dickins
+ <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Bas van Dijk <bas@dfinity.org>, Eero Kelly <eero.kelly@dfinity.org>,
+ Andrew Battat <andrew.battat@dfinity.org>,
+ Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260228010614.2536430-1-ziy@nvidia.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260228010614.2536430-1-ziy@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220036-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-220037-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[riscstar.com,linux.spacemit.com,kernel.org,163.com];
-	DKIM_TRACE(0.00)[163.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url]
-X-Rspamd-Queue-Id: 468A81C00EA
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:mid,linux.dev:dkim,linux.dev:email]
+X-Rspamd-Queue-Id: A4D591C016A
 X-Rspamd-Action: no action
 
-From: Guodong Xu <guodong@riscstar.com>
 
-[ Upstream commit a143545855bc2c6e1330f6f57ae375ac44af00a7 ]
 
-Add proper locking in mmp_pdma_residue() to prevent use-after-free when
-accessing descriptor list and descriptor contents.
+On 2026/2/28 09:06, Zi Yan wrote:
+> During a pagecache folio split, the values in the related xarray should not
+> be changed from the original folio at xarray split time until all
+> after-split folios are well formed and stored in the xarray. Current use
+> of xas_try_split() in __split_unmapped_folio() lets some after-split folios
+> show up at wrong indices in the xarray. When these misplaced after-split
+> folios are unfrozen, before correct folios are stored via __xa_store(), and
+> grabbed by folio_try_get(), they are returned to userspace at wrong file
+> indices, causing data corruption.
+> 
+> Fix it by using the original folio in xas_try_split() calls, so that
+> folio_try_get() can get the right after-split folios after the original
+> folio is unfrozen.
+> 
+> Uniform split, split_huge_page*(), is not affected, since it uses
+> xas_split_alloc() and xas_split() only once and stores the original folio
+> in the xarray.
+> 
+> Fixes below points to the commit introduces the code, but folio_split() is
+> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+> truncate operation").
+> 
+> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+> Reported-by: Bas van Dijk <bas@dfinity.org>
+> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Cc: <stable@vger.kernel.org>
+> ---
 
-The race occurs when multiple threads call tx_status() while the tasklet
-on another CPU is freeing completed descriptors:
+Thanks for the fix!
 
-CPU 0                              CPU 1
------                              -----
-mmp_pdma_tx_status()
-mmp_pdma_residue()
-  -> NO LOCK held
-     list_for_each_entry(sw, ..)
-                                   DMA interrupt
-                                   dma_do_tasklet()
-                                     -> spin_lock(&desc_lock)
-                                        list_move(sw->node, ...)
-                                        spin_unlock(&desc_lock)
-  |                                     dma_pool_free(sw) <- FREED!
-  -> access sw->desc <- UAF!
+I also made a C reproducer and tested this patch - the corruption
+disappeared.
 
-This issue can be reproduced when running dmatest on the same channel with
-multiple threads (threads_per_chan > 1).
+Without patch: corruption in < 10 iterations
+With patch: 1000 iterations, all clean
 
-Fix by protecting the chain_running list iteration and descriptor access
-with the chan->desc_lock spinlock.
-
-Signed-off-by: Juan Li <lijuan@linux.spacemit.com>
-Signed-off-by: Guodong Xu <guodong@riscstar.com>
-Link: https://patch.msgid.link/20251216-mmp-pdma-race-v1-1-976a224bb622@riscstar.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-[ Minor context conflict resolved. ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
----
- drivers/dma/mmp_pdma.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/dma/mmp_pdma.c b/drivers/dma/mmp_pdma.c
-index 136fcaeff8dd..852e6714d9f2 100644
---- a/drivers/dma/mmp_pdma.c
-+++ b/drivers/dma/mmp_pdma.c
-@@ -763,6 +763,7 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
- {
- 	struct mmp_pdma_desc_sw *sw;
- 	u32 curr, residue = 0;
-+	unsigned long flags;
- 	bool passed = false;
- 	bool cyclic = chan->cyclic_first != NULL;
- 
-@@ -778,6 +779,8 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
- 	else
- 		curr = readl(chan->phy->base + DSADR(chan->phy->idx));
- 
-+	spin_lock_irqsave(&chan->desc_lock, flags);
-+
- 	list_for_each_entry(sw, &chan->chain_running, node) {
- 		u32 start, end, len;
- 
-@@ -821,6 +824,7 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
- 			continue;
- 
- 		if (sw->async_tx.cookie == cookie) {
-+			spin_unlock_irqrestore(&chan->desc_lock, flags);
- 			return residue;
- 		} else {
- 			residue = 0;
-@@ -828,6 +832,8 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
- 		}
- 	}
- 
-+	spin_unlock_irqrestore(&chan->desc_lock, flags);
-+
- 	/* We should only get here in case of cyclic transactions */
- 	return residue;
- }
--- 
-2.43.0
-
+Tested-by: Lance Yang <lance.yang@linux.dev>
 
