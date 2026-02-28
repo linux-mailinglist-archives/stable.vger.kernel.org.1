@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-221096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221097-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGtVCa1No2nw/QQAu9opvQ
-	(envelope-from <stable+bounces-221096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:18:53 +0100
+	id 2KdYBHNdo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-221097-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:26:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9118F1C8314
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:18:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F5E1C90AA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B68E63226D98
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:47:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9784B3031AD3
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5363836DA12;
-	Sat, 28 Feb 2026 17:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114F147CC9A;
+	Sat, 28 Feb 2026 17:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+Iewy2+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nBuOCgu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1507636DA10;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9193301F0B;
 	Sat, 28 Feb 2026 17:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301445; cv=none; b=DpcFzDEgQNGrJARaVpm5ICJe340EE9KLGYM1cJTbtx9F8zDAG3AKx5qvjDTq6eIqsCPKQ2lyvak5enQhfzPvOkGQpaYhTtHm4s+CCdzqe86VBmnJJAz0Uj4KNHP2u7Fzk5DjP4JL7XBudiV0Ob1/cQjsFT7/wkWy0gn59xKe7sA=
+	t=1772301445; cv=none; b=LpIuIIndfYgG3fKHMnp2lxCRzWWlBIKF49AKY/2PQGLUkhx8Q2zlvDbp/kf8YgyGjOYwhQ3yQoQCq3g7XYgZdBXpK1jr/OP9kzFDCDm3KgdyWekfDkNbL22fi33VreLK0N0NiiUSkmFkhswxXi1NDQvM6o7CfP3lcARtjtlhm6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772301445; c=relaxed/simple;
-	bh=u2kxPBOwOLkphVOpPpRhqeDwmrywy8m72tKElHpBxYI=;
+	bh=ldOvbmv9YEPXSrA15THO6yB0XLoHUNyToVoc74OHx9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rI2rhXQeCW0xJ78aqBJQJCkyeNMXdtCSM1lAH2KuXBP0HBTecRtlDWuuX0Umo/q1eOUSH189172fjiIfnlJSKiKFmPAzGODj6OF7zTrlaJSvDFASsxZ5xYrnArfmpTa9a3bY1DChi3D/cXatM71oC9mTwMV6B6InT5jNOCJKivc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+Iewy2+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBD8C19424;
-	Sat, 28 Feb 2026 17:57:24 +0000 (UTC)
+	 MIME-Version; b=b6/OyyCShkN3d/n8rEjm6EE3y/SIHL2yIF0GuHspKuLSEQuvO7AC2/023EzA3fkO5K3eD02dHFG9tgE4xaYztcz2AyZrBOhPOArYwWW1rwpDqffz1hFAalRvO6HP1lc8wKJ/EHViVPoKawH7m3VZiLuco4uzI73Oqex5GCoYUEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nBuOCgu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A849C19423;
+	Sat, 28 Feb 2026 17:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772301445;
-	bh=u2kxPBOwOLkphVOpPpRhqeDwmrywy8m72tKElHpBxYI=;
+	bh=ldOvbmv9YEPXSrA15THO6yB0XLoHUNyToVoc74OHx9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+Iewy2+OVs3COAj8jDz78ggQ56atrWCjJuwrdbjZ4+EtgCYIlXLVHQ7EKWDgELRP
-	 Yc7li3/XaeIq3NHNcHdnYQajMRt1buk7R0WL+CurpfW32nZmgIFQoU+H8GCW4dSI5e
-	 50cYPCMYPsJRvTS2p8OxrGojQiSODAkOZWH4Irdl7BqEHkk5TVE36vDnAviIEtpH2L
-	 dacwjp2UuhqsCBhqofcZrO8OUrs8r9L9x5s4qx0NB3D99u+qI0HIe+jeSZQN11lKya
-	 6vdxcGenuPA1zSfo1hwt71NTEn+UIl/2FBurficTiQfCWVvcqrP3poirJUB5Dov/pG
-	 SoqXHc80HQRCA==
+	b=nBuOCgu+13l9lTRp97VorwCVxVqOoejWQjlTRaP/g2tAHuTz88bP6ABVgDygWsSAQ
+	 pWslT9B4UVKuxH0ya7ryGABcQfZH1wbpH95XQTJEWsfjLOVDOM3Q8ylZiWPsCbrUj4
+	 fxO8SjitgGnCuX7TEyA0oC9EWw6zweJAO5eHlyM6zs26h3ZYHvgBR6vJbJN7oDXffz
+	 pp3IQGQD3G43BTPxCXHTxH3uVyo8+KLr2NFq5qEqUchZzPARYpFT6fSwgVhWatiEnQ
+	 ToMjx3UK7XzGxp9nA6/8qgTBzg8NsY1xn/reaBBPoYYeDrEcY0ei1Q3IqV4WralA7Q
+	 bltywVcoqu8JQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+Cc: Benjamin Marzinski <bmarzins@redhat.com>,
 	stable@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Su Hui <suhui@nfschina.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 631/752] bus: fsl-mc: fix an error handling in fsl_mc_device_add()
-Date: Sat, 28 Feb 2026 12:45:42 -0500
-Message-ID: <20260228174750.1542406-631-sashal@kernel.org>
+Subject: [PATCH 6.18 632/752] dm mpath: make pg_init_delay_msecs settable
+Date: Sat, 28 Feb 2026 12:45:43 -0500
+Message-ID: <20260228174750.1542406-632-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -70,77 +66,74 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221096-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221097-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email,linaro.org:email]
-X-Rspamd-Queue-Id: 9118F1C8314
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A5F5E1C90AA
 X-Rspamd-Action: no action
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 52f527d0916bcdd7621a0c9e7e599b133294d495 ]
+[ Upstream commit 218b16992a37ea97b9e09b7659a25a864fb9976f ]
 
-In fsl_mc_device_add(), device_initialize() is called first.
-put_device() should be called to drop the reference if error
-occurs. And other resources would be released via put_device
--> fsl_mc_device_release. So remove redundant kfree() in
-error handling path.
+"pg_init_delay_msecs X" can be passed as a feature in the multipath
+table and is used to set m->pg_init_delay_msecs in parse_features().
+However, alloc_multipath_stage2(), which is called after
+parse_features(), resets m->pg_init_delay_msecs to its default value.
+Instead, set m->pg_init_delay_msecs in alloc_multipath(), which is
+called before parse_features(), to avoid overwriting a value passed in
+by the table.
 
-Fixes: bbf9d17d9875 ("staging: fsl-mc: Freescale Management Complex (fsl-mc) bus driver")
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
 Cc: stable@vger.kernel.org
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/b767348e-d89c-416e-acea-1ebbff3bea20@stanley.mountain/
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Suggested-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20260124102054.1613093-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/md/dm-mpath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index a97baf2cbcdd5..eb7b6c0ba9e7c 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -909,11 +909,7 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
- 	return 0;
+diff --git a/drivers/md/dm-mpath.c b/drivers/md/dm-mpath.c
+index aaf4a0a4b0ebb..7d3fdd96f4edf 100644
+--- a/drivers/md/dm-mpath.c
++++ b/drivers/md/dm-mpath.c
+@@ -225,6 +225,7 @@ static struct multipath *alloc_multipath(struct dm_target *ti)
+ 		mutex_init(&m->work_mutex);
  
- error_cleanup_dev:
--	kfree(mc_dev->regions);
--	if (mc_bus)
--		kfree(mc_bus);
--	else
--		kfree(mc_dev);
-+	put_device(&mc_dev->dev);
+ 		m->queue_mode = DM_TYPE_NONE;
++		m->pg_init_delay_msecs = DM_PG_INIT_DELAY_DEFAULT;
  
- 	return error;
- }
+ 		m->ti = ti;
+ 		ti->private = m;
+@@ -257,7 +258,6 @@ static int alloc_multipath_stage2(struct dm_target *ti, struct multipath *m)
+ 	set_bit(MPATHF_QUEUE_IO, &m->flags);
+ 	atomic_set(&m->pg_init_in_progress, 0);
+ 	atomic_set(&m->pg_init_count, 0);
+-	m->pg_init_delay_msecs = DM_PG_INIT_DELAY_DEFAULT;
+ 	init_waitqueue_head(&m->pg_init_wait);
+ 	init_waitqueue_head(&m->probe_wait);
+ 
 -- 
 2.51.0
 
