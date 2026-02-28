@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEdEJlhCo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:30:32 +0100
+	id 4Nb1Ebo+o2nv+gQAu9opvQ
+	(envelope-from <stable+bounces-220697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:15:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0C11C711F
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:30:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1FF1C6BD3
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:15:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D59EC3192241
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 070DE30B71F7
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226623F9AA7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB603F9ABD;
 	Sat, 28 Feb 2026 17:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cn5jF9OA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wb+3c5v4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D867048C415;
-	Sat, 28 Feb 2026 17:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1F83F9AB6;
+	Sat, 28 Feb 2026 17:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300576; cv=none; b=s/JrcLpEx5Kkw1qsttCC9sQ6NbiJ6vfYEmJeGS6wMgWYtSWJ31kkxQSnUbgLmrurwy0U14l3CB1v1pB0uNdBu3pu04QaztczDRttark6HwEsgQNvL2XTDNoQX4EPUBdYHmAZ5mOZHrSTFGxK7z15jasr3r3VIOBzuoVTOMqAwVQ=
+	t=1772300577; cv=none; b=BGyXhuuak5wxd5c++6Ag1YZ3lpDLWenNnbpJVmB1nQirR6m1gd3zBeGfdufmsfbD6CvUsQsb0b9ggwUazX4TgNzSFeXSBechL6xnKhjuBUrr5FodyUx6sMz1yK9GikrSSf6TGiFMX7eBfxAI8GagUh3h5ve1Ew8m4Awb0fqG+/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300576; c=relaxed/simple;
-	bh=yTTyB47Ztk/N1dRwdYvfAmvLvNR6akIwIhIhlTILdN4=;
+	s=arc-20240116; t=1772300577; c=relaxed/simple;
+	bh=KoRy7AwJwTQ3Et72oxY0JpXKA9pYLYIwNuspsI8av20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIhmJs+3zER8WWeJAw9BuQnkOI+CRpRfqEoePmoCPYmSBV8qfGVZqOHr9GgRkINJi5ooz29b/SX7Q4ParY+MrEEt1lk4mnzBNKlNgRlScLZ+EfJ+apGQcVkTqcoUZnKUSnPK/H1PjyIDcQWH6uglTah74aLOBQZJPW4ZiWDY7gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cn5jF9OA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FDFC19423;
-	Sat, 28 Feb 2026 17:42:55 +0000 (UTC)
+	 MIME-Version; b=QvYY/YzjG3ogItOdwfHLVD4bZ4FZX/QCms+1CWOynvrzWcY8Iz+bkzl0pZ09f4BrmhxTAq+7Am4YCRqgtGhNM0bSnMNZOHhrbovspjDhmKlvk2WCMh2RdJmznqWZIL7hz31fLThhqkKWBZX+4s3EPuoMENaddLQi890IPvCVZMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wb+3c5v4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37EAC19424;
+	Sat, 28 Feb 2026 17:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300576;
-	bh=yTTyB47Ztk/N1dRwdYvfAmvLvNR6akIwIhIhlTILdN4=;
+	s=k20201202; t=1772300577;
+	bh=KoRy7AwJwTQ3Et72oxY0JpXKA9pYLYIwNuspsI8av20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cn5jF9OAdSXd3Fj6jnMGJUDe46zpChAconJcJcylfK6p1BP+9Wh0bqn+nFlgSrWPp
-	 d8XwgISHglNSK7c8PUynZh0QW/RcP6xM03BnyZaIgzJmJQaoCPRwU53vKt0bTp+L3m
-	 f5mDiSZFjkSSU7JvVQPjBnxK2yx9jZiFNEzqOpnc+M1FauL0LPGGOzFO533I/QWERg
-	 yEuVX3MTxvwCQH+BSV2WOETgwhzHvEXoC3V2Z/tCoVd04/Wd6sN0vlMr4jWyQd76/I
-	 SvNWb5GQQxUScbtdcX/sKj5rxgdB9qU4gJGiuZRjrjZH9UG99DcQvXLozL60ZbtGqG
-	 bb5A8yXRUgXJQ==
+	b=Wb+3c5v4FeBwfpLRSsagiz69qh720LR9o19Daf44jdbR3a0nAWL/mB53O2ftv6Brw
+	 ePz9WfO3MzF2dgEk+5Zz1Ew1dkU/HkoXS8NBoiue+H0+i8XqzCBQ+YMvgEv8Kf5D6J
+	 58590scu1GISOO1GNQt2ycv5DKFHXcsjazEnlvEW5OBsvtsDHAjMb0hPaQfiQSOrcI
+	 lH669dAQf47UPdqEOhtxzmCfZC5Tzn8905dhE8gqSTpP+aU9qUqSEPxPDQdAsBAywy
+	 bkFu8vvKGhg2Uzl9sTzWet9ypZM4dKjuULAFqLh9dfV2v1kdRhcohk8x6FodBGLZG2
+	 aAp7vqLgjNTyg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Shawn Lin <shawn.lin@rock-chips.com>,
+	Marco Schirrmeister <mschirrmeister@gmail.com>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 617/844] arm64: dts: rockchip: Fix SD card support for RK3576 EVB1
-Date: Sat, 28 Feb 2026 12:28:50 -0500
-Message-ID: <20260228173244.1509663-618-sashal@kernel.org>
+Subject: [PATCH 6.19 618/844] arm64: dts: rockchip: Fix SD card support for RK3576 Nanopi R76s
+Date: Sat, 28 Feb 2026 12:28:51 -0500
+Message-ID: <20260228173244.1509663-619-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,19 +72,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220696-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[rock-chips.com,gmail.com,sntech.de,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220697-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,41 +93,43 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sntech.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,rock-chips.com:email]
-X-Rspamd-Queue-Id: CB0C11C711F
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DD1FF1C6BD3
 X-Rspamd-Action: no action
 
 From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit 7226664bf952c4cfddccd74b154a7d994608d153 ]
+[ Upstream commit a9c1acebfe0484343a443d082e039ca77186ed22 ]
 
 When runtime suspend is enabled, the associated power domain is powered
 off, which resets the registers, including the power control bit. As a result,
 the card loses power during runtime suspend. The card should still be able
 to process I/O with the help of mmc_blk_mq_rw_recovery(), which is suboptimal.
 To address this issue, we must use vmmc-supply with a GPIO based method to
-maintain power to the card. Also, add cd-gpios method to make hot-plug work
-correctly during idle periods.
+maintain power to the card and store valid tuning phases. Also, add cd-gpios
+method to make hot-plug work correctly during idle periods.
 
-Fixes: f135a1a07352 ("arm64: dts: rockchip: Add rk3576 evb1 board")
+Fixes: 7fee88882704 ("arm64: dts: rockchip: Add devicetree for the FriendlyElec NanoPi R76S")
 Cc: stable@vger.kernel.org
 Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/1768524932-163929-5-git-send-email-shawn.lin@rock-chips.com
+Tested-by: Marco Schirrmeister <mschirrmeister@gmail.com>
+Link: https://patch.msgid.link/1768524932-163929-6-git-send-email-shawn.lin@rock-chips.com
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3576-evb1-v10.dts     | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ .../boot/dts/rockchip/rk3576-nanopi-r76s.dts  | 23 ++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts b/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts
-index db8fef7a4f1b9..ffe55f970f461 100644
---- a/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts
-@@ -223,6 +223,18 @@ vcc_3v3_s0: regulator-vcc-3v3-s0 {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-nanopi-r76s.dts b/arch/arm64/boot/dts/rockchip/rk3576-nanopi-r76s.dts
+index 31fbefaeceab4..7ec27b05ff10e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-nanopi-r76s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-nanopi-r76s.dts
+@@ -192,6 +192,18 @@ vcc_3v3_s0: regulator-vcc-3v3-s0 {
+ 		regulator-name = "vcc_3v3_s0";
  		vin-supply = <&vcc_3v3_s3>;
  	};
- 
++
 +	vcc3v3_sd: regulator-vcc-3v3-sd {
 +		compatible = "regulator-fixed";
 +		enable-active-high;
@@ -137,11 +141,10 @@ index db8fef7a4f1b9..ffe55f970f461 100644
 +		regulator-max-microvolt = <3300000>;
 +		vin-supply = <&vcc_3v3_s0>;
 +	};
-+
- 	vcc_ufs_s0: regulator-vcc-ufs-s0 {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vcc_ufs_s0";
-@@ -810,6 +822,12 @@ pcie0_rst: pcie0-rst {
+ };
+ 
+ &combphy0_ps {
+@@ -726,6 +738,12 @@ pcie1_perstn: pcie1-perstn {
  		};
  	};
  
@@ -152,20 +155,20 @@ index db8fef7a4f1b9..ffe55f970f461 100644
 +	};
 +
  	usb {
- 		usb_host_pwren: usb-host-pwren {
- 			rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
-@@ -851,11 +869,15 @@ &sdmmc {
+ 		usb_otg0_pwren_h: usb-otg0-pwren-h {
+ 			rockchip,pins = <0 RK_PD1 RK_FUNC_GPIO &pcfg_pull_none>;
+@@ -751,11 +769,14 @@ &sdmmc {
  	bus-width = <4>;
  	cap-mmc-highspeed;
  	cap-sd-highspeed;
 +	cd-gpios = <&gpio0 RK_PA7 GPIO_ACTIVE_LOW>;
  	disable-wp;
- 	max-frequency = <200000000>;
- 	no-sdio;
  	no-mmc;
+ 	no-sdio;
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&sdmmc0_clk &sdmmc0_cmd &sdmmc0_det &sdmmc0_bus4>;
  	sd-uhs-sdr104;
+-	vmmc-supply = <&vcc_3v3_s3>;
 +	vmmc-supply = <&vcc3v3_sd>;
  	vqmmc-supply = <&vccio_sd_s0>;
  	status = "okay";
