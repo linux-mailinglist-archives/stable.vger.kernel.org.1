@@ -1,70 +1,55 @@
-Return-Path: <stable+bounces-220033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNJ5Hb1Eomnd1QQAu9opvQ
-	(envelope-from <stable+bounces-220033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 02:28:29 +0100
+	id MDPnBftEomnd1QQAu9opvQ
+	(envelope-from <stable+bounces-220034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 02:29:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48B31BFB94
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 02:28:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8385D1BFBBA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 02:29:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4ED6E302CE23
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 01:28:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 95779308B407
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 01:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E5B2571D7;
-	Sat, 28 Feb 2026 01:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CAC2E8B67;
+	Sat, 28 Feb 2026 01:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/abKRFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKb8bwDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF067E54B;
-	Sat, 28 Feb 2026 01:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28B82D59FA
+	for <stable@vger.kernel.org>; Sat, 28 Feb 2026 01:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772242102; cv=none; b=Qb/CW2GRAsSG51OekKsfIL0IJan6R6N8HhiL8brAXFhNwP8GQCC4E1E49moMYIAJTGCm3zPU1/U6PFZsQWLH2LHZ/qB+tgcBpP9CZibaF5Rpvuwmr4ObjtjOqpwbHlgdo0UX8EGSWeNTQzqjYKuvpxKOMaO+J2kzSBZgnd8bmTQ=
+	t=1772242155; cv=none; b=bg4G8dC8Rpz9S1DKRaBO2xHaeUUBioQbKVcrb1IDao+UXDP0I5Spi0IA8vL0X6UqDTZYkgSwMwxAxe+3trMZy9OKZ8TW/bEOUY102g0lZj1Ki0kkcj2SrjjrHHoFmq4XsUnMpfllHkqQr2f3A1g4PhyY7lz0gtmz2KNHeZTfwc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772242102; c=relaxed/simple;
-	bh=QVTdJpksh0R6F5V/824NY/+c7ANoYX1Yr9+hZikFsN8=;
+	s=arc-20240116; t=1772242155; c=relaxed/simple;
+	bh=g1tUbhtyKjfis1ODp7pjuabQGAG/S/9a34TYvWxkbRI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k7P+DQzUpja0PVlgRaPCb3QTPhVhjVDB14haErbNhr/Cj5DohMunysMDadBC0E6CXuyoX5VYCUJJB51Nz6vys1KUUaIv3OB9xYZ8Bf10U3hYjb97VJpPsjQvQipagbi+GyMLaikb/qw1+q0ysg1q74/BziHP8ifVBZry3owDUrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/abKRFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4101C116C6;
-	Sat, 28 Feb 2026 01:28:21 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bkrjv9NlSTInjEjlpehhe1pM9zr6l+TPoNvriahiskoAhhKfZW597UNLsQiHJK8qP3IF8DYDFT04LS83ePaYGY0prgg9V6Y2DP7sfHYWXxQ7WvSe0Y7ZxGopUAYqHqT4AGHF321hXXiGADPm+nNAozHmBvtxpsBAM8PExohpRwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKb8bwDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3735CC116C6;
+	Sat, 28 Feb 2026 01:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772242102;
-	bh=QVTdJpksh0R6F5V/824NY/+c7ANoYX1Yr9+hZikFsN8=;
+	s=korg; t=1772242155;
+	bh=g1tUbhtyKjfis1ODp7pjuabQGAG/S/9a34TYvWxkbRI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e/abKRFIhVVasV6wH/QrhcfHlEjash7A1FDlpXfrOzXnL0oV3NpNcaKnoO0OVpiO/
-	 eTXMOOeh3i1JNd5X9fsOznNZ3+P/YxKO3q1fRRYMVf2olpG4ZsAHhHZ7hXcdueTP1+
-	 gz4AeEEPvNTtO8wrepZWhYHeZZ2CyzpNI3Bvofpk=
-Date: Fri, 27 Feb 2026 20:28:11 -0500
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: stable@vger.kernel.org, Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	"Pan, Xinhui" <Xinhui.Pan@amd.com>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Evan Quan <evan.quan@amd.com>, Sasha Levin <sashal@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Eliav Farber <farbere@amazon.com>, Lijo Lazar <lijo.lazar@amd.com>,
-	Ma Jun <Jun.Ma2@amd.com>, Zhigang Luo <Zhigang.Luo@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Bert Karwatzki <spasswolf@web.de>, Ray Wu <ray.wu@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>, Roman Li <Roman.Li@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>, Wentao Liang <vulab@iscas.ac.cn>,
-	"open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>,
-	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH for 6.1 0/2] prepare to fix panic on old GPUs
-Message-ID: <2026022733-backhand-acquaint-233a@gregkh>
-References: <20260228011213.423524-1-rosenp@gmail.com>
+	b=HKb8bwDZiF0Nf0kPQE/M/+/FZDPyo6IMaPawjfvuR1kDpkmDMVHd/zIgqiu6NT9F7
+	 N14Y8Y1WIH7dSMTDuCp3LLH8eZgbKdlCZiaKPbNnnnjJ8vhMVMl/CXGofxfXRe2RLd
+	 IaHdOSOschw4rvOe9UNOo/kvboQ0kPIbjT8bTIAM=
+Date: Fri, 27 Feb 2026 20:29:05 -0500
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Rainer Fiebig <jrf@mailbox.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, jpoimboe@kernel.org
+Subject: Re: 6.18.14: VirtualBox modules don't build anymore; bisected
+Message-ID: <2026022738-tricky-popper-c70e@gregkh>
+References: <62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org>
+ <2026022741-mahogany-coveted-acfa@gregkh>
+ <adc83809-3eea-2bbd-c162-48662acab5ed@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,52 +58,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260228011213.423524-1-rosenp@gmail.com>
+In-Reply-To: <adc83809-3eea-2bbd-c162-48662acab5ed@mailbox.org>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220033-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220034-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,gmail.com,ffwll.ch,kernel.org,amazon.com,web.de,iscas.ac.cn,lists.freedesktop.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A48B31BFB94
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8385D1BFBBA
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 05:12:11PM -0800, Rosen Penev wrote:
-> In order to backport upstream fixes for black screen on boot with DC
-> and old GPUs, These two commits need backporting for 6.1.
+On Sat, Feb 28, 2026 at 12:30:29AM +0100, Rainer Fiebig wrote:
+> Am 27.02.26 um 21:12 schrieb Greg KH:
+> > On Fri, Feb 27, 2026 at 04:33:34PM +0100, Rainer Fiebig wrote:
+> >> In case this hasn't been reported already: with 6.18.14 the
+> >> VirtualBox-7.1.16 modules won't build during the boot process, as they
+> >> usually do.  Bisecting between 6.18.13/14 led to this:
+> >>
+> >> f056c340b73962ebaffe93997b582bdf16dc6270 is the first bad commit
+> >> commit f056c340b73962ebaffe93997b582bdf16dc6270 (HEAD)
+> >> Author: Josh Poimboeuf <jpoimboe@kernel.org>
+> >> Date:   Tue Feb 10 13:45:22 2026 -0800
+> >>
+> >>     kbuild: Add objtool to top-level clean target
+> >>
+> >>     [ Upstream commit 68b4fe32d73789dea23e356f468de67c8367ef8f ]
+> >>
+> >>     Objtool is an integral part of the build, make sure it gets cleaned
+> >>     by "make clean" and "make mrproper".
+> >> [...]
+> >>
+> >>
+> >> The script I use for building my kernels includes "make mrproper" before
+> >> compiling and "make clean" after the kernel and modules have been
+> >> installed.
+> >>
+> >> Perhaps it would be more appropriate to report this to the
+> >> VirtualBox-devs but I won't do that because the registration procedure
+> >> asks for too many private data.
+> > 
+> > We obviously can not do anything about external modules, so if you rely
+> > on these, you are going to have to work with them on this, sorry.
+> 
+> Alright, tough luck.  But that a patch-release of an LTS-kernel breaks
+> VirtualBox is really a first - at least as far as I can remember.
 
-What fixes exactly?  Please make them part of the series, otherwise it
-makes no sense for us to take them.
+Then they have gotten really lucky :)
 
-Also, you forgot to sign off on these patches, so we couldn't take them
-even if we wanted to :(
-
-thanks,
+good luck!
 
 greg k-h
 
