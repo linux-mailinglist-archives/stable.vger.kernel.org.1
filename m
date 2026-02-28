@@ -1,194 +1,171 @@
-Return-Path: <stable+bounces-221223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uK4zLv9Ko2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-221223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:07:27 +0100
+	id MPCPBJVgo2myBQUAu9opvQ
+	(envelope-from <stable+bounces-221224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:39:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5636F1C7EAD
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:07:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 666951C930F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DE22430A401C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:57:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 970BF355392A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075423E5595;
-	Sat, 28 Feb 2026 19:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6313135F610;
+	Sat, 28 Feb 2026 19:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HiOKF5MT"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="y07saRYL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82263E558D;
-	Sat, 28 Feb 2026 19:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971C435F607
+	for <stable@vger.kernel.org>; Sat, 28 Feb 2026 19:22:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772305603; cv=none; b=Z+i27ReMXOzoDbWz0KmAuHXf6Tol9/7VgVgyjhjxlnO2hq7BPbkSlkqscOrNL5jGEzj+RKSicpl68iwFY9l3RVdUPFTP2GPfQffV6D+fwrrichSzg9ITHMSDJ0JTN6w42cN/pDWoBtLHZlkmFeyNHypQ8YdFKpvr3TjU2sYa2NY=
+	t=1772306558; cv=none; b=NbS4y1s55y75QK72cLUrethB7D21uLnSusK9RSCaUfZ0WjOq6s1y+YoKaOM7Wg1pa9Lv6XGcaOaWSnRgXPga40JqyN6jB6J008lZAxIVvzYvH86CrSfyfDKthGW6Lf/CFV6XtIahvLXfgeao5TFxXMm+3X38SyihrKcph40DwKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772305603; c=relaxed/simple;
-	bh=6P9enaKfyxrdmWlDpN5CqOAocDrcYC4Wfw6upmYOnNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJNwr2d8MIsKu5Vbq4ngQmVxW+OseRvbslfSomLB6H4IjJJdZW75WGVnYAc0Fkm8tK5Yn0//TNwd/SCBOFM8gBa+mb27YUaozkYPTFp/IlrMcuVrH0a97hcDFFt9M1UCcEM8Yr+Gb1kExJD12+F3YxjVrgG9sVKzvELaUNqgYpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HiOKF5MT; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C642440E015A;
-	Sat, 28 Feb 2026 19:06:39 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 5ew-1l9oeVzc; Sat, 28 Feb 2026 19:06:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1772305591; bh=wbeQPiOafkw0nASUI9c15sAtm9STJg5mJ+SWjuXem+0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HiOKF5MT2Kp5G95HBsytprwX0W7CzweAN/EEDi064pYmdCLqjI7kAwCGaVMANSFPF
-	 RzzW6DNsU3/WKap/4+t65AT87k5qTw2WIJnkzUafdSXLPmTUVkSvkdyJTFxWPXn6ei
-	 ZXRN5tGViXhd+8/DMggImYWiOWMkBDa1D9aJFGqw95EQCHfngbRhS3F+aWXdIwd3L7
-	 +gosUwSIbOsLuPot92dd4B4Y9Kv8ilWwy4OwDkSPGjlNlrDx6CKGhl//6vlMuMtz07
-	 tTm12l4HbV+8Iyn6z5odQ7lkSzLgktNeyN6eU2QHOBHPXPIG7hY64PUB4cDSzNlsjk
-	 a2k3OfzQ6BOnrGCQtU0KIDZVKNT3/oLU9kMeDQben/dWNvDzMN95rirS70AXqqcSR9
-	 tIcYVMzIE4c+DFURWlpSz7H6KLSIOSGqGjiP0jPf1FWYNPSGAHVbvaVDHI+Mzd32UL
-	 jdvUsV1RZCaJLRl+HMYSwtWgzJTP8cSYayDAybwLjm+/jttgbDo5JpxgizXa/K++my
-	 kSlnKdR5fUQSAZMNx+D82bafa9U8VMdNreccbv54YhtxQ2crUvmJRIYBzbdh9yqM3y
-	 ULacJEOUefe0UOA3udoDjaacgBFnjltfmxBUi2zcup2LnSiZuNrlAd2uG1RKfqlTri
-	 oXji2CROoLqAv/VOAr0hp8mI=
-Received: from zn.tnic (pd9530d5e.dip0.t-ipconnect.de [217.83.13.94])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 420F640E00DA;
-	Sat, 28 Feb 2026 19:06:22 +0000 (UTC)
-Date: Sat, 28 Feb 2026 20:06:15 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Yao Zi <me@ziyao.cc>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
- C4600
-Message-ID: <20260228190615.GDaaM8p65-qJFWzgK2@fat_crate.local>
-References: <20260228173704.62460-1-me@ziyao.cc>
+	s=arc-20240116; t=1772306558; c=relaxed/simple;
+	bh=Me8n7owqfLJkYyvUXHQx2u9wWsIV5A0WiPjr8BtB/4g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I55q7gJFfK5C/GjVr25GhOYVQcfl1GwySB00AcsRq/9LMrpLmPoOjKnIwgIo4QUHdNEfhCmLeLN1MBp5Zr6DSW6zWlqyU7bgmKTs6hmo6lUo63gt+Oxi8Db7hqsqsIbXFOd3fRQizh7Vao/Q/a/RBOokcyIvzkdwL+ARNi20gIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=y07saRYL; arc=none smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d18d0e6d71so2579139a34.1
+        for <stable@vger.kernel.org>; Sat, 28 Feb 2026 11:22:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1772306554; x=1772911354; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jzurjNKz+LVtj7mOsHnigyTZSCq1BtpAu09PeT2WHx8=;
+        b=y07saRYLoCC2ntjKJ4b9npncuFpyHNGurAj1W9UU09TwMAemNZ7YdHqasUjpbPHhoP
+         Fo3TQCv8IK+dIhba2YaT6OHJsuv8emGbaKn4tbR/7Igqk4HAowbAi3l8jHfrBaGTwu2R
+         OUN3fM8MXJ4NUfpzhIasd3aAsR5AO9H4KYl+ygBFYz6xH5mnhgIYl5GFxKUrGJTlbuYF
+         LAWlOmSnzgDZGPaJzNC1RYOoG5FaBnX6R0+adFDmi6s336sHxwtI27kq1Hebwz/5EgC9
+         Z6ME29ppx85j1pOAdMC1Yy+PC83TPU2cJX65viqn4Urij04tDzURGJSdIijOnHThiZLd
+         RUBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772306554; x=1772911354;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jzurjNKz+LVtj7mOsHnigyTZSCq1BtpAu09PeT2WHx8=;
+        b=BVzSijJ8XKEOEqHtfx3PaKg3cB5r4VxAiAKCSpAeiUudgyqTl8YlMjtTX+13nr/Yvq
+         KoqvrmacMmcnaLQaxgNCXfYu1RYL4Yja3CLdDVjixCKFWmXR0+snu33tjWSCR/fszg/o
+         lxuu+Ly4fQs9W6Guz1q5P7Tk3bU/30Anae+2omVR4ko+GHnAKTTW5kEJ/OnpJH6oT8dL
+         Dee8FgmSnI/gWsaA00iyaNCsvbAF6pjf1Pu5Gd6VFhhc/iyw8KT5dNc20w6Ncs/w9SbA
+         8sT2UbTxuNBsBJNzCyRDLKQY4xXNk/NOJNV2u8AhueG7M57jAKuLndydV8BUEMifHswt
+         z0Rw==
+X-Forwarded-Encrypted: i=1; AJvYcCVMIewSFp+7UalG4vMPkPgFGqwR0ykE/NYPym+DgCaHL6qGfwgki2N5QSNNhTU54+zaVrEOBk0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIcBtEyGKmvLg0pdpz3kYB7Q/rHUceEBifxkbUXrSH2RY5MlLw
+	HyUCBFOoOMEi4yU+o6fGRo+S6DZVvFnsJe5hUiwidfogz9d4lNsNZmhEdrrQuL2QGPg=
+X-Gm-Gg: ATEYQzzUsdMbO2DcmMa6rk1iwsGOCSfdKRrVZQ8MJMh4vzAZFIhAEG6ut6+y2qxawNt
+	1fAP6WH+7ti3GMRnt2DSIExC1tcIofnu31Akgb9mJmHPiqJwTdqZsetagTjYsk45xHTBWbZGrkm
+	4Nod5ib9QDQwUE+/yRPrQ0McgK1KT8oPg+KfEutfvtRhnXYGptKTf16IZtwS2psYuwkh+eGo7AT
+	5V0gx4NBvoth0tNdxhMjFbno+4Arcb5gEyEpF7z7pyvusrEXgzL2ZRy+iQ7CaYaulAuVOf88UxX
+	WMfPtMr44LwSnajQllQdOcne8qMYePHKCnyD4hKmThPOsSku4LKx4Mi7rq3pLVo2FJZuwqwbxlV
+	jvMSMXiklIRKDckCGuCNfvvH/jvSjkJmA/7abHpcUfIyidBUeFQFzKcQ3VRXyqWYmOixGm9ngyS
+	1Z+2WL8h2d0Q4WjK63cs7qQXdqOy/Eb7RM8vCiDxGpSvIJgE9lce6avWRUeBKYgCgEt7oGhwq7g
+	w==
+X-Received: by 2002:a05:6870:e9aa:b0:40f:e6a:c0f7 with SMTP id 586e51a60fabf-41626e15081mr3595917fac.17.1772306554592;
+        Sat, 28 Feb 2026 11:22:34 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:1031:c44e:9f1f:17c1? ([2600:8803:e7e4:500:1031:c44e:9f1f:17c1])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4160d2cc08csm7236079fac.19.2026.02.28.11.22.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 28 Feb 2026 11:22:34 -0800 (PST)
+Message-ID: <20195663-2091-41eb-b4b3-e8542d29ae32@baylibre.com>
+Date: Sat, 28 Feb 2026 13:22:32 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260228173704.62460-1-me@ziyao.cc>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: st_sensors: fix trigger allocation
+To: Aleksandrs Vinarskis <alex@vinarskis.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260228-st-iio-trigger-v1-1-abf5909e547f@vinarskis.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20260228-st-iio-trigger-v1-1-abf5909e547f@vinarskis.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [7.34 / 15.00];
-	URIBL_BLACK(7.50)[ziyao.cc:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[baylibre-com.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[alien8.de:s=alien8];
-	TAGGED_FROM(0.00)[bounces-221223-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[baylibre-com.20230601.gappssmtp.com:+];
+	TAGGED_FROM(0.00)[bounces-221224-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	GREYLIST(0.00)[pass,meta];
-	DMARC_POLICY_ALLOW(0.00)[alien8.de,none];
+	DMARC_NA(0.00)[baylibre.com];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[alien8.de:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.891];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ziyao.cc:email,fat_crate.local:mid]
-X-Rspamd-Queue-Id: 5636F1C7EAD
-X-Rspamd-Action: add header
-X-Spam: Yes
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dlechner@baylibre.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre-com.20230601.gappssmtp.com:dkim,vinarskis.com:email,baylibre.com:mid]
+X-Rspamd-Queue-Id: 666951C930F
+X-Rspamd-Action: no action
 
-On Sat, Feb 28, 2026 at 05:37:04PM +0000, Yao Zi wrote:
-> Zhaoxin C4600, which names itself as CentaurHauls, claims
-> X86_FEATURE_FSGSBASE support in CPUID, while execution of fsgsbase-
-> related instructions fails with #UD exception. This will cause kernel
-> to crash early in current_save_fsgs().
+On 2/28/26 11:11 AM, Aleksandrs Vinarskis wrote:
+> Current hardcoded name prevents adding multiple st-sensors devices
+> on the same platform. Fix by aligning trigger name with other drivers.
 > 
-> Let's disable the feature on this problematic CPU and warn the user
-> about the quirk. x86_model_id is used to match the platform to avoid
-> unexpectedly breaking other CentaurHauls cores with conflicting
-> family/model ID.
-
-Please use passive voice in your commit message: no "we" or "I", etc,
-and describe your changes in imperative mood.
-
-Also, pls read section "2) Describe your changes" in
-Documentation/process/submitting-patches.rst for more details.
-
-Also, see section "Changelog" in
-Documentation/process/maintainer-tip.rst
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yao Zi <me@ziyao.cc>
+> Signed-off-by: Aleksandrs Vinarskis <alex@vinarskis.com>
 > ---
->  arch/x86/kernel/cpu/centaur.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+> Some platforms such as Dell XPS 9345 contains multiple accelerometers.
+> Fix st_sensors that currently only allows one device at the time.
+> ---
+>  drivers/iio/common/st_sensors/st_sensors_trigger.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/x86/kernel/cpu/centaur.c b/arch/x86/kernel/cpu/centaur.c
-> index 81695da9c524..3773784ba6a9 100644
-> --- a/arch/x86/kernel/cpu/centaur.c
-> +++ b/arch/x86/kernel/cpu/centaur.c
-> @@ -108,6 +108,29 @@ static void early_init_centaur(struct cpuinfo_x86 *c)
->  	}
->  }
+> diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> index 8a8ab688d7980f6dd43c660f90a0eba32c38388b..3b5615d1b6dd66ee0af6ccc83eb2fbd7b2c64d29 100644
+> --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> @@ -124,8 +124,9 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+>  	unsigned long irq_trig;
+>  	int err;
 >  
-> +/*
-> + * Zhaoxin C4600 (family 6, model 15) names itself as CentaurHauls, it claims
-> + * X86_FEATURE_FSGSBASE support in CPUID, while executing any fsgsbase-related
-> + * instructions on it results in #UD.
-> + */
-> +static void fixup_zhaoxin_fsgsbase(struct cpuinfo_x86 *c)
+> -	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
+> -					     indio_dev->name);
+> +	sdata->trig = devm_iio_trigger_alloc(parent, "%s-dev%d",
+> +					     indio_dev->name,
+> +					     iio_device_id(indio_dev));
 
-s/fixup/disable/
+Is this something that could potentially break userspace? Or are all of these
+just "always there" triggers that userspace doesn't have to touch?
 
-> +{
-> +	const char *name, *model_names[] = {
-> +		"C-QuadCore C4600"
-> +	};
+>  	if (sdata->trig == NULL) {
+>  		dev_err(parent, "failed to allocate iio trigger.\n");
+>  		return -ENOMEM;
+> 
+> ---
+> base-commit: 3fa5e5702a82d259897bd7e209469bc06368bf31
+> change-id: 20260228-st-iio-trigger-8ee1f219b566
+> 
+> Best regards,
 
-Why is this an array with a single string in it?
-
-> +	int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(model_names); i++) {
-
-So that you can loop once with it?
-
-Silly.
-
-> +		name = model_names[i];
-> +
-> +		if (!strncmp(c->x86_model_id, name, strlen(name))) {
-> +			pr_warn_once("CPU has broken FSGSBASE support\n");
-> +			setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-> +			return;
-> +		}
-> +	}
-> +}
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
