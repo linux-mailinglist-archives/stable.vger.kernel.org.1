@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNN1NKY6o2nO+gQAu9opvQ
-	(envelope-from <stable+bounces-220430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:57:42 +0100
+	id EP+AOH02o2nP+QQAu9opvQ
+	(envelope-from <stable+bounces-220431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:39:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D131C6745
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:57:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C5491C6169
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:39:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C055930634EF
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:27:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 560B33087633
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8743B3BE5;
-	Sat, 28 Feb 2026 17:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396743B3C03;
+	Sat, 28 Feb 2026 17:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O05iDDkp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U6vj0w/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEE1480DE3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC503B3BF9;
 	Sat, 28 Feb 2026 17:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300320; cv=none; b=LA+E7XoeQFcqwg4JCOPC5pwPgLyB6UM5NIyKHlHHsvz9DwJQ0ctPJUOsXW3DBiFoeasbkeGj3Ysfcl/jUmv1fwgbc564E91izzkZRkQfn/wyFpaVz8FGiSgiU9/C51wR3FelPmj6ckn0Pnixo1ccxcAjfSkKDmLIV249pqzSqP0=
+	t=1772300321; cv=none; b=HkrqEiua3My+wlSI2G1VT8L3qr7zENtDg2AD6NPCmnHxHYvbUnTCcGbiJkdTB9YJr4VlodSReb/lfQKX9etVhfTVWwGQgDo2p90X8jxrgJYAVrenHQYXvBFBRvjCbG+eVuKfd/SYO6ackEgxZ7lrC9Dl+HHI9ODpOuH8yXEfv+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300320; c=relaxed/simple;
-	bh=LI3nJcniRFCBMxwaHH5p2OMkM78vXd6UDnApdfZt3/k=;
+	s=arc-20240116; t=1772300321; c=relaxed/simple;
+	bh=l7MNXpfxHs18FIzzszA7gfEIQrfQvlOn0TBRcP4V6i4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NbZdqtLCP5mVs5cfMy91e5QXq4wL8akRGG4C4hOqzBwpuXT8G5Vp6xp0E4dWPdCnSXaGd/t5aKCIF8j+30QTyz1twyO3jauPXENEG7o3KirNS7XLHhYVTbACyKG1n66VKdlrSTIXOX1ljfam94snREAqwBDQdyenOfKtQlFFBfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O05iDDkp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E15C116D0;
-	Sat, 28 Feb 2026 17:38:39 +0000 (UTC)
+	 MIME-Version; b=rl+QIslZiEFhzpVhds224rNkRVSGW9HRjDVDflh6+JFrBvGt9mA3wxFFe22LWANi9asDNVRQvIzbVB83otvPuIVoTvLTYP2ACEnNguGv0rgrPboFEGLig4NVIiCtNyVQqCe//8fSy6R2IR6nuxL90xq7vgmRLWCU/uvIsvIWUOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U6vj0w/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32424C19424;
+	Sat, 28 Feb 2026 17:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300319;
-	bh=LI3nJcniRFCBMxwaHH5p2OMkM78vXd6UDnApdfZt3/k=;
+	s=k20201202; t=1772300320;
+	bh=l7MNXpfxHs18FIzzszA7gfEIQrfQvlOn0TBRcP4V6i4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O05iDDkpKH6Q14Zrqvme4z1ycd6n9rqgxfR/jfNS/HCc2CkwzFTrQ4GKzXlmYLSL6
-	 QA0XCbxuLYm4dm/Id2vS7NXKAQmo93wfkhdnHBYC0G832EycRgo6910iaN4WQNGJuL
-	 /NwbolANTt5U6UzOLKX0bz1wMqBRv2dfgMNXx6G6f8iEmuKfBZL02bQfkpniUpsiH4
-	 xdPgyn+ExofFV5uX7u2tQU3+ft69BDEYailR9ag2GH1A/4ydl25sgaRjOfB+nGVWn8
-	 pn9lnhRNFRnFFutcLZs3zn/c81poNYPgZ26f8DL4OMzEVRILtXG4j7VYjXs5bHlveT
-	 Tz476QX7Ch5Gg==
+	b=U6vj0w/hjvDvo8eu2a75uUiCbbE45d1dtjR1+j+p9VMva1rTXrAnCkYO+ABEIjHuw
+	 GBClhex4nZYAyolvuYmOkLnfcaQ92DAO7aFJ8MA68/+b1cLeqsUXm+rGhEwhWNt5M0
+	 thwIW8YRl2t9gT3stVwc0il2J+YK0qcOtyydMjmEuZCcHrRbtHZlEdwLy0OscOBo/J
+	 Pzrg7RkNo9Ilk6mI5fDLSEsIbB54jeopjugYRkXW8sJ/FzGxwaRpzCZPHh/qp0qE86
+	 nfs3eB8Jbaeiqm2OJOiLxSgeFMqHNVADrbzyg7hB6nVwbMID2xm6179zVdMx3ndR7j
+	 14PN0JU3GpUzA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+Cc: Valentina Fernandez <valentina.fernandezalanis@microchip.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 351/844] remoteproc: imx_dsp_rproc: Skip RP_MBOX_SUSPEND_SYSTEM when mailbox TX channel is uninitialized
-Date: Sat, 28 Feb 2026 12:24:24 -0500
-Message-ID: <20260228173244.1509663-352-sashal@kernel.org>
+Subject: [PATCH 6.19 352/844] mailbox: mchp-ipc-sbi: fix out-of-bounds access in mchp_ipc_get_cluster_aggr_irq()
+Date: Sat, 28 Feb 2026 12:24:25 -0500
+Message-ID: <20260228173244.1509663-353-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,74 +70,111 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220430-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[microchip.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220431-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 10D131C6745
+X-Rspamd-Queue-Id: 5C5491C6169
 X-Rspamd-Action: no action
 
-From: Iuliana Prodan <iuliana.prodan@nxp.com>
+From: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
 
-[ Upstream commit d62e0e92e589c53c4320ed5914af5fe103f5ce7e ]
+[ Upstream commit f7c330a8c83c9b0332fd524097eaf3e69148164d ]
 
-Firmwares that do not use mailbox communication (e.g., the hello_world
-sample) leave priv->tx_ch as NULL. The current suspend logic
-unconditionally sends RP_MBOX_SUSPEND_SYSTEM, which is invalid without
-an initialized TX channel.
+The cluster_cfg array is dynamically allocated to hold per-CPU
+configuration structures, with its size based on the number of online
+CPUs. Previously, this array was indexed using hartid, which may be
+non-contiguous or exceed the bounds of the array, leading to
+out-of-bounds access.
+Switch to using cpuid as the index, as it is guaranteed to be within
+the valid range provided by for_each_online_cpu().
 
-Detect the no_mailboxes case early and skip sending the suspend
-message. Instead, proceed directly to the runtime PM suspend path,
-which is the correct behavior for firmwares that cannot respond to
-mailbox requests.
-
-Signed-off-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-Link: https://lore.kernel.org/r/20251204122825.756106-1-iuliana.prodan@oss.nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_dsp_rproc.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/mailbox/mailbox-mchp-ipc-sbi.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-index 5a9a8fa031f6d..9e4f50e0e822d 100644
---- a/drivers/remoteproc/imx_dsp_rproc.c
-+++ b/drivers/remoteproc/imx_dsp_rproc.c
-@@ -1260,6 +1260,15 @@ static int imx_dsp_suspend(struct device *dev)
- 	if (rproc->state != RPROC_RUNNING)
- 		goto out;
+diff --git a/drivers/mailbox/mailbox-mchp-ipc-sbi.c b/drivers/mailbox/mailbox-mchp-ipc-sbi.c
+index a6e52009a4245..d444491a584e8 100644
+--- a/drivers/mailbox/mailbox-mchp-ipc-sbi.c
++++ b/drivers/mailbox/mailbox-mchp-ipc-sbi.c
+@@ -180,20 +180,20 @@ static irqreturn_t mchp_ipc_cluster_aggr_isr(int irq, void *data)
+ 	/* Find out the hart that originated the irq */
+ 	for_each_online_cpu(i) {
+ 		hartid = cpuid_to_hartid_map(i);
+-		if (irq == ipc->cluster_cfg[hartid].irq)
++		if (irq == ipc->cluster_cfg[i].irq)
+ 			break;
+ 	}
  
-+	/*
-+	 * No channel available for sending messages;
-+	 * indicates no mailboxes present, so trigger PM runtime suspend
-+	 */
-+	if (!priv->tx_ch) {
-+		dev_dbg(dev, "No initialized mbox tx channel, suspend directly.\n");
-+		goto out;
-+	}
-+
- 	reinit_completion(&priv->pm_comp);
+ 	status_msg.cluster = hartid;
+-	memcpy(ipc->cluster_cfg[hartid].buf_base, &status_msg, sizeof(struct mchp_ipc_status));
++	memcpy(ipc->cluster_cfg[i].buf_base, &status_msg, sizeof(struct mchp_ipc_status));
  
- 	/* Tell DSP that suspend is happening */
+-	ret = mchp_ipc_sbi_send(SBI_EXT_IPC_STATUS, ipc->cluster_cfg[hartid].buf_base_addr);
++	ret = mchp_ipc_sbi_send(SBI_EXT_IPC_STATUS, ipc->cluster_cfg[i].buf_base_addr);
+ 	if (ret < 0) {
+ 		dev_err_ratelimited(ipc->dev, "could not get IHC irq status ret=%d\n", ret);
+ 		return IRQ_HANDLED;
+ 	}
+ 
+-	memcpy(&status_msg, ipc->cluster_cfg[hartid].buf_base, sizeof(struct mchp_ipc_status));
++	memcpy(&status_msg, ipc->cluster_cfg[i].buf_base, sizeof(struct mchp_ipc_status));
+ 
+ 	/*
+ 	 * Iterate over each bit set in the IHC interrupt status register (IRQ_STATUS) to identify
+@@ -385,21 +385,21 @@ static int mchp_ipc_get_cluster_aggr_irq(struct mchp_ipc_sbi_mbox *ipc)
+ 		if (ret <= 0)
+ 			continue;
+ 
+-		ipc->cluster_cfg[hartid].irq = ret;
+-		ret = devm_request_irq(ipc->dev, ipc->cluster_cfg[hartid].irq,
++		ipc->cluster_cfg[cpuid].irq = ret;
++		ret = devm_request_irq(ipc->dev, ipc->cluster_cfg[cpuid].irq,
+ 				       mchp_ipc_cluster_aggr_isr, IRQF_SHARED,
+ 				       "miv-ihc-irq", ipc);
+ 		if (ret)
+ 			return ret;
+ 
+-		ipc->cluster_cfg[hartid].buf_base = devm_kmalloc(ipc->dev,
+-								 sizeof(struct mchp_ipc_status),
+-								 GFP_KERNEL);
++		ipc->cluster_cfg[cpuid].buf_base = devm_kmalloc(ipc->dev,
++								sizeof(struct mchp_ipc_status),
++								GFP_KERNEL);
+ 
+-		if (!ipc->cluster_cfg[hartid].buf_base)
++		if (!ipc->cluster_cfg[cpuid].buf_base)
+ 			return -ENOMEM;
+ 
+-		ipc->cluster_cfg[hartid].buf_base_addr = __pa(ipc->cluster_cfg[hartid].buf_base);
++		ipc->cluster_cfg[cpuid].buf_base_addr = __pa(ipc->cluster_cfg[cpuid].buf_base);
+ 
+ 		irq_found = true;
+ 	}
 -- 
 2.51.0
 
