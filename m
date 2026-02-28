@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id s43LBplGo2lM/AQAu9opvQ
-	(envelope-from <stable+bounces-220844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:48:41 +0100
+	id QA0TJ6ZGo2lM/AQAu9opvQ
+	(envelope-from <stable+bounces-220845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:48:54 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D491C761C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF311C7633
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:48:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4943D324CD8F
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:31:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 98D5430D3E9A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22E8418E2F;
-	Sat, 28 Feb 2026 17:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7A641996B;
+	Sat, 28 Feb 2026 17:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAYUs3nI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XhsCasab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64743418E27;
-	Sat, 28 Feb 2026 17:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAD0419960;
+	Sat, 28 Feb 2026 17:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300731; cv=none; b=D3OAl3+Hpv5DxQLThIDYqoEcM5Fj4BItGePCAY0dOEJXmmIO0P3i5g431Fzky7duRk+tUbTwEqxMmm8JkUaGd22sHsxoW9ANufs5yAZ3mDUCJ9mZATkoGwwk/Ha87d95g4Xf2OrfdpWV2SHvBcywT02Eyqzvd5L3yg2jpvWQM74=
+	t=1772300732; cv=none; b=Zv+aNHqjf3mI1Tls/lGE5eue3nsSrENUPF0FEy+3FLFoNiygF7w0yIf5cRgUlV2Lp6Xtyvy6pYPa+wlPTJT/1BaUdOWy7SVT2EJpDfuUDWefWUOgEnlA0hbNR3vJXflwy04QVHBjEwlqwhU477i7ucG/UQZOUxLdjwcOighY9jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300731; c=relaxed/simple;
-	bh=Ssi4ys2hsnK4l5iOGPWzKxKmZumXDR9aWBZNhATU+mw=;
+	s=arc-20240116; t=1772300732; c=relaxed/simple;
+	bh=Hlmh0opQC9HK0eY7nsrWlsivURzKe8R1G54uAobADrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqQFgn9XofWu0HxtxhtNFsNpsbDHwKtItk7ico6wufiR2P0AgWBnIxmnvuuNlXaP4uIQAys+ImqlOjx9w1/rwWe13Lox8+mOLQdoCdC/31biG4E4qpdN5MYtngL5/6gqtl/fCP8NzjBBN6rVNLnf9KNefnDQDXIPtp7I3qt03KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAYUs3nI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F147C19423;
-	Sat, 28 Feb 2026 17:45:30 +0000 (UTC)
+	 MIME-Version; b=qtuDBxnK+LL05lkdSHx78BDCINJezSOY9xQXEK2DiuIzh8rXSq5WBvPdD+pvs9h0P1EslZyBc5thNXIV1qu/AHWz2ijqV5k+0pQSz6jNY8L4ibKF+eVeCMSJQ6+lez4DGNcnDPAxTzcUOVb3WHS/U9ZV4yKLDQc3HFwuBIEBG04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XhsCasab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD10C116D0;
+	Sat, 28 Feb 2026 17:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300731;
-	bh=Ssi4ys2hsnK4l5iOGPWzKxKmZumXDR9aWBZNhATU+mw=;
+	s=k20201202; t=1772300732;
+	bh=Hlmh0opQC9HK0eY7nsrWlsivURzKe8R1G54uAobADrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAYUs3nI1rzQ0Rr2e5CilbbStZqhQaW9IIw4RpMJJgBdmPGnfi2HWvjIWAISj/DH2
-	 uh+lBBxrMM49vHEtYQzVUNaH8BN0myGXOovRBEhRP5LfDKBHp0AW0v2wvpIhTP6k3G
-	 55i3qlOCsG7ywNiIeaLq2RcNon8CbxgYPMkfx4rpNY8OhOZ01LooyuwEkEB9HPgOXj
-	 nJ38JtT8FGSViOm0dUsgwQpqFnlxtWDwaa1dY04Q4AHOTVv+TXaBD75BnKHXKE/Xpu
-	 MiIQNpbo8QEhxm+CJa+/AZLxKa07Iq+wxpnUeaBGFoJi4luF/ktNHeR41DUfc6e4UL
-	 kMyjv8Yoms2Xg==
+	b=XhsCasabwh+5YoY15talFuA/xIdPYeq2xlUxTIeeUKVhyrZ1kGBcwp11xgsEE+QzY
+	 2R7FjhQrFQBch+owQ0LKQQTcPtZHMGfSqRZc9DvODCYLq+myYXV2riw/g/46EvI9lC
+	 A7DCl2KmTPkeLjNOfq1W3Pe6sB27PltA0n5Flxt77T7GEAxYli1AY6P92Xwi8vISXy
+	 LgEfc0K+2im7JH2np1biwZr30nMbcj2sRUsPnpcvadTAw2zbH9j36x9IhJwgEwJkWm
+	 BQKvZ60yXa8SKIZynQu8LCPCZwUFwG3AdtHGSbuVia8x/pEgedLJiHf9OXh7AdR1WK
+	 GK7K650sT8mPg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Waldemar Brodkorb <wbx@openadk.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+Cc: ethanwu <ethanwu@synology.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 765/844] MIPS: rb532: Fix MMIO UART resource registration
-Date: Sat, 28 Feb 2026 12:31:18 -0500
-Message-ID: <20260228173244.1509663-766-sashal@kernel.org>
+Subject: [PATCH 6.19 766/844] ceph: supply snapshot context in ceph_zero_partial_object()
+Date: Sat, 28 Feb 2026 12:31:19 -0500
+Message-ID: <20260228173244.1509663-767-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -78,13 +78,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220844-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[synology.com,ibm.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220845-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -92,54 +93,88 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,flygoat.com:email,franken.de:email,openadk.org:email]
-X-Rspamd-Queue-Id: 92D491C761C
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DCF311C7633
 X-Rspamd-Action: no action
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: ethanwu <ethanwu@synology.com>
 
-[ Upstream commit e93bb4b76cfefb302534246e892c7667491cb8cc ]
+[ Upstream commit f16bd3fa74a2084ee7e16a8a2be7e7399b970907 ]
 
-Since commit 6e690d54cfa8 ("serial: 8250: fix return error code in
-serial8250_request_std_resource()"), registering an 8250 MMIO port
-without mapbase no longer works, as the resource range is derived from
-mapbase/mapsize.
+The ceph_zero_partial_object function was missing proper snapshot
+context for its OSD write operations, which could lead to data
+inconsistencies in snapshots.
 
-Populate mapbase and mapsize accordingly. Also drop ugly membase KSEG1
-pointer and set UPF_IOREMAP instead, letting the 8250 core perform the
-ioremap.
+Reproducer:
+../src/vstart.sh --new -x --localhost --bluestore
+./bin/ceph auth caps client.fs_a mds 'allow rwps fsname=a' mon 'allow r fsname=a' osd 'allow rw tag cephfs data=a'
+mount -t ceph fs_a@.a=/ /mnt/mycephfs/ -o conf=./ceph.conf
+dd if=/dev/urandom of=/mnt/mycephfs/foo bs=64K count=1
+mkdir /mnt/mycephfs/.snap/snap1
+md5sum /mnt/mycephfs/.snap/snap1/foo
+fallocate -p -o 0 -l 4096 /mnt/mycephfs/foo
+echo 3 > /proc/sys/vm/drop/caches
+md5sum /mnt/mycephfs/.snap/snap1/foo # get different md5sum!!
 
-Fixes: 6e690d54cfa8 ("serial: 8250: fix return error code in serial8250_request_std_resource()")
 Cc: stable@vger.kernel.org
-Reported-by: Waldemar Brodkorb <wbx@openadk.org>
-Link: https://lore.kernel.org/linux-mips/aX-d0ShTplHKZT33@waldemar-brodkorb.de/
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: ad7a60de882ac ("ceph: punch hole support")
+Signed-off-by: ethanwu <ethanwu@synology.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Tested-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/rb532/devices.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/ceph/file.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
-index b7f6f782d9a13..ffa4d38ca95df 100644
---- a/arch/mips/rb532/devices.c
-+++ b/arch/mips/rb532/devices.c
-@@ -212,11 +212,12 @@ static struct platform_device rb532_wdt = {
- static struct plat_serial8250_port rb532_uart_res[] = {
- 	{
- 		.type           = PORT_16550A,
--		.membase	= (char *)KSEG1ADDR(REGBASE + UART0BASE),
-+		.mapbase        = REGBASE + UART0BASE,
-+		.mapsize        = 0x1000,
- 		.irq		= UART0_IRQ,
- 		.regshift	= 2,
- 		.iotype		= UPIO_MEM,
--		.flags		= UPF_BOOT_AUTOCONF,
-+		.flags		= UPF_BOOT_AUTOCONF | UPF_IOREMAP,
- 	},
- 	{
- 		.flags		= 0,
+diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+index 983390069f737..9152b47227101 100644
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -2568,6 +2568,7 @@ static int ceph_zero_partial_object(struct inode *inode,
+ 	struct ceph_inode_info *ci = ceph_inode(inode);
+ 	struct ceph_fs_client *fsc = ceph_inode_to_fs_client(inode);
+ 	struct ceph_osd_request *req;
++	struct ceph_snap_context *snapc;
+ 	int ret = 0;
+ 	loff_t zero = 0;
+ 	int op;
+@@ -2582,12 +2583,25 @@ static int ceph_zero_partial_object(struct inode *inode,
+ 		op = CEPH_OSD_OP_ZERO;
+ 	}
+ 
++	spin_lock(&ci->i_ceph_lock);
++	if (__ceph_have_pending_cap_snap(ci)) {
++		struct ceph_cap_snap *capsnap =
++				list_last_entry(&ci->i_cap_snaps,
++						struct ceph_cap_snap,
++						ci_item);
++		snapc = ceph_get_snap_context(capsnap->context);
++	} else {
++		BUG_ON(!ci->i_head_snapc);
++		snapc = ceph_get_snap_context(ci->i_head_snapc);
++	}
++	spin_unlock(&ci->i_ceph_lock);
++
+ 	req = ceph_osdc_new_request(&fsc->client->osdc, &ci->i_layout,
+ 					ceph_vino(inode),
+ 					offset, length,
+ 					0, 1, op,
+ 					CEPH_OSD_FLAG_WRITE,
+-					NULL, 0, 0, false);
++					snapc, 0, 0, false);
+ 	if (IS_ERR(req)) {
+ 		ret = PTR_ERR(req);
+ 		goto out;
+@@ -2601,6 +2615,7 @@ static int ceph_zero_partial_object(struct inode *inode,
+ 	ceph_osdc_put_request(req);
+ 
+ out:
++	ceph_put_snap_context(snapc);
+ 	return ret;
+ }
+ 
 -- 
 2.51.0
 
