@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPa+E3I2o2nP+QQAu9opvQ
-	(envelope-from <stable+bounces-220427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:39:46 +0100
+	id UGWRIjg3o2lh+gQAu9opvQ
+	(envelope-from <stable+bounces-220428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:43:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E241C6144
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:39:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 727A51C62DB
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:43:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AA16630FE2DC
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:26:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1493F31CD0B6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE603B340A;
-	Sat, 28 Feb 2026 17:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D033B3421;
+	Sat, 28 Feb 2026 17:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M29XGtyT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QsUkqrKu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C144480DE3;
-	Sat, 28 Feb 2026 17:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EBD3B3418;
+	Sat, 28 Feb 2026 17:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300317; cv=none; b=ojXc6xQcoXLQhhe1HtQbLecSRK4aqEBtFtuuOg/4khgocIh/HFUl0C8N0NtWQKWKAyiyt7l1+68YyZNJdJ+kNs/nv+Xn7BG1NBezHegWrxCjKkjm3lyKl4gxfSmlVM7thpI54QO7hrObcuCpNd/cOmtlM21ZYkopMN1Bn8sK7Vc=
+	t=1772300318; cv=none; b=AydGjPAcHiLjVsz1M0N/aQfSjumwGbrZYVHRQwPc6saLoKPKv8lUG9pBMeGZGU5nOjXat4CLu4cJcXJEbs36dxxcAf6kbsgd6fIizK9FPOnhpY9ctcQerZ/euQImNr2oDSOSEamfXHNgL/BkIjfYICIquKKoPvQq0wRQAY9T5Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300317; c=relaxed/simple;
-	bh=vKFYXOQmrz68V3Mdx2r/LwhN9YLy57iFoBXg0zOps+I=;
+	s=arc-20240116; t=1772300318; c=relaxed/simple;
+	bh=RcdWu7BakA3IUxlBsPgkVxCtelqX2FgPXyoYVc88DP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3GFzmCR1uZdhOyv+98UjV4aDLJY01RQza/ANgJD4BcdTZgJwVvv3UgH/7V2X05rpM9uQeQq8yTHnIqMusAB+u+pY0h4tEZyLyqJmr95OxFVlWR7PW6nzw76aG/UIDDBAPAacw82FjQPso3tR0XQjXByGhN9DqDfwvUCKi938tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M29XGtyT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E00C19424;
-	Sat, 28 Feb 2026 17:38:36 +0000 (UTC)
+	 MIME-Version; b=AtBL+D1iwk6d4hhP3lrIRttZzfLwSs99OJgNvKLh2+qdj9aQhFO/B+XlDGZKH9NgljwNzR+WwWA4lQqK+h8+Bq0ILftrayGkTjyatuR8c7ozP4Wzvf28Yg8FBf7TW46aCYiJtM+c4SjkLKDAmR3+UsrJ7/plLV+PkOMDZI9eozk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QsUkqrKu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D9BC4AF09;
+	Sat, 28 Feb 2026 17:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300317;
-	bh=vKFYXOQmrz68V3Mdx2r/LwhN9YLy57iFoBXg0zOps+I=;
+	s=k20201202; t=1772300318;
+	bh=RcdWu7BakA3IUxlBsPgkVxCtelqX2FgPXyoYVc88DP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M29XGtyTDfFn0UekGRnNBIr1hNZKV1ta4SmoF3grcdu6jTS6jxN09/A4YjLgKhmic
-	 uOYI93M2svQv7JOrZ86TPwUfu8ix+TWIOXoCTujwWUW5WfUYJyWwOlOcT7m44y9k+U
-	 cdkc+I1vbtRyDsg2+vzIWHTJdQDIZErqO5FRmrtPS4Z9lZOUSJTvjOEykl7HgKUDJg
-	 Iy069Ex438vNPnnnTXXrMDGt+RO2fFX/l6FlqfubEIJyfLaXFqud5siEdw1fquxZp9
-	 ROD9SsrDnNtUld0p9Saf2P1KgJwptCiMAuNNgBiBQJW/HyQXmixr/2z9Dc/1gdd4ed
-	 ICMCJyVrMkfhQ==
+	b=QsUkqrKuBifVIxxCh6TK062IgahDaC7/vuRe/GOtuIWHCt+g3ildgicaInzKLrqid
+	 0DcOMnohpj1YDlDp81KRTR+A9o5K3JZhdG1bdaLcms0E1UTA/67OF+Q2QsU72tuvO1
+	 yL/3eTD5MFjW6RXvtZksu6pMdw2fqfQc45XBz8uYHwcPNyZ3eWdzjOGLqWuzjyvj7V
+	 cJyTxtI/RqE/jjhMYt8KPxhbWyjfBLHpQHSfEUScMb8AuLqHwTwwzUBJa/eQBZqFXQ
+	 kLlfrl86YwzMjwf3LAMdpDlLVcW3lJmSghVIqtu/VxeRxkTDoI471Rm3HWi+QGp9jE
+	 jK+L171zOEEWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Keita Morisaki <keita.morisaki@tier4.jp>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+Cc: Sergey Matyukevich <geomatsi@gmail.com>,
+	Andy Chiu <andybnac@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 348/844] scsi: ufs: mediatek: Fix page faults in ufs_mtk_clk_scale() trace event
-Date: Sat, 28 Feb 2026 12:24:21 -0500
-Message-ID: <20260228173244.1509663-349-sashal@kernel.org>
+Subject: [PATCH 6.19 349/844] riscv: vector: init vector context with proper vlenb
+Date: Sat, 28 Feb 2026 12:24:22 -0500
+Message-ID: <20260228173244.1509663-350-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -70,18 +70,19 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220427-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220428-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
@@ -93,76 +94,84 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B8E241C6144
+X-Rspamd-Queue-Id: 727A51C62DB
 X-Rspamd-Action: no action
 
-From: Keita Morisaki <keita.morisaki@tier4.jp>
+From: Sergey Matyukevich <geomatsi@gmail.com>
 
-[ Upstream commit 9672ed3de7d772ceddd713c769c05e832fc69bae ]
+[ Upstream commit ef3ff40346db8476a9ef7269fc9d1837e7243c40 ]
 
-The ufs_mtk_clk_scale() trace event currently stores the address of the
-name string directly via __field(const char *, name). This pointer may
-become invalid after the module is unloaded, causing page faults when the
-trace buffer is subsequently accessed.
+The vstate in thread_struct is zeroed when the vector context is
+initialized. That includes read-only register vlenb, which holds
+the vector register length in bytes. Zeroed state persists until
+mstatus.VS becomes 'dirty' and a context switch saves the actual
+hardware values.
 
-This can occur because the MediaTek UFS driver can be configured as a
-loadable module (tristate in Kconfig), meaning the name string passed to
-the trace event may reside in module memory that becomes invalid after
-module unload.
+This can expose the zero vlenb value to the user-space in early
+debug scenarios, e.g. when ptrace attaches to a traced process
+early, before any vector instruction except the first one was
+executed.
 
-Fix this by using __string() and __assign_str() to copy the string contents
-into the ring buffer instead of storing the pointer. This ensures the trace
-data remains valid regardless of module state.
+Fix this by specifying proper vlenb on vector context init.
 
-This change increases the memory usage for each ftrace entry by a few bytes
-(clock names are typically 7-15 characters like "ufs_sel" or
-"ufs_sel_max_src") compared to storing an 8-byte pointer.
-
-Note that this change does not affect anything unless all of the following
-conditions are met:
-
- - CONFIG_SCSI_UFS_MEDIATEK is enabled
-
- - ftrace tracing is enabled
-
- - The ufs_mtk_clk_scale event is enabled in ftrace
-
-Signed-off-by: Keita Morisaki <keita.morisaki@tier4.jp>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://patch.msgid.link/20260202024526.122515-1-keita.morisaki@tier4.jp
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sergey Matyukevich <geomatsi@gmail.com>
+Reviewed-by: Andy Chiu <andybnac@gmail.com>
+Tested-by: Andy Chiu <andybnac@gmail.com>
+Link: https://patch.msgid.link/20251214163537.1054292-3-geomatsi@gmail.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-mediatek-trace.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/riscv/kernel/vector.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-mediatek-trace.h b/drivers/ufs/host/ufs-mediatek-trace.h
-index b5f2ec3140748..0df8ac843379a 100644
---- a/drivers/ufs/host/ufs-mediatek-trace.h
-+++ b/drivers/ufs/host/ufs-mediatek-trace.h
-@@ -33,19 +33,19 @@ TRACE_EVENT(ufs_mtk_clk_scale,
- 	TP_ARGS(name, scale_up, clk_rate),
+diff --git a/arch/riscv/kernel/vector.c b/arch/riscv/kernel/vector.c
+index 3ed071dab9d83..b112166d51e9f 100644
+--- a/arch/riscv/kernel/vector.c
++++ b/arch/riscv/kernel/vector.c
+@@ -111,8 +111,8 @@ bool insn_is_vector(u32 insn_buf)
+ 	return false;
+ }
  
- 	TP_STRUCT__entry(
--		__field(const char*, name)
-+		__string(name, name)
- 		__field(bool, scale_up)
- 		__field(unsigned long, clk_rate)
- 	),
+-static int riscv_v_thread_zalloc(struct kmem_cache *cache,
+-				 struct __riscv_v_ext_state *ctx)
++static int riscv_v_thread_ctx_alloc(struct kmem_cache *cache,
++				    struct __riscv_v_ext_state *ctx)
+ {
+ 	void *datap;
  
- 	TP_fast_assign(
--		__entry->name = name;
-+		__assign_str(name);
- 		__entry->scale_up = scale_up;
- 		__entry->clk_rate = clk_rate;
- 	),
+@@ -122,13 +122,15 @@ static int riscv_v_thread_zalloc(struct kmem_cache *cache,
  
- 	TP_printk("ufs: clk (%s) scaled %s @ %lu",
--		  __entry->name,
-+		  __get_str(name),
- 		  __entry->scale_up ? "up" : "down",
- 		  __entry->clk_rate)
- );
+ 	ctx->datap = datap;
+ 	memset(ctx, 0, offsetof(struct __riscv_v_ext_state, datap));
++	ctx->vlenb = riscv_v_vsize / 32;
++
+ 	return 0;
+ }
+ 
+ void riscv_v_thread_alloc(struct task_struct *tsk)
+ {
+ #ifdef CONFIG_RISCV_ISA_V_PREEMPTIVE
+-	riscv_v_thread_zalloc(riscv_v_kernel_cachep, &tsk->thread.kernel_vstate);
++	riscv_v_thread_ctx_alloc(riscv_v_kernel_cachep, &tsk->thread.kernel_vstate);
+ #endif
+ }
+ 
+@@ -214,12 +216,14 @@ bool riscv_v_first_use_handler(struct pt_regs *regs)
+ 	 * context where VS has been off. So, try to allocate the user's V
+ 	 * context and resume execution.
+ 	 */
+-	if (riscv_v_thread_zalloc(riscv_v_user_cachep, &current->thread.vstate)) {
++	if (riscv_v_thread_ctx_alloc(riscv_v_user_cachep, &current->thread.vstate)) {
+ 		force_sig(SIGBUS);
+ 		return true;
+ 	}
++
+ 	riscv_v_vstate_on(regs);
+ 	riscv_v_vstate_set_restore(current, regs);
++
+ 	return true;
+ }
+ 
 -- 
 2.51.0
 
