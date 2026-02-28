@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-220136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIqDENQro2kr+AQAu9opvQ
-	(envelope-from <stable+bounces-220136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:54:28 +0100
+	id 0ODRJ2sso2kr+AQAu9opvQ
+	(envelope-from <stable+bounces-220137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:56:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50B91C530E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:54:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C921C53FD
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:56:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9EACC3128993
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:40:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8C24730D4FEE
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73E248A2AC;
-	Sat, 28 Feb 2026 17:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2FD48A2C7;
+	Sat, 28 Feb 2026 17:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s/ECMo8Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejiMAbtE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C8C48A2A4;
-	Sat, 28 Feb 2026 17:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC6448A2BB;
+	Sat, 28 Feb 2026 17:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300045; cv=none; b=hFL9oXZW+UdQjIKSJ9ItB3hry6VO/PBP2kHJ9cmxuEmMZ35pt9kQKnn72lHdJNH0Dastz5t3t2tRcV7XGyudvVbNH69xFO/LrAnYUOn2kQQ+KUPqYyAFoOnepMmLh5+AWBXQ13K8c35/Ee0wfBpjRief3Y3JstenECJg5Ck92qY=
+	t=1772300046; cv=none; b=r21IyAYwtwa8018vAwxM5ES7Avt9HnZzBqo5cfqbyLcz80ZHnuNa+qijQQ00sCHGWAqjQS+Ci9G9OcFI72tLQT1Pq2d5oRl+sp7hsuPjxbmvQOAyRzD8fMMYQYN2I0j88K6Qb9n6nttXMgW2AVHHyYytF4lLecfJ9/CLl6DUDPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300045; c=relaxed/simple;
-	bh=ANDSCPHjokIvXexJoyEmdLJh4bwF/OZdktQa/MDY09o=;
+	s=arc-20240116; t=1772300046; c=relaxed/simple;
+	bh=Z4QxMGUMs+yL5pkf3AhedAWqGSrzajzhBO6RxS9IArk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f8duuelZknw/FNOF/VFirDs9+Tkx01WBaKUS3pA54bFduVEwRMB/VVwBAAs4W0Qg75l14ozI5x3t3FZrKPp8BezZQov7F0IKAyVkpIAP3xAHyJNhmjmY7DUHedLcF6PUm8fCJn5jrgQSMaTc7VVJU8xpcrU4a+rbEergq1t7k/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s/ECMo8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C14EBC2BCB1;
-	Sat, 28 Feb 2026 17:34:04 +0000 (UTC)
+	 MIME-Version; b=jncoO1zNRPmDP/iU7Mf4pScX1YAw5n45Xjukl5B5Uo0D0yhsM92fhR58j9R95F8DPpiyDqs+76n923tifAnPgw+N+DxmjXli9FNl44GO2sIymogaYhRYMAjma9ICYix9d+8P5MkSVZReRYjeNtHkyc3EtZ7m72aUeIccfwhIC1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejiMAbtE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD41C116D0;
+	Sat, 28 Feb 2026 17:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300045;
-	bh=ANDSCPHjokIvXexJoyEmdLJh4bwF/OZdktQa/MDY09o=;
+	s=k20201202; t=1772300046;
+	bh=Z4QxMGUMs+yL5pkf3AhedAWqGSrzajzhBO6RxS9IArk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/ECMo8YVhM/ApM505rgK3WiCek+A+yyboxYdo72pbK08aUEyzh7U+1WUTEjV+pAe
-	 XNxNunKgIEWR90M8wC1qKr/vWb8D0SOXURcue9/XwLb1t+0jP8betzMr2eshBW6edr
-	 adaO3o75l/NWZqASC3GjaWys0jzpvlMsnPVQ/+xXYVfO9gRelRwVfltLQqteW4XZg1
-	 7XNNINvmPY2Uh+r5+ajn3xf2gFtvigc4d74LWVb5UGqPJf62eY1pzs/Rtteq7xGl7Y
-	 uvKwv2gL43KwR/OIgs1td2OEgEa/5zfvwWNJzTXRnBa1MOtCzG7X4pKYAf+oHdIPMD
-	 XBX1xOPIpp64Q==
+	b=ejiMAbtEdmtoTY05xrfQuEaCe10SvdXbxScdN92stW0IpLUauglHA16jGAw5mkz4i
+	 zoB6VV/YvR9/izODsMFFmMM5/zQPXiw6ic3L8Cxs/ujGaBMAor+HgF6iTKSruwzM61
+	 pQ1AH1qDHXMrA2hbAOWdtUYXprDUNKtUvRqOdUy8n26aK0PbySCROGSyCCUtbwvaP4
+	 vukR9yZqqqvgYh+XUrMU/T4z9FqOtc2PsRsiAt2974tLNJt910KqaBWnc40O+a4z5b
+	 aFC+cuqleIuUHLfRAbIH37toSlWgUt7pMzNNjwrjLgLVBAk2EraGRP5rdAgNwi/9H0
+	 xgxL7ORwt6tOg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+Cc: Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 058/844] tools/power cpupower: Reset errno before strtoull()
-Date: Sat, 28 Feb 2026 12:19:31 -0500
-Message-ID: <20260228173244.1509663-59-sashal@kernel.org>
+Subject: [PATCH 6.19 059/844] s390/purgatory: Add -Wno-default-const-init-unsafe to KBUILD_CFLAGS
+Date: Sat, 28 Feb 2026 12:19:32 -0500
+Message-ID: <20260228173244.1509663-60-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,19 +70,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220136-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220137-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,40 +90,48 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: C50B91C530E
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B1C921C53FD
 X-Rspamd-Action: no action
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit f9bd3762cf1bd0c2465f2e6121b340883471d1bf ]
+[ Upstream commit b4780fe4ddf04b51127a33d705f4a2e224df00fa ]
 
-cpuidle_state_get_one_value() never cleared errno before calling
-strtoull(), so a prior ERANGE caused every cpuidle counter read to
-return zero. Reset errno to 0 before the conversion so each sysfs read
-is evaluated independently.
+Add -Wno-default-const-init-unsafe to purgatory KBUILD_CFLAGS, similar
+to scripts/Makefile.extrawarn, since clang generates warnings for the
+dummy variable in typecheck():
 
-Link: https://lore.kernel.org/r/20251201121745.3776703-1-kaushlendra.kumar@intel.com
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+    CC      arch/s390/purgatory/purgatory.o
+      arch/s390/include/asm/ptrace.h:221:9: warning: default initialization of an object of type 'typeof (regs->psw)' (aka 'const psw_t') leaves the object uninitialized [-Wdefault-const-init-var-unsafe]
+        221 |         return psw_bits(regs->psw).pstate;
+            |                ^
+      arch/s390/include/asm/ptrace.h:98:2: note: expanded from macro 'psw_bits'
+         98 |         typecheck(psw_t, __psw);                \
+            |         ^
+      include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
+         11 |         typeof(x) __dummy2; \
+            |                   ^
+
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/lib/cpuidle.c | 1 +
+ arch/s390/purgatory/Makefile | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/power/cpupower/lib/cpuidle.c b/tools/power/cpupower/lib/cpuidle.c
-index f2c1139adf716..bd857ee7541a7 100644
---- a/tools/power/cpupower/lib/cpuidle.c
-+++ b/tools/power/cpupower/lib/cpuidle.c
-@@ -150,6 +150,7 @@ unsigned long long cpuidle_state_get_one_value(unsigned int cpu,
- 	if (len == 0)
- 		return 0;
+diff --git a/arch/s390/purgatory/Makefile b/arch/s390/purgatory/Makefile
+index 0c196a5b194af..61d240a37633d 100644
+--- a/arch/s390/purgatory/Makefile
++++ b/arch/s390/purgatory/Makefile
+@@ -23,6 +23,7 @@ KBUILD_CFLAGS += -D__DISABLE_EXPORTS
+ KBUILD_CFLAGS += $(CLANG_FLAGS)
+ KBUILD_CFLAGS += $(if $(CONFIG_CC_IS_CLANG),-Wno-microsoft-anon-tag)
+ KBUILD_CFLAGS += $(call cc-option,-fno-PIE)
++KBUILD_CFLAGS += $(call cc-option, -Wno-default-const-init-unsafe)
+ KBUILD_AFLAGS := $(filter-out -DCC_USING_EXPOLINE,$(KBUILD_AFLAGS))
+ KBUILD_AFLAGS += -D__DISABLE_EXPORTS
  
-+	errno = 0;
- 	value = strtoull(linebuf, &endp, 0);
- 
- 	if (endp == linebuf || errno == ERANGE)
 -- 
 2.51.0
 
