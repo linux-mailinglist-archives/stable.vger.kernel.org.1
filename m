@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220403-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBPgN/o2o2lh+gQAu9opvQ
-	(envelope-from <stable+bounces-220402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:42:02 +0100
+	id IOpFBVo0o2mX+QQAu9opvQ
+	(envelope-from <stable+bounces-220403-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703831C6246
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:42:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFCA1C5E2D
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:30:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9AA1B33DEAD5
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:22:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BBC4333EE4F6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABFB3AC63C;
-	Sat, 28 Feb 2026 17:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4303AD88C;
+	Sat, 28 Feb 2026 17:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQbmkhjO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTQNVPHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CBF3AC633;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9A43AD881;
 	Sat, 28 Feb 2026 17:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300294; cv=none; b=JSYTKwcB7F0F4jDKnx4IGwzQijmTjcxU0sKfrv4wtvFlDqGeTv0BtWSZ782x5l+llVtti9j17NPCieAasQQnhIZuidJZaScKyOtHtlDRy24FVsiSpNppuIWDMnxs2SG0wkJ67m+FzWb74XqSRkCKkViGbP5mpH/q6/QbOgQWkXA=
+	t=1772300294; cv=none; b=UU3G9UNe0nDIGB0vtmb7bRELLr8AYTRdxN/oBxv4UgZPWHerbkof5mjR/Y697+87pzxWzGnoAncbg08Y8ILxyq9+3BApdZFhcAGy5bS7IR0/Cfrwt0K3kY2bk1RlUHGoO6jBozkJxRCkVvEJiQ6JGHMlRdZiNCVTV/QWkl66yMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300294; c=relaxed/simple;
-	bh=r2xgP5PyfmenROj68v9m+9bJzfof5h81AA6cs0O7Ns4=;
+	bh=MLL1IeJSDw80UpFR24o8SSn6YlKqRQGw8sYJByuFDmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CEeVq5BJYqFQcOXkE8/mfE0pvH/mJwrm0MuUlRarWt+nspSiW1yUNQh39KoYE1W4VCLH9bwS4RyO1Wt40lYF9jcLVORS0Ax4eqc5Ia7V1Dx+actfXiMfeMC02XRZHTPNTK3LPwMQV3+UVr2hSUQt+y9ms9p2iDPA4OrFngVMvBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQbmkhjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589D4C19423;
-	Sat, 28 Feb 2026 17:38:13 +0000 (UTC)
+	 MIME-Version; b=cCFTTQ01CIJEKXxpO/wOWmBTovYsGUc9GffNzh8hIL5f025LE7fCDEzm0uerJyFMhMS2yRSHpIcNMa+ePZ4V5Kxw/8pHEZA+bICMexHxkqeLsSw34r6+Z1/cMqgIt9nFsB/yG2gu8oaYYmCJBY7xJDHULouZhZ7hpcOXEELGN58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTQNVPHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C8CC116D0;
+	Sat, 28 Feb 2026 17:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300293;
-	bh=r2xgP5PyfmenROj68v9m+9bJzfof5h81AA6cs0O7Ns4=;
+	s=k20201202; t=1772300294;
+	bh=MLL1IeJSDw80UpFR24o8SSn6YlKqRQGw8sYJByuFDmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQbmkhjOhnf4ariIISrIgX+KwBAPaKRsG040Lymq5ykRx7BKFhz0fNozVPav+4fhF
-	 5qoeUMWxq+Y/DvcucyG/QWtLOMFwZUTOiPgPARkG5g4zIYwwNJI8gsWAyuPbnWxM8V
-	 TjYpUlahHqs8Rjjjv9TZ6dizHwKKMNKFUcZQ5m+eRrhLYI7+wN69HTVCbQFHwXYSlO
-	 zg55zFGDK+0Y1qdjcAU9kERYjeiPt2SgkX8qzk3a7RGyWQApcz9XwfsL47DIko+oI1
-	 IuwJMwobhjOAtSDRH6Dwv5E0ZhJuW0TG9wQZuRgSQoyUjj32xJQk1P319oLl4/SLqH
-	 ICx3CqJEKfbkg==
+	b=QTQNVPHPZbtfp1p0/mfXpCM+IesOnRuxxhyXVVAE35XDKLuPlVwCX7U0gRQe13mkN
+	 hEMeVs5N7NSlzf6tvh6ti3csoMdLeSoN/qJ+mN3BsNivHOnl8gbjCBFYyV4iR+cdp0
+	 qSYO5NcOJpOvPk3vSdiIjUzSSUhfiL0GWqVomjcf9eB6xnrj/YwAcKVpUvRtDgmxcw
+	 UZsLl6WzQNEjeZzijH/za+f0swS3B6bGyHmXdavHOSiiByIGNCCWjULQqGaDy9rUak
+	 TF/E5K5fBRWZ5My/O806KNssCBSeGbH4TZWO2DOtfROhTiE3b/52HPfBKCbed1WWPo
+	 YeHwBwHpgdCZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Dian-Syuan Yang <dian_syuan0116@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 323/844] net: sfp: add quirk for Lantech 8330-265D
-Date: Sat, 28 Feb 2026 12:23:56 -0500
-Message-ID: <20260228173244.1509663-324-sashal@kernel.org>
+Subject: [PATCH 6.19 324/844] wifi: rtw89: pci: restore LDO setting after device resume
+Date: Sat, 28 Feb 2026 12:23:57 -0500
+Message-ID: <20260228173244.1509663-325-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -62,77 +62,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220402-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220403-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 703831C6246
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9DFCA1C5E2D
 X-Rspamd-Action: no action
 
-From: Marek Behún <kabel@kernel.org>
+From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
 
-[ Upstream commit 86a8e8e0ddbc3d14c799536eb888180b84d002f3 ]
+[ Upstream commit af1e82232b988f8fc6d635c60609765e49221a64 ]
 
-Similar to Lantech 8330-262D-E, the Lantech 8330-265D also reports
-2500MBd instead of 3125MBd.
+The LDO (Low Dropout Regulator) setting is missing after suspend/resume
+in some platforms, and it will cause card loss. Therefore, reconfigure
+this setting to avoid it.
 
-Also, all 8330-265D report normal RX_LOS in EEPROM, but some signal
-inverted RX_LOS. We therefore need to ignore RX_LOS on these modules.
-
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Link: https://patch.msgid.link/20260128170044.15576-1-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260127085036.44060-6-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 3e023723887c4..43aefdd8b70f7 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -532,9 +532,13 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK("HUAWEI", "MA5671A", sfp_quirk_2500basex,
- 		  sfp_fixup_ignore_tx_fault),
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index b8135cf15d13c..fb4469a76bc03 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -4605,6 +4605,7 @@ static int __maybe_unused rtw89_pci_resume(struct device *dev)
+ 		rtw89_write32_clr(rtwdev, R_AX_PCIE_PS_CTRL_V1,
+ 				  B_AX_SEL_REQ_ENTR_L1);
+ 	}
++	rtw89_pci_hci_ldo(rtwdev);
+ 	rtw89_pci_l2_hci_ldo(rtwdev);
  
--	// Lantech 8330-262D-E can operate at 2500base-X, but incorrectly report
--	// 2500MBd NRZ in their EEPROM
-+	// Lantech 8330-262D-E and 8330-265D can operate at 2500base-X, but
-+	// incorrectly report 2500MBd NRZ in their EEPROM.
-+	// Some 8330-265D modules have inverted LOS, while all of them report
-+	// normal LOS in EEPROM. Therefore we need to ignore LOS entirely.
- 	SFP_QUIRK_S("Lantech", "8330-262D-E", sfp_quirk_2500basex),
-+	SFP_QUIRK("Lantech", "8330-265D", sfp_quirk_2500basex,
-+		  sfp_fixup_ignore_los),
- 
- 	SFP_QUIRK_S("UBNT", "UF-INSTANT", sfp_quirk_ubnt_uf_instant),
- 
+ 	rtw89_pci_basic_cfg(rtwdev, true);
 -- 
 2.51.0
 
