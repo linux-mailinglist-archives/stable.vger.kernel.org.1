@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-221093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONEmKmlIo2mm/AQAu9opvQ
-	(envelope-from <stable+bounces-221093-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:56:25 +0100
+	id GIoAA7ZJo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-221094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:01:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD861C7935
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:56:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5194D1C7C95
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0A81363D531
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:47:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DB99B3226DB8
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CF736DA17;
-	Sat, 28 Feb 2026 17:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70406301F04;
+	Sat, 28 Feb 2026 17:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PgqvI3s4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TmRxl3HJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAFE36D9E9;
-	Sat, 28 Feb 2026 17:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326A036DA12;
+	Sat, 28 Feb 2026 17:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301441; cv=none; b=nEUyCb40EmH4jw94i7dz+fHo9jggp89itbFfOmETu7mqRvux7I+SkITa8lrWqaEsE9L8bhEwjTDpa1xfNU5YJ03QjCNj78KQyoevfMsO20JM5icHBfGQT0SZksT5vPIQOj4fJtTAuqpsM9THt46rk+ahWKlmWlr0BdU4h2WCv0I=
+	t=1772301443; cv=none; b=UuX8iL/7ocrjxlS8+QqI0jVCc0JSZb8USl7yx/A3o3/gWvvhR7H5/fvL7gp29iD998baj7g1qQKjY+ttH/9ZQPAVu0cC/AF/AfQEzQtFu8K+seOkCVspOmv1tMP8T5uSO4xF3tBJg1dF0xOWIKtKKOa0kxg5DOc+Gg77RRGgivc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301441; c=relaxed/simple;
-	bh=5s8BBKdf4ztkBwOi4i6eDwdPKMgB3eEiCkhMfk7U7/g=;
+	s=arc-20240116; t=1772301443; c=relaxed/simple;
+	bh=72RPNUc/iXLcDRYOIDPFhqLI8iZaaPVe6lyiIJlNqvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXLw7GemV7YnTP0OImRDGgfHnbY8a9IUM5884CM3FYhR9G3pO0npohgh5/K0l5iWK0Rpt8sXasfReVpvPcIoqcQ6JGylCKCP1wLDfPeyB2aGgQGeS36HJxhmEwHiO4EsFnpsAi138adSaKrgkkiav7UBEawTuSkzeAqmYStXfgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PgqvI3s4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397DAC2BC87;
-	Sat, 28 Feb 2026 17:57:20 +0000 (UTC)
+	 MIME-Version; b=HxMPjccuKMaF5c6zwNSJ1bhOAdzEA3DEb4z/FYmkUO6PGqOdf95vGbDNWV6Ol7AcibYJ0MTNUK8ZzeU4DOc30mlsJua5/snG8G//el8MCv8WVVXU8N+K54i76+Jj+QDIId4vEGgoLTxxFAOZ9h+467Q/ul8sC/1zXLsJ5ZY+nKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TmRxl3HJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42982C19423;
+	Sat, 28 Feb 2026 17:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301441;
-	bh=5s8BBKdf4ztkBwOi4i6eDwdPKMgB3eEiCkhMfk7U7/g=;
+	s=k20201202; t=1772301443;
+	bh=72RPNUc/iXLcDRYOIDPFhqLI8iZaaPVe6lyiIJlNqvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PgqvI3s4uqnL3DfUfiAH4lq2UgquU02rCVyh82FY3zDXPtwSjniftHwAVF1rVQgGc
-	 OKei7XXggxwn8tlzRKTXX0C0O0eRtr2ZO/t3wbBnvbMgHVLEh2qPcslTrMGJRBWh2F
-	 jR1sIc+Z9KYPXESMRAsLJHXKpWDWlrsHKE+WMf/ACrv+BeVVpXuUU/0JCC99uF6PQu
-	 9LgkIVz5iaepsYPKPUoZLJR5DSfwps84SmqsOBjN9ZNxgPr3Ix3g12moa8YycmvNgQ
-	 RJ/GxSKsRDWGC6QPj7eHXJl4e5cDcAg46+ZLNMmuoz0LuPneEdhSSSfv092oohpmLU
-	 oCHlaNaErxUOQ==
+	b=TmRxl3HJmzU7hj0uVoH/BymOsrQGNOViqteRMU/HFlgkL0s//BLAbiWBgjyTSq4vM
+	 aCV9GtUSNIZrxnI4KTTJ+0HN+kQSN0FMW5T+RFb/9OcLntkji1WRSVHxXM3jPmXNpS
+	 qiJdgWqSuMgo2lADQJOUmo63fdAv1BX5nNGyUPtTJ7j017/DO96XuWzqrlBtuRvU19
+	 HgEca+YkWvYaxNw638iuYThc/HeIgyIT0o0OGQSuExC4/KnuaXGiN6w3IrCFVdhbo3
+	 MBXQ1itws3mH49RuRr554ahtNmUGLCN7U7oSVh8FfQZ8+Pb+8rXPeKPM8vYXzx7dPn
+	 s7CFm/C8OkrhA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Hillf Danton <hdanton@sina.com>,
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	kernel test robot <oliver.sang@intel.com>,
 	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 627/752] mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
-Date: Sat, 28 Feb 2026 12:45:38 -0500
-Message-ID: <20260228174750.1542406-627-sashal@kernel.org>
+Subject: [PATCH 6.18 629/752] mm/slab: add rcu_barrier() to kvfree_rcu_barrier_on_cache()
+Date: Sat, 28 Feb 2026 12:45:40 -0500
+Message-ID: <20260228174750.1542406-629-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -69,120 +69,98 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,syzkaller.appspotmail.com,sina.com,vger.kernel.org,linux-foundation.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221093-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221094-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,d8d4c31d40f868eaea30];
 	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,sina.com:email]
-X-Rspamd-Queue-Id: 0AD861C7935
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: 5194D1C7C95
 X-Rspamd-Action: no action
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit 5747435e0fd474c24530ef1a6822f47e7d264b27 ]
+[ Upstream commit b55b423e8518361124ff0a9e15df431b3682ee4f ]
 
-When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
-vmalloc cleanup triggers expensive stack unwinding that acquires RCU read
-locks.  Processing a large purge_list without rescheduling can cause the
-task to hold CPU for extended periods (10+ seconds), leading to RCU stalls
-and potential OOM conditions.
+After we submit the rcu_free sheaves to call_rcu() we need to make sure
+the rcu callbacks complete. kvfree_rcu_barrier() does that via
+flush_all_rcu_sheaves() but kvfree_rcu_barrier_on_cache() doesn't. Fix
+that.
 
-The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
-where iterating through hundreds or thousands of vmap_area entries and
-freeing their associated shadow pages causes:
+This currently causes no issues because the caches with sheaves we have
+are never destroyed. The problem flagged by kernel test robot was
+reported for a patch that enables sheaves for (almost) all caches, and
+occurred only with CONFIG_KASAN. Harry Yoo found the root cause [1]:
 
-  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
-  ...
-  task:kworker/0:17 state:R running task stack:28840 pid:6229
-  ...
-  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
-  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
+  It turns out the object freed by sheaf_flush_unused() was in KASAN
+  percpu quarantine list (confirmed by dumping the list) by the time
+  __kmem_cache_shutdown() returns an error.
 
-Each call to kasan_release_vmalloc() can free many pages, and with
-page_owner tracking, each free triggers save_stack() which performs stack
-unwinding under RCU read lock.  Without yielding, this creates an
-unbounded RCU critical section.
+  Quarantined objects are supposed to be flushed by kasan_cache_shutdown(),
+  but things go wrong if the rcu callback (rcu_free_sheaf_nobarn()) is
+  processed after kasan_cache_shutdown() finishes.
 
-Add periodic cond_resched() calls within the loop to allow:
-- RCU grace periods to complete
-- Other tasks to run
-- Scheduler to preempt when needed
+  That's why rcu_barrier() in __kmem_cache_shutdown() didn't help,
+  because it's called after kasan_cache_shutdown().
 
-The fix uses need_resched() for immediate response under load, with a
-batch count of 32 as a guaranteed upper bound to prevent worst-case stalls
-even under light load.
+  Calling rcu_barrier() in kvfree_rcu_barrier_on_cache() guarantees
+  that it'll be added to the quarantine list before kasan_cache_shutdown()
+  is called. So it's a valid fix!
 
-Link: https://lkml.kernel.org/r/20260112103612.627247-1-kartikey406@gmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
-Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
-Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[1] https://lore.kernel.org/all/aWd6f3jERlrB5yeF@hyeyoo/
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202601121442.c530bed3-lkp@intel.com
+Fixes: 0f35040de593 ("mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction")
+Cc: stable@vger.kernel.org
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Tested-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmalloc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/slab_common.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 4fbd6e7dc479a..e2f526ad7abba 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2241,11 +2241,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
- 	reclaim_list_global(&decay_list);
- }
- 
-+#define KASAN_RELEASE_BATCH_SIZE 32
-+
- static void
- kasan_release_vmalloc_node(struct vmap_node *vn)
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index 87bde1d8916be..0f58265ca200e 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -2134,8 +2134,11 @@ EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
+  */
+ void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
  {
- 	struct vmap_area *va;
- 	unsigned long start, end;
-+	unsigned int batch_count = 0;
- 
- 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
- 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
-@@ -2255,6 +2258,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
- 			kasan_release_vmalloc(va->va_start, va->va_end,
- 				va->va_start, va->va_end,
- 				KASAN_VMALLOC_PAGE_RANGE);
+-	if (s->cpu_sheaves)
++	if (s->cpu_sheaves) {
+ 		flush_rcu_sheaves_on_cache(s);
++		rcu_barrier();
++	}
 +
-+		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
-+			cond_resched();
-+			batch_count = 0;
-+		}
- 	}
- 
- 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
+ 	/*
+ 	 * TODO: Introduce a version of __kvfree_rcu_barrier() that works
+ 	 * on a specific slab cache.
 -- 
 2.51.0
 
