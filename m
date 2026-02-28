@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-220694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EESAF4VDo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:35:33 +0100
+	id EKPAIk9Co2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:30:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007701C7290
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:35:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A201C7111
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:30:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D9B531B384A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A862A332A602
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C5A3F9337;
-	Sat, 28 Feb 2026 17:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA2B3F9355;
+	Sat, 28 Feb 2026 17:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gsk51/MS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVTYAUcQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFDA3F932C;
-	Sat, 28 Feb 2026 17:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20B53F934D;
+	Sat, 28 Feb 2026 17:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300574; cv=none; b=KgUzrLg7ch6vA72fzC9DZkgzoTqhAp0tdVlleP+QCGIlfsQUTrDUM3DCF0MMRODFRMY7ohgfEa14DFWJb/pYyqSq9IhDzjqiwPCiNffFQaLfuWeWTq/ad4ZBulZzd28wEAKu7aBgK40rsq4wUyG9FkSmMdnXlALZehPEds3QRS4=
+	t=1772300575; cv=none; b=nB4vEZLH5i05vgsvS4NXNOTZU16fukcDPdCZpHacpQxMARLQ+9HTiePFtBdnZ3P9w2JZQAO3gWV89VSFFDKcCUEBakfMCM/P0jIkg9kCsK+O7dqKEGiOiFs0UWVwrye6Y4JTr4zxeZt2mRNiclxiaZHi8p7SasVGzyGEZyksGpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300574; c=relaxed/simple;
-	bh=AILmNc2NOtZL77kxlQkF82GxIgCfmUK+qQkkpyrH21E=;
+	s=arc-20240116; t=1772300575; c=relaxed/simple;
+	bh=s3yDxUuIIIvd2yaG41DZabKKL38dVe+r2GKckN3hqmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtfuwcOeRAnu4j0uRK+xlHIk6Z4vzIC4l6vlgbo5EcI/GRDXfvcHOnqdH7K8ekyPfcqOXvOgq5M/em73S+3GU0aMVmcxHnrDggtUL2Rgby+KXthH0pPPDo3+q8vIAiSHC+3R5eWgYWeDFTciJjIvyLskHnKZZSZutFRjL57Wj5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gsk51/MS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00ACEC19423;
-	Sat, 28 Feb 2026 17:42:53 +0000 (UTC)
+	 MIME-Version; b=TYzKx1PFyGfkqLDzE+b/LJvZ8hK61lhvHPbzGmSMWwbVB9wEQEq5gpDLSPGTXuNIN9rWhpnH/mRcfhQW84RlopKTnux/7G5P75LEH2H55uDNMBQVYNv2YlSoq5xk5Osik9HFhvJbnGpCt68WDVm+8lnxkOdp0ThMHrikQ7Zg9wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVTYAUcQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A2BC19425;
+	Sat, 28 Feb 2026 17:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300574;
-	bh=AILmNc2NOtZL77kxlQkF82GxIgCfmUK+qQkkpyrH21E=;
+	s=k20201202; t=1772300575;
+	bh=s3yDxUuIIIvd2yaG41DZabKKL38dVe+r2GKckN3hqmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsk51/MSJpTkmM/pN7W+9F9+CNImOTiLNICTPxfUeCFlHLhouWrDAREtNqIDul8AG
-	 2eQ0F8avaZCZZtdS9TMiNcBoFBIJ/i68dHx9AqLDUyBo0pYjMSgguggF7De4f7/68d
-	 DymzeQlS2wnJmSb+96+P3xevf+rBq3fHnJyIi8ImVpCGwC9Or4IvKHMAfxC2u4zXFj
-	 ayekJOG1QnR/HJT108XXNzNjLmmVMVNeMOJObfkdd1v/TuAvbXjYWtKn3QT0VWU1HV
-	 FH9kIPw3QI9r/NczTmXZv3w9DFXO+sjJTL6sE79qSzwvJBRdWkWRAq2mN9LZrm0xIK
-	 i0FHdRj8yDecA==
+	b=bVTYAUcQkf2qVItTCgig5BH3VnQ5tZiA/+SL+LhzPvhiepGa8TD9KPYRox6DmWCAP
+	 50hfBdHQxSKmfIAkZRMqyv7sz+kxg16Xb1XxrbCvuuMCa8Lsq0wvCbOHIZjRXWprJA
+	 hus8roFgfDkFNetXn7zRCsssLqtFDkmRP6VdUdAOkUbkt1l20FDc/rczqAUJJ6JZYU
+	 QOlSRP7gnoiMh28HxkWEBdp8vZ8pynhNjSkyqQC2mHD8cHci9O6j/kw5u/RaW5Tnr9
+	 xCuiMCkCiqS0te++yMRLDzdFHwoDqnnu4U1HjYK7HJWS//3cd+WCXi2sArHSPe2A+G
+	 /QrAt4atm9pVA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alain Volmat <alain.volmat@foss.st.com>,
+Cc: Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 615/844] media: stm32: dcmipp: byteproc: disable compose for all bayers
-Date: Sat, 28 Feb 2026 12:28:48 -0500
-Message-ID: <20260228173244.1509663-616-sashal@kernel.org>
+Subject: [PATCH 6.19 616/844] media: i2c: ov01a10: Fix digital gain range
+Date: Sat, 28 Feb 2026 12:28:49 -0500
+Message-ID: <20260228173244.1509663-617-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,72 +68,67 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220694-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220695-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable,cisco];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[st.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 007701C7290
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: B8A201C7111
 X-Rspamd-Action: no action
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Mehdi Djait <mehdi.djait@linux.intel.com>
 
-[ Upstream commit 3363aa2640f1738ad7fc56ea56f5e0301ad97196 ]
+[ Upstream commit 91848c99ed6a98daf77f4cb7d44cf3f13bc6998f ]
 
-Avoid possibility to perform compose on all frames which mbus code is
-within the bayer range or jpeg format.
+Digital gain wraps-around at the maximum of 16838 / 0x3fff.
+Fix the maximum digital gain by setting it to 0x3fff.
 
-Fixes: 822c72eb1519 ("media: stm32: dcmipp: add bayer 10~14 bits formats")
+Signed-off-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Fixes: 0827b58dabff ("media: i2c: add ov01a10 image sensor driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/st/stm32/stm32-dcmipp/dcmipp-byteproc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/media/i2c/ov01a10.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-byteproc.c b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-byteproc.c
-index db76a02a1848a..ec1d773d5ad12 100644
---- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-byteproc.c
-+++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-byteproc.c
-@@ -130,11 +130,8 @@ static void dcmipp_byteproc_adjust_compose(struct v4l2_rect *r,
- 	r->left = 0;
+diff --git a/drivers/media/i2c/ov01a10.c b/drivers/media/i2c/ov01a10.c
+index 3ad516e4d3698..c1a7373a6311c 100644
+--- a/drivers/media/i2c/ov01a10.c
++++ b/drivers/media/i2c/ov01a10.c
+@@ -57,7 +57,7 @@
+ #define OV01A10_REG_DIGITAL_GAIN_GR	0x3513
+ #define OV01A10_REG_DIGITAL_GAIN_R	0x3516
+ #define OV01A10_DGTL_GAIN_MIN		0
+-#define OV01A10_DGTL_GAIN_MAX		0x3ffff
++#define OV01A10_DGTL_GAIN_MAX		0x3fff
+ #define OV01A10_DGTL_GAIN_STEP		1
+ #define OV01A10_DGTL_GAIN_DEFAULT	1024
  
- 	/* Compose is not possible for JPEG or Bayer formats */
--	if (fmt->code == MEDIA_BUS_FMT_JPEG_1X8 ||
--	    fmt->code == MEDIA_BUS_FMT_SBGGR8_1X8 ||
--	    fmt->code == MEDIA_BUS_FMT_SGBRG8_1X8 ||
--	    fmt->code == MEDIA_BUS_FMT_SGRBG8_1X8 ||
--	    fmt->code == MEDIA_BUS_FMT_SRGGB8_1X8) {
-+	if (fmt->code >= MEDIA_BUS_FMT_SBGGR8_1X8 &&
-+	    fmt->code <= MEDIA_BUS_FMT_JPEG_1X8) {
- 		r->width = fmt->width;
- 		r->height = fmt->height;
- 		return;
 -- 
 2.51.0
 
