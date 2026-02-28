@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEK5JDYwo2nb+AQAu9opvQ
-	(envelope-from <stable+bounces-220294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:13:10 +0100
+	id WNdvC0Ewo2nb+AQAu9opvQ
+	(envelope-from <stable+bounces-220295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:13:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0CF81C58B7
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6F61C58D4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:13:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8776332B26C4
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:05:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9884932C1C34
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52589386EDA;
-	Sat, 28 Feb 2026 17:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA8C388EB7;
+	Sat, 28 Feb 2026 17:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GfEUAHL4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uj73Vq80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FFC3446B0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002FA388EAF;
 	Sat, 28 Feb 2026 17:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300198; cv=none; b=TJztsOGZjjHYGlQrPh8ljEioFRhwFQKsZj+dizRwFbtadS3EISXlmG0ySgRVALsWwM/KBTwxUbStrWlUOXHHIvejRxidjSBbwT6PmCxX4VhxfghYSA8+pGqlr7ejoSJ+HyTHCKzzokkmiNhP2EsAN8aDi459SA5jkTEmF+VY/rQ=
+	t=1772300199; cv=none; b=sr+fVsz0NnYi2FIZu44XMd5SFqYPrBmnFMql+USBsPJzrquuu+XS+pge0KAzDfQVaZYPRSYMx4t64B7InY3ktzppBPH3xvJY+8+OscNZiEhL6D3f7wM4u0EjF6mEtTTfgm1CPYIqgcbLw0W0lt/oHhE1ohMDpRCS4QwKCD/gGNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300198; c=relaxed/simple;
-	bh=FvsW4QBgQq6gs/tk8hTh8nBELhR0NwkQ/WSSZ1LKiCU=;
+	s=arc-20240116; t=1772300199; c=relaxed/simple;
+	bh=PydTwEqeCbZg9HU66Qfhd+8E0cz2J+FcRHJw4mffmPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRUx+GjYrpeYEhCc+AF2Fkar0TL699T1sQQQ06pPiEJj+wcfxPccPxlUYT7HmrpbEU/jL4x6CSkwXwksSMD0xEW5I9i0/4XY+6WF7SiUxKxsLF6Bj4OsvOHX7PmPEx51lzcfApXI4U4Vi6yC8VC2s5m82W9pQdqzpkuGfOOVrE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GfEUAHL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4A1C116D0;
-	Sat, 28 Feb 2026 17:36:37 +0000 (UTC)
+	 MIME-Version; b=P9Vs8c4/h7L7+ihvUuj/BUyBCogJASpAs38m3uQBz7uHKT33I+NrDxa2OmIS3hwkCXj+O6eZcpXK/ZdYDsVusck1LPXNTdTNVSw3fj4kfHGsPfUcoepV1/3ftP6FiJh5QyhYzsJcG8aaBwdJ56ODiIJ8y3t0oXwBY3BRFpyYclA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uj73Vq80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37132C19424;
+	Sat, 28 Feb 2026 17:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300197;
-	bh=FvsW4QBgQq6gs/tk8hTh8nBELhR0NwkQ/WSSZ1LKiCU=;
+	s=k20201202; t=1772300198;
+	bh=PydTwEqeCbZg9HU66Qfhd+8E0cz2J+FcRHJw4mffmPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GfEUAHL4QFnKfvC4h2nvYhyRtb6OCIgK8w8hXZHIORZjrwqgv7RkKd8bqwEX9BSiC
-	 z38xKwd6F7ldvNbXLfFri1ykm/4tJDzr/CMViTWMIKiQP3ge+6YzQBy0ILneqtULVT
-	 1R0sgj6GwcrqBaCF4KIBwQf6n1R8TFl5/dq9k7X1Dl4BjpesRmHOfH7pPwH+mne3sc
-	 Eh2RwWiL5of4cxK4VekPMUlNT9vbO/mjmlqsYsPg9qRNN4R/d9tgl8pQxKZJ5DQnL2
-	 htv2xmZEsglpooc2VkatoT4IHsPGctoFcaVUWCS4+QtQSrQWy1sCQJ1wY6OTHrpTx8
-	 cMn/y6bx7pnHA==
+	b=Uj73Vq80Ln9lV6CbxcCvT3ss8eMFzEv27pUlM373mUfSQiNIx4iE9uANSlkplZPPk
+	 VM/sVlrnVJk1B6qGcLcE579Z7jVi8X7JBlZe/uiqj8iWBCTXZrBoEhCm5cJO84p1o7
+	 8dYqNI71SdTQKxiOoKxM5DD196JvL8AxjQ9toHdyTNWZybtEhDcdvXh/btNIPSALoa
+	 J8gOStHavylnpF6n3nqdE+XnY6OB9ti/mSN2Uk0Lqtn42VdgFddeVq2D/0JFxsKqwP
+	 mzM/7ZtWW5i6TpBKeaTlHxZEnuRFpVoS9/SIxgG1eW3E6mBsaatRPGUO19ADw2sb6t
+	 EcPrZJNn8qxmg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Damien Dagorn <damien.dagorn29@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Billy Tsai <billy_tsai@aspeedtech.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 216/844] ALSA: hda/realtek: fix LG Gram Style 14 speakers
-Date: Sat, 28 Feb 2026 12:22:09 -0500
-Message-ID: <20260228173244.1509663-217-sashal@kernel.org>
+Subject: [PATCH 6.19 217/844] gpio: aspeed-sgpio: Change the macro to support deferred probe
+Date: Sat, 28 Feb 2026 12:22:10 -0500
+Message-ID: <20260228173244.1509663-218-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,268 +67,84 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,suse.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220294-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220295-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F0CF81C58B7
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9A6F61C58D4
 X-Rspamd-Action: no action
 
-From: Damien Dagorn <damien.dagorn29@gmail.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-[ Upstream commit cc051fbd7f40226cc407558bc97c5099513e8657 ]
+[ Upstream commit e18533b023ec7a33488bcf33140ce69bbba2894f ]
 
-The LG Gram Style 14 (14Z90RS-G.AD77F, SSID 1854:0490) with Realtek ALC298
-shows normal routing and volume changes, but internal speakers stay silent
-unless a userland HDA-verb workaround is applied.
+Use module_platform_driver() to replace module_platform_driver_probe().
+The former utilizes platform_driver_register(), which allows the driver to
+defer probing when it doesn't acquire the necessary resources due to probe
+order. In contrast, the latter uses __platform_driver_probe(), which
+includes the comment "Note that this is incompatible with deferred
+probing." Since our SGPIO driver requires access to the clock resource, the
+former is more suitable.
 
-Add a dedicated quirk for the LG Gram Style 14 that programs the codec
-coefficient sequence used by the known workaround and enables the speaker
-amps only during playback.
-
-Tested-by: Damien Dagorn <damien.dagorn29@gmail.com>
-Signed-off-by: Damien Dagorn <damien.dagorn29@gmail.com>
-Link: https://lore.kernel.org/CAN59QMUhd4kHrkRoJA6VzEr2VKezN2yjHnANaQoZn2-Bnwe3bQ@mail.gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Link: https://lore.kernel.org/r/20260123-upstream_sgpio-v2-1-69cfd1631400@aspeedtech.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 170 ++++++++++++++++++++++++++++++
- 1 file changed, 170 insertions(+)
+ drivers/gpio/gpio-aspeed-sgpio.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index c9f59e62ee022..b6fae275919c6 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -1854,6 +1854,163 @@ static void alc298_samsung_v2_init_amps(struct hda_codec *codec,
- 	spec->gen.pcm_playback_hook = alc298_samsung_v2_playback_hook;
+diff --git a/drivers/gpio/gpio-aspeed-sgpio.c b/drivers/gpio/gpio-aspeed-sgpio.c
+index 7622f9e9f54af..318cd0e397416 100644
+--- a/drivers/gpio/gpio-aspeed-sgpio.c
++++ b/drivers/gpio/gpio-aspeed-sgpio.c
+@@ -516,7 +516,7 @@ static const struct of_device_id aspeed_sgpio_of_table[] = {
+ 
+ MODULE_DEVICE_TABLE(of, aspeed_sgpio_of_table);
+ 
+-static int __init aspeed_sgpio_probe(struct platform_device *pdev)
++static int aspeed_sgpio_probe(struct platform_device *pdev)
+ {
+ 	u32 nr_gpios, sgpio_freq, sgpio_clk_div, gpio_cnt_regval, pin_mask;
+ 	const struct aspeed_sgpio_pdata *pdata;
+@@ -611,11 +611,12 @@ static int __init aspeed_sgpio_probe(struct platform_device *pdev)
  }
  
-+/* LG Gram Style 14: program vendor coef sequence used by HDA-verb workaround */
-+struct alc298_lg_gram_style_seq {
-+	unsigned short verb;
-+	unsigned short idx;
-+	unsigned short val;
-+};
-+
-+static void alc298_lg_gram_style_coef_write(struct hda_codec *codec,
-+					    unsigned int verb,
-+					    unsigned int idx,
-+					    unsigned int val)
-+{
-+	snd_hda_codec_write(codec, 0x20, 0, AC_VERB_SET_COEF_INDEX, 0x23);
-+	snd_hda_codec_write(codec, 0x20, 0, verb, idx);
-+	snd_hda_codec_write(codec, 0x20, 0, AC_VERB_SET_PROC_COEF, 0x00);
-+	snd_hda_codec_write(codec, 0x20, 0, AC_VERB_SET_PROC_COEF, val);
-+	snd_hda_codec_write(codec, 0x20, 0, AC_VERB_SET_PROC_COEF, 0xb011);
-+}
-+
-+static void alc298_lg_gram_style_run_seq(struct hda_codec *codec,
-+					 const struct alc298_lg_gram_style_seq *seq,
-+					 int seq_size)
-+{
-+	int i;
-+
-+	for (i = 0; i < seq_size; i++)
-+		alc298_lg_gram_style_coef_write(codec, seq[i].verb,
-+						seq[i].idx, seq[i].val);
-+}
-+
-+/* Coef sequences derived from the HDA-verb workaround for this model. */
-+static const struct alc298_lg_gram_style_seq alc298_lg_gram_style_preinit_seq[] = {
-+	{ 0x420, 0x00, 0x01 },
-+};
-+
-+static const struct alc298_lg_gram_style_seq alc298_lg_gram_style_disable_seq[] = {
-+	{ 0x423, 0xff, 0x00 },
-+	{ 0x420, 0x3a, 0x80 },
-+};
-+
-+static const struct alc298_lg_gram_style_seq alc298_lg_gram_style_enable_seq[] = {
-+	{ 0x420, 0x3a, 0x81 },
-+	{ 0x423, 0xff, 0x01 },
-+};
-+
-+static const struct alc298_lg_gram_style_seq alc298_lg_gram_style_init_seq_38[] = {
-+	{ 0x423, 0xe1, 0x00 }, { 0x420, 0x12, 0x6f }, { 0x420, 0x14, 0x00 },
-+	{ 0x420, 0x1b, 0x01 }, { 0x420, 0x1d, 0x01 }, { 0x420, 0x1f, 0xfe },
-+	{ 0x420, 0x21, 0x00 }, { 0x420, 0x22, 0x10 }, { 0x420, 0x3d, 0x05 },
-+	{ 0x420, 0x3f, 0x03 }, { 0x420, 0x50, 0x2c }, { 0x420, 0x76, 0x0e },
-+	{ 0x420, 0x7c, 0x4a }, { 0x420, 0x81, 0x03 }, { 0x423, 0x99, 0x03 },
-+	{ 0x423, 0xa4, 0xb5 }, { 0x423, 0xa5, 0x01 }, { 0x423, 0xba, 0x94 },
-+};
-+
-+static const struct alc298_lg_gram_style_seq alc298_lg_gram_style_init_seq_39[] = {
-+	{ 0x423, 0xe1, 0x00 }, { 0x420, 0x12, 0x6f }, { 0x420, 0x14, 0x00 },
-+	{ 0x420, 0x1b, 0x02 }, { 0x420, 0x1d, 0x02 }, { 0x420, 0x1f, 0xfd },
-+	{ 0x420, 0x21, 0x01 }, { 0x420, 0x22, 0x10 }, { 0x420, 0x3d, 0x05 },
-+	{ 0x420, 0x3f, 0x03 }, { 0x420, 0x50, 0x2c }, { 0x420, 0x76, 0x0e },
-+	{ 0x420, 0x7c, 0x4a }, { 0x420, 0x81, 0x03 }, { 0x423, 0x99, 0x03 },
-+	{ 0x423, 0xa4, 0xb5 }, { 0x423, 0xa5, 0x01 }, { 0x423, 0xba, 0x94 },
-+};
-+
-+static const struct alc298_lg_gram_style_seq alc298_lg_gram_style_init_seq_3c[] = {
-+	{ 0x423, 0xe1, 0x00 }, { 0x420, 0x12, 0x6f }, { 0x420, 0x14, 0x00 },
-+	{ 0x420, 0x1b, 0x01 }, { 0x420, 0x1d, 0x01 }, { 0x420, 0x1f, 0xfe },
-+	{ 0x420, 0x21, 0x00 }, { 0x420, 0x22, 0x10 }, { 0x420, 0x3d, 0x05 },
-+	{ 0x420, 0x3f, 0x03 }, { 0x420, 0x50, 0x2c }, { 0x420, 0x76, 0x0e },
-+	{ 0x420, 0x7c, 0x4a }, { 0x420, 0x81, 0x03 }, { 0x423, 0xba, 0x8d },
-+};
-+
-+static const struct alc298_lg_gram_style_seq alc298_lg_gram_style_init_seq_3d[] = {
-+	{ 0x423, 0xe1, 0x00 }, { 0x420, 0x12, 0x6f }, { 0x420, 0x14, 0x00 },
-+	{ 0x420, 0x1b, 0x02 }, { 0x420, 0x1d, 0x02 }, { 0x420, 0x1f, 0xfd },
-+	{ 0x420, 0x21, 0x01 }, { 0x420, 0x22, 0x10 }, { 0x420, 0x3d, 0x05 },
-+	{ 0x420, 0x3f, 0x03 }, { 0x420, 0x50, 0x2c }, { 0x420, 0x76, 0x0e },
-+	{ 0x420, 0x7c, 0x4a }, { 0x420, 0x81, 0x03 }, { 0x423, 0xba, 0x8d },
-+};
-+
-+struct alc298_lg_gram_style_amp_desc {
-+	unsigned char nid;
-+	const struct alc298_lg_gram_style_seq *init_seq;
-+	int init_seq_size;
-+};
-+
-+static const struct alc298_lg_gram_style_amp_desc alc298_lg_gram_style_amps[] = {
-+	{ 0x38, alc298_lg_gram_style_init_seq_38,
-+		ARRAY_SIZE(alc298_lg_gram_style_init_seq_38) },
-+	{ 0x39, alc298_lg_gram_style_init_seq_39,
-+		ARRAY_SIZE(alc298_lg_gram_style_init_seq_39) },
-+	{ 0x3c, alc298_lg_gram_style_init_seq_3c,
-+		ARRAY_SIZE(alc298_lg_gram_style_init_seq_3c) },
-+	{ 0x3d, alc298_lg_gram_style_init_seq_3d,
-+		ARRAY_SIZE(alc298_lg_gram_style_init_seq_3d) },
-+};
-+
-+static void alc298_lg_gram_style_enable_amps(struct hda_codec *codec)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	int i;
-+
-+	for (i = 0; i < spec->num_speaker_amps; i++) {
-+		alc_write_coef_idx(codec, 0x22, alc298_lg_gram_style_amps[i].nid);
-+		alc298_lg_gram_style_run_seq(codec,
-+					     alc298_lg_gram_style_enable_seq,
-+					     ARRAY_SIZE(alc298_lg_gram_style_enable_seq));
-+	}
-+}
-+
-+static void alc298_lg_gram_style_disable_amps(struct hda_codec *codec)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	int i;
-+
-+	for (i = 0; i < spec->num_speaker_amps; i++) {
-+		alc_write_coef_idx(codec, 0x22, alc298_lg_gram_style_amps[i].nid);
-+		alc298_lg_gram_style_run_seq(codec,
-+					     alc298_lg_gram_style_disable_seq,
-+					     ARRAY_SIZE(alc298_lg_gram_style_disable_seq));
-+	}
-+}
-+
-+static void alc298_lg_gram_style_playback_hook(struct hda_pcm_stream *hinfo,
-+					       struct hda_codec *codec,
-+					       struct snd_pcm_substream *substream,
-+					       int action)
-+{
-+	if (action == HDA_GEN_PCM_ACT_OPEN)
-+		alc298_lg_gram_style_enable_amps(codec);
-+	if (action == HDA_GEN_PCM_ACT_CLOSE)
-+		alc298_lg_gram_style_disable_amps(codec);
-+}
-+
-+static void alc298_lg_gram_style_init_amps(struct hda_codec *codec)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	int i;
-+
-+	spec->num_speaker_amps = ARRAY_SIZE(alc298_lg_gram_style_amps);
-+
-+	for (i = 0; i < spec->num_speaker_amps; i++) {
-+		alc_write_coef_idx(codec, 0x22, alc298_lg_gram_style_amps[i].nid);
-+		alc298_lg_gram_style_run_seq(codec,
-+					     alc298_lg_gram_style_preinit_seq,
-+					     ARRAY_SIZE(alc298_lg_gram_style_preinit_seq));
-+		alc298_lg_gram_style_run_seq(codec,
-+					     alc298_lg_gram_style_disable_seq,
-+					     ARRAY_SIZE(alc298_lg_gram_style_disable_seq));
-+		alc298_lg_gram_style_run_seq(codec,
-+					     alc298_lg_gram_style_amps[i].init_seq,
-+					     alc298_lg_gram_style_amps[i].init_seq_size);
-+		alc_write_coef_idx(codec, 0x89, 0x0);
-+	}
-+
-+	spec->gen.pcm_playback_hook = alc298_lg_gram_style_playback_hook;
-+}
-+
- static void alc298_fixup_samsung_amp_v2_2_amps(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
- {
-@@ -1868,6 +2025,13 @@ static void alc298_fixup_samsung_amp_v2_4_amps(struct hda_codec *codec,
- 		alc298_samsung_v2_init_amps(codec, 4);
- }
- 
-+static void alc298_fixup_lg_gram_style_14(struct hda_codec *codec,
-+					  const struct hda_fixup *fix, int action)
-+{
-+	if (action == HDA_FIXUP_ACT_PROBE)
-+		alc298_lg_gram_style_init_amps(codec);
-+}
-+
- static void gpio2_mic_hotkey_event(struct hda_codec *codec,
- 				   struct hda_jack_callback *event)
- {
-@@ -3764,6 +3928,7 @@ enum {
- 	ALC298_FIXUP_SAMSUNG_AMP,
- 	ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS,
- 	ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS,
-+	ALC298_FIXUP_LG_GRAM_STYLE_14,
- 	ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET,
- 	ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET,
- 	ALC295_FIXUP_ASUS_MIC_NO_PRESENCE,
-@@ -5459,6 +5624,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc298_fixup_samsung_amp_v2_4_amps
+ static struct platform_driver aspeed_sgpio_driver = {
++	.probe = aspeed_sgpio_probe,
+ 	.driver = {
+ 		.name = KBUILD_MODNAME,
+ 		.of_match_table = aspeed_sgpio_of_table,
  	},
-+	[ALC298_FIXUP_LG_GRAM_STYLE_14] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc298_fixup_lg_gram_style_14
-+	},
- 	[ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET] = {
- 		.type = HDA_FIXUP_VERBS,
- 		.v.verbs = (const struct hda_verb[]) {
-@@ -7406,6 +7575,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1854, 0x0488, "LG gram 16 (16Z90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x1854, 0x0489, "LG gram 16 (16Z90R-A)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x1854, 0x048a, "LG gram 17 (17ZD90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
-+	SND_PCI_QUIRK(0x1854, 0x0490, "LG Gram Style 14 (14Z90RS)", ALC298_FIXUP_LG_GRAM_STYLE_14),
- 	SND_PCI_QUIRK(0x19e5, 0x3204, "Huawei MACH-WX9", ALC256_FIXUP_HUAWEI_MACH_WX9_PINS),
- 	SND_PCI_QUIRK(0x19e5, 0x320f, "Huawei WRT-WX9 ", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x19e5, 0x3212, "Huawei KLV-WX9 ", ALC256_FIXUP_ACER_HEADSET_MIC),
+ };
+ 
+-module_platform_driver_probe(aspeed_sgpio_driver, aspeed_sgpio_probe);
++module_platform_driver(aspeed_sgpio_driver);
+ MODULE_DESCRIPTION("Aspeed Serial GPIO Driver");
 -- 
 2.51.0
 
