@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCXFMtBGo2lM/AQAu9opvQ
-	(envelope-from <stable+bounces-220360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:49:36 +0100
+	id KLuSG2I4o2lx+gQAu9opvQ
+	(envelope-from <stable+bounces-220361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:48:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BA31C7658
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:49:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42CB1C644F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:48:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 70946318DAC0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:16:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6943133DCF6A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D7639FE85;
-	Sat, 28 Feb 2026 17:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36FA39FEA3;
+	Sat, 28 Feb 2026 17:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epxD7boY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0/koyQe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2E6480331;
-	Sat, 28 Feb 2026 17:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665A939FE9B;
+	Sat, 28 Feb 2026 17:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300257; cv=none; b=dqFgNVfATGyXjUQx9/S7q+PHl0zMyir9DzL3zaFppUef6LxCnz83AcQLY4oHM/EeTcAQwrgDSCWNxk3zodg3yv3nWU1xE4a0PpuARii6QdvANL3slxrIv9GWQoDGbUEiUB48g8LyEs/o6CxNIraH5xd/jTeMM8syuAEKnjvgviA=
+	t=1772300258; cv=none; b=ezdC333u2t78ZJZksM1FS6QBFhbkK8PS61VseklJvCberYJ2S8LerHYZlZZcrGCrkOkv/+lAhPHMHMjzvXo7Nlsgrpfy44FEkCSIDO2eDC9y3zc6yiS/IHFSuf9l82CFgAW7ydAb/i/oWgZc41JxcMx5oSkTCOuFqK7YmMp1VC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300257; c=relaxed/simple;
-	bh=S+vAKVZSypWTg0uCfcPyfYz9RZ+EQOAVcvk32yYo9cg=;
+	s=arc-20240116; t=1772300258; c=relaxed/simple;
+	bh=uOGOIZr61Qo5YmxJYttOr2GDOKOLciM0HyzmGKXTOvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKn/71VL0qiDkgcrn4wshWeotxVNSZOz4tFwXAPM0jwPjQczWTa+TisHswmc+x+4Cn3C6Ywb+C/4K4jUQMjTweAQt6VHTZaxQEDR4vCZTQOUMHPQmDWDhiKF7QTyB5yrJHssH7B3xUe8t/yCiFoNtO7RUTZ4AcoJ88nwNY1pr7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epxD7boY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFCEC19424;
-	Sat, 28 Feb 2026 17:37:36 +0000 (UTC)
+	 MIME-Version; b=fOjWaSsqa6ayj9eyQ2MLe5q25PSaEFWgs2YraSvZTeyvAr7JYI3bqbM+jgyVQdu70K3XtPWcOw+CZeanw8nzGkIjxz5Nmmf7cFUO4Babd8KdeTiOAAp1+FcX1SAfU3x+WyM5aHF8MynPPHwi0TFEkLEu/Pt2pU9wdOfvamId6Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0/koyQe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B994C19423;
+	Sat, 28 Feb 2026 17:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300257;
-	bh=S+vAKVZSypWTg0uCfcPyfYz9RZ+EQOAVcvk32yYo9cg=;
+	s=k20201202; t=1772300258;
+	bh=uOGOIZr61Qo5YmxJYttOr2GDOKOLciM0HyzmGKXTOvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=epxD7boYJe050N2t3OkFg+OV/iCg59y7ilpXlwNe9ny05VWsxFPSVF4j5Rv/T65Lq
-	 RiP8zc3yThjh7Ut5Uu0Yi3sHUOzXlrfPy9CcaMPSI+i7XoPlUSl3UaGJV86ZlVlslo
-	 c3L2dBNydZyY6kr7ZJ+SWLAM7rT4z5h+qMJVKLjBWN+EAHkZ2JsiNMNzLNShzvbyu0
-	 FAfZzKj+TS/3Mf4Cw2dsBAFXgN2WLfQCSAFFjelVduod32YsDp+tsw9Lt+xfNoE6gn
-	 t3VFrBIg9wprCfxakaiYUJdhUYZ+h+T4lN1f+nSJOXyHEc7JtNgjHmtsX8mRx1vBPG
-	 IgYOalBna5hcg==
+	b=X0/koyQezxYN2sa92X37FggHeqElmUfxTZHK6wSWfpwCQmf/IeOui19hFApmuItQP
+	 +KwWKkIgKffruoGKo8jeW6ZfGxv5RakLI2l/Rl06DFi7b8eYPOeJKE5/1UAU6Vx/m0
+	 ++afw9wuZ4t6YUoD7QQMc+xOVY+zD89+2vBnuZ97rHLcSXzdTLdpNT+cSbMMD+ZWnU
+	 I/0IA7qrtDDOFoZCpnYZJE6emVvqE6kcfImUFhFmd4N3/Y2MgT5CXYDWoSL0uon2C8
+	 pLc0EQnlxcRO4FnRyNW1QCUyv0RUtqZ1YQNnjyLzT7OUTir0etkwQLkBGHDfGscLHP
+	 xHJmhR6vOHLiw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 282/844] wifi: cfg80211: allow only one NAN interface, also in multi radio
-Date: Sat, 28 Feb 2026 12:23:15 -0500
-Message-ID: <20260228173244.1509663-283-sashal@kernel.org>
+Subject: [PATCH 6.19 283/844] ipv6: annotate data-races in ip6_multipath_hash_{policy,fields}()
+Date: Sat, 28 Feb 2026 12:23:16 -0500
+Message-ID: <20260228173244.1509663-284-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,71 +72,63 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-220361-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220360-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: E6BA31C7658
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E42CB1C644F
 X-Rspamd-Action: no action
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e69fda4d07701373354e52b0321bd40311d743d0 ]
+[ Upstream commit 03e9d91dd64e2f5ea632df5d59568d91757efc4d ]
 
-According to Wi-Fi Aware (TM) 4.0 specification 2.8, A NAN device can
-have one NAN management interface. This applies also to multi radio
-devices.
-The current code allows a driver to support more than one NAN interface,
-if those are not in the same radio.
+Add missing READ_ONCE() when reading sysctl values.
 
-Fix it.
-
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260107135129.fdaecec0fe8a.I246b5ba6e9da3ec1481ff197e47f6ce0793d7118@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260115094141.3124990-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/core.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ include/net/ipv6.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index a04f96dc9a1d7..16ccf6fb28b21 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -661,12 +661,8 @@ int wiphy_verify_iface_combinations(struct wiphy *wiphy,
- 				    c->limits[j].max > 1))
- 				return -EINVAL;
- 
--			/* Only a single NAN can be allowed, avoid this
--			 * check for multi-radio global combination, since it
--			 * hold the capabilities of all radio combinations.
--			 */
--			if (!combined_radio &&
--			    WARN_ON(types & BIT(NL80211_IFTYPE_NAN) &&
-+			/* Only a single NAN can be allowed */
-+			if (WARN_ON(types & BIT(NL80211_IFTYPE_NAN) &&
- 				    c->limits[j].max > 1))
- 				return -EINVAL;
- 
+diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+index 6a933690e0ff5..e759a00dbde19 100644
+--- a/include/net/ipv6.h
++++ b/include/net/ipv6.h
+@@ -1010,11 +1010,11 @@ static inline int ip6_default_np_autolabel(struct net *net)
+ #if IS_ENABLED(CONFIG_IPV6)
+ static inline int ip6_multipath_hash_policy(const struct net *net)
+ {
+-	return net->ipv6.sysctl.multipath_hash_policy;
++	return READ_ONCE(net->ipv6.sysctl.multipath_hash_policy);
+ }
+ static inline u32 ip6_multipath_hash_fields(const struct net *net)
+ {
+-	return net->ipv6.sysctl.multipath_hash_fields;
++	return READ_ONCE(net->ipv6.sysctl.multipath_hash_fields);
+ }
+ #else
+ static inline int ip6_multipath_hash_policy(const struct net *net)
 -- 
 2.51.0
 
