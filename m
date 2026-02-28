@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDL2CmY5o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:52:22 +0100
+	id AGP8MV88o2nO+gQAu9opvQ
+	(envelope-from <stable+bounces-220488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:05:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD96C1C657D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:52:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DFA1C694F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:05:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8577F31EC9F7
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:36:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 97CA8310C82F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9660335DA74;
-	Sat, 28 Feb 2026 17:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665CE3C6C61;
+	Sat, 28 Feb 2026 17:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V61Rnmda"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fU6zCZWn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5973835DA6A;
-	Sat, 28 Feb 2026 17:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DF63C5CA5;
+	Sat, 28 Feb 2026 17:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300373; cv=none; b=mapInrJlxtH+Fxw/I8uJ2awt0C9ASTlbsFpUu5P0TNE3f7rT5VaEIU26/1Ej37XLhyP1k4ANPzxX40MGFG7VHfl0VbaeW9eqMF0aL89m33X/NKOf7ZabHtscOmW1B19G9Z1itShaMJQgd4sF95oGBi0AcL4VieOjyLHCtG8qjK8=
+	t=1772300374; cv=none; b=tpucmjN3MNPsildPu7mRNZLTGjneZd020B6ZkDxsIIrMsa2Kgp4BVKXlHWd6mHZ1BTn2shCTOKa9pVAwnxWy2vjh/nJWlByf5O+f3vCDCgrQwmaMCJYoqAwG//oz5DKcMZ0INlt6rs/8ZJUq56AaGFs1ubYVPCYAWOtXmF7xGk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300373; c=relaxed/simple;
-	bh=lvdZkfkW74kRgGoxKJBGpZCeXsBUgyeAH0BQerntK04=;
+	s=arc-20240116; t=1772300374; c=relaxed/simple;
+	bh=p8922vCtxBCG5X3sTHGfzms+45v893kkBlH0TnDgQZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgykEsYn93Zhg47uXmCHqJ9w9js0wSmTN6Al++8rqsDVRgmZAsRxBF6bm4vV24YLf+Tm8n9MXugVU/huG9EvT9ETbmLDG9AU44wMO04O3wF6UM3S3aePIi8bNK8E+0qu0IOg7UR/ljdUri0m8NoRNtpp73ACu3zDbuxqHpPJVYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V61Rnmda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7360CC19424;
-	Sat, 28 Feb 2026 17:39:32 +0000 (UTC)
+	 MIME-Version; b=hgvEQOAlHka6gYMCF4bRh5c/KK/RL0Cvjm6K7wESY0cEh7J7HZE5GZnVz2t4vexo5K5yPi3d00RQ3jN5yIWLakwZa359TEoTqb87W9UJEJvhIHdLWeDB3tTdeMkyak4wf6S/KXH5AZOiPaIqEKPF0EqfaV+wGl7lRFb4MDI38Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fU6zCZWn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608C9C116D0;
+	Sat, 28 Feb 2026 17:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300373;
-	bh=lvdZkfkW74kRgGoxKJBGpZCeXsBUgyeAH0BQerntK04=;
+	s=k20201202; t=1772300374;
+	bh=p8922vCtxBCG5X3sTHGfzms+45v893kkBlH0TnDgQZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V61RnmdazZD4rEk7ILE1u+3cPa+4HOAGgSRKV3INOUlmBUrTeMSlQLowSdpMyC8Y8
-	 gh3FvrBpdXx9qE9ksfYQmZaianQhqdvifuhGbn1FdujCpjVY5l0/jlZFGJyeo8cufs
-	 Iym45me2QEfoqTOkEbTkAtMtOignw+MBPTYDqbrfumMcDaT1gR4FyWEZOR0KZuWJdg
-	 1RcKgS9SSvR8VkWzPl+B5rfrdVzVYmQKbgEEs+M8HX44DexoNU1l6HX+P7QpOtJsa6
-	 +6lCuL/FdNN2XWb6RWbePULJhhLdb2mGMbJgYWQ/bNPXUQm6nZRcSUmvvAIYitrovN
-	 U1Zxk8TlVCmzg==
+	b=fU6zCZWnt08WFbwYF0kAyyc+joSwgnhlxv2x980kB7VNCUoH3NoVwJvtcJDsqZP8J
+	 hq1aokkYhI+g0w50Vdi0NWS6aLIYIuqEPETXtvlRimJ0k5jvVV3PgtsbO3c76Py0xD
+	 m89IqWcAcX8Ke+Y0Keh6aZFx2b7Tn7xKQOL0zdD5KbQlqXIlmqfGLquVP9nbicB/ku
+	 Wcv3ZDfc8qw8gTiiAJ4iY5uSiNFIk934I2IGVs1ZLGX3yn0qMGm43tLG3YVI4lLwHx
+	 +yuiwy90b0Y+J7SRj0yA9gzOMLACWFAuwX6KB2puwQ4ns0xZAMCThFsAfAIHxGS6CX
+	 USQu2gmin2GRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Szymon Wilczek <swilczek.lx@gmail.com>,
-	syzbot+d27edf9f96ae85939222@syzkaller.appspotmail.com,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 408/844] ntfs3: fix circular locking dependency in run_unpack_ex
-Date: Sat, 28 Feb 2026 12:25:21 -0500
-Message-ID: <20260228173244.1509663-409-sashal@kernel.org>
+Subject: [PATCH 6.19 409/844] fs/ntfs3: avoid calling run_get_entry() when run == NULL in ntfs_read_run_nb_ra()
+Date: Sat, 28 Feb 2026 12:25:22 -0500
+Message-ID: <20260228173244.1509663-410-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,91 +67,72 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220487-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,syzkaller.appspotmail.com,paragon-software.com,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-220488-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d27edf9f96ae85939222];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BD96C1C657D
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,paragon-software.com:email]
+X-Rspamd-Queue-Id: E4DFA1C694F
 X-Rspamd-Action: no action
 
-From: Szymon Wilczek <swilczek.lx@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 08ce2fee1b869ecbfbd94e0eb2630e52203a2e03 ]
+[ Upstream commit c5226b96c08a010ebef5fdf4c90572bcd89e4299 ]
 
-Syzbot reported a circular locking dependency between wnd->rw_lock
-(sbi->used.bitmap) and ni->file.run_lock.
+When ntfs_read_run_nb_ra() is invoked with run == NULL the code later
+assumes run is valid and may call run_get_entry(NULL, ...), and also
+uses clen/idx without initializing them. Smatch reported uninitialized
+variable warnings and this can lead to undefined behaviour. This patch
+fixes it.
 
-The deadlock scenario:
-1. ntfs_extend_mft() takes ni->file.run_lock then wnd->rw_lock.
-2. run_unpack_ex() takes wnd->rw_lock then tries to acquire
-   ni->file.run_lock inside ntfs_refresh_zone().
-
-This creates an AB-BA deadlock.
-
-Fix this by using down_read_trylock() instead of down_read() when
-acquiring run_lock in run_unpack_ex(). If the lock is contended,
-skip ntfs_refresh_zone() - the MFT zone will be refreshed on the
-next MFT operation. This breaks the circular dependency since we
-never block waiting for run_lock while holding wnd->rw_lock.
-
-Reported-by: syzbot+d27edf9f96ae85939222@syzkaller.appspotmail.com
-Tested-by: syzbot+d27edf9f96ae85939222@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d27edf9f96ae85939222
-Signed-off-by: Szymon Wilczek <swilczek.lx@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202512230646.v5hrYXL0-lkp@intel.com/
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/run.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ fs/ntfs3/fsntfs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/ntfs3/run.c b/fs/ntfs3/run.c
-index 395b204925258..dc59cad4fa376 100644
---- a/fs/ntfs3/run.c
-+++ b/fs/ntfs3/run.c
-@@ -1131,11 +1131,14 @@ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
- 			struct rw_semaphore *lock =
- 				is_mounted(sbi) ? &sbi->mft.ni->file.run_lock :
- 						  NULL;
--			if (lock)
--				down_read(lock);
--			ntfs_refresh_zone(sbi);
--			if (lock)
--				up_read(lock);
-+			if (lock) {
-+				if (down_read_trylock(lock)) {
-+					ntfs_refresh_zone(sbi);
-+					up_read(lock);
-+				}
-+			} else {
-+				ntfs_refresh_zone(sbi);
-+			}
- 		}
- 		up_write(&wnd->rw_lock);
- 		if (err)
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index bd67ba7b50153..ea5b673462c35 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -1252,6 +1252,12 @@ int ntfs_read_run_nb(struct ntfs_sb_info *sbi, const struct runs_tree *run,
+ 
+ 		} while (len32);
+ 
++		if (!run) {
++			err = -EINVAL;
++			goto out;
++		}
++
++		/* Get next fragment to read. */
+ 		vcn_next = vcn + clen;
+ 		if (!run_get_entry(run, ++idx, &vcn, &lcn, &clen) ||
+ 		    vcn != vcn_next) {
 -- 
 2.51.0
 
