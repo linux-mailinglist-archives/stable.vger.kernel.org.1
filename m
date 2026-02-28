@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IC8AQw+o2nv+gQAu9opvQ
-	(envelope-from <stable+bounces-220538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:12:12 +0100
+	id EA8+IM5No2nw/QQAu9opvQ
+	(envelope-from <stable+bounces-220539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:19:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E261C6AED
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:12:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB021C834E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9919F31D5025
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:44:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EE8632BF1E9
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F443D0E6B;
-	Sat, 28 Feb 2026 17:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AAD3D0E8F;
+	Sat, 28 Feb 2026 17:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkbZadYo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pla6L91G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2603D0E62;
-	Sat, 28 Feb 2026 17:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588053D0E84;
+	Sat, 28 Feb 2026 17:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300421; cv=none; b=TBEMBvnlkXk+BJ3DVChziTraPjXk2/qTKnfYuub6r1zfQOtgSciimQoaGMFXMAAacUOai4Px2MvczQ8K40OL22awRi1izG7c/Z3hhM1JnZvRy3PX59gyiasBpW75ottSN34VPCills6ADkTxEANuBieSvrAD64KpkslbX7La+WQ=
+	t=1772300422; cv=none; b=nfNpBPkdbAMIEoZrPGFaeYIPXSVq7d60y5IuOPGW7RRvogmY/Nnhnf8fqswv+WOcdhu/JiNvWYmPIn43mSqN1tF9FgYlvJ4s6R5FYHrVZOian7BiJmErkc2QyyIUfGqlpFllqEudZTxHOKhx4rwXn6vcRcJs8ewqDZHUD+zcrNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300421; c=relaxed/simple;
-	bh=pUCiQnWyxC0p8wloLakDOX3hNyutKCYZb/R46N5Q2zc=;
+	s=arc-20240116; t=1772300422; c=relaxed/simple;
+	bh=K+vWixumeWL2fRMPBy/mNqW6qNoi92HvkM4bZ8OqI4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ok08tJhVFqV3T/kl/1we5NJOBnEbGVNuvRDvjZBc00VRq9zjfIETpW2ZqkqUedgNdlm2JoNyNngDoOQT30ok8lbQYB00ZWZNrRObizIbT7l1dak2hhfdIJu6yPrGKjnXprXynRFXYdy5ObdXCR++P5BU4sLiwZ4kjDcUX9jgKG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkbZadYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DB2C19424;
-	Sat, 28 Feb 2026 17:40:20 +0000 (UTC)
+	 MIME-Version; b=LUST2S/cW9LnGayzWSoBWqyIHDoILZ+GRSXgTH7Kq42UnAYP+ZWWwg4NyBhionESeppW9iifhG4J8YBcuf8BP5CohlOZU/RSye2mimdQU7dZi9NIEPapcTENa/VargwjRR/d7JE/jfg2J6qVvdA0cOOtbVqbVMxo7kMPSZthcac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pla6L91G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D98C116D0;
+	Sat, 28 Feb 2026 17:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300421;
-	bh=pUCiQnWyxC0p8wloLakDOX3hNyutKCYZb/R46N5Q2zc=;
+	s=k20201202; t=1772300422;
+	bh=K+vWixumeWL2fRMPBy/mNqW6qNoi92HvkM4bZ8OqI4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkbZadYoLx8GqFKaVmefhtgXeb1NP4roJw0WF1kz92XCm5b5Go3WblALsXkqTtqyg
-	 3rxJduYmy6OvoNWwIl/EVqM6Ybp9ONglspr6ja01xhwBDcPsYPhpF3pNzp8EdIw9vO
-	 fitUS+HY2kXjsP6EHXSFCYJiwTzQkJr5lbADattVIRDmMWU8oqMTt1f8gMclXneLQd
-	 bFBzqey1GuAm9f2fz7r+nqBp/zRezOTfTK8mboL2jKbuUe8MabWzLqiIvCw4d01F7B
-	 mbIVwe+hkMjsePNWhP8FuO/nXRD95m0MCyXHgxp1K4LX3VTtfLeGJPlUHqhx86DQjS
-	 wrHD3bKqZgb9w==
+	b=Pla6L91GaFffA92lJd+HkREUrCuZV1FSsCSTR0NDuElr6Gbz4auodxcugLkuWvNyp
+	 EEqK9HFBBAJy8F5nc4glNtPHLFNZM08qQjqXpWEX8KjOU7hVN28mNaoSgb1ER0JvOw
+	 vbV8lSEj3E1fW1fxH9xZdJafbyyAHpGPIRTSh2X+5erEQiCfF7ep0tcq5+ZkYwUc8f
+	 Cagz9PujMzJ3AE0USqseyLn+znrXBBDo3Zk+Vo6vRtro5cO2qZzCGxbyMVgjR6ITjH
+	 56sPN0aUIOcP6znlRJe0fAjbX+T9oZrsMLgyg28jtcnkqZmNaTS2BQjw2LLAUn7TPP
+	 49QnfwB0IAQiw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Linus Walleij <linusw@kernel.org>,
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	syzbot <syzkaller@googlegroups.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 459/844] net: ethernet: xscale: Check for PTP support properly
-Date: Sat, 28 Feb 2026 12:26:12 -0500
-Message-ID: <20260228173244.1509663-460-sashal@kernel.org>
+Subject: [PATCH 6.19 460/844] udplite: Fix null-ptr-deref in __udp_enqueue_schedule_skb().
+Date: Sat, 28 Feb 2026 12:26:13 -0500
+Message-ID: <20260228173244.1509663-461-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,18 +72,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220538-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220539-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -91,91 +92,131 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 54E261C6AED
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,googlegroups.com:email]
+X-Rspamd-Queue-Id: DAB021C834E
 X-Rspamd-Action: no action
 
-From: Linus Walleij <linusw@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 594163ea88a03bdb412063af50fc7177ef3cbeae ]
+[ Upstream commit 470c7ca2b4c3e3a51feeb952b7f97a775b5c49cd ]
 
-In ixp4xx_get_ts_info() ixp46x_ptp_find() is called
-unconditionally despite this feature only existing on
-ixp46x, leading to the following splat from tcpdump:
+syzbot reported null-ptr-deref of udp_sk(sk)->udp_prod_queue. [0]
 
-root@OpenWrt:~# tcpdump -vv -X -i eth0
-(...)
-Unable to handle kernel NULL pointer dereference at virtual address
-  00000238 when read
-(...)
-Call trace:
- ptp_clock_index from ixp46x_ptp_find+0x1c/0x38
- ixp46x_ptp_find from ixp4xx_get_ts_info+0x4c/0x64
- ixp4xx_get_ts_info from __ethtool_get_ts_info+0x90/0x108
- __ethtool_get_ts_info from __dev_ethtool+0xa00/0x2648
- __dev_ethtool from dev_ethtool+0x160/0x234
- dev_ethtool from dev_ioctl+0x2cc/0x460
- dev_ioctl from sock_ioctl+0x1ec/0x524
- sock_ioctl from sys_ioctl+0x51c/0xa94
- sys_ioctl from ret_fast_syscall+0x0/0x44
- (...)
-Segmentation fault
+Since the cited commit, udp_lib_init_sock() can fail, as can
+udp_init_sock() and udpv6_init_sock().
 
-Check for ixp46x in ixp46x_ptp_find() before trying to set up
-PTP to avoid this.
+Let's handle the error in udplite_sk_init() and udplitev6_sk_init().
 
-To avoid altering the returned error code from ixp4xx_hwtstamp_set()
-which before this patch was -EOPNOTSUPP, we return -EOPNOTSUPP
-from ixp4xx_hwtstamp_set() if ixp46x_ptp_find() fails no matter
-the error code. The helper function ixp46x_ptp_find() helper
-returns -ENODEV.
+[0]:
+BUG: KASAN: null-ptr-deref in instrument_atomic_read include/linux/instrumented.h:82 [inline]
+BUG: KASAN: null-ptr-deref in atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
+BUG: KASAN: null-ptr-deref in __udp_enqueue_schedule_skb+0x151/0x1480 net/ipv4/udp.c:1719
+Read of size 4 at addr 0000000000000008 by task syz.2.18/2944
 
-Fixes: 9055a2f59162 ("ixp4xx_eth: make ptp support a platform driver")
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260219-ixp4xx-fix-ethernet-v3-1-f235ccc3cd46@kernel.org
+CPU: 1 UID: 0 PID: 2944 Comm: syz.2.18 Not tainted syzkaller #0 PREEMPTLAZY
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ kasan_report+0xa2/0xe0 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x264/0x2c0 mm/kasan/generic.c:200
+ instrument_atomic_read include/linux/instrumented.h:82 [inline]
+ atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
+ __udp_enqueue_schedule_skb+0x151/0x1480 net/ipv4/udp.c:1719
+ __udpv6_queue_rcv_skb net/ipv6/udp.c:795 [inline]
+ udpv6_queue_rcv_one_skb+0xa2e/0x1ad0 net/ipv6/udp.c:906
+ udp6_unicast_rcv_skb+0x227/0x380 net/ipv6/udp.c:1064
+ ip6_protocol_deliver_rcu+0xe17/0x1540 net/ipv6/ip6_input.c:438
+ ip6_input_finish+0x191/0x350 net/ipv6/ip6_input.c:489
+ NF_HOOK+0x354/0x3f0 include/linux/netfilter.h:318
+ ip6_input+0x16c/0x2b0 net/ipv6/ip6_input.c:500
+ NF_HOOK+0x354/0x3f0 include/linux/netfilter.h:318
+ __netif_receive_skb_one_core net/core/dev.c:6149 [inline]
+ __netif_receive_skb+0xd3/0x370 net/core/dev.c:6262
+ process_backlog+0x4d6/0x1160 net/core/dev.c:6614
+ __napi_poll+0xae/0x320 net/core/dev.c:7678
+ napi_poll net/core/dev.c:7741 [inline]
+ net_rx_action+0x60d/0xdc0 net/core/dev.c:7893
+ handle_softirqs+0x209/0x8d0 kernel/softirq.c:622
+ do_softirq+0x52/0x90 kernel/softirq.c:523
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0xe7/0x120 kernel/softirq.c:450
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ rcu_read_unlock_bh include/linux/rcupdate.h:924 [inline]
+ __dev_queue_xmit+0x109c/0x2dc0 net/core/dev.c:4856
+ __ip6_finish_output net/ipv6/ip6_output.c:-1 [inline]
+ ip6_finish_output+0x158/0x4e0 net/ipv6/ip6_output.c:219
+ NF_HOOK_COND include/linux/netfilter.h:307 [inline]
+ ip6_output+0x342/0x580 net/ipv6/ip6_output.c:246
+ ip6_send_skb+0x1d7/0x3c0 net/ipv6/ip6_output.c:1984
+ udp_v6_send_skb+0x9a5/0x1770 net/ipv6/udp.c:1442
+ udp_v6_push_pending_frames+0xa2/0x140 net/ipv6/udp.c:1469
+ udpv6_sendmsg+0xfe0/0x2830 net/ipv6/udp.c:1759
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg+0xe5/0x270 net/socket.c:742
+ __sys_sendto+0x3eb/0x580 net/socket.c:2206
+ __do_sys_sendto net/socket.c:2213 [inline]
+ __se_sys_sendto net/socket.c:2209 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2209
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xd2/0xf20 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7f67b4d9c629
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f67b5c98028 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f67b5015fa0 RCX: 00007f67b4d9c629
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+RBP: 00007f67b4e32b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000040000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f67b5016038 R14: 00007f67b5015fa0 R15: 00007ffe3cb66dd8
+ </TASK>
+
+Fixes: b650bf0977d3 ("udp: remove busylock and add per NUMA queues")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260219173142.310741-1-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xscale/ixp4xx_eth.c | 5 +----
- drivers/net/ethernet/xscale/ptp_ixp46x.c | 3 +++
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/ipv4/udplite.c | 3 +--
+ net/ipv6/udplite.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/xscale/ixp4xx_eth.c b/drivers/net/ethernet/xscale/ixp4xx_eth.c
-index e1e7f65553e76..b0faa0f1780d0 100644
---- a/drivers/net/ethernet/xscale/ixp4xx_eth.c
-+++ b/drivers/net/ethernet/xscale/ixp4xx_eth.c
-@@ -403,15 +403,12 @@ static int ixp4xx_hwtstamp_set(struct net_device *netdev,
- 	int ret;
- 	int ch;
- 
--	if (!cpu_is_ixp46x())
--		return -EOPNOTSUPP;
--
- 	if (!netif_running(netdev))
- 		return -EINVAL;
- 
- 	ret = ixp46x_ptp_find(&port->timesync_regs, &port->phc_index);
- 	if (ret)
--		return ret;
-+		return -EOPNOTSUPP;
- 
- 	ch = PORT2CHANNEL(port);
- 	regs = port->timesync_regs;
-diff --git a/drivers/net/ethernet/xscale/ptp_ixp46x.c b/drivers/net/ethernet/xscale/ptp_ixp46x.c
-index 94203eb46e6b0..93c64db22a696 100644
---- a/drivers/net/ethernet/xscale/ptp_ixp46x.c
-+++ b/drivers/net/ethernet/xscale/ptp_ixp46x.c
-@@ -232,6 +232,9 @@ static struct ixp_clock ixp_clock;
- 
- int ixp46x_ptp_find(struct ixp46x_ts_regs *__iomem *regs, int *phc_index)
+diff --git a/net/ipv4/udplite.c b/net/ipv4/udplite.c
+index d3e621a11a1aa..826e9e79eb19c 100644
+--- a/net/ipv4/udplite.c
++++ b/net/ipv4/udplite.c
+@@ -20,10 +20,9 @@ EXPORT_SYMBOL(udplite_table);
+ /* Designate sk as UDP-Lite socket */
+ static int udplite_sk_init(struct sock *sk)
  {
-+	if (!cpu_is_ixp46x())
-+		return -ENODEV;
-+
- 	*regs = ixp_clock.regs;
- 	*phc_index = ptp_clock_index(ixp_clock.ptp_clock);
+-	udp_init_sock(sk);
+ 	pr_warn_once("UDP-Lite is deprecated and scheduled to be removed in 2025, "
+ 		     "please contact the netdev mailing list\n");
+-	return 0;
++	return udp_init_sock(sk);
+ }
  
+ static int udplite_rcv(struct sk_buff *skb)
+diff --git a/net/ipv6/udplite.c b/net/ipv6/udplite.c
+index 2cec542437f74..e867721cda4d3 100644
+--- a/net/ipv6/udplite.c
++++ b/net/ipv6/udplite.c
+@@ -16,10 +16,9 @@
+ 
+ static int udplitev6_sk_init(struct sock *sk)
+ {
+-	udpv6_init_sock(sk);
+ 	pr_warn_once("UDP-Lite is deprecated and scheduled to be removed in 2025, "
+ 		     "please contact the netdev mailing list\n");
+-	return 0;
++	return udpv6_init_sock(sk);
+ }
+ 
+ static int udplitev6_rcv(struct sk_buff *skb)
 -- 
 2.51.0
 
