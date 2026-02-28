@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AR6Ivcso2me+AQAu9opvQ
-	(envelope-from <stable+bounces-220162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:59:19 +0100
+	id CBB8Ancto2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:01:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408291C54A9
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:59:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 372F81C554D
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:01:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 82E5331DD24A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:45:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B04823109003
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832DB4963B6;
-	Sat, 28 Feb 2026 17:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349D3494A1E;
+	Sat, 28 Feb 2026 17:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RWUbJ3MW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ad2/hYTj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A974963AD;
-	Sat, 28 Feb 2026 17:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EF34963BE;
+	Sat, 28 Feb 2026 17:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300070; cv=none; b=Sg6ibb6EarVyyxZ+Alb5aCO/BYpvw0MwzwB5vLp53IMYxppvhc3KW5ypvAZMb3gps5rpSwiVJoozh8coZ0H1UDbzL5r0VgeCEQLCvVBcmeEVRRz0DsMvIhR3imRxdX5aN8WGZYI2zyK/cfsaITkY3c7zPerkPf/0X9FLUNIG/6w=
+	t=1772300071; cv=none; b=Pt+OTZAU64j5UHYtCrsMOiwuv5j+h6uZo/bU1bHE7dHR9CtdBf4Z680QaqG3eQIkiyljqpX3CdcO0iG6nEajyIr/mAHGQx+idl4mXqorfgbFHJzb6fVdCwNBytvLBI23VJfFl8q82BAQR5/F4gFgGqh0B5Sw+SGRIOBozoxZNhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300070; c=relaxed/simple;
-	bh=UR2i7G4HhfAb4y8Ra8SYvSvCSZT6TKtawcwG5ZL5Fs4=;
+	s=arc-20240116; t=1772300071; c=relaxed/simple;
+	bh=yL/3J+Kc+ufBQbQo8CUEsiiz0KXUEBwUey7O3oZpMAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RoPUZLAD3BCq5gV4f7Ut1d19n5zsoVn8CdDkigH3oH78GliQjCZR3R/iegJJy8SxDPJFOwF2O/BkhPCehyeTdta8/wj9PrUORUfRd8BGz1oPxCqTQFtnizU4EEoMfqy+q4yxRIW0IdMLkl44cMNfHN7hFSLpc8UZ3GAHv6WqiI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RWUbJ3MW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7BFC19423;
-	Sat, 28 Feb 2026 17:34:29 +0000 (UTC)
+	 MIME-Version; b=HVxJqkVgoygajIf8B/l8r1DiV/NQeIs6jQ4LOvr93W5PYoIWSigz68DmoBDIQtloCrR9H1lsn3+2hfpYBfpngDfAjYx4hwuleG6YaH521g7Mol0DVrnyK5+Aw+Pg9Zcvk4d8FgXHvXZyvyjo87acQCJ9WrgQyuX+eCRmPBl5gA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ad2/hYTj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D069C19424;
+	Sat, 28 Feb 2026 17:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300069;
-	bh=UR2i7G4HhfAb4y8Ra8SYvSvCSZT6TKtawcwG5ZL5Fs4=;
+	s=k20201202; t=1772300070;
+	bh=yL/3J+Kc+ufBQbQo8CUEsiiz0KXUEBwUey7O3oZpMAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWUbJ3MWm+SKJF7AL9WQbeTJyInhEWmGrMc3j7laim/9Nxwex5WEOlpTlFdB45Gdj
-	 81akm3KtgwAhVFAwBLRqf7LAMq8cpJ5fkW0kWB4EGOc1M1h767gEH337HH+vZAIQ/D
-	 tC5i98mLSgHqQOWoH1i56Kc2RVlemHENkrgQy2hYQGv/DnKEb0TyMMFpdOCeCIS4Fj
-	 hs3TGaiW9JR8mx5aA1SpOeUbya9R3Ea2+lmdk3tFxjLTPxGB6ywOcHar8/EPrf78Mr
-	 JNMgf8kk0rB9nZFMslCwE7s9Kz/qHDZMalo1JRAPcyj1lemvhbMdbTR3vFAYoOmFiM
-	 nqA6agqEMM8iA==
+	b=ad2/hYTjInBeOyrWpHsERcZ2yiK9+pB84MpCKTxG54ROmfQo8FUWoPJML0Z7HGr38
+	 Fqo1r4wZr1dQz3bTgOFz+sLNY7ddIoAPP4kHKaKn1EUnvna9CqG3Qv/v5dOlzbrbKo
+	 v/sCimfBD8etOiGxK0tV8n7lZfkvQW6h8ZLGRMjUnJF2H+afgiAEYcenZpBRCea4tS
+	 lVwSCafdHMaWAsTyAzp3DAUTPxyj6rVAFeEoPfyWIw9NsNV5ioywv19cRJxZtJRyGc
+	 cRZ4TjnP6w8ZgMREpWskB51UGGmy+gd4vnZsg8MAmr6auguXYfTDRVvl1k5n3h4QJ6
+	 XGdPb3Aq6Gpow==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Ata=20=C4=B0lhan=20K=C3=B6kt=C3=BCrk?= <atailhan2006@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Jason Andryuk <jason.andryuk@amd.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 084/844] ACPI: battery: fix incorrect charging status when current is zero
-Date: Sat, 28 Feb 2026 12:19:57 -0500
-Message-ID: <20260228173244.1509663-85-sashal@kernel.org>
+Subject: [PATCH 6.19 085/844] xenbus: Use .freeze/.thaw to handle xenbus devices
+Date: Sat, 28 Feb 2026 12:19:58 -0500
+Message-ID: <20260228173244.1509663-86-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -62,87 +62,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-220162-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220163-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 408291C54A9
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 372F81C554D
 X-Rspamd-Action: no action
 
-From: Ata İlhan Köktürk <atailhan2006@gmail.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit bb1256e0ddc7e9e406164319769b9f8d8389f056 ]
+[ Upstream commit e08dd1ee49838750a514e83c0aa60cd12ba6ecbb ]
 
-On some laptops, such as the Huawei Matebook series, the embedded
-controller continues to report "Charging" status even when the
-charge threshold is reached and no current is being drawn.
+The goal is to fix s2idle and S3 for Xen PV devices.  A domain resuming
+from s3 or s2idle disconnects its PV devices during resume.  The
+backends are not expecting this and do not reconnect.
 
-This incorrect reporting prevents the system from switching to battery
-power profiles, leading to significantly higher power (e.g., 18W instead
-of 7W during browsing) and missed remaining battery time estimation.
+b3e96c0c7562 ("xen: use freeze/restore/thaw PM events for suspend/
+resume/chkpt") changed xen_suspend()/do_suspend() from
+PMSG_SUSPEND/PMSG_RESUME to PMSG_FREEZE/PMSG_THAW/PMSG_RESTORE, but the
+suspend/resume callbacks remained.
 
-Validate the "Charging" state by checking if rate_now is zero. If the
-hardware reports charging but the current is zero, report "Not Charging"
-to user space.
+.freeze/restore are used with hiberation where Linux restarts in a new
+place in the future.  .suspend/resume are useful for runtime power
+management for the duration of a boot.
 
-Signed-off-by: Ata İlhan Köktürk <atailhan2006@gmail.com>
-[ rjw: Whitespace fix, braces added to an inner if (), new comment rewrite ]
-[ rjw: Changelog edits ]
-Link: https://patch.msgid.link/20260129144856.43058-1-atailhan2006@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The current behavior of the callbacks works for an xl save/restore or
+live migration where the domain is restored/migrated to a new location
+and connecting to a not-already-connected backend.
+
+Change xenbus_pm_ops to use .freeze/thaw/restore and drop the
+.suspend/resume hook.  This matches the use in drivers/xen/manage.c for
+save/restore and live migration.  With .suspend/resume empty, PV devices
+are left connected during s2idle and s3, so PV devices are not changed
+and work after resume.
+
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Acked-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20251119224731.61497-2-jason.andryuk@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/battery.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/xen/xenbus/xenbus_probe_frontend.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 34181fa52e937..4b28ef79e6ac8 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -211,7 +211,14 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 		if (battery->state & ACPI_BATTERY_STATE_DISCHARGING)
- 			val->intval = acpi_battery_handle_discharging(battery);
- 		else if (battery->state & ACPI_BATTERY_STATE_CHARGING)
--			val->intval = POWER_SUPPLY_STATUS_CHARGING;
-+			/* Validate the status by checking the current. */
-+			if (battery->rate_now != ACPI_BATTERY_VALUE_UNKNOWN &&
-+			    battery->rate_now == 0) {
-+				/* On charge but no current (0W/0mA). */
-+				val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
-+			} else {
-+				val->intval = POWER_SUPPLY_STATUS_CHARGING;
-+			}
- 		else if (battery->state & ACPI_BATTERY_STATE_CHARGE_LIMITING)
- 			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
- 		else if (acpi_battery_is_charged(battery))
+diff --git a/drivers/xen/xenbus/xenbus_probe_frontend.c b/drivers/xen/xenbus/xenbus_probe_frontend.c
+index 6d1819269cbe5..199917b6f77ca 100644
+--- a/drivers/xen/xenbus/xenbus_probe_frontend.c
++++ b/drivers/xen/xenbus/xenbus_probe_frontend.c
+@@ -148,11 +148,9 @@ static void xenbus_frontend_dev_shutdown(struct device *_dev)
+ }
+ 
+ static const struct dev_pm_ops xenbus_pm_ops = {
+-	.suspend	= xenbus_dev_suspend,
+-	.resume		= xenbus_frontend_dev_resume,
+ 	.freeze		= xenbus_dev_suspend,
+ 	.thaw		= xenbus_dev_cancel,
+-	.restore	= xenbus_dev_resume,
++	.restore	= xenbus_frontend_dev_resume,
+ };
+ 
+ static struct xen_bus_type xenbus_frontend = {
 -- 
 2.51.0
 
