@@ -1,171 +1,189 @@
-Return-Path: <stable+bounces-221224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221225-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPCPBJVgo2myBQUAu9opvQ
-	(envelope-from <stable+bounces-221224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:39:33 +0100
+	id UK6bBnZMo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-221225-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:13:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 666951C930F
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:39:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A60D1C80BF
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:13:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 970BF355392A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:01:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DED0C30CD2D0
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6313135F610;
-	Sat, 28 Feb 2026 19:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB80433F8D9;
+	Sat, 28 Feb 2026 19:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="y07saRYL"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZrGJKGTK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971C435F607
-	for <stable@vger.kernel.org>; Sat, 28 Feb 2026 19:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5A133F8DA;
+	Sat, 28 Feb 2026 19:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772306558; cv=none; b=NbS4y1s55y75QK72cLUrethB7D21uLnSusK9RSCaUfZ0WjOq6s1y+YoKaOM7Wg1pa9Lv6XGcaOaWSnRgXPga40JqyN6jB6J008lZAxIVvzYvH86CrSfyfDKthGW6Lf/CFV6XtIahvLXfgeao5TFxXMm+3X38SyihrKcph40DwKQ=
+	t=1772307188; cv=none; b=H0Tp5oJsTIQ2yg6nyhhRW9Dl9+4DptnjL/CEDE5JlRLovbSaLsSkYr6Moe0976WO8fWOFe3eBMi3Dil73Fvk1CiEYi6LTur5emeQ7v520u/JDSYZ3sYvSZvQff6VUrX7IsLZKQd30USwKvJA6dJ/mqS0SF9lFs+KodRLULndz/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772306558; c=relaxed/simple;
-	bh=Me8n7owqfLJkYyvUXHQx2u9wWsIV5A0WiPjr8BtB/4g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I55q7gJFfK5C/GjVr25GhOYVQcfl1GwySB00AcsRq/9LMrpLmPoOjKnIwgIo4QUHdNEfhCmLeLN1MBp5Zr6DSW6zWlqyU7bgmKTs6hmo6lUo63gt+Oxi8Db7hqsqsIbXFOd3fRQizh7Vao/Q/a/RBOokcyIvzkdwL+ARNi20gIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=y07saRYL; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d18d0e6d71so2579139a34.1
-        for <stable@vger.kernel.org>; Sat, 28 Feb 2026 11:22:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1772306554; x=1772911354; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jzurjNKz+LVtj7mOsHnigyTZSCq1BtpAu09PeT2WHx8=;
-        b=y07saRYLoCC2ntjKJ4b9npncuFpyHNGurAj1W9UU09TwMAemNZ7YdHqasUjpbPHhoP
-         Fo3TQCv8IK+dIhba2YaT6OHJsuv8emGbaKn4tbR/7Igqk4HAowbAi3l8jHfrBaGTwu2R
-         OUN3fM8MXJ4NUfpzhIasd3aAsR5AO9H4KYl+ygBFYz6xH5mnhgIYl5GFxKUrGJTlbuYF
-         LAWlOmSnzgDZGPaJzNC1RYOoG5FaBnX6R0+adFDmi6s336sHxwtI27kq1Hebwz/5EgC9
-         Z6ME29ppx85j1pOAdMC1Yy+PC83TPU2cJX65viqn4Urij04tDzURGJSdIijOnHThiZLd
-         RUBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772306554; x=1772911354;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jzurjNKz+LVtj7mOsHnigyTZSCq1BtpAu09PeT2WHx8=;
-        b=BVzSijJ8XKEOEqHtfx3PaKg3cB5r4VxAiAKCSpAeiUudgyqTl8YlMjtTX+13nr/Yvq
-         KoqvrmacMmcnaLQaxgNCXfYu1RYL4Yja3CLdDVjixCKFWmXR0+snu33tjWSCR/fszg/o
-         lxuu+Ly4fQs9W6Guz1q5P7Tk3bU/30Anae+2omVR4ko+GHnAKTTW5kEJ/OnpJH6oT8dL
-         Dee8FgmSnI/gWsaA00iyaNCsvbAF6pjf1Pu5Gd6VFhhc/iyw8KT5dNc20w6Ncs/w9SbA
-         8sT2UbTxuNBsBJNzCyRDLKQY4xXNk/NOJNV2u8AhueG7M57jAKuLndydV8BUEMifHswt
-         z0Rw==
-X-Forwarded-Encrypted: i=1; AJvYcCVMIewSFp+7UalG4vMPkPgFGqwR0ykE/NYPym+DgCaHL6qGfwgki2N5QSNNhTU54+zaVrEOBk0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIcBtEyGKmvLg0pdpz3kYB7Q/rHUceEBifxkbUXrSH2RY5MlLw
-	HyUCBFOoOMEi4yU+o6fGRo+S6DZVvFnsJe5hUiwidfogz9d4lNsNZmhEdrrQuL2QGPg=
-X-Gm-Gg: ATEYQzzUsdMbO2DcmMa6rk1iwsGOCSfdKRrVZQ8MJMh4vzAZFIhAEG6ut6+y2qxawNt
-	1fAP6WH+7ti3GMRnt2DSIExC1tcIofnu31Akgb9mJmHPiqJwTdqZsetagTjYsk45xHTBWbZGrkm
-	4Nod5ib9QDQwUE+/yRPrQ0McgK1KT8oPg+KfEutfvtRhnXYGptKTf16IZtwS2psYuwkh+eGo7AT
-	5V0gx4NBvoth0tNdxhMjFbno+4Arcb5gEyEpF7z7pyvusrEXgzL2ZRy+iQ7CaYaulAuVOf88UxX
-	WMfPtMr44LwSnajQllQdOcne8qMYePHKCnyD4hKmThPOsSku4LKx4Mi7rq3pLVo2FJZuwqwbxlV
-	jvMSMXiklIRKDckCGuCNfvvH/jvSjkJmA/7abHpcUfIyidBUeFQFzKcQ3VRXyqWYmOixGm9ngyS
-	1Z+2WL8h2d0Q4WjK63cs7qQXdqOy/Eb7RM8vCiDxGpSvIJgE9lce6avWRUeBKYgCgEt7oGhwq7g
-	w==
-X-Received: by 2002:a05:6870:e9aa:b0:40f:e6a:c0f7 with SMTP id 586e51a60fabf-41626e15081mr3595917fac.17.1772306554592;
-        Sat, 28 Feb 2026 11:22:34 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:1031:c44e:9f1f:17c1? ([2600:8803:e7e4:500:1031:c44e:9f1f:17c1])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4160d2cc08csm7236079fac.19.2026.02.28.11.22.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Feb 2026 11:22:34 -0800 (PST)
-Message-ID: <20195663-2091-41eb-b4b3-e8542d29ae32@baylibre.com>
-Date: Sat, 28 Feb 2026 13:22:32 -0600
+	s=arc-20240116; t=1772307188; c=relaxed/simple;
+	bh=DCOqyvKSn75Oz0wmRxY7e71iW8eEcTFv7hqiQsOwmQo=;
+	h=Date:To:From:Subject:Message-Id; b=qDhmzHKThmpmn6D3TO0yz7c137dlHwrqgJyV13gHFWLebxlNbICn2QTkGshusAM4SZIGumc3SiQua0njw5qYtnNQk9WvkVvtHrqQ9LQXdjVQdTxPjUc6nNC3OTTuDe2W6J8wKgg/OSFiMNAU4eWEpawX8t8RiWLLrFbFUjgpdvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZrGJKGTK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F68C116D0;
+	Sat, 28 Feb 2026 19:33:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772307188;
+	bh=DCOqyvKSn75Oz0wmRxY7e71iW8eEcTFv7hqiQsOwmQo=;
+	h=Date:To:From:Subject:From;
+	b=ZrGJKGTKTWQfZubafWWSxJyR7TwC3Z3Qff6aI6flKlkwDy7XoRmuu9OEYoXK1hp55
+	 gYyjML8/biMJrQ/9wvLCd8qLm9dkKpgtZ7oOkEJgIFJTG14LDw+TMN+PRQfcAgMTWy
+	 asDZFIVG/+02LdqRHX/P1A4dNe98aIktOwagyfcA=
+Date: Sat, 28 Feb 2026 11:33:07 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,ryan.roberts@arm.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,lance.yang@linux.dev,hughd@google.com,dev.jain@arm.com,david@kernel.org,bas@dfinity.org,baolin.wang@linux.alibaba.com,baohua@kernel.org,ziy@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260228193307.E3F68C116D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: st_sensors: fix trigger allocation
-To: Aleksandrs Vinarskis <alex@vinarskis.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260228-st-iio-trigger-v1-1-abf5909e547f@vinarskis.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20260228-st-iio-trigger-v1-1-abf5909e547f@vinarskis.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[baylibre-com.20230601.gappssmtp.com:s=20230601];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[baylibre-com.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-221224-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[baylibre.com];
+	TAGGED_FROM(0.00)[bounces-221225-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dlechner@baylibre.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre-com.20230601.gappssmtp.com:dkim,vinarskis.com:email,baylibre.com:mid]
-X-Rspamd-Queue-Id: 666951C930F
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3A60D1C80BF
 X-Rspamd-Action: no action
 
-On 2/28/26 11:11 AM, Aleksandrs Vinarskis wrote:
-> Current hardcoded name prevents adding multiple st-sensors devices
-> on the same platform. Fix by aligning trigger name with other drivers.
-> 
-> Signed-off-by: Aleksandrs Vinarskis <alex@vinarskis.com>
-> ---
-> Some platforms such as Dell XPS 9345 contains multiple accelerometers.
-> Fix st_sensors that currently only allows one device at the time.
-> ---
->  drivers/iio/common/st_sensors/st_sensors_trigger.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> index 8a8ab688d7980f6dd43c660f90a0eba32c38388b..3b5615d1b6dd66ee0af6ccc83eb2fbd7b2c64d29 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> @@ -124,8 +124,9 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
->  	unsigned long irq_trig;
->  	int err;
->  
-> -	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
-> -					     indio_dev->name);
-> +	sdata->trig = devm_iio_trigger_alloc(parent, "%s-dev%d",
-> +					     indio_dev->name,
-> +					     iio_device_id(indio_dev));
 
-Is this something that could potentially break userspace? Or are all of these
-just "always there" triggers that userspace doesn't have to touch?
+The patch titled
+     Subject: mm/huge_memory: fix a folio_split() race condition with folio_try_get()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch
 
->  	if (sdata->trig == NULL) {
->  		dev_err(parent, "failed to allocate iio trigger.\n");
->  		return -ENOMEM;
-> 
-> ---
-> base-commit: 3fa5e5702a82d259897bd7e209469bc06368bf31
-> change-id: 20260228-st-iio-trigger-8ee1f219b566
-> 
-> Best regards,
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Zi Yan <ziy@nvidia.com>
+Subject: mm/huge_memory: fix a folio_split() race condition with folio_try_get()
+Date: Fri, 27 Feb 2026 20:06:14 -0500
+
+During a pagecache folio split, the values in the related xarray should
+not be changed from the original folio at xarray split time until all
+after-split folios are well formed and stored in the xarray.  Current use
+of xas_try_split() in __split_unmapped_folio() lets some after-split
+folios show up at wrong indices in the xarray.  When these misplaced
+after-split folios are unfrozen, before correct folios are stored via
+__xa_store(), and grabbed by folio_try_get(), they are returned to
+userspace at wrong file indices, causing data corruption.
+
+Fix it by using the original folio in xas_try_split() calls, so that
+folio_try_get() can get the right after-split folios after the original
+folio is unfrozen.
+
+Uniform split, split_huge_page*(), is not affected, since it uses
+xas_split_alloc() and xas_split() only once and stores the original folio
+in the xarray.
+
+Fixes below points to the commit introduces the code, but folio_split() is
+used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+truncate operation").
+
+Link: https://lkml.kernel.org/r/20260228010614.2536430-1-ziy@nvidia.com
+Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: Bas van Dijk <bas@dfinity.org>
+Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/huge_memory.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+--- a/mm/huge_memory.c~mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get
++++ a/mm/huge_memory.c
+@@ -3631,6 +3631,7 @@ static int __split_unmapped_folio(struct
+ 	const bool is_anon = folio_test_anon(folio);
+ 	int old_order = folio_order(folio);
+ 	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
++	struct folio *origin_folio = folio;
+ 	int split_order;
+ 
+ 	/*
+@@ -3656,7 +3657,13 @@ static int __split_unmapped_folio(struct
+ 				xas_split(xas, folio, old_order);
+ 			else {
+ 				xas_set_order(xas, folio->index, split_order);
+-				xas_try_split(xas, folio, old_order);
++				/*
++				 * use the original folio, so that a parallel
++				 * folio_try_get() waits on it until xarray is
++				 * updated with after-split folios and
++				 * the original one is unfrozen.
++				 */
++				xas_try_split(xas, origin_folio, old_order);
+ 				if (xas_error(xas))
+ 					return xas_error(xas);
+ 			}
+_
+
+Patches currently in -mm which might be from ziy@nvidia.com are
+
+mm-cma-move-put_page_testzero-out-of-vm_warn_on-in-cma_release.patch
+mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch
 
 
