@@ -1,59 +1,71 @@
-Return-Path: <stable+bounces-220871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IN9JFnxHo2lM/AQAu9opvQ
-	(envelope-from <stable+bounces-220871-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:52:28 +0100
+	id eCADBXlFo2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:43:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8511C7747
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:52:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 055511C74CC
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:43:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 518BF314B51C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:35:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E37A6345E732
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C9741F530;
-	Sat, 28 Feb 2026 17:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4867941F55B;
+	Sat, 28 Feb 2026 17:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vLReu6ln"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwjdYgg2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC6C4963D6;
-	Sat, 28 Feb 2026 17:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8692141F54E;
+	Sat, 28 Feb 2026 17:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300756; cv=none; b=ZieFb6qA04bC6DiZE9n+MHMY7fGMUecnCMFjU3Y/9IBoqieBZcw6R6l+xgzmD6am8BDsIirASYDweTVdGEdmSpnhGnBovru6EVqOAMmsv9qUNWWu8+bZ3iDSMBvK5ZWC5/leTwt3Lcxf9C/D4Y0Hh8FfzhuYqyuFq9WrXWWWN64=
+	t=1772300758; cv=none; b=SJ9qXwoFDZO7OWpvRIGRI5TiqJDxQzOHGYl3/MotSfSI2/16oKxM3vyblemXAf/obvoyYRWWCGwAlt4g9MSdTdGT7K5E6O6W9qsJPBnR3jsOi+Oa8t83Nov3dTd/DgI823eTG0OiuXtiE9oTzRyQa8qsJriSpQr3KMgQjqdZkms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300756; c=relaxed/simple;
-	bh=ForwgQBNYAjm7/Hw3Jcwsg+KSoOreHUE+pN41ssV4SM=;
+	s=arc-20240116; t=1772300758; c=relaxed/simple;
+	bh=SvhekaeBihNp9RCE30D+VMaOdhKwa+8CeDfTQXBXoo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ELW+YeGHTj0CorXX8kdl28tG7p1wBEZbps28iqgDTz7D6Tnuql+vN8aUCD3g2Y9G2YpVJwMDw0lKRiwSEpP7llNveB40goJdHhktHil2CORiaVPR5Pwvd4wnv9PmMLiI7sl7BIafy8A4GYhf95T4aJLvXfUormsOrJtpoIGQves=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vLReu6ln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567B4C19423;
-	Sat, 28 Feb 2026 17:45:55 +0000 (UTC)
+	 MIME-Version; b=s3Wzm3xOlLE9tUP17oSejU5fOHVPe12iJc61yYhM+Zaz4qDTVJz6/1DCl9PiLgAQ/zE8XF0ZsJUSLJMrqsFfYbt/ofSoPo8pN++N2VhpwprNGIpEe4Cgj0BgE9gUm3SqKDSjz60GBLMWyR/+RGtyBsc2u4WYrB21oKAxZzRi66o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwjdYgg2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57413C116D0;
+	Sat, 28 Feb 2026 17:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300756;
-	bh=ForwgQBNYAjm7/Hw3Jcwsg+KSoOreHUE+pN41ssV4SM=;
+	s=k20201202; t=1772300758;
+	bh=SvhekaeBihNp9RCE30D+VMaOdhKwa+8CeDfTQXBXoo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLReu6lnhINNBZgklJzNGvq0KXd+3xwLEN0jyO5edLuRvP4QkvNH9H4JGh1Y1zvqj
-	 mbtDxdecjs6whti2i7r83hM+J3UHbEvX+yyPNAShVMHVwW6/rCs5mZeuXeOD/u1kvA
-	 dCZhT4vW0/z8eWyx+7K2djUYOFuzLIGezbhYg6wan/sQFJec+kwT6pv1s/QSLLCGM0
-	 K8N+1MyGD5DSPOGiYUawRkEooxKK8on8NM1PK6E3XGmQIXByqBJWWcJqHSYiI8kQmD
-	 0d29a3ZCVPG3s6+rQpdb+wR8SSfVsTvzCgU6hyCo2fII76IauAnJocrEMRrmLKF35I
-	 MVQIMJY5pdWig==
+	b=pwjdYgg2+6Mk/XDH+wrD/P+cQGoKOWjE2GN5RwjU+6RBDlx8SPCPxgJ98TBesEVVB
+	 Bu5V4zdxk6FJt714iWgEFV5Fft3Oo7FBAJ66s2IVJND8giJQbQNpuLSR7HUFcClbiX
+	 KPzA2VQiG0dnoaGoaiVZQyLjHPvnV73Locickq4ZcO/dfEQNTGuMBC+cyNdZLSblRv
+	 wbqwZgJ8z7zY15JdEredev8FrX5620ro1WnGO3rhnw9SclJzLVtt4RG2VRQqFCBfWC
+	 YZ6ABCrXkxurpKzu1qPTfvQZ09ybTRKlz374Mij5nuy2l1m9y4729T+IL5vZHIDfi7
+	 wPFvaR4IyfV/g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Ma Wupeng <mawupeng1@huawei.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 792/844] drm/amdgpu: fix sync handling in amdgpu_dma_buf_move_notify
-Date: Sat, 28 Feb 2026 12:31:45 -0500
-Message-ID: <20260228173244.1509663-793-sashal@kernel.org>
+Subject: [PATCH 6.19 793/844] mm/hugetlb: restore failed global reservations to subpool
+Date: Sat, 28 Feb 2026 12:31:46 -0500
+Message-ID: <20260228173244.1509663-794-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -63,106 +75,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220871-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,linux.dev,kernel.org,oracle.com,huawei.com,suse.com,suse.de,google.com,suse.cz,redhat.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-220872-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1B8511C7747
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 055511C74CC
 X-Rspamd-Action: no action
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-[ Upstream commit b18fc0ab837381c1a6ef28386602cd888f2d9edf ]
+[ Upstream commit 1d3f9bb4c8af70304d19c22e30f5d16a2d589bb5 ]
 
-Invalidating a dmabuf will impact other users of the shared BO.
-In the scenario where process A moves the BO, it needs to inform
-process B about the move and process B will need to update its
-page table.
+Commit a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+fixed an underflow error for hstate->resv_huge_pages caused by incorrectly
+attributing globally requested pages to the subpool's reservation.
 
-The commit fixes a synchronisation bug caused by the use of the
-ticket: it made amdgpu_vm_handle_moved behave as if updating
-the page table immediately was correct but in this case it's not.
+Unfortunately, this fix also introduced the opposite problem, which would
+leave spool->used_hpages elevated if the globally requested pages could
+not be acquired.  This is because while a subpool's reserve pages only
+accounts for what is requested and allocated from the subpool, its "used"
+counter keeps track of what is consumed in total, both from the subpool
+and globally.  Thus, we need to adjust spool->used_hpages in the other
+direction, and make sure that globally requested pages are uncharged from
+the subpool's used counter.
 
-An example is the following scenario, with 2 GPUs and glxgears
-running on GPU0 and Xorg running on GPU1, on a system where P2P
-PCI isn't supported:
+Each failed allocation attempt increments the used_hpages counter by how
+many pages were requested from the global pool.  Ultimately, this renders
+the subpool unusable, as used_hpages approaches the max limit.
 
-glxgears:
-  export linear buffer from GPU0 and import using GPU1
-  submit frame rendering to GPU0
-  submit tiled->linear blit
-Xorg:
-  copy of linear buffer
+The issue can be reproduced as follows:
+1. Allocate 4 hugetlb pages
+2. Create a hugetlb mount with max=4, min=2
+3. Consume 2 pages globally
+4. Request 3 pages from the subpool (2 from subpool + 1 from global)
+	4.1 hugepage_subpool_get_pages(spool, 3) succeeds.
+		used_hpages += 3
+	4.2 hugetlb_acct_memory(h, 1) fails: no global pages left
+		used_hpages -= 2
+5. Subpool now has used_hpages = 1, despite not being able to
+   successfully allocate any hugepages. It believes it can now only
+   allocate 3 more hugepages, not 4.
 
-The sequence of jobs would be:
-  drm_sched_job_run                       # GPU0, frame rendering
-  drm_sched_job_queue                     # GPU0, blit
-  drm_sched_job_done                      # GPU0, frame rendering
-  drm_sched_job_run                       # GPU0, blit
-  move linear buffer for GPU1 access      #
-  amdgpu_dma_buf_move_notify -> update pt # GPU0
+With each failed allocation attempt incrementing the used counter, the
+subpool eventually reaches a point where its used counter equals its
+max counter.  At that point, any future allocations that try to
+allocate hugeTLB pages from the subpool will fail, despite the subpool
+not having any of its hugeTLB pages consumed by any user.
 
-It this point the blit job on GPU0 is still running and would
-likely produce a page fault.
+Once this happens, there is no way to make the subpool usable again,
+since there is no way to decrement the used counter as no process is
+really consuming the hugeTLB pages.
 
-Cc: stable@vger.kernel.org
-Fixes: a448cb003edc ("drm/amdgpu: implement amdgpu_gem_prime_move_notify v2")
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The underflow issue that the original commit fixes still remains fixed
+as well.
+
+Without this fix, used_hpages would keep on leaking if
+hugetlb_acct_memory() fails.
+
+Link: https://lkml.kernel.org/r/20260116204037.2270096-1-joshua.hahnjy@gmail.com
+Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Acked-by: Usama Arif <usama.arif@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Ma Wupeng <mawupeng1@huawei.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Waiman Long <longman@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ mm/hugetlb.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-index c1461317eb298..83fed04436ad7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-@@ -496,8 +496,15 @@ amdgpu_dma_buf_move_notify(struct dma_buf_attachment *attach)
- 		r = dma_resv_reserve_fences(resv, 2);
- 		if (!r)
- 			r = amdgpu_vm_clear_freed(adev, vm, NULL);
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index a1832da0f6236..77e45dd50ba21 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6717,6 +6717,15 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		 */
+ 		hugetlb_acct_memory(h, -gbl_resv);
+ 	}
++	/* Restore used_hpages for pages that failed global reservation */
++	if (gbl_reserve && spool) {
++		unsigned long flags;
 +
-+		/* Don't pass 'ticket' to amdgpu_vm_handle_moved: we want the clear=true
-+		 * path to be used otherwise we might update the PT of another process
-+		 * while it's using the BO.
-+		 * With clear=true, amdgpu_vm_bo_update will sync to command submission
-+		 * from the same VM.
-+		 */
- 		if (!r)
--			r = amdgpu_vm_handle_moved(adev, vm, ticket);
-+			r = amdgpu_vm_handle_moved(adev, vm, NULL);
- 
- 		if (r && r != -EBUSY)
- 			DRM_ERROR("Failed to invalidate VM page tables (%d))\n",
++		spin_lock_irqsave(&spool->lock, flags);
++		if (spool->max_hpages != -1)
++			spool->used_hpages -= gbl_reserve;
++		unlock_or_release_subpool(spool, flags);
++	}
+ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
 -- 
 2.51.0
 
