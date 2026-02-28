@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-221114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id phFGB8VJo2kF/QQAu9opvQ
-	(envelope-from <stable+bounces-221114-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:02:13 +0100
+	id +LTEGsBNo2nw/QQAu9opvQ
+	(envelope-from <stable+bounces-221115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:19:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A364C1C7CBC
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:02:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AD41C8332
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:19:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8A9E93230955
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:47:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5EEBA306ABE3
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C5A371471;
-	Sat, 28 Feb 2026 17:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07FA371451;
+	Sat, 28 Feb 2026 17:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3qMn1bk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+RmjBO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FDE371460;
-	Sat, 28 Feb 2026 17:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9274E37146B;
+	Sat, 28 Feb 2026 17:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301464; cv=none; b=ZqqPI8lnAFNfGpi1gzU3PSrbkVzOOM0VRC6APCQbx8999MZD1IpCn2NpyYMFxVynmOzZfNTvA4/HZadO0Myvzww31D4H89JcFbQtu+bcm8eA9zPsXFCwH71jE2RAkqfkT9hvsdKwpb9nk8s2Bdz1FDsCz79KBtztzpLrQgcuGng=
+	t=1772301465; cv=none; b=UGefwqcDeVCDtpySKzTUYkapw0d8eGfWid3QThDVsQo/ePy5phMPhy3ETDJ1l9ourjVB2mbFYrpCzOkrm3tLHyhuLXW5ICsWIxj5moLEJpUT6FXDiI0KD6sHkUcmTekJmPPXccJG6pw4G398+iebZD4iqIl4cXn3wzNLqc7tYUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301464; c=relaxed/simple;
-	bh=Zeq8st5I0cgj8mYEdEdDCix/cXMYj7QqLZ18R1YqXKc=;
+	s=arc-20240116; t=1772301465; c=relaxed/simple;
+	bh=GmsVpxpNT/LPNenninbLyr63BYxl7iMmqbgXl29Fmfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckOFkbDoUvuQqU8CubbHlRfUQkehDXLe7vgPLOo8qXxOLWNO2n9cgBwYJ1K1IYNjVhaeIwJTC4KUezaVYrwlOzYXjmeKsTXLjWfXDscZt2/K5r7kXs1U8z1nq54DW4s47QMhxIZEUn4Q5ykSWahm/+xU3n92GQZpqRpYT0XA1Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3qMn1bk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE2EC116D0;
-	Sat, 28 Feb 2026 17:57:43 +0000 (UTC)
+	 MIME-Version; b=HABIyWm+ev7d87yznT1p6k9sXTjEBB4UYm59ksZSLaOUqEQSha/XuZDOg8GGZ9q8Trp4ta/G0Ta6OYx1crTbTPBzdNbikPpcx6d4mofQk0nHFaZ4zubaTIuUDk/gMvEz1I5eTZznitvy2enZWGL3hm0B/+Fac5AWPJTOuOmxFwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+RmjBO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0924C19425;
+	Sat, 28 Feb 2026 17:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301464;
-	bh=Zeq8st5I0cgj8mYEdEdDCix/cXMYj7QqLZ18R1YqXKc=;
+	s=k20201202; t=1772301465;
+	bh=GmsVpxpNT/LPNenninbLyr63BYxl7iMmqbgXl29Fmfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X3qMn1bkqUqtRADEBeiYAoLUhWTvCALGYZMUKZI7X7iKokgG/W+WPWQM7rlgeKa5R
-	 8im7XNy0OzhgcHANrd6KeAwyQWLtowF4d/8EjuG/Y8QpWVph0bP3YwFlAJ6XcUoepv
-	 x2P41EqCMwPrrGVmpm8loqCqxfFs09Do5OhyyvHR3CRq1xnr4PXngMEhqvdHgb/eCf
-	 KkylF0wOoZj83uV4LDGbQvyTxO6l6RZ3ngev5rpr8J2V7qeTtZUgENG7rgvON2FlgT
-	 ftEl7iTFqUZmw3EX6OWn4IOETqb17F7PwVO8HhezXcmIrshIHqD0loEc4WDzg023uQ
-	 EMgEPXhuznQPA==
+	b=U+RmjBO5fV8TXhYHNHsE/mY/twx9SuCmCw7yHCCARkfZE3XFiPWv4xBbCzDYjdWBJ
+	 rCE0w3EWMBME82hTjctQqA9sWhO7aZsXIHJRkyG7PhaNb94MH81CyhLYkr7mzSJTBc
+	 oZ1TBYj+HWTXwp/Iy6p8ewx+N91MgExo4fUJxZnFwFnzOSOr+WunBcVCYTnLIQEh8M
+	 6sxYqi7Wzg+zGj7orUUgVsp/jMgAOcvDDIyJAZCS81+UrvS3WCsCGkIyfemgtB8Btz
+	 uQt8kEtzzoSpWWaVy+4KJIlte5sFyoL4ABhtWWcCIj3Gg31kDwJcT/mWUX5+cYe//0
+	 XmhnjvzRD/9/g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Marco Elver <elver@google.com>,
+Cc: Breno Leitao <leitao@debian.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	stable@vger.kernel.org,
-	Boqun Feng <boqun@kernel.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 649/752] arm64: Fix non-atomic __READ_ONCE() with CONFIG_LTO=y
-Date: Sat, 28 Feb 2026 12:46:00 -0500
-Message-ID: <20260228174750.1542406-649-sashal@kernel.org>
+Subject: [PATCH 6.18 650/752] uprobes: Fix incorrect lockdep condition in filter_chain()
+Date: Sat, 28 Feb 2026 12:46:01 -0500
+Message-ID: <20260228174750.1542406-650-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -68,84 +69,82 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[google.com,vger.kernel.org,kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221114-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221115-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A364C1C7CBC
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email]
+X-Rspamd-Queue-Id: 02AD41C8332
 X-Rspamd-Action: no action
 
-From: Marco Elver <elver@google.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit bb0c99e08ab9aa6d04b40cb63c72db9950d51749 ]
+[ Upstream commit a56a38fd9196fc89401e498d70b7aa9c9679fa6e ]
 
-The implementation of __READ_ONCE() under CONFIG_LTO=y incorrectly
-qualified the fallback "once" access for types larger than 8 bytes,
-which are not atomic but should still happen "once" and suppress common
-compiler optimizations.
+The list_for_each_entry_rcu() in filter_chain() uses
+rcu_read_lock_trace_held() as the lockdep condition, but the function
+holds consumer_rwsem, not the RCU trace lock.
 
-The cast `volatile typeof(__x)` applied the volatile qualifier to the
-pointer type itself rather than the pointee. This created a volatile
-pointer to a non-volatile type, which violated __READ_ONCE() semantics.
+This gives me the following output when running with some locking debug
+option enabled:
 
-Fix this by casting to `volatile typeof(*__x) *`.
+  kernel/events/uprobes.c:1141 RCU-list traversed in non-reader section!!
+    filter_chain
+    register_for_each_vma
+    uprobe_unregister_nosync
+    __probe_event_disable
 
-With a defconfig + LTO + debug options build, we see the following
-functions to be affected:
+Remove the incorrect lockdep condition since the rwsem provides
+sufficient protection for the list traversal.
 
-	xen_manage_runstate_time (884 -> 944 bytes)
-	xen_steal_clock (248 -> 340 bytes)
-	  ^-- use __READ_ONCE() to load vcpu_runstate_info structs
-
-Fixes: e35123d83ee3 ("arm64: lto: Strengthen READ_ONCE() to acquire when CONFIG_LTO=y")
+Fixes: cc01bd044e6a ("uprobes: travers uprobe's consumer list locklessly under SRCU protection")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Boqun Feng <boqun@kernel.org>
-Signed-off-by: Marco Elver <elver@google.com>
-Tested-by: David Laight <david.laight.linux@gmail.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://patch.msgid.link/20260128-uprobe_rcu-v2-1-994ea6d32730@debian.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/rwonce.h | 2 +-
+ kernel/events/uprobes.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/rwonce.h b/arch/arm64/include/asm/rwonce.h
-index 97d9256d33c97..ac370a4a01ee9 100644
---- a/arch/arm64/include/asm/rwonce.h
-+++ b/arch/arm64/include/asm/rwonce.h
-@@ -58,7 +58,7 @@
- 	default:							\
- 		atomic = 0;						\
- 	}								\
--	atomic ? (typeof(*__x))__u.__val : (*(volatile typeof(__x))__x);\
-+	atomic ? (typeof(*__x))__u.__val : (*(volatile typeof(*__x) *)__x);\
- })
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index f11ceb8be8c41..4f42e7af575f5 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1138,7 +1138,7 @@ static bool filter_chain(struct uprobe *uprobe, struct mm_struct *mm)
+ 	bool ret = false;
  
- #endif	/* !BUILD_VDSO */
+ 	down_read(&uprobe->consumer_rwsem);
+-	list_for_each_entry_rcu(uc, &uprobe->consumers, cons_node, rcu_read_lock_trace_held()) {
++	list_for_each_entry(uc, &uprobe->consumers, cons_node) {
+ 		ret = consumer_filter(uc, mm);
+ 		if (ret)
+ 			break;
 -- 
 2.51.0
 
