@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220255-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIIKJh4vo2nb+AQAu9opvQ
-	(envelope-from <stable+bounces-220254-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:30 +0100
+	id uEMBISEvo2nb+AQAu9opvQ
+	(envelope-from <stable+bounces-220255-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189AB1C5733
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E101C5748
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A372D31F066A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:00:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A6967315D805
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3531B377036;
-	Sat, 28 Feb 2026 17:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B30B379EC0;
+	Sat, 28 Feb 2026 17:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDZkWZq8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Od3LX1vk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA78837702E;
-	Sat, 28 Feb 2026 17:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1095375AC8;
+	Sat, 28 Feb 2026 17:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300158; cv=none; b=BVeWQ0PyLJCXRhN8jotZcRn0PQgkKec9KnylzIlgwO5TEc2yvig5Zkc5fnNSM3DOZY8vRDqLql2ewJoIeSWUOxfE9f2A4FS1Wfr0KQAsXb3puflw2y52xEEjUuqBvu88UToajskXG1UQFyJziccN3szYfBvpoODxF7QCWYZImc8=
+	t=1772300158; cv=none; b=CIslrpL82OACdka6+MmEdpt8/PVYfwTobnqAatf7KHMP3CgiTsLshDTddC2lKNEBuXrHL7y17i1Qbyx7Fg342IO6WnaPuT7ANRJ1YHyuwyq05Bk6XT3PIlKo1vveIxiaYLEEBhUDwEQvB0Qt3ZM3rNG4V7NcYP5R0Am+ePTgmYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300158; c=relaxed/simple;
-	bh=fqo1tRZ40B/lwAWQfkdtK0n9wxzpxII4GRCGgGu/60k=;
+	bh=jpKIwh4BedLUAcItD23Wa7pLpbf3RV8K9IItLA6XWio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wu2O8GDA5kpHYjxLoqPKF+5jj/Qp3DRtTWfFOd888cZMqi3rYt28JdnjkuDJhTze3Eg9e8C7ClI41qpdDsQp9fo74jmTgwJsy1jz9PaN5CdNZEeG7Up6rHgtfvIb39t44yn8/OVod6iZQTG8zzxbGxHQkMbP0ZjroiD2gbune7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDZkWZq8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27148C2BCB2;
+	 MIME-Version; b=uAJZ3129EfVtVwb9icmofFTwel3EoPkh6NndRf2rCVrWsuVnhia1VsEJw2/E0P/7bBnk+feZrtKhjhrgw4JNorks6kdR0Sq3IDu4p869k7I8k0j0kJOoRFLMvJf2lPPPeqasCarGYG9bPbgTLuC8F1g8/Qus2tLFWAGnQHv3YNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Od3LX1vk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14915C2BC87;
 	Sat, 28 Feb 2026 17:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300157;
-	bh=fqo1tRZ40B/lwAWQfkdtK0n9wxzpxII4GRCGgGu/60k=;
+	s=k20201202; t=1772300158;
+	bh=jpKIwh4BedLUAcItD23Wa7pLpbf3RV8K9IItLA6XWio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDZkWZq8qVLEuK/UM6LiESC/pfsSS945k9xJ7AizJKBN+hOQ1VgFUbQ1RYNfQPyXc
-	 Pazh2tg9EM9Qj/CK68iQpGKRU/Wkt4fhn977fqa1cg6yYJ7QIEXjew7o8+D691m9Bc
-	 parGengvTyW6Oy2G2lZTl9yNAZLcjRGy9B1rgCjB9Zoh9gweN3skAULBRb5SG3eg0f
-	 P2IWunfO2T3yohSHwG0Qy97RnXxuT/i5wZCSE3B3uL0Ibi9PFFBbL0dTkE9CHlJIta
-	 DYGP5uGMu5UnEO6TyEcAwzzXps7+x5RadqajdAdm0k4k6YHUeV0Xdx53GjoYbVOKJ0
-	 ukNC4/D7wNvfw==
+	b=Od3LX1vk33gmOhtM7VMUvuxHUYm+dEfyUEToUqmUGiO8H/tumdL+j3H98bRwyMYsB
+	 1hUNa7Sg9zWPSd2fnyufa280G8UmzHPzAxr7kRllgGA/KTEp1n2wCsKpxbNgwnMoQQ
+	 y89hxqlG5ttLr3hGhoedHB3TsTmk/5B85N2n/dPCpQfkldYLw9eH2HZMmlcsjvFxRK
+	 4bsqPgtmXjjR/EhswUpmgL+rKiLHuv5YJxB+NGXhNfPAC72T0Fuz90zJUYIeLrkvbg
+	 g3HPtHPPvGJU4wJooS6EMz2TBc6svdwdJEYu8/LSV9tGTvLAxzz4wG/1bmT6RHX86O
+	 u3383ybEqIX6Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+Cc: Tuo Li <islituo@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 176/844] media: amphion: Clear last_buffer_dequeued flag for DEC_CMD_START
-Date: Sat, 28 Feb 2026 12:21:29 -0500
-Message-ID: <20260228173244.1509663-177-sashal@kernel.org>
+Subject: [PATCH 6.19 177/844] drm/panel: Fix a possible null-pointer dereference in jdi_panel_dsi_remove()
+Date: Sat, 28 Feb 2026 12:21:30 -0500
+Message-ID: <20260228173244.1509663-178-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -67,67 +66,86 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220254-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linaro.org,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220255-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email]
-X-Rspamd-Queue-Id: 189AB1C5733
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linaro.org:email]
+X-Rspamd-Queue-Id: 16E101C5748
 X-Rspamd-Action: no action
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Tuo Li <islituo@gmail.com>
 
-[ Upstream commit d85f3207d75df6d7a08be6526b15ff398668206c ]
+[ Upstream commit 95eed73b871111123a8b1d31cb1fce7e902e49ea ]
 
-The V4L2_DEC_CMD_START command may be used to handle the dynamic source
-change, which will triggers an implicit decoder drain.
-The last_buffer_dequeued flag is set in the implicit decoder drain,
-so driver need to clear it to continue the following decoding flow.
+In jdi_panel_dsi_remove(), jdi is explicitly checked, indicating that it
+may be NULL:
 
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+  if (!jdi)
+    mipi_dsi_detach(dsi);
+
+However, when jdi is NULL, the function does not return and continues by
+calling jdi_panel_disable():
+
+  err = jdi_panel_disable(&jdi->base);
+
+Inside jdi_panel_disable(), jdi is dereferenced unconditionally, which can
+lead to a NULL-pointer dereference:
+
+  struct jdi_panel *jdi = to_panel_jdi(panel);
+  backlight_disable(jdi->backlight);
+
+To prevent such a potential NULL-pointer dereference, return early from
+jdi_panel_dsi_remove() when jdi is NULL.
+
+Signed-off-by: Tuo Li <islituo@gmail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251218120955.11185-1-islituo@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vdec.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/panel/panel-jdi-lpm102a188a.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
-index c0d2aabb9e0e3..f25dbcebdccf6 100644
---- a/drivers/media/platform/amphion/vdec.c
-+++ b/drivers/media/platform/amphion/vdec.c
-@@ -724,6 +724,7 @@ static int vdec_decoder_cmd(struct file *file, void *fh, struct v4l2_decoder_cmd
- 	switch (cmd->cmd) {
- 	case V4L2_DEC_CMD_START:
- 		vdec_cmd_start(inst);
-+		vb2_clear_last_buffer_dequeued(v4l2_m2m_get_dst_vq(inst->fh.m2m_ctx));
- 		break;
- 	case V4L2_DEC_CMD_STOP:
- 		vdec_cmd_stop(inst);
+diff --git a/drivers/gpu/drm/panel/panel-jdi-lpm102a188a.c b/drivers/gpu/drm/panel/panel-jdi-lpm102a188a.c
+index 23462065d726b..ea975170fafff 100644
+--- a/drivers/gpu/drm/panel/panel-jdi-lpm102a188a.c
++++ b/drivers/gpu/drm/panel/panel-jdi-lpm102a188a.c
+@@ -434,8 +434,10 @@ static void jdi_panel_dsi_remove(struct mipi_dsi_device *dsi)
+ 	int err;
+ 
+ 	/* only detach from host for the DSI-LINK2 interface */
+-	if (!jdi)
++	if (!jdi) {
+ 		mipi_dsi_detach(dsi);
++		return;
++	}
+ 
+ 	err = jdi_panel_disable(&jdi->base);
+ 	if (err < 0)
 -- 
 2.51.0
 
