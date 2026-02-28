@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDDQKnJAo2kR+wQAu9opvQ
-	(envelope-from <stable+bounces-220749-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:22:26 +0100
+	id AIANHZdAo2kR+wQAu9opvQ
+	(envelope-from <stable+bounces-220750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:23:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236671C6E5D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:22:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD8B1C6EAB
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:23:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA80031286BE
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:17:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 977D730928D5
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFCA35F615;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE74D4921B1;
 	Sat, 28 Feb 2026 17:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkyUvV1Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="klf3YEPa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E461F35F60E;
-	Sat, 28 Feb 2026 17:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD724921AA;
+	Sat, 28 Feb 2026 17:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300630; cv=none; b=t5SdB9htDS5F/1IFVKVEhZWtbLLuUPgBNdiZQerISOEf9gHGRAYjjkKhNY/URpxx1wck0gmiYAmnEBF2xevNclFSbJiKsOfBbuMTVlSdmDvwOjmrEsuCBzmJuwOfk1hoObdnj1Jw1sCMuqoLU2EOQOH2degAwp+OlMocue1wv0o=
+	t=1772300630; cv=none; b=XYXUiSE9yiLS/mgkZDyAXp55+MZQGyIyloahEoqCXwX4CRmZG/8XzVsuyliJ0ZRlQHUO4EGqwePC8s17mcMhMwe1VnfhYvd3eREM0Ui1Hn+XFNRack2outEK69YPLmeLRGyfyTLL6qE8rH2M3F77Xl8uVlfK+xExq3rraBmbvjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300630; c=relaxed/simple;
-	bh=Xz8j6pxbQ/FSfDETEPnOFVY7lRTXjT+0U3o495G38Oo=;
+	bh=6cfPf4UrLZqeLG2ynVj+rtBkw4gw8pRAYGT4JMrGWWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jn+TqBGqg69BfrKItmNFnV+PSoieZ+awC2vu+t2NDdZ0NqrdG0nDMjRrbl/Loni7qm32NJT6QJ5UMclP1eL2yOorpDVg20H4JsqpDMjx+XnMSyWcY1jC0g9pB2sboU5ldFTfYHFQ4g397J7RXI9qILMbwGId4vdFgZqWtZgV1rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkyUvV1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F53C19425;
-	Sat, 28 Feb 2026 17:43:48 +0000 (UTC)
+	 MIME-Version; b=kl26mdNjm6H9QzAkUVWIjvqNTzgpwtYP0uuLoKw7wO0HQaujlc0utsiK1oDF5DwgsMyXlHBaeWFjfPYV3Z59l8r9F7bo/tV/t/l7ONDtrk9L40S0TlbRmNUwzSW7GG1PLKCP1/i8dKEGz/yGBD8lzOclmHxLLIIE5o8iL/FwsPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=klf3YEPa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D3BC116D0;
+	Sat, 28 Feb 2026 17:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300629;
-	bh=Xz8j6pxbQ/FSfDETEPnOFVY7lRTXjT+0U3o495G38Oo=;
+	s=k20201202; t=1772300630;
+	bh=6cfPf4UrLZqeLG2ynVj+rtBkw4gw8pRAYGT4JMrGWWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkyUvV1QHs4QI0SE4VxCJ6rd3vjLLxjDpvP+qnvWXi/qPQWKSDaqOOWgBLjt48Fe3
-	 aNWA1l0Ec9WwIRS3cmMsB9G5LGmarpsGcHg3gLxzEgo9oaPuIpQwh60Oc66GgvEgPj
-	 aoP4f19nyYHRcYMkj/LXpg2jufHfrtOXaS64KnRJXTw0vT0wTdahHjYtUlSVHA2D/Z
-	 F8Pb0UutDH2hRIJxHjDtAt7oEtKpoIjOQ9Jlz1MkJBwPszcMhXPN9kfqQYoZAO8Mp+
-	 eFkEHsa6SzMITWWzsPqRx6flK3ZFKo8Db+jl8QdVKqpp/6OlCnvAhGsZgTht2vfJlT
-	 qdFkyrt6BXIqw==
+	b=klf3YEPaZDHBlAdwif+Ih/nWSAwnzOHiOy5/J95EylJcj0skfC7Pnyee4pvvna27M
+	 Rgs3aSAqbrvg6uu7n6xJtqdx7MYYJ/os0k0lAt8uDT7Gi1K2KxJIeMuoUh2/daqrDh
+	 OPmq7YE5nZt+gRfp+cb9orQfcZBHpvTm4rYvlLEcDSbOscMpt5+OHslXHVoeeCNXrZ
+	 ojxpL6tEgP1F3w55odJQbBADiSsOZQqFnt/S7MPI5rqAtyMoFvKmp6fywekQ2xmOf6
+	 h77C8masdAYmwtO+voKZ3oshDqzKylIDLIZ8nowH3DxaurveUzoi0QZNq5heypA2xj
+	 ElUfbKZ9YUlnQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shawn Lin <shawn.lin@rock-chips.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+Cc: Brian Norris <briannorris@chromium.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 670/844] arm64: dts: rockchip: Fix rk3588 PCIe range mappings
-Date: Sat, 28 Feb 2026 12:29:43 -0500
-Message-ID: <20260228173244.1509663-671-sashal@kernel.org>
+Subject: [PATCH 6.19 671/844] PCI/PM: Prevent runtime suspend until devices are fully initialized
+Date: Sat, 28 Feb 2026 12:29:44 -0500
+Message-ID: <20260228173244.1509663-672-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,18 +72,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220749-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220750-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -93,85 +93,108 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 236671C6E5D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,chromium.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EBD8B1C6EAB
 X-Rspamd-Action: no action
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Brian Norris <briannorris@chromium.org>
 
-[ Upstream commit 46c56b737161060dfa468f25ae699749047902a2 ]
+[ Upstream commit 51c0996dadaea20d73eb0495aeda9cb0422243e8 ]
 
-The pcie bus address should be mapped 1:1 to the cpu side MMIO address, so
-that there is no same address allocated from normal system memory. Otherwise
-it's broken if the same address assigned to the EP for DMA purpose.Fix it to
-sync with the vendor BSP.
+Previously, it was possible for a PCI device to be runtime-suspended before
+it was fully initialized. When that happened, the suspend process could
+save invalid device state, for example, before BAR assignment. Restoring
+the invalid state during resume may leave the device non-functional.
 
-Fixes: 0acf4fa7f187 ("arm64: dts: rockchip: add PCIe3 support for rk3588")
-Fixes: 8d81b77f4c49 ("arm64: dts: rockchip: add rk3588 PCIe2 support")
+Prevent runtime suspend for PCI devices until they are fully initialized by
+deferring pm_runtime_enable().
+
+More details on how exactly this may occur:
+
+  1. PCI device is created by pci_scan_slot() or similar
+
+  2. As part of pci_scan_slot(), pci_pm_init() puts the device in D0 and
+     prevents runtime suspend prevented via pm_runtime_forbid()
+
+  3. pci_device_add() adds the underlying 'struct device' via device_add(),
+     which means user space can allow runtime suspend, e.g.,
+
+       echo auto > /sys/bus/pci/devices/.../power/control
+
+  4. PCI device receives BAR configuration
+     (pci_assign_unassigned_bus_resources(), etc.)
+
+  5. pci_bus_add_device() applies final fixups, saves device state, and
+     tries to attach a driver
+
+The device may potentially be suspended between #3 and #5, so this is racy
+with user space (udev or similar).
+
+Many PCI devices are enumerated at subsys_initcall time and so will not
+race with user space, but devices created later by hotplug or modular
+pwrctrl or host controller drivers are susceptible to this race.
+
+More runtime PM details at the first Link: below.
+
+Link: https://lore.kernel.org/all/0e35a4e1-894a-47c1-9528-fc5ffbafd9e2@samsung.com/
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+[bhelgaas: update comments per https://lore.kernel.org/r/CAJZ5v0iBNOmMtqfqEbrYyuK2u+2J2+zZ-iQd1FvyCPjdvU2TJg@mail.gmail.com]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: stable@vger.kernel.org
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/1767600929-195341-2-git-send-email-shawn.lin@rock-chips.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patch.msgid.link/20260122094815.v5.1.I60a53c170a8596661883bd2b4ef475155c7aa72b@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-base.dtsi  | 4 ++--
- arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/pci/bus.c | 8 ++++++++
+ drivers/pci/pci.c | 8 +++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-index 7ab12d1054a73..fdb017258b7bc 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-@@ -1955,7 +1955,7 @@ pcie2x1l1: pcie@fe180000 {
- 		power-domains = <&power RK3588_PD_PCIE>;
- 		ranges = <0x01000000 0x0 0xf3100000 0x0 0xf3100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf3200000 0x0 0xf3200000 0x0 0x00e00000>,
--			 <0x03000000 0x0 0x40000000 0x9 0xc0000000 0x0 0x40000000>;
-+			 <0x03000000 0x9 0xc0000000 0x9 0xc0000000 0x0 0x40000000>;
- 		reg = <0xa 0x40c00000 0x0 0x00400000>,
- 		      <0x0 0xfe180000 0x0 0x00010000>,
- 		      <0x0 0xf3000000 0x0 0x00100000>;
-@@ -2007,7 +2007,7 @@ pcie2x1l2: pcie@fe190000 {
- 		power-domains = <&power RK3588_PD_PCIE>;
- 		ranges = <0x01000000 0x0 0xf4100000 0x0 0xf4100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf4200000 0x0 0xf4200000 0x0 0x00e00000>,
--			 <0x03000000 0x0 0x40000000 0xa 0x00000000 0x0 0x40000000>;
-+			 <0x03000000 0xa 0x00000000 0xa 0x00000000 0x0 0x40000000>;
- 		reg = <0xa 0x41000000 0x0 0x00400000>,
- 		      <0x0 0xfe190000 0x0 0x00010000>,
- 		      <0x0 0xf4000000 0x0 0x00100000>;
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi
-index 6e5a58428bbab..a2640014ee042 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-extra.dtsi
-@@ -375,7 +375,7 @@ pcie3x4: pcie@fe150000 {
- 		power-domains = <&power RK3588_PD_PCIE>;
- 		ranges = <0x01000000 0x0 0xf0100000 0x0 0xf0100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf0200000 0x0 0xf0200000 0x0 0x00e00000>,
--			 <0x03000000 0x0 0x40000000 0x9 0x00000000 0x0 0x40000000>;
-+			 <0x03000000 0x9 0x00000000 0x9 0x00000000 0x0 0x40000000>;
- 		reg = <0xa 0x40000000 0x0 0x00400000>,
- 		      <0x0 0xfe150000 0x0 0x00010000>,
- 		      <0x0 0xf0000000 0x0 0x00100000>;
-@@ -462,7 +462,7 @@ pcie3x2: pcie@fe160000 {
- 		power-domains = <&power RK3588_PD_PCIE>;
- 		ranges = <0x01000000 0x0 0xf1100000 0x0 0xf1100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf1200000 0x0 0xf1200000 0x0 0x00e00000>,
--			 <0x03000000 0x0 0x40000000 0x9 0x40000000 0x0 0x40000000>;
-+			 <0x03000000 0x9 0x40000000 0x9 0x40000000 0x0 0x40000000>;
- 		reg = <0xa 0x40400000 0x0 0x00400000>,
- 		      <0x0 0xfe160000 0x0 0x00010000>,
- 		      <0x0 0xf1000000 0x0 0x00100000>;
-@@ -512,7 +512,7 @@ pcie2x1l0: pcie@fe170000 {
- 		power-domains = <&power RK3588_PD_PCIE>;
- 		ranges = <0x01000000 0x0 0xf2100000 0x0 0xf2100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf2200000 0x0 0xf2200000 0x0 0x00e00000>,
--			 <0x03000000 0x0 0x40000000 0x9 0x80000000 0x0 0x40000000>;
-+			 <0x03000000 0x9 0x80000000 0x9 0x80000000 0x0 0x40000000>;
- 		reg = <0xa 0x40800000 0x0 0x00400000>,
- 		      <0x0 0xfe170000 0x0 0x00010000>,
- 		      <0x0 0xf2000000 0x0 0x00100000>;
+diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+index 4383a36fd6ca0..41e5c45e38b5e 100644
+--- a/drivers/pci/bus.c
++++ b/drivers/pci/bus.c
+@@ -15,6 +15,7 @@
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/proc_fs.h>
+ #include <linux/slab.h>
+ 
+@@ -379,6 +380,13 @@ void pci_bus_add_device(struct pci_dev *dev)
+ 		put_device(&pdev->dev);
+ 	}
+ 
++	/*
++	 * Enable runtime PM, which potentially allows the device to
++	 * suspend immediately, only after the PCI state has been
++	 * configured completely.
++	 */
++	pm_runtime_enable(&dev->dev);
++
+ 	if (!dn || of_device_is_available(dn))
+ 		pci_dev_allow_binding(dev);
+ 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index f21f6933c9b63..a4eb3bc2127ae 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3199,8 +3199,14 @@ void pci_pm_init(struct pci_dev *dev)
+ poweron:
+ 	pci_pm_power_up_and_verify_state(dev);
+ 	pm_runtime_forbid(&dev->dev);
++
++	/*
++	 * Runtime PM will be enabled for the device when it has been fully
++	 * configured, but since its parent and suppliers may suspend in
++	 * the meantime, prevent them from doing so by changing the
++	 * device's runtime PM status to "active".
++	 */
+ 	pm_runtime_set_active(&dev->dev);
+-	pm_runtime_enable(&dev->dev);
+ }
+ 
+ static unsigned long pci_ea_flags(struct pci_dev *dev, u8 prop)
 -- 
 2.51.0
 
