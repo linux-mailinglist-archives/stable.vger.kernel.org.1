@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIGWAhhDo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:33:44 +0100
+	id SB9BLx1Do2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:33:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0ED1C71D9
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 447BB1C71E3
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:33:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 472603211F93
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:06:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03184340A1D4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5033F6AE3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C673F6AF7;
 	Sat, 28 Feb 2026 17:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BCA9oAB2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nUGM0AOV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A7A3F6ADA;
-	Sat, 28 Feb 2026 17:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6208E3F6AEF;
+	Sat, 28 Feb 2026 17:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300562; cv=none; b=Sk3IwrfuFzPN5R3ESnjgVPbmnzKDQdwT+DYQdXp5G0WIDT1eyY2ZOjwF5SD0CDq3YGMVhIxkxd+fXR/QW/sOV1r+dwRjO1I2w1SSnuw3MHN7m4H8079w6tmJilx6UuRSgRLse1gbYGipFqAPPRMPMklQYJ1d8aQ0w9czrD3TM5E=
+	t=1772300563; cv=none; b=dIL3INJY9oMfmcmLbZt0f/PNRC4/LkXLgA313ijGc49BqQcxrpHtFgpf5JZEr75IhREK0hJsui41SUS3hwCMWB8HtvU5+WScHjr4nL1Cb7tngMVas4L0YB1Fog8d9UwzqXI3Uxc0z0egWt/Hb/zZ1RJNLzxWFO++724Gjw67xsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300562; c=relaxed/simple;
-	bh=g+lQ6eEmCsqoIVmNzQsNBTXxuJYWt6+/ZurWb0pCyQ8=;
+	s=arc-20240116; t=1772300563; c=relaxed/simple;
+	bh=i1HvkQjXWbqm6+cFevEgkfc5JQGm0pBz1zHif6jCYd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVhnVMx9NFER3fIvso0HLV8D4H+C+Ik8UOY7x+GEHw4ldqVBRdcfS+BzWi3omvwEwDUMMTQfvh8iQ+L6hIgNtOjPmuQnr7k/YV80SJ8/lTLY9J5Kx1yhEUdQ+WJcGj0qsWr3gHY+Ofw1zZAAODuTEdVsTDxgud5PPTyF/Mdf/io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BCA9oAB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECF4C19423;
-	Sat, 28 Feb 2026 17:42:41 +0000 (UTC)
+	 MIME-Version; b=F25rOUT7AnSWX6KLsS5xTyDGUzoPt4lDjedzs7wSSh6YS09Lv13tm6fuMVZKwGR/rDb+SGQsaxhfrgx0fCar+TSBZUtMMqHCPRzDT8T1lkp/FI003/ayFtBOENqWrHEvc7kkWesmsUwr6ea3Yhbvvhu0p6GykivXLeAcn6kqQpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nUGM0AOV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA95C116D0;
+	Sat, 28 Feb 2026 17:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300562;
-	bh=g+lQ6eEmCsqoIVmNzQsNBTXxuJYWt6+/ZurWb0pCyQ8=;
+	s=k20201202; t=1772300563;
+	bh=i1HvkQjXWbqm6+cFevEgkfc5JQGm0pBz1zHif6jCYd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BCA9oAB24od+rO+L47PDP8gxkF+jO2Z/vf2oDY7C2bEIlYrLhfwEq/etvvk/eP/Eo
-	 WflEek7a4cpG+njOOnr2mvw9/p4xyK82fkJVXHEMdeYCaqrll62HDiUcLr1I7cnKee
-	 F6XxGoAGqMIu33YQC9v7VR1rj8o2mMtDA3pcrfqCZ2DEQFwFuzQ5f8/eTihEMl6JsB
-	 Lml1ubTI6ZNoPcl0KqCDVqA9F8aFrfBuhkyv6+ooQhaQ801PBvV7KuixlwxofqmBrm
-	 zSDqURZSCeg3L574CpKwFpRXuMIxa4SzcJzVyfXMh4iPac6rxWlL1SIl9yn3hlze4u
-	 rjsueGfVSpI8w==
+	b=nUGM0AOVMqVSB0rqEpN8F7IN9E5cuLcEG8ym/7AXU0PfvNP5y/sjw0SCLUIURU+Zt
+	 87HdRy2OqAO9YObI7Z6rGeVF3c1PMWu04a//Ia9PiWU1m7IMnn2kXGmC+1ZFf7tNoz
+	 eWv7/S1KdUV+ttGI8zxiUuT/78FU5W3COuUJa+mn1Mcl6vcQMpTzGzSKJssrNbBY83
+	 OND34Pfwc/ljfZblvgyRUurxdb8aOqx71UAVJUM9iznTuc3L1zro9GJuZKjEyi2/gN
+	 uD8mXZ+BGKC9LFTxIqIRS3QIJKlGEuEeyqvbrcR3D29Bm0f9nNXeGGUGros9bknnlj
+	 9A3bYmO0dOjhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michael Liang <mliang@purestorage.com>,
-	Mohamed Khalfella <mkhalfella@purestorage.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+Cc: Johan Hovold <johan@kernel.org>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 602/844] dm: clear cloned request bio pointer when last clone bio completes
-Date: Sat, 28 Feb 2026 12:28:35 -0500
-Message-ID: <20260228173244.1509663-603-sashal@kernel.org>
+Subject: [PATCH 6.19 603/844] drm/tegra: dsi: fix device leak on probe
+Date: Sat, 28 Feb 2026 12:28:36 -0500
+Message-ID: <20260228173244.1509663-604-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220681-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220682-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -92,82 +91,51 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,purestorage.com:email]
-X-Rspamd-Queue-Id: 6B0ED1C71D9
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 447BB1C71E3
 X-Rspamd-Action: no action
 
-From: Michael Liang <mliang@purestorage.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit fb8a6c18fb9a6561f7a15b58b272442b77a242dd ]
+[ Upstream commit bfef062695570842cf96358f2f46f4c6642c6689 ]
 
-Stale rq->bio values have been observed to cause double-initialization of
-cloned bios in request-based device-mapper targets, leading to
-use-after-free and double-free scenarios.
+Make sure to drop the reference taken when looking up the companion
+(ganged) device and its driver data during probe().
 
-One such case occurs when using dm-multipath on top of a PCIe NVMe
-namespace, where cloned request bios are freed during
-blk_complete_request(), but rq->bio is left intact. Subsequent clone
-teardown then attempts to free the same bios again via
-blk_rq_unprep_clone().
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-The resulting double-free path looks like:
-
-  nvme_pci_complete_batch()
-    nvme_complete_batch()
-      blk_mq_end_request_batch()
-        blk_complete_request()        // called on a DM clone request
-          bio_endio()                 // first free of all clone bios
-          ...
-        rq->end_io()                  // end_clone_request()
-          dm_complete_request(tio->orig)
-            dm_softirq_done()
-              dm_done()
-                dm_end_request()
-                  blk_rq_unprep_clone()  // second free of clone bios
-
-Fix this by clearing the clone request's bio pointer when the last cloned
-bio completes, ensuring that later teardown paths do not attempt to free
-already-released bios.
-
-Signed-off-by: Michael Liang <mliang@purestorage.com>
-Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
+Fixes: e94236cde4d5 ("drm/tegra: dsi: Add ganged mode support")
+Fixes: 221e3638feb8 ("drm/tegra: Fix reference leak in tegra_dsi_ganged_probe")
+Cc: stable@vger.kernel.org	# 3.19: 221e3638feb8
+Cc: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20251121164201.13188-1-johan@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-rq.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/tegra/dsi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-rq.c b/drivers/md/dm-rq.c
-index 5e08546696145..923252fb57aec 100644
---- a/drivers/md/dm-rq.c
-+++ b/drivers/md/dm-rq.c
-@@ -109,14 +109,21 @@ static void end_clone_bio(struct bio *clone)
- 	 */
- 	tio->completed += nr_bytes;
+diff --git a/drivers/gpu/drm/tegra/dsi.c b/drivers/gpu/drm/tegra/dsi.c
+index 175f5f9937b01..8ee96b59fdbc8 100644
+--- a/drivers/gpu/drm/tegra/dsi.c
++++ b/drivers/gpu/drm/tegra/dsi.c
+@@ -1542,11 +1542,9 @@ static int tegra_dsi_ganged_probe(struct tegra_dsi *dsi)
+ 			return -EPROBE_DEFER;
  
-+	if (!is_last)
-+		return;
-+	/*
-+	 * At this moment we know this is the last bio of the cloned request,
-+	 * and all cloned bios have been released, so reset the clone request's
-+	 * bio pointer to avoid double free.
-+	 */
-+	tio->clone->bio = NULL;
-+ exit:
- 	/*
- 	 * Update the original request.
- 	 * Do not use blk_mq_end_request() here, because it may complete
- 	 * the original request before the clone, and break the ordering.
- 	 */
--	if (is_last)
-- exit:
--		blk_update_request(tio->orig, BLK_STS_OK, tio->completed);
-+	blk_update_request(tio->orig, BLK_STS_OK, tio->completed);
- }
+ 		dsi->slave = platform_get_drvdata(gangster);
+-
+-		if (!dsi->slave) {
+-			put_device(&gangster->dev);
++		put_device(&gangster->dev);
++		if (!dsi->slave)
+ 			return -EPROBE_DEFER;
+-		}
  
- static struct dm_rq_target_io *tio_from_request(struct request *rq)
+ 		dsi->slave->master = dsi;
+ 	}
 -- 
 2.51.0
 
