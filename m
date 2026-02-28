@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJm/MO4xo2kE+QQAu9opvQ
-	(envelope-from <stable+bounces-220329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:20:30 +0100
+	id gO+RF4Exo2kE+QQAu9opvQ
+	(envelope-from <stable+bounces-220330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:18:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636A91C5AED
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:20:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE5C1C5A47
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4D361301DEF4
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:11:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B858033E8595
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F4939733D;
-	Sat, 28 Feb 2026 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FBD47F2CB;
+	Sat, 28 Feb 2026 17:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RVgvRl8r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EcjxBbNJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16422397335;
-	Sat, 28 Feb 2026 17:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F31346E70;
+	Sat, 28 Feb 2026 17:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300230; cv=none; b=uWQVXRYwGW0DTJA2N6lxgU8z+qjfqEvn7ooMWsWehS0emo8EO67S3Z8iDgOPtgddDDJIKtSpdqV2UzIsC/Te2z2fIOzpAQTyRzAWC061V8HhhR8pBL27sngbERK1NId5omJpRODtxBjFlz9bM0+9i+Y2h7MUMCUxVnyDO0w2N/0=
+	t=1772300230; cv=none; b=YSsuEBxXEODOCGHtB2Vx/Cj7ZimRcqF1DcSsi8I/LhxHAsy2I3QK69dukIPaWEs2riWZb0pEnaNGkxqPR6x3CUc/j3/nDokWocHq2xxbIY6j7FD2oCoSyj5VCscyEKbziDMtKCud+OYKVzFN1fYyVRlz0NmF5C74DfRPROb2blc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300230; c=relaxed/simple;
-	bh=CqTb2ncDZyCvY79JtpCtWTkhOpSciKWJvwe2gLjveiU=;
+	bh=my6dfp/GlCwi863JA+wggFe1YwcrV031OmpqAIPoVt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ahCMDBGYjlaeDWfToxS4Q9IZ9gYMaVyVZ5qtiGan93XeAWlzq/DDBmUR9sX/iXZ2e9IOEpalhdmIXSxHNub9/BYfwMFf7YThv0y9b2XxXSE71zrS7mUBzudRAeQ6FhiDAM3s6Q+Hj4f38Vt5U92M94QjIGtVResZ6rIvipWiqIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RVgvRl8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46242C19424;
-	Sat, 28 Feb 2026 17:37:09 +0000 (UTC)
+	 MIME-Version; b=hdc0petmA/c7XedjFYb3lUS3Uk5boda86crH76K4ep1iOQwgVx5gAGmU8vrtOqFb/iEzAl4ABCDh80877BcA1KHaoFfB3gm1lV0K8aHK5qQNQNrXMjRd6rBqwAe8Shs2ZDOQ5sZgg6FYEcxd5iYFJImFMXhPJqCHho4Q1Agb5FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EcjxBbNJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235A7C116D0;
+	Sat, 28 Feb 2026 17:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300229;
-	bh=CqTb2ncDZyCvY79JtpCtWTkhOpSciKWJvwe2gLjveiU=;
+	s=k20201202; t=1772300230;
+	bh=my6dfp/GlCwi863JA+wggFe1YwcrV031OmpqAIPoVt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVgvRl8r05+zhGH/DLg9CpaS3tRkb/XMYfRMrrlj8QE9y04YsUrYqHPlWy4VYGvp7
-	 tbOUUvbm3E1OPEpiLVvCMhuIOU3vakeayNpzYtA2ZsD869BYStoqyPqK/7al+GH1DV
-	 rzEPIhGO5tFpsugItgOukYWXxwZVc/FXpXXXYowedUGtUBY61oECCWzHMX1TECjc8K
-	 z4fnCe2M7gx43KaVPVmQk+6gFKo3/IMGrlE5OklzQVftLcqfjMn+3ddGIiiEYnt/FU
-	 SfBL7u62+cLxqc6m4j2Pq99OJNjv3/NCOApLmc8tilELkBwhxEhVOCeuWVKgiiMLct
-	 BvNm7kRIJpBJg==
+	b=EcjxBbNJNR0iQcy9C5pbsextZ+wSX/jo2f0F8/lXkIvFoLlcslAmFIvBFowmvAkXM
+	 L2oHMvTPL5vY6hyZEBcGu0gA5p1U3WdINL9Gw9mmcbKlPPE7iHtt19o3mBMRm1VFpn
+	 oGs4MunIntjSoTRT3nq1BSZ6ZdsLoLbbHCGlhpFNcCXy48brncDqlEeAHKMRvl4qNc
+	 yN5Uv2j8jsfSyrQqO28yLOIz3NiCydRSUfrG/9x0R8g2Elzs2M9L/PZQ7ZucSqQ0ky
+	 PC4hNbfI3svln64zucBswnTG6QD5+MBAsr8ViJ/HdpLoNFmmIrV6yxr7z5+WcRRtzg
+	 ZF7HuOHPhXsAw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roman Peshkichev <roman.peshkichev@gmail.com>,
+Cc: Jan Gerber <j@mailb.org>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 251/844] wifi: rtw88: fix DTIM period handling when conf->dtim_period is zero
-Date: Sat, 28 Feb 2026 12:22:44 -0500
-Message-ID: <20260228173244.1509663-252-sashal@kernel.org>
+Subject: [PATCH 6.19 252/844] wifi: rtw89: 8852au: add support for TP TX30U Plus
+Date: Sat, 28 Feb 2026 12:22:45 -0500
+Message-ID: <20260228173244.1509663-253-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,26 +66,24 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220329-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220330-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -93,68 +91,41 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:email]
-X-Rspamd-Queue-Id: 636A91C5AED
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailb.org:email]
+X-Rspamd-Queue-Id: BEE5C1C5A47
 X-Rspamd-Action: no action
 
-From: Roman Peshkichev <roman.peshkichev@gmail.com>
+From: Jan Gerber <j@mailb.org>
 
-[ Upstream commit 9f68fdcdc9dbf21be2a48feced90ff7f77d07443 ]
+[ Upstream commit a2f1fc9ab6fb0d5c9d701a516c342944258fb20e ]
 
-The function rtw_set_dtim_period() accepted an 'int' dtim_period parameter,
-while mac80211 provides dtim_period as 'u8' in struct ieee80211_bss_conf.
-In IBSS (ad-hoc) mode mac80211 may set dtim_period to 0.
+the device shows up like this and everything seams to work:
 
-The driver unconditionally wrote (dtim_period - 1) to
-REG_DTIM_COUNTER_ROOT, which resulted in 0xFF when dtim_period was 0. This
-caused delays in broadcast/multicast traffic processing and issues with
-ad-hoc operation.
+Bus 004 Device 003: ID 3625:010d Realtek 802.11ax WLAN Adapter
 
-Convert the function parameter to u8 to match ieee80211_bss_conf and avoid
-the underflow by writing 0 when dtim_period is 0.
-
-Link: https://github.com/lwfinger/rtw88/issues/406
-Signed-off-by: Roman Peshkichev <roman.peshkichev@gmail.com>
+Signed-off-by: Jan Gerber <j@mailb.org>
 Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251125180937.22977-1-roman.peshkichev@gmail.com
+Link: https://patch.msgid.link/20251212005515.2059533-1-j@mailb.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 4 ++--
- drivers/net/wireless/realtek/rtw88/main.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852au.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index d93d21656f26c..f72d12c3b2bc6 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -730,10 +730,10 @@ void rtw_set_rx_freq_band(struct rtw_rx_pkt_stat *pkt_stat, u8 channel)
- }
- EXPORT_SYMBOL(rtw_set_rx_freq_band);
- 
--void rtw_set_dtim_period(struct rtw_dev *rtwdev, int dtim_period)
-+void rtw_set_dtim_period(struct rtw_dev *rtwdev, u8 dtim_period)
- {
- 	rtw_write32_set(rtwdev, REG_TCR, BIT_TCR_UPDATE_TIMIE);
--	rtw_write8(rtwdev, REG_DTIM_COUNTER_ROOT, dtim_period - 1);
-+	rtw_write8(rtwdev, REG_DTIM_COUNTER_ROOT, dtim_period ? dtim_period - 1 : 0);
- }
- 
- void rtw_update_channel(struct rtw_dev *rtwdev, u8 center_channel,
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 43ed6d6b42919..1ab70214ce36e 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -2226,7 +2226,7 @@ enum nl80211_band rtw_hw_to_nl80211_band(enum rtw_supported_band hw_band)
- }
- 
- void rtw_set_rx_freq_band(struct rtw_rx_pkt_stat *pkt_stat, u8 channel);
--void rtw_set_dtim_period(struct rtw_dev *rtwdev, int dtim_period);
-+void rtw_set_dtim_period(struct rtw_dev *rtwdev, u8 dtim_period);
- void rtw_get_channel_params(struct cfg80211_chan_def *chandef,
- 			    struct rtw_channel_params *ch_param);
- bool check_hw_ready(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 target);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852au.c b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
+index ca782469c455d..74a976c984ad8 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852au.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
+@@ -60,6 +60,8 @@ static const struct usb_device_id rtw_8852au_id_table[] = {
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0141, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3625, 0x010d, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3625, 0x010f, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8852au_info },
+ 	{},
 -- 
 2.51.0
 
