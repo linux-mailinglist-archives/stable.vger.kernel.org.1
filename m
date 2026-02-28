@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDIUAts6o2nO+gQAu9opvQ
-	(envelope-from <stable+bounces-220438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:58:35 +0100
+	id sJLME6Y3o2lx+gQAu9opvQ
+	(envelope-from <stable+bounces-220439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:44:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E271C6790
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:58:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 000351C6376
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:44:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 37A7E32C868D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:28:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DF7DC31CA44A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1913B5BE0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D7B3B5BF3;
 	Sat, 28 Feb 2026 17:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKEnZ6P5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="su/3RFGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C244B3B4489;
-	Sat, 28 Feb 2026 17:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA513B5BEA;
+	Sat, 28 Feb 2026 17:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300327; cv=none; b=tzh+yWhfm6rmTzi3yMzsR0tW7Loqmdo17bxSP9cc+7dI7WSsaHTaYyCosYqpyhkyRUSFks10AIuIe0pXb4RkErVjKxzdObJBVFwivMjQXgWLeRkWMogIvPBusnV9aFndwnEmsRnrMxcjJehvLrHr1FJIBzrPvJO8QH0OGILoUC0=
+	t=1772300328; cv=none; b=EsvaJUBmP9GsCHp08cRTJmyegWWhvu2D3QVu/IyOKmwuWns7rp4gu5sjM40OiPNbKr5klF0XXqKZMCNwkSQ3qpqpBQqNvIoPz0jkg98Q+2c255J9YyjCIfg7tB35cF03en+Jcl0lUmsdO7pyzx3e8ONZt97l8ZhPqPGf/MxdRH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300327; c=relaxed/simple;
-	bh=/4RIoFWQvmnECXfpoZ2li00lAcsTSHybmqIwvfbhU54=;
+	s=arc-20240116; t=1772300328; c=relaxed/simple;
+	bh=VEKKTeVhlcWLRPYgdIU1LNz+iIYdHus7P0jtbj/SmGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/RrUch9MBDPEhEJ38dqWMKsuSB0R7ziS1SAAdoBFcViL860BgJSHjHskCY0Kzv6Ak8k5uykuGER+pHDHJdy3oo+BU7u+ohQ86yHhwXhYbV0xG0DL882LbftHMejNU6FE8Lsemr3woMq8STMUzV6O08YGEfEyUnONq2I7bsuM8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKEnZ6P5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF930C19424;
-	Sat, 28 Feb 2026 17:38:46 +0000 (UTC)
+	 MIME-Version; b=X1k15kcpXa4ByIVZbSWPJeArl9VTH7lOYFIDojxpwWEDrPMOOpOksGTUPqKt+9aongtI/5i9lkstP/SoXYWrqSP1Ms0C/WG/auONSHeKIQcad4KdIM4U1c2dQZ0r/A+rNmkAFOcDDdiD8pJ9/iIDt0gKN17xxHRM6eRLNRfLsj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=su/3RFGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97862C19423;
+	Sat, 28 Feb 2026 17:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300327;
-	bh=/4RIoFWQvmnECXfpoZ2li00lAcsTSHybmqIwvfbhU54=;
+	s=k20201202; t=1772300328;
+	bh=VEKKTeVhlcWLRPYgdIU1LNz+iIYdHus7P0jtbj/SmGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKEnZ6P56ixpUTKZp8RHbMlDATVbk7bU9r2DktZPwxpj1ClAdD/922X4wTqCnW0P0
-	 1efKSP+5JcOvvraOxysHzndyasYyD9AjW4+S2M6FT+6mlz76dgfDHaC2QxqJaniiwL
-	 LFIGP4LodbT0+zjhBgw26iSoQSY/wIJVgsw9oHc8iyeyD2fUi8u9YRbVe22hIF+Xp2
-	 FAHnhFw0huSngZeQJX8GL/AvBEF4KconquY+NWNSQF6gnxreJAHDngnD90TF0PSWIB
-	 nb2BaDJHn607SKipuehmyjmGNKGIgkIAPk/t6t18TNyGIP+VPJ7xAZQ+kpCE/evsbx
-	 etCDbQvRT1Z/w==
+	b=su/3RFGh16VfYOxbgJ7C3IeTG1fYW8DrqQzcDthuTiGrXpcisVUaQyfVIAyjsUfIb
+	 xFrGnzlb1XbdV+sM7ZxN8dE+A4KeTzqN5MAz/g8QfDEWP8r0JuRS1Np1FrE9eBOcPf
+	 woAtce8j+t9M3LJkTrnMh2nanADd34BttOZVaviLv1ZbIagjOWklH+snRzX1lZum+O
+	 q/1Na5j0zYEuVJrdCQfXwZBCbunJqdxKz2Yx9y+wD2S776FcGhoThPwt5ERRQmCQ+V
+	 +p6KuMbMISt3fJfibUeuoUYLwHO72p/HDg5LGhMHTBQrikKH6JQ68F6DO53uIAinZU
+	 2upNoqCAJKsnw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chuan Liu <chuan.liu@amlogic.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+Cc: Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 359/844] clk: amlogic: remove potentially unsafe flags from S4 video clocks
-Date: Sat, 28 Feb 2026 12:24:32 -0500
-Message-ID: <20260228173244.1509663-360-sashal@kernel.org>
+Subject: [PATCH 6.19 360/844] clk: renesas: rzg2l: Deassert reset on assert timeout
+Date: Sat, 28 Feb 2026 12:24:33 -0500
+Message-ID: <20260228173244.1509663-361-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,87 +66,80 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220438-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220439-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.983];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amlogic.com:email,baylibre.com:email]
-X-Rspamd-Queue-Id: 28E271C6790
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 000351C6376
 X-Rspamd-Action: no action
 
-From: Chuan Liu <chuan.liu@amlogic.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 4aca7e92023cac5018b4053bae324450f884c937 ]
+[ Upstream commit 0b0201f259e1158a875c5fd01adf318ae5d32352 ]
 
-The video clocks enci, encp, vdac and hdmitx share the same clock
-source. Adding CLK_SET_RATE_PARENT to the mux may unintentionally change
-the shared parent clock, which could affect other video clocks.
+If the assert() fails due to timeout error, set the reset register bit
+back to deasserted state. This change is needed especially for handling
+assert error in suspend() callback that expect the device to be in
+operational state in case of failure.
 
-Signed-off-by: Chuan Liu <chuan.liu@amlogic.com>
-Link: https://lore.kernel.org/r/20250919-add_video_clk-v6-3-fe223161fb3f@amlogic.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20260108123433.104464-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/s4-peripherals.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/clk/renesas/rzg2l-cpg.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/meson/s4-peripherals.c b/drivers/clk/meson/s4-peripherals.c
-index 6d69b132d1e1f..bab4f5700de47 100644
---- a/drivers/clk/meson/s4-peripherals.c
-+++ b/drivers/clk/meson/s4-peripherals.c
-@@ -1106,7 +1106,6 @@ static struct clk_regmap s4_cts_enci_sel = {
- 		.ops = &clk_regmap_mux_ops,
- 		.parent_hws = s4_cts_parents,
- 		.num_parents = ARRAY_SIZE(s4_cts_parents),
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index 64d1ef6e4c943..c20ea1212b360 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -1647,6 +1647,7 @@ static int __rzg2l_cpg_assert(struct reset_controller_dev *rcdev,
+ 	u32 mask = BIT(info->resets[id].bit);
+ 	s8 monbit = info->resets[id].monbit;
+ 	u32 value = mask << 16;
++	u32 mon;
+ 	int ret;
  
-@@ -1122,7 +1121,6 @@ static struct clk_regmap s4_cts_encp_sel = {
- 		.ops = &clk_regmap_mux_ops,
- 		.parent_hws = s4_cts_parents,
- 		.num_parents = ARRAY_SIZE(s4_cts_parents),
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
+ 	dev_dbg(rcdev->dev, "%s id:%ld offset:0x%x\n",
+@@ -1667,10 +1668,10 @@ static int __rzg2l_cpg_assert(struct reset_controller_dev *rcdev,
+ 		return 0;
+ 	}
  
-@@ -1138,7 +1136,6 @@ static struct clk_regmap s4_cts_vdac_sel = {
- 		.ops = &clk_regmap_mux_ops,
- 		.parent_hws = s4_cts_parents,
- 		.num_parents = ARRAY_SIZE(s4_cts_parents),
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -1169,7 +1166,6 @@ static struct clk_regmap s4_hdmi_tx_sel = {
- 		.ops = &clk_regmap_mux_ops,
- 		.parent_hws = s4_hdmi_tx_parents,
- 		.num_parents = ARRAY_SIZE(s4_hdmi_tx_parents),
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
+-	ret = readl_poll_timeout_atomic(priv->base + reg, value,
+-					assert == !!(value & mask), 10, 200);
+-	if (ret && !assert) {
+-		value = mask << 16;
++	ret = readl_poll_timeout_atomic(priv->base + reg, mon,
++					assert == !!(mon & mask), 10, 200);
++	if (ret) {
++		value ^= mask;
+ 		writel(value, priv->base + CLK_RST_R(info->resets[id].off));
+ 	}
  
 -- 
 2.51.0
