@@ -1,175 +1,219 @@
-Return-Path: <stable+bounces-220370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGDwA/Vio2kABwUAu9opvQ
-	(envelope-from <stable+bounces-220370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:49:41 +0100
+	id oFY3IqRYo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:05:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CA31C9466
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:49:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9551C8C4F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:05:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E1C1312336F
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:17:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C6FC130FE382
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03273A3538;
-	Sat, 28 Feb 2026 17:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85661332EA7;
+	Sat, 28 Feb 2026 17:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="EYCmKYb8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAn1VxT+"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C813A3504;
-	Sat, 28 Feb 2026 17:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300266; cv=pass; b=UWhVEBPAoIordrQ57sZUDE7iLHQVuXBdqxlIe4j26KLcxRk1YfnrkgE+olYyZZqRtDIpy5GMIAMQNKNv0UoCqwqvK32c/VnHLzbrBBcYqL4MEZ3d4r91Cq251CI/RP53O+tNxsWlDyyGZatGkP635sEovBSpI3qai2tC3hfWLWM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300266; c=relaxed/simple;
-	bh=1BJMdPqUAZ4ILPIPkmlYmVhrSric75D5wmL38+wWBLA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p0AVSxgBzgmHKC3DbybKI4+UUyNfxp5jy92oagTiPskfkE2OFQK1pMrB1ewXP1Nlp3D3eFFc1DPrF15/jMdzp5Ml/LvDJHl2T2rXLH9DtzeamzU/t9Kkax0pB05vJoVs0m27VKfATYf3sjegFkg8ISwP7p45vtNNeYpn8d4MS9I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=EYCmKYb8; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
-ARC-Seal: i=1; a=rsa-sha256; t=1772300246; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=hh0lCz+wccDqhmVMWqN8vv7siQVDwraFYbKp/1v80G0w/4mY1VHrE+h2mkO3f7REohjzlHK7gZuCmbWi/nRqsIoDs0ny0nhML3jSCc62iakej3kMtKjvQHNVNUD86oImY2lL1xHSCjLAJgqxtl13T/LlD+XXpkY9/zI0six66ME=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1772300246; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=V0iAzLvH235YmaKmJafhDbAzj392OrkWanaiH+LgkYU=; 
-	b=e1CvowAq/MvE8lxLCi58gS97yFi90QOjNxdHNpFXl/N0bve8hKLpQmIYLD1d23vNGeaB61GhrtLziPHqlKY7YlfxI2zpTuy1e87s0zWvqY1kTjUfG9b7Be/nQm3n92x/hj2gyvlGNxQpuDHbY8hlIlmSyffo7j+STpywcndU3Dw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=ziyao.cc;
-	spf=pass  smtp.mailfrom=me@ziyao.cc;
-	dmarc=pass header.from=<me@ziyao.cc>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772300246;
-	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=V0iAzLvH235YmaKmJafhDbAzj392OrkWanaiH+LgkYU=;
-	b=EYCmKYb8XL1SNTY03vjsTnS5EKl6aUDLeLN2d786oYOoUs83KxaaDQUz2eZaSQ8Z
-	5KosPeMBtZyYqWi0/ZWiyDcg9vyY/FfinjkwbwPhf9MfzqP5DWIX3oqJh3SkAw9AB2B
-	eF/mAObSDMU62P/E94kIvdDhVP1w97MRtU/C3wns=
-Received: by mx.zohomail.com with SMTPS id 1772300243723849.1494629034747;
-	Sat, 28 Feb 2026 09:37:23 -0800 (PST)
-From: Yao Zi <me@ziyao.cc>
-To: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Cc: x86@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yao Zi <me@ziyao.cc>,
-	stable@vger.kernel.org
-Subject: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin C4600
-Date: Sat, 28 Feb 2026 17:37:04 +0000
-Message-ID: <20260228173704.62460-1-me@ziyao.cc>
-X-Mailer: git-send-email 2.53.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4848C32AABE;
+	Sat, 28 Feb 2026 17:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772301271; cv=none; b=Jvo6D0LHpIIzmeKPkYTpNpF9mmSQSFQjzVdJgUQG285tIl+WroKpw2K5ezmarW2a8BQGPdKnhR5wqwymAKTsVqdG9K70ZnjEx7LVNS43EC09imN5rKXVDolrK+xcyiqKjJc21EIRXE9kqRha5z6QlBpz7zQ7kYZ7MdbCuNR2R5Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772301271; c=relaxed/simple;
+	bh=g/ldiWZ7ZtRtUsTGWptXHCGhnyIJmR/pakE7Kon9wQU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pcsCr4/hQRxHauuPLhESewZHtou9FMyJiQF8yITsdQph+2NNOJ7zFRikw5KN70Gouy6T+RbUSj8SrX3Qyr3ZIGYGsp4Km4ksFieGJKeXzD12eyfkrYeMbJMRxTj01XgsAXrHmghFuA9yDS8/kb3+zFHwhyolhLw8/fKKaPieMRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QAn1VxT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9398EC19423;
+	Sat, 28 Feb 2026 17:54:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772301271;
+	bh=g/ldiWZ7ZtRtUsTGWptXHCGhnyIJmR/pakE7Kon9wQU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QAn1VxT+aZgwVal3kVvDUVjVePlmU0eh8hoO8jb+MWxTu4yWdxDQSZPC/GcMn5ZXR
+	 W+1HKJUZ07GQwOJV/5iJXGunfLlnrGlcpeOwi0/2J31qJkzMXa8XqOCGCK16RAp+QF
+	 Y//W8wD9tfLlTrrGXL370Zfqbu3Pk/gRIaaj0mSfLQRm6st75tNuNvZboQ6NpA4Be+
+	 Li2NFi3DzV97J9Z3+HHacEJKKw3p4bkT5Mo0pAQkKtss9thKXf2NnJLp+C1qL29WAF
+	 0M5dEeKGFf/k7GMNAjjXyM2nJVmoV2+awnJMxk94n3mPij9mZdk8u4dF2Ncp/cF0u0
+	 TFxgINLeiXW4Q==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev
+Cc: Gui-Dong Han <hanguidong02@gmail.com>,
+	stable@vger.kernel.org,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 455/752] rpmsg: core: fix race in driver_override_show() and use core helper
+Date: Sat, 28 Feb 2026 12:42:46 -0500
+Message-ID: <20260228174750.1542406-455-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
+References: <20260228174750.1542406-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [8.84 / 15.00];
-	URIBL_BLACK(7.50)[ziyao.cc:mid,ziyao.cc:dkim,ziyao.cc:email];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	GREYLIST(0.00)[pass,body];
-	TAGGED_FROM(0.00)[bounces-220370-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	R_DKIM_ALLOW(0.00)[ziyao.cc:s=zmail];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,linaro.org,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[ziyao.cc,quarantine];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220925-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	FROM_NEQ_ENVFROM(0.00)[me@ziyao.cc,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ziyao.cc:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c15:e001:75::/64:c];
-	NEURAL_SPAM(0.00)[0.942];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F2CA31C9466
-X-Rspamd-Action: add header
-X-Spam: Yes
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: AF9551C8C4F
+X-Rspamd-Action: no action
 
-Zhaoxin C4600, which names itself as CentaurHauls, claims
-X86_FEATURE_FSGSBASE support in CPUID, while execution of fsgsbase-
-related instructions fails with #UD exception. This will cause kernel
-to crash early in current_save_fsgs().
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-Let's disable the feature on this problematic CPU and warn the user
-about the quirk. x86_model_id is used to match the platform to avoid
-unexpectedly breaking other CentaurHauls cores with conflicting
-family/model ID.
+[ Upstream commit 42023d4b6d2661a40ee2dcf7e1a3528a35c638ca ]
 
+The driver_override_show function reads the driver_override string
+without holding the device_lock. However, the store function modifies
+and frees the string while holding the device_lock. This creates a race
+condition where the string can be freed by the store function while
+being read by the show function, leading to a use-after-free.
+
+To fix this, replace the rpmsg_string_attr macro with explicit show and
+store functions. The new driver_override_store uses the standard
+driver_set_override helper. Since the introduction of
+driver_set_override, the comments in include/linux/rpmsg.h have stated
+that this helper must be used to set or clear driver_override, but the
+implementation was not updated until now.
+
+Because driver_set_override modifies and frees the string while holding
+the device_lock, the new driver_override_show now correctly holds the
+device_lock during the read operation to prevent the race.
+
+Additionally, since rpmsg_string_attr has only ever been used for
+driver_override, removing the macro simplifies the code.
+
+Fixes: 39e47767ec9b ("rpmsg: Add driver_override device attribute for rpmsg_device")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yao Zi <me@ziyao.cc>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20251202174948.12693-1-hanguidong02@gmail.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/centaur.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/rpmsg/rpmsg_core.c | 66 ++++++++++++++++----------------------
+ 1 file changed, 27 insertions(+), 39 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/centaur.c b/arch/x86/kernel/cpu/centaur.c
-index 81695da9c524..3773784ba6a9 100644
---- a/arch/x86/kernel/cpu/centaur.c
-+++ b/arch/x86/kernel/cpu/centaur.c
-@@ -108,6 +108,29 @@ static void early_init_centaur(struct cpuinfo_x86 *c)
- 	}
- }
+diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+index 5d661681a9b6c..96964745065b1 100644
+--- a/drivers/rpmsg/rpmsg_core.c
++++ b/drivers/rpmsg/rpmsg_core.c
+@@ -352,50 +352,38 @@ field##_show(struct device *dev,					\
+ }									\
+ static DEVICE_ATTR_RO(field);
  
-+/*
-+ * Zhaoxin C4600 (family 6, model 15) names itself as CentaurHauls, it claims
-+ * X86_FEATURE_FSGSBASE support in CPUID, while executing any fsgsbase-related
-+ * instructions on it results in #UD.
-+ */
-+static void fixup_zhaoxin_fsgsbase(struct cpuinfo_x86 *c)
+-#define rpmsg_string_attr(field, member)				\
+-static ssize_t								\
+-field##_store(struct device *dev, struct device_attribute *attr,	\
+-	      const char *buf, size_t sz)				\
+-{									\
+-	struct rpmsg_device *rpdev = to_rpmsg_device(dev);		\
+-	const char *old;						\
+-	char *new;							\
+-									\
+-	new = kstrndup(buf, sz, GFP_KERNEL);				\
+-	if (!new)							\
+-		return -ENOMEM;						\
+-	new[strcspn(new, "\n")] = '\0';					\
+-									\
+-	device_lock(dev);						\
+-	old = rpdev->member;						\
+-	if (strlen(new)) {						\
+-		rpdev->member = new;					\
+-	} else {							\
+-		kfree(new);						\
+-		rpdev->member = NULL;					\
+-	}								\
+-	device_unlock(dev);						\
+-									\
+-	kfree(old);							\
+-									\
+-	return sz;							\
+-}									\
+-static ssize_t								\
+-field##_show(struct device *dev,					\
+-	     struct device_attribute *attr, char *buf)			\
+-{									\
+-	struct rpmsg_device *rpdev = to_rpmsg_device(dev);		\
+-									\
+-	return sprintf(buf, "%s\n", rpdev->member);			\
+-}									\
+-static DEVICE_ATTR_RW(field)
+-
+ /* for more info, see Documentation/ABI/testing/sysfs-bus-rpmsg */
+ rpmsg_show_attr(name, id.name, "%s\n");
+ rpmsg_show_attr(src, src, "0x%x\n");
+ rpmsg_show_attr(dst, dst, "0x%x\n");
+ rpmsg_show_attr(announce, announce ? "true" : "false", "%s\n");
+-rpmsg_string_attr(driver_override, driver_override);
++
++static ssize_t driver_override_store(struct device *dev,
++				     struct device_attribute *attr,
++				     const char *buf, size_t count)
 +{
-+	const char *name, *model_names[] = {
-+		"C-QuadCore C4600"
-+	};
-+	int i;
++	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
++	int ret;
 +
-+	for (i = 0; i < ARRAY_SIZE(model_names); i++) {
-+		name = model_names[i];
++	ret = driver_set_override(dev, &rpdev->driver_override, buf, count);
++	if (ret)
++		return ret;
 +
-+		if (!strncmp(c->x86_model_id, name, strlen(name))) {
-+			pr_warn_once("CPU has broken FSGSBASE support\n");
-+			setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-+			return;
-+		}
-+	}
++	return count;
 +}
 +
- static void init_centaur(struct cpuinfo_x86 *c)
- {
- #ifdef CONFIG_X86_32
-@@ -201,6 +224,8 @@ static void init_centaur(struct cpuinfo_x86 *c)
- 	set_cpu_cap(c, X86_FEATURE_LFENCE_RDTSC);
- #endif
- 
-+	fixup_zhaoxin_fsgsbase(c);
++static ssize_t driver_override_show(struct device *dev,
++				    struct device_attribute *attr, char *buf)
++{
++	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
++	ssize_t len;
 +
- 	init_ia32_feat_ctl(c);
- }
++	device_lock(dev);
++	len = sysfs_emit(buf, "%s\n", rpdev->driver_override);
++	device_unlock(dev);
++	return len;
++}
++static DEVICE_ATTR_RW(driver_override);
  
+ static ssize_t modalias_show(struct device *dev,
+ 			     struct device_attribute *attr, char *buf)
 -- 
-2.53.0
+2.51.0
 
 
