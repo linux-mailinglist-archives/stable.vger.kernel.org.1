@@ -1,58 +1,70 @@
-Return-Path: <stable+bounces-220724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LRmDh1Bo2lC+wQAu9opvQ
-	(envelope-from <stable+bounces-220724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:25:17 +0100
+	id +LovCQxVo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:50:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19EC41C6F6A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:25:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B911C891A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:50:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8199D318880C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:13:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41A17321919A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DC03FE85A;
-	Sat, 28 Feb 2026 17:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3973FE06C;
+	Sat, 28 Feb 2026 17:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K6Xr+YRW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cM4f0TZY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883753FE852;
-	Sat, 28 Feb 2026 17:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF1A3FE87D;
+	Sat, 28 Feb 2026 17:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300604; cv=none; b=czbxtZTYZoHeVNlpn2yaWeSTCHUrFcFY0JRCPFl29hAYYHIZ+Xdtc10CqzzeHjqwYF4cBw0trEeXlu3GLFO6R4kZc314RWAY+84ilYF/vCnLhrQnKA3qdvWb8h6CwPkiUltVJxZZQbfXIB9KW4+kB/47Cc4SB0+gQy/42AKQ4dg=
+	t=1772300606; cv=none; b=B/DNi7Y31d+T9v2Cd+m/6B7C9Ifal08gYMdvY7S5NXEgr9Ces+JqTiPuMsOkEtx7eJ94nJaGXaWpJaH6pn8AoIvpP5wQBGK7GqG0v5tBdDwPRKESHFDWSZejeUc5COTWv02skjPuTRcjB/JCfyNXQLoKKriJg8gVPhD63DrYj4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300604; c=relaxed/simple;
-	bh=CIq1sMcaAIbQlDLPPLl+hO1rP2rtKXpxE8bLIcDJV2E=;
+	s=arc-20240116; t=1772300606; c=relaxed/simple;
+	bh=q/WVrkUAs9UtZs+I2Ue05ZFeeAw+Iz5yXKqjHVYTCCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0INEaqTdaD7IDjNDHr2XEcpTNC9EppBvPO5sJS4uZGX0dDDombV4V6TeTeRudPnTJPhQWevGmw7ujg1c6cSEEnDB9E7WJdfIeX54ItsRbOw3t8DvCp4Ecgc7H0VEMSm4b3Grr6vxU44Q0C+0szIeJhXWoUyiJQYG8SS3a5lN8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K6Xr+YRW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B157AC19423;
-	Sat, 28 Feb 2026 17:43:23 +0000 (UTC)
+	 MIME-Version; b=mN1z6bFmEeJEQbZs61IkqikkwoZtZOdgoOioNNJaS6q++Loxy+02nDiHMkq1DeSY65yPnc+Oee7SN62theCu9fAYI/xozbfYkO3IkaF2+AvCv/jmSI+sb++E/O4+XC0OQcbd6DEM/lsMaEwjRmJX1xEwSiYdb1zul4/ttBR4u/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cM4f0TZY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FADDC116D0;
+	Sat, 28 Feb 2026 17:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300604;
-	bh=CIq1sMcaAIbQlDLPPLl+hO1rP2rtKXpxE8bLIcDJV2E=;
+	s=k20201202; t=1772300606;
+	bh=q/WVrkUAs9UtZs+I2Ue05ZFeeAw+Iz5yXKqjHVYTCCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6Xr+YRWc1K7UMA7dcL7axVqxSgtFTu+b50NBx7RnQODKwP3NKnz6t+r67ai10lRu
-	 IHVxuvfp/3IXIXiRyP7xb6M0ua2VWpN79e00Hf7uuMgYS9qeMuW2TVZtr0OB5SJqhr
-	 iz16v1VEOTLoZ1nGAi/CKvKzNd7mlKDzur243Zxe8BIaKbaRHPVnMPkdFxaGN27Sxj
-	 UN+R4X+hKDpVVe9EnxRGE3SbxGlbwmb9mN2BxbXsa3G5eOklP3OSt+WcCZjisUrREe
-	 WPt9dv6H8vwb8MxpPVLFVa2qmSDQSxC6n8CMiLBoXLveVnjD0lRmYsBh7/yyn7n7iY
-	 aZzsdfu3UUhLw==
+	b=cM4f0TZYR3/3N8VYy+UfQt12oLdDp2cLZtIoRWz5LDK8409iLGmI9Qv8lhBj6I1PF
+	 tkWbv3/u+0qfEIVhdvKMJpvzA69aAZ4omsjoboXp8YoMh8pHgedLnf/QdGjbacQ//g
+	 VUDO4Ovt2hZ3bV42YZBy2uSy9ZoaCE2dWORwjRsLC/RF4zDXKR7IAm6EKapdup35qf
+	 A4FZfssEQaPBUo41O/IOCqDFEfIqanb7ZURcFbVctBzoFp56gYosOknXcXO2BSc5XT
+	 ll1fIwHfMpAdTMV9eqAKe2wlbgizf17PVYiNoMbAuZ70whKW+2ifo9Tpus05486NFa
+	 jt8ptZiHAkWCQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Zi Yan <ziy@nvidia.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 645/844] docs: kdoc: avoid error_count overflows
-Date: Sat, 28 Feb 2026 12:29:18 -0500
-Message-ID: <20260228173244.1509663-646-sashal@kernel.org>
+Subject: [PATCH 6.19 646/844] mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP allocations
+Date: Sat, 28 Feb 2026 12:29:19 -0500
+Message-ID: <20260228173244.1509663-647-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,107 +78,123 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220724-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220725-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[suse.cz,suse.com,cmpxchg.org,suse.de,nvidia.com,google.com,kernel.org,gmail.com,oracle.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lwn.net:email]
-X-Rspamd-Queue-Id: 19EC41C6F6A
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 97B911C891A
 X-Rspamd-Action: no action
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit 802774d8539fa73487190ec45438777a3c38d424 ]
+[ Upstream commit 9c9828d3ead69416d731b1238802af31760c823e ]
 
-The glibc library limits the return code to 8 bits. We need to
-stick to this limit when using sys.exit(error_count).
+Since commit cc638f329ef6 ("mm, thp: tweak reclaim/compaction effort of
+local-only and all-node allocations"), THP page fault allocations have
+settled on the following scheme (from the commit log):
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Message-ID: <233d1674db99ed8feb405a2f781de350f0fba0ac.1768823489.git.mchehab+huawei@kernel.org>
+1. local node only THP allocation with no reclaim, just compaction.
+2. for madvised VMA's or when synchronous compaction is enabled always - THP
+   allocation from any node with effort determined by global defrag setting
+   and VMA madvise
+3. fallback to base pages on any node
+
+Recent customer reports however revealed we have a gap in step 1 above.
+What we have seen is excessive reclaim due to THP page faults on a NUMA
+node that's close to its high watermark, while other nodes have plenty of
+free memory.
+
+The problem with step 1 is that it promises no reclaim after the
+compaction attempt, however reclaim is only avoided for certain compaction
+outcomes (deferred, or skipped due to insufficient free base pages), and
+not e.g.  when compaction is actually performed but fails (we did see
+compact_fail vmstat counter increasing).
+
+THP page faults can therefore exhibit a zone_reclaim_mode-like behavior,
+which is not the intention.
+
+Thus add a check for __GFP_THISNODE that corresponds to this exact
+situation and prevents continuing with reclaim/compaction once the initial
+compaction attempt isn't successful in allocating the page.
+
+Note that commit cc638f329ef6 has not introduced this over-reclaim
+possibility; it appears to exist in some form since commit 2f0799a0ffc0
+("mm, thp: restore node-local hugepage allocations").  Followup commits
+b39d0ee2632d ("mm, page_alloc: avoid expensive reclaim when compaction may
+not succeed") and cc638f329ef6 have moved in the right direction, but left
+the abovementioned gap.
+
+Link: https://lkml.kernel.org/r/20251219-costly-noretry-thisnode-fix-v1-1-e1085a4a0c34@suse.cz
+Fixes: 2f0799a0ffc0 ("mm, thp: restore node-local hugepage allocations")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kernel-doc.py | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ mm/page_alloc.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/scripts/kernel-doc.py b/scripts/kernel-doc.py
-index 7a1eaf986bcd4..1ebb16b9bb087 100755
---- a/scripts/kernel-doc.py
-+++ b/scripts/kernel-doc.py
-@@ -116,6 +116,8 @@ SRC_DIR = os.path.dirname(os.path.realpath(__file__))
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index cbf758e27aa2c..1af52f568f22d 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4818,6 +4818,20 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 			    compact_result == COMPACT_DEFERRED)
+ 				goto nopage;
  
- sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
- 
-+WERROR_RETURN_CODE = 3
++			/*
++			 * THP page faults may attempt local node only first,
++			 * but are then allowed to only compact, not reclaim,
++			 * see alloc_pages_mpol().
++			 *
++			 * Compaction can fail for other reasons than those
++			 * checked above and we don't want such THP allocations
++			 * to put reclaim pressure on a single node in a
++			 * situation where other nodes might have plenty of
++			 * available memory.
++			 */
++			if (gfp_mask & __GFP_THISNODE)
++				goto nopage;
 +
- DESC = """
- Read C language source or header FILEs, extract embedded documentation comments,
- and print formatted documentation to standard output.
-@@ -176,7 +178,21 @@ class MsgFormatter(logging.Formatter):
-         return logging.Formatter.format(self, record)
- 
- def main():
--    """Main program"""
-+    """
-+    Main program.
-+
-+    By default, the return value is:
-+
-+    - 0: success or Python version is not compatible with
-+      kernel-doc.  If -Werror is not used, it will also
-+      return 0 if there are issues at kernel-doc markups;
-+
-+    - 1: an abnormal condition happened;
-+
-+    - 2: argparse issued an error;
-+
-+    - 3: -Werror is used, and one or more unfiltered parse warnings happened.
-+    """
- 
-     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
-                                      description=DESC)
-@@ -323,16 +339,12 @@ def main():
- 
-     if args.werror:
-         print("%s warnings as errors" % error_count)    # pylint: disable=C0209
--        sys.exit(error_count)
-+        sys.exit(WERROR_RETURN_CODE)
- 
-     if args.verbose:
-         print("%s errors" % error_count)                # pylint: disable=C0209
- 
--    if args.none:
--        sys.exit(0)
--
--    sys.exit(error_count)
--
-+    sys.exit(0)
- 
- # Call main method
- if __name__ == "__main__":
+ 			/*
+ 			 * Looks like reclaim/compaction is worth trying, but
+ 			 * sync compaction could be very expensive, so keep
 -- 
 2.51.0
 
