@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAKNBNkvo2nb+AQAu9opvQ
-	(envelope-from <stable+bounces-220179-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:11:37 +0100
+	id ONx0Nccso2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:58:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829121C583E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:11:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2791C5491
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF943322329D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:48:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6F91F32A3D3B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001374B8DFF;
-	Sat, 28 Feb 2026 17:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E780E4BC020;
+	Sat, 28 Feb 2026 17:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2w6WLug"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGtHXMF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59464B8DFA;
-	Sat, 28 Feb 2026 17:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99384BC015;
+	Sat, 28 Feb 2026 17:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300086; cv=none; b=ABKQhYJ8dQ8jIGzhyG1psMmieMhGLTdeshBPGXZVl/s3sqRsEtJEzVfkHYh/iMBz2NkdWhBCVJT2vhn0XCuUtTXj0b5FBnd7JU7iIf+tN/cOcTqOA9qpWlyoPGpWAE6UkvfdkOJeYbrOXCtTPZa0WJxfv+ewHsTG/OCHJ2j3N5o=
+	t=1772300087; cv=none; b=t16QyI4J8h4AzWrbPL1PrKwxwYoUQL8SPckV+Eg3ihBrHmUMLSh5qZNVLRI/8Kh4AzdHnNGzqkjvgibHIa563wNZiIA6nh2omTTXpLgG8qrN37VhuMPiLK+d43XsqoBKojoP7CcKVgSvqAAQW4hKAe2GMirhVQKwNmjcZMoJI+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300086; c=relaxed/simple;
-	bh=n4I3ZRd9nos2v/LrmTbU4sUnLQMETJn5sEgj8BQmspU=;
+	s=arc-20240116; t=1772300087; c=relaxed/simple;
+	bh=kvUMyJMY36JwN472Kvu7Uo2pNYLuOdV0dgpV5Exx4wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LN2JxOTTo2qeu1IgMPOM38lZQSIQaB1JG9TaAvKJjd+SOpw34BQ8LsyeSvnj9dZyjP+9xIs/szRWsdfuG21dgr0dfYUZ9OOa4x46xxK+YoxxSsHlit9Fjpa7405pHAvrEe8UaPNCsdkiOBCqAvSSDDXIRtAAwIJ/49ekbAt8HLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2w6WLug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A166C2BCAF;
-	Sat, 28 Feb 2026 17:34:45 +0000 (UTC)
+	 MIME-Version; b=cJL1IFc1yAylqM7iwjzZJSRZELQsyJ4nE/NewgkSoadOCj4MCuN1eAqu8JjPj7C3835xg7NJJCid7zB7qDdH4QjkPYJh/rgOdtNIoI5xbYtTHLSg0A9WBL38jjQGu2hFFT7MJl3qqB2BiCCfwdX+m3QMl618HqepxiXKbJW4VrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGtHXMF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC517C19424;
+	Sat, 28 Feb 2026 17:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300086;
-	bh=n4I3ZRd9nos2v/LrmTbU4sUnLQMETJn5sEgj8BQmspU=;
+	s=k20201202; t=1772300087;
+	bh=kvUMyJMY36JwN472Kvu7Uo2pNYLuOdV0dgpV5Exx4wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2w6WLugSYu41Ap68YbTOsmiYsh2FAJY2XuXRN+GuMQ3cJoBYURIXxRd9fcn6frUT
-	 VgFDoUTZpcZJ01X0X0dFUtMqUStaY9/BwiDasgnqJ6/ed1vCVGosfmKDTQyC/cPobr
-	 Zc94oCWdMpIy6a0N1JAXDtgvoseZCIQOmlwhMSE9kI1Z8oJUtTDPcHYU6g6PrjSjAP
-	 mvbnw+B2aavsOld7a+Q58WJeLyH4tH9LmYzNlLKq3j9wkIV+slZHKFtgVJKBP+Elg0
-	 Ws/iA5dmTZcK+SH9lPfUMYLb+xXFK/sOm0CDK/qe3YBGCz78nYKRirGi9ibR0wT/D1
-	 sbqHQZeI1DqTg==
+	b=kGtHXMF2OmMk+11Y9LjlvuAXgCJ2nEWMvV6ob7qq0tq+cp0jAUciiynKtGVa6nEFD
+	 gbDqZtJyOsN52eBtgICW69vAsPpFhDiZ/2iOgElwDnE5+EhZgg2JGBLpxf0YHCcq0+
+	 nclgSRMUaxSsKzj3xQH5AWycAefMJ0Gd/Xx3G4VlqsLG65O4Wo6rBrwMZzrjzSKdaa
+	 Z0B03dCeU1Pv4U28ZybH7d0AW+Ni9D5fj/3m/Dh5mlD2MMiikfkC+TV4o9Oi+ZbO12
+	 FxZtW49aLUOh1EM/mhFGYsREBuc+5DjdrP4ukx+GjvQ368mKTf0VaRrMhhFhCbUVkE
+	 eoqY+Z0X84CgQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Anton Protopopov <a.s.protopopov@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Namhyung Kim <namhyung@kernel.org>,
+	Rosalie Fang <rosaliefang@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 101/844] bpf: Properly mark live registers for indirect jumps
-Date: Sat, 28 Feb 2026 12:20:14 -0500
-Message-ID: <20260228173244.1509663-102-sashal@kernel.org>
+Subject: [PATCH 6.19 102/844] perf/core: Fix slow perf_event_task_exit() with LBR callstacks
+Date: Sat, 28 Feb 2026 12:20:15 -0500
+Message-ID: <20260228173244.1509663-103-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,65 +70,117 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220179-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220180-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 829121C583E
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,infradead.org:email]
+X-Rspamd-Queue-Id: 7B2791C5491
 X-Rspamd-Action: no action
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit d1aab1ca576c90192ba961094d51b0be6355a4d6 ]
+[ Upstream commit 4960626f956d63dce57f099016c2ecbe637a8229 ]
 
-For a `gotox rX` instruction the rX register should be marked as used
-in the compute_insn_live_regs() function. Fix this.
+I got a report that a task is stuck in perf_event_exit_task() waiting
+for global_ctx_data_rwsem.  On large systems with lots threads, it'd
+have performance issues when it grabs the lock to iterate all threads
+in the system to allocate the context data.
 
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Link: https://lore.kernel.org/r/20260114162544.83253-2-a.s.protopopov@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+And it'd block task exit path which is problematic especially under
+memory pressure.
+
+  perf_event_open
+    perf_event_alloc
+      attach_perf_ctx_data
+        attach_global_ctx_data
+          percpu_down_write (global_ctx_data_rwsem)
+            for_each_process_thread
+              alloc_task_ctx_data
+                                               do_exit
+                                                 perf_event_exit_task
+                                                   percpu_down_read (global_ctx_data_rwsem)
+
+It should not hold the global_ctx_data_rwsem on the exit path.  Let's
+skip allocation for exiting tasks and free the data carefully.
+
+Reported-by: Rosalie Fang <rosaliefang@google.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260112165157.1919624-1-namhyung@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/events/core.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 1999b8d244f64..783d984d7884d 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -24852,6 +24852,12 @@ static void compute_insn_live_regs(struct bpf_verifier_env *env,
- 	case BPF_JMP32:
- 		switch (code) {
- 		case BPF_JA:
-+			def = 0;
-+			if (BPF_SRC(insn->code) == BPF_X)
-+				use = dst;
-+			else
-+				use = 0;
-+			break;
- 		case BPF_JCOND:
- 			def = 0;
- 			use = 0;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 8cca800946248..69c56cad88a89 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5280,9 +5280,20 @@ attach_task_ctx_data(struct task_struct *task, struct kmem_cache *ctx_cache,
+ 		return -ENOMEM;
+ 
+ 	for (;;) {
+-		if (try_cmpxchg((struct perf_ctx_data **)&task->perf_ctx_data, &old, cd)) {
++		if (try_cmpxchg(&task->perf_ctx_data, &old, cd)) {
+ 			if (old)
+ 				perf_free_ctx_data_rcu(old);
++			/*
++			 * Above try_cmpxchg() pairs with try_cmpxchg() from
++			 * detach_task_ctx_data() such that
++			 * if we race with perf_event_exit_task(), we must
++			 * observe PF_EXITING.
++			 */
++			if (task->flags & PF_EXITING) {
++				/* detach_task_ctx_data() may free it already */
++				if (try_cmpxchg(&task->perf_ctx_data, &cd, NULL))
++					perf_free_ctx_data_rcu(cd);
++			}
+ 			return 0;
+ 		}
+ 
+@@ -5328,6 +5339,8 @@ attach_global_ctx_data(struct kmem_cache *ctx_cache)
+ 	/* Allocate everything */
+ 	scoped_guard (rcu) {
+ 		for_each_process_thread(g, p) {
++			if (p->flags & PF_EXITING)
++				continue;
+ 			cd = rcu_dereference(p->perf_ctx_data);
+ 			if (cd && !cd->global) {
+ 				cd->global = 1;
+@@ -14294,8 +14307,11 @@ void perf_event_exit_task(struct task_struct *task)
+ 
+ 	/*
+ 	 * Detach the perf_ctx_data for the system-wide event.
++	 *
++	 * Done without holding global_ctx_data_rwsem; typically
++	 * attach_global_ctx_data() will skip over this task, but otherwise
++	 * attach_task_ctx_data() will observe PF_EXITING.
+ 	 */
+-	guard(percpu_read)(&global_ctx_data_rwsem);
+ 	detach_task_ctx_data(task);
+ }
+ 
 -- 
 2.51.0
 
