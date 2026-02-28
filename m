@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJK+DPBWo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:58:24 +0100
+	id SNuUFRtGo2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:46:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA47A1C8A82
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:58:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCEF1C7593
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8A0A36E14C1
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:29:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4CDAD30B5B71
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5513E415FD6;
-	Sat, 28 Feb 2026 17:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E25C2D2483;
+	Sat, 28 Feb 2026 17:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uobDt8p2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gFCLged8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16721415FEE;
-	Sat, 28 Feb 2026 17:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C88415FD1;
+	Sat, 28 Feb 2026 17:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300715; cv=none; b=MFpwFspWDYYOrIV5j1GbsBnddDNzVNtVW3afSDfxygtzZIdOAPVM4Gp1QDT2fEO5yU405bcN9q12QUr/KhyrJ+LpWwtlXyHztyu6MuEcspnAVOml9V6BgC17O56lj5Z8msrseGLG0RmAvfl1npeCT5C8bg16nnGbJ6iP2hiAUPA=
+	t=1772300715; cv=none; b=m7rC4XjRrpy9qtI++evSgxMgDIfAZjo4ymup5zqsn7XqKZebIIAYvjdm6M6xmSSF1WD53ZKyKB9TwS4UKOhemkkUEXDTb3mDqlXOw8LrhwNNwuuY5lFjCmyeh8Q6zjKI178pn+w5Bm7mzxKk0KPYzyQvssnnme1FXQVbB/qx6jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300715; c=relaxed/simple;
-	bh=ahXYLm+8OtBX0q7N+dNK1bZZl9qTi4S3mddAQJNgEj8=;
+	bh=7CwA+MeN8tG/l0tVfl+yVvqZ6EPZcnqVLzgKng0siLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NWTitKEFEo2Kn7imtHE3mS7FJpR5CYXv7e7R6KybGLpSzGtYpCm0EguVY2Zu2ht+97liqz0ho1uqahv8qhsqmGNMI70mMhypNNEZIi6MSbyzk0YjR+8ANLOL4TmAA5xjdhurXQVkFRbMiRe7rwbHouULd5+NA6iz7O8ZqxzxGYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uobDt8p2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216ECC19423;
+	 MIME-Version; b=thy+nf/3vOnwwBwKHyg3JdMnkOm+qvRBCNGbgKtRy8x4ptNMckbfn9/xxw/vgTW1ei3INvE9Ko6EQROjzWwRKpJ4wylgrXbBn1XAFpgiWUu8ihw/15+0sTERNY3hx6o5C8k6Nz99xrIHFbDs7wiDiT2IZwUNYcV+beTn0Egjzgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gFCLged8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13444C116D0;
 	Sat, 28 Feb 2026 17:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300714;
-	bh=ahXYLm+8OtBX0q7N+dNK1bZZl9qTi4S3mddAQJNgEj8=;
+	s=k20201202; t=1772300715;
+	bh=7CwA+MeN8tG/l0tVfl+yVvqZ6EPZcnqVLzgKng0siLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uobDt8p2Mt2cc6ZIj/dS8eQp2430ciU5Rn3udItyvwgloOdH5fattGjZ4HUoCtD4r
-	 OinpixwIyPKwZv4PnLhau5ofe2mM4dRfvvoYLkXlMVe6av6DznO9DaJyHwyALO3RkS
-	 nDvKtfaeBskna/iK64u6/6vTCjWH3H0Y/Yzn/JwUhq/9drxtN76lWQ68PDXT6+CneH
-	 1p3kG8APY6Wy9rRSMYIPTUpoY9A8DHiCK63W6Ahhes5clozgdEuzTiZdEKyEjO2nP9
-	 mQf8lDT1x7jCGkU+r+e67cElaNVrA4mayJPCS9vdr2IAbJB/yQjMP1fixajZ6AZ390
-	 6J3Nf1Q8ruxPA==
+	b=gFCLged8al/FVbuzzmvy4polPxNBX3cE3yzoqDqSzmud1NJ1GWn4XeZBl3W4AS6Lu
+	 jxABj7Ea5KASpxtBuOMo5AmtbsiJGRHlM1TBsXPvDrojnvCfPeg0d90sgwx631ov4f
+	 ItJlbKV4qP+0Xf1CsN7k4VAXBLej+lfJ78cclFqSrllTsYHqcwv4AF3eYUSCgn3zw8
+	 YEenaiJLdCcTbD2ocW091JtRs8AdBLNXU9pMT81CeppT0Z8Bc7weB0l4JM27z2zSSg
+	 iERMa3dseI4ZIgLT4Gp1FT3Dv0wfRJk7QU3cBlu/yd84i5cM5PsSNDV2QOJKNKEMib
+	 ynmxOOlc0gnfg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yifan Zhang <yifan1.zhang@amd.com>,
+Cc: Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 750/844] drm/amdgpu: Protect GPU register accesses in powergated state in some paths
-Date: Sat, 28 Feb 2026 12:31:03 -0500
-Message-ID: <20260228173244.1509663-751-sashal@kernel.org>
+Subject: [PATCH 6.19 751/844] drm/amdgpu: GPU vm support 5-level page table
+Date: Sat, 28 Feb 2026 12:31:04 -0500
+Message-ID: <20260228173244.1509663-752-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,18 +72,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220829-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220830-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -93,62 +93,111 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AA47A1C8A82
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: BCCEF1C7593
 X-Rspamd-Action: no action
 
-From: Yifan Zhang <yifan1.zhang@amd.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 39fc2bc4da0082c226cbee331f0a5d44db3997da ]
+[ Upstream commit f6b1c1f5fd7237f77fc3880603ea54dcf0371a20 ]
 
-Ungate GPU CG/PG in device_fini_hw and device_halt to protect GPU
-register accesses, e.g. GC registers are accessed in amdgpu_irq_disable_all()
-and amdgpu_fence_driver_hw_fini().
+If GPU supports 5-level page table, but CPU disable 5-level page table
+by using boot option no5lvl or CPU feature not available, the virtual
+address will be 48bit, not needed to enable 5-level page table on GPU
+vm.
 
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+If adev->vm_manager.num_level, number of pde levels, set to 4, then
+gfxhub and mmhub register VM_CONTEXTx_CNTL/PAGE_TABLE_DEPTH will set
+to 4 to enable 5-level page table in page table walker.
+
+Set vm_manager.root_level to AMDGPU_VM_PDE3, then update GPU mapping
+will allocate and update PDE3/PDE2/PDE1/PDE0/PTB 5-level page tables.
+
+If max_level is not 4, no change for the logic to support features
+needed by old ASICs.
+
+v2: squash in CONFIG fix
+
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Acked-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Stable-dep-of: 3b948dd0366a ("drm/amdgpu: Use 5-level paging if gmc support 57-bit VA")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c    | 20 ++++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h    |  3 ++-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c |  1 +
+ 3 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index ba6fb23b840a0..09f9d82e572da 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3659,9 +3659,6 @@ static int amdgpu_device_ip_fini_early(struct amdgpu_device *adev)
- 		}
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index a67285118c37b..4d329454456bc 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2360,9 +2360,26 @@ void amdgpu_vm_adjust_size(struct amdgpu_device *adev, uint32_t min_vm_size,
+ 			   unsigned max_bits)
+ {
+ 	unsigned int max_size = 1 << (max_bits - 30);
++	bool sys_5level_pgtable = false;
+ 	unsigned int vm_size;
+ 	uint64_t tmp;
  
--	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
--	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
--
- 	amdgpu_amdkfd_suspend(adev, true);
- 	amdgpu_userq_suspend(adev);
- 
-@@ -5047,6 +5044,9 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
- 		amdgpu_virt_fini_data_exchange(adev);
- 	}
- 
-+	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
-+	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
++#ifdef CONFIG_X86_64
++	/*
++	 * Refer to function configure_5level_paging() for details.
++	 */
++	sys_5level_pgtable = (native_read_cr4() & X86_CR4_LA57);
++#endif
 +
- 	/* disable all interrupts */
- 	amdgpu_irq_disable_all(adev);
- 	if (adev->mode_info.mode_config_initialized) {
-@@ -7502,6 +7502,9 @@ void amdgpu_device_halt(struct amdgpu_device *adev)
- 	amdgpu_xcp_dev_unplug(adev);
- 	drm_dev_unplug(ddev);
- 
-+	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
-+	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
++	/*
++	 * If GPU supports 5-level page table, but system uses 4-level page table,
++	 * then use 4-level page table on GPU
++	 */
++	if (max_level == 4 && !sys_5level_pgtable) {
++		min_vm_size = 256 * 1024;
++		max_level = 3;
++	}
 +
- 	amdgpu_irq_disable_all(adev);
+ 	/* adjust vm size first */
+ 	if (amdgpu_vm_size != -1) {
+ 		vm_size = amdgpu_vm_size;
+@@ -2405,6 +2422,9 @@ void amdgpu_vm_adjust_size(struct amdgpu_device *adev, uint32_t min_vm_size,
+ 	tmp = DIV_ROUND_UP(fls64(tmp) - 1, 9) - 1;
+ 	adev->vm_manager.num_level = min_t(unsigned int, max_level, tmp);
+ 	switch (adev->vm_manager.num_level) {
++	case 4:
++		adev->vm_manager.root_level = AMDGPU_VM_PDB3;
++		break;
+ 	case 3:
+ 		adev->vm_manager.root_level = AMDGPU_VM_PDB2;
+ 		break;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
+index 15d757c016cbb..de53176a398dc 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
+@@ -185,9 +185,10 @@ struct amdgpu_bo_vm;
+ #define AMDGPU_VM_USE_CPU_FOR_COMPUTE (1 << 1)
  
- 	amdgpu_fence_driver_hw_fini(adev);
+ /* VMPT level enumerate, and the hiberachy is:
+- * PDB2->PDB1->PDB0->PTB
++ * PDB3->PDB2->PDB1->PDB0->PTB
+  */
+ enum amdgpu_vm_level {
++	AMDGPU_VM_PDB3,
+ 	AMDGPU_VM_PDB2,
+ 	AMDGPU_VM_PDB1,
+ 	AMDGPU_VM_PDB0,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
+index f794fb1cc06e6..c7a7d51080a87 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
+@@ -51,6 +51,7 @@ static unsigned int amdgpu_vm_pt_level_shift(struct amdgpu_device *adev,
+ 					     unsigned int level)
+ {
+ 	switch (level) {
++	case AMDGPU_VM_PDB3:
+ 	case AMDGPU_VM_PDB2:
+ 	case AMDGPU_VM_PDB1:
+ 	case AMDGPU_VM_PDB0:
 -- 
 2.51.0
 
