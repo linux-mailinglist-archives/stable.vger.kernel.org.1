@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-220503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GH34HAw5o2mU+gQAu9opvQ
-	(envelope-from <stable+bounces-220503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:50:52 +0100
+	id 4A+PK6k5o2mU+gQAu9opvQ
+	(envelope-from <stable+bounces-220504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58BB1C6525
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:50:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64DF81C65E4
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B1DF320765C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:38:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D38A730EAA19
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5653C97D8;
-	Sat, 28 Feb 2026 17:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444D43C9FA9;
+	Sat, 28 Feb 2026 17:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9q99RXb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5m8R+WN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAD73C97CC;
-	Sat, 28 Feb 2026 17:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067883C9FA2;
+	Sat, 28 Feb 2026 17:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300387; cv=none; b=BBSuJoC/AUZqfBNoGxyZTDTxvxhIC3HCofPuSmt7akwZ/uW6WgFrEhW4JnDN08j9SwRcdeZWtKZS/NODL6x46UYBittb8jQZgYAg2Y4umgLsqmtzKsHZIf1ovwbLji/0hW3CTcC4B/HLIBDL1DNFfQR6TkePzWkhJBf3YWc0WM4=
+	t=1772300389; cv=none; b=vDeefqqvQCQVeFqAsaTuJNX7FOi8vHTMa8mvoevpuyxLS7rPQnBeMca6KW77YxbdyJYv7yjuRoh2QWaXWVbNfim6l5zuvLyEsO/l7DoMmgDGhdBf/D4pkEuZNCCFJBCUY7aH4+IjrNb7Ri8/dur0KjpyIzYs6G+H8LeYOa+Enpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300387; c=relaxed/simple;
-	bh=BTDRynjVjWjEDGWUKmJuV6dDV3tt2Q+2Vr7hjJwaa1o=;
+	s=arc-20240116; t=1772300389; c=relaxed/simple;
+	bh=ywHQZgXUE2dXca+/1j2x1D1sumAvGLhLXQ8vjh723WM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCtGQq7Yr0t6kMuxDbzlnAUX28u3WfE2MdbyYLtOUawM1Swg2fKHPg6VcWa72mUFj0m5GHLO9aeFVWndRVaqYCOJSSpB+dxuemmwk2jmVos1YvuguFKdXUio3SbAo7ab4XChP946dvOy+s33WjILtoamRzSwJ1nqjFLGycdT03I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9q99RXb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC98DC2BCB0;
-	Sat, 28 Feb 2026 17:39:46 +0000 (UTC)
+	 MIME-Version; b=SUI2wZt4bdEvOeV/QxckKF60TFJYkeWmNbUSpPzmXlr41t8xqwdGCmPTjiAH/8e4jn6Too38hbMd423nYt56K6FflmjUACM485GDcPq5hsyeWxgSMcp4b+7WOLS1Cgrpwj3h12qBPet2cl7CGSIA8au15Acv4cGayrAG+CLETug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5m8R+WN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AB0C19423;
+	Sat, 28 Feb 2026 17:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300387;
-	bh=BTDRynjVjWjEDGWUKmJuV6dDV3tt2Q+2Vr7hjJwaa1o=;
+	s=k20201202; t=1772300388;
+	bh=ywHQZgXUE2dXca+/1j2x1D1sumAvGLhLXQ8vjh723WM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O9q99RXbYmEumK6CQfapBxsWsR9cl3NsPrh3rNV6MZTIe/aTWKOfOjgmRedTtd/cf
-	 RKTYTKvjdcvWBWTqD0gsha3TXorhtVGj64spMqLdkt8tcy9plU82WJkgeBfarTiUTJ
-	 N88SkR3WQacvOkPPUPmh/Cx7nq727zHgdz9g0zgEqfO5x4AixON0814mrctNLeXv95
-	 wMw4nt2g546mmgrtjjJxH2xhM+GKfg4+n7H/w70wUC0uXjIc1/ejV/tX5xmy3uXwvb
-	 UCsE5sBVJ9+5EdzbLwn80+6U5KpBo7OqJn4Z3HtWkh1JLcOugakGIFMZRR3fkqu8Df
-	 YATwhoUOQSo4Q==
+	b=M5m8R+WNYjg+aucrhvYBRcEqe11X8Zke9Qz4c9QcVg734z2icfsaUVpucyEhxAxAT
+	 c5Z1g+9N4BCTCG4J1iCc94IRy3kwSCu8AnQDii+DOvDfbFMu/1c0zyBczrMyHn49Vy
+	 fUhglpTFixGTDKIBCi2DswmkO5IrInWZBUKF+XHDBSkd8ETTzbnZeTw0EUzWiH+mTb
+	 Rx9e1n8rhjv6y5yJ1Z7LC/akwJU0zwJtmHwy0akPC5Vpm4k8tPp7/sAUImPwREMRm8
+	 RqbqpVVe0ZLWaFagQK6rCDEaKHVQs3m4nWfd/7KlhhZJ+c/h3Cs0THIwIHneU/ciCV
+	 99sHil4YuXcRg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tom Chung <chiahsuan.chung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
+Cc: Wayne Lin <Wayne.Lin@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 424/844] drm/amd/display: Fix system resume lag issue
-Date: Sat, 28 Feb 2026 12:25:37 -0500
-Message-ID: <20260228173244.1509663-425-sashal@kernel.org>
+Subject: [PATCH 6.19 425/844] drm/amd/display: Avoid updating surface with the same surface under MPO
+Date: Sat, 28 Feb 2026 12:25:38 -0500
+Message-ID: <20260228173244.1509663-426-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -82,10 +82,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220503-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220504-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -95,55 +95,43 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B58BB1C6525
+X-Rspamd-Queue-Id: 64DF81C65E4
 X-Rspamd-Action: no action
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit 64c94cd9be2e188ed07efeafa6a109bce638c967 ]
+[ Upstream commit 1a38ded4bc8ac09fd029ec656b1e2c98cc0d238c ]
 
-[Why]
-System will try to apply idle power optimizations setting during
-system resume. But system power state is still in D3 state, and
-it will cause the idle power optimizations command not actually
-to be sent to DMUB and cause some platforms to go into IPS.
+[Why & How]
+Although it's dummy updates of surface update for committing stream
+updates, we should not have dummy_updates[j].surface all indicating
+to the same surface under multiple surfaces case. Otherwise,
+copy_surface_update_to_plane() in update_planes_and_stream_state()
+will update to the same surface only.
 
-[How]
-Set power state to D0 first before calling the
-dc_dmub_srv_apply_idle_power_optimizations(dm->dc, false)
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
 Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 150cc3fc7b2a9..b6eee94861477 100644
+index b6eee94861477..e84ec4365ca6b 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3468,7 +3468,17 @@ static int dm_resume(struct amdgpu_ip_block *ip_block)
- 	struct dc_commit_streams_params commit_params = {};
+@@ -10961,7 +10961,7 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
+ 			continue;
+ 		}
+ 		for (j = 0; j < status->plane_count; j++)
+-			dummy_updates[j].surface = status->plane_states[0];
++			dummy_updates[j].surface = status->plane_states[j];
  
- 	if (dm->dc->caps.ips_support) {
-+		if (!amdgpu_in_reset(adev))
-+			mutex_lock(&dm->dc_lock);
-+
-+		/* Need to set POWER_STATE_D0 first or it will not execute
-+		 * idle_power_optimizations command to DMUB.
-+		 */
-+		dc_dmub_srv_set_power_state(dm->dc->ctx->dmub_srv, DC_ACPI_CM_POWER_STATE_D0);
- 		dc_dmub_srv_apply_idle_power_optimizations(dm->dc, false);
-+
-+		if (!amdgpu_in_reset(adev))
-+			mutex_unlock(&dm->dc_lock);
- 	}
- 
- 	if (amdgpu_in_reset(adev)) {
+ 		sort(dummy_updates, status->plane_count,
+ 		     sizeof(*dummy_updates), dm_plane_layer_index_cmp, NULL);
 -- 
 2.51.0
 
