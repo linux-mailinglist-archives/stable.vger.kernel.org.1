@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KA/AJiZFo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:42:30 +0100
+	id sJp3Gi0zo2mX+QQAu9opvQ
+	(envelope-from <stable+bounces-220312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:25:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66881C747A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:42:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78F91C5C71
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:25:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4C2C431477F1
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:08:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E93543106BA3
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282603907A4;
-	Sat, 28 Feb 2026 17:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155CE3907C5;
+	Sat, 28 Feb 2026 17:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="goUL80ki"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uzlI+9Xk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF38447ECD8;
-	Sat, 28 Feb 2026 17:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8163907BA;
+	Sat, 28 Feb 2026 17:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300213; cv=none; b=DyKDqNTygTYF7gcu2TaKyDolNWUX5b2IjR5rdQ11+yG+uUJsIrKaB2YlU+2XdCTgrA/2RBTsRaMfSrfqBytEgAqyBPjvGHzjKOJ2hUNkeUfe2VvGaGFxNGfalcASgUSj7AYDqiRiQWO9X4d7Dwrj/uRl17VDx0uZd+Mj+uhRh2Q=
+	t=1772300214; cv=none; b=pR0QinnQtfDK7nxCo8jMpvp5mi3ibRwa9tIzIrafLO2lhomw6IVORY3XKI9PFe5O/LOPmLrGUvP3w8agaEwT8IFHoMWcf+OfjThbLUsalWomcZEzPGsMs2Tiu1lsvmMlwJdwf/LwQU/DyYxJ/bwTWVjQnLfAgJ+m4MLOu0v/7+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300213; c=relaxed/simple;
-	bh=xThnOp80bagP+sxV1jx0SyaleSC/4bhcPbj9NQNTjhY=;
+	s=arc-20240116; t=1772300214; c=relaxed/simple;
+	bh=qY5I0Wy2aMCKfW2z+0xbRo/coKUmjewIAn8v5cgq4OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZ8Vzq0l0w4RwT99JSkkBNKVIlD6nQlQB39P46TdC9Iesv6Yp/4M/eU8hQtCxizWPs8INwv9YKiMYNSxXXPP457qtKj5naVWnHNOMBjVq+VZy7gG+MUBVgEdBEVgxYQR9Ij8BlF6FXzlMT/Gkae8rWX6M7HBDuQNzt0sxprBjj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=goUL80ki; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1EEC19423;
+	 MIME-Version; b=G3Ocq6MXznmWrjenAO7e2eZCUH9asGIJHgyqDWpwwE+JKz91wznC/Npcdn+6x3IR3GqTmUrXnNtG5cmJzSNoxpoWHPXj12789MAzLPlKU5yKMdJTPPk9D63o+CMD/gOguti0ekXsx8ZUhYLlc1dhAjqLRBhlPI5EzZvJnqQvnLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uzlI+9Xk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 062A8C116D0;
 	Sat, 28 Feb 2026 17:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300213;
-	bh=xThnOp80bagP+sxV1jx0SyaleSC/4bhcPbj9NQNTjhY=;
+	s=k20201202; t=1772300214;
+	bh=qY5I0Wy2aMCKfW2z+0xbRo/coKUmjewIAn8v5cgq4OI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=goUL80ki8/WMsyp90OCRQUtfXRU2kEO7aGzwj8v5637QxL2zkLCvEPrXYMIoUltNt
-	 dAYfLHVdxUBG1ps+8h4rIlMM+4xAXJYLeD/01/vKGPH4SIlC9xwpuCTft6hIyzhXjE
-	 44yBjikcTxMCjtsFnFADilKBY1q+TXJhkKbVUVuBLNWKKCsyvMXRQ3fRo7IDAzwxVo
-	 3W4aQL6kBbDIzJ1Dgw6aGsz2gZ5NrG0wtbusA2JuGX97otjH9qiXfnAubcFxp6AqZG
-	 Uip7CG+v4p6HwiaFX+Qvu3xeBNe89nC858vkXeLExLDyOKXqW6dMfnk2/0KBREBQZi
-	 MnHy4rUGDHx6Q==
+	b=uzlI+9XkVzMOtp5u84SQz5+AeAiVs9WByHaYFFfg2SWG11HXD+17LkdrPWo1MznDR
+	 B3/p797wMk0m4KyVpyz93EWoNKiVhXGgqB34yvm0dt/1xhZQ7SIqWEagWcEicjMiCX
+	 e4+DTGL18ZwO2FT9JPW3JNeSJiuIvf5VuiGlflGp0z4sauFgsPqHKaU2HpOmZ2pRZh
+	 z7ep7CaiEDiJyRUka4NOJIg4AnwqwT+86HL5wN7fk4/H9Hjm+atrqSEDGDWk61ZjN9
+	 wNC1W34Mp8ItANkBXMY9F7wH8GybeMVjpf8/rYCqgN7Bi5tcVpf4vaftpjbmDqyq3u
+	 6S/FcwZ94N1Vg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Felix Gu <gu_0233@qq.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+Cc: Bastien Nocera <hadess@hadess.net>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 233/844] hwmon: (nct7363) Fix a resource leak in nct7363_present_pwm_fanin
-Date: Sat, 28 Feb 2026 12:22:26 -0500
-Message-ID: <20260228173244.1509663-234-sashal@kernel.org>
+Subject: [PATCH 6.19 234/844] HID: logitech-hidpp: Add support for Logitech K980
+Date: Sat, 28 Feb 2026 12:22:27 -0500
+Message-ID: <20260228173244.1509663-235-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,20 +71,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[qq.com,roeck-us.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-220312-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-220311-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -92,40 +91,39 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qq.com:email]
-X-Rspamd-Queue-Id: B66881C747A
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D78F91C5C71
 X-Rspamd-Action: no action
 
-From: Felix Gu <gu_0233@qq.com>
+From: Bastien Nocera <hadess@hadess.net>
 
-[ Upstream commit 4923bbff0bcffe488b3aa76829c829bd15b02585 ]
+[ Upstream commit af4fe07a9d963a72438ade96cf090e84b3399d0c ]
 
-When calling of_parse_phandle_with_args(), the caller is responsible
-to call of_node_put() to release the reference of device node.
-In nct7363_present_pwm_fanin, it does not release the reference,
-causing a resource leak.
+Add support for the solar-charging Logitech K980 keyboard, over
+Bluetooth. Bolt traffic doesn't get routed through logitech-dj, so
+this code isn't triggered when Bolt is used.
 
-Signed-off-by: Felix Gu <gu_0233@qq.com>
-Link: https://lore.kernel.org/r/tencent_9717645269E4C07D3D131F52201E12E5E10A@qq.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Bastien Nocera <hadess@hadess.net>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct7363.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-logitech-hidpp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/nct7363.c b/drivers/hwmon/nct7363.c
-index 71cef794835df..47fc1b4a0f3f9 100644
---- a/drivers/hwmon/nct7363.c
-+++ b/drivers/hwmon/nct7363.c
-@@ -349,6 +349,7 @@ static int nct7363_present_pwm_fanin(struct device *dev,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index e871f1729d4b3..ca96102121b85 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -4666,6 +4666,8 @@ static const struct hid_device_id hidpp_devices[] = {
+ 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb037) },
+ 	{ /* MX Anywhere 3SB mouse over Bluetooth */
+ 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb038) },
++	{ /* Slim Solar+ K980 Keyboard over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb391) },
+ 	{}
+ };
  
-+	of_node_put(args.np);
- 	if (args.args[0] >= NCT7363_PWM_COUNT)
- 		return -EINVAL;
- 	data->pwm_mask |= BIT(args.args[0]);
 -- 
 2.51.0
 
