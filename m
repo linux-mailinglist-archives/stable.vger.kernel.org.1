@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJ3SJvQoo2kr+AQAu9opvQ
-	(envelope-from <stable+bounces-220116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:42:12 +0100
+	id KHboGdApo2kr+AQAu9opvQ
+	(envelope-from <stable+bounces-220117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:45:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40DE71C50B8
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:42:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D55681C5143
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:45:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 536363072C09
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:37:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E2C0C30F4A75
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550AB47F2E9;
-	Sat, 28 Feb 2026 17:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C55B480323;
+	Sat, 28 Feb 2026 17:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="joOAxSd+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lUkIuBlh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168A947F2DD;
-	Sat, 28 Feb 2026 17:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCC233A9D1;
+	Sat, 28 Feb 2026 17:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300027; cv=none; b=ZqPr5+VO8OQ63KnThwhIF/CEGEkCulQjl1jRzxzgsDn3U3pN2t/4/945ZHZr6X9uoM5Tx2ltCb1nJQAq6W+o3xVlfT+r83nSZzxexjH4Xki7iQn37gO7eIfWJ4DhwF25NVhbBu4RwfDszz9jKT3eIxQEX/edfq53Ogs6hZQ2KSk=
+	t=1772300028; cv=none; b=G0DFRerakwKgrVD4IaJGkjqjoZcqoonVQC3X+Chd3dHO5oQXU1KkHzPjCC+nZtFtJhHb0epu72TdqW1daLI+dDS9qVBbR/VhiTsSSHTS4NP7zlyry+6cPx65FBlFNXOgpF73psUJH2jdxpMUQ/XzCIR4m5+tuo6PGe6/5WJ0i2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300027; c=relaxed/simple;
-	bh=L7r/ZydBdbS3/Kljjcw3TA4m/2thEk7br8YIHdiykkw=;
+	s=arc-20240116; t=1772300028; c=relaxed/simple;
+	bh=OuM3R714gkSYXJVa0MHO55s0U6lgQYUyrnpXyQvuiPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHSh4TOcgEgfGu7/ZwvwjbHDCTT0BKpV0MICqtGPHolds7Ph0zaJwZqZYRMt0g1zSlBo6lvLnh0+n6b7fv2CsJyL5KmhZdm3395wxhZD1D+aqdvGx2Uv2ZGtxvTYHmiRMV5Hu+wqLnow9KJCAiXTMqLBPSEnIW22z1XK9RLiaeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=joOAxSd+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF67C19425;
-	Sat, 28 Feb 2026 17:33:46 +0000 (UTC)
+	 MIME-Version; b=LVHxdu4WN3oWS3Cr/BKbHJnUu6GlSDKxdPbRPdiXEA+9O09AkjC9G41coW/mnGExCC+8uGp9ZgpkDgKafjD/rWR1OEQG8FtgzVYXgQd8yyUu+mnTt5/JL418EbNxAltWK0l0laMgc6KUAaTOPR70hZ0WRXU/rvU1rvn11Vhn9Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lUkIuBlh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41525C19423;
+	Sat, 28 Feb 2026 17:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772300027;
-	bh=L7r/ZydBdbS3/Kljjcw3TA4m/2thEk7br8YIHdiykkw=;
+	bh=OuM3R714gkSYXJVa0MHO55s0U6lgQYUyrnpXyQvuiPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=joOAxSd+18RFQNMSpiu+tFsoWGkhYTlr9c1QilVdhK1oI5L7ECnP7lwvVaM1YXtPV
-	 Yo6hx2wRJKm7Ly8iMfmg2Nt5XcRsJEZjSyk/0wLqAMFASBDrAkDPhg48+85H/M5OSh
-	 lZWJuF4t/TcIetS83mnQJVczu/7yZhMuVCa9Djk+XxgNYMYSyfUXW7F5T2tH1fGESf
-	 thszKNLKNbs3JRZ+0pDEHr4bOZAi1/jHITn1fXb3CJgFzqYHb7latt18cnXM5I/kwR
-	 AojUe6kXfL7f+uqYcSIh24ZvjMMomCrDeEV7zfN5fd+Oeu3RLnk5JdMhMfOhmPTW2R
-	 swsi5anE/nnWg==
+	b=lUkIuBlhp0Mzxet/p4bMXjAfkqVwqPx9S9f2c+NYI4p1doDuxaHTwlw5mqc7f6/oD
+	 jIyfKoS8kE0ASgejnx7yQXhnne8ECU1sj5EMfhXZhyprAAfk1TwpLPmOiqFt4pRTea
+	 JcVyJjSkZrxjyeJ0qdeaATXAvOCTgDVhj+x1Nkh0VtQWDnEIFt74gCkuc3whPoWr0J
+	 zfKfcxLuntLiXz9CYwRUgbSv80c2mbYQXTKrYLYB4NJbjBvQx5BlVet9ZMJjq0kOjI
+	 Pz10RisqBHKljcMDYSDtjt+trgQtLZJ89RZxCqj81mOJz1ExRQieA6HLVN4Y+OiTjF
+	 esgRhwqO8gWyA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Deepakkumar Karn <dkarn@redhat.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Clint George <clintbgeorge@gmail.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 038/844] fs/buffer: add alert in try_to_free_buffers() for folios without buffers
-Date: Sat, 28 Feb 2026 12:19:11 -0500
-Message-ID: <20260228173244.1509663-39-sashal@kernel.org>
+Subject: [PATCH 6.19 039/844] kselftest/kublk: include message in _Static_assert for C11 compatibility
+Date: Sat, 28 Feb 2026 12:19:12 -0500
+Message-ID: <20260228173244.1509663-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,19 +72,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220116-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,redhat.com,linuxfoundation.org,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220117-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -92,52 +93,87 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 40DE71C50B8
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D55681C5143
 X-Rspamd-Action: no action
 
-From: Deepakkumar Karn <dkarn@redhat.com>
+From: Clint George <clintbgeorge@gmail.com>
 
-[ Upstream commit b68f91ef3b3fe82ad78c417de71b675699a8467c ]
+[ Upstream commit 3e6ad272bb8b3199bad952e7b077102af2d8df03 ]
 
-try_to_free_buffers() can be called on folios with no buffers attached
-when filemap_release_folio() is invoked on a folio belonging to a mapping
-with AS_RELEASE_ALWAYS set but no release_folio operation defined.
+Add descriptive message in the _Static_assert to comply with the C11
+standard requirement to prevent compiler from throwing out error. The
+compiler throws an error when _Static_assert is used without a message as
+that is a C23 extension.
 
-In such cases, folio_needs_release() returns true because of the
-AS_RELEASE_ALWAYS flag, but the folio has no private buffer data. This
-causes try_to_free_buffers() to call drop_buffers() on a folio with no
-buffers, leading to a null pointer dereference.
+[] Testing:
+The diff between before and after of running the kselftest test of the
+module shows no regression on system with x86 architecture
 
-Adding a check in try_to_free_buffers() to return early if the folio has no
-buffers attached, with WARN_ON_ONCE() to alert about the misconfiguration.
-This provides defensive hardening.
+[] Error log:
+~/Desktop/kernel-dev/linux-v1/tools/testing/selftests/ublk$ make LLVM=1 W=1
+  CC       kublk
+In file included from kublk.c:6:
+./kublk.h:220:43: error: '_Static_assert' with no message is a C23 extension [-Werror,-Wc23-extensions]
+  220 |         _Static_assert(UBLK_MAX_QUEUES_SHIFT <= 7);
+      |                                                  ^
+      |                                                  , ""
+1 error generated.
+In file included from null.c:3:
+./kublk.h:220:43: error: '_Static_assert' with no message is a C23 extension [-Werror,-Wc23-extensions]
+  220 |         _Static_assert(UBLK_MAX_QUEUES_SHIFT <= 7);
+      |                                                  ^
+      |                                                  , ""
+1 error generated.
+In file included from file_backed.c:3:
+./kublk.h:220:43: error: '_Static_assert' with no message is a C23 extension [-Werror,-Wc23-extensions]
+  220 |         _Static_assert(UBLK_MAX_QUEUES_SHIFT <= 7);
+      |                                                  ^
+      |                                                  , ""
+1 error generated.
+In file included from common.c:3:
+./kublk.h:220:43: error: '_Static_assert' with no message is a C23 extension [-Werror,-Wc23-extensions]
+  220 |         _Static_assert(UBLK_MAX_QUEUES_SHIFT <= 7);
+      |                                                  ^
+      |                                                  , ""
+1 error generated.
+In file included from stripe.c:3:
+./kublk.h:220:43: error: '_Static_assert' with no message is a C23 extension [-Werror,-Wc23-extensions]
+  220 |         _Static_assert(UBLK_MAX_QUEUES_SHIFT <= 7);
+      |                                                  ^
+      |                                                  , ""
+1 error generated.
+In file included from fault_inject.c:11:
+./kublk.h:220:43: error: '_Static_assert' with no message is a C23 extension [-Werror,-Wc23-extensions]
+  220 |         _Static_assert(UBLK_MAX_QUEUES_SHIFT <= 7);
+      |                                                  ^
+      |                                                  , ""
+1 error generated.
+make: *** [../lib.mk:225: ~/Desktop/kernel-dev/linux-v1/tools/testing/selftests/ublk/kublk] Error 1
 
-Signed-off-by: Deepakkumar Karn <dkarn@redhat.com>
-Link: https://patch.msgid.link/20251211131211.308021-1-dkarn@redhat.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/r/20251215085022.7642-1-clintbgeorge@gmail.com
+Signed-off-by: Clint George <clintbgeorge@gmail.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/buffer.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/ublk/kublk.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index 838c0c5710229..28e4d53f17173 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -2948,6 +2948,10 @@ bool try_to_free_buffers(struct folio *folio)
- 	if (folio_test_writeback(folio))
- 		return false;
+diff --git a/tools/testing/selftests/ublk/kublk.h b/tools/testing/selftests/ublk/kublk.h
+index 8a83b90ec603a..cae2e30f0cdd5 100644
+--- a/tools/testing/selftests/ublk/kublk.h
++++ b/tools/testing/selftests/ublk/kublk.h
+@@ -223,7 +223,7 @@ static inline __u64 build_user_data(unsigned tag, unsigned op,
+ 		unsigned tgt_data, unsigned q_id, unsigned is_target_io)
+ {
+ 	/* we only have 7 bits to encode q_id */
+-	_Static_assert(UBLK_MAX_QUEUES_SHIFT <= 7);
++	_Static_assert(UBLK_MAX_QUEUES_SHIFT <= 7, "UBLK_MAX_QUEUES_SHIFT must be <= 7");
+ 	assert(!(tag >> 16) && !(op >> 8) && !(tgt_data >> 16) && !(q_id >> 7));
  
-+	/* Misconfigured folio check */
-+	if (WARN_ON_ONCE(!folio_buffers(folio)))
-+		return true;
-+
- 	if (mapping == NULL) {		/* can this still happen? */
- 		ret = drop_buffers(folio, &buffers_to_free);
- 		goto out;
+ 	return tag | (op << 16) | (tgt_data << 24) |
 -- 
 2.51.0
 
