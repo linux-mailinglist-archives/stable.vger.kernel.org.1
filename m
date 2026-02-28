@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-220281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCU6GRwvo2nb+AQAu9opvQ
-	(envelope-from <stable+bounces-220281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:28 +0100
+	id mF6NJiwvo2me+AQAu9opvQ
+	(envelope-from <stable+bounces-220282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056E71C572C
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3908E1C5752
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 913B230A8B58
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:04:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 36AB430AB573
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0778A384527;
-	Sat, 28 Feb 2026 17:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D2038453F;
+	Sat, 28 Feb 2026 17:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z4i4WcSM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nOFXR+pb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6D4384520;
-	Sat, 28 Feb 2026 17:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1D7384537;
+	Sat, 28 Feb 2026 17:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300185; cv=none; b=J3eAlEK+pNi/O2hzG39iBkmW4dSPmuiB28Ledpa2T6UumO++3CK8e7PVs3aBx91JK5kH+rlIwW4MIAY4Qn0ThULoym16J7CipeqfYIxOm24FNQ2DQkN05TvQtYjgg9nL9SKYcZanMjrN71NORD1VfhlCi+8sxFOMgO9tydV+KMQ=
+	t=1772300186; cv=none; b=CKKtCD4n7Liz4Fl8tJBslAUJMeJWTKvvYHZACsk6HvqcyDWJ7ndNiW69600ogOBuTQY4KueovjoCn8nDvAEL7rvxYXZIwqC6pSj7vM3U8cLzixMLZTaqaeJIPxPEIT3pfUM7hmAGo0c3+T2yZ9fcLuocTJn6l5QfBOk75vHFKYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300185; c=relaxed/simple;
-	bh=pUC00dQjKHBTt5nZppW0FFDjlsWQZo9tD2+ybHrc3VU=;
+	s=arc-20240116; t=1772300186; c=relaxed/simple;
+	bh=gji0AlFxWedMciKFHPpWbLZYurZSn7rxo7+2jgIjW1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JRjZFyhVZ+89GWy7SuXtzRsiqZZh8L2UW7JWbHqe6T7N1kVar7IHOX/woUBodr5EE0KDU31NHb6J1WGO0jyf/roxdpDZJk+DLTUBQQ8/cMhTY6ulBKbcp3o9SBg7UpIxaw35jwjkcXyoeH3GyhgEATc1+skUS6b2VtpHkfeI428=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z4i4WcSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC63C19423;
-	Sat, 28 Feb 2026 17:36:24 +0000 (UTC)
+	 MIME-Version; b=V+g23Cd1cVax7rYRKLxJk1K05RLjlm/lk/RbljYzAyI394gbr4BQ5J69DCd+kH9AtPheNuTsWfc8m5jqmF1OlDft/p52B0U97UM8EGH6W7q/GxJPwEOAqFTPI1RRe7CstMz9V5sge8rvIROkLdSn1uv0s/ia3rZSGY20mA/s7Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nOFXR+pb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9255C19425;
+	Sat, 28 Feb 2026 17:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300185;
-	bh=pUC00dQjKHBTt5nZppW0FFDjlsWQZo9tD2+ybHrc3VU=;
+	s=k20201202; t=1772300186;
+	bh=gji0AlFxWedMciKFHPpWbLZYurZSn7rxo7+2jgIjW1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4i4WcSMd1Rsb0XNJlQhRcFbpFGO4g4kZematVi4t9QiK1FDKvD4SwKXB3NP4EEgV
-	 Ue69EfDyolqitDRiZBJ2mXKFCK5nSZgOG9R8fl6ufY0dzBCtrgJLTMSKIKjTF602Ux
-	 31tHrLAdi6sQPTAHh05//XC7Aq41izaJmqnEWfObL/ede8P9HfQdlX238oVuNyp/SD
-	 KCLzcyj1WrGwsbhWisQKUWV2CQTmWY1tkb/tXoyA3zdNR762tMy66F1ZlIxtOyQ0vs
-	 lkSx6dzSuTxZ26wy+l10ThrhupLyISLzY8w/zHA70JtwPKz1j2yGfdJmaCePahCFJs
-	 KTLQLaA7zb51g==
+	b=nOFXR+pbo4IDiFx419d4ZSPbZfXmImwel0D6rFeT0f479jBJ8RlsMmZkhhKlmKr7V
+	 w9wxXx01D7g9TklzMALDMybu9IR+Dsg97m8jfMV+wvZYFdgcnFZHpwhkZQK2oAVJew
+	 FijtQrL9k02f/E5d6wpAuLyuzkK3QCIv2WYlpo9nr07Tv8TYqJVTjeilkpufes87A+
+	 PiwcP1et2HTsohFPio/6O7LROb9GOwWWFBD+tGxW7viiourDjYub3Y6zNmMOZHVL8c
+	 FLmdXkXNGTpom9EWB/F/ZYj9IEy4wXl9TW3QnG/PVg9tlsftez+ET9350LvCMWVbwZ
+	 tv02VKDLI+r9A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ovidiu Bunea <ovidiu.bunea@amd.com>,
-	Karen Chen <karen.chen@amd.com>,
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	"Ovidiu (Ovi) Bunea" <ovidiu.bunea@amd.com>,
 	Matthew Stewart <matthew.stewart2@amd.com>,
 	Dan Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 203/844] drm/amd/display: Disable FEC when powering down encoders
-Date: Sat, 28 Feb 2026 12:21:56 -0500
-Message-ID: <20260228173244.1509663-204-sashal@kernel.org>
+Subject: [PATCH 6.19 204/844] drm/amd/display: Ensure link output is disabled in backend reset for PLL_ON
+Date: Sat, 28 Feb 2026 12:21:57 -0500
+Message-ID: <20260228173244.1509663-205-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -74,13 +74,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220281-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220282-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -94,81 +94,60 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 056E71C572C
+X-Rspamd-Queue-Id: 3908E1C5752
 X-Rspamd-Action: no action
 
-From: Ovidiu Bunea <ovidiu.bunea@amd.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit 8cee62904caf95e5698fa0f2d420f5f22b4dea15 ]
+[ Upstream commit 4589712e0111352973131bad975023b25569287c ]
 
-[why & how]
-VBIOS DMCUB FW can enable FEC for capable eDPs, but S/W DC state is
-only updated for link0 when transitioning into OS with driver loaded.
-This causes issues when the eDP is immediately hidden and DIG0 is
-assigned to another link that does not support FEC. Driver will
-attempt to disable FEC but FEC enablement occurs based on the link
-state, which does not have fec_state updated since it is a different
-link. Thus, FEC disablement on DIG0 will get skipped and cause no
-light up.
+[Why]
+We're missing the code to actually disable the link output when we have
+to leave the SYMCLK_ON but the TX remains OFF.
 
-Reviewed-by: Karen Chen <karen.chen@amd.com>
-Signed-off-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
+[How]
+Port the code from DCN401 that detects SYMCLK_ON_TX_OFF and disable
+the link output when the backend is reset.
+
+Reviewed-by: Ovidiu (Ovi) Bunea <ovidiu.bunea@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 Signed-off-by: Matthew Stewart <matthew.stewart2@amd.com>
 Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/hwss/dce110/dce110_hwseq.c | 24 ++++++++++++-------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ .../drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c  | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-index 9f7087ac41f21..3d2673a22759a 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -59,6 +59,7 @@
- #include "dc_state_priv.h"
- #include "dpcd_defs.h"
- #include "dsc.h"
-+#include "dc_dp_types.h"
- /* include DCE11 register header files */
- #include "dce/dce_11_0_d.h"
- #include "dce/dce_11_0_sh_mask.h"
-@@ -1736,20 +1737,25 @@ static void power_down_encoders(struct dc *dc)
- 	int i;
- 
- 	for (i = 0; i < dc->link_count; i++) {
--		enum signal_type signal = dc->links[i]->connector_signal;
--
--		dc->link_srv->blank_dp_stream(dc->links[i], false);
-+		struct dc_link *link = dc->links[i];
-+		struct link_encoder *link_enc = link->link_enc;
-+		enum signal_type signal = link->connector_signal;
- 
-+		dc->link_srv->blank_dp_stream(link, false);
- 		if (signal != SIGNAL_TYPE_EDP)
- 			signal = SIGNAL_TYPE_NONE;
- 
--		if (dc->links[i]->ep_type == DISPLAY_ENDPOINT_PHY)
--			dc->links[i]->link_enc->funcs->disable_output(
--					dc->links[i]->link_enc, signal);
-+		if (link->ep_type == DISPLAY_ENDPOINT_PHY)
-+			link_enc->funcs->disable_output(link_enc, signal);
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
+index d1ecdb92b072b..20f700b59847c 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
+@@ -546,8 +546,22 @@ static void dcn31_reset_back_end_for_pipe(
+ 	if (pipe_ctx->stream_res.tg->funcs->set_odm_bypass)
+ 		pipe_ctx->stream_res.tg->funcs->set_odm_bypass(
+ 				pipe_ctx->stream_res.tg, &pipe_ctx->stream->timing);
++	/*
++	 * TODO - convert symclk_ref_cnts for otg to a bit map to solve
++	 * the case where the same symclk is shared across multiple otg
++	 * instances
++	 */
+ 	if (dc_is_hdmi_tmds_signal(pipe_ctx->stream->signal))
+-		pipe_ctx->stream->link->phy_state.symclk_ref_cnts.otg = 0;
++		link->phy_state.symclk_ref_cnts.otg = 0;
 +
-+		if (link->fec_state == dc_link_fec_enabled) {
-+			link_enc->funcs->fec_set_enable(link_enc, false);
-+			link_enc->funcs->fec_set_ready(link_enc, false);
-+			link->fec_state = dc_link_fec_not_ready;
++	if (pipe_ctx->top_pipe == NULL) {
++		if (link->phy_state.symclk_state == SYMCLK_ON_TX_OFF) {
++			const struct link_hwss *link_hwss = get_link_hwss(link, &pipe_ctx->link_res);
++
++			link_hwss->disable_link_output(link, &pipe_ctx->link_res, pipe_ctx->stream->signal);
++			link->phy_state.symclk_state = SYMCLK_OFF_TX_OFF;
 +		}
++	}
  
--		dc->links[i]->link_status.link_active = false;
--		memset(&dc->links[i]->cur_link_settings, 0,
--				sizeof(dc->links[i]->cur_link_settings));
-+		link->link_status.link_active = false;
-+		memset(&link->cur_link_settings, 0, sizeof(link->cur_link_settings));
- 	}
- }
+ 	set_drr_and_clear_adjust_pending(pipe_ctx, pipe_ctx->stream, NULL);
  
 -- 
 2.51.0
