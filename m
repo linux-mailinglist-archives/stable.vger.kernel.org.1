@@ -1,186 +1,415 @@
-Return-Path: <stable+bounces-220021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECgUDhwpomn/0QQAu9opvQ
-	(envelope-from <stable+bounces-220021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 00:30:36 +0100
+	id MH+GGmUwomke0wQAu9opvQ
+	(envelope-from <stable+bounces-220022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 01:01:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9226A1BEFF9
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 00:30:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B91481BF4C0
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 01:01:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81248303D701
-	for <lists+stable@lfdr.de>; Fri, 27 Feb 2026 23:30:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9D0A30F1AD6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 00:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7359736CE01;
-	Fri, 27 Feb 2026 23:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CDF394492;
+	Sat, 28 Feb 2026 00:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="DzXPYawd"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D3kJf7Ul"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A125F1C1F02
-	for <stable@vger.kernel.org>; Fri, 27 Feb 2026 23:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772235032; cv=none; b=SStab/WOLP0xsIlaZBKXIoJRAfha2QQCDt01UxmzNA+pj11GZhUZQ7apbSCsk+QVDN2OjXK3qGxXYZr7+VFAKkfKTllKC5Fc1uaBl0kxGoVABCwXVIRU/jJtwr+o4Z8+YlmpolVEtvUbX55Gzp2DnUkXWRWongfRGup9iw+UjdI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772235032; c=relaxed/simple;
-	bh=eD3b4NhYV+l0KpPtrNorEZzPjLU56VLV2CVDQSNIBPo=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=ZmJ701dBurAvXxYXDT673ZOL0eN+HDepFRkMlY1P98LiG1FjYevf5fDzN19lVxgo8TNVHfSu4riexayLhRABC9wfnl/i7wIBTLIRD9Y7mTAUxwsmkMY5XCVTdAEHODQ//y9L0olgZ+G/ilMsG3IEo7dnsUAkqGS1dSV9yLRjGVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=DzXPYawd; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4fN4Lq030Cz9tC6;
-	Sat, 28 Feb 2026 00:30:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1772235027;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=e1nPChna7+RYo6iyruU4iBM9ZttxYDzT2FfpsVz1MfM=;
-	b=DzXPYawd8LZwbqPIyEHIfKj4aQjz2yRkLDtg4sI9rz0pJQOUKsdL01ypRX/mlP6lLs9acU
-	KmEzHgabR3n+VNHxZz3qPYD3ZwCDfGxtcfACqa56tO9QyyZOT3vxspMAdlsVWfFyhaYud3
-	HqogZa5iClak7Cl848TE21Kw0LOdGaHLuv/kpdsUh03wyfxEltrqeZT7cwMYcES7d7N8W0
-	MDAW95ibISNPm948A100zuAs+Pa0VPoUHmGVZzc9OEK25/KjSwKYEk8QT9i2xtA+Vfo0mi
-	wfWnZVztwlgLvLQIcyMrso4VzGus/7Tqg356ChqXDsIcLwQmu4GRrYxAvcLwCA==
-Subject: Re: 6.18.14: VirtualBox modules don't build anymore; bisected
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, jpoimboe@kernel.org
-References: <62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org>
- <2026022741-mahogany-coveted-acfa@gregkh>
-From: Rainer Fiebig <jrf@mailbox.org>
-Autocrypt: addr=jrf@mailbox.org; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <adc83809-3eea-2bbd-c162-48662acab5ed@mailbox.org>
-Date: Sat, 28 Feb 2026 00:30:29 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CC7395261
+	for <stable@vger.kernel.org>; Sat, 28 Feb 2026 00:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772236808; cv=pass; b=EQtBcxMi3BAY/dhy+bIH9saL/7yTw9y5G04YjlMMg66/rphOsF80I+JtZWDff1ZyZfD74acnGkwxuYrkpOi4J8RFUotoFZt4B037R6ZzzjJBQZj//G4f/aQst/pJY10kqzXbXwPkpes0veScncQd0lCYD0RRVQItC8a/BwSwkyA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772236808; c=relaxed/simple;
+	bh=B28KfXTVIHWAH+pwOzTyktHs/wteIJxouZMrqga+cf0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TUxLt3+no/Y012cFVU1KyBACBdF7X0SvzOr/7lH+bsrdv/rSTVSe8aG8fSorr2+WyJ3brNhsPhpIP9HzRmKGe7QvNTnchzVQzz9Zsu6CSSxy0rb7QZ1tQ2OQwCFxMyIJEUEjVBdyfBmRPo8P6okyVTn9MCKagOB7uhq2fo72u8E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D3kJf7Ul; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5033b64256dso168001cf.0
+        for <stable@vger.kernel.org>; Fri, 27 Feb 2026 16:00:07 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772236806; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IcUi4Eac+O4yF9PoXFE2sBOM+XdRMQYDm/94qCT3atH5yfSYkwGmxfv1vohPFTdE+Y
+         FjqhdHsdVos6fT0Tfb6QV96YzUXow1ZLP77tqGyOMLt26u05Qy0cAiXMw7YyXlj+4fuW
+         ibW2UFCOFCM0OxhXY2ToerCikbMLTfYaMkFJMESLcNJCY3S21nZq3ZJjkAMAS9EYlenc
+         ed+kfCqUA6B8/DD2kL9RedvCLZmEIkGSdPVu9yWunBFJBGXuv53eCORZ8BsXTe4KpAzx
+         CYqgz4nQ4P8ZKBvbGBqkl4x0WDUr4GbdWobliBXs0Iz2fWHEMKfEUCbX2nCPqLyd7/y1
+         FY8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3yddjG/5Y0KXabUKtjnkcKD4FXkRFrDhaHT6JScxTco=;
+        fh=ci6Vpip7Dajj7D0SsAFtnDz3SF5XkNL9J9oc+p3s/Zo=;
+        b=Bkb7L9Ip5DtU3KHcwj/6brrbHR8UzeslaR0ejchaaJ3c+mkjyQGF79KleS5veBO16/
+         CAKLI0T0oZpjeSQ1fGByE9tOULbU1lJopMEwzAofUDfL6++cDMDzVEMw1g7JqL2ce5uK
+         zTA6glkmxjRRGYJt+p4QNxnTM8go5InoCGjomKduOVhmZgheZUgYdsWHUtbJ9cSBPJaj
+         Lr1nQbT3t+sKfLPEmXrbTge9vTl8De7pY7dGAdKt4EkgrGYm5EEKpssCylcQmFn5UzJN
+         ifHlnw7FL6bBywUoVBwfqtiUl9HpSgc18z2UsP1UxZOYvaaLQc0/LBRMG58t1L1Sipzm
+         VjDw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772236806; x=1772841606; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3yddjG/5Y0KXabUKtjnkcKD4FXkRFrDhaHT6JScxTco=;
+        b=D3kJf7Ulct0SCkvf7I3kIVjfSnw596oHVi88qXDIsj1L78jKIfXZpnsApvXgSMA87p
+         uNLRUEO5pHJaeADxQ2BzKrsZbUzGyPi0vbi8H1jCqxtnUDB/MwYsfHNZcUPmcv9JoEZG
+         wk6UbzmB3fBlyflTajSQulknPQLEhL3veyhx/6FuLUlZnPniF2BlHbhc+jXEDwqnHBgq
+         dEqKMCXccxx7pahMiowXkeS1Pf7CZiqh8IgazTnGXWY1JMoLIvxiiuQk/RIZWDYCg2Kl
+         UXJpKeQC0oE2mxvTTK2OblRPmahc8XV5jQ3Q74FljHMaBKeV81bXtRvWItOb3R9oyotH
+         uLuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772236806; x=1772841606;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3yddjG/5Y0KXabUKtjnkcKD4FXkRFrDhaHT6JScxTco=;
+        b=d9piq3QlySQoVIN9V/oRC4II7Kt34NjtqlsJbU4zQYT2rgAmqwnF7OTjJQmRuKvhtN
+         zRYvR32AbC8Iwo2VLo+/nKApAoSv0iFPzDjsLu46N9ZlsF6wqwA0xfSyQhvdBJvO7gkR
+         3/kokVFNSX4LdIrQprrNq4Z7kXl0GRCNtiZsouTZaO1JIKH2eNZqz7SAL1M+XSKQhtLP
+         2F691toHATuJz+/3UalqdLMwT7HIKKFg+rJLnEOIaiRmnFyOvZEEEW/lkgNZWR8J/Git
+         Lf/Cpx9F+ExL87JHk7WFWIDCDRqnKaM7Hdew+LOnl6fcc8rIVF6YAxEaMVrjI5kxh8ba
+         bTxA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQQQw5D6Knq1hcy6jrOZYBBTNtvIHj80ohY8XuZo+WY1z7QzxXixt/B9TGwH1Jk8x2HLwv74A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSb+YXARuI0qZ/aIcPPo5cr45Lhr8fdWYsUse7C3F/eq/AejlS
+	BMmlLYnk7+oPOlllH6edekZcDw/Xb6LgrHOR/TWeFBxR7zH8YbSIVkYTvo8FyS8YPJYA2tJhR8z
+	6ZXr245uK8+Im2J8jPHwCjfH5RGIq+bjydlwTxCbo
+X-Gm-Gg: ATEYQzzbfdi33afBk704MlpEt95Zxjw1mVMxNlZ7Vf3+W7sJal3K0UITYKwehNsqDhP
+	qJjyRhi2EUAlwPwHwZuGMsT+ICBOJ9vkhoTZuA0r5lx1xQjm/YvwscIYe/szSlmrqwMzWWebOyA
+	Yf6CwrfPHgiocsIwF28k8pWKfSuvj8qjnThyHw6NIiVPQ+0vFWoN3Pg1MGa9uMjdeVUBwxHPXPA
+	Tsb7A+qYoup38Y7qfkBevH0j4VyE9UIqaoEERSoIrhThJzrIsJMn99Z7JtgZ+y8MmOLQjr+3D+Q
+	QdJ3HP276Nw/oYhmFg9g0pizXwJoWkcLwA8D2mNmYg==
+X-Received: by 2002:a05:622a:1308:b0:501:4eae:dbfc with SMTP id
+ d75a77b69052e-5076182d63bmr1756811cf.5.1772236805650; Fri, 27 Feb 2026
+ 16:00:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2026022741-mahogany-coveted-acfa@gregkh>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 1ac2c258e3f53a9760a
-X-MBO-RS-META: 3r991arxi1tj7mrnjj1fscnh4a5t4zpw
+References: <20260225064601.270301-1-guanyulin@google.com> <20260225064601.270301-3-guanyulin@google.com>
+ <87fr6na0nw.wl-tiwai@suse.de>
+In-Reply-To: <87fr6na0nw.wl-tiwai@suse.de>
+From: Guan-Yu Lin <guanyulin@google.com>
+Date: Sat, 28 Feb 2026 08:00:00 +0800
+X-Gm-Features: AaiRm53ptCFt_q2nGAuGSY2eM5lPNdvP7VORHK8-qrElNH6Lb3G9HX2FDoTgLos
+Message-ID: <CAOuDEK1Rek7vaLLzvOqiN1jcuiESyOLYqjR+rY5htqEFayG2JA@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] ALSA: usb: qcom: manage offload device usage
+To: Takashi Iwai <tiwai@suse.de>
+Cc: gregkh@linuxfoundation.org, mathias.nyman@intel.com, perex@perex.cz, 
+	tiwai@suse.com, quic_wcheng@quicinc.com, broonie@kernel.org, arnd@arndb.de, 
+	harshit.m.mogalapalli@oracle.com, wesley.cheng@oss.qualcomm.com, 
+	dan.carpenter@linaro.org, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-220021-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220022-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jrf@mailbox.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[mailbox.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[guanyulin@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailbox.org:mid,mailbox.org:dkim]
-X-Rspamd-Queue-Id: 9226A1BEFF9
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: B91481BF4C0
 X-Rspamd-Action: no action
 
-Am 27.02.26 um 21:12 schrieb Greg KH:
-> On Fri, Feb 27, 2026 at 04:33:34PM +0100, Rainer Fiebig wrote:
->> In case this hasn't been reported already: with 6.18.14 the
->> VirtualBox-7.1.16 modules won't build during the boot process, as they
->> usually do.  Bisecting between 6.18.13/14 led to this:
->>
->> f056c340b73962ebaffe93997b582bdf16dc6270 is the first bad commit
->> commit f056c340b73962ebaffe93997b582bdf16dc6270 (HEAD)
->> Author: Josh Poimboeuf <jpoimboe@kernel.org>
->> Date:   Tue Feb 10 13:45:22 2026 -0800
->>
->>     kbuild: Add objtool to top-level clean target
->>
->>     [ Upstream commit 68b4fe32d73789dea23e356f468de67c8367ef8f ]
->>
->>     Objtool is an integral part of the build, make sure it gets cleaned
->>     by "make clean" and "make mrproper".
->> [...]
->>
->>
->> The script I use for building my kernels includes "make mrproper" before
->> compiling and "make clean" after the kernel and modules have been
->> installed.
->>
->> Perhaps it would be more appropriate to report this to the
->> VirtualBox-devs but I won't do that because the registration procedure
->> asks for too many private data.
-> 
-> We obviously can not do anything about external modules, so if you rely
-> on these, you are going to have to work with them on this, sorry.
+Hi Takashi,
 
-Alright, tough luck.  But that a patch-release of an LTS-kernel breaks
-VirtualBox is really a first - at least as far as I can remember.  So, I
-think I'll create an experimental branch and revert that commit, as I've
-never missed it before.
+Thanks for raising the concern. The fix I proposed aims only to
+separate xhci_sideband_remove_interrupter() and usb_offload_put().
+Let's wait for QC's reply to see whether this is a rigid fix.
 
-Rainer
+ Regards,
+ Guan-Yu
 
+On Fri, Feb 27, 2026 at 1:13=E2=80=AFAM Takashi Iwai <tiwai@suse.de> wrote:
+>
+> On Wed, 25 Feb 2026 07:45:51 +0100,
+> Guan-Yu Lin wrote:
+> >
+> > The Qualcomm USB audio offload driver currently does not report its off=
+load
+> > activity to the USB core. This prevents the USB core from properly trac=
+king
+> > active offload sessions, which could allow the device to auto-suspend w=
+hile
+> > audio offloading is in progress.
+> >
+> > Integrate usb_offload_get() and usb_offload_put() calls into the offloa=
+d
+> > stream setup and teardown paths. Specifically, call usb_offload_get() w=
+hen
+> > initializing the event ring and usb_offload_put() when freeing it.
+> >
+> > Since the updated usb_offload_get() and usb_offload_put() APIs require =
+the
+> > caller to hold the USB device lock, add the necessary device locking in
+> > handle_uaudio_stream_req() and qmi_stop_session() to satisfy this
+> > requirement.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: ef82a4803aab ("xhci: sideband: add api to trace sideband usage")
+> > Signed-off-by: Guan-Yu Lin <guanyulin@google.com>
+>
+> Mostly it looks good to me, but a slight concern is the
+> usb_offload_put() call in the error path of prepare_qmi_response().
+> IIUC, the bitmap is cleared only at uaudio_event_ring_cleanup_free(),
+> and you have also the usb_offload_put() call there.  I wonder whether
+> this might lead to the refcount unbalance.
+>
+> I'm not sure whether the original driver code handles it well, and
+> this could be already a bug there calling
+> xhci_sideband_remove_interrupter(), though.
+>
+>
+> thanks,
+>
+> Takashi
+>
+> > ---
+> >  sound/usb/qcom/qc_audio_offload.c | 102 ++++++++++++++++++------------
+> >  1 file changed, 60 insertions(+), 42 deletions(-)
+> >
+> > diff --git a/sound/usb/qcom/qc_audio_offload.c b/sound/usb/qcom/qc_audi=
+o_offload.c
+> > index cfb30a195364..1da243662327 100644
+> > --- a/sound/usb/qcom/qc_audio_offload.c
+> > +++ b/sound/usb/qcom/qc_audio_offload.c
+> > @@ -699,6 +699,7 @@ static void uaudio_event_ring_cleanup_free(struct u=
+audio_dev *dev)
+> >               uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE,
+> >                                  PAGE_SIZE);
+> >               xhci_sideband_remove_interrupter(uadev[dev->chip->card->n=
+umber].sb);
+> > +             usb_offload_put(dev->udev);
+> >       }
+> >  }
+> >
+> > @@ -750,6 +751,7 @@ static void qmi_stop_session(void)
+> >       struct snd_usb_substream *subs;
+> >       struct usb_host_endpoint *ep;
+> >       struct snd_usb_audio *chip;
+> > +     struct usb_device *udev;
+> >       struct intf_info *info;
+> >       int pcm_card_num;
+> >       int if_idx;
+> > @@ -791,8 +793,13 @@ static void qmi_stop_session(void)
+> >                       disable_audio_stream(subs);
+> >               }
+> >               atomic_set(&uadev[idx].in_use, 0);
+> > -             guard(mutex)(&chip->mutex);
+> > -             uaudio_dev_cleanup(&uadev[idx]);
+> > +
+> > +             udev =3D uadev[idx].udev;
+> > +             if (udev) {
+> > +                     guard(device)(&udev->dev);
+> > +                     guard(mutex)(&chip->mutex);
+> > +                     uaudio_dev_cleanup(&uadev[idx]);
+> > +             }
+> >       }
+> >  }
+> >
+> > @@ -1183,11 +1190,15 @@ static int uaudio_event_ring_setup(struct snd_u=
+sb_substream *subs,
+> >       er_pa =3D 0;
+> >
+> >       /* event ring */
+> > +     ret =3D usb_offload_get(subs->dev);
+> > +     if (ret < 0)
+> > +             goto exit;
+> > +
+> >       ret =3D xhci_sideband_create_interrupter(uadev[card_num].sb, 1, f=
+alse,
+> >                                              0, uaudio_qdev->data->intr=
+_num);
+> >       if (ret < 0) {
+> >               dev_err(&subs->dev->dev, "failed to fetch interrupter\n")=
+;
+> > -             goto exit;
+> > +             goto put_offload;
+> >       }
+> >
+> >       sgt =3D xhci_sideband_get_event_buffer(uadev[card_num].sb);
+> > @@ -1219,6 +1230,8 @@ static int uaudio_event_ring_setup(struct snd_usb=
+_substream *subs,
+> >       mem_info->dma =3D 0;
+> >  remove_interrupter:
+> >       xhci_sideband_remove_interrupter(uadev[card_num].sb);
+> > +put_offload:
+> > +     usb_offload_put(subs->dev);
+> >  exit:
+> >       return ret;
+> >  }
+> > @@ -1483,6 +1496,7 @@ static int prepare_qmi_response(struct snd_usb_su=
+bstream *subs,
+> >       uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE, PAGE_SIZ=
+E);
+> >  free_sec_ring:
+> >       xhci_sideband_remove_interrupter(uadev[card_num].sb);
+> > +     usb_offload_put(subs->dev);
+> >  drop_sync_ep:
+> >       if (subs->sync_endpoint) {
+> >               uaudio_iommu_unmap(MEM_XFER_RING,
+> > @@ -1528,6 +1542,7 @@ static void handle_uaudio_stream_req(struct qmi_h=
+andle *handle,
+> >       u8 pcm_card_num;
+> >       u8 pcm_dev_num;
+> >       u8 direction;
+> > +     struct usb_device *udev =3D NULL;
+> >       int ret =3D 0;
+> >
+> >       if (!svc->client_connected) {
+> > @@ -1597,50 +1612,53 @@ static void handle_uaudio_stream_req(struct qmi=
+_handle *handle,
+> >
+> >       uadev[pcm_card_num].ctrl_intf =3D chip->ctrl_intf;
+> >
+> > -     if (req_msg->enable) {
+> > -             ret =3D enable_audio_stream(subs,
+> > -                                       map_pcm_format(req_msg->audio_f=
+ormat),
+> > -                                       req_msg->number_of_ch, req_msg-=
+>bit_rate,
+> > -                                       datainterval);
+> > -
+> > -             if (!ret)
+> > -                     ret =3D prepare_qmi_response(subs, req_msg, &resp=
+,
+> > -                                                info_idx);
+> > -             if (ret < 0) {
+> > -                     guard(mutex)(&chip->mutex);
+> > -                     subs->opened =3D 0;
+> > -             }
+> > -     } else {
+> > -             info =3D &uadev[pcm_card_num].info[info_idx];
+> > -             if (info->data_ep_pipe) {
+> > -                     ep =3D usb_pipe_endpoint(uadev[pcm_card_num].udev=
+,
+> > -                                            info->data_ep_pipe);
+> > -                     if (ep) {
+> > -                             xhci_sideband_stop_endpoint(uadev[pcm_car=
+d_num].sb,
+> > -                                                         ep);
+> > -                             xhci_sideband_remove_endpoint(uadev[pcm_c=
+ard_num].sb,
+> > -                                                           ep);
+> > +     udev =3D subs->dev;
+> > +     scoped_guard(device, &udev->dev) {
+> > +             if (req_msg->enable) {
+> > +                     ret =3D enable_audio_stream(subs,
+> > +                                             map_pcm_format(req_msg->a=
+udio_format),
+> > +                                             req_msg->number_of_ch, re=
+q_msg->bit_rate,
+> > +                                             datainterval);
+> > +
+> > +                     if (!ret)
+> > +                             ret =3D prepare_qmi_response(subs, req_ms=
+g, &resp,
+> > +                                                     info_idx);
+> > +                     if (ret < 0) {
+> > +                             guard(mutex)(&chip->mutex);
+> > +                             subs->opened =3D 0;
+> > +                     }
+> > +             } else {
+> > +                     info =3D &uadev[pcm_card_num].info[info_idx];
+> > +                     if (info->data_ep_pipe) {
+> > +                             ep =3D usb_pipe_endpoint(uadev[pcm_card_n=
+um].udev,
+> > +                                                     info->data_ep_pip=
+e);
+> > +                             if (ep) {
+> > +                                     xhci_sideband_stop_endpoint(uadev=
+[pcm_card_num].sb,
+> > +                                                                     e=
+p);
+> > +                                     xhci_sideband_remove_endpoint(uad=
+ev[pcm_card_num].sb,
+> > +                                                                     e=
+p);
+> > +                             }
+> > +
+> > +                             info->data_ep_pipe =3D 0;
+> >                       }
+> >
+> > -                     info->data_ep_pipe =3D 0;
+> > -             }
+> > -
+> > -             if (info->sync_ep_pipe) {
+> > -                     ep =3D usb_pipe_endpoint(uadev[pcm_card_num].udev=
+,
+> > -                                            info->sync_ep_pipe);
+> > -                     if (ep) {
+> > -                             xhci_sideband_stop_endpoint(uadev[pcm_car=
+d_num].sb,
+> > -                                                         ep);
+> > -                             xhci_sideband_remove_endpoint(uadev[pcm_c=
+ard_num].sb,
+> > -                                                           ep);
+> > +                     if (info->sync_ep_pipe) {
+> > +                             ep =3D usb_pipe_endpoint(uadev[pcm_card_n=
+um].udev,
+> > +                                                     info->sync_ep_pip=
+e);
+> > +                             if (ep) {
+> > +                                     xhci_sideband_stop_endpoint(uadev=
+[pcm_card_num].sb,
+> > +                                                                     e=
+p);
+> > +                                     xhci_sideband_remove_endpoint(uad=
+ev[pcm_card_num].sb,
+> > +                                                                     e=
+p);
+> > +                             }
+> > +
+> > +                             info->sync_ep_pipe =3D 0;
+> >                       }
+> >
+> > -                     info->sync_ep_pipe =3D 0;
+> > +                     disable_audio_stream(subs);
+> > +                     guard(mutex)(&chip->mutex);
+> > +                     subs->opened =3D 0;
+> >               }
+> > -
+> > -             disable_audio_stream(subs);
+> > -             guard(mutex)(&chip->mutex);
+> > -             subs->opened =3D 0;
+> >       }
+> >
+> >  response:
+> > --
+> > 2.53.0.414.gf7e9f6c205-goog
+> >
 
