@@ -1,71 +1,67 @@
-Return-Path: <stable+bounces-220872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCADBXlFo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220872-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:43:53 +0100
+	id 8KAgA5BHo2lM/AQAu9opvQ
+	(envelope-from <stable+bounces-220873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:52:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 055511C74CC
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:43:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7741C7757
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E37A6345E732
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:35:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 66ED3315B936
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4867941F55B;
-	Sat, 28 Feb 2026 17:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F9B41F549;
+	Sat, 28 Feb 2026 17:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwjdYgg2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PjZjTZ4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8692141F54E;
-	Sat, 28 Feb 2026 17:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BE641EE06;
+	Sat, 28 Feb 2026 17:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300758; cv=none; b=SJ9qXwoFDZO7OWpvRIGRI5TiqJDxQzOHGYl3/MotSfSI2/16oKxM3vyblemXAf/obvoyYRWWCGwAlt4g9MSdTdGT7K5E6O6W9qsJPBnR3jsOi+Oa8t83Nov3dTd/DgI823eTG0OiuXtiE9oTzRyQa8qsJriSpQr3KMgQjqdZkms=
+	t=1772300760; cv=none; b=fUSRLxo74xdIzqAewbt+OSiWs2KCtoAZlbjAAVB96UXMKgzVHVOkJc685LKPOs//c0gPtCQ3dsrPKVNzLGYlPklbVFeA8E197plVLXs9s8GjJlweyyYlW09nU34wC9XfggMMw4rMnokqWudsuzhKkF5FmPOufeza96cbsbcf32Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300758; c=relaxed/simple;
-	bh=SvhekaeBihNp9RCE30D+VMaOdhKwa+8CeDfTQXBXoo0=;
+	s=arc-20240116; t=1772300760; c=relaxed/simple;
+	bh=zp6cO7ZFhELTQw7V6vC4EMFq2kivJRRUtz9gBME0WYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3Wzm3xOlLE9tUP17oSejU5fOHVPe12iJc61yYhM+Zaz4qDTVJz6/1DCl9PiLgAQ/zE8XF0ZsJUSLJMrqsFfYbt/ofSoPo8pN++N2VhpwprNGIpEe4Cgj0BgE9gUm3SqKDSjz60GBLMWyR/+RGtyBsc2u4WYrB21oKAxZzRi66o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwjdYgg2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57413C116D0;
-	Sat, 28 Feb 2026 17:45:56 +0000 (UTC)
+	 MIME-Version; b=KtgWdA09wcvGBk4fsHx1TVWXt55xZQnJQfhU7bmfm1Ld/OJ/queb6fSkR/mn7Esb0QZjEsJoN7fCN/HYKzbvPioNEE4oaA2LVpZ2OkZlcvzI0wlll9OZiCT8az+VwGuVmPrltBIxDxSAAX0tmiqz5RFRgdKu8NGpn9PjVvbZ1EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PjZjTZ4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A2AC2BC9E;
+	Sat, 28 Feb 2026 17:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300758;
-	bh=SvhekaeBihNp9RCE30D+VMaOdhKwa+8CeDfTQXBXoo0=;
+	s=k20201202; t=1772300760;
+	bh=zp6cO7ZFhELTQw7V6vC4EMFq2kivJRRUtz9gBME0WYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwjdYgg2+6Mk/XDH+wrD/P+cQGoKOWjE2GN5RwjU+6RBDlx8SPCPxgJ98TBesEVVB
-	 Bu5V4zdxk6FJt714iWgEFV5Fft3Oo7FBAJ66s2IVJND8giJQbQNpuLSR7HUFcClbiX
-	 KPzA2VQiG0dnoaGoaiVZQyLjHPvnV73Locickq4ZcO/dfEQNTGuMBC+cyNdZLSblRv
-	 wbqwZgJ8z7zY15JdEredev8FrX5620ro1WnGO3rhnw9SclJzLVtt4RG2VRQqFCBfWC
-	 YZ6ABCrXkxurpKzu1qPTfvQZ09ybTRKlz374Mij5nuy2l1m9y4729T+IL5vZHIDfi7
-	 wPFvaR4IyfV/g==
+	b=PjZjTZ4Cwy0ZrKdk+EMIxy+qVWLEK/ZsH905v38p/4N2tJIhLysmcP/v8Lyk5k6kR
+	 hWmBf7FjaV85hOQncZEBqbUkiggBwqBbul9ox1r+oOv6uKdHJE8THHKATjVAUdxO+l
+	 bKgJoMaIbYBqCXPuNA1FUboF6tLnBiqbx/VL2IU3X40sIJEPtYiSs/T9TR+JdZvvpz
+	 Yi1nvwXYWxwgS0oV5RhoReeJr9a8B9Zz7nZ8auN9v+heDJx0GBSBv78YQE6jVAaNc4
+	 iSwJT8C+Hz/fE3G5prk0RPqIjPjhcJEJavLQL/ISTdyrJh+JdyUfD9sGf2qGQvASjZ
+	 YQ1mnIjS0iv0w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Usama Arif <usama.arif@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Ma Wupeng <mawupeng1@huawei.com>,
+Cc: Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Waiman Long <longman@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 793/844] mm/hugetlb: restore failed global reservations to subpool
-Date: Sat, 28 Feb 2026 12:31:46 -0500
-Message-ID: <20260228173244.1509663-794-sashal@kernel.org>
+Subject: [PATCH 6.19 794/844] mm/page_alloc: skip debug_check_no_{obj,locks}_freed with FPI_TRYLOCK
+Date: Sat, 28 Feb 2026 12:31:47 -0500
+Message-ID: <20260228173244.1509663-795-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -79,131 +75,170 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,linux.dev,kernel.org,oracle.com,huawei.com,suse.com,suse.de,google.com,suse.cz,redhat.com,linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-220872-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220873-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 055511C74CC
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9E7741C7757
 X-Rspamd-Action: no action
 
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-[ Upstream commit 1d3f9bb4c8af70304d19c22e30f5d16a2d589bb5 ]
+[ Upstream commit 338ad1e84d15078a9ae46d7dd7466329ae0bfa61 ]
 
-Commit a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
-fixed an underflow error for hstate->resv_huge_pages caused by incorrectly
-attributing globally requested pages to the subpool's reservation.
+When CONFIG_DEBUG_OBJECTS_FREE is enabled,
+debug_check_no_{obj,locks}_freed() functions are called.
 
-Unfortunately, this fix also introduced the opposite problem, which would
-leave spool->used_hpages elevated if the globally requested pages could
-not be acquired.  This is because while a subpool's reserve pages only
-accounts for what is requested and allocated from the subpool, its "used"
-counter keeps track of what is consumed in total, both from the subpool
-and globally.  Thus, we need to adjust spool->used_hpages in the other
-direction, and make sure that globally requested pages are uncharged from
-the subpool's used counter.
+Since both of them spin on a lock, they are not safe to be called if the
+FPI_TRYLOCK flag is specified.  This leads to a lockdep splat:
 
-Each failed allocation attempt increments the used_hpages counter by how
-many pages were requested from the global pool.  Ultimately, this renders
-the subpool unusable, as used_hpages approaches the max limit.
+  ================================
+  WARNING: inconsistent lock state
+  6.19.0-rc5-slab-for-next+ #326 Tainted: G                 N
+  --------------------------------
+  inconsistent {INITIAL USE} -> {IN-NMI} usage.
+  kunit_try_catch/9046 [HC2[2]:SC0[0]:HE0:SE1] takes:
+  ffffffff84ed6bf8 (&obj_hash[i].lock){-.-.}-{2:2}, at: __debug_check_no_obj_freed+0xe0/0x300
+  {INITIAL USE} state was registered at:
+    lock_acquire+0xd9/0x2f0
+    _raw_spin_lock_irqsave+0x4c/0x80
+    __debug_object_init+0x9d/0x1f0
+    debug_object_init+0x34/0x50
+    __init_work+0x28/0x40
+    init_cgroup_housekeeping+0x151/0x210
+    init_cgroup_root+0x3d/0x140
+    cgroup_init_early+0x30/0x240
+    start_kernel+0x3e/0xcd0
+    x86_64_start_reservations+0x18/0x30
+    x86_64_start_kernel+0xf3/0x140
+    common_startup_64+0x13e/0x148
+  irq event stamp: 2998
+  hardirqs last  enabled at (2997): [<ffffffff8298b77a>] exc_nmi+0x11a/0x240
+  hardirqs last disabled at (2998): [<ffffffff8298b991>] sysvec_irq_work+0x11/0x110
+  softirqs last  enabled at (1416): [<ffffffff813c1f72>] __irq_exit_rcu+0x132/0x1c0
+  softirqs last disabled at (1303): [<ffffffff813c1f72>] __irq_exit_rcu+0x132/0x1c0
 
-The issue can be reproduced as follows:
-1. Allocate 4 hugetlb pages
-2. Create a hugetlb mount with max=4, min=2
-3. Consume 2 pages globally
-4. Request 3 pages from the subpool (2 from subpool + 1 from global)
-	4.1 hugepage_subpool_get_pages(spool, 3) succeeds.
-		used_hpages += 3
-	4.2 hugetlb_acct_memory(h, 1) fails: no global pages left
-		used_hpages -= 2
-5. Subpool now has used_hpages = 1, despite not being able to
-   successfully allocate any hugepages. It believes it can now only
-   allocate 3 more hugepages, not 4.
+  other info that might help us debug this:
+   Possible unsafe locking scenario:
 
-With each failed allocation attempt incrementing the used counter, the
-subpool eventually reaches a point where its used counter equals its
-max counter.  At that point, any future allocations that try to
-allocate hugeTLB pages from the subpool will fail, despite the subpool
-not having any of its hugeTLB pages consumed by any user.
+         CPU0
+         ----
+    lock(&obj_hash[i].lock);
+    <Interrupt>
+      lock(&obj_hash[i].lock);
 
-Once this happens, there is no way to make the subpool usable again,
-since there is no way to decrement the used counter as no process is
-really consuming the hugeTLB pages.
+   *** DEADLOCK ***
 
-The underflow issue that the original commit fixes still remains fixed
-as well.
+Rename free_pages_prepare() to __free_pages_prepare(), add an fpi_t
+parameter, and skip those checks if FPI_TRYLOCK is set.  To keep the fpi_t
+definition in mm/page_alloc.c, add a wrapper function free_pages_prepare()
+that always passes FPI_NONE and use it in mm/compaction.c.
 
-Without this fix, used_hpages would keep on leaking if
-hugetlb_acct_memory() fails.
-
-Link: https://lkml.kernel.org/r/20260116204037.2270096-1-joshua.hahnjy@gmail.com
-Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Acked-by: Usama Arif <usama.arif@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Ma Wupeng <mawupeng1@huawei.com>
+Link: https://lkml.kernel.org/r/20260209062639.16577-1-harry.yoo@oracle.com
+Fixes: 8c57b687e833 ("mm, bpf: Introduce free_pages_nolock()")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
 Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Waiman Long <longman@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ mm/page_alloc.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index a1832da0f6236..77e45dd50ba21 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6717,6 +6717,15 @@ long hugetlb_reserve_pages(struct inode *inode,
- 		 */
- 		hugetlb_acct_memory(h, -gbl_resv);
- 	}
-+	/* Restore used_hpages for pages that failed global reservation */
-+	if (gbl_reserve && spool) {
-+		unsigned long flags;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 1af52f568f22d..48af3d7b47849 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1340,8 +1340,8 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
+ 
+ #endif /* CONFIG_MEM_ALLOC_PROFILING */
+ 
+-__always_inline bool free_pages_prepare(struct page *page,
+-			unsigned int order)
++__always_inline bool __free_pages_prepare(struct page *page,
++					  unsigned int order, fpi_t fpi_flags)
+ {
+ 	int bad = 0;
+ 	bool skip_kasan_poison = should_skip_kasan_poison(page);
+@@ -1434,7 +1434,7 @@ __always_inline bool free_pages_prepare(struct page *page,
+ 	page_table_check_free(page, order);
+ 	pgalloc_tag_sub(page, 1 << order);
+ 
+-	if (!PageHighMem(page)) {
++	if (!PageHighMem(page) && !(fpi_flags & FPI_TRYLOCK)) {
+ 		debug_check_no_locks_freed(page_address(page),
+ 					   PAGE_SIZE << order);
+ 		debug_check_no_obj_freed(page_address(page),
+@@ -1473,6 +1473,11 @@ __always_inline bool free_pages_prepare(struct page *page,
+ 	return true;
+ }
+ 
++bool free_pages_prepare(struct page *page, unsigned int order)
++{
++	return __free_pages_prepare(page, order, FPI_NONE);
++}
 +
-+		spin_lock_irqsave(&spool->lock, flags);
-+		if (spool->max_hpages != -1)
-+			spool->used_hpages -= gbl_reserve;
-+		unlock_or_release_subpool(spool, flags);
-+	}
- out_uncharge_cgroup:
- 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
- 					    chg * pages_per_huge_page(h), h_cg);
+ /*
+  * Frees a number of pages from the PCP lists
+  * Assumes all pages on list are in same zone.
+@@ -1606,7 +1611,7 @@ static void __free_pages_ok(struct page *page, unsigned int order,
+ 	unsigned long pfn = page_to_pfn(page);
+ 	struct zone *zone = page_zone(page);
+ 
+-	if (free_pages_prepare(page, order))
++	if (__free_pages_prepare(page, order, fpi_flags))
+ 		free_one_page(zone, page, pfn, order, fpi_flags);
+ }
+ 
+@@ -2970,7 +2975,7 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
+ 		return;
+ 	}
+ 
+-	if (!free_pages_prepare(page, order))
++	if (!__free_pages_prepare(page, order, fpi_flags))
+ 		return;
+ 
+ 	/*
+@@ -3027,7 +3032,7 @@ void free_unref_folios(struct folio_batch *folios)
+ 		unsigned long pfn = folio_pfn(folio);
+ 		unsigned int order = folio_order(folio);
+ 
+-		if (!free_pages_prepare(&folio->page, order))
++		if (!__free_pages_prepare(&folio->page, order, FPI_NONE))
+ 			continue;
+ 		/*
+ 		 * Free orders not handled on the PCP directly to the
 -- 
 2.51.0
 
