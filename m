@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLs2ON5Wo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:58:06 +0100
+	id CABCGulWo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:58:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63DAD1C8A66
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:58:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B298F1C8A74
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2359369BE95
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:29:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0A1B326A3A5
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51333414928;
-	Sat, 28 Feb 2026 17:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFBD415FC0;
+	Sat, 28 Feb 2026 17:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FzUNoCTL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGbQqEeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C58414933;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F051041652E;
 	Sat, 28 Feb 2026 17:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300713; cv=none; b=fTglwRMw0Xhi5/181rLZFTXYa5uXN8TIxPTdToan37xIcjoJ6e/hBe3fRiuDqRAQbxwTesguAOTHx4keTQeB9FNMYV3+5cYRWTWGbFz1p5vuYCxTDBSyQphpqY35j3BRr7ha0RZzf2RZMFliojJWr+O1ZexSq+JhTzW7AyH7R9I=
+	t=1772300714; cv=none; b=Jv2sxUg/AUA8pIaAP5kB/Z00GZnGjvw3aiRTlJcn2FyTYHvs8FkeVtIOEa14PQQuS5RcN6jPJzoz65FFxxrUrT+LKtbkKejR8Ff9vEoLqJ9c+GjBMBLH7lJvj1ODMAMW/8SoJBcWPEhP0n1ysvk6XQAc/ZlM2ej7TozBPSA10r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300713; c=relaxed/simple;
-	bh=SUf0qdZ6P+PWNQj5j9osWjREKs8+YSw/TMis7sPESjs=;
+	s=arc-20240116; t=1772300714; c=relaxed/simple;
+	bh=XW2U0HJTBShcycZ6yYEmu1RVekp9uFgol6PeA2a1UK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPy5m01BYowQfv995/We/UceJmx2NrgIASTATuWFtq21E2zsKV/QtMe52Yvq5cCLUQShn4fA493mbYeX0iB9bq86/ncIUvwlJPkMPCN79ghII4y/hJPSu4NCyd38Rq2j4FFfIS7eT8dIVgjEycE+yHimo+tAzzVbcFmtGYCRXJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FzUNoCTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C13C19424;
-	Sat, 28 Feb 2026 17:45:12 +0000 (UTC)
+	 MIME-Version; b=t2/yaBgQ6DlvAC2soxStTbvaHTYyTocsvDARJ2KYtKvBo++DmxMmlzcgsq6AEpVjxYUC2ChYkmgb4iaeW4H4t+rHmI8hMgXViAgTG0sGOmCsGcWrl2D+XGnlbsfVxLY9L7jHLJBZBIclBOWrERNn+IvWpAzBr38pNcfTQr9J/m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGbQqEeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36422C2BC87;
+	Sat, 28 Feb 2026 17:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300712;
-	bh=SUf0qdZ6P+PWNQj5j9osWjREKs8+YSw/TMis7sPESjs=;
+	s=k20201202; t=1772300713;
+	bh=XW2U0HJTBShcycZ6yYEmu1RVekp9uFgol6PeA2a1UK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FzUNoCTLLmlQVqPXgq5bgq6qnA1CH9srDaTgU3sZ4IMfcPc6+aHnolocayUR4l2zu
-	 CEYYEJquAaSU4zmKzfdl73dGyDmQw+PrYLwVKYk9Bn+FSK0z3OBugLNkcpQLwtJtMZ
-	 +unjD6RyLEJW7lTs45R8OyvUceUkepGLUzXw2tBcf/E8o79nMLKJauR4lAK0TDMJcr
-	 sTW/HtrowmKkUYNv6rxKNPpMZhsiT7PTE3lxO4urVFPP7Qr8oFM59ZXG8tpI2vMuf2
-	 imR5bjpcmV9Xz7IA/9F7wGZxi9OYLIF2AZO5UEdqKP+JycnVEpcYX1C3m+rG2LoRZB
-	 0p2sfcSl3HvgQ==
+	b=ZGbQqEeEbS5exsVx8n7hlkwQcozLTniSrGOP+tkMVf2bCgdQd5G+tmVl2R07w8DRm
+	 7ns8mRJq/FdlICctNq9bvFKTCkfOQFhQL2v2X/uX/mkirpt92iDlwwFWSemB/ExJUE
+	 EXH/Dcqrrz80mTBXNRQj40oEg55L7ifHDzs6HX5BhZCZpqpaaJ5SBfnq/0rc77CrpO
+	 /iKqkdy30fbRqzMJs65GcAqyr7KYgD7cptV9sO0QEBCuFCMckPYDQS/Hcvqw2ZjcVg
+	 mnoEPTCM95rL2q2bl2yhLeLcGZlNG2Y/JhBjQs8tY8cIHgJGqvIFWuY8f9kdbmHdz6
+	 nJw7ea6MBZiqA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Hodges <hodgesd@meta.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Sunday Clement <Sunday.Clement@amd.com>,
+	Alexander Deucher <Alexander.Deucher@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 748/844] tipc: fix RCU dereference race in tipc_aead_users_dec()
-Date: Sat, 28 Feb 2026 12:31:01 -0500
-Message-ID: <20260228173244.1509663-749-sashal@kernel.org>
+Subject: [PATCH 6.19 749/844] drm/amdkfd: Fix out-of-bounds write in kfd_event_page_set()
+Date: Sat, 28 Feb 2026 12:31:02 -0500
+Message-ID: <20260228173244.1509663-750-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,18 +72,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220827-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220828-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -93,45 +93,46 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,meta.com:email]
-X-Rspamd-Queue-Id: 63DAD1C8A66
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B298F1C8A74
 X-Rspamd-Action: no action
 
-From: Daniel Hodges <hodgesd@meta.com>
+From: Sunday Clement <Sunday.Clement@amd.com>
 
-[ Upstream commit 6a65c0cb0ff20b3cbc5f1c87b37dd22cdde14a1c ]
+[ Upstream commit 8a70a26c9f34baea6c3199a9862ddaff4554a96d ]
 
-tipc_aead_users_dec() calls rcu_dereference(aead) twice: once to store
-in 'tmp' for the NULL check, and again inside the atomic_add_unless()
-call.
+The kfd_event_page_set() function writes KFD_SIGNAL_EVENT_LIMIT * 8
+bytes via memset without checking the buffer size parameter. This allows
+unprivileged userspace to trigger an out-of bounds kernel memory write
+by passing a small buffer, leading to  potential privilege
+escalation.
 
-Use the already-dereferenced 'tmp' pointer consistently, matching the
-correct pattern used in tipc_aead_users_inc() and tipc_aead_users_set().
-
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Signed-off-by: Sunday Clement <Sunday.Clement@amd.com>
+Reviewed-by: Alexander Deucher <Alexander.Deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Daniel Hodges <hodgesd@meta.com>
-Link: https://patch.msgid.link/20260203145621.17399-1-git@danielhodges.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/crypto.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_events.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 970db62bd029b..a3f9ca28c3d53 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -460,7 +460,7 @@ static void tipc_aead_users_dec(struct tipc_aead __rcu *aead, int lim)
- 	rcu_read_lock();
- 	tmp = rcu_dereference(aead);
- 	if (tmp)
--		atomic_add_unless(&rcu_dereference(aead)->users, -1, lim);
-+		atomic_add_unless(&tmp->users, -1, lim);
- 	rcu_read_unlock();
- }
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_events.c b/drivers/gpu/drm/amd/amdkfd/kfd_events.c
+index 5a190dd6be4e2..844a6a28a6408 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_events.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_events.c
+@@ -331,6 +331,12 @@ static int kfd_event_page_set(struct kfd_process *p, void *kernel_address,
+ 	if (p->signal_page)
+ 		return -EBUSY;
  
++	if (size < KFD_SIGNAL_EVENT_LIMIT * 8) {
++		pr_err("Event page size %llu is too small, need at least %lu bytes\n",
++				size, (unsigned long)(KFD_SIGNAL_EVENT_LIMIT * 8));
++		return -EINVAL;
++	}
++
+ 	page = kzalloc(sizeof(*page), GFP_KERNEL);
+ 	if (!page)
+ 		return -ENOMEM;
 -- 
 2.51.0
 
