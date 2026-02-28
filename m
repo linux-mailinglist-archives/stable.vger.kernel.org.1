@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-221018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKKXHhVdo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-221018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:24:37 +0100
+	id +PicAwhIo2l//AQAu9opvQ
+	(envelope-from <stable+bounces-221019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:54:48 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B0C1C9009
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 842A11C786C
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:54:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83D143609246
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:45:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E95F32DC15B
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639D84BCAA7;
-	Sat, 28 Feb 2026 17:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532324BCAB3;
+	Sat, 28 Feb 2026 17:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kp11pT4C"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvyx6iRl"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B5129E114;
-	Sat, 28 Feb 2026 17:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AA44BCAB0;
+	Sat, 28 Feb 2026 17:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301361; cv=none; b=jYOkWF0+eDKYqQS9pl2Udn8t8EUeF9pzHtH2rvmx4jQbYQchYboPJONuMHBsntdOOA+aeJ/x1LVQWjBHK9pyFOshl1PICLGn4mTAxEKq56olTea7GLj2TcnmsFtlQ9cBypPaUV/d54Vp6PRe39Z0uklArRuC3OrLFXSgNUrrEZE=
+	t=1772301362; cv=none; b=T1rhlaXy3XgpEm7mr3pDgqfhjnyjwlstQMPQBPm+7N8od8ZKF+yexMb+0ISciNFC+y1KGgN+KWmWPOEgkkxR3TGaspjvIjDQUuODUz0Ik5z0W393Ij+exJLMd5jU0FfuUrEv6JDLwXnL7w4oV4R5jXFdsKzggJcfA+l97rJxt04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301361; c=relaxed/simple;
-	bh=OeBiOH2MaUBz2DQS4qmVwqoVgLtnGrd+D6Gji32gUUA=;
+	s=arc-20240116; t=1772301362; c=relaxed/simple;
+	bh=dTle06lUXDk7SlT5K/JGW0wMzFUKzTs8xoOQno5za78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFCghGsAyzAhiHDGS9X7QXqShE+/mAUkorRTN+PI8AJ48jhF3gQ+mCeZFn4t+llJaiXq+uawiuC6n1he4tXTe4bGkL3/16o2/Sr5KyVJg9k504iGaF/gT6MuF+Owl9d2NeAGSI14FZFoJwCx8JEOfPi3dvm/M3JgPlSCdRB9+Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kp11pT4C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEB4C19425;
-	Sat, 28 Feb 2026 17:56:00 +0000 (UTC)
+	 MIME-Version; b=a7MumSOh8jG6dvz7m+baUAAKTWLnZ7aRRz3sWkJGxTiL7OLYmSjDQdX+pWJfrws2jFkkuJHVGT1wpona8kiVUQAiz1wx3TIGxl74w2mmIZKDOi7gmn997hQdOeimy7KWC0i52blwMpTGgULxWxX9ZmZZkwb/Ssucz2RprE5qrB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvyx6iRl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B806C2BC87;
+	Sat, 28 Feb 2026 17:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301361;
-	bh=OeBiOH2MaUBz2DQS4qmVwqoVgLtnGrd+D6Gji32gUUA=;
+	s=k20201202; t=1772301362;
+	bh=dTle06lUXDk7SlT5K/JGW0wMzFUKzTs8xoOQno5za78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kp11pT4CcpznlEsSQAwYnwfHDG6T+PW7+J0lh7SMxnQOww9T+CzdWQLH3H0lNNudV
-	 m0TTw1UakcauOfHvqydHvLDWIGPlWowIt/TLJrxIOwnpu2Nn0JBerrVdrfb1mRx8vO
-	 VIVbUtYCEf7CyXNXN6CTHvWaDtadP5LcboidsnIuFyGs1iGY2KArU/ZgKzAgnNjh9Z
-	 5Am29Vdp7Nge/jGB1W9L2xOTQmM+wv1KHJ0lgNpMzu0EHPsiNAGXTpHZxLliXeLLPX
-	 jDPvM9TYV30jWLq7zjov8Ktn1o1NqKx9MtzP67jjLQOOqa9nXHJSV7DOhwAQdujgQX
-	 PDHbqVNKMfw2w==
+	b=kvyx6iRl5AENPh10NpAYwn29JGiXg4HY9FN17i077hl6GqngZdo8Sncm2+SNz1+1u
+	 35pUfT8A5AiIv76P75kTWSYA8mkjK5CzfdwiLRavG1MvEeTmJNamRadAuOerTERGVM
+	 FdsmdwLDaJ1MjYYva1nfKLFrIZ7D+8+e67LHnWiEyxd07f+WpyzwxP/QUGZ067O5Vk
+	 BZJwuIeeIUiLGNpfwBJjV8hU/kyrsisT5B+8wQaRYR2Y+xHK2yY2o/rcmF3oTz0u3O
+	 bA6KoEWcLI7zfuB/7pcp55iUquCBC3iYMRkZj0amTkSqvsUDuMgRRAn5edCQLuGsZO
+	 pULrCtnNKBzmA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
 Cc: Alain Volmat <alain.volmat@foss.st.com>,
-	Stable@vger.kernel.org,
+	stable@vger.kernel.org,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 549/752] media: stm32: dcmipp: avoid naming clock if only one is needed
-Date: Sat, 28 Feb 2026 12:44:20 -0500
-Message-ID: <20260228174750.1542406-549-sashal@kernel.org>
+Subject: [PATCH 6.18 550/752] media: stm32: dcmipp: bytecap: clear all interrupts upon stream stop
+Date: Sat, 28 Feb 2026 12:44:21 -0500
+Message-ID: <20260228174750.1542406-550-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221018-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221019-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -90,54 +90,47 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable,cisco];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: A5B0C1C9009
+X-Rspamd-Queue-Id: 842A11C786C
 X-Rspamd-Action: no action
 
 From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit 2f130245f2143fa8f4da77071f844911d2c69319 ]
+[ Upstream commit 222f1279edd9008ee35b62de156ddac84e31443c ]
 
-When DCMIPP requires only a single clock (kclk), avoid relying on its
-name to obtain it. The introduction of MP25 support added the mclk,
-which necessitated naming the first clock kclk. However, this breaks
-backward compatibility with existing MP13 device trees that do not
-specify clock names.
+Ensure that there are no pending interrupts after we have stopped the
+pipeline. Indeed, it could happen that new interrupt has been generated
+during the stop_streaming processing hence clear them in order to avoid
+getting a new interrupt right from the start of a next start_streaming.
 
-Fixes: 686f27f7ea37 ("media: stm32: dcmipp: add core support for the stm32mp25")
+Fixes: 28e0f3772296 ("media: stm32-dcmipp: STM32 DCMIPP camera interface driver")
+Cc: stable@vger.kernel.org
 Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Cc: Stable@vger.kernel.org # 6.14.x: 7f487562af49 media: stm32: dcmipp: correct ret type in dcmipp_graph_notify_bound
-Cc: Stable@vger.kernel.org # 6.14.x: c715dd62da30 media: stm32: dcmipp: add has_csi2 & needs_mclk in match data
-Cc: Stable@vger.kernel.org # 6.14.x:
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-index 1b7bae3266c8d..49398d0777646 100644
---- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-+++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-@@ -526,7 +526,12 @@ static int dcmipp_probe(struct platform_device *pdev)
- 		return ret;
- 	}
+diff --git a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
+index 1c1b6b48918ee..b18e273ef4a3e 100644
+--- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
++++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
+@@ -512,6 +512,9 @@ static void dcmipp_bytecap_stop_streaming(struct vb2_queue *vq)
+ 	/* Disable pipe */
+ 	reg_clear(vcap, DCMIPP_P0FSCR, DCMIPP_P0FSCR_PIPEN);
  
--	kclk = devm_clk_get(&pdev->dev, "kclk");
-+	/*
-+	 * In case of the DCMIPP has only 1 clock (such as on MP13), the
-+	 * clock might not be named.
-+	 */
-+	kclk = devm_clk_get(&pdev->dev,
-+			    dcmipp->pipe_cfg->needs_mclk ? "kclk" : NULL);
- 	if (IS_ERR(kclk))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(kclk),
- 				     "Unable to get kclk\n");
++	/* Clear any pending interrupts */
++	reg_write(vcap, DCMIPP_CMFCR, DCMIPP_CMIER_P0ALL);
++
+ 	spin_lock_irq(&vcap->irqlock);
+ 
+ 	/* Return all queued buffers to vb2 in ERROR state */
 -- 
 2.51.0
 
