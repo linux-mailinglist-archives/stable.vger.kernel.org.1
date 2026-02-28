@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iC7gDvxWo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:58:36 +0100
+	id iBa0Fi1Go2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:46:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C381C8A97
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:58:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B241C75AB
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3FB6437194EC
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:29:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C43B73089620
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1547C495525;
-	Sat, 28 Feb 2026 17:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38817415623;
+	Sat, 28 Feb 2026 17:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSQrtyXY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sq51djEH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA2141651E;
-	Sat, 28 Feb 2026 17:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB585415619;
+	Sat, 28 Feb 2026 17:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300716; cv=none; b=GcRQI82azpF8nbdU2RHSEkIRnLi/blkgWUgAqTa4wP0e7KCyS4S58TrgZ0ciwIZQw4eH1KbzrH5QeiwIgQsdoSYZ2PNjXes0A6kXRmsMDWSZs9gzvjLwhYxhTJsEXwcFjnuAvUwIfzL+Aoum2YiGs5nRo6Ox66frH2wbL9zvGhs=
+	t=1772300718; cv=none; b=sq/7VP03KESB+/P02OqMVxp6oNLMlZqfMLLfxV8z8VKicw3Fnp3DZ1fRX17FpwBfiQYNb0iTVPv6pdWQ4Paawr/FQiLPxwcuav+VEG7ZezSYDSKCyRLPRB4cVtVK3oqT/B0EZTvWqZPI555lPT7a1LdgyKKNG3yWdJFwDNU0rng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300716; c=relaxed/simple;
-	bh=AhMIT7OoY6+ia1wzwEj6LDd5nymD3tVV7EHUtUD+8VE=;
+	s=arc-20240116; t=1772300718; c=relaxed/simple;
+	bh=EtV2LE5whI6918UgcOFQyk+HwlHhhT9iTKC/U1RTuVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NSgUowh36pZMIjgPF5YrBsbmkbmcZvdux8EEffS8GMbY9fm6PzbmyYc0o5n3ZLt+547SAo4tQz7ihLI1qpIYeaLPhfF/g6WqKGxl+JGG6+VZ9k/17goAMSoSeZWgUFYDTikVtGBtb3IFBfrVVloCLqEGmrgCuF4lfrYCCYhOXnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSQrtyXY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06284C19423;
-	Sat, 28 Feb 2026 17:45:15 +0000 (UTC)
+	 MIME-Version; b=jaeb/fo3H6bnw/mVRqwlCrwccE3QWk0M57JqzjQmi/lG4xkjClC3jep3VU6ktmDgF2i6Pp+dsVklZ6dgKuGRih/d7HsXoo3/Nde4MEL0+7JSnIWl5dw9L4wql7h40i8QrJk2Sm/kL6qnKycfcEuOHjiovbPfhNYeiYYc7/QSZO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sq51djEH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97D9C116D0;
+	Sat, 28 Feb 2026 17:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300716;
-	bh=AhMIT7OoY6+ia1wzwEj6LDd5nymD3tVV7EHUtUD+8VE=;
+	s=k20201202; t=1772300717;
+	bh=EtV2LE5whI6918UgcOFQyk+HwlHhhT9iTKC/U1RTuVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qSQrtyXY/GjQvkY/VZ9nr3IkgirltLG98TEnNwdMbOBMjNYVRWSkw+dv3HYA92J6b
-	 KaQTAQ6UwQqEJASY4PmEjXTWjTcdtL6MFLXN3FIBTFKhg3THqxeKSjHxJGx4Hw/XyB
-	 4bUHYTPbisPjhzL6i5fLZczNV4Hnxbu+nMVXpDjNLBp6XL4lk3ic4PSh/D9zwzJDhP
-	 KXY/C05uZrl7m1VexzetaIOSASm2MHOC4rUAKaWrg6bNhUaG/0zQa1hw3rWVjLPUr8
-	 lBQ4XdILZWrMwAOHdYIrC4ynjW7cev7aUFK2/THtWBMNgult3Eq7ANhTi3BVf4dXe6
-	 L2SRiB9BaXKPA==
+	b=sq51djEHMDRXuoHzOui7neaRMJOUzGEy2brsp1tjgA+AMDE3FCGdUeK/v3LlZMjJ5
+	 bYVbMrySU4w0+0bSupWsO5cDVKJfAGJ8Al2w/YoEk3dmLRTpp57da9g9FmOMZWeze1
+	 5MHwmql6c9Kj12O2IC8jTGApnbkkS++P70ZGc8kgIJow+K11XWpbTgkMJ/OuIGQOp3
+	 TNV4zSQvUwUnNl9LYyvV701G8zuwMYJVaeMhWcWO2MOZFnP9f+bOtsCUvBvEpjyxsL
+	 2R2a2xPTgU8gJX2k8u5GnCAPes2K/+vqGEYXoKCTv+zNup01WYBf4IhhjGDyJI4Glk
+	 K+usNU0pLSB3w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Kevin Hao <haokexin@gmail.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 752/844] drm/amdgpu: Use 5-level paging if gmc support 57-bit VA
-Date: Sat, 28 Feb 2026 12:31:05 -0500
-Message-ID: <20260228173244.1509663-753-sashal@kernel.org>
+Subject: [PATCH 6.19 753/844] net: cpsw_new: Fix unnecessary netdev unregistration in cpsw_probe() error path
+Date: Sat, 28 Feb 2026 12:31:06 -0500
+Message-ID: <20260228173244.1509663-754-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -63,96 +63,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220831-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220832-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D5C381C8A97
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 98B241C75AB
 X-Rspamd-Action: no action
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Kevin Hao <haokexin@gmail.com>
 
-[ Upstream commit 3b948dd0366a0b64c02e4ed1aefdf7825942e803 ]
+[ Upstream commit 62db84b7efa63b78aed9fdbdae90f198771be94c ]
 
-Regardless if CPU enable 5-level paging, GPU vm use 5-level paging if
-gmc init with 57-bit address space support, because
+The current error handling in cpsw_probe() has two issues:
+- cpsw_unregister_ports() may be called before cpsw_register_ports() has
+  been executed.
 
-ARM64 4-level paging support 48-bit VA, x86 and GPU 4-level paging
-support 47-bit VA, require 5-level paging on GPU to support ARM64.
+- cpsw_unregister_ports() is already invoked within cpsw_register_ports()
+  in case of a register_netdev() failure, but the error path would call
+  it again.
 
-NPA address space 52-bit mapping on NPA GPU VM require 5-level paging.
-
-Debugger trap get device snapshot expect LDS and Scratch base, limit
-above 57-bit, which is set only for 5-level paging.
-
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.19.x
+Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://patch.msgid.link/20260205-cpsw-error-path-v1-1-6e58bae6b299@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 17 -----------------
- 1 file changed, 17 deletions(-)
+ drivers/net/ethernet/ti/cpsw_new.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index 4d329454456bc..bd7f83efed187 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2360,26 +2360,9 @@ void amdgpu_vm_adjust_size(struct amdgpu_device *adev, uint32_t min_vm_size,
- 			   unsigned max_bits)
- {
- 	unsigned int max_size = 1 << (max_bits - 30);
--	bool sys_5level_pgtable = false;
- 	unsigned int vm_size;
- 	uint64_t tmp;
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index 21af0a10626aa..b9fc31eb06134 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -2003,7 +2003,7 @@ static int cpsw_probe(struct platform_device *pdev)
+ 	/* setup netdevs */
+ 	ret = cpsw_create_ports(cpsw);
+ 	if (ret)
+-		goto clean_unregister_netdev;
++		goto clean_cpts;
  
--#ifdef CONFIG_X86_64
--	/*
--	 * Refer to function configure_5level_paging() for details.
--	 */
--	sys_5level_pgtable = (native_read_cr4() & X86_CR4_LA57);
--#endif
--
--	/*
--	 * If GPU supports 5-level page table, but system uses 4-level page table,
--	 * then use 4-level page table on GPU
--	 */
--	if (max_level == 4 && !sys_5level_pgtable) {
--		min_vm_size = 256 * 1024;
--		max_level = 3;
--	}
--
- 	/* adjust vm size first */
- 	if (amdgpu_vm_size != -1) {
- 		vm_size = amdgpu_vm_size;
+ 	/* Grab RX and TX IRQs. Note that we also have RX_THRESHOLD and
+ 	 * MISC IRQs which are always kept disabled with this driver so
+@@ -2017,14 +2017,14 @@ static int cpsw_probe(struct platform_device *pdev)
+ 			       0, dev_name(dev), cpsw);
+ 	if (ret < 0) {
+ 		dev_err(dev, "error attaching irq (%d)\n", ret);
+-		goto clean_unregister_netdev;
++		goto clean_cpts;
+ 	}
+ 
+ 	ret = devm_request_irq(dev, cpsw->irqs_table[1], cpsw_tx_interrupt,
+ 			       0, dev_name(dev), cpsw);
+ 	if (ret < 0) {
+ 		dev_err(dev, "error attaching irq (%d)\n", ret);
+-		goto clean_unregister_netdev;
++		goto clean_cpts;
+ 	}
+ 
+ 	if (!cpsw->cpts)
+@@ -2034,7 +2034,7 @@ static int cpsw_probe(struct platform_device *pdev)
+ 			       0, dev_name(&pdev->dev), cpsw);
+ 	if (ret < 0) {
+ 		dev_err(dev, "error attaching misc irq (%d)\n", ret);
+-		goto clean_unregister_netdev;
++		goto clean_cpts;
+ 	}
+ 
+ 	/* Enable misc CPTS evnt_pend IRQ */
+@@ -2043,7 +2043,7 @@ static int cpsw_probe(struct platform_device *pdev)
+ skip_cpts:
+ 	ret = cpsw_register_notifiers(cpsw);
+ 	if (ret)
+-		goto clean_unregister_netdev;
++		goto clean_cpts;
+ 
+ 	ret = cpsw_register_devlink(cpsw);
+ 	if (ret)
+@@ -2065,8 +2065,6 @@ static int cpsw_probe(struct platform_device *pdev)
+ 
+ clean_unregister_notifiers:
+ 	cpsw_unregister_notifiers(cpsw);
+-clean_unregister_netdev:
+-	cpsw_unregister_ports(cpsw);
+ clean_cpts:
+ 	cpts_release(cpsw->cpts);
+ 	cpdma_ctlr_destroy(cpsw->dma);
 -- 
 2.51.0
 
