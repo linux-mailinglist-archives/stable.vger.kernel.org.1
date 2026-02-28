@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLmiFjpTo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:42:34 +0100
+	id 4PpHLUU/o2kR+wQAu9opvQ
+	(envelope-from <stable+bounces-220685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:17:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99AB31C87F2
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:42:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BADB1C6C96
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:17:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE0F13418375
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:06:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6E8503112F99
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776D83F73A6;
-	Sat, 28 Feb 2026 17:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E943F6AEF;
+	Sat, 28 Feb 2026 17:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sj6D9wsE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLzKS5xp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE0B3F739D;
-	Sat, 28 Feb 2026 17:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DB73F73BB;
+	Sat, 28 Feb 2026 17:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300565; cv=none; b=NPZTKzdfmWN9ckDpmlinzzgqIp1xpZohbtAEixwPa3wu8cFxISMl70cocrkT8Bdm/prS7/GKWauT5QCwnliyuWaQFpyvdSfBbKp/btJXVKIS3l9RMMiiU3cTWEbvnmPp7CzSXYX0cwNPwgwV9NnDqhIHMOkh9zjt3IaO8g2/aqE=
+	t=1772300566; cv=none; b=hQzbl/JPzUJ6IMFTEXn2aRHLVfSe6UswvX4xN++C3MPQdlA+s7wTeehX4RnXUvVzcBit8BwkwRhvEf5DapkOJm/rXkQYNP4r/mWL/s7xodTl1Vo+13GH1CIW4TzAVxa41tp/kOOr+ArEJHDBD6xkZ2EvnlEW1atZI8P0THRw6mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300565; c=relaxed/simple;
-	bh=9cr3n3gmMpWWaSZjZA2afqSrWBNC6bCrHzSRJ4+2g74=;
+	s=arc-20240116; t=1772300566; c=relaxed/simple;
+	bh=z/W11taz5qyx+nRC96o5JLotFW31RFx5HMgKlHr4b4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oglukAxGHt5B58mnElLkDk7iJKPHnraYNzG8y06hW1rz1eb5S4JUAjZOaOyT+PVCk+v3yEsdD5ld8luftixlHcsiE5paxffDa+P1Oux2Jzfk3dna85EjJwEuhJdn0DwOD997ETpLwmO4cSA0COgOUaqPxgLhSBVxXYWKymzKfl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sj6D9wsE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1AAC19424;
-	Sat, 28 Feb 2026 17:42:44 +0000 (UTC)
+	 MIME-Version; b=hTp57xjPZ6wTU/Pis1oqLKjam/Gjx4quXOOMMUrUZ7Z9+mqc+9ywVnBcJ9BvXFDjNt5WphaIDHRLcsV7ZlfmGCCyYPS0Uq1ePNqiZqle7cYxEqJuIWgFnzpkSYjYMmaYVnR+r2MVKFDEq1YcWQiAbfmM6Jbxwm5AapDrQ0lpoEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLzKS5xp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59264C116D0;
+	Sat, 28 Feb 2026 17:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300565;
-	bh=9cr3n3gmMpWWaSZjZA2afqSrWBNC6bCrHzSRJ4+2g74=;
+	s=k20201202; t=1772300566;
+	bh=z/W11taz5qyx+nRC96o5JLotFW31RFx5HMgKlHr4b4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sj6D9wsEL3KpaSfXAhvaWcDaJAZKj3AkKT7RvsvPj5Jzd9MlRTRkCiBMZNVsULSR/
-	 +lSr5Oa5LY8HJ+XtH6vzGH/NjpXoaZghXmRzT8GIlMHE25/JWmW5Uqr2wO6KOE6SkP
-	 tYqHCf1tC/RIqAU7eItJUQbusw6bL9QaaocK5LuNRdqx2C5AcHNoOcbczDp3L/Df52
-	 1HpynZv6r6pZ7ekbSzb+8FymuSfSsa2a4YjHD7B6V3Ox4S8mP/sPuyv/6eycvDJY2R
-	 6I8wUD+vtzR/pl79t19Ysbn0Xnd2k+dZ8ZeWzb14Ym6BVXO0iX0snDIJ7pntHRrESv
-	 h3xPCFM1wsoOQ==
+	b=oLzKS5xpzDdbi7OWRTaq7yTrubaAz2UldkYeMyGZi06Ymg6cjT/qGsFjsssIy3rPr
+	 s4MquKkFwI9wBaAxNMYgoBHbWFVbcdLNTX98Y1TE1Xeoy9wE4j1dAZxF/ZYRRuHnM9
+	 AKV3NRzzUKtZHLv/4oH6fIN5rBxmpn6rMB33KXH2iufoTHOOkEpNqgJP8rGdSPm8f0
+	 rOXO0I+ab5oZTmRudXjOpb65zDgGKj5265mYdVSTmo9/7F4QZ3ruJ+rIM+3oi4hx6g
+	 0p8diI0d/J1pIGrk+a53RoEGzPuXCJ+dxAIgDpQ4HDG78OtB3ALvBV/PjRQM8Nl9eh
+	 VvUZyYYjwYirQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Wentao Liang <vulab@iscas.ac.cn>,
+Cc: Vitor Soares <vitor.soares@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 605/844] soc: ti: pruss: Fix double free in pruss_clk_mux_setup()
-Date: Sat, 28 Feb 2026 12:28:38 -0500
-Message-ID: <20260228173244.1509663-606-sashal@kernel.org>
+Subject: [PATCH 6.19 606/844] arm64: dts: ti: k3-am69-aquila: Change main_spi0/2 CS to GPIO mode
+Date: Sat, 28 Feb 2026 12:28:39 -0500
+Message-ID: <20260228173244.1509663-607-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -71,18 +72,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220684-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220685-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -91,52 +92,71 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 99AB31C87F2
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ti.com:email]
+X-Rspamd-Queue-Id: 5BADB1C6C96
 X-Rspamd-Action: no action
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Vitor Soares <vitor.soares@toradex.com>
 
-[ Upstream commit 80db65d4acfb9ff12d00172aed39ea8b98261aad ]
+[ Upstream commit 78a123f45a7e9ac2a59f0eff8a37d31773e7a021 ]
 
-In the pruss_clk_mux_setup(), the devm_add_action_or_reset() indirectly
-calls pruss_of_free_clk_provider(), which calls of_node_put(clk_mux_np)
-on the error path. However, after the devm_add_action_or_reset()
-returns, the of_node_put(clk_mux_np) is called again, causing a double
-free.
+Hardware chip select does not work correctly on main_spi0 and
+main_spi2 controllers. Testing shows main_spi2 loses CS state
+during runtime PM suspend, while main_spi0 cannot drive CS HIGH
+when bus is idle.
 
-Fix by returning directly, to avoid the duplicate of_node_put().
+Use GPIO-based chip select for both controllers.
 
-Fixes: ba59c9b43c86 ("soc: ti: pruss: support CORECLK_MUX and IEPCLK_MUX")
+Fixes: 39ac6623b1d8 ("arm64: dts: ti: Add Aquila AM69 Support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20260113014716.2464741-1-vulab@iscas.ac.cn
+Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://patch.msgid.link/20260112175350.79270-2-ivitro@gmail.com
 Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/pruss.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am69-aquila.dtsi | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
-index 038576805bfa0..0fd59c73f585d 100644
---- a/drivers/soc/ti/pruss.c
-+++ b/drivers/soc/ti/pruss.c
-@@ -366,12 +366,10 @@ static int pruss_clk_mux_setup(struct pruss *pruss, struct clk *clk_mux,
+diff --git a/arch/arm64/boot/dts/ti/k3-am69-aquila.dtsi b/arch/arm64/boot/dts/ti/k3-am69-aquila.dtsi
+index 0866eb8a6f348..5119baf62a4c2 100644
+--- a/arch/arm64/boot/dts/ti/k3-am69-aquila.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am69-aquila.dtsi
+@@ -479,7 +479,7 @@ J784S4_IOPAD(0x0dc, PIN_OUTPUT, 0) /* (AM36) SPI0_D1  */ /* AQUILA D17 */
+ 	/* Aquila SPI_2 CS */
+ 	pinctrl_main_spi0_cs0: main-spi0-cs0-default-pins {
+ 		pinctrl-single,pins = <
+-			J784S4_IOPAD(0x0cc, PIN_OUTPUT, 0) /* (AM37) SPI0_CS0 */ /* AQUILA D16 */
++			J784S4_IOPAD(0x0cc, PIN_OUTPUT, 7) /* (AM37) SPI0_CS0.GPIO0_51 */ /* AQUILA D16 */
+ 		>;
+ 	};
  
- 	ret = devm_add_action_or_reset(dev, pruss_of_free_clk_provider,
- 				       clk_mux_np);
--	if (ret) {
-+	if (ret)
- 		dev_err(dev, "failed to add clkmux free action %d", ret);
--		goto put_clk_mux_np;
--	}
+@@ -495,7 +495,7 @@ J784S4_IOPAD(0x0ac, PIN_OUTPUT, 10) /* (AE34) MCASP0_AXR15.SPI2_D1  */ /* AQUILA
+ 	/* Aquila SPI_1 CS */
+ 	pinctrl_main_spi2_cs0: main-spi2-cs0-default-pins {
+ 		pinctrl-single,pins = <
+-			J784S4_IOPAD(0x09c, PIN_OUTPUT, 10) /* (AF35) MCASP0_AXR11.SPI2_CS1 */ /* AQUILA D9 */
++			J784S4_IOPAD(0x09c, PIN_OUTPUT, 7) /* (AF35) MCASP0_AXR11.GPIO0_39 */ /* AQUILA D9 */
+ 		>;
+ 	};
  
--	return 0;
-+	return ret;
+@@ -1204,6 +1204,7 @@ &main_sdhci1 {
+ &main_spi0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_main_spi0>, <&pinctrl_main_spi0_cs0>;
++	cs-gpios = <&main_gpio0 51 GPIO_ACTIVE_LOW>;
+ 	status = "disabled";
+ };
  
- put_clk_mux_np:
- 	of_node_put(clk_mux_np);
+@@ -1211,6 +1212,7 @@ &main_spi0 {
+ &main_spi2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_main_spi2>, <&pinctrl_main_spi2_cs0>;
++	cs-gpios = <&main_gpio0 39 GPIO_ACTIVE_LOW>;
+ 	status = "disabled";
+ };
+ 
 -- 
 2.51.0
 
