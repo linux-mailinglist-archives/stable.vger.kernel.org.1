@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-220445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220446-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDdAMSo3o2lh+gQAu9opvQ
-	(envelope-from <stable+bounces-220445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:42:50 +0100
+	id WLStE/U3o2lx+gQAu9opvQ
+	(envelope-from <stable+bounces-220446-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:46:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2751C62B5
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:42:49 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E69501C63B8
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:46:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9174035B9C85
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:29:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5CB3F30D85F7
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4711948122D;
-	Sat, 28 Feb 2026 17:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847AF3B7769;
+	Sat, 28 Feb 2026 17:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gc102TDX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tcQEyMp3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058D93B6CBB;
-	Sat, 28 Feb 2026 17:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FE73B775F;
+	Sat, 28 Feb 2026 17:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300334; cv=none; b=Ue/FC5KtXfIFXT2Niozm8EykgmwaImVjDI9V+F1AEOEF6vEWw1Sl9qojTiJpMYC1ZrqlL02Z24yAniT0pR6wgXEw7K1TUJ4m2S1TCbDEjQ2ZilesJIBn2ilX/5orbl/8+TIxBTpDEgv8upnT1yKL5ajf40bGbGv5nnK/J1iNKMo=
+	t=1772300335; cv=none; b=PgZ7PdjpjDFHK3sgeus02ObqMZbxhSS6Kk+huC1lCzVmlOfgP989x24vjeFG2BHI2fUQkpklTP7KAzjEgULXyK6dAw2yGRkluxRnRvlyZ0G9pr7bXwmLniziAWwbrb0efH3vnqaVLWR+TdyguYkSYPsR/BIgF4U5Nu3yvQdeNEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300334; c=relaxed/simple;
-	bh=NTHk+Aj+yk0JQZSMKMquAes9wACrqJ8bnwzA5E35qOM=;
+	s=arc-20240116; t=1772300335; c=relaxed/simple;
+	bh=0KWI7mRy87m/nS0+mW6q0c2VaGXP+MWdnuyz1U6iQD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhLjCKVZfeIaAvQDXdHIYZkaUiWwGmvbA/OSVmTiqb9e5riwjdb2PxVsGfJZ8gC+8UpAx32GqY9GS6GCF9q4YUNbJ4F0cRc5ohRiF7l/Co7TDDsTjqWn88F+QYGFsiw03UCvBvlhJBxqvVlB0GJvGHRv77BT6T+6MeWf/7HQH1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gc102TDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2536EC19423;
-	Sat, 28 Feb 2026 17:38:53 +0000 (UTC)
+	 MIME-Version; b=qP6mW4kvH7xddJfhfVviievM3jHvpD95isFt3S8aEeUbWvq55aTTGtExRfpX9zXGkf3VFet2v8u+ukrT39z1n6BJLQf5QS99BSkqVoiWHEDWKXbz/4yCnYJP8iz3/HVSCc9rLwAkWOrRnzcsArMD8S3NpJt2SeGjAtZn5A2yycg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tcQEyMp3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C202C116D0;
+	Sat, 28 Feb 2026 17:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300333;
-	bh=NTHk+Aj+yk0JQZSMKMquAes9wACrqJ8bnwzA5E35qOM=;
+	s=k20201202; t=1772300334;
+	bh=0KWI7mRy87m/nS0+mW6q0c2VaGXP+MWdnuyz1U6iQD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gc102TDXTOaEs0hxXHlrZN6Ds7d/1EObQoqaZuKXxquLC67FsuKEj7ktgbywdbAsb
-	 nBMz6gYVeZjLvCvGfGd0E3cXhlxDK1FxeBm370Qzt+rlWfcdEaYYDmHOTiBvRkCvC2
-	 QEJxBrBQLEkNKatu7H6QLAArxDW4GgX3rbdEb43Lsack9lQYmJ534/acg824kv8QsN
-	 AFIwBqsDpuoJQpsg0LMq+ol3RNznp4+QDzFfLxrPPbl6WRnZ1F5/Ft/iHLefRLinQ0
-	 axZ43uGKSacwVh+SDt+JD+yT6YkpyNqWpscKEIHl+Vqqby5iDPZMe/haqq/nBYkSwn
-	 kEkEL408UxXpg==
+	b=tcQEyMp3cabSvRzkbNDE+PfarubyfSP1Ab+ijsX6cbYzbPVlsb2EMRyaLj7G7Zc4H
+	 Ag3yke/NkaX/0IY6MtiYcfvidpMvPbrmxpKm8IajJ3RY/PvOMK+rg2SfcwsnP36BI9
+	 YAG8ak6U7jvgJsJFrubCCObbAEqlConn7v12sqcV6zk2Hac1cs5gErcBi7v7sqEHBu
+	 9S/vMHkEQbzlO2313eIqieUFnbTBVJkPlxAI4WudMyIbTgZn2jKF9puGblg92xTnjy
+	 Dl4dWiwtiEzPkX1qipdK9ZEQwDTYOJGsuUV6BXXNtkur76+uLku9IuJXNuGfqyexk6
+	 W1ZjUUew9SOXA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+Cc: Maciej Strozek <mstrozek@opensource.cirrus.com>,
 	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 366/844] soundwire: dmi-quirks: add mapping for Avell B.ON (OEM rebranded of NUC15)
-Date: Sat, 28 Feb 2026 12:24:39 -0500
-Message-ID: <20260228173244.1509663-367-sashal@kernel.org>
+Subject: [PATCH 6.19 367/844] soundwire: intel_auxdevice: add cs42l45 codec to wake_capable_list
+Date: Sat, 28 Feb 2026 12:24:40 -0500
+Message-ID: <20260228173244.1509663-368-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -73,7 +73,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,10 +81,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220445-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220446-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -94,49 +94,38 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2C2751C62B5
+X-Rspamd-Queue-Id: E69501C63B8
 X-Rspamd-Action: no action
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-[ Upstream commit 59946373755d71dbd7614ba235e0093159f80b69 ]
+[ Upstream commit f87e5575a6bd1925cd55f500b61b661724372e5f ]
 
-Avell B.ON is an OEM re-branded NUC15 'Bishop County' LAPBC510 and
-LAPBC710.
+Add cs42l45 to the wake_capable_list because it can generate jack events
+whilst the bus is stopped.
 
-Link: https://github.com/thesofproject/linux/issues/5529
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
 Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20251215130947.31385-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251215151729.3911077-1-ckeepax@opensource.cirrus.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/dmi-quirks.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/soundwire/intel_auxdevice.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soundwire/dmi-quirks.c b/drivers/soundwire/dmi-quirks.c
-index 91ab97a456fa9..5854218e1a274 100644
---- a/drivers/soundwire/dmi-quirks.c
-+++ b/drivers/soundwire/dmi-quirks.c
-@@ -122,6 +122,17 @@ static const struct dmi_system_id adr_remap_quirk_table[] = {
- 		},
- 		.driver_data = (void *)intel_tgl_bios,
- 	},
-+	{
-+		/*
-+		 * quirk used for Avell B.ON (OEM rebrand of NUC15 'Bishop County'
-+		 * LAPBC510 and LAPBC710)
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Avell High Performance"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "B.ON"),
-+		},
-+		.driver_data = (void *)intel_tgl_bios,
-+	},
- 	{
- 		/* quirk used for NUC15 'Rooks County' LAPRC510 and LAPRC710 skews */
- 		.matches = {
+diff --git a/drivers/soundwire/intel_auxdevice.c b/drivers/soundwire/intel_auxdevice.c
+index 6df2601fff909..8752b0e3ce74c 100644
+--- a/drivers/soundwire/intel_auxdevice.c
++++ b/drivers/soundwire/intel_auxdevice.c
+@@ -52,6 +52,7 @@ struct wake_capable_part {
+ 
+ static struct wake_capable_part wake_capable_list[] = {
+ 	{0x01fa, 0x4243},
++	{0x01fa, 0x4245},
+ 	{0x025d, 0x5682},
+ 	{0x025d, 0x700},
+ 	{0x025d, 0x711},
 -- 
 2.51.0
 
