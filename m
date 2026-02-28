@@ -1,415 +1,223 @@
-Return-Path: <stable+bounces-220022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MH+GGmUwomke0wQAu9opvQ
-	(envelope-from <stable+bounces-220022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 01:01:41 +0100
+	id iGw/Nb4xomke0wQAu9opvQ
+	(envelope-from <stable+bounces-220023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 01:07:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B91481BF4C0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 01:01:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E581BF575
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 01:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9D0A30F1AD6
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 00:00:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 39B433011680
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 00:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CDF394492;
-	Sat, 28 Feb 2026 00:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE316A33B;
+	Sat, 28 Feb 2026 00:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D3kJf7Ul"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4ecAiPt/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CC7395261
-	for <stable@vger.kernel.org>; Sat, 28 Feb 2026 00:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772236808; cv=pass; b=EQtBcxMi3BAY/dhy+bIH9saL/7yTw9y5G04YjlMMg66/rphOsF80I+JtZWDff1ZyZfD74acnGkwxuYrkpOi4J8RFUotoFZt4B037R6ZzzjJBQZj//G4f/aQst/pJY10kqzXbXwPkpes0veScncQd0lCYD0RRVQItC8a/BwSwkyA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772236808; c=relaxed/simple;
-	bh=B28KfXTVIHWAH+pwOzTyktHs/wteIJxouZMrqga+cf0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TUxLt3+no/Y012cFVU1KyBACBdF7X0SvzOr/7lH+bsrdv/rSTVSe8aG8fSorr2+WyJ3brNhsPhpIP9HzRmKGe7QvNTnchzVQzz9Zsu6CSSxy0rb7QZ1tQ2OQwCFxMyIJEUEjVBdyfBmRPo8P6okyVTn9MCKagOB7uhq2fo72u8E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D3kJf7Ul; arc=pass smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30BB548EE
+	for <stable@vger.kernel.org>; Sat, 28 Feb 2026 00:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772237240; cv=none; b=a4gBFyFmEaRu/RNKmc8L9gWB33ZnGByo1VBOm9F9+VwYvthEyl3cTPTjFo+E6vzvzQjFK3p7vcuPq71Lrdme1R4BAIbxwK1RmBCn7t0kqGRXypmSmHFxpaQX6Q6+KjnRt//T+sPza+JIEu8zyJtiH/OsUTpf0uCYXrkiItYW9w8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772237240; c=relaxed/simple;
+	bh=jL9GteoOWWgXkwI4VcYLSAaGM4KHutruotNHJppWhmE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WY8kknrbxBH3aOtRGBcNoq1FBVZeYh0QixiFRXF+29IbETAN0kioT2GiBu9aDp/0g2GMGjki6/A+kahvEZgaoUQHheSfmoyWRf7prU/YAqTMVPEvLAbUZNVFx4nfFDavvsUczX2ZPbng5KPYUu4FHvhPW2D57JPAdUfL6JFk2Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4ecAiPt/; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5033b64256dso168001cf.0
-        for <stable@vger.kernel.org>; Fri, 27 Feb 2026 16:00:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772236806; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IcUi4Eac+O4yF9PoXFE2sBOM+XdRMQYDm/94qCT3atH5yfSYkwGmxfv1vohPFTdE+Y
-         FjqhdHsdVos6fT0Tfb6QV96YzUXow1ZLP77tqGyOMLt26u05Qy0cAiXMw7YyXlj+4fuW
-         ibW2UFCOFCM0OxhXY2ToerCikbMLTfYaMkFJMESLcNJCY3S21nZq3ZJjkAMAS9EYlenc
-         ed+kfCqUA6B8/DD2kL9RedvCLZmEIkGSdPVu9yWunBFJBGXuv53eCORZ8BsXTe4KpAzx
-         CYqgz4nQ4P8ZKBvbGBqkl4x0WDUr4GbdWobliBXs0Iz2fWHEMKfEUCbX2nCPqLyd7/y1
-         FY8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3yddjG/5Y0KXabUKtjnkcKD4FXkRFrDhaHT6JScxTco=;
-        fh=ci6Vpip7Dajj7D0SsAFtnDz3SF5XkNL9J9oc+p3s/Zo=;
-        b=Bkb7L9Ip5DtU3KHcwj/6brrbHR8UzeslaR0ejchaaJ3c+mkjyQGF79KleS5veBO16/
-         CAKLI0T0oZpjeSQ1fGByE9tOULbU1lJopMEwzAofUDfL6++cDMDzVEMw1g7JqL2ce5uK
-         zTA6glkmxjRRGYJt+p4QNxnTM8go5InoCGjomKduOVhmZgheZUgYdsWHUtbJ9cSBPJaj
-         Lr1nQbT3t+sKfLPEmXrbTge9vTl8De7pY7dGAdKt4EkgrGYm5EEKpssCylcQmFn5UzJN
-         ifHlnw7FL6bBywUoVBwfqtiUl9HpSgc18z2UsP1UxZOYvaaLQc0/LBRMG58t1L1Sipzm
-         VjDw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b6097ca315bso12013390a12.3
+        for <stable@vger.kernel.org>; Fri, 27 Feb 2026 16:07:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772236806; x=1772841606; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3yddjG/5Y0KXabUKtjnkcKD4FXkRFrDhaHT6JScxTco=;
-        b=D3kJf7Ulct0SCkvf7I3kIVjfSnw596oHVi88qXDIsj1L78jKIfXZpnsApvXgSMA87p
-         uNLRUEO5pHJaeADxQ2BzKrsZbUzGyPi0vbi8H1jCqxtnUDB/MwYsfHNZcUPmcv9JoEZG
-         wk6UbzmB3fBlyflTajSQulknPQLEhL3veyhx/6FuLUlZnPniF2BlHbhc+jXEDwqnHBgq
-         dEqKMCXccxx7pahMiowXkeS1Pf7CZiqh8IgazTnGXWY1JMoLIvxiiuQk/RIZWDYCg2Kl
-         UXJpKeQC0oE2mxvTTK2OblRPmahc8XV5jQ3Q74FljHMaBKeV81bXtRvWItOb3R9oyotH
-         uLuw==
+        d=google.com; s=20230601; t=1772237238; x=1772842038; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Rk2j9mMZvm5I21CFq9daaZ0tGleTEgRj/BEZaesZVs=;
+        b=4ecAiPt/C0TLbkaAvCN9gfspyvRtPQHCWk/mcjc7jey1QvCNtyiNxnDO0aIJnXx0hL
+         Hmx1uESpvICwPpRV+dbNsw/Dbny9rs2IynKSE+zWoCwPodgNJebNosp1AT4kgcJUCVPz
+         mHqK8XM/auaWxKCkE3AoFiuKScYLlm6q/rzUSl+b/wyDKL+0kFK2g4myfdIVtNhoIMtM
+         1nNSXFlBXpXHBdu8bTVV2pw++gy8Tqt8K+G7hd+II6YXYJiLGuA0AIM/42KxAQqdVLTh
+         2P0MbRT0twMOaPJTZ0+wEoHSaDCaqtCKqeqfoxnmtPp+ARxlMknI76TynBOMwtzdr8er
+         secg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772236806; x=1772841606;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3yddjG/5Y0KXabUKtjnkcKD4FXkRFrDhaHT6JScxTco=;
-        b=d9piq3QlySQoVIN9V/oRC4II7Kt34NjtqlsJbU4zQYT2rgAmqwnF7OTjJQmRuKvhtN
-         zRYvR32AbC8Iwo2VLo+/nKApAoSv0iFPzDjsLu46N9ZlsF6wqwA0xfSyQhvdBJvO7gkR
-         3/kokVFNSX4LdIrQprrNq4Z7kXl0GRCNtiZsouTZaO1JIKH2eNZqz7SAL1M+XSKQhtLP
-         2F691toHATuJz+/3UalqdLMwT7HIKKFg+rJLnEOIaiRmnFyOvZEEEW/lkgNZWR8J/Git
-         Lf/Cpx9F+ExL87JHk7WFWIDCDRqnKaM7Hdew+LOnl6fcc8rIVF6YAxEaMVrjI5kxh8ba
-         bTxA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQQQw5D6Knq1hcy6jrOZYBBTNtvIHj80ohY8XuZo+WY1z7QzxXixt/B9TGwH1Jk8x2HLwv74A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSb+YXARuI0qZ/aIcPPo5cr45Lhr8fdWYsUse7C3F/eq/AejlS
-	BMmlLYnk7+oPOlllH6edekZcDw/Xb6LgrHOR/TWeFBxR7zH8YbSIVkYTvo8FyS8YPJYA2tJhR8z
-	6ZXr245uK8+Im2J8jPHwCjfH5RGIq+bjydlwTxCbo
-X-Gm-Gg: ATEYQzzbfdi33afBk704MlpEt95Zxjw1mVMxNlZ7Vf3+W7sJal3K0UITYKwehNsqDhP
-	qJjyRhi2EUAlwPwHwZuGMsT+ICBOJ9vkhoTZuA0r5lx1xQjm/YvwscIYe/szSlmrqwMzWWebOyA
-	Yf6CwrfPHgiocsIwF28k8pWKfSuvj8qjnThyHw6NIiVPQ+0vFWoN3Pg1MGa9uMjdeVUBwxHPXPA
-	Tsb7A+qYoup38Y7qfkBevH0j4VyE9UIqaoEERSoIrhThJzrIsJMn99Z7JtgZ+y8MmOLQjr+3D+Q
-	QdJ3HP276Nw/oYhmFg9g0pizXwJoWkcLwA8D2mNmYg==
-X-Received: by 2002:a05:622a:1308:b0:501:4eae:dbfc with SMTP id
- d75a77b69052e-5076182d63bmr1756811cf.5.1772236805650; Fri, 27 Feb 2026
- 16:00:05 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772237238; x=1772842038;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Rk2j9mMZvm5I21CFq9daaZ0tGleTEgRj/BEZaesZVs=;
+        b=hiVe0EQ4VIqi7DC42+w5XZQ6rG22Gig/SDejEXh7VaZG0gnjTlgjSUJ503hffyCoBC
+         fVQa8UIlEpsq7aT3kDXqFtseLIHHc9+co509MFJipKKPxl2Ei/F4BpPUR2bcLsSpd3kc
+         MSQiWga8kGCEYtUaaChBuHtQlvBd/5Mv0A7OQjpiu/qRhotF9ktRf/2Pb3IrPYnKpWTW
+         Xdy7DziaDFp23aoOc/jb/kin7UdKe67fzADGh5fViWX9WGm6WH0BPAvMrtRxLdR/0KKb
+         EcQaF8kFrks2QBwHABY+lWyaLyLfqIXh1iXxpTQI4AeOr5Hc8K3deFbAXBhcT1TjxDSH
+         Jotg==
+X-Forwarded-Encrypted: i=1; AJvYcCXijYENl2tFF3azMwy5JPlFFk1pPajqTpPojnkJOwqMXKxj3+Jcty8FBPNQAP2WF8ZRavkSFJM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwG0jTeH229P5+nhV7B3GupPDkX8HnzzT11vOU6IuCFR50izG6V
+	Tk3vyJng7aQG2PAst/Mzcj+Omq+sF9qCR86x0Tt8jcO6WQ+IJ4WNZehhJsCKgIyeu+TVb41Pw3Q
+	pTzFYWQ==
+X-Received: from pgmm15.prod.google.com ([2002:a05:6a02:550f:b0:c66:c17e:9c4f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9cca:b0:394:f482:badf
+ with SMTP id adf61e73a8af0-395c3a1bbf3mr4226790637.11.1772237238200; Fri, 27
+ Feb 2026 16:07:18 -0800 (PST)
+Date: Fri, 27 Feb 2026 16:07:16 -0800
+In-Reply-To: <20260224223405.3270433-17-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260225064601.270301-1-guanyulin@google.com> <20260225064601.270301-3-guanyulin@google.com>
- <87fr6na0nw.wl-tiwai@suse.de>
-In-Reply-To: <87fr6na0nw.wl-tiwai@suse.de>
-From: Guan-Yu Lin <guanyulin@google.com>
-Date: Sat, 28 Feb 2026 08:00:00 +0800
-X-Gm-Features: AaiRm53ptCFt_q2nGAuGSY2eM5lPNdvP7VORHK8-qrElNH6Lb3G9HX2FDoTgLos
-Message-ID: <CAOuDEK1Rek7vaLLzvOqiN1jcuiESyOLYqjR+rY5htqEFayG2JA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] ALSA: usb: qcom: manage offload device usage
-To: Takashi Iwai <tiwai@suse.de>
-Cc: gregkh@linuxfoundation.org, mathias.nyman@intel.com, perex@perex.cz, 
-	tiwai@suse.com, quic_wcheng@quicinc.com, broonie@kernel.org, arnd@arndb.de, 
-	harshit.m.mogalapalli@oracle.com, wesley.cheng@oss.qualcomm.com, 
-	dan.carpenter@linaro.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, 
+Mime-Version: 1.0
+References: <20260224223405.3270433-1-yosry@kernel.org> <20260224223405.3270433-17-yosry@kernel.org>
+Message-ID: <aaIxtBYRNCHdEvsV@google.com>
+Subject: Re: [PATCH v6 16/31] KVM: nSVM: Unify handling of VMRUN failures with
+ proper cleanup
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-220023-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220022-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanyulin@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: B91481BF4C0
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 06E581BF575
 X-Rspamd-Action: no action
 
-Hi Takashi,
+On Tue, Feb 24, 2026, Yosry Ahmed wrote:
+> There are currently two possible causes of VMRUN failures emulated by
+> KVM:
+> 
+> 1) Consistency checks failures. In this case, KVM updates the exit code
+>    in the mapped VMCB12 and exits early in nested_svm_vmrun(). This
+>    causes a few problems:
+> 
+>   A) KVM does not clear the GIF if the early consistency checks fail
+>      (because nested_svm_vmexit() is not called). Nothing requires
+>      GIF=0 before a VMRUN, from the APM:
+> 
+> 	It is assumed that VMM software cleared GIF some time before
+> 	executing the VMRUN instruction, to ensure an atomic state
+> 	switch.
+> 
+>      So an early #VMEXIT from early consistency checks could leave the
+>      GIF set.
+> 
+>   B) svm_leave_smm() is missing consistency checks on the newly loaded
+>      guest state, because the checks aren't performed by
+>      enter_svm_guest_mode().
 
-Thanks for raising the concern. The fix I proposed aims only to
-separate xhci_sideband_remove_interrupter() and usb_offload_put().
-Let's wait for QC's reply to see whether this is a rigid fix.
+This is flat out wrong.  RSM isn't missing any consistency checks that are
+provided by nested_vmcb_check_save().
 
- Regards,
- Guan-Yu
+	if (CC(!(save->efer & EFER_SVME)))                                    <=== irrelevant given KVM's implementation
+		return false;
 
-On Fri, Feb 27, 2026 at 1:13=E2=80=AFAM Takashi Iwai <tiwai@suse.de> wrote:
->
-> On Wed, 25 Feb 2026 07:45:51 +0100,
-> Guan-Yu Lin wrote:
-> >
-> > The Qualcomm USB audio offload driver currently does not report its off=
-load
-> > activity to the USB core. This prevents the USB core from properly trac=
-king
-> > active offload sessions, which could allow the device to auto-suspend w=
-hile
-> > audio offloading is in progress.
-> >
-> > Integrate usb_offload_get() and usb_offload_put() calls into the offloa=
-d
-> > stream setup and teardown paths. Specifically, call usb_offload_get() w=
-hen
-> > initializing the event ring and usb_offload_put() when freeing it.
-> >
-> > Since the updated usb_offload_get() and usb_offload_put() APIs require =
-the
-> > caller to hold the USB device lock, add the necessary device locking in
-> > handle_uaudio_stream_req() and qmi_stop_session() to satisfy this
-> > requirement.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: ef82a4803aab ("xhci: sideband: add api to trace sideband usage")
-> > Signed-off-by: Guan-Yu Lin <guanyulin@google.com>
->
-> Mostly it looks good to me, but a slight concern is the
-> usb_offload_put() call in the error path of prepare_qmi_response().
-> IIUC, the bitmap is cleared only at uaudio_event_ring_cleanup_free(),
-> and you have also the usb_offload_put() call there.  I wonder whether
-> this might lead to the refcount unbalance.
->
-> I'm not sure whether the original driver code handles it well, and
-> this could be already a bug there calling
-> xhci_sideband_remove_interrupter(), though.
->
->
-> thanks,
->
-> Takashi
->
-> > ---
-> >  sound/usb/qcom/qc_audio_offload.c | 102 ++++++++++++++++++------------
-> >  1 file changed, 60 insertions(+), 42 deletions(-)
-> >
-> > diff --git a/sound/usb/qcom/qc_audio_offload.c b/sound/usb/qcom/qc_audi=
-o_offload.c
-> > index cfb30a195364..1da243662327 100644
-> > --- a/sound/usb/qcom/qc_audio_offload.c
-> > +++ b/sound/usb/qcom/qc_audio_offload.c
-> > @@ -699,6 +699,7 @@ static void uaudio_event_ring_cleanup_free(struct u=
-audio_dev *dev)
-> >               uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE,
-> >                                  PAGE_SIZE);
-> >               xhci_sideband_remove_interrupter(uadev[dev->chip->card->n=
-umber].sb);
-> > +             usb_offload_put(dev->udev);
-> >       }
-> >  }
-> >
-> > @@ -750,6 +751,7 @@ static void qmi_stop_session(void)
-> >       struct snd_usb_substream *subs;
-> >       struct usb_host_endpoint *ep;
-> >       struct snd_usb_audio *chip;
-> > +     struct usb_device *udev;
-> >       struct intf_info *info;
-> >       int pcm_card_num;
-> >       int if_idx;
-> > @@ -791,8 +793,13 @@ static void qmi_stop_session(void)
-> >                       disable_audio_stream(subs);
-> >               }
-> >               atomic_set(&uadev[idx].in_use, 0);
-> > -             guard(mutex)(&chip->mutex);
-> > -             uaudio_dev_cleanup(&uadev[idx]);
-> > +
-> > +             udev =3D uadev[idx].udev;
-> > +             if (udev) {
-> > +                     guard(device)(&udev->dev);
-> > +                     guard(mutex)(&chip->mutex);
-> > +                     uaudio_dev_cleanup(&uadev[idx]);
-> > +             }
-> >       }
-> >  }
-> >
-> > @@ -1183,11 +1190,15 @@ static int uaudio_event_ring_setup(struct snd_u=
-sb_substream *subs,
-> >       er_pa =3D 0;
-> >
-> >       /* event ring */
-> > +     ret =3D usb_offload_get(subs->dev);
-> > +     if (ret < 0)
-> > +             goto exit;
-> > +
-> >       ret =3D xhci_sideband_create_interrupter(uadev[card_num].sb, 1, f=
-alse,
-> >                                              0, uaudio_qdev->data->intr=
-_num);
-> >       if (ret < 0) {
-> >               dev_err(&subs->dev->dev, "failed to fetch interrupter\n")=
-;
-> > -             goto exit;
-> > +             goto put_offload;
-> >       }
-> >
-> >       sgt =3D xhci_sideband_get_event_buffer(uadev[card_num].sb);
-> > @@ -1219,6 +1230,8 @@ static int uaudio_event_ring_setup(struct snd_usb=
-_substream *subs,
-> >       mem_info->dma =3D 0;
-> >  remove_interrupter:
-> >       xhci_sideband_remove_interrupter(uadev[card_num].sb);
-> > +put_offload:
-> > +     usb_offload_put(subs->dev);
-> >  exit:
-> >       return ret;
-> >  }
-> > @@ -1483,6 +1496,7 @@ static int prepare_qmi_response(struct snd_usb_su=
-bstream *subs,
-> >       uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE, PAGE_SIZ=
-E);
-> >  free_sec_ring:
-> >       xhci_sideband_remove_interrupter(uadev[card_num].sb);
-> > +     usb_offload_put(subs->dev);
-> >  drop_sync_ep:
-> >       if (subs->sync_endpoint) {
-> >               uaudio_iommu_unmap(MEM_XFER_RING,
-> > @@ -1528,6 +1542,7 @@ static void handle_uaudio_stream_req(struct qmi_h=
-andle *handle,
-> >       u8 pcm_card_num;
-> >       u8 pcm_dev_num;
-> >       u8 direction;
-> > +     struct usb_device *udev =3D NULL;
-> >       int ret =3D 0;
-> >
-> >       if (!svc->client_connected) {
-> > @@ -1597,50 +1612,53 @@ static void handle_uaudio_stream_req(struct qmi=
-_handle *handle,
-> >
-> >       uadev[pcm_card_num].ctrl_intf =3D chip->ctrl_intf;
-> >
-> > -     if (req_msg->enable) {
-> > -             ret =3D enable_audio_stream(subs,
-> > -                                       map_pcm_format(req_msg->audio_f=
-ormat),
-> > -                                       req_msg->number_of_ch, req_msg-=
->bit_rate,
-> > -                                       datainterval);
-> > -
-> > -             if (!ret)
-> > -                     ret =3D prepare_qmi_response(subs, req_msg, &resp=
-,
-> > -                                                info_idx);
-> > -             if (ret < 0) {
-> > -                     guard(mutex)(&chip->mutex);
-> > -                     subs->opened =3D 0;
-> > -             }
-> > -     } else {
-> > -             info =3D &uadev[pcm_card_num].info[info_idx];
-> > -             if (info->data_ep_pipe) {
-> > -                     ep =3D usb_pipe_endpoint(uadev[pcm_card_num].udev=
-,
-> > -                                            info->data_ep_pipe);
-> > -                     if (ep) {
-> > -                             xhci_sideband_stop_endpoint(uadev[pcm_car=
-d_num].sb,
-> > -                                                         ep);
-> > -                             xhci_sideband_remove_endpoint(uadev[pcm_c=
-ard_num].sb,
-> > -                                                           ep);
-> > +     udev =3D subs->dev;
-> > +     scoped_guard(device, &udev->dev) {
-> > +             if (req_msg->enable) {
-> > +                     ret =3D enable_audio_stream(subs,
-> > +                                             map_pcm_format(req_msg->a=
-udio_format),
-> > +                                             req_msg->number_of_ch, re=
-q_msg->bit_rate,
-> > +                                             datainterval);
-> > +
-> > +                     if (!ret)
-> > +                             ret =3D prepare_qmi_response(subs, req_ms=
-g, &resp,
-> > +                                                     info_idx);
-> > +                     if (ret < 0) {
-> > +                             guard(mutex)(&chip->mutex);
-> > +                             subs->opened =3D 0;
-> > +                     }
-> > +             } else {
-> > +                     info =3D &uadev[pcm_card_num].info[info_idx];
-> > +                     if (info->data_ep_pipe) {
-> > +                             ep =3D usb_pipe_endpoint(uadev[pcm_card_n=
-um].udev,
-> > +                                                     info->data_ep_pip=
-e);
-> > +                             if (ep) {
-> > +                                     xhci_sideband_stop_endpoint(uadev=
-[pcm_card_num].sb,
-> > +                                                                     e=
-p);
-> > +                                     xhci_sideband_remove_endpoint(uad=
-ev[pcm_card_num].sb,
-> > +                                                                     e=
-p);
-> > +                             }
-> > +
-> > +                             info->data_ep_pipe =3D 0;
-> >                       }
-> >
-> > -                     info->data_ep_pipe =3D 0;
-> > -             }
-> > -
-> > -             if (info->sync_ep_pipe) {
-> > -                     ep =3D usb_pipe_endpoint(uadev[pcm_card_num].udev=
-,
-> > -                                            info->sync_ep_pipe);
-> > -                     if (ep) {
-> > -                             xhci_sideband_stop_endpoint(uadev[pcm_car=
-d_num].sb,
-> > -                                                         ep);
-> > -                             xhci_sideband_remove_endpoint(uadev[pcm_c=
-ard_num].sb,
-> > -                                                           ep);
-> > +                     if (info->sync_ep_pipe) {
-> > +                             ep =3D usb_pipe_endpoint(uadev[pcm_card_n=
-um].udev,
-> > +                                                     info->sync_ep_pip=
-e);
-> > +                             if (ep) {
-> > +                                     xhci_sideband_stop_endpoint(uadev=
-[pcm_card_num].sb,
-> > +                                                                     e=
-p);
-> > +                                     xhci_sideband_remove_endpoint(uad=
-ev[pcm_card_num].sb,
-> > +                                                                     e=
-p);
-> > +                             }
-> > +
-> > +                             info->sync_ep_pipe =3D 0;
-> >                       }
-> >
-> > -                     info->sync_ep_pipe =3D 0;
-> > +                     disable_audio_stream(subs);
-> > +                     guard(mutex)(&chip->mutex);
-> > +                     subs->opened =3D 0;
-> >               }
-> > -
-> > -             disable_audio_stream(subs);
-> > -             guard(mutex)(&chip->mutex);
-> > -             subs->opened =3D 0;
-> >       }
-> >
-> >  response:
-> > --
-> > 2.53.0.414.gf7e9f6c205-goog
-> >
+	if (CC((save->cr0 & X86_CR0_CD) == 0 && (save->cr0 & X86_CR0_NW)) ||  <== kvm_set_cr0() in rsm_enter_protected_mode()
+	    CC(save->cr0 & ~0xffffffffULL))
+		return false;
+
+	if (CC(!kvm_dr6_valid(save->dr6)) || CC(!kvm_dr7_valid(save->dr7)))   <== kvm_set_dr() in rsm_load_state_{32,64}
+		return false;
+
+	/*
+	 * These checks are also performed by KVM_SET_SREGS,
+	 * except that EFER.LMA is not checked by SVM against
+	 * CR0.PG && EFER.LME.
+	 */
+	if ((save->efer & EFER_LME) && (save->cr0 & X86_CR0_PG)) { 
+		if (CC(!(save->cr4 & X86_CR4_PAE)) ||                         <== kvm_set_cr4() in rsm_enter_protected_mode()
+		    CC(!(save->cr0 & X86_CR0_PE)) ||                          <== kvm_set_cr0() in rsm_enter_protected_mode()
+		    CC(!kvm_vcpu_is_legal_cr3(vcpu, save->cr3)))              <== kvm_set_cr3() in rsm_enter_protected_mode()
+			return false;
+	}
+
+	/* Note, SVM doesn't have any additional restrictions on CR4. */
+	if (CC(!__kvm_is_valid_cr4(vcpu, save->cr4)))                         <== kvm_set_cr4() in rsm_enter_protected_mode()
+		return false;
+
+	if (CC(!kvm_valid_efer(vcpu, save->efer)))                            <== __kvm_emulate_msr_write() in rsm_load_state_64()
+		return false;
+
+Even if RSM were missing checks on the L2 state being loaded, I'm not willing to
+take on _any_ complexity in nested VMRUN to make RSM suck a little less.  KVM's
+L2 => SMM => RSM => L2 is fundamentally broken.  Anyone that argues otherwise is
+ignoring architecturally defined behavior in the SDM and APM.
+
+If someone wants to actually put in the effort to properly emulating SMI => RSM
+from L2, then I'd be happy to take on some complexity, but even then it's not at
+all clear that it would be necessary.
+
+> 2) Failure to load L2's CR3 or merge the MSR bitmaps. In this case, a
+>    fully-fledged #VMEXIT injection is performed as VMCB02 is already
+>    prepared.
+> 
+> Arguably all VMRUN failures should be handled before the VMCB02 is
+> prepared, but with proper cleanup (e.g. clear the GIF).
+
+Eh, so long as KVM cleans up after itself, I don't see anything wrong with
+preparing some of vmcb02.
+
+So after staring at this for some time, us having gone through multiple attempts
+to get things right, and this being tagged for stable@, unless I'm missing some
+massive simplification this provides down the road, I am strongly against refactoring
+this code, and 100% against reworking things to "fix" SMM.
+
+And so for the stable@ patches, I'm also opposed to all of these:
+
+  KVM: nSVM: Refactor minimal #VMEXIT handling out of nested_svm_vmexit()
+  KVM: nSVM: Call nested_svm_init_mmu_context() before switching to VMCB02
+  KVM: nSVM: Call nested_svm_merge_msrpm() from enter_svm_guest_mode()
+  KVM: nSVM: Make nested_svm_merge_msrpm() return an errno
+  KVM: nSVM: Call enter_guest_mode() before switching to VMCB02
+  KVM: nSVM: Drop nested_vmcb_check_{save/control}() wrappers
+
+unless they're *needed* by some later commit (I didn't look super closely).
+
+For stable@, just fix the GIF case and move on.
+
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index d734cd5eef5e..d9790e37d4e8 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1036,6 +1036,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
+                vmcb12->control.exit_code    = SVM_EXIT_ERR;
+                vmcb12->control.exit_info_1  = 0;
+                vmcb12->control.exit_info_2  = 0;
++               svm_set_gif(svm, false);
+                goto out;
+        }
+
+Sorry for not catching this earlier, I didn't actually read the changelog until
+this version.  /facepalm
 
