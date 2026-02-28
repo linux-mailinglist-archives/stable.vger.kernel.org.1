@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-221017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221018-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNO9IxVdo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-221017-lists+stable=lfdr.de@vger.kernel.org>)
+	id cKKXHhVdo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-221018-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:24:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F4A1C900A
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:24:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B0C1C9009
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:24:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BCC435E60E4
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:45:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83D143609246
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742254BCAAE;
-	Sat, 28 Feb 2026 17:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639D84BCAA7;
+	Sat, 28 Feb 2026 17:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPpsq9Ux"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kp11pT4C"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370763EBF04;
-	Sat, 28 Feb 2026 17:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B5129E114;
+	Sat, 28 Feb 2026 17:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301360; cv=none; b=bhj5CFanX100UgUnvJQ+rRzOKJjXTxhxWkSIoI9LQFjHoSRtPd4H+8ivnDOhiPJaNggciNNSmgIpeVyUnIT5yJzpvMLeOXx50j2SBP4qORdMbjD4QoNkNAmAFBHR0S/yj3hcY7fmg6JnV90QE7KT8zX0sW94SyVy/v7OElqGTUs=
+	t=1772301361; cv=none; b=jYOkWF0+eDKYqQS9pl2Udn8t8EUeF9pzHtH2rvmx4jQbYQchYboPJONuMHBsntdOOA+aeJ/x1LVQWjBHK9pyFOshl1PICLGn4mTAxEKq56olTea7GLj2TcnmsFtlQ9cBypPaUV/d54Vp6PRe39Z0uklArRuC3OrLFXSgNUrrEZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301360; c=relaxed/simple;
-	bh=59EppQRRUUkNDsiJXqyzwrpObOW1D6YTxPbFo7kMLwk=;
+	s=arc-20240116; t=1772301361; c=relaxed/simple;
+	bh=OeBiOH2MaUBz2DQS4qmVwqoVgLtnGrd+D6Gji32gUUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rmwn9iByumHmy85XvpjhhVnMrywZe5tS4L6I/dE7mu9yOBMux6PvNR3UkRsGusUrnOpBQIYoeCV4KTkNd5+fYxjWrnz3o6VScz2J83dpRTtanorY2EDfxEmxPPgyQRvgS+pm5MjHDe0r4qgJv0cRQxOWlGLYeD2ZzTLf3Tgy2Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XPpsq9Ux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACB7C19423;
-	Sat, 28 Feb 2026 17:55:59 +0000 (UTC)
+	 MIME-Version; b=qFCghGsAyzAhiHDGS9X7QXqShE+/mAUkorRTN+PI8AJ48jhF3gQ+mCeZFn4t+llJaiXq+uawiuC6n1he4tXTe4bGkL3/16o2/Sr5KyVJg9k504iGaF/gT6MuF+Owl9d2NeAGSI14FZFoJwCx8JEOfPi3dvm/M3JgPlSCdRB9+Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kp11pT4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEB4C19425;
+	Sat, 28 Feb 2026 17:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301360;
-	bh=59EppQRRUUkNDsiJXqyzwrpObOW1D6YTxPbFo7kMLwk=;
+	s=k20201202; t=1772301361;
+	bh=OeBiOH2MaUBz2DQS4qmVwqoVgLtnGrd+D6Gji32gUUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPpsq9UxCCr0zFp/Y2BPdjgqWArK3t9l3F9hlZ/NfYLaFSrnn54apisUHvlIbY9v8
-	 NU+97G8wmPOuUL+HVJTXikh9rXvswLgzCJGXmCZM/jaP9PItUOfyyjRLuq7T8mycum
-	 YE2yrejPEbBN1P5Z1wzToHPCVvd/CSU48HSHHeak/wDRxAPpvLNjlvX5QWQXMzpdDT
-	 YAGJmnKwUlhpqZ6z7AuWtf/BMrnDIaCkYtgYV1/dP/2D7rK91XjVMaJksufaHHJfuo
-	 6z6v5FlOfuO5nNurFgfrFCt+IRnvQERLz7kkTGvnjQDWNkErhguoDh8GBf2wkOIlag
-	 zB0imGnV7DaUA==
+	b=Kp11pT4CcpznlEsSQAwYnwfHDG6T+PW7+J0lh7SMxnQOww9T+CzdWQLH3H0lNNudV
+	 m0TTw1UakcauOfHvqydHvLDWIGPlWowIt/TLJrxIOwnpu2Nn0JBerrVdrfb1mRx8vO
+	 VIVbUtYCEf7CyXNXN6CTHvWaDtadP5LcboidsnIuFyGs1iGY2KArU/ZgKzAgnNjh9Z
+	 5Am29Vdp7Nge/jGB1W9L2xOTQmM+wv1KHJ0lgNpMzu0EHPsiNAGXTpHZxLliXeLLPX
+	 jDPvM9TYV30jWLq7zjov8Ktn1o1NqKx9MtzP67jjLQOOqa9nXHJSV7DOhwAQdujgQX
+	 PDHbqVNKMfw2w==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Shawn Lin <shawn.lin@rock-chips.com>,
-	stable@vger.kernel.org,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Marco Schirrmeister <mschirrmeister@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+Cc: Alain Volmat <alain.volmat@foss.st.com>,
+	Stable@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 548/752] soc: rockchip: grf: Support multiple grf to be handled
-Date: Sat, 28 Feb 2026 12:44:19 -0500
-Message-ID: <20260228174750.1542406-548-sashal@kernel.org>
+Subject: [PATCH 6.18 549/752] media: stm32: dcmipp: avoid naming clock if only one is needed
+Date: Sat, 28 Feb 2026 12:44:20 -0500
+Message-ID: <20260228174750.1542406-549-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -68,124 +67,77 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221018-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[rock-chips.com,vger.kernel.org,collabora.com,gmail.com,sntech.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221017-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,msgid.link:url,sntech.de:email]
-X-Rspamd-Queue-Id: 37F4A1C900A
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: A5B0C1C9009
 X-Rspamd-Action: no action
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit 75fb63ae031211e9264ac888fabc2ca9cd3fcccf ]
+[ Upstream commit 2f130245f2143fa8f4da77071f844911d2c69319 ]
 
-Currently, only the first matched node will be handled. This leads
-to jtag switching broken for RK3576, as rk3576-sys-grf is found before
-rk3576-ioc-grf. Change the code to scan all the possible node to fix
-the problem.
+When DCMIPP requires only a single clock (kclk), avoid relying on its
+name to obtain it. The introduction of MP25 support added the mclk,
+which necessitated naming the first clock kclk. However, this breaks
+backward compatibility with existing MP13 device trees that do not
+specify clock names.
 
-Fixes: e1aaecacfa13 ("soc: rockchip: grf: Add rk3576 default GRF values")
-Cc: stable@vger.kernel.org
-Cc: Detlev Casanova <detlev.casanova@collabora.com>
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Tested-by: Marco Schirrmeister <mschirrmeister@gmail.com>
-Link: https://patch.msgid.link/1768524932-163929-3-git-send-email-shawn.lin@rock-chips.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 686f27f7ea37 ("media: stm32: dcmipp: add core support for the stm32mp25")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Cc: Stable@vger.kernel.org # 6.14.x: 7f487562af49 media: stm32: dcmipp: correct ret type in dcmipp_graph_notify_bound
+Cc: Stable@vger.kernel.org # 6.14.x: c715dd62da30 media: stm32: dcmipp: add has_csi2 & needs_mclk in match data
+Cc: Stable@vger.kernel.org # 6.14.x:
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/rockchip/grf.c | 55 +++++++++++++++++++-------------------
- 1 file changed, 27 insertions(+), 28 deletions(-)
+ drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/rockchip/grf.c b/drivers/soc/rockchip/grf.c
-index 9b96499fa1dfc..db407fa279850 100644
---- a/drivers/soc/rockchip/grf.c
-+++ b/drivers/soc/rockchip/grf.c
-@@ -202,34 +202,33 @@ static int __init rockchip_grf_init(void)
- 	struct regmap *grf;
- 	int ret, i;
- 
--	np = of_find_matching_node_and_match(NULL, rockchip_grf_dt_match,
--					     &match);
--	if (!np)
--		return -ENODEV;
--	if (!match || !match->data) {
--		pr_err("%s: missing grf data\n", __func__);
--		of_node_put(np);
--		return -EINVAL;
--	}
--
--	grf_info = match->data;
--
--	grf = syscon_node_to_regmap(np);
--	of_node_put(np);
--	if (IS_ERR(grf)) {
--		pr_err("%s: could not get grf syscon\n", __func__);
--		return PTR_ERR(grf);
--	}
--
--	for (i = 0; i < grf_info->num_values; i++) {
--		const struct rockchip_grf_value *val = &grf_info->values[i];
--
--		pr_debug("%s: adjusting %s in %#6x to %#10x\n", __func__,
--			val->desc, val->reg, val->val);
--		ret = regmap_write(grf, val->reg, val->val);
--		if (ret < 0)
--			pr_err("%s: write to %#6x failed with %d\n",
--			       __func__, val->reg, ret);
-+	for_each_matching_node_and_match(np, rockchip_grf_dt_match, &match) {
-+		if (!of_device_is_available(np))
-+			continue;
-+		if (!match || !match->data) {
-+			pr_err("%s: missing grf data\n", __func__);
-+			of_node_put(np);
-+			return -EINVAL;
-+		}
-+
-+		grf_info = match->data;
-+
-+		grf = syscon_node_to_regmap(np);
-+		if (IS_ERR(grf)) {
-+			pr_err("%s: could not get grf syscon\n", __func__);
-+			return PTR_ERR(grf);
-+		}
-+
-+		for (i = 0; i < grf_info->num_values; i++) {
-+			const struct rockchip_grf_value *val = &grf_info->values[i];
-+
-+			pr_debug("%s: adjusting %s in %#6x to %#10x\n", __func__,
-+				val->desc, val->reg, val->val);
-+			ret = regmap_write(grf, val->reg, val->val);
-+			if (ret < 0)
-+				pr_err("%s: write to %#6x failed with %d\n",
-+					__func__, val->reg, ret);
-+		}
+diff --git a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
+index 1b7bae3266c8d..49398d0777646 100644
+--- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
++++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
+@@ -526,7 +526,12 @@ static int dcmipp_probe(struct platform_device *pdev)
+ 		return ret;
  	}
  
- 	return 0;
+-	kclk = devm_clk_get(&pdev->dev, "kclk");
++	/*
++	 * In case of the DCMIPP has only 1 clock (such as on MP13), the
++	 * clock might not be named.
++	 */
++	kclk = devm_clk_get(&pdev->dev,
++			    dcmipp->pipe_cfg->needs_mclk ? "kclk" : NULL);
+ 	if (IS_ERR(kclk))
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(kclk),
+ 				     "Unable to get kclk\n");
 -- 
 2.51.0
 
