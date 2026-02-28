@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-220676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220677-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAkbJqFSo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:40:01 +0100
+	id OPcOJvc+o2kR+wQAu9opvQ
+	(envelope-from <stable+bounces-220677-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:16:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB221C87B8
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:40:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F961C6C33
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:16:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EAAD33316A5F
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:05:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BCE9930C020C
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766BE3F5A70;
-	Sat, 28 Feb 2026 17:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C82A3F529C;
+	Sat, 28 Feb 2026 17:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eVSblbch"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFDpGdSZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3612F3F5A60;
-	Sat, 28 Feb 2026 17:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7F23F5A7E;
+	Sat, 28 Feb 2026 17:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300558; cv=none; b=u6TO8/iXQieOH6U2ykU9eT/4/zOILOdMItsvFZhi0sT/XHaNGvpyReG6xKDmuOMcEevtk0wdtCvDZbfQoY5AZ263w15btjlIf33KXaCTD/X3Fy3ck6jLlnilSfj7OvtA7nbvCpxEVBKV0lKjHrTzNXjACc0Ol8Hfp3QodLPgtmQ=
+	t=1772300559; cv=none; b=abKT/mkWHxGZk0rcicqE15z90wyFQS4W3kFL/U2FL1XgSYt1/FkD23uvak7IMtTwmz3uq0k/UQwq+VWuYVa8Y90SQvuj8tAOu5ipjw4tJSNDUTaU0htf4Jywq0ElSuyMKRNRRdc8i5R2Wf/2pnK1p2udc8npdiVnvLhCVOMk0Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300558; c=relaxed/simple;
-	bh=c3A55tmRUKNtJtG/xnSgd+ZJdr/KmsWNCeJ7nVrLmXk=;
+	s=arc-20240116; t=1772300559; c=relaxed/simple;
+	bh=xmQi6+YKV9ITXwuL3p4IK8mL4FzIuikf+SuQGHCJe74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o4VdygKSFukydq0dyq8cgKrKZAHm+Q7FF6Fr/z8VhvshX1C7UlKOxPK8NMRivgKrD4k6xjJIaDaWnI3J571jbqsM+HZeoO/+IWu1GqXbJlDke0idQ5bXYBG7VM8uhu39laF6TbLYa0gIuFy4nkNLX8qs3kD21acz5HFpFzsEVD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eVSblbch; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8CDC19425;
-	Sat, 28 Feb 2026 17:42:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KHC9y4Nz1yZYOiNSkeNNBk91n1JnGthZjknx/Ygd1YQmEMSB99UNOVcZCSaX27ef/Su/SLF+aRghPm4QEA7b2jiLt0Kx9rz4D/EcQAkGjWph5h3tL/fHx21iCdwTMjYvXI5St6t8Pmq5TL6XJtYhzQvnglR22kjqo6F71wkjUPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFDpGdSZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEC1C19424;
+	Sat, 28 Feb 2026 17:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772300558;
-	bh=c3A55tmRUKNtJtG/xnSgd+ZJdr/KmsWNCeJ7nVrLmXk=;
+	bh=xmQi6+YKV9ITXwuL3p4IK8mL4FzIuikf+SuQGHCJe74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eVSblbchXC2wUkVNn5CXPAxmHwfJb3gYFdTVHviFxG2G5o3LMOdiHOGHOkKA6u1dc
-	 FmEL/CVjGvp9OEprLHI6BMoK1Ogq8OKfdfi/5i3U51RiOI8RswXaM+4ew8f4JIXywc
-	 lTc6+OQ8ef1O1wgc0jifyRFyHXkmOyT2ggDEFHcR5lESrsZGkTYBU9E3MNVQY2zulz
-	 D3a7pgwRVwgN9DdckXS3eobfkgWmY7qKLQeInZ53Rsd63Gi03eQWfj4EFUT5sHwcAJ
-	 vkR7Xm0/nkctUFTpn7M/ze6BV77aA79XreB1z374gnfuXZDsDwHeHu3FGuTwrkUcii
-	 P2AEnM4cI+v6g==
+	b=dFDpGdSZa/Jt3poWhI0N3LY8QLSDiejQWinMe0NcgdGr84IxaSEZsTBoDagd1lFwU
+	 1UHWs3K/PQQ3TQbS08VG6Ywp2AcKp8vQn0K2zaN1PBmv7aB2oV2JmOiPrudQYwEp8k
+	 Yl7LMgRMiH9PY+x9xnxY++5M3YITrYydhxJgId+bg2PC45RWF7bPW+iS6r75ykbi+s
+	 qE7z01ejkcSfe6c0uakMk4IaIbjVih1kGWnwsBV5DLgujy2p9FRl9IMtFnBzRrDx1U
+	 tRV5PG2wzqml0Jfe0qUZKA+7X1Nh8FnLJ0rnzFjNoMVT4/Bwxnf+cZ8+EFG+MYIAh1
+	 q4+QcqX3cjcMA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 597/844] media: staging/ipu7: Fix the loop bound in l2 table alloc
-Date: Sat, 28 Feb 2026 12:28:30 -0500
-Message-ID: <20260228173244.1509663-598-sashal@kernel.org>
+Subject: [PATCH 6.19 598/844] platform/x86: ISST: Add missing write block check
+Date: Sat, 28 Feb 2026 12:28:31 -0500
+Message-ID: <20260228173244.1509663-599-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -63,73 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220676-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-220677-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CCB221C87B8
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 36F961C6C33
 X-Rspamd-Action: no action
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 98cc19a353abc8b48b7d58fd7a455e09e7c3aba3 ]
+[ Upstream commit 0e5aef2795008c80c515f6fa04e377c6e5715958 ]
 
-This patch fixes the incorrect loop bound in alloc_l2_pt(). When
-initializing L2 page table entries, the loop was incorrectly using
-ISP_L1PT_PTES instead of ISP_L2PT_PTES though the ISP_L1PT_PTES is
-equal to ISP_L2PT_PTES.
+If writes are blocked, then return error during SST-CP enable command.
+Add missing write block check in this code path.
 
-Fixes: 71d81c25683a ("media: staging/ipu7: add IPU7 DMA APIs and MMU mapping")
+Fixes: 8bed9ff7dbcc ("platform/x86: ISST: Process read/write blocked feature status")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Link: https://patch.msgid.link/20260107060256.1634188-2-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/ipu7/ipu7-mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/staging/media/ipu7/ipu7-mmu.c b/drivers/staging/media/ipu7/ipu7-mmu.c
-index ded1986eb8ba3..ea35cce4830ad 100644
---- a/drivers/staging/media/ipu7/ipu7-mmu.c
-+++ b/drivers/staging/media/ipu7/ipu7-mmu.c
-@@ -231,7 +231,7 @@ static u32 *alloc_l2_pt(struct ipu7_mmu_info *mmu_info)
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+index 34bff2f65a835..f587709ddd473 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+@@ -612,6 +612,9 @@ static long isst_if_core_power_state(void __user *argp)
+ 		return -EINVAL;
  
- 	dev_dbg(mmu_info->dev, "alloc_l2: get_zeroed_page() = %p\n", pt);
- 
--	for (i = 0; i < ISP_L1PT_PTES; i++)
-+	for (i = 0; i < ISP_L2PT_PTES; i++)
- 		pt[i] = mmu_info->dummy_page_pteval;
- 
- 	return pt;
+ 	if (core_power.get_set) {
++		if (power_domain_info->write_blocked)
++			return -EPERM;
++
+ 		_write_cp_info("cp_enable", core_power.enable, SST_CP_CONTROL_OFFSET,
+ 			       SST_CP_ENABLE_START, SST_CP_ENABLE_WIDTH, SST_MUL_FACTOR_NONE)
+ 		_write_cp_info("cp_prio_type", core_power.priority_type, SST_CP_CONTROL_OFFSET,
 -- 
 2.51.0
 
