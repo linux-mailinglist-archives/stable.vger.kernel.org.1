@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-221126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 3pN8HrRmo2mzCQUAu9opvQ
-	(envelope-from <stable+bounces-221126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 23:05:40 +0100
+	id iN/LF1xpo2mACgUAu9opvQ
+	(envelope-from <stable+bounces-221127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 23:17:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E7EB1C95E2
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 23:05:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6885F1C96D6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 23:16:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5F60339579B
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:47:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 08A4331706DE
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B58372226;
-	Sat, 28 Feb 2026 17:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A337837222C;
+	Sat, 28 Feb 2026 17:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rQfhxUGw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uSx10ZQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EBC371449;
-	Sat, 28 Feb 2026 17:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6541D372228;
+	Sat, 28 Feb 2026 17:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301476; cv=none; b=cpYW/P6TJ87aWm0nVb43jO2+tN88y7NFaqqizhyAdSi8ROtAbxOnYoxfZEaKmeUF0tq3rXWC8hoAnqtJF5PX3erGH9d76xgO3s9Z758A9yMdIL9hMHaAuwDbzo4g/hIagvNPjwIX2pTnhhcJIikh8/ptFpQaFc5iP+MebzTgl2g=
+	t=1772301477; cv=none; b=dITRx0erhgL7you/MDNkSoBZxgKLETIiyuHq9RzGVNsN8Y3dsVsmDGIamTQ6Y7ECVXVl4q4GsEM93Gs0eZ7JICrE/vIVjz8D4tfL06/mTloQpW5phrDSwnYjrSArbIFtxGQHNRGoZiL5u40gnS94m86ggPwEOKjdepZ7Qc+4rq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301476; c=relaxed/simple;
-	bh=dQkMmHrbcqCy/oztNkPAM72dHeZZl1pyQ+qFF3r0YC4=;
+	s=arc-20240116; t=1772301477; c=relaxed/simple;
+	bh=POVVDLSYNt4aqCKww6t4rhfVjfjD+cYHX5CfY2Bk1SE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4yuJ9PRwXpWFwZWVGAHBtF9HSqH0hFZEhKNeCgoKIl+clW/yOveAxTdy2W9BWzfU7TAzWYi7AMjrkL5ftL0i3xtoTJ08E0/Wgg/13k3dxxTboQAwL/dj/5lv/AnpJHbdfP+w6kyYyduZCDGGezNJVF0/nBynqLcSml74HaXaec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rQfhxUGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5930DC116D0;
-	Sat, 28 Feb 2026 17:57:55 +0000 (UTC)
+	 MIME-Version; b=tyFn6B8QZieG3+9nYhrHioPUWf+DhVE6MCXVT5dmcitgbVaSQF1s88zQDjdFZdhJJmxW6Mlx1CzOZ9WOQIt9cxbLWf3y8QOxax4UV/uTfJA7SLntfT60IaG+OVAZdMkKy9jwCv6bznick3raD1zrku8vUv+YQ/Er2v8e4kfbBA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uSx10ZQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D08C116D0;
+	Sat, 28 Feb 2026 17:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301476;
-	bh=dQkMmHrbcqCy/oztNkPAM72dHeZZl1pyQ+qFF3r0YC4=;
+	s=k20201202; t=1772301477;
+	bh=POVVDLSYNt4aqCKww6t4rhfVjfjD+cYHX5CfY2Bk1SE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQfhxUGw1WQ2pt2c0TWRFBQUTnzO9GkV4bKPUR7OjbJg/0+hJl94W6Y++JKxVPtgj
-	 IVOoDEQDL26xAJ+YCGVzqdaqazgL9r5EGuJIZjgaHob9ZXtWhTcaCkbAVskH4wi2sf
-	 KrlcMNofNvTDsNVr3kG0t8IkeSBOa82jKRl6VR0smeSeIjUHO/+kgDdNE/+MA4dtD+
-	 Ct9jUx+s7oSN5jY7dGSV/ZEcp2IDFRAya4lcMiYLemHyXAyt5ZiiJW6LDXXfK5ICvN
-	 u4ZUUjQsEpvZ3PIYtmFrDj3e5Qi8/RT4gTo79/RwJ9/2tqsoVFUOMrq2s4vbrfqFFj
-	 iNszaiy9/ydFw==
+	b=uSx10ZQc04LVd9/DjiS2w+XCGKJAoq3iXACtiCq+THRoMX8xiscYhoE2WBvGv3jC9
+	 DEbtmDMHNF4SvmDoZSb47eVgc817bhR6l3KqBomXVHQRFiOnOkGj9c2q8QaKbkTDEv
+	 RMkuJb0sngoSVodbEqdCuWaeHj9L9Ux6xyIlP0EzvKH33rxK4zQC0gJaydp6sEvIJR
+	 +8HXH25Tr6F2coVPpL81y/5dWlfb+z3hHbVynRxW/cS/jKVZns04i03saFreqprmy/
+	 YcHzcHO9ExWGo4Ca1j8Yo34B50H/f7i62hZCIrwSPw50qYnykj+lYen7N2cLq4F5RR
+	 R62vLKIKdh4jQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
 Cc: Rong Zhang <rongrong@oss.cipunited.com>,
@@ -53,9 +53,9 @@ Cc: Rong Zhang <rongrong@oss.cipunited.com>,
 	Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 661/752] MIPS: Loongson2ef: Register PCI controller in early stage
-Date: Sat, 28 Feb 2026 12:46:12 -0500
-Message-ID: <20260228174750.1542406-661-sashal@kernel.org>
+Subject: [PATCH 6.18 662/752] MIPS: Loongson2ef: Use pcibios_align_resource() to block io range
+Date: Sat, 28 Feb 2026 12:46:13 -0500
+Message-ID: <20260228174750.1542406-662-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [8.84 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	GREYLIST(0.00)[pass,body];
-	TAGGED_FROM(0.00)[bounces-221126-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221127-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -87,7 +87,7 @@ X-Spamd-Result: default: False [8.84 / 15.00];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_SPAM(0.00)[0.960];
+	NEURAL_SPAM(0.00)[0.965];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -95,24 +95,37 @@ X-Spamd-Result: default: False [8.84 / 15.00];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infi.wang:email,flygoat.com:email,franken.de:email,ziyao.cc:email,cipunited.com:email]
-X-Rspamd-Queue-Id: 8E7EB1C95E2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,flygoat.com:email,infi.wang:email]
+X-Rspamd-Queue-Id: 6885F1C96D6
 X-Rspamd-Action: add header
 X-Spam: Yes
 
 From: Rong Zhang <rongrong@oss.cipunited.com>
 
-[ Upstream commit 6a00c043af07492502ba7a2263ddc4cdb01b66a7 ]
+[ Upstream commit 32ec465103527ede09b640cd0ab0636dc58827fb ]
 
-We are about to set loongson_pci_io_resource.start to 0 and adopt
-PCIBIOS_MIN_IO. As the first step, PCI controller needs to be registered
-in early stage to make it the root of other resources (e.g., i8259) and
-prevent resource conflicts.
+Loongson2ef reserves io range below 0x4000 (LOONGSON_PCI_IO_START) while
+ISA-mode only IDE controller on the south bridge still has a hard
+dependency on ISA IO ports.
 
-Register it in plat_mem_setup() instead of arch_initcall().
+The reservation was done by lifting loongson_pci_io_resource.start onto
+0x4000. Prior to commit ae81aad5c2e1 ("MIPS: PCI: Use
+pci_enable_resources()"), the arch specific pcibios_enable_resources()
+did not check if the resources were claimed, which diverges from what
+PCI core checks, effectively hiding the fact that IDE IO resources were
+not properly within the resource tree. After starting to use
+pcibios_enable_resources() from PCI core, enabling IDE controller fails:
+
+  pata_cs5536 0000:00:0e.2: BAR 0 [io  0x01f0-0x01f7]: not claimed; can't enable device
+  pata_cs5536 0000:00:0e.2: probe with driver pata_cs5536 failed with error -22
+
+MIPS PCI code already has support for enforcing lower bounds using
+PCIBIOS_MIN_IO in pcibios_align_resource() without altering the IO
+window start address itself. Make Loongson2ef PCI code use
+PCIBIOS_MIN_IO too.
 
 Fixes: ae81aad5c2e1 ("MIPS: PCI: Use pci_enable_resources()")
 Cc: stable@vger.kernel.org
@@ -123,56 +136,37 @@ Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mach-loongson2ef/loongson.h | 6 ++++++
- arch/mips/loongson2ef/common/pci.c                | 7 +------
- arch/mips/loongson2ef/common/setup.c              | 1 +
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ arch/mips/loongson2ef/common/pci.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/mach-loongson2ef/loongson.h b/arch/mips/include/asm/mach-loongson2ef/loongson.h
-index 4a098fb102325..0e586787eb87a 100644
---- a/arch/mips/include/asm/mach-loongson2ef/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson2ef/loongson.h
-@@ -324,4 +324,10 @@ extern unsigned long _loongson_addrwincfg_base;
- 
- #endif	/* ! CONFIG_CPU_SUPPORTS_ADDRWINCFG */
- 
-+#ifdef CONFIG_PCI
-+void loongson2ef_pcibios_init(void);
-+#else
-+static inline void loongson2ef_pcibios_init(void) { }
-+#endif
-+
- #endif /* __ASM_MACH_LOONGSON2EF_LOONGSON_H */
 diff --git a/arch/mips/loongson2ef/common/pci.c b/arch/mips/loongson2ef/common/pci.c
-index 7d9ea51e8c01e..55524f9a7b96b 100644
+index 55524f9a7b96b..0f11392104bfd 100644
 --- a/arch/mips/loongson2ef/common/pci.c
 +++ b/arch/mips/loongson2ef/common/pci.c
-@@ -73,15 +73,10 @@ static void __init setup_pcimap(void)
- #endif
- }
+@@ -17,7 +17,7 @@ static struct resource loongson_pci_mem_resource = {
  
--static int __init pcibios_init(void)
-+void __init loongson2ef_pcibios_init(void)
+ static struct resource loongson_pci_io_resource = {
+ 	.name	= "pci io space",
+-	.start	= LOONGSON_PCI_IO_START,
++	.start	= 0x00000000UL, /* See loongson2ef_pcibios_init(). */
+ 	.end	= IO_SPACE_LIMIT,
+ 	.flags	= IORESOURCE_IO,
+ };
+@@ -77,6 +77,15 @@ void __init loongson2ef_pcibios_init(void)
  {
  	setup_pcimap();
  
++	/*
++	 * ISA-mode only IDE controllers have a hard dependency on ISA IO ports.
++	 *
++	 * Claim them by setting PCI IO space to start at 0x00000000, and set
++	 * PCIBIOS_MIN_IO to prevent non-legacy PCI devices from touching
++	 * reserved regions.
++	 */
++	PCIBIOS_MIN_IO = LOONGSON_PCI_IO_START;
++
  	loongson_pci_controller.io_map_base = mips_io_port_base;
  	register_pci_controller(&loongson_pci_controller);
--
--
--	return 0;
- }
--
--arch_initcall(pcibios_init);
-diff --git a/arch/mips/loongson2ef/common/setup.c b/arch/mips/loongson2ef/common/setup.c
-index 4fd27f4f90edb..a639e35acce59 100644
---- a/arch/mips/loongson2ef/common/setup.c
-+++ b/arch/mips/loongson2ef/common/setup.c
-@@ -27,4 +27,5 @@ EXPORT_SYMBOL(__wbflush);
- 
- void __init plat_mem_setup(void)
- {
-+	loongson2ef_pcibios_init();
  }
 -- 
 2.51.0
