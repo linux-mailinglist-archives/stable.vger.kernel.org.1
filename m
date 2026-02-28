@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-220993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLxBLilYo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:03:37 +0100
+	id +NatDy1Yo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-220994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:03:41 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C48151C8BBB
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:03:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 501491C8BC2
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 83ABC30E3B0D
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:45:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 658DB313FF3C
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D9E4B8DFE;
-	Sat, 28 Feb 2026 17:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC331334C1C;
+	Sat, 28 Feb 2026 17:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXvPZPR9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QB17cpf3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773DC47CC83;
-	Sat, 28 Feb 2026 17:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7BB328B71;
+	Sat, 28 Feb 2026 17:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301337; cv=none; b=UffUyTEpdR1FkGwZgQ/tGdtb4tZMeLaHLlV16XkSxzQfRh4rBn4euhpboOF9rBpc7bnBQuQ7YBA4+sKSEroI0OqZYq00/EJ8DPeJne7METUAcxIZWEw4jOH/+y644GjY8jNTmEsoEl/rPuewTqhrlFaHR9Eq4opoo/PBeRy0WEA=
+	t=1772301338; cv=none; b=KYlACdTnTdLRzl8iAYVniedL/fChdRo+hL/t+YDP4ULgUW8bkpUiIJ5AGjIBZKsmu2nJIAAuo+Rz7uWa44gfx9IVnNBmGQhDfrOjCewdaKklKZJWqN1Za+e+wTtEdktsydotxd6VpYOalheXQO77NMOe8qtwpI5cxRI7ssSaUGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301337; c=relaxed/simple;
-	bh=MoI6jtW1+tHn1I40ybjJ8CI+qmV3MhZTCStQS/hEr/E=;
+	s=arc-20240116; t=1772301338; c=relaxed/simple;
+	bh=0QaQnWkvIXvBE9XpsdBu7sO72Xv5kEXcQG12BIWTGsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLuUmlI8p/27kBqH0grWC7A21U6q1o/FkTC4zIciSpVtsE+QgfD+2lNibc5V8EvJftIqGwt8nG4PfJ54cnwiDW8Vl+T3zS84WFe0HgAu9a5nO7xoz4bHB+Ikcr8ddR3UOITuhDW9qlx2KQqd+mgomNpi8cTgQFXAoHhGmbl7ZbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXvPZPR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D61C2BC87;
-	Sat, 28 Feb 2026 17:55:36 +0000 (UTC)
+	 MIME-Version; b=kzfz0hiSdTKPdfIc9Op7jDOUHk1/D8sp2wbF3Av3euXtrsAttDkUgpIRsPGf76CSbdjb6b55CcglpTsop7CWJfQgSjwH57GKomAOh5opiC0sVYxpocpboAQ8y7ydkOrsIqIcFIYynDbcU2ij+TBeWDdGYf4uhuEUMGKjVyLwCtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QB17cpf3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFF4C19424;
+	Sat, 28 Feb 2026 17:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301337;
-	bh=MoI6jtW1+tHn1I40ybjJ8CI+qmV3MhZTCStQS/hEr/E=;
+	s=k20201202; t=1772301338;
+	bh=0QaQnWkvIXvBE9XpsdBu7sO72Xv5kEXcQG12BIWTGsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXvPZPR9ETTMeJR1ym3xTaQraKvAtdK2b753GYKPjJM3x0rlaZ2lrVy7VGTDSK329
-	 z5zO97Rc43cz0NdPV7srvut5GWlIijCxVlIcJgw7uOW8NpTPnrqMgMn68bVDlXYTFV
-	 6Qw4rCPnSoUBqHae82nFTUBKyyAtWSczUBffkcwbu1HQypiORJt/dbznfuBM7MzYNO
-	 5f917cBi4yINb3f2DQ540j0UkLenEOKyH3sxjKVZz+PNXVnEYkvAQjGA0q3vyI6Bsv
-	 o/dW+hN4WD/usjGWiTHP9Q7ZtO77EG2Nh7MSYbULKIcZDph9dinlttLijfpxXs+wGh
-	 J8pc8Vfm0RFIw==
+	b=QB17cpf3P3tse7Ml3qLKhPS03Ji8JCyWf477TAlCBXvwgtuQOob5GmoRLZGGWkkjo
+	 YSKhxuwjLKVs/n0PP1fyUDddI+TmRkeLn9/tVhGRcM0PjYS/jgfFHaRA8WdJcF8KZg
+	 bhRlhCVVaCaJ8d2Lzyyx7ZAtUwjm3AscW/vmJ5JoCivKAW8Bm4xKw4VXeNSvS/XSVI
+	 6WhsOdHpU5cAMH0Tt6/MZEU0Y/2HKj+CWkuxLE877ydWgDW88AxBlQ9YJtnUfJaBG5
+	 sX4KRJ4/V8RGo0FLc5f1EMZ8ugJ4fcHomm582nEknEJOgMseRpRT+AQrbDk8co5GC+
+	 a9+EK0B6TAymA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Jai Luthra <jai.luthra@ideasonboard.com>,
+Cc: David Plowman <david.plowman@raspberrypi.com>,
 	stable@vger.kernel.org,
 	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 524/752] media: i2c: ov5647: Initialize subdev before controls
-Date: Sat, 28 Feb 2026 12:43:55 -0500
-Message-ID: <20260228174750.1542406-524-sashal@kernel.org>
+Subject: [PATCH 6.18 525/752] media: i2c: ov5647: Correct pixel array offset
+Date: Sat, 28 Feb 2026 12:43:56 -0500
+Message-ID: <20260228174750.1542406-525-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -74,7 +75,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -83,7 +84,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220993-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-220994-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
@@ -93,57 +94,44 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C48151C8BBB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,raspberrypi.com:email]
+X-Rspamd-Queue-Id: 501491C8BC2
 X-Rspamd-Action: no action
 
-From: Jai Luthra <jai.luthra@ideasonboard.com>
+From: David Plowman <david.plowman@raspberrypi.com>
 
-[ Upstream commit eee13cbccacb6d0a3120c126b8544030905b069d ]
+[ Upstream commit a4e62e597f21bb37db0ad13aca486094e9188167 ]
 
-In ov5647_init_controls() we call v4l2_get_subdevdata, but it is
-initialized by v4l2_i2c_subdev_init() in the probe, which currently
-happens after init_controls(). This can result in a segfault if the
-error condition is hit, and we try to access i2c_client, so fix the
-order.
+The top offset in the pixel array is actually 6 (see page 3-1 of the
+OV5647 data sheet).
 
-Fixes: 4974c2f19fd8 ("media: ov5647: Support gain, exposure and AWB controls")
+Fixes: 14f70a3232aa ("media: ov5647: Add support for get_selection()")
 Cc: stable@vger.kernel.org
-Suggested-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: David Plowman <david.plowman@raspberrypi.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov5647.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/i2c/ov5647.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
-index e193fef4fcedf..f9fac858dc7ba 100644
+index f9fac858dc7ba..d9e300406f58e 100644
 --- a/drivers/media/i2c/ov5647.c
 +++ b/drivers/media/i2c/ov5647.c
-@@ -1420,15 +1420,15 @@ static int ov5647_probe(struct i2c_client *client)
+@@ -69,7 +69,7 @@
+ #define OV5647_NATIVE_HEIGHT		1956U
  
- 	sensor->mode = OV5647_DEFAULT_MODE;
+ #define OV5647_PIXEL_ARRAY_LEFT		16U
+-#define OV5647_PIXEL_ARRAY_TOP		16U
++#define OV5647_PIXEL_ARRAY_TOP		6U
+ #define OV5647_PIXEL_ARRAY_WIDTH	2592U
+ #define OV5647_PIXEL_ARRAY_HEIGHT	1944U
  
--	ret = ov5647_init_controls(sensor);
--	if (ret)
--		goto mutex_destroy;
--
- 	sd = &sensor->sd;
- 	v4l2_i2c_subdev_init(sd, client, &ov5647_subdev_ops);
- 	sd->internal_ops = &ov5647_subdev_internal_ops;
- 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
- 
-+	ret = ov5647_init_controls(sensor);
-+	if (ret)
-+		goto mutex_destroy;
-+
- 	sensor->pad.flags = MEDIA_PAD_FL_SOURCE;
- 	sd->entity.function = MEDIA_ENT_F_CAM_SENSOR;
- 	ret = media_entity_pads_init(&sd->entity, 1, &sensor->pad);
 -- 
 2.51.0
 
