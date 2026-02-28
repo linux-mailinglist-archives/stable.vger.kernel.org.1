@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yH44Olc3o2lx+gQAu9opvQ
-	(envelope-from <stable+bounces-220492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:43:35 +0100
+	id 2MpPCEQ3o2lx+gQAu9opvQ
+	(envelope-from <stable+bounces-220493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:43:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58EA11C6323
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:43:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB52C1C62F7
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 93CD13184FBC
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:36:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 533E83180CC6
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51E73C7564;
-	Sat, 28 Feb 2026 17:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66713C7576;
+	Sat, 28 Feb 2026 17:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I9PAN+dn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3UQYNoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94153C7559;
-	Sat, 28 Feb 2026 17:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895DB3C7579;
+	Sat, 28 Feb 2026 17:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300377; cv=none; b=dLTZ18r9COC8bSRu4Q7ydi4z3JoWXiyi+ZSSyFDYE4WgEGZi7JSAlQ0+oV4sDTuU5R0tVFLgw2CTDslV8QI8YMcUFoLTTbWDF2nICU0D6Mub2JYT4DgbjJhO+Kf7bb5dknTOUJ/8/immWyUwN6xKRvqthScV2UxL+k5F+V3usWc=
+	t=1772300378; cv=none; b=iF0cBu0/A5TUyH63fuYmTM+mbu0FDj6cUIf5qadZrMkQPn8erbzCetM4KSkh05o6MepFaWpeUwCJg2LZx8mEvImdT8FDxTvJxjmkviNwaCeerWdBlEwDzygQTdxek8brPZgogdaKYit4FeqwOo29r3XrmYqUsNwRcIQ+/kOOUWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300377; c=relaxed/simple;
-	bh=LRvyp1T7495ebwokwEb5xk3tnpAB4BOXNi8MmubQZjQ=;
+	s=arc-20240116; t=1772300378; c=relaxed/simple;
+	bh=SmIZ7eLhuIMXWv0+9VOXp6q9bv9TM4DpcEnGvHeowfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LloOGc0IM32wS4xkhPG8rjOefKQICYDooXCmgbAAvVUwlDfyIMy/lgQn05X4BdbSHOPbIOAJ1Lm3ZEDxuc5xo6+kmBrR9ZJvMwWGmd4A4Blrju9RJPwhH7glx/PDF9YCv0jRz5wD5zex6ozhFGxCVPwQyy7YMZcUKz3aakpHpU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I9PAN+dn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3307C116D0;
-	Sat, 28 Feb 2026 17:39:36 +0000 (UTC)
+	 MIME-Version; b=S91rzEQsIZkD+TyWtPkmrzx7XcRKimNQvGSQqq5sI+tVrkTAc2hADdU2L8MROM0YsNpJjPhwrJSqA5Wb5biAF2vThYwQYqHukSfoetOWha5Gy/PigErLsEsuK4taypuJkyjKvI+Z8EnKk8smYu60DBRMP0BUmocgdtEG7Uuv8fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p3UQYNoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4A7C19423;
+	Sat, 28 Feb 2026 17:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300377;
-	bh=LRvyp1T7495ebwokwEb5xk3tnpAB4BOXNi8MmubQZjQ=;
+	s=k20201202; t=1772300378;
+	bh=SmIZ7eLhuIMXWv0+9VOXp6q9bv9TM4DpcEnGvHeowfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9PAN+dnhNDBuHO9gcln1jTPn3RqLBg8oYdJg2Va5l1Mn7OVabpqy7E7it02iqA92
-	 kNszaOodf+3gtaZeaKOhFXng1XZI9x/h1+3ARwEC+iAb1DhINeIWjXrviJxvT0YRGh
-	 qC1r3VGRCH+gNdMmUDrBTt00CfG8kci9ImNyPowwz2f+4Fk296tnBTnDM6fjqLlMLC
-	 WpGlDT6NKWHcw6uB7CNlUY9XtKpPVr5oiwCLJTTPj4NT/2nus/bcb/5asQFBbjPPtC
-	 OswjE2gdz2i6+3fhmD6UFOmZBGXDQQIrztw0ZwpOuMfSiyXk64nNeEgyfWXcbc7JjM
-	 2vWIYOp3qb2HQ==
+	b=p3UQYNoDTtPjHQxgVc92AVBKk2IjoEVp+XQBLkVhYNaTXKaySjEYihqoAl7U5emLP
+	 q/mItUgNU60XegredbhoLszFSlEYAOLOaTKfcpp09alJDm3LK7DC/2r6VO0eeXwzlm
+	 GyaUj+MFRGyoupAOzEDcFDmUctIPBp8YtwZ3J/W90FZkqaK9Ih1glw7RBXSAybSs42
+	 F1qoRHrzuQ5AG1O8lmLDBEn2oKJDEwt0pZZ150GoIxIo3T4YD91OiisGjKPARX7cn0
+	 toMY57uODU3/eJT16//HaQMS3vG4j/MAd/ywNqoAOHSfeBmt9NBMl2WORttuXk4GST
+	 WHq3ZQcpRoN3A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yauhen Kharuzhy <jekhor@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Phil Sutter <phil@nwl.cc>,
+	Alyssa Ross <hi@alyssa.is>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 413/844] ACPI: x86: Force enabling of PWM2 on the Yogabook YB1-X90
-Date: Sat, 28 Feb 2026 12:25:26 -0500
-Message-ID: <20260228173244.1509663-414-sashal@kernel.org>
+Subject: [PATCH 6.19 414/844] include: uapi: netfilter_bridge.h: Cover for musl libc
+Date: Sat, 28 Feb 2026 12:25:27 -0500
+Message-ID: <20260228173244.1509663-415-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -69,73 +70,66 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-220493-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220492-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 58EA11C6323
+X-Rspamd-Queue-Id: CB52C1C62F7
 X-Rspamd-Action: no action
 
-From: Yauhen Kharuzhy <jekhor@gmail.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit a8c975302868c716afef0f50467bebbd069a35b8 ]
+[ Upstream commit 4edd4ba71ce0df015303dba75ea9d20d1a217546 ]
 
-The PWM2 on YB1-X90 tablets is used for keyboard backlight control but
-it is disabled in the ACPI DSDT table. Add it to the override_status_ids
-list to allow keyboard function control driver
-(drivers/platform/x86/lenovo/yogabook.c) to use it.
+Musl defines its own struct ethhdr and thus defines __UAPI_DEF_ETHHDR to
+zero. To avoid struct redefinition errors, user space is therefore
+supposed to include netinet/if_ether.h before (or instead of)
+linux/if_ether.h. To relieve them from this burden, include the libc
+header here if not building for kernel space.
 
-Signed-off-by: Yauhen Kharuzhy <jekhor@gmail.com>
-Link: https://patch.msgid.link/20260211222242.4101162-1-jekhor@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Alyssa Ross <hi@alyssa.is>
+Suggested-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ include/uapi/linux/netfilter_bridge.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 4ee30c2897a2b..418951639f511 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -81,6 +81,18 @@ static const struct override_status_id override_status_ids[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
- 	      }),
+diff --git a/include/uapi/linux/netfilter_bridge.h b/include/uapi/linux/netfilter_bridge.h
+index 1610fdbab98df..ad520d3e9df8f 100644
+--- a/include/uapi/linux/netfilter_bridge.h
++++ b/include/uapi/linux/netfilter_bridge.h
+@@ -5,6 +5,10 @@
+ /* bridge-specific defines for netfilter. 
+  */
  
-+	/*
-+	 * Lenovo Yoga Book uses PWM2 for touch keyboard backlight control.
-+	 * It needs to be enabled only for the Android device version (YB1-X90*
-+	 * aka YETI-11); the Windows version (YB1-X91*) uses ACPI control
-+	 * methods.
-+	 */
-+	PRESENT_ENTRY_HID("80862289", "2", INTEL_ATOM_AIRMONT, {
-+		DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+		DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+		DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
-+	      }),
++#ifndef __KERNEL__
++#include <netinet/if_ether.h>	/* for __UAPI_DEF_ETHHDR if defined */
++#endif
 +
- 	/*
- 	 * The INT0002 device is necessary to clear wakeup interrupt sources
- 	 * on Cherry Trail devices, without it we get nobody cared IRQ msgs.
+ #include <linux/in.h>
+ #include <linux/netfilter.h>
+ #include <linux/if_ether.h>
 -- 
 2.51.0
 
