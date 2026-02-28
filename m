@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-220245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kC/kGsIyo2kE+QQAu9opvQ
-	(envelope-from <stable+bounces-220245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:24:02 +0100
+	id 4MKOABUyo2kE+QQAu9opvQ
+	(envelope-from <stable+bounces-220246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:21:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCE61C5BC1
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:24:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905D61C5B1A
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:21:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D361C31E20B0
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:58:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCB9031D3ABB
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1019373BFF;
-	Sat, 28 Feb 2026 17:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC0A373C1B;
+	Sat, 28 Feb 2026 17:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JK+w/X4K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LDorU3Un"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C99373BF6;
-	Sat, 28 Feb 2026 17:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A36373C0F;
+	Sat, 28 Feb 2026 17:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300149; cv=none; b=T/rnNZf2EE6f8US31GMo73a6SP3SB/vNbl/rhesEYcCJuKVa3Rku8Y2FYZ2T3EhZrau4uOSeQ3JYI7LWgGiZSj7aeCyjHv32u4g+MRwcBw1EgE/ndKqEAOm/OT2S2DiXDdQHFKoy9UnmCHIkRN56rq/azTVeklsEpBgnC6ErxeU=
+	t=1772300150; cv=none; b=kwbvHPgQylXBRl7OgjCOP8siStLRCki8fphAGr1tJJjWwxUJ694NZD9rr/BSM5l6dgJ0r6F79ZOckGQSPqR85wCI9brEQRuP+mgIQxHTOUllJCdOhucikyF4mxNkMJtwrZPB77B6uP33qOkIBMqJEZLneLeyL4GID6xPbCq8Cl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300149; c=relaxed/simple;
-	bh=hkP8rxH0F6ii2fNCCVUvAtZjHRzD7vUzYkbdE0yLUZg=;
+	s=arc-20240116; t=1772300150; c=relaxed/simple;
+	bh=cLAisaLoAcnoaoTX3ZrNJXG1gYgYHnAZhB+sh2Pe5r8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SP4JJ6JXbAXasRg0XAAX9seU483vbOZfEcdCq/s/bFak22oIVkZEzpTlnq1PcnXxHMNg1WQjFp4ELjAuizFYNXRYHiyxE7rZ9+VZreXKJL2tXuA4UEvDBl1IUBI3iyH3z6ShSdz6dUoov8hcsYVnP5hdWfTzOalB98NhXLcyg5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JK+w/X4K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4847BC19423;
-	Sat, 28 Feb 2026 17:35:48 +0000 (UTC)
+	 MIME-Version; b=bVbCEk+JCNlNiYCpg8bzYwUG1+DVBjz/yfOUC8QRB/eYFySUAVea3G8ecS3mu8XUTXP5lT/8WXkztpR3FzgYppzeZvMcxardxIP4WTEHleU66dsQD6vq6jNHFjkTxsxKJLvVXrsqI3tBn/6CUXe6ZCzTuQqOa3dTzzklhEVyB1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LDorU3Un; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EFF2C19424;
+	Sat, 28 Feb 2026 17:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300149;
-	bh=hkP8rxH0F6ii2fNCCVUvAtZjHRzD7vUzYkbdE0yLUZg=;
+	s=k20201202; t=1772300150;
+	bh=cLAisaLoAcnoaoTX3ZrNJXG1gYgYHnAZhB+sh2Pe5r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JK+w/X4K16SbRCRY2Tku0zfw7benScw07G2vDDKJqnWzOeyV38C4wdlrPxI3YXjFx
-	 5DCg1S4FANITkzNUjsydn4OQkHmNz3wDKCvGzrzhnL7ZEV+DqVWH/PfgDn8RHJGGj1
-	 QrnIP/M893V0wVgpOSPndfns5M2+L5VLXZkJZGFEZQ0Bg8/jaoiXIxyvIbgnxOuQfP
-	 JqbcR/WpGlg4HlYLyR1/8l9CABaXejifU7HYL8HmjKClZELHguZWJd/HsgiaGfiHj8
-	 VMixL0ShXNb4hMXTaESjrCV/sTEzyu286n3kTVkshBtdPFl+DAVrdfD1i6eegwApod
-	 cGjgilFlrjcCg==
+	b=LDorU3UnyUEDj8/NE2X1+ihuC7jIDtPMwm2KIvFQ+AoVTmtbItyJNoTKlZQQQFyDB
+	 du7VmO9RlaiCCsiSMoC18gFpEB/A421/PVaP2jvo9dBVMCwvHRVqeoY6Uyk3rPegQ9
+	 KQT9D4o+RryeOUC0EPtzFBJ3pQmfCy5ayVuwNgFefzyDg2p84MrJASccKq62fA4R2m
+	 AvzjgyIrFRlXkxIISlRCxM+kmbam8vYCxiMqc96jZOE/VPKqGkJYPqT/L97IU85leQ
+	 O6xIAvMIU0+W2HQ3yr+e4EjJe2vC2/1tYFnbEXyjd+5WTfmO7qdT6HrWixxHDpUjVX
+	 ryX0po319N30A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Brian Howard <blhoward2@gmail.com>,
-	Kris Fredrick <linux.baguette800@slmail.me>,
-	Andrei Shumailov <gentoo1993@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: YuBiao Wang <YuBiao.Wang@amd.com>,
+	Victor Skvortsov <Victor.Skvortsov@amd.com>,
+	Gavin Wan <gavin.wan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 167/844] HID: multitouch: add quirks for Lenovo Yoga Book 9i
-Date: Sat, 28 Feb 2026 12:21:20 -0500
-Message-ID: <20260228173244.1509663-168-sashal@kernel.org>
+Subject: [PATCH 6.19 168/844] drm/amdgpu: Skip loading SDMA_RS64 in VF
+Date: Sat, 28 Feb 2026 12:21:21 -0500
+Message-ID: <20260228173244.1509663-169-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -73,15 +73,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,slmail.me,suse.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-220245-lists,stable=lfdr.de];
-	DISPOSABLE_CC(0.00)[gmail.com,slmail.me,suse.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-220246-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -95,168 +93,38 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,slmail.me:email,suse.com:email]
-X-Rspamd-Queue-Id: BFCE61C5BC1
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 905D61C5B1A
 X-Rspamd-Action: no action
 
-From: Brian Howard <blhoward2@gmail.com>
+From: YuBiao Wang <YuBiao.Wang@amd.com>
 
-[ Upstream commit 822bc5b3744b0b2c2c9678aa1d80b2cf04fdfabf ]
+[ Upstream commit 39c21b81112321cbe1267b02c77ecd2161ce19aa ]
 
-The Lenovo Yoga Book 9i is a dual-screen laptop, with a single composite
-USB device providing both touch and tablet interfaces for both screens.
-All inputs report through a single device, differentiated solely by report
-numbers. As there is no way for udev to differentiate the inputs based on
-USB vendor/product ID or interface numbers, custom naming is required to
-match against for downstream configuration. A firmware bug also results
-in an erroneous InRange message report being received after the stylus
-leaves proximity, blocking later touch events. Add required quirks for
-Gen 8 to Gen 10 models, including a new quirk providing for custom input
-device naming and dropping erroneous InRange reports.
+VFs use the PF SDMA ucode and are unable to load SDMA_RS64.
 
-Signed-off-by: Brian Howard <blhoward2@gmail.com>
-Tested-by: Brian Howard <blhoward2@gmail.com>
-Tested-by: Kris Fredrick <linux.baguette800@slmail.me>
-Reported-by: Andrei Shumailov <gentoo1993@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220386
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: YuBiao Wang <YuBiao.Wang@amd.com>
+Signed-off-by: Victor Skvortsov <Victor.Skvortsov@amd.com>
+Reviewed-by: Gavin Wan <gavin.wan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h        |  1 +
- drivers/hid/hid-multitouch.c | 72 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 73 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 9c2bf584d9f6f..5a18cb41e6d79 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -841,6 +841,7 @@
- #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
- #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
- #define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
-+#define USB_DEVICE_ID_LENOVO_YOGABOOK9I	0x6161
- #define USB_DEVICE_ID_LENOVO_OPTICAL_USB_MOUSE_600E	0x600e
- #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_608D	0x608d
- #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019	0x6019
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index b1c3ef1290587..f21850f7d89e4 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -76,6 +76,7 @@ MODULE_LICENSE("GPL");
- #define MT_QUIRK_DISABLE_WAKEUP		BIT(21)
- #define MT_QUIRK_ORIENTATION_INVERT	BIT(22)
- #define MT_QUIRK_APPLE_TOUCHBAR		BIT(23)
-+#define MT_QUIRK_YOGABOOK9I		BIT(24)
- 
- #define MT_INPUTMODE_TOUCHSCREEN	0x02
- #define MT_INPUTMODE_TOUCHPAD		0x03
-@@ -231,6 +232,7 @@ static void mt_post_parse(struct mt_device *td, struct mt_application *app);
- #define MT_CLS_RAZER_BLADE_STEALTH		0x0112
- #define MT_CLS_SMART_TECH			0x0113
- #define MT_CLS_APPLE_TOUCHBAR			0x0114
-+#define MT_CLS_YOGABOOK9I			0x0115
- #define MT_CLS_SIS				0x0457
- 
- #define MT_DEFAULT_MAXCONTACT	10
-@@ -427,6 +429,14 @@ static const struct mt_class mt_classes[] = {
- 		.quirks = MT_QUIRK_NOT_SEEN_MEANS_UP |
- 			MT_QUIRK_ALWAYS_VALID |
- 			MT_QUIRK_CONTACT_CNT_ACCURATE,
-+	},
-+		{ .name = MT_CLS_YOGABOOK9I,
-+		.quirks = MT_QUIRK_ALWAYS_VALID |
-+			MT_QUIRK_FORCE_MULTI_INPUT |
-+			MT_QUIRK_SEPARATE_APP_REPORT |
-+			MT_QUIRK_HOVERING |
-+			MT_QUIRK_YOGABOOK9I,
-+		.export_all_inputs = true
- 	},
- 	{ }
- };
-@@ -1576,6 +1586,38 @@ static void mt_report(struct hid_device *hid, struct hid_report *report)
- 	if (rdata && rdata->is_mt_collection)
- 		return mt_touch_report(hid, rdata);
- 
-+	/* Lenovo Yoga Book 9i requires consuming and dropping certain bogus reports */
-+	if (rdata && rdata->application &&
-+		(rdata->application->quirks & MT_QUIRK_YOGABOOK9I)) {
-+
-+		bool all_zero_report = true;
-+
-+		for (int f = 0; f < report->maxfield && all_zero_report; f++) {
-+			struct hid_field *fld = report->field[f];
-+
-+			for (int i = 0; i < fld->report_count; i++) {
-+				unsigned int usage = fld->usage[i].hid;
-+
-+				if (usage == HID_DG_INRANGE ||
-+					usage == HID_DG_TIPSWITCH ||
-+					usage == HID_DG_BARRELSWITCH ||
-+					usage == HID_DG_BARRELSWITCH2 ||
-+					usage == HID_DG_CONTACTID ||
-+					usage == HID_DG_TILT_X ||
-+					usage == HID_DG_TILT_Y) {
-+
-+					if (fld->value[i] != 0) {
-+						all_zero_report = false;
-+						break;
-+					}
-+				}
-+			}
-+		}
-+
-+		if (all_zero_report)
-+			return;
-+	}
-+
- 	if (field && field->hidinput && field->hidinput->input)
- 		input_sync(field->hidinput->input);
- }
-@@ -1772,6 +1814,30 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 		break;
- 	}
- 
-+	/* Lenovo Yoga Book 9i requires custom naming to allow differentiation in udev */
-+	if (hi->report && td->mtclass.quirks & MT_QUIRK_YOGABOOK9I) {
-+		switch (hi->report->id) {
-+		case 48:
-+			suffix = "Touchscreen Top";
-+			break;
-+		case 56:
-+			suffix = "Touchscreen Bottom";
-+			break;
-+		case 20:
-+			suffix = "Stylus Top";
-+			break;
-+		case 40:
-+			suffix = "Stylus Bottom";
-+			break;
-+		case 80:
-+			suffix = "Emulated Touchpad";
-+			break;
-+		default:
-+			suffix = "";
-+			break;
-+		}
-+	}
-+
- 	if (suffix) {
- 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
- 						 "%s %s", hdev->name, suffix);
-@@ -2277,6 +2343,12 @@ static const struct hid_device_id mt_devices[] = {
- 			   USB_VENDOR_ID_LENOVO,
- 			   USB_DEVICE_ID_LENOVO_X12_TAB2) },
- 
-+	/* Lenovo Yoga Book 9i */
-+	{ .driver_data = MT_CLS_YOGABOOK9I,
-+		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
-+			   USB_VENDOR_ID_LENOVO,
-+			   USB_DEVICE_ID_LENOVO_YOGABOOK9I) },
-+
- 	/* Logitech devices */
- 	{ .driver_data = MT_CLS_NSMU,
- 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 47a6ce4fdc744..292e2706286a1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -1261,6 +1261,7 @@ bool amdgpu_virt_fw_load_skip_check(struct amdgpu_device *adev, uint32_t ucode_i
+ 		    || ucode_id == AMDGPU_UCODE_ID_SDMA5
+ 		    || ucode_id == AMDGPU_UCODE_ID_SDMA6
+ 		    || ucode_id == AMDGPU_UCODE_ID_SDMA7
++		    || ucode_id == AMDGPU_UCODE_ID_SDMA_RS64
+ 		    || ucode_id == AMDGPU_UCODE_ID_RLC_G
+ 		    || ucode_id == AMDGPU_UCODE_ID_RLC_RESTORE_LIST_CNTL
+ 		    || ucode_id == AMDGPU_UCODE_ID_RLC_RESTORE_LIST_GPM_MEM
 -- 
 2.51.0
 
