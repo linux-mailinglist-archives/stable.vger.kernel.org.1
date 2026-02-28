@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-221180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLdAJM5co2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-221180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:23:26 +0100
+	id QI8DLf9Jo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-221181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:03:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7A91C8F98
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:23:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38AFB1C7D47
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:03:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8FD4F311F9BE
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:48:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 81FE93466342
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9B046AEF1;
-	Sat, 28 Feb 2026 17:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3367B373C07;
+	Sat, 28 Feb 2026 17:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q2XBjPIe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WbYyD6eX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25AA373C0B;
-	Sat, 28 Feb 2026 17:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EB121B9F5;
+	Sat, 28 Feb 2026 17:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301537; cv=none; b=JsLzRCoVaPpXnb1M+WPghy8OSdfgYiHNG21qjgBuTT3SgDaGvJ0+VO5WZvLhs/bGp9bFVctjq0SEN4G2zmNPxgnF43Xnp1BNfHxIz0lkExFLiShS/eFLPEfkczffsn6zy6xma52EhxSC1uqM76lZ/trKqxIJCa7DhYi7Tmr99EA=
+	t=1772301539; cv=none; b=Fd/6fTuLg9Rb1/GPj/fgAEhZyXNnw8tXOMt7W8z+Ij+xlgYeKOhwIu6YrAmoUrKLgAmeW5hxp52GvmdYJEL7GbfNG14wnECgB4iDa1v3vtl1KuaOf4DDRnolYsJtH1HokwcH6Mbvg40e0eZqzYVRlTbZy9Wl3vxi9mOPu88x6kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301537; c=relaxed/simple;
-	bh=D22sXEeJMslmAAsbB8Dliwp+gkAeNSn++Ovxt/kE01Y=;
+	s=arc-20240116; t=1772301539; c=relaxed/simple;
+	bh=52p4sL82RyST9hoyOzQaCwxu6La9p3mr5VhqShIvROQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FA81X8hG4PzcIvD8MjsZ5JVniqN2GJive6hesX3BZYtW5kDWkujVtlkx7tnnvlpB80LyFHfCkSdM6obm4NdgnLoGYPhe131xTU/ezkaP8mSrFNsueyjL8I39hpgoX0HVKP3eikNh/euSvJXF6vjxqVml8SWU0gaDWVDPKrAwFP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q2XBjPIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082BAC2BC87;
-	Sat, 28 Feb 2026 17:58:56 +0000 (UTC)
+	 MIME-Version; b=DcXLnlyLQKVihUQweAyTH4+X9JLbzgGTcSGUpkPhNGlRznt8uGSeiFSVt8pHNWGHTm9E4BeYS3XZUPi8AJ8tKBgzkmeqda8dJ0oNYe0k0jcHpdGggD+bjHcPl+fm5oKaLkiFB03XjSDZ/R6mudjjIEgU4kXBP1+mbtawbJsRjhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WbYyD6eX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F394FC19424;
+	Sat, 28 Feb 2026 17:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301537;
-	bh=D22sXEeJMslmAAsbB8Dliwp+gkAeNSn++Ovxt/kE01Y=;
+	s=k20201202; t=1772301538;
+	bh=52p4sL82RyST9hoyOzQaCwxu6La9p3mr5VhqShIvROQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q2XBjPIeygYtf1+RLjU1T9B4EWHtxru4Ho6ftC4Cl2s15aHYTVODqtwUEb+iSot0L
-	 PEUTbDI1QIB8/xf4TmjNrbsRbofCCXRCcue5luk3Ei/RtbpD4BGJWoLPzPiAJZfYbl
-	 lxg2Zv6wtNLqdgp0XdIHDRZ+86kGVosDgVx4hb4bQy3xdbPubAqJrsQyFDhJMzaus+
-	 x16q6/G7qntiISLyIUhw5o17wSt+62NRz82419lwjpRK6lpgLj4xnLhVTI0Fkl1Vq4
-	 bUcQGEH7ZTZrA/xhmLFMbu+oxxLls/P0tCGUuXq68yWF1YZFuWsw+iHbRSyLcK0T1X
-	 m80a0kW06d82Q==
+	b=WbYyD6eXzgv/aHv0CikhsfUiSV2RoyqXpAItouhGM1Ph2TuSORR/+sUWJsBf7AQqw
+	 RPw2hisAh6vjiWLo+8FwIA2nbwJbfW0c38CpaPalaS2sV+1fSjzAlVskzSyEYQkMl9
+	 YhvkUkLjL4scHadnAziIjk8DbfOiGogSAQsIintzxFo1/dLpimw43QSsuuXte8Ltr+
+	 lTj1//Oi+nj0fRMTAYLy8ncKdAkPl9CJhlz/vFHNKRWfFIQK5gk+Vnx6J4r+HEzh0G
+	 wb5+0bPn2exWyqB4rAflTOkbHoYOXLWAsXnm8eIG9VD2/GgquAKRecDAnKEq/juWjZ
+	 TVnKDWFR6Et9w==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: Hans de Goede <johannes.goede@oss.qualcomm.com>,
+Cc: Andrey Vatoropin <a.vatoropin@crpt.ru>,
 	stable@vger.kernel.org,
-	Shixiong Ou <oushixiong@kylinos.cn>,
 	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 719/752] fbdev: Use device_create_with_groups() to fix sysfs groups registration race
-Date: Sat, 28 Feb 2026 12:47:10 -0500
-Message-ID: <20260228174750.1542406-719-sashal@kernel.org>
+Subject: [PATCH 6.18 720/752] fbcon: check return value of con2fb_acquire_newinfo()
+Date: Sat, 28 Feb 2026 12:47:11 -0500
+Message-ID: <20260228174750.1542406-720-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -72,20 +71,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,vger.kernel.org,kylinos.cn,gmx.de,kernel.org];
+	FREEMAIL_CC(0.00)[crpt.ru,vger.kernel.org,gmx.de,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-221180-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221181-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -93,125 +92,46 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 9C7A91C8F98
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxtesting.org:url,crpt.ru:email,gmx.de:email]
+X-Rspamd-Queue-Id: 38AFB1C7D47
 X-Rspamd-Action: no action
 
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-[ Upstream commit 68eeb0871e986ae5462439dae881e3a27bcef85f ]
+[ Upstream commit 011a0502801c8536f64141a2b61362c14f456544 ]
 
-The fbdev sysfs attributes are registered after sending the uevent for
-the device creation, leaving a race window where e.g. udev rules may
-not be able to access the sysfs attributes because the registration is
-not done yet.
+If fbcon_open() fails when called from con2fb_acquire_newinfo() then
+info->fbcon_par pointer remains NULL which is later dereferenced.
 
-Fix this by switching to device_create_with_groups(). This also results in
-a nice cleanup. After switching to device_create_with_groups() all that
-is left of fb_init_device() is setting the drvdata and that can be passed
-to device_create[_with_groups]() too. After which fb_init_device() can
-be completely removed.
+Add check for return value of the function con2fb_acquire_newinfo() to
+avoid it.
 
-Dropping fb_init_device() + fb_cleanup_device() in turn allows removing
-fb_info.class_flag as they were the only user of this field.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 5fc830d6aca1 ("fbdev: Register sysfs groups through device_add_group")
+Fixes: d1baa4ffa677 ("fbcon: set_con2fb_map fixes")
 Cc: stable@vger.kernel.org
-Cc: Shixiong Ou <oushixiong@kylinos.cn>
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
 Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbsysfs.c | 36 +++---------------------------
- include/linux/fb.h                 |  1 -
- 2 files changed, 3 insertions(+), 34 deletions(-)
+ drivers/video/fbdev/core/fbcon.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/core/fbsysfs.c
-index b8344c40073b4..baa2bae0fb5b3 100644
---- a/drivers/video/fbdev/core/fbsysfs.c
-+++ b/drivers/video/fbdev/core/fbsysfs.c
-@@ -12,8 +12,6 @@
- 
- #include "fb_internal.h"
- 
--#define FB_SYSFS_FLAG_ATTR 1
--
- static int activate(struct fb_info *fb_info, struct fb_var_screeninfo *var)
- {
- 	int err;
-@@ -451,33 +449,7 @@ static struct attribute *fb_device_attrs[] = {
- 	NULL,
- };
- 
--static const struct attribute_group fb_device_attr_group = {
--	.attrs          = fb_device_attrs,
--};
--
--static int fb_init_device(struct fb_info *fb_info)
--{
--	int ret;
--
--	dev_set_drvdata(fb_info->dev, fb_info);
--
--	fb_info->class_flag |= FB_SYSFS_FLAG_ATTR;
--
--	ret = device_add_group(fb_info->dev, &fb_device_attr_group);
--	if (ret)
--		fb_info->class_flag &= ~FB_SYSFS_FLAG_ATTR;
--
--	return 0;
--}
--
--static void fb_cleanup_device(struct fb_info *fb_info)
--{
--	if (fb_info->class_flag & FB_SYSFS_FLAG_ATTR) {
--		device_remove_group(fb_info->dev, &fb_device_attr_group);
--
--		fb_info->class_flag &= ~FB_SYSFS_FLAG_ATTR;
--	}
--}
-+ATTRIBUTE_GROUPS(fb_device);
- 
- int fb_device_create(struct fb_info *fb_info)
- {
-@@ -485,14 +457,13 @@ int fb_device_create(struct fb_info *fb_info)
- 	dev_t devt = MKDEV(FB_MAJOR, node);
- 	int ret;
- 
--	fb_info->dev = device_create(fb_class, fb_info->device, devt, NULL, "fb%d", node);
-+	fb_info->dev = device_create_with_groups(fb_class, fb_info->device, devt, fb_info,
-+						 fb_device_groups, "fb%d", node);
- 	if (IS_ERR(fb_info->dev)) {
- 		/* Not fatal */
- 		ret = PTR_ERR(fb_info->dev);
- 		pr_warn("Unable to create device for framebuffer %d; error %d\n", node, ret);
- 		fb_info->dev = NULL;
--	} else {
--		fb_init_device(fb_info);
- 	}
- 
- 	return 0;
-@@ -505,7 +476,6 @@ void fb_device_destroy(struct fb_info *fb_info)
- 	if (!fb_info->dev)
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index e7e07eb2142eb..7453377f34336 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -1047,7 +1047,8 @@ static void fbcon_init(struct vc_data *vc, bool init)
  		return;
  
--	fb_cleanup_device(fb_info);
- 	device_destroy(fb_class, devt);
- 	fb_info->dev = NULL;
- }
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 05cc251035da9..c3302d5135466 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -497,7 +497,6 @@ struct fb_info {
- #if defined(CONFIG_FB_DEVICE)
- 	struct device *dev;		/* This is this fb device */
- #endif
--	int class_flag;                    /* private sysfs flags */
- #ifdef CONFIG_FB_TILEBLITTING
- 	struct fb_tile_ops *tileops;    /* Tile Blitting */
- #endif
+ 	if (!info->fbcon_par)
+-		con2fb_acquire_newinfo(vc, info, vc->vc_num);
++		if (con2fb_acquire_newinfo(vc, info, vc->vc_num))
++			return;
+ 
+ 	/* If we are not the first console on this
+ 	   fb, copy the font from that console */
 -- 
 2.51.0
 
