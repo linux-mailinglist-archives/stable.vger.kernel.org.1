@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-220248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GD9QFx01o2kI+gQAu9opvQ
-	(envelope-from <stable+bounces-220248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:34:05 +0100
+	id qOKCBhowo2nb+AQAu9opvQ
+	(envelope-from <stable+bounces-220249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:12:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F4C1C5F63
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:34:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F431C586E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:12:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7BB84309D6CB
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:59:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 98583309E116
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 17:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37E8375249;
-	Sat, 28 Feb 2026 17:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3200373C11;
+	Sat, 28 Feb 2026 17:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QumqkXwD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPEQx86Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B18375240;
-	Sat, 28 Feb 2026 17:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66941375259;
+	Sat, 28 Feb 2026 17:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300152; cv=none; b=QnoR71+A0NBOvhvAuPPjXmGkEVMUWI6K5SWntBbaZvyOd9jC28MuOqYxNwAPjLE1aKbP7NVWdQqFr3X0T2YRqHzbZmrqxrMcoW+RtlN/ADU03rBcY6ilru46koqSTxkVfdHiT7c5iNbq5uKM8wSM2YfVd7NENPrrB8A7SckQGIM=
+	t=1772300153; cv=none; b=T0mAgBuRvS24ist+txmRogn0js0bmJTv3SqrS2usc39mufgr5DqpVM420DLvPCAD6RkRHycIpHpgGBgECbi7rUFdy0kB1dSqHOPpA1zX4cK8QqH1R1fR19FLZwNuwUy9nwun2jHdeHbBjpcYfhjKJWVhE8y6QyU4wmQ+8kMmwq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300152; c=relaxed/simple;
-	bh=8kH7fjcXz01elzl6DePsFy3ZBZZVGKgi8oVdueZK7DA=;
+	s=arc-20240116; t=1772300153; c=relaxed/simple;
+	bh=fXAX9LhA9WCCjvD4wbLPx91gxh6pb3yQ+Cj2hu0fIwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a89/SMeZtt86O61llOmklCt6fArqAnueUz5L1+D9CtxNX/ZEB1Bj2dzIOA2Qy+2e13JFN8T9O5U2+Wej72HHxuqWCW17whLatn+0V8+RWwXH0LDE+KMU7BQZSksUDq4TOQVtXnqGbY6TbRL1TLmVN+CD7fuXpW6506DoXPIVNMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QumqkXwD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F324C2BC87;
-	Sat, 28 Feb 2026 17:35:51 +0000 (UTC)
+	 MIME-Version; b=S2s7OX7MYiznmkzvEOvxX7srtncCjMEiRhewdAbHgwLLno7OwQ25QZxhVGAorKy7GLvK0X2V6h1yyYqX54pK16Lm3E0e9F+smGyHzWWOXguV44GwVVPVcAonUWGrGN5JxGcuBAurxO7ZnfT1g9gQ6zRvJ3maC4r52lYDr87K7aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPEQx86Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876CBC116D0;
+	Sat, 28 Feb 2026 17:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300152;
-	bh=8kH7fjcXz01elzl6DePsFy3ZBZZVGKgi8oVdueZK7DA=;
+	s=k20201202; t=1772300153;
+	bh=fXAX9LhA9WCCjvD4wbLPx91gxh6pb3yQ+Cj2hu0fIwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QumqkXwD/EE1PXP1jn9gPV6Ur0NkXZgiVhCfNB1J8/8zB7yn7vkZBWJYw5AXrXTwD
-	 wBfY4O3XaoQuo7ycvMziCbSzNYaZKDxTnpVRdSvxzKllW0R0p4LPia3D6nk2DzJQ2/
-	 bqZg5rtCN02gRAnXhtikzrHw8Gzqc+3eHqrVH/FMsk0wqKgTSZ+NFbPsgqECnIm7xj
-	 Hsp3fLsUYf0Iq+nLVuYeE+Z3zFmTp4HPl+bP5HUj6mN+FXz7Q3CCqwabXhpPKdWpct
-	 roMTCXr+b0E+NsCSStdF8c5S+nwoQLuUVnXlWSbhZN4aAW4iQWH2Q6PmBLR/9ilsNN
-	 VMH2kIOY0BX1A==
+	b=YPEQx86QI+9uKU+IftChaMMk5/JmkRw1IN/VQYWUe00Vz6OZGDFKZeKYDtAZRAmxU
+	 A4m0SeYa6LGLTpI46VAGCoch+d9D5LoqkIbsHQFWnR9NDbA7lowJa2E0s2uVcxQwcx
+	 VDu3wDyvwYIoGYKUn218jOypGscTftYgHZJZVjF6P1/Z3v3WhJ5fTCEvIl5KuSv9gr
+	 jpPwUd1+FeWR0ujhEQzqZNN1Ur41Ab0vXYtBw2NS0BpcZ9/qvC62KwM5IWtyVhyiMR
+	 QaAnWjAWwkYgLOtgdjAckNbStUrH3BWTzFTnqsXEykI+vRlZhRbt9p5JXH2GAtAllA
+	 kRrEo1tW+Klsw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Yihan Zhu <yihan.zhu@amd.com>,
-	Matthew Stewart <matthew.stewart2@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 170/844] drm/amd/display: Adjust PHY FSM transition to TX_EN-to-PLL_ON for TMDS on DCN35
-Date: Sat, 28 Feb 2026 12:21:23 -0500
-Message-ID: <20260228173244.1509663-171-sashal@kernel.org>
+Subject: [PATCH 6.19 171/844] drm/xe: Only toggle scheduling in TDR if GuC is running
+Date: Sat, 28 Feb 2026 12:21:24 -0500
+Message-ID: <20260228173244.1509663-172-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -70,155 +67,75 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220248-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-220249-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 69F4C1C5F63
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 29F431C586E
 X-Rspamd-Action: no action
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 75372d75a4e23783583998ed99d5009d555850da ]
+[ Upstream commit dd1ef5e2456558876244795bb22a4d90cb24f160 ]
 
-[Why]
-A backport of the change made for DCN401 that addresses an issue where
-we turn off the PHY PLL when disabling TMDS output, which causes the
-OTG to remain stuck.
+If the firmware is not running during TDR (e.g., when the driver is
+unloading), there's no need to toggle scheduling in the GuC. In such
+cases, skip this step.
 
-The OTG being stuck can lead to a hang in the DCHVM's ability to ACK
-invalidations when it thinks the HUBP is still on but it's not receiving
-global sync.
+v4:
+ - Bail on wait UC not running (Niranjana)
 
-The transition to PLL_ON needs to be atomic as there's no guarantee
-that the thread isn't pre-empted or is able to complete before the
-IOMMU watchdog times out.
-
-[How]
-Backport the implementation from dcn401 back to dcn35.
-
-There's a functional difference in when the eDP output is disabled in
-dcn401 code so we don't want to utilize it directly.
-
-Reviewed-by: Yihan Zhu <yihan.zhu@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Matthew Stewart <matthew.stewart2@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Link: https://patch.msgid.link/20260110012739.2888434-4-matthew.brost@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/hwss/dcn35/dcn35_hwseq.c   | 52 +++++++++++++++++++
- .../amd/display/dc/hwss/dcn35/dcn35_hwseq.h   |  3 ++
- .../amd/display/dc/hwss/dcn35/dcn35_init.c    |  2 +-
- 3 files changed, 56 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_guc_submit.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-index cb2dfd34b5e2e..88542ca715573 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -1726,3 +1726,55 @@ void dcn35_program_cursor_offload_now(struct dc *dc, const struct pipe_ctx *pipe
- {
- 	dc_dmub_srv_program_cursor_now(dc, pipe);
- }
-+
-+static void disable_link_output_symclk_on_tx_off(struct dc_link *link, enum dp_link_encoding link_encoding)
-+{
-+	struct dc *dc = link->ctx->dc;
-+	struct pipe_ctx *pipe_ctx = NULL;
-+	uint8_t i;
-+
-+	for (i = 0; i < MAX_PIPES; i++) {
-+		pipe_ctx = &dc->current_state->res_ctx.pipe_ctx[i];
-+		if (pipe_ctx->stream && pipe_ctx->stream->link == link && pipe_ctx->top_pipe == NULL) {
-+			pipe_ctx->clock_source->funcs->program_pix_clk(
-+					pipe_ctx->clock_source,
-+					&pipe_ctx->stream_res.pix_clk_params,
-+					link_encoding,
-+					&pipe_ctx->pll_settings);
-+			break;
-+		}
-+	}
-+}
-+
-+void dcn35_disable_link_output(struct dc_link *link,
-+		const struct link_resource *link_res,
-+		enum signal_type signal)
-+{
-+	struct dc *dc = link->ctx->dc;
-+	const struct link_hwss *link_hwss = get_link_hwss(link, link_res);
-+	struct dmcu *dmcu = dc->res_pool->dmcu;
-+
-+	if (signal == SIGNAL_TYPE_EDP &&
-+			link->dc->hwss.edp_backlight_control &&
-+			!link->skip_implict_edp_power_control)
-+		link->dc->hwss.edp_backlight_control(link, false);
-+	else if (dmcu != NULL && dmcu->funcs->lock_phy)
-+		dmcu->funcs->lock_phy(dmcu);
-+
-+	if (dc_is_tmds_signal(signal) && link->phy_state.symclk_ref_cnts.otg > 0) {
-+		disable_link_output_symclk_on_tx_off(link, DP_UNKNOWN_ENCODING);
-+		link->phy_state.symclk_state = SYMCLK_ON_TX_OFF;
-+	} else {
-+		link_hwss->disable_link_output(link, link_res, signal);
-+		link->phy_state.symclk_state = SYMCLK_OFF_TX_OFF;
-+	}
-+	/*
-+	 * Add the logic to extract BOTH power up and power down sequences
-+	 * from enable/disable link output and only call edp panel control
-+	 * in enable_link_dp and disable_link_dp once.
-+	 */
-+	if (dmcu != NULL && dmcu->funcs->unlock_phy)
-+		dmcu->funcs->unlock_phy(dmcu);
-+
-+	dc->link_srv->dp_trace_source_sequence(link, DPCD_SOURCE_SEQ_AFTER_DISABLE_LINK_PHY);
-+}
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h
-index 1ff41dba556c0..e3459546a908a 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h
-@@ -108,5 +108,8 @@ void dcn35_update_cursor_offload_pipe(struct dc *dc, const struct pipe_ctx *pipe
- void dcn35_notify_cursor_offload_drr_update(struct dc *dc, struct dc_state *context,
- 					    const struct dc_stream_state *stream);
- void dcn35_program_cursor_offload_now(struct dc *dc, const struct pipe_ctx *pipe);
-+void dcn35_disable_link_output(struct dc_link *link,
-+		const struct link_resource *link_res,
-+		enum signal_type signal);
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index f6ba2b0f074d2..ced13f17fb720 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -1304,7 +1304,7 @@ guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)
+ 		if (exec_queue_reset(q))
+ 			err = -EIO;
  
- #endif /* __DC_HWSS_DCN35_H__ */
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-index 5a66c9db26709..81bd36f3381db 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-@@ -113,7 +113,7 @@ static const struct hw_sequencer_funcs dcn35_funcs = {
- 	.enable_lvds_link_output = dce110_enable_lvds_link_output,
- 	.enable_tmds_link_output = dce110_enable_tmds_link_output,
- 	.enable_dp_link_output = dce110_enable_dp_link_output,
--	.disable_link_output = dcn32_disable_link_output,
-+	.disable_link_output = dcn35_disable_link_output,
- 	.z10_restore = dcn35_z10_restore,
- 	.z10_save_init = dcn31_z10_save_init,
- 	.set_disp_pattern_generator = dcn30_set_disp_pattern_generator,
+-		if (!exec_queue_destroyed(q)) {
++		if (!exec_queue_destroyed(q) && xe_uc_fw_is_running(&guc->fw)) {
+ 			/*
+ 			 * Wait for any pending G2H to flush out before
+ 			 * modifying state
+@@ -1339,6 +1339,7 @@ guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)
+ 		 */
+ 		smp_rmb();
+ 		ret = wait_event_timeout(guc->ct.wq,
++					 !xe_uc_fw_is_running(&guc->fw) ||
+ 					 !exec_queue_pending_disable(q) ||
+ 					 xe_guc_read_stopped(guc) ||
+ 					 vf_recovery(guc), HZ * 5);
 -- 
 2.51.0
 
