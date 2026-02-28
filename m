@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-220849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGq0HZ5Zo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:09:50 +0100
+	id KOz5BcxEo2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:41:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0DD1C8D33
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 567EC1C73EA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:40:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 043E03451825
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:32:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B2E433E1445
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA36241A26B;
-	Sat, 28 Feb 2026 17:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDCB34FF7D;
+	Sat, 28 Feb 2026 17:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNnVAvwC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SITkB9kZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5F841A264;
-	Sat, 28 Feb 2026 17:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCC741A277;
+	Sat, 28 Feb 2026 17:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300736; cv=none; b=XQW+Q3d5f+f3/4ckn0bS0u3V5aUIhZOCG63rHtn06IqNR5ymtWLOmAC9EFrDQkFlW/Wqk+lB+qTR2NZW73VsLQ7fx5lQRJEabVhbpCMqhQpyjts94/N7OT0EFo8mNNRkQMjjjc9grugv6d/jxke70wP23FAGSfMjqzQBHGvHnIs=
+	t=1772300737; cv=none; b=YIb9cqVEOhCQtnEqr5XlEyunw1X9SVl79osQY2mopYS2omWWDRFoQ7ZpELyagWEvkHn6ATv7VT1yElmXfy3HtPSNVMpHonSQSas5gC8BYSFSFCUIMqz2/OcKdgSJEtzgolHFss72KBTxA608CMaQtZ7murmRjRaPp0gzrhBfpW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300736; c=relaxed/simple;
-	bh=h9Z/KId332mUdy5fm53XOU9xtmdVeVuae9Ii70xwFTQ=;
+	s=arc-20240116; t=1772300737; c=relaxed/simple;
+	bh=emobCQBnMg46p/11boViFk59VezvSiUxF6K3V1JMj8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K8+L9fdIhO14BNfIs0bi0zvQOCmvxXJN8vWZOOFbspG8JpSX3lRi/b27n/w88zmO9S5oN3ykCbz7T4vNwdOsHt+JaYNDzXrMOyATyLxsW2Ym8dM7EopCEVSzIppC2HJPfibyCaNQct2gUp6oHYvok+MVfdZmPL5OObCIlKtW04c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNnVAvwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805CFC19423;
-	Sat, 28 Feb 2026 17:45:35 +0000 (UTC)
+	 MIME-Version; b=Sj+xn7uz1MKXKLJ5kEmoUHbXY9O0BUw7BsBcpX5TG5Zt/wgitvyL+BsSQtyt3IZFe1jiEYP786tJvW4df1c96WKBvGS9KFYI+fDJqTwKI9xIfUVZcJzEE+zVtemBj/kvdblTnF6Y37nbbz2wwGdQGYjkQ+836p6ACXlXuK3WhsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SITkB9kZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2F7C19425;
+	Sat, 28 Feb 2026 17:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300736;
-	bh=h9Z/KId332mUdy5fm53XOU9xtmdVeVuae9Ii70xwFTQ=;
+	s=k20201202; t=1772300737;
+	bh=emobCQBnMg46p/11boViFk59VezvSiUxF6K3V1JMj8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FNnVAvwCtf6VV0MedJFfUbSrS4k2JoxoqneC/FrSvBbXGlpWTw6dkEzyy3SjhmAOS
-	 ZtaFpkqfzHrOZSEw8linucgDz/BRQ5VfB+Fe7Kd3r98IoaIVvo85VEF/iK6D4WvdE2
-	 Ciw9ejmL5ii5llRDCCHKJdCX1RUHiLYxF3IOWOMlOsdTNaaR7UsWa7bxs2zaYRZ4zx
-	 e/Z9qdQLwgEZNCtiab7j7NCwGytm4zXaOZp7OaBavq8xc4YDpdgQGxgscTn/703spc
-	 sFlrXXkSwogj6ToWz3bQZMMIDjQaNpModphu2m5CQXkjOwFMefPbrojNvS1ESqgT3H
-	 NCQCkWctD97dg==
+	b=SITkB9kZv227NPqAQa/sxm5eiLPIWZq8SxqCHMKoDrcvIVc7HUu8yVYI/46OuvHKJ
+	 QqLi5a1Klx6hf0r4X5KVZKK+1ajOSIzuXgvB4gKukYdjrVspK2psEquJMjmEOXu+8A
+	 ySSXG8suyYeEMdZkZYP+yxmD+T6AVBhUBWLTrXm193vM74sYyApUYslg9ZlCCklQig
+	 SE/b+cgG6dIgFgm4LfE8ffr0pxTb/vM61j3f4zbVUBOJN5phMGU95NleroEruCEySX
+	 qyaJkkZk1qBTtSkVzJDv1y7oPw931IKgOfI3GFWOHQxRnO7zpODgtZvlhireXlwdK9
+	 Wj8DnLjvmvfbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Harry Yoo <harry.yoo@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
+Cc: John Garry <john.g.garry@oracle.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 770/844] mm/slab: use prandom if !allow_spin
-Date: Sat, 28 Feb 2026 12:31:23 -0500
-Message-ID: <20260228173244.1509663-771-sashal@kernel.org>
+Subject: [PATCH 6.19 771/844] LoongArch: Make cpumask_of_node() robust against NUMA_NO_NODE
+Date: Sat, 28 Feb 2026 12:31:24 -0500
+Message-ID: <20260228173244.1509663-772-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -77,14 +77,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220849-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220850-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -92,151 +91,39 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,oracle.com:email,suse.cz:email]
-X-Rspamd-Queue-Id: CD0DD1C8D33
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,loongson.cn:email]
+X-Rspamd-Queue-Id: 567EC1C73EA
 X-Rspamd-Action: no action
 
-From: Harry Yoo <harry.yoo@oracle.com>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit a1e244a9f177894969c6cd5ebbc6d72c19fc4a7a ]
+[ Upstream commit 94b0c831eda778ae9e4f2164a8b3de485d8977bb ]
 
-When CONFIG_SLAB_FREELIST_RANDOM is enabled and get_random_u32()
-is called in an NMI context, lockdep complains because it acquires
-a local_lock:
+The arch definition of cpumask_of_node() cannot handle NUMA_NO_NODE -
+which is a valid index - so add a check for this.
 
-  ================================
-  WARNING: inconsistent lock state
-  6.19.0-rc5-slab-for-next+ #325 Tainted: G                 N
-  --------------------------------
-  inconsistent {INITIAL USE} -> {IN-NMI} usage.
-  kunit_try_catch/8312 [HC2[2]:SC0[0]:HE0:SE1] takes:
-  ffff88a02ec49cc0 (batched_entropy_u32.lock){-.-.}-{3:3}, at: get_random_u32+0x7f/0x2e0
-  {INITIAL USE} state was registered at:
-    lock_acquire+0xd9/0x2f0
-    get_random_u32+0x93/0x2e0
-    __get_random_u32_below+0x17/0x70
-    cache_random_seq_create+0x121/0x1c0
-    init_cache_random_seq+0x5d/0x110
-    do_kmem_cache_create+0x1e0/0xa30
-    __kmem_cache_create_args+0x4ec/0x830
-    create_kmalloc_caches+0xe6/0x130
-    kmem_cache_init+0x1b1/0x660
-    mm_core_init+0x1d8/0x4b0
-    start_kernel+0x620/0xcd0
-    x86_64_start_reservations+0x18/0x30
-    x86_64_start_kernel+0xf3/0x140
-    common_startup_64+0x13e/0x148
-  irq event stamp: 76
-  hardirqs last  enabled at (75): [<ffffffff8298b77a>] exc_nmi+0x11a/0x240
-  hardirqs last disabled at (76): [<ffffffff8298b991>] sysvec_irq_work+0x11/0x110
-  softirqs last  enabled at (0): [<ffffffff813b2dda>] copy_process+0xc7a/0x2350
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
-
-  other info that might help us debug this:
-   Possible unsafe locking scenario:
-
-         CPU0
-         ----
-    lock(batched_entropy_u32.lock);
-    <Interrupt>
-      lock(batched_entropy_u32.lock);
-
-   *** DEADLOCK ***
-
-Fix this by using pseudo-random number generator if !allow_spin.
-This means kmalloc_nolock() users won't get truly random numbers,
-but there is not much we can do about it.
-
-Note that an NMI handler might interrupt prandom_u32_state() and
-change the random state, but that's safe.
-
-Link: https://lore.kernel.org/all/0c33bdee-6de8-4d9f-92ca-4f72c1b6fb9f@suse.cz
-Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
 Cc: stable@vger.kernel.org
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Link: https://patch.msgid.link/20260210081900.329447-3-harry.yoo@oracle.com
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slub.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ arch/loongarch/include/asm/topology.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 6304a2b7b8318..889c2804bbfeb 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -41,6 +41,7 @@
- #include <linux/prefetch.h>
- #include <linux/memcontrol.h>
- #include <linux/random.h>
-+#include <linux/prandom.h>
- #include <kunit/test.h>
- #include <kunit/test-bug.h>
- #include <linux/sort.h>
-@@ -3196,8 +3197,11 @@ static void *next_freelist_entry(struct kmem_cache *s,
- 	return (char *)start + idx;
- }
+diff --git a/arch/loongarch/include/asm/topology.h b/arch/loongarch/include/asm/topology.h
+index f06e7ff25bb7c..6b79d6183085a 100644
+--- a/arch/loongarch/include/asm/topology.h
++++ b/arch/loongarch/include/asm/topology.h
+@@ -12,7 +12,7 @@
  
-+static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
-+
- /* Shuffle the single linked freelist based on a random pre-computed sequence */
--static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
-+static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
-+			     bool allow_spin)
- {
- 	void *start;
- 	void *cur;
-@@ -3208,7 +3212,19 @@ static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
- 		return false;
+ extern cpumask_t cpus_on_node[];
  
- 	freelist_count = oo_objects(s->oo);
--	pos = get_random_u32_below(freelist_count);
-+	if (allow_spin) {
-+		pos = get_random_u32_below(freelist_count);
-+	} else {
-+		struct rnd_state *state;
-+
-+		/*
-+		 * An interrupt or NMI handler might interrupt and change
-+		 * the state in the middle, but that's safe.
-+		 */
-+		state = &get_cpu_var(slab_rnd_state);
-+		pos = prandom_u32_state(state) % freelist_count;
-+		put_cpu_var(slab_rnd_state);
-+	}
+-#define cpumask_of_node(node)  (&cpus_on_node[node])
++#define cpumask_of_node(node)  ((node) == NUMA_NO_NODE ? cpu_all_mask : &cpus_on_node[node])
  
- 	page_limit = slab->objects * s->size;
- 	start = fixup_red_left(s, slab_address(slab));
-@@ -3235,7 +3251,8 @@ static inline int init_cache_random_seq(struct kmem_cache *s)
- 	return 0;
- }
- static inline void init_freelist_randomization(void) { }
--static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
-+static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
-+				    bool allow_spin)
- {
- 	return false;
- }
-@@ -3320,7 +3337,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
- 
- 	setup_slab_debug(s, slab, start);
- 
--	shuffle = shuffle_freelist(s, slab);
-+	shuffle = shuffle_freelist(s, slab, allow_spin);
- 
- 	if (!shuffle) {
- 		start = fixup_red_left(s, start);
-@@ -8627,6 +8644,9 @@ void __init kmem_cache_init_late(void)
- {
- 	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM, 0);
- 	WARN_ON(!flushwq);
-+#ifdef CONFIG_SLAB_FREELIST_RANDOM
-+	prandom_init_once(&slab_rnd_state);
-+#endif
- }
- 
- struct kmem_cache *
+ struct pci_bus;
+ extern int pcibus_to_node(struct pci_bus *);
 -- 
 2.51.0
 
