@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-220795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPXzG2lEo2li+wQAu9opvQ
-	(envelope-from <stable+bounces-220795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:39:21 +0100
+	id cMqPOuNEo2li+wQAu9opvQ
+	(envelope-from <stable+bounces-220796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:41:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D52F1C7385
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:39:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5882A1C740F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 20:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 40A4C3133593
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:24:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6872C319733F
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739BB40D8AD;
-	Sat, 28 Feb 2026 17:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B852640E120;
+	Sat, 28 Feb 2026 17:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xv4TQSut"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GdAuBSsY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345B140D8A5;
-	Sat, 28 Feb 2026 17:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C45B40D08B;
+	Sat, 28 Feb 2026 17:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300679; cv=none; b=ZIscek69J7Ipg4ghnncetJ1goEDruTmmI5iOVTf1WXwTO95CtRl/UObZ+G8pNKDKt5EJcE2nvXVwlO1Mh7m1kgYqF7sP1SO0DHZhQH9Eicbg9YbRgRNZSbJgnDUnHPK4Vk82kn5H+3MqCpnIPxmR7At9v8pKTLML4vmGPp0AxKo=
+	t=1772300680; cv=none; b=ZWNLZBt3FBj4blluJIaC8qOXK3a6kdF5vTzBvlBiIsoziWW9gjil0kJyNmInd0yT9mW0MxTz9bVDmHROJgT0DMS6zHh35b5BU5GADGcxCzZdZ90c0KeWk3OojAm3aERUxpMuyJOt5IqcuOzuiazaNULAido/QqNV7g7suxb7wAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300679; c=relaxed/simple;
-	bh=95F7p9FHL/AywEQFx6+zZMDVlipdmfIm7nhBfH5jJKE=;
+	s=arc-20240116; t=1772300680; c=relaxed/simple;
+	bh=Y5A+qy/cBeezTIQpW8P+otUa1RJTrk/4afSR4NCp82U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GbopKHGNIQOdYxUZ+E0iVWdOSfEa1FB1ZOYlrElpO9ZAJJkNh9oQAHDR6R/oeb9PSD69bswj/HRlLw6neon8qLcqFwYwNSTt+AUTdikzwJ+Hz6IJqSrWEgC6DL2mIDkn7x7wjpd9RR7yx0Kyc2Kg5GhuAPE3d9i6K1ZG5MQTJnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xv4TQSut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65902C19424;
-	Sat, 28 Feb 2026 17:44:38 +0000 (UTC)
+	 MIME-Version; b=iAc06YJfaes/sPgtYgNCPlDkxBLdcJh3Vvu+Din36fY4uHOz0e0pXMcdUjfg2ZXmNHpFs48sOni8vqTATUr5ZGLKqn8uLI77/Rj8Z0YuvdyLf7rDnGGae99g5BRyNRj80pRT3IsOMcwZHIYS6CuWtFj5gpiNsCjb1JphhcosEHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GdAuBSsY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBA7C19425;
+	Sat, 28 Feb 2026 17:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300679;
-	bh=95F7p9FHL/AywEQFx6+zZMDVlipdmfIm7nhBfH5jJKE=;
+	s=k20201202; t=1772300680;
+	bh=Y5A+qy/cBeezTIQpW8P+otUa1RJTrk/4afSR4NCp82U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xv4TQSutb5Clm+FzEETMkIdJCXne+su35qorghq1Xz/xHSy0a64jALRHUkBn5VepY
-	 AsiL5Xu/R4zWCLSz1fjD14EzXrAP+r6dLByO/RsFaj6wbfKuahYkjuBB7XPCvz3vhE
-	 WgQiOO+H2azCN9Xlrt0VJM6uNvdZ7vE3YDCdS2km2akpesJEjh21lXlgfOOWAMVMLR
-	 5mR57Zxi7c2/LoK3Kq/cKUbPiVEo6Ru1my8KSRM/Df3S5gmR7thgdarbUJKNx/pDl5
-	 1Ll6FCBwV0s8wXMJ3Ol/PjCzXdwysjijvnAx1kUDLxkvQC3dpElv4NF186aMkxnZdI
-	 mBRYUpXdd+2nA==
+	b=GdAuBSsYz7CzM0/VJR/paBCCAs6ytg+twN2aIq1h0kcHerYbh48IkySYBPmWHm8cq
+	 luqNOd8G4skgwoOPquyKOmmVelsjSGgLvQqm40TzbhkgScRu2IEuECujgM0f+uJwjN
+	 kkVLWIVarOGgPYjyaonetroDRwagz8EdVqj4xPo21zmNvln2knYUXY+oxi5f468EeX
+	 SFRtwhjTxbk5yPES1Eubib4CoN890Q+m3pvkWgDkKfy5qvG4YAOHx0pSAvsIUU/6Qb
+	 m4oLlBR44vTvbab5fbqCwmsEIdKccucf6tznsAh99JAIQ///93B1mStoG7DxZBTXfc
+	 rb+hBYRK8X+LQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+Cc: William Tambe <williamt@cadence.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Chris Zankel <chris@zankel.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 716/844] power: reset: tdx-ec-poweroff: fix restart
-Date: Sat, 28 Feb 2026 12:30:29 -0500
-Message-ID: <20260228173244.1509663-717-sashal@kernel.org>
+Subject: [PATCH 6.19 717/844] mm/highmem: fix __kmap_to_page() build error
+Date: Sat, 28 Feb 2026 12:30:30 -0500
+Message-ID: <20260228173244.1509663-718-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -68,116 +69,82 @@ X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220795-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[cadence.com,gmail.com,zankel.net,linux-foundation.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220796-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,toradex.com:email]
-X-Rspamd-Queue-Id: 1D52F1C7385
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,cadence.com:email,linux-foundation.org:email,zankel.net:email]
+X-Rspamd-Queue-Id: 5882A1C740F
 X-Rspamd-Action: no action
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: William Tambe <williamt@cadence.com>
 
-[ Upstream commit 562357a6310f79e45844c3e980d410a1e8e02ce6 ]
+[ Upstream commit 94350fe6cad77b46c3dcb8c96543bef7647efbc0 ]
 
-During testing, restart occasionally failed on Toradex modules.
+This changes fixes following build error which is a miss from ef6e06b2ef87
+("highmem: fix kmap_to_page() for kmap_local_page() addresses").
 
-The issue was traced to an interaction between the EC-based reset/poweroff
-handler and the PSCI restart handler. While the embedded controller is
-resetting or powering off the module, the PSCI code may still be invoked,
-triggering an I2C transaction to the PMIC. This can leave the PMIC I2C
-in a frozen state.
+mm/highmem.c:184:66: error: 'pteval' undeclared (first use in this
+function); did you mean 'pte_val'?
+184 | idx = arch_kmap_local_map_idx(i, pte_pfn(pteval));
 
-Add a delay after issuing the EC reset or power-off command to give the
-controller time to complete the operation and avoid falling back to another
-restart/poweroff provider.
+In __kmap_to_page(), pteval is used but does not exist in the function.
 
-Also print an error message if sending the command to the embedded controller
-fails.
+(akpm: affects xtensa only)
 
-Fixes: 18672fe12367 ("power: reset: add Toradex Embedded Controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://patch.msgid.link/20260130071208.1184239-1-ghidoliemanuele@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lkml.kernel.org/r/SJ0PR07MB86317E00EC0C59DA60935FDCD18DA@SJ0PR07MB8631.namprd07.prod.outlook.com
+Fixes: ef6e06b2ef87 ("highmem: fix kmap_to_page() for kmap_local_page() addresses")
+Signed-off-by: William Tambe <williamt@cadence.com>
+Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/reset/tdx-ec-poweroff.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ mm/highmem.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/reset/tdx-ec-poweroff.c b/drivers/power/reset/tdx-ec-poweroff.c
-index 3302a127fce52..8040aa03d74d4 100644
---- a/drivers/power/reset/tdx-ec-poweroff.c
-+++ b/drivers/power/reset/tdx-ec-poweroff.c
-@@ -8,7 +8,10 @@
-  */
+diff --git a/mm/highmem.c b/mm/highmem.c
+index b5c8e4c2d5d49..a33e411839517 100644
+--- a/mm/highmem.c
++++ b/mm/highmem.c
+@@ -180,12 +180,13 @@ struct page *__kmap_to_page(void *vaddr)
+ 		for (i = 0; i < kctrl->idx; i++) {
+ 			unsigned long base_addr;
+ 			int idx;
++			pte_t pteval = kctrl->pteval[i];
  
- #include <linux/array_size.h>
-+#include <linux/bug.h>
-+#include <linux/delay.h>
- #include <linux/device.h>
-+#include <linux/dev_printk.h>
- #include <linux/err.h>
- #include <linux/i2c.h>
- #include <linux/mod_devicetable.h>
-@@ -31,6 +34,8 @@
+ 			idx = arch_kmap_local_map_idx(i, pte_pfn(pteval));
+ 			base_addr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
  
- #define EC_REG_MAX                      0xD0
- 
-+#define EC_CMD_TIMEOUT_MS             	1000
-+
- static const struct regmap_range volatile_ranges[] = {
- 	regmap_reg_range(EC_CMD_REG, EC_CMD_REG),
- };
-@@ -75,6 +80,13 @@ static int tdx_ec_power_off(struct sys_off_data *data)
- 
- 	err = tdx_ec_cmd(regmap, EC_CMD_POWEROFF);
- 
-+	if (err) {
-+		dev_err(data->dev, "Failed to send power off command\n");
-+	} else {
-+		mdelay(EC_CMD_TIMEOUT_MS);
-+		WARN_ONCE(1, "Unable to power off system\n");
-+	}
-+
- 	return err ? NOTIFY_BAD : NOTIFY_DONE;
- }
- 
-@@ -85,6 +97,13 @@ static int tdx_ec_restart(struct sys_off_data *data)
- 
- 	err = tdx_ec_cmd(regmap, EC_CMD_RESET);
- 
-+	if (err) {
-+		dev_err(data->dev, "Failed to send restart command\n");
-+	} else {
-+		mdelay(EC_CMD_TIMEOUT_MS);
-+		WARN_ONCE(1, "Unable to restart system\n");
-+	}
-+
- 	return err ? NOTIFY_BAD : NOTIFY_DONE;
- }
+ 			if (base_addr == base)
+-				return pte_page(kctrl->pteval[i]);
++				return pte_page(pteval);
+ 		}
+ 	}
  
 -- 
 2.51.0
