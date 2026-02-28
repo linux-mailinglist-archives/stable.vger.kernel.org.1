@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-220517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Ki2JptMo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-220517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:14:19 +0100
+	id CEzcGsA5o2mU+gQAu9opvQ
+	(envelope-from <stable+bounces-220518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D181C812F
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:14:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 037101C6610
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:53:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E7654324D917
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:40:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 20252315306E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366B33CC1DD;
-	Sat, 28 Feb 2026 17:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6203CC9EF;
+	Sat, 28 Feb 2026 17:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GgisCwzc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dAc0/8u+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1443CC1D7;
-	Sat, 28 Feb 2026 17:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04BB3CC9E6;
+	Sat, 28 Feb 2026 17:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300401; cv=none; b=DRoQS83rkSktDp+4VYx55k8TqOQIfpzvtN0Q+ONlKZKXBcJP+cjz5NQ8em0MvwP/dqpx8I7xhhzdUqf2xv1Hf5mYeKTOnUp+r+ob6P/S9k55GDrTqZaBkhMCXx7H51tibTFNOc9y3Vu7zA84vq8hKTEjAuN02pg4u134OcKA2MU=
+	t=1772300401; cv=none; b=hHnW9EIHsoUQ6QPQFONL49fCg6oH7rycO4zO9tLd+uonrfYF5qqfclRW3YVa1bG45AE/pKTXqIn5iJfGGhJqaF02HhXjbNHM7NOHKaWtZ8Mzkv8a2BqiGugv+EMwFVFA2VrWOr06cO7N67/j9xgdHScW9R9aiDrXmt12rTh7r70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772300401; c=relaxed/simple;
-	bh=C7Bf/4SETKQRpPhhtzMAKhHgf2oEI1fWMYv2QqDhegk=;
+	bh=FmRr01DdfDLLOruObW/tsEkSx9zOqwHGqIC11f0aC08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M2scCRdnRsCnmeQJPDDFBi4l1FdD/AeLZAw5pNxDAu/BQy46y52CqQdgeg7ByQ1vuB8QaPdCmTUOWE/vEBwXbXFGCk4CKeKgnxuYcX9v3oMeXGFwNaBw4vOJFUk5Amla6AAVGaMqCq+uj3MY4j0f2tkHWIpq7ELoSzt9uJTqaNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GgisCwzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D947C19423;
+	 MIME-Version; b=SllG/tHRVN3owo8kirYPq9Bc2k+tuPjW607senmmZSWaMoDJNwElg4UQCsN0ZA0R4TUPGaMCIETz+G0a7ag0UEDRz2TOy2TDtOtkl1hd/DLev+5JwTbcqj4Byg1hkj9scCxErMwovQfZSWRuooDaVURqQhet1SONzGIsUyYiP9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dAc0/8u+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0A5C2BC87;
 	Sat, 28 Feb 2026 17:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300400;
-	bh=C7Bf/4SETKQRpPhhtzMAKhHgf2oEI1fWMYv2QqDhegk=;
+	s=k20201202; t=1772300401;
+	bh=FmRr01DdfDLLOruObW/tsEkSx9zOqwHGqIC11f0aC08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GgisCwzcMkONW7ttGsVx5qjhcte/q8Q5Vc7tI1TYrLGUMgWBPxvZgazdBYyFiGKPN
-	 C6wekJzgfgRj0j4f5G9QDJ1t7Nl7USrM2Iba7/g8xnoSMt/DJVm8+NqHOUTCKUCEWc
-	 E/PA7vJxps0Jmqh73r3x/MZ97Ig0zDiMvRkuthP/Z14GUfz11Fw3WSrGgTxBMS6xI6
-	 x2pvcQI69Xg3HnieckWeWZU5o2JNjoVqVamcI96KAVVIV1dwfZAuQcU+GQ4dwdiEeJ
-	 KS8YBVN1DxeAQsiOnLR7U/p5goATmYc8jaNweC9KMVodIKa5Eyh8we5IgOhxtPOknd
-	 yhmzHZgq8NYsA==
+	b=dAc0/8u+nWgqAxCZgFhmefYpXaUDMKNASow7+AMki5N7PWemmcvWmx4Uv2u9kxpyU
+	 2BqhRT1iJ/Ju6dDik3EVgOkCqJuSE5gnmA5GDnzmGsOhIn7XL0E2N/+fcX8sjZX7S2
+	 uPVQyQ3soYOwVjv64CRXN77607NfLg+/Ixfrm0GebigIB9YPfPmvYU2K39wRSQ8pkz
+	 tEckAszNDNKsJcWEBqY/xvg6WzurrX3CqPJ/yozg+sAiLf+ZP7zjdqG/kED8NlY3CI
+	 kYSM4OcIOBrd2z3T4RxMPcxoxiBBoakEDsMW3tIJNRjQeMvbo4Ztp6khL+k4cA0ZvX
+	 IHKIYzqedsZ7A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Aaron Erhardt <aer@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 438/844] ASoC: amd: amd_sdw: add machine driver quirk for Lenovo models
-Date: Sat, 28 Feb 2026 12:25:51 -0500
-Message-ID: <20260228173244.1509663-439-sashal@kernel.org>
+Subject: [PATCH 6.19 439/844] ALSA: hda/hdmi: Add quirk for TUXEDO IBS14G6
+Date: Sat, 28 Feb 2026 12:25:52 -0500
+Message-ID: <20260228173244.1509663-440-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -72,77 +72,59 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-220518-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220517-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: E3D181C812F
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 037101C6610
 X-Rspamd-Action: no action
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Aaron Erhardt <aer@tuxedocomputers.com>
 
-[ Upstream commit 3acf517e1ae05ef66561b7a2782690387ce46e21 ]
+[ Upstream commit d649c58bcad8fb9b749e3837136a201632fa109d ]
 
-This patch adds a quirk to include the codec amplifier function for Lenovo
-models listed in the quirk table.
+Depending on the timing during boot, the BIOS might report wrong pin
+capabilities, which can lead to HDMI audio being disabled. Therefore,
+force HDMI audio connection on TUXEDO InfinityBook S 14 Gen6.
 
-Note: In these models, the RT722 codec amplifier is excluded, and an
-external amplifier is used instead.
-
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://patch.msgid.link/20260218104734.3641481-3-Vijendar.Mukunda@amd.com
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Aaron Erhardt <aer@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260218213234.429686-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-sdw-legacy-mach.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ sound/hda/codecs/hdmi/hdmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/amd/acp/acp-sdw-legacy-mach.c b/sound/soc/amd/acp/acp-sdw-legacy-mach.c
-index fae94b9edd5a3..4f92de33a71a0 100644
---- a/sound/soc/amd/acp/acp-sdw-legacy-mach.c
-+++ b/sound/soc/amd/acp/acp-sdw-legacy-mach.c
-@@ -95,6 +95,22 @@ static const struct dmi_system_id soc_sdw_quirk_table[] = {
- 		},
- 		.driver_data = (void *)(ASOC_SDW_CODEC_SPKR),
- 	},
-+	{
-+		.callback = soc_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "21YW"),
-+		},
-+		.driver_data = (void *)(ASOC_SDW_CODEC_SPKR),
-+	},
-+	{
-+		.callback = soc_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "21YX"),
-+		},
-+		.driver_data = (void *)(ASOC_SDW_CODEC_SPKR),
-+	},
+diff --git a/sound/hda/codecs/hdmi/hdmi.c b/sound/hda/codecs/hdmi/hdmi.c
+index 111c9b5335afc..c2e3adc7b3c00 100644
+--- a/sound/hda/codecs/hdmi/hdmi.c
++++ b/sound/hda/codecs/hdmi/hdmi.c
+@@ -1557,6 +1557,7 @@ static const struct snd_pci_quirk force_connect_list[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
+ 	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
+ 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
++	SND_PCI_QUIRK(0x1558, 0x14a1, "TUXEDO InfinityBook S 14 Gen6", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
  	{}
- };
- 
 -- 
 2.51.0
 
