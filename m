@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBHNNlhNo2nW/AQAu9opvQ
-	(envelope-from <stable+bounces-221030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:17:28 +0100
+	id gJBoHStdo2nW/AQAu9opvQ
+	(envelope-from <stable+bounces-221031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:24:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E8B1C826E
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 21:17:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF57A1C9041
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 22:24:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 575AF332C8F4
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:46:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34E9F34AB6EE
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CC64BCAD1;
-	Sat, 28 Feb 2026 17:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF4E4BCADA;
+	Sat, 28 Feb 2026 17:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cNuuztnc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JNM7OrOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C92175A60;
-	Sat, 28 Feb 2026 17:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3D7175A60;
+	Sat, 28 Feb 2026 17:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772301372; cv=none; b=IdxQMiadi0rHOx+SO3oLQBBtwAA+rZQ3TR75Hx+ae0yYBJTfgTW8EY5l+ymBdE1e0wVh8t6Uw2bvbGEjr6Pxrg5N1ukSwWgdx1bFC0fkFYx7f14bA/R/sdBXdSMeTu71+1awcZICLRN5lb/0Ffz7aXIdr7yha7nYnyqi5ByxJTI=
+	t=1772301373; cv=none; b=h1GYMi8oWNM3NxjhG5TROtw4wfFrVYDY1k1D6XVQwKz6OOyaozVMGVgrLqIGipbrRD+BHK/ZXHctxzOezDaRxmwKi45LBIf/aqjxyyfUE32+GBfXKDXd+bhGJk8SCPw+wNp5bA2CvLFVhnznUVtU8/l+8BWmjGeqFKmQ+OZOj50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772301372; c=relaxed/simple;
-	bh=0Mqm9g8b0uJL2WhV7ayN85PIyCavrW4mYuHt/F+FbWA=;
+	s=arc-20240116; t=1772301373; c=relaxed/simple;
+	bh=OaCouxSx0lKU05Hau1lvpeNDX2VRaZRCsIhjdSs/cBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKtfEPMe8RHO8rfbtUoL7EzglOXtemOSU/rOcqP3NAy0X6fhI9xtm1LylyIzfZrBIGwctE1z5I6IfNTaJZDToO4waOe0r7GhG3+pkBIEJ0D+DkCSvnN03t85uHvGg9W/OBECNiy5y5GNQRsf8dQQKhYzamyNk9JQjbcC7lwXAoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cNuuztnc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DAB2C19423;
-	Sat, 28 Feb 2026 17:56:11 +0000 (UTC)
+	 MIME-Version; b=lgr2XYKMT6SOv2EY+8uHIxW5/p2zJJ/GLJ9sE88uNzFe2zyR7qzS6g7LiGq6ROhEqFld65nCVGjTUiP5l0KaAbw4Zi0f2VRxZ4y9QUjmq8nbpdC2sa3Vu/zgp+TJ9dQu2r3JfTxPGKaf8ZUQWFoM9XA7QhIiDYNI+1du5qwinNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JNM7OrOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD03C19424;
+	Sat, 28 Feb 2026 17:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772301372;
-	bh=0Mqm9g8b0uJL2WhV7ayN85PIyCavrW4mYuHt/F+FbWA=;
+	s=k20201202; t=1772301373;
+	bh=OaCouxSx0lKU05Hau1lvpeNDX2VRaZRCsIhjdSs/cBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cNuuztncOuEwsmyiTqf02p3fdwpr/sH24O4UbM/7bvjXzfysnnOTlnBS86YZPD85Y
-	 b3L4+zJ+WKMVwCtsVrzHdPiTye4RuU5EMBUUx91VLLjxLihI8KRGZ0Q9vh9qJ0pmrC
-	 M8C5kxPtLCyNMDIVUSlmm9tQMsW/uVB6v0o71zcjRq46nPQtqcx14Z/2IQ55UBn4Ij
-	 wUlxFxB4vqMA0sbhaGSiglY7yvImhuINtzo0baQ/OTNCXZW3Rnug+mWCfbXDjoy//v
-	 qMuyNLI1H1NUp4xNoM4nk+x8HssOtXrBoU+f7jut0AbpfIQA7T3RGrKGxNF4cZoqhh
-	 sGFiRVpR9rAJw==
+	b=JNM7OrOq5H1MxgMwGrXJe04gOZtQF/IWhLYjsq20PBh+VsMAbSq4i7BPWlEj3f7OP
+	 FxuI7S9aMuRyHvYgpBLPrufvYg77BEmN0NwGfbZ2zLFfrFKynwbJtVTNTN3GKLM1xV
+	 S2PXEEWXlxxTrzfHJ4WbvcxBMSa5oK8Mb7aKknTm192dUT8YciFClUnH8ex2JmdsL2
+	 hSxmltvIN0ZKdSWJxSlQq28pC2fT3sPmJ1jeSCx+Q9dxOKJn45qqMzWKJ47QiTsN8z
+	 eUgYdwasE5lkUYh9MVnUPR0pIe7o6gD8cloxbQEQr16JkUfSZI8uZa8xL3pWBFrC11
+	 HUElQza3Xq6kw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev
-Cc: John Keeping <jkeeping@inmusicbrands.com>,
+Cc: Dirk Behme <dirk.behme@de.bosch.com>,
 	stable@vger.kernel.org,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 561/752] rtc: pcf8563: use correct of_node for output clock
-Date: Sat, 28 Feb 2026 12:44:32 -0500
-Message-ID: <20260228174750.1542406-561-sashal@kernel.org>
+Subject: [PATCH 6.18 562/752] drm/tyr: fix register name in error print
+Date: Sat, 28 Feb 2026 12:44:33 -0500
+Message-ID: <20260228174750.1542406-562-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228174750.1542406-1-sashal@kernel.org>
 References: <20260228174750.1542406-1-sashal@kernel.org>
@@ -71,18 +71,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221030-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221031-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -92,46 +92,43 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:email,inmusicbrands.com:email]
-X-Rspamd-Queue-Id: 83E8B1C826E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: EF57A1C9041
 X-Rspamd-Action: no action
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Dirk Behme <dirk.behme@de.bosch.com>
 
-[ Upstream commit a380a02ea3ddc69c1c1ccca3882748dee33ec3d3 ]
+[ Upstream commit 793e8f7d52814e096f63373eca643d2672366a5a ]
 
-When switching to regmap, the i2c_client pointer was removed from struct
-pcf8563 so this function switched to using the RTC device instead.  But
-the RTC device is a child of the original I2C device and does not have
-an associated of_node.
-
-Reference the correct device's of_node to ensure that the output clock
-can be found when referenced by other devices and so that the override
-clock name is read correctly.
+The `..IRQ..` register is printed here. Not the `..INT..` one.
+Correct this.
 
 Cc: stable@vger.kernel.org
-Fixes: 00f1bb9b8486b ("rtc: pcf8563: Switch to regmap")
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Link: https://patch.msgid.link/20260108184749.3413348-1-jkeeping@inmusicbrands.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: cf4fd52e3236 ("rust: drm: Introduce the Tyr driver for Arm Mali GPUs")
+Link: https://lore.kernel.org/rust-for-linux/A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com/
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+Link: https://patch.msgid.link/20260119070838.3219739-1-dirk.behme@de.bosch.com
+[aliceryhl: update commit message prefix]
+[aliceryhl: add cc stable as per Miguel's suggestion]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf8563.c | 2 +-
+ drivers/gpu/drm/tyr/driver.rs | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-pcf8563.c b/drivers/rtc/rtc-pcf8563.c
-index 4e61011fb7a96..b281e9489df1d 100644
---- a/drivers/rtc/rtc-pcf8563.c
-+++ b/drivers/rtc/rtc-pcf8563.c
-@@ -424,7 +424,7 @@ static const struct clk_ops pcf8563_clkout_ops = {
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index d5625dd1e41c8..0052ebe957199 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -76,7 +76,7 @@ fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
+         dev_err!(dev, "GPU reset failed with errno\n");
+         dev_err!(
+             dev,
+-            "GPU_INT_RAWSTAT is {}\n",
++            "GPU_IRQ_RAWSTAT is {}\n",
+             regs::GPU_IRQ_RAWSTAT.read(dev, iomem)?
+         );
  
- static struct clk *pcf8563_clkout_register_clk(struct pcf8563 *pcf8563)
- {
--	struct device_node *node = pcf8563->rtc->dev.of_node;
-+	struct device_node *node = pcf8563->rtc->dev.parent->of_node;
- 	struct clk_init_data init;
- 	struct clk *clk;
- 	int ret;
 -- 
 2.51.0
 
