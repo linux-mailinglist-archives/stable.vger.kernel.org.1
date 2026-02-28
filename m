@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-220304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-220305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFGLLXowo2kE+QQAu9opvQ
-	(envelope-from <stable+bounces-220304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:14:18 +0100
+	id xvRmHocxo2lN+QQAu9opvQ
+	(envelope-from <stable+bounces-220305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:18:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8561C5912
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:14:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82EBE1C5A5E
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 19:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D6ACA309D451
-	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:07:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2EBCE31413DA
+	for <lists+stable@lfdr.de>; Sat, 28 Feb 2026 18:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D4F38D012;
-	Sat, 28 Feb 2026 17:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA0647ECCB;
+	Sat, 28 Feb 2026 17:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+j7nzrj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bs3cS5vC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD94938D009;
-	Sat, 28 Feb 2026 17:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A7938CFEC;
+	Sat, 28 Feb 2026 17:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772300207; cv=none; b=R/jPc4JgB9m9BaZTNF2gdo5+iVGMTCZPam8g0RkuMbE6SYKZZBSQB8VL4hjX6Zq6zAQHW7iaFe/PBbVJcRM8XmoTjytiO5R8m++/wzij5/W8Y6DgYxNW/L2+uEv5sNEOwDTG6CHrE/wYdC438+0RoN/W6NF6v7i8bNS0W/bKkh0=
+	t=1772300208; cv=none; b=EokAjhbq4tN9NXP+K/5zG5dXxRxhO7q8qrsEx+qvHXdXnTRbzLeYm7W82dlsisBnbyYlhIrtc0QpohTuJfHvActIqNLaqmCRYBPyic4JFHbsOszBtidhIIrvH/RfH8U+j1NieSA/H2eHhOoeEW0hYAPPHXaSkaISkm83U425Vtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772300207; c=relaxed/simple;
-	bh=HrE32cZx8Wn5/h1pkvX3+n4NaaYqY4QP3DhxJjCs4u0=;
+	s=arc-20240116; t=1772300208; c=relaxed/simple;
+	bh=kpQBiKo3UidFW6K/ysDFz78+2sCdcuiynhFgU1tK/pA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLzph1+eguryzMHw5fy2Jtc9FnwYQEk52fqLIkfah6XV7HjLF9jLBkzwR31e1e/GhzpXt7Oz1XHO0rgN+WfYFZpXtAvL66AKXN1FbbiHrIrzCjGmT2xFShTn93YMkw0BrHb56frap0r/tqootcx2nbZH7yvOeBzr8ccfjaeKRPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+j7nzrj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0588DC2BC9E;
-	Sat, 28 Feb 2026 17:36:46 +0000 (UTC)
+	 MIME-Version; b=HJszLEL+69FsCPac0TgBMKVByvLHSqsAzUbm643XTyjd46o7URs2SYnyljudGENSyzpKxwa2RqCPkji7QSxDYzvf4/YnU/5bAMT9nWlbVTdH1RlbFM8iEe1eZ4H1JE+Dq1ym47Fm/Ie7uGyENipeez9Zo2Y2idAShddCmddMuEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bs3cS5vC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D416EC116D0;
+	Sat, 28 Feb 2026 17:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772300207;
-	bh=HrE32cZx8Wn5/h1pkvX3+n4NaaYqY4QP3DhxJjCs4u0=;
+	s=k20201202; t=1772300208;
+	bh=kpQBiKo3UidFW6K/ysDFz78+2sCdcuiynhFgU1tK/pA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+j7nzrjMrJ7litxdXDLWSkLJTAzXJmyb2aDOQOAGhlkpgJVBsR6t1iQcH1YtkmEu
-	 XerC3hpLzfOolJacsDS/KfIizKpOC0KAhdB89wi+PGCDqaWYIcRdWmKeccU9UEDaq4
-	 XFRQMvpZ/hoLWEFJIMM+7QM3TIhtky1Y+HJJ0HNdAE6GfDkGthkifzFG5GD21Xobs6
-	 xBuwToZm1WltVGm3DEo7kZVs+RgjUvLod83KnWZ6wyDyo8G1s8EF70gfFR8oFu+IP3
-	 K+3WxTggC4AprJ/Ad9zK3uihLS3teaocnMSbeN5jpdMG6bIv2MTxhQJBwuGxSg2eCY
-	 jBJ5sZvl627Ew==
+	b=Bs3cS5vCVEQnaxhgFJkgiwVmcbELgHzTyfdhHnvy5IGBB/EsZF22cy3+vevcS7b3c
+	 RIcf48Y6dd5JVG0wGtFFsh7eJzz8PPnOVd9/hg8pbxVKv78m6hNqRi3GslPNqnuDac
+	 3JMN7A5yAGptJmBwuXh/mEQEvRK6mEfA+Bv06Q5WC2lo2Xk4veGYrADjtfk9Cid9HS
+	 4yfDVR7hpiIyaPzUVTyvE/xAm9BCcRv9svysaWbNuu6Bg5nl9Iu9uOLjcbnd5LDdQf
+	 NE9v55G2GJKqBojvgMw66/qTGXfh38m2To8h0deyg5Z+/L2IAqVTEgIwa834nlac4I
+	 KlsfRa/Kkk1Yg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chen Ni <nichen@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Robert McIntyre <rjmcinty@hotmail.com>,
+	Eugene Shalygin <eugene.shalygin@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 226/844] ASoC: codecs: max98390: Check return value of devm_gpiod_get_optional() in max98390_i2c_probe()
-Date: Sat, 28 Feb 2026 12:22:19 -0500
-Message-ID: <20260228173244.1509663-227-sashal@kernel.org>
+Subject: [PATCH 6.19 227/844] hwmon: (asus-ec-sensors) add Pro WS TRX50-SAGE WIFI A
+Date: Sat, 28 Feb 2026 12:22:20 -0500
+Message-ID: <20260228173244.1509663-228-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260228173244.1509663-1-sashal@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
@@ -66,71 +67,80 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-220304-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[hotmail.com,gmail.com,roeck-us.net,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-220305-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 8C8561C5912
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,roeck-us.net:email]
+X-Rspamd-Queue-Id: 82EBE1C5A5E
 X-Rspamd-Action: no action
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Robert McIntyre <rjmcinty@hotmail.com>
 
-[ Upstream commit a1d14d8364eac2611fe1391c73ff0e5b26064f0e ]
+[ Upstream commit af7e57d444141ac9e77b57296d59c3e965c4c4fa ]
 
-The devm_gpiod_get_optional() function may return an error pointer
-(ERR_PTR) in case of a genuine failure during GPIO acquisition,
-not just NULL which indicates the legitimate absence of an optional
-GPIO.
+Adding support for Pro WS TRX50-SAGE WIFI A, which is identical
+sensors-wise to Pro WS TRX50-SAGE WIFI
 
-Add an IS_ERR() check after the function call to catch such errors and
-propagate them to the probe function, ensuring the driver fails to load
-safely rather than proceeding with an invalid pointer.
-
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://patch.msgid.link/20260130091904.3426149-1-nichen@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Robert McIntyre <rjmcinty@hotmail.com>
+Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
+Link: https://lore.kernel.org/r/20251213200531.259435-4-eugene.shalygin@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/max98390.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/hwmon/asus_ec_sensors.rst | 1 +
+ drivers/hwmon/asus-ec-sensors.c         | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/sound/soc/codecs/max98390.c b/sound/soc/codecs/max98390.c
-index 3dd4dd94bc371..ff58805e97d17 100644
---- a/sound/soc/codecs/max98390.c
-+++ b/sound/soc/codecs/max98390.c
-@@ -1067,6 +1067,9 @@ static int max98390_i2c_probe(struct i2c_client *i2c)
- 
- 	reset_gpio = devm_gpiod_get_optional(&i2c->dev,
- 					     "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(reset_gpio))
-+		return dev_err_probe(&i2c->dev, PTR_ERR(reset_gpio),
-+				     "Failed to get reset gpio\n");
- 
- 	/* Power on device */
- 	if (reset_gpio) {
+diff --git a/Documentation/hwmon/asus_ec_sensors.rst b/Documentation/hwmon/asus_ec_sensors.rst
+index 232885f24430d..b5e1bc7ac0643 100644
+--- a/Documentation/hwmon/asus_ec_sensors.rst
++++ b/Documentation/hwmon/asus_ec_sensors.rst
+@@ -10,6 +10,7 @@ Supported boards:
+  * PRIME X670E-PRO WIFI
+  * PRIME Z270-A
+  * Pro WS TRX50-SAGE WIFI
++ * Pro WS TRX50-SAGE WIFI A
+  * Pro WS X570-ACE
+  * Pro WS WRX90E-SAGE SE
+  * ProArt X570-CREATOR WIFI
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index 61b18b88ee8ff..a1445799e23d8 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -793,6 +793,8 @@ static const struct dmi_system_id dmi_table[] = {
+ 					&board_info_pro_art_x870E_creator_wifi),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("Pro WS TRX50-SAGE WIFI",
+ 					&board_info_pro_ws_trx50_sage_wifi),
++	DMI_EXACT_MATCH_ASUS_BOARD_NAME("Pro WS TRX50-SAGE WIFI A",
++					&board_info_pro_ws_trx50_sage_wifi),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("Pro WS WRX90E-SAGE SE",
+ 					&board_info_pro_ws_wrx90e_sage_se),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("Pro WS X570-ACE",
 -- 
 2.51.0
 
