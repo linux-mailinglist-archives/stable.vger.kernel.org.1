@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-222120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJo1OMudo2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:43 +0100
+	id MC0uJAiio2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:18:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00AF1CC954
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA98B1CD6CF
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:18:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9E6843004CA3
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B702532796D1
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAB430AD15;
-	Sun,  1 Mar 2026 01:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B447430B517;
+	Sun,  1 Mar 2026 01:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRmTCWtK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pNVvYOUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F361D2F12CE;
-	Sun,  1 Mar 2026 01:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785122F12CE
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329952; cv=none; b=PnhloobhJ2dLpHujlO6ala67NkdUUJ0gOUH1BN/YAjQISZMO1uGVbl2E7XG0xo2ulf5pde3OUUW0t05X/66XN+Gm1WrlcjPJkJUnGoPL7E46hgJQnrmDBF57so8VSjn93FNoIzsyy5QmGI2GDQmHWm8bhvEuNUJAIqa+xME2+1s=
+	t=1772329954; cv=none; b=Sip1VVyN4KFRr4oue0t3xaTH0MC/Jwq8Xs2EJvzcvc8z7WZxcl7D/wsMy0Mo7JMWxtLU1uEOfL+Pb3AIporRoLMEZ4FwkNgZZyxEFqZbwoVSHZ4CYAi8kjK/PoD8hnm6xykiaRSzgcWyjRWbvDc9M61tLKLfi38DH5PmufHuk1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329952; c=relaxed/simple;
-	bh=lK7j4WZSSl7gy8lpJIYfmQvgTUHcfSKUjQ0FZWdvr1s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SYY9//xZiuPD5IUWBBDUxf7hvnqC/RLzGqtIjvoRFQBMJNseIIng0lh9X2JZSeybvGC/903MIjWfx4VPbXvVnMcgn/4UUttqC0lk1BVBetKBl9hZkAppLtxDC/G0tFr08S8Zs2oKlPeaoXGwPMuHrDHiXNf/qkRQFYuZc6jtiP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRmTCWtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48B4C19424;
-	Sun,  1 Mar 2026 01:52:30 +0000 (UTC)
+	s=arc-20240116; t=1772329954; c=relaxed/simple;
+	bh=VMnN+Os703lIqCDY1dYJp2pKh+k6GIkVTnVEH6yGBoI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=asNuOEWOFjn3M+t5ZgUKsM0P41cKv25eXCBzjGI87xlCHSzapRN6CIm0LhqYIoE3RYYlcqgc1nsROKAPxzko0KpSxQqBkUkklkkFwn2P/bmpn0HLSRvKUh7GYm9FRtFsHpImoHqjs44W7LS13gIqjh6FrWbKjPaS3NOXFCE/vnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pNVvYOUF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643BFC19424;
+	Sun,  1 Mar 2026 01:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329951;
-	bh=lK7j4WZSSl7gy8lpJIYfmQvgTUHcfSKUjQ0FZWdvr1s=;
+	s=k20201202; t=1772329954;
+	bh=VMnN+Os703lIqCDY1dYJp2pKh+k6GIkVTnVEH6yGBoI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=MRmTCWtK9fsBCn2EYEBhfvchR7C9Ukst8JDhGjW45g4KFuLWFKKhNXMbg60DL8BAK
-	 fzj6FK3Walb0Li1GqirPXiCVCvOjXEZAzBy+6ENWwipYWiaFttsx64nuPDx0nLq2a3
-	 2HRE2ooLC2TYhqOPYGamlTU2rNfZXAf3FpgymCDlPT0oT+WzDNnsywrOfEnkLF7hbs
-	 30YbvzfuvhBKZpnmjfL9BkqfiFdPbADp/8OZ2PLiz6U5PnLm5KVkCEV8vAcI0Tk33H
-	 I9JthquljMC9S1crXa8ZOTshToaAB3eUCBydvRxj47JPTt5FkYaSkH9GR4Rkkv8ZzH
-	 ychSIu2BaqvQg==
+	b=pNVvYOUFbF4LOdf7Fn3YDMejfR0vv0lJHA0/TF1B0SCus4Ot7Dh07A4fmzC9PWPTW
+	 HVf4ZpNpxg/PDCZSK2doB/Q6KJhfnLJb8dXErtRody8DmraYfGfFWJUFgLo6Jv3MoJ
+	 AwOphem3HUp789ejH+vzS+xSgqQXlEXthpN24MJPrWM7ngEjOApPtxHnOOTaszc6OY
+	 XiaUUMLfegQyr188U4Y8Y7f7qO3yGEoO2NipK6lXfqI4KMjAi98Y0ttrLUDDFZnisS
+	 r+0FffTAi3hgvMZnS5a+VUartk4Cimh7SJ7fngJV2Q4/3xzDpaTeHvVRg4E9GSsula
+	 C2YSYcGQQvbew==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	haotienh@nvidia.com
-Cc: stable <stable@kernel.org>,
-	Wayne Chang <waynec@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: FAILED: Patch "usb: gadget: tegra-xudc: Add handling for BLCG_COREPLL_PWRDN" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:52:29 -0500
-Message-ID: <20260301015229.1719032-1-sashal@kernel.org>
+	lihaoxiang@isrc.iscas.ac.cn
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+	Su Hui <suhui@nfschina.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: FAILED: Patch "bus: fsl-mc: fix an error handling in fsl_mc_device_add()" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:52:31 -0500
+Message-ID: <20260301015232.1719081-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,13 +70,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222120-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222121-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -90,9 +90,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,msgid.link:url,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E00AF1CC954
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nfschina.com:email,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,nxp.com:email]
+X-Rspamd-Queue-Id: EA98B1CD6CF
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,73 +105,48 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1132e90840abf3e7db11f1d28199e9fbc0b0e69e Mon Sep 17 00:00:00 2001
-From: Haotien Hsu <haotienh@nvidia.com>
-Date: Sat, 24 Jan 2026 01:31:21 +0800
-Subject: [PATCH] usb: gadget: tegra-xudc: Add handling for BLCG_COREPLL_PWRDN
+From 52f527d0916bcdd7621a0c9e7e599b133294d495 Mon Sep 17 00:00:00 2001
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Date: Sat, 24 Jan 2026 18:20:54 +0800
+Subject: [PATCH] bus: fsl-mc: fix an error handling in fsl_mc_device_add()
 
-The COREPLL_PWRDN bit in the BLCG register must be set when the XUSB
-device controller is powergated and cleared when it is unpowergated.
-If this bit is not explicitly controlled, the core PLL may remain in an
-incorrect power state across suspend/resume or ELPG transitions.
-Therefore, update the driver to explicitly control this bit during
-powergate transitions.
+In fsl_mc_device_add(), device_initialize() is called first.
+put_device() should be called to drop the reference if error
+occurs. And other resources would be released via put_device
+-> fsl_mc_device_release. So remove redundant kfree() in
+error handling path.
 
-Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Link: https://patch.msgid.link/20260123173121.4093902-1-waynec@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bbf9d17d9875 ("staging: fsl-mc: Freescale Management Complex (fsl-mc) bus driver")
+Cc: stable@vger.kernel.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/b767348e-d89c-416e-acea-1ebbff3bea20@stanley.mountain/
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Suggested-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20260124102054.1613093-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 ---
- drivers/usb/gadget/udc/tegra-xudc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
-index 9d2007f448c04..7f7251c10e952 100644
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -3392,17 +3392,18 @@ static void tegra_xudc_device_params_init(struct tegra_xudc *xudc)
- {
- 	u32 val, imod;
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index 08b99b0b342f3..007223549887d 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -896,11 +896,7 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
+ 	return 0;
  
-+	val = xudc_readl(xudc, BLCG);
- 	if (xudc->soc->has_ipfs) {
--		val = xudc_readl(xudc, BLCG);
- 		val |= BLCG_ALL;
- 		val &= ~(BLCG_DFPCI | BLCG_UFPCI | BLCG_FE |
- 				BLCG_COREPLL_PWRDN);
- 		val |= BLCG_IOPLL_0_PWRDN;
- 		val |= BLCG_IOPLL_1_PWRDN;
- 		val |= BLCG_IOPLL_2_PWRDN;
--
--		xudc_writel(xudc, val, BLCG);
-+	} else {
-+		val &= ~BLCG_COREPLL_PWRDN;
- 	}
-+	xudc_writel(xudc, val, BLCG);
+ error_cleanup_dev:
+-	kfree(mc_dev->regions);
+-	if (mc_bus)
+-		kfree(mc_bus);
+-	else
+-		kfree(mc_dev);
++	put_device(&mc_dev->dev);
  
- 	if (xudc->soc->port_speed_quirk)
- 		tegra_xudc_limit_port_speed(xudc);
-@@ -3953,6 +3954,7 @@ static void tegra_xudc_remove(struct platform_device *pdev)
- static int __maybe_unused tegra_xudc_powergate(struct tegra_xudc *xudc)
- {
- 	unsigned long flags;
-+	u32 val;
- 
- 	dev_dbg(xudc->dev, "entering ELPG\n");
- 
-@@ -3965,6 +3967,10 @@ static int __maybe_unused tegra_xudc_powergate(struct tegra_xudc *xudc)
- 
- 	spin_unlock_irqrestore(&xudc->lock, flags);
- 
-+	val = xudc_readl(xudc, BLCG);
-+	val |= BLCG_COREPLL_PWRDN;
-+	xudc_writel(xudc, val, BLCG);
-+
- 	clk_bulk_disable_unprepare(xudc->soc->num_clks, xudc->clks);
- 
- 	regulator_bulk_disable(xudc->soc->num_supplies, xudc->supplies);
+ 	return error;
+ }
 -- 
 2.51.0
 
