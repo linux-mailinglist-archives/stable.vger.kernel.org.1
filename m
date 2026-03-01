@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-222133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KauM/ido2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:28 +0100
+	id qFtGM4Seo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2854A1CCA2C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DF71CCC65
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3FDB93014937
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83DC230F4C42
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056AF2F3C37;
-	Sun,  1 Mar 2026 01:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1271A2FE56E;
+	Sun,  1 Mar 2026 01:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RR608h92"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gnfyOl7N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE6126D4F9;
-	Sun,  1 Mar 2026 01:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BB42E62A2;
+	Sun,  1 Mar 2026 01:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329983; cv=none; b=UuoJrIzic6D035pqWkXL0v0LLX1dlIidzwpUnLvTqwIoWUfUeeOimmNgi9ZMtDycXlISkd+dJj5lemisCT+u4EglGnnFGWr0TxiskxoBgLnbfgke40ck1tPk7zfR7pT7ooofFsWE4bOAIuSizM8rjrULP6r/g5lAImHdGWSF3gs=
+	t=1772329986; cv=none; b=lr9sj3vFAKF/1UDchAL9NReYCguES247Sp/mK/mcCaeAGeOE18sXTVIshLYFIpb/VchwFVJOeQUKwUmG/I0KbVeJfhxqBP09NzFfF6xmPu/shYEBGpTu0G3XqsisWjY+Ul9H1HyhEvf20vMlS9/A6tchwGpFtlSve/CYPvhnDlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329983; c=relaxed/simple;
-	bh=aY3P8zrU/EFjgbAzxGLBGp6GrHlhuS9zMqY1sPloWEQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fZrEQsQI9vAMwNDDIbYCbSkbWcFou/j/Tku9FlzFaDEwRvx3PCNEudiKo1Uqw7JgUcVao6PH6XIDYmYJh+DnE/LG875UvUFpyg1HNgg9zOiDe3lEU10DXPcYjop6AbmZqW6yjRSvejtevW4IfS3idBBu+o4yK948tLm+2PftbJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RR608h92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFC8C19421;
-	Sun,  1 Mar 2026 01:53:02 +0000 (UTC)
+	s=arc-20240116; t=1772329986; c=relaxed/simple;
+	bh=+w8Rq6Gyk0LT4U9vWhHddWEA/x6NsNEHT3+t4BLvqO0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=utJPnxpXxa7Ii1cipZGgjuYXsnjeZoSwhQCFpoezj/wzmzUDVMEzPoGhwNBj1dfuq1XMoFUBEa6opSqsBwXqZqqwN46J1kZ+w6py2O+Pw8iil/eufDBPlfg6hFBB9/SwsoaBsCFVBa3wb1XbP4PnEtw4Cj9W59wKXp7HUFSO9Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gnfyOl7N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552A6C19425;
+	Sun,  1 Mar 2026 01:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329983;
-	bh=aY3P8zrU/EFjgbAzxGLBGp6GrHlhuS9zMqY1sPloWEQ=;
+	s=k20201202; t=1772329986;
+	bh=+w8Rq6Gyk0LT4U9vWhHddWEA/x6NsNEHT3+t4BLvqO0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=RR608h92ug5yVgTD15W2GFydumMWau8nveoiOPzRdtSnmuiywrgtSNaQdfpUXF26d
-	 1zTi4r2WSXCoy9wjvqc+3lHvZ38sD6K0Uo8x4qN6jBFYIZEmalWF9u377coc7PIdzt
-	 28cI8ltf48Up82ggV9NihRYAUuh/R3Ml/ETtU8KW9iNU+hTAgfp+RsySJstONon/ay
-	 cUTieBwJCuiplZCiaI7XU8eAl1gGSkLAD1aWQGLmIOeUi1OCBYB+ToEZYfMKT+kV4L
-	 SRF8GhYq7aYzPFKvGfrCgXr2WED0qWMInSX0f2l87d4dXW1VtWywakonluSMUimjZf
-	 dQQnpbIQ+j1IQ==
+	b=gnfyOl7ND8Gjp03nxAdBcs5q2XdC6aSx/42fCn0L0Agxn8eXST2uZHOiHyzf15dRi
+	 8APs1jugEllnjHPmuN9zpqPPHQYzDQy57bLf6/nbzKnU/sRFCuVGuF/sQVhVREoLdc
+	 9t1PPcrHS3T2iw54/GnsdfF9NBH5sm6ybpHDIBpBt8F8cIDCahzUAygZZsIgiy1Td/
+	 Ety26jvNbH8Tg2VDdZpx0SjXjRMuohObBqvO3vxW9UNsSVdV5XOJ8Q6TCUJG5ebZC+
+	 28d88e61wQXAURPlwld4SD9w6v72tl1LH6DXGMEOEY9Ggsod/vZzWsH+/gzJ2+e7na
+	 2Dh2qcF7FOkMw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	aha310510@gmail.com
-Cc: Inki Dae <inki.dae@samsung.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: FAILED: Patch "drm/exynos: vidi: use priv->vidi_dev for ctx lookup in vidi_connection_ioctl()" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:53:01 -0500
-Message-ID: <20260301015301.1719682-1-sashal@kernel.org>
+	heming.zhao@suse.com
+Cc: Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	ocfs2-devel@lists.linux.dev,
+	linux-hardening@vger.kernel.org
+Subject: FAILED: Patch "ocfs2: fix reflink preserve cleanup issue" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:53:03 -0500
+Message-ID: <20260301015304.1719729-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,34 +70,34 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222133-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[fasheh.com,evilplan.org,oracle.com,gmail.com,live.cn,huawei.com,linux-foundation.org,lists.linux.dev,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222134-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2854A1CCA2C
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,oracle.com:email,huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,fasheh.com:email,live.cn:email]
+X-Rspamd-Queue-Id: 44DF71CCC65
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,96 +110,50 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From d3968a0d85b211e197f2f4f06268a7031079e0d0 Mon Sep 17 00:00:00 2001
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Mon, 19 Jan 2026 17:25:51 +0900
-Subject: [PATCH] drm/exynos: vidi: use priv->vidi_dev for ctx lookup in
- vidi_connection_ioctl()
+From 5138c936c2c82c9be8883921854bc6f7e1177d8c Mon Sep 17 00:00:00 2001
+From: Heming Zhao <heming.zhao@suse.com>
+Date: Wed, 10 Dec 2025 09:57:24 +0800
+Subject: [PATCH] ocfs2: fix reflink preserve cleanup issue
 
-vidi_connection_ioctl() retrieves the driver_data from drm_dev->dev to
-obtain a struct vidi_context pointer. However, drm_dev->dev is the
-exynos-drm master device, and the driver_data contained therein is not
-the vidi component device, but a completely different device.
+commit c06c303832ec ("ocfs2: fix xattr array entry __counted_by error")
+doesn't handle all cases and the cleanup job for preserved xattr entries
+still has bug:
+- the 'last' pointer should be shifted by one unit after cleanup
+  an array entry.
+- current code logic doesn't cleanup the first entry when xh_count is 1.
 
-This can lead to various bugs, ranging from null pointer dereferences and
-garbage value accesses to, in unlucky cases, out-of-bounds errors,
-use-after-free errors, and more.
+Note, commit c06c303832ec is also a bug fix for 0fe9b66c65f3.
 
-To resolve this issue, we need to store/delete the vidi device pointer in
-exynos_drm_private->vidi_dev during bind/unbind, and then read this
-exynos_drm_private->vidi_dev within ioctl() to obtain the correct
-struct vidi_context pointer.
-
+Link: https://lkml.kernel.org/r/20251210015725.8409-2-heming.zhao@suse.com
+Fixes: 0fe9b66c65f3 ("ocfs2: Add preserve to reflink.")
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_drv.h  |  1 +
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 14 +++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ fs/ocfs2/xattr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.h b/drivers/gpu/drm/exynos/exynos_drm_drv.h
-index 23646e55f142c..06c29ff2aac0e 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_drv.h
-+++ b/drivers/gpu/drm/exynos/exynos_drm_drv.h
-@@ -199,6 +199,7 @@ struct drm_exynos_file_private {
- struct exynos_drm_private {
- 	struct device *g2d_dev;
- 	struct device *dma_dev;
-+	struct device *vidi_dev;
- 	void *mapping;
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index 5fd85f5178689..e434a62dd69f9 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -6395,6 +6395,10 @@ static int ocfs2_reflink_xattr_header(handle_t *handle,
+ 					(void *)last - (void *)xe);
+ 				memset(last, 0,
+ 				       sizeof(struct ocfs2_xattr_entry));
++				last = &new_xh->xh_entries[le16_to_cpu(new_xh->xh_count)] - 1;
++			} else {
++				memset(xe, 0, sizeof(struct ocfs2_xattr_entry));
++				last = NULL;
+ 			}
  
- 	/* for atomic commit */
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index 64c69dd2966ec..480c99a8f9f75 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -224,9 +224,14 @@ ATTRIBUTE_GROUPS(vidi);
- int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
- 				struct drm_file *file_priv)
- {
--	struct vidi_context *ctx = dev_get_drvdata(drm_dev->dev);
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
-+	struct device *dev = priv ? priv->vidi_dev : NULL;
-+	struct vidi_context *ctx = dev ? dev_get_drvdata(dev) : NULL;
- 	struct drm_exynos_vidi_connection *vidi = data;
- 
-+	if (!ctx)
-+		return -ENODEV;
-+
- 	if (!vidi) {
- 		DRM_DEV_DEBUG_KMS(ctx->dev,
- 				  "user data for vidi is null.\n");
-@@ -372,6 +377,7 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
- {
- 	struct vidi_context *ctx = dev_get_drvdata(dev);
- 	struct drm_device *drm_dev = data;
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
- 	struct drm_encoder *encoder = &ctx->encoder;
- 	struct exynos_drm_plane *exynos_plane;
- 	struct exynos_drm_plane_config plane_config = { 0 };
-@@ -379,6 +385,8 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
- 	int ret;
- 
- 	ctx->drm_dev = drm_dev;
-+	if (priv)
-+		priv->vidi_dev = dev;
- 
- 	plane_config.pixel_formats = formats;
- 	plane_config.num_pixel_formats = ARRAY_SIZE(formats);
-@@ -424,8 +432,12 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
- static void vidi_unbind(struct device *dev, struct device *master, void *data)
- {
- 	struct vidi_context *ctx = dev_get_drvdata(dev);
-+	struct drm_device *drm_dev = data;
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
- 
- 	timer_delete_sync(&ctx->timer);
-+	if (priv)
-+		priv->vidi_dev = NULL;
- }
- 
- static const struct component_ops vidi_component_ops = {
+ 			/*
 -- 
 2.51.0
 
