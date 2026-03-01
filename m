@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-222036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222037-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJmfDFmco2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222036-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:33 +0100
+	id CGH/HtGco2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222037-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:56:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3AD51CC371
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A021CC523
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:56:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2EE6E30923B7
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:50:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 88F81302E0D8
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F58308F3E;
-	Sun,  1 Mar 2026 01:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193F1309DB1;
+	Sun,  1 Mar 2026 01:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kx2Xx67K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KR7HbQW7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804D12FD68B;
-	Sun,  1 Mar 2026 01:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6892FD7BE;
+	Sun,  1 Mar 2026 01:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329746; cv=none; b=amcdPTUCjvrCflnNArm4PxLmWf4MXIOvGQM1AwlUJfEVIafdWavVrcAlrFVyIOHtecUHCtmjCYY1XsTI3bwtREFnmlILcZerInx73bjsGkstj4NCUMwjo1EJATugIHg7VP7NOas46KBCfpVxOdrWc8i8O3lgMrw4bLp/Z/u3xQA=
+	t=1772329748; cv=none; b=Qo/tWc4Q12jKJLeKmQumNupm6n30ehfPOkJl6lktWUICGE1LUXps3ltLvloi1+o/LAOFcIrlxsc44gcW80aG1Az3IZBlPspR9Lb/UuFvjH+XgnBOR24R5GDXXdh1HT97t9Y8PD2u/OBG7Kvzg14vU9DM++INBIv9CiM//2/LHtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329746; c=relaxed/simple;
-	bh=LAiMzjBIXOgYMRHbuDHSdHhjMjfU2b0SIZZSJjVe++M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QqB+JndOumD71HqJv11fVFSftdpS0q/lsRAQ+aAMtPSNTrvEl3lC1MKvtDstUBODmkhEGW+IaIcrjJxBKz3zkzPYa4wBb5DMs/kLv3wiaMs1ZAkdSry93U7zrCS/ZogX0r1rxA6ylNprSPNNOae4h4U29BGAHhbeiuyGT/FOb78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kx2Xx67K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74740C19425;
-	Sun,  1 Mar 2026 01:49:05 +0000 (UTC)
+	s=arc-20240116; t=1772329748; c=relaxed/simple;
+	bh=yGybDEyAAJuUDXKq7LIFxjcR693cgzZ3yTr20kqPrJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X6rGC0NoYnazuBNcdzntBtb5MyJODNhCQ9jTa9B6i9ut+sbh7AUWcnNLW+GXKKKQO8OJzeFSccHr5JGzYsJkAXtzAsAC2AyPvnAzjwX6EzlVcbFj+BbYLsg6pC9gWqgMf7RHXEcxiPk+YhPeMIlHxMeLhfIouMvX2iUB3ZNZOtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KR7HbQW7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F51C19421;
+	Sun,  1 Mar 2026 01:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329746;
-	bh=LAiMzjBIXOgYMRHbuDHSdHhjMjfU2b0SIZZSJjVe++M=;
+	s=k20201202; t=1772329748;
+	bh=yGybDEyAAJuUDXKq7LIFxjcR693cgzZ3yTr20kqPrJI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=kx2Xx67Ki5l9/Dkk3om6kERDCCGVIe/k6Dar1U1ZoHv+ROWjMac+w/YVWM5eT93eB
-	 AGvkAM7ihMVKEH4bABRcp8f7/3e86SA25xqObPLa2b079V2wqXNn19IpAeqEZuC92i
-	 UDzthcMOmUALZGQ4qENaYAGO+PRkBw3X5bV1RC2KZn0j4WHiV7Bgkr6hV2xXBlDyle
-	 e/jFKh1cGxnEoT7RZenjYYTf8Z0PhqIWZZUFz2G4srg47oBvTX5fDZv/4SyvJUbSDF
-	 wuYEWqQrZ0Pyz8nfKmjF8YA+z4idBoZGETlVsJjvZVNjkjpgHZDddJ7O2QccBbgeZB
-	 B4GlzJa+1hFZQ==
+	b=KR7HbQW7caUqzgokePofNCJmYfcRVbhc2Z9QIeJyssdyXzzMpuXryCcwkIxSZ67iB
+	 MBdIhJskZbDSuTQvG/sSjyIP1trHadhAQjQprHIcd/rAFGW2D5zJ22CEaoYFcI1u1K
+	 NGyo6+uOOfwrJofdnRRhy7ygyXWzfoHqvRdkx5cF5TWruuaaLFn6kMFSTlZecmSdA8
+	 FmP0KpWlg1rycJfb6VB9d8afD9HugXeFNGkTkpyCmxGQvhF2y+Qt97FoFhCkswMosc
+	 Xf4sJxFUAVbwYNvHiPfVB6ECOE8hamA1md6iWbXjFZyVWEc+IqqHrlYEYK7XuIiZe4
+	 +4IjwpykhiNng==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ming.qian@oss.nxp.com
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	linux-media@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "media: verisilicon: Avoid G2 bus error while decoding H.264 and HEVC" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:49:03 -0500
-Message-ID: <20260301014904.1713392-1-sashal@kernel.org>
+	seanjc@google.com
+Cc: Jim Mattson <jmattson@google.com>,
+	kvm@vger.kernel.org
+Subject: FAILED: Patch "KVM: x86: Return "unsupported" instead of "invalid" on access to unsupported PV MSR" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:49:06 -0500
+Message-ID: <20260301014907.1713445-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,35 +62,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222036-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222037-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,collabora.com:email]
-X-Rspamd-Queue-Id: D3AD51CC371
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 00A021CC523
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -108,172 +102,195 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From e0203ddf9af7c8e170e1e99ce83b4dc07f0cd765 Mon Sep 17 00:00:00 2001
-From: Ming Qian <ming.qian@oss.nxp.com>
-Date: Fri, 5 Dec 2025 09:54:26 +0800
-Subject: [PATCH] media: verisilicon: Avoid G2 bus error while decoding H.264
- and HEVC
+From 5bb9ac1865123356337a389af935d3913ee917ed Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Tue, 30 Dec 2025 12:59:48 -0800
+Subject: [PATCH] KVM: x86: Return "unsupported" instead of "invalid" on access
+ to unsupported PV MSR
 
-For the i.MX8MQ platform, there is a hardware limitation: the g1 VPU and
-g2 VPU cannot decode simultaneously; otherwise, it will cause below bus
-error and produce corrupted pictures, even potentially lead to system hang.
+Return KVM_MSR_RET_UNSUPPORTED instead of '1' (which for all intents and
+purposes means "invalid") when rejecting accesses to KVM PV MSRs to adhere
+to KVM's ABI of allowing host reads and writes of '0' to MSRs that are
+advertised to userspace via KVM_GET_MSR_INDEX_LIST, even if the vCPU model
+doesn't support the MSR.
 
-[  110.527986] hantro-vpu 38310000.video-codec: frame decode timed out.
-[  110.583517] hantro-vpu 38310000.video-codec: bus error detected.
+E.g. running a QEMU VM with
 
-Therefore, it is necessary to ensure that g1 and g2 operate alternately.
-This allows for successful multi-instance decoding of H.264 and HEVC.
+  -cpu host,-kvmclock,kvm-pv-enforce-cpuid
 
-To achieve this, g1 and g2 share the same v4l2_m2m_dev, and then the
-v4l2_m2m_dev can handle the scheduling.
+yields:
 
-Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
+  qemu: error: failed to set MSR 0x12 to 0x0
+  qemu: target/i386/kvm/kvm.c:3301: kvm_buf_set_msrs:
+        Assertion `ret == cpu->kvm_msr_buf->nmsrs' failed.
+
+Fixes: 66570e966dd9 ("kvm: x86: only provide PV features if enabled in guest's CPUID")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Co-developed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Link: https://patch.msgid.link/20251230205948.4094097-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- drivers/media/platform/verisilicon/hantro.h   |  2 +
- .../media/platform/verisilicon/hantro_drv.c   | 42 +++++++++++++++++--
- .../media/platform/verisilicon/imx8m_vpu_hw.c |  8 ++++
- 3 files changed, 49 insertions(+), 3 deletions(-)
+ arch/x86/kvm/x86.c | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/media/platform/verisilicon/hantro.h b/drivers/media/platform/verisilicon/hantro.h
-index e0fdc4535b2d7..0353de154a1ec 100644
---- a/drivers/media/platform/verisilicon/hantro.h
-+++ b/drivers/media/platform/verisilicon/hantro.h
-@@ -77,6 +77,7 @@ struct hantro_irq {
-  * @double_buffer:		core needs double buffering
-  * @legacy_regs:		core uses legacy register set
-  * @late_postproc:		postproc must be set up at the end of the job
-+ * @shared_devices:		an array of device ids that cannot run concurrently
-  */
- struct hantro_variant {
- 	unsigned int enc_offset;
-@@ -101,6 +102,7 @@ struct hantro_variant {
- 	unsigned int double_buffer : 1;
- 	unsigned int legacy_regs : 1;
- 	unsigned int late_postproc : 1;
-+	const struct of_device_id *shared_devices;
- };
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 211d8c24a4b11..e4418409b468d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4097,47 +4097,47 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK_NEW:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
  
- /**
-diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/media/platform/verisilicon/hantro_drv.c
-index 60b95b5d8565f..94f58f4e4a4e5 100644
---- a/drivers/media/platform/verisilicon/hantro_drv.c
-+++ b/drivers/media/platform/verisilicon/hantro_drv.c
-@@ -13,6 +13,7 @@
- #include <linux/clk.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_platform.h>
- #include <linux/platform_device.h>
- #include <linux/pm.h>
- #include <linux/pm_runtime.h>
-@@ -1035,6 +1036,41 @@ static int hantro_disable_multicore(struct hantro_dev *vpu)
- 	return 0;
- }
+ 		vcpu->kvm->arch.wall_clock = data;
+ 		kvm_write_wall_clock(vcpu->kvm, data, 0);
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
  
-+static struct v4l2_m2m_dev *hantro_get_v4l2_m2m_dev(struct hantro_dev *vpu)
-+{
-+	struct device_node *node;
-+	struct hantro_dev *shared_vpu;
-+
-+	if (!vpu->variant || !vpu->variant->shared_devices)
-+		goto init_new_m2m_dev;
-+
-+	for_each_matching_node(node, vpu->variant->shared_devices) {
-+		struct platform_device *pdev;
-+		struct v4l2_m2m_dev *m2m_dev;
-+
-+		pdev = of_find_device_by_node(node);
-+		if (!pdev)
-+			continue;
-+
-+		shared_vpu = platform_get_drvdata(pdev);
-+		if (IS_ERR_OR_NULL(shared_vpu) || shared_vpu == vpu) {
-+			platform_device_put(pdev);
-+			continue;
-+		}
-+
-+		v4l2_m2m_get(shared_vpu->m2m_dev);
-+		m2m_dev = shared_vpu->m2m_dev;
-+		platform_device_put(pdev);
-+
-+		of_node_put(node);
-+
-+		return m2m_dev;
-+	}
-+
-+init_new_m2m_dev:
-+	return v4l2_m2m_init(&vpu_m2m_ops);
-+}
-+
- static int hantro_probe(struct platform_device *pdev)
- {
- 	const struct of_device_id *match;
-@@ -1186,7 +1222,7 @@ static int hantro_probe(struct platform_device *pdev)
- 	}
- 	platform_set_drvdata(pdev, vpu);
+ 		vcpu->kvm->arch.wall_clock = data;
+ 		kvm_write_wall_clock(vcpu->kvm, data, 0);
+ 		break;
+ 	case MSR_KVM_SYSTEM_TIME_NEW:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
  
--	vpu->m2m_dev = v4l2_m2m_init(&vpu_m2m_ops);
-+	vpu->m2m_dev = hantro_get_v4l2_m2m_dev(vpu);
- 	if (IS_ERR(vpu->m2m_dev)) {
- 		v4l2_err(&vpu->v4l2_dev, "Failed to init mem2mem device\n");
- 		ret = PTR_ERR(vpu->m2m_dev);
-@@ -1225,7 +1261,7 @@ static int hantro_probe(struct platform_device *pdev)
- 	hantro_remove_enc_func(vpu);
- err_m2m_rel:
- 	media_device_cleanup(&vpu->mdev);
--	v4l2_m2m_release(vpu->m2m_dev);
-+	v4l2_m2m_put(vpu->m2m_dev);
- err_v4l2_unreg:
- 	v4l2_device_unregister(&vpu->v4l2_dev);
- err_clk_unprepare:
-@@ -1248,7 +1284,7 @@ static void hantro_remove(struct platform_device *pdev)
- 	hantro_remove_dec_func(vpu);
- 	hantro_remove_enc_func(vpu);
- 	media_device_cleanup(&vpu->mdev);
--	v4l2_m2m_release(vpu->m2m_dev);
-+	v4l2_m2m_put(vpu->m2m_dev);
- 	v4l2_device_unregister(&vpu->v4l2_dev);
- 	clk_bulk_unprepare(vpu->variant->num_clocks, vpu->clocks);
- 	reset_control_assert(vpu->resets);
-diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-index 5be0e2e76882f..6f8e43b7f1575 100644
---- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-+++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-@@ -343,6 +343,12 @@ const struct hantro_variant imx8mq_vpu_variant = {
- 	.num_regs = ARRAY_SIZE(imx8mq_reg_names)
- };
+ 		kvm_write_system_time(vcpu, data, false, msr_info->host_initiated);
+ 		break;
+ 	case MSR_KVM_SYSTEM_TIME:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
  
-+static const struct of_device_id imx8mq_vpu_shared_resources[] __initconst = {
-+	{ .compatible = "nxp,imx8mq-vpu-g1", },
-+	{ .compatible = "nxp,imx8mq-vpu-g2", },
-+	{ /* sentinel */ }
-+};
-+
- const struct hantro_variant imx8mq_vpu_g1_variant = {
- 	.dec_fmts = imx8m_vpu_dec_fmts,
- 	.num_dec_fmts = ARRAY_SIZE(imx8m_vpu_dec_fmts),
-@@ -356,6 +362,7 @@ const struct hantro_variant imx8mq_vpu_g1_variant = {
- 	.num_irqs = ARRAY_SIZE(imx8mq_irqs),
- 	.clk_names = imx8mq_g1_clk_names,
- 	.num_clocks = ARRAY_SIZE(imx8mq_g1_clk_names),
-+	.shared_devices = imx8mq_vpu_shared_resources,
- };
+ 		kvm_write_system_time(vcpu, data, true,  msr_info->host_initiated);
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_EN:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
  
- const struct hantro_variant imx8mq_vpu_g2_variant = {
-@@ -371,6 +378,7 @@ const struct hantro_variant imx8mq_vpu_g2_variant = {
- 	.num_irqs = ARRAY_SIZE(imx8mq_g2_irqs),
- 	.clk_names = imx8mq_g2_clk_names,
- 	.num_clocks = ARRAY_SIZE(imx8mq_g2_clk_names),
-+	.shared_devices = imx8mq_vpu_shared_resources,
- };
+ 		if (kvm_pv_enable_async_pf(vcpu, data))
+ 			return 1;
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_INT:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
  
- const struct hantro_variant imx8mm_vpu_g1_variant = {
+ 		if (kvm_pv_enable_async_pf_int(vcpu, data))
+ 			return 1;
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_ACK:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 		if (data & 0x1) {
+ 			/*
+ 			 * Pairs with the smp_mb__after_atomic() in
+@@ -4150,7 +4150,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		break;
+ 	case MSR_KVM_STEAL_TIME:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_STEAL_TIME))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		if (unlikely(!sched_info_on()))
+ 			return 1;
+@@ -4168,7 +4168,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		break;
+ 	case MSR_KVM_PV_EOI_EN:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_PV_EOI))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		if (kvm_lapic_set_pv_eoi(vcpu, data, sizeof(u8)))
+ 			return 1;
+@@ -4176,7 +4176,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 
+ 	case MSR_KVM_POLL_CONTROL:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_POLL_CONTROL))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		/* only enable bit supported */
+ 		if (data & (-1ULL << 1))
+@@ -4477,61 +4477,61 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->kvm->arch.wall_clock;
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK_NEW:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->kvm->arch.wall_clock;
+ 		break;
+ 	case MSR_KVM_SYSTEM_TIME:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.time;
+ 		break;
+ 	case MSR_KVM_SYSTEM_TIME_NEW:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.time;
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_EN:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.apf.msr_en_val;
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_INT:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.apf.msr_int_val;
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_ACK:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = 0;
+ 		break;
+ 	case MSR_KVM_STEAL_TIME:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_STEAL_TIME))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.st.msr_val;
+ 		break;
+ 	case MSR_KVM_PV_EOI_EN:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_PV_EOI))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.pv_eoi.msr_val;
+ 		break;
+ 	case MSR_KVM_POLL_CONTROL:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_POLL_CONTROL))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.msr_kvm_poll_control;
+ 		break;
 -- 
 2.51.0
 
