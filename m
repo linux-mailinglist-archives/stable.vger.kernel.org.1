@@ -1,179 +1,220 @@
-Return-Path: <stable+bounces-222405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IP+0Jve/o2nyLQUAu9opvQ
-	(envelope-from <stable+bounces-222405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 05:26:31 +0100
+	id vACFFWLVo2kuPAUAu9opvQ
+	(envelope-from <stable+bounces-222406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 06:57:54 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B931CE822
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 05:26:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A01EB1CE962
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 06:57:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6FFE1302F270
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 04:26:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECDDB301BC3A
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 05:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CEF4314D06;
-	Sun,  1 Mar 2026 04:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539864C97;
+	Sun,  1 Mar 2026 05:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="K7VbM3g7";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="wx3R7ZJa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ptn/j+ip"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9536A2EE611;
-	Sun,  1 Mar 2026 04:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1599427F010
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 05:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772339180; cv=none; b=m4ZGpHLjzJbkNKwPFu3ZFwi3aM6Z39w5iYxKmSZS+rq3WQebk7viCXBTEad7815GhVKEV88DOYhKT1BWNTIZsQV/SvssKA0OV+lmTJpSd8kd623MhFrEXuvqIHpwbL7O72Q87R3gVAO9yC1Jf2Uz77uN9opijUUHXjCwYFHpzZ4=
+	t=1772344667; cv=none; b=gVThqN5rVhd+fgSDtGug73HqSaWcNvOpz4SYG1ibMi2CPagEdkkX/sRPyeWSknU0OLAW3ghohzHVKiHY/0WIHSVN2OxCrQN5eKkUi7S6V4N9tGHD4AtA4U1Gz1NXmv+4ZBsG3NK+DEDFJMOAIavI5Zrt9GTfPmUfq95Dl/MpTIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772339180; c=relaxed/simple;
-	bh=KXlbxRLwDnuQ9Jy6vHgMhpb2BCcDKrIFmwsO95AVSUg=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=f4sAfDipbMsydjrMbw85rVSywYnT5NyVNDBH5PNg4ia+TFRl+MkUvQbmJKJ1TUxwir4OE4FFhf0NYNp1JGkECbWzv4EdY6eUxYGfqLkhIVPzMH6D/OuJX9EeajH8hBwNLkEEu3NM3AlruyMaKKkBEWK1k5rjwCT8spm0zPmP3Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=K7VbM3g7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=wx3R7ZJa; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 1EE6E1D000D1;
-	Sat, 28 Feb 2026 23:26:17 -0500 (EST)
-Received: from phl-frontend-02 ([10.202.2.161])
-  by phl-compute-05.internal (MEProxy); Sat, 28 Feb 2026 23:26:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772339176;
-	 x=1772425576; bh=IEv+G3MMbZwL+t+I7F/CKerxblIeu1ih2REldfhgFKE=; b=
-	K7VbM3g7HK88vZAzJeXzbSLPkEUSXmEJVv0XfksRXqtuG8mQNv0CcCQYZd1GoO3h
-	BYnOoCisY1XY0b/rdGy2blzW9LT8/HzwM3Agr8WmYNZ3RBmtuzWrGzEizC7ZCBC+
-	H4/A7++3HkbSyEoxq9L4zfOqMhywfVVonJByWQsPRM8ojN71MRWEo6XgAePq+R/Z
-	TnXoKJ+8TUC/Q6kFmrD2jKeUa7WIrLclXjOfPhpzvvIBeg37Xqu7k3+jNhZauNet
-	SRCJJbKb3mNxV//+JHiFdLq+9hLFSa0nDrLc/ylZRlUCmL9IRq7JjKasHooi17nS
-	VXtBjpivwO4Zdy9K9TLRZg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772339176; x=
-	1772425576; bh=IEv+G3MMbZwL+t+I7F/CKerxblIeu1ih2REldfhgFKE=; b=w
-	x3R7ZJaV/mZDZjGG4jSOOZec4bFwlYoAQ6lNgzaOS3p53ufgAJfiIOpkPSQQgZGV
-	8LJcUzXAkCZz/Eikkh3BXcTyenYdV6D+obghqZ3CQX2PDnot55Aobz2FJZdnnWF7
-	32JLn/h0Z7Fz7/Q99pEATY8QoPcBrtoCKspWqcX3OEpX953601u1jE6iweFZbaEf
-	CZE88EUHz8EWKrgofREUPnAltDnOmwwYahgBVdbIXJAgxy0GaNOEEaLrhLwsXK2/
-	nMdTJNmMrL95qHi5Wm310lJfGR/l4ZJpYTAHH4Jm9MCKFAP/FuKSRgabjEovRWRw
-	zQHP5f5vM770TXANKLs7A==
-X-ME-Sender: <xms:6L-jaU8cTVQ5fPPWzCNwCmtgGIF1KzVEPL8PkGoXAFzWmmY4scRj4g>
-    <xme:6L-jadG7JpFGpP9Oqw_Gp6eWXOJaC-hK2sg5gXUtTIAvDWs3xu1OttI9mF6F4WgwD
-    ar8hyyDEHbcalVC77pwldUaqs2VU58hkLdclnqGz5AOwejOpanPKQ>
-X-ME-Received: <xmr:6L-jabLLoXszpJYl-a7hN7qxsAg1z-qSyRBdnv0H9eiiyeaI3P41sTr2FpRFTG-oarMPOkHb_AUFwhloT2q09jD6jWsOaA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheefkeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfhffuvfevfhgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
-    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeelkefgteejkeejvefgiefgheegtedufeeuvdeuvedvheejjeehvefh
-    ffffgfduteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
-    ohhmpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
-    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihf
-    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrd
-    hlihhnuhigrdguvghvpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhu
-    nhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
-    grthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvght
-    pdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:6L-jaQdYz8JO20VTY_f_-wv8eldu2kQQSLmkJEQ2lXlx6NnsWvRwaw>
-    <xmx:6L-jaYXJAQ9xiIvVjHYA-4rhciVgKyL4-o1cuI1YdYuLXeAgP5VKaQ>
-    <xmx:6L-jaXHzJ8Y2F1qM-4-jDWWOSQVcKt5aDsEoYIQ3qtL_p-F_SB8Xcg>
-    <xmx:6L-jaZXKC_Tvsv-_PmU2B7p2w4Mtg1j1hnkQWCDxXwgKUB13RoqqRQ>
-    <xmx:6L-jaYmg4APVEjJl9t28anxcbjAcnHIRRXe_72WkUkO8tfHieS6uuIlv>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 28 Feb 2026 23:26:13 -0500 (EST)
-Message-ID: <1a732eb1-4884-4dad-8a35-4b79d4bcb485@pobox.com>
-Date: Sat, 28 Feb 2026 20:26:12 -0800
+	s=arc-20240116; t=1772344667; c=relaxed/simple;
+	bh=IdKgk6ijWp8kUU8Q2S9JtScG7492fW4G6cBZo1f8DlA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EJ2nVcXkurRvuTlea6WqTQt1ilBZ+NODFI6Tm0wB2DzIWEt/O6rkx+BhsdFGiCxNN3Q5+qlI/q5vGky8ssGXROJllhp0FucsLBCbcMmrGrd54BY0zrYC59nB7/wGXEkVGkHVfefG882MMlHbMaDeqpnJ4Ecayl1yRB8VScbcgqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ptn/j+ip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE49FC2BC87
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 05:57:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772344666;
+	bh=IdKgk6ijWp8kUU8Q2S9JtScG7492fW4G6cBZo1f8DlA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ptn/j+ip/X4Md6MuxIaHbIG9tHPk4jllMi8MDJ5roTk8HpTXnfpz0SZm0sSM78RqY
+	 42B69X25weV1uCFDdHyBu3pyuWKTzd1psvhA2LoOb7uqLqXSyfqyE9TePQJe6M595e
+	 fgtI5mEe5wojI2PWccJbPIFvJC27ENYK8J7VFmo9TGYKlsOxbFg42lbSgLo9SsTsSo
+	 O1G3Nr5QNVSGofiikhKGwOS7jnQ7sCc/f4WswGhZPDk33mxI/YG1vtM5YE0MubFCIB
+	 KaBvu+t80OLAkvioh2/dJJQGTwz6FNdYEjLyLxyMvepTiymSvHIQLzXbijtFuFufDJ
+	 DiweGhbbsJgDg==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-65c187dfc82so5326067a12.2
+        for <stable@vger.kernel.org>; Sat, 28 Feb 2026 21:57:46 -0800 (PST)
+X-Gm-Message-State: AOJu0Yy4OENd7wRzekiTZpBUWd084VMiATbpcCTmXxc8oc5F5AR1ga0a
+	+z7vmK4Gc6IFm//pLXVOHI1iy/LN7aD32tmLmab/xd0JOZsg1ytzPRls0owJ4eKngGcijZBwyAs
+	qO/1/oW8m0E/iGroG6GDkUjp43QmYsA0=
+X-Received: by 2002:a05:6402:2110:b0:65c:972:7073 with SMTP id
+ 4fb4d7f45d1cf-65fde4c676emr5799791a12.28.1772344665254; Sat, 28 Feb 2026
+ 21:57:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Barry K. Nathan" <barryn@pobox.com>
-Subject: Re: [PATCH 6.6 000/283] 6.6.128-rc1 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260228180659.1583364-1-sashal@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260228180659.1583364-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260301011732.1671502-1-sashal@kernel.org>
+In-Reply-To: <20260301011732.1671502-1-sashal@kernel.org>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sun, 1 Mar 2026 13:57:33 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H46pdrJgJ0tg493nK8S8X6NQrXu+jHO-yDpBBdyDpRQKw@mail.gmail.com>
+X-Gm-Features: AaiRm53AMPG4vNbW7cnia_a82DoSif7QrjvcUnOF5IP5lHdodd5yuyFSY8lMvh4
+Message-ID: <CAAhV-H46pdrJgJ0tg493nK8S8X6NQrXu+jHO-yDpBBdyDpRQKw@mail.gmail.com>
+Subject: Re: FAILED: Patch "LoongArch: Handle percpu handler address for ORC
+ unwinder" failed to apply to 6.18-stable tree
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, yangtiezhu@loongson.cn, 
+	Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
+	linux-rt-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-222405-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222406-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pobox.com:mid,pobox.com:dkim,pobox.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 00B931CE822
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:email]
+X-Rspamd-Queue-Id: A01EB1CE962
 X-Rspamd-Action: no action
 
-On 2/28/26 10:06, Sasha Levin wrote:
-> 
-> This is the start of the stable review cycle for the 6.6.128 release.
-> There are 283 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Mon Mar  2 06:06:54 PM UTC 2026.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.6.y&id2=v6.6.127
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
+Hi, Sasha,
+
+On Sun, Mar 1, 2026 at 9:17=E2=80=AFAM Sasha Levin <sashal@kernel.org> wrot=
+e:
+>
+> The patch below does not apply to the 6.18-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+Please add 4cd641a79e69270a062777f64a0dd330abb9044a ("LoongArch:
+Remove unnecessary checks for ORC unwinder") as a dependency, then
+this one and another one can be applied.
+
+Huacai
+
+>
 > Thanks,
 > Sasha
-
-Tested on an amd64 laptop (Lenovo ThinkPad T14 Gen 1). Working well,
-no regressions observed.
-
-Tested-by: Barry K. Nathan <barryn@pobox.com>
-
--- 
--Barry K. Nathan  <barryn@pobox.com>
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+> From 055c7e75190e0be43037bd663a3f6aced194416e Mon Sep 17 00:00:00 2001
+> From: Tiezhu Yang <yangtiezhu@loongson.cn>
+> Date: Tue, 10 Feb 2026 19:31:13 +0800
+> Subject: [PATCH] LoongArch: Handle percpu handler address for ORC unwinde=
+r
+>
+> After commit 4cd641a79e69 ("LoongArch: Remove unnecessary checks for ORC
+> unwinder"), the system can not boot normally under some configs (such as
+> enable KASAN), there are many error messages "cannot find unwind pc".
+>
+> The kernel boots normally with the defconfig, so no problem found out at
+> the first time. Here is one way to reproduce:
+>
+>   cd linux
+>   make mrproper defconfig -j"$(nproc)"
+>   scripts/config -e KASAN
+>   make olddefconfig all -j"$(nproc)"
+>   sudo make modules_install
+>   sudo make install
+>   sudo reboot
+>
+> The address that can not unwind is not a valid kernel address which is
+> between "pcpu_handlers[cpu]" and "pcpu_handlers[cpu] + vec_sz" due to
+> the code of eentry was copied to the new area of pcpu_handlers[cpu] in
+> setup_tlb_handler(), handle this special case to get the valid address
+> to unwind normally.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>  arch/loongarch/include/asm/setup.h |  3 +++
+>  arch/loongarch/kernel/unwind_orc.c | 16 ++++++++++++++++
+>  2 files changed, 19 insertions(+)
+>
+> diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/=
+asm/setup.h
+> index 3c2fb16b11b64..f81375e5e89c0 100644
+> --- a/arch/loongarch/include/asm/setup.h
+> +++ b/arch/loongarch/include/asm/setup.h
+> @@ -7,6 +7,7 @@
+>  #define _LOONGARCH_SETUP_H
+>
+>  #include <linux/types.h>
+> +#include <linux/threads.h>
+>  #include <asm/sections.h>
+>  #include <uapi/asm/setup.h>
+>
+> @@ -14,6 +15,8 @@
+>
+>  extern unsigned long eentry;
+>  extern unsigned long tlbrentry;
+> +extern unsigned long pcpu_handlers[NR_CPUS];
+> +extern long exception_handlers[VECSIZE * 128 / sizeof(long)];
+>  extern char init_command_line[COMMAND_LINE_SIZE];
+>  extern void tlb_init(int cpu);
+>  extern void cpu_cache_init(void);
+> diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/u=
+nwind_orc.c
+> index d6b3688a1ce97..11ba3e4ac9eee 100644
+> --- a/arch/loongarch/kernel/unwind_orc.c
+> +++ b/arch/loongarch/kernel/unwind_orc.c
+> @@ -352,6 +352,22 @@ static inline unsigned long bt_address(unsigned long=
+ ra)
+>  {
+>         extern unsigned long eentry;
+>
+> +#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
+> +       int cpu;
+> +       int vec_sz =3D sizeof(exception_handlers);
+> +
+> +       for_each_possible_cpu(cpu) {
+> +               if (!pcpu_handlers[cpu])
+> +                       continue;
+> +
+> +               if (ra >=3D pcpu_handlers[cpu] &&
+> +                   ra < pcpu_handlers[cpu] + vec_sz) {
+> +                       ra =3D ra + eentry - pcpu_handlers[cpu];
+> +                       break;
+> +               }
+> +       }
+> +#endif
+> +
+>         if (ra >=3D eentry && ra < eentry +  EXCCODE_INT_END * VECSIZE) {
+>                 unsigned long func;
+>                 unsigned long type =3D (ra - eentry) / VECSIZE;
+> --
+> 2.51.0
+>
+>
+>
+>
+>
 
