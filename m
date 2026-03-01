@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNebKVGXo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:33:05 +0100
+	id QFMbAW+Wo2lPHgUAu9opvQ
+	(envelope-from <stable+bounces-221401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:29:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215881CAF02
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:33:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 714EE1CAC46
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:29:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E2B73122210
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:22:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B8A63064F3A
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFA9274B28;
-	Sun,  1 Mar 2026 01:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040822750E6;
+	Sun,  1 Mar 2026 01:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BE5iyPPq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDcIihbr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62858430BA3;
-	Sun,  1 Mar 2026 01:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4D7430BA3
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328166; cv=none; b=nMhGYu9XrbWimegQqQi7fX/qoDTfnUq34+JspIfjXhO+BKwGBct4gLx+heVBL7YpsQ2JVBCo53V2kcj6g1OyFwJFLCtz7TeM7AEeYcUaZzIWVXNcoiKlW77eQF5A0Ewjs4ny8ATcIcFYjMVorRHZeSEPE0c6NbVhEdqYug4TzVs=
+	t=1772328168; cv=none; b=VZ/QnxU0oPbQ4G8pO4vdS0GamyoQCweeBkkT8mryaOVsb3uXlMNQam0pSU0Ryrcp/fZ4waKkR+xXoS82iAHJsW4eokAoEa0sDz+88nGWFGpTNd/l8ZwPVGy+Z09+QCa0ZsdvHe2VZEesUUBCucoQpcfS7rnCzKh+TFHtFHniaf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328166; c=relaxed/simple;
-	bh=+ROLhv8WM+oN45TbQKg3sKmN5USgWb2m1qHlpVQp6DU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EDNjtGf9zamcJ46YkKioryclCWNf97iGlYdwnfbV5lDHXDwmKJ4FjEKWcg81t5jM39aUI2A4FTaNNaPoQ6VatA5uI9c4hBm8vjAyfc+86JJu8V7cWyvlvU6Bu8dzwJNK33MbaNz8CkFsjxVEdT8zygxO3gNFKCqtndDTV6HzeQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BE5iyPPq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F1EC19421;
-	Sun,  1 Mar 2026 01:22:45 +0000 (UTC)
+	s=arc-20240116; t=1772328168; c=relaxed/simple;
+	bh=SEnKEqpbJJgzhXkZ15c0atJTE45+ANLkzK1gHcuG0F8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OK4VMGzW69aQDhXntT85jb8Gv2gTh0pVZm/EfadE+8NQQkiAeB2PeN/Bwa31bCisUMu/HnYFAZdpCPDP8xCa3uOawb6vfn04hQOS7ee+WHlq2wZ4MyRaDd6V1xP52leTfU/TmE+BmGT/1LVtbaWyY2nL5k19M3LyAfFCIEviL7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDcIihbr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122D7C19424;
+	Sun,  1 Mar 2026 01:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328166;
-	bh=+ROLhv8WM+oN45TbQKg3sKmN5USgWb2m1qHlpVQp6DU=;
+	s=k20201202; t=1772328168;
+	bh=SEnKEqpbJJgzhXkZ15c0atJTE45+ANLkzK1gHcuG0F8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=BE5iyPPq10l33/UCpUj9hylINPaAXE4phIReXeBLaHmZYT6fmnqLXCL74mQ3gy2+t
-	 cLcpos8fvZMeVvo1ckVMJrTbiq3C/LW6bpmRo6tYg+dovUK8kK+lpuKMGDMwV06f9b
-	 UijD5Mwsln2/54S6hrCwIVzUZX61NUi27NOG8acg1SOnhY4NNWWlTYDkLXTGXQD3Eg
-	 lYYv9+LlpMewfXqYc+0XHGWT+uMpKXQBLOp0be62ULIokERFA3Sb2ei6tYD5JCeOUg
-	 uzFVEnBRkXp6xPumJ+nH6RGtNlJOSmwm4X58SwhnI843FOItkjXfykO3hnpw33x94t
-	 b+qGVVUcHux2g==
+	b=cDcIihbr7qPFJ8izihFJhmVwcIb2RUXulRG1qt336uYOH2hb86BA6gZgfqTXg48vZ
+	 yFJ4NPFn9VKxITtTvl/RGiDYHZApUrk2sMJOxNYNz4VWboAlnPga11kIZG2bPeugie
+	 qKJD3SRtCmqt3jT8/sUnf3gwVUOJgEPZNh3HUnq/vm/9DjExIHnaxrcg5zaSJOlEZ/
+	 c4m5/KAK78h7gY+arH4NO+kwmjaxg94f0rhiI44BmDGB6bhp1WQQclLqep8GXdgBCN
+	 IDXjgoFBkiI3dUXYpfr7Oh+Uh+FNqGKsL3SwkMPQNtHX3wy9gCwYkXH5Vplkz4/Jhc
+	 dRgPHcKjcKHjQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	guojinhui.liam@bytedance.com
-Cc: Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	iommu@lists.linux.dev
-Subject: FAILED: Patch "iommu/vt-d: Flush dev-IOTLB only when PCIe device is accessible in scalable mode" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:22:44 -0500
-Message-ID: <20260301012244.1679211-1-sashal@kernel.org>
+	loic.poulain@oss.qualcomm.com
+Cc: stable@kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm/bridge: anx7625: Fix invalid EDID size" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:22:46 -0500
+Message-ID: <20260301012246.1679262-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,35 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221400-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221401-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 215881CAF02
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 714EE1CAC46
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -102,81 +103,38 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 10e60d87813989e20eac1f3eda30b3bae461e7f9 Mon Sep 17 00:00:00 2001
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-Date: Thu, 22 Jan 2026 09:48:51 +0800
-Subject: [PATCH] iommu/vt-d: Flush dev-IOTLB only when PCIe device is
- accessible in scalable mode
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 1d5362145de96b5d00d590605cc94cdfa572b405 Mon Sep 17 00:00:00 2001
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Thu, 18 Dec 2025 16:13:07 +0100
+Subject: [PATCH] drm/bridge: anx7625: Fix invalid EDID size
 
-Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
-request when device is disconnected") relies on
-pci_dev_is_disconnected() to skip ATS invalidation for
-safely-removed devices, but it does not cover link-down caused
-by faults, which can still hard-lock the system.
+DRM checks EDID block count against allocated size in drm_edid_valid
+function. We have to allocate the right EDID size instead of the max
+size to prevent the EDID to be reported as invalid.
 
-For example, if a VM fails to connect to the PCIe device,
-"virsh destroy" is executed to release resources and isolate
-the fault, but a hard-lockup occurs while releasing the group fd.
-
-Call Trace:
- qi_submit_sync
- qi_flush_dev_iotlb
- intel_pasid_tear_down_entry
- device_block_translation
- blocking_domain_attach_dev
- __iommu_attach_device
- __iommu_device_set_domain
- __iommu_group_set_domain_internal
- iommu_detach_group
- vfio_iommu_type1_detach_group
- vfio_group_detach_container
- vfio_group_fops_release
- __fput
-
-Although pci_device_is_present() is slower than
-pci_dev_is_disconnected(), it still takes only ~70 µs on a
-ConnectX-5 (8 GT/s, x2) and becomes even faster as PCIe speed
-and width increase.
-
-Besides, devtlb_invalidation_with_pasid() is called only in the
-paths below, which are far less frequent than memory map/unmap.
-
-1. mm-struct release
-2. {attach,release}_dev
-3. set/remove PASID
-4. dirty-tracking setup
-
-The gain in system stability far outweighs the negligible cost
-of using pci_device_is_present() instead of pci_dev_is_disconnected()
-to decide when to skip ATS invalidation, especially under GDR
-high-load conditions.
-
-Fixes: 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation request when device is disconnected")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Link: https://lore.kernel.org/r/20251211035946.2071-3-guojinhui.liam@bytedance.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Cc: stable@kernel.org
+Fixes: 7c585f9a71aa ("drm/bridge: anx7625: use struct drm_edid more")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251218151307.95491-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 ---
- drivers/iommu/intel/pasid.c | 2 +-
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index 3f6d78180d799..99692f88b8834 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -218,7 +218,7 @@ devtlb_invalidation_with_pasid(struct intel_iommu *iommu,
- 	if (!info || !info->ats_enabled)
- 		return;
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 6f3fdcb6afdb9..4e49e4f28d552 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -1801,7 +1801,7 @@ static const struct drm_edid *anx7625_edid_read(struct anx7625_data *ctx)
+ 		return NULL;
+ 	}
  
--	if (pci_dev_is_disconnected(to_pci_dev(dev)))
-+	if (!pci_device_is_present(to_pci_dev(dev)))
- 		return;
+-	ctx->cached_drm_edid = drm_edid_alloc(edid_buf, FOUR_BLOCK_SIZE);
++	ctx->cached_drm_edid = drm_edid_alloc(edid_buf, edid_num * ONE_BLOCK_SIZE);
+ 	kfree(edid_buf);
  
- 	sid = PCI_DEVID(info->bus, info->devfn);
+ out:
 -- 
 2.51.0
 
