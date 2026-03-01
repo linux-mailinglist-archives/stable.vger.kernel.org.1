@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-222294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDyfGXCfo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:44 +0100
+	id IFYgMk+fo2lzIgUAu9opvQ
+	(envelope-from <stable+bounces-222295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F751CD06F
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712CA1CD013
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 15B933030EDA
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:02:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DFA5E301DEC1
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9612EE5FD;
-	Sun,  1 Mar 2026 02:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432602F3C1F;
+	Sun,  1 Mar 2026 02:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RldULCnF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8GYwGIm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700AE259C80;
-	Sun,  1 Mar 2026 02:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B32259C80;
+	Sun,  1 Mar 2026 02:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330520; cv=none; b=RVSmgx3ABL3UUyyrzw3ZfxvhozmQAeDh72bZ6Yu6oH4sEs4/oUHdD17fal45FAFrVWYfvuUAoLGQIZ1ZYieQxRrtzYOM9Vyw1fROKDahgmxC3VZP2UNbwEOr/eVM0IlvIkPQS6Jytfeo5fY5OOb4A8uhoN6D+C+y+vz07XK1w/A=
+	t=1772330523; cv=none; b=TPT7pgVRqSdPxP9PzhiGu+rawfnZO18IHJI8wziy4OtkLpOPIt773f02ymJ/fumhM2cN9AnyOeKTP9ivMJaGD14EdqB+5QhpOeZqOD130ZIvM42qg/mhwANpFQQRXPGOS+VKGY6XyEvvW1qRdb15GXEExLuwApRVoA0JHCCrkCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330520; c=relaxed/simple;
-	bh=0GW2Dfo8bMAwLhoSpJqB7GXmNjNtdOnqQgMYlEMk6BQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RFNGaQnMkrpOISkiSuk23f3eIe6zkyPjbapDpKVBCuuQ0zp3jsoSAMsn2MfUQpf5zPb0bvfDHYK9s2sLUtqB5nW08mEyq6K138g8iSFtBinTuHYweJ1T4fUHOrdU4Sjxe9GgybO7N/rmgp6F/PWXCQO9uPPgzfyM8nBdQDeeP/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RldULCnF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC813C19421;
-	Sun,  1 Mar 2026 02:01:59 +0000 (UTC)
+	s=arc-20240116; t=1772330523; c=relaxed/simple;
+	bh=OaARiU2V97zcxx5wDw3VqcFr9rDXhNBAk19csGgqDLU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CkF6TdGXL1uRaaVAxoAlIG6EogHFt4VbhLv53864Q0cGDhQARZjvxt/yf/GHpBQUKrvkAdAvLF+F/Q7syhGTnvO22rKhDUBYyJlKHDw2m9VJlzk7LQk3KVAxxir8WL92+yZOa0ctRxISZ1YEfKc58QqUNeEYCj7mqRqavKACYM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8GYwGIm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA37C19421;
+	Sun,  1 Mar 2026 02:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330520;
-	bh=0GW2Dfo8bMAwLhoSpJqB7GXmNjNtdOnqQgMYlEMk6BQ=;
+	s=k20201202; t=1772330522;
+	bh=OaARiU2V97zcxx5wDw3VqcFr9rDXhNBAk19csGgqDLU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=RldULCnFa+ISyIAXCoeu+jhpuqlebVJdl5tru2nYrOFBKopVUAHkoYQ0mBD95ghrJ
-	 OdqKxEglKz4+xD2Ou8xRuzvKxrbPoyq2aIDwLMYHWiFmE18OoEuivGVy08RH9QfCgS
-	 HdMNurOaJJLj1QVCU220T92I6Afh7Uk5HS0uX1F6zwUfaL3uV+732pENPF+nJzWirc
-	 bszVW+t6WFKOkgqBn1Xi3FxEZSok0ovVOEzq4YwVsrAmt8K+P/N3QApgMTXOoe2Q3s
-	 7Dgy9PXn0PnMX0ASS6gSSVqghdUzhER4HKVBpjUPDxy1HFurVM3PoAQI3sq5/Ym2AZ
-	 xUEv0ztJ6C9RQ==
+	b=N8GYwGImNiCKin0lB1Cq3ceQg5zL59wVR06jdIg9XshyURuEkhd5+Z6gUPSeGziiG
+	 o32Zz+xi9iaWyK6aDdvFBbXaYzvmVJ5XsHdnP9QKVwY9k7Jtfc0QWaBs93KYCvUUDX
+	 MoavXTHBzbkeqzle/QfqiDFdIRhqVRgegGZRie+xnoWE6OsacnjR3KV6KB6LzLmpzZ
+	 uONG1B2iz8f27PLKKsliooVht7xbkoAunJhjZ/Q0FZyQI9+zhgA+uoeyMCBWWyDTk7
+	 seCLDkNRvP6A6zgHMrvfS/0f4cGvmsx+OaNf3rGXshqMSN9t4qs+h6LIZWupa47ajP
+	 3qL5T0zZUF2YQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	djwong@kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	linux-xfs@vger.kernel.org
-Subject: FAILED: Patch "xfs: fix the xattr scrub to detect freemap/entries array collisions" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:01:58 -0500
-Message-ID: <20260301020158.1729354-1-sashal@kernel.org>
+	raag.jadav@intel.com
+Cc: Guido Trentalancia <guido@trentalancia.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-gpio@vger.kernel.org
+Subject: FAILED: Patch "pinctrl: intel: Add code name documentation" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:02:00 -0500
+Message-ID: <20260301020200.1729403-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,19 +69,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222294-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-222295-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E9F751CD06F
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,trentalancia.com:email]
+X-Rspamd-Queue-Id: 712CA1CD013
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -102,114 +104,79 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6fed8270448c246e706921c177e9633013dd3fcf Mon Sep 17 00:00:00 2001
-From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Fri, 23 Jan 2026 09:27:33 -0800
-Subject: [PATCH] xfs: fix the xattr scrub to detect freemap/entries array
- collisions
+From fc32c5725fbe1164d353400389d3e29d19960a3a Mon Sep 17 00:00:00 2001
+From: Raag Jadav <raag.jadav@intel.com>
+Date: Sat, 24 Jan 2026 13:44:54 +0530
+Subject: [PATCH] pinctrl: intel: Add code name documentation
 
-In the previous patches, we observed that it's possible for there to be
-freemap entries with zero size but a nonzero base.  This isn't an
-inconsistency per se, but older kernels can get confused by this and
-corrupt the block, leading to corruption.
+Intel pinctrl drivers support large set of platforms and the IPs are
+often reused by their different variants, but it's currently not possible
+to figure out the exact driver that supports specific variant. Add user
+friendly documentation for them.
 
-If we see this, flag the xattr structure for optimization so that it
-gets rebuilt.
-
-Cc: <stable@vger.kernel.org> # v4.15
-Fixes: 13791d3b833428 ("xfs: scrub extended attribute leaf space")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
+Reported-by: Guido Trentalancia <guido@trentalancia.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220056
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Acked-by: Guido Trentalancia <guido@trentalancia.com>
+[andy: added Oxford comma]
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- fs/xfs/scrub/attr.c | 54 ++++++++++++++++++++++-----------------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ drivers/pinctrl/intel/Kconfig | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/fs/xfs/scrub/attr.c b/fs/xfs/scrub/attr.c
-index eeb5ac34d7422..a397c50b77943 100644
---- a/fs/xfs/scrub/attr.c
-+++ b/fs/xfs/scrub/attr.c
-@@ -287,32 +287,6 @@ xchk_xattr_set_map(
- 	return ret;
- }
+diff --git a/drivers/pinctrl/intel/Kconfig b/drivers/pinctrl/intel/Kconfig
+index e4dc9ba899bde..04c3a5b581f3c 100644
+--- a/drivers/pinctrl/intel/Kconfig
++++ b/drivers/pinctrl/intel/Kconfig
+@@ -53,7 +53,10 @@ config PINCTRL_ALDERLAKE
+ 	select PINCTRL_INTEL
+ 	help
+ 	  This pinctrl driver provides an interface that allows configuring
+-	  of Intel Alder Lake PCH pins and using them as GPIOs.
++	  PCH pins of the following platforms and using them as GPIOs:
++	  - Alder Lake HX, N, and S
++	  - Raptor Lake HX, E, and S
++	  - Twin Lake
  
--/*
-- * Check the leaf freemap from the usage bitmap.  Returns false if the
-- * attr freemap has problems or points to used space.
-- */
--STATIC bool
--xchk_xattr_check_freemap(
--	struct xfs_scrub		*sc,
--	struct xfs_attr3_icleaf_hdr	*leafhdr)
--{
--	struct xchk_xattr_buf		*ab = sc->buf;
--	unsigned int			mapsize = sc->mp->m_attr_geo->blksize;
--	int				i;
--
--	/* Construct bitmap of freemap contents. */
--	bitmap_zero(ab->freemap, mapsize);
--	for (i = 0; i < XFS_ATTR_LEAF_MAPSIZE; i++) {
--		if (!xchk_xattr_set_map(sc, ab->freemap,
--				leafhdr->freemap[i].base,
--				leafhdr->freemap[i].size))
--			return false;
--	}
--
--	/* Look for bits that are set in freemap and are marked in use. */
--	return !bitmap_intersects(ab->freemap, ab->usedmap, mapsize);
--}
--
- /*
-  * Check this leaf entry's relations to everything else.
-  * Returns the number of bytes used for the name/value data.
-@@ -403,6 +377,7 @@ xchk_xattr_block(
+ config PINCTRL_BROXTON
+ 	tristate "Intel Broxton pinctrl and GPIO driver"
+@@ -137,15 +140,17 @@ config PINCTRL_METEORLAKE
+ 	select PINCTRL_INTEL
+ 	help
+ 	  This pinctrl driver provides an interface that allows configuring
+-	  of Intel Meteor Lake pins and using them as GPIOs.
++	  SoC pins of the following platforms and using them as GPIOs:
++	  - Arrow Lake (all variants)
++	  - Meteor Lake (all variants)
  
- 	*last_checked = blk->blkno;
- 	bitmap_zero(ab->usedmap, mp->m_attr_geo->blksize);
-+	bitmap_zero(ab->freemap, mp->m_attr_geo->blksize);
+ config PINCTRL_METEORPOINT
+ 	tristate "Intel Meteor Point pinctrl and GPIO driver"
+ 	select PINCTRL_INTEL
+ 	help
+-	  Meteor Point is the PCH of Intel Meteor Lake. This pinctrl driver
+-	  provides an interface that allows configuring of PCH pins and
+-	  using them as GPIOs.
++	  This pinctrl driver provides an interface that allows configuring
++	  PCH pins of the following platforms and using them as GPIOs:
++	  - Arrow Lake HX and S
  
- 	/* Check all the padding. */
- 	if (xfs_has_crc(ds->sc->mp)) {
-@@ -449,6 +424,9 @@ xchk_xattr_block(
- 	if ((char *)&entries[leafhdr.count] > (char *)leaf + leafhdr.firstused)
- 		xchk_da_set_corrupt(ds, level);
+ config PINCTRL_SUNRISEPOINT
+ 	tristate "Intel Sunrisepoint pinctrl and GPIO driver"
+@@ -160,7 +165,11 @@ config PINCTRL_TIGERLAKE
+ 	select PINCTRL_INTEL
+ 	help
+ 	  This pinctrl driver provides an interface that allows configuring
+-	  of Intel Tiger Lake PCH pins and using them as GPIOs.
++	  PCH pins of the following platforms and using them as GPIOs:
++	  - Alder Lake H, P, PS, and U
++	  - Raptor Lake H, P, PS, PX, and U
++	  - Rocket Lake S
++	  - Tiger Lake (all variants)
  
-+	if (ds->sc->sm->sm_flags & XFS_SCRUB_OFLAG_CORRUPT)
-+		goto out;
-+
- 	buf_end = (char *)bp->b_addr + mp->m_attr_geo->blksize;
- 	for (i = 0, ent = entries; i < leafhdr.count; ent++, i++) {
- 		/* Mark the leaf entry itself. */
-@@ -467,7 +445,29 @@ xchk_xattr_block(
- 			goto out;
- 	}
- 
--	if (!xchk_xattr_check_freemap(ds->sc, &leafhdr))
-+	/* Construct bitmap of freemap contents. */
-+	for (i = 0; i < XFS_ATTR_LEAF_MAPSIZE; i++) {
-+		if (!xchk_xattr_set_map(ds->sc, ab->freemap,
-+				leafhdr.freemap[i].base,
-+				leafhdr.freemap[i].size))
-+			xchk_da_set_corrupt(ds, level);
-+
-+		/*
-+		 * freemap entries with zero length and nonzero base can cause
-+		 * problems with older kernels, so we mark these for preening
-+		 * even though there's no inconsistency.
-+		 */
-+		if (leafhdr.freemap[i].size == 0 &&
-+		    leafhdr.freemap[i].base > 0)
-+			xchk_da_set_preen(ds, level);
-+
-+		if (ds->sc->sm->sm_flags & XFS_SCRUB_OFLAG_CORRUPT)
-+			goto out;
-+	}
-+
-+	/* Look for bits that are set in freemap and are marked in use. */
-+	if (bitmap_intersects(ab->freemap, ab->usedmap,
-+			mp->m_attr_geo->blksize))
- 		xchk_da_set_corrupt(ds, level);
- 
- 	if (leafhdr.usedbytes != usedbytes)
+ source "drivers/pinctrl/intel/Kconfig.tng"
+ endmenu
 -- 
 2.51.0
 
