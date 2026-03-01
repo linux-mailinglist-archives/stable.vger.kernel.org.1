@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-222037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222038-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGH/HtGco2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:56:33 +0100
+	id gNenFMOro2myJgUAu9opvQ
+	(envelope-from <stable+bounces-222038-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:00:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A021CC523
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:56:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3EE1CE1F9
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:00:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88F81302E0D8
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:50:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF3F133DFD18
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193F1309DB1;
-	Sun,  1 Mar 2026 01:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7979A2FD7BE;
+	Sun,  1 Mar 2026 01:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KR7HbQW7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QxkZgl2G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6892FD7BE;
-	Sun,  1 Mar 2026 01:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A47C2D838A;
+	Sun,  1 Mar 2026 01:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329748; cv=none; b=Qo/tWc4Q12jKJLeKmQumNupm6n30ehfPOkJl6lktWUICGE1LUXps3ltLvloi1+o/LAOFcIrlxsc44gcW80aG1Az3IZBlPspR9Lb/UuFvjH+XgnBOR24R5GDXXdh1HT97t9Y8PD2u/OBG7Kvzg14vU9DM++INBIv9CiM//2/LHtQ=
+	t=1772329751; cv=none; b=HMl2OWpWWjAxllK7NFr6ShmDZRVyWsljkSI/O2D6eXVIkhVR14rcs57xjXoPewOPvG59Bc3hcBdPftz2E3UKo+4Sgc3K50RWkhijNM5yLN0hN/S3QEPS1RZjLroRGH1HtaWzQG0sT9qDksVnVBVFouP72aSP6sHexBRdvTp6J2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329748; c=relaxed/simple;
-	bh=yGybDEyAAJuUDXKq7LIFxjcR693cgzZ3yTr20kqPrJI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X6rGC0NoYnazuBNcdzntBtb5MyJODNhCQ9jTa9B6i9ut+sbh7AUWcnNLW+GXKKKQO8OJzeFSccHr5JGzYsJkAXtzAsAC2AyPvnAzjwX6EzlVcbFj+BbYLsg6pC9gWqgMf7RHXEcxiPk+YhPeMIlHxMeLhfIouMvX2iUB3ZNZOtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KR7HbQW7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F51C19421;
-	Sun,  1 Mar 2026 01:49:08 +0000 (UTC)
+	s=arc-20240116; t=1772329751; c=relaxed/simple;
+	bh=Crm2DzV5ZRLDP0lpvNgwHhx72Dh443SKSFzyDVBju4c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GA4ZBwssQcV8/4R9JRnVHBgzHzrgI04NSUCQwHA7vMa0Cum7T9yBNXW8jhSvpsdE/1hUycXXKRTiIINm6wr0Lms2lh8JTMls99c2xhbXO9S5ru66+d19zpi02yMhi++E0WALxw7k9BiCUQ6e+b6y9shFMU9KVzB0In6qpUbK6lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QxkZgl2G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B7AC2BCAF;
+	Sun,  1 Mar 2026 01:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329748;
-	bh=yGybDEyAAJuUDXKq7LIFxjcR693cgzZ3yTr20kqPrJI=;
+	s=k20201202; t=1772329750;
+	bh=Crm2DzV5ZRLDP0lpvNgwHhx72Dh443SKSFzyDVBju4c=;
 	h=From:To:Cc:Subject:Date:From;
-	b=KR7HbQW7caUqzgokePofNCJmYfcRVbhc2Z9QIeJyssdyXzzMpuXryCcwkIxSZ67iB
-	 MBdIhJskZbDSuTQvG/sSjyIP1trHadhAQjQprHIcd/rAFGW2D5zJ22CEaoYFcI1u1K
-	 NGyo6+uOOfwrJofdnRRhy7ygyXWzfoHqvRdkx5cF5TWruuaaLFn6kMFSTlZecmSdA8
-	 FmP0KpWlg1rycJfb6VB9d8afD9HugXeFNGkTkpyCmxGQvhF2y+Qt97FoFhCkswMosc
-	 Xf4sJxFUAVbwYNvHiPfVB6ECOE8hamA1md6iWbXjFZyVWEc+IqqHrlYEYK7XuIiZe4
-	 +4IjwpykhiNng==
+	b=QxkZgl2GZHnrH9f9pE/n9S4nb0SGvJeRoHuL3oHqDLXWohrqYUfVSd+LY2VqbaU/1
+	 5sxpPMMT7E73ayLu1R3QvZPAd8VCD2sqkL+yoLZo7/+XeWYnRVVh41JbmSins8/SSR
+	 bM8AD83cwtx3ZDv9v9wsmrC7TLzPp718d7SLJLICtZlsVzK3IO4X0fcowMTQNt1qxZ
+	 WPZqFPX7jPbPHjfAo9aGKOM7OfRvpbitCqaX9n7T/kbjm5zL8jGbFLOiCLSJoorLns
+	 Sd7y491lzZPtbb50lyCXvKxZ7CPNb3A4jmHEQgu6fxQjpEwc6Tp1dtlcDZpdLe7HoT
+	 CG51rbxKtvI+g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	seanjc@google.com
-Cc: Jim Mattson <jmattson@google.com>,
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>,
 	kvm@vger.kernel.org
-Subject: FAILED: Patch "KVM: x86: Return "unsupported" instead of "invalid" on access to unsupported PV MSR" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:49:06 -0500
-Message-ID: <20260301014907.1713445-1-sashal@kernel.org>
+Subject: FAILED: Patch "KVM: nSVM: Remove a user-triggerable WARN on nested_svm_load_cr3() succeeding" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:49:09 -0500
+Message-ID: <20260301014909.1713524-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,29 +67,28 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-222038-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222037-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 00A021CC523
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BB3EE1CE1F9
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -102,195 +101,89 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5bb9ac1865123356337a389af935d3913ee917ed Mon Sep 17 00:00:00 2001
+From fc3ba56385d03501eb582e4b86691ba378e556f9 Mon Sep 17 00:00:00 2001
 From: Sean Christopherson <seanjc@google.com>
-Date: Tue, 30 Dec 2025 12:59:48 -0800
-Subject: [PATCH] KVM: x86: Return "unsupported" instead of "invalid" on access
- to unsupported PV MSR
+Date: Tue, 16 Dec 2025 08:17:54 -0800
+Subject: [PATCH] KVM: nSVM: Remove a user-triggerable WARN on
+ nested_svm_load_cr3() succeeding
 
-Return KVM_MSR_RET_UNSUPPORTED instead of '1' (which for all intents and
-purposes means "invalid") when rejecting accesses to KVM PV MSRs to adhere
-to KVM's ABI of allowing host reads and writes of '0' to MSRs that are
-advertised to userspace via KVM_GET_MSR_INDEX_LIST, even if the vCPU model
-doesn't support the MSR.
+Drop the WARN in svm_set_nested_state() on nested_svm_load_cr3() failing
+as it is trivially easy to trigger from userspace by modifying CPUID after
+loading CR3.  E.g. modifying the state restoration selftest like so:
 
-E.g. running a QEMU VM with
+  --- tools/testing/selftests/kvm/x86/state_test.c
+  +++ tools/testing/selftests/kvm/x86/state_test.c
+  @@ -280,7 +280,16 @@ int main(int argc, char *argv[])
 
-  -cpu host,-kvmclock,kvm-pv-enforce-cpuid
+                 /* Restore state in a new VM.  */
+                  vcpu = vm_recreate_with_one_vcpu(vm);
+  -               vcpu_load_state(vcpu, state);
+  +
+  +               if (stage == 4) {
+  +                       state->sregs.cr3 = BIT(44);
+  +                       vcpu_load_state(vcpu, state);
+  +
+  +                       vcpu_set_cpuid_property(vcpu, X86_PROPERTY_MAX_PHY_ADDR, 36);
+  +                       __vcpu_nested_state_set(vcpu, &state->nested);
+  +               } else {
+  +                       vcpu_load_state(vcpu, state);
+  +               }
 
-yields:
+                  /*
+                   * Restore XSAVE state in a dummy vCPU, first without doing
 
-  qemu: error: failed to set MSR 0x12 to 0x0
-  qemu: target/i386/kvm/kvm.c:3301: kvm_buf_set_msrs:
-        Assertion `ret == cpu->kvm_msr_buf->nmsrs' failed.
+generates:
 
-Fixes: 66570e966dd9 ("kvm: x86: only provide PV features if enabled in guest's CPUID")
+  WARNING: CPU: 30 PID: 938 at arch/x86/kvm/svm/nested.c:1877 svm_set_nested_state+0x34a/0x360 [kvm_amd]
+  Modules linked in: kvm_amd kvm irqbypass [last unloaded: kvm]
+  CPU: 30 UID: 1000 PID: 938 Comm: state_test Tainted: G        W           6.18.0-rc7-58e10b63777d-next-vm
+  Tainted: [W]=WARN
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:svm_set_nested_state+0x34a/0x360 [kvm_amd]
+  Call Trace:
+   <TASK>
+   kvm_arch_vcpu_ioctl+0xf33/0x1700 [kvm]
+   kvm_vcpu_ioctl+0x4e6/0x8f0 [kvm]
+   __x64_sys_ioctl+0x8f/0xd0
+   do_syscall_64+0x61/0xad0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Simply delete the WARN instead of trying to prevent userspace from shoving
+"illegal" state into CR3.  For better or worse, KVM's ABI allows userspace
+to set CPUID after SREGS, and vice versa, and KVM is very permissive when
+it comes to guest CPUID.  I.e. attempting to enforce the virtual CPU model
+when setting CPUID could break userspace.  Given that the WARN doesn't
+provide any meaningful protection for KVM or benefit for userspace, simply
+drop it even though the odds of breaking userspace are minuscule.
+
+Opportunistically delete a spurious newline.
+
+Fixes: b222b0b88162 ("KVM: nSVM: refactor the CR3 reload on migration")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://patch.msgid.link/20251230205948.4094097-1-seanjc@google.com
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20251216161755.1775409-1-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ arch/x86/kvm/svm/nested.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 211d8c24a4b11..e4418409b468d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4097,47 +4097,47 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		break;
- 	case MSR_KVM_WALL_CLOCK_NEW:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index ba0f11c68372b..9be67040e94d9 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1870,10 +1870,9 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 	 * thus MMU might not be initialized correctly.
+ 	 * Set it again to fix this.
+ 	 */
+-
+ 	ret = nested_svm_load_cr3(&svm->vcpu, vcpu->arch.cr3,
+ 				  nested_npt_enabled(svm), false);
+-	if (WARN_ON_ONCE(ret))
++	if (ret)
+ 		goto out_free;
  
- 		vcpu->kvm->arch.wall_clock = data;
- 		kvm_write_wall_clock(vcpu->kvm, data, 0);
- 		break;
- 	case MSR_KVM_WALL_CLOCK:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		vcpu->kvm->arch.wall_clock = data;
- 		kvm_write_wall_clock(vcpu->kvm, data, 0);
- 		break;
- 	case MSR_KVM_SYSTEM_TIME_NEW:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		kvm_write_system_time(vcpu, data, false, msr_info->host_initiated);
- 		break;
- 	case MSR_KVM_SYSTEM_TIME:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		kvm_write_system_time(vcpu, data, true,  msr_info->host_initiated);
- 		break;
- 	case MSR_KVM_ASYNC_PF_EN:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		if (kvm_pv_enable_async_pf(vcpu, data))
- 			return 1;
- 		break;
- 	case MSR_KVM_ASYNC_PF_INT:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		if (kvm_pv_enable_async_pf_int(vcpu, data))
- 			return 1;
- 		break;
- 	case MSR_KVM_ASYNC_PF_ACK:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 		if (data & 0x1) {
- 			/*
- 			 * Pairs with the smp_mb__after_atomic() in
-@@ -4150,7 +4150,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		break;
- 	case MSR_KVM_STEAL_TIME:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_STEAL_TIME))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		if (unlikely(!sched_info_on()))
- 			return 1;
-@@ -4168,7 +4168,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		break;
- 	case MSR_KVM_PV_EOI_EN:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_PV_EOI))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		if (kvm_lapic_set_pv_eoi(vcpu, data, sizeof(u8)))
- 			return 1;
-@@ -4176,7 +4176,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 
- 	case MSR_KVM_POLL_CONTROL:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_POLL_CONTROL))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		/* only enable bit supported */
- 		if (data & (-1ULL << 1))
-@@ -4477,61 +4477,61 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		break;
- 	case MSR_KVM_WALL_CLOCK:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		msr_info->data = vcpu->kvm->arch.wall_clock;
- 		break;
- 	case MSR_KVM_WALL_CLOCK_NEW:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		msr_info->data = vcpu->kvm->arch.wall_clock;
- 		break;
- 	case MSR_KVM_SYSTEM_TIME:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		msr_info->data = vcpu->arch.time;
- 		break;
- 	case MSR_KVM_SYSTEM_TIME_NEW:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		msr_info->data = vcpu->arch.time;
- 		break;
- 	case MSR_KVM_ASYNC_PF_EN:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		msr_info->data = vcpu->arch.apf.msr_en_val;
- 		break;
- 	case MSR_KVM_ASYNC_PF_INT:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		msr_info->data = vcpu->arch.apf.msr_int_val;
- 		break;
- 	case MSR_KVM_ASYNC_PF_ACK:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		msr_info->data = 0;
- 		break;
- 	case MSR_KVM_STEAL_TIME:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_STEAL_TIME))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		msr_info->data = vcpu->arch.st.msr_val;
- 		break;
- 	case MSR_KVM_PV_EOI_EN:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_PV_EOI))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		msr_info->data = vcpu->arch.pv_eoi.msr_val;
- 		break;
- 	case MSR_KVM_POLL_CONTROL:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_POLL_CONTROL))
--			return 1;
-+			return KVM_MSR_RET_UNSUPPORTED;
- 
- 		msr_info->data = vcpu->arch.msr_kvm_poll_control;
- 		break;
+ 	svm->nested.force_msr_bitmap_recalc = true;
 -- 
 2.51.0
 
