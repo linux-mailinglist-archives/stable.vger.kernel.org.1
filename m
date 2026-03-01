@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-221654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHzMFuiao2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:24 +0100
+	id SLNkLK+ao2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621631CBD05
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D15C1CBB9D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D3CEC3033BC5
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:34:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC235321B623
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A002ECEA5;
-	Sun,  1 Mar 2026 01:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68D12EA498;
+	Sun,  1 Mar 2026 01:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQaV/4M2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYsvRqSv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A71D2C11DE;
-	Sun,  1 Mar 2026 01:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A39B2C11DE;
+	Sun,  1 Mar 2026 01:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328809; cv=none; b=m+bCeN3BReNfQE+WT1rmjHMZ0XjitCt0wDd4VnRls7g7syoeISqrc1OWbs2hWhGAX74XO9bAwkW3ZNDwrS4fokSDm9PCUeUwN0HNPLTwqdUJ13BewHJNyZoM9PhyXL4zsqrQqTmIiuyR3v9XxVJjDe8/y0rYyX1nDR3lMPkmnxI=
+	t=1772328811; cv=none; b=hdUQAjt9/lDN1ZdiP5ixz2htSRHeUYkfcYgLRdKNbe0f4tPeyXs8H7lqgsuiDFCoLDuPeI3Sz0u0fpdxxFtPVYG+JM4I+DuNKFtVfNikxj2omhdEiBYB2l9ikf/2m6FbWMS/3/Ay3G+/r9nEh/j0nfg4Q1j+p2ZwbC3oh17f358=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328809; c=relaxed/simple;
-	bh=T60yvjC+wrrKaiJC2NzibWNn8VluSv61fFrxfxbavlY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lOv1SE1ybcJGYu9dC6wHIkUcrPR6UKP8GCDm7U/9uWrl8QEyFPsBULISKscFolNnoouzC5BscTWcbmalLdyqJ/PYytYygXDY4hVCNj4zj+c/z0M1jNCCxcwfUuUitMf0T7x138xlEfj/yGwW7gIO6c7fGHcQsXrNZ9mi+PvsW6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQaV/4M2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCE6C19421;
-	Sun,  1 Mar 2026 01:33:28 +0000 (UTC)
+	s=arc-20240116; t=1772328811; c=relaxed/simple;
+	bh=QNFjlH+gMhBy12XR4oNDDswtqryM8ZLP7ODp8ijjbDg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ta7QBtUdwUICs40m1mcBBT502G19//f0g0JCGx0l9VS+U/9esW59/PbGw3DxrLaSqTCJNV+SWqZ7zj1DgLDtgjCqDgPKHg+M7YKtFK2sMrTwQPjgq1Sko76U+Hwm08jYBd2yBDCJh+vUjk+nLPbUvP9tI5InxKU8Y70T+ku1PDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYsvRqSv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B93C19421;
+	Sun,  1 Mar 2026 01:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328809;
-	bh=T60yvjC+wrrKaiJC2NzibWNn8VluSv61fFrxfxbavlY=;
+	s=k20201202; t=1772328811;
+	bh=QNFjlH+gMhBy12XR4oNDDswtqryM8ZLP7ODp8ijjbDg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=nQaV/4M20XQjckFdvcTAFEMWiclT4wVE9xX25IPGB5ks8M5KUepKXExVgL8H0gOP8
-	 TarejYlSh0el1lC55r1Rfs9Q02cvbvNYt3bQNwLx17JdF3Zfg2RaELODrqAPcJPaYr
-	 5JQXgSCLmzFjfGQVKDvwKwlxsIYT5KFdjuhN/ryfv9NuKBAZz2rP4Dj7T4VNPXpjb8
-	 n4AjCbaB2WT6ISVVDWJQy9wLINET7NW2L1G88hALZtr1QKNTQm6Xd5VwquVrDr47C2
-	 jeBhtVpxamjyZB9Vuti84CcE9A1Cv2CDL80OR8R+jNapIUwdFJWXb8+TlzLvRBBul8
-	 eNRpa44cBICAA==
+	b=OYsvRqSvAg7U1Zhw2qQrLM9fDTxiiIS1A7dcbqI5RTjhqZhFqK8mOc5i8Udi39eXf
+	 E+XTYtNToiY+rzeWx9Ed++0iEJM+Y9N884KIRGt1ratcAFQWpu1/KBdMEEb+rP6fqs
+	 SB68cKM7uoxlhuXmZSQTapf94h3Xas2EqOto27KeK89xd7v7FdzvvnlN3ydCTQ3RMg
+	 Pe9B69jCR42A8LPpTRMyyN2RKIb7tKJWHfLtSE8VRlSSiKpi63zUebX6hobOLoMZSM
+	 QbOuki5tKphNrLV60UoZXMtEnlBUb/L3oBoFOdzoqOe2WmG7+bJgTN5IsbWR+AlBtn
+	 cedFxVvQPh+Iw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	renjiang.han@oss.qualcomm.com
-Cc: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	linux-media@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: FAILED: Patch "media: venus: vdec: fix error state assignment for zero bytesused" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:33:27 -0500
-Message-ID: <20260301013327.1692685-1-sashal@kernel.org>
+	mpatocka@redhat.com
+Cc: Ondrej Kozina <okozina@redhat.com>,
+	dm-devel@lists.linux.dev
+Subject: FAILED: Patch "dm-integrity: fix recalculation in bitmap mode" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:33:29 -0500
+Message-ID: <20260301013329.1692734-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +63,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221654-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221655-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 621631CBD05
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5D15C1CBB9D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -105,49 +102,69 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 93ecd6ee95c38cb533fa25f48d3c1c8cb69f410f Mon Sep 17 00:00:00 2001
-From: Renjiang Han <renjiang.han@oss.qualcomm.com>
-Date: Thu, 11 Dec 2025 15:20:39 +0530
-Subject: [PATCH] media: venus: vdec: fix error state assignment for zero
- bytesused
+From 118ba36e446c01e3cd34b3eedabf1d9436525e1d Mon Sep 17 00:00:00 2001
+From: Mikulas Patocka <mpatocka@redhat.com>
+Date: Mon, 19 Jan 2026 15:06:02 +0100
+Subject: [PATCH] dm-integrity: fix recalculation in bitmap mode
 
-When hfi_session_flush is issued, all queued buffers are returned to
-the V4L2 driver. Some of these buffers are not processed and have
-bytesused = 0. Currently, the driver marks such buffers as error even
-during drain operations, which can incorrectly flag EOS buffers.
+There's a logic quirk in the handling of suspend in the bitmap mode:
 
-Only capture buffers with zero payload (and not EOS) should be marked
-with VB2_BUF_STATE_ERROR. The check is performed inside the non-EOS
-branch to ensure correct handling.
+This is the sequence of calls if we are reloading a dm-integrity table:
+* dm_integrity_ctr reads a superblock with the flag SB_FLAG_DIRTY_BITMAP
+  set.
+* dm_integrity_postsuspend initializes a journal and clears the flag
+  SB_FLAG_DIRTY_BITMAP.
+* dm_integrity_resume sees the superblock with SB_FLAG_DIRTY_BITMAP set -
+  thus it interprets the journal as if it were a bitmap.
 
-Fixes: 51df3c81ba10b ("media: venus: vdec: Mark flushed buffers with error state")
-Signed-off-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
-Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+This quirk causes recalculation problem if the user increases the size of
+the device in the bitmap mode.
+
+Fix this by reading a fresh copy on the superblock in
+dm_integrity_resume. This commit also fixes another logic quirk - the
+branch that sets bitmap bits if the device was extended should only be
+executed if the flag SB_FLAG_DIRTY_BITMAP is set.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Tested-by: Ondrej Kozina <okozina@redhat.com>
+Fixes: 468dfca38b1a ("dm integrity: add a bitmap mode")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- drivers/media/platform/qcom/venus/vdec.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/md/dm-integrity.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index 4a6641fdffcf7..d0bd2d86a31f9 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -1440,10 +1440,10 @@ static void vdec_buf_done(struct venus_inst *inst, unsigned int buf_type,
- 				inst->drain_active = false;
- 				inst->codec_state = VENUS_DEC_STATE_STOPPED;
- 			}
-+		} else {
-+			if (!bytesused)
-+				state = VB2_BUF_STATE_ERROR;
- 		}
--
--		if (!bytesused)
--			state = VB2_BUF_STATE_ERROR;
- 	} else {
- 		vbuf->sequence = inst->sequence_out++;
- 	}
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index 380527f43b2a1..a9c0157bf42fe 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -3788,14 +3788,27 @@ static void dm_integrity_resume(struct dm_target *ti)
+ 	struct dm_integrity_c *ic = ti->private;
+ 	__u64 old_provided_data_sectors = le64_to_cpu(ic->sb->provided_data_sectors);
+ 	int r;
++	__le32 flags;
+ 
+ 	DEBUG_print("resume\n");
+ 
+ 	ic->wrote_to_journal = false;
+ 
++	flags = ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING);
++	r = sync_rw_sb(ic, REQ_OP_READ);
++	if (r)
++		dm_integrity_io_error(ic, "reading superblock", r);
++	if ((ic->sb->flags & flags) != flags) {
++		ic->sb->flags |= flags;
++		r = sync_rw_sb(ic, REQ_OP_WRITE | REQ_FUA);
++		if (unlikely(r))
++			dm_integrity_io_error(ic, "writing superblock", r);
++	}
++
+ 	if (ic->provided_data_sectors != old_provided_data_sectors) {
+ 		if (ic->provided_data_sectors > old_provided_data_sectors &&
+ 		    ic->mode == 'B' &&
++		    ic->sb->flags & cpu_to_le32(SB_FLAG_DIRTY_BITMAP) &&
+ 		    ic->sb->log2_blocks_per_bitmap_bit == ic->log2_blocks_per_bitmap_bit) {
+ 			rw_journal_sectors(ic, REQ_OP_READ, 0,
+ 					   ic->n_bitmap_blocks * (BITMAP_BLOCK_SIZE >> SECTOR_SHIFT), NULL);
 -- 
 2.51.0
 
