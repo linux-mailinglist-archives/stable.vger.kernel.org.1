@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-221431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGwWC8aXo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:02 +0100
+	id INhlFXuVo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 556CF1CB070
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098F11CA800
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D882330A5289
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 967253023336
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5282750E6;
-	Sun,  1 Mar 2026 01:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E55C27E045;
+	Sun,  1 Mar 2026 01:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pQV57zZZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iURT7AFk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F08EC8F0;
-	Sun,  1 Mar 2026 01:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6214813B7AE;
+	Sun,  1 Mar 2026 01:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328249; cv=none; b=B6YohjQyl1agAvBYiqL0Xm9u5UZ9RFZsCCFWcDkFtV7eWgF2axZa7755Aw7fnrVdHa5K5Lrv+4liVRt5jpfe2Zo2hcMR181OKt+HMv/PFClTeI6OGlyEAneHPSgPqJKzzwfIXdiEInc632eheGBVJM5twLzgz0e9fJKAYXhLKFg=
+	t=1772328251; cv=none; b=PDaTZy43zBN9KQzTi/Lhc1Llc7RW6h7padAq3lRxVTk9uXBz0gld/k1fXRohlCLVD77U68HNBUMsBOmgzdTITkGiJ/Lq4+/H21LY8hDoEh46TLxC6Gacl5sQ8OJQv1sACd3bvf0p2ZxW+JJArTOOYjrta7/gzvP0ms5Z4/XSy7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328249; c=relaxed/simple;
-	bh=TQ3WS7xrSDrkWsZUWcdsmed+WLHe+KwVejHgAu1KVak=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Rn+zjXH0DkAXowALf3afQGgs3IsSbvz5SSH/YwNz46WCgJKJcaPnUIQnL60wgKmDFS1LJV2HMKOd8AfIbHwXXuPGR74UYMH/7pLKy5VllsVV15R4ldXm9p4chtsDsM8nCzhU2p3XCZgF4zJrF5Hbx1XTFsau9GaatfAAuA+4U9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pQV57zZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA40C19421;
-	Sun,  1 Mar 2026 01:24:08 +0000 (UTC)
+	s=arc-20240116; t=1772328251; c=relaxed/simple;
+	bh=nBHyryKGDGsZacfYeyhHAa5VbbwgdXI6JjnY7WHB3y4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p7ygRy3heUpxkO30BsQb2YbxVLFRY2q2gFBTapeqmQ+1UH+hwdd6HtPzOuacpythwDpA0VfTOL2NdfQThiVVR6RpwRHtKGuwOlxGVTks7igQFhxDXVK8CYK1UFgVtPLUjpjuRHvXJCpzENd5x07SW68rmdLirPdxipGCzGO7/sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iURT7AFk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C49C19421;
+	Sun,  1 Mar 2026 01:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328249;
-	bh=TQ3WS7xrSDrkWsZUWcdsmed+WLHe+KwVejHgAu1KVak=;
+	s=k20201202; t=1772328251;
+	bh=nBHyryKGDGsZacfYeyhHAa5VbbwgdXI6JjnY7WHB3y4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=pQV57zZZF/kFlEP8IH6tquW5FzZlzHwfONKu7j3MffApTNagN7M0lIzi7t9cvDlND
-	 tk35L4TOVkazTgxuDq9XhPJ7DyearCN4qCxoNChsHz5yhFvcgXpUlxwncaKRy+Qcot
-	 KPGomOiVEgfdqVNnRKGabqkxJWE8lIL3gPh4NMGJE9bCAy40nP1Sk64oqOx+SkaZRT
-	 qxmox+WUb2/dh+vz8mGd1DJ5Treu2KmdaC3+Q5EXCbUqktnfbAO9dEVgiEv5bZFCGL
-	 xzHJP5ZTLgv5GBGyEcPqW4uUTEzQgJb0UOW+1EE+gd1ZNnPd+lXdXFvzBRFAnp+jP6
-	 DwkHXhNL5uYjg==
+	b=iURT7AFkxYsImzDdMnjN1O4hKMKYV7GOs2WdeakO/cjEw63gNJUwthJQ0k95FPvjm
+	 HvPSWw7J5eO70xjumVw+yBqWokzlPyAbk5ykJ5egfkFk+/boKYLyz1/ubzZqBAA1RL
+	 OqeUfrbej5yec9Djx8kd16VITfUh8/JGa5PyJ5P3hq5nds5De5FMfaTz9oHoPFg7L6
+	 DA9QOiSUdsZR+syFb1FBzPkJ4i6gS512P62gHY6hV3brdbK1QwbRC06slDZM/YF3OJ
+	 lJtyyeYqCEZXM0gYa8JR0WxxhOVGRk04/h1n5/XbFT8LXGG/0rEjD3rNlcA/Kyd9Cp
+	 QHpPDKEpSQ9bw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ilpo.jarvinen@linux.intel.com
-Cc: =?UTF-8?q?Malte=20Schr=C3=B6der?= <malte+lkml@tnxip.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org
-Subject: FAILED: Patch "PCI: Rewrite bridge window head alignment function" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:24:07 -0500
-Message-ID: <20260301012407.1680882-1-sashal@kernel.org>
+	axboe@kernel.dk
+Cc: io-uring@vger.kernel.org
+Subject: FAILED: Patch "io_uring/net: don't continue send bundle if poll was required for retry" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:24:09 -0500
+Message-ID: <20260301012409.1680931-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,36 +59,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-221431-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221432-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 556CF1CB070
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 098F11CA800
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -103,171 +101,48 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From bc75c8e5071120e919beb39e69f0979cccfdf219 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 19 Dec 2025 19:40:15 +0200
-Subject: [PATCH] PCI: Rewrite bridge window head alignment function
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 806ae939c41e5da1d94a1e2b31f5702e96b6c3e3 Mon Sep 17 00:00:00 2001
+From: Jens Axboe <axboe@kernel.dk>
+Date: Tue, 27 Jan 2026 21:01:41 -0700
+Subject: [PATCH] io_uring/net: don't continue send bundle if poll was required
+ for retry
 
-The calculation of bridge window head alignment is done by
-calculate_mem_align() [*]. With the default bridge window alignment, it
-is used for both head and tail alignment.
+If a send bundle has picked a bunch of buffers, then it needs to send
+all of those to be complete. This may require poll arming, if the send
+buffer ends up being full. Once a send bundle has been poll armed, no
+further bundles should be attempted.
 
-The selected head alignment does not always result in tight-fitting
-resources (gap at d4f00000-d4ffffff):
+This allows a current bundle to complete even though it needs to go
+through polling to do so, but it will not allow another bundle to be
+started once that has happened. Ideally we would abort a bundle if it
+was only partially sent, but as some parts of it already went out on the
+wire, this obviously isn't feasible. Not continuing more bundle attempts
+post encountering a full socket buffer is the second best thing.
 
-  d4800000-dbffffff : PCI Bus 0000:06
-    d4800000-d48fffff : PCI Bus 0000:07
-      d4800000-d4803fff : 0000:07:00.0
-        d4800000-d4803fff : nvme
-    d4900000-d49fffff : PCI Bus 0000:0a
-      d4900000-d490ffff : 0000:0a:00.0
-        d4900000-d490ffff : r8169
-      d4910000-d4913fff : 0000:0a:00.0
-    d4a00000-d4cfffff : PCI Bus 0000:0b
-      d4a00000-d4bfffff : 0000:0b:00.0
-        d4a00000-d4bfffff : 0000:0b:00.0
-      d4c00000-d4c07fff : 0000:0b:00.0
-    d4d00000-d4dfffff : PCI Bus 0000:15
-      d4d00000-d4d07fff : 0000:15:00.0
-        d4d00000-d4d07fff : xhci-hcd
-    d4e00000-d4efffff : PCI Bus 0000:16
-      d4e00000-d4e7ffff : 0000:16:00.0
-      d4e80000-d4e803ff : 0000:16:00.0
-        d4e80000-d4e803ff : ahci
-    d5000000-dbffffff : PCI Bus 0000:0c
-
-This has not caused problems (for years) with the default bridge window
-tail alignment that grossly over-estimates the required tail alignment
-leaving more tail room than necessary. With the introduction of relaxed
-tail alignment that leaves no extra tail room whatsoever, any gaps will
-immediately turn into assignment failures.
-
-Introduce head alignment calculation that ensures no gaps are left and
-apply the new approach when using relaxed alignment. We may want to
-consider using it for the normal alignment eventually, but as the first
-step, solve only the problem with the relaxed tail alignment.
-
-([*] I don't understand the algorithm in calculate_mem_align().)
-
-Link: https://git.kernel.org/history/history/c/5d0a8965aea9 ("[PATCH] 2.5.14: New PCI allocation code (alpha, arm, parisc) [2/2]")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220775
-Reported-by: Malte Schröder <malte+lkml@tnxip.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Malte Schröder <malte+lkml@tnxip.de>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251219174036.16738-3-ilpo.jarvinen@linux.intel.com
+Fixes: a05d1f625c7a ("io_uring/net: support bundles for send")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- drivers/pci/setup-bus.c | 53 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 44 insertions(+), 9 deletions(-)
+ io_uring/net.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 4b918ff4d2d8b..80e5a8fc62e70 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -1228,6 +1228,45 @@ static inline resource_size_t calculate_mem_align(resource_size_t *aligns,
- 	return min_align;
- }
+diff --git a/io_uring/net.c b/io_uring/net.c
+index 519ea055b7619..d9a4b83804a25 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -515,7 +515,11 @@ static inline bool io_send_finish(struct io_kiocb *req,
  
-+/*
-+ * Calculate bridge window head alignment that leaves no gaps in between
-+ * resources.
-+ */
-+static resource_size_t calculate_head_align(resource_size_t *aligns,
-+					    int max_order)
-+{
-+	resource_size_t head_align = 1;
-+	resource_size_t remainder = 0;
-+	int order;
-+
-+	/* Take the largest alignment as the starting point. */
-+	head_align <<= max_order + __ffs(SZ_1M);
-+
-+	for (order = max_order - 1; order >= 0; order--) {
-+		resource_size_t align1 = 1;
-+
-+		align1 <<= order + __ffs(SZ_1M);
-+
-+		/*
-+		 * Account smaller resources with alignment < max_order that
-+		 * could be used to fill head room if alignment less than
-+		 * max_order is used.
-+		 */
-+		remainder += aligns[order];
-+
-+		/*
-+		 * Test if head fill is enough to satisfy the alignment of
-+		 * the larger resources after reducing the alignment.
-+		 */
-+		while ((head_align > align1) && (remainder >= head_align / 2)) {
-+			head_align /= 2;
-+			remainder -= head_align;
-+		}
-+	}
-+
-+	return head_align;
-+}
-+
- /**
-  * pbus_upstream_space_available - Check no upstream resource limits allocation
-  * @bus:	The bus
-@@ -1315,13 +1354,13 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- {
- 	struct pci_dev *dev;
- 	resource_size_t min_align, win_align, align, size, size0, size1 = 0;
--	resource_size_t aligns[28]; /* Alignments from 1MB to 128TB */
-+	resource_size_t aligns[28] = {}; /* Alignments from 1MB to 128TB */
-+	resource_size_t aligns2[28] = {};/* Alignments from 1MB to 128TB */
- 	int order, max_order;
- 	struct resource *b_res = pbus_select_window_for_type(bus, type);
- 	resource_size_t children_add_size = 0;
- 	resource_size_t children_add_align = 0;
- 	resource_size_t add_align = 0;
--	resource_size_t relaxed_align;
- 	resource_size_t old_size;
+ 	cflags = io_put_kbufs(req, sel->val, sel->buf_list, io_bundle_nbufs(kmsg, sel->val));
  
- 	if (!b_res)
-@@ -1331,7 +1370,6 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 	if (b_res->parent)
- 		return;
+-	if (bundle_finished || req->flags & REQ_F_BL_EMPTY)
++	/*
++	 * Don't start new bundles if the buffer list is empty, or if the
++	 * current operation needed to go through polling to complete.
++	 */
++	if (bundle_finished || req->flags & (REQ_F_BL_EMPTY | REQ_F_POLLED))
+ 		goto finish;
  
--	memset(aligns, 0, sizeof(aligns));
- 	max_order = 0;
- 	size = 0;
- 
-@@ -1382,6 +1420,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 			 */
- 			if (r_size <= align)
- 				aligns[order] += align;
-+			aligns2[order] += align;
- 			if (order > max_order)
- 				max_order = order;
- 
-@@ -1406,9 +1445,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 
- 	if (bus->self && size0 &&
- 	    !pbus_upstream_space_available(bus, b_res, size0, min_align)) {
--		relaxed_align = 1ULL << (max_order + __ffs(SZ_1M));
--		relaxed_align = max(relaxed_align, win_align);
--		min_align = min(min_align, relaxed_align);
-+		min_align = calculate_head_align(aligns2, max_order);
- 		size0 = calculate_memsize(size, min_size, 0, 0, old_size, win_align);
- 		resource_set_range(b_res, min_align, size0);
- 		pci_info(bus->self, "bridge window %pR to %pR requires relaxed alignment rules\n",
-@@ -1422,9 +1459,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 
- 		if (bus->self && size1 &&
- 		    !pbus_upstream_space_available(bus, b_res, size1, add_align)) {
--			relaxed_align = 1ULL << (max_order + __ffs(SZ_1M));
--			relaxed_align = max(relaxed_align, win_align);
--			min_align = min(min_align, relaxed_align);
-+			min_align = calculate_head_align(aligns2, max_order);
- 			size1 = calculate_memsize(size, min_size, add_size, children_add_size,
- 						  old_size, win_align);
- 			pci_info(bus->self,
+ 	/*
 -- 
 2.51.0
 
