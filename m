@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-221802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAaREQSdo2nFIQUAu9opvQ
-	(envelope-from <stable+bounces-221802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:57:24 +0100
+	id gGphOyKZo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91AFA1CC5E0
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:57:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B36E71CB4E5
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1E0832B926B
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A176302198D
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D9E2DF126;
-	Sun,  1 Mar 2026 01:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4AE2DCBFA;
+	Sun,  1 Mar 2026 01:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4qiDItc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ByC5RRTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766192C11D3
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7811E0B86;
+	Sun,  1 Mar 2026 01:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329173; cv=none; b=irnmmwfwcnry+jPTDVvA2hE7T9PAKSNXMgjVLa0f+bpeo7LPlgqSqV8/oV1naTv6uCbFRuJ8j2vzbfgJ7aUe5ZbAKK0OBb8Dc2IPK86xdCrgxtbvI8HkkuPnQ+d5vgXefo7LtbAaUekYHF3UGaYmWCXbdF/eEJpLyQN54EhSd/c=
+	t=1772329175; cv=none; b=BubMhdNXK5ZNlbRoQFT+7MUoVD4qFoCh2jezYrEGXq0c9VvelmH5NcVzBeIvn7wryqJn6nKmakcXGnKuzvkCdTIpSp0XojGSdjAAAtMb1BEr0pgwGpBZ2RFGlLPdGmgoryxARe72idEfyYioe4iT3YEKE6QElfpuL9bZt3Tw8g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329173; c=relaxed/simple;
-	bh=xLAmtX6CpJX7sWovQGFE/2ZUbEacfdrmX3oqcXISffo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LgBo3u9SxkySiOQFn8Hto43ujFpLgwmlyG2kLuLy5jnqzSkvsLsnv3MIeLwp+FXXRTik3ix2aVuFwo6Ea2glONhOss8R/PR1gM8iuBDH5B33Kfslc+zaTnsvTSt/08YGoWRF+BfoOA4G7U6ucELSPcI4g0sQ5pQ9/dtybF5ZYhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4qiDItc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78A0C19421;
-	Sun,  1 Mar 2026 01:39:32 +0000 (UTC)
+	s=arc-20240116; t=1772329175; c=relaxed/simple;
+	bh=PwDTssfiLj812mcKn94XQrPq6Lkqg5ltegmZDIuOI/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PgSzbLS/OBa0XflqRuZ7Sg7b+Jmpft+ghWEGdtP9qYDZE9HFgJdo0nkx/9WkbvFwzgpo0Fj2BEWx21ObBvuM1eeClVFeS0moow2wd7/oknKsQy6/Uzh7LWDv+OIWwSGQo/Gp/aDk7Pk+gfAmjHubJgOcicCBJb9u06Tu5qX9dRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ByC5RRTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF8BC19421;
+	Sun,  1 Mar 2026 01:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329173;
-	bh=xLAmtX6CpJX7sWovQGFE/2ZUbEacfdrmX3oqcXISffo=;
+	s=k20201202; t=1772329175;
+	bh=PwDTssfiLj812mcKn94XQrPq6Lkqg5ltegmZDIuOI/M=;
 	h=From:To:Cc:Subject:Date:From;
-	b=R4qiDItcFC1/6kThYaF1Ufr/6v6Arja0xBjgUUXRwKktCcYtwRSpRSXDWYzx+5yDi
-	 UqC11UgGTx3IxC3X25OGN6TeO+9WNA0l2aLFpZlwjpwdjs0tkJkXoRRy4ejnC4XsUh
-	 qgZL3EhZfzFKHHLP1kKEflST7/b7eH7oPkehgL0ooKTMHr1XA6zk4kX+T+21gyJRS8
-	 6Unr+/moaCVMsonNizjorvENZbP78rLnmo8BKB4ZBxz5SchTTFAKEZb+TTGcXlLiLN
-	 YHl/KY/aVk2R5fggVziWomo/WhNA2//BiNrdEOaQWKXH1zwkfjIpy23nPSTRMJTomq
-	 3K1XEcDVubNnA==
+	b=ByC5RRTSjTrPbME/Y1GtTonDApx2e9eWOXCFUw+TZwlLEqKlhV1+xO2hWMPGGX2Ai
+	 5MqvL2P+30n9Lc9Vm9rX6tXVy6RzGLWvOsjKWdt5LDIsEsAkRwsvalHymmS5FFbfVF
+	 TOybuxgWbhdnHXXDFeGnBjSwBqfYssBWZJJnhXdgfhJM9PLf+Z886ngTAQbpk9BovH
+	 PQsH0QppwZP3tIanWId56YevG5WhUCAjSLiEJ6KBPkYn0OlglZZHym1ZP0nPkTPmWp
+	 oHDJYkwWPVo19cQtBqpWAuhe9iTpi06I+gONXUOz52+1bFh9BaOfM7WHwVI75y42Mn
+	 ZVTCGxNEpnJWw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	alexander.deucher@amd.com
-Cc: Mario Kleiner <mario.kleiner.de@gmail.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm/amdgpu: keep vga memory on MacBooks with switchable graphics" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:39:31 -0500
-Message-ID: <20260301013931.1700539-1-sashal@kernel.org>
+	lossin@kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	rust-for-linux@vger.kernel.org
+Subject: FAILED: Patch "rust: pin-init: replace clippy `expect` with `allow`" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:39:33 -0500
+Message-ID: <20260301013933.1700585-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,36 +62,33 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,lists.freedesktop.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221802-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-221803-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,gitlab.freedesktop.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 91AFA1CC5E0
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B36E71CB4E5
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -105,49 +101,80 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 096bb75e13cc508d3915b7604e356bcb12b17766 Mon Sep 17 00:00:00 2001
-From: Alex Deucher <alexander.deucher@amd.com>
-Date: Mon, 16 Feb 2026 10:02:32 -0500
-Subject: [PATCH] drm/amdgpu: keep vga memory on MacBooks with switchable
- graphics
+From a58b8764aed9648357b1c5b6368c9943ba33b7f9 Mon Sep 17 00:00:00 2001
+From: Benno Lossin <lossin@kernel.org>
+Date: Sun, 15 Feb 2026 14:22:30 +0100
+Subject: [PATCH] rust: pin-init: replace clippy `expect` with `allow`
 
-On Intel MacBookPros with switchable graphics, when the iGPU
-is enabled, the address of VRAM gets put at 0 in the dGPU's
-virtual address space.  This is non-standard and seems to cause
-issues with the cursor if it ends up at 0.  We have the framework
-to reserve memory at 0 in the address space, so enable it here if
-the vram start address is 0.
+`clippy` has changed behavior in [1] (Rust 1.95) where it no longer
+warns about the `let_and_return` lint when a comment is placed between
+the let binding and the return expression. Nightly thus fails to build,
+because the expectation is no longer fulfilled.
 
-Reviewed-and-tested-by: Mario Kleiner <mario.kleiner.de@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4302
-Cc: stable@vger.kernel.org
-Cc: Mario Kleiner <mario.kleiner.de@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Thus replace the expectation with an `allow`.
+
+[ The errors were:
+
+      error: this lint expectation is unfulfilled
+          --> rust/pin-init/src/lib.rs:1279:10
+           |
+      1279 | #[expect(clippy::let_and_return)]
+           |          ^^^^^^^^^^^^^^^^^^^^^^
+           |
+           = note: `-D unfulfilled-lint-expectations` implied by `-D warnings`
+           = help: to override `-D warnings` add `#[allow(unfulfilled_lint_expectations)]`
+
+      error: this lint expectation is unfulfilled
+          --> rust/pin-init/src/lib.rs:1295:10
+           |
+      1295 | #[expect(clippy::let_and_return)]
+           |          ^^^^^^^^^^^^^^^^^^^^^^
+
+    - Miguel ]
+
+Link: https://github.com/rust-lang/rust-clippy/pull/16461 [1]
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+Cc: stable@vger.kernel.org # Needed in 6.18.y and later.
+Link: https://patch.msgid.link/20260215132232.1549861-1-lossin@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ rust/pin-init/src/lib.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index d35d9719d5668..6a6b334428f6d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -1068,6 +1068,16 @@ void amdgpu_gmc_get_vbios_allocations(struct amdgpu_device *adev)
- 	case CHIP_RENOIR:
- 		adev->mman.keep_stolen_vga_memory = true;
- 		break;
-+	case CHIP_POLARIS10:
-+	case CHIP_POLARIS11:
-+	case CHIP_POLARIS12:
-+		/* MacBookPros with switchable graphics put VRAM at 0 when
-+		 * the iGPU is enabled which results in cursor issues if
-+		 * the cursor ends up at 0.  Reserve vram at 0 in that case.
-+		 */
-+		if (adev->gmc.vram_start == 0)
-+			adev->mman.keep_stolen_vga_memory = true;
-+		break;
- 	default:
- 		adev->mman.keep_stolen_vga_memory = false;
- 		break;
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 8dc9dd5ac6fd3..3da65db9e2dd3 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -1276,13 +1276,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+ ///
+ /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
+ ///   pointer must result in a valid `U`.
+-#[expect(clippy::let_and_return)]
+ pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T, E>) -> impl PinInit<U, E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+     let res = unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinned_init(ptr.cast::<T>())) };
+     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
+     // cycle when computing the type returned by this function)
++    #[allow(clippy::let_and_return)]
+     res
+ }
+ 
+@@ -1292,13 +1292,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+ ///
+ /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
+ ///   pointer must result in a valid `U`.
+-#[expect(clippy::let_and_return)]
+ pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+     let res = unsafe { init_from_closure(|ptr: *mut U| init.__init(ptr.cast::<T>())) };
+     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
+     // cycle when computing the type returned by this function)
++    #[allow(clippy::let_and_return)]
+     res
+ }
+ 
 -- 
 2.51.0
 
