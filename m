@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-222073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHHIMgSdo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:57:24 +0100
+	id QFMgFS6so2myJgUAu9opvQ
+	(envelope-from <stable+bounces-222074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:02:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751AB1CC5F3
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:57:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C06FA1CE243
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AA7F730A70B5
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFD8D341788B
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2320E309DD2;
-	Sun,  1 Mar 2026 01:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49F1309EE6;
+	Sun,  1 Mar 2026 01:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FO9k8o5T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C9ct6okF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F322E2DF2;
-	Sun,  1 Mar 2026 01:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AF52E2DF2;
+	Sun,  1 Mar 2026 01:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329832; cv=none; b=MrkktpakCoXmrgf8RH5cI+QZo4uIPuzV3V4BQi2pRIcPdhhyqK4kZnsY4ukApt3d4TX0aqyLGUgQA1wdJItZH/O4p4F/ZzgFcfB1ZR5igVsz3kKDsIb8vD27947JeobOqzTWUZO70+JJcr5NjOsnpAcy3xAsXiI7LcftHSNfaMw=
+	t=1772329835; cv=none; b=YpBteaDZ5BeYZnzZFw2+ogHSjJu+p/4Cey+T6Qe2qZRvPb0bm3dCrTHM8VAt28ZgaPRvgstL6n2xDwylVztEt4P+ZMcOBynp/Xd0SFb3AJvIOPSnXqBmaUZjJZVcpkHvTClt7p0twbnUawYDzqOUYhy1xpiNtQdWI0elWAoKLM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329832; c=relaxed/simple;
-	bh=ow2/a8v3fd0nPpTzAoSOlL7ZVvXCvohti+S6z6ialIU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oN7J7HTIXFxYEbWOOD50tAqNwn/ATGWTo4mm/r+FtTEKwE4LC+19A3jpxHCL6amMJ0Sgs1g5sECYR0gWeDXhjR5fjL99cjWCZx4CxTEX1+1D119BwHHdWcj7ivkIorunu58Z9DX+wNbhoza2oJEa1tuLdu7wpee04ISiki8OA7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FO9k8o5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB46C19424;
-	Sun,  1 Mar 2026 01:50:31 +0000 (UTC)
+	s=arc-20240116; t=1772329835; c=relaxed/simple;
+	bh=dU0+ka9nMwi8d0i8va8LHYtFFsxLtptDAPy2Yfrc+lI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PtOEDY37sCFkYErKYsspY7OWDy1qrgDc9nUx2ZcOutTaNLItlYrqcNE9S8uVPte8Kwy4Kgt2yVLWbmIVz0YW04rRev6+wYrJq8+SkniyHTLzn2Zs8fpYIMzBKPEJBxhG0gpkZjx/rzx2/J7s4mvkWjhzW3/pC6eWBKZruniL6CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C9ct6okF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB708C19421;
+	Sun,  1 Mar 2026 01:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329832;
-	bh=ow2/a8v3fd0nPpTzAoSOlL7ZVvXCvohti+S6z6ialIU=;
+	s=k20201202; t=1772329835;
+	bh=dU0+ka9nMwi8d0i8va8LHYtFFsxLtptDAPy2Yfrc+lI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=FO9k8o5T4K2g4xLL8OJeZ2M5wkN3xozxBVHzsBEWEOYjjRIk0ma7HgVJi+wajkRm9
-	 J8noz0uBTW87EhniTZdQii4yJ18rYQzbnvWJ4RaXcqp0qKCJBHFKvSgsHHeQDeFPg7
-	 c5El6MeCSp2OmguLbBjp04SZ5vj1pJfwNHi8SR8zcpoa9YyIsQra0WR8eItq9WD/o3
-	 1q3P2cS6Hcln8Q/ZBTcqkghYJxCjE+YtEEddfoXaS4cgw1VnK1eUA1UD9ZxppJmyC4
-	 GLhZOW2FTOQV4lnOTGBZgFIg5cVAv3gImrpWQBw0NdagqcFXd8gkqmueGJI0M3HGFN
-	 M1zJ66XBnYqSg==
+	b=C9ct6okF/+jOPc8uN9sP5Xx+aj/CLTrVpWWGNYdIWKoFg01AISjsD2bU2OAk7Rjef
+	 3gZ5eJkY/9Qg9mfArXi8DbJfVG39dxzRM6TMnnwar8xU5LIKoxn0U8e/i7Q11cZ++H
+	 5hujCIorZ9zPj9qPKwQXQ5PKTmeWi6Abg4d7bx8mILJTs5eSk6t5BkU1F5WPeicJuw
+	 CDsCJPy0yl08ZGZHzQcXNIQgMnrK2nIuLS8+9ZKV1Yt4BZiTmndAmwEQbFHE/xEZsn
+	 QOuB/MQaquouhJW3zIUtQXV5F3qeauriuSWrsLn8Rp11BmI0K8ZCvrBTJALYdHBfFQ
+	 ZZubqDQjasrtQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	yi.zhang@huawei.com
-Cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	stable@kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org
-Subject: FAILED: Patch "ext4: don't zero the entire extent if EXT4_EXT_DATA_PARTIAL_VALID1" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:50:30 -0500
-Message-ID: <20260301015030.1716539-1-sashal@kernel.org>
+	oleg@redhat.com
+Cc: Paulo Andrade <pandrade@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: FAILED: Patch "x86/uprobes: Fix XOL allocation failure for 32-bit tasks" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:50:33 -0500
+Message-ID: <20260301015033.1716584-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +65,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222073-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222074-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,huaweicloud.com:email]
-X-Rspamd-Queue-Id: 751AB1CC5F3
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: C06FA1CE243
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,89 +104,133 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1bf6974822d1dba86cf11b5f05498581cf3488a2 Mon Sep 17 00:00:00 2001
-From: Zhang Yi <yi.zhang@huawei.com>
-Date: Sat, 29 Nov 2025 18:32:34 +0800
-Subject: [PATCH] ext4: don't zero the entire extent if
- EXT4_EXT_DATA_PARTIAL_VALID1
+From d55c571e4333fac71826e8db3b9753fadfbead6a Mon Sep 17 00:00:00 2001
+From: Oleg Nesterov <oleg@redhat.com>
+Date: Sun, 11 Jan 2026 16:00:37 +0100
+Subject: [PATCH] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
 
-When allocating initialized blocks from a large unwritten extent, or
-when splitting an unwritten extent during end I/O and converting it to
-initialized, there is currently a potential issue of stale data if the
-extent needs to be split in the middle.
+This script
 
-       0  A      B  N
-       [UUUUUUUUUUUU]    U: unwritten extent
-       [--DDDDDDDD--]    D: valid data
-          |<-  ->| ----> this range needs to be initialized
+	#!/usr/bin/bash
 
-ext4_split_extent() first try to split this extent at B with
-EXT4_EXT_DATA_ENTIRE_VALID1 and EXT4_EXT_MAY_ZEROOUT flag set, but
-ext4_split_extent_at() failed to split this extent due to temporary lack
-of space. It zeroout B to N and mark the entire extent from 0 to N
-as written.
+	echo 0 > /proc/sys/kernel/randomize_va_space
 
-       0  A      B  N
-       [WWWWWWWWWWWW]    W: written extent
-       [SSDDDDDDDDZZ]    Z: zeroed, S: stale data
+	echo 'void main(void) {}' > TEST.c
 
-ext4_split_extent() then try to split this extent at A with
-EXT4_EXT_DATA_VALID2 flag set. This time, it split successfully and left
-a stale written extent from 0 to A.
+	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
+	gcc -m32 -fcf-protection=branch TEST.c -o test
 
-       0  A      B   N
-       [WW|WWWWWWWWWW]
-       [SS|DDDDDDDDZZ]
+	bpftrace -e 'uprobe:./test:main {}' -c ./test
 
-Fix this by pass EXT4_EXT_DATA_PARTIAL_VALID1 to ext4_split_extent_at()
-when splitting at B, don't convert the entire extent to written and left
-it as unwritten after zeroing out B to N. The remaining work is just
-like the standard two-part split. ext4_split_extent() will pass the
-EXT4_EXT_DATA_VALID2 flag when it calls ext4_split_extent_at() for the
-second time, allowing it to properly handle the split. If the split is
-successful, it will keep extent from 0 to A as unwritten.
+"hangs", the probed ./test task enters an endless loop.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Cc: stable@kernel.org
-Message-ID: <20251129103247.686136-3-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+The problem is that with randomize_va_space == 0
+get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
+just return the "addr == TASK_SIZE - PAGE_SIZE" hint, this addr is used
+by the stack vma.
+
+arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
+in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
+vm_unmapped_area() happily returns the high address > TASK_SIZE and then
+get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
+check.
+
+handle_swbp() doesn't report this failure (probably it should) and silently
+restarts the probed insn. Endless loop.
+
+I think that the right fix should change the x86 get_unmapped_area() paths
+to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
+CONFIG_X86_X32_ABI=y, in_x32_syscall() falsely returns true in this case
+because ->orig_ax = -1.
+
+But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
+the probed task is 32-bit to make in_ia32_syscall() true.
+
+Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
+Reported-by: Paulo Andrade <pandrade@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
 ---
- fs/ext4/extents.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/x86/kernel/uprobes.c | 24 ++++++++++++++++++++++++
+ include/linux/uprobes.h   |  1 +
+ kernel/events/uprobes.c   | 10 +++++++---
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 8d5ca450aa5d2..1fee84ea20af1 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3310,6 +3310,15 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
- 		}
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 7be8e361ca55b..619dddf54424e 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -1823,3 +1823,27 @@ bool is_uprobe_at_func_entry(struct pt_regs *regs)
  
- 		if (!err) {
-+			/*
-+			 * The first half contains partially valid data, the
-+			 * splitting of this extent has not been completed, fix
-+			 * extent length and ext4_split_extent() split will the
-+			 * first half again.
-+			 */
-+			if (split_flag & EXT4_EXT_DATA_PARTIAL_VALID1)
-+				goto fix_extent_len;
+ 	return false;
+ }
 +
- 			/* update the extent length and mark as initialized */
- 			ex->ee_len = cpu_to_le16(ee_len);
- 			ext4_ext_try_to_merge(handle, inode, path, ex);
-@@ -3379,7 +3388,9 @@ static struct ext4_ext_path *ext4_split_extent(handle_t *handle,
- 			split_flag1 |= EXT4_EXT_MARK_UNWRIT1 |
- 				       EXT4_EXT_MARK_UNWRIT2;
- 		if (split_flag & EXT4_EXT_DATA_VALID2)
--			split_flag1 |= EXT4_EXT_DATA_ENTIRE_VALID1;
-+			split_flag1 |= map->m_lblk > ee_block ?
-+				       EXT4_EXT_DATA_PARTIAL_VALID1 :
-+				       EXT4_EXT_DATA_ENTIRE_VALID1;
- 		path = ext4_split_extent_at(handle, inode, path,
- 				map->m_lblk + map->m_len, split_flag1, flags1);
- 		if (IS_ERR(path))
++#ifdef CONFIG_IA32_EMULATION
++unsigned long arch_uprobe_get_xol_area(void)
++{
++	struct thread_info *ti = current_thread_info();
++	unsigned long vaddr;
++
++	/*
++	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
++	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
++	 * vm_unmapped_area_info.high_limit.
++	 *
++	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=y case,
++	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
++	 * (falsely) returns true because ->orig_ax == -1.
++	 */
++	if (test_thread_flag(TIF_ADDR32))
++		ti->status |= TS_COMPAT;
++	vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++	ti->status &= ~TS_COMPAT;
++
++	return vaddr;
++}
++#endif
+diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+index ee3d36eda45dd..f548fea2adec8 100644
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -242,6 +242,7 @@ extern void arch_uprobe_clear_state(struct mm_struct *mm);
+ extern void arch_uprobe_init_state(struct mm_struct *mm);
+ extern void handle_syscall_uprobe(struct pt_regs *regs, unsigned long bp_vaddr);
+ extern void arch_uprobe_optimize(struct arch_uprobe *auprobe, unsigned long vaddr);
++extern unsigned long arch_uprobe_get_xol_area(void);
+ #else /* !CONFIG_UPROBES */
+ struct uprobes_state {
+ };
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index a7d7d83ca1d78..dfbce021fb027 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1694,6 +1694,12 @@ static const struct vm_special_mapping xol_mapping = {
+ 	.mremap = xol_mremap,
+ };
+ 
++unsigned long __weak arch_uprobe_get_xol_area(void)
++{
++	/* Try to map as high as possible, this is only a hint. */
++	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++}
++
+ /* Slot allocation for XOL */
+ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+ {
+@@ -1709,9 +1715,7 @@ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+ 	}
+ 
+ 	if (!area->vaddr) {
+-		/* Try to map as high as possible, this is only a hint. */
+-		area->vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
+-						PAGE_SIZE, 0, 0);
++		area->vaddr = arch_uprobe_get_xol_area();
+ 		if (IS_ERR_VALUE(area->vaddr)) {
+ 			ret = area->vaddr;
+ 			goto fail;
 -- 
 2.51.0
 
