@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-222176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uB1/FACeo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:36 +0100
+	id SAa/M+Gdo2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6E61CCA42
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F72E1CC9D3
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 74A98310D7B5
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D58C53032897
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD523019DC;
-	Sun,  1 Mar 2026 01:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714982F4A18;
+	Sun,  1 Mar 2026 01:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwwtuQZt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghEbZoXa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E491E2F3C07;
-	Sun,  1 Mar 2026 01:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3414F2673AA;
+	Sun,  1 Mar 2026 01:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330091; cv=none; b=A4I5TnH4CmtvxFS4fH6Qv213D9LUxrhUMAb1/8FYepkV2ZrrSBp1xZqn4LMkgeb4UMbBF+EtsHLeZPEM/2rL+HlqaLSv6Vo+Tbw6APETZx0IW7qaMckJgP5zRWaPI54jvjNudSL7EPb9QGYHuUMFdscVlzCfbB8QZy+LR3Lnsz8=
+	t=1772330093; cv=none; b=EMFOZfNtVPb+OrPSW8WELKNgIQk0ZNcJNTo8UJy+pFLESuvQ8arLMyinBvEUPEEsQ42tVeIT5DB/8PCHvq6kLHMv2Hb8vkUXPYqWHHoPKlymlWkdP9PaqiTFGiuE5WvmyzW+/34JewzvnLQsDOGED/aRPa3w5IDG8f9BA/OCAHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330091; c=relaxed/simple;
-	bh=edtenUmGloYbfDmsAkqmocEZRSRiYeLaNyWAquJV9pM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IIFzv4ZVWXWX0EZEyokjEZWsmD8Pn19usbFiXjVbBTZsIi2SIamua//rOD5v91iEGY2NIsm/AKlPCa98t/8XzEuGmwSXWQm61Ep8JKhux0vA8AbqbydSCfcYaLGOjt4/ZmspV7Rm/cb2Zp8Y383bL8Efy8sspLhOQumCtsQNzxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwwtuQZt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27575C19421;
-	Sun,  1 Mar 2026 01:54:50 +0000 (UTC)
+	s=arc-20240116; t=1772330093; c=relaxed/simple;
+	bh=S3kB/6+6+BLwjYDChs0XPyP2t9UMHrtlyqPqoRGzRMs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VdLnPnu6r7M9nK0TU/ni7s81IIUTB1I32b9s0tX4rrEyzDLdprn0IGH/Vv3VI/dALJeEssbP1PmxY7LHmqtnV6jqipqYSKtlUOhYywcyKkEkUQPT+1GcsQwpIu/uOtWyJELXjJaPz5sRl8UzHBeRqqbNmHljqbQG5b6eKkIOdn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghEbZoXa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82417C19424;
+	Sun,  1 Mar 2026 01:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330090;
-	bh=edtenUmGloYbfDmsAkqmocEZRSRiYeLaNyWAquJV9pM=;
+	s=k20201202; t=1772330093;
+	bh=S3kB/6+6+BLwjYDChs0XPyP2t9UMHrtlyqPqoRGzRMs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=MwwtuQZtWqXZqdw8G9H5c04dTWVYS+YFvTn1zL5t9Nu5ISD4tqGWmz5CZ++Za0e+l
-	 oFU0fDU1fAsL/jtLV7YloIZOc/VNC6gB3kJOmvk1CN8P81PI0dcstclDL6WqvWe5u3
-	 T2pCJaWStg+FNXkI4gkryvFJOg4QI6De5z2qzg+cZ7xGtGo68GFKu1ZImByTaHX1XK
-	 Hquxlbum8gUEnCiYlgkOKFO5AzOEyIs/qo25iC1Pn6PsBh137aEp/Imx7RFi2lpiKu
-	 Or9/4NC+sTAXa5smnsFair/SWsnMM97G7l61junVciQyGbOPhrC9HWCQEn6iQD5iD+
-	 MPjMsxo/Z4Rbw==
+	b=ghEbZoXapU4hFEkewBjP9OW2h/TKTNez2RQuX+jkiKuwPIxcs/e/Me+Recp5GI//R
+	 Qo5Cb6uJQIXA0iyR3zv7jVGM3I1omX8ouu2Cc0aPcov7XK1A/G1srxBKN4gyERVZXL
+	 /3jatjpn5+GVOoVlOYNVFZgKr0h1xNgCKtq/XWhQjLwpHXCrelH+JhQvsGYx1PcP65
+	 mRnLzdU9BtDMAHcr7n+8n9DBivFicY8UdcWHAzF8mFbUdcbh935R0JNBn8GKPXgkLI
+	 OTPs/Dh3bHfrPsDoh9ZUTE13w1NwcFoZWbDIIHNIhGEHhlBPlGwFpa82uJ+Sy5YJDd
+	 YSMH9ft2zvE/A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	me@ziyao.cc
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mips@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: FAILED: Patch "MIPS: Work around LLVM bug when gp is used as global register variable" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:54:48 -0500
-Message-ID: <20260301015449.1721870-1-sashal@kernel.org>
+	linkinjeon@kernel.org
+Cc: tianshuo han <hantianshuo233@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
+	linux-cifs@vger.kernel.org
+Subject: FAILED: Patch "ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off reset in error paths" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:54:51 -0500
+Message-ID: <20260301015451.1721916-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,39 +63,36 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [8.84 / 15.00];
-	URIBL_BLACK(7.50)[ziyao.cc:email];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222176-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
-	GREYLIST(0.00)[pass,meta];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-222177-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_SPAM(0.00)[0.977];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ziyao.cc:email,franken.de:email,gnu.org:url]
-X-Rspamd-Queue-Id: BF6E61CCA42
-X-Rspamd-Action: add header
-X-Spam: Yes
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9F72E1CC9D3
+X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
@@ -108,102 +104,66 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 30bfc2d6a1132a89a5f1c3b96c59cf3e4d076ea3 Mon Sep 17 00:00:00 2001
-From: Yao Zi <me@ziyao.cc>
-Date: Thu, 5 Feb 2026 15:56:44 +0000
-Subject: [PATCH] MIPS: Work around LLVM bug when gp is used as global register
- variable
+From 010eb01ce23b34b50531448b0da391c7f05a72af Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Sat, 24 Jan 2026 10:55:46 +0900
+Subject: [PATCH] ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off
+ reset in error paths
 
-On MIPS, __current_thread_info is defined as global register variable
-locating in $gp, and is simply assigned with new address during kernel
-relocation.
+The problem occurs when a signed request fails smb2 signature verification
+check. In __process_request(), if check_sign_req() returns an error,
+set_smb2_rsp_status(work, STATUS_ACCESS_DENIED) is called.
+set_smb2_rsp_status() set work->next_smb2_rcv_hdr_off as zero. By resetting
+next_smb2_rcv_hdr_off to zero, the pointer to the next command in the chain
+is lost. Consequently, is_chained_smb2_message() continues to point to
+the same request header instead of advancing. If the header's NextCommand
+field is non-zero, the function returns true, causing __handle_ksmbd_work()
+to repeatedly process the same failed request in an infinite loop.
+This results in the kernel log being flooded with "bad smb2 signature"
+messages and high CPU usage.
 
-This however is broken with LLVM, which always restores $gp if it finds
-$gp is clobbered in any form, including when intentionally through a
-global register variable. This is against GCC's documentation[1], which
-requires a callee-saved register used as global register variable not to
-be restored if it's clobbered.
+This patch fixes the issue by changing the return value from
+SERVER_HANDLER_CONTINUE to SERVER_HANDLER_ABORT. This ensures that
+the processing loop terminates immediately rather than attempting to
+continue from an invalidated offset.
 
-As a result, $gp will continue to point to the unrelocated kernel after
-the epilog of relocate_kernel(), leading to an early crash in init_idle,
-
-[    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 0000000000000000, epc == ffffffff81afada8, ra == ffffffff81afad90
-[    0.000000] Oops[#1]:
-[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G        W           6.19.0-rc5-00262-gd3eeb99bbc99-dirty #188 VOLUNTARY
-[    0.000000] Tainted: [W]=WARN
-[    0.000000] Hardware name: loongson,loongson64v-4core-virtio
-[    0.000000] $ 0   : 0000000000000000 0000000000000000 0000000000000001 0000000000000000
-[    0.000000] $ 4   : ffffffff80b80ec0 ffffffff80b53d48 0000000000000000 00000000000f4240
-[    0.000000] $ 8   : 0000000000000100 ffffffff81d82f80 ffffffff81d82f80 0000000000000001
-[    0.000000] $12   : 0000000000000000 ffffffff81776f58 00000000000005da 0000000000000002
-[    0.000000] $16   : ffffffff80b80e40 0000000000000000 ffffffff80b81614 9800000005dfbe80
-[    0.000000] $20   : 00000000540000e0 ffffffff81980000 0000000000000000 ffffffff80f81c80
-[    0.000000] $24   : 0000000000000a26 ffffffff8114fb90
-[    0.000000] $28   : ffffffff80b50000 ffffffff80b53d40 0000000000000000 ffffffff81afad90
-[    0.000000] Hi    : 0000000000000000
-[    0.000000] Lo    : 0000000000000000
-[    0.000000] epc   : ffffffff81afada8 init_idle+0x130/0x270
-[    0.000000] ra    : ffffffff81afad90 init_idle+0x118/0x270
-[    0.000000] Status: 540000e2	KX SX UX KERNEL EXL
-[    0.000000] Cause : 00000008 (ExcCode 02)
-[    0.000000] BadVA : 0000000000000000
-[    0.000000] PrId  : 00006305 (ICT Loongson-3)
-[    0.000000] Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
-[    0.000000] Stack : 9800000005dfbf00 ffffffff8178e950 0000000000000000 0000000000000000
-[    0.000000]         0000000000000000 ffffffff81970000 000000000000003f ffffffff810a6528
-[    0.000000]         0000000000000001 9800000005dfbe80 9800000005dfbf00 ffffffff81980000
-[    0.000000]         ffffffff810a6450 ffffffff81afb6c0 0000000000000000 ffffffff810a2258
-[    0.000000]         ffffffff81d82ec8 ffffffff8198d010 ffffffff81b67e80 ffffffff8197dd98
-[    0.000000]         ffffffff81d81c80 ffffffff81930000 0000000000000040 0000000000000000
-[    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[    0.000000]         0000000000000000 000000000000009e ffffffff9fc01000 0000000000000000
-[    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[    0.000000]         0000000000000000 ffffffff81ae86dc ffffffff81b3c741 0000000000000002
-[    0.000000]         ...
-[    0.000000] Call Trace:
-[    0.000000] [<ffffffff81afada8>] init_idle+0x130/0x270
-[    0.000000] [<ffffffff81afb6c0>] sched_init+0x5c8/0x6c0
-[    0.000000] [<ffffffff81ae86dc>] start_kernel+0x27c/0x7a8
-
-This bug has been reported to LLVM[2] and affects version from (at
-least) 18 to 21. Let's work around this by using inline assembly to
-assign $gp before a fix is widely available.
-
+Reported-by: tianshuo han <hantianshuo233@gmail.com>
 Cc: stable@vger.kernel.org
-Link: https://gcc.gnu.org/onlinedocs/gcc-15.2.0/gcc/Global-Register-Variables.html # [1]
-Link: https://github.com/llvm/llvm-project/issues/176546 # [2]
-Signed-off-by: Yao Zi <me@ziyao.cc>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- arch/mips/kernel/relocate.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/smb/server/server.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/kernel/relocate.c b/arch/mips/kernel/relocate.c
-index 7f1c136ad8506..59833210542ff 100644
---- a/arch/mips/kernel/relocate.c
-+++ b/arch/mips/kernel/relocate.c
-@@ -420,7 +420,20 @@ void *__init relocate_kernel(void)
- 			goto out;
+diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
+index 554ae90df906d..d2410a3f163ae 100644
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -126,21 +126,21 @@ static int __process_request(struct ksmbd_work *work, struct ksmbd_conn *conn,
+ andx_again:
+ 	if (command >= conn->max_cmds) {
+ 		conn->ops->set_rsp_status(work, STATUS_INVALID_PARAMETER);
+-		return SERVER_HANDLER_CONTINUE;
++		return SERVER_HANDLER_ABORT;
+ 	}
  
- 		/* The current thread is now within the relocated image */
-+#ifndef CONFIG_CC_IS_CLANG
- 		__current_thread_info = RELOCATED(&init_thread_union);
-+#else
-+		/*
-+		 * LLVM may wrongly restore $gp ($28) in epilog even if it's
-+		 * intentionally modified. Work around this by using inline
-+		 * assembly to assign $gp. $gp couldn't be listed as output or
-+		 * clobber, or LLVM will still restore its original value.
-+		 * See also LLVM upstream issue
-+		 * https://github.com/llvm/llvm-project/issues/176546
-+		 */
-+		asm volatile("move $28, %0" : :
-+			     "r" (RELOCATED(&init_thread_union)));
-+#endif
+ 	cmds = &conn->cmds[command];
+ 	if (!cmds->proc) {
+ 		ksmbd_debug(SMB, "*** not implemented yet cmd = %x\n", command);
+ 		conn->ops->set_rsp_status(work, STATUS_NOT_IMPLEMENTED);
+-		return SERVER_HANDLER_CONTINUE;
++		return SERVER_HANDLER_ABORT;
+ 	}
  
- 		/* Return the new kernel's entry point */
- 		kernel_entry = RELOCATED(start_kernel);
+ 	if (work->sess && conn->ops->is_sign_req(work, command)) {
+ 		ret = conn->ops->check_sign_req(work);
+ 		if (!ret) {
+ 			conn->ops->set_rsp_status(work, STATUS_ACCESS_DENIED);
+-			return SERVER_HANDLER_CONTINUE;
++			return SERVER_HANDLER_ABORT;
+ 		}
+ 	}
+ 
 -- 
 2.51.0
 
