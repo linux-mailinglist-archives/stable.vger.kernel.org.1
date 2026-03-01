@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-221818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221819-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAO6ByOao2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221818-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:07 +0100
+	id +NtgNHOZo2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221819-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:42:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3481CB8B8
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FCF1CB664
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:42:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 34495307F326
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D14A3034334
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4432D2D0C63;
-	Sun,  1 Mar 2026 01:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D102D6407;
+	Sun,  1 Mar 2026 01:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i5P9z2s3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7GA3iFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C10277C9D;
-	Sun,  1 Mar 2026 01:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EF52773CC;
+	Sun,  1 Mar 2026 01:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329212; cv=none; b=OgKcTyH0+bHBYQ+rqU/riLIJV+TFw4B6WfOfTPfypk1Vyv0DiW19uedCwwA6XPgQP7G8lzjQoKYjyyusMZGdENX9kWPYMOOJ5l46SpTvs0X3wG25bUykMEkL5gSiF3NijjhulrPUDL10sHe0s01/1mlJ8xphyOD7KEEv0Rc7GPI=
+	t=1772329214; cv=none; b=XGPDJW7Qy9WREDcxFIBr55eN57vz4KdU+H3XPN7LUpODYVoZcu8wF3HOgh5i6q+zyM03P22H4jwpPdOpEwfWGNwnmi8Z1WDwVmfKX1jU2w7aearwPR8ZUJeDhCyIzOobcTCEjIJpNexKNl0Db4NE4MpHyVj/BPsRSjJy5mw+e6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329212; c=relaxed/simple;
-	bh=N5bT5sjadIBowyEfeB0QSXcX7RFjEZMCme9YIIlWcEw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GSr+1yiSlkcDy2IAHNCKQhVtWav5lUiiyKNTxDjys02nnkRhIlyVflEVmvtddnMo6/WQPPsMPMT5Itw/6246dTW+K3g3xZUkybx3iBnS3QSm5+Ynf6JfvTfSUiHzlfjZ+jOXe61guSCYCadEuJ/X926xQxyRtvkIZAfcC0FJJMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i5P9z2s3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560ACC19424;
-	Sun,  1 Mar 2026 01:40:11 +0000 (UTC)
+	s=arc-20240116; t=1772329214; c=relaxed/simple;
+	bh=kZVvdKbaYD8wCSMtEf4cZ+78PrkAWxYOg0dW6wdhIQU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SZfFxCckerpyamHgsGQCjsE3k5ScGvvz6W6gnxY/En2i0mbFfdgiAMxUOdbsIE4jTLB9NPBAypFnP6/+x3U9/rDyrKSKzKKKVbPi1N+Z/Y/ps/XwGwh6POLeszzX/nVEiDXWnrkUGN95/wGVXom9hWjxrJBGcvsoOnDQ0TG2ToA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7GA3iFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99037C19421;
+	Sun,  1 Mar 2026 01:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329211;
-	bh=N5bT5sjadIBowyEfeB0QSXcX7RFjEZMCme9YIIlWcEw=;
+	s=k20201202; t=1772329214;
+	bh=kZVvdKbaYD8wCSMtEf4cZ+78PrkAWxYOg0dW6wdhIQU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=i5P9z2s3lwdBCQTkV9Q9GdJ4cQyGiX43iyCvd7RPZ6ktdVahAIFVus9p3xvWajWzA
-	 JZi6GtvWxzqslXzalMULvGTwhAt5FcNYBrr7pxQzseaUiLwTqNDDgf3p2Xb9GZvWT5
-	 JxygNDvR9TIAWWuIYHazfYgeRi0MayAqnBip7dZUEX4GYlVHJ2TEzKQeBNQQR+pKBX
-	 DY+Gqt/Qd8wbvWBtvltWxUxzZLOpjXKoHSV3UrM+oSehK1Jol/qxAk59PAUxw21yo8
-	 OAq/TTxOkXysjynijlIkGdbf0jKHsMr7ME/NV85TqI1T+GBr6+1l4uhRnfvMeJa5Ia
-	 9uS08qUjlrwGg==
+	b=H7GA3iFnv6EMYg3yIFBK52gLMGr8qo+rsSsrAVyKj4e51qCFQ5IBY/Vv9fktUE9tb
+	 xw0ELFGH6DECxb/OecpTUGc3EDjyG40ezLhm8hBfmUSj9uBviqsd3x9BuCRQqEOm1H
+	 GTgxHH80T9vjEjf8uVEp8SY0kHtf/ZjrV41lWG714xofURcf3u2xfrkBFMgnIoTcuz
+	 vsKid256ywBDJP3iFINEnYnigSIe087lWG0d9O4dSFPX43rJDMZ+c6uAdk8SIHdK2t
+	 vvxmXIiVMO/44M29Ou6OGr0ZQGI8A5lwtUoCziJo9DQoEvSXsBtHHwzm7HjduUg1p3
+	 ybhtrYZhf2ARg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	cassel@kernel.org
 Cc: Manivannan Sadhasivam <mani@kernel.org>,
 	Shawn Lin <shawn.lin@rock-chips.com>,
-	linux-pci@vger.kernel.org
-Subject: FAILED: Patch "Revert "PCI: dwc: Don't wait for link up if driver can detect Link Up event"" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:40:09 -0500
-Message-ID: <20260301014010.1701361-1-sashal@kernel.org>
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: FAILED: Patch "Revert "PCI: dw-rockchip: Enumerate endpoints based on dll_link_up IRQ"" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:40:12 -0500
+Message-ID: <20260301014012.1701407-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,33 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221818-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221819-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rock-chips.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DF3481CB8B8
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rock-chips.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 88FCF1CB664
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -103,13 +105,13 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 142d5869f6eec3110adda0ad2d931f5b3c22371d Mon Sep 17 00:00:00 2001
+From 180c3cfe36786d261a55da52a161f9e279b19a6f Mon Sep 17 00:00:00 2001
 From: Niklas Cassel <cassel@kernel.org>
-Date: Mon, 22 Dec 2025 07:42:13 +0100
-Subject: [PATCH] Revert "PCI: dwc: Don't wait for link up if driver can detect
- Link Up event"
+Date: Mon, 22 Dec 2025 07:42:09 +0100
+Subject: [PATCH] Revert "PCI: dw-rockchip: Enumerate endpoints based on
+ dll_link_up IRQ"
 
-This reverts commit 8d3bf19f1b585a3cc0027f508b64c33484db8d0d.
+This reverts commit 0e0b45ab5d770a748487ba0ae8f77d1fb0f0de3e.
 
 While this fake hotplugging was a nice idea, it has shown that this feature
 does not handle PCIe switches correctly:
@@ -146,8 +148,8 @@ then there is a problem when the downstream busses starts showing up and
 the PCI core doesn't extend the subordinate bus number and bridge resources
 after initial scan during boot.
 
-So revert the change that skipped dw_pcie_wait_for_link() if the Link up
-IRQ was used by a vendor glue driver.
+The long term plan is to migrate this driver to the upcoming pwrctrl APIs
+that are supposed to handle this problem elegantly.
 
 Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Niklas Cassel <cassel@kernel.org>
@@ -155,45 +157,109 @@ Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Tested-by: Shawn Lin <shawn.lin@rock-chips.com>
 Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251222064207.3246632-14-cassel@kernel.org
+Link: https://patch.msgid.link/20251222064207.3246632-10-cassel@kernel.org
 ---
- drivers/pci/controller/dwc/pcie-designware-host.c | 10 ++--------
- drivers/pci/controller/dwc/pcie-designware.h      |  1 -
- 2 files changed, 2 insertions(+), 9 deletions(-)
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c | 59 +------------------
+ 1 file changed, 3 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index 8c41b90a1db1e..06c02fcc76c89 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -665,14 +665,8 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
- 			goto err_remove_edma;
- 	}
+diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+index ca808d8f79753..352f513ebf036 100644
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -508,34 +508,6 @@ static const struct dw_pcie_ops dw_pcie_ops = {
+ 	.get_ltssm = rockchip_pcie_get_ltssm,
+ };
  
--	/*
--	 * Note: Skip the link up delay only when a Link Up IRQ is present.
--	 * If there is no Link Up IRQ, we should not bypass the delay
--	 * because that would require users to manually rescan for devices.
--	 */
--	if (!pp->use_linkup_irq)
--		/* Ignore errors, the link may come up later */
--		dw_pcie_wait_for_link(pci);
-+	/* Ignore errors, the link may come up later */
-+	dw_pcie_wait_for_link(pci);
+-static irqreturn_t rockchip_pcie_rc_sys_irq_thread(int irq, void *arg)
+-{
+-	struct rockchip_pcie *rockchip = arg;
+-	struct dw_pcie *pci = &rockchip->pci;
+-	struct dw_pcie_rp *pp = &pci->pp;
+-	struct device *dev = pci->dev;
+-	u32 reg;
+-
+-	reg = rockchip_pcie_readl_apb(rockchip, PCIE_CLIENT_INTR_STATUS_MISC);
+-	rockchip_pcie_writel_apb(rockchip, reg, PCIE_CLIENT_INTR_STATUS_MISC);
+-
+-	dev_dbg(dev, "PCIE_CLIENT_INTR_STATUS_MISC: %#x\n", reg);
+-	dev_dbg(dev, "LTSSM_STATUS: %#x\n", rockchip_pcie_get_ltssm_reg(rockchip));
+-
+-	if (reg & PCIE_RDLH_LINK_UP_CHGED) {
+-		if (rockchip_pcie_link_up(pci)) {
+-			msleep(PCIE_RESET_CONFIG_WAIT_MS);
+-			dev_dbg(dev, "Received Link up event. Starting enumeration!\n");
+-			/* Rescan the bus to enumerate endpoint devices */
+-			pci_lock_rescan_remove();
+-			pci_rescan_bus(pp->bridge->bus);
+-			pci_unlock_rescan_remove();
+-		}
+-	}
+-
+-	return IRQ_HANDLED;
+-}
+-
+ static irqreturn_t rockchip_pcie_ep_sys_irq_thread(int irq, void *arg)
+ {
+ 	struct rockchip_pcie *rockchip = arg;
+@@ -568,29 +540,14 @@ static irqreturn_t rockchip_pcie_ep_sys_irq_thread(int irq, void *arg)
+ 	return IRQ_HANDLED;
+ }
  
- 	ret = pci_host_probe(bridge);
- 	if (ret)
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index fc9cf8ce86290..a3a3f6e89a812 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -438,7 +438,6 @@ struct dw_pcie_rp {
- 	bool			use_atu_msg;
- 	int			msg_atu_index;
- 	struct resource		*msg_res;
--	bool			use_linkup_irq;
- 	struct pci_eq_presets	presets;
- 	struct pci_config_window *cfg;
- 	bool			ecam_enabled;
+-static int rockchip_pcie_configure_rc(struct platform_device *pdev,
+-				      struct rockchip_pcie *rockchip)
++static int rockchip_pcie_configure_rc(struct rockchip_pcie *rockchip)
+ {
+-	struct device *dev = &pdev->dev;
+ 	struct dw_pcie_rp *pp;
+-	int irq, ret;
+ 	u32 val;
+ 
+ 	if (!IS_ENABLED(CONFIG_PCIE_ROCKCHIP_DW_HOST))
+ 		return -ENODEV;
+ 
+-	irq = platform_get_irq_byname(pdev, "sys");
+-	if (irq < 0)
+-		return irq;
+-
+-	ret = devm_request_threaded_irq(dev, irq, NULL,
+-					rockchip_pcie_rc_sys_irq_thread,
+-					IRQF_ONESHOT, "pcie-sys-rc", rockchip);
+-	if (ret) {
+-		dev_err(dev, "failed to request PCIe sys IRQ\n");
+-		return ret;
+-	}
+-
+ 	/* LTSSM enable control mode */
+ 	val = FIELD_PREP_WM16(PCIE_LTSSM_ENABLE_ENHANCE, 1);
+ 	rockchip_pcie_writel_apb(rockchip, val, PCIE_CLIENT_HOT_RESET_CTRL);
+@@ -602,17 +559,7 @@ static int rockchip_pcie_configure_rc(struct platform_device *pdev,
+ 	pp = &rockchip->pci.pp;
+ 	pp->ops = &rockchip_pcie_host_ops;
+ 
+-	ret = dw_pcie_host_init(pp);
+-	if (ret) {
+-		dev_err(dev, "failed to initialize host\n");
+-		return ret;
+-	}
+-
+-	/* unmask DLL up/down indicator */
+-	val = FIELD_PREP_WM16(PCIE_RDLH_LINK_UP_CHGED, 0);
+-	rockchip_pcie_writel_apb(rockchip, val, PCIE_CLIENT_INTR_MASK_MISC);
+-
+-	return ret;
++	return dw_pcie_host_init(pp);
+ }
+ 
+ static int rockchip_pcie_configure_ep(struct platform_device *pdev,
+@@ -731,7 +678,7 @@ static int rockchip_pcie_probe(struct platform_device *pdev)
+ 
+ 	switch (data->mode) {
+ 	case DW_PCIE_RC_TYPE:
+-		ret = rockchip_pcie_configure_rc(pdev, rockchip);
++		ret = rockchip_pcie_configure_rc(rockchip);
+ 		if (ret)
+ 			goto deinit_clk;
+ 		break;
 -- 
 2.51.0
 
