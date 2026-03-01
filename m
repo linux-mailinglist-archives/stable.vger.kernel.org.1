@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-221889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221890-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCW3IqGpo2nfJQUAu9opvQ
-	(envelope-from <stable+bounces-221889-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:51:13 +0100
+	id mGxzI6Wpo2nfJQUAu9opvQ
+	(envelope-from <stable+bounces-221890-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:51:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9561CDF8A
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:51:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA40E1CDF91
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:51:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11E5531D84F0
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A45F131D8D28
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12952C1788;
-	Sun,  1 Mar 2026 01:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20F72C1788;
+	Sun,  1 Mar 2026 01:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SnqLATCE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOllKSBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A7026FA6F;
-	Sun,  1 Mar 2026 01:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63A5277C9D
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329382; cv=none; b=BKPU5dp8S8qFpB1lyxjFA+XeTYnThbPWjFREad/oqVbuWZxrDUAeHGTn/tBtKMyt0VnQ58VJJ7VFtQoDec+ufzjFn3W5FjDENWHYVFGFJxIlMK+kWaa07XHdFb8kT7ueUA0a+rPIZSr9hYYjOckNbnYkb70+TAChBulfExAAT6s=
+	t=1772329384; cv=none; b=ilxQD+TPuOUpkwuS8gyflCWheNjYgb+XDb9pUQA0rIruqsgJjdISrV02DqTHIje7QowRJoq5qfdd4EfNGqCihcx5goJVvuk8mRIKqsv3cBv+fqRdaOM5hshxOB/UUcV2EIIn6NsdcgLQnXk1/IQiHb6r572g+CsWEJGmeIDmsBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329382; c=relaxed/simple;
-	bh=yz1KDReCXChk/d3BtAkAMYPjYynfLbVLMx2pwaENvJs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ofGBXYQnLyFWlVx1+weFBKAvDRBmIAwsg3EvUAo6x5dinrToqyg4Ou6i1iGXHAGKxQpnFaCdSMG0cGpi9WPMK+1Yi19F2tIqc4S82glUF9ZpWnkqYEa+wU21mUDU419NzqM0SIYRZ02UGNNPp08zyHa56GHubn+jn0fIJjwoN6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SnqLATCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C627CC19421;
-	Sun,  1 Mar 2026 01:43:01 +0000 (UTC)
+	s=arc-20240116; t=1772329384; c=relaxed/simple;
+	bh=nC6i27IF8T9hUfPgHhY7YbOJ0NvxHqKhESTNB2tWLak=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O/uCgsbyCLk+R21mYd0K66Uu2fx3qlvMFEI1LNeTLz3jSwOwquZ3ZlUSwDW7n13UkM3ZMKwCddSvb7FbhJoRazcv0vIrhni1dYgMTFfuLwlUJ11vltQ5y336sk8ju0IV0B91yQLrnRfY5JQuDD6xyHvLWo59QwxVIA+Lsc9zGyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOllKSBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22701C19421;
+	Sun,  1 Mar 2026 01:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329382;
-	bh=yz1KDReCXChk/d3BtAkAMYPjYynfLbVLMx2pwaENvJs=;
+	s=k20201202; t=1772329384;
+	bh=nC6i27IF8T9hUfPgHhY7YbOJ0NvxHqKhESTNB2tWLak=;
 	h=From:To:Cc:Subject:Date:From;
-	b=SnqLATCE0CVVVfKgjyXpLh9KaAu+XVEABhRuVj9w9/60IaE7G/o7bAK98fb10Dh8S
-	 2PMS9q9iqayjjGPVF19MwpunWsJ7rw7QPWy0N8zA6uNtJnkMk1TmlBoeSBB944kVBH
-	 IZ0tsG8S8MRbULTuFO91w9Xk0dlosKDQMvON3jKg9lKLBAbuoJ7WJa85MWrGMcfOu/
-	 lhA6ZUm8oIVnoCieG2lTcs+oOECOoEx0IAGQMNyCRi4dgbLoLH4ud/kzaw5ivFYqKq
-	 rFh7Fa0RalQNSktTe9XGkVpSP3myAmkneNpcirQDplbKKwHE9w9j5ua8HDZKBWIin1
-	 Ldi98ZlyJFZ1g==
+	b=BOllKSBuhpUi20X5jBQFVDMjYGcfYJwo2rD6GHo8ideRveSwijA9vdkPSHh0gTzZU
+	 wb2ufhRhGK9/Ltb3KT74cDQSc92NWTbdbVjtZR+/hVBW/Hc6YMKbW3pvGlHQZktObf
+	 yGsk0u20cl7CTCRfjri0ETUQbtW6Faz1to3VwI92xWnN0KfO4v8xN3hvP0JwayQMu9
+	 N1PGUr4928u43Xy8NN+anwiicLL6Pg0+j6ELKV7QHgcXkBveVsn6dA0apNv+p61ghK
+	 XSpyR7ijDqoGQmA6m+BcNblj7ZSvQBGQZ5y9wa4OMAKNRs3tIQE6xOsdQYN+MOis6U
+	 fBMoxB31rliig==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	guojinhui.liam@bytedance.com
-Cc: Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	iommu@lists.linux.dev
-Subject: FAILED: Patch "iommu/vt-d: Flush dev-IOTLB only when PCIe device is accessible in scalable mode" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:43:00 -0500
-Message-ID: <20260301014300.1704977-1-sashal@kernel.org>
+	luca.ceresoli@bootlin.com
+Cc: Maxime Ripard <mripard@kernel.org>,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm: of: drm_of_panel_bridge_remove(): fix device_node leak" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:43:02 -0500
+Message-ID: <20260301014303.1705028-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,35 +60,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221889-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-221890-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: EA9561CDF8A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EA40E1CDF91
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -102,81 +101,44 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 10e60d87813989e20eac1f3eda30b3bae461e7f9 Mon Sep 17 00:00:00 2001
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-Date: Thu, 22 Jan 2026 09:48:51 +0800
-Subject: [PATCH] iommu/vt-d: Flush dev-IOTLB only when PCIe device is
- accessible in scalable mode
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From a4b4385d0523e39a7c058cb5a6c8269e513126ca Mon Sep 17 00:00:00 2001
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Fri, 9 Jan 2026 08:31:32 +0100
+Subject: [PATCH] drm: of: drm_of_panel_bridge_remove(): fix device_node leak
 
-Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
-request when device is disconnected") relies on
-pci_dev_is_disconnected() to skip ATS invalidation for
-safely-removed devices, but it does not cover link-down caused
-by faults, which can still hard-lock the system.
+drm_of_panel_bridge_remove() uses of_graph_get_remote_node() to get a
+device_node but does not put the node reference.
 
-For example, if a VM fails to connect to the PCIe device,
-"virsh destroy" is executed to release resources and isolate
-the fault, but a hard-lockup occurs while releasing the group fd.
-
-Call Trace:
- qi_submit_sync
- qi_flush_dev_iotlb
- intel_pasid_tear_down_entry
- device_block_translation
- blocking_domain_attach_dev
- __iommu_attach_device
- __iommu_device_set_domain
- __iommu_group_set_domain_internal
- iommu_detach_group
- vfio_iommu_type1_detach_group
- vfio_group_detach_container
- vfio_group_fops_release
- __fput
-
-Although pci_device_is_present() is slower than
-pci_dev_is_disconnected(), it still takes only ~70 µs on a
-ConnectX-5 (8 GT/s, x2) and becomes even faster as PCIe speed
-and width increase.
-
-Besides, devtlb_invalidation_with_pasid() is called only in the
-paths below, which are far less frequent than memory map/unmap.
-
-1. mm-struct release
-2. {attach,release}_dev
-3. set/remove PASID
-4. dirty-tracking setup
-
-The gain in system stability far outweighs the negligible cost
-of using pci_device_is_present() instead of pci_dev_is_disconnected()
-to decide when to skip ATS invalidation, especially under GDR
-high-load conditions.
-
-Fixes: 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation request when device is disconnected")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Link: https://lore.kernel.org/r/20251211035946.2071-3-guojinhui.liam@bytedance.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fixes: c70087e8f16f ("drm/drm_of: add drm_of_panel_bridge_remove function")
+Cc: stable@vger.kernel.org # v4.15
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patch.msgid.link/20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-1-8bad3ef90b9f@bootlin.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/iommu/intel/pasid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/drm/drm_of.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index 3f6d78180d799..99692f88b8834 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -218,7 +218,7 @@ devtlb_invalidation_with_pasid(struct intel_iommu *iommu,
- 	if (!info || !info->ats_enabled)
- 		return;
+diff --git a/include/drm/drm_of.h b/include/drm/drm_of.h
+index 7f0256dae3f13..f3e55ea2174c0 100644
+--- a/include/drm/drm_of.h
++++ b/include/drm/drm_of.h
+@@ -5,6 +5,7 @@
+ #include <linux/err.h>
+ #include <linux/of_graph.h>
+ #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
++#include <linux/of.h>
+ #include <drm/drm_bridge.h>
+ #endif
  
--	if (pci_dev_is_disconnected(to_pci_dev(dev)))
-+	if (!pci_device_is_present(to_pci_dev(dev)))
- 		return;
+@@ -173,6 +174,8 @@ static inline int drm_of_panel_bridge_remove(const struct device_node *np,
+ 	bridge = of_drm_find_bridge(remote);
+ 	drm_panel_bridge_remove(bridge);
  
- 	sid = PCI_DEVID(info->bus, info->devfn);
++	of_node_put(remote);
++
+ 	return 0;
+ #else
+ 	return -EINVAL;
 -- 
 2.51.0
 
