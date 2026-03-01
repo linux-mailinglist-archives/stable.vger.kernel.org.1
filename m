@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-222259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIN1LRSuo2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:12 +0100
+	id aPobJxeuo2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:15 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3541CE44C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F09651CE453
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 110CB32F48F7
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:00:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B13D34BD5AB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263272594B9;
-	Sun,  1 Mar 2026 02:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6240919CD19;
+	Sun,  1 Mar 2026 02:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RgY70FUC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aR3oWNrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD5E1DED49
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F551DED49;
+	Sun,  1 Mar 2026 02:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330431; cv=none; b=px6wE8Q9Y6DdlCGD/BEqH4f3EfXUmP1Qp/O7rM0DUquHf8wleNGD+d64FtiI85rhkw4VoTfIbw3hUdDkrZCSGk24Zdd4zY04JBdHFJfwvJsJPQY/uA/VLmN6A/IiRVsmCdMlRa+KKs8P6soOu9Cgv4tadbgjU8SG7mY0d56OClc=
+	t=1772330434; cv=none; b=R6osKMUCHFBPp2Y92YUmC7zAuED2gwcjQlJNW00i+NKdTP++eXl0F9DPu1ks5gOSMBGCJwV7jwe8tVOg79Kd3aHr9RvafnAuNvGtlR9CFnUqPcJPVvRzynS4vE3q6dUiRG9iIotQ5eHbaiywLsNYr9x7CYX6YQTt+jBFjHhNEJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330431; c=relaxed/simple;
-	bh=XRVJZth6JtO3MLk1zu2ID3f7cI5sQ1jy2k7mX3MXpeA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dA608q68Yi0hvSt70iIxdPgFzABnZDsCB6QshE7kI3XTrZ2Mpsluytt/MJX2dsJh8+5TdKR3v3l2InCS3wR3dQbQUqWb+gLX86ISyPIME9D7XZGO1uXS1sd1I+j1kQ4hdnDqmb7O9IH1Arl2lRZik6wvrbtHdcq4Y1iPrWiFaxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RgY70FUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D044CC19421;
-	Sun,  1 Mar 2026 02:00:30 +0000 (UTC)
+	s=arc-20240116; t=1772330434; c=relaxed/simple;
+	bh=K1D4mn2pDLE0sBMMMgT5N546+Usi24C7G4hFF+3LVIU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OwbrARW+6NhKITNdVA9teTtLgQ5WFj5FzNcv/kPCWvpfoNsM/d6BCmAqgyijpmu09+WAv8aSl90GcCNbjl0ly31/CqB8a/BaK48XmOVjjSTij4vw3JvYkil3tI7yM0pv5/6KCvk/LoXInSe1iqW1rMxiPAIV6M9Y9YAD/ovW0Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aR3oWNrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430FDC19421;
+	Sun,  1 Mar 2026 02:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330431;
-	bh=XRVJZth6JtO3MLk1zu2ID3f7cI5sQ1jy2k7mX3MXpeA=;
+	s=k20201202; t=1772330434;
+	bh=K1D4mn2pDLE0sBMMMgT5N546+Usi24C7G4hFF+3LVIU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=RgY70FUCErKRRId6SpKKilr9Heh61KaSEIIZ50nEkj+IRTdiX2JLICOPIaITA7Qw2
-	 vGMI4xVRri4mTdNnXCJHPxwYIkwgqd5SrOn9tMOvZnuU5vqk6V/DeDmXW4W/v9ux07
-	 QJsxwk4bqRdEQAr+MIwEGrtpZN7CpWf8YaIa2Zl1939ZPDI+94aiM5pfgVQeX/fo+K
-	 dc+ooV3WwKGJP3chVjeKxMrV113j6I7gb+zB6JUg9hVaD3FXuU5rJ5b0tfLe7l4RpR
-	 4viVAxjikJC9xnQHUbYOcLemzjfPGiAa5ExRnttpXtx4CLVAa4PPhph6rXMeul26FR
-	 xUQeSbZuduLpg==
+	b=aR3oWNrNgjqeZfUpnk3VpzYcz0yO1V5pdpC+xp2ybAk7iOPGXDNfpCo5GHl0QNuGs
+	 4+RUKZyyTiDDfoxreL1lrmgaSWvajRX1EaGJPF+NRCIAEC5/tfjVU8ptaOchlGwva8
+	 fxlCUMflD8SVksCkCzZ0G8I4wGsRfVUXZA4pP2NURauaRhXkOo0Re0GLKX2R9k6FjV
+	 46fuWKGdx25u14LMcK9nxH9yhzuQZDLRycjS00N3lNKTgP3eAb9kke2NwGCz17Hlhu
+	 ypfNgWwGzBNpMROcUfPLCqeA2vIo915BoWHzFs4G64DX/aAYeosyHTqYQ4M6O4jLjC
+	 C1KM5JsI0xpRA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chao@kernel.org
-Cc: stable@kernel.org,
-	syzbot+803dd716c4310d16ff3a@syzkaller.appspotmail.com,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: FAILED: Patch "f2fs: fix to do sanity check on node footer in {read,write}_end_io" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:00:29 -0500
-Message-ID: <20260301020029.1726589-1-sashal@kernel.org>
+	yi.zhang@huawei.com
+Cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	stable@kernel.org,
+	Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org
+Subject: FAILED: Patch "ext4: subdivide EXT4_EXT_DATA_VALID1" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:00:31 -0500
+Message-ID: <20260301020032.1726644-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,35 +65,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222259-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222260-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.981];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,803dd716c4310d16ff3a];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: 1B3541CE44C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huaweicloud.com:email]
+X-Rspamd-Queue-Id: F09651CE453
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -105,181 +105,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 50ac3ecd8e05b6bcc350c71a4307d40c030ec7e4 Mon Sep 17 00:00:00 2001
-From: Chao Yu <chao@kernel.org>
-Date: Mon, 12 Jan 2026 15:49:16 +0800
-Subject: [PATCH] f2fs: fix to do sanity check on node footer in
- {read,write}_end_io
+From 22784ca541c0f01c5ebad14e8228298dc0a390ed Mon Sep 17 00:00:00 2001
+From: Zhang Yi <yi.zhang@huawei.com>
+Date: Sat, 29 Nov 2025 18:32:33 +0800
+Subject: [PATCH] ext4: subdivide EXT4_EXT_DATA_VALID1
 
------------[ cut here ]------------
-kernel BUG at fs/f2fs/data.c:358!
-Call Trace:
- <IRQ>
- blk_update_request+0x5eb/0xe70 block/blk-mq.c:987
- blk_mq_end_request+0x3e/0x70 block/blk-mq.c:1149
- blk_complete_reqs block/blk-mq.c:1224 [inline]
- blk_done_softirq+0x107/0x160 block/blk-mq.c:1229
- handle_softirqs+0x283/0x870 kernel/softirq.c:579
- __do_softirq kernel/softirq.c:613 [inline]
- invoke_softirq kernel/softirq.c:453 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1050
- </IRQ>
+When splitting an extent, if the EXT4_GET_BLOCKS_CONVERT flag is set and
+it is necessary to split the target extent in the middle,
+ext4_split_extent() first handles splitting the latter half of the
+extent and passes the EXT4_EXT_DATA_VALID1 flag. This flag implies that
+all blocks before the split point contain valid data; however, this
+assumption is incorrect.
 
-In f2fs_write_end_io(), it detects there is inconsistency in between
-node page index (nid) and footer.nid of node page.
+Therefore, subdivid EXT4_EXT_DATA_VALID1 into
+EXT4_EXT_DATA_ENTIRE_VALID1 and EXT4_EXT_DATA_PARTIAL_VALID1, which
+indicate that the first half of the extent is either entirely valid or
+only partially valid, respectively. These two flags cannot be set
+simultaneously.
 
-If footer of node page is corrupted in fuzzed image, then we load corrupted
-node page w/ async method, e.g. f2fs_ra_node_pages() or f2fs_ra_node_page(),
-in where we won't do sanity check on node footer, once node page becomes
-dirty, we will encounter this bug after node page writeback.
+This patch does not use EXT4_EXT_DATA_PARTIAL_VALID1, it only replaces
+EXT4_EXT_DATA_VALID1 with EXT4_EXT_DATA_ENTIRE_VALID1 at the location
+where it is set, no logical changes.
 
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
 Cc: stable@kernel.org
-Reported-by: syzbot+803dd716c4310d16ff3a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=803dd716c4310d16ff3a
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Message-ID: <20251129103247.686136-2-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- fs/f2fs/data.c | 12 ++++++++++--
- fs/f2fs/f2fs.h | 11 +++++++++++
- fs/f2fs/node.c | 20 +++++++++++---------
- fs/f2fs/node.h |  8 --------
- 4 files changed, 32 insertions(+), 19 deletions(-)
+ fs/ext4/extents.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index f461f1318b4cc..9b70b6d337031 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -172,6 +172,11 @@ static void f2fs_finish_read_bio(struct bio *bio, bool in_task)
- 		while (nr_pages--)
- 			dec_page_count(F2FS_F_SB(folio), __read_io_type(folio));
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 2cf5759ba6894..8d5ca450aa5d2 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -43,8 +43,13 @@
+ #define EXT4_EXT_MARK_UNWRIT1	0x2  /* mark first half unwritten */
+ #define EXT4_EXT_MARK_UNWRIT2	0x4  /* mark second half unwritten */
  
-+		if (F2FS_F_SB(folio)->node_inode && is_node_folio(folio) &&
-+			f2fs_sanity_check_node_footer(F2FS_F_SB(folio),
-+				folio, folio->index, NODE_TYPE_REGULAR, true))
-+			bio->bi_status = BLK_STS_IOERR;
+-#define EXT4_EXT_DATA_VALID1	0x8  /* first half contains valid data */
+-#define EXT4_EXT_DATA_VALID2	0x10 /* second half contains valid data */
++/* first half contains valid data */
++#define EXT4_EXT_DATA_ENTIRE_VALID1	0x8   /* has entirely valid data */
++#define EXT4_EXT_DATA_PARTIAL_VALID1	0x10  /* has partially valid data */
++#define EXT4_EXT_DATA_VALID1		(EXT4_EXT_DATA_ENTIRE_VALID1 | \
++					 EXT4_EXT_DATA_PARTIAL_VALID1)
 +
- 		if (finished)
- 			folio_end_read(folio, bio->bi_status == BLK_STS_OK);
- 	}
-@@ -374,8 +379,11 @@ static void f2fs_write_end_io(struct bio *bio)
- 						STOP_CP_REASON_WRITE_FAIL);
- 		}
++#define EXT4_EXT_DATA_VALID2	0x20 /* second half contains valid data */
  
--		f2fs_bug_on(sbi, is_node_folio(folio) &&
--				folio->index != nid_of_node(folio));
-+		if (is_node_folio(folio)) {
-+			f2fs_sanity_check_node_footer(sbi, folio,
-+				folio->index, NODE_TYPE_REGULAR, true);
-+			f2fs_bug_on(sbi, folio->index != nid_of_node(folio));
-+		}
+ static __le32 ext4_extent_block_csum(struct inode *inode,
+ 				     struct ext4_extent_header *eh)
+@@ -3190,8 +3195,9 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
+ 	unsigned int ee_len, depth;
+ 	int err = 0;
  
- 		dec_page_count(sbi, type);
+-	BUG_ON((split_flag & (EXT4_EXT_DATA_VALID1 | EXT4_EXT_DATA_VALID2)) ==
+-	       (EXT4_EXT_DATA_VALID1 | EXT4_EXT_DATA_VALID2));
++	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) == EXT4_EXT_DATA_VALID1);
++	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) &&
++	       (split_flag & EXT4_EXT_DATA_VALID2));
  
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index ae78b8e1ca0ce..d41210a381cdb 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1572,6 +1572,14 @@ enum f2fs_lookup_mode {
- 	LOOKUP_AUTO,
- };
+ 	ext_debug(inode, "logical block %llu\n", (unsigned long long)split);
  
-+/* For node type in __get_node_folio() */
-+enum node_type {
-+	NODE_TYPE_REGULAR,
-+	NODE_TYPE_INODE,
-+	NODE_TYPE_XATTR,
-+	NODE_TYPE_NON_INODE,
-+};
-+
- /* a threshold of maximum elapsed time in critical region to print tracepoint */
- #define MAX_LOCK_ELAPSED_TIME		500
+@@ -3373,7 +3379,7 @@ static struct ext4_ext_path *ext4_split_extent(handle_t *handle,
+ 			split_flag1 |= EXT4_EXT_MARK_UNWRIT1 |
+ 				       EXT4_EXT_MARK_UNWRIT2;
+ 		if (split_flag & EXT4_EXT_DATA_VALID2)
+-			split_flag1 |= EXT4_EXT_DATA_VALID1;
++			split_flag1 |= EXT4_EXT_DATA_ENTIRE_VALID1;
+ 		path = ext4_split_extent_at(handle, inode, path,
+ 				map->m_lblk + map->m_len, split_flag1, flags1);
+ 		if (IS_ERR(path))
+@@ -3728,7 +3734,7 @@ static struct ext4_ext_path *ext4_split_convert_extents(handle_t *handle,
  
-@@ -3915,6 +3923,9 @@ struct folio *f2fs_new_node_folio(struct dnode_of_data *dn, unsigned int ofs);
- void f2fs_ra_node_page(struct f2fs_sb_info *sbi, nid_t nid);
- struct folio *f2fs_get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
- 						enum node_type node_type);
-+int f2fs_sanity_check_node_footer(struct f2fs_sb_info *sbi,
-+					struct folio *folio, pgoff_t nid,
-+					enum node_type ntype, bool in_irq);
- struct folio *f2fs_get_inode_folio(struct f2fs_sb_info *sbi, pgoff_t ino);
- struct folio *f2fs_get_xnode_folio(struct f2fs_sb_info *sbi, pgoff_t xnid);
- int f2fs_move_node_folio(struct folio *node_folio, int gc_type);
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 30e26b878af0b..efd4f176a1f44 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1511,9 +1511,9 @@ void f2fs_ra_node_page(struct f2fs_sb_info *sbi, nid_t nid)
- 	f2fs_folio_put(afolio, err ? true : false);
- }
- 
--static int sanity_check_node_footer(struct f2fs_sb_info *sbi,
-+int f2fs_sanity_check_node_footer(struct f2fs_sb_info *sbi,
- 					struct folio *folio, pgoff_t nid,
--					enum node_type ntype)
-+					enum node_type ntype, bool in_irq)
- {
- 	if (unlikely(nid != nid_of_node(folio)))
- 		goto out_err;
-@@ -1538,12 +1538,13 @@ static int sanity_check_node_footer(struct f2fs_sb_info *sbi,
- 		goto out_err;
- 	return 0;
- out_err:
--	f2fs_warn(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
--		  "node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
--		  ntype, nid, nid_of_node(folio), ino_of_node(folio),
--		  ofs_of_node(folio), cpver_of_node(folio),
--		  next_blkaddr_of_node(folio));
- 	set_sbi_flag(sbi, SBI_NEED_FSCK);
-+	f2fs_warn_ratelimited(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
-+		"node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
-+		ntype, nid, nid_of_node(folio), ino_of_node(folio),
-+		ofs_of_node(folio), cpver_of_node(folio),
-+		next_blkaddr_of_node(folio));
-+
- 	f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
- 	return -EFSCORRUPTED;
- }
-@@ -1589,7 +1590,7 @@ static struct folio *__get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
- 		goto out_err;
- 	}
- page_hit:
--	err = sanity_check_node_footer(sbi, folio, nid, ntype);
-+	err = f2fs_sanity_check_node_footer(sbi, folio, nid, ntype, false);
- 	if (!err)
- 		return folio;
- out_err:
-@@ -1764,7 +1765,8 @@ static bool __write_node_folio(struct folio *folio, bool atomic, bool *submitted
- 	/* get old block addr of this node page */
- 	nid = nid_of_node(folio);
- 
--	if (sanity_check_node_footer(sbi, folio, nid, NODE_TYPE_REGULAR)) {
-+	if (f2fs_sanity_check_node_footer(sbi, folio, nid,
-+					NODE_TYPE_REGULAR, false)) {
- 		f2fs_handle_critical_error(sbi, STOP_CP_REASON_CORRUPTED_NID);
- 		goto redirty_out;
- 	}
-diff --git a/fs/f2fs/node.h b/fs/f2fs/node.h
-index 9cb8dcf8d4176..824ac9f0e6e42 100644
---- a/fs/f2fs/node.h
-+++ b/fs/f2fs/node.h
-@@ -52,14 +52,6 @@ enum {
- 	IS_PREALLOC,		/* nat entry is preallocated */
- };
- 
--/* For node type in __get_node_folio() */
--enum node_type {
--	NODE_TYPE_REGULAR,
--	NODE_TYPE_INODE,
--	NODE_TYPE_XATTR,
--	NODE_TYPE_NON_INODE,
--};
--
- /*
-  * For node information
-  */
+ 	/* Convert to unwritten */
+ 	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
+-		split_flag |= EXT4_EXT_DATA_VALID1;
++		split_flag |= EXT4_EXT_DATA_ENTIRE_VALID1;
+ 	/* Convert to initialized */
+ 	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
+ 		/*
 -- 
 2.51.0
 
