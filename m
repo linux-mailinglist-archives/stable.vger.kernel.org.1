@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-222102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJhTGWCso2myJgUAu9opvQ
-	(envelope-from <stable+bounces-222102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:02:56 +0100
+	id QBHQOMKho2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3071CE269
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CBF11CD652
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4CE03434CE1
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0772D3276C86
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B703019DC;
-	Sun,  1 Mar 2026 01:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7253930FF33;
+	Sun,  1 Mar 2026 01:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hKkRugTC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2bvF3K9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96A42F39BE;
-	Sun,  1 Mar 2026 01:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340D0274B5F;
+	Sun,  1 Mar 2026 01:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329902; cv=none; b=hPDTgQdLa8edcjUpXWrmYR/p2ahA84Jg5npzmr8dg+Ta2fgPcNLsu3qK1EjYKoHnhDJV/Gp4l2HR+5dYXNjVkzWYOjbDb1D9z42zV6cegNIA6z1QoAi0P65fPDETgOVaaEobFW9qZYUESSXy52Rlwo1lQB+7cU//qikvmo5RPoM=
+	t=1772329905; cv=none; b=XalcXowsQi8+Y/03Q5Py4B39qe+emvFeBGIMvUU6iA4Big4z+D0PovsZxHEmRrv0Yy35whRPf8AGwFKimUdyH23/8/B+4y2rIPX8LGzBftB4s/oCeh8oYP19BtiPIQg7utZkbqZ+eNwpetHk/oiE43mR3zRTeeWJ2dcbTxWh41U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329902; c=relaxed/simple;
-	bh=upClWo20FVZIpfqaFNHOc2zt3Q1qTQQDxyXdD8UIW1g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n7xIa1o5CeNir3lX9i+8wS76qaA+Xktq6zZWRp94tyg1IvNaFR5euovrSRwwi+Pk//XcIZIZgrvzpj0NKrEnsmXVWTuVseelTseapDzkt3kiKXXF+4uKrc9mAZcASoLEOLmgBbbDvEUV3L3AIEgchpTH2bPvhU+1sz84lhgkrdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hKkRugTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2EFC19421;
-	Sun,  1 Mar 2026 01:51:42 +0000 (UTC)
+	s=arc-20240116; t=1772329905; c=relaxed/simple;
+	bh=jx4KZa0onHZ65iT/vfhusrQFmygbeXz5t2Cx7GbYs4s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HYMx/H3LZaDLnw1Mj7vAohwqm5rxF4poX06IvKWHMLIIS11ISo0tt4y3c31rpSpiJHqISl0lBoHp7GgB2XqB1IRd1H64iCMX2m8h4LlX87wJKQaAioDcCpd/gpK0UwCXZ4kbmc7FLdU8eeira1pB+ArXLejgG9zLWilr9krbigE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2bvF3K9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A2BC19421;
+	Sun,  1 Mar 2026 01:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329902;
-	bh=upClWo20FVZIpfqaFNHOc2zt3Q1qTQQDxyXdD8UIW1g=;
+	s=k20201202; t=1772329905;
+	bh=jx4KZa0onHZ65iT/vfhusrQFmygbeXz5t2Cx7GbYs4s=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hKkRugTCyuuuUH3A4Tkuyx9WE4pkTsBmaJCF2shSNnozoTB5jfnSF4/l38OJE0xdI
-	 PqaUuCjc3G+gQJSoNnhkA6QKfUqWikT3UeSryvGzkpbp8CjxVTZzFA3rEMXVfW3wDh
-	 Jk2XbdydhLwYJ5Z4r5vnHLa2OPwG6ZoPF+rtJFCnCzcIlUsVXt4X9gBnYdkvGlBg83
-	 fTR6z0xSgpjuIbOswt9nOcwXjTe1PNNzt5IRE3iw95Y7NWRmAV6tWE6/4YYZOqLyCs
-	 j1Muvsa2448uhZDnUTmeKKya5JjatZqgFH/QnAh++d87UAYTrbxgKX4XmtHivA0J47
-	 ld+3n/fn/fOgg==
+	b=B2bvF3K9sZODn7d6hX9zcrUDVazYO20fpL+A3OV8N79+FBaCYvu+BNdov3JWgFBpu
+	 X5+dRRVhLKeQMETKzjNdSK9l3nxBbc5PL/S3mexa7UPCclV5c9DWKSC/5lgjXjXdgX
+	 RYtOE7yyGnqvovz9BRoUTr21Tqmcbagf3e4CnW3fGWet4IC0jy2yECSrpdI4qi+OFz
+	 G6cBQSZ1uNVb9HRibqvz9nG7YjJZB10pV7yzLztWW6lYz8NnRvPvmBG1bM5hLhXsrS
+	 IfccBDVVDVxwvlRMR5L4N2HMTPVtQXKPlHAQeti3AfE/EJrH2gpSlsiJsJKXbtgXRP
+	 JHP5WAILk4BfA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	johan@kernel.org
-Cc: Andreas Kemnade <andreas@kemnade.info>,
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Lee Jones <lee@kernel.org>,
-	linux-omap@vger.kernel.org
-Subject: FAILED: Patch "mfd: omap-usb-host: Fix OF populate on driver rebind" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:51:40 -0500
-Message-ID: <20260301015141.1718071-1-sashal@kernel.org>
+	linux-arm-msm@vger.kernel.org
+Subject: FAILED: Patch "mfd: qcom-pm8xxx: Fix OF populate on driver rebind" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:51:42 -0500
+Message-ID: <20260301015143.1718121-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,7 +75,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222102-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222103-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -88,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kemnade.info:email]
-X-Rspamd-Queue-Id: AA3071CE269
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 5CBF11CD652
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -103,10 +104,10 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 24804ba508a3e240501c521685a1c4eb9f574f8e Mon Sep 17 00:00:00 2001
+From 27a8acea47a93fea6ad0e2df4c20a9b51490e4d9 Mon Sep 17 00:00:00 2001
 From: Johan Hovold <johan@kernel.org>
-Date: Fri, 19 Dec 2025 12:07:14 +0100
-Subject: [PATCH] mfd: omap-usb-host: Fix OF populate on driver rebind
+Date: Fri, 19 Dec 2025 12:09:47 +0100
+Subject: [PATCH] mfd: qcom-pm8xxx: Fix OF populate on driver rebind
 
 Since commit c6e126de43e7 ("of: Keep track of populated platform
 devices") child devices will not be created by of_platform_populate()
@@ -119,30 +120,37 @@ the child devices are created if the driver is rebound.
 Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
 Cc: stable@vger.kernel.org	# 3.16
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
-Link: https://patch.msgid.link/20251219110714.23919-1-johan@kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251219110947.24101-1-johan@kernel.org
 Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- drivers/mfd/omap-usb-host.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/mfd/qcom-pm8xxx.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
-index a77b6fc790f2e..4d29a6e2ed87a 100644
---- a/drivers/mfd/omap-usb-host.c
-+++ b/drivers/mfd/omap-usb-host.c
-@@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
- {
- 	pm_runtime_disable(&pdev->dev);
- 
--	/* remove children */
--	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
-+	if (pdev->dev.of_node)
-+		of_platform_depopulate(&pdev->dev);
-+	else
-+		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
+diff --git a/drivers/mfd/qcom-pm8xxx.c b/drivers/mfd/qcom-pm8xxx.c
+index 1149f7102a365..0cf374c015ce7 100644
+--- a/drivers/mfd/qcom-pm8xxx.c
++++ b/drivers/mfd/qcom-pm8xxx.c
+@@ -577,17 +577,11 @@ static int pm8xxx_probe(struct platform_device *pdev)
+ 	return rc;
  }
  
- static const struct dev_pm_ops usbhsomap_dev_pm_ops = {
+-static int pm8xxx_remove_child(struct device *dev, void *unused)
+-{
+-	platform_device_unregister(to_platform_device(dev));
+-	return 0;
+-}
+-
+ static void pm8xxx_remove(struct platform_device *pdev)
+ {
+ 	struct pm_irq_chip *chip = platform_get_drvdata(pdev);
+ 
+-	device_for_each_child(&pdev->dev, NULL, pm8xxx_remove_child);
++	of_platform_depopulate(&pdev->dev);
+ 	irq_domain_remove(chip->irqdomain);
+ }
+ 
 -- 
 2.51.0
 
