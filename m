@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-222139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFq3Fh6io2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:19:10 +0100
+	id KBGXEcqdo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0201CD6DE
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:19:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF2F1CC93E
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C9EF3284B08
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8080B30F8159
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB4F3019DC;
-	Sun,  1 Mar 2026 01:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0240B30EF92;
+	Sun,  1 Mar 2026 01:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYE4SELG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OV1ynq+7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B323009C7;
-	Sun,  1 Mar 2026 01:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AEF2C08AD;
+	Sun,  1 Mar 2026 01:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329998; cv=none; b=nR1iTP/sbRUdU75fk5t2v/rvCEFWxVC6BhGymybSboXZ+2ikdyRD8RXdzEdG8uAUs40GefmRKZsrldlLo8uukzO84eTEpWaoAhUNpvnZMjU6DW+nk4/OE2bVIkWHNbO/PUnBuEEtY7K5pOI4ft+h3KFp/M3hT49yrkYLfoRDeXw=
+	t=1772330000; cv=none; b=Qd8POn9YnLjfIUi59t0K1557sqHx1qWYyOsYpza9B6oML2jipQNfbEmOdV7ao/vc8/9mEpVa/E/hXOdINJZ0fSg98jgb+KJENLrSkcqWt6JmwIdoySKTNdCipBn+8Az0VAUiC4BrRuuF7YBhTqgBgGcfYpIF6rq29DLWVS2KK9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329998; c=relaxed/simple;
-	bh=NVmAom0BU6nsWTd3B9XM3tdvJu76GZ12EIQjBF6Y/mE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IaOTw1E89ykQQ1IDaBaW6Gw7I8CBJvbqH5eMMc0Hi0K2SOJXC6qnhX5KAIQleQOcQvQFeRYe4xUVhy8UucP/MwxyoSocNguK5ctL+HpXGhRPVSuW8oLyZLjf8Y0Gj+cEUVhyTW3C9TZX5Cx9soN2gmmCXuVJpWCWApqgLYkAUBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYE4SELG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35BCC19424;
-	Sun,  1 Mar 2026 01:53:17 +0000 (UTC)
+	s=arc-20240116; t=1772330000; c=relaxed/simple;
+	bh=R5tQpyvkOahvTrujdWQ05xw2oehMgcO2zg2LLFExlho=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RhjjGau5pX21OiYdaraw6nUvtWuLEtYx3ViU4Jwb/mSeklsJhP7OH9Ao4hmKSfPy/vAVtzgitaHi6MiQOvVMju9+CDQAZbQncJu1TFBjCYDASGXA0knr4H3f+fBcvuRudARdr2JRRq2HV4ZsYcnhMMGjxATnMgYJFD9m0DYZAPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OV1ynq+7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28072C19421;
+	Sun,  1 Mar 2026 01:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329998;
-	bh=NVmAom0BU6nsWTd3B9XM3tdvJu76GZ12EIQjBF6Y/mE=;
+	s=k20201202; t=1772330000;
+	bh=R5tQpyvkOahvTrujdWQ05xw2oehMgcO2zg2LLFExlho=;
 	h=From:To:Cc:Subject:Date:From;
-	b=PYE4SELG7XOP0mDItFlQeFiU8TCpJJ3puoDXTsS6ZZJvkfXhFAUGDZBlGMxaFhSzB
-	 7t0HLIA08WAJP+dkde7mv2xige5Ey4Px0z7aWQev/10AVagBveOP1HMTprFpQoPEIr
-	 uxlFlR5VwwsiLJUIp4gazHnE0Mav28DJbFC+YFiiNW4OAyK57DqavW93fncSl3CZbr
-	 lbe6UDQv1kjoQ6D6NqVMoA3OdZiTJco+6wHSWNohZibNMzoPBcNVBpHRdIgMWA4eJn
-	 hZVS4jJRTu/Nd8wfpPGw9mtdnGXofYMpTD5PrPjPI/XwFnU2TPwqbOBv2EE7xSC+KF
-	 bKjwWEMo4Zh7A==
+	b=OV1ynq+7X5JiYcYcZOh1VnTJIO7QSBvxkgGlpBcGmGUcpUUqxc/4RKLj5BTqYxVzn
+	 Z4pMkPsUAFip3RZcIMa0paeicMbS89nSyZUwQPO2oVkb/vEGP7upJQJhLNx5oUkunP
+	 Sqx4fZ44PjeqePZ00bIMVgVdXku3pRXA5mbNrLx/bbZpItgy4jVKUefwB2XLK5pYyy
+	 dGaYk7W2e2B8s16tswlVPWNo55Zv1LmW2TKHlYiTkGYtoL/R/e1hcCXmAz/AItxiBu
+	 4ZWve41Vm9zNs08222i4CSd4bDe5qdEoYo1XtSldHyv3g0PGuK74obX5yMHF+QV6Up
+	 8922NCfwyYMNw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jinbaohong@synology.com
-Cc: Qu Wenruo <wqu@suse.com>,
-	Robbie Ko <robbieko@synology.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	linux-btrfs@vger.kernel.org
-Subject: FAILED: Patch "btrfs: continue trimming remaining devices on failure" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:53:16 -0500
-Message-ID: <20260301015316.1719989-1-sashal@kernel.org>
+	linusw@kernel.org
+Cc: Niklas Cassel <cassel@kernel.org>,
+	linux-ide@vger.kernel.org
+Subject: FAILED: Patch "ata: pata_ftide010: Fix some DMA timings" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:53:18 -0500
+Message-ID: <20260301015319.1720038-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +63,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222139-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222140-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,synology.com:email,suse.com:email]
-X-Rspamd-Queue-Id: AC0201CD6DE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ABF2F1CC93E
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,45 +102,42 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 912d1c6680bdb40b72b1b9204706f32b6eb842c3 Mon Sep 17 00:00:00 2001
-From: jinbaohong <jinbaohong@synology.com>
-Date: Wed, 28 Jan 2026 07:06:38 +0000
-Subject: [PATCH] btrfs: continue trimming remaining devices on failure
+From ff4a46c278ac6a4b3f39be1492a4568b6dcc6105 Mon Sep 17 00:00:00 2001
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 3 Feb 2026 11:23:01 +0100
+Subject: [PATCH] ata: pata_ftide010: Fix some DMA timings
 
-Commit 93bba24d4b5a ("btrfs: Enhance btrfs_trim_fs function to handle
-error better") intended to make device trimming continue even if one
-device fails, tracking failures and reporting them at the end. However,
-it used 'break' instead of 'continue', causing the loop to exit on the
-first device failure.
+The FTIDE010 has been missing some timing settings since its
+inception, since the upstream OpenWrt patch was missing these.
 
-Fix this by replacing 'break' with 'continue'.
+The community has since come up with the appropriate timings.
 
-Fixes: 93bba24d4b5a ("btrfs: Enhance btrfs_trim_fs function to handle error better")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Robbie Ko <robbieko@synology.com>
-Signed-off-by: jinbaohong <jinbaohong@synology.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: be4e456ed3a5 ("ata: Add driver for Faraday Technology FTIDE010")
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/pata_ftide010.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index a91bce05ffb4c..b63296e9abf48 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -6688,7 +6688,7 @@ int btrfs_trim_fs(struct btrfs_fs_info *fs_info, struct fstrim_range *range)
- 		if (ret) {
- 			dev_failed++;
- 			dev_ret = ret;
--			break;
-+			continue;
- 		}
- 	}
- 	mutex_unlock(&fs_devices->device_list_mutex);
+diff --git a/drivers/ata/pata_ftide010.c b/drivers/ata/pata_ftide010.c
+index c3a8384c3e04d..c41da296eb389 100644
+--- a/drivers/ata/pata_ftide010.c
++++ b/drivers/ata/pata_ftide010.c
+@@ -122,10 +122,10 @@ static const u8 mwdma_50_active_time[3] = {6, 2, 2};
+ static const u8 mwdma_50_recovery_time[3] = {6, 2, 1};
+ static const u8 mwdma_66_active_time[3] = {8, 3, 3};
+ static const u8 mwdma_66_recovery_time[3] = {8, 2, 1};
+-static const u8 udma_50_setup_time[6] = {3, 3, 2, 2, 1, 1};
++static const u8 udma_50_setup_time[6] = {3, 3, 2, 2, 1, 9};
+ static const u8 udma_50_hold_time[6] = {3, 1, 1, 1, 1, 1};
+-static const u8 udma_66_setup_time[7] = {4, 4, 3, 2, };
+-static const u8 udma_66_hold_time[7] = {};
++static const u8 udma_66_setup_time[7] = {4, 4, 3, 2, 1, 9, 9};
++static const u8 udma_66_hold_time[7] = {4, 2, 1, 1, 1, 1, 1};
+ 
+ /*
+  * We set 66 MHz for all MWDMA modes
 -- 
 2.51.0
 
