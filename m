@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-222195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOuKCAGto2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222195-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:05:37 +0100
+	id iAgWDm2io2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:20:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC371CE335
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:05:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93CA21CD750
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:20:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B2B0319F5EB
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:56:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0818532A2941
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5446E274B5F;
-	Sun,  1 Mar 2026 01:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFB72EA481;
+	Sun,  1 Mar 2026 01:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZrEbMGg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z/uL99ou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172092C08AD;
-	Sun,  1 Mar 2026 01:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FB12C08AD
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330134; cv=none; b=qNkFAjUJfB2xFhkLW5IBSGBYyM5epdusDnYrh5SCgkFUKIbiVxg/YUVeLfbzPfACatzZTNhVkbj6cYY4WT257xuLQAdkQramhvu9PgjpmknUht9assPWGJSlXOeCX74LmYwR/KOThb7xvGAifljRkt4aKqJ4kIxE83uDT9mHZU8=
+	t=1772330136; cv=none; b=fnbBBmS7wU9j9/ubaW8KbsmaL//mpEaKJiMPVl3vEMkxkyCIdzZDzMs8O06fRXKqX+aPoyrWoL8z4HAKZORYE/8GzTKnWNZ+aiLsMB5Tflg1G/jtyFgB7Al+7mHzi7ZE+hl2tUkgqlH8Yof2tFh/D17EkGQ4hb7pRzW7CDiMr+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330134; c=relaxed/simple;
-	bh=vwvV2Qtp84nbZAPvR8ocH5+Fsl6AsoxJ0LsKZFCkaCs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U+2dMLlRXoSFFwSE7zDpkLoc1TpuF3Y4pHnVNCEFUBhBs9MFriLNHH1gIjvkWLxl7r4s4LEYAPlOlz7k1i0wXmYIs/Z8zUK6r4rwpyWZ+LsThmL++DlD9uEgUOwVMIeFf+aQ3AlpNHIhvfY3wrCsahAiyp285anP2WEM5x6ydg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZrEbMGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E7DC19421;
-	Sun,  1 Mar 2026 01:55:33 +0000 (UTC)
+	s=arc-20240116; t=1772330136; c=relaxed/simple;
+	bh=musc2uRF0XxxZlUq2OWGOOlzOkQAX09z5nqdbHPwYJs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s1+QdmLzMPYJWBkoGqJecptiAEsPFfbHdG3FYcNHzjc3vFDX1BwC8DsVbbNoSuqJkLLP4r4jdOaJz2geAeBgwDwlv3BfZgMdB6sAclEyU/LZNCPrndt0G9paQM/9wLNL8hpMeJo/2mMa6f/1869YYsyOqbHJZm7N6CGvi55rC3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z/uL99ou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD025C19421;
+	Sun,  1 Mar 2026 01:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330134;
-	bh=vwvV2Qtp84nbZAPvR8ocH5+Fsl6AsoxJ0LsKZFCkaCs=;
+	s=k20201202; t=1772330136;
+	bh=musc2uRF0XxxZlUq2OWGOOlzOkQAX09z5nqdbHPwYJs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=EZrEbMGgPHJTR0gU1qjzmJ/at2HbXNokrKw4pkl5I2MbOrWVQM7rdwdTi9P+xrfH7
-	 hvUUPF37M6hrdA8NNx+R/ZgWiHouTBlHhOqjFVFPH92fAUKOH646ek2PzLbrDFgOQ8
-	 nuILUhSBO8CYu4oRLuFrzm0+b5UlEouEz7aujyMG1KLdmRDgrWrFRyohQtyHB5GWyz
-	 qNaY/MWM/TAQ/mYFD/Z4rgziXBijN5lIH0kBIlYLC9skxMWg91vbELtHc2QJcG6ep1
-	 K9VoPUyUlDQBeXbDNOnD1tHpmYuTg39g1225s9N/VTAHg7JE0iDLRR0t6JVGw18dg2
-	 oPH9TJ8x/I+dQ==
+	b=Z/uL99ouGdPGadeRJLV441D4aAalYLk6gd88PviR4OWO1xpSxL4odeFS+kWmnyYvb
+	 wolaM9umxCNJEznmaYnFrQACNbFVClz96R9o8r9rRSwtCF8B5RVruWqbA/2o8TKSro
+	 XXksJqqWAj3mB+um/lwLrP1tytcMas4Er/kKjFgF/Wm5qAm8E4HVB02r32YE3L0Od6
+	 GTb6eRl60HfGtKTna3rfQ0IIMStLYhQV1ncyQROSM/nAZL6p6CzHayqFLVFeRCP/Dh
+	 bs+uAY/r8Go63ej3uJWnwJomioLxiWZ0DJexRXei/8nJVnSduDo/M0qN3/7r4MTu4b
+	 KSNHlt7iGTJlA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mhiramat@kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	linux-trace-kernel@vger.kernel.org
-Subject: FAILED: Patch "tracing: Fix to set write permission to per-cpu buffer_size_kb" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:55:31 -0500
-Message-ID: <20260301015532.1722782-1-sashal@kernel.org>
+	sunpeng.li@amd.com
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm/amd/display: Increase DCN35 SR enter/exit latency" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:55:34 -0500
+Message-ID: <20260301015534.1722831-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,33 +67,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222195-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222196-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7AC371CE335
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 93CA21CD750
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -103,39 +106,89 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f844282deed7481cf2f813933229261e27306551 Mon Sep 17 00:00:00 2001
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Date: Tue, 10 Feb 2026 17:43:36 +0900
-Subject: [PATCH] tracing: Fix to set write permission to per-cpu
- buffer_size_kb
+From 318917e1d8ecc89f820f4fabf79935f4fed718cd Mon Sep 17 00:00:00 2001
+From: Leo Li <sunpeng.li@amd.com>
+Date: Mon, 3 Nov 2025 11:14:59 -0500
+Subject: [PATCH] drm/amd/display: Increase DCN35 SR enter/exit latency
 
-Since the per-cpu buffer_size_kb file is writable for changing
-per-cpu ring buffer size, the file should have the write access
-permission.
+[Why & How]
 
+On Framework laptops with DDR5 modules, underflow can be observed.
+It's unclear why it only occurs on specific desktop contents. However,
+increasing enter/exit latencies by 3us seems to resolve it.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4463
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/177071301597.2293046.11683339475076917920.stgit@mhiramat.tok.corp.google.com
-Fixes: 21ccc9cd7211 ("tracing: Disable "other" permission bits in the tracefs files")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c | 16 ++++++++--------
+ .../gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c |  4 ++--
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 845b8a165daf3..fd470675809b3 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -8613,7 +8613,7 @@ tracing_init_tracefs_percpu(struct trace_array *tr, long cpu)
- 	trace_create_cpu_file("stats", TRACE_MODE_READ, d_cpu,
- 				tr, cpu, &tracing_stats_fops);
- 
--	trace_create_cpu_file("buffer_size_kb", TRACE_MODE_READ, d_cpu,
-+	trace_create_cpu_file("buffer_size_kb", TRACE_MODE_WRITE, d_cpu,
- 				tr, cpu, &tracing_entries_fops);
- 
- 	if (tr->range_addr_start)
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index 7abe6811e4dfa..6fc5247526132 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -766,32 +766,32 @@ static struct wm_table ddr5_wm_table = {
+ 			.wm_inst = WM_A,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 31.0,
++			.sr_enter_plus_exit_time_us = 33.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_B,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 31.0,
++			.sr_enter_plus_exit_time_us = 33.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_C,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 31.0,
++			.sr_enter_plus_exit_time_us = 33.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_D,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 31.0,
++			.sr_enter_plus_exit_time_us = 33.0,
+ 			.valid = true,
+ 		},
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+index 817a370e80a77..8a177d5ae213e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+@@ -164,8 +164,8 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_5_soc = {
+ 		},
+ 	},
+ 	.num_states = 5,
+-	.sr_exit_time_us = 28.0,
+-	.sr_enter_plus_exit_time_us = 30.0,
++	.sr_exit_time_us = 31.0,
++	.sr_enter_plus_exit_time_us = 33.0,
+ 	.sr_exit_z8_time_us = 250.0,
+ 	.sr_enter_plus_exit_z8_time_us = 350.0,
+ 	.fclk_change_latency_us = 24.0,
 -- 
 2.51.0
 
