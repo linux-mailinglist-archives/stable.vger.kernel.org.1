@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-221315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIS9FiOUo2khHQUAu9opvQ
-	(envelope-from <stable+bounces-221315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:31 +0100
+	id 8JpIO3mVo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417B01CA2E5
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E311CA7EB
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 671583011CB4
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:19:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B4C7430C3981
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7094265CDD;
-	Sun,  1 Mar 2026 01:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA022641CA;
+	Sun,  1 Mar 2026 01:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLqKCtmQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1pdJsTR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66DD25F78F;
-	Sun,  1 Mar 2026 01:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101F718E02A;
+	Sun,  1 Mar 2026 01:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327962; cv=none; b=hLccFlrNm/K2L/dvo6N9YnWwb5OkufawZds//M0unA3aKvqUMwnNSdXLignqqmstDmXASUE8hhXAc4Mx2/BpscDWrR0H2KSGvqy1OKpbXpY2fkYldinhuIBfWsR8lC9yZpQAW8X0EiudYemXKIBS1/Yp6prx9nLZGJamMaaoMZw=
+	t=1772327965; cv=none; b=echyNi1C+car+8vTdXWGD59UbqIACTFVmg5Bm+Y2cL03Rpyf8zLgkwhCC5dD7RzqY8FccqR2DmO4pujRpl1XBuh1eTdDEVkrClXrY1rPJFQYcM8xQgOrSTP8sImLv0fNJkIjWdhKnh4yX6FWB6oi1tC6qDbIDv6+Lh/FUSy3cQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327962; c=relaxed/simple;
-	bh=LdcG8ETEviyuXaC2W+MfMsfj/WLomJKJaGZKqWIdFj0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E56kt3UF/u1X+W21mTDf9lTxe1VCHuSpNjTJdrupT2DeG5uT03eM9Oc1Mh5psfYpBz5bJDZLyo3CSsDl7kwO+B14C0g4VnohkBtKXiK3a1pE3uBuC0xyELwvG8QPaxXnRj+n/PAT4ltiWEVgIegl8Vn3fBPxEVT+OAWN4/pIWN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLqKCtmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CD2C19421;
-	Sun,  1 Mar 2026 01:19:21 +0000 (UTC)
+	s=arc-20240116; t=1772327965; c=relaxed/simple;
+	bh=S/Aak4m6ZxYDgDAG2cPMbe3IX7TZmOu0+52KR8O0TdE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QSplqUpL27VG6EWFPjviHnQEspwK3b57S08Kfdp93fxb7L45jNNgIs2E0TUZnc389x+39b68Ufvz+Df2lNZHcqT7gALPgDl02jU+HwwP9TKNFTqGv+aR3PUbCGjhCVpHRKFTf1W+zebit0G+qYukIC4sTxp6uiCE8xOXpuPDQ94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1pdJsTR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E9AC19421;
+	Sun,  1 Mar 2026 01:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327962;
-	bh=LdcG8ETEviyuXaC2W+MfMsfj/WLomJKJaGZKqWIdFj0=;
+	s=k20201202; t=1772327964;
+	bh=S/Aak4m6ZxYDgDAG2cPMbe3IX7TZmOu0+52KR8O0TdE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=PLqKCtmQ4pEQ1iXzYwdXkrmUQ9o8lXfboU/YdzR6O6wokpTbKtoJ8JH/VKo2yN9rO
-	 ff0ofNOqXnQsfuYuqdQZVf5LVNJKIzENxeTgPDY0D9doMdKi7Gm9cxEwbCP/JLUNcC
-	 Gd24uxT0LzRDZ3ZaZdkiVD9y7/QXx73YNs7DE9C+gWuAYYIFrlqQtOIGZM7EykOTCy
-	 Ady+ZzteoG1EEh1Q5gTHK2EdYRiYECVyGNhJq9ST5aG/Jip6H+EKhwMrtNHwkXq2W7
-	 bZSArM/S5gxAawqSS5GnnfTQkeFm7RIhiT3jt6KwEd6KOULctEiBlrsSCyR0NxmyRK
-	 lQRLJ1tQLMu8A==
+	b=d1pdJsTRBuDL4Zr6ImQ5CD+YYt0RE8scNhdN+Atb+dwfP2zsjBLI5ipcWxLLAL0AT
+	 MTC+dF+60vsmxLp0ucPeH9PxcgSWcToFx2g9kjQhiMJ7P52kN1ckuCuv758YvnbKaX
+	 KHrcwQkkFm7ua8DKTBDE5hBg5Z3tMONUPBAj92dbOtkG++MKapyPXdCqi0mCel6YiG
+	 eB+TZBwkLO59DxDsotH+vKSffGv2aEujIlh4eTPVJRMVwZKMWdCtYHsqolblxJ9OwL
+	 uw3IeP8kWUb1Fcbq5Qu/NJKL1E4bkGyiK19X02GapdEdrO7q3ovNVnmlSaXxhoVNez
+	 t56U6RSd4pc+A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	irui.wang@mediatek.com
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	linux-media@vger.kernel.org,
+	vulab@iscas.ac.cn
+Cc: Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
 	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: FAILED: Patch "media: mediatek: encoder: Fix uninitialized scalar variable issue" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:19:20 -0500
-Message-ID: <20260301011920.1674351-1-sashal@kernel.org>
+	linux-omap@vger.kernel.org
+Subject: FAILED: Patch "ARM: omap2: Fix reference count leaks in omap_control_init()" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:19:22 -0500
+Message-ID: <20260301011923.1674404-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,33 +65,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221315-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221316-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mediatek.com:email]
-X-Rspamd-Queue-Id: 417B01CA2E5
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,baylibre.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 50E311CA7EB
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -106,58 +104,77 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 88e935de7cf8795d7a6a51385db87ecb361a7050 Mon Sep 17 00:00:00 2001
-From: Irui Wang <irui.wang@mediatek.com>
-Date: Sun, 7 Sep 2025 17:35:56 +0800
-Subject: [PATCH] media: mediatek: encoder: Fix uninitialized scalar variable
- issue
+From 93a04ab480c8bbcb7d9004be139c538c8a0c1bc8 Mon Sep 17 00:00:00 2001
+From: Wentao Liang <vulab@iscas.ac.cn>
+Date: Wed, 17 Dec 2025 14:21:22 +0000
+Subject: [PATCH] ARM: omap2: Fix reference count leaks in omap_control_init()
 
-UNINIT checker finds some instances of variables that are used
-without being initialized, for example using the uninitialized
-value enc_result.is_key_frm can result in unpredictable behavior,
-so initialize these variables after declaring.
+The of_get_child_by_name() function increments the reference count
+of child nodes, causing multiple reference leaks in omap_control_init():
 
-Fixes: 4e855a6efa54 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Encoder Driver")
+1. scm_conf node never released in normal/error paths
+2. clocks node leak when checking existence
+3. Missing scm_conf release before np in error paths
+
+Fix these leaks by adding proper of_node_put() calls and separate error
+handling.
+
+Fixes: e5b635742e98 ("ARM: OMAP2+: control: add syscon support for register accesses")
 Cc: stable@vger.kernel.org
-Signed-off-by: Irui Wang <irui.wang@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+Link: https://patch.msgid.link/20251217142122.1861292-1-vulab@iscas.ac.cn
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 ---
- .../media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/mach-omap2/control.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc.c b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc.c
-index 6faf3f659e751..b3a0a1d8b7a8e 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc.c
-@@ -850,7 +850,7 @@ static void vb2ops_venc_buf_queue(struct vb2_buffer *vb)
- static int vb2ops_venc_start_streaming(struct vb2_queue *q, unsigned int count)
+diff --git a/arch/arm/mach-omap2/control.c b/arch/arm/mach-omap2/control.c
+index 79860b23030de..eb6fc7c61b6e0 100644
+--- a/arch/arm/mach-omap2/control.c
++++ b/arch/arm/mach-omap2/control.c
+@@ -732,7 +732,7 @@ int __init omap2_control_base_init(void)
+  */
+ int __init omap_control_init(void)
  {
- 	struct mtk_vcodec_enc_ctx *ctx = vb2_get_drv_priv(q);
--	struct venc_enc_param param;
-+	struct venc_enc_param param = { };
+-	struct device_node *np, *scm_conf;
++	struct device_node *np, *scm_conf, *clocks_node;
+ 	const struct of_device_id *match;
+ 	const struct omap_prcm_init_data *data;
  	int ret;
- 	int i;
+@@ -753,16 +753,19 @@ int __init omap_control_init(void)
  
-@@ -1004,7 +1004,7 @@ static int mtk_venc_encode_header(void *priv)
- 	int ret;
- 	struct vb2_v4l2_buffer *src_buf, *dst_buf;
- 	struct mtk_vcodec_mem bs_buf;
--	struct venc_done_result enc_result;
-+	struct venc_done_result enc_result = { };
+ 			if (IS_ERR(syscon)) {
+ 				ret = PTR_ERR(syscon);
+-				goto of_node_put;
++				goto err_put_scm_conf;
+ 			}
  
- 	dst_buf = v4l2_m2m_dst_buf_remove(ctx->m2m_ctx);
- 	if (!dst_buf) {
-@@ -1125,7 +1125,7 @@ static void mtk_venc_worker(struct work_struct *work)
- 	struct vb2_v4l2_buffer *src_buf, *dst_buf;
- 	struct venc_frm_buf frm_buf;
- 	struct mtk_vcodec_mem bs_buf;
--	struct venc_done_result enc_result;
-+	struct venc_done_result enc_result = { };
- 	int ret, i;
+-			if (of_get_child_by_name(scm_conf, "clocks")) {
++			clocks_node = of_get_child_by_name(scm_conf, "clocks");
++			if (clocks_node) {
++				of_node_put(clocks_node);
+ 				ret = omap2_clk_provider_init(scm_conf,
+ 							      data->index,
+ 							      syscon, NULL);
+ 				if (ret)
+-					goto of_node_put;
++					goto err_put_scm_conf;
+ 			}
++			of_node_put(scm_conf);
+ 		} else {
+ 			/* No scm_conf found, direct access */
+ 			ret = omap2_clk_provider_init(np, data->index, NULL,
+@@ -780,6 +783,9 @@ int __init omap_control_init(void)
  
- 	/* check dst_buf, dst_buf may be removed in device_run
+ 	return 0;
+ 
++err_put_scm_conf:
++	if (scm_conf)
++		of_node_put(scm_conf);
+ of_node_put:
+ 	of_node_put(np);
+ 	return ret;
 -- 
 2.51.0
 
