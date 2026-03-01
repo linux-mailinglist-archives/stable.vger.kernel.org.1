@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-221757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LZ/E0Oco2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221757-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:11 +0100
+	id GJVTIkCZo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CD81CC30A
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A151CB581
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 04C7F32807CA
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 896E63053375
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED28C2D24B7;
-	Sun,  1 Mar 2026 01:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7962D9484;
+	Sun,  1 Mar 2026 01:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tjVSqETE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mTPrUCpa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B016B82899;
-	Sun,  1 Mar 2026 01:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6BD82899;
+	Sun,  1 Mar 2026 01:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329067; cv=none; b=phbYtytc2xmr+dCKnBkm3uoSuVbeq5oq1RcaO9E8BoPlEp1Q6YlcuMxlKhQMNAGW6p4nHe+x/kFMhZCHTIWKp5XfI69GJRgQM81f4s2KlZ+YGHfEDm4qx/O/t/l9v3ZxjFdeGPhmOWjWq9HJq/KpvCLAPG/mwLEkrgfVet4wg8g=
+	t=1772329070; cv=none; b=ufpIb3DGOcXxseoQKHJOrT9ZcOA7cAgS93iSCWZT5tetvDsU0ZwrOK9jgosJiofSv1DJ21IxudZ6UCe1Tsl0f65w9w3HIY/QZle++1MQjv8G+eoK/oc+O0okFs3N3Qz7i+zcfE7ou7Nm5iti6wH9ZLfXpl7rdbwkS8+74sBi9TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329067; c=relaxed/simple;
-	bh=Sh7y6GqWfyxLfb0N/xbQ3qwKNVdtLM4leHvHDDGqIG0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S7IHr5DUVsl1C7u+QvbJWBviL3MAVc7rpzg2ekjyHzxTJdB8nUwC8RtvMy8cEGRiVwJ49+lXZJB28Gp2UWZLz4/lJ/woDg2x4u6UlqNTSBOKSHDPIZuKoVoMaiYl2nrSh2KumMUXDvInPPJNSSBtrapHfPfvS/Mr7VR9dSUwbRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tjVSqETE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09052C19425;
-	Sun,  1 Mar 2026 01:37:46 +0000 (UTC)
+	s=arc-20240116; t=1772329070; c=relaxed/simple;
+	bh=co1AthSFIq0rfOMJLFzAav4ZdGSzHYRKBuEoMntLpsg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H1ub9+gEcsCbjIFHmxZ2G9eyGx2N8FM43EZN3oz2Mv9ydl0X5Cu6KjUW1VvFZDCWHzELr5JnD5H59jaKWzimCiBomjVAFjvOeytstl9QCTegyE2utWAnkTlKffeltyZlQv/jcTZxVYiDV5OAk0WQ2ndIxqRJxUzXUAesT6ubyFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mTPrUCpa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4588AC19421;
+	Sun,  1 Mar 2026 01:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329067;
-	bh=Sh7y6GqWfyxLfb0N/xbQ3qwKNVdtLM4leHvHDDGqIG0=;
+	s=k20201202; t=1772329069;
+	bh=co1AthSFIq0rfOMJLFzAav4ZdGSzHYRKBuEoMntLpsg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=tjVSqETEJTlfe6BUoHc5YKP2B1J6dy6cxFYLTN+h14lSGHb3J/4VZnVoHhRbxLWZd
-	 rbHpt8Z8JuqInzr8II5nzNs/ifhGCE4/+R3tg2BxOAjP6pBLpjVBU0dGpnXd0Z9ekg
-	 ypmx7N2FNWa/5V2dGSNbqdCjLjmQ+XK4nA6Izvq323hvsQaVumJICkoV1eC034BJiI
-	 aBZFUoNrn1VuU9UHUG+LCKdMij3Ir+sqigwm4uH76RsfZF27c/g3FC5RPwYUUwrk/M
-	 jZcZ1MCHrxzzkVZ7iUqjApbefgF7ZfK+FefO5OX1JEa0ZY3IigyB5Kk9u5DDZUhNEg
-	 RLd1RcEcdATXA==
+	b=mTPrUCpa1Qa6J0y6sgM+6jZhhKTDhBdc85O5ytnHVeFJvCVIBAXcoNTXeQbvP3Kof
+	 lK6tyk2h/k2Bm6pgaxkLWWV+lgv3yAXYsamm67GghKsfazHW3KbJRjc/uKu3uI8f++
+	 RZk5FTInvg/zwYWcbG8YeaLyt6Hm7Nwuxv5FsaGoUVrcORos2UWS5kXVYKsSa6V64i
+	 apd2XipBFo/MQYYv6m942gq626V0PWGhqOJJ/JRMKYVaw8tjrNCUeV5JK3QhUpcKib
+	 EiiOViNXBruZ101JZfGXbKgdp+4/KvWVNYFn4ZCmJGMUAKM0sI+z/ON1SUwsntMlTS
+	 7WkVuxRCBZoug==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	linkinjeon@kernel.org
-Cc: Igor Stepansky <igor.stepansky@orca.security>,
-	Steve French <stfrench@microsoft.com>,
-	linux-cifs@vger.kernel.org
-Subject: FAILED: Patch "ksmbd: add chann_lock to protect ksmbd_chann_list xarray" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:37:45 -0500
-Message-ID: <20260301013745.1698010-1-sashal@kernel.org>
+	me@ziyao.cc
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: FAILED: Patch "MIPS: Work around LLVM bug when gp is used as global register variable" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:37:47 -0500
+Message-ID: <20260301013748.1698055-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,35 +64,39 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [8.84 / 15.00];
+	URIBL_BLACK(7.50)[ziyao.cc:email];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221757-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221758-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
+	GREYLIST(0.00)[pass,meta];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,orca.security:email]
-X-Rspamd-Queue-Id: A4CD81CC30A
-X-Rspamd-Action: no action
+	NEURAL_SPAM(0.00)[0.977];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,gnu.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 59A151CB581
+X-Rspamd-Action: add header
+X-Spam: Yes
 
 The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
@@ -103,117 +108,102 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4f3a06cc57976cafa8c6f716646be6c79a99e485 Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Mon, 9 Feb 2026 10:43:19 +0900
-Subject: [PATCH] ksmbd: add chann_lock to protect ksmbd_chann_list xarray
+From 30bfc2d6a1132a89a5f1c3b96c59cf3e4d076ea3 Mon Sep 17 00:00:00 2001
+From: Yao Zi <me@ziyao.cc>
+Date: Thu, 5 Feb 2026 15:56:44 +0000
+Subject: [PATCH] MIPS: Work around LLVM bug when gp is used as global register
+ variable
 
-ksmbd_chann_list xarray lacks synchronization, allowing use-after-free in
-multi-channel sessions (between lookup_chann_list() and ksmbd_chann_del).
+On MIPS, __current_thread_info is defined as global register variable
+locating in $gp, and is simply assigned with new address during kernel
+relocation.
 
-Adds rw_semaphore chann_lock to struct ksmbd_session and protects
-all xa_load/xa_store/xa_erase accesses.
+This however is broken with LLVM, which always restores $gp if it finds
+$gp is clobbered in any form, including when intentionally through a
+global register variable. This is against GCC's documentation[1], which
+requires a callee-saved register used as global register variable not to
+be restored if it's clobbered.
+
+As a result, $gp will continue to point to the unrelocated kernel after
+the epilog of relocate_kernel(), leading to an early crash in init_idle,
+
+[    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 0000000000000000, epc == ffffffff81afada8, ra == ffffffff81afad90
+[    0.000000] Oops[#1]:
+[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G        W           6.19.0-rc5-00262-gd3eeb99bbc99-dirty #188 VOLUNTARY
+[    0.000000] Tainted: [W]=WARN
+[    0.000000] Hardware name: loongson,loongson64v-4core-virtio
+[    0.000000] $ 0   : 0000000000000000 0000000000000000 0000000000000001 0000000000000000
+[    0.000000] $ 4   : ffffffff80b80ec0 ffffffff80b53d48 0000000000000000 00000000000f4240
+[    0.000000] $ 8   : 0000000000000100 ffffffff81d82f80 ffffffff81d82f80 0000000000000001
+[    0.000000] $12   : 0000000000000000 ffffffff81776f58 00000000000005da 0000000000000002
+[    0.000000] $16   : ffffffff80b80e40 0000000000000000 ffffffff80b81614 9800000005dfbe80
+[    0.000000] $20   : 00000000540000e0 ffffffff81980000 0000000000000000 ffffffff80f81c80
+[    0.000000] $24   : 0000000000000a26 ffffffff8114fb90
+[    0.000000] $28   : ffffffff80b50000 ffffffff80b53d40 0000000000000000 ffffffff81afad90
+[    0.000000] Hi    : 0000000000000000
+[    0.000000] Lo    : 0000000000000000
+[    0.000000] epc   : ffffffff81afada8 init_idle+0x130/0x270
+[    0.000000] ra    : ffffffff81afad90 init_idle+0x118/0x270
+[    0.000000] Status: 540000e2	KX SX UX KERNEL EXL
+[    0.000000] Cause : 00000008 (ExcCode 02)
+[    0.000000] BadVA : 0000000000000000
+[    0.000000] PrId  : 00006305 (ICT Loongson-3)
+[    0.000000] Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
+[    0.000000] Stack : 9800000005dfbf00 ffffffff8178e950 0000000000000000 0000000000000000
+[    0.000000]         0000000000000000 ffffffff81970000 000000000000003f ffffffff810a6528
+[    0.000000]         0000000000000001 9800000005dfbe80 9800000005dfbf00 ffffffff81980000
+[    0.000000]         ffffffff810a6450 ffffffff81afb6c0 0000000000000000 ffffffff810a2258
+[    0.000000]         ffffffff81d82ec8 ffffffff8198d010 ffffffff81b67e80 ffffffff8197dd98
+[    0.000000]         ffffffff81d81c80 ffffffff81930000 0000000000000040 0000000000000000
+[    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    0.000000]         0000000000000000 000000000000009e ffffffff9fc01000 0000000000000000
+[    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    0.000000]         0000000000000000 ffffffff81ae86dc ffffffff81b3c741 0000000000000002
+[    0.000000]         ...
+[    0.000000] Call Trace:
+[    0.000000] [<ffffffff81afada8>] init_idle+0x130/0x270
+[    0.000000] [<ffffffff81afb6c0>] sched_init+0x5c8/0x6c0
+[    0.000000] [<ffffffff81ae86dc>] start_kernel+0x27c/0x7a8
+
+This bug has been reported to LLVM[2] and affects version from (at
+least) 18 to 21. Let's work around this by using inline assembly to
+assign $gp before a fix is widely available.
 
 Cc: stable@vger.kernel.org
-Reported-by: Igor Stepansky <igor.stepansky@orca.security>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://gcc.gnu.org/onlinedocs/gcc-15.2.0/gcc/Global-Register-Variables.html # [1]
+Link: https://github.com/llvm/llvm-project/issues/176546 # [2]
+Signed-off-by: Yao Zi <me@ziyao.cc>
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
- fs/smb/server/mgmt/user_session.c |  5 +++++
- fs/smb/server/mgmt/user_session.h |  1 +
- fs/smb/server/smb2pdu.c           | 12 +++++++++++-
- 3 files changed, 17 insertions(+), 1 deletion(-)
+ arch/mips/kernel/relocate.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index 68b3e0cb54d38..8c2b14ea7b0ec 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -244,12 +244,14 @@ static void free_channel_list(struct ksmbd_session *sess)
- 	struct channel *chann;
- 	unsigned long index;
+diff --git a/arch/mips/kernel/relocate.c b/arch/mips/kernel/relocate.c
+index 7f1c136ad8506..59833210542ff 100644
+--- a/arch/mips/kernel/relocate.c
++++ b/arch/mips/kernel/relocate.c
+@@ -420,7 +420,20 @@ void *__init relocate_kernel(void)
+ 			goto out;
  
-+	down_write(&sess->chann_lock);
- 	xa_for_each(&sess->ksmbd_chann_list, index, chann) {
- 		xa_erase(&sess->ksmbd_chann_list, index);
- 		kfree(chann);
- 	}
+ 		/* The current thread is now within the relocated image */
++#ifndef CONFIG_CC_IS_CLANG
+ 		__current_thread_info = RELOCATED(&init_thread_union);
++#else
++		/*
++		 * LLVM may wrongly restore $gp ($28) in epilog even if it's
++		 * intentionally modified. Work around this by using inline
++		 * assembly to assign $gp. $gp couldn't be listed as output or
++		 * clobber, or LLVM will still restore its original value.
++		 * See also LLVM upstream issue
++		 * https://github.com/llvm/llvm-project/issues/176546
++		 */
++		asm volatile("move $28, %0" : :
++			     "r" (RELOCATED(&init_thread_union)));
++#endif
  
- 	xa_destroy(&sess->ksmbd_chann_list);
-+	up_write(&sess->chann_lock);
- }
- 
- static void __session_rpc_close(struct ksmbd_session *sess,
-@@ -434,7 +436,9 @@ static int ksmbd_chann_del(struct ksmbd_conn *conn, struct ksmbd_session *sess)
- {
- 	struct channel *chann;
- 
-+	down_write(&sess->chann_lock);
- 	chann = xa_erase(&sess->ksmbd_chann_list, (long)conn);
-+	up_write(&sess->chann_lock);
- 	if (!chann)
- 		return -ENOENT;
- 
-@@ -668,6 +672,7 @@ static struct ksmbd_session *__session_create(int protocol)
- 	rwlock_init(&sess->tree_conns_lock);
- 	atomic_set(&sess->refcnt, 2);
- 	init_rwsem(&sess->rpc_lock);
-+	init_rwsem(&sess->chann_lock);
- 
- 	ret = __init_smb2_session(sess);
- 	if (ret)
-diff --git a/fs/smb/server/mgmt/user_session.h b/fs/smb/server/mgmt/user_session.h
-index 176d800c24906..d94f5e128a9b4 100644
---- a/fs/smb/server/mgmt/user_session.h
-+++ b/fs/smb/server/mgmt/user_session.h
-@@ -48,6 +48,7 @@ struct ksmbd_session {
- 	char				sess_key[CIFS_KEY_SIZE];
- 
- 	struct hlist_node		hlist;
-+	struct rw_semaphore		chann_lock;
- 	struct xarray			ksmbd_chann_list;
- 	struct xarray			tree_conns;
- 	struct ida			tree_conn_ida;
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 4d3154cc493ea..3efcc7da1b9f6 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -80,7 +80,13 @@ static inline bool check_session_id(struct ksmbd_conn *conn, u64 id)
- 
- struct channel *lookup_chann_list(struct ksmbd_session *sess, struct ksmbd_conn *conn)
- {
--	return xa_load(&sess->ksmbd_chann_list, (long)conn);
-+	struct channel *chann;
-+
-+	down_read(&sess->chann_lock);
-+	chann = xa_load(&sess->ksmbd_chann_list, (long)conn);
-+	up_read(&sess->chann_lock);
-+
-+	return chann;
- }
- 
- /**
-@@ -1559,8 +1565,10 @@ static int ntlm_authenticate(struct ksmbd_work *work,
- 				return -ENOMEM;
- 
- 			chann->conn = conn;
-+			down_write(&sess->chann_lock);
- 			old = xa_store(&sess->ksmbd_chann_list, (long)conn, chann,
- 					KSMBD_DEFAULT_GFP);
-+			up_write(&sess->chann_lock);
- 			if (xa_is_err(old)) {
- 				kfree(chann);
- 				return xa_err(old);
-@@ -1652,8 +1660,10 @@ static int krb5_authenticate(struct ksmbd_work *work,
- 				return -ENOMEM;
- 
- 			chann->conn = conn;
-+			down_write(&sess->chann_lock);
- 			old = xa_store(&sess->ksmbd_chann_list, (long)conn,
- 					chann, KSMBD_DEFAULT_GFP);
-+			up_write(&sess->chann_lock);
- 			if (xa_is_err(old)) {
- 				kfree(chann);
- 				return xa_err(old);
+ 		/* Return the new kernel's entry point */
+ 		kernel_entry = RELOCATED(start_kernel);
 -- 
 2.51.0
 
