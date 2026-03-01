@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221943-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gA9dGE6qo2nfJQUAu9opvQ
-	(envelope-from <stable+bounces-221942-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:54:06 +0100
+	id 6MmEI0+qo2nfJQUAu9opvQ
+	(envelope-from <stable+bounces-221943-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:54:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92DB1CE08F
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:54:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC521CE09A
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:54:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02D413324370
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 505F73326C06
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E002E8DE3;
-	Sun,  1 Mar 2026 01:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4372DB7B5;
+	Sun,  1 Mar 2026 01:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYoOjYnz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r/E0xwlN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A80020010A;
-	Sun,  1 Mar 2026 01:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D93F20010A
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329517; cv=none; b=knP0mFr5A1M0F/dw0FU/P8kTwzs37OXXt16psigab6OQWycNeVYGVTcIBWWDWKhpCj4jwzOeqDpO+NhAHZNCa7u3iPkkEGyfj3tcJNmzfRT/6FagN6JOno86CnTr381URNIve5PQT+yr9F5N48hUTUjJw5jvVLdyYntCWKLG7FA=
+	t=1772329519; cv=none; b=EXeL5vCGtK1XBzOOKZb9NSdQIvY+Ymcw9JgzdxounhTT998LKn0CTfM/BOkATWZjsmSCbgoOqH3nh16kgb/BglTXMGbbJXkceJsqEZ5jGFpurC8pt/1fRt3C6w7VUpQzTybVZg23aJUUrrdKt9Q8TypNpy3N6DSa+89eEURMaYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329517; c=relaxed/simple;
-	bh=zgLhDZVzHsFwKoIAegtQdUYOLB1BE8hTfYY1ANchflQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aOtu5FPs2DsxkodDasFnH81S17FDI6entf/E6VgqmE1Z10Simc+0yU320sytt2QIM3swlOodKdmxUPugRMJWdItZYjsuKXLMWHANc6HnmX3QTWts4Cyg/gne6ZBnGfGpXIwBN1swXgV884+VBhFrQH/pBZZ2TNBvo26N0pHHRs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYoOjYnz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526ECC19421;
-	Sun,  1 Mar 2026 01:45:16 +0000 (UTC)
+	s=arc-20240116; t=1772329519; c=relaxed/simple;
+	bh=lCxpL+urHOTREi6/gPVC4Y9b8CjTIH+jPjr29gff8Zg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PSHfb3z8dwaWSNO9agI9jDCdfqMOCq2NcCye/L8szTmqKaOMmitTCL/dk3E6SGayBB7AYrNKuR3FaVNDGHulWqZrJeUtviRVYqi0b+ScXfYZOgd+ie5LLv7LeqaR5bEbhjyNeNUGKkP02+A5fx1Cq1xDBXdBs/RUu6zHl3u1pEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r/E0xwlN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7F6C19421;
+	Sun,  1 Mar 2026 01:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329517;
-	bh=zgLhDZVzHsFwKoIAegtQdUYOLB1BE8hTfYY1ANchflQ=;
+	s=k20201202; t=1772329519;
+	bh=lCxpL+urHOTREi6/gPVC4Y9b8CjTIH+jPjr29gff8Zg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=eYoOjYnzTJQkwn3EEsuyg5+uwxbsNdzVSkqI+/XNVART/9+dTMLA+QCxBm/9ZVKzv
-	 JXgAretqodGyY29SDscKh//DJ1Dst87ZGJToo8q6X8y2nGnaaVved5VDMtuD4EDeHs
-	 EUwUpEuK973ZwhnpeuSand4Wn+iVdNd/t0xL4ZXUt/hqYgnpV10RcBco11MtCtsVoj
-	 sBQpldTyntNdQq3lZZCGC58GDQNgPw7xVg3CVo9AHo5pqcLZwifb1TDNm8gdd3pabB
-	 uP4+XeQLtZsGWck9CySJ3ZHoks42/WqTzjwR3Ja0F0V4B+2keQRgQjO2/+1ckwWWq/
-	 8S9JCsi5OBPCQ==
+	b=r/E0xwlNhyoRoCvZ+5REM9BW3543xZg4+OOJN6S5z4/1PV9tqNyKv6QbTLnP6FUHm
+	 HRxEMuyluv1oe5qBhpIQxyFQIw7bCJpDOXs4sNpl7QW2s1hnPKqJn6J8xicL1DZxKU
+	 Vk/2fcL3disXY5pPN1cSAhFs2f23OLybxiAA3t2gdxioBvmFwGjm7Vpx2IZQOzoD/s
+	 bWNeQsC/17UkMEagf2/3ga3gSlP8suZlNqxvVx5x6MwGrtEl698ZKfoxwCKT738hmd
+	 5YHdShatV7gTuXaeV9Gv5ol+xQ2zRvUl8/1yFXLBX8YV85fbfoLSPaBq+ecbV3MJPh
+	 QvKH29fTwn20A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	thomas.richard@bootlin.com
-Cc: stable <stable@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org
-Subject: FAILED: Patch "usb: cdns3: fix role switching during resume" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:45:14 -0500
-Message-ID: <20260301014515.1707809-1-sashal@kernel.org>
+	yifan1.zhang@amd.com
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm/amdgpu: Protect GPU register accesses in powergated state in some paths" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:45:17 -0500
+Message-ID: <20260301014517.1707859-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,9 +74,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	URIBL_MULTI_FAIL(0.00)[bootlin.com:server fail,linuxfoundation.org:server fail,sea.lore.kernel.org:server fail,msgid.link:server fail];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,amd.com:server fail];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221942-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221943-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D92DB1CE08F
+X-Rspamd-Queue-Id: 1CC521CE09A
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -104,91 +104,59 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 87e4b043b98a1d269be0b812f383881abee0ca45 Mon Sep 17 00:00:00 2001
-From: "Thomas Richard (TI)" <thomas.richard@bootlin.com>
-Date: Fri, 30 Jan 2026 11:05:45 +0100
-Subject: [PATCH] usb: cdns3: fix role switching during resume
+From 39fc2bc4da0082c226cbee331f0a5d44db3997da Mon Sep 17 00:00:00 2001
+From: Yifan Zhang <yifan1.zhang@amd.com>
+Date: Mon, 2 Feb 2026 13:17:39 +0800
+Subject: [PATCH] drm/amdgpu: Protect GPU register accesses in powergated state
+ in some paths
 
-If the role change while we are suspended, the cdns3 driver switches to the
-new mode during resume. However, switching to host mode in this context
-causes a NULL pointer dereference.
+Ungate GPU CG/PG in device_fini_hw and device_halt to protect GPU
+register accesses, e.g. GC registers are accessed in amdgpu_irq_disable_all()
+and amdgpu_fence_driver_hw_fini().
 
-The host role's start() operation registers a xhci-hcd device, but its
-probe is deferred while we are in the resume path. The host role's resume()
-operation assumes the xhci-hcd device is already probed, which is not the
-case, leading to the dereference. Since the start() operation of the new
-role is already called, the resume operation can be skipped.
-
-So skip the resume operation for the new role if a role switch occurs
-during resume. Once the resume sequence is complete, the xhci-hcd device
-can be probed in case of host mode.
-
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000208
-Mem abort info:
-...
-Data abort info:
-...
-[0000000000000208] pgd=0000000000000000, p4d=0000000000000000
-Internal error: Oops: 0000000096000004 [#1]  SMP
-Modules linked in:
-CPU: 0 UID: 0 PID: 146 Comm: sh Not tainted
-6.19.0-rc7-00013-g6e64f4aabfae-dirty #135 PREEMPT
-Hardware name: Texas Instruments J7200 EVM (DT)
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : usb_hcd_is_primary_hcd+0x0/0x1c
-lr : cdns_host_resume+0x24/0x5c
-...
-Call trace:
- usb_hcd_is_primary_hcd+0x0/0x1c (P)
- cdns_resume+0x6c/0xbc
- cdns3_controller_resume.isra.0+0xe8/0x17c
- cdns3_plat_resume+0x18/0x24
- platform_pm_resume+0x2c/0x68
- dpm_run_callback+0x90/0x248
- device_resume+0x100/0x24c
- dpm_resume+0x190/0x2ec
- dpm_resume_end+0x18/0x34
- suspend_devices_and_enter+0x2b0/0xa44
- pm_suspend+0x16c/0x5fc
- state_store+0x80/0xec
- kobj_attr_store+0x18/0x2c
- sysfs_kf_write+0x7c/0x94
- kernfs_fop_write_iter+0x130/0x1dc
- vfs_write+0x240/0x370
- ksys_write+0x70/0x108
- __arm64_sys_write+0x1c/0x28
- invoke_syscall+0x48/0x10c
- el0_svc_common.constprop.0+0x40/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x34/0x108
- el0t_64_sync_handler+0xa0/0xe4
- el0t_64_sync+0x198/0x19c
-Code: 52800003 f9407ca5 d63f00a0 17ffffe4 (f9410401)
----[ end trace 0000000000000000 ]---
-
-Cc: stable <stable@kernel.org>
-Fixes: 2cf2581cd229 ("usb: cdns3: add power lost support for system resume")
-Signed-off-by: Thomas Richard (TI) <thomas.richard@bootlin.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://patch.msgid.link/20260130-usb-cdns3-fix-role-switching-during-resume-v1-1-44c456852b52@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 ---
- drivers/usb/cdns3/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index 1243a5cea91b5..f0e32227c0b79 100644
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -551,7 +551,7 @@ int cdns_resume(struct cdns *cdns)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index c1ffc63e23ab5..528990a595ec9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3504,9 +3504,6 @@ static int amdgpu_device_ip_fini_early(struct amdgpu_device *adev)
  		}
  	}
  
--	if (cdns->roles[cdns->role]->resume)
-+	if (!role_changed && cdns->roles[cdns->role]->resume)
- 		cdns->roles[cdns->role]->resume(cdns, power_lost);
+-	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
+-	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
+-
+ 	amdgpu_amdkfd_suspend(adev, true);
+ 	amdgpu_amdkfd_teardown_processes(adev);
+ 	amdgpu_userq_suspend(adev);
+@@ -4902,6 +4899,9 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
+ 		amdgpu_virt_fini_data_exchange(adev);
+ 	}
  
- 	return 0;
++	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
++	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
++
+ 	/* disable all interrupts */
+ 	amdgpu_irq_disable_all(adev);
+ 	if (adev->mode_info.mode_config_initialized) {
+@@ -7360,6 +7360,9 @@ void amdgpu_device_halt(struct amdgpu_device *adev)
+ 	amdgpu_xcp_dev_unplug(adev);
+ 	drm_dev_unplug(ddev);
+ 
++	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
++	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
++
+ 	amdgpu_irq_disable_all(adev);
+ 
+ 	amdgpu_fence_driver_hw_fini(adev);
 -- 
 2.51.0
 
