@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-222099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222100-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKmYL7aho2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222099-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:26 +0100
+	id qI05GDeeo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222100-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADB91CD634
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7491CCAEA
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7610D3431DE6
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D0A4030DEC41
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CF02FF67A;
-	Sun,  1 Mar 2026 01:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1916303CA0;
+	Sun,  1 Mar 2026 01:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pk+IbEzN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ioI/dnOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8B52FC89C;
-	Sun,  1 Mar 2026 01:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7247E2FE577;
+	Sun,  1 Mar 2026 01:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329896; cv=none; b=kMDMm9Y221EeuOU66/QcGcF0/AIqzXXGA2Age804mlHdKwkhgu5IrGTDWJODTfhDdNKRiddctEgNPdEBZ/vCemKfEOvVMIc9y6BeNko16n7+ZHs2k7Ri0XjXOXvzVZeM2ND5+qdFN3KiCgLiXSULNoPi2yOZtpuAfSMu4f8eMG8=
+	t=1772329898; cv=none; b=KK2INnzUt9VepJNuiezM0KGFBgltfzcrEP4OI3S/LfwVk0PR1E93gFTJZNIFWRp/FUy8pHp7fkvkMdrsf1FC/tItvchg/QdjxxLjhJkiHrjYafOYe2irLWmHMMtldPw5vd+98+ez7WgAnKi9TGIDmgMUsi50oYe/MPm2CokrnJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329896; c=relaxed/simple;
-	bh=4mooUjkFYtVwuPe1sqeZO0h770fCHiODOMfNXps+jHc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LLa3gURD+1j59LSsLnqUEvBMjSI7S+dR3Yw2NtyvUJOrzVGr4+GtYN+yuHo0biiLT55Urk6U1V9TnSCWQY5EEBEoTC8/D8QVpnABLYrdD/JJMrHE9AQ/RU0YSU6/cXFparrE19wsPHKT9xDyQXDI2DF0FF5Obz5NFuAqttbczao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pk+IbEzN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAF6C19421;
-	Sun,  1 Mar 2026 01:51:35 +0000 (UTC)
+	s=arc-20240116; t=1772329898; c=relaxed/simple;
+	bh=hbv5kg007avlzh4pA0OW9AAOG1KnUD6hPlxj3fyEvOc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AhfAbDBKv4+f7YxLkY1SCl78HjqmXXjMWGk9Ws2Z+X9Uc3xtACp2VlLJlksE47KHVfdJz+yseVSi1PGysnxWZR6MVP1WCauzxD58iQU9KEzDVLppCb/ttadGT4JmkBdYTK1iRPvdfbjfpbHrIXz/Gg1tr5qwo+Fg5Q4LII86uC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ioI/dnOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E0EC19421;
+	Sun,  1 Mar 2026 01:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329895;
-	bh=4mooUjkFYtVwuPe1sqeZO0h770fCHiODOMfNXps+jHc=;
+	s=k20201202; t=1772329898;
+	bh=hbv5kg007avlzh4pA0OW9AAOG1KnUD6hPlxj3fyEvOc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Pk+IbEzN+ZoxMklqFavmZVNm0tPOSIkXDpKlRlRuDHwjAzylRxSOlQXSEXPxNhsn4
-	 bRxtjHkNCtGBSGHATWPdA15QlgwFr4XzRaeGYJRnfrcJlIlRJNgU5IRwyO7sLI+EI7
-	 E2fBGJSBzKOgdw1wbbalHaakG5ravi8h0tH8FhCHspz/aCWseqydSwB45uMTA6L0wJ
-	 dCz2U07daOVu7MqsL9PPdps8KqINJoZUrVmDsNwV7GRCgKOMS4dpZ/QDbVbmb2Jl+r
-	 NgsE3pmmeRzMrh91NYuzvZ2RPnUqHEHrIMsixiq26UbNa+VGWfyJFrcv0SaXeQsILk
-	 7Ism71A1MZoqQ==
+	b=ioI/dnOW6XDLvTrWHf5wbQtJjIDGoxuM9R9HIPCBG1WEzLYMscUMXA9as9EYLf/Aa
+	 DipHVImQK/NsbWC8l2bzXaCzkkegdO3NM5+bHK9w9b9v3a/nKYaH+H9rfMrkd6tya2
+	 C42G7i2AeaAsMrF2w5SEcQjMDWK9QfcAZzy2YlD1rcB3TvMbayaZPjm07dHriezcwM
+	 9DbjCCGXLweKUj8Xs2dTICDTF7rXpXRh7x2MW3SK8axAacGBi0KMDxKXomjVy6FdfL
+	 gTFsCFnyp5Wr7UrzQ15Fzy+Ag0qQCwPA+2SsqY8Zpbt/ZgxG1VFX1e/ajgOVPyLxp6
+	 bGnAbjrfdqBkg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ii4gsp@gmail.com
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	linux-input@vger.kernel.org
-Subject: FAILED: Patch "Input: synaptics_i2c - guard polling restart in resume" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:51:33 -0500
-Message-ID: <20260301015134.1717924-1-sashal@kernel.org>
+	guojinhui.liam@bytedance.com
+Cc: Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	iommu@lists.linux.dev
+Subject: FAILED: Patch "iommu/vt-d: Flush dev-IOTLB only when PCIe device is accessible in scalable mode" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:51:36 -0500
+Message-ID: <20260301015136.1717973-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,38 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222099-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-222100-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 6ADB91CD634
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,amd.com:email]
+X-Rspamd-Queue-Id: EC7491CCAEA
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -104,48 +103,81 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 870c2e7cd881d7a10abb91f2b38135622d9f9f65 Mon Sep 17 00:00:00 2001
-From: Minseong Kim <ii4gsp@gmail.com>
-Date: Wed, 21 Jan 2026 10:02:02 -0800
-Subject: [PATCH] Input: synaptics_i2c - guard polling restart in resume
+From 10e60d87813989e20eac1f3eda30b3bae461e7f9 Mon Sep 17 00:00:00 2001
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
+Date: Thu, 22 Jan 2026 09:48:51 +0800
+Subject: [PATCH] iommu/vt-d: Flush dev-IOTLB only when PCIe device is
+ accessible in scalable mode
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-synaptics_i2c_resume() restarts delayed work unconditionally, even when
-the input device is not opened. Guard the polling restart by taking the
-input device mutex and checking input_device_enabled() before re-queuing
-the delayed work.
+Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
+request when device is disconnected") relies on
+pci_dev_is_disconnected() to skip ATS invalidation for
+safely-removed devices, but it does not cover link-down caused
+by faults, which can still hard-lock the system.
 
-Fixes: eef3e4cab72ea ("Input: add driver for Synaptics I2C touchpad")
-Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
+For example, if a VM fails to connect to the PCIe device,
+"virsh destroy" is executed to release resources and isolate
+the fault, but a hard-lockup occurs while releasing the group fd.
+
+Call Trace:
+ qi_submit_sync
+ qi_flush_dev_iotlb
+ intel_pasid_tear_down_entry
+ device_block_translation
+ blocking_domain_attach_dev
+ __iommu_attach_device
+ __iommu_device_set_domain
+ __iommu_group_set_domain_internal
+ iommu_detach_group
+ vfio_iommu_type1_detach_group
+ vfio_group_detach_container
+ vfio_group_fops_release
+ __fput
+
+Although pci_device_is_present() is slower than
+pci_dev_is_disconnected(), it still takes only ~70 µs on a
+ConnectX-5 (8 GT/s, x2) and becomes even faster as PCIe speed
+and width increase.
+
+Besides, devtlb_invalidation_with_pasid() is called only in the
+paths below, which are far less frequent than memory map/unmap.
+
+1. mm-struct release
+2. {attach,release}_dev
+3. set/remove PASID
+4. dirty-tracking setup
+
+The gain in system stability far outweighs the negligible cost
+of using pci_device_is_present() instead of pci_dev_is_disconnected()
+to decide when to skip ATS invalidation, especially under GDR
+high-load conditions.
+
+Fixes: 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation request when device is disconnected")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260121063738.799967-1-ii4gsp@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Link: https://lore.kernel.org/r/20251211035946.2071-3-guojinhui.liam@bytedance.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- drivers/input/mouse/synaptics_i2c.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/iommu/intel/pasid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/mouse/synaptics_i2c.c b/drivers/input/mouse/synaptics_i2c.c
-index c8ddfff2605ff..29da66af36d74 100644
---- a/drivers/input/mouse/synaptics_i2c.c
-+++ b/drivers/input/mouse/synaptics_i2c.c
-@@ -615,13 +615,16 @@ static int synaptics_i2c_resume(struct device *dev)
- 	int ret;
- 	struct i2c_client *client = to_i2c_client(dev);
- 	struct synaptics_i2c *touch = i2c_get_clientdata(client);
-+	struct input_dev *input = touch->input;
+diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
+index 3f6d78180d799..99692f88b8834 100644
+--- a/drivers/iommu/intel/pasid.c
++++ b/drivers/iommu/intel/pasid.c
+@@ -218,7 +218,7 @@ devtlb_invalidation_with_pasid(struct intel_iommu *iommu,
+ 	if (!info || !info->ats_enabled)
+ 		return;
  
- 	ret = synaptics_i2c_reset_config(client);
- 	if (ret)
- 		return ret;
+-	if (pci_dev_is_disconnected(to_pci_dev(dev)))
++	if (!pci_device_is_present(to_pci_dev(dev)))
+ 		return;
  
--	mod_delayed_work(system_dfl_wq, &touch->dwork,
--				msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
-+	guard(mutex)(&input->mutex);
-+	if (input_device_enabled(input))
-+		mod_delayed_work(system_dfl_wq, &touch->dwork,
-+				 msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
- 
- 	return 0;
- }
+ 	sid = PCI_DEVID(info->bus, info->devfn);
 -- 
 2.51.0
 
