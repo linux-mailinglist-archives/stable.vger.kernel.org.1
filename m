@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-221839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNdxAWmao2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:17 +0100
+	id GAVsDWuao2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2701CBA3D
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA1D1CBA4E
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49FF3308F553
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:41:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5F5FD308F63D
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB80D2F3C07;
-	Sun,  1 Mar 2026 01:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2322E2F3C34;
+	Sun,  1 Mar 2026 01:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJmbWrhj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQ76+TBL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7FA2F39B8;
-	Sun,  1 Mar 2026 01:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1612DF13E;
+	Sun,  1 Mar 2026 01:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329262; cv=none; b=i1HtEuBxeRZSxVeTnY8EI0oQF/GeNhdAyoB5u45yXUl+7x3jsadfzsbjIhuVH6CAOcYEhtdy7h9u4s05qmrDZ2svKkB4j1ddl5JGs/pH6A8KL4Nu6vabAmfr+3c3siVGq1ky/XddmnmK0bDFd5XY8J/5s+HjFpXFbLargUtGl2Q=
+	t=1772329264; cv=none; b=o/oHDQwnjlGT9C3LEHKfI/yhbK3KdkwBtGQaJSwxaDSwc25Pl+dWGMjWkjyP6ZAqeftyvegiDZbR/SAvYoweABgyxymTyaEwA+6ignNphHcsqVSnscXfdpHEEgTWQ1Han6Q/sxolyh3ZuSU6NRjGBqNIdvzNv8s7tCod3X62XZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329262; c=relaxed/simple;
-	bh=Jp3xrx6O6Tc5hBGyNEwDmw6vSIID8FxLKlp2Kn7Sr5E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ohmccRWNd2jU2tJyg+7x+1eIhu4PqQZ6bxTPSw0cneGE/1PuoM6LT8Nxia3Oc2hTmt0fARFmrg3F4Krb7Dz5au+kV9JwRGltTUdzk0YX0Y+OXR+GkP5JbS7eq0UNOPD1SIERqZ3qe3+F3D2j/cl5L+UdxYg/w1BPN/BkeLr3Eh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJmbWrhj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041C1C19421;
-	Sun,  1 Mar 2026 01:41:01 +0000 (UTC)
+	s=arc-20240116; t=1772329264; c=relaxed/simple;
+	bh=PonijaVrsagX3/M5GbS7xhTi3SmWY1lCL+3ApFbXYiA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o8lt00e+6WMiXgm33X9ur51zPJxTVlSrWrJckdXiHuOTqrGfEefU3s8hcj3dqRWlF51ombOOKg8Z2AwOCW3JxiUfP12zbHQ2G8n2ULJchPWyOun4qb66oDe7KRyod6vu3IPEJSdRttP0LIEWtZay1nuvTT+apJ7w65xm3ZtEqBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQ76+TBL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2413CC19421;
+	Sun,  1 Mar 2026 01:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329262;
-	bh=Jp3xrx6O6Tc5hBGyNEwDmw6vSIID8FxLKlp2Kn7Sr5E=;
+	s=k20201202; t=1772329264;
+	bh=PonijaVrsagX3/M5GbS7xhTi3SmWY1lCL+3ApFbXYiA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=IJmbWrhjtbyyjU75MAXIjoO5195fi6I9i4/S4cwW0vilEUZhppkN1wt3KZFl1sL5D
-	 XQUOHQrgD+Vbp9uxuEZZqRYlUhp6YBwq/tMcj2TEC6gQg8sScz1J7+BdQ4AunniJu4
-	 3xJKVI2zAfkFIdkUyz4k3A3eM7zzyNco0ajRpXX9gvXwvuOZfvS2Ob+5FPQOlHUT+E
-	 0IbgJlUqEW8t/QFDu481CmWgoXJkcMME89mBACF5LutXthqIjFxA/6TM++TOC3/qKQ
-	 0COU2OBr1sPKSkuCB3bSXDJDNMl8dnXeTeA0Y4/iMtvQkdNsCDkCD7k9gB7s/eQ0/R
-	 vCeF2WlBNQE2w==
+	b=MQ76+TBLC0qyiwJQwKMtNQmI8qfQqbQ2os0g7tkamhlJbFAQQbqdgEw1drEvzf5LP
+	 qLkjorjx7DkJq8Uj1k4Wn7GSnr51/au2V4KsYrHTi8CKdvY3R6DR/LaP3L7CBN95cb
+	 fzy+zRsDLOOdDrU/r+qdkMAU5EXATIoc+B/LggtxfUfPKmgxPbS61Ft3qRxMrKN2dj
+	 PjhhwUU6lexUvfYPPnzb8V8hOpo9/voMgOtIYZh7C1EUKzk1Zjrvz15svNzYa1+TsH
+	 XSRb/hWCS97bi8IK+biTbl1BBHk5E2TAXXEG1ucerbzK/zJYQHVO+ybAliK2IUuwL8
+	 DOg+caY0T8Ghg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	oneukum@suse.com
-Cc: Jiri Kosina <jkosina@suse.com>,
-	linux-input@vger.kernel.org
-Subject: FAILED: Patch "HID: hid-pl: handle probe errors" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:41:00 -0500
-Message-ID: <20260301014100.1702470-1-sashal@kernel.org>
+	ming.qian@oss.nxp.com
+Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	linux-media@vger.kernel.org
+Subject: FAILED: Patch "media: amphion: Drop min_queued_buffers assignment" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:41:02 -0500
+Message-ID: <20260301014103.1702519-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,9 +64,10 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
@@ -72,24 +75,24 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221840-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221839-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DB2701CBA3D
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email]
+X-Rspamd-Queue-Id: DEA1D1CBA4E
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -102,42 +105,51 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3756a272d2cf356d2203da8474d173257f5f8521 Mon Sep 17 00:00:00 2001
-From: Oliver Neukum <oneukum@suse.com>
-Date: Wed, 19 Nov 2025 10:09:57 +0100
-Subject: [PATCH] HID: hid-pl: handle probe errors
+From 5633ec763a2a18cef6c5ac9250e4f4b8786e7999 Mon Sep 17 00:00:00 2001
+From: Ming Qian <ming.qian@oss.nxp.com>
+Date: Tue, 23 Dec 2025 14:27:52 +0800
+Subject: [PATCH] media: amphion: Drop min_queued_buffers assignment
 
-Errors in init must be reported back or we'll
-follow a NULL pointer the first time FF is used.
+The min_queued_buffers field controls when start_streaming() is called
+by the vb2 core (it delays the callback until at least N buffers are
+queued). Setting it to 1 affects the timing of start_streaming(), which
+breaks the seek flow in decoder scenarios and causes test failures.
 
-Fixes: 20eb127906709 ("hid: force feedback driver for PantherLord USB/PS2 2in1 Adapter")
+The current driver implementation does not rely on this minimum buffer
+requirement and handles streaming start correctly with the default
+value of 0, so remove these assignments.
+
+Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- drivers/hid/hid-pl.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/media/platform/amphion/vpu_v4l2.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/hid/hid-pl.c b/drivers/hid/hid-pl.c
-index 3c8827081deae..dc11d5322fc0f 100644
---- a/drivers/hid/hid-pl.c
-+++ b/drivers/hid/hid-pl.c
-@@ -194,9 +194,14 @@ static int pl_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 		goto err;
- 	}
- 
--	plff_init(hdev);
-+	ret = plff_init(hdev);
-+	if (ret)
-+		goto stop;
- 
- 	return 0;
-+
-+stop:
-+	hid_hw_stop(hdev);
- err:
- 	return ret;
- }
+diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
+index 121165a7184fc..64fc88d89cccd 100644
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -669,7 +669,6 @@ static int vpu_m2m_queue_init(void *priv, struct vb2_queue *src_vq, struct vb2_q
+ 		src_vq->mem_ops = &vb2_vmalloc_memops;
+ 	src_vq->drv_priv = inst;
+ 	src_vq->buf_struct_size = sizeof(struct vpu_vb2_buffer);
+-	src_vq->min_queued_buffers = 1;
+ 	src_vq->dev = inst->vpu->dev;
+ 	src_vq->lock = &inst->lock;
+ 	ret = vb2_queue_init(src_vq);
+@@ -686,7 +685,6 @@ static int vpu_m2m_queue_init(void *priv, struct vb2_queue *src_vq, struct vb2_q
+ 		dst_vq->mem_ops = &vb2_vmalloc_memops;
+ 	dst_vq->drv_priv = inst;
+ 	dst_vq->buf_struct_size = sizeof(struct vpu_vb2_buffer);
+-	dst_vq->min_queued_buffers = 1;
+ 	dst_vq->dev = inst->vpu->dev;
+ 	dst_vq->lock = &inst->lock;
+ 	ret = vb2_queue_init(dst_vq);
 -- 
 2.51.0
 
