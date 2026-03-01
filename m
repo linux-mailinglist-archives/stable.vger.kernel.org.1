@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-221563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJ20AQGZo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:17 +0100
+	id 0HX3NQOZo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F061CB472
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 206601CB479
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 18E7E30634E4
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2E35830639CF
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B872BE033;
-	Sun,  1 Mar 2026 01:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC1C2BEFE8;
+	Sun,  1 Mar 2026 01:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gg/NBiRm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BRYcZQCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F074D242D72;
-	Sun,  1 Mar 2026 01:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB8D430BB5;
+	Sun,  1 Mar 2026 01:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328588; cv=none; b=WtwtqCz6P/Iqp1NlnP9phnnj8AvyPQunO80D+L4oI8baqlDtLcj7VEil5qAKK9QKAaXaiqSo6aB2vXwnQc5MvIVoogOZRJJ+W628P41dsnUHdABShQpTzQZeyK4kglwZKkaqq1rrMxiWdjEgHNwzIPlYWkFD+IjRkgAY4UbhZtw=
+	t=1772328589; cv=none; b=X6ek9W3+yuIEf/O7V0T/yODDJBsjNZhjIIbsAJLk3n6rqqdz5aAqYBepj/xCEloT+zaon+HAq0FtY5KBvsY6gmMQ3IyMjBSeidu6r5J14hJRylzUWTsLAwAXuhz0KaE7run3ERac3U1EWOTL9yHPSjudREZi4QrZPPGze+mY5Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328588; c=relaxed/simple;
-	bh=IrY0eGxSChiRY4Cxlu1YtDyRdH9huQg1/FmQrUI6izs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tZw9FfVicyMEYUxm0D3BJMc1qnn9gT2/we87MZuSTk3ht6ubXUj3JRpch1FJjQgO8Aeah6PD7VsL6vjNwsRzps2z81p+Yy+ZM9fN3Bbs4EvD05Kufh1JlRS5M7q4q9ms2k0swWIwIXLRE/u3FlILpb7iTfNrK0jDBLtmtTOzqR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gg/NBiRm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62153C19421;
-	Sun,  1 Mar 2026 01:29:46 +0000 (UTC)
+	s=arc-20240116; t=1772328589; c=relaxed/simple;
+	bh=ylevKCBCWcRYXoqDCQYKjh/MazvjuVPCqwnZmq72niI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vns7jyC2/sbWIdkH8/rclHFqkT37gwpFHV2FFiQgPGNHmlQjOAcn4Ndw5ZGzJaBJ9PcQ+rXOsZTlRhwKio4ooGkYWGTiab060xcjObmLNxKCPrsBU+r5EIo7C4LvTX+G3zKUEIVWW7gORktFJJNCZ/GikzAgnEn0LLSpPPtg2wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BRYcZQCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFE7C19421;
+	Sun,  1 Mar 2026 01:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328587;
-	bh=IrY0eGxSChiRY4Cxlu1YtDyRdH9huQg1/FmQrUI6izs=;
+	s=k20201202; t=1772328589;
+	bh=ylevKCBCWcRYXoqDCQYKjh/MazvjuVPCqwnZmq72niI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Gg/NBiRmo9mYR8tQ+OxxH5Kjy3TK1eYCTEgVG0bLv7BZIthzThvP4gDKzLB7KHq+S
-	 B4uwtNd1fNc+bGjJfzoZ0IQT6s03oVyx/MkQdpRMYr7NpULxV1WNvuKCDwGpOQXhVM
-	 eJpwfVCpMcAM99knDvx4TFmi8VA2XSbLkCPtDQyTQWaWtemRBNkZmCn3wo1gw7R6hB
-	 HVQLetx0BmNn9k6ABQHtsV8JpGvpN5RSTl+FOPPAGDuVz2anR4tAnIoUej7ZKf1kJA
-	 HWaeOnLaKIgUh/GBCYutWCSrc77+oHxPqWwX+wMdm7AG1lRIFdzB5BfOCkSICCDgQM
-	 nL0/AbdNGWeEA==
+	b=BRYcZQCxd1cqbaqv37KZXaFZGoZbTuM9qws7gmn/BwaO3L6SdpzuuieEWZ8yL1F79
+	 KPFYbcyh/lMWuKYOFAG+4pNdJ2Rh4K23nzgEsvPL+dyJhtMDLr7uQA113fFs2FLCjt
+	 fIdVlT4RUPSR2VnxVq0+XpEqDc4SyJvzDaeaN5p9LlHyp61BSLpBYz/hxXL3W493Uu
+	 C5GPwh5Kx3Aq+CSXugXcP7fWISXA9hI0apsCgyCRspwClsbWqba6UEQ0t7kNaQ+Pff
+	 pT9+AESUGOLC5VJLPHYjfKqFgzCVu0kw73HNPubjCfIirlfCoR+5Q7lHfrmK2jOJEV
+	 14HjSNYOfxyZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	petr.pavlu@suse.com
+	mhiramat@kernel.org
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Tom Zanussi <zanussi@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	linux-trace-kernel@vger.kernel.org
-Subject: FAILED: Patch "tracing: Fix checking of freed trace_event_file for hist files" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:29:44 -0500
-Message-ID: <20260301012945.1687606-1-sashal@kernel.org>
+Subject: FAILED: Patch "tracing: ring-buffer: Fix to check event length before using" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:29:47 -0500
+Message-ID: <20260301012947.1687657-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,32 +64,32 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221564-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221563-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 20F061CB472
+X-Rspamd-Queue-Id: 206601CB479
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -104,59 +102,54 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f0a0da1f907e8488826d91c465f7967a56a95aca Mon Sep 17 00:00:00 2001
-From: Petr Pavlu <petr.pavlu@suse.com>
-Date: Thu, 19 Feb 2026 17:27:01 +0100
-Subject: [PATCH] tracing: Fix checking of freed trace_event_file for hist
- files
+From 912b0ee248c529a4f45d1e7f568dc1adddbf2a4a Mon Sep 17 00:00:00 2001
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Date: Mon, 16 Feb 2026 18:30:15 +0900
+Subject: [PATCH] tracing: ring-buffer: Fix to check event length before using
 
-The event_hist_open() and event_hist_poll() functions currently retrieve
-a trace_event_file pointer from a file struct by invoking
-event_file_data(), which simply returns file->f_inode->i_private. The
-functions then check if the pointer is NULL to determine whether the event
-is still valid. This approach is flawed because i_private is assigned when
-an eventfs inode is allocated and remains set throughout its lifetime.
-Instead, the code should call event_file_file(), which checks for
-EVENT_FILE_FL_FREED. Using the incorrect access function may result in the
-code potentially opening a hist file for an event that is being removed or
-becoming stuck while polling on this file.
-
-Correct the access method to event_file_file() in both functions.
+Check the event length before adding it for accessing next index in
+rb_read_data_buffer(). Since this function is used for validating
+possibly broken ring buffers, the length of the event could be broken.
+In that case, the new event (e + len) can point a wrong address.
+To avoid invalid memory access at boot, check whether the length of
+each event is in the possible range before using it.
 
 Cc: stable@vger.kernel.org
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Link: https://patch.msgid.link/20260219162737.314231-2-petr.pavlu@suse.com
-Fixes: 1bd13edbbed6 ("tracing/hist: Add poll(POLLIN) support on hist file")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 5f3b6e839f3c ("ring-buffer: Validate boot range memory events")
+Link: https://patch.msgid.link/177123421541.142205.9414352170164678966.stgit@devnote2
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/trace_events_hist.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/ring_buffer.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index e6f449f53afcc..768df987419e3 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -5784,7 +5784,7 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index bdc8010d8f482..1e7a34a31851c 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1849,6 +1849,7 @@ static int rb_read_data_buffer(struct buffer_data_page *dpage, int tail, int cpu
+ 	struct ring_buffer_event *event;
+ 	u64 ts, delta;
+ 	int events = 0;
++	int len;
+ 	int e;
  
- 	guard(mutex)(&event_mutex);
+ 	*delta_ptr = 0;
+@@ -1856,9 +1857,12 @@ static int rb_read_data_buffer(struct buffer_data_page *dpage, int tail, int cpu
  
--	event_file = event_file_data(file);
-+	event_file = event_file_file(file);
- 	if (!event_file)
- 		return EPOLLERR;
+ 	ts = dpage->time_stamp;
  
-@@ -5822,7 +5822,7 @@ static int event_hist_open(struct inode *inode, struct file *file)
+-	for (e = 0; e < tail; e += rb_event_length(event)) {
++	for (e = 0; e < tail; e += len) {
  
- 	guard(mutex)(&event_mutex);
+ 		event = (struct ring_buffer_event *)(dpage->data + e);
++		len = rb_event_length(event);
++		if (len <= 0 || len > tail - e)
++			return -1;
  
--	event_file = event_file_data(file);
-+	event_file = event_file_file(file);
- 	if (!event_file) {
- 		ret = -ENODEV;
- 		goto err;
+ 		switch (event->type_len) {
+ 
 -- 
 2.51.0
 
