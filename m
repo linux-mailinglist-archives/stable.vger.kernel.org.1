@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-221914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GilHyubo2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:31 +0100
+	id IBIKAPKpo2nfJQUAu9opvQ
+	(envelope-from <stable+bounces-221915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:52:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259511CBE67
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8CB1CE030
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7231B3039DE2
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:44:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 988F232F4729
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BF22D97AA;
-	Sun,  1 Mar 2026 01:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DDC2DBF40;
+	Sun,  1 Mar 2026 01:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rzb7iJ/k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Akhc/Xt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F812D94A0;
-	Sun,  1 Mar 2026 01:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31705243969;
+	Sun,  1 Mar 2026 01:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329448; cv=none; b=G1tstAmFk3FAULNWs4bAB8fMMCjv7f1o7ycYzL6Utj4VQooHO1oNELhVo86/Edkd5tO9j3bfkmydJRSv15/VBKUxDSLGiA+AtPZnl1wesbQn0aGdnfOQG3wu1c8TeTD5d2pfr/awAHHhB2vyVqtjnvxgs36d+UZc0zmRg7ZF+Iw=
+	t=1772329451; cv=none; b=QX78y/74EsY23ghK3vtnP8PQUaDvl5VJ2evRl200473jNgMfkl2XgCYJT+PoruwCT1Nac0Y416zn8xY3lBxstpBBDQslYPxhsGpsWfe5FIC0R8gfnz30/6ykis5OPx8p2t1Vj37j8EeX0qWJAQFo1UhaCZAMTx7AdqWVQYvzDUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329448; c=relaxed/simple;
-	bh=TGGVqFqyad7yJE0UEmO/YWOtfuFI1S4YChrL4FMhKNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=okXNUamAcaACnWBoi1DKMFPfrGbH1AHI4m9MGQwyHcFdU1TczdJ31qnkvXuAuRa9+s8eSwoTofVGYmJKzyq8Jd6MQDElRz2YI2KIZXFU+UStch2teNgvIGeSeVUfNJJAANd/yZK33wmMTvktEcwEmDrMIT1XI9Lf/SMnSI8io7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rzb7iJ/k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E732CC19421;
-	Sun,  1 Mar 2026 01:44:07 +0000 (UTC)
+	s=arc-20240116; t=1772329451; c=relaxed/simple;
+	bh=ICWJceNjWAcsYgqkB2Ubv4dZDEYGG4zPXXvZXz8Lmxc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PxyF8F4pnzeNawYzN7mg4J1p4Y8qZhBcX0OAV7CluZIN3OiLmUwFM4a/WB/2N98EcnV6LEPH9fanHywiqo91urkJcPoWe1JHe72XVNB6zQ4ZO5swztBSrjCizgr0Owre4WFua94kkZQ6b+X82IPuu/Awrdxvs8rW3IZ1Glwf7HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Akhc/Xt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9EAC19421;
+	Sun,  1 Mar 2026 01:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329448;
-	bh=TGGVqFqyad7yJE0UEmO/YWOtfuFI1S4YChrL4FMhKNU=;
+	s=k20201202; t=1772329451;
+	bh=ICWJceNjWAcsYgqkB2Ubv4dZDEYGG4zPXXvZXz8Lmxc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Rzb7iJ/kYOj+K16j/x3ILHM+Xc4M0LSfyaJPpVZWL9itYFFj6uGAq80868ODsl6Ke
-	 8ma+rHa0PRhQhCqc4cJW6heu3LiL1y1S1Htn4a4PIOQDLYO8Zi1xvPsTQ+r+ByLPtG
-	 jJPVtREw10QP0Rc5BWTRqNxk9eALneUC634CJGcnpYs/+NTqxyaoZfJO1zxWcpQPgt
-	 w2X3AMFz38KamN4xaGQoQKyXemLiB6kma2R336tXMvIp42A37JNdLZbn7ztx4aFZA8
-	 FfkTIcnlzeXKXeh5QiZqUju9mvXRxWROT5pZhae3f96sHqIqq0u0ny86IfECmET/iW
-	 KfndJ+23zZ33g==
+	b=Akhc/Xt2UlLelGxL4GLWZ3Zp8z5owBYfdpO2KuAcD4CMQWr8KjwZaJOM7wK1WKP36
+	 BVw7YzgB2UQf/Hz7gOgf/bGuPOSAL3tc3q5EZrU3JFIDcUTPTu1cvcmOmgoDTy9mRb
+	 Zpk6rWwD72oVLgNbwpFIIGu0PXaPJ13v2ZebHIeyaDL7vjTvkEGbOhPHMeL8QOGl+/
+	 /+f18K15XJjAPuF4XfdZzUJ1Z7m0kXLeFdb0i6H6g2pkxsKkeobhSDEZOs2bTQqzJl
+	 JMtCEjMeLRIFoNUC8nPgux0tlZ+sDCJmOXN/KOhJu3QS+41sFnoaW3VflCnFI7Pc+5
+	 l3S4q5bQl9QGw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ilpo.jarvinen@linux.intel.com
-Cc: =?UTF-8?q?Malte=20Schr=C3=B6der?= <malte+lkml@tnxip.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org
-Subject: FAILED: Patch "PCI: Fix bridge window alignment with optional resources" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:44:06 -0500
-Message-ID: <20260301014406.1706241-1-sashal@kernel.org>
+	eperezma@redhat.com
+Cc: Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: FAILED: Patch "vhost: move vdpa group bound check to vhost_vdpa" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:44:08 -0500
+Message-ID: <20260301014409.1706293-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,34 +66,32 @@ X-stable: review
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221914-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221915-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,tnxip.de:email]
-X-Rspamd-Queue-Id: 259511CBE67
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 9F8CB1CE030
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -104,102 +104,76 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7e90360e6d4599795b6f4e094e20d0bdf3b2615f Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 19 Dec 2025 19:40:14 +0200
-Subject: [PATCH] PCI: Fix bridge window alignment with optional resources
+From cd025c1e876b4e262e71398236a1550486a73ede Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+Date: Mon, 19 Jan 2026 15:32:54 +0100
+Subject: [PATCH] vhost: move vdpa group bound check to vhost_vdpa
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-pbus_size_mem() has two alignments, one for required resources in min_align
-and another in add_align that takes account optional resources.
+Remove duplication by consolidating these here.  This reduces the
+posibility of a parent driver missing them.
 
-The add_align is applied to the bridge window through the realloc_head
-list. It can happen, however, that add_align is larger than min_align but
-calculated size1 and size0 are equal due to extra tailroom (e.g., hotplug
-reservation, tail alignment), and therefore no entry is created to the
-realloc_head list. Without the bridge appearing in the realloc head,
-add_align is lost when pbus_size_mem() returns.
+While we're at it, fix a bug in vdpa_sim where a valid ASID can be
+assigned to a group equal to ngroups, causing an out of bound write.
 
-The problem is visible in this log for 0000:05:00.0 which lacks
-add_size ... add_align ... line that would indicate it was added into
-the realloc_head list:
-
-  pci 0000:05:00.0: PCI bridge to [bus 06-16]
-  ...
-  pci 0000:06:00.0: bridge window [mem 0x00100000-0x001fffff] to [bus 07] requires relaxed alignment rules
-  pci 0000:06:06.0: bridge window [mem 0x00100000-0x001fffff] to [bus 0a] requires relaxed alignment rules
-  pci 0000:06:07.0: bridge window [mem 0x00100000-0x003fffff] to [bus 0b] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x00800000-0x00ffffff 64bit pref] to [bus 0c-14] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] add_size 100000 add_align 1000000
-  pci 0000:06:0c.0: bridge window [mem 0x00100000-0x001fffff] to [bus 15] requires relaxed alignment rules
-  pci 0000:06:0d.0: bridge window [mem 0x00100000-0x001fffff] to [bus 16] requires relaxed alignment rules
-  pci 0000:06:0d.0: bridge window [mem 0x00100000-0x001fffff] to [bus 16] requires relaxed alignment rules
-  pci 0000:05:00.0: bridge window [mem 0xd4800000-0xd97fffff]: assigned
-  pci 0000:05:00.0: bridge window [mem 0x1060000000-0x10607fffff 64bit pref]: assigned
-  pci 0000:06:08.0: bridge window [mem size 0x04900000]: can't assign; no space
-  pci 0000:06:08.0: bridge window [mem size 0x04900000]: failed to assign
-
-While this bug itself seems old, it has likely become more visible after
-the relaxed tail alignment that does not grossly overestimate the size
-needed for the bridge window.
-
-Make sure add_align > min_align too results in adding an entry into the
-realloc head list. In addition, add handling to the cases where add_size is
-zero while only alignment differs.
-
-Fixes: d74b9027a4da ("PCI: Consider additional PF's IOV BAR alignment in sizing and assigning")
-Reported-by: Malte Schröder <malte+lkml@tnxip.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Malte Schröder <malte+lkml@tnxip.de>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251219174036.16738-2-ilpo.jarvinen@linux.intel.com
+Fixes: bda324fd037a ("vdpasim: control virtqueue support")
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20260119143306.1818855-2-eperezma@redhat.com>
 ---
- drivers/pci/setup-bus.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/vdpa/mlx5/net/mlx5_vnet.c | 3 ---
+ drivers/vdpa/vdpa_sim/vdpa_sim.c  | 6 ------
+ drivers/vhost/vdpa.c              | 2 +-
+ 3 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 6e90f46f52afd..4b918ff4d2d8b 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -14,6 +14,7 @@
-  *	     tighter packing. Prefetchable range support.
-  */
+diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+index ddaa1366704bb..44062e9d68f00 100644
+--- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
++++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+@@ -3640,9 +3640,6 @@ static int mlx5_set_group_asid(struct vdpa_device *vdev, u32 group,
+ 	struct mlx5_vdpa_dev *mvdev = to_mvdev(vdev);
+ 	int err = 0;
  
-+#include <linux/align.h>
- #include <linux/bitops.h>
- #include <linux/bug.h>
- #include <linux/init.h>
-@@ -456,7 +457,7 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
- 					"%s %pR: ignoring failure in optional allocation\n",
- 					res_name, res);
- 			}
--		} else if (add_size > 0) {
-+		} else if (add_size > 0 || !IS_ALIGNED(res->start, align)) {
- 			res->flags |= add_res->flags &
- 				 (IORESOURCE_STARTALIGN|IORESOURCE_SIZEALIGN);
- 			if (pci_reassign_resource(dev, idx, add_size, align))
-@@ -1442,12 +1443,13 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+-	if (group >= MLX5_VDPA_NUMVQ_GROUPS)
+-		return -EINVAL;
+-
+ 	mvdev->mres.group2asid[group] = asid;
  
- 	resource_set_range(b_res, min_align, size0);
- 	b_res->flags |= IORESOURCE_STARTALIGN;
--	if (bus->self && size1 > size0 && realloc_head) {
-+	if (bus->self && realloc_head && (size1 > size0 || add_align > min_align)) {
- 		b_res->flags &= ~IORESOURCE_DISABLED;
--		add_to_list(realloc_head, bus->self, b_res, size1-size0, add_align);
-+		add_size = size1 > size0 ? size1 - size0 : 0;
-+		add_to_list(realloc_head, bus->self, b_res, add_size, add_align);
- 		pci_info(bus->self, "bridge window %pR to %pR add_size %llx add_align %llx\n",
- 			   b_res, &bus->busn_res,
--			   (unsigned long long) (size1 - size0),
-+			   (unsigned long long) add_size,
- 			   (unsigned long long) add_align);
- 	}
- }
+ 	mutex_lock(&mvdev->mres.lock);
+diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim.c b/drivers/vdpa/vdpa_sim/vdpa_sim.c
+index c1c6431950e1b..df9c7ddc5d782 100644
+--- a/drivers/vdpa/vdpa_sim/vdpa_sim.c
++++ b/drivers/vdpa/vdpa_sim/vdpa_sim.c
+@@ -606,12 +606,6 @@ static int vdpasim_set_group_asid(struct vdpa_device *vdpa, unsigned int group,
+ 	struct vhost_iotlb *iommu;
+ 	int i;
+ 
+-	if (group > vdpasim->dev_attr.ngroups)
+-		return -EINVAL;
+-
+-	if (asid >= vdpasim->dev_attr.nas)
+-		return -EINVAL;
+-
+ 	iommu = &vdpasim->iommu[asid];
+ 
+ 	mutex_lock(&vdpasim->mutex);
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index 05a481e4c385a..9d25b735b43dd 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -680,7 +680,7 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+ 	case VHOST_VDPA_SET_GROUP_ASID:
+ 		if (copy_from_user(&s, argp, sizeof(s)))
+ 			return -EFAULT;
+-		if (s.num >= vdpa->nas)
++		if (idx >= vdpa->ngroups || s.num >= vdpa->nas)
+ 			return -EINVAL;
+ 		if (!ops->set_group_asid)
+ 			return -EOPNOTSUPP;
 -- 
 2.51.0
 
