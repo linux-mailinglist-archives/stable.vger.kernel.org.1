@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-221415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221416-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJHZOnGVo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:05 +0100
+	id 6A2FL3OVo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221416-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18481CA7CC
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4181CA7D4
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 93F0B300F139
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:23:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 13E10301670C
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C11274B28;
-	Sun,  1 Mar 2026 01:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AB82750E6;
+	Sun,  1 Mar 2026 01:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vwd7/8mc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJy0RfJI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE1D238171;
-	Sun,  1 Mar 2026 01:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1F62727EB;
+	Sun,  1 Mar 2026 01:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328203; cv=none; b=lhFIy4nrcMWXDZcQHY09+X4xclrou3GeAHXGiE12Ne5Uc1aXMhKEwyZSVpYQC7aV3PsN3zt2GFyCdhyF4SNuRh3KruXD1dRV9QzIefee6GVhaAVPaUUZIDoaEiU8lBAgZM4BmB2EvR4wZzzdmmkR4CLGpO2KRqEsFrVpeFzg3wQ=
+	t=1772328206; cv=none; b=oej/JRDiPwkh/ZRCUiAb6MXFT05CqZeEbYwQjXVD6Am2/nUU75lREuY3E1SxbmZ2WhTMRWFM39KLsZM9Ah1G1DvJ2tA0Do87+H8A1ciLHRMqXVyuWQVw7tijuT//dW6peldpD8y9iyoDnKxKP3a08knTPb9nm3fdFNXpHQJUCOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328203; c=relaxed/simple;
-	bh=lztf7gbi9rIi7D96Gsi+OIv5d56OJVcQ8bcksuUHnEI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=svkFcg4jIuuraDpjDO4f4+S0Ye8ih65DRant8/Fwvt+yN3IkxRasNp9jyoXPfbWGFMZfqmIVvbge7ys09SiRi6xgbJ0awYQBG4KUPvr9wE28Gm+y3chzL/sCQ4goliHvlmVcnCY/Nf+Bywe9JJAQsX7l56rlW3kqFK1d9kUFM8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vwd7/8mc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F9CC19421;
-	Sun,  1 Mar 2026 01:23:22 +0000 (UTC)
+	s=arc-20240116; t=1772328206; c=relaxed/simple;
+	bh=iP915mVy8Lgk3GXyGzzo6oL7YS5aYIAZEh5+Qz8WTB8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a7FDtVcfV3p3QzS8q7Y3kAjqcAmV4YOXahfMiZi2WR0/iOS5/aYeM12XrQtXdQDTkQPxuHPTwYN4xg62fMCnprFNU9CFPQuqDzY/DUEY8XnYlwwhrqNQmSrHh6RGDjDpLylVmx+F1AdT23bBuqPe9MB9klNsLynKFwvCulpAhac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJy0RfJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568A4C19421;
+	Sun,  1 Mar 2026 01:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328203;
-	bh=lztf7gbi9rIi7D96Gsi+OIv5d56OJVcQ8bcksuUHnEI=;
+	s=k20201202; t=1772328206;
+	bh=iP915mVy8Lgk3GXyGzzo6oL7YS5aYIAZEh5+Qz8WTB8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Vwd7/8mcuWhf51kzuv/gMzrBLwoL8fF1r0gMRqbXibxoaQQsP67fwqTmHE6i8iqGb
-	 eKU3FqfApIIpuL6eN5WwfwNB1iI2aN0M+3CzNJ0aRs5DO70STyt4EcfxI7fhHDM6G/
-	 OadEzrxI10Qu8qg7WDNSg6v11ldNEtvWT0p3wa4MMrQ8ODqcKgyk02ujH7Vm4Ta/VE
-	 JH8jaMhaB/4O4P95xgFckDz7fwekNTRlnmW9MWZVPNxmwZIdxatGuDn9Q6r7sLUkCU
-	 0xvfLJ0V/0me5B1t/kwWGIih0Whw1CWwaR60N1JsTlmoMEd0NtzH43ONz7iIDDnCwU
-	 MfQ3IbFZROm6w==
+	b=IJy0RfJIfS036Z6vt/Vr7dK8w2sz4+twOMZ2RcU2aXUwkzLew51skJ1AZMziOi1Kd
+	 zUk6cOBxw2Lb3boXPn8nNvqQkGkXRYov9g4UV7+KBTDlfY6AvvpHWFvsEtXXWlLA67
+	 s1xIIVa/K2oe3ZGkE/q7x67OFhqVvpapHGNfge2sTu3nxlkz2Zsit0sl0x/pl/Ehul
+	 rI+FxIBJwMnCTVQvaPNYROrk49iKT/Msm51sn0UgjqMkZPhKnhsk7HWRJWEIdOeHr7
+	 drjfrkkPgwLTUZDLPqovBdM8B+hQ82rFbUBR4C+yoGUaFr+evRk5aG4ZAu85qc3uN1
+	 GZm66PsA4Cwsw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	djwong@kernel.org
-Cc: r772577952@gmail.com,
-	Christoph Hellwig <hch@lst.de>,
-	linux-xfs@vger.kernel.org
-Subject: FAILED: Patch "xfs: only call xf{array,blob}_destroy if we have a valid pointer" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:23:21 -0500
-Message-ID: <20260301012321.1680046-1-sashal@kernel.org>
+	raag.jadav@intel.com
+Cc: Guido Trentalancia <guido@trentalancia.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-gpio@vger.kernel.org
+Subject: FAILED: Patch "pinctrl: intel: Add code name documentation" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:23:23 -0500
+Message-ID: <20260301012324.1680099-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,14 +75,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,lst.de,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-221416-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-221415-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D18481CA7CC
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,trentalancia.com:email]
+X-Rspamd-Queue-Id: 5D4181CA7D4
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -104,119 +104,79 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From ba408d299a3bb3c5309f40c5326e4fb83ead4247 Mon Sep 17 00:00:00 2001
-From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Fri, 23 Jan 2026 09:27:37 -0800
-Subject: [PATCH] xfs: only call xf{array,blob}_destroy if we have a valid
- pointer
+From fc32c5725fbe1164d353400389d3e29d19960a3a Mon Sep 17 00:00:00 2001
+From: Raag Jadav <raag.jadav@intel.com>
+Date: Sat, 24 Jan 2026 13:44:54 +0530
+Subject: [PATCH] pinctrl: intel: Add code name documentation
 
-Only call the xfarray and xfblob destructor if we have a valid pointer,
-and be sure to null out that pointer afterwards.  Note that this patch
-fixes a large number of commits, most of which were merged between 6.9
-and 6.10.
+Intel pinctrl drivers support large set of platforms and the IPs are
+often reused by their different variants, but it's currently not possible
+to figure out the exact driver that supports specific variant. Add user
+friendly documentation for them.
 
-Cc: r772577952@gmail.com
-Cc: <stable@vger.kernel.org> # v6.12
-Fixes: ab97f4b1c03075 ("xfs: repair AGI unlinked inode bucket lists")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Tested-by: Jiaming Zhang <r772577952@gmail.com>
+Cc: stable@vger.kernel.org
+Reported-by: Guido Trentalancia <guido@trentalancia.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220056
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Acked-by: Guido Trentalancia <guido@trentalancia.com>
+[andy: added Oxford comma]
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- fs/xfs/scrub/agheader_repair.c | 8 ++++++--
- fs/xfs/scrub/attr_repair.c     | 6 ++++--
- fs/xfs/scrub/dir_repair.c      | 8 ++++++--
- fs/xfs/scrub/dirtree.c         | 8 ++++++--
- fs/xfs/scrub/nlinks.c          | 3 ++-
- 5 files changed, 24 insertions(+), 9 deletions(-)
+ drivers/pinctrl/intel/Kconfig | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/fs/xfs/scrub/agheader_repair.c b/fs/xfs/scrub/agheader_repair.c
-index d8e3c51a41b1a..15d58eedb3873 100644
---- a/fs/xfs/scrub/agheader_repair.c
-+++ b/fs/xfs/scrub/agheader_repair.c
-@@ -837,8 +837,12 @@ xrep_agi_buf_cleanup(
- {
- 	struct xrep_agi	*ragi = buf;
+diff --git a/drivers/pinctrl/intel/Kconfig b/drivers/pinctrl/intel/Kconfig
+index e4dc9ba899bde..04c3a5b581f3c 100644
+--- a/drivers/pinctrl/intel/Kconfig
++++ b/drivers/pinctrl/intel/Kconfig
+@@ -53,7 +53,10 @@ config PINCTRL_ALDERLAKE
+ 	select PINCTRL_INTEL
+ 	help
+ 	  This pinctrl driver provides an interface that allows configuring
+-	  of Intel Alder Lake PCH pins and using them as GPIOs.
++	  PCH pins of the following platforms and using them as GPIOs:
++	  - Alder Lake HX, N, and S
++	  - Raptor Lake HX, E, and S
++	  - Twin Lake
  
--	xfarray_destroy(ragi->iunlink_prev);
--	xfarray_destroy(ragi->iunlink_next);
-+	if (ragi->iunlink_prev)
-+		xfarray_destroy(ragi->iunlink_prev);
-+	ragi->iunlink_prev = NULL;
-+	if (ragi->iunlink_next)
-+		xfarray_destroy(ragi->iunlink_next);
-+	ragi->iunlink_next = NULL;
- 	xagino_bitmap_destroy(&ragi->iunlink_bmp);
- }
+ config PINCTRL_BROXTON
+ 	tristate "Intel Broxton pinctrl and GPIO driver"
+@@ -137,15 +140,17 @@ config PINCTRL_METEORLAKE
+ 	select PINCTRL_INTEL
+ 	help
+ 	  This pinctrl driver provides an interface that allows configuring
+-	  of Intel Meteor Lake pins and using them as GPIOs.
++	  SoC pins of the following platforms and using them as GPIOs:
++	  - Arrow Lake (all variants)
++	  - Meteor Lake (all variants)
  
-diff --git a/fs/xfs/scrub/attr_repair.c b/fs/xfs/scrub/attr_repair.c
-index f9191eae13eea..a924b467a8447 100644
---- a/fs/xfs/scrub/attr_repair.c
-+++ b/fs/xfs/scrub/attr_repair.c
-@@ -1516,8 +1516,10 @@ xrep_xattr_teardown(
- 		xfblob_destroy(rx->pptr_names);
- 	if (rx->pptr_recs)
- 		xfarray_destroy(rx->pptr_recs);
--	xfblob_destroy(rx->xattr_blobs);
--	xfarray_destroy(rx->xattr_records);
-+	if (rx->xattr_blobs)
-+		xfblob_destroy(rx->xattr_blobs);
-+	if (rx->xattr_records)
-+		xfarray_destroy(rx->xattr_records);
- 	mutex_destroy(&rx->lock);
- 	kfree(rx);
- }
-diff --git a/fs/xfs/scrub/dir_repair.c b/fs/xfs/scrub/dir_repair.c
-index dbfcef6fb7da6..f105e49f654bd 100644
---- a/fs/xfs/scrub/dir_repair.c
-+++ b/fs/xfs/scrub/dir_repair.c
-@@ -172,8 +172,12 @@ xrep_dir_teardown(
- 	struct xrep_dir		*rd = sc->buf;
+ config PINCTRL_METEORPOINT
+ 	tristate "Intel Meteor Point pinctrl and GPIO driver"
+ 	select PINCTRL_INTEL
+ 	help
+-	  Meteor Point is the PCH of Intel Meteor Lake. This pinctrl driver
+-	  provides an interface that allows configuring of PCH pins and
+-	  using them as GPIOs.
++	  This pinctrl driver provides an interface that allows configuring
++	  PCH pins of the following platforms and using them as GPIOs:
++	  - Arrow Lake HX and S
  
- 	xrep_findparent_scan_teardown(&rd->pscan);
--	xfblob_destroy(rd->dir_names);
--	xfarray_destroy(rd->dir_entries);
-+	if (rd->dir_names)
-+		xfblob_destroy(rd->dir_names);
-+	rd->dir_names = NULL;
-+	if (rd->dir_entries)
-+		xfarray_destroy(rd->dir_entries);
-+	rd->dir_names = NULL;
- }
+ config PINCTRL_SUNRISEPOINT
+ 	tristate "Intel Sunrisepoint pinctrl and GPIO driver"
+@@ -160,7 +165,11 @@ config PINCTRL_TIGERLAKE
+ 	select PINCTRL_INTEL
+ 	help
+ 	  This pinctrl driver provides an interface that allows configuring
+-	  of Intel Tiger Lake PCH pins and using them as GPIOs.
++	  PCH pins of the following platforms and using them as GPIOs:
++	  - Alder Lake H, P, PS, and U
++	  - Raptor Lake H, P, PS, PX, and U
++	  - Rocket Lake S
++	  - Tiger Lake (all variants)
  
- /* Set up for a directory repair. */
-diff --git a/fs/xfs/scrub/dirtree.c b/fs/xfs/scrub/dirtree.c
-index e484f8a0886cd..e95dc74f11456 100644
---- a/fs/xfs/scrub/dirtree.c
-+++ b/fs/xfs/scrub/dirtree.c
-@@ -81,8 +81,12 @@ xchk_dirtree_buf_cleanup(
- 		kfree(path);
- 	}
- 
--	xfblob_destroy(dl->path_names);
--	xfarray_destroy(dl->path_steps);
-+	if (dl->path_names)
-+		xfblob_destroy(dl->path_names);
-+	dl->path_names = NULL;
-+	if (dl->path_steps)
-+		xfarray_destroy(dl->path_steps);
-+	dl->path_steps = NULL;
- 	mutex_destroy(&dl->lock);
- }
- 
-diff --git a/fs/xfs/scrub/nlinks.c b/fs/xfs/scrub/nlinks.c
-index 46488aff908cc..e80fe7395d788 100644
---- a/fs/xfs/scrub/nlinks.c
-+++ b/fs/xfs/scrub/nlinks.c
-@@ -971,7 +971,8 @@ xchk_nlinks_teardown_scan(
- 
- 	xfs_dir_hook_del(xnc->sc->mp, &xnc->dhook);
- 
--	xfarray_destroy(xnc->nlinks);
-+	if (xnc->nlinks)
-+		xfarray_destroy(xnc->nlinks);
- 	xnc->nlinks = NULL;
- 
- 	xchk_iscan_teardown(&xnc->collect_iscan);
+ source "drivers/pinctrl/intel/Kconfig.tng"
+ endmenu
 -- 
 2.51.0
 
