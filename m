@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-221523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FiPDEmXo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:32:57 +0100
+	id UI6kNmOXo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:33:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392A11CAEDB
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:32:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AA11CAF3F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9A0B53022C3F
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:28:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B86BA3026BE2
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F59259C80;
-	Sun,  1 Mar 2026 01:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80D22874ED;
+	Sun,  1 Mar 2026 01:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lAbeDDmX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikre+hWc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2537B285C84;
-	Sun,  1 Mar 2026 01:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A504287265;
+	Sun,  1 Mar 2026 01:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328478; cv=none; b=eJdUZMEmKjwdTos+YFvfDe7YgSVbfYdfv5qSLB2tBi62cvUp8U6UlHGyIlSc+sd6M0g9Edum/RPzeGIG8dFTkumKRtxQ2YadVe4vbvVMVluJrzkur8OOVe9rQ0BPzCRTfJFGGrbtvVCwRgeqT1eK5LNwnXEaqGQgU9rC38IcFsc=
+	t=1772328480; cv=none; b=ex5BABsJZC7AqslxQrbAv0zRJPsXND8BcHjoyyWrzeBhBLXjeCV4bY+8kfgB6MTS4n/EE5xWXyvdqPpfhmTa7zTRk9mhxgcmWLPB5yaGLFnIJzrT/9QYjzbU0iLdaU69372WExrvrhTfvMmOw01ewmQEyLakTjHzF5ejFalE5nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328478; c=relaxed/simple;
-	bh=MmtJWNnu3f1+1GqtsL/LcOyTGtnGPEeZyfimyyh8N9c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=My/VurKR7i8WtgQLcq3r7AEVC0jh2okotQC+4SBNMOQQDxLGE/NAyth2r16SHowpYKNKE88Oa635s9hUzMabES2nlZhv3w7MX/ECxJqHDOPJW8ucf4fCR5DTeVr34nYbKm2qwR7CmOLm/HjmRV28g18rsNoJnb0TiD9SrBZ3E3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lAbeDDmX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B6AC19421;
-	Sun,  1 Mar 2026 01:27:57 +0000 (UTC)
+	s=arc-20240116; t=1772328480; c=relaxed/simple;
+	bh=ys/o4yzy0c9Wme9/BZsLqJFYT6JpQHh2MXo3m/IMZLY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GzI7ENg6agJr7RqEN50pvHGMVJ89nKFV0IYq5G+2j357y3RADUWrHawgLQhJHx2afsaOwUBYUdN/WNks2N90at678QZgy/4j06jyJhyJ7JUCt1LIyGIXBZt5bsZ2x876u32icOptTtU1IZ0XAMavzPSch+BAAvK3wiVSojaj1dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikre+hWc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FFAC19421;
+	Sun,  1 Mar 2026 01:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328478;
-	bh=MmtJWNnu3f1+1GqtsL/LcOyTGtnGPEeZyfimyyh8N9c=;
+	s=k20201202; t=1772328480;
+	bh=ys/o4yzy0c9Wme9/BZsLqJFYT6JpQHh2MXo3m/IMZLY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=lAbeDDmXN9t/FtkYfnjq8jNEXob9i3kyq6XBifVsWGuWouny4uDS9VJmolEELP39p
-	 /yRxyRv6hNxv93VjulqTY1J6UrTNVF2LPgbkH4DzfjThez8rjbBgDHhHJkU2mywO8a
-	 8N9AAUr8RGSx2BWusVCQUK+eyffegkrb/jFfjHyE38ZZy4RYu2oIIAWfHGef4JnZ6n
-	 mHcUXaPOTAQPL1/NdUEow6LU2cETfSKmTQK7e0AkMoFJtiaaBuloX5x/nlZ75WFHsj
-	 bnAuW0DXIoZtK1ko5zIBNG3tlUlxankfeuFXLrsUKtp1PYeilz6Vk/xRsxdOx8yLEJ
-	 Osx4/IuyG7wDA==
+	b=ikre+hWcNX7RdHS1/+BC50C87X6h77zjcH9XU1U1DkxzJ38RHOlA0o7wD2KEstkFg
+	 iV9u9tkm4AS0s0CsqM1XcxrWxgYabRjTOVNloNcdZpnNk9qyxU22XCDcTbReC/dp3P
+	 Ia9K83HHVdp2HZUSKGPyPPwdye/nWKilwcRDO+7s4SY2hbqGCCKmEfjq6/meXVdr6F
+	 U2IM/sQLbAMDFF2jBexhj6a26owRfer7vFMQ8BKvDsgIncJjyVXY/yibGJK/j+Bip3
+	 7Kym4g/2eU27AQuntvNofmueRpZ7BSoS94WLHJBvrubc2FAKms1zSKFz/WRW0gyG/i
+	 5W9LCgv1yy3HQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	haokexin@gmail.com
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: ti: icssg-prueth: Add optional dependency on HSR" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:27:55 -0500
-Message-ID: <20260301012756.1685565-1-sashal@kernel.org>
+	mason8110@gmail.com
+Cc: Lewis Mason <lewis@ocuru.co.uk>,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org
+Subject: FAILED: Patch "ALSA: hda/realtek: Add quirk for Samsung Galaxy Book3 Pro 360 (NP965QFG)" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:27:58 -0500
+Message-ID: <20260301012758.1685614-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -72,24 +73,24 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-221523-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221524-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 392A11CAEDB
+X-Rspamd-Queue-Id: D8AA11CAF3F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -102,56 +103,37 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From e3998b6e90f875f19bf758053d79ccfd41880173 Mon Sep 17 00:00:00 2001
-From: Kevin Hao <haokexin@gmail.com>
-Date: Sat, 7 Feb 2026 14:21:46 +0800
-Subject: [PATCH] net: ti: icssg-prueth: Add optional dependency on HSR
+From 3a6b7dc431aab90744e973254604855e654294ae Mon Sep 17 00:00:00 2001
+From: Lewis Mason <mason8110@gmail.com>
+Date: Tue, 10 Feb 2026 23:13:37 +0000
+Subject: [PATCH] ALSA: hda/realtek: Add quirk for Samsung Galaxy Book3 Pro 360
+ (NP965QFG)
 
-Commit 95540ad6747c ("net: ti: icssg-prueth: Add support for HSR frame
-forward offload") introduced support for offloading HSR frame forwarding,
-which relies on functions such as is_hsr_master() provided by the HSR
-module. Although HSR provides stubs for configurations with HSR
-disabled, this driver still requires an optional dependency on HSR.
-Otherwise, build failures will occur when icssg-prueth is built-in
-while HSR is configured as a module.
-  ld.lld: error: undefined symbol: is_hsr_master
-  >>> referenced by icssg_prueth.c:710 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:710)
-  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_del_mcast) in archive vmlinux.a
-  >>> referenced by icssg_prueth.c:681 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:681)
-  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_add_mcast) in archive vmlinux.a
-  >>> referenced by icssg_prueth.c:1812 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:1812)
-  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(prueth_netdevice_event) in archive vmlinux.a
+The Samsung Galaxy Book3 Pro 360 NP965QFG (subsystem ID 0x144d:0xc1cb)
+uses the same Realtek ALC298 codec and amplifier configuration as the
+NP960QFG (0x144d:0xc1ca). Apply the same ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS
+fixup to enable the internal speakers.
 
-  ld.lld: error: undefined symbol: hsr_get_port_ndev
-  >>> referenced by icssg_prueth.c:712 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:712)
-  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_del_mcast) in archive vmlinux.a
-  >>> referenced by icssg_prueth.c:712 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:712)
-  >>>               drivers/net/etherneteth_hsr_del_mcast) in archive vmlinux.a
-  >>> referenced by icssg_prueth.c:683 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:683)
-  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_add_mcast) in archive vmlinux.a
-  >>> referenced 1 more times
-
-Fixes: 95540ad6747c ("net: ti: icssg-prueth: Add support for HSR frame forward offload")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260207-icssg-dep-v3-1-8c47c1937f81@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Lewis Mason <lewis@ocuru.co.uk>
+Link: https://patch.msgid.link/20260210231337.7265-1-lewis@ocuru.co.uk
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 ---
- drivers/net/ethernet/ti/Kconfig | 1 +
+ sound/hda/codecs/realtek/alc269.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
-index fe5b2926d8ab0..c60b04921c62c 100644
---- a/drivers/net/ethernet/ti/Kconfig
-+++ b/drivers/net/ethernet/ti/Kconfig
-@@ -192,6 +192,7 @@ config TI_ICSSG_PRUETH
- 	depends on NET_SWITCHDEV
- 	depends on ARCH_K3 && OF && TI_K3_UDMA_GLUE_LAYER
- 	depends on PTP_1588_CLOCK_OPTIONAL
-+	depends on HSR || !HSR
- 	help
- 	  Support dual Gigabit Ethernet ports over the ICSSG PRU Subsystem.
- 	  This subsystem is available starting with the AM65 platform.
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 8664446648096..c11312aa5ca76 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7318,6 +7318,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x144d, 0xc872, "Samsung Galaxy Book2 Pro (NP950XEE)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc886, "Samsung Galaxy Book3 Pro (NP964XFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc1ca, "Samsung Galaxy Book3 Pro 360 (NP960QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
++	SND_PCI_QUIRK(0x144d, 0xc1cb, "Samsung Galaxy Book3 Pro 360 (NP965QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc1cc, "Samsung Galaxy Book3 Ultra (NT960XFH)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x1458, 0x900e, "Gigabyte G5 KF5 (2023)", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
 -- 
 2.51.0
 
