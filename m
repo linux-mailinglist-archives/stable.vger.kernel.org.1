@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-221535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221536-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAG+G+yXo2lIHwUAu9opvQ
-	(envelope-from <stable+bounces-221535-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:40 +0100
+	id GIA9Bxqmo2mWJAUAu9opvQ
+	(envelope-from <stable+bounces-221536-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:36:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0301CB108
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B191CDB7E
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0AB9A303D0FE
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:28:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF09A319FD21
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169962874ED;
-	Sun,  1 Mar 2026 01:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4293287510;
+	Sun,  1 Mar 2026 01:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YHHXZi4+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bvydk6QK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC33285C84;
-	Sun,  1 Mar 2026 01:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E72285C84;
+	Sun,  1 Mar 2026 01:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328508; cv=none; b=p9mNHd77T8cYlXfANnjxD5RFvasSbcZcf+HghnQ9TF+sATm/nRBVLO2lbUwcFGTVsdabZ09UhgaDVLlyJo8CMOssY3xwM1nqZYsmW+aX92djbtRlnQql1BTwF8jXGo37VN640ZUc2C0tPYGOVoTYYbOnWdJHf8GJCXclwd8C3UU=
+	t=1772328511; cv=none; b=FGHIteU0LWZJWl08m8ACLzpTE4KWiztBAEJLTyRoAr4p2E0l1/hIWo3tLjbW/INFCuA8g5QbgCk45bImuEX6tbCrkq8JBp7l5yGkQCHZvk03qf+fkS5jEQXyMCjjfJruAVxCI0si5BBB6H3M+kd5wru1bnrRYWIS5hqKtpUrSlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328508; c=relaxed/simple;
-	bh=6BTI1UVeG4tQYlx39XQkCdSzxjetyFCbjbmNcM2R6Yw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ah6CdAyfvP5MiDgaAI4RanJ0mepZ4YluwRJ05k0XAEWsorgbfCRXNdl2Wlmh+iKseS2U37ESpBNXiZU7+orscuE85heo7gqnPVXWCPLxgf+L4/Z6grPenjmzoAi+xMZiltf/R4Dq+9ey+jA1daT+o2fkM6qaE15WOGIvzRB+VHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YHHXZi4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A6DC19421;
-	Sun,  1 Mar 2026 01:28:28 +0000 (UTC)
+	s=arc-20240116; t=1772328511; c=relaxed/simple;
+	bh=Q5DiCW9on0G/BrAWD39bQXl0ueMsoCMGKvy2MK32ZI8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ki3JHW90HCcxKII1fAZmtxzhVcdfkpTfaVA7r+cdpjFF4fFLv6IcJP1tKIu6Tct3RK3bWOG3m+kQlh48NB3ox0wHb0iusu7K6Iya2xa8jegXfOXpOHS56+JRNo7/KBNy8R+rL7PSJWMPTZr2lspZ8JIv2OM1T9rVo7U5cQh6Ovk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bvydk6QK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A743C19421;
+	Sun,  1 Mar 2026 01:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328508;
-	bh=6BTI1UVeG4tQYlx39XQkCdSzxjetyFCbjbmNcM2R6Yw=;
+	s=k20201202; t=1772328511;
+	bh=Q5DiCW9on0G/BrAWD39bQXl0ueMsoCMGKvy2MK32ZI8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=YHHXZi4+7jM42pSi5k6kVn8YsDK1iPG+EHENWiN+JsSNcDrhXGgWpdVmqjHtcwcgQ
-	 zFH3b04UyIx1PBpODgnH0tBr1okX92nB3t7f7pyJyCkUjWB/i27kUxvGVGmhzKvlB3
-	 eQ8+ocKOIGuI3CNqw9BsVRizcSsxnJWIj4mcGZ66BOU3ofhqMhvMW4JWWyKaDtOV13
-	 xdUS9qDPT+O7VkjBVuNeNPzXSztdtPnCbMf/365qjT6jk1HTyQHwVKmFGSOHvXq8qx
-	 QxTxCWRIkdL7jKP8fA78EHPShTweDLXg61HZoailB8fuRXqyAKMwv+qJRHoKIafdiT
-	 IVLz7cFjoFATw==
+	b=bvydk6QKBibZ1IeyOi1o/at42rVPsvpUDpmmZjzczeFPII1egbKENfVG21FUqq7mE
+	 5JtVxGBOFNCVTVfjdzCpPFPBeYwMpxMIeTOB5oRl4HqNm/VykugMTTcnq9cxZPAyuF
+	 xt6jxeWVXWhCXjb5ulIp7CWUA2MgTzsaFHQuwTTDwvqo8Qa1GNMSHp10Ah//gyjCOm
+	 PHp1E346hF8OmgMYZoWD9S9CqEPVoiQgIXmf0UfE9fMSNN2gNs+m95Iq0TE91jAq4I
+	 23KmNb2WJE2LTSxbbm1Un9k4+op0i8HZeQDHUp+p0E4fEoZGFsXOWxXMl3JNbqw9wh
+	 iWkxtXFeV6dgg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	hu.shengming@zte.com.cn
-Cc: "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	linux-trace-kernel@vger.kernel.org
-Subject: FAILED: Patch "function_graph: Restore direct mode when callbacks drop to one" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:28:26 -0500
-Message-ID: <20260301012827.1686191-1-sashal@kernel.org>
+	enelsonmoore@gmail.com
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: FAILED: Patch "net: intel: fix PCI device ID conflict between i40e and ipw2200" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:28:29 -0500
+Message-ID: <20260301012829.1686242-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,32 +67,34 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221536-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-221535-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6E0301CB108
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: A9B191CDB7E
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -101,42 +107,68 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 53b2fae90ff01fede6520ca744ed5e8e366497ba Mon Sep 17 00:00:00 2001
-From: Shengming Hu <hu.shengming@zte.com.cn>
-Date: Fri, 13 Feb 2026 14:29:32 +0800
-Subject: [PATCH] function_graph: Restore direct mode when callbacks drop to
- one
+From d03e094473ecdeb68d853752ba467abe13e1de44 Mon Sep 17 00:00:00 2001
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Mon, 9 Feb 2026 18:12:34 -0800
+Subject: [PATCH] net: intel: fix PCI device ID conflict between i40e and
+ ipw2200
 
-When registering a second fgraph callback, direct path is disabled and
-array loop is used instead.  When ftrace_graph_active falls back to one,
-we try to re-enable direct mode via ftrace_graph_enable_direct(true, ...).
-But ftrace_graph_enable_direct() incorrectly disables the static key
-rather than enabling it.  This leaves fgraph_do_direct permanently off
-after first multi-callback transition, so direct fast mode is never
-restored.
+The ID 8086:104f is matched by both i40e and ipw2200. The same device
+ID should not be in more than one driver, because in that case, which
+driver is used is unpredictable. Fix this by taking advantage of the
+fact that i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
+devices use PCI_CLASS_NETWORK_OTHER to differentiate the devices.
 
+Fixes: 2e45d3f4677a ("i40e: Add support for X710 B/P & SFP+ cards")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260213142932519cuWSpEXeS4-UnCvNXnK2P@zte.com.cn
-Fixes: cc60ee813b503 ("function_graph: Use static_call and branch to optimize entry function")
-Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Link: https://patch.msgid.link/20260210021235.16315-1-enelsonmoore@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- kernel/trace/fgraph.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c  | 8 +++++++-
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c | 8 +++++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
-index cc48d16be43e0..4df766c690f92 100644
---- a/kernel/trace/fgraph.c
-+++ b/kernel/trace/fgraph.c
-@@ -1303,7 +1303,7 @@ static void ftrace_graph_enable_direct(bool enable_branch, struct fgraph_ops *go
- 	static_call_update(fgraph_func, func);
- 	static_call_update(fgraph_retfunc, retfunc);
- 	if (enable_branch)
--		static_branch_disable(&fgraph_do_direct);
-+		static_branch_enable(&fgraph_do_direct);
- }
- 
- static void ftrace_graph_disable_direct(bool disable_branch)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index d3bc3207054f9..02de186dcc8f5 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -75,7 +75,13 @@ static const struct pci_device_id i40e_pci_tbl[] = {
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_BASE_T4), 0},
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_BASE_T_BC), 0},
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_SFP), 0},
+-	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_B), 0},
++	/*
++	 * This ID conflicts with ipw2200, but the devices can be differentiated
++	 * because i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
++	 * devices use PCI_CLASS_NETWORK_OTHER.
++	 */
++	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, I40E_DEV_ID_10G_B),
++		PCI_CLASS_NETWORK_ETHERNET << 8, 0xffff00, 0},
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_KX_X722), 0},
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_QSFP_X722), 0},
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_SFP_X722), 0},
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+index 09035a77e775f..b0e769da94156 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+@@ -11387,7 +11387,13 @@ static const struct pci_device_id card_ids[] = {
+ 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2754, 0, 0, 0},
+ 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2761, 0, 0, 0},
+ 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2762, 0, 0, 0},
+-	{PCI_VDEVICE(INTEL, 0x104f), 0},
++	/*
++	 * This ID conflicts with i40e, but the devices can be differentiated
++	 * because i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
++	 * devices use PCI_CLASS_NETWORK_OTHER.
++	 */
++	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x104f),
++		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, 0},
+ 	{PCI_VDEVICE(INTEL, 0x4220), 0},	/* BG */
+ 	{PCI_VDEVICE(INTEL, 0x4221), 0},	/* BG */
+ 	{PCI_VDEVICE(INTEL, 0x4223), 0},	/* ABG */
 -- 
 2.51.0
 
