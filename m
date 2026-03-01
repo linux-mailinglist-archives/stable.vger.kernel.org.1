@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-222271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOs1NA2fo2lzIgUAu9opvQ
-	(envelope-from <stable+bounces-222271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:06:05 +0100
+	id uFzpCzSuo2m0JwUAu9opvQ
+	(envelope-from <stable+bounces-222272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A658A1CCF48
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:06:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F301CE476
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D58D730A3FB3
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 162D534D31B0
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095362FC89C;
-	Sun,  1 Mar 2026 02:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A841D2C21F2;
+	Sun,  1 Mar 2026 02:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBabF1Pw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frswDLhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8FA1DED49;
-	Sun,  1 Mar 2026 02:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0ED16132A;
+	Sun,  1 Mar 2026 02:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330460; cv=none; b=kpf3ONuES2a5X2hDzw1bUGnk4sF6uTuLDxRybnyqmjAkV77uzmEyWAvlGVW/QghGshNvFj4OuEJQCJo4amBtBA1I4KQNz4+TrKMXH2qOjK4cuhz9YiSXe5rhGiombU8gML7L0kyDaUsjbIy4uxlllvl2sPz/qKBtB3HscLVj2ws=
+	t=1772330463; cv=none; b=tu6+6lc6tH2Mo26KYkTVmWhnT/iXqYvmf2B7OK0Co1qi0ZwkIcrfm5g0gTVOxslsuY7QgzE1qopm+kWrQAQcMAGLCjj/Zs6YQmK58gMM/D/epgu20v2nH+eqx6JC/q8z1JLfFhzEwmdizXj/VoUy0s2APMzdqVNGXDlO41BPGh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330460; c=relaxed/simple;
-	bh=SfOSfyfAXN/2qOeS5QnWaJ0wiGy6jwhyZChS6qo0kgk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XLsvDrKqVv916xKO6BY3YV3azZ/pFeVM/TWefLM76pZwYxr2MbY1ft0T5xqGY483Rgi4cmRUAaC2TIuZtkyw9/os3ZvSVNhnzYZaAMnPAbjrtLVU2ssUG0s/7ZA+YepeVdn7OkC6Q1mmDMR7AnZPgCN41c4UJ0sBCPRPCCYvU90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBabF1Pw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CD4C19421;
-	Sun,  1 Mar 2026 02:00:59 +0000 (UTC)
+	s=arc-20240116; t=1772330463; c=relaxed/simple;
+	bh=dyxHGjJI8DjxC6R5BVOEZ5pjv5AkreDImFcN1oum+pg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cA1w6+YqKxmBHJQbFFbETJPF0fq8EhmGJMPFP7GlBiEvennBg9M12JBNyKV55jlE1XjTW143zK3sUrQ58gJbJ0KdLmYgn68MhjFKQMBNcBtPq/UQljgOWiaAG6eItCHnVZGc4s1Mv0WaC16s2Fw+kPuW0xnMCpQjv1L2geP+XpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frswDLhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DA5C19421;
+	Sun,  1 Mar 2026 02:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330460;
-	bh=SfOSfyfAXN/2qOeS5QnWaJ0wiGy6jwhyZChS6qo0kgk=;
+	s=k20201202; t=1772330463;
+	bh=dyxHGjJI8DjxC6R5BVOEZ5pjv5AkreDImFcN1oum+pg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=SBabF1PwVt8Ia1q8K2B+Bj3judxuL4vGV3guicfy33UeDFD/xks8Ir/7yCUQNLoyN
-	 0KRNz88rg4lOVailPLUxo4wqW14K0GHgALtMaWdKrvEGLouNsuagxIzXHJ7dYs3vQH
-	 qEnAadv1OVL+KO52inDy8yyLJW5vw2ef8nHn8bq8qYOXh0IgwqewmjzsDUDBriFawP
-	 hH0VwxE+Gvg+S8/xwb8/52DB6T3K4EWnducuRtg69eV0yQ1DpVYJfWo4lW+vbuKk00
-	 0NC2wH6vk4gdNYJqo2G0b2rQcprG1Q/w1zIbwwmeI5okFqrSz6AlPEjgqm5EJJTtlg
-	 p34nH962wqpag==
+	b=frswDLhTPIIQlnudDHnWQXOc5M6P6/VXzxVLDKLtQZg/d/rHlMEvPKUQjZoc3F5zi
+	 AUwuHvPvMTF+yb54w8yNVyN5O0pqUQU9o86F2dOKyn4gjHEdU1Yyo8uiuowJmwidGw
+	 G+oEG/docMbdBihbv89K9x7WYnyrPrRMOncQx7yv2i9L9wXV1c67qn4rfw/nzk8wBV
+	 XoudCFi1SuOKqL7mmAWf2tQwnw832vpuVNECLwkTQYfW/RBqLRi8D5Mp2ceuc58s77
+	 bDo0+05TsTggc8Q6AC9dzBPe0f3YisMnqeRLLvrqNUGTAuB079T08N5wHDPMFSvjoh
+	 vgrgk80ahzUQA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jack@suse.cz
-Cc: Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	stable@kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org
-Subject: FAILED: Patch "ext4: use optimized mballoc scanning regardless of inode format" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:00:58 -0500
-Message-ID: <20260301020058.1727910-1-sashal@kernel.org>
+	jerrysteve1101@gmail.com
+Cc: Peter Robinson <pbrobinson@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: FAILED: Patch "arm64: dts: rockchip: Do not enable hdmi_sound node on Pinebook Pro" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:01:00 -0500
+Message-ID: <20260301020101.1728010-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +67,35 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222271-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,manjaro.org,sntech.de,vger.kernel.org,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-222272-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,suse.cz:email,huawei.com:email]
-X-Rspamd-Queue-Id: A658A1CCF48
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pine64.org:url,sntech.de:email]
+X-Rspamd-Queue-Id: 47F301CE476
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -105,47 +108,50 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3574c322b1d0eb32dbd76b469cb08f9a67641599 Mon Sep 17 00:00:00 2001
-From: Jan Kara <jack@suse.cz>
-Date: Wed, 14 Jan 2026 19:28:19 +0100
-Subject: [PATCH] ext4: use optimized mballoc scanning regardless of inode
- format
+From b18247f9dab735c9c2d63823d28edc9011e7a1ad Mon Sep 17 00:00:00 2001
+From: Jun Yan <jerrysteve1101@gmail.com>
+Date: Fri, 16 Jan 2026 23:12:53 +0800
+Subject: [PATCH] arm64: dts: rockchip: Do not enable hdmi_sound node on
+ Pinebook Pro
 
-Currently we don't used mballoc optimized scanning (using max free
-extent order and avg free extent order group lists) for inodes with
-indirect block based format. This is confusing for users and I don't see
-a good reason for that. Even with indirect block based inode format we
-can spend big amount of time searching for free blocks for large
-filesystems with fragmented free space. To add to the confusion before
-commit 077d0c2c78df ("ext4: make mb_optimize_scan performance mount
-option work with extents") optimized scanning was applied *only* to
-indirect block based inodes so that commit appears as a performance
-regression to some users. Just use optimized scanning whenever it is
-enabled by mount options.
+Remove the redundant enabling of the hdmi_sound node in the Pinebook Pro
+board dts file, because the HDMI output is unused on this device. [1][2]
 
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260114182836.14120-4-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+This change also eliminates the following kernel log warning, which is
+caused by the unenabled dependent node of hdmi_sound that ultimately
+results in the node's probe failure:
+
+  platform hdmi-sound: deferred probe pending: asoc-simple-card: parse error
+
+[1] https://files.pine64.org/doc/PinebookPro/pinebookpro_v2.1_mainboard_schematic.pdf
+[2] https://files.pine64.org/doc/PinebookPro/pinebookpro_schematic_v21a_20220419.pdf
+
+Cc: stable@vger.kernel.org
+Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://patch.msgid.link/20260116151253.9223-1-jerrysteve1101@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 ---
- fs/ext4/mballoc.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 910b454b4a21e..dbc82b65f810f 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1148,8 +1148,6 @@ static inline int should_optimize_scan(struct ext4_allocation_context *ac)
- 		return 0;
- 	if (ac->ac_criteria >= CR_GOAL_LEN_SLOW)
- 		return 0;
--	if (!ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS))
--		return 0;
- 	return 1;
- }
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index eaaca08a76018..a6ac89567bafe 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -421,10 +421,6 @@ &gpu {
+ 	status = "okay";
+ };
  
+-&hdmi_sound {
+-	status = "okay";
+-};
+-
+ &i2c0 {
+ 	clock-frequency = <400000>;
+ 	i2c-scl-falling-time-ns = <4>;
 -- 
 2.51.0
 
