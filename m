@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-221241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221242-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIapCTOTo2khHQUAu9opvQ
-	(envelope-from <stable+bounces-221241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:15:31 +0100
+	id IFBSFTSTo2khHQUAu9opvQ
+	(envelope-from <stable+bounces-221242-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:15:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CC01C9FD3
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:15:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB29D1C9FDB
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 19A5B30193B8
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:15:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E1C1D3019FFD
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69423A937;
-	Sun,  1 Mar 2026 01:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E85422D7A9;
+	Sun,  1 Mar 2026 01:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHrtQpBF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnRHsxKE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD9321B9F6
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B1D1F7541;
+	Sun,  1 Mar 2026 01:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327708; cv=none; b=NUKDG25MchvKrnGBF1ECqNrZH4Mx4EJ6aQgMXLe7u+/0gt5qxviPvy/WTdupPYm65gFYYFAd4hdpLwg68/oNd+K8V36NAMJHsWp4+lccYH7sCh/QbKDh36fHRn/cshCBKLyXA1dE+bIN6hgqCfbUB14pFO+hCxKYqjf2VtpQTJs=
+	t=1772327710; cv=none; b=iY0SsxYgb5uc5PCYGPXAjFBknmEGokD9sAxo6XKNUuqUJx0ctoorbM693bnhL3KZf1bZ/j2j7+iYRDV22MP14r0HFfs9jRlPUOC72LpavEdM/6twU56Fy/jBGjyx8rSedxuG1dIBnMu1VPU/6Wyvbkqb/8/f/wLCK1sc28nqf5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327708; c=relaxed/simple;
-	bh=fPHCvD2H9nYeBw3rrOrowqbJMs59jQUUx/KELcs0N+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H7jqM5A07D9TNN6q6A39oV3iCFr3Bo2YChQ0/ep/EjwMpwmYR+yXbqooRISNNBqPAe4H6wFbm5BAYFTTa9uNMkC8XoRyGja8k3UfCSJRktKvPGtISoEyCncWtKq0vkG50oeCUHBUrFBRFTAkZc0M3KQLv67VmmkJnrgjA3vcnEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHrtQpBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23410C19421;
-	Sun,  1 Mar 2026 01:15:07 +0000 (UTC)
+	s=arc-20240116; t=1772327710; c=relaxed/simple;
+	bh=l3mnD9GnnU+gbqL3tSw5oKgcACxypQ5ZjSNrcLhhefE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f+0EZulvB8UXVfssgZM1tCjmiD+bibhCuqEya/kjfdhWCkePD4qmUNBGFJ4XnTYeQAaKeMosTjN8BDwM6toRkkBFu7mvbaeLxIHR7ZWkt5z0wuMWUycHKdo1oADNkH0UuhNfqWc0GPtbHtzBoIqVIW4p6RT3pXORsoyM2K9G5bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnRHsxKE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD91CC19421;
+	Sun,  1 Mar 2026 01:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327707;
-	bh=fPHCvD2H9nYeBw3rrOrowqbJMs59jQUUx/KELcs0N+s=;
+	s=k20201202; t=1772327710;
+	bh=l3mnD9GnnU+gbqL3tSw5oKgcACxypQ5ZjSNrcLhhefE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=gHrtQpBF0SbC10bLtAPbshk/PDfJ5w3r6/oNvqNC0bjAPtbEvb33fnMZr7Fgu4G2g
-	 5gfoGAf9Fx08JQnPIkzAO9zEBM6tjOTh+HnbLgAwCv1ZGEExHSKdnynDm4LVaHdOuJ
-	 Ix3Dt6bg6q2k8uFAhjx+nC2JLvGtPhvr6vK3/S9iYLXMSV33FFZ/51uPd+X1vsiqff
-	 eNcGaPcIQ+I5pAk5+D5unQk6dqKC65xDF5dq8I6lw4Th4ghvm9kKnJFuwalIm/DlGH
-	 5E/7k+nEB6U0Zi0bCekpPGJtxly2/4k3LGkma2IH/V2Oq4G92G07wDQXXFgWeZKgUq
-	 w5D+Ptw0rH01Q==
+	b=BnRHsxKEu37tj5vOkrwCP40f/dWalXUfB/gS2c2hZ7gZRu8lmsvv5xBRZg16dyRQa
+	 GoYw/XIi7970FbQK6wwlilk8A5pQS+HgyvdcLeSx5ZpCMXyvmaFXDu+nmVD4EqCzTA
+	 7E7SsVtaromLfCYRz/8SPb3m/iFMyjCXku8FIgyyTdP5sfDArhMxQvdK04jtV9JvLB
+	 Sbg1/EE2MKkpO73EPoXA40NrhOTRmyRSJygjtze/OIgTe0GnToQdKU0yvpOy+Jhlrq
+	 9u4Pv6VOPl095O4kZJvCKOZdClgaMCU0n7dLmQoLqUa/nWDeTQwJJYmBFLXkX63cLM
+	 6pqZzaQHO3ASg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mario.limonciello@amd.com
-Cc: Cal Peake <cp@absolutedigital.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm/amd: Fix hang on amdgpu unload by using pci_dev_is_disconnected()" failed to apply to 6.19-stable tree
-Date: Sat, 28 Feb 2026 20:15:05 -0500
-Message-ID: <20260301011506.1667986-1-sashal@kernel.org>
+	yazen.ghannam@amd.com
+Cc: Michal Pecio <michal.pecio@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+	linux-acpi@vger.kernel.org
+Subject: FAILED: Patch "x86/acpi/boot: Correct acpi_is_processor_usable() check again" failed to apply to 6.18-stable tree
+Date: Sat, 28 Feb 2026 20:15:08 -0500
+Message-ID: <20260301011508.1668080-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,37 +65,39 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221241-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,alien8.de,kernel.org,linux.intel.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221242-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B2CC01C9FD3
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,alien8.de:email]
+X-Rspamd-Queue-Id: DB29D1C9FDB
 X-Rspamd-Action: no action
 
-The patch below does not apply to the 6.19-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
@@ -104,66 +107,131 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f7afda7fcd169a9168695247d07ad94cf7b9798f Mon Sep 17 00:00:00 2001
-From: Mario Limonciello <mario.limonciello@amd.com>
-Date: Thu, 5 Feb 2026 10:42:54 -0600
-Subject: [PATCH] drm/amd: Fix hang on amdgpu unload by using
- pci_dev_is_disconnected()
+From adbf61cc47cb72b102682e690ad323e1eda652c2 Mon Sep 17 00:00:00 2001
+From: Yazen Ghannam <yazen.ghannam@amd.com>
+Date: Tue, 11 Nov 2025 14:53:57 +0000
+Subject: [PATCH] x86/acpi/boot: Correct acpi_is_processor_usable() check again
 
-The commit 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise
-disconnect") introduced early KFD cleanup when drm_dev_is_unplugged()
-returns true. However, this causes hangs during normal module unload
-(rmmod amdgpu).
+ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
+used in conjunction with the "Enabled" MADT LAPIC flag to determine if
+a CPU can be enabled/hotplugged by the OS after boot.
 
-The issue occurs because drm_dev_unplug() is called in amdgpu_pci_remove()
-for all removal scenarios, not just surprise disconnects. This was done
-intentionally in commit 39934d3ed572 ("Revert "drm/amdgpu: TA unload
-messages are not actually sent to psp when amdgpu is uninstalled"") to
-fix IGT PCI software unplug test failures. As a result,
-drm_dev_is_unplugged() returns true even during normal module unload,
-triggering the early KFD cleanup inappropriately.
+Before the new bit was defined, the "Enabled" bit was explicitly
+described like this (ACPI v6.0 wording provided):
 
-The correct check should distinguish between:
-- Actual surprise disconnect (eGPU unplugged): pci_dev_is_disconnected()
-  returns true
-- Normal module unload (rmmod): pci_dev_is_disconnected() returns false
+  "If zero, this processor is unusable, and the operating system
+  support will not attempt to use it"
 
-Replace drm_dev_is_unplugged() with pci_dev_is_disconnected() to ensure
-the early cleanup only happens during true hardware disconnect events.
+This means that CPU hotplug (based on MADT) is not possible. Many BIOS
+implementations follow this guidance. They may include LAPIC entries in
+MADT for unavailable CPUs, but since these entries are marked with
+"Enabled=0" it is expected that the OS will completely ignore these
+entries.
 
+However, QEMU will do the same (include entries with "Enabled=0") for
+the purpose of allowing CPU hotplug within the guest.
+
+Comment from QEMU function pc_madt_cpu_entry():
+
+  /* ACPI spec says that LAPIC entry for non present
+   * CPU may be omitted from MADT or it must be marked
+   * as disabled. However omitting non present CPU from
+   * MADT breaks hotplug on linux. So possible CPUs
+   * should be put in MADT but kept disabled.
+   */
+
+Recent Linux topology changes broke the QEMU use case. A following fix
+for the QEMU use case broke bare metal topology enumeration.
+
+Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
+for guests and to maintain the ACPI spec behavior for bare metal.
+
+Remove an unnecessary check added to fix a bare metal case introduced by
+the QEMU "fix".
+
+  [ bp: Change logic as Michal suggested. ]
+  [ mingo: Removed misapplied -stable tag. ]
+
+Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check")
+Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present package")
+Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.com
+Reported-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
 Cc: stable@vger.kernel.org
-Reported-by: Cal Peake <cp@absolutedigital.net>
-Closes: https://lore.kernel.org/all/b0c22deb-c0fa-3343-33cf-fd9a77d7db99@absolutedigital.net/
-Fixes: 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise disconnect")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
+ arch/x86/kernel/cpu/topology.c | 15 ---------------
+ 2 files changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 528990a595ec9..9758221413814 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4924,7 +4924,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
- 	 * before ip_fini_early to prevent kfd locking refcount issues by calling
- 	 * amdgpu_amdkfd_suspend()
- 	 */
--	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+	if (pci_dev_is_disconnected(adev->pdev))
- 		amdgpu_amdkfd_device_fini_sw(adev);
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 9fa321a95eb33..d6138b2b633a3 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -35,6 +35,7 @@
+ #include <asm/smp.h>
+ #include <asm/i8259.h>
+ #include <asm/setup.h>
++#include <asm/hypervisor.h>
  
- 	amdgpu_device_ip_fini_early(adev);
-@@ -4936,7 +4936,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
+ #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
+ static int __initdata acpi_force = 0;
+@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_flags)
+ 	if (lapic_flags & ACPI_MADT_ENABLED)
+ 		return true;
  
- 	amdgpu_gart_dummy_page_fini(adev);
+-	if (!acpi_support_online_capable ||
+-	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
+-		return true;
++	if (acpi_support_online_capable)
++		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
  
--	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+	if (pci_dev_is_disconnected(adev->pdev))
- 		amdgpu_device_unmap_mmio(adev);
- 
+-	return false;
++	/*
++	 * QEMU expects legacy "Enabled=0" LAPIC entries to be counted as usable
++	 * in order to support CPU hotplug in guests.
++	 */
++	return !hypervisor_is_type(X86_HYPER_NATIVE);
  }
+ 
+ static int __init
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index f55ea3cdbf88e..23190a786d310 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -27,7 +27,6 @@
+ #include <xen/xen.h>
+ 
+ #include <asm/apic.h>
+-#include <asm/hypervisor.h>
+ #include <asm/io_apic.h>
+ #include <asm/mpspec.h>
+ #include <asm/msr.h>
+@@ -236,20 +235,6 @@ static __init void topo_register_apic(u32 apic_id, u32 acpi_id, bool present)
+ 		cpuid_to_apicid[cpu] = apic_id;
+ 		topo_set_cpuids(cpu, apic_id, acpi_id);
+ 	} else {
+-		u32 pkgid = topo_apicid(apic_id, TOPO_PKG_DOMAIN);
+-
+-		/*
+-		 * Check for present APICs in the same package when running
+-		 * on bare metal. Allow the bogosity in a guest.
+-		 */
+-		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
+-		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
+-			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
+-				     apic_id);
+-			topo_info.nr_rejected_cpus++;
+-			return;
+-		}
+-
+ 		topo_info.nr_disabled_cpus++;
+ 	}
+ 
 -- 
 2.51.0
 
