@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-222085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMYGOIKdo2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:30 +0100
+	id aAHRGkaso2myJgUAu9opvQ
+	(envelope-from <stable+bounces-222086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:02:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4C11CC822
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC1B1CE25A
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 22A7130D8009
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68CD5342468D
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D10230BF52;
-	Sun,  1 Mar 2026 01:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB5730EF67;
+	Sun,  1 Mar 2026 01:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SmfFfcvS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WekFOGxn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C489D2D97AA;
-	Sun,  1 Mar 2026 01:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1112E430BA3;
+	Sun,  1 Mar 2026 01:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329861; cv=none; b=rQY4UZ8IGKqnTaM+B6METUuDgRjx+YFJhByL2M99zCntwAs7mYMUGmxMXssP3I8GKCZd+0bVXIK/3lnR9ULU6qJ4KcLz9a8O0DlNuaUysQJNxRlh7C26fw0amIBAZbYD/SSBsP8i3VRJEdCLEtG7KrBmdi3bkmV62O2LGnz35xg=
+	t=1772329864; cv=none; b=Mybt1zAtq3l2Fu72RH3QvwJMHqjmvC0I/0m5YkrzMl1fF/4YhSGhDFxNZQehKP+oTJuJW1hK07nsaVAZsbWLUtcx/9PvFRqE/K/7IMautw4gH7ki0KZpE1hhCz05j5ZAvKCFpnfkeZKHbKAYJtjEplC9lBTjtONOuoPCr+/UvBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329861; c=relaxed/simple;
-	bh=0aeHzwX6UrXpngliMubdwa0sEmYqXXi1qTWFH8ruo+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U+inVo6wQ26QWaBh3mR63vgV3hTKYbpjida7hUge1r8dIXf4dUP1GKrqQGf8aKlcLDNNRBqf/4rTorv3ssORppmMw/QXWX1uf7SxqpJQgw796nz+FhxETFURjyAZaPnTjPr+0atof8gEGgEA9fHVupIVFjzhjuZInqrtVDpl1Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SmfFfcvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66CBC19425;
-	Sun,  1 Mar 2026 01:51:00 +0000 (UTC)
+	s=arc-20240116; t=1772329864; c=relaxed/simple;
+	bh=uQmxfgCPeuvSjBiobXxiPtsaGsDnF0pu65G2bO7lCwM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VGFCddTfGNKXym8TtsnXJzRJnB25uZ9KJ9IiB7heBoLS38OACYNbBL6GJP15CW+2JNga1PxzwC9NQXphVz2Q+gVvZlFF48+VTKtH3vyn3pJxwpSXV13o2tonHbFBuFYPSV3TrVMo8E1lczhGTrFAh6zSLciK/w4MMELlQ+Bxk5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WekFOGxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7058DC19421;
+	Sun,  1 Mar 2026 01:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329861;
-	bh=0aeHzwX6UrXpngliMubdwa0sEmYqXXi1qTWFH8ruo+s=;
+	s=k20201202; t=1772329864;
+	bh=uQmxfgCPeuvSjBiobXxiPtsaGsDnF0pu65G2bO7lCwM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=SmfFfcvSK8OUSERhuYjkj1FsMHLsdUZsQ/aA2ERlpPmm4c1f8X57qB2t+3w3shVkp
-	 8mhPUACKrsrcn6zYEyWuqEJndiuebreyteWkzoOfny2RgwhkdNbKrgJ9SD0M0gNOG5
-	 v2Odszk4yq5YWKCGhfsyVjfb1tHuxxHqueisEODvDEcy0aowc3Zh7wQ/FgPG2PpZl1
-	 bNq63TSbkVyDpudTI4umt7YTNbegyJQyhlM6fT99wvWLJaUtUktqyFdSWBqto0wEMN
-	 jtOjzntocRxSMlQRfhZ+MzV8yhlrCXUnNYB+TnjlOOG3S+TVCUgAxSve2ERZ14eg9S
-	 HGZEob48sPr5Q==
+	b=WekFOGxn7fDjROlpRyImGn+QGtwnY6+kvP+CkEjy+eId/4elffXGcoFlKtRVK9wwo
+	 FZ8grkYFHDQujXhBWQeKToRTDYfTIaqQGsB9rfJo2tIwceayL+0+e2Rtbcg3QJxIJ1
+	 4D4H1z6d1a9lf5mgUwb6j+5TjY0RDAWOMagr3wbqQf0PH43QWWQkSeEfTYLcEVk//p
+	 OvcpC1LdmTJH5UwO+aypxwDn6W04SHQSp8+uuOmjdcYWSthWfPMqnap9ag+SeFaQtg
+	 O9hkm8E0u4fyehCs0r/SLyPjURxlfB9IcNiwaGyCgTOoJqCSvMDsPnacfFkOBr5jEa
+	 /pEWC2E3iUeYw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jack@suse.cz
-Cc: Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	stable@kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org
-Subject: FAILED: Patch "ext4: use optimized mballoc scanning regardless of inode format" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:50:59 -0500
-Message-ID: <20260301015059.1717169-1-sashal@kernel.org>
+	kernel@mattwhitlock.name
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	dm-devel@lists.linux.dev
+Subject: FAILED: Patch "dm-unstripe: fix mapping bug when there are multiple targets in a table" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:51:01 -0500
+Message-ID: <20260301015102.1717215-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +63,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222085-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222086-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 5C4C11CC822
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mattwhitlock.name:email]
+X-Rspamd-Queue-Id: BCC1B1CE25A
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,47 +102,57 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3574c322b1d0eb32dbd76b469cb08f9a67641599 Mon Sep 17 00:00:00 2001
-From: Jan Kara <jack@suse.cz>
-Date: Wed, 14 Jan 2026 19:28:19 +0100
-Subject: [PATCH] ext4: use optimized mballoc scanning regardless of inode
- format
+From 83c10e8dd43628d0bf86486616556cd749a3c310 Mon Sep 17 00:00:00 2001
+From: Matt Whitlock <kernel@mattwhitlock.name>
+Date: Sun, 18 Jan 2026 13:36:15 -0500
+Subject: [PATCH] dm-unstripe: fix mapping bug when there are multiple targets
+ in a table
 
-Currently we don't used mballoc optimized scanning (using max free
-extent order and avg free extent order group lists) for inodes with
-indirect block based format. This is confusing for users and I don't see
-a good reason for that. Even with indirect block based inode format we
-can spend big amount of time searching for free blocks for large
-filesystems with fragmented free space. To add to the confusion before
-commit 077d0c2c78df ("ext4: make mb_optimize_scan performance mount
-option work with extents") optimized scanning was applied *only* to
-indirect block based inodes so that commit appears as a performance
-regression to some users. Just use optimized scanning whenever it is
-enabled by mount options.
+The "unstriped" device-mapper target incorrectly calculates the sector
+offset on the mapped device when the target's origin is not zero.
 
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260114182836.14120-4-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Take for example this hypothetical concatenation of the members of a
+two-disk RAID0:
+
+linearized:       0 2097152 unstriped 2 128 0 /dev/md/raid0 0
+linearized: 2097152 2097152 unstriped 2 128 1 /dev/md/raid0 0
+
+The intent in this example is to create a single device named
+/dev/mapper/linearized that comprises all of the chunks of the first disk
+of the RAID0 set, followed by all of the chunks of the second disk of the
+RAID0 set.
+
+This fails because dm-unstripe.c's map_to_core function does its
+computations based on the sector number within the mapper device rather
+than the sector number within the target. The bug turns invisible when
+the target's origin is at sector zero of the mapper device, as is the
+common case. In the example above, however, what happens is that the
+first half of the mapper device gets mapped correctly to the first disk
+of the RAID0, but the second half of the mapper device gets mapped past
+the end of the RAID0 device, and accesses to any of those sectors return
+errors.
+
+Signed-off-by: Matt Whitlock <kernel@mattwhitlock.name>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 18a5bf270532 ("dm: add unstriped target")
 ---
- fs/ext4/mballoc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/md/dm-unstripe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 910b454b4a21e..dbc82b65f810f 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1148,8 +1148,6 @@ static inline int should_optimize_scan(struct ext4_allocation_context *ac)
- 		return 0;
- 	if (ac->ac_criteria >= CR_GOAL_LEN_SLOW)
- 		return 0;
--	if (!ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS))
--		return 0;
- 	return 1;
- }
+diff --git a/drivers/md/dm-unstripe.c b/drivers/md/dm-unstripe.c
+index e8a9432057dce..17be483595642 100644
+--- a/drivers/md/dm-unstripe.c
++++ b/drivers/md/dm-unstripe.c
+@@ -117,7 +117,7 @@ static void unstripe_dtr(struct dm_target *ti)
+ static sector_t map_to_core(struct dm_target *ti, struct bio *bio)
+ {
+ 	struct unstripe_c *uc = ti->private;
+-	sector_t sector = bio->bi_iter.bi_sector;
++	sector_t sector = dm_target_offset(ti, bio->bi_iter.bi_sector);
+ 	sector_t tmp_sector = sector;
  
+ 	/* Shift us up to the right "row" on the stripe */
 -- 
 2.51.0
 
