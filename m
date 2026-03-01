@@ -1,120 +1,121 @@
-Return-Path: <stable+bounces-222406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222407-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id vACFFWLVo2kuPAUAu9opvQ
-	(envelope-from <stable+bounces-222406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 06:57:54 +0100
+	id QKF5BOrVo2mdPAUAu9opvQ
+	(envelope-from <stable+bounces-222407-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 07:00:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01EB1CE962
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 06:57:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0997F1CE97B
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 07:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ECDDB301BC3A
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 05:57:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0BB803008088
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 06:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539864C97;
-	Sun,  1 Mar 2026 05:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE601306B0A;
+	Sun,  1 Mar 2026 06:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ptn/j+ip"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQ5nOPbv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1599427F010
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 05:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690CB2D97BB
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 06:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772344667; cv=none; b=gVThqN5rVhd+fgSDtGug73HqSaWcNvOpz4SYG1ibMi2CPagEdkkX/sRPyeWSknU0OLAW3ghohzHVKiHY/0WIHSVN2OxCrQN5eKkUi7S6V4N9tGHD4AtA4U1Gz1NXmv+4ZBsG3NK+DEDFJMOAIavI5Zrt9GTfPmUfq95Dl/MpTIQ=
+	t=1772344804; cv=none; b=Ntlukt663r5t61mBM65IP/5OWYzbGJp4+NoH5xpg/G0RwwY341QN+1ruT9wtTxeuHXsPOF5/UweCZd9miFK6eoLsq6qwvDOnuHH9qfhidgm0H2Vwhyx4d7LPIAviwlqqPitBv/BysBKHv95K9mMrlclj0YWnX7JNcA8yPmnRsTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772344667; c=relaxed/simple;
-	bh=IdKgk6ijWp8kUU8Q2S9JtScG7492fW4G6cBZo1f8DlA=;
+	s=arc-20240116; t=1772344804; c=relaxed/simple;
+	bh=QKni47SVW9Uu35RdotBA7722dJSKwDszVsr/Cmo+eIU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EJ2nVcXkurRvuTlea6WqTQt1ilBZ+NODFI6Tm0wB2DzIWEt/O6rkx+BhsdFGiCxNN3Q5+qlI/q5vGky8ssGXROJllhp0FucsLBCbcMmrGrd54BY0zrYC59nB7/wGXEkVGkHVfefG882MMlHbMaDeqpnJ4Ecayl1yRB8VScbcgqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ptn/j+ip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE49FC2BC87
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 05:57:46 +0000 (UTC)
+	 To:Cc:Content-Type; b=g4s9jncwMxOyyd0KMPkyBdJ1aCG7VSxcTDcruc8+c6/bv0TI4NCB1w4y3jVn2qeD0RnJOHcVgyUpasqeGhRd7dfBZ/d2/oTGnRgWeMa6q4paO4F69+lXp8al9sztlq/B1D12yz2IWM++dYvdP5NaJLYOA/0hRT3Ry6xGFsNIwDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQ5nOPbv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C252C2BCB0
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 06:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772344666;
-	bh=IdKgk6ijWp8kUU8Q2S9JtScG7492fW4G6cBZo1f8DlA=;
+	s=k20201202; t=1772344804;
+	bh=QKni47SVW9Uu35RdotBA7722dJSKwDszVsr/Cmo+eIU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ptn/j+ip/X4Md6MuxIaHbIG9tHPk4jllMi8MDJ5roTk8HpTXnfpz0SZm0sSM78RqY
-	 42B69X25weV1uCFDdHyBu3pyuWKTzd1psvhA2LoOb7uqLqXSyfqyE9TePQJe6M595e
-	 fgtI5mEe5wojI2PWccJbPIFvJC27ENYK8J7VFmo9TGYKlsOxbFg42lbSgLo9SsTsSo
-	 O1G3Nr5QNVSGofiikhKGwOS7jnQ7sCc/f4WswGhZPDk33mxI/YG1vtM5YE0MubFCIB
-	 KaBvu+t80OLAkvioh2/dJJQGTwz6FNdYEjLyLxyMvepTiymSvHIQLzXbijtFuFufDJ
-	 DiweGhbbsJgDg==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-65c187dfc82so5326067a12.2
-        for <stable@vger.kernel.org>; Sat, 28 Feb 2026 21:57:46 -0800 (PST)
-X-Gm-Message-State: AOJu0Yy4OENd7wRzekiTZpBUWd084VMiATbpcCTmXxc8oc5F5AR1ga0a
-	+z7vmK4Gc6IFm//pLXVOHI1iy/LN7aD32tmLmab/xd0JOZsg1ytzPRls0owJ4eKngGcijZBwyAs
-	qO/1/oW8m0E/iGroG6GDkUjp43QmYsA0=
-X-Received: by 2002:a05:6402:2110:b0:65c:972:7073 with SMTP id
- 4fb4d7f45d1cf-65fde4c676emr5799791a12.28.1772344665254; Sat, 28 Feb 2026
- 21:57:45 -0800 (PST)
+	b=UQ5nOPbvJlle9K2ewrCfaXDlMF3/CnrPh10KwTwRpi2D0LMPy+je0uCUAsvXqqNix
+	 lNx1yibvd0/qry8SfG6cxIc92vbq+vTTo2BsKc9Ni21+ueStrli0CqoT2x3vO7wv4z
+	 xZJQkCuee+gJYzc0nQQv5BImFGv0K7nVa78wqZ/ybG0/LD5jADhMXHodNnFsDMNM3I
+	 qTGGD6i7GgbJVwIk7GAfN/1gtMF1ylZSJ44hKqogooCFEMOVpChR5774HprQPfjnas
+	 WMpL/F/d6uJ59bZHAbJdiPXBeJTcH9Vz88oy9mhGxgLFgb0FFQAWDBV82LiWc+ANR3
+	 kw+sJEtg4zm3w==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-65f771c6b89so4937553a12.3
+        for <stable@vger.kernel.org>; Sat, 28 Feb 2026 22:00:03 -0800 (PST)
+X-Gm-Message-State: AOJu0YxOpAp9bzSakw7tO/NIRv4NPKK+hyQvtHxMXr+xDSH6XoHa1m4S
+	8GQauHXZFEz3eKG9mE/p6dLs7f4yCuY2OZes5HaKGwjzQeyYHqVA6F5It/4ChJfsrD7a4i/wfJ8
+	AaDIjndSY5pWjSXKEHUsk6GEzxPEvRnk=
+X-Received: by 2002:a05:6402:42c4:b0:65b:ec2d:e60d with SMTP id
+ 4fb4d7f45d1cf-65fde2d08c7mr5450438a12.32.1772344802355; Sat, 28 Feb 2026
+ 22:00:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260301011732.1671502-1-sashal@kernel.org>
-In-Reply-To: <20260301011732.1671502-1-sashal@kernel.org>
+References: <20260301012606.1683431-1-sashal@kernel.org>
+In-Reply-To: <20260301012606.1683431-1-sashal@kernel.org>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 1 Mar 2026 13:57:33 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H46pdrJgJ0tg493nK8S8X6NQrXu+jHO-yDpBBdyDpRQKw@mail.gmail.com>
-X-Gm-Features: AaiRm53AMPG4vNbW7cnia_a82DoSif7QrjvcUnOF5IP5lHdodd5yuyFSY8lMvh4
-Message-ID: <CAAhV-H46pdrJgJ0tg493nK8S8X6NQrXu+jHO-yDpBBdyDpRQKw@mail.gmail.com>
-Subject: Re: FAILED: Patch "LoongArch: Handle percpu handler address for ORC
- unwinder" failed to apply to 6.18-stable tree
+Date: Sun, 1 Mar 2026 13:59:51 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7QMmww2E2yZECuW=La0i3s1nKbbQvpODgPzrPci3f0HQ@mail.gmail.com>
+X-Gm-Features: AaiRm50WuaIawTrIMUAzic5HCfeMGfAec2UkDWc3Lhbmb5tQfUpf37UwpYVyxss
+Message-ID: <CAAhV-H7QMmww2E2yZECuW=La0i3s1nKbbQvpODgPzrPci3f0HQ@mail.gmail.com>
+Subject: Re: FAILED: Patch "net: stmmac: dwmac-loongson: Set clk_csr_i to
+ 100-150MHz" failed to apply to 6.12-stable tree
 To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, yangtiezhu@loongson.cn, 
-	Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
-	linux-rt-devel@lists.linux.dev
+Cc: stable@vger.kernel.org, Hongliang Wang <wanghongliang@loongson.cn>, 
+	Huacai Chen <chenhuacai@loongson.cn>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222406-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222407-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:email]
-X-Rspamd-Queue-Id: A01EB1CE962
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,msgid.link:url,loongson.cn:email]
+X-Rspamd-Queue-Id: 0997F1CE97B
 X-Rspamd-Action: no action
 
 Hi, Sasha,
 
-On Sun, Mar 1, 2026 at 9:17=E2=80=AFAM Sasha Levin <sashal@kernel.org> wrot=
+On Sun, Mar 1, 2026 at 9:26=E2=80=AFAM Sasha Levin <sashal@kernel.org> wrot=
 e:
 >
-> The patch below does not apply to the 6.18-stable tree.
+> The patch below does not apply to the 6.12-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
-Please add 4cd641a79e69270a062777f64a0dd330abb9044a ("LoongArch:
-Remove unnecessary checks for ORC unwinder") as a dependency, then
-this one and another one can be applied.
+I have already submit a patch for 6.12 some days ago:
+https://lore.kernel.org/loongarch/20260218121219.2545107-1-chenhuacai@loong=
+son.cn/T/#u
 
 Huacai
 
@@ -124,95 +125,46 @@ Huacai
 >
 > ------------------ original commit in Linus's tree ------------------
 >
-> From 055c7e75190e0be43037bd663a3f6aced194416e Mon Sep 17 00:00:00 2001
-> From: Tiezhu Yang <yangtiezhu@loongson.cn>
-> Date: Tue, 10 Feb 2026 19:31:13 +0800
-> Subject: [PATCH] LoongArch: Handle percpu handler address for ORC unwinde=
-r
+> From e1aa5ef892fb4fa9014a25e87b64b97347919d37 Mon Sep 17 00:00:00 2001
+> From: Huacai Chen <chenhuacai@loongson.cn>
+> Date: Tue, 3 Feb 2026 14:29:01 +0800
+> Subject: [PATCH] net: stmmac: dwmac-loongson: Set clk_csr_i to 100-150MHz
 >
-> After commit 4cd641a79e69 ("LoongArch: Remove unnecessary checks for ORC
-> unwinder"), the system can not boot normally under some configs (such as
-> enable KASAN), there are many error messages "cannot find unwind pc".
->
-> The kernel boots normally with the defconfig, so no problem found out at
-> the first time. Here is one way to reproduce:
->
->   cd linux
->   make mrproper defconfig -j"$(nproc)"
->   scripts/config -e KASAN
->   make olddefconfig all -j"$(nproc)"
->   sudo make modules_install
->   sudo make install
->   sudo reboot
->
-> The address that can not unwind is not a valid kernel address which is
-> between "pcpu_handlers[cpu]" and "pcpu_handlers[cpu] + vec_sz" due to
-> the code of eentry was copied to the new area of pcpu_handlers[cpu] in
-> setup_tlb_handler(), handle this special case to get the valid address
-> to unwind normally.
+> Current clk_csr_i setting of Loongson STMMAC (including LS7A1000/2000
+> and LS2K1000/2000/3000) are copy & paste from other drivers. In fact,
+> Loongson STMMAC use 125MHz clocks and need 62 freq division to within
+> 2.5MHz, meeting most PHY MDC requirement. So fix by setting clk_csr_i
+> to 100-150MHz, otherwise some PHYs may link fail.
 >
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> Fixes: 30bba69d7db40e7 ("stmmac: pci: Add dwmac support for Loongson")
+> Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
 > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> Link: https://patch.msgid.link/20260203062901.2158236-1-chenhuacai@loongs=
+on.cn
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 > ---
->  arch/loongarch/include/asm/setup.h |  3 +++
->  arch/loongarch/kernel/unwind_orc.c | 16 ++++++++++++++++
->  2 files changed, 19 insertions(+)
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/=
-asm/setup.h
-> index 3c2fb16b11b64..f81375e5e89c0 100644
-> --- a/arch/loongarch/include/asm/setup.h
-> +++ b/arch/loongarch/include/asm/setup.h
-> @@ -7,6 +7,7 @@
->  #define _LOONGARCH_SETUP_H
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drive=
+rs/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> index 107a7c84ace80..c05e3e7a539cf 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> @@ -91,8 +91,8 @@ static void loongson_default_data(struct pci_dev *pdev,
+>         /* Get bus_id, this can be overwritten later */
+>         plat->bus_id =3D pci_dev_id(pdev);
 >
->  #include <linux/types.h>
-> +#include <linux/threads.h>
->  #include <asm/sections.h>
->  #include <uapi/asm/setup.h>
+> -       /* clk_csr_i =3D 20-35MHz & MDC =3D clk_csr_i/16 */
+> -       plat->clk_csr =3D STMMAC_CSR_20_35M;
+> +       /* clk_csr_i =3D 100-150MHz & MDC =3D clk_csr_i/62 */
+> +       plat->clk_csr =3D STMMAC_CSR_100_150M;
+>         plat->core_type =3D DWMAC_CORE_GMAC;
+>         plat->force_sf_dma_mode =3D 1;
 >
-> @@ -14,6 +15,8 @@
->
->  extern unsigned long eentry;
->  extern unsigned long tlbrentry;
-> +extern unsigned long pcpu_handlers[NR_CPUS];
-> +extern long exception_handlers[VECSIZE * 128 / sizeof(long)];
->  extern char init_command_line[COMMAND_LINE_SIZE];
->  extern void tlb_init(int cpu);
->  extern void cpu_cache_init(void);
-> diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/u=
-nwind_orc.c
-> index d6b3688a1ce97..11ba3e4ac9eee 100644
-> --- a/arch/loongarch/kernel/unwind_orc.c
-> +++ b/arch/loongarch/kernel/unwind_orc.c
-> @@ -352,6 +352,22 @@ static inline unsigned long bt_address(unsigned long=
- ra)
->  {
->         extern unsigned long eentry;
->
-> +#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
-> +       int cpu;
-> +       int vec_sz =3D sizeof(exception_handlers);
-> +
-> +       for_each_possible_cpu(cpu) {
-> +               if (!pcpu_handlers[cpu])
-> +                       continue;
-> +
-> +               if (ra >=3D pcpu_handlers[cpu] &&
-> +                   ra < pcpu_handlers[cpu] + vec_sz) {
-> +                       ra =3D ra + eentry - pcpu_handlers[cpu];
-> +                       break;
-> +               }
-> +       }
-> +#endif
-> +
->         if (ra >=3D eentry && ra < eentry +  EXCCODE_INT_END * VECSIZE) {
->                 unsigned long func;
->                 unsigned long type =3D (ra - eentry) / VECSIZE;
 > --
 > 2.51.0
->
 >
 >
 >
