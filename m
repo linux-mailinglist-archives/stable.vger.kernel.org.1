@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-221704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221705-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJHhIXWbo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:45 +0100
+	id 6NgfKXabo2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221705-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D400E1CBF8A
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1F91CBF91
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50B34324B7FD
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73CDA324CC94
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A14F2C033C;
-	Sun,  1 Mar 2026 01:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0804E2D94BA;
+	Sun,  1 Mar 2026 01:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hXhYSZor"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="raO9B4XH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7402882D6
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD121430B90;
+	Sun,  1 Mar 2026 01:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328937; cv=none; b=qUmyGgaUxQhdmGYcAE2kiez0uBLDPCyEjgKl+thwafMm6zl8ym6Q6OfnzzTe+kiLrLyXNJhDptz1Ak4u39ROAhQRd8mtWBKySWcwB5WV+cEg0nKXP/6sNjfQauw5K7O0IS25viZ/sm2xD2TGq7F73ldZGFZlw/wQ5B5m+ioyA9M=
+	t=1772328939; cv=none; b=Ed3fcCF4joyEzw/pa3lNfPxnowOWGzQCUxynVO8/7JXlv1TFiP/1pzaYJ/5jz0KmlkBcWvy5egYgXJMhItD8VU/9tAckovVCsNF0mpeie89jDQr3pItA2MDH+5nVReZ7pe0S9QhixJGz/Zcc/eGqhzJhCajWWVD74Gxm0Aw21Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328937; c=relaxed/simple;
-	bh=S56YA5Uv2kQArQg+KTbDvXGAKWcdygfI6q9JF94M7RQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jnwflMcwcx7kne4bcReZbFFS6DtmJiuBY/RbTzqJX95+viLKa/2NfIUuXMgJXV0tUQ75JXT2vew2/TXaBwhfawZXolNpx8/RUr03PpDi+9aThByj5QkwzRCnlm7zsp3sSmCoz4JQooq5njQUcTEdP9V7X3K9Im7i+W8r+qYlDO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hXhYSZor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF43C19421;
-	Sun,  1 Mar 2026 01:35:36 +0000 (UTC)
+	s=arc-20240116; t=1772328939; c=relaxed/simple;
+	bh=3xb6ADMUgPIqQDmCtmn2dnliHPBeEZ0ekjPpb7NZOy4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BOIPb2CB2xgynlpYnkWYjZ/HZs0vgHBD0NZDQDujoIB2CcxBOjDN5IzRlXLa25Jtnvzb36+VaHP4oHsYKEdXS8bQzqCsiCxpswzgLGdf2/E2h71Cz6J/kyPiM5W39Ip2BVmPEbpK4x6VmEFCg0yLoo5v6xFF85dtsLzyKxf4P9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=raO9B4XH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01EA0C19421;
+	Sun,  1 Mar 2026 01:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328937;
-	bh=S56YA5Uv2kQArQg+KTbDvXGAKWcdygfI6q9JF94M7RQ=;
+	s=k20201202; t=1772328939;
+	bh=3xb6ADMUgPIqQDmCtmn2dnliHPBeEZ0ekjPpb7NZOy4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hXhYSZormzioWSzWPhzcQCCLOi0v7GgJCgWqhrcXvHlTJP+CpmdndTeg22vz2uHKW
-	 /h9jEsh43traJ/SuvnYSDzrEDk/SC6urHFu4ZFjZo9X5NvJc5CE/XeGDnM5P34k0W9
-	 n3IewpCO3wTYGgbG6NZX3ZRxVigExOJJCmdX9oy3XI35m6f/9zgz4RQChxf3xVTM3U
-	 DZw3AIFqq7fUu2H1Al49dHHCSsCHClNwufLB1wugeqILjHQYRkVslaebC2JU9ZeYEG
-	 E+FVNUz1SFfJD90bRBEjg/xTkNIrQWTXj6Lo5T8xF/QlWtlcKDkziz74MQZ5M1u0fG
-	 2X8v4XPxLddww==
+	b=raO9B4XHokuOoNzg9lcJt1K5zC8Woom6ScqGQQ9R5SDF88chkoswrWPDkPQkP+or4
+	 SThfaZ40CnGZkrN5jXZly/OIBChierFKi5+cu3aNF5AzhqAYYnLJcVGbS1plOIXe4O
+	 wgVQnZy82FYdh7NcCyU/EZEHh2mje/OK/d+0EGZ+m6gSR3ILU/QKZ2zN3MrUJuwTcO
+	 vjy0x67ldR/k8kZrIQm5RcPIYM7BA64jbfLEKB4qaDUfMWGgqgawdqXe1hK6Bzjq+w
+	 RU5H83Oyuc4z/aAxBaFHpUI4fMqVE0XvzDhYPNiaJGTG7nBKrcxkhHvXOub6Xdpfix
+	 cGBC0+V8BWTGA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	me@linux.beauty
-Cc: Baoquan He <bhe@redhat.com>,
-	Alexander Graf <graf@amazon.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Philipp Rudo <prudo@redhat.com>,
-	Ricardo Ribalda Delgado <ribalda@chromium.org>,
-	Ross Zwisler <zwisler@google.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	kexec@lists.infradead.org
-Subject: FAILED: Patch "kexec: derive purgatory entry from symbol" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:35:34 -0500
-Message-ID: <20260301013535.1695311-1-sashal@kernel.org>
+	antoniu.miclaus@analog.com
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org
+Subject: FAILED: Patch "iio: gyro: itg3200: Fix unchecked return value in read_raw" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:35:37 -0500
+Message-ID: <20260301013537.1695363-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -81,9 +75,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221704-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221705-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
@@ -95,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,goodmis.org:email,chromium.org:email,linux.beauty:email]
-X-Rspamd-Queue-Id: D400E1CBF8A
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,huawei.com:email]
+X-Rspamd-Queue-Id: 1C1F91CBF91
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -110,230 +104,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 480e1d5c64bb14441f79f2eb9421d5e26f91ea3d Mon Sep 17 00:00:00 2001
-From: Li Chen <me@linux.beauty>
-Date: Tue, 20 Jan 2026 20:40:04 +0800
-Subject: [PATCH] kexec: derive purgatory entry from symbol
+From b79b24f578cdb2d657db23e5fafe82c7e6a36b72 Mon Sep 17 00:00:00 2001
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Date: Thu, 29 Jan 2026 17:01:45 +0200
+Subject: [PATCH] iio: gyro: itg3200: Fix unchecked return value in read_raw
 
-kexec_load_purgatory() derives image->start by locating e_entry inside an
-SHF_EXECINSTR section.  If the purgatory object contains multiple
-executable sections with overlapping sh_addr, the entrypoint check can
-match more than once and trigger a WARN.
+The return value from itg3200_read_reg_s16() is stored in ret but
+never checked. The function unconditionally returns IIO_VAL_INT,
+ignoring potential I2C read failures. This causes garbage data to
+be returned to userspace when the read fails, with no error reported.
 
-Derive the entry section from the purgatory_start symbol when present and
-compute image->start from its final placement.  Keep the existing e_entry
-fallback for purgatories that do not expose the symbol.
+Add proper error checking to propagate the failure to callers.
 
-WARNING: kernel/kexec_file.c:1009 at kexec_load_purgatory+0x395/0x3c0, CPU#10: kexec/1784
-Call Trace:
- <TASK>
- bzImage64_load+0x133/0xa00
- __do_sys_kexec_file_load+0x2b3/0x5c0
- do_syscall_64+0x81/0x610
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-[me@linux.beauty: move helper to avoid forward declaration, per Baoquan]
-  Link: https://lkml.kernel.org/r/20260128043511.316860-1-me@linux.beauty
-Link: https://lkml.kernel.org/r/20260120124005.148381-1-me@linux.beauty
-Fixes: 8652d44f466a ("kexec: support purgatories with .text.hot sections")
-Signed-off-by: Li Chen <me@linux.beauty>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Eric Biggers <ebiggers@kernel.org>
-Cc: Li Chen <me@linux.beauty>
-Cc: Philipp Rudo <prudo@redhat.com>
-Cc: Ricardo Ribalda Delgado <ribalda@chromium.org>
-Cc: Ross Zwisler <zwisler@google.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9dbf091da080 ("iio: gyro: Add itg3200")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- kernel/kexec_file.c | 131 +++++++++++++++++++++++++-------------------
- 1 file changed, 74 insertions(+), 57 deletions(-)
+ drivers/iio/gyro/itg3200_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index eb62a97942428..2bfbb2d144e69 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -882,6 +882,60 @@ static int kexec_calculate_store_digests(struct kimage *image)
- }
- 
- #ifdef CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY
-+/*
-+ * kexec_purgatory_find_symbol - find a symbol in the purgatory
-+ * @pi:		Purgatory to search in.
-+ * @name:	Name of the symbol.
-+ *
-+ * Return: pointer to symbol in read-only symtab on success, NULL on error.
-+ */
-+static const Elf_Sym *kexec_purgatory_find_symbol(struct purgatory_info *pi,
-+						  const char *name)
-+{
-+	const Elf_Shdr *sechdrs;
-+	const Elf_Ehdr *ehdr;
-+	const Elf_Sym *syms;
-+	const char *strtab;
-+	int i, k;
-+
-+	if (!pi->ehdr)
-+		return NULL;
-+
-+	ehdr = pi->ehdr;
-+	sechdrs = (void *)ehdr + ehdr->e_shoff;
-+
-+	for (i = 0; i < ehdr->e_shnum; i++) {
-+		if (sechdrs[i].sh_type != SHT_SYMTAB)
-+			continue;
-+
-+		if (sechdrs[i].sh_link >= ehdr->e_shnum)
-+			/* Invalid strtab section number */
-+			continue;
-+		strtab = (void *)ehdr + sechdrs[sechdrs[i].sh_link].sh_offset;
-+		syms = (void *)ehdr + sechdrs[i].sh_offset;
-+
-+		/* Go through symbols for a match */
-+		for (k = 0; k < sechdrs[i].sh_size/sizeof(Elf_Sym); k++) {
-+			if (ELF_ST_BIND(syms[k].st_info) != STB_GLOBAL)
-+				continue;
-+
-+			if (strcmp(strtab + syms[k].st_name, name) != 0)
-+				continue;
-+
-+			if (syms[k].st_shndx == SHN_UNDEF ||
-+			    syms[k].st_shndx >= ehdr->e_shnum) {
-+				pr_debug("Symbol: %s has bad section index %d.\n",
-+					name, syms[k].st_shndx);
-+				return NULL;
-+			}
-+
-+			/* Found the symbol we are looking for */
-+			return &syms[k];
-+		}
-+	}
-+
-+	return NULL;
-+}
- /*
-  * kexec_purgatory_setup_kbuf - prepare buffer to load purgatory.
-  * @pi:		Purgatory to be loaded.
-@@ -960,6 +1014,10 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
- 	unsigned long offset;
- 	size_t sechdrs_size;
- 	Elf_Shdr *sechdrs;
-+	const Elf_Sym *entry_sym;
-+	u16 entry_shndx = 0;
-+	unsigned long entry_off = 0;
-+	bool start_fixed = false;
- 	int i;
- 
- 	/*
-@@ -977,6 +1035,12 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
- 	bss_addr = kbuf->mem + kbuf->bufsz;
- 	kbuf->image->start = pi->ehdr->e_entry;
- 
-+	entry_sym = kexec_purgatory_find_symbol(pi, "purgatory_start");
-+	if (entry_sym) {
-+		entry_shndx = entry_sym->st_shndx;
-+		entry_off = entry_sym->st_value;
-+	}
-+
- 	for (i = 0; i < pi->ehdr->e_shnum; i++) {
- 		unsigned long align;
- 		void *src, *dst;
-@@ -994,6 +1058,13 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
- 
- 		offset = ALIGN(offset, align);
- 
-+		if (!start_fixed && entry_sym && i == entry_shndx &&
-+		    (sechdrs[i].sh_flags & SHF_EXECINSTR) &&
-+		    entry_off < sechdrs[i].sh_size) {
-+			kbuf->image->start = kbuf->mem + offset + entry_off;
-+			start_fixed = true;
-+		}
-+
- 		/*
- 		 * Check if the segment contains the entry point, if so,
- 		 * calculate the value of image->start based on it.
-@@ -1004,13 +1075,14 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
- 		 * is not set to the initial value, and warn the user so they
- 		 * have a chance to fix their purgatory's linker script.
- 		 */
--		if (sechdrs[i].sh_flags & SHF_EXECINSTR &&
-+		if (!start_fixed && sechdrs[i].sh_flags & SHF_EXECINSTR &&
- 		    pi->ehdr->e_entry >= sechdrs[i].sh_addr &&
- 		    pi->ehdr->e_entry < (sechdrs[i].sh_addr
- 					 + sechdrs[i].sh_size) &&
--		    !WARN_ON(kbuf->image->start != pi->ehdr->e_entry)) {
-+		    kbuf->image->start == pi->ehdr->e_entry) {
- 			kbuf->image->start -= sechdrs[i].sh_addr;
- 			kbuf->image->start += kbuf->mem + offset;
-+			start_fixed = true;
- 		}
- 
- 		src = (void *)pi->ehdr + sechdrs[i].sh_offset;
-@@ -1128,61 +1200,6 @@ int kexec_load_purgatory(struct kimage *image, struct kexec_buf *kbuf)
- 	return ret;
- }
- 
--/*
-- * kexec_purgatory_find_symbol - find a symbol in the purgatory
-- * @pi:		Purgatory to search in.
-- * @name:	Name of the symbol.
-- *
-- * Return: pointer to symbol in read-only symtab on success, NULL on error.
-- */
--static const Elf_Sym *kexec_purgatory_find_symbol(struct purgatory_info *pi,
--						  const char *name)
--{
--	const Elf_Shdr *sechdrs;
--	const Elf_Ehdr *ehdr;
--	const Elf_Sym *syms;
--	const char *strtab;
--	int i, k;
--
--	if (!pi->ehdr)
--		return NULL;
--
--	ehdr = pi->ehdr;
--	sechdrs = (void *)ehdr + ehdr->e_shoff;
--
--	for (i = 0; i < ehdr->e_shnum; i++) {
--		if (sechdrs[i].sh_type != SHT_SYMTAB)
--			continue;
--
--		if (sechdrs[i].sh_link >= ehdr->e_shnum)
--			/* Invalid strtab section number */
--			continue;
--		strtab = (void *)ehdr + sechdrs[sechdrs[i].sh_link].sh_offset;
--		syms = (void *)ehdr + sechdrs[i].sh_offset;
--
--		/* Go through symbols for a match */
--		for (k = 0; k < sechdrs[i].sh_size/sizeof(Elf_Sym); k++) {
--			if (ELF_ST_BIND(syms[k].st_info) != STB_GLOBAL)
--				continue;
--
--			if (strcmp(strtab + syms[k].st_name, name) != 0)
--				continue;
--
--			if (syms[k].st_shndx == SHN_UNDEF ||
--			    syms[k].st_shndx >= ehdr->e_shnum) {
--				pr_debug("Symbol: %s has bad section index %d.\n",
--						name, syms[k].st_shndx);
--				return NULL;
--			}
--
--			/* Found the symbol we are looking for */
--			return &syms[k];
--		}
--	}
--
--	return NULL;
--}
--
- void *kexec_purgatory_get_symbol_addr(struct kimage *image, const char *name)
- {
- 	struct purgatory_info *pi = &image->purgatory_info;
+diff --git a/drivers/iio/gyro/itg3200_core.c b/drivers/iio/gyro/itg3200_core.c
+index cd8a2dae56cd9..bfe95ec1abda9 100644
+--- a/drivers/iio/gyro/itg3200_core.c
++++ b/drivers/iio/gyro/itg3200_core.c
+@@ -93,6 +93,8 @@ static int itg3200_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_RAW:
+ 		reg = (u8)chan->address;
+ 		ret = itg3200_read_reg_s16(indio_dev, reg, val);
++		if (ret)
++			return ret;
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
 -- 
 2.51.0
 
