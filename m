@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HIkKyGao2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:05 +0100
+	id GAO6ByOao2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989A11CB8A9
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3481CB8B8
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 571E230172F6
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34495307F326
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F832C15B0;
-	Sun,  1 Mar 2026 01:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4432D2D0C63;
+	Sun,  1 Mar 2026 01:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDNoyCQL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i5P9z2s3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6805277C9D;
-	Sun,  1 Mar 2026 01:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C10277C9D;
+	Sun,  1 Mar 2026 01:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329209; cv=none; b=oDLPw/63TWP2Zoo89puD4HzZT1aBaucWm+panvcfV+K2NPfoEZw0ZqbuZ/gHH7kdr/QWJGtPcBxltxWs6X5xhkFsJWuHMYKFLVJwVkZMzf7aGwYJE/ZAGkDgQWPOyJDmWz6jJPeZ3sMwNKtnxFEOtjFx7M4QRG08bxJP0V/qlG0=
+	t=1772329212; cv=none; b=OgKcTyH0+bHBYQ+rqU/riLIJV+TFw4B6WfOfTPfypk1Vyv0DiW19uedCwwA6XPgQP7G8lzjQoKYjyyusMZGdENX9kWPYMOOJ5l46SpTvs0X3wG25bUykMEkL5gSiF3NijjhulrPUDL10sHe0s01/1mlJ8xphyOD7KEEv0Rc7GPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329209; c=relaxed/simple;
-	bh=z+wbmHhajM6Wa2I/w5E14et+MQ+hnFLEOhAwa/OS9UE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CjckuZfAzQtZO31xbcuBecWSIS5VFHbslKaPapeYYTCBCE/jDgIgu6+5wDRSwPC+crBSEV5SCjU9NsjS4iifPufR84vOS9Nh7AC38/yBXvmtf3Xs2JuQx+fEOJvD6XSfLs+8tEsZ/3uVKW45j1Cuv/cJdPXQlaf1exTlsak/IcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDNoyCQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133F6C19421;
-	Sun,  1 Mar 2026 01:40:08 +0000 (UTC)
+	s=arc-20240116; t=1772329212; c=relaxed/simple;
+	bh=N5bT5sjadIBowyEfeB0QSXcX7RFjEZMCme9YIIlWcEw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GSr+1yiSlkcDy2IAHNCKQhVtWav5lUiiyKNTxDjys02nnkRhIlyVflEVmvtddnMo6/WQPPsMPMT5Itw/6246dTW+K3g3xZUkybx3iBnS3QSm5+Ynf6JfvTfSUiHzlfjZ+jOXe61guSCYCadEuJ/X926xQxyRtvkIZAfcC0FJJMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i5P9z2s3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560ACC19424;
+	Sun,  1 Mar 2026 01:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329209;
-	bh=z+wbmHhajM6Wa2I/w5E14et+MQ+hnFLEOhAwa/OS9UE=;
+	s=k20201202; t=1772329211;
+	bh=N5bT5sjadIBowyEfeB0QSXcX7RFjEZMCme9YIIlWcEw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=CDNoyCQLUAgSa9GL82u2bCIiXPryHzWGIdVnhk+VfNROZTAI3TKVetpPkyu5aKgIV
-	 V0W/nzsKVxTqdYfdZYCnzwPzsgP8vdkJ68TCzWSQ+sJtuQ1iZhgdXwveNcu8d0Zk9H
-	 UClQbuz0iIhEeQrSlrqFPslRWHAUXe+BZUO3IEETrD9XQPSn12ZAUx1KIkYDroxgql
-	 V0c6RMg8ZCFB/3KpQgrbmQWnn0EKW/EE1sYtkE3Az2kI+TkemJFjr8iNXI3+AwqdUY
-	 xDwtfowC1NA6exxx4S/5W2hd8GxUeX34PYZqjFmCnCxLEdC9UlMmh9MJ1y6yZXsdFl
-	 V99r+nd/lSD/w==
+	b=i5P9z2s3lwdBCQTkV9Q9GdJ4cQyGiX43iyCvd7RPZ6ktdVahAIFVus9p3xvWajWzA
+	 JZi6GtvWxzqslXzalMULvGTwhAt5FcNYBrr7pxQzseaUiLwTqNDDgf3p2Xb9GZvWT5
+	 JxygNDvR9TIAWWuIYHazfYgeRi0MayAqnBip7dZUEX4GYlVHJ2TEzKQeBNQQR+pKBX
+	 DY+Gqt/Qd8wbvWBtvltWxUxzZLOpjXKoHSV3UrM+oSehK1Jol/qxAk59PAUxw21yo8
+	 OAq/TTxOkXysjynijlIkGdbf0jKHsMr7ME/NV85TqI1T+GBr6+1l4uhRnfvMeJa5Ia
+	 9uS08qUjlrwGg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	cascardo@igalia.com
-Cc: Xu Yilun <yilun.xu@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linux-fpga@vger.kernel.org
-Subject: FAILED: Patch "fpga: dfl: use subsys_initcall to allow built-in drivers to be added" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:40:07 -0500
-Message-ID: <20260301014007.1701312-1-sashal@kernel.org>
+	cassel@kernel.org
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	linux-pci@vger.kernel.org
+Subject: FAILED: Patch "Revert "PCI: dwc: Don't wait for link up if driver can detect Link Up event"" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:40:09 -0500
+Message-ID: <20260301014010.1701361-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221817-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221818-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,8 +89,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,igalia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 989A11CB8A9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rock-chips.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DF3481CB8B8
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -103,47 +103,97 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 267f53140c9d0bf270bbe0148082e9b8e5011273 Mon Sep 17 00:00:00 2001
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Date: Mon, 15 Dec 2025 16:05:50 -0300
-Subject: [PATCH] fpga: dfl: use subsys_initcall to allow built-in drivers to
- be added
+From 142d5869f6eec3110adda0ad2d931f5b3c22371d Mon Sep 17 00:00:00 2001
+From: Niklas Cassel <cassel@kernel.org>
+Date: Mon, 22 Dec 2025 07:42:13 +0100
+Subject: [PATCH] Revert "PCI: dwc: Don't wait for link up if driver can detect
+ Link Up event"
 
-The dfl code adds a bus. If it is built-in and there is a built-in driver
-as well, the dfl module_init may be called after the driver module_init,
-leading to a failure to register the driver as the bus has not been added
-yet.
+This reverts commit 8d3bf19f1b585a3cc0027f508b64c33484db8d0d.
 
-Use subsys_initcall, which guarantees it will be called before the drivers
-init code.
+While this fake hotplugging was a nice idea, it has shown that this feature
+does not handle PCIe switches correctly:
+pci_bus 0004:43: busn_res: can not insert [bus 43-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:43: busn_res: [bus 43-41] end is updated to 43
+pci_bus 0004:43: busn_res: can not insert [bus 43] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:00.0: devices behind bridge are unusable because [bus 43] cannot be assigned for them
+pci_bus 0004:44: busn_res: can not insert [bus 44-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:44: busn_res: [bus 44-41] end is updated to 44
+pci_bus 0004:44: busn_res: can not insert [bus 44] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:02.0: devices behind bridge are unusable because [bus 44] cannot be assigned for them
+pci_bus 0004:45: busn_res: can not insert [bus 45-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:45: busn_res: [bus 45-41] end is updated to 45
+pci_bus 0004:45: busn_res: can not insert [bus 45] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:06.0: devices behind bridge are unusable because [bus 45] cannot be assigned for them
+pci_bus 0004:46: busn_res: can not insert [bus 46-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:46: busn_res: [bus 46-41] end is updated to 46
+pci_bus 0004:46: busn_res: can not insert [bus 46] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:0e.0: devices behind bridge are unusable because [bus 46] cannot be assigned for them
+pci_bus 0004:42: busn_res: [bus 42-41] end is updated to 46
+pci_bus 0004:42: busn_res: can not insert [bus 42-46] under [bus 41] (conflicts with (null) [bus 41])
+pci 0004:41:00.0: devices behind bridge are unusable because [bus 42-46] cannot be assigned for them
+pcieport 0004:40:00.0: bridge has subordinate 41 but max busn 46
 
-Without the fix, we see failures like this:
+During the initial scan, PCI core doesn't see the switch and since the Root
+Port is not hot plug capable, the secondary bus number gets assigned as the
+subordinate bus number. This means, the PCI core assumes that only one bus
+will appear behind the Root Port since the Root Port is not hot plug
+capable.
 
-[    0.479475] Driver 'intel-m10-bmc' was unable to register with bus_type 'dfl' because the bus was not initialized.
+This works perfectly fine for PCIe endpoints connected to the Root Port,
+since they don't extend the bus. However, if a PCIe switch is connected,
+then there is a problem when the downstream busses starts showing up and
+the PCI core doesn't extend the subordinate bus number and bridge resources
+after initial scan during boot.
 
+So revert the change that skipped dw_pcie_wait_for_link() if the Link up
+IRQ was used by a vendor glue driver.
+
+Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Tested-by: Shawn Lin <shawn.lin@rock-chips.com>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
 Cc: stable@vger.kernel.org
-Fixes: 9ba3a0aa09fe ("fpga: dfl: create a dfl bus type to support DFL devices")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Link: https://lore.kernel.org/r/20251215-dfl_subsys-v1-1-21807bad6b10@igalia.com
-Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Link: https://patch.msgid.link/20251222064207.3246632-14-cassel@kernel.org
 ---
- drivers/fpga/dfl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-designware-host.c | 10 ++--------
+ drivers/pci/controller/dwc/pcie-designware.h      |  1 -
+ 2 files changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/fpga/dfl.c b/drivers/fpga/dfl.c
-index 7022657243c0a..449c3a082e232 100644
---- a/drivers/fpga/dfl.c
-+++ b/drivers/fpga/dfl.c
-@@ -2018,7 +2018,7 @@ static void __exit dfl_fpga_exit(void)
- 	bus_unregister(&dfl_bus_type);
- }
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index 8c41b90a1db1e..06c02fcc76c89 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -665,14 +665,8 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
+ 			goto err_remove_edma;
+ 	}
  
--module_init(dfl_fpga_init);
-+subsys_initcall(dfl_fpga_init);
- module_exit(dfl_fpga_exit);
+-	/*
+-	 * Note: Skip the link up delay only when a Link Up IRQ is present.
+-	 * If there is no Link Up IRQ, we should not bypass the delay
+-	 * because that would require users to manually rescan for devices.
+-	 */
+-	if (!pp->use_linkup_irq)
+-		/* Ignore errors, the link may come up later */
+-		dw_pcie_wait_for_link(pci);
++	/* Ignore errors, the link may come up later */
++	dw_pcie_wait_for_link(pci);
  
- MODULE_DESCRIPTION("FPGA Device Feature List (DFL) Support");
+ 	ret = pci_host_probe(bridge);
+ 	if (ret)
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index fc9cf8ce86290..a3a3f6e89a812 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -438,7 +438,6 @@ struct dw_pcie_rp {
+ 	bool			use_atu_msg;
+ 	int			msg_atu_index;
+ 	struct resource		*msg_res;
+-	bool			use_linkup_irq;
+ 	struct pci_eq_presets	presets;
+ 	struct pci_config_window *cfg;
+ 	bool			ecam_enabled;
 -- 
 2.51.0
 
