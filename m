@@ -1,57 +1,73 @@
-Return-Path: <stable+bounces-221909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IOqONupo2nfJQUAu9opvQ
-	(envelope-from <stable+bounces-221909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:52:11 +0100
+	id 4CScCd2po2nfJQUAu9opvQ
+	(envelope-from <stable+bounces-221910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:52:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935B91CE001
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:52:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A52A41CE008
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8BBC031E5EFC
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A91232EEAD6
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D092D837E;
-	Sun,  1 Mar 2026 01:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735472D6407;
+	Sun,  1 Mar 2026 01:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TwQXCBZy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWkedhLl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DC32D3EEA;
-	Sun,  1 Mar 2026 01:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37053243969
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329435; cv=none; b=n2wy8Ou1z495KCAITsq0nMovC1rpXIlJNaKBYmxKnxb7O9sz82WHp0J37n/x4ZyP/TbgLK44f5l+KgsK/UCQpn4HRxFsnzaLT0P2eyeJ3hCJUJO8bmFXWFj+9RAv8TV8y0t+kio7Ntwbyh0UoQ8Mn8laDZ/sbCn4Nd/+McOY9oA=
+	t=1772329439; cv=none; b=XkgMo3iuFYVZDCfrnWdBhXCDmS/wWF+sHbpWJNGkkiB6J7176ZYm6EBgvb8haiho2P+HRJXr22U6NaDwa7JW4ZzPG/omiAG7TSbklsG9v0THd6TVp2oNjAmuRC1yeV+kWErW+1t3liiXTp/OfCxAiDnySiwW+Px36xS1h4WSglQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329435; c=relaxed/simple;
-	bh=2qqGh2OE1JNTiMshtbDgeDg4zT3BE7VTeDI+ucEI6DQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VFEf3czlJNayn4POtguCKmWc2WOtpgWLqiFaqnR/mLi65mgDqtsMakQsh9Q4UCSYhrGhoDL+VqMZ6/+99pTGS6E1umc2RXtRaa3Hq3/WBAbZLGCACXKqlZlk+v/Y5FJyjolddubTFa0OGOXaLGj3XfJkHRvu9DXOY6pWQKQPNTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TwQXCBZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EE7C19421;
-	Sun,  1 Mar 2026 01:43:54 +0000 (UTC)
+	s=arc-20240116; t=1772329439; c=relaxed/simple;
+	bh=HPwVeXUbcz975t5+OPJItK7zlQ8gqtQCsHjdhzkQcg8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H1HiuD9u1bRZJfZekiXyqB4eaAi5Wpa3w92bC2xr2OFOJI6C8D85gMCVRZ+Ob+kM4LjyXXSU2F0m5hUXlQ5iZrnApCz9/dm0jCO6U56ye+bHizxxrP+a4oSnJxHM/stbERbtzBcCrZ8BPCDuHrq96MKOFe5uohP6D6/RUbb28hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWkedhLl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFE8C19421;
+	Sun,  1 Mar 2026 01:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329435;
-	bh=2qqGh2OE1JNTiMshtbDgeDg4zT3BE7VTeDI+ucEI6DQ=;
+	s=k20201202; t=1772329439;
+	bh=HPwVeXUbcz975t5+OPJItK7zlQ8gqtQCsHjdhzkQcg8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=TwQXCBZy8vHQUVxsnhHlz0omYDZw5TRWo+lk0SoHH61MK6cWIUS2lVj7dBUuradg/
-	 J/PUkC9IVVVcsswt1eltE6ZrWtf1yBXZYs9EHFtZGptfGFZKU/Vy4X9H+5Y6oWhtuv
-	 zfMtWhHYbxqE4T3U/rKiKFVsMdTvIOzAVMSCPtkYaDE1SvuwkGtYAGdk1bBw2K8hdr
-	 1b4pmtj7mBFdxNL2hxxhDdz8givMrQoXZOUs+gP9TPyiyFAszCcnMLX/Lee/6IjUah
-	 yLsA8m8lzbFPpswNXn62GeDC04SyqsGUpgXZvVGE8+yF8npfi5BdE/n2X3MK3I+lIJ
-	 j26VzwZCyNaJg==
+	b=bWkedhLlZTuLPZ/l+f4I8Hp3PpAYU3X/gtOVrq64GW+qCoQorCB5lK2eqvNm8wlz0
+	 dsnNIn2zOwVPhV6n3R2ug57hZVbAYm4ihHUvmbXwgi6QBM+xHIb9UxcVbQBVqSWrG2
+	 DwvZ0UAz1kwjPwheJgmnDrSuelDOeawIxRQ1mydjuzNvHTuHfvXJE+JXFhxewpflBD
+	 xCht5vGPnxqUI0Y50bXxWrhN+HhfmV/Hb8Atzaxx/xl9HsTUL06X3c6+uqS5C3TqmL
+	 tFTRbK7bcCEd+xGHVscI7tZvLJ2BR8arVYIEeOpV/XL9eN6RBWRT6YxiBFXo+84CNl
+	 vYHcHMc9hhurg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ailiop@suse.com
-Cc: NeilBrown <neil@brown.name>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	linux-nfs@vger.kernel.org
-Subject: FAILED: Patch "nfsd: fix return error code for nfsd_map_name_to_[ug]id" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:43:53 -0500
-Message-ID: <20260301014353.1705991-1-sashal@kernel.org>
+	harshit.m.mogalapalli@oracle.com
+Cc: Paul Webb <paul.x.webb@oracle.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Alexander Graf <graf@amazon.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
+	Borislav Betkov <bp@alien8.de>,
+	guoweikang <guoweikang.kernel@gmail.com>,
+	Henry Willard <henry.willard@oracle.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Bohac <jbohac@suse.cz>,
+	Joel Granados <joel.granados@kernel.org>,
+	Jonathan McDowell <noodles@fb.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Yifei Liu <yifei.l.liu@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: FAILED: Patch "x86/kexec: add a sanity check on previous kernel's ima kexec buffer" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:43:55 -0500
+Message-ID: <20260301014356.1706042-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,26 +77,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221909-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[oracle.com,linux.ibm.com,amazon.com,kernel.org,redhat.com,alien8.de,gmail.com,zytor.com,suse.cz,fb.com,intel.com,linutronix.de,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221910-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
@@ -88,8 +106,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 935B91CE001
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: A52A41CE008
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -102,56 +120,78 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 404d779466646bf1461f2090ff137e99acaecf42 Mon Sep 17 00:00:00 2001
-From: Anthony Iliopoulos <ailiop@suse.com>
-Date: Mon, 22 Dec 2025 14:30:05 -0500
-Subject: [PATCH] nfsd: fix return error code for nfsd_map_name_to_[ug]id
+From c5489d04337b47e93c0623e8145fcba3f5739efd Mon Sep 17 00:00:00 2001
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Date: Tue, 30 Dec 2025 22:16:09 -0800
+Subject: [PATCH] x86/kexec: add a sanity check on previous kernel's ima kexec
+ buffer
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-idmap lookups can time out while the cache is waiting for a userspace
-upcall reply. In that case cache_check() returns -ETIMEDOUT to callers.
+When the second-stage kernel is booted via kexec with a limiting command
+line such as "mem=<size>", the physical range that contains the carried
+over IMA measurement list may fall outside the truncated RAM leading to a
+kernel panic.
 
-The nfsd_map_name_to_[ug]id functions currently proceed with attempting
-to map the id to a kuid despite a potentially temporary failure to
-perform the idmap lookup. This results in the code returning the error
-NFSERR_BADOWNER which can cause client operations to return to userspace
-with failure.
+    BUG: unable to handle page fault for address: ffff97793ff47000
+    RIP: ima_restore_measurement_list+0xdc/0x45a
+    #PF: error_code(0x0000) – not-present page
 
-Fix this by returning the failure status before attempting kuid mapping.
+Other architectures already validate the range with page_is_ram(), as done
+in commit cbf9c4b9617b ("of: check previous kernel's ima-kexec-buffer
+against memory bounds") do a similar check on x86.
 
-This will return NFSERR_JUKEBOX on idmap lookup timeout so that clients
-can retry the operation instead of aborting it.
+Without carrying the measurement list across kexec, the attestation
+would fail.
 
-Fixes: 65e10f6d0ab0 ("nfsd: Convert idmap to use kuids and kgids")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lkml.kernel.org/r/20251231061609.907170-4-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Fixes: b69a2afd5afc ("x86/kexec: Carry forward IMA measurement log on kexec")
+Reported-by: Paul Webb <paul.x.webb@oracle.com>
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: guoweikang <guoweikang.kernel@gmail.com>
+Cc: Henry Willard <henry.willard@oracle.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Bohac <jbohac@suse.cz>
+Cc: Joel Granados <joel.granados@kernel.org>
+Cc: Jonathan McDowell <noodles@fb.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Yifei Liu <yifei.l.liu@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/nfsd/nfs4idmap.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/setup.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/nfsd/nfs4idmap.c b/fs/nfsd/nfs4idmap.c
-index b5b3d45979c9b..c319c31b0f647 100644
---- a/fs/nfsd/nfs4idmap.c
-+++ b/fs/nfsd/nfs4idmap.c
-@@ -672,6 +672,8 @@ __be32 nfsd_map_name_to_uid(struct svc_rqst *rqstp, const char *name,
- 		return nfserr_inval;
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 1b2edd07a3e17..383d4a4784f5b 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -439,9 +439,15 @@ int __init ima_free_kexec_buffer(void)
  
- 	status = do_name_to_id(rqstp, IDMAP_TYPE_USER, name, namelen, &id);
-+	if (status)
-+		return status;
- 	*uid = make_kuid(nfsd_user_namespace(rqstp), id);
- 	if (!uid_valid(*uid))
- 		status = nfserr_badowner;
-@@ -707,6 +709,8 @@ __be32 nfsd_map_name_to_gid(struct svc_rqst *rqstp, const char *name,
- 		return nfserr_inval;
+ int __init ima_get_kexec_buffer(void **addr, size_t *size)
+ {
++	int ret;
++
+ 	if (!ima_kexec_buffer_size)
+ 		return -ENOENT;
  
- 	status = do_name_to_id(rqstp, IDMAP_TYPE_GROUP, name, namelen, &id);
-+	if (status)
-+		return status;
- 	*gid = make_kgid(nfsd_user_namespace(rqstp), id);
- 	if (!gid_valid(*gid))
- 		status = nfserr_badowner;
++	ret = ima_validate_range(ima_kexec_buffer_phys, ima_kexec_buffer_size);
++	if (ret)
++		return ret;
++
+ 	*addr = __va(ima_kexec_buffer_phys);
+ 	*size = ima_kexec_buffer_size;
+ 
 -- 
 2.51.0
 
