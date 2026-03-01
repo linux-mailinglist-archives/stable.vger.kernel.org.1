@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-221253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIC1BdCTo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221253-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:18:08 +0100
+	id uE7CBNWTo2khHQUAu9opvQ
+	(envelope-from <stable+bounces-221254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:18:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FEC1CA1D0
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:18:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC41C1CA1EF
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:18:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 897DC305E9BC
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:15:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 210DA305F4D7
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD6B1EF091;
-	Sun,  1 Mar 2026 01:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DA122F77B;
+	Sun,  1 Mar 2026 01:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bs64U1uV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8Pdm36c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C216238171;
-	Sun,  1 Mar 2026 01:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA053430B90;
+	Sun,  1 Mar 2026 01:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327739; cv=none; b=NNutZdibdAjnX5qkHfPm37ww4ltg3WpI9kcG/Iu8eEQWL7/2A2yDwjNlcvOdGtoIMqtgtMnB4a7HSZNhgpYI6dCdmm4QPiaH2jT4CRFlUBwCSdRxDTkSiqmlioPuRg29R91qs9QcnjrkASjpRJLNVm8SZjnkUU6MX4IetW6rSBM=
+	t=1772327742; cv=none; b=nbZFF6kj1M1HwLIrsbPtCEQ+aUgc4v3pjWIG5YS6u6AEEmx4KNwBX2IBwSyorXDmJMoMWrP9GVjtGb6Fwk+suoBU6FGsWPm56ugJhGx58mpO9WCB7YGphaWhBq+Wfti8lAprRmqB+3W3YSAebDOdn8caJBvUSIS6YKy3GudpaaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327739; c=relaxed/simple;
-	bh=n2ilVx3zQIHHEV3Hrse3BGNLYFpgudbb8bxVOcRWsuM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hr8CsMyR6N9Q/EOmgEPthSu2cvhJvKX4VW9YtGCpBGJvT/bgs6A6Z5Mo9xWbvCLFYDAhQMAOa5lOwWQAs5/4SK/JruUO4e+QpxFkdkgnVsbprFDKdfn7P00FlWOjjVKo5YvgufJTmtOmeGgz0JEW6hdFw6FWgbz5Jg6ZrAI9zL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bs64U1uV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F54BC19421;
-	Sun,  1 Mar 2026 01:15:38 +0000 (UTC)
+	s=arc-20240116; t=1772327742; c=relaxed/simple;
+	bh=OAaoWngE4iLEgGq6+OrogRicXN9Jfngd7Pwwn07cWrg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AKxo+SBWQjHjl0k22AmZOw2uJoXs3M8Fkj2rb5A8KnJY88CNm8aIvA6mmZQBVkyr401GaassU5ciEnxTGG9BpqxhsD1jNAanAcJ+5UX4ErVw2S8D5oktxjeLUl41CXzGI2ezPuGZksoJwWHsiyMmzJeEU27rtbIc9Kkq3Do2MZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8Pdm36c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D18C19421;
+	Sun,  1 Mar 2026 01:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327739;
-	bh=n2ilVx3zQIHHEV3Hrse3BGNLYFpgudbb8bxVOcRWsuM=;
+	s=k20201202; t=1772327741;
+	bh=OAaoWngE4iLEgGq6+OrogRicXN9Jfngd7Pwwn07cWrg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=bs64U1uVt7Wrs5Fw59/9PEeiIvYXQ06rCc64n6KR8i64yPNJWWCPtS4f89bYxM+qy
-	 uXeKpQfTGdDVHjzM3J5HyQPrGV0YJozhBuDk41htyyYXjz5EjlA3e+omP344JfmoB4
-	 CwF6yTFxQ56vqVLzXpOPUFU79ZKt7lTYkhM+2L1qrfVAmvT1saFUwC0VTTwOlrbnHr
-	 BRKvIn/NuiKIO78RGdeqGkEKL8spNV3aO3V3K0Gc1GLDEep8fNgbsJo2VkICxiZBGs
-	 UEmMKvSWK9VA8pAVEXCJMPtSMwtZydGlJ+pOXnPQO1zRjcD0KvXBBZ1i2sTBVlPwpN
-	 QncB54FUIjo6w==
+	b=D8Pdm36cezKFsz8qwd4Pz9NOeKr5IcVVwG1pnNt6VcusqeATfQvt9aO34hq2rQ2Eb
+	 2KIYVzJ5yg+OShwWwtUArLLwOzOd9tgtubpauqW4VHB6RfqkaTmaSpQ1IUHFh9Ihxn
+	 7eZlSWHfTFrhGBGaBykTr8sOne9zpajLMxxL1RjJCUI/OjEhxB+oBXqNhwKF4MW6ty
+	 0/sLBruiybkyai3aPpP6v1CoIFGQrMQKR+n3iCLMW/n0TZrYdDAG3Zy2Hi1hVYkOYq
+	 L6ekJZFVNdyHKAkfIENOLLFMx90gBAsulaMQLX/ZiiV01ALvEtFtbyCgIz310d/38Y
+	 rygPovdzg5OOw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	oleg@redhat.com
-Cc: Paulo Andrade <pandrade@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	linux-trace-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: FAILED: Patch "x86/uprobes: Fix XOL allocation failure for 32-bit tasks" failed to apply to 6.18-stable tree
-Date: Sat, 28 Feb 2026 20:15:37 -0500
-Message-ID: <20260301011537.1669125-1-sashal@kernel.org>
+	dikshita.agarwal@oss.qualcomm.com
+Cc: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: FAILED: Patch "media: iris: Add missing platform data entries for SM8750" failed to apply to 6.18-stable tree
+Date: Sat, 28 Feb 2026 20:15:39 -0500
+Message-ID: <20260301011539.1669217-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,33 +67,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221253-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221254-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A7FEC1CA1D0
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: AC41C1CA1EF
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.18-stable tree.
@@ -104,133 +106,54 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From d55c571e4333fac71826e8db3b9753fadfbead6a Mon Sep 17 00:00:00 2001
-From: Oleg Nesterov <oleg@redhat.com>
-Date: Sun, 11 Jan 2026 16:00:37 +0100
-Subject: [PATCH] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
+From bbef55f414100853d5bcea56a41f8b171bac8fcb Mon Sep 17 00:00:00 2001
+From: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Date: Thu, 18 Dec 2025 12:24:09 +0530
+Subject: [PATCH] media: iris: Add missing platform data entries for SM8750
 
-This script
+Two platform-data fields for SM8750 were missed:
 
-	#!/usr/bin/bash
+  - get_vpu_buffer_size = iris_vpu33_buf_size
+    Without this, the driver fails to allocate the required internal
+    buffers, leading to basic decode/encode failures during session
+    bring-up.
 
-	echo 0 > /proc/sys/kernel/randomize_va_space
+  - max_core_mbps = ((7680 * 4320) / 256) * 60
+    Without this capability exposed, capability checks are incomplete and
+    v4l2-compliance for encoder fails.
 
-	echo 'void main(void) {}' > TEST.c
-
-	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
-	gcc -m32 -fcf-protection=branch TEST.c -o test
-
-	bpftrace -e 'uprobe:./test:main {}' -c ./test
-
-"hangs", the probed ./test task enters an endless loop.
-
-The problem is that with randomize_va_space == 0
-get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
-just return the "addr == TASK_SIZE - PAGE_SIZE" hint, this addr is used
-by the stack vma.
-
-arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
-in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
-vm_unmapped_area() happily returns the high address > TASK_SIZE and then
-get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
-check.
-
-handle_swbp() doesn't report this failure (probably it should) and silently
-restarts the probed insn. Endless loop.
-
-I think that the right fix should change the x86 get_unmapped_area() paths
-to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
-CONFIG_X86_X32_ABI=y, in_x32_syscall() falsely returns true in this case
-because ->orig_ax = -1.
-
-But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
-the probed task is 32-bit to make in_ia32_syscall() true.
-
-Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
-Reported-by: Paulo Andrade <pandrade@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
+Fixes: a5925a2ce077 ("media: iris: add VPU33 specific encoding buffer calculation")
+Fixes: a6882431a138 ("media: iris: Add support for ENUM_FRAMESIZES/FRAMEINTERVALS for encoder")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
+Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- arch/x86/kernel/uprobes.c | 24 ++++++++++++++++++++++++
- include/linux/uprobes.h   |  1 +
- kernel/events/uprobes.c   | 10 +++++++---
- 3 files changed, 32 insertions(+), 3 deletions(-)
+ drivers/media/platform/qcom/iris/iris_platform_gen2.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-index 7be8e361ca55b..619dddf54424e 100644
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -1823,3 +1823,27 @@ bool is_uprobe_at_func_entry(struct pt_regs *regs)
- 
- 	return false;
- }
-+
-+#ifdef CONFIG_IA32_EMULATION
-+unsigned long arch_uprobe_get_xol_area(void)
-+{
-+	struct thread_info *ti = current_thread_info();
-+	unsigned long vaddr;
-+
-+	/*
-+	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
-+	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
-+	 * vm_unmapped_area_info.high_limit.
-+	 *
-+	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=y case,
-+	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
-+	 * (falsely) returns true because ->orig_ax == -1.
-+	 */
-+	if (test_thread_flag(TIF_ADDR32))
-+		ti->status |= TS_COMPAT;
-+	vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+	ti->status &= ~TS_COMPAT;
-+
-+	return vaddr;
-+}
-+#endif
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index ee3d36eda45dd..f548fea2adec8 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -242,6 +242,7 @@ extern void arch_uprobe_clear_state(struct mm_struct *mm);
- extern void arch_uprobe_init_state(struct mm_struct *mm);
- extern void handle_syscall_uprobe(struct pt_regs *regs, unsigned long bp_vaddr);
- extern void arch_uprobe_optimize(struct arch_uprobe *auprobe, unsigned long vaddr);
-+extern unsigned long arch_uprobe_get_xol_area(void);
- #else /* !CONFIG_UPROBES */
- struct uprobes_state {
- };
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index a7d7d83ca1d78..dfbce021fb027 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1694,6 +1694,12 @@ static const struct vm_special_mapping xol_mapping = {
- 	.mremap = xol_mremap,
- };
- 
-+unsigned long __weak arch_uprobe_get_xol_area(void)
-+{
-+	/* Try to map as high as possible, this is only a hint. */
-+	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+}
-+
- /* Slot allocation for XOL */
- static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
- {
-@@ -1709,9 +1715,7 @@ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
- 	}
- 
- 	if (!area->vaddr) {
--		/* Try to map as high as possible, this is only a hint. */
--		area->vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
--						PAGE_SIZE, 0, 0);
-+		area->vaddr = arch_uprobe_get_xol_area();
- 		if (IS_ERR_VALUE(area->vaddr)) {
- 			ret = area->vaddr;
- 			goto fail;
+diff --git a/drivers/media/platform/qcom/iris/iris_platform_gen2.c b/drivers/media/platform/qcom/iris/iris_platform_gen2.c
+index b2d8559dd2b85..c932dc026616e 100644
+--- a/drivers/media/platform/qcom/iris/iris_platform_gen2.c
++++ b/drivers/media/platform/qcom/iris/iris_platform_gen2.c
+@@ -1056,6 +1056,7 @@ const struct iris_platform_data sm8750_data = {
+ 	.get_instance = iris_hfi_gen2_get_instance,
+ 	.init_hfi_command_ops = iris_hfi_gen2_command_ops_init,
+ 	.init_hfi_response_ops = iris_hfi_gen2_response_ops_init,
++	.get_vpu_buffer_size = iris_vpu33_buf_size,
+ 	.vpu_ops = &iris_vpu35_ops,
+ 	.set_preset_registers = iris_set_sm8550_preset_registers,
+ 	.icc_tbl = sm8550_icc_table,
+@@ -1088,6 +1089,7 @@ const struct iris_platform_data sm8750_data = {
+ 	.num_vpp_pipe = 4,
+ 	.max_session_count = 16,
+ 	.max_core_mbpf = NUM_MBS_8K * 2,
++	.max_core_mbps = ((7680 * 4320) / 256) * 60,
+ 	.dec_input_config_params_default =
+ 		sm8550_vdec_input_config_params_default,
+ 	.dec_input_config_params_default_size =
 -- 
 2.51.0
 
