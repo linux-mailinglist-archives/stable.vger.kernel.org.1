@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-222370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SCj7L5Gko2lXJAUAu9opvQ
-	(envelope-from <stable+bounces-222370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:29:37 +0100
+	id eEfQATOvo2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:14:59 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB751CD9A4
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:29:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4518C1CE594
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:14:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8876D3584A41
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:05:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDCD43586C96
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0781D306B0A;
-	Sun,  1 Mar 2026 02:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7503090CD;
+	Sun,  1 Mar 2026 02:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VHiXJ8dM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="taU4CDUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5073033D5;
-	Sun,  1 Mar 2026 02:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49292D97AA;
+	Sun,  1 Mar 2026 02:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330709; cv=none; b=LC62f8WzywX3napz6vrluPHNrcz4s+WWA+R1benfRLpj2qVAJEW9/DMgodCldjriyo0MD1GPoIgS2khZzMvRXq7DvwbDOx/BgJDcf1uJCpxQTli2JgJdltBzkEHHYePHzowVv8Yw76jCl+huOrk0cgwBM4on+ie94XraOy0Iwyg=
+	t=1772330712; cv=none; b=pfSER+8DPXTNWCKcFfMhJ0HHuZ3IdlfA8L64OMWSIh5e7/jQ1vKDahWa0netps0MNDBAoJAjhOkau1mmqeG8X4/1jAK12m0bGIT3hgdUC5wEBGQwRdrmAqN29gXqxrOwwPW5TdKh4ySToqhrVntt3o89JmjXqxPHdVBniwtyvHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330709; c=relaxed/simple;
-	bh=48spGrgVqcI8zWtm6MgnDf2HL5282UVUNksVg/2L6uU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oFtd9DkrMCiR3WQoynzJbiJsAO/ADQulGj+GphYVxGV7TeqGjd2siE4PZvzeIJUvRkAi5JMtL6JW7K7SWdA8AgjjAnt2lLjFi2ZZ7NQPGEB0Vim+9Ohfpo7OqNwoGN9aurIBQ1OEOY1vkyOrRkx1lRFundGOD2emZKxtFp+JW7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VHiXJ8dM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2983DC19421;
-	Sun,  1 Mar 2026 02:05:09 +0000 (UTC)
+	s=arc-20240116; t=1772330712; c=relaxed/simple;
+	bh=6iJJdg59GHZ+DGw3lKpzkykOeGOj7wh87hpRJwQeJdg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bYXAK0SGlmEOgfSakFBWqobTQG4lGx+5xHWzdIQXhVxn1YOQzuNC8EEf1k7SFa5mmm7KBTj5nUngDjUnerr6gIEMf8S7hsb19x4OPkJG057G04xMph5IN34SIxMJkoiewT5m2T6yepgo/vagKf663PmVQZi2aNRBYHg4jAjodSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=taU4CDUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500BFC19421;
+	Sun,  1 Mar 2026 02:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330709;
-	bh=48spGrgVqcI8zWtm6MgnDf2HL5282UVUNksVg/2L6uU=;
+	s=k20201202; t=1772330711;
+	bh=6iJJdg59GHZ+DGw3lKpzkykOeGOj7wh87hpRJwQeJdg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=VHiXJ8dMIpQpvRHJcF6x1zwImyQ0G2pH16vrqhfZ75Jbo84k6sbwhwULGAm4EF9dp
-	 cFcPpailx/Gi4+gR2Cb7jt6ck1MPnFCsTTnLg3yzh4aN2x2dlnFBhE041X3i4Nh9OW
-	 xmp7eY7Y6rvuxHUAbhj77UQz5T+rDozbPwUH/w6nGKJ51lQkCmuKbiQRdoNxQJ5WA2
-	 ZhU0wBuwL9HAMB6Ul4QF4LS4d4xTtuu8oxdWS8k3D99c4RZqdAnDiAy14WWHi1258i
-	 KRZkDIHEeWIwEVPHUjEi03HtIXe/BEnOYVwuirD6rLCLgB9hFwx1Wd/U5kow8FGWa2
-	 //VOtR4eyihDw==
+	b=taU4CDUAhY2edlpKttBAzEWF5S5TiAvS3ps1gVg0syGfO6dGLrv9sWRxdeYaXEPJu
+	 FJj1qqMg13aICmqAkjY+HCb8YWQjaNdd0hHhSqhbqNycYnxZlqEmLYvO3H3p/MA9xZ
+	 +DBkfPeBeK1Oe3nAds2eVs0XYdvQxElHnspiTosmoc5gGRqnbHAVZqHiX5QPkzAWWP
+	 VRhN/0XgAX8mHJ+o5yFy9CtmJb+Dq0Zygaj9qmkmU9jqqzwfVQug6yHthEXtXCxJOp
+	 +BBAzly1rfPpK8cuNH40lCylQJW5Zw2Qf8WfOkFyLvf9qSxek3bt+3J5peWPDBtBVg
+	 ByccE95jJTTtA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	enelsonmoore@gmail.com
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: ethernet: marvell: skge: remove incorrect conflicting PCI ID" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:05:07 -0500
-Message-ID: <20260301020508.1733763-1-sashal@kernel.org>
+	dnaim@cachyos.org
+Cc: Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org
+Subject: FAILED: Patch "ALSA: hda/realtek: Add quirk for Gigabyte G5 KF5 (2023)" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:05:09 -0500
+Message-ID: <20260301020510.1733817-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,30 +67,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222370-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222371-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 2BB751CD9A4
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,cachyos.org:email]
+X-Rspamd-Queue-Id: 4518C1CE594
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -103,47 +102,34 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From d01103fdcb871fd83fd06ef5803d576507c6a801 Mon Sep 17 00:00:00 2001
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Thu, 5 Feb 2026 23:17:14 -0800
-Subject: [PATCH] net: ethernet: marvell: skge: remove incorrect conflicting
- PCI ID
+From 405d59fdd2038a65790eaad8c1013d37a2af6561 Mon Sep 17 00:00:00 2001
+From: Eric Naim <dnaim@cachyos.org>
+Date: Tue, 10 Feb 2026 17:34:02 +0800
+Subject: [PATCH] ALSA: hda/realtek: Add quirk for Gigabyte G5 KF5 (2023)
 
-The ID 1186:4302 is matched by both r8169 and skge. The same device ID
-should not be in more than one driver, because in that case, which
-driver is used is unpredictable. I downloaded the latest drivers for
-all hardware revisions of the D-Link DGE-530T from D-Link's website,
-and the only drivers which contain this ID are Realtek drivers.
-Therefore, remove this device ID from skge.
+Fixes microphone detection when a headset is connected to the audio jack
+using the ALC256.
 
-In the kernel bug report which requested addition of this device ID,
-someone created a patch to add the ID to skge. Then, it was pointed
-out that this device is an "r8169 in disguise", and a patch was created
-to add it to r8169. Somehow, both of these patches got merged. See the
-link below.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=38862
-Fixes: c074304c2bcf ("add pci-id for DGE-530T")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Link: https://patch.msgid.link/20260206071724.15268-1-enelsonmoore@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Eric Naim <dnaim@cachyos.org>
+Link: https://patch.msgid.link/20260210093403.21514-1-dnaim@cachyos.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 ---
- drivers/net/ethernet/marvell/skge.c | 1 -
- 1 file changed, 1 deletion(-)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/marvell/skge.c b/drivers/net/ethernet/marvell/skge.c
-index 05349a0b2db1c..cf4e26d337bb5 100644
---- a/drivers/net/ethernet/marvell/skge.c
-+++ b/drivers/net/ethernet/marvell/skge.c
-@@ -78,7 +78,6 @@ static const struct pci_device_id skge_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_SYSKONNECT, 0x4320) }, /* SK-98xx V2.0 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4b01) },	  /* D-Link DGE-530T (rev.B) */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4c00) },	  /* D-Link DGE-530T */
--	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4302) },	  /* D-Link DGE-530T Rev C1 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4320) },	  /* Marvell Yukon 88E8001/8003/8010 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x5005) },	  /* Belkin */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_CNET, 0x434E) }, 	  /* CNet PowerG-2000 */
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 80f0be13b69f5..8664446648096 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7319,6 +7319,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x144d, 0xc886, "Samsung Galaxy Book3 Pro (NP964XFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc1ca, "Samsung Galaxy Book3 Pro 360 (NP960QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc1cc, "Samsung Galaxy Book3 Ultra (NT960XFH)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
++	SND_PCI_QUIRK(0x1458, 0x900e, "Gigabyte G5 KF5 (2023)", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1462, 0xb171, "Cubi N 8GL (MS-B171)", ALC283_FIXUP_HEADSET_MIC),
 -- 
 2.51.0
 
