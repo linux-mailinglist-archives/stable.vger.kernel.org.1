@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-221702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ILVOWubo2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221702-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:35 +0100
+	id 6JZaIYmYo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:38:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3E71CBF5B
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 212C11CB316
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD96C315D128
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 44274302021A
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8C42C21F2;
-	Sun,  1 Mar 2026 01:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31CE2D8DDD;
+	Sun,  1 Mar 2026 01:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPAqLBxm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OoWH36N/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F26C145A1F;
-	Sun,  1 Mar 2026 01:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B3A29B793;
+	Sun,  1 Mar 2026 01:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328932; cv=none; b=lsv4MvxEE3qH/lVWYRx4BtvkM/jfQKuKN55j4eeGMC+Y+6TYF9T6TTwDFilR03aKntEdvNsOfd3inNyxwtbQzamtuCZvOtD1CTO4IGQcdOUdUWUnzoGNAc/owQcWOBP5XxizK67aa0Tvk3lPWN8lGkPN6l2ZCyiQwTQW60qv5X0=
+	t=1772328934; cv=none; b=UMXkkXkJzV/ukSBhiTWzYldUGi1+4FxNfEy9/sgG2o/Wflnhbb+tDMjfCmMmT83OM1rRPjlIwiK3AQ0DqLphWJ2mSvR2UOO/HkZoFVNyciPoj++9dys6tf7afOEJC+6Z+XQxXx83DJ7QtUdXcdCC3JCspg5e96+K0EMYPsTp0Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328932; c=relaxed/simple;
-	bh=acfn/kC+hiaoEJPN65iBMDOYqf1AkwCw06oEA6U8u6A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n0NxEt4DYyh2lZ1Cl2AcqSBt21dmWerPK9tgkwk+unPnMuf32CdZSuWFCqQTSPVKp6elPFJUfLOnVqsRzvMTug/YS1qoB03okgYo6FcxrWd3M8riAUQJM4TsmeaLfEb/7sJyqM+ilYPhFzSpQb8hols2XP8kKKAfJ7dnptUi9ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPAqLBxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C30C19421;
-	Sun,  1 Mar 2026 01:35:31 +0000 (UTC)
+	s=arc-20240116; t=1772328934; c=relaxed/simple;
+	bh=f44CCvzcFsCEUiWVTexGj8h1YBDZoxypY0yPh5a0HsY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VcVVcSd801fct4Er7QJpT6e0aQ6TjPFZxNnk9lXoqcqzm3aWFKfI2UosZ4vFlfkzLHBcQgbKVDgkAakHVkPdu1LaUp7eb4tDHQGEoL+ACMn59fmUFwHCXOl6xN1GKGpDOKHT/s1XIr2oZjHDBd9MvW0dK1fMfNHVFede7LO+7u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OoWH36N/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1370C19421;
+	Sun,  1 Mar 2026 01:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328932;
-	bh=acfn/kC+hiaoEJPN65iBMDOYqf1AkwCw06oEA6U8u6A=;
+	s=k20201202; t=1772328934;
+	bh=f44CCvzcFsCEUiWVTexGj8h1YBDZoxypY0yPh5a0HsY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=IPAqLBxmxiRdHcPpGTdwnj6kKlyrVtNtdjp5UP5tbgkfzqRB+6C53mZQ9TkhjtZ22
-	 dycAf/AF89JH+bHIgu2zTkLtnrMr43Q1qbq+xVCtoi6p9FKwEoeWfUp+SlWA2DPXSU
-	 Yh/k6KVyituWllGdM3cjfyUqkYxxXRBx1hh/wqfajt7QuXLbxnhsQlVbqj6pGPe1s1
-	 I+v3UtvbNQvVAmkx/s/IWctyaY92Lh/EasbVAbTCtyU41M2Sy8DQPtEoxUP7BGzbOr
-	 llRicLISUFMg26N09OexU7i2NFX3/ZzcJeONjh9E2pz48Ji0+DxusJg+rzh53h/LDj
-	 gUreQ2N3KrmUQ==
+	b=OoWH36N/bUQRrWFtTAJFIeDud/ER7aaIMKt+RsIiPMjQFEPy3XfzixSLOxDWQiiL8
+	 cPLEk5WBD700lWkr2UTk08FB1fPfuDp6KhazES+bJxPe6keBq6RSfk7QZvfmeoNSJR
+	 5Uye5YbHUn/jlzgIlGHTmJpJdON3dyN3Sc01rZYF5Kibz/jrGjNkUaMUwD8PnqOFjS
+	 Z8b0qgxHHpqK7a+A6L/wlspRBAAXPGKpYyILuuEhXIt6OKjFdfl9unBOs8oChlld+H
+	 ayyJzIZpC+NewEJIkJqn6NQ4HyLKKZsHwpCQjE/iQjyty4aER9s+adfUqnCzqn+qW4
+	 ZFWLGT9xc9OvQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	nathan@kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: FAILED: Patch "ACPI: APEI: GHES: Disable KASAN instrumentation when compile testing with clang < 18" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:35:30 -0500
-Message-ID: <20260301013530.1695214-1-sashal@kernel.org>
+	maobibo@loongson.cn
+Cc: Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	virtualization@lists.linux.dev,
+	linux-crypto@vger.kernel.org
+Subject: FAILED: Patch "crypto: virtio: Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:35:32 -0500
+Message-ID: <20260301013532.1695261-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,29 +69,28 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-221703-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221702-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 8A3E71CBF5B
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 212C11CB316
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -103,55 +103,41 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b584bfbd7ec417f257f651cc00a90c66e31dfbf1 Mon Sep 17 00:00:00 2001
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 14 Jan 2026 16:27:11 -0700
-Subject: [PATCH] ACPI: APEI: GHES: Disable KASAN instrumentation when compile
- testing with clang < 18
+From a389d431053935366b88a8fbf271f1a564b9a44e Mon Sep 17 00:00:00 2001
+From: Bibo Mao <maobibo@loongson.cn>
+Date: Tue, 13 Jan 2026 11:05:55 +0800
+Subject: [PATCH] crypto: virtio: Remove duplicated virtqueue_kick in
+ virtio_crypto_skcipher_crypt_req
 
-After a recent innocuous change to drivers/acpi/apei/ghes.c, building
-ARCH=arm64 allmodconfig with clang-17 or older (which has both
-CONFIG_KASAN=y and CONFIG_WERROR=y) fails with:
+With function virtio_crypto_skcipher_crypt_req(), there is already
+virtqueue_kick() call with spinlock held in function
+__virtio_crypto_skcipher_do_req(). Remove duplicated virtqueue_kick()
+function call here.
 
-  drivers/acpi/apei/ghes.c:902:13: error: stack frame size (2768) exceeds limit (2048) in 'ghes_do_proc' [-Werror,-Wframe-larger-than]
-    902 | static void ghes_do_proc(struct ghes *ghes,
-        |             ^
-
-A KASAN pass that removes unneeded stack instrumentation, enabled by
-default in clang-18 [1], drastically improves stack usage in this case.
-
-To avoid the warning in the common allmodconfig case when it can break
-the build, disable KASAN for ghes.o when compile testing with clang-17
-and older. Disabling KASAN outright may hide legitimate runtime issues,
-so live with the warning in that case; the user can either increase the
-frame warning limit or disable -Werror, which they should probably do
-when debugging with KASAN anyways.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2148
-Link: https://github.com/llvm/llvm-project/commit/51fbab134560ece663517bf1e8c2a30300d08f1a [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260114-ghes-avoid-wflt-clang-older-than-18-v1-1-9c8248bfe4f4@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: d79b5d0bbf2e ("crypto: virtio - support crypto engine framework")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20260113030556.3522533-3-maobibo@loongson.cn>
 ---
- drivers/acpi/apei/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/crypto/virtio/virtio_crypto_skcipher_algs.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/acpi/apei/Makefile b/drivers/acpi/apei/Makefile
-index 5db61dfb46915..1a0b85923cd42 100644
---- a/drivers/acpi/apei/Makefile
-+++ b/drivers/acpi/apei/Makefile
-@@ -1,6 +1,10 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_ACPI_APEI)		+= apei.o
- obj-$(CONFIG_ACPI_APEI_GHES)	+= ghes.o
-+# clang versions prior to 18 may blow out the stack with KASAN
-+ifeq ($(CONFIG_COMPILE_TEST)_$(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_y_)
-+KASAN_SANITIZE_ghes.o := n
-+endif
- obj-$(CONFIG_ACPI_APEI_PCIEAER)	+= ghes_helpers.o
- obj-$(CONFIG_ACPI_APEI_EINJ)	+= einj.o
- einj-y				:= einj-core.o
+diff --git a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
+index 1b3fb21a2a7de..11053d1786d4d 100644
+--- a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
++++ b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
+@@ -541,8 +541,6 @@ int virtio_crypto_skcipher_crypt_req(
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	virtqueue_kick(data_vq->vq);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
