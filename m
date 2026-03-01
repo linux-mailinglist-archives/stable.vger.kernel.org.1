@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-222357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHvdLg2vo2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:14:21 +0100
+	id CL6gDPifo2noIgUAu9opvQ
+	(envelope-from <stable+bounces-222358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:10:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549F61CE570
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:14:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB771CD2C6
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:10:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA75633420B1
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:04:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 25C5E3078110
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09902FE598;
-	Sun,  1 Mar 2026 02:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CE02FB969;
+	Sun,  1 Mar 2026 02:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enw0AOMb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MnS9gHex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7403B2C08AD;
-	Sun,  1 Mar 2026 02:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07451190664;
+	Sun,  1 Mar 2026 02:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330680; cv=none; b=GnbSPRlli0nPfwrkJFcyjggiEH5ojhTivYN1UwiJ+JTr2f4/IARoOlJacMI5YNzMJ0Z1faaxyc7UfL2f3+dbvMeJ/IwwHxeCbgjO045RNbU/LjP8Ew9xPs3UYBzo7rOYJfkyD1FMNH9nEXLwkWTjCrz4ITdzNwcjOd9mejwxwo4=
+	t=1772330683; cv=none; b=niOECS5lzIzm4o4mA4w/4Y8orO5cIjPfCC2nSsP9apuSQ11fESotRxkucmbxql7D1KA9sb6GHMMNtdELxf/zBKkDtJJXPyJZ6inVvC6VnOoY7MhxctwoCHCTJkrdhZIuenBgGYTw8d1iu/y5Mv82J9vqyC6YJ0sFTMncnV0OBLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330680; c=relaxed/simple;
-	bh=VFO0+VjK6VTT4hAp0iYjW+9oXkn4yWow94c8FN1ox9w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rNDD7jc+N3ppwrRo9Xn2EHiohhxwuUgiLkLNvRRBtNO5WO20DExaaLX/5dBHm6wPF0Mr3mA3Tdt066Ue9/FV4v+9C/Yo3zQmbk2E/O+l9vP/AvI0u2J0Z2GMq/UrF3o4kSOko4wfhAWD9MbF3s+maIg7/vCSjgfq+t7zBp2PUjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enw0AOMb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3030C19421;
-	Sun,  1 Mar 2026 02:04:39 +0000 (UTC)
+	s=arc-20240116; t=1772330683; c=relaxed/simple;
+	bh=KY8zbWFaUbTfy1IbZIYr0rBhVQnVZ6/4ab7tkam5GRU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jj+wt8wR1BqJmuZ9KUNy+1MbxAjBeQLmlsRrrBJfxSkaRaE3hrbUKK8fmRPA2Z6/dQU3jFoEnZaakmRpIKLj3tCg5Ie9bkKcXC2bUB7MQvmCRocbURozhLNbuuxH+ag0npSfhKe59B00z1Y6U54Uw9aZPT27iX6U2k/VXjcy8Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MnS9gHex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E035C19421;
+	Sun,  1 Mar 2026 02:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330680;
-	bh=VFO0+VjK6VTT4hAp0iYjW+9oXkn4yWow94c8FN1ox9w=;
+	s=k20201202; t=1772330682;
+	bh=KY8zbWFaUbTfy1IbZIYr0rBhVQnVZ6/4ab7tkam5GRU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=enw0AOMb3vugUQgKpDG2bzxPnPGbDBsq7RY0z1PeM3T2twinNyZR8g1xi2C+Qa0i4
-	 vo6ZlYhpSzpiyAyH2bdsypAEBOdmRYGAsQvVwyzWn1Wfwu01CVMhskmlI89Aww4+M3
-	 zEkFdC0mfFqj56Qa4OTiRS3jDf5XSZsMhjUeD4qsNQJSv1y7rYCWvIAW46TbBDpY9i
-	 UAfzsYIkl+z9XnVUhzWbJCtHly3UT3RB6zUDzAliSyIRJzYazcjzMOfNmiKo/5iJn3
-	 w6qdubd6YsCDoes+Nn3X1YTGzCIDQ4+h39iEclZHW08WOvnpwrgrkkeBJTqT/ZPCug
-	 Uo90dl/MJEbMg==
+	b=MnS9gHex/XVk1hRqsYd5tiw6wJVFcYX+sWvTSSu2hkgYjZUYa03Fk3h5fmD929uH1
+	 dEsaxAJcTeY4yNpg9mPdBYjw6g/NMU0c/vAdmYJHmrV8iQzPVNAdZ5RByhwD2A8Hsu
+	 1IqVAQdFfokivcR7/gIorDyQWCpnlVQmFKxhj9HVxwx8ljCzT4oRQgCJH1dCCJ6tAZ
+	 CfjmcyXhhrRahbL5J0fKgWT8Gc4uRnCYO5et6+wHag+RmoAGwVuP+7NTcOCpoL4cgI
+	 YJPcf0dOCw/zN7NLcSaJ3nv4UZ7vP8thAVuCAjnQYrGASkNAlhyFZ5FuDJaeLbz3uf
+	 X3yLP3x8GmRVg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	linkinjeon@kernel.org
-Cc: Igor Stepansky <igor.stepansky@orca.security>,
-	Steve French <stfrench@microsoft.com>,
-	linux-cifs@vger.kernel.org
-Subject: FAILED: Patch "ksmbd: add chann_lock to protect ksmbd_chann_list xarray" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:04:38 -0500
-Message-ID: <20260301020438.1733124-1-sashal@kernel.org>
+	yangtiezhu@loongson.cn
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+	loongarch@lists.linux.dev,
+	linux-rt-devel@lists.linux.dev
+Subject: FAILED: Patch "LoongArch: Handle percpu handler address for ORC unwinder" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:04:40 -0500
+Message-ID: <20260301020441.1733170-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,18 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222357-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222358-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -89,8 +89,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 549F61CE570
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,loongson.cn:email]
+X-Rspamd-Queue-Id: 1CB771CD2C6
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -103,117 +103,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4f3a06cc57976cafa8c6f716646be6c79a99e485 Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Mon, 9 Feb 2026 10:43:19 +0900
-Subject: [PATCH] ksmbd: add chann_lock to protect ksmbd_chann_list xarray
+From 055c7e75190e0be43037bd663a3f6aced194416e Mon Sep 17 00:00:00 2001
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Date: Tue, 10 Feb 2026 19:31:13 +0800
+Subject: [PATCH] LoongArch: Handle percpu handler address for ORC unwinder
 
-ksmbd_chann_list xarray lacks synchronization, allowing use-after-free in
-multi-channel sessions (between lookup_chann_list() and ksmbd_chann_del).
+After commit 4cd641a79e69 ("LoongArch: Remove unnecessary checks for ORC
+unwinder"), the system can not boot normally under some configs (such as
+enable KASAN), there are many error messages "cannot find unwind pc".
 
-Adds rw_semaphore chann_lock to struct ksmbd_session and protects
-all xa_load/xa_store/xa_erase accesses.
+The kernel boots normally with the defconfig, so no problem found out at
+the first time. Here is one way to reproduce:
+
+  cd linux
+  make mrproper defconfig -j"$(nproc)"
+  scripts/config -e KASAN
+  make olddefconfig all -j"$(nproc)"
+  sudo make modules_install
+  sudo make install
+  sudo reboot
+
+The address that can not unwind is not a valid kernel address which is
+between "pcpu_handlers[cpu]" and "pcpu_handlers[cpu] + vec_sz" due to
+the code of eentry was copied to the new area of pcpu_handlers[cpu] in
+setup_tlb_handler(), handle this special case to get the valid address
+to unwind normally.
 
 Cc: stable@vger.kernel.org
-Reported-by: Igor Stepansky <igor.stepansky@orca.security>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- fs/smb/server/mgmt/user_session.c |  5 +++++
- fs/smb/server/mgmt/user_session.h |  1 +
- fs/smb/server/smb2pdu.c           | 12 +++++++++++-
- 3 files changed, 17 insertions(+), 1 deletion(-)
+ arch/loongarch/include/asm/setup.h |  3 +++
+ arch/loongarch/kernel/unwind_orc.c | 16 ++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index 68b3e0cb54d38..8c2b14ea7b0ec 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -244,12 +244,14 @@ static void free_channel_list(struct ksmbd_session *sess)
- 	struct channel *chann;
- 	unsigned long index;
+diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
+index 3c2fb16b11b64..f81375e5e89c0 100644
+--- a/arch/loongarch/include/asm/setup.h
++++ b/arch/loongarch/include/asm/setup.h
+@@ -7,6 +7,7 @@
+ #define _LOONGARCH_SETUP_H
  
-+	down_write(&sess->chann_lock);
- 	xa_for_each(&sess->ksmbd_chann_list, index, chann) {
- 		xa_erase(&sess->ksmbd_chann_list, index);
- 		kfree(chann);
- 	}
+ #include <linux/types.h>
++#include <linux/threads.h>
+ #include <asm/sections.h>
+ #include <uapi/asm/setup.h>
  
- 	xa_destroy(&sess->ksmbd_chann_list);
-+	up_write(&sess->chann_lock);
- }
+@@ -14,6 +15,8 @@
  
- static void __session_rpc_close(struct ksmbd_session *sess,
-@@ -434,7 +436,9 @@ static int ksmbd_chann_del(struct ksmbd_conn *conn, struct ksmbd_session *sess)
+ extern unsigned long eentry;
+ extern unsigned long tlbrentry;
++extern unsigned long pcpu_handlers[NR_CPUS];
++extern long exception_handlers[VECSIZE * 128 / sizeof(long)];
+ extern char init_command_line[COMMAND_LINE_SIZE];
+ extern void tlb_init(int cpu);
+ extern void cpu_cache_init(void);
+diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/unwind_orc.c
+index d6b3688a1ce97..11ba3e4ac9eee 100644
+--- a/arch/loongarch/kernel/unwind_orc.c
++++ b/arch/loongarch/kernel/unwind_orc.c
+@@ -352,6 +352,22 @@ static inline unsigned long bt_address(unsigned long ra)
  {
- 	struct channel *chann;
+ 	extern unsigned long eentry;
  
-+	down_write(&sess->chann_lock);
- 	chann = xa_erase(&sess->ksmbd_chann_list, (long)conn);
-+	up_write(&sess->chann_lock);
- 	if (!chann)
- 		return -ENOENT;
- 
-@@ -668,6 +672,7 @@ static struct ksmbd_session *__session_create(int protocol)
- 	rwlock_init(&sess->tree_conns_lock);
- 	atomic_set(&sess->refcnt, 2);
- 	init_rwsem(&sess->rpc_lock);
-+	init_rwsem(&sess->chann_lock);
- 
- 	ret = __init_smb2_session(sess);
- 	if (ret)
-diff --git a/fs/smb/server/mgmt/user_session.h b/fs/smb/server/mgmt/user_session.h
-index 176d800c24906..d94f5e128a9b4 100644
---- a/fs/smb/server/mgmt/user_session.h
-+++ b/fs/smb/server/mgmt/user_session.h
-@@ -48,6 +48,7 @@ struct ksmbd_session {
- 	char				sess_key[CIFS_KEY_SIZE];
- 
- 	struct hlist_node		hlist;
-+	struct rw_semaphore		chann_lock;
- 	struct xarray			ksmbd_chann_list;
- 	struct xarray			tree_conns;
- 	struct ida			tree_conn_ida;
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 4d3154cc493ea..3efcc7da1b9f6 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -80,7 +80,13 @@ static inline bool check_session_id(struct ksmbd_conn *conn, u64 id)
- 
- struct channel *lookup_chann_list(struct ksmbd_session *sess, struct ksmbd_conn *conn)
- {
--	return xa_load(&sess->ksmbd_chann_list, (long)conn);
-+	struct channel *chann;
++#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
++	int cpu;
++	int vec_sz = sizeof(exception_handlers);
 +
-+	down_read(&sess->chann_lock);
-+	chann = xa_load(&sess->ksmbd_chann_list, (long)conn);
-+	up_read(&sess->chann_lock);
++	for_each_possible_cpu(cpu) {
++		if (!pcpu_handlers[cpu])
++			continue;
 +
-+	return chann;
- }
- 
- /**
-@@ -1559,8 +1565,10 @@ static int ntlm_authenticate(struct ksmbd_work *work,
- 				return -ENOMEM;
- 
- 			chann->conn = conn;
-+			down_write(&sess->chann_lock);
- 			old = xa_store(&sess->ksmbd_chann_list, (long)conn, chann,
- 					KSMBD_DEFAULT_GFP);
-+			up_write(&sess->chann_lock);
- 			if (xa_is_err(old)) {
- 				kfree(chann);
- 				return xa_err(old);
-@@ -1652,8 +1660,10 @@ static int krb5_authenticate(struct ksmbd_work *work,
- 				return -ENOMEM;
- 
- 			chann->conn = conn;
-+			down_write(&sess->chann_lock);
- 			old = xa_store(&sess->ksmbd_chann_list, (long)conn,
- 					chann, KSMBD_DEFAULT_GFP);
-+			up_write(&sess->chann_lock);
- 			if (xa_is_err(old)) {
- 				kfree(chann);
- 				return xa_err(old);
++		if (ra >= pcpu_handlers[cpu] &&
++		    ra < pcpu_handlers[cpu] + vec_sz) {
++			ra = ra + eentry - pcpu_handlers[cpu];
++			break;
++		}
++	}
++#endif
++
+ 	if (ra >= eentry && ra < eentry +  EXCCODE_INT_END * VECSIZE) {
+ 		unsigned long func;
+ 		unsigned long type = (ra - eentry) / VECSIZE;
 -- 
 2.51.0
 
