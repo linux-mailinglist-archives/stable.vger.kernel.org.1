@@ -1,144 +1,179 @@
-Return-Path: <stable+bounces-222401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EB2uBkSxo2mpKAUAu9opvQ
-	(envelope-from <stable+bounces-222401-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:23:48 +0100
+	id go49LeK2o2mLKgUAu9opvQ
+	(envelope-from <stable+bounces-222402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:47:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7924A1CE695
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:23:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 377941CE71E
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:47:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7421730078F4
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 03:20:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3147A300C0FA
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 03:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC7021257B;
-	Sun,  1 Mar 2026 03:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A852D1931;
+	Sun,  1 Mar 2026 03:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ldWhmyRT"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="ewuVQY0f";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="X1XdJNaA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893A92FD7BE;
-	Sun,  1 Mar 2026 03:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DD11CEADB;
+	Sun,  1 Mar 2026 03:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772335223; cv=none; b=SsUiM0LzIx3KD6x/QA9E5SZNU0Er2dF9cGnO1Dgr+arhJTwR2+RV0ZRACWtjBzWLUWUTx7E9DSwsETC1fu4S6D7YknWwe3AJzCRWs6T9ECrcDC7IRv3rJtNSsqumkwAYfiM/GTQhMh50w8ZgB+cM9v9tNzvSByARclvNmkQjZ74=
+	t=1772336861; cv=none; b=VE3SYDtRHisLkqkdDZvCOPo7v25gU7Mzdk9rWr5rf4sOwcy9vf7m/1qI6KcCZiGaO8vurMHFFguyaSlY6nUhqsGI8Xmt2YPxjHeaB/rnDs2uXqyKuN+sD64zUVLI5FWSKKUlTmQ+jfRLdmAFw4X6tdmKrWtqBtYsCNFuGr+0yvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772335223; c=relaxed/simple;
-	bh=5QDKUwYfwEYBq4ItvlMoP8J0YVGi3x2/N98yqJxxFjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YN1eMzRG8TPUnM3x+IhvxThKeQ2x8y3WhD5UL538fJuAjnlEpZpidtYaqa29QiaKlk1wQriNDfk6eKsgllRBnGqF/LSmM8jmH9A3HVGFFTk9Rdc8DBt8Xjn30oyqGo6DVRtYNhQdJa1i+v3EHKH6ab2fKllCqjVyRIxRDrkv2uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ldWhmyRT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07FAC19425;
-	Sun,  1 Mar 2026 03:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772335223;
-	bh=5QDKUwYfwEYBq4ItvlMoP8J0YVGi3x2/N98yqJxxFjI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ldWhmyRTnFme6trmd7R0a4n1flQUSaHcjzpj1H3vNeL3DfgCTV51Jx5DkTfSLycos
-	 2BIdCzV/6KsTtjCGx6eO18zBflcY51lB39g43GA4WDE2u7b7BFSvvt4egsYRUTGAX6
-	 6VqL0NXtnIFEuaOE+gHBNZ2yjFQ9s8fQX3MUcfBYGMn10A+nkDWynUDQUxlzuL8wlG
-	 ad5XsVzHk/J04gsRCQVUQv6tUSD/OA7rnlr9aN2jn9pd4JHOqhiCnTJxV/kP2hsJDH
-	 w27CELVmymhN+EUqIXHndh4uq+HLbJaGS9kTSVXQ9b75afU0rZq/jlNeVvmwa/owgF
-	 KKsjrYI1+xdLw==
-Date: Sat, 28 Feb 2026 19:19:29 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>, Rae Moar <raemoar63@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] lib/crypto: tests: Depend on library options rather than
- selecting them
-Message-ID: <20260301031929.GB2271@sol>
-References: <20260226191749.39397-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1772336861; c=relaxed/simple;
+	bh=Jicj6pzhUz5nrLCK+0MFfAYA4dyLWhWWqcgZyyr+8dM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uqlA1aUyw6Wipvr8P1h9UUdws3BjmDiqM5jiBlqKx6B+njMHKVOOvHeQz4XfhsuoLXyA+3FA83yqER+TSl1Ki2uZtlFnTXqEw2BUBUid4gahtvMqCe0naoCUHf2cat4tgZhFSM5qdXaq+Cx/QOuTNx548zwLAeRX+qJ9wsInl9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=ewuVQY0f; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=X1XdJNaA; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 114257A007C;
+	Sat, 28 Feb 2026 22:47:36 -0500 (EST)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-02.internal (MEProxy); Sat, 28 Feb 2026 22:47:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772336856;
+	 x=1772423256; bh=q4zm0dsCRx6yq5T9GyTIEBmkmp5SlS2fNta05mobAs8=; b=
+	ewuVQY0fNii1GejHC9QQuKE+jU2uecOMtN4geUDKWg9k6gx/L4CVjjItnneQC6ZK
+	CAO7F2XY7fgHB6OGqWxSmkHQZ4SIIl0vewDCRQCSj39cXXGTdNI2ocg0SGNwCRIz
+	4OZjGvDxqqbfgbnQOPvZ4XKgMWV6sPVayAnbNGO49ZS3UJvqPjqrXikitzX9sVOs
+	OPBGAjl+U8vj5NGLik0IH1PoB2eOnzaws0kws4/N5yDJZNiZDYoNePjAa35URjEf
+	U5+pWEt4NwpPVizvgntJYS6qM3tFMEYGsER6bFx+IcoE4JwWeqj2THxsCljxFcAf
+	oB71NUtVVnEoQrYgW+rZcQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772336856; x=
+	1772423256; bh=q4zm0dsCRx6yq5T9GyTIEBmkmp5SlS2fNta05mobAs8=; b=X
+	1XdJNaAjtfJHcIVEsbcE2toKBjOnkj6jm6UF/1fMYsm8fANfeZOXmGF+X8Uqv5h8
+	1SAUmo0mh/7gqIO7032ozfBtyecnS2NS44oO3t5iKZXt8JqZpOjSqcf0mqd6IhX+
+	zoIaUwL2gVIyZ0ECPhLAdIlGmIVh5+4H1+5S6hViEwuNN4TNHd7B4IFZmhGaY5PP
+	ZJJVZso9RzcAdgHP0X4ZlPmdnc0ZuUcNn1tZlWLscGXWOgSAwdpZhxF0N8HcWKCV
+	KVgSvck1AvnK3/r5ESPs1m48j7od4h3X6XDJe4zADcb1rgnz/8cl/kkhnedStLoR
+	D9RWI/10Z5hSsVCOJLsIQ==
+X-ME-Sender: <xms:2LajaeoD_n8qogfV97HcDhyQaKqNMQWm-KXRqCvYhkk-TzkuKFbZsw>
+    <xme:2LajaVf0Hb1nI-H8hsQ37d-APEnxMsV9lnlyaYDtKM6vB_w1sohq79e8NnQ0BbkjF
+    TrRrzSIydWP9pv0Zg_xva-84Aett89jZpLSACjEOeUIWtIuULnFPDH3>
+X-ME-Received: <xmr:2LajaUjkTL8ueRPFZ5CFbPRXKzJpWJDVdmp7TUIFvWLkGN1m2NY-C9kae1C8iqWdY9DvfXEPX1VtloPyzStO5UpfbRrpnQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheefjeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
+    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
+    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
+    ohhmpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihf
+    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrd
+    hlihhnuhigrdguvghvpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhu
+    nhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
+    grthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvght
+    pdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:2LajaTLnZAZCCGF7S-gv7kZaeGJNxoAGrEW98gZEE_x0wUxS49Rekg>
+    <xmx:2LajaRoEgYk_SMROHwOfe0h66dxlvYP3cyvpDCmFcDRrFym2q_I62Q>
+    <xmx:2LajaYq4uw8khtBr5zSnrOhuL0J8PfIeTUAAuyKm9y1XsEfNd8M32A>
+    <xmx:2LajafFVXkEhjJ0oCMm_YXVqochI8CRNGVJSzkzJ3f5otFI_1baZAw>
+    <xmx:2LajaYeOKfweJp2uD9XrOYFTDxo7E1rwYuGTVFKCVLpCqsJo0vRTuehx>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 28 Feb 2026 22:47:33 -0500 (EST)
+Message-ID: <b902b20e-4ec8-4ea7-9ee7-16606c9dc147@pobox.com>
+Date: Sat, 28 Feb 2026 19:47:32 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226191749.39397-1-ebiggers@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/147] 5.10.252-rc1 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260228181731.1605473-1-sashal@kernel.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260228181731.1605473-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222401-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,zx2c4.com,gondor.apana.org.au,googlegroups.com,linux.dev,google.com,gmail.com,linux-m68k.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-222402-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-m68k.org:email]
-X-Rspamd-Queue-Id: 7924A1CE695
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,messagingengine.com:dkim,pobox.com:mid,pobox.com:dkim,pobox.com:email]
+X-Rspamd-Queue-Id: 377941CE71E
 X-Rspamd-Action: no action
 
-On Thu, Feb 26, 2026 at 11:17:49AM -0800, Eric Biggers wrote:
-> The convention for KUnit tests is to have the test kconfig options
-> visible only when the code they depend on is already enabled.  This way
-> only the tests that are relevant to the particular kernel build can be
-> enabled, either manually or via KUNIT_ALL_TESTS.
+On 2/28/26 10:17, Sasha Levin wrote:
 > 
-> Update lib/crypto/tests/Kconfig to follow that convention, i.e. depend
-> on the corresponding library options rather than selecting them.  This
-> fixes an issue where enabling KUNIT_ALL_TESTS enabled non-test code.
+> This is the start of the stable review cycle for the 5.10.252 release.
+> There are 147 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> This does mean that it becomes more difficult to enable *all* the crypto
-> library tests (which is what I do as a maintainer of the code), since
-> doing so will now require enabling other options that select the
-> libraries.  Regardless, we should follow the standard KUnit convention.
+> Responses should be made by Mon Mar  2 06:17:30 PM UTC 2026.
+> Anything received after that time might be too late.
 > 
-> Note: currently most of the crypto library options are selected by
-> visible options in crypto/Kconfig, which can be used to enable them
-> without too much trouble.  If in the future we end up with more cases
-> like CRYPTO_LIB_CURVE25519 which is selected only by WIREGUARD (thus
-> making CRYPTO_LIB_CURVE25519_KUNIT_TEST effectively depend on WIREGUARD
-> after this commit), we could consider adding a new kconfig option that
-> enables all the library code specifically for testing.
+> The whole patch series can be found in one patch at:
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.10.y&id2=v5.10.251
+> or in the git tree and branch at:
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 > 
-> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Closes: https://lore.kernel.org/r/CAMuHMdVFRQZXCKJBOBDJtpENvpVO39AxGMUFWVQdM6xKTpnYYw@mail.gmail.com
-> Fixes: 4dcf6caddaa0 ("lib/crypto: tests: Add KUnit tests for SHA-224 and SHA-256")
-> Fixes: 571eaeddb67d ("lib/crypto: tests: Add KUnit tests for SHA-384 and SHA-512")
-> Fixes: 6dd4d9f7919e ("lib/crypto: tests: Add KUnit tests for Poly1305")
-> Fixes: 66b130607908 ("lib/crypto: tests: Add KUnit tests for SHA-1 and HMAC-SHA1")
-> Fixes: d6b6aac0cdb4 ("lib/crypto: tests: Add KUnit tests for MD5 and HMAC-MD5")
-> Fixes: afc4e4a5f122 ("lib/crypto: tests: Migrate Curve25519 self-test to KUnit")
-> Fixes: 6401fd334ddf ("lib/crypto: tests: Add KUnit tests for BLAKE2b")
-> Fixes: 15c64c47e484 ("lib/crypto: tests: Add SHA3 kunit tests")
-> Fixes: b3aed551b3fc ("lib/crypto: tests: Add KUnit tests for POLYVAL")
-> Fixes: ed894faccb8d ("lib/crypto: tests: Add KUnit tests for ML-DSA verification")
-> Fixes: 7246fe6cd644 ("lib/crypto: tests: Add KUnit tests for NH")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> Thanks,
+> Sasha
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git/log/?h=libcrypto-fixes
+Tested on an amd64 laptop (Lenovo ThinkPad T14 Gen 1). Working well,
+no regressions observed.
 
-- Eric
+Tested-by: Barry K. Nathan <barryn@pobox.com>
+
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
