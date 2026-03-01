@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-222096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222097-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLZcAEido2nDIQUAu9opvQ
-	(envelope-from <stable+bounces-222096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:32 +0100
+	id aCQVJzqeo2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222097-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981291CC6FB
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 451DF1CCAF7
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5BB030AB2EB
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1011B30DE2AA
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEACE30FC23;
-	Sun,  1 Mar 2026 01:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0457A30FC39;
+	Sun,  1 Mar 2026 01:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTxFSyCT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MpH1CfCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F581A3165;
-	Sun,  1 Mar 2026 01:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB311A3165;
+	Sun,  1 Mar 2026 01:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329889; cv=none; b=pg/LvC98rFv3IdioZhu81XXzMPqARaV5bNBm+vpYhTbWwH80KbL/Q3jgzaVOpRYE5lVaLFU9HY+fUTEdkpHTuTCAlWtJc3CSZAvBzxKYPqcMBnopsEok17PaNJO0oxqMYuBFQRUvsffV+8GYBXb7N2WTQHalHzoIemW4QBIuUwE=
+	t=1772329891; cv=none; b=TdydueyP9D456VUrYYELN9D/OEiLqyIlk59QRNzCpHNFmNBkkbTxHmEFQLR9J41y7qlPagI9OQ3wME3muKvTsudISiVBe0y0IJUGia8qyrZW3rccnovjmjZowpIDMx4kwHQiApR663EphRca/u14ZYGLuZCLPMTwPwKdp87oCy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329889; c=relaxed/simple;
-	bh=AgSADgdW694KD7uHvIcfpYrMGEv0FmdH9BuEzfYfoOs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WIHBzSeKF9AjUxcQDRmTP3mzhT3+Cry5dBQtoGHNNpde1nui/fHNG+cVXUDCEfIFnYkwLBKdwBlb6CK3HKSXdL240F31/SUjfQuE37t39DXWPHkIIpMK55EzjF5y40/uLF/W0/4s5g+iJQ3mfzuWVEHWJROHj/DS44QWwpkqvL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTxFSyCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844E8C19425;
-	Sun,  1 Mar 2026 01:51:28 +0000 (UTC)
+	s=arc-20240116; t=1772329891; c=relaxed/simple;
+	bh=KtXz8DzHFUxtmnT8ymf0sr8XZSG5to2d3Ka/77DXUGg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H96kPxCXxS+OkXbnDKdZI6fjGaXmj5bEF7w/QmOvZ5LrtF5CZHzunE/CJilblWLq+X5iOK/OHT5uE2akbPEKI5PoaPkDeh1h2zqvseTmbpFW8bWR2WAY0joyFmKuPk/Vyu6rveCX+OVhXMAiU4uL+3Bqehy3RDWhruS42bN4vyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MpH1CfCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CCDC19421;
+	Sun,  1 Mar 2026 01:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329889;
-	bh=AgSADgdW694KD7uHvIcfpYrMGEv0FmdH9BuEzfYfoOs=;
+	s=k20201202; t=1772329891;
+	bh=KtXz8DzHFUxtmnT8ymf0sr8XZSG5to2d3Ka/77DXUGg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=XTxFSyCTPu7GlW7pSmO5m6jhUcfe8w/D7irQ88zl/do53I/bXH4JP7UK/dTRRx13b
-	 fK9Vb93QX/w+UZ9IicJIv533n3R6USm5fakfuaCqBzrEYmHkCgXyk5j4LfuHhH+183
-	 BsT2FkkbvDZgP5rKvcVZgVSNB0flNfmebf5BnuW2RCj+QbwiFHtVNsaqYuxRKzNlep
-	 0fPLIJGhLqlxV12WNydcksLr0LAP3BupfOh6yYBh26evlWLbGB8TdQ5otq17lHaa+P
-	 tnOXoo7bxbgItzCTB545PQxmC2GDEWJOhIHt+DXIvEJf8tmLnD5h9YH5p3stkZrCmy
-	 c+5QosKp7+flQ==
+	b=MpH1CfCeiN6bEqGOIdQWFIDV6XceJ777RgvuAZPs8KEwAM4cMsyhQvXtir4nlLJ16
+	 z+LevSCF3bhpN6K9t+JuPtCp0KDHJk987IykWzkUPx5LxMfky1hMmW11HNid8l/kba
+	 CUQfprqBfn2cWqmD08vEebnNNR+NylvG5NtCBeadDdSs6JOHx/AJGkFp7EVGJENmMA
+	 hBwxGH08KqW5dy+3J9pq5P2Nf3mVBRPB1WXKRkwZoWPcCuJ8XgjQjlXE0lXVhh/09H
+	 Jr/I2ExdEyKAOhzs/3IFobUZDVHZGdAK6+UAMumR5oEWGeNdo9Plbi+fpJ+TdE/rjp
+	 RGx1AI29LIqjg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	djwong@kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>,
-	linux-xfs@vger.kernel.org
-Subject: FAILED: Patch "xfs: mark data structures corrupt on EIO and ENODATA" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:51:26 -0500
-Message-ID: <20260301015127.1717768-1-sashal@kernel.org>
+	guojinhui.liam@bytedance.com
+Cc: Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	iommu@lists.linux.dev
+Subject: FAILED: Patch "iommu/vt-d: Skip dev-iotlb flush for inaccessible PCIe device without scalable mode" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:51:29 -0500
+Message-ID: <20260301015129.1717818-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,36 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222096-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222097-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email]
-X-Rspamd-Queue-Id: 981291CC6FB
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,amd.com:email]
+X-Rspamd-Queue-Id: 451DF1CCAF7
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -103,80 +103,140 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f39854a3fb2f06dc69b81ada002b641ba5b4696b Mon Sep 17 00:00:00 2001
-From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Thu, 18 Dec 2025 18:40:50 -0800
-Subject: [PATCH] xfs: mark data structures corrupt on EIO and ENODATA
+From 42662d19839f34735b718129ea200e3734b07e50 Mon Sep 17 00:00:00 2001
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
+Date: Thu, 22 Jan 2026 09:48:50 +0800
+Subject: [PATCH] iommu/vt-d: Skip dev-iotlb flush for inaccessible PCIe device
+ without scalable mode
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-I learned a few things this year: first, blk_status_to_errno can return
-ENODATA for critical media errors; and second, the scrub code doesn't
-mark data structures as corrupt on ENODATA or EIO.
+PCIe endpoints with ATS enabled and passed through to userspace
+(e.g., QEMU, DPDK) can hard-lock the host when their link drops,
+either by surprise removal or by a link fault.
 
-Currently, scrub failing to capture these errors isn't all that
-impactful -- the checking code will exit to userspace with EIO/ENODATA,
-and xfs_scrub will log a complaint and exit with nonzero status.  Most
-people treat fsck tools failing as a sign that the fs is corrupt, but
-online fsck should mark the metadata bad and keep moving.
+Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
+request when device is disconnected") adds pci_dev_is_disconnected()
+to devtlb_invalidation_with_pasid() so ATS invalidation is skipped
+only when the device is being safely removed, but it applies only
+when Intel IOMMU scalable mode is enabled.
 
-Cc: stable@vger.kernel.org # v4.15
-Fixes: 4700d22980d459 ("xfs: create helpers to record and deal with scrub problems")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+With scalable mode disabled or unsupported, a system hard-lock
+occurs when a PCIe endpoint's link drops because the Intel IOMMU
+waits indefinitely for an ATS invalidation that cannot complete.
+
+Call Trace:
+ qi_submit_sync
+ qi_flush_dev_iotlb
+ __context_flush_dev_iotlb.part.0
+ domain_context_clear_one_cb
+ pci_for_each_dma_alias
+ device_block_translation
+ blocking_domain_attach_dev
+ iommu_deinit_device
+ __iommu_group_remove_device
+ iommu_release_device
+ iommu_bus_notifier
+ blocking_notifier_call_chain
+ bus_notify
+ device_del
+ pci_remove_bus_device
+ pci_stop_and_remove_bus_device
+ pciehp_unconfigure_device
+ pciehp_disable_slot
+ pciehp_handle_presence_or_link_change
+ pciehp_ist
+
+Commit 81e921fd3216 ("iommu/vt-d: Fix NULL domain on device release")
+adds intel_pasid_teardown_sm_context() to intel_iommu_release_device(),
+which calls qi_flush_dev_iotlb() and can also hard-lock the system
+when a PCIe endpoint's link drops.
+
+Call Trace:
+ qi_submit_sync
+ qi_flush_dev_iotlb
+ __context_flush_dev_iotlb.part.0
+ intel_context_flush_no_pasid
+ device_pasid_table_teardown
+ pci_pasid_table_teardown
+ pci_for_each_dma_alias
+ intel_pasid_teardown_sm_context
+ intel_iommu_release_device
+ iommu_deinit_device
+ __iommu_group_remove_device
+ iommu_release_device
+ iommu_bus_notifier
+ blocking_notifier_call_chain
+ bus_notify
+ device_del
+ pci_remove_bus_device
+ pci_stop_and_remove_bus_device
+ pciehp_unconfigure_device
+ pciehp_disable_slot
+ pciehp_handle_presence_or_link_change
+ pciehp_ist
+
+Sometimes the endpoint loses connection without a link-down event
+(e.g., due to a link fault); killing the process (virsh destroy)
+then hard-locks the host.
+
+Call Trace:
+ qi_submit_sync
+ qi_flush_dev_iotlb
+ __context_flush_dev_iotlb.part.0
+ domain_context_clear_one_cb
+ pci_for_each_dma_alias
+ device_block_translation
+ blocking_domain_attach_dev
+ __iommu_attach_device
+ __iommu_device_set_domain
+ __iommu_group_set_domain_internal
+ iommu_detach_group
+ vfio_iommu_type1_detach_group
+ vfio_group_detach_container
+ vfio_group_fops_release
+ __fput
+
+pci_dev_is_disconnected() only covers safe-removal paths;
+pci_device_is_present() tests accessibility by reading
+vendor/device IDs and internally calls pci_dev_is_disconnected().
+On a ConnectX-5 (8 GT/s, x2) this costs ~70 µs.
+
+Since __context_flush_dev_iotlb() is only called on
+{attach,release}_dev paths (not hot), add pci_device_is_present()
+there to skip inaccessible devices and avoid the hard-lock.
+
+Fixes: 37764b952e1b ("iommu/vt-d: Global devTLB flush when present context entry changed")
+Fixes: 81e921fd3216 ("iommu/vt-d: Fix NULL domain on device release")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Link: https://lore.kernel.org/r/20251211035946.2071-2-guojinhui.liam@bytedance.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- fs/xfs/scrub/btree.c   | 2 ++
- fs/xfs/scrub/common.c  | 4 ++++
- fs/xfs/scrub/dabtree.c | 2 ++
- 3 files changed, 8 insertions(+)
+ drivers/iommu/intel/pasid.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/xfs/scrub/btree.c b/fs/xfs/scrub/btree.c
-index 8ba004979862f..40f36db9f07d5 100644
---- a/fs/xfs/scrub/btree.c
-+++ b/fs/xfs/scrub/btree.c
-@@ -42,6 +42,8 @@ __xchk_btree_process_error(
- 		break;
- 	case -EFSBADCRC:
- 	case -EFSCORRUPTED:
-+	case -EIO:
-+	case -ENODATA:
- 		/* Note the badness but don't abort. */
- 		sc->sm->sm_flags |= errflag;
- 		*error = 0;
-diff --git a/fs/xfs/scrub/common.c b/fs/xfs/scrub/common.c
-index 38d0b7d5c894b..affed35a8c96f 100644
---- a/fs/xfs/scrub/common.c
-+++ b/fs/xfs/scrub/common.c
-@@ -103,6 +103,8 @@ __xchk_process_error(
- 		break;
- 	case -EFSBADCRC:
- 	case -EFSCORRUPTED:
-+	case -EIO:
-+	case -ENODATA:
- 		/* Note the badness but don't abort. */
- 		sc->sm->sm_flags |= errflag;
- 		*error = 0;
-@@ -177,6 +179,8 @@ __xchk_fblock_process_error(
- 		break;
- 	case -EFSBADCRC:
- 	case -EFSCORRUPTED:
-+	case -EIO:
-+	case -ENODATA:
- 		/* Note the badness but don't abort. */
- 		sc->sm->sm_flags |= errflag;
- 		*error = 0;
-diff --git a/fs/xfs/scrub/dabtree.c b/fs/xfs/scrub/dabtree.c
-index dd14f355358ca..5858d4d5e279b 100644
---- a/fs/xfs/scrub/dabtree.c
-+++ b/fs/xfs/scrub/dabtree.c
-@@ -45,6 +45,8 @@ xchk_da_process_error(
- 		break;
- 	case -EFSBADCRC:
- 	case -EFSCORRUPTED:
-+	case -EIO:
-+	case -ENODATA:
- 		/* Note the badness but don't abort. */
- 		sc->sm->sm_flags |= XFS_SCRUB_OFLAG_CORRUPT;
- 		*error = 0;
+diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
+index 3e2255057079c..3f6d78180d799 100644
+--- a/drivers/iommu/intel/pasid.c
++++ b/drivers/iommu/intel/pasid.c
+@@ -1102,6 +1102,14 @@ static void __context_flush_dev_iotlb(struct device_domain_info *info)
+ 	if (!info->ats_enabled)
+ 		return;
+ 
++	/*
++	 * Skip dev-IOTLB flush for inaccessible PCIe devices to prevent the
++	 * Intel IOMMU from waiting indefinitely for an ATS invalidation that
++	 * cannot complete.
++	 */
++	if (!pci_device_is_present(to_pci_dev(info->dev)))
++		return;
++
+ 	qi_flush_dev_iotlb(info->iommu, PCI_DEVID(info->bus, info->devfn),
+ 			   info->pfsid, info->ats_qdep, 0, MAX_AGAW_PFN_WIDTH);
+ 
 -- 
 2.51.0
 
