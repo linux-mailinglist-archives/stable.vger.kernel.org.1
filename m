@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPDENcuVo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:26:35 +0100
+	id sDsOAc6Vo2lPHgUAu9opvQ
+	(envelope-from <stable+bounces-221449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:26:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785291CA9CD
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:26:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760681CA9D4
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B46BE3035A66
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CA283020E83
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705F727E07A;
-	Sun,  1 Mar 2026 01:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49F227CCF2;
+	Sun,  1 Mar 2026 01:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VRg7eBkw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Quw6OLXH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315B827B35B;
-	Sun,  1 Mar 2026 01:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880A3C8F0;
+	Sun,  1 Mar 2026 01:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328291; cv=none; b=Dht6AX0l96ZX+0f5A27UeELk9w4p6itx5+UJ/HrRpI9alACCcYVFdC1odC5MCAQ/djKR8RNVnAI0H8nKBN5RSTRLJDUBQv4khJqf8+qvDY4c/4dSu27FM4GqnUmVUleo/eeBcZAmZpuYJSyhT1EZcAL2Ry3nKRO9ABuMRTlHgok=
+	t=1772328293; cv=none; b=Uu7YC3zvJMjwc6mZUFq9561RsLV9es2pqvKw6ZcGkfMxB2NBkwT10SUGtboHMomUTh2njclZXyNeEgBWQvyOgBTlMHxl4zNN3KrVwrExTVtsuOC8aYPtw0rNhfm2RugL8PhaeGW141YaqpqsAce5lxcK2iSssjydLQvzFa88B9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328291; c=relaxed/simple;
-	bh=rtX7DyN3bJ2S8o3NgMrm5A8EMI5UyE/WOHCeZzeZPec=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dxJkoSFx0ECM+1QNtvo/SYFQSrrOQCbFbJN+/aq6PrwmehivoulgFp/KTTosNy0fCSLQF3BYR+hoy3kfyhCjLgbjSoX5B2TODCa3A5z1hioCDTZ+MS0cO08WwVqG9oPryNlxVYmR/IUMTpUccfJ3RJLIV1X8fRcB1GHSmSWid20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VRg7eBkw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAB0C19421;
-	Sun,  1 Mar 2026 01:24:50 +0000 (UTC)
+	s=arc-20240116; t=1772328293; c=relaxed/simple;
+	bh=gIBuM8xa7/3gO2Ejm6BuYAW0duRVNl2UN2laHkXY3Uc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qe8qHwLEfgWX+Olky1m/p7Wb/yEtqWvtyeoS+4DNWnNLAJOpp+quf5JekA5KeGgFPxyTrMoAqQx8O6i6NDP14ihFzCX2ViRjH/F7ULvzcn0t0DywfbxiQ9bR9LAj4mvPfqE3oMnIpJ7sS3aXQBXFttJf+0AcHEutkiwa9Q/RYmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Quw6OLXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2037C19421;
+	Sun,  1 Mar 2026 01:24:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328291;
-	bh=rtX7DyN3bJ2S8o3NgMrm5A8EMI5UyE/WOHCeZzeZPec=;
+	s=k20201202; t=1772328293;
+	bh=gIBuM8xa7/3gO2Ejm6BuYAW0duRVNl2UN2laHkXY3Uc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=VRg7eBkw3nVv074WKiIvepaHpwYkpBF1NDb+d6dE1BrRnlVaQE+T2sS7TwovfiURr
-	 hqJ8eogqGMUZuwLsHOBYyxREOyNXezWBqwEfUVQ279D4TeaiZsUXarUE/+1Oa6qJu4
-	 WQIfVTFxuMBwPpkcPxNLwZQ30zqfC5kumct9vjriDqJYOdnBQvPtxkIPfCGAHeD6fp
-	 2g0D3+ya9T95bHp/ZxOLF0hW6uHPsRCdQddL6nLH34r1ho08erziM4pVlZy1VBCi7l
-	 Aa600Vs6Jo4BFdY2Qud4FkoBoTa9kX+a7a8Hm0IwfGFvZqVE+hRlCzUWACqCXWKr7Q
-	 r70/Oz5TKEMtA==
+	b=Quw6OLXHdoZekmpYJ/7kIl0ZFTSUS0ie8OdoXSgI82ag88wKqXTknHEjfabs0Z5yc
+	 TSQcq1YnDc5c3AY0vVoTHRFWUUfuL2alJuGDbSnmg6pQYSG6QO34EhKQKQ2EslrybK
+	 onVeXYZyK7QLRxG51JlhTl6atpI795fRukw3vubhq2ofU4HNboZkXpo3UJTcoZMB0M
+	 0FA3bJJbLrDJAQdLi2G09SFMhuZaWZV7o5y56lWXB9bfnBfMnqHr8boSArVA4etOD7
+	 nGkCL28EUPLZ7GYVAZtfFAM6wa7NifNg43wsjj2lILjw/Q6e0qM14QZB6+10z2GvPf
+	 8uczjpbS3/Iow==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	aha310510@gmail.com
-Cc: Inki Dae <inki.dae@samsung.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: FAILED: Patch "drm/exynos: vidi: use priv->vidi_dev for ctx lookup in vidi_connection_ioctl()" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:24:48 -0500
-Message-ID: <20260301012449.1681760-1-sashal@kernel.org>
+	antoniu.miclaus@analog.com
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org
+Subject: FAILED: Patch "iio: gyro: itg3200: Fix unchecked return value in read_raw" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:24:51 -0500
+Message-ID: <20260301012451.1681808-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,20 +69,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221448-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221449-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 785291CA9CD
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 760681CA9D4
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -105,96 +104,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From d3968a0d85b211e197f2f4f06268a7031079e0d0 Mon Sep 17 00:00:00 2001
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Mon, 19 Jan 2026 17:25:51 +0900
-Subject: [PATCH] drm/exynos: vidi: use priv->vidi_dev for ctx lookup in
- vidi_connection_ioctl()
+From b79b24f578cdb2d657db23e5fafe82c7e6a36b72 Mon Sep 17 00:00:00 2001
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Date: Thu, 29 Jan 2026 17:01:45 +0200
+Subject: [PATCH] iio: gyro: itg3200: Fix unchecked return value in read_raw
 
-vidi_connection_ioctl() retrieves the driver_data from drm_dev->dev to
-obtain a struct vidi_context pointer. However, drm_dev->dev is the
-exynos-drm master device, and the driver_data contained therein is not
-the vidi component device, but a completely different device.
+The return value from itg3200_read_reg_s16() is stored in ret but
+never checked. The function unconditionally returns IIO_VAL_INT,
+ignoring potential I2C read failures. This causes garbage data to
+be returned to userspace when the read fails, with no error reported.
 
-This can lead to various bugs, ranging from null pointer dereferences and
-garbage value accesses to, in unlucky cases, out-of-bounds errors,
-use-after-free errors, and more.
+Add proper error checking to propagate the failure to callers.
 
-To resolve this issue, we need to store/delete the vidi device pointer in
-exynos_drm_private->vidi_dev during bind/unbind, and then read this
-exynos_drm_private->vidi_dev within ioctl() to obtain the correct
-struct vidi_context pointer.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Fixes: 9dbf091da080 ("iio: gyro: Add itg3200")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/gpu/drm/exynos/exynos_drm_drv.h  |  1 +
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 14 +++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ drivers/iio/gyro/itg3200_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.h b/drivers/gpu/drm/exynos/exynos_drm_drv.h
-index 23646e55f142c..06c29ff2aac0e 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_drv.h
-+++ b/drivers/gpu/drm/exynos/exynos_drm_drv.h
-@@ -199,6 +199,7 @@ struct drm_exynos_file_private {
- struct exynos_drm_private {
- 	struct device *g2d_dev;
- 	struct device *dma_dev;
-+	struct device *vidi_dev;
- 	void *mapping;
- 
- 	/* for atomic commit */
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index 64c69dd2966ec..480c99a8f9f75 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -224,9 +224,14 @@ ATTRIBUTE_GROUPS(vidi);
- int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
- 				struct drm_file *file_priv)
- {
--	struct vidi_context *ctx = dev_get_drvdata(drm_dev->dev);
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
-+	struct device *dev = priv ? priv->vidi_dev : NULL;
-+	struct vidi_context *ctx = dev ? dev_get_drvdata(dev) : NULL;
- 	struct drm_exynos_vidi_connection *vidi = data;
- 
-+	if (!ctx)
-+		return -ENODEV;
-+
- 	if (!vidi) {
- 		DRM_DEV_DEBUG_KMS(ctx->dev,
- 				  "user data for vidi is null.\n");
-@@ -372,6 +377,7 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
- {
- 	struct vidi_context *ctx = dev_get_drvdata(dev);
- 	struct drm_device *drm_dev = data;
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
- 	struct drm_encoder *encoder = &ctx->encoder;
- 	struct exynos_drm_plane *exynos_plane;
- 	struct exynos_drm_plane_config plane_config = { 0 };
-@@ -379,6 +385,8 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
- 	int ret;
- 
- 	ctx->drm_dev = drm_dev;
-+	if (priv)
-+		priv->vidi_dev = dev;
- 
- 	plane_config.pixel_formats = formats;
- 	plane_config.num_pixel_formats = ARRAY_SIZE(formats);
-@@ -424,8 +432,12 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
- static void vidi_unbind(struct device *dev, struct device *master, void *data)
- {
- 	struct vidi_context *ctx = dev_get_drvdata(dev);
-+	struct drm_device *drm_dev = data;
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
- 
- 	timer_delete_sync(&ctx->timer);
-+	if (priv)
-+		priv->vidi_dev = NULL;
- }
- 
- static const struct component_ops vidi_component_ops = {
+diff --git a/drivers/iio/gyro/itg3200_core.c b/drivers/iio/gyro/itg3200_core.c
+index cd8a2dae56cd9..bfe95ec1abda9 100644
+--- a/drivers/iio/gyro/itg3200_core.c
++++ b/drivers/iio/gyro/itg3200_core.c
+@@ -93,6 +93,8 @@ static int itg3200_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_RAW:
+ 		reg = (u8)chan->address;
+ 		ret = itg3200_read_reg_s16(indio_dev, reg, val);
++		if (ret)
++			return ret;
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
 -- 
 2.51.0
 
