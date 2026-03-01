@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-221366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBnjBBWWo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:49 +0100
+	id wIk6A/KUo2n3HQUAu9opvQ
+	(envelope-from <stable+bounces-221367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:22:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32ECA1CAAA0
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE931CA574
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:22:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1480F305ACBE
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:21:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C8346302C73D
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FCA26E710;
-	Sun,  1 Mar 2026 01:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C2F274B5F;
+	Sun,  1 Mar 2026 01:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmkvoRZM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qqewTdWi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7844B2BD0B
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F892BD0B;
+	Sun,  1 Mar 2026 01:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328083; cv=none; b=U7lgowzBUIlMhesFns5KwW5ER4x1gRtflKMryJ8fYe9pU6QGvFeydbQk2/kv3CTvBqGORIZ+a5VDyKdMEtmrTIpNrwHr/VjZ340yTkMGzsdhcACQvKxlf0A3E+GA7OV8hJENPeU/mKGNOzkkc6Gvy7L8M7Gs64xgYEAEDhcqKDQ=
+	t=1772328085; cv=none; b=uLqTG2ZraAOwHfwNoEteiefEKKDg5mi7/EE0tb4s2RzIIybNm8jH0HEps8KwM3n3YmcHHwQUS2Tep2SruHRDyB9AVDbthqqieUWagAYq3knyPHBfTNqHR3SGVyQItOojxk39zvAoF0OeNx75ZbmDmD018SRhRhnx4zIbhTo5Uyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328083; c=relaxed/simple;
-	bh=EpmKOr3GTt2LrSszN/TlpfKNunThgbrd5fPU0E/rf5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sz5PAPTPWWBnnfU8zZ9yKUl9RqUP+6hNH/0hL1Qm0XIIOTe4jf9belE3DijIaOMcpNAICMII0XxfVsgoWRyyJWjBEVIKXAmcuX2yCgwR8dXBFrE8ywUpwnRtaD7xJ8Jp9oboeWV7Q3Su0+hSGOGo6duKtIk/eYH17SLS3SMhU68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmkvoRZM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3BBC2BC87;
-	Sun,  1 Mar 2026 01:21:22 +0000 (UTC)
+	s=arc-20240116; t=1772328085; c=relaxed/simple;
+	bh=cStXjZw7ZuEYg6hpY1Da/79s+sXlHNHkAc0ebc5k6So=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PlYx89xBjZHbiDXh7hDChtWs14ru4zgj4p673Xwtqm0IEh37G5kmeFjbbywTGYr86W/cqDpX9GlCZmEwnG673gDGvTWms6tbMb4DGzZzVnexWGKgItZ06tT97DmoWVRwKbdBnw2f6l/wjArHcOmhJ+TCvfRF1+ja8D4Xkr75r4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qqewTdWi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37B2C2BC87;
+	Sun,  1 Mar 2026 01:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328083;
-	bh=EpmKOr3GTt2LrSszN/TlpfKNunThgbrd5fPU0E/rf5Y=;
+	s=k20201202; t=1772328085;
+	bh=cStXjZw7ZuEYg6hpY1Da/79s+sXlHNHkAc0ebc5k6So=;
 	h=From:To:Cc:Subject:Date:From;
-	b=YmkvoRZM63zyPw68t9gHnBvLGR5Qxxg4et9oyQBAj3E8HCm5irOLoX3H6hBXXQivb
-	 ZrlNPFG8Ax5FE6IbThuAr1RQ7c3c75JtqZiL0qCapPl5pb1npakkyH9S53Q4ZphgUK
-	 KFfv0oM7faSxb8tpSQDVXe3iy5rpoq2wEjcPALCKkbPlBptKRxgVuyLphnHp3E294C
-	 31LHER3lnXMfnpuIDYJ94BkrPmd631Ysex4gbA5DnL7QO8sLE+zvQa2aE464zkrKb8
-	 pcHwTU/HC4NS/fxHi4isRT7hkBofMzK+QRI2i9CkhwBSRSTmZKaqyDYbZ/sauBFlz1
-	 bd1v2+OQ0I1vA==
+	b=qqewTdWiS+TWTom0KgacxrEk1idMHYNuBz3yUGUsMxsFM3HP4CrKyO19Ob0WOiCHP
+	 KZvIAWf3MIK3xnsWX+yIkpLwOkDjj02YtkCO/n+YGYOAR6EmyLoZL1EA865GWPxrxz
+	 YqkHvm8UAVeek6kUffIRy9iuUHMGcvRBbc/yTZEB+5VDIdxT0rDJrUhSQcJQvQfBOQ
+	 MlGWo2B/NUB6lZoNuRni5l9zAVJ7leh0tRJco6Pn87zuQ2FHpk1FnLef8FgcUmG6oT
+	 2iaqrgzvVFMmmffbDMV9wDGi7ATUusyBeSPTF2bqTN/OeE5lTEpEFod1g1dnuNYNGY
+	 rNL9eXJHHI3sQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	shawn.lin@rock-chips.com
-Cc: Detlev Casanova <detlev.casanova@collabora.com>,
-	Chaoyi Chen <chaoyi.chen@rock-chips.com>,
-	Marco Schirrmeister <mschirrmeister@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: FAILED: Patch "soc: rockchip: grf: Fix wrong RK3576_IOCGRF_MISC_CON definition" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:21:20 -0500
-Message-ID: <20260301012121.1677247-1-sashal@kernel.org>
+	alain.volmat@foss.st.com
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: FAILED: Patch "media: stm32: dcmipp: bytecap: clear all interrupts upon stream stop" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:21:23 -0500
+Message-ID: <20260301012123.1677297-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,35 +65,35 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[collabora.com,rock-chips.com,gmail.com,sntech.de,lists.infradead.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221366-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221367-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,msgid.link:url,sntech.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rock-chips.com:email]
-X-Rspamd-Queue-Id: 32ECA1CAAA0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,st.com:email]
+X-Rspamd-Queue-Id: AAE931CA574
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -107,39 +106,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3cdc30c42d4a87444f6c7afbefd6a9381c4caa27 Mon Sep 17 00:00:00 2001
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Date: Fri, 16 Jan 2026 08:55:28 +0800
-Subject: [PATCH] soc: rockchip: grf: Fix wrong RK3576_IOCGRF_MISC_CON
- definition
+From 222f1279edd9008ee35b62de156ddac84e31443c Mon Sep 17 00:00:00 2001
+From: Alain Volmat <alain.volmat@foss.st.com>
+Date: Fri, 19 Dec 2025 15:30:35 +0100
+Subject: [PATCH] media: stm32: dcmipp: bytecap: clear all interrupts upon
+ stream stop
 
-RK3576_IOCGRF_MISC_CON is IOC_GRF + 0x40F0, fix it.
+Ensure that there are no pending interrupts after we have stopped the
+pipeline. Indeed, it could happen that new interrupt has been generated
+during the stop_streaming processing hence clear them in order to avoid
+getting a new interrupt right from the start of a next start_streaming.
 
-Fixes: e1aaecacfa13 ("soc: rockchip: grf: Add rk3576 default GRF values")
+Fixes: 28e0f3772296 ("media: stm32-dcmipp: STM32 DCMIPP camera interface driver")
 Cc: stable@vger.kernel.org
-Cc: Detlev Casanova <detlev.casanova@collabora.com>
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-Tested-by: Marco Schirrmeister <mschirrmeister@gmail.com>
-Link: https://patch.msgid.link/1768524932-163929-2-git-send-email-shawn.lin@rock-chips.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- drivers/soc/rockchip/grf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/soc/rockchip/grf.c b/drivers/soc/rockchip/grf.c
-index 27bfa09ff2516..8974d1c6b35dc 100644
---- a/drivers/soc/rockchip/grf.c
-+++ b/drivers/soc/rockchip/grf.c
-@@ -146,7 +146,7 @@ static const struct rockchip_grf_info rk3576_sysgrf __initconst = {
- 	.num_values = ARRAY_SIZE(rk3576_defaults_sys_grf),
- };
+diff --git a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
+index 1c1b6b48918ee..b18e273ef4a3e 100644
+--- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
++++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
+@@ -512,6 +512,9 @@ static void dcmipp_bytecap_stop_streaming(struct vb2_queue *vq)
+ 	/* Disable pipe */
+ 	reg_clear(vcap, DCMIPP_P0FSCR, DCMIPP_P0FSCR_PIPEN);
  
--#define RK3576_IOCGRF_MISC_CON		0x04F0
-+#define RK3576_IOCGRF_MISC_CON		0x40F0
++	/* Clear any pending interrupts */
++	reg_write(vcap, DCMIPP_CMFCR, DCMIPP_CMIER_P0ALL);
++
+ 	spin_lock_irq(&vcap->irqlock);
  
- static const struct rockchip_grf_value rk3576_defaults_ioc_grf[] __initconst = {
- 	{ "jtag switching", RK3576_IOCGRF_MISC_CON, FIELD_PREP_WM16_CONST(BIT(1), 0) },
+ 	/* Return all queued buffers to vb2 in ERROR state */
 -- 
 2.51.0
 
