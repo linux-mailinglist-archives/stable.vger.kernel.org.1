@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-221861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221862-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGieNm2ao2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:21 +0100
+	id 6ACeBWido2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-221862-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5983F1CBA6B
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823171CC7BB
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5DDBA303388E
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFEDF32D3B54
 	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5137B2D979C;
-	Sun,  1 Mar 2026 01:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC9713B58A;
+	Sun,  1 Mar 2026 01:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="svQAWwzs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nll+fgC5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A2582899
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4242E277C9D
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329314; cv=none; b=LkezEeKz9l1DuqJw8zdbHFYpD2mhwKIlYNEVYjhegDcg8Coef9buLh77wTwZP/C8ohgdTI9oddAgvJJo8wqw3SFZjKhQ+Gv/oCBT3JG2i6mQHZEI1Tf6aFVqGtBsG+tt1oKm7QnQfnoQ2SXmViQ2+OGe9M36TtnuPkr7WMDhCkA=
+	t=1772329316; cv=none; b=dq4P/s28y4llB7PE1ZaoYFNp0rMSa0htatxgmyZMKv39gnKZB6TyvNO1yi4VJfyopGgxG6cV5Tza5h3Bmq1hxfOoCTplq+PJ5vpxgWUi2f8RBfmwaQkbIJ3AMppJgKyHi1Q3wTdwyczCDjPIC4gkYyouRvX9ywmRTRxD3A5qrpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329314; c=relaxed/simple;
-	bh=XK485chqRAUqkZ6BF7Q8Flh4ocDzLimSDIKeo7CZc7Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PvsCb6x9xE81kXIuOjNmJY5KtqI6tXUh9VG6xl1dWxGm+yCTD0hAsgWjUZmMYi53k9dPF584Uh5ahY10KYzoOFtsMV+JZq0bPhty+XCRZuJPSO+yJ+RY4bgyIipe2xzU8vSZ+fp6lWDO/OK5K1MnNEjE2Pj35VurhomVhceJLT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=svQAWwzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEB0C19421;
-	Sun,  1 Mar 2026 01:41:53 +0000 (UTC)
+	s=arc-20240116; t=1772329316; c=relaxed/simple;
+	bh=DZgwUkLbSC1Gsk2Cp5BMaa7SvKj5k//iiNKBuBlwVJA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dE9/pm++u6/8b3ujqUTiY+alqOk+cxaa6DioSBodnX/PvX/2QpwJJPbCD2Gk0Nho1Rfqrs9eWRoFfcneN91T8eqH1DwaQIjBT7nUR3bztbq6VaQmV+qTD7BAY7SORL8HjwTTIFggHQ10HUxpP8iPJ6A46extpGt2y1Uq/N2eL24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nll+fgC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CB6C19421;
+	Sun,  1 Mar 2026 01:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329314;
-	bh=XK485chqRAUqkZ6BF7Q8Flh4ocDzLimSDIKeo7CZc7Y=;
+	s=k20201202; t=1772329316;
+	bh=DZgwUkLbSC1Gsk2Cp5BMaa7SvKj5k//iiNKBuBlwVJA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=svQAWwzssDK/yhSraStRq43nEaojDL9Cd8tdAxvXWjLyIGzcTxKKwqiKaGtUdj3eU
-	 d6JV7lY1P1cyLLhQeDxG7vClXf47Lal8gTfYqk9CWAyPaUlBS8SPGDuy2EI0fGK0Fi
-	 atvfbFcRQr7jS/+SGtuOYZUct4crIWlJp8QzOi1WWLswADvyDs/xyhfOSMRmM2W/Rn
-	 ODvw+0RQ2L0jP3Q17+Ez2dsA2rIewe4ZGK47n/HOhjhjaIKWZAIcDjN6sjhWobNTWN
-	 27yrpRMmWuioxM0/8K3UIVNdQ/ozJ9rKqzr/BFH4ssQL7vABpn4Yyg9jfDvojszzru
-	 +ACdLVDKOdOfA==
+	b=Nll+fgC560Sb//QAfgRNhQn9pzKTpAGQdnHALF3swu9ueWX3SlaZzOzg04mgWMJLN
+	 lFJDZO+9sDUZHFaFH7u6XwQkqvVVxR8iO3Zbs+bZ6is5aRFdcNJP6mwApVoPQ5qcRd
+	 pL2JcfRyfuRuuYX5xALpe+HSfaFyIpzyBE5tn8XvAKMeYHZvRBLfd45GwATEVCWr/w
+	 rXrYSaTF01sI+/0k6ptMMPOCfXOZFJsmQ/mk8/bvWr1FmxpBcQ/K2FXlDvErVp2W1A
+	 Cc8KwbnKlMdrqfsTQ8D9tk7tbmn7+NbbXW1DmrpcSjZ+pfKn9qVlbkAnmXnH0U4GtD
+	 NLkcizf6XAwpg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johan@kernel.org
-Cc: Andrew Davis <afd@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	vulab@iscas.ac.cn
+Cc: Nishanth Menon <nm@ti.com>,
 	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "soc: ti: k3-socinfo: Fix regmap leak on probe failure" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:41:51 -0500
-Message-ID: <20260301014152.1703596-1-sashal@kernel.org>
+Subject: FAILED: Patch "soc: ti: pruss: Fix double free in pruss_clk_mux_setup()" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:41:54 -0500
+Message-ID: <20260301014154.1703645-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,19 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221861-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221862-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5983F1CBA6B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,ti.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 823171CC7BB
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -103,40 +102,47 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From c933138d45176780fabbbe7da263e04d5b3e525d Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Thu, 27 Nov 2025 14:49:42 +0100
-Subject: [PATCH] soc: ti: k3-socinfo: Fix regmap leak on probe failure
+From 80db65d4acfb9ff12d00172aed39ea8b98261aad Mon Sep 17 00:00:00 2001
+From: Wentao Liang <vulab@iscas.ac.cn>
+Date: Tue, 13 Jan 2026 01:47:16 +0000
+Subject: [PATCH] soc: ti: pruss: Fix double free in pruss_clk_mux_setup()
 
-The mmio regmap allocated during probe is never freed.
+In the pruss_clk_mux_setup(), the devm_add_action_or_reset() indirectly
+calls pruss_of_free_clk_provider(), which calls of_node_put(clk_mux_np)
+on the error path. However, after the devm_add_action_or_reset()
+returns, the of_node_put(clk_mux_np) is called again, causing a double
+free.
 
-Switch to using the device managed allocator so that the regmap is
-released on probe failures (e.g. probe deferral) and on driver unbind.
+Fix by returning directly, to avoid the duplicate of_node_put().
 
-Fixes: a5caf03188e4 ("soc: ti: k3-socinfo: Do not use syscon helper to build regmap")
-Cc: stable@vger.kernel.org	# 6.15
-Cc: Andrew Davis <afd@ti.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Andrew Davis <afd@ti.com>
-Link: https://patch.msgid.link/20251127134942.2121-1-johan@kernel.org
+Fixes: ba59c9b43c86 ("soc: ti: pruss: support CORECLK_MUX and IEPCLK_MUX")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20260113014716.2464741-1-vulab@iscas.ac.cn
 Signed-off-by: Nishanth Menon <nm@ti.com>
 ---
- drivers/soc/ti/k3-socinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/ti/pruss.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/ti/k3-socinfo.c b/drivers/soc/ti/k3-socinfo.c
-index 50c170a995f90..42275cb5ba1c8 100644
---- a/drivers/soc/ti/k3-socinfo.c
-+++ b/drivers/soc/ti/k3-socinfo.c
-@@ -141,7 +141,7 @@ static int k3_chipinfo_probe(struct platform_device *pdev)
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
+diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+index 038576805bfa0..0fd59c73f585d 100644
+--- a/drivers/soc/ti/pruss.c
++++ b/drivers/soc/ti/pruss.c
+@@ -366,12 +366,10 @@ static int pruss_clk_mux_setup(struct pruss *pruss, struct clk *clk_mux,
  
--	regmap = regmap_init_mmio(dev, base, &k3_chipinfo_regmap_cfg);
-+	regmap = devm_regmap_init_mmio(dev, base, &k3_chipinfo_regmap_cfg);
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
+ 	ret = devm_add_action_or_reset(dev, pruss_of_free_clk_provider,
+ 				       clk_mux_np);
+-	if (ret) {
++	if (ret)
+ 		dev_err(dev, "failed to add clkmux free action %d", ret);
+-		goto put_clk_mux_np;
+-	}
  
+-	return 0;
++	return ret;
+ 
+ put_clk_mux_np:
+ 	of_node_put(clk_mux_np);
 -- 
 2.51.0
 
