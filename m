@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-221658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EO2pCMOao2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:47 +0100
+	id oA0YAxKYo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5EE1CBC26
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7061CB16F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E92D4321FA81
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:34:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34423301460A
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA442DA749;
-	Sun,  1 Mar 2026 01:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6A42F3C1F;
+	Sun,  1 Mar 2026 01:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GDWwLC9r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iv+n6jeB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41A52D0C79;
-	Sun,  1 Mar 2026 01:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603EF27281D;
+	Sun,  1 Mar 2026 01:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328818; cv=none; b=HD19dGJMhXhQgdcEwRyUiyRbjDOaM4bfCwX5jxYUHmX+1j8qUhZng8hu9/G4qDkrzUZYbd2cbEmXhVGPvEQJJdekh8QhuwiN16TfwbBmgSS9yVVf20a8UdmtPaIOdo46gDd9lwPPu7KQFB3YT6EBcpGhY/Q+qJ/ZmjrQ4CrDPeQ=
+	t=1772328821; cv=none; b=Q5s6nO8G4kvEVnBVkhXc7/X9/Ftz+HGcFJbF0E/8OG7mJ1WhhGgZrb2dylnFK79IuGjX5wUTn4/Y0w/s0t8QsY/vR+nNjR7PpyU0uS80YCIQrB9UiIA1Il4VYK4Uo5XyTroKVFoPLoRQhOG5T/PMcoZunp8+zirRzza2HWuqTKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328818; c=relaxed/simple;
-	bh=bbnxhDkgqj8+2K2uhb7dq1w6jFLvUJ5r6VAomHB4Dm4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jXG3ldpNCUyX+xh1cMEHmy7KFYG7h2u3Qb+NmuyGbIekIFknl39plE5eMSBa3acLKXWfmHzgY62L3jNTggLJXEKkLxTWMPF4rqw1WBFCduH96RmThGkDm07seU6T6MLAXoNBhVIdJ4AD/VDh2u4VLK9nQVf0dCkSss8IeVh1o3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GDWwLC9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D574C19421;
-	Sun,  1 Mar 2026 01:33:37 +0000 (UTC)
+	s=arc-20240116; t=1772328821; c=relaxed/simple;
+	bh=cqIU2G+iAY4RBM8mwGYWDbIlF407slftIXTAd+BOewA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mHoqbSJTmiEv4i6qMXIP9R+FSo6VG+8Cj8Bnzp/Eng9jc3HPQOt1Zvkw1izSIpBe9UaLlgSiofxN/pD1UCc+9bEcOrmAkD90HHspFtsxQO9AHDxzpMtYeqhAkYIEMSNwh89C7KMkz+uuYXAPmJFm5k8WUsYURuPCEo9C3i+di1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iv+n6jeB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C1BC19421;
+	Sun,  1 Mar 2026 01:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328818;
-	bh=bbnxhDkgqj8+2K2uhb7dq1w6jFLvUJ5r6VAomHB4Dm4=;
+	s=k20201202; t=1772328821;
+	bh=cqIU2G+iAY4RBM8mwGYWDbIlF407slftIXTAd+BOewA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=GDWwLC9rOFY6V7JcE09p4vZLMeD2K/jr/4+ru4f635SEht0kV2KmsM9VT2X135z++
-	 nWCB4t2eq0ctrV9207fCJRbFsxxa+CXMDCNhXpa49TCnbpz9McYj1NiKBbQPI3hltz
-	 g9FjLheAaxaVzDfJNCSANCrhhWD21g6m2SjjA698sdTCl/PMwUI28O5961hAWZ0m+z
-	 O4a7HhiurlSvrJw7IZIcGh6k0yfogJfPeeQ6ufvws+tRHPPuMpkftvIu+YhNeAGOex
-	 AkzwXet1Bl/JZ6wAl5OAZCzTggk7vGhE5LSSRg+WgFXArCCMBiNkCZrSeEM+1u3XxI
-	 8FrcSBA3tuJzQ==
+	b=Iv+n6jeB5JnGUay/35akdQcrnUeqfhwXk/l61coV6QLwUuh2EMovA27kIAb9eB2sf
+	 dvdPmH3AGKbaNUG7m67bLpsWwDz/ynZ06EjGZdzgsPAMzicPkPAfOxhPrT12Och4rn
+	 890OwOOctJF+7y1hpKNBYIg0iYLNLTmu1EU5+Mb9moobw0WpXNOowhtC9hJ+vnVA34
+	 5rIaa7PCscoUCYK8r1F6naPsv3zhO2yVLgUYsnidIKnkfgnVYt5xfQ0quX3CN8pZXw
+	 Ju66OhD6347hH+utce0Lkr+rJ2b496vRJrKaeonKLEWsDAuAEIkLnPJg2H/by/pP95
+	 dc0TwsQkGlBDA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	bfoster@redhat.com
-Cc: Baokun Li <libaokun1@huawei.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	stable@kernel.org,
-	linux-ext4@vger.kernel.org
-Subject: FAILED: Patch "ext4: fix dirtyclusters double decrement on fs shutdown" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:33:36 -0500
-Message-ID: <20260301013336.1692882-1-sashal@kernel.org>
+	jerrysteve1101@gmail.com
+Cc: Peter Robinson <pbrobinson@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: FAILED: Patch "arm64: dts: rockchip: Do not enable hdmi_sound node on Pinebook Pro" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:33:39 -0500
+Message-ID: <20260301013339.1692933-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,29 +71,30 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221658-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,manjaro.org,sntech.de,vger.kernel.org,lists.infradead.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-221659-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7C5EE1CBC26
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BB7061CB16F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -104,121 +107,50 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 94a8cea54cd935c54fa2fba70354757c0fc245e3 Mon Sep 17 00:00:00 2001
-From: Brian Foster <bfoster@redhat.com>
-Date: Tue, 13 Jan 2026 12:19:05 -0500
-Subject: [PATCH] ext4: fix dirtyclusters double decrement on fs shutdown
+From b18247f9dab735c9c2d63823d28edc9011e7a1ad Mon Sep 17 00:00:00 2001
+From: Jun Yan <jerrysteve1101@gmail.com>
+Date: Fri, 16 Jan 2026 23:12:53 +0800
+Subject: [PATCH] arm64: dts: rockchip: Do not enable hdmi_sound node on
+ Pinebook Pro
 
-fstests test generic/388 occasionally reproduces a warning in
-ext4_put_super() associated with the dirty clusters count:
+Remove the redundant enabling of the hdmi_sound node in the Pinebook Pro
+board dts file, because the HDMI output is unused on this device. [1][2]
 
-  WARNING: CPU: 7 PID: 76064 at fs/ext4/super.c:1324 ext4_put_super+0x48c/0x590 [ext4]
+This change also eliminates the following kernel log warning, which is
+caused by the unenabled dependent node of hdmi_sound that ultimately
+results in the node's probe failure:
 
-Tracing the failure shows that the warning fires due to an
-s_dirtyclusters_counter value of -1. IOW, this appears to be a
-spurious decrement as opposed to some sort of leak. Further tracing
-of the dirty cluster count deltas and an LLM scan of the resulting
-output identified the cause as a double decrement in the error path
-between ext4_mb_mark_diskspace_used() and the caller
-ext4_mb_new_blocks().
+  platform hdmi-sound: deferred probe pending: asoc-simple-card: parse error
 
-First, note that generic/388 is a shutdown vs. fsstress test and so
-produces a random set of operations and shutdown injections. In the
-problematic case, the shutdown triggers an error return from the
-ext4_handle_dirty_metadata() call(s) made from
-ext4_mb_mark_context(). The changed value is non-zero at this point,
-so ext4_mb_mark_diskspace_used() does not exit after the error
-bubbles up from ext4_mb_mark_context(). Instead, the former
-decrements both cluster counters and returns the error up to
-ext4_mb_new_blocks(). The latter falls into the !ar->len out path
-which decrements the dirty clusters counter a second time, creating
-the inconsistency.
+[1] https://files.pine64.org/doc/PinebookPro/pinebookpro_v2.1_mainboard_schematic.pdf
+[2] https://files.pine64.org/doc/PinebookPro/pinebookpro_schematic_v21a_20220419.pdf
 
-To avoid this problem and simplify ownership of the cluster
-reservation in this codepath, lift the counter reduction to a single
-place in the caller. This makes it more clear that
-ext4_mb_new_blocks() is responsible for acquiring cluster
-reservation (via ext4_claim_free_clusters()) in the !delalloc case
-as well as releasing it, regardless of whether it ends up consumed
-or returned due to failure.
-
-Fixes: 0087d9fb3f29 ("ext4: Fix s_dirty_blocks_counter if block allocation failed with nodelalloc")
-Signed-off-by: Brian Foster <bfoster@redhat.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20260113171905.118284-1-bfoster@redhat.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://patch.msgid.link/20260116151253.9223-1-jerrysteve1101@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 ---
- fs/ext4/mballoc-test.c |  2 +-
- fs/ext4/mballoc.c      | 21 +++++----------------
- 2 files changed, 6 insertions(+), 17 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/ext4/mballoc-test.c b/fs/ext4/mballoc-test.c
-index a9416b20ff64c..4abb40d4561ce 100644
---- a/fs/ext4/mballoc-test.c
-+++ b/fs/ext4/mballoc-test.c
-@@ -567,7 +567,7 @@ test_mark_diskspace_used_range(struct kunit *test,
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index eaaca08a76018..a6ac89567bafe 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -421,10 +421,6 @@ &gpu {
+ 	status = "okay";
+ };
  
- 	bitmap = mbt_ctx_bitmap(sb, TEST_GOAL_GROUP);
- 	memset(bitmap, 0, sb->s_blocksize);
--	ret = ext4_mb_mark_diskspace_used(ac, NULL, 0);
-+	ret = ext4_mb_mark_diskspace_used(ac, NULL);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
- 	max = EXT4_CLUSTERS_PER_GROUP(sb);
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index de4cacb740b33..dd29558ad753b 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4186,8 +4186,7 @@ ext4_mb_mark_context(handle_t *handle, struct super_block *sb, bool state,
-  * Returns 0 if success or error code
-  */
- static noinline_for_stack int
--ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
--				handle_t *handle, unsigned int reserv_clstrs)
-+ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac, handle_t *handle)
- {
- 	struct ext4_group_desc *gdp;
- 	struct ext4_sb_info *sbi;
-@@ -4242,13 +4241,6 @@ ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
- 	BUG_ON(changed != ac->ac_b_ex.fe_len);
- #endif
- 	percpu_counter_sub(&sbi->s_freeclusters_counter, ac->ac_b_ex.fe_len);
--	/*
--	 * Now reduce the dirty block count also. Should not go negative
--	 */
--	if (!(ac->ac_flags & EXT4_MB_DELALLOC_RESERVED))
--		/* release all the reserved blocks if non delalloc */
--		percpu_counter_sub(&sbi->s_dirtyclusters_counter,
--				   reserv_clstrs);
- 
- 	return err;
- }
-@@ -6333,7 +6325,7 @@ ext4_fsblk_t ext4_mb_new_blocks(handle_t *handle,
- 			ext4_mb_pa_put_free(ac);
- 	}
- 	if (likely(ac->ac_status == AC_STATUS_FOUND)) {
--		*errp = ext4_mb_mark_diskspace_used(ac, handle, reserv_clstrs);
-+		*errp = ext4_mb_mark_diskspace_used(ac, handle);
- 		if (*errp) {
- 			ext4_discard_allocated_blocks(ac);
- 			goto errout;
-@@ -6364,12 +6356,9 @@ ext4_fsblk_t ext4_mb_new_blocks(handle_t *handle,
- out:
- 	if (inquota && ar->len < inquota)
- 		dquot_free_block(ar->inode, EXT4_C2B(sbi, inquota - ar->len));
--	if (!ar->len) {
--		if ((ar->flags & EXT4_MB_DELALLOC_RESERVED) == 0)
--			/* release all the reserved blocks if non delalloc */
--			percpu_counter_sub(&sbi->s_dirtyclusters_counter,
--						reserv_clstrs);
--	}
-+	/* release any reserved blocks */
-+	if (reserv_clstrs)
-+		percpu_counter_sub(&sbi->s_dirtyclusters_counter, reserv_clstrs);
- 
- 	trace_ext4_allocate_blocks(ar, (unsigned long long)block);
- 
+-&hdmi_sound {
+-	status = "okay";
+-};
+-
+ &i2c0 {
+ 	clock-frequency = <400000>;
+ 	i2c-scl-falling-time-ns = <4>;
 -- 
 2.51.0
 
