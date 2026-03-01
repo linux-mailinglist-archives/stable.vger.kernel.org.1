@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-222143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMh+HSOio2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:19:15 +0100
+	id SJ4NByWio2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:19:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC751CD6EE
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A009B1CD6F6
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E77C328633E
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5938345614D
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF7B303A01;
-	Sun,  1 Mar 2026 01:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5928274B5F;
+	Sun,  1 Mar 2026 01:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvOtWyDU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fTJw4NzH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436CC274B5F;
-	Sun,  1 Mar 2026 01:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A0E2F7ADE
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330008; cv=none; b=OTS+81kTEHFsVAEyEUxzuAzuEI+CLQXDrVZMFmgGHa4BgDCQlGKbP7DnXuK5PUMxhmDnXtcx2c1KqcyngxclIjKMksXNuPe1BpBN6+NbOJlbhXs6illhJHdlJ9Qc08T5Hu6ds5+bhf8QzzEZQv6TfiDisLTf8LO9ybccjlYyEwE=
+	t=1772330010; cv=none; b=UHmXq0se1oudtCzswzeuWPxZOmRdTNn5uNbL8uR0x70kuAlGX6Zws5gV+tHxhjzwojgDBEZ8h/jmIfiSC/M8QTQgMzFAnnjL8FRDXZO3h6yUfGjZ0xsFRTOCy73Pm7neqAXumo9svkvKQKwAx0D7q1a+j6eHniysmowuYPAYjd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330008; c=relaxed/simple;
-	bh=+MlxvMgIvOcV4f0uiMnm4b4Bu4lgt491hACDl2oRdTA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=by11n2Jp0ze8R1I2QDsvTH/6Zbui/1qH+X25i9qikLacfBVG8ao5ct6+RvOPVJg7fLwAiZVDeL3il0c597vPQxVVD2XKJMoPxFZi70JNb6bCuPJ4jqGYtbu0qib8elzY+n2fZI9zptnQKvvuIwFRKO+ZVnI+Jw5WSfg+fnenaXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvOtWyDU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C7CC19424;
-	Sun,  1 Mar 2026 01:53:27 +0000 (UTC)
+	s=arc-20240116; t=1772330010; c=relaxed/simple;
+	bh=KeF1EjDxd9GxW048ylxTKI+8UBUwg/UtPEADTnoQPdA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CUACFfsI1FJ6bYGEIRjmTOj/FiLZTfJaXYG9nxzSmPsqXuusXOVJXk9llzU59kJSdDfeRrZLHB8hEEAPQURsxCqsWYf0Te5FbUoaTKHcwjcP8cUYwaOSiTZOtrbkGA+RJWP2WEEx2+hG4DAgqNdOfbTCWltQ+k0gg+98f0LS+cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fTJw4NzH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C63C19425;
+	Sun,  1 Mar 2026 01:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330008;
-	bh=+MlxvMgIvOcV4f0uiMnm4b4Bu4lgt491hACDl2oRdTA=;
+	s=k20201202; t=1772330010;
+	bh=KeF1EjDxd9GxW048ylxTKI+8UBUwg/UtPEADTnoQPdA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=HvOtWyDUPk/h8mmcXKDyYD4tcFu/e28vfmQXh7tUMUMVTqCf7iAovOe2zAN0wyTO4
-	 1QOKc9q0CSVfkmMPVgM/1FprI7xLr9Po9Q8RCxCqYN7SmTsqdPrMDY8yfbYN9hDhX4
-	 g0z9VxFEgQ0HEjiqfmR2LjnXh0y1ioCRQ8JDXcAHtVFkkmfMmOOYcVo9PemeknOX/j
-	 G8NOMrIGnaamP3gRjcBQP/MjNffTwQk2ezPh8zcvweW/scRGca38YsrQw5PtYUb9lg
-	 6eV2Dx7CZoCizvdaIrohuNUYZH8AAtlPTYfbD7UzBS6iHexM3ufwUhcmHxpDCR1doo
-	 LvBpK/i8HROSQ==
+	b=fTJw4NzHVBVXxWOLM0vSrn4DAnGkaB6Ke+//bOuFSKAKIQxKHoXF8YYvU5XEUTHDy
+	 hxYh5XX5P0F0NOruIfv/6WQi52NZ11lstnBg6GRDqiTgKInRouZxxXFr3a3y12MLgs
+	 9D+XsbKcAqE6V3GDpg5176m/JrCSogDWs3B6zyrGIHrWATT2yWStwMIUdgzb/PnVjU
+	 aT/kRVIcE9CBFnGoKla3jqQJ9aVJ2mQQZcVk8ZK9dW5gG/6JbvY06I/eSquU3nv8AJ
+	 k6Te377RzsY6iNk+80pnTMAtsBxMGfAyWWg75BUZt4skHp/eF//cZthXKrX6PAE2r7
+	 5XShXsvq4IHtw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	thomas.richard@bootlin.com
-Cc: stable <stable@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org
-Subject: FAILED: Patch "usb: cdns3: fix role switching during resume" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:53:25 -0500
-Message-ID: <20260301015326.1720215-1-sashal@kernel.org>
+	andrea.scian@dave.eu
+Cc: stable@kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	linux-mtd@lists.infradead.org
+Subject: FAILED: Patch "mtd: rawnand: pl353: Fix software ECC support" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:53:28 -0500
+Message-ID: <20260301015328.1720267-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222143-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222144-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,msgid.link:url,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: DEC751CD6EE
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dave.eu:email]
+X-Rspamd-Queue-Id: A009B1CD6F6
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -104,91 +103,34 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 87e4b043b98a1d269be0b812f383881abee0ca45 Mon Sep 17 00:00:00 2001
-From: "Thomas Richard (TI)" <thomas.richard@bootlin.com>
-Date: Fri, 30 Jan 2026 11:05:45 +0100
-Subject: [PATCH] usb: cdns3: fix role switching during resume
+From 89b831ebdaca0df4ca3b226f7e7a1d1db1629060 Mon Sep 17 00:00:00 2001
+From: Andrea Scian <andrea.scian@dave.eu>
+Date: Wed, 4 Feb 2026 18:41:44 +0100
+Subject: [PATCH] mtd: rawnand: pl353: Fix software ECC support
 
-If the role change while we are suspended, the cdns3 driver switches to the
-new mode during resume. However, switching to host mode in this context
-causes a NULL pointer dereference.
+We need to set also write_page_raw in ecc structure to allow
+choosing SW ECC instead of HW one, otherwise write operation fail.
 
-The host role's start() operation registers a xhci-hcd device, but its
-probe is deferred while we are in the resume path. The host role's resume()
-operation assumes the xhci-hcd device is already probed, which is not the
-case, leading to the dereference. Since the start() operation of the new
-role is already called, the resume operation can be skipped.
-
-So skip the resume operation for the new role if a role switch occurs
-during resume. Once the resume sequence is complete, the xhci-hcd device
-can be probed in case of host mode.
-
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000208
-Mem abort info:
-...
-Data abort info:
-...
-[0000000000000208] pgd=0000000000000000, p4d=0000000000000000
-Internal error: Oops: 0000000096000004 [#1]  SMP
-Modules linked in:
-CPU: 0 UID: 0 PID: 146 Comm: sh Not tainted
-6.19.0-rc7-00013-g6e64f4aabfae-dirty #135 PREEMPT
-Hardware name: Texas Instruments J7200 EVM (DT)
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : usb_hcd_is_primary_hcd+0x0/0x1c
-lr : cdns_host_resume+0x24/0x5c
-...
-Call trace:
- usb_hcd_is_primary_hcd+0x0/0x1c (P)
- cdns_resume+0x6c/0xbc
- cdns3_controller_resume.isra.0+0xe8/0x17c
- cdns3_plat_resume+0x18/0x24
- platform_pm_resume+0x2c/0x68
- dpm_run_callback+0x90/0x248
- device_resume+0x100/0x24c
- dpm_resume+0x190/0x2ec
- dpm_resume_end+0x18/0x34
- suspend_devices_and_enter+0x2b0/0xa44
- pm_suspend+0x16c/0x5fc
- state_store+0x80/0xec
- kobj_attr_store+0x18/0x2c
- sysfs_kf_write+0x7c/0x94
- kernfs_fop_write_iter+0x130/0x1dc
- vfs_write+0x240/0x370
- ksys_write+0x70/0x108
- __arm64_sys_write+0x1c/0x28
- invoke_syscall+0x48/0x10c
- el0_svc_common.constprop.0+0x40/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x34/0x108
- el0t_64_sync_handler+0xa0/0xe4
- el0t_64_sync+0x198/0x19c
-Code: 52800003 f9407ca5 d63f00a0 17ffffe4 (f9410401)
----[ end trace 0000000000000000 ]---
-
-Cc: stable <stable@kernel.org>
-Fixes: 2cf2581cd229 ("usb: cdns3: add power lost support for system resume")
-Signed-off-by: Thomas Richard (TI) <thomas.richard@bootlin.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://patch.msgid.link/20260130-usb-cdns3-fix-role-switching-during-resume-v1-1-44c456852b52@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 08d8c62164a322 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
+Signed-off-by: Andrea Scian <andrea.scian@dave.eu>
+Cc: stable@kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/usb/cdns3/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/pl35x-nand-controller.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index 1243a5cea91b5..f0e32227c0b79 100644
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -551,7 +551,7 @@ int cdns_resume(struct cdns *cdns)
- 		}
- 	}
- 
--	if (cdns->roles[cdns->role]->resume)
-+	if (!role_changed && cdns->roles[cdns->role]->resume)
- 		cdns->roles[cdns->role]->resume(cdns, power_lost);
- 
- 	return 0;
+diff --git a/drivers/mtd/nand/raw/pl35x-nand-controller.c b/drivers/mtd/nand/raw/pl35x-nand-controller.c
+index 11bd90e3f18cb..7f012b7c3eaec 100644
+--- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
++++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
+@@ -976,6 +976,7 @@ static int pl35x_nand_attach_chip(struct nand_chip *chip)
+ 		fallthrough;
+ 	case NAND_ECC_ENGINE_TYPE_NONE:
+ 	case NAND_ECC_ENGINE_TYPE_SOFT:
++		chip->ecc.write_page_raw = nand_monolithic_write_page_raw;
+ 		break;
+ 	case NAND_ECC_ENGINE_TYPE_ON_HOST:
+ 		ret = pl35x_nand_init_hw_ecc_controller(nfc, chip);
 -- 
 2.51.0
 
