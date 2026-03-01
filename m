@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-222316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJIyMqquo2nUJwUAu9opvQ
-	(envelope-from <stable+bounces-222316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:12:42 +0100
+	id 2GtaL8ujo2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:26:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E901CE52D
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:12:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1620B1CD8BA
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B450E3524AC0
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:03:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3B3E3324697
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C493016EE;
-	Sun,  1 Mar 2026 02:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5512D979C;
+	Sun,  1 Mar 2026 02:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WNuF/uFS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eIdjR6YE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760D313D53C;
-	Sun,  1 Mar 2026 02:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31E713B58A
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330578; cv=none; b=bPYDHzJohtDyj/PLy6W+FKdxVtO+1MuYYmjbM8XnBC9nZ4kPnfhkp0afzRU6b7NtiWhuSs8jqUha8kyca/GNTzPmmzJtdRXapL+SLeR8PzIoQBiW7tBZ9356Zwh2JN+kJZX0FPfuVGggLOKJwH8xpadI8X+Y2gMpHdKS+tyMmck=
+	t=1772330581; cv=none; b=lOZrph9YmL8gVlxl+va6qsuebKeJwCeZM9p8fNdCewe7a+l5YTcDqpcVysp6LA6G+4Nwwbzv3igavg4wefZGsF2zpHjoSmymqdtq02VrXGsEbXsA0MziQoAQsmZ1VHvwRfGJuCstxkFr5l226uVL0XlIUxe7zR+bw4rJajVJyV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330578; c=relaxed/simple;
-	bh=qaosfLo4AHWp+gGW+BnVKv6cOTQ+cuQJjo83LZp2dvA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hg0MY6TlAyKK5/i5l91ew37EORThmjQevt0WjH6BIvMP9FfEaF3aX0Pf1fAkO6gg7g/2Iv05EVosn00FtGdOXbZnM+7mQgSSY+Gj1Q+zOAoEa8ZaCkeHptT0kYjAA22kjkPHPuE+o56ZAAKq7MZ36vex11GXPHxFQJexbORGYtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WNuF/uFS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DDFC19421;
-	Sun,  1 Mar 2026 02:02:57 +0000 (UTC)
+	s=arc-20240116; t=1772330581; c=relaxed/simple;
+	bh=VIirExjuTsJcudi9KQqQIGuDAvwU/Z+Z7acipKVjnm0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iyVwj4Et9KQK760L3XOKqI54BL6K1Onk39Bewf/izayGMt+EMA+NsXb5rCmOYOsbqjtVUNVXKT8PCA6TpJv7oFtaCAsytbJa/UGkAUZ4clra9HvBJD5qrZ5xvyRxDszzVpsC526KzoSPn3r6yTCvma3VE1F7UdtNG2rvO5h11yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eIdjR6YE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DACC19421;
+	Sun,  1 Mar 2026 02:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330578;
-	bh=qaosfLo4AHWp+gGW+BnVKv6cOTQ+cuQJjo83LZp2dvA=;
+	s=k20201202; t=1772330581;
+	bh=VIirExjuTsJcudi9KQqQIGuDAvwU/Z+Z7acipKVjnm0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=WNuF/uFSe1caoQol4SuvX2kfdf9hIoNxzfMSHMF6DPQWCUibgZJGxTrsja147eCBz
-	 bQNovDyFsdyXNly3lo3MBZnL06mFP4snGGoAeEZArfF0Eo2U5zgs3Al+85JwlIRhw/
-	 zJtW39LPmB1aTmrXOJFr8ALR5sVCfdHx77j3PvZe6GMLtAl+0KFunaZFYQA6CVP1xc
-	 VmxJ/2CFjFelm5T1CALpZ9jixq7dSLjb+2I+/el2y9EF3q07iZbmD4pDE6wNK+prGk
-	 L8wyRwOUZDlvAQLjsgM/K8cmO3wVkgIetro1jVfZFpjyyHixDAVxqYnS5geGqy6OWp
-	 c6e3bFh00prnw==
+	b=eIdjR6YE3x+po6EsrITpJjbSdVLu1dV1X0QnTqyT3nIAK1EL/JljoSneWxD/BRkLu
+	 7IGAG0/Jg66JzmZsGrlOmgUD+1GylnAAzj0Xmyc6T47dbuF2ilPjfyJRkNuzlGHmu4
+	 33E3SzAUIsQS4l+cyk9w2r81wxvTS1IG6s5LAW/ANpgPs74mbrsGtaUm9F7y9+cVCA
+	 kmHlCO/fOhcTvkQddYX/mIZwh9Brh/8b+MI8IBQVJ4kVX+bfoA2Y1Z457gPkS3lNtj
+	 Hi2ajfC16l3RHDy2uTxCKpfcnjveJx94kDb4H0JoSjbKDfiA67MHl/FLfRdE0vt2i/
+	 be5hmG0+gYGRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	heming.zhao@suse.com
-Cc: Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
+	me@linux.beauty
+Cc: Baoquan He <bhe@redhat.com>,
+	Alexander Graf <graf@amazon.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Philipp Rudo <prudo@redhat.com>,
+	Ricardo Ribalda Delgado <ribalda@chromium.org>,
+	Ross Zwisler <zwisler@google.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	ocfs2-devel@lists.linux.dev,
-	linux-hardening@vger.kernel.org
-Subject: FAILED: Patch "ocfs2: fix reflink preserve cleanup issue" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:02:55 -0500
-Message-ID: <20260301020256.1730870-1-sashal@kernel.org>
+	kexec@lists.infradead.org
+Subject: FAILED: Patch "kexec: derive purgatory entry from symbol" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:02:58 -0500
+Message-ID: <20260301020259.1730921-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,34 +71,32 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-222317-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[fasheh.com,evilplan.org,oracle.com,gmail.com,live.cn,huawei.com,linux-foundation.org,lists.linux.dev,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222316-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,oracle.com:email,suse.com:email,evilplan.org:email,fasheh.com:email,live.cn:email]
-X-Rspamd-Queue-Id: B0E901CE52D
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1620B1CD8BA
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -110,50 +109,230 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5138c936c2c82c9be8883921854bc6f7e1177d8c Mon Sep 17 00:00:00 2001
-From: Heming Zhao <heming.zhao@suse.com>
-Date: Wed, 10 Dec 2025 09:57:24 +0800
-Subject: [PATCH] ocfs2: fix reflink preserve cleanup issue
+From 480e1d5c64bb14441f79f2eb9421d5e26f91ea3d Mon Sep 17 00:00:00 2001
+From: Li Chen <me@linux.beauty>
+Date: Tue, 20 Jan 2026 20:40:04 +0800
+Subject: [PATCH] kexec: derive purgatory entry from symbol
 
-commit c06c303832ec ("ocfs2: fix xattr array entry __counted_by error")
-doesn't handle all cases and the cleanup job for preserved xattr entries
-still has bug:
-- the 'last' pointer should be shifted by one unit after cleanup
-  an array entry.
-- current code logic doesn't cleanup the first entry when xh_count is 1.
+kexec_load_purgatory() derives image->start by locating e_entry inside an
+SHF_EXECINSTR section.  If the purgatory object contains multiple
+executable sections with overlapping sh_addr, the entrypoint check can
+match more than once and trigger a WARN.
 
-Note, commit c06c303832ec is also a bug fix for 0fe9b66c65f3.
+Derive the entry section from the purgatory_start symbol when present and
+compute image->start from its final placement.  Keep the existing e_entry
+fallback for purgatories that do not expose the symbol.
 
-Link: https://lkml.kernel.org/r/20251210015725.8409-2-heming.zhao@suse.com
-Fixes: 0fe9b66c65f3 ("ocfs2: Add preserve to reflink.")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
+WARNING: kernel/kexec_file.c:1009 at kexec_load_purgatory+0x395/0x3c0, CPU#10: kexec/1784
+Call Trace:
+ <TASK>
+ bzImage64_load+0x133/0xa00
+ __do_sys_kexec_file_load+0x2b3/0x5c0
+ do_syscall_64+0x81/0x610
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+[me@linux.beauty: move helper to avoid forward declaration, per Baoquan]
+  Link: https://lkml.kernel.org/r/20260128043511.316860-1-me@linux.beauty
+Link: https://lkml.kernel.org/r/20260120124005.148381-1-me@linux.beauty
+Fixes: 8652d44f466a ("kexec: support purgatories with .text.hot sections")
+Signed-off-by: Li Chen <me@linux.beauty>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: Li Chen <me@linux.beauty>
+Cc: Philipp Rudo <prudo@redhat.com>
+Cc: Ricardo Ribalda Delgado <ribalda@chromium.org>
+Cc: Ross Zwisler <zwisler@google.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/ocfs2/xattr.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/kexec_file.c | 131 +++++++++++++++++++++++++-------------------
+ 1 file changed, 74 insertions(+), 57 deletions(-)
 
-diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
-index 5fd85f5178689..e434a62dd69f9 100644
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -6395,6 +6395,10 @@ static int ocfs2_reflink_xattr_header(handle_t *handle,
- 					(void *)last - (void *)xe);
- 				memset(last, 0,
- 				       sizeof(struct ocfs2_xattr_entry));
-+				last = &new_xh->xh_entries[le16_to_cpu(new_xh->xh_count)] - 1;
-+			} else {
-+				memset(xe, 0, sizeof(struct ocfs2_xattr_entry));
-+				last = NULL;
- 			}
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index eb62a97942428..2bfbb2d144e69 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -882,6 +882,60 @@ static int kexec_calculate_store_digests(struct kimage *image)
+ }
  
- 			/*
+ #ifdef CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY
++/*
++ * kexec_purgatory_find_symbol - find a symbol in the purgatory
++ * @pi:		Purgatory to search in.
++ * @name:	Name of the symbol.
++ *
++ * Return: pointer to symbol in read-only symtab on success, NULL on error.
++ */
++static const Elf_Sym *kexec_purgatory_find_symbol(struct purgatory_info *pi,
++						  const char *name)
++{
++	const Elf_Shdr *sechdrs;
++	const Elf_Ehdr *ehdr;
++	const Elf_Sym *syms;
++	const char *strtab;
++	int i, k;
++
++	if (!pi->ehdr)
++		return NULL;
++
++	ehdr = pi->ehdr;
++	sechdrs = (void *)ehdr + ehdr->e_shoff;
++
++	for (i = 0; i < ehdr->e_shnum; i++) {
++		if (sechdrs[i].sh_type != SHT_SYMTAB)
++			continue;
++
++		if (sechdrs[i].sh_link >= ehdr->e_shnum)
++			/* Invalid strtab section number */
++			continue;
++		strtab = (void *)ehdr + sechdrs[sechdrs[i].sh_link].sh_offset;
++		syms = (void *)ehdr + sechdrs[i].sh_offset;
++
++		/* Go through symbols for a match */
++		for (k = 0; k < sechdrs[i].sh_size/sizeof(Elf_Sym); k++) {
++			if (ELF_ST_BIND(syms[k].st_info) != STB_GLOBAL)
++				continue;
++
++			if (strcmp(strtab + syms[k].st_name, name) != 0)
++				continue;
++
++			if (syms[k].st_shndx == SHN_UNDEF ||
++			    syms[k].st_shndx >= ehdr->e_shnum) {
++				pr_debug("Symbol: %s has bad section index %d.\n",
++					name, syms[k].st_shndx);
++				return NULL;
++			}
++
++			/* Found the symbol we are looking for */
++			return &syms[k];
++		}
++	}
++
++	return NULL;
++}
+ /*
+  * kexec_purgatory_setup_kbuf - prepare buffer to load purgatory.
+  * @pi:		Purgatory to be loaded.
+@@ -960,6 +1014,10 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
+ 	unsigned long offset;
+ 	size_t sechdrs_size;
+ 	Elf_Shdr *sechdrs;
++	const Elf_Sym *entry_sym;
++	u16 entry_shndx = 0;
++	unsigned long entry_off = 0;
++	bool start_fixed = false;
+ 	int i;
+ 
+ 	/*
+@@ -977,6 +1035,12 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
+ 	bss_addr = kbuf->mem + kbuf->bufsz;
+ 	kbuf->image->start = pi->ehdr->e_entry;
+ 
++	entry_sym = kexec_purgatory_find_symbol(pi, "purgatory_start");
++	if (entry_sym) {
++		entry_shndx = entry_sym->st_shndx;
++		entry_off = entry_sym->st_value;
++	}
++
+ 	for (i = 0; i < pi->ehdr->e_shnum; i++) {
+ 		unsigned long align;
+ 		void *src, *dst;
+@@ -994,6 +1058,13 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
+ 
+ 		offset = ALIGN(offset, align);
+ 
++		if (!start_fixed && entry_sym && i == entry_shndx &&
++		    (sechdrs[i].sh_flags & SHF_EXECINSTR) &&
++		    entry_off < sechdrs[i].sh_size) {
++			kbuf->image->start = kbuf->mem + offset + entry_off;
++			start_fixed = true;
++		}
++
+ 		/*
+ 		 * Check if the segment contains the entry point, if so,
+ 		 * calculate the value of image->start based on it.
+@@ -1004,13 +1075,14 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
+ 		 * is not set to the initial value, and warn the user so they
+ 		 * have a chance to fix their purgatory's linker script.
+ 		 */
+-		if (sechdrs[i].sh_flags & SHF_EXECINSTR &&
++		if (!start_fixed && sechdrs[i].sh_flags & SHF_EXECINSTR &&
+ 		    pi->ehdr->e_entry >= sechdrs[i].sh_addr &&
+ 		    pi->ehdr->e_entry < (sechdrs[i].sh_addr
+ 					 + sechdrs[i].sh_size) &&
+-		    !WARN_ON(kbuf->image->start != pi->ehdr->e_entry)) {
++		    kbuf->image->start == pi->ehdr->e_entry) {
+ 			kbuf->image->start -= sechdrs[i].sh_addr;
+ 			kbuf->image->start += kbuf->mem + offset;
++			start_fixed = true;
+ 		}
+ 
+ 		src = (void *)pi->ehdr + sechdrs[i].sh_offset;
+@@ -1128,61 +1200,6 @@ int kexec_load_purgatory(struct kimage *image, struct kexec_buf *kbuf)
+ 	return ret;
+ }
+ 
+-/*
+- * kexec_purgatory_find_symbol - find a symbol in the purgatory
+- * @pi:		Purgatory to search in.
+- * @name:	Name of the symbol.
+- *
+- * Return: pointer to symbol in read-only symtab on success, NULL on error.
+- */
+-static const Elf_Sym *kexec_purgatory_find_symbol(struct purgatory_info *pi,
+-						  const char *name)
+-{
+-	const Elf_Shdr *sechdrs;
+-	const Elf_Ehdr *ehdr;
+-	const Elf_Sym *syms;
+-	const char *strtab;
+-	int i, k;
+-
+-	if (!pi->ehdr)
+-		return NULL;
+-
+-	ehdr = pi->ehdr;
+-	sechdrs = (void *)ehdr + ehdr->e_shoff;
+-
+-	for (i = 0; i < ehdr->e_shnum; i++) {
+-		if (sechdrs[i].sh_type != SHT_SYMTAB)
+-			continue;
+-
+-		if (sechdrs[i].sh_link >= ehdr->e_shnum)
+-			/* Invalid strtab section number */
+-			continue;
+-		strtab = (void *)ehdr + sechdrs[sechdrs[i].sh_link].sh_offset;
+-		syms = (void *)ehdr + sechdrs[i].sh_offset;
+-
+-		/* Go through symbols for a match */
+-		for (k = 0; k < sechdrs[i].sh_size/sizeof(Elf_Sym); k++) {
+-			if (ELF_ST_BIND(syms[k].st_info) != STB_GLOBAL)
+-				continue;
+-
+-			if (strcmp(strtab + syms[k].st_name, name) != 0)
+-				continue;
+-
+-			if (syms[k].st_shndx == SHN_UNDEF ||
+-			    syms[k].st_shndx >= ehdr->e_shnum) {
+-				pr_debug("Symbol: %s has bad section index %d.\n",
+-						name, syms[k].st_shndx);
+-				return NULL;
+-			}
+-
+-			/* Found the symbol we are looking for */
+-			return &syms[k];
+-		}
+-	}
+-
+-	return NULL;
+-}
+-
+ void *kexec_purgatory_get_symbol_addr(struct kimage *image, const char *name)
+ {
+ 	struct purgatory_info *pi = &image->purgatory_info;
 -- 
 2.51.0
 
