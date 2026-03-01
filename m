@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOksKMabo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:52:06 +0100
+	id CBwIFaKbo2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5AF1CC13B
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:52:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD751CC0B7
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 20AB2307245B
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:47:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 60A7E3035F48
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281DD1DF271;
-	Sun,  1 Mar 2026 01:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554952EA749;
+	Sun,  1 Mar 2026 01:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0c+y0tM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eIvvC5Ie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFE52C21F2;
-	Sun,  1 Mar 2026 01:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F742DCF67;
+	Sun,  1 Mar 2026 01:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329606; cv=none; b=S0lJf2zQkv8qLMG/NwTcBFs8Ijt0xW0UpqtxYHW/5gb4HDYcZyKq1moqsJAxMDUmj8eCJltEaVgJ5+qCIIR3QaCrU1F9XDSukXc6Rgb8us+JjGmXOnCcvRoVXfZbJPAu/yrfJQkaEwDyMIVkFHZp/Usc2B6C+CXLoUuzkNGxld8=
+	t=1772329609; cv=none; b=QhPz5RH3rniAuGZ3kktM8cGtJMW7VFQSONXznx+0oh7zZ80oS8IeuAgD83It1lXGNdQCNT8qcWqewNpXXpwVA6xhD/9KhS5lK6POZQcxdrTWCDJAm0uhVPGzwzmD6bmxcN+aTBwja04sWujECUZRKhnZ96Owgijfd3KohCScM3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329606; c=relaxed/simple;
-	bh=PNg5hhknE+TMd+QxOsmYRx9MOwlYqd1Q+qDLrQpXfuo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hyfs9sW93jykVCiLO3UsISyikMWLDktphFpcQKdc2GZuJ2qXQ1LD9fcHyta3mUlNp/sXqMPTDXIpOFbUNmiCh1BhUE5onEFhqN5l4CHdiWY8iyPBlDwWpvUDl09HtjBIFxFzrdf50ebMy8cdcrlsKJLMi7CvvqVr+AB2jNhXOcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0c+y0tM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB644C19421;
-	Sun,  1 Mar 2026 01:46:45 +0000 (UTC)
+	s=arc-20240116; t=1772329609; c=relaxed/simple;
+	bh=AcP9sno7F5Tu+dfxWSLMpnF+ZT9/ZZGCqkdEQdGDMV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G3Hy7/L453nVHHkKsYk5w0bc5t/6wgXRZKSwoIGwmu60zON+ATgtRJp+iesuqIFc77HB3I2yXkZomj9WgHYbQ4z9Z/JW6u7k0YbJ78dsMbWeMljOUELteDPG2b36LcmRONoR098a9luPwNjuX4O9gtcc1LJP4NBj7khUSbpYWVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eIvvC5Ie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EDAC19421;
+	Sun,  1 Mar 2026 01:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329606;
-	bh=PNg5hhknE+TMd+QxOsmYRx9MOwlYqd1Q+qDLrQpXfuo=;
+	s=k20201202; t=1772329609;
+	bh=AcP9sno7F5Tu+dfxWSLMpnF+ZT9/ZZGCqkdEQdGDMV8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=m0c+y0tM+4nlALYDtwB5pU2RHoWIqb8KMMJSHLeXqaUiIMtTT8fu5SyEeQo+bOeNu
-	 DcqY8Qcd/ofsDIXfrZ8hhvRpfKIuMhXhv7dVjuatXqMk8Q7EOHH0dpCTjQxwLkJEga
-	 eQutTKk42Aq5TxCeUeuN0OeX0v9db6qzAbdxUFq2ErOzCv704Rdu4uT8nF78gwc33G
-	 RJsADBnvHjrEFKXyCjf4zG1m13DHcljhigI6HAPXtlAEAdXL3ekOv3gXMQPmeMrs/j
-	 CYo5w0g3EhRFrjFuAFHk4Wq/ha+Ho4hFvYlqngOtA2fa4qHKuh3O0GGKR+I+xzIV1D
-	 JmfRf8gtzIqoA==
+	b=eIvvC5IeFJbFGySNPXploTyTiMUYXZZXOiv/Iht+m8v+93QA8I+8xlL20Y81UZ8br
+	 45pe3tgNO2J3cne/xZbUg0XXgdhijmajPCffD+0whXPuVb8uYtxfgJdjWXVAJxf4+M
+	 711GnT4UiAzfRTv7fAIiRsBcWsghJq2mzic85qGvg2wxGzAOcT2GnNQ7NEABjt30n9
+	 vIuo1CAwfqpcfKKMRGjp6DaCSAJvYQCPEoW/RJkTCaH91v8tm+ucuWjb1mXSoaQWdG
+	 tjxt8tpate/uYhxRWubDBNCxOQOnOo7GcCqRi6J2P4+fGWsN3WXeehOpfgOmn+vWAh
+	 UPNx7g0PIa0lg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	yangtiezhu@loongson.cn
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	loongarch@lists.linux.dev,
-	linux-rt-devel@lists.linux.dev
-Subject: FAILED: Patch "LoongArch: Guard percpu handler under !CONFIG_PREEMPT_RT" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:46:44 -0500
-Message-ID: <20260301014644.1709796-1-sashal@kernel.org>
+	linkinjeon@kernel.org
+Cc: Igor Stepansky <igor.stepansky@orca.security>,
+	Steve French <stfrench@microsoft.com>,
+	linux-cifs@vger.kernel.org
+Subject: FAILED: Patch "ksmbd: add chann_lock to protect ksmbd_chann_list xarray" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:46:46 -0500
+Message-ID: <20260301014647.1709841-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,20 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221978-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221979-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1B5AF1CC13B
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,orca.security:email]
+X-Rspamd-Queue-Id: EBD751CC0B7
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -104,35 +103,117 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 70b0faae3590c628a98a627a10e5d211310169d4 Mon Sep 17 00:00:00 2001
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Date: Tue, 10 Feb 2026 19:31:13 +0800
-Subject: [PATCH] LoongArch: Guard percpu handler under !CONFIG_PREEMPT_RT
+From 4f3a06cc57976cafa8c6f716646be6c79a99e485 Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Mon, 9 Feb 2026 10:43:19 +0900
+Subject: [PATCH] ksmbd: add chann_lock to protect ksmbd_chann_list xarray
 
-After commit 88fd2b70120d ("LoongArch: Fix sleeping in atomic context for
-PREEMPT_RT"), it should guard percpu handler under !CONFIG_PREEMPT_RT to
-avoid redundant operations.
+ksmbd_chann_list xarray lacks synchronization, allowing use-after-free in
+multi-channel sessions (between lookup_chann_list() and ksmbd_chann_del).
+
+Adds rw_semaphore chann_lock to struct ksmbd_session and protects
+all xa_load/xa_store/xa_erase accesses.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reported-by: Igor Stepansky <igor.stepansky@orca.security>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- arch/loongarch/kernel/unwind_prologue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/mgmt/user_session.c |  5 +++++
+ fs/smb/server/mgmt/user_session.h |  1 +
+ fs/smb/server/smb2pdu.c           | 12 +++++++++++-
+ 3 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kernel/unwind_prologue.c b/arch/loongarch/kernel/unwind_prologue.c
-index 729e775bd40dd..ee1c29686ab05 100644
---- a/arch/loongarch/kernel/unwind_prologue.c
-+++ b/arch/loongarch/kernel/unwind_prologue.c
-@@ -65,7 +65,7 @@ static inline bool scan_handlers(unsigned long entry_offset)
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index 68b3e0cb54d38..8c2b14ea7b0ec 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -244,12 +244,14 @@ static void free_channel_list(struct ksmbd_session *sess)
+ 	struct channel *chann;
+ 	unsigned long index;
  
- static inline bool fix_exception(unsigned long pc)
++	down_write(&sess->chann_lock);
+ 	xa_for_each(&sess->ksmbd_chann_list, index, chann) {
+ 		xa_erase(&sess->ksmbd_chann_list, index);
+ 		kfree(chann);
+ 	}
+ 
+ 	xa_destroy(&sess->ksmbd_chann_list);
++	up_write(&sess->chann_lock);
+ }
+ 
+ static void __session_rpc_close(struct ksmbd_session *sess,
+@@ -434,7 +436,9 @@ static int ksmbd_chann_del(struct ksmbd_conn *conn, struct ksmbd_session *sess)
  {
--#ifdef CONFIG_NUMA
-+#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
- 	int cpu;
+ 	struct channel *chann;
  
- 	for_each_possible_cpu(cpu) {
++	down_write(&sess->chann_lock);
+ 	chann = xa_erase(&sess->ksmbd_chann_list, (long)conn);
++	up_write(&sess->chann_lock);
+ 	if (!chann)
+ 		return -ENOENT;
+ 
+@@ -668,6 +672,7 @@ static struct ksmbd_session *__session_create(int protocol)
+ 	rwlock_init(&sess->tree_conns_lock);
+ 	atomic_set(&sess->refcnt, 2);
+ 	init_rwsem(&sess->rpc_lock);
++	init_rwsem(&sess->chann_lock);
+ 
+ 	ret = __init_smb2_session(sess);
+ 	if (ret)
+diff --git a/fs/smb/server/mgmt/user_session.h b/fs/smb/server/mgmt/user_session.h
+index 176d800c24906..d94f5e128a9b4 100644
+--- a/fs/smb/server/mgmt/user_session.h
++++ b/fs/smb/server/mgmt/user_session.h
+@@ -48,6 +48,7 @@ struct ksmbd_session {
+ 	char				sess_key[CIFS_KEY_SIZE];
+ 
+ 	struct hlist_node		hlist;
++	struct rw_semaphore		chann_lock;
+ 	struct xarray			ksmbd_chann_list;
+ 	struct xarray			tree_conns;
+ 	struct ida			tree_conn_ida;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 4d3154cc493ea..3efcc7da1b9f6 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -80,7 +80,13 @@ static inline bool check_session_id(struct ksmbd_conn *conn, u64 id)
+ 
+ struct channel *lookup_chann_list(struct ksmbd_session *sess, struct ksmbd_conn *conn)
+ {
+-	return xa_load(&sess->ksmbd_chann_list, (long)conn);
++	struct channel *chann;
++
++	down_read(&sess->chann_lock);
++	chann = xa_load(&sess->ksmbd_chann_list, (long)conn);
++	up_read(&sess->chann_lock);
++
++	return chann;
+ }
+ 
+ /**
+@@ -1559,8 +1565,10 @@ static int ntlm_authenticate(struct ksmbd_work *work,
+ 				return -ENOMEM;
+ 
+ 			chann->conn = conn;
++			down_write(&sess->chann_lock);
+ 			old = xa_store(&sess->ksmbd_chann_list, (long)conn, chann,
+ 					KSMBD_DEFAULT_GFP);
++			up_write(&sess->chann_lock);
+ 			if (xa_is_err(old)) {
+ 				kfree(chann);
+ 				return xa_err(old);
+@@ -1652,8 +1660,10 @@ static int krb5_authenticate(struct ksmbd_work *work,
+ 				return -ENOMEM;
+ 
+ 			chann->conn = conn;
++			down_write(&sess->chann_lock);
+ 			old = xa_store(&sess->ksmbd_chann_list, (long)conn,
+ 					chann, KSMBD_DEFAULT_GFP);
++			up_write(&sess->chann_lock);
+ 			if (xa_is_err(old)) {
+ 				kfree(chann);
+ 				return xa_err(old);
 -- 
 2.51.0
 
