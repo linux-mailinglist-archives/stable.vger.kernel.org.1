@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-222306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGzIF6Ofo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:08:35 +0100
+	id cDHvD6Cjo2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:25:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C541CD106
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:08:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9397E1CD8A1
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 313313026898
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:02:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5910B3512B12
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EF02FC881;
-	Sun,  1 Mar 2026 02:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB462FB969;
+	Sun,  1 Mar 2026 02:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QFFZv+Wd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOvDOd5j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A352673AA
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03792F39BE;
+	Sun,  1 Mar 2026 02:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330553; cv=none; b=fCiaSLYMA/uViPR/jGaYoCiH7Zx+S3NcJx0dNAbBtTW2zzMyjppuC0CJL3z1+Cajrc0oiMmkAbhEJHMRzIyZkqwR+4ob4pXV/x3zBALKjzZjSiGIkqkv2zDdyLEugBlpdOY77in89dAray30IRGVXa50MkStkIwGmxjXFhiipoM=
+	t=1772330556; cv=none; b=kUhNdbZUZAqX2mEqik/oUCHEWEADYPsNZMkzSpYXWf2PK25nLG/Uzdk/u2vT/MX+ipu/IvzK/CIkiYizVWt7cw8eK9fn0nw1igUykyuaDWAqRycXbGfPuF7YhQsGl8Q/GJZx86hor4wIuXwBSLHwFkKbn504JdMtjRBp0umIJXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330553; c=relaxed/simple;
-	bh=R4wgXi7m9MAehuW90Ukk0wrh5/GcAEwQj4ow3aXRmtU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iF6ecMyzJLCVNI0uScyNe6rT3T1pXtf2QoFEebn4ZNjoCanmaZ01ZBIMVKjpF4/gIWKVs7wDyMo2NK0Lyw0r0pfYCUU5cQavxxJvDmvkSQxdHYkY3ePdgti+4HR9sgaSMemGThPEoRE2w3DqVY45sPSH3kPRC1pzJ0NHqq/HDcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QFFZv+Wd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8F5C19421;
-	Sun,  1 Mar 2026 02:02:32 +0000 (UTC)
+	s=arc-20240116; t=1772330556; c=relaxed/simple;
+	bh=qkqjRa3wsDLzGrsSgYPRQlxzZlw1kz5wyxSIfm9/9Zg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OPu4ThqIVmJhqLFle7Pte7rMJs1Y2WtfgAnPNjFzIeXwxY6tQH+E/3XV+8Ae2iP1rGnzHlXeMhU2RcWQI1rCDf34RpXw9ZZ9VljsPoLTj+368+Mh8SCJUMGMj4OPodj1eZiu3CYyCgHpqKFwYwHzSQEtf2NUURlr3SY2Uymb6Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOvDOd5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB31C19421;
+	Sun,  1 Mar 2026 02:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330553;
-	bh=R4wgXi7m9MAehuW90Ukk0wrh5/GcAEwQj4ow3aXRmtU=;
+	s=k20201202; t=1772330555;
+	bh=qkqjRa3wsDLzGrsSgYPRQlxzZlw1kz5wyxSIfm9/9Zg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=QFFZv+WdA0VA7eUl40NBJ88vQAWA0cFiuIO+NktVQZAU0t+Yu5cN+CBQEqxJi0Wme
-	 1q2wlxnNiHsWjbTh/9TnAM2hm8F+clGd/I8fEy2JrjEYlpkeQ8K8saAb0b/B3dw8Nj
-	 mATGmv29UDSSP3ASobMvv4yCI5W5ORkPpQJ+Fx7cmWNDwl6dM2oisDV1XMxOgoZmuD
-	 JqqrT8Rm/nlw/16szdZY6l9r+Nx4dv+gIVc+5DsLgiyZq9Zf2yC8ZjrC5XJWTCjxqs
-	 s7PBD0LEncFkkUCyTxC+Rl7QGwJzvDN5aSnQUmRSvfnXkMl5ICOW0WS2t+Vg4OIuZR
-	 0gd1Ekar/td5g==
+	b=IOvDOd5j6yngnuki4vwQsv5zH4QKrV0SdeZKTRAbhP3YiQ3PB5doehEgLQ/UHJarO
+	 s6ebjoIYsrUv51WBBc9Ea9ecUIIpfPq9T2QTL+paa+yPbXUAmKldNtvw+QHWYKobFw
+	 Y9ELXec1SiQnTWZqVxFCk9xbs56QfLfr11g2aRmxIp+/lsamTndaR04xj/Z/chDdHi
+	 JXZgo3dN5SMh0diutifmjTKg9Zec0WCu2aUDaKUpsm+W1igCFavb1gm4fdgjw0hy/j
+	 c8WKnqni6ZSdE2KBnuQGuPvISWfYRZVZbPBVJ39u9p6yz27cvSh6HKNd7SJ2oQGOG2
+	 3ngDHhxnSsC4A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	lihaoxiang@isrc.iscas.ac.cn
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	Su Hui <suhui@nfschina.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: FAILED: Patch "bus: fsl-mc: fix an error handling in fsl_mc_device_add()" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:02:30 -0500
-Message-ID: <20260301020231.1730299-1-sashal@kernel.org>
+	zenmchen@gmail.com
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	linux-bluetooth@vger.kernel.org
+Subject: FAILED: Patch "Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:02:33 -0500
+Message-ID: <20260301020234.1730360-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +64,34 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222306-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222307-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nfschina.com:email,nxp.com:email,iscas.ac.cn:email,linaro.org:email]
-X-Rspamd-Queue-Id: C1C541CD106
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,mpg.de:email]
+X-Rspamd-Queue-Id: 9397E1CD8A1
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -105,48 +104,81 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 52f527d0916bcdd7621a0c9e7e599b133294d495 Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Sat, 24 Jan 2026 18:20:54 +0800
-Subject: [PATCH] bus: fsl-mc: fix an error handling in fsl_mc_device_add()
+From 6c0568b7741a346088fd6dfced2d871f7d481d06 Mon Sep 17 00:00:00 2001
+From: Zenm Chen <zenmchen@gmail.com>
+Date: Thu, 29 Jan 2026 10:28:19 +0800
+Subject: [PATCH] Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
 
-In fsl_mc_device_add(), device_initialize() is called first.
-put_device() should be called to drop the reference if error
-occurs. And other resources would be released via put_device
--> fsl_mc_device_release. So remove redundant kfree() in
-error handling path.
+Add USB ID 7392:e611 for Edimax EW-7611UXB which is RTL8851BU-based
+Wi-Fi + Bluetooth adapter.
 
-Fixes: bbf9d17d9875 ("staging: fsl-mc: Freescale Management Complex (fsl-mc) bus driver")
-Cc: stable@vger.kernel.org
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/b767348e-d89c-416e-acea-1ebbff3bea20@stanley.mountain/
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Suggested-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20260124102054.1613093-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below:
+
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=7392 ProdID=e611 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=802.11ax WLAN Adapter
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtw89_8851bu_git
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Cc: stable@vger.kernel.org # 6.6.x
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index 08b99b0b342f3..007223549887d 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -896,11 +896,7 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
- 	return 0;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 8c34a17edae5d..fcec8e589e814 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -529,6 +529,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x7392, 0xe611), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
  
- error_cleanup_dev:
--	kfree(mc_dev->regions);
--	if (mc_bus)
--		kfree(mc_bus);
--	else
--		kfree(mc_dev);
-+	put_device(&mc_dev->dev);
- 
- 	return error;
- }
+ 	/* Realtek 8852AE Bluetooth devices */
+ 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
 -- 
 2.51.0
 
