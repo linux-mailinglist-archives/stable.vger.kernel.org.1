@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-222286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uM8sD7ego2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:13:11 +0100
+	id oHZLAlOfo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA211CD494
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:13:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFE21CD020
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 787E6308127E
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7927C301105B
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD3E2EFDAD;
-	Sun,  1 Mar 2026 02:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30C52F12CE;
+	Sun,  1 Mar 2026 02:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHXPIZwr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVF1eHkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D58C190664;
-	Sun,  1 Mar 2026 02:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968CF259C80;
+	Sun,  1 Mar 2026 02:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330498; cv=none; b=bCrsAMW99tbnDQKT0vcUuZM1Qo+I5GDdukgpXpjrrxeTXW+z4uE5RUvM+k475a8E+7RmlPyQKUo4GGsDP7Ivvxe7Rc9LYPrRTxUS/6n/OI4ld5BMRC8/xlij7103s6psAJXxcH7uNtfT87E72N4+Cdwm6bCM75xQcvtTSESTPqk=
+	t=1772330500; cv=none; b=tBnHEm8Gchi2sbrbFXVuXDvzjy1sw7SDirbXzbO3A0KwB0jwDfZG8j2letb/nEZiXtcr0VIuF0f1NdErcyvGkiWsXGId9PTss3rSr9ZkAyZG4LwoUKH+NkgZtr5QO+tGAdJdusTxpSFNYAmVjzVdnRjyWydtsOJ8NSgWYIx9ZZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330498; c=relaxed/simple;
-	bh=RDEqyk1uYIK9WMq21nhVxBPsuYbkpwmsRlRHMsnxpS0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TjBW0okgrh+88LuWgWbdgqA7Hcq8PbK3mH108FfXragqSuTmVR4+Tv/dGk2d0lZVDk7pAg6SC6YJWF+BN/5/YCNUKK5RugaxnebDF+G2AIhD8x0PSwh1EGdsJJZl4dPuLSP3QdEZIqxhdw0tscq79wIL1w/I0iRf+syC93mXx3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHXPIZwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC58C19421;
-	Sun,  1 Mar 2026 02:01:37 +0000 (UTC)
+	s=arc-20240116; t=1772330500; c=relaxed/simple;
+	bh=QF6Pu2yGyVyLBmMaTukg585WFg5+YfniypssSDEG1xo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rT6YsWaQHkggfN5gsnvwtY/PQ5wCfh5LBCqKIZ7WEjuUu8+BnhZSVzDCnxnSeqpx+xTSR0q9Hj5vzfs6FEWJYO5blqnxeLlM9TllocKwBQ68BNwR+N5MsK2LCpIeVN4J/fIjTGao1rP0Um2waTH5AG/DxuICqb1gDGAkg75xY4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVF1eHkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9498C19421;
+	Sun,  1 Mar 2026 02:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330497;
-	bh=RDEqyk1uYIK9WMq21nhVxBPsuYbkpwmsRlRHMsnxpS0=;
+	s=k20201202; t=1772330500;
+	bh=QF6Pu2yGyVyLBmMaTukg585WFg5+YfniypssSDEG1xo=;
 	h=From:To:Cc:Subject:Date:From;
-	b=WHXPIZwrmHZQOxaLDdcUa9qjmq92lqawdco2MT0t+Fyh1lHP/ZvmGoVqvZ2kRZhSR
-	 SRJmNZO1eAAbeyoGzesuBIKZDrzHR/o0CXCaOSjEwIhOE9zeGezn3ZpYSon2jL6qWF
-	 eXAK2gUfmCvmLsf8KDS18wYy+AdlQB3wFfBulEqTWDl5VQFg5lxLeRXwjta07B+99H
-	 +YsOfg6aSkzmitZxEnWtfkSQVORedFB/aHK3BYN07CgBtRg7m4j6eoYTV/GtEIfW+o
-	 ik5VdwCnTPdUbg8gKPbVf/8Vssjg9pX6gOuHg9E7EClWZmt/oJMoHVokv44fEcKHgc
-	 ro5kg+9ZbCA9Q==
+	b=iVF1eHkUfPdED17zlCEEWkxnxeylf2JJ/wbcoEYZZA6CrMal2xy/1IgMdCab+MUDp
+	 2C1y3tL4gDOVtfSnhxBW8Nr1q4ZmAkdpOgo7oz15MvYFTHV+fyvyGVOKA0D0remJcC
+	 NbssLDSTwu25AaKFgJN/HrxKmR2diEYxu1HUgbBvAhFbyCnY3vQausedW6I2XaZFwz
+	 IR6ntYfnK5uqh68stRAI2JDQo2roLQ/t7CSpScLWVARz8Wf887Za4ncUqNw0WO7aDj
+	 RYv1fzdfC+vxPEyMZHpmp07z6c+p320sxvxBIaTSPpjjajkTo1XKvkO3f8F/uTLmWy
+	 gSeDVio5DHD2A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johan@kernel.org
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Lee Jones <lee@kernel.org>,
-	linux-arm-msm@vger.kernel.org
-Subject: FAILED: Patch "mfd: qcom-pm8xxx: Fix OF populate on driver rebind" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:01:35 -0500
-Message-ID: <20260301020136.1728945-1-sashal@kernel.org>
+	ii4gsp@gmail.com
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org
+Subject: FAILED: Patch "Input: synaptics_i2c - guard polling restart in resume" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:01:38 -0500
+Message-ID: <20260301020138.1728997-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,21 +65,23 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222286-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222287-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 3EA211CD494
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 6CFE21CD020
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -104,53 +104,48 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 27a8acea47a93fea6ad0e2df4c20a9b51490e4d9 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Fri, 19 Dec 2025 12:09:47 +0100
-Subject: [PATCH] mfd: qcom-pm8xxx: Fix OF populate on driver rebind
+From 870c2e7cd881d7a10abb91f2b38135622d9f9f65 Mon Sep 17 00:00:00 2001
+From: Minseong Kim <ii4gsp@gmail.com>
+Date: Wed, 21 Jan 2026 10:02:02 -0800
+Subject: [PATCH] Input: synaptics_i2c - guard polling restart in resume
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+synaptics_i2c_resume() restarts delayed work unconditionally, even when
+the input device is not opened. Guard the polling restart by taking the
+input device mutex and checking input_device_enabled() before re-queuing
+the delayed work.
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
-
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org	# 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251219110947.24101-1-johan@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: eef3e4cab72ea ("Input: add driver for Synaptics I2C touchpad")
+Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260121063738.799967-1-ii4gsp@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- drivers/mfd/qcom-pm8xxx.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/input/mouse/synaptics_i2c.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/qcom-pm8xxx.c b/drivers/mfd/qcom-pm8xxx.c
-index 1149f7102a365..0cf374c015ce7 100644
---- a/drivers/mfd/qcom-pm8xxx.c
-+++ b/drivers/mfd/qcom-pm8xxx.c
-@@ -577,17 +577,11 @@ static int pm8xxx_probe(struct platform_device *pdev)
- 	return rc;
+diff --git a/drivers/input/mouse/synaptics_i2c.c b/drivers/input/mouse/synaptics_i2c.c
+index c8ddfff2605ff..29da66af36d74 100644
+--- a/drivers/input/mouse/synaptics_i2c.c
++++ b/drivers/input/mouse/synaptics_i2c.c
+@@ -615,13 +615,16 @@ static int synaptics_i2c_resume(struct device *dev)
+ 	int ret;
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	struct synaptics_i2c *touch = i2c_get_clientdata(client);
++	struct input_dev *input = touch->input;
+ 
+ 	ret = synaptics_i2c_reset_config(client);
+ 	if (ret)
+ 		return ret;
+ 
+-	mod_delayed_work(system_dfl_wq, &touch->dwork,
+-				msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
++	guard(mutex)(&input->mutex);
++	if (input_device_enabled(input))
++		mod_delayed_work(system_dfl_wq, &touch->dwork,
++				 msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
+ 
+ 	return 0;
  }
- 
--static int pm8xxx_remove_child(struct device *dev, void *unused)
--{
--	platform_device_unregister(to_platform_device(dev));
--	return 0;
--}
--
- static void pm8xxx_remove(struct platform_device *pdev)
- {
- 	struct pm_irq_chip *chip = platform_get_drvdata(pdev);
- 
--	device_for_each_child(&pdev->dev, NULL, pm8xxx_remove_child);
-+	of_platform_depopulate(&pdev->dev);
- 	irq_domain_remove(chip->irqdomain);
- }
- 
 -- 
 2.51.0
 
