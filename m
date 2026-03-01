@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-221695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKNRKVWbo2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:13 +0100
+	id YMfXLbaao2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:34 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF4B1CBF04
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E51BE1CBBE6
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 004F83088717
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E0FD23042DE9
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A472DD5E2;
-	Sun,  1 Mar 2026 01:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE102F3C34;
+	Sun,  1 Mar 2026 01:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VtXJINgk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6XE6YID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652AE2773CC;
-	Sun,  1 Mar 2026 01:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BFC1E0B86;
+	Sun,  1 Mar 2026 01:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328915; cv=none; b=s7K/8UmFMkr0C5JCkq9ExIK9RIo1WNgCJ8dr7o0xXrnYREGiM5sHtSTIGH3Wwp8Wp9zhcQ4uAxAccuUrumN/9oCQ8C0taFaUCruKDVZzFNv3dFAZtn005d4vaikNMCZcB2Oj+MJn9w5mUbYojbzem15+HJ1tG8VgZosD6qLCu0w=
+	t=1772328917; cv=none; b=R/3nEtl5aux3AExl4VX9/e2XeG7Qfnhv9WJY8zlQX9bLxWurgf/k9ng7dGpeeuofSCHjx9/n3NLujwB0QTwebhrsRzHvs2UNuO7p09eFN5vPOvXSsmZlPGmDvkCfUBFGFNJ1B/rMt7P9Df9jsXpIZCu/NznqOQFXaY4dR7xrCbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328915; c=relaxed/simple;
-	bh=WyZKhM5sELHMmYIDInl7H0zYgMd48hMoKNtxXZV0Y58=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aMAHCVh8qzFzBRybHANXwDVaeRcwtvKcDj0WCpHQb5V73JUB3n9V9JNG5bbyBh97PWOPzmQkKDFNhCDkFq0gqs/JqG1lf+i9zDxEIKqpgFU8rFaFCZ6Xk+zHn3iG19EwZNO1LV7HFRtKHybdBV7TTR67Un4WpcZlOaJyWpab6uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VtXJINgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892BEC19421;
-	Sun,  1 Mar 2026 01:35:14 +0000 (UTC)
+	s=arc-20240116; t=1772328917; c=relaxed/simple;
+	bh=Syl3GzmQqs5cREfXERw4hG0i9I/bfWEc8B2HrZihuJ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hyZaIaThJstsqNWcCqUt5Dnwm8anlMQszYNMIguqLrpgfC3c+4twHCSQkStfR9+H2Goe+33SKi+9WPAMfOayGRmGNkTKijIUVuQutKTKwYqAGB9xR2q5dVihSOOX/Sr7ZMIXcIuwG/wEfxC80IxCjR5eM+ObeANJybs8YzOEVAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6XE6YID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3F9C19421;
+	Sun,  1 Mar 2026 01:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328915;
-	bh=WyZKhM5sELHMmYIDInl7H0zYgMd48hMoKNtxXZV0Y58=;
+	s=k20201202; t=1772328917;
+	bh=Syl3GzmQqs5cREfXERw4hG0i9I/bfWEc8B2HrZihuJ0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=VtXJINgk9HsQRJZE6oepeFQ+sr9ke85yI70TCCFroAx02vN6GUG3amtQrFLaMvaIr
-	 az81YOWxaSNPIF3PzdOvb/LRY4gCtz6mS/xE2oVYJPC9vv8WPWQUiXClM5u5Bfm/pd
-	 KIGQcRMXofjgI+jZIy6uowmOUUasXTVV4jGg5ZrLOHQ+lb+8S9g/+SX8x3GYw7GGuZ
-	 X9BAxMYIa5e8s7GxNro2DX24bdjBmAKOKPzY4LCqqXEB4wl4dnUnSjnGrNNak2THpY
-	 0lJBrIjvmphZzCX3kZBR8Q/IdgRtdhmhmjbsva75glpTyxldFekKNfsnBxsfz8viFx
-	 6DpZoYicC4XCA==
+	b=j6XE6YID0wx8qu21dWq7ts+bJ10hRPRNA9JZMwNSqjvj7S3I0onBa83aT9KZkaC5h
+	 vvr8AiqNPGjMZbxLWi72giSv+cMA/8QIQOLYQDjBwNm/VZEyrhR6WZgK58kcJkYS8J
+	 9uP6QGGY99rMLgzpbeOYI5CFiMNKSr+rewM3BaBsQ4EQe3cRZQoY1xQnt9IjEnWUhI
+	 UKmodUXqgk78vzvLQecjjFJRXiXeprYJt0nRfJl5U948hIvCGXQxVFZa9sMUB6O2MJ
+	 /NeCcuwuSTPS4jg0Ww/N0ZK/VLTsR1SUlNsQ/iHXsKOyprQbu4dPDFTxLx78+u2rKw
+	 1xM1gj594c1rQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	haotienh@nvidia.com
-Cc: stable <stable@kernel.org>,
-	Wayne Chang <waynec@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: FAILED: Patch "usb: gadget: tegra-xudc: Add handling for BLCG_COREPLL_PWRDN" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:35:13 -0500
-Message-ID: <20260301013513.1694827-1-sashal@kernel.org>
+	maobibo@loongson.cn
+Cc: Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	virtualization@lists.linux.dev,
+	linux-crypto@vger.kernel.org
+Subject: FAILED: Patch "crypto: virtio: Add spinlock protection with virtqueue notification" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:35:15 -0500
+Message-ID: <20260301013515.1694904-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +65,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221695-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221696-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ABF4B1CBF04
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E51BE1CBBE6
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -105,73 +104,60 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1132e90840abf3e7db11f1d28199e9fbc0b0e69e Mon Sep 17 00:00:00 2001
-From: Haotien Hsu <haotienh@nvidia.com>
-Date: Sat, 24 Jan 2026 01:31:21 +0800
-Subject: [PATCH] usb: gadget: tegra-xudc: Add handling for BLCG_COREPLL_PWRDN
+From af9a17d29ce9060664f56264bcc64b976fddd2b5 Mon Sep 17 00:00:00 2001
+From: Bibo Mao <maobibo@loongson.cn>
+Date: Tue, 13 Jan 2026 11:05:54 +0800
+Subject: [PATCH] crypto: virtio: Add spinlock protection with virtqueue
+ notification
 
-The COREPLL_PWRDN bit in the BLCG register must be set when the XUSB
-device controller is powergated and cleared when it is unpowergated.
-If this bit is not explicitly controlled, the core PLL may remain in an
-incorrect power state across suspend/resume or ELPG transitions.
-Therefore, update the driver to explicitly control this bit during
-powergate transitions.
+When VM boots with one virtio-crypto PCI device and builtin backend,
+run openssl benchmark command with multiple processes, such as
+  openssl speed -evp aes-128-cbc -engine afalg  -seconds 10 -multi 32
 
-Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Link: https://patch.msgid.link/20260123173121.4093902-1-waynec@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+openssl processes will hangup and there is error reported like this:
+ virtio_crypto virtio0: dataq.0:id 3 is not a head!
+
+It seems that the data virtqueue need protection when it is handled
+for virtio done notification. If the spinlock protection is added
+in virtcrypto_done_task(), openssl benchmark with multiple processes
+works well.
+
+Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20260113030556.3522533-2-maobibo@loongson.cn>
 ---
- drivers/usb/gadget/udc/tegra-xudc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/crypto/virtio/virtio_crypto_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
-index 9d2007f448c04..7f7251c10e952 100644
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -3392,17 +3392,18 @@ static void tegra_xudc_device_params_init(struct tegra_xudc *xudc)
- {
- 	u32 val, imod;
+diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
+index 3d241446099cc..ccc6b5c1b24b3 100644
+--- a/drivers/crypto/virtio/virtio_crypto_core.c
++++ b/drivers/crypto/virtio/virtio_crypto_core.c
+@@ -75,15 +75,20 @@ static void virtcrypto_done_task(unsigned long data)
+ 	struct data_queue *data_vq = (struct data_queue *)data;
+ 	struct virtqueue *vq = data_vq->vq;
+ 	struct virtio_crypto_request *vc_req;
++	unsigned long flags;
+ 	unsigned int len;
  
-+	val = xudc_readl(xudc, BLCG);
- 	if (xudc->soc->has_ipfs) {
--		val = xudc_readl(xudc, BLCG);
- 		val |= BLCG_ALL;
- 		val &= ~(BLCG_DFPCI | BLCG_UFPCI | BLCG_FE |
- 				BLCG_COREPLL_PWRDN);
- 		val |= BLCG_IOPLL_0_PWRDN;
- 		val |= BLCG_IOPLL_1_PWRDN;
- 		val |= BLCG_IOPLL_2_PWRDN;
--
--		xudc_writel(xudc, val, BLCG);
-+	} else {
-+		val &= ~BLCG_COREPLL_PWRDN;
- 	}
-+	xudc_writel(xudc, val, BLCG);
++	spin_lock_irqsave(&data_vq->lock, flags);
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
++			spin_unlock_irqrestore(&data_vq->lock, flags);
+ 			if (vc_req->alg_cb)
+ 				vc_req->alg_cb(vc_req, len);
++			spin_lock_irqsave(&data_vq->lock, flags);
+ 		}
+ 	} while (!virtqueue_enable_cb(vq));
++	spin_unlock_irqrestore(&data_vq->lock, flags);
+ }
  
- 	if (xudc->soc->port_speed_quirk)
- 		tegra_xudc_limit_port_speed(xudc);
-@@ -3953,6 +3954,7 @@ static void tegra_xudc_remove(struct platform_device *pdev)
- static int __maybe_unused tegra_xudc_powergate(struct tegra_xudc *xudc)
- {
- 	unsigned long flags;
-+	u32 val;
- 
- 	dev_dbg(xudc->dev, "entering ELPG\n");
- 
-@@ -3965,6 +3967,10 @@ static int __maybe_unused tegra_xudc_powergate(struct tegra_xudc *xudc)
- 
- 	spin_unlock_irqrestore(&xudc->lock, flags);
- 
-+	val = xudc_readl(xudc, BLCG);
-+	val |= BLCG_COREPLL_PWRDN;
-+	xudc_writel(xudc, val, BLCG);
-+
- 	clk_bulk_disable_unprepare(xudc->soc->num_clks, xudc->clks);
- 
- 	regulator_bulk_disable(xudc->soc->num_supplies, xudc->supplies);
+ static void virtcrypto_dataq_callback(struct virtqueue *vq)
 -- 
 2.51.0
 
