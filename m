@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-222109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id tpwFK2mso2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:03:05 +0100
+	id kF0dLE6eo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192B31CE271
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:03:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BAE1CCB55
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9375A3278CAE
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F33843048EDC
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C077303A0A;
-	Sun,  1 Mar 2026 01:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD162EA481;
+	Sun,  1 Mar 2026 01:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CPoyxD5s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHXAP3CC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBC776026;
-	Sun,  1 Mar 2026 01:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B543043D2;
+	Sun,  1 Mar 2026 01:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329923; cv=none; b=E0j6WqNJnTVVDQ8F3CZniBBJwk83qLUZq3ot5qnSH9Vb2B5D6qAfzyD7g0zW4USrKh3c18Y2b5ZNvS6nwW8SdRZ7LT+/YuH+UH+L5jlOuirB9aJSgO8TshMocsOkOXxGpf5cJjwQWyPMB50kaULnCwKnI6eABIhrh/AQrN1U3ko=
+	t=1772329925; cv=none; b=Lff47faaEDOEyGX6VvGu+SDRQHfPyxjW2/oaVTieRLOJ0I3v8E/qPYDeOK24cfKAyaXS280LwD56lWK4Y5IuFuBpkFBlgncSmt2ZlD6ucFEvo6u8oIkv47DYwJsL0bvno5Qh3P4oXz0M7m7PAnLvK945UMaRM9VL5NuwD0YNbbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329923; c=relaxed/simple;
-	bh=Az8LLLGv7p4NyyEga/O67fntIWNIPrpfEX+5iLQtwew=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jj1qQ5FLhuT+E5BZlZkQhUTUdqynwKMKYt5jKk83QMktEfo0YeEiggY0OEDhTaCItbf5jNpueDPwwQUKyUOzfbR/b2TJOCcdrAZ0JwRBEbunvyGlziUyhFRZlGjd7rOqC0/oAUN7B95NI0Y4vEZwdBsvo2Lpzxw61Po2UnzJk/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CPoyxD5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC5AC19421;
-	Sun,  1 Mar 2026 01:52:02 +0000 (UTC)
+	s=arc-20240116; t=1772329925; c=relaxed/simple;
+	bh=fsjZWzQE9JKGOk6Xc2Non6p9aIclBrU7krhXKQRrRRE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cxLm8vm7QGcrD5Wmw3nKN2r+5gZtEKyIrgMsNsGoyDDg8S0wdo4EUz3O+PXPRweryDDobNF3Rl5fCa3N42j97brbRw387ZG1W1+KmGTMKn9eH/0XZ0QcBisM1pgXw+QZQQCw26mmOwV/96RaFagz9whONzsOXEkjiBAkQmr6ZvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHXAP3CC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A454CC19421;
+	Sun,  1 Mar 2026 01:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329922;
-	bh=Az8LLLGv7p4NyyEga/O67fntIWNIPrpfEX+5iLQtwew=;
+	s=k20201202; t=1772329925;
+	bh=fsjZWzQE9JKGOk6Xc2Non6p9aIclBrU7krhXKQRrRRE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=CPoyxD5siAnETgnWjuZm77kAXJ7I9IoKjEHvDcKG+bk/+D02BG+rQoFSKWzRzJdbF
-	 RPX4NItLpr1RznSSR7xRlUubxvhUD1nz2iHmVmVzo8H7ueIePCmY0SIeje/ZZXO9XO
-	 P1MLZcWrxU6cFAsu047UUbbZFtWgWqcD4BOMO0sBLhhrnGwJh303qceLA4t6/e0BuB
-	 HepwqZ9+wllQnkTfi+RFceAAtonNkJ8F0eNP5TAnmTTjojpqcgVfoO0M4jEcKjYBrv
-	 d4CI8sYS1KLivOe5qrI7ubxv//lLADkLE+EbquBBzM1M/WaT0b98jBP3jTb2nrEi3D
-	 i7+ng2Ks40Hdw==
+	b=qHXAP3CC/lLWCRhVqyCmZkBcJB3QeoLklzcrbYXO6LH6iNkwp7DBBtxqetxC3eTGF
+	 uzAxWpXHpV+qPHCP9z8Yqhtro20RPjAOTPP2Et6MW2TIZrk+boBpxQqaH/DrX5GrNt
+	 p2E1uni2XtyVnZR92BYs+sYz1S2GFgF+UoBUiPG79bhMwH+lQDPMiFYeia1be4PABm
+	 qMmvoM5DLNUF2qS7FD4WkfXFtOJHr+foeepFSZnYXK/CgFmJ+9n6y//emOJsLRkcJL
+	 6Ajie87m3vL+IuNEOCIY/S9HSkQ5fBwK9lb/DunJePyfzjNfna/+CnadYhhH9VCOUU
+	 Ia1F3Xmsv1dwg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	raag.jadav@intel.com
-Cc: Guido Trentalancia <guido@trentalancia.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-gpio@vger.kernel.org
-Subject: FAILED: Patch "pinctrl: intel: Add code name documentation" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:52:00 -0500
-Message-ID: <20260301015201.1718433-1-sashal@kernel.org>
+	kovalev@altlinux.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	kvm@vger.kernel.org
+Subject: FAILED: Patch "KVM: x86: Add SRCU protection for reading PDPTRs in __get_sregs2()" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:52:03 -0500
+Message-ID: <20260301015203.1718480-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,19 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222109-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222110-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,trentalancia.com:email]
-X-Rspamd-Queue-Id: 192B31CE271
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 49BAE1CCB55
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -104,79 +102,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From fc32c5725fbe1164d353400389d3e29d19960a3a Mon Sep 17 00:00:00 2001
-From: Raag Jadav <raag.jadav@intel.com>
-Date: Sat, 24 Jan 2026 13:44:54 +0530
-Subject: [PATCH] pinctrl: intel: Add code name documentation
+From 95d848dc7e639988dbb385a8cba9b484607cf98c Mon Sep 17 00:00:00 2001
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+Date: Sat, 24 Jan 2026 01:28:01 +0300
+Subject: [PATCH] KVM: x86: Add SRCU protection for reading PDPTRs in
+ __get_sregs2()
 
-Intel pinctrl drivers support large set of platforms and the IPs are
-often reused by their different variants, but it's currently not possible
-to figure out the exact driver that supports specific variant. Add user
-friendly documentation for them.
+Add SRCU read-side protection when reading PDPTR registers in
+__get_sregs2().
 
+Reading PDPTRs may trigger access to guest memory:
+kvm_pdptr_read() -> svm_cache_reg() -> load_pdptrs() ->
+kvm_vcpu_read_guest_page() -> kvm_vcpu_gfn_to_memslot()
+
+kvm_vcpu_gfn_to_memslot() dereferences memslots via __kvm_memslots(),
+which uses srcu_dereference_check() and requires either kvm->srcu or
+kvm->slots_lock to be held. Currently only vcpu->mutex is held,
+triggering lockdep warning:
+
+=============================
+WARNING: suspicious RCU usage in kvm_vcpu_gfn_to_memslot
+6.12.59+ #3 Not tainted
+
+include/linux/kvm_host.h:1062 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by syz.5.1717/15100:
+ #0: ff1100002f4b00b0 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x1d5/0x1590
+
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xf0/0x120 lib/dump_stack.c:120
+ lockdep_rcu_suspicious+0x1e3/0x270 kernel/locking/lockdep.c:6824
+ __kvm_memslots include/linux/kvm_host.h:1062 [inline]
+ __kvm_memslots include/linux/kvm_host.h:1059 [inline]
+ kvm_vcpu_memslots include/linux/kvm_host.h:1076 [inline]
+ kvm_vcpu_gfn_to_memslot+0x518/0x5e0 virt/kvm/kvm_main.c:2617
+ kvm_vcpu_read_guest_page+0x27/0x50 virt/kvm/kvm_main.c:3302
+ load_pdptrs+0xff/0x4b0 arch/x86/kvm/x86.c:1065
+ svm_cache_reg+0x1c9/0x230 arch/x86/kvm/svm/svm.c:1688
+ kvm_pdptr_read arch/x86/kvm/kvm_cache_regs.h:141 [inline]
+ __get_sregs2 arch/x86/kvm/x86.c:11784 [inline]
+ kvm_arch_vcpu_ioctl+0x3e20/0x4aa0 arch/x86/kvm/x86.c:6279
+ kvm_vcpu_ioctl+0x856/0x1590 virt/kvm/kvm_main.c:4663
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl fs/ioctl.c:893 [inline]
+ __x64_sys_ioctl+0x18b/0x210 fs/ioctl.c:893
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xbd/0x1d0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Cc: stable@vger.kernel.org
-Reported-by: Guido Trentalancia <guido@trentalancia.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220056
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Acked-by: Guido Trentalancia <guido@trentalancia.com>
-[andy: added Oxford comma]
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 6dba94035203 ("KVM: x86: Introduce KVM_GET_SREGS2 / KVM_SET_SREGS2")
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://patch.msgid.link/20260123222801.646123-1-kovalev@altlinux.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- drivers/pinctrl/intel/Kconfig | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ arch/x86/kvm/x86.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pinctrl/intel/Kconfig b/drivers/pinctrl/intel/Kconfig
-index e4dc9ba899bde..04c3a5b581f3c 100644
---- a/drivers/pinctrl/intel/Kconfig
-+++ b/drivers/pinctrl/intel/Kconfig
-@@ -53,7 +53,10 @@ config PINCTRL_ALDERLAKE
- 	select PINCTRL_INTEL
- 	help
- 	  This pinctrl driver provides an interface that allows configuring
--	  of Intel Alder Lake PCH pins and using them as GPIOs.
-+	  PCH pins of the following platforms and using them as GPIOs:
-+	  - Alder Lake HX, N, and S
-+	  - Raptor Lake HX, E, and S
-+	  - Twin Lake
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 386cdb775fd48..1ea94f4a3dcbc 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12145,9 +12145,11 @@ static void __get_sregs2(struct kvm_vcpu *vcpu, struct kvm_sregs2 *sregs2)
+ 		return;
  
- config PINCTRL_BROXTON
- 	tristate "Intel Broxton pinctrl and GPIO driver"
-@@ -137,15 +140,17 @@ config PINCTRL_METEORLAKE
- 	select PINCTRL_INTEL
- 	help
- 	  This pinctrl driver provides an interface that allows configuring
--	  of Intel Meteor Lake pins and using them as GPIOs.
-+	  SoC pins of the following platforms and using them as GPIOs:
-+	  - Arrow Lake (all variants)
-+	  - Meteor Lake (all variants)
+ 	if (is_pae_paging(vcpu)) {
++		kvm_vcpu_srcu_read_lock(vcpu);
+ 		for (i = 0 ; i < 4 ; i++)
+ 			sregs2->pdptrs[i] = kvm_pdptr_read(vcpu, i);
+ 		sregs2->flags |= KVM_SREGS2_FLAGS_PDPTRS_VALID;
++		kvm_vcpu_srcu_read_unlock(vcpu);
+ 	}
+ }
  
- config PINCTRL_METEORPOINT
- 	tristate "Intel Meteor Point pinctrl and GPIO driver"
- 	select PINCTRL_INTEL
- 	help
--	  Meteor Point is the PCH of Intel Meteor Lake. This pinctrl driver
--	  provides an interface that allows configuring of PCH pins and
--	  using them as GPIOs.
-+	  This pinctrl driver provides an interface that allows configuring
-+	  PCH pins of the following platforms and using them as GPIOs:
-+	  - Arrow Lake HX and S
- 
- config PINCTRL_SUNRISEPOINT
- 	tristate "Intel Sunrisepoint pinctrl and GPIO driver"
-@@ -160,7 +165,11 @@ config PINCTRL_TIGERLAKE
- 	select PINCTRL_INTEL
- 	help
- 	  This pinctrl driver provides an interface that allows configuring
--	  of Intel Tiger Lake PCH pins and using them as GPIOs.
-+	  PCH pins of the following platforms and using them as GPIOs:
-+	  - Alder Lake H, P, PS, and U
-+	  - Raptor Lake H, P, PS, PX, and U
-+	  - Rocket Lake S
-+	  - Tiger Lake (all variants)
- 
- source "drivers/pinctrl/intel/Kconfig.tng"
- endmenu
 -- 
 2.51.0
 
