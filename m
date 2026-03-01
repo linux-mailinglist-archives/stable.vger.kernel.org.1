@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-221546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFacJmSYo2lIHwUAu9opvQ
-	(envelope-from <stable+bounces-221546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:40 +0100
+	id SArGD2uYo2lIHwUAu9opvQ
+	(envelope-from <stable+bounces-221547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9E71CB2AE
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F311CB2CF
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2CFC0304B91C
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:28:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CE0C2304BEAF
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDD8296BC1;
-	Sun,  1 Mar 2026 01:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2275E28AAEB;
+	Sun,  1 Mar 2026 01:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGWgTAtK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqcrPXwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B66285C84;
-	Sun,  1 Mar 2026 01:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA28430BB5;
+	Sun,  1 Mar 2026 01:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328538; cv=none; b=Qh0uiEPgz6jXea+jJPo1DlLrbpuMRFQlh5bNbd874cLHLDbTnhrkR+AFl78gbnLpcmAoD+Z0nNecK151mApWVVJmgrg49f+xeplvIoD5lHeaK5ZMeCJ5+blz5pmBmCCkOX1leDfNR7skv7+1riPZd6krKd1y1DpH6XjrFWvvKSA=
+	t=1772328539; cv=none; b=uVUSAhx3EMLLCEunU+Lmw3EnMAR4bBJWOnaogeDbguXM4Yo/nyo50+TAuZWbaL01qhHMulzIdV4eJMZVIjqFegSG5jEHpwoZY+eMuukyoaLdmRCaNJPCOdkn45fE3l3vPvEnsBFioG4a0fx9qWqZKLNhvbyb9OZt6GoXTboi4gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328538; c=relaxed/simple;
-	bh=dj9a1zw0iVDX0X264gbz2jbxQdfwfErx51IkqDHkr5Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jm8Yc/vUB/wjeTZAnZpwhLgxJavflS6D/eh6xv4ciimo3jooSsdYrjCeML6Ca+90Q2MhQ1Mlf5tBKXHMXVipzDwmI9GMgOLXamj3mp85iC2hkYeoz2Ogx8DPI+hJAMV63H33JM1dKLbUZS6HYur9DgoWuos1/C34J1b8sIeOxqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGWgTAtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204D1C19424;
-	Sun,  1 Mar 2026 01:28:57 +0000 (UTC)
+	s=arc-20240116; t=1772328539; c=relaxed/simple;
+	bh=T6ilbPT6n3N+sYAGmiaYyKSry/fnNT5u4TmPVdQ01vU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qv7Q5xL1VHwFKzrMiuEJJoqp9zLUWEpmWq1YGTbRPvj5wuHbnLACShUmNLLDv2N7opeobbDqdVkneunYMeMqaESiIKQrtQrIV1e0hUbywZjm3MgxCLrY5YC5NVUmTYAMYjOYU0HvHPY38gT+2HwXm0mybSk5FJFkjwZpEg4trpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqcrPXwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616DAC19421;
+	Sun,  1 Mar 2026 01:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328537;
-	bh=dj9a1zw0iVDX0X264gbz2jbxQdfwfErx51IkqDHkr5Q=;
+	s=k20201202; t=1772328539;
+	bh=T6ilbPT6n3N+sYAGmiaYyKSry/fnNT5u4TmPVdQ01vU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=HGWgTAtK2uojT+jVRjYmca5FdDIt0Q0g6LyKfzPQC2rMt1O3hHYxUKxozoVgSDUjp
-	 RNi/rcnn3jvzZoKp1QwoMBFh+0zjT2FgA55Z4jf7UajcjzLiPb7nOlGPTlew6zLyb1
-	 C2ZagJ1W88GHegPBUz8F9WPLTLLW5HY5lzIEuQEPLKk4IGPrMBuRlMo7ejJCFEO2BT
-	 3q8FimffOpNznH5JH4p+9FySlIlIshJTD7Rn/L0lnHg4xVdFDrg5oJUfwbJ573lqrP
-	 qEhMPkrFXUVOL8ndupNJoOhFi0ER4bMALmOsVyAup9wbnMO2R9Dby4uxMiIlFyV7PM
-	 ouTE5FeuZp4pQ==
+	b=LqcrPXwzZJKaXBb2RL+EYKC/ujfVepXRi0clkMvTiwWGFS8Qcv7PAf8cpe8dL3eVS
+	 eJQz9IELhYumPIYWSPBxlDEKN2wQPj9bR7LbjxTha7pcqMZh8ZmyQXWmwVY+P2ZVI0
+	 UqjyjQaG8CKVRxSILn69BvLBU3z1LNKbvavO1o4cIzgYtfYLebHGyxiWPKuW4eoyKe
+	 ONCr+mdDqVGgcvFtBT1OrEsVI4dvyYFjCA1iJKL29oeseXSrEGkv72dbu+zKmILWQz
+	 SiPe5sWH0mifdSXDs7sgpYmTFOFQYapz5g8iAa+gE1OrWs/mT/W+AP4rWAv+/xGpdq
+	 6ImbTBhVQcu7w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	pchelkin@ispras.ru
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	linux-cifs@vger.kernel.org
-Subject: FAILED: Patch "ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error paths" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:28:55 -0500
-Message-ID: <20260301012856.1686760-1-sashal@kernel.org>
+	tiwai@suse.de
+Cc: linux-sound@vger.kernel.org
+Subject: FAILED: Patch "ALSA: hda/conexant: Fix headphone jack handling on Acer Swift SF314" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:28:58 -0500
+Message-ID: <20260301012858.1686809-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,28 +66,28 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221546-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-221547-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DE9E71CB2AE
+X-Rspamd-Queue-Id: 77F311CB2CF
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -102,67 +100,60 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a09dc10d1353f0e92c21eae2a79af1c2b1ddcde8 Mon Sep 17 00:00:00 2001
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-Date: Sat, 14 Feb 2026 18:45:14 +0300
-Subject: [PATCH] ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error
- paths
+From 7bc0df86c2384bc1e2012a2c946f82305054da64 Mon Sep 17 00:00:00 2001
+From: Takashi Iwai <tiwai@suse.de>
+Date: Tue, 17 Feb 2026 11:44:11 +0100
+Subject: [PATCH] ALSA: hda/conexant: Fix headphone jack handling on Acer Swift
+ SF314
 
-There are two places where ksmbd_vfs_kern_path_end_removing() needs to be
-called in order to balance what the corresponding successful call to
-ksmbd_vfs_kern_path_start_removing() has done, i.e. drop inode locks and
-put the taken references.  Otherwise there might be potential deadlocks
-and unbalanced locks which are caught like:
+Acer Swift SF314 (SSID 1025:136d) needs a bit of tweaks of the pin
+configurations for NID 0x16 and 0x19 to make the headphone / headset
+jack working.  NID 0x17 can remain as is for the working speaker, and
+the built-in mic is supported via SOF.
 
-BUG: workqueue leaked lock or atomic: kworker/5:21/0x00000000/7596
-     last function: handle_ksmbd_work
-2 locks held by kworker/5:21/7596:
- #0: ffff8881051ae448 (sb_writers#3){.+.+}-{0:0}, at: ksmbd_vfs_kern_path_locked+0x142/0x660
- #1: ffff888130e966c0 (&type->i_mutex_dir_key#3/1){+.+.}-{4:4}, at: ksmbd_vfs_kern_path_locked+0x17d/0x660
-CPU: 5 PID: 7596 Comm: kworker/5:21 Not tainted 6.1.162-00456-gc29b353f383b #138
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-Workqueue: ksmbd-io handle_ksmbd_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x44/0x5b
- process_one_work.cold+0x57/0x5c
- worker_thread+0x82/0x600
- kthread+0x153/0x190
- ret_from_fork+0x22/0x30
- </TASK>
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: d5fc1400a34b ("smb/server: avoid deadlock when linking with ReplaceIfExists")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221086
+Link: https://patch.msgid.link/20260217104414.62911-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 ---
- fs/smb/server/smb2pdu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/hda/codecs/conexant.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index cbb31efdbaa2e..2782eea214d0d 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6115,14 +6115,14 @@ static int smb2_create_link(struct ksmbd_work *work,
- 				rc = -EINVAL;
- 				ksmbd_debug(SMB, "cannot delete %s\n",
- 					    link_name);
--				goto out;
- 			}
- 		} else {
- 			rc = -EEXIST;
- 			ksmbd_debug(SMB, "link already exists\n");
--			goto out;
- 		}
- 		ksmbd_vfs_kern_path_end_removing(&path);
-+		if (rc)
-+			goto out;
- 	}
- 	rc = ksmbd_vfs_link(work, target_name, link_name);
- 	if (rc)
+diff --git a/sound/hda/codecs/conexant.c b/sound/hda/codecs/conexant.c
+index 5623d8c0a0f7c..f71123a475464 100644
+--- a/sound/hda/codecs/conexant.c
++++ b/sound/hda/codecs/conexant.c
+@@ -299,6 +299,7 @@ enum {
+ 	CXT_PINCFG_SWS_JS201D,
+ 	CXT_PINCFG_TOP_SPEAKER,
+ 	CXT_FIXUP_HP_A_U,
++	CXT_FIXUP_ACER_SWIFT_HP,
+ };
+ 
+ /* for hda_fixup_thinkpad_acpi() */
+@@ -1024,6 +1025,14 @@ static const struct hda_fixup cxt_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cxt_fixup_hp_a_u,
+ 	},
++	[CXT_FIXUP_ACER_SWIFT_HP] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x16, 0x0321403f }, /* Headphone */
++			{ 0x19, 0x40f001f0 }, /* Mic */
++			{ }
++		},
++	},
+ };
+ 
+ static const struct hda_quirk cxt5045_fixups[] = {
+@@ -1073,6 +1082,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK(0x1025, 0x0543, "Acer Aspire One 522", CXT_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x054c, "Acer Aspire 3830TG", CXT_FIXUP_ASPIRE_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x054f, "Acer Aspire 4830T", CXT_FIXUP_ASPIRE_DMIC),
++	SND_PCI_QUIRK(0x1025, 0x136d, "Acer Swift SF314", CXT_FIXUP_ACER_SWIFT_HP),
+ 	SND_PCI_QUIRK(0x103c, 0x8079, "HP EliteBook 840 G3", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x807C, "HP EliteBook 820 G3", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x80FD, "HP ProBook 640 G2", CXT_FIXUP_HP_DOCK),
 -- 
 2.51.0
 
