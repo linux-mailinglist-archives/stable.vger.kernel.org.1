@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-221642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLmkNm2ao2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221642-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:21 +0100
+	id SCeNMMiao2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622631CBA6C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C796A1CBC4E
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18838312F30B
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:34:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C204C302D684
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A7B2ECE93;
-	Sun,  1 Mar 2026 01:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198E92D7DD4;
+	Sun,  1 Mar 2026 01:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVW61yBw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bf9tWTRt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764962C1788;
-	Sun,  1 Mar 2026 01:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D071A2C0F84;
+	Sun,  1 Mar 2026 01:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328780; cv=none; b=Z89jjob6D5DZyltJeGw7bvOC+kWspL+P9H5MYJQo5r4deKOwkDXz+BL6AHRClEcz4L4gUrB8fxRgcc8yabUMEi2PygVvNJPdMiq9geoGwkeegnomjNwE3+/xtOz5io9uoVUiHvbg56VAsyD2hCyLGNWQqPAfBJdrgzk7cUGVd+8=
+	t=1772328782; cv=none; b=JXLFFRW214RKBMGOBHywQWwT4BuS4Hq6gYri4o/EwSAiaLIGvH3LUNLSeMCipJu52iqhnPle3wFtIA2Q62ugiF2ghYywQnhmzl3AZ4Q2c34xyRG8XiK0oAU/TeSqp8laz53knjcWGgvi9bF6abJd39lZbP3qxfdAU1PfW1owjhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328780; c=relaxed/simple;
-	bh=YprwY4GuCPHJiogG0GgbvQEZUMdlTc50FVsRCTE6+s0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P2HEHnGMO1eSXeHmHVKcoEo1zRPtGAGEYp67bG+9PZNIXJPXubEggBiUNDNNiV6Bz/Qmrz89DUzCW6EOaFW+psX/YNLgAktPImnpzIPdVECjITVWNEw+dIuHLA9uy58JHrZNHGJiFYpOy8qV2jR1HkybMgqZD6QcvIY8RoZhZ8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVW61yBw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3245C19421;
-	Sun,  1 Mar 2026 01:32:59 +0000 (UTC)
+	s=arc-20240116; t=1772328782; c=relaxed/simple;
+	bh=wFlOjqUJFksQ6ddQTDQy3hs4PvX+i9Zccmu2/ZznsMQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E0XTk1hhgB7OBmckLTXGNNzf7FBUtuU/dtTxYJ5ABEF4a4ZrRqlK7hbC2PllzLTxesa/rfBJj6xUdmMqTRa7fx1BGPrME+g1my6wXfnRdo/OELqIDE/R0ZAt/w0CjNSYu2Q0xKcJSFaTMLq2TmoX1g4ngeS2yNiLukxki+jy3pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bf9tWTRt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01230C19421;
+	Sun,  1 Mar 2026 01:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328780;
-	bh=YprwY4GuCPHJiogG0GgbvQEZUMdlTc50FVsRCTE6+s0=;
+	s=k20201202; t=1772328782;
+	bh=wFlOjqUJFksQ6ddQTDQy3hs4PvX+i9Zccmu2/ZznsMQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=YVW61yBwNQQFtvxdV3VMyyRaflV0hpZawhKtX1sANm3xR9RgtJBfi4uI2hdyk4Rj2
-	 97DRGLonsn7KNaODdM/LTaSMdT1BS99u9QB7RwqysTuZ6o6nHoTXwhwF99KiJ8s/Np
-	 +3m7cmpAnVqxSGLdhiuTPOBR7RKLNuEqQXrG6pzxVS2lywLxdDHvFM7Awq22P7qtTT
-	 XSnDCMUJ56JJJNbNsnh+F8mEsPSNRr0yRoASAD6FUIYdsvcvYcUI28cFnEERnrclIb
-	 NZ02tES0Ue2V4DQSmxNSiRFNkkXxkNwfLi0HZ7oAND7epODWc8zZYczynYiW8IfkML
-	 sD45DOnnXCPKg==
+	b=Bf9tWTRtMKMRgj5Hl2zDtQzQK2UAVxSZ9z9ytnRoENN250I4xcWvl7pl8GWM2sZ8B
+	 M2zOYj5tuTR4L7j5Y1XyMROY/cJfxrLHqKEooG3i1M9w1A0QbPokkwULGnXyVJGUIY
+	 ll9fVCJBVrTIQNz7Md+LtAJbF6y20eBjUFU6W/cDwCQXVd0p8n1olsSW737l88dFgP
+	 vhMxvx+61FgBOhYZaBv8Nck8Y5r0PLW3oxlWuz1BuJBTSY3yz6sOMnJlroh1Ro8ldj
+	 2WoyaUv7wq24N2qju8UByIq4Hv1I8SZS/DzkBELdDCu6XoiYZoQ75sZ1IgckS5aLh1
+	 9rIeKfnpQaxDg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	lihaoxiang@isrc.iscas.ac.cn
-Cc: Brian Masney <bmasney@redhat.com>,
-	Thierry Reding <treding@nvidia.com>,
-	linux-clk@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: FAILED: Patch "clk: tegra: tegra124-emc: Fix potential memory leak in tegra124_clk_register_emc()" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:32:58 -0500
-Message-ID: <20260301013258.1692111-1-sashal@kernel.org>
+	yi.zhang@huawei.com
+Cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	stable@kernel.org,
+	Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org
+Subject: FAILED: Patch "ext4: subdivide EXT4_EXT_DATA_VALID1" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:33:00 -0500
+Message-ID: <20260301013300.1692160-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,33 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221642-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221643-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 622631CBA6C
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,huaweicloud.com:email]
+X-Rspamd-Queue-Id: C796A1CBC4E
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -104,39 +105,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From fce0d0bd9c20fefd180ea9e8362d619182f97a1d Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Thu, 15 Jan 2026 13:05:42 +0800
-Subject: [PATCH] clk: tegra: tegra124-emc: Fix potential memory leak in
- tegra124_clk_register_emc()
+From 22784ca541c0f01c5ebad14e8228298dc0a390ed Mon Sep 17 00:00:00 2001
+From: Zhang Yi <yi.zhang@huawei.com>
+Date: Sat, 29 Nov 2025 18:32:33 +0800
+Subject: [PATCH] ext4: subdivide EXT4_EXT_DATA_VALID1
 
-If clk_register() fails, call kfree to release "tegra".
+When splitting an extent, if the EXT4_GET_BLOCKS_CONVERT flag is set and
+it is necessary to split the target extent in the middle,
+ext4_split_extent() first handles splitting the latter half of the
+extent and passes the EXT4_EXT_DATA_VALID1 flag. This flag implies that
+all blocks before the split point contain valid data; however, this
+assumption is incorrect.
 
-Fixes: 2db04f16b589 ("clk: tegra: Add EMC clock driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Brian Masney <bmasney@redhat.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Therefore, subdivid EXT4_EXT_DATA_VALID1 into
+EXT4_EXT_DATA_ENTIRE_VALID1 and EXT4_EXT_DATA_PARTIAL_VALID1, which
+indicate that the first half of the extent is either entirely valid or
+only partially valid, respectively. These two flags cannot be set
+simultaneously.
+
+This patch does not use EXT4_EXT_DATA_PARTIAL_VALID1, it only replaces
+EXT4_EXT_DATA_VALID1 with EXT4_EXT_DATA_ENTIRE_VALID1 at the location
+where it is set, no logical changes.
+
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Cc: stable@kernel.org
+Message-ID: <20251129103247.686136-2-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- drivers/clk/tegra/clk-tegra124-emc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/extents.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/tegra/clk-tegra124-emc.c b/drivers/clk/tegra/clk-tegra124-emc.c
-index 2a6db04342815..0f6fb776b2298 100644
---- a/drivers/clk/tegra/clk-tegra124-emc.c
-+++ b/drivers/clk/tegra/clk-tegra124-emc.c
-@@ -538,8 +538,10 @@ struct clk *tegra124_clk_register_emc(void __iomem *base, struct device_node *np
- 	tegra->hw.init = &init;
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 2cf5759ba6894..8d5ca450aa5d2 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -43,8 +43,13 @@
+ #define EXT4_EXT_MARK_UNWRIT1	0x2  /* mark first half unwritten */
+ #define EXT4_EXT_MARK_UNWRIT2	0x4  /* mark second half unwritten */
  
- 	clk = clk_register(NULL, &tegra->hw);
--	if (IS_ERR(clk))
-+	if (IS_ERR(clk)) {
-+		kfree(tegra);
- 		return clk;
-+	}
+-#define EXT4_EXT_DATA_VALID1	0x8  /* first half contains valid data */
+-#define EXT4_EXT_DATA_VALID2	0x10 /* second half contains valid data */
++/* first half contains valid data */
++#define EXT4_EXT_DATA_ENTIRE_VALID1	0x8   /* has entirely valid data */
++#define EXT4_EXT_DATA_PARTIAL_VALID1	0x10  /* has partially valid data */
++#define EXT4_EXT_DATA_VALID1		(EXT4_EXT_DATA_ENTIRE_VALID1 | \
++					 EXT4_EXT_DATA_PARTIAL_VALID1)
++
++#define EXT4_EXT_DATA_VALID2	0x20 /* second half contains valid data */
  
- 	tegra->prev_parent = clk_hw_get_parent_by_index(
- 		&tegra->hw, emc_get_parent(&tegra->hw))->clk;
+ static __le32 ext4_extent_block_csum(struct inode *inode,
+ 				     struct ext4_extent_header *eh)
+@@ -3190,8 +3195,9 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
+ 	unsigned int ee_len, depth;
+ 	int err = 0;
+ 
+-	BUG_ON((split_flag & (EXT4_EXT_DATA_VALID1 | EXT4_EXT_DATA_VALID2)) ==
+-	       (EXT4_EXT_DATA_VALID1 | EXT4_EXT_DATA_VALID2));
++	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) == EXT4_EXT_DATA_VALID1);
++	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) &&
++	       (split_flag & EXT4_EXT_DATA_VALID2));
+ 
+ 	ext_debug(inode, "logical block %llu\n", (unsigned long long)split);
+ 
+@@ -3373,7 +3379,7 @@ static struct ext4_ext_path *ext4_split_extent(handle_t *handle,
+ 			split_flag1 |= EXT4_EXT_MARK_UNWRIT1 |
+ 				       EXT4_EXT_MARK_UNWRIT2;
+ 		if (split_flag & EXT4_EXT_DATA_VALID2)
+-			split_flag1 |= EXT4_EXT_DATA_VALID1;
++			split_flag1 |= EXT4_EXT_DATA_ENTIRE_VALID1;
+ 		path = ext4_split_extent_at(handle, inode, path,
+ 				map->m_lblk + map->m_len, split_flag1, flags1);
+ 		if (IS_ERR(path))
+@@ -3728,7 +3734,7 @@ static struct ext4_ext_path *ext4_split_convert_extents(handle_t *handle,
+ 
+ 	/* Convert to unwritten */
+ 	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
+-		split_flag |= EXT4_EXT_DATA_VALID1;
++		split_flag |= EXT4_EXT_DATA_ENTIRE_VALID1;
+ 	/* Convert to initialized */
+ 	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
+ 		/*
 -- 
 2.51.0
 
