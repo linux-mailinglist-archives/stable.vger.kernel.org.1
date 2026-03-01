@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-221796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221797-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OI5eJv+Yo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:15 +0100
+	id ML9XJ9qZo2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221797-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:43:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BD91CB46B
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE6E1CB7B1
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02AF33014517
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E43E8306FE16
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53DB2EA481;
-	Sun,  1 Mar 2026 01:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D323F2DCF67;
+	Sun,  1 Mar 2026 01:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IvCmHDe3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bvieI5NA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BB42DB799;
-	Sun,  1 Mar 2026 01:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968132F3C34
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329159; cv=none; b=uZkWrMsnYCX+ZNQQH/wYP+tnx2N1yIxoL/pwz7EFrFj2TxMW7FmDIMOrTxN5/W2TVv7BE3iT2cWvIgr9XLAymKgQX9EG56NTAYIQ8xqeo0jejEoLHzXaEmoXDs+X0qrwpr0TcAYTmFbunm6frNhp+KGwDwVJtOGINEg4hoKzVMw=
+	t=1772329161; cv=none; b=m/CSXZUGAaCn7U4fEfc4ESzwyk7ZJubj/FrljuxEJcTGpser62OWeGhwLaM842maRwSHXnB6UxE9dKkYoZEYICdsz4NscVcPgScgOq3eelZQDMiQjoD6RocQDl4GLcXBQCdeCNMQtPfeHDzseXVvwKTFnDKq1/vGahBtiB4U+sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329159; c=relaxed/simple;
-	bh=AyiKFNuAPGcp1cKB8OHfwUhAGRjcr3aAvgJp9HKMWA0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LF9hDhSnxWE5aL9eZVw1swFjEWL4PiaXMWgmtaivTqouckjARwYk7c7huv0gvV05XYZUQzQla16IG5M58VW+D8KuyD11OwlN+YH/g6Cx455+yUdJgzAwmu4OjAOAltjuJNCngGOK5tqo073mjOgl9SewgOOS7gFySD9BiNygXB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IvCmHDe3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7DDC19421;
-	Sun,  1 Mar 2026 01:39:18 +0000 (UTC)
+	s=arc-20240116; t=1772329161; c=relaxed/simple;
+	bh=7HRUhMCSg+OSPm9O1veqgxOrbjeHvhJG/6MzA6/D3jk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZpRSQjd364fVo1u2fDzx9TRrpoVZD10GuFgAvdaVkSRCYIxSl5dKuVJcaykI7ym8fHjXuR3KoIzfdEGpBAN8Ia924IHu2IhrmJU2iLkOTu21azUKRZ2jOBH2szRRLDcieco2iRPxV3bctkEtGhbnvDXY+fM5iK91PrbJIBc/ALw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bvieI5NA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16115C19421;
+	Sun,  1 Mar 2026 01:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329159;
-	bh=AyiKFNuAPGcp1cKB8OHfwUhAGRjcr3aAvgJp9HKMWA0=;
+	s=k20201202; t=1772329161;
+	bh=7HRUhMCSg+OSPm9O1veqgxOrbjeHvhJG/6MzA6/D3jk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=IvCmHDe3fMWmSR3Uq0R1bzYiG40HqWdT/3xFo5UC4zvhfG4SFfbaq2mkrwQvLZc1G
-	 VoSwJgp0Qmm82ylSAhYhDO8K1E1i5p7ZeozDZJ/aEoPEkmnulB9VUpKRInWih6vcxZ
-	 RjvotA2OhsFOMWul07/D5fPXLwB0UEeFINlqCVvQlOOaYYhIeSYB1hGCMVf+ZvF7tv
-	 H8kbX3onjVV3GP8XShBtXjGdXzXNAXu/hyTdyXOCZ1BIYUq81HxlXTIayI+7RLol5U
-	 TS5Uv1UbX9rceG2sMK7dVHn+30NSPbtOs1yWD5ND+wIm05/230AyHLgmPEdzYSu2yA
-	 bZ6/uaf3/ETPA==
+	b=bvieI5NAfCZ9cgtdPDBIgxReev/tXI8xuj8kZp7s4V7Bf7HmbfAvYUvfZ0v0L2kLv
+	 x0eMY4TPVASRRWjW/E4TV47QrfF7tnAHguxXjhzBMrqBWUfA1zXezI913ZgBOQ04JE
+	 sux+YWccKwf7EjmFl8ckvER/fe1m37cDZzqlQ3pdX7YRBK8vkbo+lxfINtCcRwl9+R
+	 dH5aoHV4tRKY+kaDICYG0Kf9Rcv005BtCuQGrADe38qTsD+uSlngyhalUXTyjT4j6s
+	 y2+JJ6PS4kF5fqD/xKoiUBsOej4CWQSHjoS6yZ3LbFtPSbTTrUVu92zVjl1OK4iBCJ
+	 OI4voI0zH3X9A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	cnitlrt@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "net/sched: act_skbedit: fix divide-by-zero in tcf_skbedit_hash()" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:39:17 -0500
-Message-ID: <20260301013917.1700213-1-sashal@kernel.org>
+	ardb@kernel.org
+Cc: Dave Young <dyoung@redhat.com>
+Subject: FAILED: Patch "x86/kexec: Copy ACPI root pointer address from config table" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:39:19 -0500
+Message-ID: <20260301013919.1700262-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,31 +64,31 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-221796-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221797-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 13BD91CB46B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5AE6E1CB7B1
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -102,61 +101,48 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From be054cc66f739a9ba615dba9012a07fab8e7dd6f Mon Sep 17 00:00:00 2001
-From: Ruitong Liu <cnitlrt@gmail.com>
-Date: Sat, 14 Feb 2026 01:59:48 +0800
-Subject: [PATCH] net/sched: act_skbedit: fix divide-by-zero in
- tcf_skbedit_hash()
+From e00ac9e5afb5d80c0168ec88d8e8662a54af8249 Mon Sep 17 00:00:00 2001
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 17 Feb 2026 12:09:35 +0100
+Subject: [PATCH] x86/kexec: Copy ACPI root pointer address from config table
 
-Commit 38a6f0865796 ("net: sched: support hash selecting tx queue")
-added SKBEDIT_F_TXQ_SKBHASH support. The inclusive range size is
-computed as:
+Dave reports that kexec may fail when the first kernel boots via the EFI
+stub but without EFI runtime services, as in that case, the RSDP address
+field in struct bootparams is never assigned. Kexec copies this value
+into the version of struct bootparams that it provides to the incoming
+kernel, which may have no other means to locate the ACPI root pointer.
 
-mapping_mod = queue_mapping_max - queue_mapping + 1;
+So take the value from the EFI config tables if no root pointer has been
+set in the first kernel's struct bootparams.
 
-The range size can be 65536 when the requested range covers all possible
-u16 queue IDs (e.g. queue_mapping=0 and queue_mapping_max=U16_MAX).
-That value cannot be represented in a u16 and previously wrapped to 0,
-so tcf_skbedit_hash() could trigger a divide-by-zero:
-
-queue_mapping += skb_get_hash(skb) % params->mapping_mod;
-
-Compute mapping_mod in a wider type and reject ranges larger than U16_MAX
-to prevent params->mapping_mod from becoming 0 and avoid the crash.
-
-Fixes: 38a6f0865796 ("net: sched: support hash selecting tx queue")
-Cc: stable@vger.kernel.org # 6.12+
-Signed-off-by: Ruitong Liu <cnitlrt@gmail.com>
-Link: https://patch.msgid.link/20260213175948.1505257-1-cnitlrt@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
+Cc: <stable@vger.kernel.org> # v6.1
+Reported-by: Dave Young <dyoung@redhat.com>
+Tested-by: Dave Young <dyoung@redhat.com>
+Link: https://lore.kernel.org/linux-efi/aZQg_tRQmdKNadCg@darkstar.users.ipa.redhat.com/
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- net/sched/act_skbedit.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/kernel/kexec-bzimage64.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/sched/act_skbedit.c b/net/sched/act_skbedit.c
-index 8c1d1554f6575..5450c1293eb50 100644
---- a/net/sched/act_skbedit.c
-+++ b/net/sched/act_skbedit.c
-@@ -126,7 +126,7 @@ static int tcf_skbedit_init(struct net *net, struct nlattr *nla,
- 	struct tcf_skbedit *d;
- 	u32 flags = 0, *priority = NULL, *mark = NULL, *mask = NULL;
- 	u16 *queue_mapping = NULL, *ptype = NULL;
--	u16 mapping_mod = 1;
-+	u32 mapping_mod = 1;
- 	bool exists = false;
- 	int ret = 0, err;
- 	u32 index;
-@@ -194,6 +194,10 @@ static int tcf_skbedit_init(struct net *net, struct nlattr *nla,
- 			}
+diff --git a/arch/x86/kernel/kexec-bzimage64.c b/arch/x86/kernel/kexec-bzimage64.c
+index 7508d0ccc7403..251edc5a040fc 100644
+--- a/arch/x86/kernel/kexec-bzimage64.c
++++ b/arch/x86/kernel/kexec-bzimage64.c
+@@ -193,6 +193,13 @@ setup_efi_state(struct boot_params *params, unsigned long params_load_addr,
+ 	struct efi_info *current_ei = &boot_params.efi_info;
+ 	struct efi_info *ei = &params->efi_info;
  
- 			mapping_mod = *queue_mapping_max - *queue_mapping + 1;
-+			if (mapping_mod > U16_MAX) {
-+				NL_SET_ERR_MSG_MOD(extack, "The range of queue_mapping is invalid.");
-+				return -EINVAL;
-+			}
- 			flags |= SKBEDIT_F_TXQ_SKBHASH;
- 		}
- 		if (*pure_flags & SKBEDIT_F_INHERITDSFIELD)
++	if (!params->acpi_rsdp_addr) {
++		if (efi.acpi20 != EFI_INVALID_TABLE_ADDR)
++			params->acpi_rsdp_addr = efi.acpi20;
++		else if (efi.acpi != EFI_INVALID_TABLE_ADDR)
++			params->acpi_rsdp_addr = efi.acpi;
++	}
++
+ 	if (!efi_enabled(EFI_RUNTIME_SERVICES))
+ 		return 0;
+ 
 -- 
 2.51.0
 
