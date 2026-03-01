@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-221762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221763-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sASFB1mco2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-221762-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:33 +0100
+	id tjvvOFSZo2ksIAUAu9opvQ
+	(envelope-from <stable+bounces-221763-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C68E1CC370
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D991CB5E8
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B47FA3284363
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE41A3029259
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035B02EC562;
-	Sun,  1 Mar 2026 01:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7EB2F28FF;
+	Sun,  1 Mar 2026 01:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oGY4Tug8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HQt9P6Tf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4B42D9798;
-	Sun,  1 Mar 2026 01:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F8E2D9798;
+	Sun,  1 Mar 2026 01:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329076; cv=none; b=j682O4VhubIK4Ldayib2lMtWwl5qUhLLCEm6+96Yt3uAPHkFIfcgxPJ1jqrf4072GG+Y8EMDfWAJYGJUDDFEczlP+3xvhICOnHz79nvffG8Hy+qkByglyvAOBt/Z+GnT2MQLdJHaV145aMJNSZNFWYWa6IZ6YkJfSO7elE19Nak=
+	t=1772329078; cv=none; b=Urf0n2HpHWVOsbnxC4OeOXUzZEWiH2BFFOvhGVGVZKRxeyaAyYEUbskpuzT4xksksbrJzA7O3kKvNIfHzjgE2i5jSKMjT1ai+1J+grNCm8oMiSJRpBnygXabXqqIdDAEzw2cvYVyhvQuBYL5zQNWkwrp2kt3i/Hp78fKp1odBXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329076; c=relaxed/simple;
-	bh=eB4GNu0K/uOaYscFNrdQgtuflzG4HrNElfM8Hs0gG9E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PlwQoOCBchXnKSfCLLxxZbwUVg2NkWV7IBu0w2noPqKYcTWNVSZWOKg3RyOTIrqxFpPBLeIU30rolOrTiJ0YLVZ6BC8MhR/xEIdW6duQGXgpjgKkYEPApnadHjBNczQ1ibyNHYuzPbBZ4iz8g7AU/B+gvtqckLc7cMS4CRGYy+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oGY4Tug8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C770C19421;
-	Sun,  1 Mar 2026 01:37:55 +0000 (UTC)
+	s=arc-20240116; t=1772329078; c=relaxed/simple;
+	bh=HRLW37JqMa5SuXmKPlNEmPRMGd6lnQD5OgGPDfsdnhA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ajnk6BP1DSprHz3h8Xz7rYv+JfM0ELN2bY6ZV+f4hNDZpLci9XFEjLIFE0K/fNlu0IEzdy1QucGdyGttzHRLcoqGWtYhONWFegERXKCz5oGNrtS1lA54kvzZpz4PD8EjZYAPEYs6M04QScLKdlRQa3D2VytNxUFHN7ZDN0u0rq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HQt9P6Tf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4350DC19421;
+	Sun,  1 Mar 2026 01:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329076;
-	bh=eB4GNu0K/uOaYscFNrdQgtuflzG4HrNElfM8Hs0gG9E=;
+	s=k20201202; t=1772329078;
+	bh=HRLW37JqMa5SuXmKPlNEmPRMGd6lnQD5OgGPDfsdnhA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=oGY4Tug8sl3v/G5q2nQDMckHbnl9KKmav3RQO/xLnftktP6E3TSWBGNH/RwMONb3x
-	 ynQUNgBlaKX9yOaMq0RKbjRp+9HgbXgq33LlfYp0JElq1gojitkimfLToIXhLN7eho
-	 srmZr3+5wdZI4zrWQ/aPhjLSH76FfHIH3jsbCg9OUonbStJX74wTi2q1Kduexi/SMp
-	 7DTjlHLCXkK9nbkVGEyTD5+Jo5Jo8mZNIcpRiiqvxwdlur7pI9p8wa5e9RLK5neLRd
-	 9ZIIHXnoyonpHLqDVJRa7TbADLdJsCHGE91NCNpKDy9cTwn3tf3ovjR5oljY+2VyG4
-	 +pb+Mu8JdgTrw==
+	b=HQt9P6TfreVt5C3Mk2bBIfBsKVHcj1O1gnd0C03t123hyBsyIXo69btAeptTUSk2o
+	 FFbr7PysHgkhGvJq3vk83kGxTy4TS0IJP0zn0oHl4Weyria9z+XjfePoNXgIaRJzKN
+	 KnEXpoDWAb3XFn/ZTUrL3k9EfLjJyqRER+rrTD8suhDSP0Yc0BUMFxIx7hHpFaSFuL
+	 v8JUffUvaC9xS8FpAcp4Bsc/9oHuFhTI5E3Oz88/PtIJVp21BA1OtB0aRQxUdwRYfO
+	 IUrZ8YvNpCs2LSZPFXJuDA7u9dcGFNM1e/iv9/RCoFQdY+rddleZytJwX2sUvvxvur
+	 mlq3zDGB3CGcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	git@danielhodges.dev
-Cc: Anna Schumaker <anna.schumaker@oracle.com>,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "SUNRPC: fix gss_auth kref leak in gss_alloc_msg error path" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:37:54 -0500
-Message-ID: <20260301013754.1698192-1-sashal@kernel.org>
+	john.g.garry@oracle.com
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+	loongarch@lists.linux.dev
+Subject: FAILED: Patch "LoongArch: Make cpumask_of_node() robust against NUMA_NO_NODE" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:37:56 -0500
+Message-ID: <20260301013757.1698242-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,19 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221762-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221763-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,danielhodges.dev:email]
-X-Rspamd-Queue-Id: 7C68E1CC370
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,oracle.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 85D991CB5E8
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -103,54 +102,34 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From dd2fdc3504592d85e549c523b054898a036a6afe Mon Sep 17 00:00:00 2001
-From: Daniel Hodges <git@danielhodges.dev>
-Date: Fri, 6 Feb 2026 15:41:46 -0500
-Subject: [PATCH] SUNRPC: fix gss_auth kref leak in gss_alloc_msg error path
+From 94b0c831eda778ae9e4f2164a8b3de485d8977bb Mon Sep 17 00:00:00 2001
+From: John Garry <john.g.garry@oracle.com>
+Date: Tue, 10 Feb 2026 19:31:12 +0800
+Subject: [PATCH] LoongArch: Make cpumask_of_node() robust against NUMA_NO_NODE
 
-Commit 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c") added
-a kref_get(&gss_auth->kref) call to balance the gss_put_auth() done
-in gss_release_msg(), but forgot to add a corresponding kref_put()
-on the error path when kstrdup_const() fails.
+The arch definition of cpumask_of_node() cannot handle NUMA_NO_NODE -
+which is a valid index - so add a check for this.
 
-If service_name is non-NULL and kstrdup_const() fails, the function
-jumps to err_put_pipe_version which calls put_pipe_version() and
-kfree(gss_msg), but never releases the gss_auth reference. This leads
-to a kref leak where the gss_auth structure is never freed.
-
-Add a forward declaration for gss_free_callback() and call kref_put()
-in the err_put_pipe_version error path to properly release the
-reference taken earlier.
-
-Fixes: 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- net/sunrpc/auth_gss/auth_gss.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/loongarch/include/asm/topology.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
-index 5c095cb8cb201..bb3c3db2713b1 100644
---- a/net/sunrpc/auth_gss/auth_gss.c
-+++ b/net/sunrpc/auth_gss/auth_gss.c
-@@ -39,6 +39,8 @@ static const struct rpc_authops authgss_ops;
- static const struct rpc_credops gss_credops;
- static const struct rpc_credops gss_nullops;
+diff --git a/arch/loongarch/include/asm/topology.h b/arch/loongarch/include/asm/topology.h
+index f06e7ff25bb7c..6b79d6183085a 100644
+--- a/arch/loongarch/include/asm/topology.h
++++ b/arch/loongarch/include/asm/topology.h
+@@ -12,7 +12,7 @@
  
-+static void gss_free_callback(struct kref *kref);
-+
- #define GSS_RETRY_EXPIRED 5
- static unsigned int gss_expired_cred_retry_delay = GSS_RETRY_EXPIRED;
+ extern cpumask_t cpus_on_node[];
  
-@@ -551,6 +553,7 @@ gss_alloc_msg(struct gss_auth *gss_auth,
- 	}
- 	return gss_msg;
- err_put_pipe_version:
-+	kref_put(&gss_auth->kref, gss_free_callback);
- 	put_pipe_version(gss_auth->net);
- err_free_msg:
- 	kfree(gss_msg);
+-#define cpumask_of_node(node)  (&cpus_on_node[node])
++#define cpumask_of_node(node)  ((node) == NUMA_NO_NODE ? cpu_all_mask : &cpus_on_node[node])
+ 
+ struct pci_bus;
+ extern int pcibus_to_node(struct pci_bus *);
 -- 
 2.51.0
 
