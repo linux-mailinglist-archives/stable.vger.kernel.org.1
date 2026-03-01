@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-221997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEXjGpafo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:08:22 +0100
+	id KKx6FRKro2myJgUAu9opvQ
+	(envelope-from <stable+bounces-221998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:57:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4031CD0B9
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:08:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB32F1CE16A
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:57:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BB103389E78
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:48:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB1F4338E9C7
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F692F12CE;
-	Sun,  1 Mar 2026 01:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E9F2D97AA;
+	Sun,  1 Mar 2026 01:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gMXetGFU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AojH4Y7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4F7244670;
-	Sun,  1 Mar 2026 01:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7EA1A3165
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329652; cv=none; b=CS38KxwqqiXtfIujiRC3WnI1EbjkndTdiVZFNrvWoKsKYKZzCOxuR5X7TBtoyxF7Sit619HcH3GEf7X60Gjf/aJbWIVJEmPV8ZdWYp8i57Bf2PHqvAQXspqo3sLN4cLCttudrwEJiiHMyfNU3BP8YV7OBK92SSCYsNdp8x+78c4=
+	t=1772329654; cv=none; b=Q0scc02AzSU4Iyu/W4y63UssGmqvaRWF5nSOKNW2fOgaRXfrzhvguo+JfOkzEIcQcJeN3UJt/BK6TcP0RyIUeu2/UclazNcGWxtG1QCXAY265DKEZcaVt3fPCnwH451w9VsWYsRjVUEGlX/YHFiFU5AjihFXXKth8iQVXqPUTbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329652; c=relaxed/simple;
-	bh=1vvdGwV6/iaY6fwdiAj4QL+taqX3w07IyiPraPIL2X4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=juJ1pS6aR+6++hVWtczs75bQCwH1qJEmPxXRh+CoKw9biKQwtn826qXj7jC0WGgTrJTO9cOlqHhnJaq3qdWaWPROFXg+EUaOW1x7s5jTU2b+ITXGcBt4cdmTLulZpoyW3Di3MciVnY6hbwyKmKHgj+UHVv7N8Bce0XhU/mTZ5EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gMXetGFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D8CC19421;
-	Sun,  1 Mar 2026 01:47:31 +0000 (UTC)
+	s=arc-20240116; t=1772329654; c=relaxed/simple;
+	bh=8yvGc6/u3APT9EaaIgAuvoGpfEqpmnS6AZAeWpyz+dA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QmmDhtcUb4+7bBbMLLU7O4gVj1XDSO8tFWCNHbgqPbc7LWmD9m583p8pwwsYwvDTMbB02cJrSJXexf83wuN6IlSr5+YiK52737BogZAe/xB2+OOAT5Xt8ZfUtxnS6hA7x0lb/bPgDKt2sdFwJn38dTFBb8CHwqvH0FRcPYaUjio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AojH4Y7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD95BC19421;
+	Sun,  1 Mar 2026 01:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329652;
-	bh=1vvdGwV6/iaY6fwdiAj4QL+taqX3w07IyiPraPIL2X4=;
+	s=k20201202; t=1772329654;
+	bh=8yvGc6/u3APT9EaaIgAuvoGpfEqpmnS6AZAeWpyz+dA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=gMXetGFUty1i9uqnmxwmP9J89ruMmOgjroEUVKVC/5RrCW19FleIuRcWYacFCx2+A
-	 DADrSmsFcSwmqyMbegASsV6elJrfvAYx8DqE2IjumreT7ftqQgM4lCir8pEB3VL6Pf
-	 Z6/7t/JlQ2HZvh377IbFDOvTD3wGWJpqYOqz83EVBR64/KbLw1Bp8JDXKeDvrT8EoZ
-	 FDjIrtqZtk6b+QiQjOotLWFfL3T+ZER2hKhqK4dThDfaV3D4EL+3OO95siYIs2u/Cg
-	 QxByfap624n1Pt0XPQrmVhXNK7ecIwvohey3htBCMvqSfwWGSX/aGooX3GAkDyoXR+
-	 6mYx0eW5cfJOQ==
+	b=AojH4Y7TniYV6cRSFQqnAlN6LL6YT4v6wqOokWxRFErEmk7TtT5lkBIqVeND07WvA
+	 5nie0wUduz9JytlkrR7b4ZQBmr6CZ0acKFfE5ZO53eXLgarqnjxA0sTOFwQqqpcFBC
+	 CUmUZ7FJOaNoo0AAulGzpam6981l3hVUMBPcVBkOlCWj9WsZq718lA0lLnsonMKMoY
+	 y1vxKKVJwdTuv7ks4iMofY3eh4GYw1kcvQeZtZ3nWET+G0ouhGOx2AojmCfAcjPjnX
+	 91Msloy85+O9jJoRC75n1bPlAFZPjeVY4Jyi0PhP2TZrSZ4a0maTdEdDCg2BQh+e4x
+	 CTcyX4VW7p+jA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	enelsonmoore@gmail.com
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: FAILED: Patch "net: intel: fix PCI device ID conflict between i40e and ipw2200" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:47:29 -0500
-Message-ID: <20260301014730.1711449-1-sashal@kernel.org>
+	cuichao1753@phytium.com.cn
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Gregory Price <gourry@gourry.net>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	linux-mm@kvack.org
+Subject: FAILED: Patch "mm: numa_memblks: Identify the accurate NUMA ID of CFMW" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:47:32 -0500
+Message-ID: <20260301014732.1711498-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,32 +68,30 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221997-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221998-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:email,intel.com:email]
-X-Rspamd-Queue-Id: CA4031CD0B9
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AB32F1CE16A
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -107,68 +104,86 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From d03e094473ecdeb68d853752ba467abe13e1de44 Mon Sep 17 00:00:00 2001
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Mon, 9 Feb 2026 18:12:34 -0800
-Subject: [PATCH] net: intel: fix PCI device ID conflict between i40e and
- ipw2200
+From f043a93fff9e3e3e648b6525483f59104b0819fa Mon Sep 17 00:00:00 2001
+From: Cui Chao <cuichao1753@phytium.com.cn>
+Date: Fri, 13 Feb 2026 14:03:47 +0800
+Subject: [PATCH] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
 
-The ID 8086:104f is matched by both i40e and ipw2200. The same device
-ID should not be in more than one driver, because in that case, which
-driver is used is unpredictable. Fix this by taking advantage of the
-fact that i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
-devices use PCI_CLASS_NETWORK_OTHER to differentiate the devices.
+In some physical memory layout designs, the address space of CFMW (CXL
+Fixed Memory Window) resides between multiple segments of system memory
+belonging to the same NUMA node. In numa_cleanup_meminfo, these multiple
+segments of system memory are merged into a larger numa_memblk. When
+identifying which NUMA node the CFMW belongs to, it may be incorrectly
+assigned to the NUMA node of the merged system memory.
 
-Fixes: 2e45d3f4677a ("i40e: Add support for X710 B/P & SFP+ cards")
+When a CXL RAM region is created in userspace, the memory capacity of
+the newly created region is not added to the CFMW-dedicated NUMA node.
+Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
+containing RAM). This makes it impossible to clearly distinguish
+between the two types of memory, which may affect memory-tiering
+applications.
+
+Example memory layout:
+
+Physical address space:
+    0x00000000 - 0x1FFFFFFF  System RAM (node0)
+    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
+    0x40000000 - 0x5FFFFFFF  System RAM (node0)
+    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+
+After numa_cleanup_meminfo, the two node0 segments are merged into one:
+    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
+    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+
+So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
+
+To address this scenario, accurately identifying the correct NUMA node
+can be achieved by checking whether the region belongs to both
+numa_meminfo and numa_reserved_meminfo.
+
+While this issue is only observed in a QEMU configuration, and no known
+end users are impacted by this problem, it is likely that some firmware
+implementation is leaving memory map holes in a CXL Fixed Memory Window.
+CXL hotplug depends on mapping free window capacity, and it seems to be
+only a coincidence to have not hit this problem yet.
+
+Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
+Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
 Cc: stable@vger.kernel.org
-Acked-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Link: https://patch.msgid.link/20260210021235.16315-1-enelsonmoore@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/20260213060347.2389818-2-cuichao1753@phytium.com.cn
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c  | 8 +++++++-
- drivers/net/wireless/intel/ipw2x00/ipw2200.c | 8 +++++++-
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ mm/numa_memblks.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index d3bc3207054f9..02de186dcc8f5 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -75,7 +75,13 @@ static const struct pci_device_id i40e_pci_tbl[] = {
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_BASE_T4), 0},
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_BASE_T_BC), 0},
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_SFP), 0},
--	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_B), 0},
-+	/*
-+	 * This ID conflicts with ipw2200, but the devices can be differentiated
-+	 * because i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
-+	 * devices use PCI_CLASS_NETWORK_OTHER.
-+	 */
-+	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, I40E_DEV_ID_10G_B),
-+		PCI_CLASS_NETWORK_ETHERNET << 8, 0xffff00, 0},
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_KX_X722), 0},
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_QSFP_X722), 0},
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_SFP_X722), 0},
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-index 09035a77e775f..b0e769da94156 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-@@ -11387,7 +11387,13 @@ static const struct pci_device_id card_ids[] = {
- 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2754, 0, 0, 0},
- 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2761, 0, 0, 0},
- 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2762, 0, 0, 0},
--	{PCI_VDEVICE(INTEL, 0x104f), 0},
-+	/*
-+	 * This ID conflicts with i40e, but the devices can be differentiated
-+	 * because i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
-+	 * devices use PCI_CLASS_NETWORK_OTHER.
-+	 */
-+	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x104f),
-+		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, 0},
- 	{PCI_VDEVICE(INTEL, 0x4220), 0},	/* BG */
- 	{PCI_VDEVICE(INTEL, 0x4221), 0},	/* BG */
- 	{PCI_VDEVICE(INTEL, 0x4223), 0},	/* ABG */
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index 8f5735fda0a21..3f53464240e8d 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -570,15 +570,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
+ int phys_to_target_node(u64 start)
+ {
+ 	int nid = meminfo_to_nid(&numa_meminfo, start);
++	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
+ 
+ 	/*
+-	 * Prefer online nodes, but if reserved memory might be
+-	 * hot-added continue the search with reserved ranges.
++	 * Prefer online nodes unless the address is also described
++	 * by reserved ranges, in which case use the reserved nid.
+ 	 */
+-	if (nid != NUMA_NO_NODE)
++	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
+ 		return nid;
+ 
+-	return meminfo_to_nid(&numa_reserved_meminfo, start);
++	return reserved_nid;
+ }
+ EXPORT_SYMBOL_GPL(phys_to_target_node);
+ 
 -- 
 2.51.0
 
