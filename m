@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-222155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDCpCeqdo2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:14 +0100
+	id mGOhJrKeo2lzIgUAu9opvQ
+	(envelope-from <stable+bounces-222156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:04:34 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF161CC9E9
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 185431CCD2C
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:04:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6574A30A0A7D
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A90631037EC
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C678330AD15;
-	Sun,  1 Mar 2026 01:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EB02FE042;
+	Sun,  1 Mar 2026 01:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mr4RcRxy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZupN4A3v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B0D2EBBA9;
-	Sun,  1 Mar 2026 01:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE062E6CC0;
+	Sun,  1 Mar 2026 01:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330037; cv=none; b=KCMmuJC8sUECj+DGazLA+qCCY4A2ceWXW8gdYVWjooZw1xF2bMznC0XDjaeUD27N579wx/REDxXRqPJ3qWKbjsaqop/7SPjoGo4wTWRHTIoGjSX6etiH+myQQrHa1PRlirRxjfcI6Mn66fi6bOdFFRVIGTzz8vPsR8DlpYoebJo=
+	t=1772330039; cv=none; b=CQfM2NGRb1kNi1nB1wd5H+IZ+A3ZnX+Uz4I/Ut4JQeRjaCC+QmaSvP+2PEn8jikRzkgxcXKEUPwzwn/8Bu8+aHKoU8XzHpSQMYdjgOtvV1O9nA4w3xQiIYEW+FoZBZj6GM13/b1lAqW/6zoH+FkHWJiGfwBSYUoHUBw9C4RDd6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330037; c=relaxed/simple;
-	bh=nWgyK4bmMA4Ntbgxd4K/ARtx6r4Ti1SthxAk+Z7Cudw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iCw59qpSDxC8EyDtfjugMKKAwi07p4X0Kb6Rvi9KG6lVB2JaqKLZEXPBX5vqBiSbAGnW5VXfu1ubLrpSvkA94uxh9u9EG+aCPTzrqYHHoCE4vUQsyYzkdlRQeFhG8rSlusflCVMdxoILAr/JtqSaw6LhTQv+/yN9o46gPA7Bb2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mr4RcRxy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CB5C19421;
-	Sun,  1 Mar 2026 01:53:56 +0000 (UTC)
+	s=arc-20240116; t=1772330039; c=relaxed/simple;
+	bh=B+QKWh4kotwyH+bdw56pFm+qXELNoFGXNP6SKLlHiFw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bheXnPD4vOMdTyghZznDvz7LDzCoPtBwmal2q5SJ8ygo5n6tydK/ZtaQHZEl52OCse/Y+F16mdJd0I0L+yuh6hymGOSFPiv/v+jVzeq5h3vNHeYbuecsRAKPO1RuFDcBFXr9DTVhvj4RsFOdizF3nApIKNzZxZZxZzpfxAlRa1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZupN4A3v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28115C19424;
+	Sun,  1 Mar 2026 01:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330037;
-	bh=nWgyK4bmMA4Ntbgxd4K/ARtx6r4Ti1SthxAk+Z7Cudw=;
+	s=k20201202; t=1772330039;
+	bh=B+QKWh4kotwyH+bdw56pFm+qXELNoFGXNP6SKLlHiFw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Mr4RcRxyMZYhSo04FNKVpetpG+SKbuPzEsh0okGNldXchpDYdPNooWQGNjfRjFRza
-	 5pfmhfihbKpPZlXfOIvz3AxlID0gJEMlTajpoxZcZON7ZIOh8iE5IOVIihvLdNON8K
-	 eOsAs5TEfqXz2/P+1O+YwOap0pswE7mSBT53c3r/hTJQnlq+bDUH4gxkQV8fhmDuzk
-	 PFxWX6eb5kVYdjL1Vi0YXBu+1oFlv2QsySgCuGUAMAv7fH9Edx6Nq9WN2NBL47+qbB
-	 uDmkGfE7ryt4yhlSDdj3qe4EHnzvHh9cB7GzfDVab0wPud1zMV9Dj6vtV5z+rKW/U1
-	 yZFnhKpYc9LuQ==
+	b=ZupN4A3vXS7pF7yUJ+SYDQtUJxvoERi3uFbu1cv+O/XnqNL8gz1z2qltwePyfeNVI
+	 H3YWokTsdeM9/7hsdzJJfT0oX0880+8V2ot00GJFavNIMEu/D99UxV6A13JK+5dOYY
+	 GhAPZp/kIorFp00aboMXv867Sna2BCu/xH3mQeNwWQMCKPYU26nHxF+6lX8fgYb5FO
+	 4hNtGG1CQtl5OEI9b15QbSNggye8/IdE4vd5oH4nzHRAFM2JSOtb/sKtPBFpN9MdBS
+	 Ahh7KpY3fjYMK/vDbG2oh3eshq9Y0AoKj2V5oDnTeybLJ+0FVLZY26FxU1doBCil4W
+	 mkauPE4TKuPnQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	sprasad@microsoft.com
-Cc: Steve French <stfrench@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: FAILED: Patch "cifs: Fix locking usage for tcon fields" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:53:55 -0500
-Message-ID: <20260301015355.1720805-1-sashal@kernel.org>
+	guojinhui.liam@bytedance.com
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	linux-pci@vger.kernel.org
+Subject: FAILED: Patch "PCI: Fix pci_slot_trylock() error handling" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:53:57 -0500
+Message-ID: <20260301015358.1720850-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222155-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222156-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,8 +89,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CEF161CC9E9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 185431CCD2C
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -103,134 +103,68 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 96c4af418586ee9a6aab61738644366426e05316 Mon Sep 17 00:00:00 2001
-From: Shyam Prasad N <sprasad@microsoft.com>
-Date: Sun, 1 Feb 2026 00:21:13 +0530
-Subject: [PATCH] cifs: Fix locking usage for tcon fields
+From 9368d1ee62829b08aa31836b3ca003803caf0b72 Mon Sep 17 00:00:00 2001
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
+Date: Fri, 12 Dec 2025 22:55:28 +0800
+Subject: [PATCH] PCI: Fix pci_slot_trylock() error handling
 
-We used to use the cifs_tcp_ses_lock to protect a lot of objects
-that are not just the server, ses or tcon lists. We later introduced
-srv_lock, ses_lock and tc_lock to protect fields within the
-corresponding structs. This was done to provide a more granular
-protection and avoid unnecessary serialization.
+Commit a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
+delegates the bridge device's pci_dev_trylock() to pci_bus_trylock() in
+pci_slot_trylock(), but it forgets to remove the corresponding
+pci_dev_unlock() when pci_bus_trylock() fails.
 
-There were still a couple of uses of cifs_tcp_ses_lock to provide
-tcon fields. In this patch, I've replaced them with tc_lock.
+Before a4e772898f8b, the code did:
 
+  if (!pci_dev_trylock(dev)) /* <- lock bridge device */
+    goto unlock;
+  if (dev->subordinate) {
+    if (!pci_bus_trylock(dev->subordinate)) {
+      pci_dev_unlock(dev);   /* <- unlock bridge device */
+      goto unlock;
+    }
+  }
+
+After a4e772898f8b the bridge-device lock is no longer taken, but the
+pci_dev_unlock(dev) on the failure path was left in place, leading to the
+bug.
+
+This yields one of two errors:
+
+  1. A warning that the lock is being unlocked when no one holds it.
+  2. An incorrect unlock of a lock that belongs to another thread.
+
+Fix it by removing the now-redundant pci_dev_unlock(dev) on the failure
+path.
+
+[Same patch later posted by Keith at
+https://patch.msgid.link/20260116184150.3013258-1-kbusch@meta.com]
+
+Fixes: a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://patch.msgid.link/20251212145528.2555-1-guojinhui.liam@bytedance.com
 ---
- fs/smb/client/cached_dir.c | 4 ++--
- fs/smb/client/smb2misc.c   | 6 +++---
- fs/smb/client/smb2ops.c    | 8 +++-----
- fs/smb/client/smb2pdu.c    | 2 ++
- fs/smb/client/trace.h      | 1 +
- 5 files changed, 11 insertions(+), 10 deletions(-)
+ drivers/pci/pci.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
-index df9977030d199..2a6b8ce80be23 100644
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -792,11 +792,11 @@ static void cfids_laundromat_worker(struct work_struct *work)
- 		cfid->dentry = NULL;
- 
- 		if (cfid->is_open) {
--			spin_lock(&cifs_tcp_ses_lock);
-+			spin_lock(&cfid->tcon->tc_lock);
- 			++cfid->tcon->tc_count;
- 			trace_smb3_tcon_ref(cfid->tcon->debug_id, cfid->tcon->tc_count,
- 					    netfs_trace_tcon_ref_get_cached_laundromat);
--			spin_unlock(&cifs_tcp_ses_lock);
-+			spin_unlock(&cfid->tcon->tc_lock);
- 			queue_work(serverclose_wq, &cfid->close_work);
- 		} else
- 			/*
-diff --git a/fs/smb/client/smb2misc.c b/fs/smb/client/smb2misc.c
-index f3cb62d914502..0871b9f1f86a6 100644
---- a/fs/smb/client/smb2misc.c
-+++ b/fs/smb/client/smb2misc.c
-@@ -820,14 +820,14 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
- 	int rc;
- 
- 	cifs_dbg(FYI, "%s: tc_count=%d\n", __func__, tcon->tc_count);
--	spin_lock(&cifs_tcp_ses_lock);
-+	spin_lock(&tcon->tc_lock);
- 	if (tcon->tc_count <= 0) {
- 		struct TCP_Server_Info *server = NULL;
- 
- 		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
- 				    netfs_trace_tcon_ref_see_cancelled_close);
- 		WARN_ONCE(tcon->tc_count < 0, "tcon refcount is negative");
--		spin_unlock(&cifs_tcp_ses_lock);
-+		spin_unlock(&tcon->tc_lock);
- 
- 		if (tcon->ses) {
- 			server = tcon->ses->server;
-@@ -841,7 +841,7 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
- 	tcon->tc_count++;
- 	trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
- 			    netfs_trace_tcon_ref_get_cancelled_close);
--	spin_unlock(&cifs_tcp_ses_lock);
-+	spin_unlock(&tcon->tc_lock);
- 
- 	rc = __smb2_handle_cancelled_cmd(tcon, SMB2_CLOSE_HE, 0,
- 					 persistent_fid, volatile_fid);
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index f6806946d0eee..653e2f29384d4 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3107,7 +3107,9 @@ smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
- 						struct cifs_tcon,
- 						tcon_list);
- 		if (tcon) {
-+			spin_lock(&tcon->tc_lock);
- 			tcon->tc_count++;
-+			spin_unlock(&tcon->tc_lock);
- 			trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
- 					    netfs_trace_tcon_ref_get_dfs_refer);
- 		}
-@@ -3176,13 +3178,9 @@ smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
-  out:
- 	if (tcon && !tcon->ipc) {
- 		/* ipc tcons are not refcounted */
--		spin_lock(&cifs_tcp_ses_lock);
--		tcon->tc_count--;
-+		cifs_put_tcon(tcon, netfs_trace_tcon_ref_put_dfs_refer);
- 		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
- 				    netfs_trace_tcon_ref_dec_dfs_refer);
--		/* tc_count can never go negative */
--		WARN_ON(tcon->tc_count < 0);
--		spin_unlock(&cifs_tcp_ses_lock);
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 13dbb405dc31f..59319e08fca61 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5346,10 +5346,8 @@ static int pci_slot_trylock(struct pci_slot *slot)
+ 		if (!dev->slot || dev->slot != slot)
+ 			continue;
+ 		if (dev->subordinate) {
+-			if (!pci_bus_trylock(dev->subordinate)) {
+-				pci_dev_unlock(dev);
++			if (!pci_bus_trylock(dev->subordinate))
+ 				goto unlock;
+-			}
+ 		} else if (!pci_dev_trylock(dev))
+ 			goto unlock;
  	}
- 	kfree(utf16_path);
- 	kfree(dfs_req);
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index fa22702a61a6e..a88b21e5b30e2 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4263,7 +4263,9 @@ void smb2_reconnect_server(struct work_struct *work)
- 
- 		list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
- 			if (tcon->need_reconnect || tcon->need_reopen_files) {
-+				spin_lock(&tcon->tc_lock);
- 				tcon->tc_count++;
-+				spin_unlock(&tcon->tc_lock);
- 				trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
- 						    netfs_trace_tcon_ref_get_reconnect_server);
- 				list_add_tail(&tcon->rlist, &tmp_list);
-diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
-index a584a77431132..191f02344dcdd 100644
---- a/fs/smb/client/trace.h
-+++ b/fs/smb/client/trace.h
-@@ -189,6 +189,7 @@
- 	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
- 	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
- 	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
-+	EM(netfs_trace_tcon_ref_put_dfs_refer,		"PUT DfsRfr") \
- 	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
- 	EM(netfs_trace_tcon_ref_put_tlink,		"PUT Tlink ") \
- 	EM(netfs_trace_tcon_ref_see_cancelled_close,	"SEE Cn-Cls") \
 -- 
 2.51.0
 
