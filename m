@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-222041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222042-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJ0sE7Ggo2noIgUAu9opvQ
-	(envelope-from <stable+bounces-222041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:13:05 +0100
+	id WONyH++co2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222042-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:57:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A150A1CD483
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:13:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 367EF1CC5A5
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:57:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81E4033E40DD
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:50:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8B5B305FDBA
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598A630B517;
-	Sun,  1 Mar 2026 01:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABA930B51E;
+	Sun,  1 Mar 2026 01:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KKqwxiQg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVrZZ7E4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9B62F0C7E
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE902F5328;
+	Sun,  1 Mar 2026 01:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329758; cv=none; b=QrX4/rCpqX7WABg7aB0qIIohJEwhhaQiwUEYu9xhsim954IMKbRKjZeMuRx1ch7vpxMzj5uMqzv0c5MAO7SfM3n1invUwFV/JXwlzvh99Jf68Lt1doALUsNyyoFSSqP8swBO3QoI/rNnfiWmJXSzzwjP+vLz8gclOuZcV3lewkA=
+	t=1772329760; cv=none; b=pO0bYIjYmWVMX3x1oA6kwH7eJbIMZkkU+b5IaUhl2xN/MqYsDv8DGu9B4nC/5glXdC9fy1Jw4addGQp8USmfRXXTuabMOL4jlN9/KjUeLbGUyS0KIH4vRTNQWJn24FAJQFDlMkL72YGeQCs+SVPhYjjgXVNBkrLYtd2cCK18tQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329758; c=relaxed/simple;
-	bh=2f/4LlmLaQdv+rQoNNgthrk/pCl5uvXoFWD9PYlqA7o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hgFC8b7fzCS1LRYOYPcrNUadl727b85OvjOzy9PrhZj4ZxAK1IWsiUP1iEf2BbWuPIWTGFAy/xLW5udtGqmS4lh9nxHdJERJr9GTf8bg8+s01OGJk6UYkpur8kaAnoRm/BW6sFNuUS/Sx3OmtIhd7qfk3zMwP7EVKDs6ohZ4SsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KKqwxiQg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF25C19421;
-	Sun,  1 Mar 2026 01:49:17 +0000 (UTC)
+	s=arc-20240116; t=1772329760; c=relaxed/simple;
+	bh=pIDYsAU0QFaDBCZp0mEOqVf03EEnJQaA4N+58a45G2I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GMKjeEzYWaKHyU9F4cFwGISnSFh2ekYXWjum7bdY7AqylXotc4eLiyGa2AVyRs+qfEJ/u+hPbadAuAtfKEcBxqbxzHlJMKXqwE2eM95SfuGM3bwRhe2BwrB5hwx84rranqSIK5nxf08xysXLKvHKPNEhWn2HZYrUBShixCx3n3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVrZZ7E4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A161EC19424;
+	Sun,  1 Mar 2026 01:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329758;
-	bh=2f/4LlmLaQdv+rQoNNgthrk/pCl5uvXoFWD9PYlqA7o=;
+	s=k20201202; t=1772329760;
+	bh=pIDYsAU0QFaDBCZp0mEOqVf03EEnJQaA4N+58a45G2I=;
 	h=From:To:Cc:Subject:Date:From;
-	b=KKqwxiQgwcNiWNWjNOKAWiv4oC3v+zNIhPqc0toix+VUe1ES7G7JEpMb7ueGA6WOa
-	 dFB18fiKLHukcXw+67if/36+WrD3iELhqlsKuTPUHe+O9fxqsD4NV//M1SWWVHJsyj
-	 9RjRtOsoHDmlnbmC3naJUr0xXvoNCzlGu2MbYA4CjS1E3qYKevQjTb4TZ+k5YsK1/h
-	 3J6+gkluXolBo5PY8PqoSN9ja62C8AUfaWRRfG4uX1CRk7ZAQTZyZtrtxx0DeJCkB7
-	 fmOhy0RW6rSgbhaHAiYOROBxClpLXF565ld176lWD0OX6YsbU9RbC573/lQQxacZ5S
-	 +u2VvgQQNfsJg==
+	b=BVrZZ7E421r75ZvCzRJlmdSZcxZy60NMYa6aa5iRGjwclaWp7kvGHaq0pZmRpzvtu
+	 1TmtQWhZvLpof6mZU649EjDTVFa/xfm+s6GEeeLZrY4g6PrsxF7RvfTvQcRuHN44rY
+	 TpodiB6hwJPf3hIxS5bF/9j+jo7QbcUPyZ6VS6KvJWFAw3LZgWOemvx9h5RpBxd4ua
+	 k8+OoINbnfUhOEhavVe4nWW9wq0ATLNhJH5sgtVI0kj06lRjmjiY87Li+5MSfY5sXT
+	 VYYLjZLSYOeK7QzVvSFFkzfagIPXSwHQKEyscnvpQ6PvWaCIvXTxQzitlt1rPdejEA
+	 fexqNmhqGE8vA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	leitao@debian.org
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "arm64: Disable branch profiling for all arm64 code" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:49:16 -0500
-Message-ID: <20260301014916.1713684-1-sashal@kernel.org>
+	gnoack@google.com
+Cc: Jiri Kosina <jkosina@suse.com>,
+	linux-input@vger.kernel.org
+Subject: FAILED: Patch "HID: magicmouse: Do not crash on missing msc->input" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:49:18 -0500
+Message-ID: <20260301014918.1713730-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,36 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222041-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222042-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
-X-Rspamd-Queue-Id: A150A1CD483
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 367EF1CC5A5
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -103,47 +102,46 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f22c81bebf8bda6e54dc132df0ed54f6bf8756f9 Mon Sep 17 00:00:00 2001
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 6 Jan 2026 02:16:35 -0800
-Subject: [PATCH] arm64: Disable branch profiling for all arm64 code
+From 17abd396548035fbd6179ee1a431bd75d49676a7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
+Date: Fri, 9 Jan 2026 11:57:14 +0100
+Subject: [PATCH] HID: magicmouse: Do not crash on missing msc->input
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The arm64 kernel doesn't boot with annotated branches
-(PROFILE_ANNOTATED_BRANCHES) enabled and CONFIG_DEBUG_VIRTUAL together.
+Fake USB devices can send their own report descriptors for which the
+input_mapping() hook does not get called.  In this case, msc->input stays NULL,
+leading to a crash at a later time.
 
-Bisecting it, I found that disabling branch profiling in arch/arm64/mm
-solved the problem. Narrowing down a bit further, I found that
-physaddr.c is the file that needs to have branch profiling disabled to
-get the machine to boot.
+Detect this condition in the input_configured() hook and reject the device.
 
-I suspect that it might invoke some ftrace helper very early in the boot
-process and ftrace is still not enabled(!?).
-
-Rather than playing whack-a-mole with individual files, disable branch
-profiling for the entire arch/arm64 tree, similar to what x86 already
-does in arch/x86/Kbuild.
+This is not supposed to happen with actual magic mouse devices, but can be
+provoked by imposing as a magic mouse USB device.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Günther Noack <gnoack@google.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 ---
- arch/arm64/Kbuild | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/hid-magicmouse.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/Kbuild b/arch/arm64/Kbuild
-index 5bfbf7d79c99b..d876bc0e54211 100644
---- a/arch/arm64/Kbuild
-+++ b/arch/arm64/Kbuild
-@@ -1,4 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0-only
+diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
+index 7d4a25c6de0eb..91f621ceb924b 100644
+--- a/drivers/hid/hid-magicmouse.c
++++ b/drivers/hid/hid-magicmouse.c
+@@ -725,6 +725,11 @@ static int magicmouse_input_configured(struct hid_device *hdev,
+ 	struct magicmouse_sc *msc = hid_get_drvdata(hdev);
+ 	int ret;
+ 
++	if (!msc->input) {
++		hid_err(hdev, "magicmouse setup input failed (no input)");
++		return -EINVAL;
++	}
 +
-+# Branch profiling isn't noinstr-safe
-+subdir-ccflags-$(CONFIG_TRACE_BRANCH_PROFILING) += -DDISABLE_BRANCH_PROFILING
-+
- obj-y			+= kernel/ mm/ net/
- obj-$(CONFIG_KVM)	+= kvm/
- obj-$(CONFIG_XEN)	+= xen/
+ 	ret = magicmouse_setup_input(msc->input, hdev);
+ 	if (ret) {
+ 		hid_err(hdev, "magicmouse setup input failed (%d)\n", ret);
 -- 
 2.51.0
 
