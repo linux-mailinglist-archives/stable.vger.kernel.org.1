@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-221481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDYoMVeWo2lPHgUAu9opvQ
-	(envelope-from <stable+bounces-221481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:28:55 +0100
+	id sBS8LiGWo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:28:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896E31CAC09
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:28:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 918851CAAD4
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:28:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F02CD3042980
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:26:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4B9E13019C9F
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A68287268;
-	Sun,  1 Mar 2026 01:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE51288C20;
+	Sun,  1 Mar 2026 01:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DL7Rarlw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UhT8+8Bd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029521F9F70;
-	Sun,  1 Mar 2026 01:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF5E284898;
+	Sun,  1 Mar 2026 01:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328371; cv=none; b=MoqXJq5URYuQOLsvx5vcSwDL8ow/YnLdJbwWBFwS3orUDQgxqMmRiv6PUbZL4zBbPwFU+TTlg9FGXcI4Pv2U2LW9wFWAj1h+KGvfN90s2nk4vzVbh2voWJi+Agw9EB9mtWoqJehnpjSyg8UPYXZrUHmTcFVVUXwQiWH5zQZbQDU=
+	t=1772328373; cv=none; b=Y9+kGzDJm+OjEKIF4v36qubohwNZMqOH8g4CzU4cv34DXBkif4A4GZDI3S76oYKYoFKwBERWQ1anDMuTvvHMFjV6LFeWljCYzU0iRECxp7A1Oc/6+2z9K14T6Wib629QuRJV+8ecQNAM9SeyexkGTPVCxuQFGgcM/T/RSbNybf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328371; c=relaxed/simple;
-	bh=JIvsk/L1B2U9zZ6RBYcoahkhBp1ymOtESQW00Fx8vMc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FM80PIAMWcgM1yOtGHaUH8Icb2kAeYeiKKgpVF1VOBAbZ09nEIcr0Lf5mQLXbI0gRUBABNO2P8wXb6329FuAmQ9RYMjkxjXCGXaev1WI+k8aCO+F4GaVq/Z9rJGBaVcL7wkOlxmgjPcj2RXpY2bDMg91fwNeBaWeBS1EwLcdAvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DL7Rarlw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39129C19421;
-	Sun,  1 Mar 2026 01:26:10 +0000 (UTC)
+	s=arc-20240116; t=1772328373; c=relaxed/simple;
+	bh=sBm6WNNMF/Wp1cMcvjbjxSLqqZjKsSZOnkYuLWT/z1I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FMT1ViPhBGbMVX9mCG+EwyckX4IqeUcayiv/hGdgssBIBdabKYSKFaiUndHoQDgIlNoYs5FSz6cRmeuDmxUwqlmFIjoVA1+BnlCsCYD/xbsj7p7uGKnnHYRq5l81pVIdT+KCXEE99FIzs+P0dOU1gwNqujshlC90nKR1OQFTTS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UhT8+8Bd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972E4C19421;
+	Sun,  1 Mar 2026 01:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328370;
-	bh=JIvsk/L1B2U9zZ6RBYcoahkhBp1ymOtESQW00Fx8vMc=;
+	s=k20201202; t=1772328373;
+	bh=sBm6WNNMF/Wp1cMcvjbjxSLqqZjKsSZOnkYuLWT/z1I=;
 	h=From:To:Cc:Subject:Date:From;
-	b=DL7RarlwCvt9+7VgsbZdTON6lL/u9CCy7TvPE88nmlJ4BR4NupRW7QZllNs8XV7UC
-	 AvO5ahkbrSgYCbAO1sVupLQvm+mDiZZAilNT5QXxXpyCSrAELze1E+4jmtUNewYCgE
-	 iIZurNSwypdyCvDm5cAyNZ3DlpSYtxiFEzxDsESuIxra73ykSMupzHa/inwicxa+Z2
-	 wCzNGSUeq5DdR5BgNdRzpXknLfEnzmE7Tu/VDep8l89wryMRDgz4FWqm18397J2dWE
-	 CYqviJlf1oFsjx7TfQAKr+69yt25FLNE2u4QHVScrJ0CqU5LcHcgfKR1na0XG9EdMV
-	 rcEzL3hrdWbyQ==
+	b=UhT8+8BdZWf4NeyrkKP2HFI3b9OUPqGqHg8tzQ63FRSSVUEbraXCePm89vnG5jsNS
+	 SKzk7ktv3Rvco1E0G284VehqYatowZgXLseR8Rtblr/TOX1MWEOcy8x9FPXG0hrbbQ
+	 EZ3i7KuHIPzgkIHCIBC+Q2q1aAyyq2OeHl0luYt1b3k8reu6+kELvt0dygF9gU4xeW
+	 PtcERqeo/0RGPDXW5nED22cxJqlt67kSJm/yMOtCQAloSwZJvZAf4hFx7Yz/SwF/P4
+	 P4NW2AA/EYZPV/kefNYqXvqmnnBxZk+6vhL8oNMp5byBDPAZzZqWXA4ABBUvHkvBSo
+	 WBsgXlU5iXMcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	haokexin@gmail.com
@@ -50,9 +50,9 @@ Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	linux-omap@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: cpsw_new: Fix unnecessary netdev unregistration in cpsw_probe() error path" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:26:08 -0500
-Message-ID: <20260301012609.1683482-1-sashal@kernel.org>
+Subject: FAILED: Patch "net: cpsw_new: Fix potential unregister of netdev that has not been registered yet" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:26:11 -0500
+Message-ID: <20260301012611.1683532-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,12 +70,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-221481-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221482-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -91,9 +91,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 896E31CAC09
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 918851CAAD4
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -106,87 +106,51 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 62db84b7efa63b78aed9fdbdae90f198771be94c Mon Sep 17 00:00:00 2001
+From 9d724b34fbe13b71865ad0906a4be97571f19cf5 Mon Sep 17 00:00:00 2001
 From: Kevin Hao <haokexin@gmail.com>
-Date: Thu, 5 Feb 2026 10:47:02 +0800
-Subject: [PATCH] net: cpsw_new: Fix unnecessary netdev unregistration in
- cpsw_probe() error path
+Date: Thu, 5 Feb 2026 10:47:03 +0800
+Subject: [PATCH] net: cpsw_new: Fix potential unregister of netdev that has
+ not been registered yet
 
-The current error handling in cpsw_probe() has two issues:
-- cpsw_unregister_ports() may be called before cpsw_register_ports() has
-  been executed.
-
-- cpsw_unregister_ports() is already invoked within cpsw_register_ports()
-  in case of a register_netdev() failure, but the error path would call
-  it again.
+If an error occurs during register_netdev() for the first MAC in
+cpsw_register_ports(), even though cpsw->slaves[0].ndev is set to NULL,
+cpsw->slaves[1].ndev would remain unchanged. This could later cause
+cpsw_unregister_ports() to attempt unregistering the second MAC.
+To address this, add a check for ndev->reg_state before calling
+unregister_netdev(). With this change, setting cpsw->slaves[i].ndev
+to NULL becomes unnecessary and can be removed accordingly.
 
 Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
 Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
 Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://patch.msgid.link/20260205-cpsw-error-path-v1-1-6e58bae6b299@gmail.com
+Link: https://patch.msgid.link/20260205-cpsw-error-path-v1-2-6e58bae6b299@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_new.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/ti/cpsw_new.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 21af0a10626aa..b9fc31eb06134 100644
+index b9fc31eb06134..7f42f58a4b031 100644
 --- a/drivers/net/ethernet/ti/cpsw_new.c
 +++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -2003,7 +2003,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 	/* setup netdevs */
- 	ret = cpsw_create_ports(cpsw);
- 	if (ret)
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
+@@ -1472,7 +1472,7 @@ static void cpsw_unregister_ports(struct cpsw_common *cpsw)
  
- 	/* Grab RX and TX IRQs. Note that we also have RX_THRESHOLD and
- 	 * MISC IRQs which are always kept disabled with this driver so
-@@ -2017,14 +2017,14 @@ static int cpsw_probe(struct platform_device *pdev)
- 			       0, dev_name(dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
+ 	for (i = 0; i < cpsw->data.slaves; i++) {
+ 		ndev = cpsw->slaves[i].ndev;
+-		if (!ndev)
++		if (!ndev || ndev->reg_state != NETREG_REGISTERED)
+ 			continue;
+ 
+ 		priv = netdev_priv(ndev);
+@@ -1494,7 +1494,6 @@ static int cpsw_register_ports(struct cpsw_common *cpsw)
+ 		if (ret) {
+ 			dev_err(cpsw->dev,
+ 				"cpsw: err registering net device%d\n", i);
+-			cpsw->slaves[i].ndev = NULL;
+ 			break;
+ 		}
  	}
- 
- 	ret = devm_request_irq(dev, cpsw->irqs_table[1], cpsw_tx_interrupt,
- 			       0, dev_name(dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 	}
- 
- 	if (!cpsw->cpts)
-@@ -2034,7 +2034,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 			       0, dev_name(&pdev->dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching misc irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 	}
- 
- 	/* Enable misc CPTS evnt_pend IRQ */
-@@ -2043,7 +2043,7 @@ static int cpsw_probe(struct platform_device *pdev)
- skip_cpts:
- 	ret = cpsw_register_notifiers(cpsw);
- 	if (ret)
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 
- 	ret = cpsw_register_devlink(cpsw);
- 	if (ret)
-@@ -2065,8 +2065,6 @@ static int cpsw_probe(struct platform_device *pdev)
- 
- clean_unregister_notifiers:
- 	cpsw_unregister_notifiers(cpsw);
--clean_unregister_netdev:
--	cpsw_unregister_ports(cpsw);
- clean_cpts:
- 	cpts_release(cpsw->cpts);
- 	cpdma_ctlr_destroy(cpsw->dma);
 -- 
 2.51.0
 
