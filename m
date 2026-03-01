@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PnBMUico2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:16 +0100
+	id sASFB1mco2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-221762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CCB1CC31D
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C68E1CC370
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 607B83282ED5
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B47FA3284363
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64B72E2EF9;
-	Sun,  1 Mar 2026 01:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035B02EC562;
+	Sun,  1 Mar 2026 01:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LsQUjSBp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oGY4Tug8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7892182899;
-	Sun,  1 Mar 2026 01:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4B42D9798;
+	Sun,  1 Mar 2026 01:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329074; cv=none; b=JBpNVbFywXTUDL185EUgyYhfaX2+RRL4I8YE1bdj6r75z6qhlGxhVaheVN5yy5Ae3BRKPTkL+rzQxjMoh5ZknmzfZkQk01ui5VqB3PaPcvUf7ULnXd+W20KJzfdOMm6V8zs6hX0IO5zykDpG3XlAJSt2jAnYeLa/VInmEEBJjhI=
+	t=1772329076; cv=none; b=j682O4VhubIK4Ldayib2lMtWwl5qUhLLCEm6+96Yt3uAPHkFIfcgxPJ1jqrf4072GG+Y8EMDfWAJYGJUDDFEczlP+3xvhICOnHz79nvffG8Hy+qkByglyvAOBt/Z+GnT2MQLdJHaV145aMJNSZNFWYWa6IZ6YkJfSO7elE19Nak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329074; c=relaxed/simple;
-	bh=4R4BGyKKPwJ2unF3DVW/G3JhpVVNedvuU6aK9H8iWJA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WZum7o1v7Hr+7Klg2Di/7Z2wBThI49kTnmi20QIKwrXfP+RWuY2WjKPylY/Iyj4VbEHTK7pdVAKlfnjdzLM6crNyr5RUULktl0IUQgaCiLk+GMvhDEiuw2IKnQILf4Yqg8ZcUKtUV0EiUPqpXvBTJgS1Ikgy5gj5P8X9oDBroNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LsQUjSBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB81FC19421;
-	Sun,  1 Mar 2026 01:37:53 +0000 (UTC)
+	s=arc-20240116; t=1772329076; c=relaxed/simple;
+	bh=eB4GNu0K/uOaYscFNrdQgtuflzG4HrNElfM8Hs0gG9E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PlwQoOCBchXnKSfCLLxxZbwUVg2NkWV7IBu0w2noPqKYcTWNVSZWOKg3RyOTIrqxFpPBLeIU30rolOrTiJ0YLVZ6BC8MhR/xEIdW6duQGXgpjgKkYEPApnadHjBNczQ1ibyNHYuzPbBZ4iz8g7AU/B+gvtqckLc7cMS4CRGYy+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oGY4Tug8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C770C19421;
+	Sun,  1 Mar 2026 01:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329074;
-	bh=4R4BGyKKPwJ2unF3DVW/G3JhpVVNedvuU6aK9H8iWJA=;
+	s=k20201202; t=1772329076;
+	bh=eB4GNu0K/uOaYscFNrdQgtuflzG4HrNElfM8Hs0gG9E=;
 	h=From:To:Cc:Subject:Date:From;
-	b=LsQUjSBpfTn9FXcDP988bApLBw9Ru36N0ifboqB4YghfN3kMNy3RAZcX1UngDo2TD
-	 dq7OrNDZ+ldYn+F111T4U4MJCVuPAw/OILeYvQeBls4et1pwYlPoTPgy1mWqMTZD31
-	 +dmmaIqyn6lVUbFTmfnuTHYj6/hLPm1Gmikng487CHqzG3E8MCggvhIcVTgf8xP6YW
-	 Zj+/yXi3C+/UlMXrAoAA4ZCl2PptaY/u8MmUDRpcIfbRPfu6YoBXmXlTpNe+vP4Slu
-	 YbvEkHLwBmrhq0cgB7xwkEJggz3T0+kqmIcZvQ3Y4PFO3fDExfV63Paqu0FZhNhitU
-	 6mFE7Ox0dqG/Q==
+	b=oGY4Tug8sl3v/G5q2nQDMckHbnl9KKmav3RQO/xLnftktP6E3TSWBGNH/RwMONb3x
+	 ynQUNgBlaKX9yOaMq0RKbjRp+9HgbXgq33LlfYp0JElq1gojitkimfLToIXhLN7eho
+	 srmZr3+5wdZI4zrWQ/aPhjLSH76FfHIH3jsbCg9OUonbStJX74wTi2q1Kduexi/SMp
+	 7DTjlHLCXkK9nbkVGEyTD5+Jo5Jo8mZNIcpRiiqvxwdlur7pI9p8wa5e9RLK5neLRd
+	 9ZIIHXnoyonpHLqDVJRa7TbADLdJsCHGE91NCNpKDy9cTwn3tf3ovjR5oljY+2VyG4
+	 +pb+Mu8JdgTrw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	yangtiezhu@loongson.cn
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	loongarch@lists.linux.dev,
-	linux-rt-devel@lists.linux.dev
-Subject: FAILED: Patch "LoongArch: Handle percpu handler address for ORC unwinder" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:37:52 -0500
-Message-ID: <20260301013752.1698147-1-sashal@kernel.org>
+	git@danielhodges.dev
+Cc: Anna Schumaker <anna.schumaker@oracle.com>,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: FAILED: Patch "SUNRPC: fix gss_auth kref leak in gss_alloc_msg error path" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:37:54 -0500
+Message-ID: <20260301013754.1698192-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,18 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221760-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221762-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -89,8 +89,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 37CCB1CC31D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,danielhodges.dev:email]
+X-Rspamd-Queue-Id: 7C68E1CC370
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -103,88 +103,54 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 055c7e75190e0be43037bd663a3f6aced194416e Mon Sep 17 00:00:00 2001
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Date: Tue, 10 Feb 2026 19:31:13 +0800
-Subject: [PATCH] LoongArch: Handle percpu handler address for ORC unwinder
+From dd2fdc3504592d85e549c523b054898a036a6afe Mon Sep 17 00:00:00 2001
+From: Daniel Hodges <git@danielhodges.dev>
+Date: Fri, 6 Feb 2026 15:41:46 -0500
+Subject: [PATCH] SUNRPC: fix gss_auth kref leak in gss_alloc_msg error path
 
-After commit 4cd641a79e69 ("LoongArch: Remove unnecessary checks for ORC
-unwinder"), the system can not boot normally under some configs (such as
-enable KASAN), there are many error messages "cannot find unwind pc".
+Commit 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c") added
+a kref_get(&gss_auth->kref) call to balance the gss_put_auth() done
+in gss_release_msg(), but forgot to add a corresponding kref_put()
+on the error path when kstrdup_const() fails.
 
-The kernel boots normally with the defconfig, so no problem found out at
-the first time. Here is one way to reproduce:
+If service_name is non-NULL and kstrdup_const() fails, the function
+jumps to err_put_pipe_version which calls put_pipe_version() and
+kfree(gss_msg), but never releases the gss_auth reference. This leads
+to a kref leak where the gss_auth structure is never freed.
 
-  cd linux
-  make mrproper defconfig -j"$(nproc)"
-  scripts/config -e KASAN
-  make olddefconfig all -j"$(nproc)"
-  sudo make modules_install
-  sudo make install
-  sudo reboot
+Add a forward declaration for gss_free_callback() and call kref_put()
+in the err_put_pipe_version error path to properly release the
+reference taken earlier.
 
-The address that can not unwind is not a valid kernel address which is
-between "pcpu_handlers[cpu]" and "pcpu_handlers[cpu] + vec_sz" due to
-the code of eentry was copied to the new area of pcpu_handlers[cpu] in
-setup_tlb_handler(), handle this special case to get the valid address
-to unwind normally.
-
+Fixes: 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Daniel Hodges <git@danielhodges.dev>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 ---
- arch/loongarch/include/asm/setup.h |  3 +++
- arch/loongarch/kernel/unwind_orc.c | 16 ++++++++++++++++
- 2 files changed, 19 insertions(+)
+ net/sunrpc/auth_gss/auth_gss.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
-index 3c2fb16b11b64..f81375e5e89c0 100644
---- a/arch/loongarch/include/asm/setup.h
-+++ b/arch/loongarch/include/asm/setup.h
-@@ -7,6 +7,7 @@
- #define _LOONGARCH_SETUP_H
+diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
+index 5c095cb8cb201..bb3c3db2713b1 100644
+--- a/net/sunrpc/auth_gss/auth_gss.c
++++ b/net/sunrpc/auth_gss/auth_gss.c
+@@ -39,6 +39,8 @@ static const struct rpc_authops authgss_ops;
+ static const struct rpc_credops gss_credops;
+ static const struct rpc_credops gss_nullops;
  
- #include <linux/types.h>
-+#include <linux/threads.h>
- #include <asm/sections.h>
- #include <uapi/asm/setup.h>
- 
-@@ -14,6 +15,8 @@
- 
- extern unsigned long eentry;
- extern unsigned long tlbrentry;
-+extern unsigned long pcpu_handlers[NR_CPUS];
-+extern long exception_handlers[VECSIZE * 128 / sizeof(long)];
- extern char init_command_line[COMMAND_LINE_SIZE];
- extern void tlb_init(int cpu);
- extern void cpu_cache_init(void);
-diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/unwind_orc.c
-index d6b3688a1ce97..11ba3e4ac9eee 100644
---- a/arch/loongarch/kernel/unwind_orc.c
-+++ b/arch/loongarch/kernel/unwind_orc.c
-@@ -352,6 +352,22 @@ static inline unsigned long bt_address(unsigned long ra)
- {
- 	extern unsigned long eentry;
- 
-+#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
-+	int cpu;
-+	int vec_sz = sizeof(exception_handlers);
++static void gss_free_callback(struct kref *kref);
 +
-+	for_each_possible_cpu(cpu) {
-+		if (!pcpu_handlers[cpu])
-+			continue;
-+
-+		if (ra >= pcpu_handlers[cpu] &&
-+		    ra < pcpu_handlers[cpu] + vec_sz) {
-+			ra = ra + eentry - pcpu_handlers[cpu];
-+			break;
-+		}
-+	}
-+#endif
-+
- 	if (ra >= eentry && ra < eentry +  EXCCODE_INT_END * VECSIZE) {
- 		unsigned long func;
- 		unsigned long type = (ra - eentry) / VECSIZE;
+ #define GSS_RETRY_EXPIRED 5
+ static unsigned int gss_expired_cred_retry_delay = GSS_RETRY_EXPIRED;
+ 
+@@ -551,6 +553,7 @@ gss_alloc_msg(struct gss_auth *gss_auth,
+ 	}
+ 	return gss_msg;
+ err_put_pipe_version:
++	kref_put(&gss_auth->kref, gss_free_callback);
+ 	put_pipe_version(gss_auth->net);
+ err_free_msg:
+ 	kfree(gss_msg);
 -- 
 2.51.0
 
