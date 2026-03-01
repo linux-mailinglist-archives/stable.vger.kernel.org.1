@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-222363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PjyIwiho2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:14:32 +0100
+	id mOjuEiSvo2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:14:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB911CD4F2
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:14:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7811CE585
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:14:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA4A430221DE
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:04:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CADF320E7AB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D103033FE;
-	Sun,  1 Mar 2026 02:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E302FE598;
+	Sun,  1 Mar 2026 02:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RxCnuj3o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t+turYsP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B566C190664;
-	Sun,  1 Mar 2026 02:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DA4302147;
+	Sun,  1 Mar 2026 02:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330693; cv=none; b=c3CkmM3sP4Xe7K68kkJUr+lkv0cZEmMJPtHhfN1TOEGCUzcSmdi2QtA+NSsF6Ff3X794u5+40raymC+WXO9NFprAaUW4gh5P5+SD+/tfiWb2dsvjBoBZ0ZjytzYQTBkorvS6UMdbhkmVq0/6ud5wm4PlpjSptUaBb88W7Lj75J8=
+	t=1772330696; cv=none; b=EO8Y+2z8eVAQNl25mO7YyIygZLHmTZ3CaCTjvhmekhXZJvwaQrSQckQ1qnanj1QBCt3U5OvKVjo0y7uAulDsGjnaEoHvgQ+iRRR7i6tS6GB+ipk5ehDoc9z19Zcy+c1cL4wd4VJBpOAF61WFgKK7DU8tTfACN/XlbFbM5fobtLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330693; c=relaxed/simple;
-	bh=caKWZYL5O7q0hLqaeYoNM0JGfpq/Z1+OaVwX/7/f1/Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZjcNJkTAW1qIfPx54xjhFbrOBObDROSGtczw3y6UB1zpc60agXxAUCRX2qsUaNgqqb0cDxOh4qBbNKn327E7wDorfQItQCSDk5btRJ/0oaj3NBJV5b+zNawzo/5R7B2k9EeQhI0NAQ0gjIww2B+C326we1ceSt4lzdnUiN3LUAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RxCnuj3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4A4C19421;
-	Sun,  1 Mar 2026 02:04:52 +0000 (UTC)
+	s=arc-20240116; t=1772330696; c=relaxed/simple;
+	bh=ikidgnCz8BSgUW20gUNMMdDEKKoQ8wlMqpZGwxnOBps=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pa+87YMFW9hoYeXFLOw+i2lb1mJp68hyekfS7CLdKZnJU8gaQhaJGRSAZV/NjYGgozYAfevUHsRPMayaZf/7ZWwSLADz+sC+EBHUgP/SG3IX6Nsf43FXYmZKHKrjvVRoKvFn1TM8SxVVZMW6yqmj7LBMP72DDCSsMLKePgWJ6zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t+turYsP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAA5C19421;
+	Sun,  1 Mar 2026 02:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330693;
-	bh=caKWZYL5O7q0hLqaeYoNM0JGfpq/Z1+OaVwX/7/f1/Q=;
+	s=k20201202; t=1772330696;
+	bh=ikidgnCz8BSgUW20gUNMMdDEKKoQ8wlMqpZGwxnOBps=;
 	h=From:To:Cc:Subject:Date:From;
-	b=RxCnuj3o/u7dDvxrwRSotkRJQe5BXMag7jBIfCMi7VOUo+x7qnI/1B0LLLJsh8Bbr
-	 ANPx3FGDdp0BdB72yqPIsTy7F6IcP1slV6RIqH4U3wQJ2kxYG7STCJaw8isBWKZgFD
-	 n1ss4AKmCNf1f4sT8G+Pcpk4sw4z3GzO1iP0SkiziEeuXIPh2RQBfXycdqQmc6otQE
-	 7FGzmb/h5XXMlVQLfyITL42R+T828QVlx978H4rO5d9WXH5dWyoM7+OXQM+d2V9Z+O
-	 T/NC5UdA6Se9JJm/q/oAuAaYBoNUSZeompcIh9hTcRiQledftDsTC9Sv3MC41YLQHx
-	 ZTzvjgl3HHAFg==
+	b=t+turYsPALi3uzmLPBDBmfdcZjLZd8F2fRBbXFc+FH1ot/e+sewf873WoAm4oReuQ
+	 pWb4kZjpDMksbZ+DaPUirW1+vFTDtw8uP2SZt8XO5mdzjnNsQjuJIqZ/HGLyWLVkNK
+	 0m8+LveB9VqUmlhymwTLU4QUgj58lC2QAVYQerzKFU074l+vM9f9eBfmo+M/cLBOHS
+	 keDDIh5+2RwYpIGn7W2OsqOENDzwTGDr7nicl7Thf3DFVil51WFO5Gs7ILF54k+xCl
+	 Z4S2/QQK7Z0Y/ttrfcM39jrvUVn1VT9Lxh+E9u508VpsBVUkbL5U2+e8A09uxJHwcb
+	 5bznnmhFT1zjw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	git@danielhodges.dev
-Cc: Anna Schumaker <anna.schumaker@oracle.com>,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "SUNRPC: fix gss_auth kref leak in gss_alloc_msg error path" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:04:51 -0500
-Message-ID: <20260301020451.1733398-1-sashal@kernel.org>
+	ethanwu@synology.com
+Cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	ceph-devel@vger.kernel.org
+Subject: FAILED: Patch "ceph: supply snapshot context in ceph_zero_partial_object()" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:04:53 -0500
+Message-ID: <20260301020454.1733449-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,19 +68,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222363-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[ibm.com,gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222364-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DAB911CD4F2
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,synology.com:email]
+X-Rspamd-Queue-Id: 6F7811CE585
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -103,54 +104,83 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From dd2fdc3504592d85e549c523b054898a036a6afe Mon Sep 17 00:00:00 2001
-From: Daniel Hodges <git@danielhodges.dev>
-Date: Fri, 6 Feb 2026 15:41:46 -0500
-Subject: [PATCH] SUNRPC: fix gss_auth kref leak in gss_alloc_msg error path
+From f16bd3fa74a2084ee7e16a8a2be7e7399b970907 Mon Sep 17 00:00:00 2001
+From: ethanwu <ethanwu@synology.com>
+Date: Thu, 25 Sep 2025 18:42:05 +0800
+Subject: [PATCH] ceph: supply snapshot context in ceph_zero_partial_object()
 
-Commit 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c") added
-a kref_get(&gss_auth->kref) call to balance the gss_put_auth() done
-in gss_release_msg(), but forgot to add a corresponding kref_put()
-on the error path when kstrdup_const() fails.
+The ceph_zero_partial_object function was missing proper snapshot
+context for its OSD write operations, which could lead to data
+inconsistencies in snapshots.
 
-If service_name is non-NULL and kstrdup_const() fails, the function
-jumps to err_put_pipe_version which calls put_pipe_version() and
-kfree(gss_msg), but never releases the gss_auth reference. This leads
-to a kref leak where the gss_auth structure is never freed.
+Reproducer:
+../src/vstart.sh --new -x --localhost --bluestore
+./bin/ceph auth caps client.fs_a mds 'allow rwps fsname=a' mon 'allow r fsname=a' osd 'allow rw tag cephfs data=a'
+mount -t ceph fs_a@.a=/ /mnt/mycephfs/ -o conf=./ceph.conf
+dd if=/dev/urandom of=/mnt/mycephfs/foo bs=64K count=1
+mkdir /mnt/mycephfs/.snap/snap1
+md5sum /mnt/mycephfs/.snap/snap1/foo
+fallocate -p -o 0 -l 4096 /mnt/mycephfs/foo
+echo 3 > /proc/sys/vm/drop/caches
+md5sum /mnt/mycephfs/.snap/snap1/foo # get different md5sum!!
 
-Add a forward declaration for gss_free_callback() and call kref_put()
-in the err_put_pipe_version error path to properly release the
-reference taken earlier.
-
-Fixes: 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: ad7a60de882ac ("ceph: punch hole support")
+Signed-off-by: ethanwu <ethanwu@synology.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Tested-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 ---
- net/sunrpc/auth_gss/auth_gss.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ceph/file.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
-index 5c095cb8cb201..bb3c3db2713b1 100644
---- a/net/sunrpc/auth_gss/auth_gss.c
-+++ b/net/sunrpc/auth_gss/auth_gss.c
-@@ -39,6 +39,8 @@ static const struct rpc_authops authgss_ops;
- static const struct rpc_credops gss_credops;
- static const struct rpc_credops gss_nullops;
- 
-+static void gss_free_callback(struct kref *kref);
-+
- #define GSS_RETRY_EXPIRED 5
- static unsigned int gss_expired_cred_retry_delay = GSS_RETRY_EXPIRED;
- 
-@@ -551,6 +553,7 @@ gss_alloc_msg(struct gss_auth *gss_auth,
+diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+index 983390069f737..9152b47227101 100644
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -2568,6 +2568,7 @@ static int ceph_zero_partial_object(struct inode *inode,
+ 	struct ceph_inode_info *ci = ceph_inode(inode);
+ 	struct ceph_fs_client *fsc = ceph_inode_to_fs_client(inode);
+ 	struct ceph_osd_request *req;
++	struct ceph_snap_context *snapc;
+ 	int ret = 0;
+ 	loff_t zero = 0;
+ 	int op;
+@@ -2582,12 +2583,25 @@ static int ceph_zero_partial_object(struct inode *inode,
+ 		op = CEPH_OSD_OP_ZERO;
  	}
- 	return gss_msg;
- err_put_pipe_version:
-+	kref_put(&gss_auth->kref, gss_free_callback);
- 	put_pipe_version(gss_auth->net);
- err_free_msg:
- 	kfree(gss_msg);
+ 
++	spin_lock(&ci->i_ceph_lock);
++	if (__ceph_have_pending_cap_snap(ci)) {
++		struct ceph_cap_snap *capsnap =
++				list_last_entry(&ci->i_cap_snaps,
++						struct ceph_cap_snap,
++						ci_item);
++		snapc = ceph_get_snap_context(capsnap->context);
++	} else {
++		BUG_ON(!ci->i_head_snapc);
++		snapc = ceph_get_snap_context(ci->i_head_snapc);
++	}
++	spin_unlock(&ci->i_ceph_lock);
++
+ 	req = ceph_osdc_new_request(&fsc->client->osdc, &ci->i_layout,
+ 					ceph_vino(inode),
+ 					offset, length,
+ 					0, 1, op,
+ 					CEPH_OSD_FLAG_WRITE,
+-					NULL, 0, 0, false);
++					snapc, 0, 0, false);
+ 	if (IS_ERR(req)) {
+ 		ret = PTR_ERR(req);
+ 		goto out;
+@@ -2601,6 +2615,7 @@ static int ceph_zero_partial_object(struct inode *inode,
+ 	ceph_osdc_put_request(req);
+ 
+ out:
++	ceph_put_snap_context(snapc);
+ 	return ret;
+ }
+ 
 -- 
 2.51.0
 
