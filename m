@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-222124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222125-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OIPErGdo2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:17 +0100
+	id +PZZKnOeo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222125-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C5F1CC8F2
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 243481CCC0F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4AF9304F313
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8874C3085B84
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA9830DD10;
-	Sun,  1 Mar 2026 01:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770F12FDC27;
+	Sun,  1 Mar 2026 01:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgE3TnKr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uJtg1itV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2947230C354;
-	Sun,  1 Mar 2026 01:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5042FE066
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329961; cv=none; b=h9zjLmsyfX8ptVJYYDCMLd1HCV5r/K85KhCp5+SDgS6cO8G9wV9LK0ToBtWUdsB2THZ1dUZn/OOYTYSjKUUl+4e+0kRg5dA1Dwc4rwpgr2diI/TLQxSki8Fhd1qETOrQYoGWSi+EmzAunxNsQCNBCsXufuZH0Cs9FDgtqHStN5k=
+	t=1772329963; cv=none; b=qorQdnCgtu0ZGUH/rL+/kqOCHDto1bsvWlBI9DSlupbLneQjLj6nEpBYKRCs/AhOQlSVKggLPR7dg5QKFuaWwG/k0uUiGpATANJQsUDbwWoJt7yMMklXmbkVNoyuqXELDJCwQZcU9UFdTM5TZJmvenUWgNiDs0Y5PYP9fELpI2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329961; c=relaxed/simple;
-	bh=l4owRCNvVkmpeUTQLmBTis4IAMulB7IykbJAx8fhJAg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k+kyeYn1WzGt+WPak6gqSEv/nF0Cc8nGntQzdk7emlVAi9jI13w/5ms2yaf5Qa3vih8Wlp7P11urVSaUROJF5z3+g/xrlv/MNKpdu/l+t9ANxt6w+lfZ1mgc1E8rSrqRd9KOCg6hWNtmkrgcdrb1W1xhJtbTuY7dbr9wwU39LV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgE3TnKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7FBC19421;
-	Sun,  1 Mar 2026 01:52:40 +0000 (UTC)
+	s=arc-20240116; t=1772329963; c=relaxed/simple;
+	bh=LdkQyWhY8/sOxq6lPbH2M0bRkx10EZVujj0IB3ReurY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CIijS1JqvQRq3CZqKjpGBC5iyRlJnlAM9iF3jIF+fA4FfpdqKBVp3vbLu6B5+4PlxgbVrM1AX+Tfc3+JRehAMeDcgwvTyXd8frshGwkK8Tge013E7uFfcodhorOaofRKZ9yclxR7QrH8e5NesxrAdZlcCksYOvwxQwUkbrXMcwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uJtg1itV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884FCC19421;
+	Sun,  1 Mar 2026 01:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329960;
-	bh=l4owRCNvVkmpeUTQLmBTis4IAMulB7IykbJAx8fhJAg=;
+	s=k20201202; t=1772329963;
+	bh=LdkQyWhY8/sOxq6lPbH2M0bRkx10EZVujj0IB3ReurY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=cgE3TnKrxhMJStpuOwr7I++XzrDIFjSqAfLFWkfiOcN72WjlCWJ81SR0hJZGWddg/
-	 BtU09f1/ptmkPCkikW8sM2EdVnbSV1MuYCikYTs5sYCLNvGDzSLdAD08BAn52MlBKk
-	 VLpNW4OxjUUbS8Nlkk4THlGeNAq/NDTAChPkeDCyP4TK0YVl4yWPZmPLpFUq+Z4sVc
-	 IP/SfexUxuYBHyvYU6roCi8JiDcLmvHbxU8poD8mPpTYcAdqYIY5rxQzll2IWTyEeN
-	 ZoX8PcGDhlMImhs8F/EUGQMNavUSyYrVzWG4BsRoUFpDMqC+dE5LnqCW248YPfWyjc
-	 6RUz3oBdGDStg==
+	b=uJtg1itVxg2wNOwyAe7ELdugfJrJO128UWpinichCumeewvMaR983YarGN64n1bR1
+	 lQ2NICDs4PHriDLmCez7474TXHdgvWQj6JykpFkRVTg6JbG1N+oWSqaszEdQ8g+tc1
+	 4ZQswflGh0L3hE3FCZ2OXHKMic/8XbXOF1GaLcEe2gMdwR9uxmM+3hGqO7y8oV4m/q
+	 lg+48Aq0DhzXHFLn3UjO6RyFoPocuG3S+46Ni5Iix6W9QP2wjjQDXMmUrZOJv7AKgq
+	 BcuqiQy5UHBY8gC2+xjDKn4Jrg0U6LO0cUrIqE3RdC9rRJuW7jBfQXLnrn/b1MuVFG
+	 0MLoARNY+k/5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	nathan@kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: FAILED: Patch "ACPI: APEI: GHES: Disable KASAN instrumentation when compile testing with clang < 18" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:52:38 -0500
-Message-ID: <20260301015239.1719222-1-sashal@kernel.org>
+	lgs201920130244@gmail.com
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: FAILED: Patch "powerpc/smp: Add check for kcalloc() failure in parse_thread_groups()" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:52:41 -0500
+Message-ID: <20260301015241.1719268-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,29 +68,30 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222124-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222125-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 05C5F1CC8F2
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,csgroup.eu:email]
+X-Rspamd-Queue-Id: 243481CCC0F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -103,55 +104,38 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b584bfbd7ec417f257f651cc00a90c66e31dfbf1 Mon Sep 17 00:00:00 2001
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 14 Jan 2026 16:27:11 -0700
-Subject: [PATCH] ACPI: APEI: GHES: Disable KASAN instrumentation when compile
- testing with clang < 18
+From 33c1c6d8a28a2761ac74b0380b2563cf546c2a3a Mon Sep 17 00:00:00 2001
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Tue, 23 Sep 2025 21:32:35 +0800
+Subject: [PATCH] powerpc/smp: Add check for kcalloc() failure in
+ parse_thread_groups()
 
-After a recent innocuous change to drivers/acpi/apei/ghes.c, building
-ARCH=arm64 allmodconfig with clang-17 or older (which has both
-CONFIG_KASAN=y and CONFIG_WERROR=y) fails with:
+As kcalloc() may fail, check its return value to avoid a NULL pointer
+dereference when passing it to of_property_read_u32_array().
 
-  drivers/acpi/apei/ghes.c:902:13: error: stack frame size (2768) exceeds limit (2048) in 'ghes_do_proc' [-Werror,-Wframe-larger-than]
-    902 | static void ghes_do_proc(struct ghes *ghes,
-        |             ^
-
-A KASAN pass that removes unneeded stack instrumentation, enabled by
-default in clang-18 [1], drastically improves stack usage in this case.
-
-To avoid the warning in the common allmodconfig case when it can break
-the build, disable KASAN for ghes.o when compile testing with clang-17
-and older. Disabling KASAN outright may hide legitimate runtime issues,
-so live with the warning in that case; the user can either increase the
-frame warning limit or disable -Werror, which they should probably do
-when debugging with KASAN anyways.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2148
-Link: https://github.com/llvm/llvm-project/commit/51fbab134560ece663517bf1e8c2a30300d08f1a [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260114-ghes-avoid-wflt-clang-older-than-18-v1-1-9c8248bfe4f4@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
+Cc: stable@vger.kernel.org
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250923133235.1862108-1-lgs201920130244@gmail.com
 ---
- drivers/acpi/apei/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/kernel/smp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/apei/Makefile b/drivers/acpi/apei/Makefile
-index 5db61dfb46915..1a0b85923cd42 100644
---- a/drivers/acpi/apei/Makefile
-+++ b/drivers/acpi/apei/Makefile
-@@ -1,6 +1,10 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_ACPI_APEI)		+= apei.o
- obj-$(CONFIG_ACPI_APEI_GHES)	+= ghes.o
-+# clang versions prior to 18 may blow out the stack with KASAN
-+ifeq ($(CONFIG_COMPILE_TEST)_$(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_y_)
-+KASAN_SANITIZE_ghes.o := n
-+endif
- obj-$(CONFIG_ACPI_APEI_PCIEAER)	+= ghes_helpers.o
- obj-$(CONFIG_ACPI_APEI_EINJ)	+= einj.o
- einj-y				:= einj-core.o
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 292fee8809bc8..cad3358fa4c35 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -822,6 +822,8 @@ static int parse_thread_groups(struct device_node *dn,
+ 
+ 	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
+ 	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
++	if (!thread_group_array)
++		return -ENOMEM;
+ 	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
+ 					 thread_group_array, count);
+ 	if (ret)
 -- 
 2.51.0
 
