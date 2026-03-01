@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-222273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uB9+IjWuo2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:45 +0100
+	id 2AHNA6Cgo2noIgUAu9opvQ
+	(envelope-from <stable+bounces-222274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:12:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70231CE47E
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175701CD45D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:12:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B2B934D4542
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7317230803F8
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7E62F3C37;
-	Sun,  1 Mar 2026 02:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F182FB969;
+	Sun,  1 Mar 2026 02:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gF5L4rFv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oet0Twc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F264B16132A;
-	Sun,  1 Mar 2026 02:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E7216132A;
+	Sun,  1 Mar 2026 02:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330466; cv=none; b=XlDTSm37cZs4XxAPn08AX/j06jVIrkPMJ3JQeDRKgpPmdQOxrFxzDKNK7AaoJLi6f25mT0Cu28jkS5+SklH9j3uyG9a8+BCC3qY6qDMm57leKEkbL/nc0v1Ze2/8ocEK5ywMxdoEmTigk9ScD3143FjIoPe1EhPjhtlhQsyQ79c=
+	t=1772330468; cv=none; b=kXhjVNVWlhFwSe+wSEFkp1nXm4RsTxkqFx+tuIR8orc58t/HVWMtTVzzN5bJM1qE7eTYdatdMmV5siKM729LOQXBg0jjOTjSnItjWHKJuVSrNPL0LKRPP7H7l1zzmocZ9Poqi6B3fvQ2XuInTYeyIwsCPuoE31iVV7vXnrEZ2aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330466; c=relaxed/simple;
-	bh=/65fSYzHl0ingl2Ap1KRq0o6NxKTjbEl3og3Y3XRFhw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TPV1XEJI5Eb2Pcb0dSmCOzuUMiPDrXcmKrEreK464HsuQfVi1KbR78Abt/8nVHJHy8c1KgIPu/5LY2CUPlxaL70Uk0B4FstPr7b5lzsdH4wryw3Dr9O+vDvy9BktiyhWB8o+jAawl4XI0bsbjCtKi1ztNQhGtJwtK91ooXtr1OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gF5L4rFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091CFC19421;
-	Sun,  1 Mar 2026 02:01:04 +0000 (UTC)
+	s=arc-20240116; t=1772330468; c=relaxed/simple;
+	bh=XZqSslqH5aefPUYHLUJgLTcF85MLhe81LypuMbegfcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RxNoFsRTJ663VxirNZ+qLuENvXwvfn+tSAdSO+iunlezFHnOdjgitktaZPpVKC5ziEjjrXdjfQRxQa2iMlFxyAAu92+HKDtDo+SbROTEvI1p3VVASPXsKnW5Fn5HiI3Tr+4l6TjsBMutx2ISKXmeMnB9k4MLgun5XAB0bXUJIoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oet0Twc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9937EC19425;
+	Sun,  1 Mar 2026 02:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330465;
-	bh=/65fSYzHl0ingl2Ap1KRq0o6NxKTjbEl3og3Y3XRFhw=;
+	s=k20201202; t=1772330468;
+	bh=XZqSslqH5aefPUYHLUJgLTcF85MLhe81LypuMbegfcY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=gF5L4rFvboZd5w7RJ94bfFk50U1AwEH+cY4JLnwXmvvCu9LyCfp/pwQLqcI6mRelf
-	 9ukocyprWM9askyhKrK3oUjIqV6B3qs5IX7K2gQ54dwerycanQJtezp6zlp/tOAZTk
-	 M3mKPIIwhjIlv26SejNPPjuCFq7UtfIlpFE1nlY4Sg4cMyLu4i81LK6ok/knQsZFzL
-	 0J8l62ASa8wwtLRg6qtgy6Zp5pnp9xANBG6ACm1sDjGGKxHa17GN5XMiovE8onrdkP
-	 sdBjwJmlrvSjQ++QcPyDjUSKOEGBG808uAX915+95dD9ZusRBNG4uZDUbew4OMKP1e
-	 ewG420LqPPfSg==
+	b=Oet0Twc0mAdkkhAsKz2O9zYwPHmIzDGf7gQJxuz9mpCvIFZmOmvLwLG6eRVPqXyoo
+	 JeEmOgFQwghc1fBto+TcmyoT7WEWG1j4idX0lttDuqGc/GnDL3fL9f0Azb+68PQ/Kg
+	 jgL9JOdBwTDiyOKd29YkU60O/eT9r97LKknlJyRGiV1BkSt0/sGBtaG7gI/FuzTUlm
+	 HY2xExWbxQMa1UPU+hJJ1N4P3k4W3Xh7R56X9/6RukWY6KDsGjZKE5XLfeDj+hgXiz
+	 91Y6iVQudkn77D8C7sqo3zjk/xHBONw+1Ej7UPaUP6fhvJPfqnf4QzCSlIOf2UTPNr
+	 PuXfs/Wd/iFgA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jack@suse.cz
-Cc: Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	stable@kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org
-Subject: FAILED: Patch "ext4: always allocate blocks only from groups inode can use" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:01:03 -0500
-Message-ID: <20260301020103.1728070-1-sashal@kernel.org>
+	kernel@mattwhitlock.name
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	dm-devel@lists.linux.dev
+Subject: FAILED: Patch "dm-unstripe: fix mapping bug when there are multiple targets in a table" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:01:06 -0500
+Message-ID: <20260301020106.1728117-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,33 +63,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222273-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222274-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,suse.de:email,suse.cz:email]
-X-Rspamd-Queue-Id: B70231CE47E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mattwhitlock.name:email]
+X-Rspamd-Queue-Id: 175701CD45D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -106,106 +102,57 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4865c768b563deff1b6a6384e74a62f143427b42 Mon Sep 17 00:00:00 2001
-From: Jan Kara <jack@suse.cz>
-Date: Wed, 14 Jan 2026 19:28:18 +0100
-Subject: [PATCH] ext4: always allocate blocks only from groups inode can use
+From 83c10e8dd43628d0bf86486616556cd749a3c310 Mon Sep 17 00:00:00 2001
+From: Matt Whitlock <kernel@mattwhitlock.name>
+Date: Sun, 18 Jan 2026 13:36:15 -0500
+Subject: [PATCH] dm-unstripe: fix mapping bug when there are multiple targets
+ in a table
 
-For filesystems with more than 2^32 blocks inodes using indirect block
-based format cannot use blocks beyond the 32-bit limit.
-ext4_mb_scan_groups_linear() takes care to not select these unsupported
-groups for such inodes however other functions selecting groups for
-allocation don't. So far this is harmless because the other selection
-functions are used only with mb_optimize_scan and this is currently
-disabled for inodes with indirect blocks however in the following patch
-we want to enable mb_optimize_scan regardless of inode format.
+The "unstriped" device-mapper target incorrectly calculates the sector
+offset on the mapped device when the target's origin is not zero.
 
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260114182836.14120-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Take for example this hypothetical concatenation of the members of a
+two-disk RAID0:
+
+linearized:       0 2097152 unstriped 2 128 0 /dev/md/raid0 0
+linearized: 2097152 2097152 unstriped 2 128 1 /dev/md/raid0 0
+
+The intent in this example is to create a single device named
+/dev/mapper/linearized that comprises all of the chunks of the first disk
+of the RAID0 set, followed by all of the chunks of the second disk of the
+RAID0 set.
+
+This fails because dm-unstripe.c's map_to_core function does its
+computations based on the sector number within the mapper device rather
+than the sector number within the target. The bug turns invisible when
+the target's origin is at sector zero of the mapper device, as is the
+common case. In the example above, however, what happens is that the
+first half of the mapper device gets mapped correctly to the first disk
+of the RAID0, but the second half of the mapper device gets mapped past
+the end of the RAID0 device, and accesses to any of those sectors return
+errors.
+
+Signed-off-by: Matt Whitlock <kernel@mattwhitlock.name>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 18a5bf270532 ("dm: add unstriped target")
 ---
- fs/ext4/mballoc.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ drivers/md/dm-unstripe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index dd29558ad753b..910b454b4a21e 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -892,6 +892,21 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
- 	}
- }
+diff --git a/drivers/md/dm-unstripe.c b/drivers/md/dm-unstripe.c
+index e8a9432057dce..17be483595642 100644
+--- a/drivers/md/dm-unstripe.c
++++ b/drivers/md/dm-unstripe.c
+@@ -117,7 +117,7 @@ static void unstripe_dtr(struct dm_target *ti)
+ static sector_t map_to_core(struct dm_target *ti, struct bio *bio)
+ {
+ 	struct unstripe_c *uc = ti->private;
+-	sector_t sector = bio->bi_iter.bi_sector;
++	sector_t sector = dm_target_offset(ti, bio->bi_iter.bi_sector);
+ 	sector_t tmp_sector = sector;
  
-+static ext4_group_t ext4_get_allocation_groups_count(
-+				struct ext4_allocation_context *ac)
-+{
-+	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
-+
-+	/* non-extent files are limited to low blocks/groups */
-+	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
-+		ngroups = EXT4_SB(ac->ac_sb)->s_blockfile_groups;
-+
-+	/* Pairs with smp_wmb() in ext4_update_super() */
-+	smp_rmb();
-+
-+	return ngroups;
-+}
-+
- static int ext4_mb_scan_groups_xa_range(struct ext4_allocation_context *ac,
- 					struct xarray *xa,
- 					ext4_group_t start, ext4_group_t end)
-@@ -899,7 +914,7 @@ static int ext4_mb_scan_groups_xa_range(struct ext4_allocation_context *ac,
- 	struct super_block *sb = ac->ac_sb;
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	enum criteria cr = ac->ac_criteria;
--	ext4_group_t ngroups = ext4_get_groups_count(sb);
-+	ext4_group_t ngroups = ext4_get_allocation_groups_count(ac);
- 	unsigned long group = start;
- 	struct ext4_group_info *grp;
- 
-@@ -951,7 +966,7 @@ static int ext4_mb_scan_groups_p2_aligned(struct ext4_allocation_context *ac,
- 	ext4_group_t start, end;
- 
- 	start = group;
--	end = ext4_get_groups_count(ac->ac_sb);
-+	end = ext4_get_allocation_groups_count(ac);
- wrap_around:
- 	for (i = ac->ac_2order; i < MB_NUM_ORDERS(ac->ac_sb); i++) {
- 		ret = ext4_mb_scan_groups_largest_free_order_range(ac, i,
-@@ -1001,7 +1016,7 @@ static int ext4_mb_scan_groups_goal_fast(struct ext4_allocation_context *ac,
- 	ext4_group_t start, end;
- 
- 	start = group;
--	end = ext4_get_groups_count(ac->ac_sb);
-+	end = ext4_get_allocation_groups_count(ac);
- wrap_around:
- 	i = mb_avg_fragment_size_order(ac->ac_sb, ac->ac_g_ex.fe_len);
- 	for (; i < MB_NUM_ORDERS(ac->ac_sb); i++) {
-@@ -1083,7 +1098,7 @@ static int ext4_mb_scan_groups_best_avail(struct ext4_allocation_context *ac,
- 		min_order = fls(ac->ac_o_ex.fe_len);
- 
- 	start = group;
--	end = ext4_get_groups_count(ac->ac_sb);
-+	end = ext4_get_allocation_groups_count(ac);
- wrap_around:
- 	for (i = order; i >= min_order; i--) {
- 		int frag_order;
-@@ -1182,11 +1197,7 @@ static int ext4_mb_scan_groups(struct ext4_allocation_context *ac)
- 	int ret = 0;
- 	ext4_group_t start;
- 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
--	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
--
--	/* non-extent files are limited to low blocks/groups */
--	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
--		ngroups = sbi->s_blockfile_groups;
-+	ext4_group_t ngroups = ext4_get_allocation_groups_count(ac);
- 
- 	/* searching for the right group start from the goal value specified */
- 	start = ac->ac_g_ex.fe_group;
+ 	/* Shift us up to the right "row" on the stripe */
 -- 
 2.51.0
 
