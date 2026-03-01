@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-222253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Ez/KOCio2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222253-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:22:24 +0100
+	id wJJqGuOio2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:22:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5221CD7DC
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:22:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C618C1CD7E3
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:22:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F96B34B6EAB
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:00:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 790CB32F2FB3
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A017D2FE042;
-	Sun,  1 Mar 2026 02:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1770277C9D;
+	Sun,  1 Mar 2026 02:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9ptrlGk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OtIkpI9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637FF19CD19;
-	Sun,  1 Mar 2026 02:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A8019CD19
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330417; cv=none; b=KkqbEWjNHur63HsZNVriOlM0Muu9d/+pRKMIG5XdEh3exJwwH2sBmZl4gId1xIzg64HXoMtOT304k7LouUxosqFGuA65We7xO6KUmSBiqpoauYScRX7QY/VTN30BsZerpcOfqbN6CcCYY0zDuL71k7zqwmatqwF092IJzWOmpkQ=
+	t=1772330419; cv=none; b=Hx3TFDAVZ9Bkqq5kuYcURVlm+SCe2I7TmO5JAFRrnuzxwYFAAjaP/9py8sqTE0AX41u2rxbnyjy7VxjIby8LL4+8kP0LhMBZ/fXW/PNMTKC2udBmypjV2hX8rdYIDVq30vmA3ug/aCu6K62EqmoaQaWz6HX9anWdYc2kLbzevGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330417; c=relaxed/simple;
-	bh=CAqfdvGTsAeA/zXlRzNkFlP0fHkN5zOVayou3z5MjIg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YSkAdi7/SDT/UAXQjw5PM4Tsx4mfxEWzfxFXn1k083U6Zgm8TCi47hRqR90CwqYinrcnecrZteVcC0vzouTn7zkXuXRA91TBXeoKbNMp1mDs9YUJN5TAJ609g59GGFncDGck4VK0SkGDySUAhFO1TCGO0SsuNhTRELpFtFjJTqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9ptrlGk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC865C19421;
-	Sun,  1 Mar 2026 02:00:16 +0000 (UTC)
+	s=arc-20240116; t=1772330419; c=relaxed/simple;
+	bh=Y/Pkvml/BQFLsC8/UcnckneX/hvtllzBtpUcn+L9wlE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HbMpHZY+FR0Me2lHo1eQvjMEH7Xg3Kf0PFpSNTqLQdcWR/vHpS4Qn4+wJneCTQCjKv7ad33EuJJRgRDE0kZmyD9ojJU8BHw6tyKQAj8HC3PPZ1bO1Ziqhj2W/4ZX/mOdsVQam0yspdk1EJxkHk6r8oTC0bNmBqZvtk5VUdnOUxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OtIkpI9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B61C19421;
+	Sun,  1 Mar 2026 02:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330417;
-	bh=CAqfdvGTsAeA/zXlRzNkFlP0fHkN5zOVayou3z5MjIg=;
+	s=k20201202; t=1772330419;
+	bh=Y/Pkvml/BQFLsC8/UcnckneX/hvtllzBtpUcn+L9wlE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=l9ptrlGkPTzuw1bbM9jdZre+93IJofTc9wvwRl9r18QZ5gwclUAYmRG2dZt7VOUj9
-	 O642U2kPAXE104cTujEtC0FxzBbi2rtixYfuM5iAlsshhyVOaYBGZ0rj7d4AIjXzPx
-	 7yZmqm7woMe3jwjtYZXiyFcOd/G8/445hKrR9JbcPLjJiDQsQQLqzXJxBJUR341FhV
-	 zf/qmB5z5D1gj2cDr+gGV3wWWbKZZ0jV40oBNtw/3ajyytY7iMJN+r5wi/KXjxldmy
-	 bbcnzst2CplBIEXRkP7rp48sJtkJuIa7rdbiFBv/tuVJQZsjTfrVIGzumjJcguK26Y
-	 4wQBwKp1aFyuQ==
+	b=OtIkpI9sQnK2bSb6mwfrURTTHPFkDl0L1IriRaAJc1AQdgdcqKoKRQzCSbf+yooLh
+	 GJcvqmrVzvtoWemtTv4ktY1LKTbNQZZ+IRppFJ7MYvlXwTgXnCRJ3PXGVJUOQTO5be
+	 ei94Xx/Y29N3/PBZUEqe8eK9ARcdk49KR63pn9mKbfCIzXUvEtHfAYZ3ubQUbX/JGQ
+	 Von5IsiPn8L56cB/Wjs0i5TZ5pE9/1THZMZAZp9mGr07Bwg4TnU6RFZqpB8hzt4k3/
+	 exTiDuhsRx64EINn0BKJEEwA1rJ3r3rvn3vL2Ah93ihg2u7+nRm/if7ReBagao6T84
+	 pt8gSym8Pn/ow==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mliang@purestorage.com
-Cc: Mohamed Khalfella <mkhalfella@purestorage.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	dm-devel@lists.linux.dev
-Subject: FAILED: Patch "dm: clear cloned request bio pointer when last clone bio completes" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:00:15 -0500
-Message-ID: <20260301020015.1726261-1-sashal@kernel.org>
+	vulab@iscas.ac.cn
+Cc: Nishanth Menon <nm@ti.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: FAILED: Patch "soc: ti: pruss: Fix double free in pruss_clk_mux_setup()" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:00:17 -0500
+Message-ID: <20260301020017.1726306-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,19 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222253-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222254-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1C5221CD7DC
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:email]
+X-Rspamd-Queue-Id: C618C1CD7E3
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -103,78 +102,47 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From fb8a6c18fb9a6561f7a15b58b272442b77a242dd Mon Sep 17 00:00:00 2001
-From: Michael Liang <mliang@purestorage.com>
-Date: Fri, 9 Jan 2026 15:52:54 -0700
-Subject: [PATCH] dm: clear cloned request bio pointer when last clone bio
- completes
+From 80db65d4acfb9ff12d00172aed39ea8b98261aad Mon Sep 17 00:00:00 2001
+From: Wentao Liang <vulab@iscas.ac.cn>
+Date: Tue, 13 Jan 2026 01:47:16 +0000
+Subject: [PATCH] soc: ti: pruss: Fix double free in pruss_clk_mux_setup()
 
-Stale rq->bio values have been observed to cause double-initialization of
-cloned bios in request-based device-mapper targets, leading to
-use-after-free and double-free scenarios.
+In the pruss_clk_mux_setup(), the devm_add_action_or_reset() indirectly
+calls pruss_of_free_clk_provider(), which calls of_node_put(clk_mux_np)
+on the error path. However, after the devm_add_action_or_reset()
+returns, the of_node_put(clk_mux_np) is called again, causing a double
+free.
 
-One such case occurs when using dm-multipath on top of a PCIe NVMe
-namespace, where cloned request bios are freed during
-blk_complete_request(), but rq->bio is left intact. Subsequent clone
-teardown then attempts to free the same bios again via
-blk_rq_unprep_clone().
+Fix by returning directly, to avoid the duplicate of_node_put().
 
-The resulting double-free path looks like:
-
-  nvme_pci_complete_batch()
-    nvme_complete_batch()
-      blk_mq_end_request_batch()
-        blk_complete_request()        // called on a DM clone request
-          bio_endio()                 // first free of all clone bios
-          ...
-        rq->end_io()                  // end_clone_request()
-          dm_complete_request(tio->orig)
-            dm_softirq_done()
-              dm_done()
-                dm_end_request()
-                  blk_rq_unprep_clone()  // second free of clone bios
-
-Fix this by clearing the clone request's bio pointer when the last cloned
-bio completes, ensuring that later teardown paths do not attempt to free
-already-released bios.
-
-Signed-off-by: Michael Liang <mliang@purestorage.com>
-Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: ba59c9b43c86 ("soc: ti: pruss: support CORECLK_MUX and IEPCLK_MUX")
 Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20260113014716.2464741-1-vulab@iscas.ac.cn
+Signed-off-by: Nishanth Menon <nm@ti.com>
 ---
- drivers/md/dm-rq.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/soc/ti/pruss.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-rq.c b/drivers/md/dm-rq.c
-index 5e08546696145..923252fb57aec 100644
---- a/drivers/md/dm-rq.c
-+++ b/drivers/md/dm-rq.c
-@@ -109,14 +109,21 @@ static void end_clone_bio(struct bio *clone)
- 	 */
- 	tio->completed += nr_bytes;
+diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+index 038576805bfa0..0fd59c73f585d 100644
+--- a/drivers/soc/ti/pruss.c
++++ b/drivers/soc/ti/pruss.c
+@@ -366,12 +366,10 @@ static int pruss_clk_mux_setup(struct pruss *pruss, struct clk *clk_mux,
  
-+	if (!is_last)
-+		return;
-+	/*
-+	 * At this moment we know this is the last bio of the cloned request,
-+	 * and all cloned bios have been released, so reset the clone request's
-+	 * bio pointer to avoid double free.
-+	 */
-+	tio->clone->bio = NULL;
-+ exit:
- 	/*
- 	 * Update the original request.
- 	 * Do not use blk_mq_end_request() here, because it may complete
- 	 * the original request before the clone, and break the ordering.
- 	 */
--	if (is_last)
-- exit:
--		blk_update_request(tio->orig, BLK_STS_OK, tio->completed);
-+	blk_update_request(tio->orig, BLK_STS_OK, tio->completed);
- }
+ 	ret = devm_add_action_or_reset(dev, pruss_of_free_clk_provider,
+ 				       clk_mux_np);
+-	if (ret) {
++	if (ret)
+ 		dev_err(dev, "failed to add clkmux free action %d", ret);
+-		goto put_clk_mux_np;
+-	}
  
- static struct dm_rq_target_io *tio_from_request(struct request *rq)
+-	return 0;
++	return ret;
+ 
+ put_clk_mux_np:
+ 	of_node_put(clk_mux_np);
 -- 
 2.51.0
 
