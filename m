@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-222060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOb6JQqso2myJgUAu9opvQ
-	(envelope-from <stable+bounces-222060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:01:30 +0100
+	id yIYUJEydo2nFIQUAu9opvQ
+	(envelope-from <stable+bounces-222061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223061CE21F
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:01:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C2D21CC709
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64BAD325AFE5
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:51:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 98B6830C7EEE
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301EE311964;
-	Sun,  1 Mar 2026 01:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782E531197A;
+	Sun,  1 Mar 2026 01:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jb+f9WV3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cvPJcBw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C652EB5A6;
-	Sun,  1 Mar 2026 01:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B224311973;
+	Sun,  1 Mar 2026 01:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329802; cv=none; b=Eim/yO/MmvAUAOPxKrhXBSY+ZyWCIlfqjbxSuazPtMD6ODELf/+71fJmZr9uBymeUaoiRsRnfP17nRhWVce5Qle7hdutzh+gdTkn9WAQPB4io+W+EQ955nqHBwjAFwUtw6A5ObFOJzjzznaGMRo5/9kp//u6JLClh0DxUi4+K/8=
+	t=1772329804; cv=none; b=nWseshvLJ2r8tRVWLqmRB8a+JTGhIrlIn1AVa1bNJrcYZivDpCqp1p93J1EwO/NI+x9H7v1ETmpI/vIBQaXX0O4hqs1vGiBRZNervuEtu0oiKYnvo6wRxPCp2KYsrWy+EeBjREXkWUesxnOeP/3zKPaBxcCgWeofCTyzd/hefEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329802; c=relaxed/simple;
-	bh=9wc6RcBvCeb4893KauHz4tqwsv1JvTfPg7PX/OPBYDM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n91ir3GFEHYkGyebh0EP1Q8r9x0mLZjGq9uix4MpmzCrqCJmwJrTe5XauR8y+0JTLkEBDMdWQXnds4CA8IYz0DOW/aU4S/u/Z8lN/UUgcjzoNgA9YLO+uUlqnJ4L1GstD/4lZWIGuqwD7DCv3IANlLwwpgNtU6JrtKDCeeHut2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jb+f9WV3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBDBC19421;
-	Sun,  1 Mar 2026 01:50:00 +0000 (UTC)
+	s=arc-20240116; t=1772329804; c=relaxed/simple;
+	bh=xFQ0Ysh6tdVloh73ZaJ9AzyOJAjelfrho7qX/6MLnUw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZjtNSdYcwaJoSzU+cerDFmSQIf4RoCdZha3qyxL52JX8UWjB1029P4IBJFoI7SyBNLG7pnp44p4UBjUS3s5chwwAwps/faVikqSiGwY10tpz6Nr/lzx/3z9Sv48Qrsg+tpXvb9enS9aVgnkoCpJ5G9mJOZRbT/ZkpLFGOccCQWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cvPJcBw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD7AC19421;
+	Sun,  1 Mar 2026 01:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329801;
-	bh=9wc6RcBvCeb4893KauHz4tqwsv1JvTfPg7PX/OPBYDM=;
+	s=k20201202; t=1772329804;
+	bh=xFQ0Ysh6tdVloh73ZaJ9AzyOJAjelfrho7qX/6MLnUw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Jb+f9WV3yAKuph7cC1fU3+PzmYjwXP3b/fUWYgvOu3WETuylXvMxGkwhvYxJcidta
-	 wuC3oHq1Hufa1kqmiNyjB8/13iH31ry6l3yu98QZy+9ud0WDWL1iFUFLcEXj33LMhB
-	 ZlAjK+m+eOXq3gA2S/ksPfEtVNl13OyfM9LhUBLquGTx5UH/k1xx419A60LiwimKI+
-	 aNqudelDjS9TXjixhw6vlXEhaEeeK5n4BgXbVuTJuZkCfk6CCq5M8snrzRg9oA+V8R
-	 4rRsEVdQdYf0RuScrJpXTlib1OIgycOYjt+aBw1ex789aTz+Zdx8itkH5gWsNJjb/W
-	 iUQcg3uLDOF2g==
+	b=cvPJcBw6TixlJ3OIEpOr0HRXHIk0gxWRROLyTSnKGjPNvFcLDxvLQ8tildoY6FJ8J
+	 1EHZC4DNUK0jYrxKjaVO1LDKIxRt0VcnEI29TdkFj/n4n5dJd9ZKiGx3OP8axcMee7
+	 vGCtJ0NcSxuC0CNsRos24Ye9NILlnTppd+ZU7fSSw/4WnQMIQnP/2Nx+b0FOue5Yel
+	 qdywbb6o+WElZ3O7qYm0Bc/b8ByiI0ISbJcLPfKVAy4K6cKsUvGNqN+5bpWBRE7+QP
+	 qAhQOuCEvvcls5dOO2m5cZenaoF1f3Zq1eYGXrM0fAlMkqmwpkNuxg8mJSfJHv7rMt
+	 kvkYr8+LT6YLw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	dlemoal@kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	linux-ide@vger.kernel.org
-Subject: FAILED: Patch "ata: libata-scsi: refactor ata_scsi_translate()" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:49:59 -0500
-Message-ID: <20260301014959.1715482-1-sashal@kernel.org>
+	xiaolei.wang@windriver.com
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	linux-media@vger.kernel.org
+Subject: FAILED: Patch "media: i2c: ov5647: use our own mutex for the ctrl lock" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:50:02 -0500
+Message-ID: <20260301015002.1715634-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,34 +63,35 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222060-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222061-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: 223061CE21F
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,windriver.com:email]
+X-Rspamd-Queue-Id: 2C2D21CC709
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,158 +104,39 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From bb3a8154b1a1dc2c86d037482c0a2cf9186829ed Mon Sep 17 00:00:00 2001
-From: Damien Le Moal <dlemoal@kernel.org>
-Date: Wed, 17 Dec 2025 14:05:25 +0900
-Subject: [PATCH] ata: libata-scsi: refactor ata_scsi_translate()
+From 973e42fd5d2b397bff34f0c249014902dbf65912 Mon Sep 17 00:00:00 2001
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
+Date: Fri, 5 Dec 2025 15:19:18 +0800
+Subject: [PATCH] media: i2c: ov5647: use our own mutex for the ctrl lock
 
-Factor out of ata_scsi_translate() the code handling queued command
-deferral using the port qc_defer callback and issuing the queued
-command with ata_qc_issue() into the new function ata_scsi_qc_issue(),
-and simplify the goto used in ata_scsi_translate().
-While at it, also add a lockdep annotation to check that the port lock
-is held when ata_scsi_translate() is called.
+__v4l2_ctrl_handler_setup() and __v4l2_ctrl_modify_range() contains an
+assertion to verify that the v4l2_ctrl_handler::lock is held, as it should
+only be called when the lock has already been acquired. Therefore use our
+own mutex for the ctrl lock, otherwise a warning will be reported.
 
-No functional changes.
-
+Fixes: 4974c2f19fd8 ("media: ov5647: Support gain, exposure and AWB controls")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+[Sakari Ailus: Fix a minor conflict.]
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- drivers/ata/libata-scsi.c | 81 ++++++++++++++++++++++++---------------
- 1 file changed, 50 insertions(+), 31 deletions(-)
+ drivers/media/i2c/ov5647.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index d388a4ff9ae44..be620bc045848 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1691,6 +1691,42 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
- 	ata_qc_done(qc);
- }
+diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
+index 1041732104fa7..6285e234962e0 100644
+--- a/drivers/media/i2c/ov5647.c
++++ b/drivers/media/i2c/ov5647.c
+@@ -1248,6 +1248,8 @@ static int ov5647_init_controls(struct ov5647 *sensor)
  
-+static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
-+{
-+	int ret;
+ 	v4l2_ctrl_handler_init(&sensor->ctrls, 14);
+ 
++	sensor->ctrls.lock = &sensor->lock;
 +
-+	if (!ap->ops->qc_defer)
-+		goto issue;
-+
-+	/* Check if the command needs to be deferred. */
-+	ret = ap->ops->qc_defer(qc);
-+	switch (ret) {
-+	case 0:
-+		break;
-+	case ATA_DEFER_LINK:
-+		ret = SCSI_MLQUEUE_DEVICE_BUSY;
-+		break;
-+	case ATA_DEFER_PORT:
-+		ret = SCSI_MLQUEUE_HOST_BUSY;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		ret = SCSI_MLQUEUE_HOST_BUSY;
-+		break;
-+	}
-+
-+	if (ret) {
-+		/* Force a requeue of the command to defer its execution. */
-+		ata_qc_free(qc);
-+		return ret;
-+	}
-+
-+issue:
-+	ata_qc_issue(qc);
-+
-+	return 0;
-+}
-+
- /**
-  *	ata_scsi_translate - Translate then issue SCSI command to ATA device
-  *	@dev: ATA device to which the command is addressed
-@@ -1714,66 +1750,49 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
-  *	spin_lock_irqsave(host lock)
-  *
-  *	RETURNS:
-- *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY if the command
-- *	needs to be deferred.
-+ *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY or SCSI_MLQUEUE_HOST_BUSY if the
-+ *	command needs to be deferred.
-  */
- static int ata_scsi_translate(struct ata_device *dev, struct scsi_cmnd *cmd,
- 			      ata_xlat_func_t xlat_func)
- {
- 	struct ata_port *ap = dev->link->ap;
- 	struct ata_queued_cmd *qc;
--	int rc;
+ 	v4l2_ctrl_new_std(&sensor->ctrls, &ov5647_ctrl_ops,
+ 			  V4L2_CID_AUTOGAIN, 0, 1, 1, 0);
  
-+	lockdep_assert_held(ap->lock);
-+
-+	/*
-+	 * ata_scsi_qc_new() calls scsi_done(cmd) in case of failure. So we
-+	 * have nothing further to do when allocating a qc fails.
-+	 */
- 	qc = ata_scsi_qc_new(dev, cmd);
- 	if (!qc)
--		goto err_mem;
-+		return 0;
- 
- 	/* data is present; dma-map it */
- 	if (cmd->sc_data_direction == DMA_FROM_DEVICE ||
- 	    cmd->sc_data_direction == DMA_TO_DEVICE) {
- 		if (unlikely(scsi_bufflen(cmd) < 1)) {
- 			ata_dev_warn(dev, "WARNING: zero len r/w req\n");
--			goto err_did;
-+			cmd->result = (DID_ERROR << 16);
-+			goto done;
- 		}
- 
- 		ata_sg_init(qc, scsi_sglist(cmd), scsi_sg_count(cmd));
--
- 		qc->dma_dir = cmd->sc_data_direction;
- 	}
- 
- 	qc->complete_fn = ata_scsi_qc_complete;
- 
- 	if (xlat_func(qc))
--		goto early_finish;
--
--	if (ap->ops->qc_defer) {
--		if ((rc = ap->ops->qc_defer(qc)))
--			goto defer;
--	}
--
--	/* select device, send command to hardware */
--	ata_qc_issue(qc);
-+		goto done;
- 
--	return 0;
--
--early_finish:
--	ata_qc_free(qc);
--	scsi_done(cmd);
--	return 0;
-+	return ata_scsi_qc_issue(ap, qc);
- 
--err_did:
-+done:
- 	ata_qc_free(qc);
--	cmd->result = (DID_ERROR << 16);
- 	scsi_done(cmd);
--err_mem:
- 	return 0;
--
--defer:
--	ata_qc_free(qc);
--	if (rc == ATA_DEFER_LINK)
--		return SCSI_MLQUEUE_DEVICE_BUSY;
--	else
--		return SCSI_MLQUEUE_HOST_BUSY;
- }
- 
- /**
 -- 
 2.51.0
 
