@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-221871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDMvI5aao2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221871-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:02 +0100
+	id 0IcCCpuao2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425C91CBB08
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8A71CBB27
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6BFEA3090E9A
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D51743091C96
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13C12D3EC7;
-	Sun,  1 Mar 2026 01:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172C029D270;
+	Sun,  1 Mar 2026 01:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qp/fdOIm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZsXR8DU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D6C29B795;
-	Sun,  1 Mar 2026 01:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD377233134;
+	Sun,  1 Mar 2026 01:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329338; cv=none; b=nq6AD+MUXWYmMf77cbwiytUMCkY9KDhybGZgyTszmvRF5j0PsRY5mG8/WYDUQf22pddD0FUMq59I7hVpSVhflHWZUWPkjipF58DROdjlqBDxOwcy5cyi9ceqoOiRNm6/hL82MDX5r8AHJ0lBWLxTYJrcREiE/S8oMkIcqq1Kqas=
+	t=1772329340; cv=none; b=fd7alLMm2V14boxNCKI6+u0uOKwm5mjS35DPKLOiCkJXPmlf7m8mVl0mz3nqfRHgMiLcwA6fbEgZVQ2DBWwyq1cNlolp1P5OG/g+dqQcgKpNNNYnceuQ9gKm4FGY5nbJ+6ffWR4hbaDTo/Ou/+lOVzzqIQ2kcpk53JS2GohVm/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329338; c=relaxed/simple;
-	bh=yW6OHSpxhyVjHV/gi9B+6WDmw8M3IawGvSsZ5T7yuT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jHPKqnV310oiy9YcwEnBJlEaGrZqa87hGwTn9/8SmSVC09QrqKQxe0hPHTZ32Quc0oFpM06wfMMDf0UNufAsByiwQ/3yzBCFW2uHMiUzmp/FXLziZXwKx5dLDNixIZ+qDMFe67Se2ZdxME4rkUwzdAoLP+vdhlkwWvR+IYlwhxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qp/fdOIm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E10C19421;
-	Sun,  1 Mar 2026 01:42:17 +0000 (UTC)
+	s=arc-20240116; t=1772329340; c=relaxed/simple;
+	bh=ii2FZUREE/8XGqs8JDiAOZEExqmPn472bB3HL2pQ1EA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PKyXM92Rxd7Rc43Tk07j4ViCPf5wYU/M3vF+WhKazQrU4nsPtaUJvr6tDGuaBWqMsUeGu0fRe67+AQNf+FT/USUDXFAJLCV/+XcRnvaakAryD1XwBiMEorcs/SkGRDaxKcUyz4QUMUerfachTaBJ9wkd4hjMhP28ed1w4h9LIuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZsXR8DU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B93CC19421;
+	Sun,  1 Mar 2026 01:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329338;
-	bh=yW6OHSpxhyVjHV/gi9B+6WDmw8M3IawGvSsZ5T7yuT4=;
+	s=k20201202; t=1772329340;
+	bh=ii2FZUREE/8XGqs8JDiAOZEExqmPn472bB3HL2pQ1EA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=qp/fdOImRMndnDIY6y0N8PlxNN4yUOhkwN0wo7ZPvGr5k9skG06bKTwanl8IjHS4U
-	 3KaZ5bTMRrf2nyl1u1JoJ/aaJxNVqla9QKOILdsMSVGrYROqx0uuca4RnzAAyz8uvd
-	 kbdGaFTLX95gAzFd29o7NhzvngpgQWjL/My4TEP6xQSTP0GwBC2AhYCLw3tOpOEa9H
-	 k//T3BfkqPzF1hxF/gszkdK/j+8aalNN0IdGsIQcODVUKi2soBkB5GBvJYQvRWGofb
-	 kqTgFS2GR5Zq+j6a9SVaJUta9kWSQLQ2n1zF2GHHsTJ/+STH3V035oh2LguToK/CTP
-	 NmhZR1uATsUUQ==
+	b=ZsXR8DU0WY6h0NBUYb10SvJqnqvPva5de76HslJdAQZOnjt57sOyTTF6mQgp1SDo4
+	 HTdDv8qmrpbxliNSA++B7AzBfB/EUE3wkq/15AUvPvTzZTBx9i4cKISnb9sTWiDCs5
+	 dHXv1Bzv1QKchZ5SH6is3Va3C26elmGRSH4tkvzl+sXnHE7exzNPbMio7BUpHSWSwN
+	 j8MTSk0aOOFWzG3L+csv6P3MYV7tOcfgDjjYwAa1NDKDpQgzODXvMfEwWSyAu6Vpq/
+	 RJf52sWd/4ca3cyMM3K6sLa3QgjjTPWEszEY+J152MVR0l3SlYddYOLg5TQWVbOwzw
+	 gislYMMyxZbDQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	yi.zhang@huawei.com
-Cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	stable@kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org
-Subject: FAILED: Patch "ext4: don't zero the entire extent if EXT4_EXT_DATA_PARTIAL_VALID1" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:42:16 -0500
-Message-ID: <20260301014216.1704094-1-sashal@kernel.org>
+	schnelle@linux.ibm.com
+Cc: Benjamin Block <bblock@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	linux-s390@vger.kernel.org
+Subject: FAILED: Patch "s390/pci: Handle futile config accesses of disabled devices directly" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:42:18 -0500
+Message-ID: <20260301014218.1704139-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +65,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221871-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221872-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huaweicloud.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 425C91CBB08
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DA8A71CBB27
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -105,89 +104,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1bf6974822d1dba86cf11b5f05498581cf3488a2 Mon Sep 17 00:00:00 2001
-From: Zhang Yi <yi.zhang@huawei.com>
-Date: Sat, 29 Nov 2025 18:32:34 +0800
-Subject: [PATCH] ext4: don't zero the entire extent if
- EXT4_EXT_DATA_PARTIAL_VALID1
+From 84d875e69818bed600edccb09be4a64b84a34a54 Mon Sep 17 00:00:00 2001
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+Date: Thu, 8 Jan 2026 16:45:53 +0100
+Subject: [PATCH] s390/pci: Handle futile config accesses of disabled devices
+ directly
 
-When allocating initialized blocks from a large unwritten extent, or
-when splitting an unwritten extent during end I/O and converting it to
-initialized, there is currently a potential issue of stale data if the
-extent needs to be split in the middle.
+On s390 PCI busses and slots with multiple functions may have holes
+because PCI functions are passed-through by the hypervisor on a per
+function basis and some functions may be in standby or reserved. This
+fact is indicated by returning true from the
+hypervisor_isolated_pci_functions() helper and triggers common code to
+scan all possible devfn values. Via pci_scan_single_device() this in
+turn causes config reads for the device and vendor IDs, even for PCI
+functions which are in standby and thereofore disabled.
 
-       0  A      B  N
-       [UUUUUUUUUUUU]    U: unwritten extent
-       [--DDDDDDDD--]    D: valid data
-          |<-  ->| ----> this range needs to be initialized
+So far these futile config reads, as well as potentially writes, which
+can never succeed were handled by the PCI load/store instructions
+themselves. This works as the platform just returns an error for
+a disabled and thus not usable function handle. It does cause spamming
+of error logs and additional overhead though.
 
-ext4_split_extent() first try to split this extent at B with
-EXT4_EXT_DATA_ENTIRE_VALID1 and EXT4_EXT_MAY_ZEROOUT flag set, but
-ext4_split_extent_at() failed to split this extent due to temporary lack
-of space. It zeroout B to N and mark the entire extent from 0 to N
-as written.
+Instead check if the used function handle is enabled in zpci_cfg_load()
+and zpci_cfg_write() and if not enable directly return -ENODEV. Also
+refactor zpci_cfg_load() and zpci_cfg_store() slightly to accommodate
+the new logic while meeting modern kernel style guidelines.
 
-       0  A      B  N
-       [WWWWWWWWWWWW]    W: written extent
-       [SSDDDDDDDDZZ]    Z: zeroed, S: stale data
-
-ext4_split_extent() then try to split this extent at A with
-EXT4_EXT_DATA_VALID2 flag set. This time, it split successfully and left
-a stale written extent from 0 to A.
-
-       0  A      B   N
-       [WW|WWWWWWWWWW]
-       [SS|DDDDDDDDZZ]
-
-Fix this by pass EXT4_EXT_DATA_PARTIAL_VALID1 to ext4_split_extent_at()
-when splitting at B, don't convert the entire extent to written and left
-it as unwritten after zeroing out B to N. The remaining work is just
-like the standard two-part split. ext4_split_extent() will pass the
-EXT4_EXT_DATA_VALID2 flag when it calls ext4_split_extent_at() for the
-second time, allowing it to properly handle the split. If the split is
-successful, it will keep extent from 0 to A as unwritten.
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Cc: stable@kernel.org
-Message-ID: <20251129103247.686136-3-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Fixes: a50297cf8235 ("s390/pci: separate zbus creation from scanning")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 ---
- fs/ext4/extents.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/s390/pci/pci.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 8d5ca450aa5d2..1fee84ea20af1 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3310,6 +3310,15 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
- 		}
- 
- 		if (!err) {
-+			/*
-+			 * The first half contains partially valid data, the
-+			 * splitting of this extent has not been completed, fix
-+			 * extent length and ext4_split_extent() split will the
-+			 * first half again.
-+			 */
-+			if (split_flag & EXT4_EXT_DATA_PARTIAL_VALID1)
-+				goto fix_extent_len;
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 57f3980b98a92..7f44b0644a20e 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -231,24 +231,33 @@ int zpci_fmb_disable_device(struct zpci_dev *zdev)
+ static int zpci_cfg_load(struct zpci_dev *zdev, int offset, u32 *val, u8 len)
+ {
+ 	u64 req = ZPCI_CREATE_REQ(zdev->fh, ZPCI_PCIAS_CFGSPC, len);
++	int rc = -ENODEV;
+ 	u64 data;
+-	int rc;
 +
- 			/* update the extent length and mark as initialized */
- 			ex->ee_len = cpu_to_le16(ee_len);
- 			ext4_ext_try_to_merge(handle, inode, path, ex);
-@@ -3379,7 +3388,9 @@ static struct ext4_ext_path *ext4_split_extent(handle_t *handle,
- 			split_flag1 |= EXT4_EXT_MARK_UNWRIT1 |
- 				       EXT4_EXT_MARK_UNWRIT2;
- 		if (split_flag & EXT4_EXT_DATA_VALID2)
--			split_flag1 |= EXT4_EXT_DATA_ENTIRE_VALID1;
-+			split_flag1 |= map->m_lblk > ee_block ?
-+				       EXT4_EXT_DATA_PARTIAL_VALID1 :
-+				       EXT4_EXT_DATA_ENTIRE_VALID1;
- 		path = ext4_split_extent_at(handle, inode, path,
- 				map->m_lblk + map->m_len, split_flag1, flags1);
- 		if (IS_ERR(path))
++	if (!zdev_enabled(zdev))
++		goto out_err;
+ 
+ 	rc = __zpci_load(&data, req, offset);
+-	if (!rc) {
+-		data = le64_to_cpu((__force __le64) data);
+-		data >>= (8 - len) * 8;
+-		*val = (u32) data;
+-	} else
+-		*val = 0xffffffff;
++	if (rc)
++		goto out_err;
++	data = le64_to_cpu((__force __le64)data);
++	data >>= (8 - len) * 8;
++	*val = (u32)data;
++	return 0;
++
++out_err:
++	PCI_SET_ERROR_RESPONSE(val);
+ 	return rc;
+ }
+ 
+ static int zpci_cfg_store(struct zpci_dev *zdev, int offset, u32 val, u8 len)
+ {
+ 	u64 req = ZPCI_CREATE_REQ(zdev->fh, ZPCI_PCIAS_CFGSPC, len);
++	int rc = -ENODEV;
+ 	u64 data = val;
+-	int rc;
++
++	if (!zdev_enabled(zdev))
++		return rc;
+ 
+ 	data <<= (8 - len) * 8;
+ 	data = (__force u64) cpu_to_le64(data);
 -- 
 2.51.0
 
