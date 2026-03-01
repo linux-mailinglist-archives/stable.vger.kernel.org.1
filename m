@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-221636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2J/PIVaao2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:58 +0100
+	id 2F9KMlmno2mWJAUAu9opvQ
+	(envelope-from <stable+bounces-221637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:41:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F5B1CB9D5
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 358061CDCE9
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD565312DA0F
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:33:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59198312D42F
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1055C2DC782;
-	Sun,  1 Mar 2026 01:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A490277C9D;
+	Sun,  1 Mar 2026 01:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J16KgcDz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSFmv45m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C283A1EDA0F;
-	Sun,  1 Mar 2026 01:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D90C1EDA0F;
+	Sun,  1 Mar 2026 01:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328765; cv=none; b=IJB2ln9puSjdhahiEqD65LGapXsKJw5eWl6lazy7A20g+M3nkPbs051iXy2h9VtlyDku7XwGURPIbhEurnQhlUWzqbS95hr7wJPKKHUCA/pjEf7RBn+JzZgUFMgM7JjEOT9Gra/wPV0lihW4s1+8ivd3PhWFRCtwZ4bKcLI/X/M=
+	t=1772328768; cv=none; b=iU6Ra0H3a/8qh5sUmlak7epyStX2riGAo0J4YSjd1v+9CcrQC14tZlDp+R0wiCAKy3NX+GsKmT3sRBwpqBZkVM8wwOWcblnPZMLzT5+37SUa0v+JPXA91J7MWSLn226WuOT+XmPiycWy9aAqOe+9ceBWCvQgcc/2/XUe34xLr90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328765; c=relaxed/simple;
-	bh=g2OaSrwdKEpWhPv+QEXEVWvFKu3syn9agrnbERcbPhs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oo+/j/mQ2B3DdK9u7LIhqGFCMYPcKJYbVxnyI53QoDSDKJuKnaTyAfC12bQyOImymcEZPQ+F3ZlC0y1JVbrtTHrEQgggsdEq+Af6beGX1bnnOLkbBEp6Zq5PPrJXSZnk+xGWpfxd9jkkP6GttZFOO6GvWod8AfHfVdN1Loenftk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J16KgcDz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7569C2BC87;
-	Sun,  1 Mar 2026 01:32:44 +0000 (UTC)
+	s=arc-20240116; t=1772328768; c=relaxed/simple;
+	bh=pQ42qVVfpEdDx78lBiJv4+SbIBADwbKS7t2sX1XubYQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V78iB8YusRJUVUKqzcGUibP8f5860zSwYaN5ISKksn5XwmbWB91mF4Fc5AlUaNo/L3oPbgZqeIAIQTFzdjPzXSaGdq4HAJrnV5PTkdNHzgRt0OwF1yoo/TPKpEIRKgvDUxoYDFio8Si0Fm8Sde+JKC0bJuajb7zFhCkRsYU4PU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSFmv45m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682CBC19424;
+	Sun,  1 Mar 2026 01:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328765;
-	bh=g2OaSrwdKEpWhPv+QEXEVWvFKu3syn9agrnbERcbPhs=;
+	s=k20201202; t=1772328767;
+	bh=pQ42qVVfpEdDx78lBiJv4+SbIBADwbKS7t2sX1XubYQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=J16KgcDzZJK4mtNIYdQMQXyCMvHusawdjbm1P1uAW2H8+5yod+2J8uXQm8VEHXmkr
-	 F4N2t1Ob8fe0PgW2vQP98N58JuhFAlhzQYt1rQkP23UVLABlux2CG2SQ4Gnh2lOvb1
-	 FDzR6N+dJs+w/2J/yPmKGkkuPpKYd3xPnHF7OyoaUx0xKDQzWn874MchTrv83xzP0r
-	 R0Snl3O0pZYAB7o1h6s7FvRWrDcs21PkBijGqpQI5e/aNCdwMkv85o/KuunQv4WW2C
-	 Pq/9D+KVLg37mn5FHLRgPrVonfCjJZAk2wF+vQv4jUhlHlg7jgfU+8IR2Lgzr2+nY8
-	 SI1y6q3VHJtPQ==
+	b=YSFmv45mNq6/wCVe2ELP9WjmogJpefq5DEnCkC2w1Gv7Xv/qg9aoioSfGXu48XVZ4
+	 m/TVwCCUBB73/D5xAkh7iifF3naVj3WYDFvXHzfd2fC268u5jScp8KRJ8hwUyWHYDe
+	 jhEiEtrpB9M4QuNnOBUZOBTAbkLXxPKSb3zGW/LNVK0DLiNknnrEwJfjgzw3GDi1gu
+	 gfWOxtzuy9u7BBF6UJd8X1kZ9TEFS3pOcHgRglMi0u8wOXU6RB5IbLRKIXO4VGJw+R
+	 N217Uj4J8ObqFnKwiT0DVxfsQTsLHNMFa7GmXu0tDM84JMQ4cjv6GunzZGyFHn7MG3
+	 9khhYdpwGKSSA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	j@jannau.net
-Cc: Stephen Boyd <sboyd@kernel.org>,
-	Neal Gompa <neal@gompa.dev>,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: FAILED: Patch "clk: clk-apple-nco: Add "apple,t8103-nco" compatible" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:32:43 -0500
-Message-ID: <20260301013243.1691792-1-sashal@kernel.org>
+	johan@kernel.org
+Cc: Kevin Hilman <khilman@baylibre.com>,
+	linux-omap@vger.kernel.org
+Subject: FAILED: Patch "bus: omap-ocp2scp: fix OF populate on driver rebind" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:32:45 -0500
+Message-ID: <20260301013246.1691844-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +63,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221636-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221637-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[jannau.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 04F5B1CB9D5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 358061CDCE9
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -105,40 +102,66 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From ef9b3b4dbe767e4ac642a88dc0507927ac545047 Mon Sep 17 00:00:00 2001
-From: Janne Grunau <j@jannau.net>
-Date: Wed, 31 Dec 2025 13:22:00 +0100
-Subject: [PATCH] clk: clk-apple-nco: Add "apple,t8103-nco" compatible
+From 5eb63e9bb65d88abde647ced50fe6ad40c11de1a Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Fri, 19 Dec 2025 12:01:19 +0100
+Subject: [PATCH] bus: omap-ocp2scp: fix OF populate on driver rebind
 
-After discussion with the devicetree maintainers we agreed to not extend
-lists with the generic compatible "apple,nco" anymore [1]. Use
-"apple,t8103-nco" as base compatible as it is the SoC the driver and
-bindings were written for.
+Since commit c6e126de43e7 ("of: Keep track of populated platform
+devices") child devices will not be created by of_platform_populate()
+if the devices had previously been deregistered individually so that the
+OF_POPULATED flag is still set in the corresponding OF nodes.
 
-[1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
+Switch to using of_platform_depopulate() instead of open coding so that
+the child devices are created if the driver is rebound.
 
-Fixes: 6641057d5dba ("clk: clk-apple-nco: Add driver for Apple NCO")
-Cc: stable@vger.kernel.org
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Janne Grunau <j@jannau.net>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Cc: stable@vger.kernel.org      # 3.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251219110119.23507-1-johan@kernel.org
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 ---
- drivers/clk/clk-apple-nco.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bus/omap-ocp2scp.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clk/clk-apple-nco.c b/drivers/clk/clk-apple-nco.c
-index d3ced4a0f029e..434c067968bbc 100644
---- a/drivers/clk/clk-apple-nco.c
-+++ b/drivers/clk/clk-apple-nco.c
-@@ -320,6 +320,7 @@ static int applnco_probe(struct platform_device *pdev)
+diff --git a/drivers/bus/omap-ocp2scp.c b/drivers/bus/omap-ocp2scp.c
+index e4dfda7b3b102..eee5ad191ea9c 100644
+--- a/drivers/bus/omap-ocp2scp.c
++++ b/drivers/bus/omap-ocp2scp.c
+@@ -17,15 +17,6 @@
+ #define OCP2SCP_TIMING 0x18
+ #define SYNC2_MASK 0xf
+ 
+-static int ocp2scp_remove_devices(struct device *dev, void *c)
+-{
+-	struct platform_device *pdev = to_platform_device(dev);
+-
+-	platform_device_unregister(pdev);
+-
+-	return 0;
+-}
+-
+ static int omap_ocp2scp_probe(struct platform_device *pdev)
+ {
+ 	int ret;
+@@ -79,7 +70,7 @@ static int omap_ocp2scp_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ err0:
+-	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
++	of_platform_depopulate(&pdev->dev);
+ 
+ 	return ret;
+ }
+@@ -87,7 +78,7 @@ static int omap_ocp2scp_probe(struct platform_device *pdev)
+ static void omap_ocp2scp_remove(struct platform_device *pdev)
+ {
+ 	pm_runtime_disable(&pdev->dev);
+-	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
++	of_platform_depopulate(&pdev->dev);
  }
  
- static const struct of_device_id applnco_ids[] = {
-+	{ .compatible = "apple,t8103-nco" },
- 	{ .compatible = "apple,nco" },
- 	{ }
- };
+ #ifdef CONFIG_OF
 -- 
 2.51.0
 
