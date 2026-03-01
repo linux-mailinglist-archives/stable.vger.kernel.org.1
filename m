@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-222156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGOhJrKeo2lzIgUAu9opvQ
-	(envelope-from <stable+bounces-222156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:04:34 +0100
+	id iNZ1MGmeo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 185431CCD2C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:04:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C82991CCBCE
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A90631037EC
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8C53E302E1DB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EB02FE042;
-	Sun,  1 Mar 2026 01:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA0330B50D;
+	Sun,  1 Mar 2026 01:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZupN4A3v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oTqZFmJZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE062E6CC0;
-	Sun,  1 Mar 2026 01:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DED30B514;
+	Sun,  1 Mar 2026 01:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330039; cv=none; b=CQfM2NGRb1kNi1nB1wd5H+IZ+A3ZnX+Uz4I/Ut4JQeRjaCC+QmaSvP+2PEn8jikRzkgxcXKEUPwzwn/8Bu8+aHKoU8XzHpSQMYdjgOtvV1O9nA4w3xQiIYEW+FoZBZj6GM13/b1lAqW/6zoH+FkHWJiGfwBSYUoHUBw9C4RDd6s=
+	t=1772330042; cv=none; b=CLwIMrVtyV7L6T76b/OV88jatCmB8oUvWnZPwidqI0Q5refqlMOcbRuSMGMilCzIXgq8fhW0bxOwqaEYC/u0B7fYMWiBpjqs0XXEug8JfNe7qyokXr3Y2ZFcX2KeVkXU9Oe7ROl8b3nzzdn1PGOFs7fXy1/PKwyrAVTQzlDZpp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330039; c=relaxed/simple;
-	bh=B+QKWh4kotwyH+bdw56pFm+qXELNoFGXNP6SKLlHiFw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bheXnPD4vOMdTyghZznDvz7LDzCoPtBwmal2q5SJ8ygo5n6tydK/ZtaQHZEl52OCse/Y+F16mdJd0I0L+yuh6hymGOSFPiv/v+jVzeq5h3vNHeYbuecsRAKPO1RuFDcBFXr9DTVhvj4RsFOdizF3nApIKNzZxZZxZzpfxAlRa1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZupN4A3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28115C19424;
-	Sun,  1 Mar 2026 01:53:59 +0000 (UTC)
+	s=arc-20240116; t=1772330042; c=relaxed/simple;
+	bh=Eqlh5XZILYmEfF31pZ7euyGMJtcuPfM9/j4OUurLkq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dMC1SZH2i9joZElFXlZS/hk71y0Y4S9FTEdd8hhbmdqz9NvJbUioh7ps7j4QUw9PTnDtIlR4dxLUm8HbG2AIEbS3IyvY1RjZ8gELA2rvBvHLBsxhAJkaWNR91fMz2fvgow3jdHni7qSausfFAOS27GzPP/PBhLESCQ8k/+vmuWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oTqZFmJZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71BF0C19421;
+	Sun,  1 Mar 2026 01:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330039;
-	bh=B+QKWh4kotwyH+bdw56pFm+qXELNoFGXNP6SKLlHiFw=;
+	s=k20201202; t=1772330042;
+	bh=Eqlh5XZILYmEfF31pZ7euyGMJtcuPfM9/j4OUurLkq0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=ZupN4A3vXS7pF7yUJ+SYDQtUJxvoERi3uFbu1cv+O/XnqNL8gz1z2qltwePyfeNVI
-	 H3YWokTsdeM9/7hsdzJJfT0oX0880+8V2ot00GJFavNIMEu/D99UxV6A13JK+5dOYY
-	 GhAPZp/kIorFp00aboMXv867Sna2BCu/xH3mQeNwWQMCKPYU26nHxF+6lX8fgYb5FO
-	 4hNtGG1CQtl5OEI9b15QbSNggye8/IdE4vd5oH4nzHRAFM2JSOtb/sKtPBFpN9MdBS
-	 Ahh7KpY3fjYMK/vDbG2oh3eshq9Y0AoKj2V5oDnTeybLJ+0FVLZY26FxU1doBCil4W
-	 mkauPE4TKuPnQ==
+	b=oTqZFmJZbXXHdHjtOkkRFx1oD5YuuFo6wInJcF/V4qGw3nZyFk9WgqBDiUd7HKP53
+	 nR/9qB7CN0r2CFb4I1MnWwuGyQe4XL+AwCNpj2BZeh0UhzQALRaN//SXRAkzxl6nud
+	 HQCUgx1osH2b5bqBuWJFckk5EBpWOmPivKJvYrwhHwxlCG6FFX/aEjyCjnKqLEKBQq
+	 CkDaxWxAmIptlgrZWDrrPgZDnGHVfMVD3wwx3RIHKp1n1JX2MnUAo1Q9FDVd5E0xZv
+	 A2zXqz0LE2AhfRNgjNSONsionBViQHzo7YhC8mptAT8v5k9q073ub2zjARVyFOFfa2
+	 b4uVWNR3XuU0w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	guojinhui.liam@bytedance.com
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	linux-pci@vger.kernel.org
-Subject: FAILED: Patch "PCI: Fix pci_slot_trylock() error handling" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:53:57 -0500
-Message-ID: <20260301015358.1720850-1-sashal@kernel.org>
+	lihaoxiang@isrc.iscas.ac.cn
+Cc: Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org
+Subject: FAILED: Patch "parisc: kernel: replace kfree() with put_device() in create_tree_node()" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:54:00 -0500
+Message-ID: <20260301015400.1720903-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,19 +67,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222156-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_CC(0.00)[gmx.de,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222157-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 185431CCD2C
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: C82991CCBCE
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -103,68 +103,38 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9368d1ee62829b08aa31836b3ca003803caf0b72 Mon Sep 17 00:00:00 2001
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-Date: Fri, 12 Dec 2025 22:55:28 +0800
-Subject: [PATCH] PCI: Fix pci_slot_trylock() error handling
+From dcf69599c47f29ce0a99117eb3f9ddcd2c4e78b6 Mon Sep 17 00:00:00 2001
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Date: Fri, 19 Dec 2025 21:19:26 +0800
+Subject: [PATCH] parisc: kernel: replace kfree() with put_device() in
+ create_tree_node()
 
-Commit a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-delegates the bridge device's pci_dev_trylock() to pci_bus_trylock() in
-pci_slot_trylock(), but it forgets to remove the corresponding
-pci_dev_unlock() when pci_bus_trylock() fails.
+If device_register() fails, put_device() is the correct way to
+drop the device reference.
 
-Before a4e772898f8b, the code did:
+Found by code review.
 
-  if (!pci_dev_trylock(dev)) /* <- lock bridge device */
-    goto unlock;
-  if (dev->subordinate) {
-    if (!pci_bus_trylock(dev->subordinate)) {
-      pci_dev_unlock(dev);   /* <- unlock bridge device */
-      goto unlock;
-    }
-  }
-
-After a4e772898f8b the bridge-device lock is no longer taken, but the
-pci_dev_unlock(dev) on the failure path was left in place, leading to the
-bug.
-
-This yields one of two errors:
-
-  1. A warning that the lock is being unlocked when no one holds it.
-  2. An incorrect unlock of a lock that belongs to another thread.
-
-Fix it by removing the now-redundant pci_dev_unlock(dev) on the failure
-path.
-
-[Same patch later posted by Keith at
-https://patch.msgid.link/20260116184150.3013258-1-kbusch@meta.com]
-
-Fixes: a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: 1070c9655b90 ("[PA-RISC] Fix must_check warnings in drivers.c")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251212145528.2555-1-guojinhui.liam@bytedance.com
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- drivers/pci/pci.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/parisc/kernel/drivers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 13dbb405dc31f..59319e08fca61 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5346,10 +5346,8 @@ static int pci_slot_trylock(struct pci_slot *slot)
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
- 		if (dev->subordinate) {
--			if (!pci_bus_trylock(dev->subordinate)) {
--				pci_dev_unlock(dev);
-+			if (!pci_bus_trylock(dev->subordinate))
- 				goto unlock;
--			}
- 		} else if (!pci_dev_trylock(dev))
- 			goto unlock;
+diff --git a/arch/parisc/kernel/drivers.c b/arch/parisc/kernel/drivers.c
+index 8d23fe42b0cee..809e3c171ad54 100644
+--- a/arch/parisc/kernel/drivers.c
++++ b/arch/parisc/kernel/drivers.c
+@@ -435,7 +435,7 @@ static struct parisc_device * __init create_tree_node(char id,
+ 	dev->dev.dma_mask = &dev->dma_mask;
+ 	dev->dev.coherent_dma_mask = dev->dma_mask;
+ 	if (device_register(&dev->dev)) {
+-		kfree(dev);
++		put_device(&dev->dev);
+ 		return NULL;
  	}
+ 
 -- 
 2.51.0
 
