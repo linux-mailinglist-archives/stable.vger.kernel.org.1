@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-222022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wH2/AqGco2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:55:45 +0100
+	id +D/tDC2co2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:53:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795501CC46D
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:55:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B311CC29C
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:53:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54C6E30AE786
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:49:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8DA7D308BAD0
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEDA2E7648;
-	Sun,  1 Mar 2026 01:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F262FE59C;
+	Sun,  1 Mar 2026 01:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vGp5B7Jk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZBzBwjdC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B098C2594B9
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70602D0C63;
+	Sun,  1 Mar 2026 01:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329712; cv=none; b=SBsnjPCAFDhlArUlgHzMFxcreRkiYKTJK73qY6bXfd6PVdJWZpwJW6XDN5d6zNFAMDj8i9qSFM+wF99q4GhDlEdRDAqn5zG+VbpnD6XjxhyQNLzVEjLutcgOys7J+AzH0p6xYt4mIkYLVgWeXBgkhg8lFn5JXPwDeFjrJFJ+pwg=
+	t=1772329714; cv=none; b=QoKSuSm/3w1KW38WLyLiCVBrDLTDsKz9bEbKYd1z7Tpsp69HRDo0DTldxHIPPHTDAU20yDDVaahtZB0RxJ+q0QWYzWArsOJ/ttkUv/BG4X8FDljCA2R3k765i4RXptU0L0JkUBT18A1rkFme06Vul6g9hjJY4pAnw2CWj68cumg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329712; c=relaxed/simple;
-	bh=GnqiyrPx6H54np56kyfyEaN9ZySH9ie2NjzrGMOZrMw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BoHuwVxBpMjTMZPgKj2CYuc9aTgms5ttUnkDmXRcl0LZKxJF5urlrrlAZvKgV3e2+132M5Qv/2q72u9VjG028rOraZd6Fh9JGi8DkyYD96rMLbc9rDsgbrbqh9ROFcwTEu2RYRrZ/wkHFhk0wsnjFwPvfzgZgnvie+paaKr3NcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vGp5B7Jk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AA8C19421;
-	Sun,  1 Mar 2026 01:48:31 +0000 (UTC)
+	s=arc-20240116; t=1772329714; c=relaxed/simple;
+	bh=MzftVfv5NEmnPSua02Zde3NRB/VhYUeL3Sr7gTODhjk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LkoOUzvKi6er1l05ck8uorU0DCHFfedlBMWV0MMPsOD4wbkLQ4kQLxIbM8Ve0w5S01IvPgZ5pWIK4slZCelVL6D8yDaSomMO9TjupUudTHU3GEuEdncUPNv44Q2uN2lvHiF4a8pDpHOrxdRWqceOq+JsutjG6jC6sjYtZMS5wos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZBzBwjdC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1801FC19421;
+	Sun,  1 Mar 2026 01:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329712;
-	bh=GnqiyrPx6H54np56kyfyEaN9ZySH9ie2NjzrGMOZrMw=;
+	s=k20201202; t=1772329714;
+	bh=MzftVfv5NEmnPSua02Zde3NRB/VhYUeL3Sr7gTODhjk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=vGp5B7Jka3rukB9f2fURsBdnxL0Mlek7rZ/t0Xby71h/8FpHxDy/mDfUETCMNNclA
-	 nrjVHU51VY5DgewqRhn3XJJJ2R1cq9aQE6LkeCL/l3Rg899NgYZM5MpqwG0NpD4hb0
-	 FTh5d/Ft3bbNMjMiwOuADOLfgTaksiETqMYMxzW0GqkxgZ8Dg5izZHO88TlYCvg0VQ
-	 b7Kjcsegg+TiyfErc/KmW0XA3HdTejkwQihB+ciVrbhXXJugAZLE0xtznUuiLOTreK
-	 LW8fM8pc0J+ulCe3E9XtSBKtobmRR6U0JAi4XobC342G+IaWXuLjBpJpJuagnY+dbI
-	 zY1MOi/uJYG8g==
+	b=ZBzBwjdC0RRq0sQ4J/S71OAsHyK6kOOKvuIyBa/ubBv2OtwMdiMCUDUK0kQrH2OF/
+	 eZKmvcJbJYGOu1cS8M7EHilPLa6g7hfonEPr6R0cc1q9Gt/Ac0RaJaTJ4hKplOL7nu
+	 wTTCpPHPWxhvz25oQG6Wpif4xxGpNTSCXQVvrVitFtbZUGjoJEcuEi06bk2fQrqTbt
+	 xeD8FumcP7nnEO0f95/ESNXL2IF6nufH6J6DB60VDzwYxI5m5UE/kzD+CH5nw+mKZt
+	 1S2ddK7Gvrqhj/Ei2qxQZA4SU0PamGY7pi12/Y8hF00SATNgz63PVSSYEMupWl/gpG
+	 ftGOzy5KlB+ug==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johan@kernel.org
-Cc: Yong Wu <yong.wu@mediatek.com>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "memory: mtk-smi: fix device leak on larb probe" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:48:30 -0500
-Message-ID: <20260301014830.1712707-1-sashal@kernel.org>
+	hanguidong02@gmail.com
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
+	linux-remoteproc@vger.kernel.org
+Subject: FAILED: Patch "rpmsg: core: fix race in driver_override_show() and use core helper" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:48:32 -0500
+Message-ID: <20260301014832.1712762-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,34 +63,34 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[mediatek.com,gmail.com,kernel.org,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-222023-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222022-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mediatek.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 795501CC46D
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: 13B311CC29C
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -106,40 +103,123 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9dae65913b32d05dbc8ff4b8a6bf04a0e49a8eb6 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Fri, 21 Nov 2025 17:46:23 +0100
-Subject: [PATCH] memory: mtk-smi: fix device leak on larb probe
+From 42023d4b6d2661a40ee2dcf7e1a3528a35c638ca Mon Sep 17 00:00:00 2001
+From: Gui-Dong Han <hanguidong02@gmail.com>
+Date: Wed, 3 Dec 2025 01:49:48 +0800
+Subject: [PATCH] rpmsg: core: fix race in driver_override_show() and use core
+ helper
 
-Make sure to drop the reference taken when looking up the SMI device
-during larb probe on late probe failure (e.g. probe deferral) and on
-driver unbind.
+The driver_override_show function reads the driver_override string
+without holding the device_lock. However, the store function modifies
+and frees the string while holding the device_lock. This creates a race
+condition where the string can be freed by the store function while
+being read by the show function, leading to a use-after-free.
 
-Fixes: cc8bbe1a8312 ("memory: mediatek: Add SMI driver")
-Fixes: 038ae37c510f ("memory: mtk-smi: add missing put_device() call in mtk_smi_device_link_common")
-Cc: stable@vger.kernel.org	# 4.6: 038ae37c510f
-Cc: stable@vger.kernel.org	# 4.6
-Cc: Yong Wu <yong.wu@mediatek.com>
-Cc: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251121164624.13685-3-johan@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+To fix this, replace the rpmsg_string_attr macro with explicit show and
+store functions. The new driver_override_store uses the standard
+driver_set_override helper. Since the introduction of
+driver_set_override, the comments in include/linux/rpmsg.h have stated
+that this helper must be used to set or clear driver_override, but the
+implementation was not updated until now.
+
+Because driver_set_override modifies and frees the string while holding
+the device_lock, the new driver_override_show now correctly holds the
+device_lock during the read operation to prevent the race.
+
+Additionally, since rpmsg_string_attr has only ever been used for
+driver_override, removing the macro simplifies the code.
+
+Fixes: 39e47767ec9b ("rpmsg: Add driver_override device attribute for rpmsg_device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20251202174948.12693-1-hanguidong02@gmail.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- drivers/memory/mtk-smi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/rpmsg/rpmsg_core.c | 66 ++++++++++++++++----------------------
+ 1 file changed, 27 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
-index dd6150d200e89..3609bfd3c64be 100644
---- a/drivers/memory/mtk-smi.c
-+++ b/drivers/memory/mtk-smi.c
-@@ -685,6 +685,7 @@ static void mtk_smi_larb_remove(struct platform_device *pdev)
- 	device_link_remove(&pdev->dev, larb->smi_common_dev);
- 	pm_runtime_disable(&pdev->dev);
- 	component_del(&pdev->dev, &mtk_smi_larb_component_ops);
-+	put_device(larb->smi_common_dev);
- }
+diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+index 5d661681a9b6c..96964745065b1 100644
+--- a/drivers/rpmsg/rpmsg_core.c
++++ b/drivers/rpmsg/rpmsg_core.c
+@@ -352,50 +352,38 @@ field##_show(struct device *dev,					\
+ }									\
+ static DEVICE_ATTR_RO(field);
  
- static int __maybe_unused mtk_smi_larb_resume(struct device *dev)
+-#define rpmsg_string_attr(field, member)				\
+-static ssize_t								\
+-field##_store(struct device *dev, struct device_attribute *attr,	\
+-	      const char *buf, size_t sz)				\
+-{									\
+-	struct rpmsg_device *rpdev = to_rpmsg_device(dev);		\
+-	const char *old;						\
+-	char *new;							\
+-									\
+-	new = kstrndup(buf, sz, GFP_KERNEL);				\
+-	if (!new)							\
+-		return -ENOMEM;						\
+-	new[strcspn(new, "\n")] = '\0';					\
+-									\
+-	device_lock(dev);						\
+-	old = rpdev->member;						\
+-	if (strlen(new)) {						\
+-		rpdev->member = new;					\
+-	} else {							\
+-		kfree(new);						\
+-		rpdev->member = NULL;					\
+-	}								\
+-	device_unlock(dev);						\
+-									\
+-	kfree(old);							\
+-									\
+-	return sz;							\
+-}									\
+-static ssize_t								\
+-field##_show(struct device *dev,					\
+-	     struct device_attribute *attr, char *buf)			\
+-{									\
+-	struct rpmsg_device *rpdev = to_rpmsg_device(dev);		\
+-									\
+-	return sprintf(buf, "%s\n", rpdev->member);			\
+-}									\
+-static DEVICE_ATTR_RW(field)
+-
+ /* for more info, see Documentation/ABI/testing/sysfs-bus-rpmsg */
+ rpmsg_show_attr(name, id.name, "%s\n");
+ rpmsg_show_attr(src, src, "0x%x\n");
+ rpmsg_show_attr(dst, dst, "0x%x\n");
+ rpmsg_show_attr(announce, announce ? "true" : "false", "%s\n");
+-rpmsg_string_attr(driver_override, driver_override);
++
++static ssize_t driver_override_store(struct device *dev,
++				     struct device_attribute *attr,
++				     const char *buf, size_t count)
++{
++	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
++	int ret;
++
++	ret = driver_set_override(dev, &rpdev->driver_override, buf, count);
++	if (ret)
++		return ret;
++
++	return count;
++}
++
++static ssize_t driver_override_show(struct device *dev,
++				    struct device_attribute *attr, char *buf)
++{
++	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
++	ssize_t len;
++
++	device_lock(dev);
++	len = sysfs_emit(buf, "%s\n", rpdev->driver_override);
++	device_unlock(dev);
++	return len;
++}
++static DEVICE_ATTR_RW(driver_override);
+ 
+ static ssize_t modalias_show(struct device *dev,
+ 			     struct device_attribute *attr, char *buf)
 -- 
 2.51.0
 
