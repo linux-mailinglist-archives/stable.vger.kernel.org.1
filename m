@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-222177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAa/M+Gdo2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222177-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:05 +0100
+	id kNOZG56eo2lzIgUAu9opvQ
+	(envelope-from <stable+bounces-222178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:04:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F72E1CC9D3
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B45751CCCC9
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:04:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D58C53032897
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C7F23303A88E
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714982F4A18;
-	Sun,  1 Mar 2026 01:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6F4302CD5;
+	Sun,  1 Mar 2026 01:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghEbZoXa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FteGoBYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3414F2673AA;
-	Sun,  1 Mar 2026 01:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714C12673AA;
+	Sun,  1 Mar 2026 01:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330093; cv=none; b=EMFOZfNtVPb+OrPSW8WELKNgIQk0ZNcJNTo8UJy+pFLESuvQ8arLMyinBvEUPEEsQ42tVeIT5DB/8PCHvq6kLHMv2Hb8vkUXPYqWHHoPKlymlWkdP9PaqiTFGiuE5WvmyzW+/34JewzvnLQsDOGED/aRPa3w5IDG8f9BA/OCAHk=
+	t=1772330095; cv=none; b=qt2qpw21RlLFjKWzK3lhDd0Epa9bL9P7pE8poaV2E/zqmBPntvFax9PjYGI6yYBUcZmkoZIv5NN1xXM6Ejy8xXhOjwPHVgm9p5Yf9A82tCiFYgJtfEUERf/EEP5y3oym2Y94t485RPvXl27uRKubcJ0uQK2Ip566oUyDGQ3P/WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330093; c=relaxed/simple;
-	bh=S3kB/6+6+BLwjYDChs0XPyP2t9UMHrtlyqPqoRGzRMs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VdLnPnu6r7M9nK0TU/ni7s81IIUTB1I32b9s0tX4rrEyzDLdprn0IGH/Vv3VI/dALJeEssbP1PmxY7LHmqtnV6jqipqYSKtlUOhYywcyKkEkUQPT+1GcsQwpIu/uOtWyJELXjJaPz5sRl8UzHBeRqqbNmHljqbQG5b6eKkIOdn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghEbZoXa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82417C19424;
-	Sun,  1 Mar 2026 01:54:52 +0000 (UTC)
+	s=arc-20240116; t=1772330095; c=relaxed/simple;
+	bh=I2HPxVqL/24mv875Z8LhKLtcrUl4X1yyrzU0DBGKjH4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hNbtbWCsc7sCi/6LK0K0PD1Hm0LVmuoyDYvjL+xpYFocttIz8JOJN45PC7zclEzRNHPLXxvEssduXwoyGpdTZ3f7NtjqVhh1kUatbFgjTwKoqAuyVz7X3AWl1NgXdXtmPwoyAG0wXEV1b3Mi+rKQrIPpCIhGbj7mXHpbmj7kDg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FteGoBYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A0BC19421;
+	Sun,  1 Mar 2026 01:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330093;
-	bh=S3kB/6+6+BLwjYDChs0XPyP2t9UMHrtlyqPqoRGzRMs=;
+	s=k20201202; t=1772330095;
+	bh=I2HPxVqL/24mv875Z8LhKLtcrUl4X1yyrzU0DBGKjH4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=ghEbZoXapU4hFEkewBjP9OW2h/TKTNez2RQuX+jkiKuwPIxcs/e/Me+Recp5GI//R
-	 Qo5Cb6uJQIXA0iyR3zv7jVGM3I1omX8ouu2Cc0aPcov7XK1A/G1srxBKN4gyERVZXL
-	 /3jatjpn5+GVOoVlOYNVFZgKr0h1xNgCKtq/XWhQjLwpHXCrelH+JhQvsGYx1PcP65
-	 mRnLzdU9BtDMAHcr7n+8n9DBivFicY8UdcWHAzF8mFbUdcbh935R0JNBn8GKPXgkLI
-	 OTPs/Dh3bHfrPsDoh9ZUTE13w1NwcFoZWbDIIHNIhGEHhlBPlGwFpa82uJ+Sy5YJDd
-	 YSMH9ft2zvE/A==
+	b=FteGoBYC0xdJ9sECy4dBPsHYJqMkVqsmynqoGytaqFYLyvF9hu9yLh2wCsU1sz9T3
+	 DwyQCHQJ/3PO3TT90Dn2GUtPmqneHCYsotn3jOw4M2l/Ez7e+/kIFI7cmIi9et5zlj
+	 1vr+LgqZMNi7VTZQCrSf/HhhYLxrlVZEnU6mgQAc1+cjCfe5jbdFjukkuHHFmoUduV
+	 QSxABJywyDEruvCCfPpPaijm07dpgRxDLq2w8HZPht2Ayt+dmivE8ogMkaMsf4OrvG
+	 1ZLkWj0KkFF5GYydpKl83WSRzeJO9xk68Ay+hWuonEW0ZJtAts2GeOg8cpZ20HGit7
+	 tUVMBvNa9wg4A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	linkinjeon@kernel.org
-Cc: tianshuo han <hantianshuo233@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
-	linux-cifs@vger.kernel.org
-Subject: FAILED: Patch "ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off reset in error paths" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:54:51 -0500
-Message-ID: <20260301015451.1721916-1-sashal@kernel.org>
+	jiaxun.yang@flygoat.com
+Cc: Waldemar Brodkorb <wbx@openadk.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org
+Subject: FAILED: Patch "MIPS: rb532: Fix MMIO UART resource registration" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:54:53 -0500
+Message-ID: <20260301015453.1721961-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,20 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-222178-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-222177-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9F72E1CC9D3
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,openadk.org:email,flygoat.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B45751CCCC9
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -104,66 +103,49 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 010eb01ce23b34b50531448b0da391c7f05a72af Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Sat, 24 Jan 2026 10:55:46 +0900
-Subject: [PATCH] ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off
- reset in error paths
+From e93bb4b76cfefb302534246e892c7667491cb8cc Mon Sep 17 00:00:00 2001
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Date: Thu, 5 Feb 2026 10:08:42 +0000
+Subject: [PATCH] MIPS: rb532: Fix MMIO UART resource registration
 
-The problem occurs when a signed request fails smb2 signature verification
-check. In __process_request(), if check_sign_req() returns an error,
-set_smb2_rsp_status(work, STATUS_ACCESS_DENIED) is called.
-set_smb2_rsp_status() set work->next_smb2_rcv_hdr_off as zero. By resetting
-next_smb2_rcv_hdr_off to zero, the pointer to the next command in the chain
-is lost. Consequently, is_chained_smb2_message() continues to point to
-the same request header instead of advancing. If the header's NextCommand
-field is non-zero, the function returns true, causing __handle_ksmbd_work()
-to repeatedly process the same failed request in an infinite loop.
-This results in the kernel log being flooded with "bad smb2 signature"
-messages and high CPU usage.
+Since commit 6e690d54cfa8 ("serial: 8250: fix return error code in
+serial8250_request_std_resource()"), registering an 8250 MMIO port
+without mapbase no longer works, as the resource range is derived from
+mapbase/mapsize.
 
-This patch fixes the issue by changing the return value from
-SERVER_HANDLER_CONTINUE to SERVER_HANDLER_ABORT. This ensures that
-the processing loop terminates immediately rather than attempting to
-continue from an invalidated offset.
+Populate mapbase and mapsize accordingly. Also drop ugly membase KSEG1
+pointer and set UPF_IOREMAP instead, letting the 8250 core perform the
+ioremap.
 
-Reported-by: tianshuo han <hantianshuo233@gmail.com>
+Fixes: 6e690d54cfa8 ("serial: 8250: fix return error code in serial8250_request_std_resource()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: Waldemar Brodkorb <wbx@openadk.org>
+Link: https://lore.kernel.org/linux-mips/aX-d0ShTplHKZT33@waldemar-brodkorb.de/
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
- fs/smb/server/server.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/rb532/devices.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index 554ae90df906d..d2410a3f163ae 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -126,21 +126,21 @@ static int __process_request(struct ksmbd_work *work, struct ksmbd_conn *conn,
- andx_again:
- 	if (command >= conn->max_cmds) {
- 		conn->ops->set_rsp_status(work, STATUS_INVALID_PARAMETER);
--		return SERVER_HANDLER_CONTINUE;
-+		return SERVER_HANDLER_ABORT;
- 	}
- 
- 	cmds = &conn->cmds[command];
- 	if (!cmds->proc) {
- 		ksmbd_debug(SMB, "*** not implemented yet cmd = %x\n", command);
- 		conn->ops->set_rsp_status(work, STATUS_NOT_IMPLEMENTED);
--		return SERVER_HANDLER_CONTINUE;
-+		return SERVER_HANDLER_ABORT;
- 	}
- 
- 	if (work->sess && conn->ops->is_sign_req(work, command)) {
- 		ret = conn->ops->check_sign_req(work);
- 		if (!ret) {
- 			conn->ops->set_rsp_status(work, STATUS_ACCESS_DENIED);
--			return SERVER_HANDLER_CONTINUE;
-+			return SERVER_HANDLER_ABORT;
- 		}
- 	}
- 
+diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
+index b7f6f782d9a13..ffa4d38ca95df 100644
+--- a/arch/mips/rb532/devices.c
++++ b/arch/mips/rb532/devices.c
+@@ -212,11 +212,12 @@ static struct platform_device rb532_wdt = {
+ static struct plat_serial8250_port rb532_uart_res[] = {
+ 	{
+ 		.type           = PORT_16550A,
+-		.membase	= (char *)KSEG1ADDR(REGBASE + UART0BASE),
++		.mapbase        = REGBASE + UART0BASE,
++		.mapsize        = 0x1000,
+ 		.irq		= UART0_IRQ,
+ 		.regshift	= 2,
+ 		.iotype		= UPIO_MEM,
+-		.flags		= UPF_BOOT_AUTOCONF,
++		.flags		= UPF_BOOT_AUTOCONF | UPF_IOREMAP,
+ 	},
+ 	{
+ 		.flags		= 0,
 -- 
 2.51.0
 
