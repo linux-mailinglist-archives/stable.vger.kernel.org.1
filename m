@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-221901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DtrOQ2bo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:01 +0100
+	id uOQwLRKbo2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81CE61CBDEF
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 602511CBDF7
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1DB6E3028C0D
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 56FF03039004
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3DF2D3EEA;
-	Sun,  1 Mar 2026 01:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7E92D7D47;
+	Sun,  1 Mar 2026 01:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Om++qUbB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n6yZ1fFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E732C1788;
-	Sun,  1 Mar 2026 01:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51231145A1F;
+	Sun,  1 Mar 2026 01:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329412; cv=none; b=ediPdjPN35TAV99PPq9tw3axVXErRwU28KyYPORQOsnNHPwIOuCBUjLe/rBxPaBQFg+CWwE07lOEEg39fUyO2cwgTDVWSViBSol9a9/81mUtKLhfTtKfKfdTBzNMCXKmWclJ8Jn4pEkNF9AwCKdzDnb8ZNHA6pXqPe9VLZ/O7Sk=
+	t=1772329414; cv=none; b=qHEABekTWLL/JDxJS1SpipCsdMY4SoAMGBcHuyS6KYQA42cOO610qVsG6MMhACGzn+pNWh81ySaFgCgcEOQHn723xxAV/bQkMbXM++Mqq+49fG/F7noX/1R8ebqX8cMwxQQehUYymSHWZ5qrq0ZB0YLs3frLABvfStw0Wz3E7w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329412; c=relaxed/simple;
-	bh=bc9+iMSF9DGb1c2lcZ7apY1df49N2w5cfndy3KUGxrA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C0DHkN6P09PCAaMBLgE6rS4uR2fEglP//44m0AGub1AQZwgs2pn/c0jiKo02DcTs64l9zUeV9YzdiqKmxxPmJrY6YcKMawcglwBEPBCYthm5qYNhl8l1SD/gXJ5St2FuLTvkXCeLeV2Cbsbq3gL5E8OZgCev/s9SCuhPjRqj8uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Om++qUbB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848FCC19421;
-	Sun,  1 Mar 2026 01:43:31 +0000 (UTC)
+	s=arc-20240116; t=1772329414; c=relaxed/simple;
+	bh=Q5wpVgnREjETGE1Db+bjR8On0pA/fN5oYvQjbsr/+NA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d02GyeNOHI+Yo2KbpkKDYb/coQ9Bid1P3JNVXX+vT/Of1Deon6K143lE4X7nwIbEzbIQHAm45lPurWfhnji6h1kaJtcEGDrMYrbqTxJB+hlkYn7+z8nkA6zuaia6OmZGtnCwXT7TnIz34Zcx6J61hDot7e6V9eRZeLNrwuzJ1uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n6yZ1fFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3576C19421;
+	Sun,  1 Mar 2026 01:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329412;
-	bh=bc9+iMSF9DGb1c2lcZ7apY1df49N2w5cfndy3KUGxrA=;
+	s=k20201202; t=1772329414;
+	bh=Q5wpVgnREjETGE1Db+bjR8On0pA/fN5oYvQjbsr/+NA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Om++qUbBnn37bcP/1eSyIfOOmY8i2BJn7Nd2qdeApE1cXWyRhZro0YP49QOSSF0UR
-	 6cX/bqRc6QuN2+42xhCodajYLOXut1NU0QTnbRI8LQG6fx3eHJ1sjEhSlqeKEOIvph
-	 S2tZ/6tdS0aGy+RD8YW+YR+0aoCRXDPnWOCT9jRgsAOZa3JIdDuMJJzFXSoj2Z7qX4
-	 kbrBjZ4Bg9PXAB77pgyL5J4OWu8YUqNW9q13DlaZutwS05/+kjKpVnv1WCsHCjtGGh
-	 Gz7e4KQ6ukxfnND7bwepN8r/hvmxB551Jm2p9fAL+aU7WjTQsnXwZQKIJgl5ua1rmc
-	 vZUcY2I//+oiQ==
+	b=n6yZ1fFaS62lIHZegtZ96L+pCh9l3wXJHrETnEErfdI04X1XwLWchOSHOUjgO7Nfa
+	 Btw6NRrOFS5LiNwKnOqPgWe+5IjoYTayCV4Mb1BYHwi6Ndk4hSXjuFBhAzKmSDykOi
+	 ksgnsSqp+G97pKwhI5wFF4F3Ndc7ZEuaAtdsfybiNT3YS6k4BZqIzm30s0/KBGhPMg
+	 c+JR83X+DLtvsSoqhuAb0jaaLNbvpndSHR5psP5tg4dW5CpgmXc0k3CwnR0NQVtwd1
+	 1vFB6dz/qlsr14vJtESx+7aGenwoHK5fVWlOTi+90NolsibOgTSr49Cea0S0xRs19H
+	 pgDeCxZeaoCRw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	djwong@kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	linux-xfs@vger.kernel.org
-Subject: FAILED: Patch "xfs: fix the xattr scrub to detect freemap/entries array collisions" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:43:30 -0500
-Message-ID: <20260301014330.1705594-1-sashal@kernel.org>
+	kovalev@altlinux.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	kvm@vger.kernel.org
+Subject: FAILED: Patch "KVM: x86: Add SRCU protection for reading PDPTRs in __get_sregs2()" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:43:32 -0500
+Message-ID: <20260301014332.1705643-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -77,8 +77,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221901-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-221902-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -88,8 +88,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lst.de:email]
-X-Rspamd-Queue-Id: 81CE61CBDEF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxtesting.org:url,msgid.link:url,altlinux.org:email]
+X-Rspamd-Queue-Id: 602511CBDF7
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -102,114 +102,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6fed8270448c246e706921c177e9633013dd3fcf Mon Sep 17 00:00:00 2001
-From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Fri, 23 Jan 2026 09:27:33 -0800
-Subject: [PATCH] xfs: fix the xattr scrub to detect freemap/entries array
- collisions
+From 95d848dc7e639988dbb385a8cba9b484607cf98c Mon Sep 17 00:00:00 2001
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+Date: Sat, 24 Jan 2026 01:28:01 +0300
+Subject: [PATCH] KVM: x86: Add SRCU protection for reading PDPTRs in
+ __get_sregs2()
 
-In the previous patches, we observed that it's possible for there to be
-freemap entries with zero size but a nonzero base.  This isn't an
-inconsistency per se, but older kernels can get confused by this and
-corrupt the block, leading to corruption.
+Add SRCU read-side protection when reading PDPTR registers in
+__get_sregs2().
 
-If we see this, flag the xattr structure for optimization so that it
-gets rebuilt.
+Reading PDPTRs may trigger access to guest memory:
+kvm_pdptr_read() -> svm_cache_reg() -> load_pdptrs() ->
+kvm_vcpu_read_guest_page() -> kvm_vcpu_gfn_to_memslot()
 
-Cc: <stable@vger.kernel.org> # v4.15
-Fixes: 13791d3b833428 ("xfs: scrub extended attribute leaf space")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+kvm_vcpu_gfn_to_memslot() dereferences memslots via __kvm_memslots(),
+which uses srcu_dereference_check() and requires either kvm->srcu or
+kvm->slots_lock to be held. Currently only vcpu->mutex is held,
+triggering lockdep warning:
+
+=============================
+WARNING: suspicious RCU usage in kvm_vcpu_gfn_to_memslot
+6.12.59+ #3 Not tainted
+
+include/linux/kvm_host.h:1062 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by syz.5.1717/15100:
+ #0: ff1100002f4b00b0 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x1d5/0x1590
+
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xf0/0x120 lib/dump_stack.c:120
+ lockdep_rcu_suspicious+0x1e3/0x270 kernel/locking/lockdep.c:6824
+ __kvm_memslots include/linux/kvm_host.h:1062 [inline]
+ __kvm_memslots include/linux/kvm_host.h:1059 [inline]
+ kvm_vcpu_memslots include/linux/kvm_host.h:1076 [inline]
+ kvm_vcpu_gfn_to_memslot+0x518/0x5e0 virt/kvm/kvm_main.c:2617
+ kvm_vcpu_read_guest_page+0x27/0x50 virt/kvm/kvm_main.c:3302
+ load_pdptrs+0xff/0x4b0 arch/x86/kvm/x86.c:1065
+ svm_cache_reg+0x1c9/0x230 arch/x86/kvm/svm/svm.c:1688
+ kvm_pdptr_read arch/x86/kvm/kvm_cache_regs.h:141 [inline]
+ __get_sregs2 arch/x86/kvm/x86.c:11784 [inline]
+ kvm_arch_vcpu_ioctl+0x3e20/0x4aa0 arch/x86/kvm/x86.c:6279
+ kvm_vcpu_ioctl+0x856/0x1590 virt/kvm/kvm_main.c:4663
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl fs/ioctl.c:893 [inline]
+ __x64_sys_ioctl+0x18b/0x210 fs/ioctl.c:893
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xbd/0x1d0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Cc: stable@vger.kernel.org
+Fixes: 6dba94035203 ("KVM: x86: Introduce KVM_GET_SREGS2 / KVM_SET_SREGS2")
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://patch.msgid.link/20260123222801.646123-1-kovalev@altlinux.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- fs/xfs/scrub/attr.c | 54 ++++++++++++++++++++++-----------------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ arch/x86/kvm/x86.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/xfs/scrub/attr.c b/fs/xfs/scrub/attr.c
-index eeb5ac34d7422..a397c50b77943 100644
---- a/fs/xfs/scrub/attr.c
-+++ b/fs/xfs/scrub/attr.c
-@@ -287,32 +287,6 @@ xchk_xattr_set_map(
- 	return ret;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 386cdb775fd48..1ea94f4a3dcbc 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12145,9 +12145,11 @@ static void __get_sregs2(struct kvm_vcpu *vcpu, struct kvm_sregs2 *sregs2)
+ 		return;
+ 
+ 	if (is_pae_paging(vcpu)) {
++		kvm_vcpu_srcu_read_lock(vcpu);
+ 		for (i = 0 ; i < 4 ; i++)
+ 			sregs2->pdptrs[i] = kvm_pdptr_read(vcpu, i);
+ 		sregs2->flags |= KVM_SREGS2_FLAGS_PDPTRS_VALID;
++		kvm_vcpu_srcu_read_unlock(vcpu);
+ 	}
  }
  
--/*
-- * Check the leaf freemap from the usage bitmap.  Returns false if the
-- * attr freemap has problems or points to used space.
-- */
--STATIC bool
--xchk_xattr_check_freemap(
--	struct xfs_scrub		*sc,
--	struct xfs_attr3_icleaf_hdr	*leafhdr)
--{
--	struct xchk_xattr_buf		*ab = sc->buf;
--	unsigned int			mapsize = sc->mp->m_attr_geo->blksize;
--	int				i;
--
--	/* Construct bitmap of freemap contents. */
--	bitmap_zero(ab->freemap, mapsize);
--	for (i = 0; i < XFS_ATTR_LEAF_MAPSIZE; i++) {
--		if (!xchk_xattr_set_map(sc, ab->freemap,
--				leafhdr->freemap[i].base,
--				leafhdr->freemap[i].size))
--			return false;
--	}
--
--	/* Look for bits that are set in freemap and are marked in use. */
--	return !bitmap_intersects(ab->freemap, ab->usedmap, mapsize);
--}
--
- /*
-  * Check this leaf entry's relations to everything else.
-  * Returns the number of bytes used for the name/value data.
-@@ -403,6 +377,7 @@ xchk_xattr_block(
- 
- 	*last_checked = blk->blkno;
- 	bitmap_zero(ab->usedmap, mp->m_attr_geo->blksize);
-+	bitmap_zero(ab->freemap, mp->m_attr_geo->blksize);
- 
- 	/* Check all the padding. */
- 	if (xfs_has_crc(ds->sc->mp)) {
-@@ -449,6 +424,9 @@ xchk_xattr_block(
- 	if ((char *)&entries[leafhdr.count] > (char *)leaf + leafhdr.firstused)
- 		xchk_da_set_corrupt(ds, level);
- 
-+	if (ds->sc->sm->sm_flags & XFS_SCRUB_OFLAG_CORRUPT)
-+		goto out;
-+
- 	buf_end = (char *)bp->b_addr + mp->m_attr_geo->blksize;
- 	for (i = 0, ent = entries; i < leafhdr.count; ent++, i++) {
- 		/* Mark the leaf entry itself. */
-@@ -467,7 +445,29 @@ xchk_xattr_block(
- 			goto out;
- 	}
- 
--	if (!xchk_xattr_check_freemap(ds->sc, &leafhdr))
-+	/* Construct bitmap of freemap contents. */
-+	for (i = 0; i < XFS_ATTR_LEAF_MAPSIZE; i++) {
-+		if (!xchk_xattr_set_map(ds->sc, ab->freemap,
-+				leafhdr.freemap[i].base,
-+				leafhdr.freemap[i].size))
-+			xchk_da_set_corrupt(ds, level);
-+
-+		/*
-+		 * freemap entries with zero length and nonzero base can cause
-+		 * problems with older kernels, so we mark these for preening
-+		 * even though there's no inconsistency.
-+		 */
-+		if (leafhdr.freemap[i].size == 0 &&
-+		    leafhdr.freemap[i].base > 0)
-+			xchk_da_set_preen(ds, level);
-+
-+		if (ds->sc->sm->sm_flags & XFS_SCRUB_OFLAG_CORRUPT)
-+			goto out;
-+	}
-+
-+	/* Look for bits that are set in freemap and are marked in use. */
-+	if (bitmap_intersects(ab->freemap, ab->usedmap,
-+			mp->m_attr_geo->blksize))
- 		xchk_da_set_corrupt(ds, level);
- 
- 	if (leafhdr.usedbytes != usedbytes)
 -- 
 2.51.0
 
