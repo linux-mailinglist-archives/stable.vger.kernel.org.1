@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-222234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJCpGfefo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:59 +0100
+	id uK3YFv6fo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:10:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781921CD2BF
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6726B1CD2DB
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5B5AA306BCB9
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 89178306C3FA
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2992F28FF;
-	Sun,  1 Mar 2026 01:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717FA76026;
+	Sun,  1 Mar 2026 01:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d0hjCf2s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hq9iX7h6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75E92727FC;
-	Sun,  1 Mar 2026 01:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E9F29D270;
+	Sun,  1 Mar 2026 01:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330372; cv=none; b=AKNec/7nPeUNNP0M37qyREsDpPlzuFugG/hwGQ/Zql/x1w9jAFv3HtKSvr0zQwvRHJD8uUVe12pI3VKVkpQDFRhn1HxT6mLYFZRMYuY2Irkgup0cf7ILctekNqtKsq50d0+sbzBLrdE6gTI0BpWWgKaNBgp+ZS7RX0r4JkFt2Q8=
+	t=1772330375; cv=none; b=b34C0nkmvyneGS1Ox0S3JB68FKnZAiMWkzt4OARb4kNS0DxTCjFgqdXEgKkdkggB6J5C7G04HFeorOqmj/BIYZF30mAK17c3QiGslr+42yhl2z4ZZ/kyTqPG4F5NbM3KiHmMegP6fJRzmF0AMvHjiiS4YQ1fNg9/Hhcx42Feap8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330372; c=relaxed/simple;
-	bh=qMgwLUVJTrFifh71Terdlu6lXHy24h1A9/M0ViDBF/g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qoWH9Hhs0JnWHNrsPnfsDe+nuLLTh5wl3KLuDltbTqzBvjJzcgS5/dHHQLWQGJVq4k93XIpU8J7NMlL1h9+vD4L/Ut9VeVLfYl9SNCtqHC3SYW48c5KujvrTfrrJLfWWW/gS03cucms0u+QIVhwELKVS2+xMJkCV6/5GJpYaYOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d0hjCf2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C20C19421;
-	Sun,  1 Mar 2026 01:59:32 +0000 (UTC)
+	s=arc-20240116; t=1772330375; c=relaxed/simple;
+	bh=QYW9ZbmUcnfCPA/HyaxHglK9sIZNNwiB7LNSLhjZZGA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p2dRvfwmdy2BzKEErKe+dVPxAg12gxMwLfEJnIHHjnrGqicRkK2Qaojl/V8A3Ld/GqbCZijus7StjmZHsKCMVufD97qyZ4IxGeTYAtRzpK1x+8rF5CkDnCjaaxAimTQbq35zGKSr02eR5ghIDdJ5lSErN/xBclL88/WEJsVlu7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hq9iX7h6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0EAC19421;
+	Sun,  1 Mar 2026 01:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330372;
-	bh=qMgwLUVJTrFifh71Terdlu6lXHy24h1A9/M0ViDBF/g=;
+	s=k20201202; t=1772330375;
+	bh=QYW9ZbmUcnfCPA/HyaxHglK9sIZNNwiB7LNSLhjZZGA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=d0hjCf2sRkiYrUaiMFIIBaI+dKttJigIjYbt6vOKm8phHeQ2NdlIty0rbVuDZFhwu
-	 Jncbuhq/r98nU9cwhhnOuVtL9Yk5IuZHkicZYP6wpxoWi0M0HmUC/bW2O6VTxQltbL
-	 KD0qPVBzmMisCazxyCBUHpgZecK+QulftjoVv333yUeQUI3mKbjkhxhP9Vb69FSCBt
-	 PCGovJiV/+yi/THSXillFdUt9Grs5GY+pvMIgOEVImTvAbADd3PSi5+uDpzRICrK1M
-	 6msx0yjqw1wzjhlY2DNsan7B5AI7cRhv7oW0Yk8d7Nx0xI5KBVV+l6uC1YLMJH40FY
-	 6WRefuxz7B6PA==
+	b=hq9iX7h6eC8g7elYJ0Z9LqVMUNye9UP/hTNrfCr8R3ZN5vpIKBQfIXqjQDKjFVrAj
+	 wp3+dAZEHzefCRfEm53a7V5ksphIknP2DU7gzZIEe4BvA3x2h/+SSLlleqh1IE87A8
+	 ss9C2By1oh5o36FNB4FGzOFgLqDJFqkrtce2lw7swGDc8hsu+ZAHGf4jIhKGmf+8vF
+	 VCEXQvDc/ayZPVYJRoW0nj0r5txenTLntkpGRBP1PHmYdo9wiYtXiPeTGpHvH2fDk2
+	 hZrocu5o7tlaTWiN6mz3oEDeQpVpIbXRjy67W+TTkTh7C0ynttY0EPblLxo/O3LQ+A
+	 GWYYlL2ycaK1Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	vulab@iscas.ac.cn
-Cc: Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "ARM: omap2: Fix reference count leaks in omap_control_init()" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 20:59:30 -0500
-Message-ID: <20260301015930.1725317-1-sashal@kernel.org>
+	seanjc@google.com
+Cc: Jim Mattson <jmattson@google.com>,
+	kvm@vger.kernel.org
+Subject: FAILED: Patch "KVM: x86: Return "unsupported" instead of "invalid" on access to unsupported PV MSR" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 20:59:33 -0500
+Message-ID: <20260301015933.1725367-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,19 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222234-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222235-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,iscas.ac.cn:email,kemnade.info:email,baylibre.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 781921CD2BF
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6726B1CD2DB
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -104,77 +102,195 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 93a04ab480c8bbcb7d9004be139c538c8a0c1bc8 Mon Sep 17 00:00:00 2001
-From: Wentao Liang <vulab@iscas.ac.cn>
-Date: Wed, 17 Dec 2025 14:21:22 +0000
-Subject: [PATCH] ARM: omap2: Fix reference count leaks in omap_control_init()
+From 5bb9ac1865123356337a389af935d3913ee917ed Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Tue, 30 Dec 2025 12:59:48 -0800
+Subject: [PATCH] KVM: x86: Return "unsupported" instead of "invalid" on access
+ to unsupported PV MSR
 
-The of_get_child_by_name() function increments the reference count
-of child nodes, causing multiple reference leaks in omap_control_init():
+Return KVM_MSR_RET_UNSUPPORTED instead of '1' (which for all intents and
+purposes means "invalid") when rejecting accesses to KVM PV MSRs to adhere
+to KVM's ABI of allowing host reads and writes of '0' to MSRs that are
+advertised to userspace via KVM_GET_MSR_INDEX_LIST, even if the vCPU model
+doesn't support the MSR.
 
-1. scm_conf node never released in normal/error paths
-2. clocks node leak when checking existence
-3. Missing scm_conf release before np in error paths
+E.g. running a QEMU VM with
 
-Fix these leaks by adding proper of_node_put() calls and separate error
-handling.
+  -cpu host,-kvmclock,kvm-pv-enforce-cpuid
 
-Fixes: e5b635742e98 ("ARM: OMAP2+: control: add syscon support for register accesses")
+yields:
+
+  qemu: error: failed to set MSR 0x12 to 0x0
+  qemu: target/i386/kvm/kvm.c:3301: kvm_buf_set_msrs:
+        Assertion `ret == cpu->kvm_msr_buf->nmsrs' failed.
+
+Fixes: 66570e966dd9 ("kvm: x86: only provide PV features if enabled in guest's CPUID")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
-Link: https://patch.msgid.link/20251217142122.1861292-1-vulab@iscas.ac.cn
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Link: https://patch.msgid.link/20251230205948.4094097-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/arm/mach-omap2/control.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/x86/kvm/x86.c | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/control.c b/arch/arm/mach-omap2/control.c
-index 79860b23030de..eb6fc7c61b6e0 100644
---- a/arch/arm/mach-omap2/control.c
-+++ b/arch/arm/mach-omap2/control.c
-@@ -732,7 +732,7 @@ int __init omap2_control_base_init(void)
-  */
- int __init omap_control_init(void)
- {
--	struct device_node *np, *scm_conf;
-+	struct device_node *np, *scm_conf, *clocks_node;
- 	const struct of_device_id *match;
- 	const struct omap_prcm_init_data *data;
- 	int ret;
-@@ -753,16 +753,19 @@ int __init omap_control_init(void)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 211d8c24a4b11..e4418409b468d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4097,47 +4097,47 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK_NEW:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
  
- 			if (IS_ERR(syscon)) {
- 				ret = PTR_ERR(syscon);
--				goto of_node_put;
-+				goto err_put_scm_conf;
- 			}
+ 		vcpu->kvm->arch.wall_clock = data;
+ 		kvm_write_wall_clock(vcpu->kvm, data, 0);
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
  
--			if (of_get_child_by_name(scm_conf, "clocks")) {
-+			clocks_node = of_get_child_by_name(scm_conf, "clocks");
-+			if (clocks_node) {
-+				of_node_put(clocks_node);
- 				ret = omap2_clk_provider_init(scm_conf,
- 							      data->index,
- 							      syscon, NULL);
- 				if (ret)
--					goto of_node_put;
-+					goto err_put_scm_conf;
- 			}
-+			of_node_put(scm_conf);
- 		} else {
- 			/* No scm_conf found, direct access */
- 			ret = omap2_clk_provider_init(np, data->index, NULL,
-@@ -780,6 +783,9 @@ int __init omap_control_init(void)
+ 		vcpu->kvm->arch.wall_clock = data;
+ 		kvm_write_wall_clock(vcpu->kvm, data, 0);
+ 		break;
+ 	case MSR_KVM_SYSTEM_TIME_NEW:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
  
- 	return 0;
+ 		kvm_write_system_time(vcpu, data, false, msr_info->host_initiated);
+ 		break;
+ 	case MSR_KVM_SYSTEM_TIME:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
  
-+err_put_scm_conf:
-+	if (scm_conf)
-+		of_node_put(scm_conf);
- of_node_put:
- 	of_node_put(np);
- 	return ret;
+ 		kvm_write_system_time(vcpu, data, true,  msr_info->host_initiated);
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_EN:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		if (kvm_pv_enable_async_pf(vcpu, data))
+ 			return 1;
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_INT:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		if (kvm_pv_enable_async_pf_int(vcpu, data))
+ 			return 1;
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_ACK:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 		if (data & 0x1) {
+ 			/*
+ 			 * Pairs with the smp_mb__after_atomic() in
+@@ -4150,7 +4150,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		break;
+ 	case MSR_KVM_STEAL_TIME:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_STEAL_TIME))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		if (unlikely(!sched_info_on()))
+ 			return 1;
+@@ -4168,7 +4168,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		break;
+ 	case MSR_KVM_PV_EOI_EN:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_PV_EOI))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		if (kvm_lapic_set_pv_eoi(vcpu, data, sizeof(u8)))
+ 			return 1;
+@@ -4176,7 +4176,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 
+ 	case MSR_KVM_POLL_CONTROL:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_POLL_CONTROL))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		/* only enable bit supported */
+ 		if (data & (-1ULL << 1))
+@@ -4477,61 +4477,61 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->kvm->arch.wall_clock;
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK_NEW:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->kvm->arch.wall_clock;
+ 		break;
+ 	case MSR_KVM_SYSTEM_TIME:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.time;
+ 		break;
+ 	case MSR_KVM_SYSTEM_TIME_NEW:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.time;
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_EN:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.apf.msr_en_val;
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_INT:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.apf.msr_int_val;
+ 		break;
+ 	case MSR_KVM_ASYNC_PF_ACK:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF_INT))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = 0;
+ 		break;
+ 	case MSR_KVM_STEAL_TIME:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_STEAL_TIME))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.st.msr_val;
+ 		break;
+ 	case MSR_KVM_PV_EOI_EN:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_PV_EOI))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.pv_eoi.msr_val;
+ 		break;
+ 	case MSR_KVM_POLL_CONTROL:
+ 		if (!guest_pv_has(vcpu, KVM_FEATURE_POLL_CONTROL))
+-			return 1;
++			return KVM_MSR_RET_UNSUPPORTED;
+ 
+ 		msr_info->data = vcpu->arch.msr_kvm_poll_control;
+ 		break;
 -- 
 2.51.0
 
