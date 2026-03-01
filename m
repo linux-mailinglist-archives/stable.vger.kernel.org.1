@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-222034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222035-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAZoOsuco2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:56:27 +0100
+	id YEBLFFWco2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222035-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8927C1CC51B
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:56:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6B01CC360
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A921B30B7181
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:50:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CCFCC3091CAF
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7032330595C;
-	Sun,  1 Mar 2026 01:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0D92FD675;
+	Sun,  1 Mar 2026 01:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NqATBNtv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XOg/Tat1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316872D837E;
-	Sun,  1 Mar 2026 01:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA8B2D5937;
+	Sun,  1 Mar 2026 01:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329741; cv=none; b=QJ9hlzXoTFyAhD3/7hH51cViqXP3Qy2id4ditDJVLQ+yZP6lpTaR3reSA967+1x2jmuLCFHSSa/lt4dxXqQxmyhJ/2E2MD75iBmMb7vL/FKhC85Soh444jeRBOQo9rvA3octzADRjSmn0GAZjzN394bxNHqLk06ABhx3O2BpY3g=
+	t=1772329743; cv=none; b=WKaJ8ZAosMcWuWZQqxv2aMXMIC0TEHWu109PlYYurfktGiU61875uCMVoP9rV/aQZFeOa1XBcpN8V4ApmyVfYKBglF5JqD+KDYZPEmNZT/cL4e5y9S9qhFkUY0BLVsb03VFK3dNWjk/LY4l70n5e7/k34VdlwAw9N0YInFBIZ7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329741; c=relaxed/simple;
-	bh=1v5VOec4mPL2m0hJuGIj42Rm/Fdy7QBXm4L3bn/wd/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u3KT9vn/0RPK6Ysk3NSk0cXrfsPr+1xqEugGCB/AMi93KMmYwpZA6rMqb2Cel+Nr+M0nw3RCw5s8zHAdaPl2YwHaUpO8vD/ZpWb2getnQ/PLskoDaRstZoR4Xv3aUMNyQNdlSgfdJ9HVkKoly3YnS1/Ne0irlpRNJqffbQ8afmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NqATBNtv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE7DC19424;
-	Sun,  1 Mar 2026 01:49:00 +0000 (UTC)
+	s=arc-20240116; t=1772329743; c=relaxed/simple;
+	bh=hKPfWY3C38468BnO2wo8zfAHG6X53W98fR1INJ/k2Oo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DmKzTBG/GeSoClUKMohq6wyzjqOpJHTOQu6GuK3k0PsuyXBQ58WgjAw9HR/SoqsQiUu2uIBevBJwEab+ILCL+ceRKQlYyNQ35f8QXiZKtFwgdFn1yMorLwE6i6CFNq3yAXc+Bi0Ym/7otqpplsKNmjIBBfkUXhLAnkQTDWCt7JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XOg/Tat1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA96C19421;
+	Sun,  1 Mar 2026 01:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329741;
-	bh=1v5VOec4mPL2m0hJuGIj42Rm/Fdy7QBXm4L3bn/wd/0=;
+	s=k20201202; t=1772329743;
+	bh=hKPfWY3C38468BnO2wo8zfAHG6X53W98fR1INJ/k2Oo=;
 	h=From:To:Cc:Subject:Date:From;
-	b=NqATBNtvuX+4tz0pQCuupduPpnkoK7VmbBbBoIJxxJ4jD2omeB8mqLsJAtth8oR5Y
-	 ekkjbK7ZfA9NfXWjd6KFid1jUHr50L736iSJL5otw7lJ1JPWP0yKToAxKQQsHvAY1c
-	 5oAjLPmEUYFP3CQ1SVKDyw7IH/je9/8AA74gOCbvpL+tO2es1Kcd95sCuseMKj+PvG
-	 uTTQr+w9vRIZRg2zGFw2rqgXy3/nDNAy7y91xr8Y+s5VcDer/v1UpGrLaofLpuDFjV
-	 XIZ5th7Dfnex1Xh+eZOVCm/GV/T7Byv36ow9i0ajDFRAGU0CYjl+eT85NqSth/RSoE
-	 PeqOWcMBDyMeA==
+	b=XOg/Tat1xCN3KaHcB3jyRA16vqugBu/gLmGYX3Cut28m6WmfwWL24ZtYQBG4eZu61
+	 2hoPxNd8fgCo5+fwPUtFTocCLHnNJUgTvuY08MeafdxQLn1VWN4L/l6K+Z+1lvhJu/
+	 +cWg2J/qWs54fkTKkvlw/iJKRzKUVtQNwO6yemketHcb+qciZyZ0ufKIlhvpg4VLAz
+	 +uBZATLhM3y7f2S4BAJ0rpL8WyAWUi13F4FUYvUy/vvFkxtZaFFVMiG9zhY3QqkzG3
+	 uaJ6isSj+p24prlrUwJ1LP7u04AsHtQPKR8meeo8FZugiJgwyrJc+NRb47BqCWJ5bF
+	 T723BCG166wFw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ebiggers@kernel.org
-Cc: Sami Tolvanen <samitolvanen@google.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	dm-devel@lists.linux.dev
-Subject: FAILED: Patch "dm-verity: correctly handle dm_bufio_client_create() failure" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:48:59 -0500
-Message-ID: <20260301014859.1713290-1-sashal@kernel.org>
+	haoxiang_li2024@163.com
+Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: FAILED: Patch "media: mtk-mdp: Fix a reference leak bug in mtk_mdp_remove()" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:49:01 -0500
+Message-ID: <20260301014901.1713342-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,34 +65,36 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222034-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,163.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222035-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.987];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8927C1CC51B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,collabora.com:email]
+X-Rspamd-Queue-Id: EA6B01CC360
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -103,40 +107,36 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 119f4f04186fa4f33ee6bd39af145cdaff1ff17f Mon Sep 17 00:00:00 2001
-From: Eric Biggers <ebiggers@kernel.org>
-Date: Fri, 19 Dec 2025 11:29:08 -0800
-Subject: [PATCH] dm-verity: correctly handle dm_bufio_client_create() failure
+From f128bab57b8018e526b7eda854ca20069863af47 Mon Sep 17 00:00:00 2001
+From: Haoxiang Li <haoxiang_li2024@163.com>
+Date: Wed, 8 Oct 2025 17:01:56 +0800
+Subject: [PATCH] media: mtk-mdp: Fix a reference leak bug in mtk_mdp_remove()
 
-If either of the calls to dm_bufio_client_create() in verity_fec_ctr()
-fails, then dm_bufio_client_destroy() is later called with an ERR_PTR()
-argument.  That causes a crash.  Fix this.
+In mtk_mdp_probe(), vpu_get_plat_device() increases the reference
+count of the returned platform device. Add platform_device_put()
+to prevent reference leak.
 
-Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
+Fixes: c8eb2d7e8202 ("[media] media: Add Mediatek MDP Driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- drivers/md/dm-verity-fec.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/mediatek/mdp/mtk_mdp_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/dm-verity-fec.c b/drivers/md/dm-verity-fec.c
-index ef9970b889aaf..7583607a8aa62 100644
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -501,9 +501,9 @@ void verity_fec_dtr(struct dm_verity *v)
- 	mempool_exit(&f->output_pool);
- 	kmem_cache_destroy(f->cache);
+diff --git a/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c b/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c
+index f78fa30f18648..8432833814f31 100644
+--- a/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c
++++ b/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c
+@@ -254,6 +254,7 @@ static void mtk_mdp_remove(struct platform_device *pdev)
  
--	if (f->data_bufio)
-+	if (!IS_ERR_OR_NULL(f->data_bufio))
- 		dm_bufio_client_destroy(f->data_bufio);
--	if (f->bufio)
-+	if (!IS_ERR_OR_NULL(f->bufio))
- 		dm_bufio_client_destroy(f->bufio);
+ 	pm_runtime_disable(&pdev->dev);
+ 	vb2_dma_contig_clear_max_seg_size(&pdev->dev);
++	platform_device_put(mdp->vpu_dev);
+ 	mtk_mdp_unregister_m2m_device(mdp);
+ 	v4l2_device_unregister(&mdp->v4l2_dev);
  
- 	if (f->dev)
 -- 
 2.51.0
 
