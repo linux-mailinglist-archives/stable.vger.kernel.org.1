@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-221742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221743-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aP9CDw2co2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:53:17 +0100
+	id gF5lEZebo2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221743-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFFC1CC206
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:53:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2121CC093
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A62863276CA0
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F3DE1304D54D
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0B82C15B0;
-	Sun,  1 Mar 2026 01:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A1C2D0C79;
+	Sun,  1 Mar 2026 01:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9U69csQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gq4eGoR0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B9928FFFB;
-	Sun,  1 Mar 2026 01:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FD125228C;
+	Sun,  1 Mar 2026 01:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329029; cv=none; b=LhrJMkTw8yXQyrias+fOIXHlRAniRJwBZjb0NcbLWQk1uUrQ7/pTIblRGT/mFa3lXATpVfV8NbVJ8nEbY5WeXlzL9I8P5ntR+SFI1pdXhOsX1pczj46qnmMu+YIqwKCgYsC9/4FC16fQwl4fryz+My84QaohbXhKhzGJJWpWWfw=
+	t=1772329031; cv=none; b=FNJPR7UkXHv3AWSTDXqoWk/N1hVdOND30vtcT0vGg3nQ8Y7IHONZz/hjZ/8F2PcAoTV0npQk269UdiOxL3ZbRxfLeikrc671itq8jX+FEqGR85yzShQ6BuDsku4JKIl7UakkiPORxrveYX13KTlm0BQw2NRi9u2tey7AnAICy68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329029; c=relaxed/simple;
-	bh=gXafvwIQfg362EDrwydIDZ4rEEhgur3U/156J2dwyR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mvyg9e3aYafS0N8PuT3xEbeQIPa0lwAS189WPRM8wGIiPD2kWHmBDd/DvyL9qAvgEgtUWkmM5gG3uVs5YegjcjGpwz4g6kdo7jq2y94Tj1UGtWcDWfdMBcP73mFZn3K1emUP2Kg9RJ3MNT55Oi9jZFPTrz96ee0Li75Y6ST/2NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9U69csQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D80C19425;
-	Sun,  1 Mar 2026 01:37:08 +0000 (UTC)
+	s=arc-20240116; t=1772329031; c=relaxed/simple;
+	bh=Iwrpt31RGTFOqQ/BCt6apdbtPNLQGEJpJmLQW5RsIww=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ldtjncm8EfYIcpVgvGQKcb9Jz6P/UkvSsObXvVs/y7ZhRhlyW/Txb6d3f0FCN2P0Cs8JXgCpCeeTPAJXnQy2P0pW4/Do/gxRzaw9fvETOQemi7XMHUDyL/ZipMNDGt5HIY2PT6Z98IYI4++ayEP22iKGgnf30bDciKzfPBuphVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gq4eGoR0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8049DC19424;
+	Sun,  1 Mar 2026 01:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329028;
-	bh=gXafvwIQfg362EDrwydIDZ4rEEhgur3U/156J2dwyR0=;
+	s=k20201202; t=1772329031;
+	bh=Iwrpt31RGTFOqQ/BCt6apdbtPNLQGEJpJmLQW5RsIww=;
 	h=From:To:Cc:Subject:Date:From;
-	b=O9U69csQD0/hTCDxwRC5RS1v9flTesSabJFuuQUJwxlb0JBySLYKsucwA9ftZMUTP
-	 Is7QE1+eYiBWu5QgXaute3oP2HxhSRO9Cf02IAXQbxTGu5MBiLLPlMqHztb88va67f
-	 Km3PkjlC+a37JwhBSOz7N+HM500U4NgCYjBzcV51uMZ3m1zbAfSZKyejnpFd4ejN0w
-	 b7Kb+sEUBJUBMNBt083c/t2EfIGmOY6DTNIGXMysfE2QTnw4VPfAGVWwHxPMK4DM02
-	 T00/QYcQvcb9Ze6cYwKCMCBA1VjK3LWjCd1preMmB9Bc9YI2oj2NAknb9Ly6W1MfKI
-	 qV9Tj5X25czyQ==
+	b=Gq4eGoR0MSoxQozZwvcrwTkoPegTiUc+pEtuCFlVrEY2S7nI/tdJN40VW/uFCFLDz
+	 8Qq7otqJaYnXSsS8VKMFDbt2aR7cGPhmoG5FZ4vDyJQ2v00Ydu3uyiBpzozwGa0yXy
+	 pqHqsgVoUe66J1xTj1c7KGnd7yltZJOezcgb4WUBGff7B3nBiWmF0FJt1mqWFLXko4
+	 qk23mc1sf0EIYwzx5qL84JBvv2+Y/FoDyftAx4L4SmfBiXGRfDsvFx9MeOX2/9yI8r
+	 wxArUYN3PnpN6XXpGYQIJWw+49RMzXIPa7Ee7o0QaoiEsWqmFvQOhgVOAXeDsW+Un/
+	 F1bqpDRNzG5CA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ethantidmore06@gmail.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-staging@lists.linux.dev
-Subject: FAILED: Patch "staging: rtl8723bs: fix null dereference in find_network" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:37:06 -0500
-Message-ID: <20260301013707.1697306-1-sashal@kernel.org>
+	metze@samba.org
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Steve French <stfrench@microsoft.com>
+Subject: FAILED: Patch "smb: server: fix last send credit problem causing disconnects" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:37:09 -0500
+Message-ID: <20260301013709.1697356-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,36 +66,40 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [8.84 / 15.00];
+	URIBL_BLACK(7.50)[talpey.com:email];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221742-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,talpey.com,vger.kernel.org,lists.samba.org,microsoft.com];
+	GREYLIST(0.00)[pass,body];
+	TAGGED_FROM(0.00)[bounces-221743-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: AEFFC1CC206
-X-Rspamd-Action: no action
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_SPAM(0.00)[0.901];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samba.org:email,talpey.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0C2121CC093
+X-Rspamd-Action: add header
+X-Spam: Yes
 
 The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
@@ -103,40 +111,130 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 41460a19654c32d39fd0e3a3671cd8d4b7b8479f Mon Sep 17 00:00:00 2001
-From: Ethan Tidmore <ethantidmore06@gmail.com>
-Date: Mon, 2 Feb 2026 14:54:29 -0600
-Subject: [PATCH] staging: rtl8723bs: fix null dereference in find_network
+From 8cf2bbac6281434065f5f3aeab19c9c08ff755a2 Mon Sep 17 00:00:00 2001
+From: Stefan Metzmacher <metze@samba.org>
+Date: Thu, 22 Jan 2026 18:16:46 +0100
+Subject: [PATCH] smb: server: fix last send credit problem causing disconnects
 
-The variable pwlan has the possibility of being NULL when passed into
-rtw_free_network_nolock() which would later dereference the variable.
+When we are about to use the last send credit that was
+granted to us by the peer, we need to wait until
+we are ourself able to grant at least one credit
+to the peer. Otherwise it might not be possible
+for the peer to grant more credits.
 
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Link: https://patch.msgid.link/20260202205429.20181-1-ethantidmore06@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The following sections in MS-SMBD are related to this:
+
+3.1.5.1 Sending Upper Layer Messages
+...
+If Connection.SendCredits is 1 and the CreditsGranted field of the
+message is 0, stop processing.
+...
+
+3.1.5.9 Managing Credits Prior to Sending
+...
+If Connection.ReceiveCredits is zero, or if Connection.SendCredits is
+one and the Connection.SendQueue is not empty, the sender MUST allocate
+and post at least one receive of size Connection.MaxReceiveSize and MUST
+increment Connection.ReceiveCredits by the number allocated and posted.
+If no receives are posted, the processing MUST return a value of zero to
+indicate to the caller that no Send message can be currently performed.
+...
+
+This problem was found by running this on Windows 2025
+against ksmbd with required smb signing:
+'frametest.exe -r 4k -t 20 -n 2000' after
+'frametest.exe -w 4k -t 20 -n 2000'.
+
+Link: https://lore.kernel.org/linux-cifs/b58fa352-2386-4145-b42e-9b4b1d484e17@samba.org/
+Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/smb/server/transport_rdma.c | 32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-index b3a9e40054a7f..8e98344951acf 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-@@ -826,8 +826,10 @@ static void find_network(struct adapter *adapter)
- 	struct wlan_network *tgt_network = &pmlmepriv->cur_network;
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 38248b6a1b5ca..5c0cc5064e8c0 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -1033,6 +1033,15 @@ static void smb_direct_post_recv_credits(struct work_struct *work)
  
- 	pwlan = rtw_find_network(&pmlmepriv->scanned_queue, tgt_network->network.mac_address);
--	if (pwlan)
--		pwlan->fixed = false;
-+	if (!pwlan)
-+		return;
+ 	atomic_add(credits, &sc->recv_io.credits.available);
+ 
++	/*
++	 * If the last send credit is waiting for credits
++	 * it can grant we need to wake it up
++	 */
++	if (credits &&
++	    atomic_read(&sc->send_io.bcredits.count) == 0 &&
++	    atomic_read(&sc->send_io.credits.count) == 0)
++		wake_up(&sc->send_io.credits.wait_queue);
 +
-+	pwlan->fixed = false;
+ 	if (credits)
+ 		queue_work(sc->workqueue, &sc->idle.immediate_work);
+ }
+@@ -1306,6 +1315,7 @@ static int calc_rw_credits(struct smbdirect_socket *sc,
  
- 	if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) &&
- 	    (adapter->stapriv.asoc_sta_count == 1))
+ static int smb_direct_create_header(struct smbdirect_socket *sc,
+ 				    int size, int remaining_data_length,
++				    int new_credits,
+ 				    struct smbdirect_send_io **sendmsg_out)
+ {
+ 	struct smbdirect_socket_parameters *sp = &sc->parameters;
+@@ -1321,7 +1331,7 @@ static int smb_direct_create_header(struct smbdirect_socket *sc,
+ 	/* Fill in the packet header */
+ 	packet = (struct smbdirect_data_transfer *)sendmsg->packet;
+ 	packet->credits_requested = cpu_to_le16(sp->send_credit_target);
+-	packet->credits_granted = cpu_to_le16(manage_credits_prior_sending(sc));
++	packet->credits_granted = cpu_to_le16(new_credits);
+ 
+ 	packet->flags = 0;
+ 	if (manage_keep_alive_before_sending(sc))
+@@ -1459,6 +1469,7 @@ static int smb_direct_post_send_data(struct smbdirect_socket *sc,
+ 	int data_length;
+ 	struct scatterlist sg[SMBDIRECT_SEND_IO_MAX_SGE - 1];
+ 	struct smbdirect_send_batch _send_ctx;
++	int new_credits;
+ 
+ 	if (!send_ctx) {
+ 		smb_direct_send_ctx_init(&_send_ctx, false, 0);
+@@ -1477,12 +1488,29 @@ static int smb_direct_post_send_data(struct smbdirect_socket *sc,
+ 	if (ret)
+ 		goto credit_failed;
+ 
++	new_credits = manage_credits_prior_sending(sc);
++	if (new_credits == 0 &&
++	    atomic_read(&sc->send_io.credits.count) == 0 &&
++	    atomic_read(&sc->recv_io.credits.count) == 0) {
++		queue_work(sc->workqueue, &sc->recv_io.posted.refill_work);
++		ret = wait_event_interruptible(sc->send_io.credits.wait_queue,
++					       atomic_read(&sc->send_io.credits.count) >= 1 ||
++					       atomic_read(&sc->recv_io.credits.available) >= 1 ||
++					       sc->status != SMBDIRECT_SOCKET_CONNECTED);
++		if (sc->status != SMBDIRECT_SOCKET_CONNECTED)
++			ret = -ENOTCONN;
++		if (ret < 0)
++			goto credit_failed;
++
++		new_credits = manage_credits_prior_sending(sc);
++	}
++
+ 	data_length = 0;
+ 	for (i = 0; i < niov; i++)
+ 		data_length += iov[i].iov_len;
+ 
+ 	ret = smb_direct_create_header(sc, data_length, remaining_data_length,
+-				       &msg);
++				       new_credits, &msg);
+ 	if (ret)
+ 		goto header_failed;
+ 
 -- 
 2.51.0
 
