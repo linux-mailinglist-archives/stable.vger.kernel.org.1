@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-221282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAlCGAmUo2khHQUAu9opvQ
-	(envelope-from <stable+bounces-221282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:05 +0100
+	id MEKSMpeUo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:21:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D731CA279
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AFB11CA416
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:21:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F379301C916
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:18:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F306B3058BA5
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EB324169D;
-	Sun,  1 Mar 2026 01:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE8424677F;
+	Sun,  1 Mar 2026 01:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AqrldhRi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPOR7K5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F1524679F
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D899223D2B1
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327879; cv=none; b=maibMPvECbB7kdMiVDzELZfqkJJkShsDEsDuzj9X6LFEweGHYIGFJI2CwQvt+7ntJfHpG8iI9z6FJIRgJu/Dd17iqC7sBpKQjVSsH6/OZxrIPfiH8hRe64vkRIxsAQnoLHebfztzgbNEZFgjUd0+ZeWOoVmqeb1nheSysSsy4W0=
+	t=1772327881; cv=none; b=TqHy6mq/l1pfVIEsTyLLia3+D8tXKCHgEqYbhV/hDxUsm9VvqcHyxYO3/ay3Fv+IxiRB4U3ZgaqXMoaMWrmvS4DKcG39zGE8N4obF1rwGNwXYYBy7sX9kB4DEnQw9ZigcqeBq4sJamU9znAUnAU8iyjdIxXTvezS43wVKdWQmYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327879; c=relaxed/simple;
-	bh=kWgMT48C4ORLUtZwxrSADwgXn0DpuHYFbe4vBadeueY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M1gelKYWXkE2Uoz9ENGHz6AKjT2WVmxCVa+7geVpjC51+NqYP8gagHdp5M/mUmDZzJw5IZQNGjjYn51A1Kj1WdhCOujlfH+AY4WAjSO309zbWya4umaXva9F0G5vbl1gbE9/IkBmOIw5RCCkl1HoDcUlfXgMVpg7A7vUQJIVYEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AqrldhRi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73BEC19421;
-	Sun,  1 Mar 2026 01:17:57 +0000 (UTC)
+	s=arc-20240116; t=1772327881; c=relaxed/simple;
+	bh=oX7yNXLTbGvb/uLyVqm7AKZQ66U23OfAjbAu/LYXgog=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jq0u5jwL+Tr1HY+n2CQl4xmgQYC2xXxd2wJvlQ8aPMqoOZwBHDDpB1d/byGB6DXnlmEfaGeRUdHFsD4v/SRI9HdAsLGx47JMcqg4jpSW/3n+YgXeYW9lp3bPrrBr6Cq6WZKSDymEIrhzDcOafXTRKm4MJbWUd10rb6Gx1NetlQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPOR7K5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F86C19421;
+	Sun,  1 Mar 2026 01:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327879;
-	bh=kWgMT48C4ORLUtZwxrSADwgXn0DpuHYFbe4vBadeueY=;
+	s=k20201202; t=1772327881;
+	bh=oX7yNXLTbGvb/uLyVqm7AKZQ66U23OfAjbAu/LYXgog=;
 	h=From:To:Cc:Subject:Date:From;
-	b=AqrldhRirgj72xPeV8qSjxpICo5WN4crfhA6/BzE3tJ74ymjaCKN3yQ16Gq7XF71o
-	 dIiFVNIuCwh9A3uk6nMxC96yMuJvW5AqsHDp7GJ3zhXD1m2IGLKTa0v65vD9S+xPsJ
-	 OQ7970KjTGAoBEoMkTQE8FukKNEEqitZcnOYXXL+YcRL07EHYw6lm+BxlqaHLOUs32
-	 gwFNGW651zFU3dI4lgB2YWGdkxaP6SrMyXS2V+U79muEG7NIpAcBQrW7XzyERhW4bA
-	 2Gy2Bax0DmONbrdITHJkDS2iqALR7tdgGWhjgXpEqVVocWqIViTNF3D9kLcgl0s4KL
-	 Ku4xC+C/hVPUQ==
+	b=JPOR7K5rSRB4KX1UOKfu5o5njdXeiL8IrZXDRzZ7EIQBShZk7KIB7BzEJJXPROsrw
+	 S+mrLewpyxD9WIrUezg8WoIYOa4nTaikGYDOPFKdXMfk/whtBB+Mwl3jjmSdX6Mf0P
+	 UnjSik284g+23HavyqtOEB3TU4KXcK5s0rH3W0FkYvKYXvW0pDOa/yiiI4M+FKpiCz
+	 ygJ1d/VWOzMtjASZYtH6DegUkw/LBr8+dmp1ZG9wIZpEf8lI1ycCfId4umOFcn+AuS
+	 Tj/ShhnREMN9Xp+klvUqMyo+aq8c3veFdg8TXXD6VwMgcqyA6the4jpBLYiNMFo/WY
+	 Fwhizh0rtiG+A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johan@kernel.org
-Cc: Yong Wu <yong.wu@mediatek.com>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "memory: mtk-smi: fix device leaks on common probe" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:17:56 -0500
-Message-ID: <20260301011756.1672013-1-sashal@kernel.org>
+	olvaffe@gmail.com
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm/panthor: fix for dma-fence safe access rules" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:17:59 -0500
+Message-ID: <20260301011759.1672072-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,34 +65,34 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[mediatek.com,gmail.com,kernel.org,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-221283-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221282-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mediatek.com:email]
-X-Rspamd-Queue-Id: E2D731CA279
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,collabora.com:email]
+X-Rspamd-Queue-Id: 5AFB11CA416
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -106,48 +105,49 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6cfa038bddd710f544076ea2ef7792fc82fbedd6 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Fri, 21 Nov 2025 17:46:22 +0100
-Subject: [PATCH] memory: mtk-smi: fix device leaks on common probe
+From efe24898485c5c831e629d9c6fb9350c35cb576f Mon Sep 17 00:00:00 2001
+From: Chia-I Wu <olvaffe@gmail.com>
+Date: Thu, 4 Dec 2025 09:45:45 -0800
+Subject: [PATCH] drm/panthor: fix for dma-fence safe access rules
 
-Make sure to drop the reference taken when looking up the SMI device
-during common probe on late probe failure (e.g. probe deferral) and on
-driver unbind.
+Commit 506aa8b02a8d6 ("dma-fence: Add safe access helpers and document
+the rules") details the dma-fence safe access rules. The most common
+culprit is that drm_sched_fence_get_timeline_name may race with
+group_free_queue.
 
-Fixes: 47404757702e ("memory: mtk-smi: Add device link for smi-sub-common")
-Fixes: 038ae37c510f ("memory: mtk-smi: add missing put_device() call in mtk_smi_device_link_common")
-Cc: stable@vger.kernel.org	# 5.16: 038ae37c510f
-Cc: stable@vger.kernel.org	# 5.16
-Cc: Yong Wu <yong.wu@mediatek.com>
-Cc: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251121164624.13685-2-johan@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Cc: stable@vger.kernel.org # v6.17+
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patch.msgid.link/20251204174545.399059-1-olvaffe@gmail.com
 ---
- drivers/memory/mtk-smi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/panthor/panthor_sched.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
-index 733e22f695ab7..dd6150d200e89 100644
---- a/drivers/memory/mtk-smi.c
-+++ b/drivers/memory/mtk-smi.c
-@@ -674,6 +674,7 @@ static int mtk_smi_larb_probe(struct platform_device *pdev)
- err_pm_disable:
- 	pm_runtime_disable(dev);
- 	device_link_remove(dev, larb->smi_common_dev);
-+	put_device(larb->smi_common_dev);
- 	return ret;
- }
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index a17b067a04392..0f83e778d89aa 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -23,6 +23,7 @@
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
++#include <linux/rcupdate.h>
  
-@@ -917,6 +918,7 @@ static void mtk_smi_common_remove(struct platform_device *pdev)
- 	if (common->plat->type == MTK_SMI_GEN2_SUB_COMM)
- 		device_link_remove(&pdev->dev, common->smi_common_dev);
- 	pm_runtime_disable(&pdev->dev);
-+	put_device(common->smi_common_dev);
- }
+ #include "panthor_devfreq.h"
+ #include "panthor_device.h"
+@@ -943,6 +944,9 @@ static void group_release_work(struct work_struct *work)
+ 						   release_work);
+ 	u32 i;
  
- static int __maybe_unused mtk_smi_common_resume(struct device *dev)
++	/* dma-fences may still be accessing group->queues under rcu lock. */
++	synchronize_rcu();
++
+ 	for (i = 0; i < group->queue_count; i++)
+ 		group_free_queue(group, group->queues[i]);
+ 
 -- 
 2.51.0
 
