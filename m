@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-222332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIlTCyqgo2noIgUAu9opvQ
-	(envelope-from <stable+bounces-222332-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:10:50 +0100
+	id OHxDKyWko2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:27:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C45F1CD337
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:10:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5BA1CD906
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4840A308A858
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:03:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5269A3206491
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7D6309F19;
-	Sun,  1 Mar 2026 02:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27EF1303A15;
+	Sun,  1 Mar 2026 02:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wi892R0h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ulDrnbeD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09EA302147;
-	Sun,  1 Mar 2026 02:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE72F2FE042;
+	Sun,  1 Mar 2026 02:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330617; cv=none; b=SyYbzS/0h9uISl1WzYzE4/8SKZw+DqTBAxoY0I5jO5mfh1nPsYm2QtyXWVz3yPun4B+C5T0OJaCP3zsLv/ncGP0XhGebqCllRmK8Jnub2t2ylEkuokWhiZV5RbDvpp5mG7HY1+HXmtWF2WI5VcG0/SWSJEiXVjBVL5lMH5CXHL8=
+	t=1772330619; cv=none; b=Sa7GGtw7ZFG+LnnUbtlbNNYmHXy6NoC8fPUw7ykOT7EU7OnwqbMNnRS4xl0CC8+l2NFphXGav/EBHni0L0/1eCgoysASZo/k2LEa/2V3eXqkbS/qbw/O/YJGSDRepGO3vS4pDpXvgOWDVCxf1uDemZ6NQ4GV6RQIRoMx4rg01gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330617; c=relaxed/simple;
-	bh=WrVLA2VEKz05X1Sqx6guuyKsYYSTyz+W7CKJMfGiHKw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pCUZJ1omyqHf+Ne7AcHJTNTqw7+pDC5vs1qJhxZlg7Mk7wl9w6QRo55JGbwwthXVHOMz1kS9nBzjhejXA85ukLhAGYacFeiqrPE1pZVOA5V1UkgAiAk2N9EsEHWj8CxjCw15kh3/5R2lnj5n/pAf8Dc0gCjhe9MTTLcubMt6NDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wi892R0h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E59C19421;
-	Sun,  1 Mar 2026 02:03:37 +0000 (UTC)
+	s=arc-20240116; t=1772330619; c=relaxed/simple;
+	bh=H862XwlavCdbOLZzhwteOuPwF3ZTcWCqxfd1CFdXl90=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oK+wOSqyNoKYA6gBdouEj3uChSeYs32O1KC91JJcYur+GcJYfdERIgSqV1uczHTl9+JBul02/fgPeiQCuL1YGccIp6hAEqSfGwVgVG89E/aWvLDPlpUbcpjCld9iUE6f0etFb6CLN9opkPFeDfJxolmXdQcl/DW7hThwtfX1Iwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ulDrnbeD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD12C19421;
+	Sun,  1 Mar 2026 02:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330617;
-	bh=WrVLA2VEKz05X1Sqx6guuyKsYYSTyz+W7CKJMfGiHKw=;
+	s=k20201202; t=1772330619;
+	bh=H862XwlavCdbOLZzhwteOuPwF3ZTcWCqxfd1CFdXl90=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Wi892R0ht/d2OyNXvTtkRID6tpwaI2kduxTmHSonwRrN72mM5KN237psJuyY2UFsj
-	 /iXkzMDiV8jWq8rghGkUI91WsHRtUgJtAzmFFQEurqzVuUwKkgJaa0Js3ys1k9flKP
-	 +sQ6YLpVvXHjGR5CWEkmv1eW4Y9urdclP75RfvIuoRPSC5uzw4rK0gY842v00z9gz2
-	 jl8f2B3H+eAvB4dOFbzVwtQgX2eBHij/PvZQvJgXg2E3J9gKFqFsrl6AnsR+RPtDVo
-	 dOFslaWJyZVfrIfmxQiw9FuDZ36lVc8MHUgu28OF9kBjNMLQ34spvFeM1bqG1hIB7h
-	 OJYXrTg8sOEqg==
+	b=ulDrnbeD8S5+lWGTPx0+1zaDXmOJyKTfkeUNeN4XaAzDLnDmRMRVPgwTazcmHWRkH
+	 z9fwFPGSPeQRiEUr7nkFCKrZ7ZAkgLkXrCGKvIyfKjolNDY/QYzUKoW1TGkLSAwX7j
+	 e7NGl9KmsMbjS3dvlTeKkvnOV3cLZIht1TSX/L7WoqKZ7ASTATIJmRVqYvAAg0CZHa
+	 ebFl1EYPQV+wDEUpXJJ0lBNUa8cfjtgMrH+pwWZrCEHjCv1gfvSYu6QntmJjh7CPh8
+	 vw5HmkrOdc3ma5WYRbSM6sFrvNIuPpp8wFp9FcRCoTVhlgt4toOY3WJTIpEf9apYT7
+	 5o/RW5DX6RjQA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	tiwai@suse.de
-Cc: linux-sound@vger.kernel.org
-Subject: FAILED: Patch "ALSA: hda/conexant: Add quirk for HP ZBook Studio G4" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:03:35 -0500
-Message-ID: <20260301020336.1731695-1-sashal@kernel.org>
+	ethantidmore06@gmail.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-staging@lists.linux.dev
+Subject: FAILED: Patch "staging: rtl8723bs: fix null dereference in find_network" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:03:37 -0500
+Message-ID: <20260301020338.1731741-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,33 +63,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222332-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-222333-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9C45F1CD337
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0F5BA1CD906
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -101,35 +102,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1585cf83e98db32463e5d54161b06a5f01fe9976 Mon Sep 17 00:00:00 2001
-From: Takashi Iwai <tiwai@suse.de>
-Date: Sat, 7 Feb 2026 14:13:17 +0100
-Subject: [PATCH] ALSA: hda/conexant: Add quirk for HP ZBook Studio G4
+From 41460a19654c32d39fd0e3a3671cd8d4b7b8479f Mon Sep 17 00:00:00 2001
+From: Ethan Tidmore <ethantidmore06@gmail.com>
+Date: Mon, 2 Feb 2026 14:54:29 -0600
+Subject: [PATCH] staging: rtl8723bs: fix null dereference in find_network
 
-It was reported that we need the same quirk for HP ZBook Studio G4
-(SSID 103c:826b) as other HP models to make the mute-LED working.
+The variable pwlan has the possibility of being NULL when passed into
+rtw_free_network_nolock() which would later dereference the variable.
 
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/64d78753-b9ff-4c64-8920-64d8d31cd20c@gmail.com
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221002
-Link: https://patch.msgid.link/20260207131324.2428030-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Link: https://patch.msgid.link/20260202205429.20181-1-ethantidmore06@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/conexant.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/hda/codecs/conexant.c b/sound/hda/codecs/conexant.c
-index 2384e64eada36..5623d8c0a0f7c 100644
---- a/sound/hda/codecs/conexant.c
-+++ b/sound/hda/codecs/conexant.c
-@@ -1081,6 +1081,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
- 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
-+	SND_PCI_QUIRK(0x103c, 0x826b, "HP ZBook Studio G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index b3a9e40054a7f..8e98344951acf 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -826,8 +826,10 @@ static void find_network(struct adapter *adapter)
+ 	struct wlan_network *tgt_network = &pmlmepriv->cur_network;
+ 
+ 	pwlan = rtw_find_network(&pmlmepriv->scanned_queue, tgt_network->network.mac_address);
+-	if (pwlan)
+-		pwlan->fixed = false;
++	if (!pwlan)
++		return;
++
++	pwlan->fixed = false;
+ 
+ 	if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) &&
+ 	    (adapter->stapriv.asoc_sta_count == 1))
 -- 
 2.51.0
 
