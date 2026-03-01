@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-222114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBciG3Sso2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222114-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:03:16 +0100
+	id yOFVKG2do2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED481CE286
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:03:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6676E1CC7D8
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CFDB830FD770
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1380A306FE6F
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5432B311592;
-	Sun,  1 Mar 2026 01:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84719309F08;
+	Sun,  1 Mar 2026 01:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DdtdvU81"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRzobopH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158562ECE9B;
-	Sun,  1 Mar 2026 01:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C8F2FD7BE;
+	Sun,  1 Mar 2026 01:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329938; cv=none; b=O6s2mfZazhr8zVdVOzYuyH0+AAgIJkCufl12MdgfmPufvh5HtQrSXmpQMrl0Lsq3tEFEq6fOIf4uLSN4pRr4J03W62YBMJ7bEp9oG5m8DO3qoZIX42FmB9LGgy4uvVAK3+eqIrAoz4fKVguD0ZuHqNNNBzI1h5z6tSvDycH5PIM=
+	t=1772329940; cv=none; b=jydjZwDnVWViFPy4kwQgLicC74h2V3k986Nx29TX6HRaJfacq88CJP74KaHMcvnCgf7UJ0cWkGvYJIoFP3OKB//15iOV0T2U0829CvVCoXy2I6TyumYuLhduYbhAgaOfUuiVuumjT+uRs3uPmMGiTANZBC3Iqc78HYW4RY6k0Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329938; c=relaxed/simple;
-	bh=rTELKinGm7Mc5tDtME5CJpDMsIjVjzcBhOLS/ns89AM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N2g58AQ6SmeHlACLYkEAl+oTB7ks5JhbC/nNR9JOdQdBKb2ft0Zjwmks5F+bDNw775588tHNxS8tpQ9EkHD90KdjMMxerWcOj+nItHDVz9UmHTvuF7UTtZk6qwexQtVPevB90CW0mIDmQ7yvy+rQM4ur2wurF3dUhLS13bKcWhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DdtdvU81; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2F1C19421;
-	Sun,  1 Mar 2026 01:52:16 +0000 (UTC)
+	s=arc-20240116; t=1772329940; c=relaxed/simple;
+	bh=8lbF1j8bYc2jjw1q7zHSl0yiArpqCszERv6Ckuw9lKc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ExxbfcSDRbDj71ggWuDpT/XZ5LqAKnLEp8jMJEjH0nX+DwT0Qrz9KJE7wWPeN1KIShBeOg4K7JEBYEpEMv+EOjbgrg7oTwHd+N//5udFikheFf3EAohq5xIRDhA1XQLTBaY7pmwinwKT7C2aqD4i6DbWBreHBYInEYthpAI4z20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRzobopH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4ADC19421;
+	Sun,  1 Mar 2026 01:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329937;
-	bh=rTELKinGm7Mc5tDtME5CJpDMsIjVjzcBhOLS/ns89AM=;
+	s=k20201202; t=1772329939;
+	bh=8lbF1j8bYc2jjw1q7zHSl0yiArpqCszERv6Ckuw9lKc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=DdtdvU81sysVN/eYgmlEBe7RrVapQUYqPQrxToz7VEyuVZCdF0982BH5WBp25/cfO
-	 XTwpMiVUZKMJFU4qm8Mew5E21LTWY9x46UlZeu//uocGNspuuRrdSThxOsPv/cq/BR
-	 Ftov8YCpKqgmq6RVVR/nMJANxWzmVKOGQ09un8zuErhbhj2mZPAOiYWGHcYpUZvaGh
-	 pBuSwTDr6TzQP/ZpDHNWx/GzDnY1TeU/S3Ad0obasYEtKOLbpIrkUgnnhVuKRRdmoA
-	 mUaku0tK2PXoji37/mMyegIg49vNH6cepCv+5AmMCO9eqf65FPYL/3Oa8XXa3u9V0g
-	 ZPtk+6NDBDyMg==
+	b=rRzobopH0/8uqv36Pb+6xjDCWg2IwJlsVlKBCweYPBOfxYd3xlKYRssjWcbZY43XG
+	 /kbQFYNiSGU7eiXSCYS1H5Z55QCdo6rmoUvsxh9KiU4tKzXXjBtr2zU0mv173/go5f
+	 PDGXIIxaXD0F7t61aP1S3lCvNxMxhPIPru8N0gngiiAli5m2kvde2Ky8GrQ82cf7Ie
+	 DJuWv88llaIe81/CIYcekNUaeSGu+RQSUTN9MgqJI+UbjRFW/GlE2xmVpKQv8hwKj0
+	 wVrGApXSbV1PDWauTyLf3Ets2L2Vyz7mrOOEgwh+dnsr+OfbPTPgKp56E/TGeQYovC
+	 dmbiC5bxQCSBw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chuck.lever@oracle.com
-Cc: Xingjing Deng <micro6947@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "SUNRPC: auth_gss: fix memory leaks in XDR decoding error paths" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:52:15 -0500
-Message-ID: <20260301015215.1718711-1-sashal@kernel.org>
+	jinpu.wang@ionos.com
+Cc: Yu Kuai <yukuai@fnnas.com>,
+	linux-raid@vger.kernel.org
+Subject: FAILED: Patch "md/bitmap: fix GPF in write_page caused by resize race" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:52:17 -0500
+Message-ID: <20260301015218.1718763-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,20 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-222114-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222115-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email]
-X-Rspamd-Queue-Id: 9ED481CE286
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,fnnas.com:email,ionos.com:email]
+X-Rspamd-Queue-Id: 6676E1CC7D8
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,226 +102,53 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3e6397b056335cc56ef0e9da36c95946a19f5118 Mon Sep 17 00:00:00 2001
-From: Chuck Lever <chuck.lever@oracle.com>
-Date: Fri, 26 Dec 2025 10:15:32 -0500
-Subject: [PATCH] SUNRPC: auth_gss: fix memory leaks in XDR decoding error
- paths
+From 46ef85f854dfa9d5226b3c1c46493d79556c9589 Mon Sep 17 00:00:00 2001
+From: Jack Wang <jinpu.wang@ionos.com>
+Date: Tue, 20 Jan 2026 11:24:56 +0100
+Subject: [PATCH] md/bitmap: fix GPF in write_page caused by resize race
 
-The gssx_dec_ctx(), gssx_dec_status(), and gssx_dec_name()
-functions allocate memory via gssx_dec_buffer(), which calls
-kmemdup(). When a subsequent decode operation fails, these
-functions return immediately without freeing previously
-allocated buffers, causing memory leaks.
+A General Protection Fault occurs in write_page() during array resize:
+RIP: 0010:write_page+0x22b/0x3c0 [md_mod]
 
-The leak in gssx_dec_ctx() is particularly relevant because
-the caller (gssp_accept_sec_context_upcall) initializes several
-buffer length fields to non-zero values, resulting in memory
-allocation:
+This is a use-after-free race between bitmap_daemon_work() and
+__bitmap_resize(). The daemon iterates over `bitmap->storage.filemap`
+without locking, while the resize path frees that storage via
+md_bitmap_file_unmap(). `quiesce()` does not stop the md thread,
+allowing concurrent access to freed pages.
 
-    struct gssx_ctx rctxh = {
-        .exported_context_token.len = GSSX_max_output_handle_sz,
-        .mech.len = GSS_OID_MAX_LEN,
-        .src_name.display_name.len = GSSX_max_princ_sz,
-        .targ_name.display_name.len = GSSX_max_princ_sz
-    };
+Fix by holding `mddev->bitmap_info.mutex` during the bitmap update.
 
-If, for example, gssx_dec_name() succeeds for src_name but
-fails for targ_name, the memory allocated for
-exported_context_token, mech, and src_name.display_name
-remains unreferenced and cannot be reclaimed.
-
-Add error handling with goto-based cleanup to free any
-previously allocated buffers before returning an error.
-
-Reported-by: Xingjing Deng <micro6947@gmail.com>
-Closes: https://lore.kernel.org/linux-nfs/CAK+ZN9qttsFDu6h1FoqGadXjMx1QXqPMoYQ=6O9RY4SxVTvKng@mail.gmail.com/
-Fixes: 1d658336b05f ("SUNRPC: Add RPC based upcall mechanism for RPCGSS auth")
+Link: https://lore.kernel.org/linux-raid/20260120102456.25169-1-jinpu.wang@ionos.com
+Closes: https://lore.kernel.org/linux-raid/CAMGffE=Mbfp=7xD_hYxXk1PAaCZNSEAVeQGKGy7YF9f2S4=NEA@mail.gmail.com/T/#u
 Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: d60b479d177a ("md/bitmap: add bitmap_resize function to allow bitmap resizing.")
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 ---
- net/sunrpc/auth_gss/gss_rpc_xdr.c | 82 ++++++++++++++++++++++++-------
- 1 file changed, 64 insertions(+), 18 deletions(-)
+ drivers/md/md-bitmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/auth_gss/gss_rpc_xdr.c b/net/sunrpc/auth_gss/gss_rpc_xdr.c
-index 7d2cdc2bd374e..f320c0a8e6049 100644
---- a/net/sunrpc/auth_gss/gss_rpc_xdr.c
-+++ b/net/sunrpc/auth_gss/gss_rpc_xdr.c
-@@ -320,29 +320,47 @@ static int gssx_dec_status(struct xdr_stream *xdr,
- 
- 	/* status->minor_status */
- 	p = xdr_inline_decode(xdr, 8);
--	if (unlikely(p == NULL))
--		return -ENOSPC;
-+	if (unlikely(p == NULL)) {
-+		err = -ENOSPC;
-+		goto out_free_mech;
-+	}
- 	p = xdr_decode_hyper(p, &status->minor_status);
- 
- 	/* status->major_status_string */
- 	err = gssx_dec_buffer(xdr, &status->major_status_string);
- 	if (err)
--		return err;
-+		goto out_free_mech;
- 
- 	/* status->minor_status_string */
- 	err = gssx_dec_buffer(xdr, &status->minor_status_string);
- 	if (err)
--		return err;
-+		goto out_free_major_status_string;
- 
- 	/* status->server_ctx */
- 	err = gssx_dec_buffer(xdr, &status->server_ctx);
- 	if (err)
--		return err;
-+		goto out_free_minor_status_string;
- 
- 	/* we assume we have no options for now, so simply consume them */
- 	/* status->options */
- 	err = dummy_dec_opt_array(xdr, &status->options);
-+	if (err)
-+		goto out_free_server_ctx;
- 
-+	return 0;
-+
-+out_free_server_ctx:
-+	kfree(status->server_ctx.data);
-+	status->server_ctx.data = NULL;
-+out_free_minor_status_string:
-+	kfree(status->minor_status_string.data);
-+	status->minor_status_string.data = NULL;
-+out_free_major_status_string:
-+	kfree(status->major_status_string.data);
-+	status->major_status_string.data = NULL;
-+out_free_mech:
-+	kfree(status->mech.data);
-+	status->mech.data = NULL;
- 	return err;
- }
- 
-@@ -505,28 +523,35 @@ static int gssx_dec_name(struct xdr_stream *xdr,
- 	/* name->name_type */
- 	err = gssx_dec_buffer(xdr, &dummy_netobj);
- 	if (err)
--		return err;
-+		goto out_free_display_name;
- 
- 	/* name->exported_name */
- 	err = gssx_dec_buffer(xdr, &dummy_netobj);
- 	if (err)
--		return err;
-+		goto out_free_display_name;
- 
- 	/* name->exported_composite_name */
- 	err = gssx_dec_buffer(xdr, &dummy_netobj);
- 	if (err)
--		return err;
-+		goto out_free_display_name;
- 
- 	/* we assume we have no attributes for now, so simply consume them */
- 	/* name->name_attributes */
- 	err = dummy_dec_nameattr_array(xdr, &dummy_name_attr_array);
- 	if (err)
--		return err;
-+		goto out_free_display_name;
- 
- 	/* we assume we have no options for now, so simply consume them */
- 	/* name->extensions */
- 	err = dummy_dec_opt_array(xdr, &dummy_option_array);
-+	if (err)
-+		goto out_free_display_name;
- 
-+	return 0;
-+
-+out_free_display_name:
-+	kfree(name->display_name.data);
-+	name->display_name.data = NULL;
- 	return err;
- }
- 
-@@ -649,32 +674,34 @@ static int gssx_dec_ctx(struct xdr_stream *xdr,
- 	/* ctx->state */
- 	err = gssx_dec_buffer(xdr, &ctx->state);
- 	if (err)
--		return err;
-+		goto out_free_exported_context_token;
- 
- 	/* ctx->need_release */
- 	err = gssx_dec_bool(xdr, &ctx->need_release);
- 	if (err)
--		return err;
-+		goto out_free_state;
- 
- 	/* ctx->mech */
- 	err = gssx_dec_buffer(xdr, &ctx->mech);
- 	if (err)
--		return err;
-+		goto out_free_state;
- 
- 	/* ctx->src_name */
- 	err = gssx_dec_name(xdr, &ctx->src_name);
- 	if (err)
--		return err;
-+		goto out_free_mech;
- 
- 	/* ctx->targ_name */
- 	err = gssx_dec_name(xdr, &ctx->targ_name);
- 	if (err)
--		return err;
-+		goto out_free_src_name;
- 
- 	/* ctx->lifetime */
- 	p = xdr_inline_decode(xdr, 8+8);
--	if (unlikely(p == NULL))
--		return -ENOSPC;
-+	if (unlikely(p == NULL)) {
-+		err = -ENOSPC;
-+		goto out_free_targ_name;
-+	}
- 	p = xdr_decode_hyper(p, &ctx->lifetime);
- 
- 	/* ctx->ctx_flags */
-@@ -683,17 +710,36 @@ static int gssx_dec_ctx(struct xdr_stream *xdr,
- 	/* ctx->locally_initiated */
- 	err = gssx_dec_bool(xdr, &ctx->locally_initiated);
- 	if (err)
--		return err;
-+		goto out_free_targ_name;
- 
- 	/* ctx->open */
- 	err = gssx_dec_bool(xdr, &ctx->open);
- 	if (err)
--		return err;
-+		goto out_free_targ_name;
- 
- 	/* we assume we have no options for now, so simply consume them */
- 	/* ctx->options */
- 	err = dummy_dec_opt_array(xdr, &ctx->options);
-+	if (err)
-+		goto out_free_targ_name;
-+
-+	return 0;
- 
-+out_free_targ_name:
-+	kfree(ctx->targ_name.display_name.data);
-+	ctx->targ_name.display_name.data = NULL;
-+out_free_src_name:
-+	kfree(ctx->src_name.display_name.data);
-+	ctx->src_name.display_name.data = NULL;
-+out_free_mech:
-+	kfree(ctx->mech.data);
-+	ctx->mech.data = NULL;
-+out_free_state:
-+	kfree(ctx->state.data);
-+	ctx->state.data = NULL;
-+out_free_exported_context_token:
-+	kfree(ctx->exported_context_token.data);
-+	ctx->exported_context_token.data = NULL;
- 	return err;
- }
- 
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index dbe4c4b9a1daf..1d4a050dab3ab 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2453,6 +2453,7 @@ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
+ 		memcpy(page_address(store.sb_page),
+ 		       page_address(bitmap->storage.sb_page),
+ 		       sizeof(bitmap_super_t));
++	mutex_lock(&bitmap->mddev->bitmap_info.mutex);
+ 	spin_lock_irq(&bitmap->counts.lock);
+ 	md_bitmap_file_unmap(&bitmap->storage);
+ 	bitmap->storage = store;
+@@ -2560,7 +2561,7 @@ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
+ 			set_page_attr(bitmap, i, BITMAP_PAGE_DIRTY);
+ 	}
+ 	spin_unlock_irq(&bitmap->counts.lock);
+-
++	mutex_unlock(&bitmap->mddev->bitmap_info.mutex);
+ 	if (!init) {
+ 		__bitmap_unplug(bitmap);
+ 		bitmap->mddev->pers->quiesce(bitmap->mddev, 0);
 -- 
 2.51.0
 
