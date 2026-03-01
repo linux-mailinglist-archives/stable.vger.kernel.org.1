@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-222154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222155-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UG8NFb2so2myJgUAu9opvQ
-	(envelope-from <stable+bounces-222154-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:04:29 +0100
+	id uDCpCeqdo2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222155-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD711CE2DE
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:04:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF161CC9E9
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF051345F22A
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6574A30A0A7D
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2825F2FDC3C;
-	Sun,  1 Mar 2026 01:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C678330AD15;
+	Sun,  1 Mar 2026 01:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mke3/rZY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mr4RcRxy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8FF2EE5FD;
-	Sun,  1 Mar 2026 01:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B0D2EBBA9;
+	Sun,  1 Mar 2026 01:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330034; cv=none; b=qHC4CqYdBXeMl2J/C6DwRYPHs0hm3J6zdzVLR8hkmOWPUOe2ZYkEpNziTMJT6sIGODIYTGXWW+5V7/fnMWyp3gKSyw+7d+HSQdUm0Ce1OSfUC1F2wi6tuIGuMiP4hicKW3TimJLhFY4XJYth90BjSDKnGjjO0wK4dHnBTVDLTuk=
+	t=1772330037; cv=none; b=KCMmuJC8sUECj+DGazLA+qCCY4A2ceWXW8gdYVWjooZw1xF2bMznC0XDjaeUD27N579wx/REDxXRqPJ3qWKbjsaqop/7SPjoGo4wTWRHTIoGjSX6etiH+myQQrHa1PRlirRxjfcI6Mn66fi6bOdFFRVIGTzz8vPsR8DlpYoebJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330034; c=relaxed/simple;
-	bh=ucYr/n11bP/5vjX9OhGt3Zz5SHClV50N0kAnnz+VbcM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q0ZTbkazFSoFwdIENfwR0D2vg570+rmEY5jLe4eODL8GbNWDmypyWOgU41ZuyOkZ5KLLTfip6EdD0hfcgR1W9jR1JD/CACOE/gFuFsJKlI1oGg/0LdEzpSpLxAjbp8Pw6rBBmk9mK6Ta2bZCl3CZlkogYUiFerO1IiofCklUQZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mke3/rZY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B106C19421;
-	Sun,  1 Mar 2026 01:53:54 +0000 (UTC)
+	s=arc-20240116; t=1772330037; c=relaxed/simple;
+	bh=nWgyK4bmMA4Ntbgxd4K/ARtx6r4Ti1SthxAk+Z7Cudw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iCw59qpSDxC8EyDtfjugMKKAwi07p4X0Kb6Rvi9KG6lVB2JaqKLZEXPBX5vqBiSbAGnW5VXfu1ubLrpSvkA94uxh9u9EG+aCPTzrqYHHoCE4vUQsyYzkdlRQeFhG8rSlusflCVMdxoILAr/JtqSaw6LhTQv+/yN9o46gPA7Bb2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mr4RcRxy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CB5C19421;
+	Sun,  1 Mar 2026 01:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330034;
-	bh=ucYr/n11bP/5vjX9OhGt3Zz5SHClV50N0kAnnz+VbcM=;
+	s=k20201202; t=1772330037;
+	bh=nWgyK4bmMA4Ntbgxd4K/ARtx6r4Ti1SthxAk+Z7Cudw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=mke3/rZY0k59xWQJyguaD+NJFg8ZrftNfkcVadI11L3YJn9ujZlVN9V7fkVcwrxrY
-	 apyuE5vRasv/H1hKtVXMOU46GDHuStsatVKOUqoaBCFtyzxATEI/c9AJyjH0y8fz1y
-	 IoU/AZJChxYAxVUTYchfPOBqoMdQhHN1Fii+hn2QA5e5X7B8ktqUB3xPRnHXY8a7MZ
-	 gx3981SeO241eNBkxLs5QbWT3i2HbQivmTQPU+Uok6Ex4N7ODynFrMFCymbIDEZ4QL
-	 HgVYPO9o1LmTi5h0+v4Ya8LpEQ1wAFenUBiES7z6C310edx/toUkvxUQvOdiRvlRkP
-	 8oI1N2e8wb2BA==
+	b=Mr4RcRxyMZYhSo04FNKVpetpG+SKbuPzEsh0okGNldXchpDYdPNooWQGNjfRjFRza
+	 5pfmhfihbKpPZlXfOIvz3AxlID0gJEMlTajpoxZcZON7ZIOh8iE5IOVIihvLdNON8K
+	 eOsAs5TEfqXz2/P+1O+YwOap0pswE7mSBT53c3r/hTJQnlq+bDUH4gxkQV8fhmDuzk
+	 PFxWX6eb5kVYdjL1Vi0YXBu+1oFlv2QsySgCuGUAMAv7fH9Edx6Nq9WN2NBL47+qbB
+	 uDmkGfE7ryt4yhlSDdj3qe4EHnzvHh9cB7GzfDVab0wPud1zMV9Dj6vtV5z+rKW/U1
+	 yZFnhKpYc9LuQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	tiwai@suse.de
-Cc: linux-sound@vger.kernel.org
-Subject: FAILED: Patch "ALSA: hda/conexant: Add quirk for HP ZBook Studio G4" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:53:52 -0500
-Message-ID: <20260301015353.1720760-1-sashal@kernel.org>
+	sprasad@microsoft.com
+Cc: Steve French <stfrench@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: FAILED: Patch "cifs: Fix locking usage for tcon fields" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:53:55 -0500
+Message-ID: <20260301015355.1720805-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,33 +64,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222154-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-222155-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AFD711CE2DE
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CEF161CC9E9
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -101,35 +103,134 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1585cf83e98db32463e5d54161b06a5f01fe9976 Mon Sep 17 00:00:00 2001
-From: Takashi Iwai <tiwai@suse.de>
-Date: Sat, 7 Feb 2026 14:13:17 +0100
-Subject: [PATCH] ALSA: hda/conexant: Add quirk for HP ZBook Studio G4
+From 96c4af418586ee9a6aab61738644366426e05316 Mon Sep 17 00:00:00 2001
+From: Shyam Prasad N <sprasad@microsoft.com>
+Date: Sun, 1 Feb 2026 00:21:13 +0530
+Subject: [PATCH] cifs: Fix locking usage for tcon fields
 
-It was reported that we need the same quirk for HP ZBook Studio G4
-(SSID 103c:826b) as other HP models to make the mute-LED working.
+We used to use the cifs_tcp_ses_lock to protect a lot of objects
+that are not just the server, ses or tcon lists. We later introduced
+srv_lock, ses_lock and tc_lock to protect fields within the
+corresponding structs. This was done to provide a more granular
+protection and avoid unnecessary serialization.
 
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/64d78753-b9ff-4c64-8920-64d8d31cd20c@gmail.com
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221002
-Link: https://patch.msgid.link/20260207131324.2428030-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+There were still a couple of uses of cifs_tcp_ses_lock to provide
+tcon fields. In this patch, I've replaced them with tc_lock.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- sound/hda/codecs/conexant.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/cached_dir.c | 4 ++--
+ fs/smb/client/smb2misc.c   | 6 +++---
+ fs/smb/client/smb2ops.c    | 8 +++-----
+ fs/smb/client/smb2pdu.c    | 2 ++
+ fs/smb/client/trace.h      | 1 +
+ 5 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/sound/hda/codecs/conexant.c b/sound/hda/codecs/conexant.c
-index 2384e64eada36..5623d8c0a0f7c 100644
---- a/sound/hda/codecs/conexant.c
-+++ b/sound/hda/codecs/conexant.c
-@@ -1081,6 +1081,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
- 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
-+	SND_PCI_QUIRK(0x103c, 0x826b, "HP ZBook Studio G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+index df9977030d199..2a6b8ce80be23 100644
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -792,11 +792,11 @@ static void cfids_laundromat_worker(struct work_struct *work)
+ 		cfid->dentry = NULL;
+ 
+ 		if (cfid->is_open) {
+-			spin_lock(&cifs_tcp_ses_lock);
++			spin_lock(&cfid->tcon->tc_lock);
+ 			++cfid->tcon->tc_count;
+ 			trace_smb3_tcon_ref(cfid->tcon->debug_id, cfid->tcon->tc_count,
+ 					    netfs_trace_tcon_ref_get_cached_laundromat);
+-			spin_unlock(&cifs_tcp_ses_lock);
++			spin_unlock(&cfid->tcon->tc_lock);
+ 			queue_work(serverclose_wq, &cfid->close_work);
+ 		} else
+ 			/*
+diff --git a/fs/smb/client/smb2misc.c b/fs/smb/client/smb2misc.c
+index f3cb62d914502..0871b9f1f86a6 100644
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -820,14 +820,14 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
+ 	int rc;
+ 
+ 	cifs_dbg(FYI, "%s: tc_count=%d\n", __func__, tcon->tc_count);
+-	spin_lock(&cifs_tcp_ses_lock);
++	spin_lock(&tcon->tc_lock);
+ 	if (tcon->tc_count <= 0) {
+ 		struct TCP_Server_Info *server = NULL;
+ 
+ 		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 				    netfs_trace_tcon_ref_see_cancelled_close);
+ 		WARN_ONCE(tcon->tc_count < 0, "tcon refcount is negative");
+-		spin_unlock(&cifs_tcp_ses_lock);
++		spin_unlock(&tcon->tc_lock);
+ 
+ 		if (tcon->ses) {
+ 			server = tcon->ses->server;
+@@ -841,7 +841,7 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
+ 	tcon->tc_count++;
+ 	trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 			    netfs_trace_tcon_ref_get_cancelled_close);
+-	spin_unlock(&cifs_tcp_ses_lock);
++	spin_unlock(&tcon->tc_lock);
+ 
+ 	rc = __smb2_handle_cancelled_cmd(tcon, SMB2_CLOSE_HE, 0,
+ 					 persistent_fid, volatile_fid);
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index f6806946d0eee..653e2f29384d4 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -3107,7 +3107,9 @@ smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
+ 						struct cifs_tcon,
+ 						tcon_list);
+ 		if (tcon) {
++			spin_lock(&tcon->tc_lock);
+ 			tcon->tc_count++;
++			spin_unlock(&tcon->tc_lock);
+ 			trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 					    netfs_trace_tcon_ref_get_dfs_refer);
+ 		}
+@@ -3176,13 +3178,9 @@ smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
+  out:
+ 	if (tcon && !tcon->ipc) {
+ 		/* ipc tcons are not refcounted */
+-		spin_lock(&cifs_tcp_ses_lock);
+-		tcon->tc_count--;
++		cifs_put_tcon(tcon, netfs_trace_tcon_ref_put_dfs_refer);
+ 		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 				    netfs_trace_tcon_ref_dec_dfs_refer);
+-		/* tc_count can never go negative */
+-		WARN_ON(tcon->tc_count < 0);
+-		spin_unlock(&cifs_tcp_ses_lock);
+ 	}
+ 	kfree(utf16_path);
+ 	kfree(dfs_req);
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index fa22702a61a6e..a88b21e5b30e2 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4263,7 +4263,9 @@ void smb2_reconnect_server(struct work_struct *work)
+ 
+ 		list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
+ 			if (tcon->need_reconnect || tcon->need_reopen_files) {
++				spin_lock(&tcon->tc_lock);
+ 				tcon->tc_count++;
++				spin_unlock(&tcon->tc_lock);
+ 				trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 						    netfs_trace_tcon_ref_get_reconnect_server);
+ 				list_add_tail(&tcon->rlist, &tmp_list);
+diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
+index a584a77431132..191f02344dcdd 100644
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -189,6 +189,7 @@
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
+ 	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
++	EM(netfs_trace_tcon_ref_put_dfs_refer,		"PUT DfsRfr") \
+ 	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
+ 	EM(netfs_trace_tcon_ref_put_tlink,		"PUT Tlink ") \
+ 	EM(netfs_trace_tcon_ref_see_cancelled_close,	"SEE Cn-Cls") \
 -- 
 2.51.0
 
