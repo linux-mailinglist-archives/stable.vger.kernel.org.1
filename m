@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-221814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EGI5Iu2oo2nfJQUAu9opvQ
-	(envelope-from <stable+bounces-221814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:48:13 +0100
+	id J4KhEF+Zo2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F075F1CDEED
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:48:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 114A61CB613
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D9BC312D1BF
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0CF2B302E7FB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CC62D948D;
-	Sun,  1 Mar 2026 01:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0C32D94A0;
+	Sun,  1 Mar 2026 01:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8MInzn9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkqvG2sy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE94B2C0F84
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB902F25F0;
+	Sun,  1 Mar 2026 01:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329203; cv=none; b=bSsGFtiOq/39Vu2n6JGlM8de28cQ1Y4A/S8QjoJezmTtEDa8XtxdZtL0JsbM20SNJTRm/HZOcFzkaI9pne0yeZIHKVZhyBe+fGk+J15+gYP1e5yZwWENH3YBaJkJTayS6JvVprodY4f+K+LTUjb/ornPEoq0eVrY+7qFRjb+/Ws=
+	t=1772329205; cv=none; b=aQytI9WOK/C2P3tHC4Sjj5ekECEbgE7mv2lWa96S1ZvSv5vcWgmXlD3OZ1FQsp4Qgn/GwyHACy5xZ+mNz7wB3i2zexz03oRzT8dWPl1qzl2eRSnNxIXCac/td/1oNxsZE74ipSlgZiAmVL5DJkFcTH69mPoKCF5ET2fIs4wLpQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329203; c=relaxed/simple;
-	bh=GvPeFBSp28rQnDX/NpT3iu4lnh2ZFtLOp3Qwu31SJuU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lLk2PgtATf/0WAO+fSHzl6xxGeuy7+SFOOQRUV+wJX49iOcMwFlVB/g1fF2R5aNXtCLJ87aAHmGil9MhqZEajlh4XbggmRcVM5UbPk9W1o9mY74cPRmrs/lYClS2kcaKYhIRjKoEjMu38ZSef58LXGplKcQhtyczgMvEvHR+7ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8MInzn9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141F1C19421;
-	Sun,  1 Mar 2026 01:40:01 +0000 (UTC)
+	s=arc-20240116; t=1772329205; c=relaxed/simple;
+	bh=IVsdRCf09PIrz+NLVnJgcmyyqvZ1jGoF5WvH/1EnhiU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HY2lxn0pAajyVcAZofLHujYymYtHUCZ8yUbzMV+9kinQ+9LmT30ejesU8zQ1BN2zj+lIHkLHsZVlCflAUWYN+AsZ5AprvMB/ORPgpByD/RQv7K913mMC1iwYaL8OZLR1UGYAAxyUbJC2fIwk8W3u9m5SgtdTyMPWJWR1KLM6cqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkqvG2sy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83016C19425;
+	Sun,  1 Mar 2026 01:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329202;
-	bh=GvPeFBSp28rQnDX/NpT3iu4lnh2ZFtLOp3Qwu31SJuU=;
+	s=k20201202; t=1772329205;
+	bh=IVsdRCf09PIrz+NLVnJgcmyyqvZ1jGoF5WvH/1EnhiU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=B8MInzn9tLmZCqH2xN/TnyeRGKTnrKTmj73Qw+FVTHl+EhKK6wss0zA7WApF7ugHT
-	 EecAHJG8bFOBL+m0cyzeeSaSJkv9BKBj1xcDzhk3VVVtH03eHj6sluvVAaYahBGfdb
-	 tQ4nhjFyqwJTsvH96VxiGXksxkClkbGsGki3m0sWFzilURa3nTqTXmJ/BFfmvtdAO0
-	 MCKXnQw7gh9ZRrrufU1r//VCVYHtxiqjT+EcD2avAqEy/sXfAwqeKBFVh3zVHqu6DO
-	 sfhEUfRzit+32dn7jOMwiH92lRBa0k4uF8BKEtvJK2At6XSjC3L4ZtndTN0ZuWc+gB
-	 yOQAk4XoS3Hww==
+	b=SkqvG2sykx+7nXXIL6wfpM6bvWhmNPyZvBQLKGC87ebQNCbDzuEkYGjh97rYbK27u
+	 mnjJMnL8qN3BHMnFgDKjSFE24pOT4Ap/jNDN2OWr2sXR00ocDdVozEeZ/sKntsm39J
+	 0sdkK3GxaspqcfZ5m1XsBQXOklNyKT2oETz1NE6+6DVoyUoOGlV+59+AMEPBUehLEF
+	 fGqHi+RCeYZDVcSBqxypWrM6PZpd5emVtWNAlB3qCocvo6o5Sh8ZX7H52HMeds/5oF
+	 ks3NBJOuh1wYafVxUzuvuj1zTuCD+81TV9ait8pv16GbFFjpb9otauQ56AF4DdT+a+
+	 gFkMjnlS6p7FQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johan@kernel.org
-Cc: Yong Wu <yong.wu@mediatek.com>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "memory: mtk-smi: fix device leak on larb probe" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:40:00 -0500
-Message-ID: <20260301014000.1701156-1-sashal@kernel.org>
+	chris.brandt@renesas.com
+Cc: stable@kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-renesas-soc@vger.kernel.org,
+	linux-clk@vger.kernel.org
+Subject: FAILED: Patch "clk: renesas: rzg2l: Select correct div round macro" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:40:03 -0500
+Message-ID: <20260301014003.1701211-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,35 +64,35 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221815-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[mediatek.com,gmail.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221814-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.993];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,mediatek.com:email]
-X-Rspamd-Queue-Id: F075F1CDEED
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,renesas.com:email,glider.be:email]
+X-Rspamd-Queue-Id: 114A61CB613
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -106,40 +105,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9dae65913b32d05dbc8ff4b8a6bf04a0e49a8eb6 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Fri, 21 Nov 2025 17:46:23 +0100
-Subject: [PATCH] memory: mtk-smi: fix device leak on larb probe
+From f9451374dcfdfe669ee55b58ee6c11e8638980e4 Mon Sep 17 00:00:00 2001
+From: Chris Brandt <chris.brandt@renesas.com>
+Date: Fri, 14 Nov 2025 14:45:29 -0500
+Subject: [PATCH] clk: renesas: rzg2l: Select correct div round macro
 
-Make sure to drop the reference taken when looking up the SMI device
-during larb probe on late probe failure (e.g. probe deferral) and on
-driver unbind.
+Variable foutvco_rate is an unsigned long, not an unsigned long long.
 
-Fixes: cc8bbe1a8312 ("memory: mediatek: Add SMI driver")
-Fixes: 038ae37c510f ("memory: mtk-smi: add missing put_device() call in mtk_smi_device_link_common")
-Cc: stable@vger.kernel.org	# 4.6: 038ae37c510f
-Cc: stable@vger.kernel.org	# 4.6
-Cc: Yong Wu <yong.wu@mediatek.com>
-Cc: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251121164624.13685-3-johan@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: stable@kernel.org
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://lore.kernel.org/CAMuHMdVf7dSeqAhtyxDCFuCheQRzwS-8996Rr2Ntui21uiBgdA@mail.gmail.com
+Fixes: dabf72b85f29 ("clk: renesas: rzg2l: Fix FOUTPOSTDIV clk")
+Signed-off-by: Chris Brandt <chris.brandt@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251114194529.3304361-1-chris.brandt@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/memory/mtk-smi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/renesas/rzg2l-cpg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
-index dd6150d200e89..3609bfd3c64be 100644
---- a/drivers/memory/mtk-smi.c
-+++ b/drivers/memory/mtk-smi.c
-@@ -685,6 +685,7 @@ static void mtk_smi_larb_remove(struct platform_device *pdev)
- 	device_link_remove(&pdev->dev, larb->smi_common_dev);
- 	pm_runtime_disable(&pdev->dev);
- 	component_del(&pdev->dev, &mtk_smi_larb_component_ops);
-+	put_device(larb->smi_common_dev);
- }
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index dfe0f5e87d8cf..0bcf64b152e07 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -572,8 +572,8 @@ rzg2l_cpg_get_foutpostdiv_rate(struct rzg2l_pll5_param *params,
+ 	foutvco_rate = div_u64(mul_u32_u32(EXTAL_FREQ_IN_MEGA_HZ * MEGA,
+ 					   (params->pl5_intin << 24) + params->pl5_fracin),
+ 			       params->pl5_refdiv) >> 24;
+-	foutpostdiv_rate = DIV_ROUND_CLOSEST_ULL(foutvco_rate,
+-						 params->pl5_postdiv1 * params->pl5_postdiv2);
++	foutpostdiv_rate = DIV_ROUND_CLOSEST(foutvco_rate,
++					     params->pl5_postdiv1 * params->pl5_postdiv2);
  
- static int __maybe_unused mtk_smi_larb_resume(struct device *dev)
+ 	return foutpostdiv_rate;
+ }
 -- 
 2.51.0
 
