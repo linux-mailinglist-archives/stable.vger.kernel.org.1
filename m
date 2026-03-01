@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-222197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YB0eGQSto2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:05:40 +0100
+	id eFrzDAato2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:05:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE6D1CE33C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:05:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADF81CE343
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5F5B3477C56
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:56:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDD7131125AA
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC682FC876;
-	Sun,  1 Mar 2026 01:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB8C2FF164;
+	Sun,  1 Mar 2026 01:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="laIKjeiB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WmarwLhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511232C08AD
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0302D6407;
+	Sun,  1 Mar 2026 01:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330139; cv=none; b=eIpS//4NMuLVi7PJCjZ7l9OafOaEz8HlASyXwmY6FNTEIhd39HYvpHJSm47V0eZtaFSH7Caf2YThAg8HbAGq0N25n7lHIXz2f2H7cvwvZZfofDkfIIK+ta1Frk9sPSTJh10gFVRX/89kaLKYE42fGYOev8cpXQp9/FyNDYT8nJc=
+	t=1772330141; cv=none; b=XSbYdIA5VvVVK1nuddUNpUvNgjNDLvRjUgzyp1uBezJiGFUrvzBbRihCvFPKrXpUc2W7RkZ+gl8zohZcNEvNjSarMMRbaheZ4dTE0XZfRsJQK/65JDozq+DqFaYorG3YroK9iq1L1uJDPaRSqUPJrfccZ9Dx9Kr0Ecjrwnt5gDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330139; c=relaxed/simple;
-	bh=PbhtZHps7fvqv08yRTQKF/ykoEkv4V3+N8iOb4uoLnc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UHA5k+NBFUTMmyL6qP2RbTy1rEJtVHvXbp+ETEV3IuBESlhSKF8Kz4dIaMw3FyU33fPwN0pcvdxaOkSPCYdRGFPfcwszkX/KdT5Jf2ZoAZ5kgwhNbBHj1FP/FJHBv1XF01I2c4vjOcDaAERl8ZJgLNeToPa3zK5gifftknEvXtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=laIKjeiB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C8EC19421;
-	Sun,  1 Mar 2026 01:55:38 +0000 (UTC)
+	s=arc-20240116; t=1772330141; c=relaxed/simple;
+	bh=EVBcl/sC5fLFNg0p5i5KgIdHfSMMJfUfmmYFLj/VAK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IxN5LMda0aSsGLJxNa1Weso7uCC/JUDk+y9iToREahiEWa76W/+4avxfwD8FVW5GuhjRwQ6REjjJMPD/VxAlvnMYVgXYCIFdPbew3fixObjHxAn8471sHAzoB4FabF+3W34nF+fzc+F5NH5sdzL+0pgUKhLglKXq9J8/OadjZs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WmarwLhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC48EC19424;
+	Sun,  1 Mar 2026 01:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330138;
-	bh=PbhtZHps7fvqv08yRTQKF/ykoEkv4V3+N8iOb4uoLnc=;
+	s=k20201202; t=1772330141;
+	bh=EVBcl/sC5fLFNg0p5i5KgIdHfSMMJfUfmmYFLj/VAK4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=laIKjeiBAap+fse+YEnUwKrCrnptW0/xYiwEfxEruZ408ilfoDoxsAueeE6HzguIn
-	 tWaHPQJlJ4niFa7xjRZg9HmtD3gTt8+X9RJcqZ7QNrD1Ht50RtikW/klhAKTIKr/Q+
-	 kjNJUitBe7QMsH6K0m8FYLZeS0k+xk2pnQzvGlExuevaRcX9cCHkJaorjfqSTZplSj
-	 7k2AGs24tEyqdrDx0Dnwqljc7Muy+xrXpjSTS/zR0H3qx9/mUNAua6MyJ25cgHGU84
-	 bBW5wwVm67d/6JfM15y4FuzeZp2ZSZ4piJ9kg716PEQc7qH6mRJhlEJzgviMhR7zDU
-	 pEhhP3sF2/rOg==
+	b=WmarwLhG+tNhuv7lCj8bA/8RRLK12ZRmXv3VEVYc9u1I+QByU1pRc3jCDAIuq+W2/
+	 aqZfnDKvHdX6eswfRFYMm2whewTydTtCZQKi5/zatNHwlInZ5B7WiwwjtozPvnNg4a
+	 R2ZAQGyvdHxA9lzjTY5saaEwpKQUcQyqboN1fx4+9UOWWzfF5jl6RvC+BXSxNRwJhE
+	 wv6T47TdAPRqQJdBYZkTgLsAt9EkCog8z0iTyjnj8qnwU6OVkUOuvvBh8WWqR1ePup
+	 UF8rB5ylnBBbqq6f+BWW7m50g4BBI8qoCZaCZ+mXIvbeyo8gFdU+RPerYtqJq0U07X
+	 RvamCkv8T4aQg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	pierre-eric.pelloux-prayer@amd.com
-Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm/amdgpu: fix sync handling in amdgpu_dma_buf_move_notify" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:55:36 -0500
-Message-ID: <20260301015537.1722904-1-sashal@kernel.org>
+	enelsonmoore@gmail.com
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: FAILED: Patch "net: intel: fix PCI device ID conflict between i40e and ipw2200" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:55:39 -0500
+Message-ID: <20260301015539.1722955-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,36 +64,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222197-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222198-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 8EE6D1CE33C
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4ADF81CE343
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -104,75 +107,68 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b18fc0ab837381c1a6ef28386602cd888f2d9edf Mon Sep 17 00:00:00 2001
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Date: Mon, 9 Feb 2026 18:54:45 +0100
-Subject: [PATCH] drm/amdgpu: fix sync handling in amdgpu_dma_buf_move_notify
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From d03e094473ecdeb68d853752ba467abe13e1de44 Mon Sep 17 00:00:00 2001
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Mon, 9 Feb 2026 18:12:34 -0800
+Subject: [PATCH] net: intel: fix PCI device ID conflict between i40e and
+ ipw2200
 
-Invalidating a dmabuf will impact other users of the shared BO.
-In the scenario where process A moves the BO, it needs to inform
-process B about the move and process B will need to update its
-page table.
+The ID 8086:104f is matched by both i40e and ipw2200. The same device
+ID should not be in more than one driver, because in that case, which
+driver is used is unpredictable. Fix this by taking advantage of the
+fact that i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
+devices use PCI_CLASS_NETWORK_OTHER to differentiate the devices.
 
-The commit fixes a synchronisation bug caused by the use of the
-ticket: it made amdgpu_vm_handle_moved behave as if updating
-the page table immediately was correct but in this case it's not.
-
-An example is the following scenario, with 2 GPUs and glxgears
-running on GPU0 and Xorg running on GPU1, on a system where P2P
-PCI isn't supported:
-
-glxgears:
-  export linear buffer from GPU0 and import using GPU1
-  submit frame rendering to GPU0
-  submit tiled->linear blit
-Xorg:
-  copy of linear buffer
-
-The sequence of jobs would be:
-  drm_sched_job_run                       # GPU0, frame rendering
-  drm_sched_job_queue                     # GPU0, blit
-  drm_sched_job_done                      # GPU0, frame rendering
-  drm_sched_job_run                       # GPU0, blit
-  move linear buffer for GPU1 access      #
-  amdgpu_dma_buf_move_notify -> update pt # GPU0
-
-It this point the blit job on GPU0 is still running and would
-likely produce a page fault.
-
+Fixes: 2e45d3f4677a ("i40e: Add support for X710 B/P & SFP+ cards")
 Cc: stable@vger.kernel.org
-Fixes: a448cb003edc ("drm/amdgpu: implement amdgpu_gem_prime_move_notify v2")
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Link: https://patch.msgid.link/20260210021235.16315-1-enelsonmoore@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c  | 8 +++++++-
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c | 8 +++++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-index b9c38a4fe546a..656c267dbe587 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-@@ -514,8 +514,15 @@ amdgpu_dma_buf_move_notify(struct dma_buf_attachment *attach)
- 		r = dma_resv_reserve_fences(resv, 2);
- 		if (!r)
- 			r = amdgpu_vm_clear_freed(adev, vm, NULL);
-+
-+		/* Don't pass 'ticket' to amdgpu_vm_handle_moved: we want the clear=true
-+		 * path to be used otherwise we might update the PT of another process
-+		 * while it's using the BO.
-+		 * With clear=true, amdgpu_vm_bo_update will sync to command submission
-+		 * from the same VM.
-+		 */
- 		if (!r)
--			r = amdgpu_vm_handle_moved(adev, vm, ticket);
-+			r = amdgpu_vm_handle_moved(adev, vm, NULL);
- 
- 		if (r && r != -EBUSY)
- 			DRM_ERROR("Failed to invalidate VM page tables (%d))\n",
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index d3bc3207054f9..02de186dcc8f5 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -75,7 +75,13 @@ static const struct pci_device_id i40e_pci_tbl[] = {
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_BASE_T4), 0},
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_BASE_T_BC), 0},
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_SFP), 0},
+-	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_B), 0},
++	/*
++	 * This ID conflicts with ipw2200, but the devices can be differentiated
++	 * because i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
++	 * devices use PCI_CLASS_NETWORK_OTHER.
++	 */
++	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, I40E_DEV_ID_10G_B),
++		PCI_CLASS_NETWORK_ETHERNET << 8, 0xffff00, 0},
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_KX_X722), 0},
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_QSFP_X722), 0},
+ 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_SFP_X722), 0},
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+index 09035a77e775f..b0e769da94156 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+@@ -11387,7 +11387,13 @@ static const struct pci_device_id card_ids[] = {
+ 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2754, 0, 0, 0},
+ 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2761, 0, 0, 0},
+ 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2762, 0, 0, 0},
+-	{PCI_VDEVICE(INTEL, 0x104f), 0},
++	/*
++	 * This ID conflicts with i40e, but the devices can be differentiated
++	 * because i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
++	 * devices use PCI_CLASS_NETWORK_OTHER.
++	 */
++	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x104f),
++		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, 0},
+ 	{PCI_VDEVICE(INTEL, 0x4220), 0},	/* BG */
+ 	{PCI_VDEVICE(INTEL, 0x4221), 0},	/* BG */
+ 	{PCI_VDEVICE(INTEL, 0x4223), 0},	/* ABG */
 -- 
 2.51.0
 
