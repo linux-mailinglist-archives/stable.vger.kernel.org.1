@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-221558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHboHWymo2mWJAUAu9opvQ
-	(envelope-from <stable+bounces-221558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:37:32 +0100
+	id mILKBhqXo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:32:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F40E1CDBC1
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:37:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DF51CAE2D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:32:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D64F7312C0BB
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF310302C284
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3AE2C15BB;
-	Sun,  1 Mar 2026 01:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C4A29B78F;
+	Sun,  1 Mar 2026 01:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hApJrmHa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bE+TW6Su"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028712BEC2C
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F8029A9C3
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328575; cv=none; b=ivTM3M6l2Tm+agaHkH0aFqYhL+8Knt7gL2frAYBPMTu0/ca0cyQkCu6IroHa8pYEJVmbgy6BOn5Jc07ag1c27Jh1ldsonUvNKD4mHsM4/7plhzYN7fG/UuSTPigm4mN5gDU6Ij76PPQ/1/YN3AIF5zlsXRfRckYWEaMTSX1BQfI=
+	t=1772328577; cv=none; b=r6CEEfNVRhG/AE155VrFHlEdxhqWh5tg0sFHx9yP/2dlznIda4Mm2jQHw7sUEwUaS5uWHotxOuWyU0AkfOsz2/7tGQGNhdzXIYIiEd2F1ns+SvVNlCDDFJQNi2FA5WE8pj92O29rnsfjb7rv23jSV+g0mTdv+QiTOatLZ9GsRgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328575; c=relaxed/simple;
-	bh=u4czxrtZgCB48G981RTqgVFuCUPkaBSXsTWdc63DVY4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AIo8zcLy9Wz/4j0Lo/Qo3dHNVtp7cGNSXBLApWodUTBSME7d436rRgc6iyPj0UXLQv6U8E2gakIB8nUORtH3gJqJ7v5NmLZYmyIijPfiR7WnotvMiKQa8hIYAyFJHm5vGzWe/UkrHAWpOMNQcgcPLEP/GVhVLiyx6CJUL9LUuHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hApJrmHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5446CC19421;
-	Sun,  1 Mar 2026 01:29:34 +0000 (UTC)
+	s=arc-20240116; t=1772328577; c=relaxed/simple;
+	bh=DsQ3K+tlIu9eWzhR1RyKkxyUD8zRG9UOdgZrUnWCylM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZcPyKqH4GJKDw+d31ZXAQyA9azPO8PbJlESzJtpp4Q86CIpptxVSyrlERD7+5Rc8v3ruLHynfJZnSNmOCBo5ZwuCq2T9+p4zAedF8xPpp6lSpg0OQIoa9o8MhLZOhnj9+GWj3l6FMrRFdS2pGHJv2vZqzYkNjB4YSPXS0TTKrgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bE+TW6Su; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997DBC19421;
+	Sun,  1 Mar 2026 01:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328574;
-	bh=u4czxrtZgCB48G981RTqgVFuCUPkaBSXsTWdc63DVY4=;
+	s=k20201202; t=1772328577;
+	bh=DsQ3K+tlIu9eWzhR1RyKkxyUD8zRG9UOdgZrUnWCylM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hApJrmHafg/SRyWTKiKVh4ZGWQd8sdQSlidOqK+2BW07SOD8xds3EdC2l2m0zHf8n
-	 wnshGIYhZQnqoVOt6SRWJtmfJYjg7lBNirHo6BNI2cv7ZNz4KXm6+uLeBx87O0Tu6U
-	 38b7Fh1B1ofogUDeLM6Q54ry1qBOIEPRwgbTRJGLn/Nl4wsq6cmWuY6GcI0xkHplBR
-	 ZyaHW0Lhd6jMZYDGxeD3z+j9a1Xbjusk4ZKcMU/ISthfB8wx5f5QolO3i5cC1OxV5U
-	 sgIRXgihEArtAB8KbwVKbA2S3POnJale/DBNNZ9vCsbXV7+EwTWmUdnydSW6ReQAfP
-	 ezUX4ljanPBdg==
+	b=bE+TW6SuMj6M//r3RjTh0KIDhPfHiiLqJOyhSkLN0tJkrOOyGdg7PJTJTjTmqEQSF
+	 6dfKY2pb6vrGMk7hQy7zARIokIkNeErF995xJYbuK/R71D4QH+UD7rLmRv+/AoFuJy
+	 7+zg/apsYSNZJV7DmKera+y9njnriMcMMBi0KsctLU629VqBYEHuvf5V1DNvtLcoW6
+	 L6vfMVuRyG2ceE6fmqUzblXLyRuwZqS4nXfqYGB4ZvZR5JuDKaV84r2a3TtcezpT6u
+	 FroIAZFhRz+/SxY65sSZkPyLCCZ0HEMEqFNbkTUDGj2hj+BtEaZujvJ/M3JqgjTrO1
+	 oUngC8/Pn3ocA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	alexander.deucher@amd.com
-Cc: Mario Kleiner <mario.kleiner.de@gmail.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm/amdgpu: keep vga memory on MacBooks with switchable graphics" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:29:32 -0500
-Message-ID: <20260301012933.1687345-1-sashal@kernel.org>
+	maz@kernel.org
+Cc: Hyesoo Yu <hyesoo.yu@samsung.com>,
+	Quentin Perret <qperret@google.com>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org
+Subject: FAILED: Patch "arm64: Force the use of CNTVCT_EL0 in __delay()" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:29:35 -0500
+Message-ID: <20260301012935.1687392-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,36 +64,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,lists.freedesktop.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221558-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221559-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 0F40E1CDBC1
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C8DF51CAE2D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -105,49 +104,86 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 096bb75e13cc508d3915b7604e356bcb12b17766 Mon Sep 17 00:00:00 2001
-From: Alex Deucher <alexander.deucher@amd.com>
-Date: Mon, 16 Feb 2026 10:02:32 -0500
-Subject: [PATCH] drm/amdgpu: keep vga memory on MacBooks with switchable
- graphics
+From 29cc0f3aa7c64d3b3cb9d94c0a0984ba6717bf72 Mon Sep 17 00:00:00 2001
+From: Marc Zyngier <maz@kernel.org>
+Date: Fri, 13 Feb 2026 14:16:19 +0000
+Subject: [PATCH] arm64: Force the use of CNTVCT_EL0 in __delay()
 
-On Intel MacBookPros with switchable graphics, when the iGPU
-is enabled, the address of VRAM gets put at 0 in the dGPU's
-virtual address space.  This is non-standard and seems to cause
-issues with the cursor if it ends up at 0.  We have the framework
-to reserve memory at 0 in the address space, so enable it here if
-the vram start address is 0.
+Quentin forwards a report from Hyesoo Yu, describing an interesting
+problem with the use of WFxT in __delay() when a vcpu is loaded and
+that KVM is *not* in VHE mode (either nVHE or hVHE).
 
-Reviewed-and-tested-by: Mario Kleiner <mario.kleiner.de@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4302
+In this case, CNTVOFF_EL2 is set to a non-zero value to reflect the
+state of the guest virtual counter. At the same time, __delay() is
+using get_cycles() to read the counter value, which is indirected to
+reading CNTPCT_EL0.
+
+The core of the issue is that WFxT is using the *virtual* counter,
+while the kernel is using the physical counter, and that the offset
+introduces a really bad discrepancy between the two.
+
+Fix this by forcing the use of CNTVCT_EL0, making __delay() consistent
+irrespective of the value of CNTVOFF_EL2.
+
+Reported-by: Hyesoo Yu <hyesoo.yu@samsung.com>
+Reported-by: Quentin Perret <qperret@google.com>
+Reviewed-by: Quentin Perret <qperret@google.com>
+Fixes: 7d26b0516a0d ("arm64: Use WFxT for __delay() when possible")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/ktosachvft2cgqd5qkukn275ugmhy6xrhxur4zqpdxlfr3qh5h@o3zrfnsq63od
 Cc: stable@vger.kernel.org
-Cc: Mario Kleiner <mario.kleiner.de@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm64/lib/delay.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index d35d9719d5668..6a6b334428f6d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -1068,6 +1068,16 @@ void amdgpu_gmc_get_vbios_allocations(struct amdgpu_device *adev)
- 	case CHIP_RENOIR:
- 		adev->mman.keep_stolen_vga_memory = true;
- 		break;
-+	case CHIP_POLARIS10:
-+	case CHIP_POLARIS11:
-+	case CHIP_POLARIS12:
-+		/* MacBookPros with switchable graphics put VRAM at 0 when
-+		 * the iGPU is enabled which results in cursor issues if
-+		 * the cursor ends up at 0.  Reserve vram at 0 in that case.
-+		 */
-+		if (adev->gmc.vram_start == 0)
-+			adev->mman.keep_stolen_vga_memory = true;
-+		break;
- 	default:
- 		adev->mman.keep_stolen_vga_memory = false;
- 		break;
+diff --git a/arch/arm64/lib/delay.c b/arch/arm64/lib/delay.c
+index cb2062e7e2340..d02341303899e 100644
+--- a/arch/arm64/lib/delay.c
++++ b/arch/arm64/lib/delay.c
+@@ -23,9 +23,20 @@ static inline unsigned long xloops_to_cycles(unsigned long xloops)
+ 	return (xloops * loops_per_jiffy * HZ) >> 32;
+ }
+ 
++/*
++ * Force the use of CNTVCT_EL0 in order to have the same base as WFxT.
++ * This avoids some annoying issues when CNTVOFF_EL2 is not reset 0 on a
++ * KVM host running at EL1 until we do a vcpu_put() on the vcpu. When
++ * running at EL2, the effective offset is always 0.
++ *
++ * Note that userspace cannot change the offset behind our back either,
++ * as the vcpu mutex is held as long as KVM_RUN is in progress.
++ */
++#define __delay_cycles()	__arch_counter_get_cntvct_stable()
++
+ void __delay(unsigned long cycles)
+ {
+-	cycles_t start = get_cycles();
++	cycles_t start = __delay_cycles();
+ 
+ 	if (alternative_has_cap_unlikely(ARM64_HAS_WFXT)) {
+ 		u64 end = start + cycles;
+@@ -35,17 +46,17 @@ void __delay(unsigned long cycles)
+ 		 * early, use a WFET loop to complete the delay.
+ 		 */
+ 		wfit(end);
+-		while ((get_cycles() - start) < cycles)
++		while ((__delay_cycles() - start) < cycles)
+ 			wfet(end);
+ 	} else 	if (arch_timer_evtstrm_available()) {
+ 		const cycles_t timer_evt_period =
+ 			USECS_TO_CYCLES(ARCH_TIMER_EVT_STREAM_PERIOD_US);
+ 
+-		while ((get_cycles() - start + timer_evt_period) < cycles)
++		while ((__delay_cycles() - start + timer_evt_period) < cycles)
+ 			wfe();
+ 	}
+ 
+-	while ((get_cycles() - start) < cycles)
++	while ((__delay_cycles() - start) < cycles)
+ 		cpu_relax();
+ }
+ EXPORT_SYMBOL(__delay);
 -- 
 2.51.0
 
