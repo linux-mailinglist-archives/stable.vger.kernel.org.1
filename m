@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YL+MF+KXo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:30 +0100
+	id GAVkOOOXo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:31 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFAFC1CB0D0
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AD01CB0DA
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1226730219EC
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:33:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 833CB301A2FD
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557442DEA89;
-	Sun,  1 Mar 2026 01:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2352DF12A;
+	Sun,  1 Mar 2026 01:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XfsCLvhs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GG+6w8FQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AD82C0F95
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D812C033C;
+	Sun,  1 Mar 2026 01:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328773; cv=none; b=Rz2r7FEc1K5jaKJHphuWR9JqFPpLRTYLfwHpMhQ1Ech+tSnc3MhtLZb6lFjZlsSxc9U7oFEhy4hai41io+9WKY3YanvaIlECQi01d0VUC/4HF6n33hE5HpqBSL9dT4xb7X2rIFb/rsEsOW66eAqGUvFZFKFIXCs1di4lQALXiOk=
+	t=1772328775; cv=none; b=meOzrUO09RzdvAosOlXDRL8h4z7iV9Hc84PsT/5t23akhGBNwuJdI7wiSfAtHuU9LDXbYMQZeQFNblUaOmnYOhbms8iHBP1i6fYmkZfGYZ7VzNsmWdh3kmJk1dcSwxSrRvRe8lABeN0sI95bFBLyBjNYQkuKo4uOcWB1BHFpiME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328773; c=relaxed/simple;
-	bh=881nQElLHTL4BmI/W1rly7+OnNSbKmVc7U1Fb6sAlxQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C58KSDf/r4YqU3FgRCO2udmTxMSzFdPsnf2CN4h8BPBBJ8vvRznjUNCIOlYuN5xkIp1zHgMRRL1d66WPRMBix9O7/AVSH6Dd66FZl5DNAxlSVWU847Vtiuekr0v1jDL3mu6XvU2dPGcTV1RHgKSxkWrF6y6kP5hkiPQSM9bUszE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XfsCLvhs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C17AC19421;
-	Sun,  1 Mar 2026 01:32:52 +0000 (UTC)
+	s=arc-20240116; t=1772328775; c=relaxed/simple;
+	bh=Y6HuOq7P9NyjDL79wRnOIkGrroU/7stgXHHRH9NJPqA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EWWO/9d1se+dNrUQpm4+OEsmyPbsg9oYBrnGzgwTWVtfYCvUoVLrOV1LqdCEUnXmoA15aHm330ZQ/L8ErtcutuLseq9A982G4sI5/ef8S26Ui3uZaQ3dc0tnrFYoGshuYGbIfEVmPr81WMEDiSkyU8CXSYnkh8zUAKMjqJmS8Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GG+6w8FQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEF2C19421;
+	Sun,  1 Mar 2026 01:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328773;
-	bh=881nQElLHTL4BmI/W1rly7+OnNSbKmVc7U1Fb6sAlxQ=;
+	s=k20201202; t=1772328775;
+	bh=Y6HuOq7P9NyjDL79wRnOIkGrroU/7stgXHHRH9NJPqA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=XfsCLvhs0AHLNXKg8ZWR4pqs5UwyiAMEJO8PM9yI7AFSg4KSEqd98pPcioUzhIcsN
-	 WXWOn5r+6Z8eQOxDGSfYrA6rAstMhxsRrze+pa8HKTOTemY+ClLbHHcD0MW9/rkLaw
-	 2mWMjLXc635vXWtK2Ug+PVcDL1+F3o3q1fwGOa4kZVZO+5Ug76J3e2zj4zhK9n2Yvg
-	 CBZCf5NDLUG5GHQgF9JzujcxdhhSbGzB+JqIGCp2bZcy4v11qgvpnm6zqyQt6ot/Xz
-	 +CoERdZZ2EAnY7/g1QUPA9K2uQRjwAMsgnOypf/dOhAkGJZ2WOahKU8yBbHqUkMNsH
-	 fuLIpbe03Qg6w==
+	b=GG+6w8FQwgwIm8M++7eJobcyO6h5qt6pLHz9H0UyayJGUWyIQ/ZcBZej4MNrIQL/2
+	 NU7/jICx3V8v/p3R0AsAAOrvbCjKhw+bD428rjqxs9zMBEmc4+fSJiAl11bdoXBt5v
+	 ni9PRPTr6G5Xw3+eYlyAzI457aU6PGTOv+hNtK/aGzXzXLPZcuY4mHpltxNuFsGRbI
+	 3lCdQgG0XaPVq6W2Mxyif0DZ02UfiJvpsSAIQG9W/NsNtoOxhRE1ZIooAUnxBS2RMG
+	 2Xu0bTcEP9duh8Y3Y1buwagT3CMjRW7P2bKei7kVDrYLU8ktUut84X13VriUAQZrj0
+	 vRxDlW4PXd5Mg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chao@kernel.org
-Cc: stable@kernel.org,
-	syzbot+803dd716c4310d16ff3a@syzkaller.appspotmail.com,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: FAILED: Patch "f2fs: fix to do sanity check on node footer in {read,write}_end_io" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:32:50 -0500
-Message-ID: <20260301013251.1691964-1-sashal@kernel.org>
+	oleg@redhat.com
+Cc: Paulo Andrade <pandrade@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: FAILED: Patch "x86/uprobes: Fix XOL allocation failure for 32-bit tasks" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:32:53 -0500
+Message-ID: <20260301013253.1692011-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,34 +64,33 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221639-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221640-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.979];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,803dd716c4310d16ff3a];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EFAFC1CB0D0
+X-Rspamd-Queue-Id: A3AD01CB0DA
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -104,181 +103,133 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 50ac3ecd8e05b6bcc350c71a4307d40c030ec7e4 Mon Sep 17 00:00:00 2001
-From: Chao Yu <chao@kernel.org>
-Date: Mon, 12 Jan 2026 15:49:16 +0800
-Subject: [PATCH] f2fs: fix to do sanity check on node footer in
- {read,write}_end_io
+From d55c571e4333fac71826e8db3b9753fadfbead6a Mon Sep 17 00:00:00 2001
+From: Oleg Nesterov <oleg@redhat.com>
+Date: Sun, 11 Jan 2026 16:00:37 +0100
+Subject: [PATCH] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
 
------------[ cut here ]------------
-kernel BUG at fs/f2fs/data.c:358!
-Call Trace:
- <IRQ>
- blk_update_request+0x5eb/0xe70 block/blk-mq.c:987
- blk_mq_end_request+0x3e/0x70 block/blk-mq.c:1149
- blk_complete_reqs block/blk-mq.c:1224 [inline]
- blk_done_softirq+0x107/0x160 block/blk-mq.c:1229
- handle_softirqs+0x283/0x870 kernel/softirq.c:579
- __do_softirq kernel/softirq.c:613 [inline]
- invoke_softirq kernel/softirq.c:453 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1050
- </IRQ>
+This script
 
-In f2fs_write_end_io(), it detects there is inconsistency in between
-node page index (nid) and footer.nid of node page.
+	#!/usr/bin/bash
 
-If footer of node page is corrupted in fuzzed image, then we load corrupted
-node page w/ async method, e.g. f2fs_ra_node_pages() or f2fs_ra_node_page(),
-in where we won't do sanity check on node footer, once node page becomes
-dirty, we will encounter this bug after node page writeback.
+	echo 0 > /proc/sys/kernel/randomize_va_space
 
-Cc: stable@kernel.org
-Reported-by: syzbot+803dd716c4310d16ff3a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=803dd716c4310d16ff3a
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+	echo 'void main(void) {}' > TEST.c
+
+	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
+	gcc -m32 -fcf-protection=branch TEST.c -o test
+
+	bpftrace -e 'uprobe:./test:main {}' -c ./test
+
+"hangs", the probed ./test task enters an endless loop.
+
+The problem is that with randomize_va_space == 0
+get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
+just return the "addr == TASK_SIZE - PAGE_SIZE" hint, this addr is used
+by the stack vma.
+
+arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
+in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
+vm_unmapped_area() happily returns the high address > TASK_SIZE and then
+get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
+check.
+
+handle_swbp() doesn't report this failure (probably it should) and silently
+restarts the probed insn. Endless loop.
+
+I think that the right fix should change the x86 get_unmapped_area() paths
+to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
+CONFIG_X86_X32_ABI=y, in_x32_syscall() falsely returns true in this case
+because ->orig_ax = -1.
+
+But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
+the probed task is 32-bit to make in_ia32_syscall() true.
+
+Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
+Reported-by: Paulo Andrade <pandrade@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
 ---
- fs/f2fs/data.c | 12 ++++++++++--
- fs/f2fs/f2fs.h | 11 +++++++++++
- fs/f2fs/node.c | 20 +++++++++++---------
- fs/f2fs/node.h |  8 --------
- 4 files changed, 32 insertions(+), 19 deletions(-)
+ arch/x86/kernel/uprobes.c | 24 ++++++++++++++++++++++++
+ include/linux/uprobes.h   |  1 +
+ kernel/events/uprobes.c   | 10 +++++++---
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index f461f1318b4cc..9b70b6d337031 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -172,6 +172,11 @@ static void f2fs_finish_read_bio(struct bio *bio, bool in_task)
- 		while (nr_pages--)
- 			dec_page_count(F2FS_F_SB(folio), __read_io_type(folio));
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 7be8e361ca55b..619dddf54424e 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -1823,3 +1823,27 @@ bool is_uprobe_at_func_entry(struct pt_regs *regs)
  
-+		if (F2FS_F_SB(folio)->node_inode && is_node_folio(folio) &&
-+			f2fs_sanity_check_node_footer(F2FS_F_SB(folio),
-+				folio, folio->index, NODE_TYPE_REGULAR, true))
-+			bio->bi_status = BLK_STS_IOERR;
+ 	return false;
+ }
 +
- 		if (finished)
- 			folio_end_read(folio, bio->bi_status == BLK_STS_OK);
- 	}
-@@ -374,8 +379,11 @@ static void f2fs_write_end_io(struct bio *bio)
- 						STOP_CP_REASON_WRITE_FAIL);
- 		}
- 
--		f2fs_bug_on(sbi, is_node_folio(folio) &&
--				folio->index != nid_of_node(folio));
-+		if (is_node_folio(folio)) {
-+			f2fs_sanity_check_node_footer(sbi, folio,
-+				folio->index, NODE_TYPE_REGULAR, true);
-+			f2fs_bug_on(sbi, folio->index != nid_of_node(folio));
-+		}
- 
- 		dec_page_count(sbi, type);
- 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index ae78b8e1ca0ce..d41210a381cdb 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1572,6 +1572,14 @@ enum f2fs_lookup_mode {
- 	LOOKUP_AUTO,
++#ifdef CONFIG_IA32_EMULATION
++unsigned long arch_uprobe_get_xol_area(void)
++{
++	struct thread_info *ti = current_thread_info();
++	unsigned long vaddr;
++
++	/*
++	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
++	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
++	 * vm_unmapped_area_info.high_limit.
++	 *
++	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=y case,
++	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
++	 * (falsely) returns true because ->orig_ax == -1.
++	 */
++	if (test_thread_flag(TIF_ADDR32))
++		ti->status |= TS_COMPAT;
++	vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++	ti->status &= ~TS_COMPAT;
++
++	return vaddr;
++}
++#endif
+diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+index ee3d36eda45dd..f548fea2adec8 100644
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -242,6 +242,7 @@ extern void arch_uprobe_clear_state(struct mm_struct *mm);
+ extern void arch_uprobe_init_state(struct mm_struct *mm);
+ extern void handle_syscall_uprobe(struct pt_regs *regs, unsigned long bp_vaddr);
+ extern void arch_uprobe_optimize(struct arch_uprobe *auprobe, unsigned long vaddr);
++extern unsigned long arch_uprobe_get_xol_area(void);
+ #else /* !CONFIG_UPROBES */
+ struct uprobes_state {
+ };
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index a7d7d83ca1d78..dfbce021fb027 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1694,6 +1694,12 @@ static const struct vm_special_mapping xol_mapping = {
+ 	.mremap = xol_mremap,
  };
  
-+/* For node type in __get_node_folio() */
-+enum node_type {
-+	NODE_TYPE_REGULAR,
-+	NODE_TYPE_INODE,
-+	NODE_TYPE_XATTR,
-+	NODE_TYPE_NON_INODE,
-+};
++unsigned long __weak arch_uprobe_get_xol_area(void)
++{
++	/* Try to map as high as possible, this is only a hint. */
++	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++}
 +
- /* a threshold of maximum elapsed time in critical region to print tracepoint */
- #define MAX_LOCK_ELAPSED_TIME		500
- 
-@@ -3915,6 +3923,9 @@ struct folio *f2fs_new_node_folio(struct dnode_of_data *dn, unsigned int ofs);
- void f2fs_ra_node_page(struct f2fs_sb_info *sbi, nid_t nid);
- struct folio *f2fs_get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
- 						enum node_type node_type);
-+int f2fs_sanity_check_node_footer(struct f2fs_sb_info *sbi,
-+					struct folio *folio, pgoff_t nid,
-+					enum node_type ntype, bool in_irq);
- struct folio *f2fs_get_inode_folio(struct f2fs_sb_info *sbi, pgoff_t ino);
- struct folio *f2fs_get_xnode_folio(struct f2fs_sb_info *sbi, pgoff_t xnid);
- int f2fs_move_node_folio(struct folio *node_folio, int gc_type);
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 30e26b878af0b..efd4f176a1f44 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1511,9 +1511,9 @@ void f2fs_ra_node_page(struct f2fs_sb_info *sbi, nid_t nid)
- 	f2fs_folio_put(afolio, err ? true : false);
- }
- 
--static int sanity_check_node_footer(struct f2fs_sb_info *sbi,
-+int f2fs_sanity_check_node_footer(struct f2fs_sb_info *sbi,
- 					struct folio *folio, pgoff_t nid,
--					enum node_type ntype)
-+					enum node_type ntype, bool in_irq)
+ /* Slot allocation for XOL */
+ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
  {
- 	if (unlikely(nid != nid_of_node(folio)))
- 		goto out_err;
-@@ -1538,12 +1538,13 @@ static int sanity_check_node_footer(struct f2fs_sb_info *sbi,
- 		goto out_err;
- 	return 0;
- out_err:
--	f2fs_warn(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
--		  "node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
--		  ntype, nid, nid_of_node(folio), ino_of_node(folio),
--		  ofs_of_node(folio), cpver_of_node(folio),
--		  next_blkaddr_of_node(folio));
- 	set_sbi_flag(sbi, SBI_NEED_FSCK);
-+	f2fs_warn_ratelimited(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
-+		"node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
-+		ntype, nid, nid_of_node(folio), ino_of_node(folio),
-+		ofs_of_node(folio), cpver_of_node(folio),
-+		next_blkaddr_of_node(folio));
-+
- 	f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
- 	return -EFSCORRUPTED;
- }
-@@ -1589,7 +1590,7 @@ static struct folio *__get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
- 		goto out_err;
+@@ -1709,9 +1715,7 @@ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
  	}
- page_hit:
--	err = sanity_check_node_footer(sbi, folio, nid, ntype);
-+	err = f2fs_sanity_check_node_footer(sbi, folio, nid, ntype, false);
- 	if (!err)
- 		return folio;
- out_err:
-@@ -1764,7 +1765,8 @@ static bool __write_node_folio(struct folio *folio, bool atomic, bool *submitted
- 	/* get old block addr of this node page */
- 	nid = nid_of_node(folio);
  
--	if (sanity_check_node_footer(sbi, folio, nid, NODE_TYPE_REGULAR)) {
-+	if (f2fs_sanity_check_node_footer(sbi, folio, nid,
-+					NODE_TYPE_REGULAR, false)) {
- 		f2fs_handle_critical_error(sbi, STOP_CP_REASON_CORRUPTED_NID);
- 		goto redirty_out;
- 	}
-diff --git a/fs/f2fs/node.h b/fs/f2fs/node.h
-index 9cb8dcf8d4176..824ac9f0e6e42 100644
---- a/fs/f2fs/node.h
-+++ b/fs/f2fs/node.h
-@@ -52,14 +52,6 @@ enum {
- 	IS_PREALLOC,		/* nat entry is preallocated */
- };
- 
--/* For node type in __get_node_folio() */
--enum node_type {
--	NODE_TYPE_REGULAR,
--	NODE_TYPE_INODE,
--	NODE_TYPE_XATTR,
--	NODE_TYPE_NON_INODE,
--};
--
- /*
-  * For node information
-  */
+ 	if (!area->vaddr) {
+-		/* Try to map as high as possible, this is only a hint. */
+-		area->vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
+-						PAGE_SIZE, 0, 0);
++		area->vaddr = arch_uprobe_get_xol_area();
+ 		if (IS_ERR_VALUE(area->vaddr)) {
+ 			ret = area->vaddr;
+ 			goto fail;
 -- 
 2.51.0
 
