@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-222000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222001-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CADoKPqbo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:52:58 +0100
+	id qF3KFr2fo2noIgUAu9opvQ
+	(envelope-from <stable+bounces-222001-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2014A1CC1B4
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:52:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01221CD16F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 522103041D51
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:48:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41291339662B
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D99F2F3C37;
-	Sun,  1 Mar 2026 01:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5802FF147;
+	Sun,  1 Mar 2026 01:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Im7mEb2U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="siFzWCZy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44B32F39A7;
-	Sun,  1 Mar 2026 01:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2021D2820A9;
+	Sun,  1 Mar 2026 01:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329661; cv=none; b=A8p94J0tvHVvFX/J0EVI3Xi6AEhd02lk3GxPcvGqx4PDl9Y+czB0e1CebJR9hkCrvvlgVjPjW/i8kaKpJ0JaEaaioR2uEUsIkbk/XifsQl9iuUyxiBsWFWsL6aKWmsVeP73GjawfAUxT4nJI4UYpHadDm97BcYyl4OUpg6nIB7o=
+	t=1772329664; cv=none; b=HJ1Omd5adEuIaxzqiHV/DVACsRGRzlMr3k2GF2+pEHjAQsj01KoJ9Xa14A5A/kTu+B9Jr/MecyFjK36L4Yp+HDtofpKRgxARJPI4856hxUR6IKfii+Iuc6I2gc6sA9gNy7ACcvbJFvZxunEqVH7kCGKksPWF3LNZI2XSTWNLPhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329661; c=relaxed/simple;
-	bh=ARllGZ6tB1zTW9sg85pAasRHhvOtyZxhNhLSBGTqQzk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z33rgu4BwrdyO+UWXTa31GFQZBwOu30I38bwCJ9zSu8oSnn5WSp0h8bL/tWew+w3llAzWrNt7myc+4+NKUcC0h97KLhOCy3usgwvfKs1nVABFeu0rMrHuSA9j3+sXNfsTInZ+eVeq3KCa2P4qqgtTLKH6xxYKOOaPWWoJnquva4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Im7mEb2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2E7C19421;
-	Sun,  1 Mar 2026 01:47:40 +0000 (UTC)
+	s=arc-20240116; t=1772329664; c=relaxed/simple;
+	bh=BmHILf84EJxe3dgHVSJZQPz/Ihpk/bUIcJq42uG3fS8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jOAV6wSIx+7JQv7MxwQ//cDYQaRq+Ap+0Ziz7XO4H/G0C0FNBG7e50HuSH2fReA833mDjsUYSgqGuX6z/UsyBabVDJ60gHd5zXS9LE91b5DyHO9CYxgGA6ahmHdZV9ofFio0ZSdvPWs4ZkRrbx7q1pKmEkOoEIPvga/q2L+iSkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=siFzWCZy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F70C19421;
+	Sun,  1 Mar 2026 01:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329661;
-	bh=ARllGZ6tB1zTW9sg85pAasRHhvOtyZxhNhLSBGTqQzk=;
+	s=k20201202; t=1772329664;
+	bh=BmHILf84EJxe3dgHVSJZQPz/Ihpk/bUIcJq42uG3fS8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Im7mEb2UKE3W+lvMw7KHPNjPwptFIMTElhlyptUSFT6DXdh0qTFvE99bs47iz/bx+
-	 2r8zr9QLnL+BwSNy1FmhnY3wIj4nRMNNA4rXjvs03MJ95MrN+WDFYzuxnzHayTDf8F
-	 soGpjmCrc4E0w3x48GrPmvRzFNBmOVTt9tiYl+SvAGFvy1VjyUAam9jGW6CaOCmmUL
-	 xQYWcitXpMfFdzFDzvV4xFBZDUF4Mufqi6jxwULMSKtcAdudOjzHcX27qFc3bMT3fH
-	 ldQG+U1hwi9cBjEmPCJYeY+AyPt59RJtuNjTlHhzJcJIsE0Y/eytRI8oyAmnkz+4sG
-	 6GGrGjdqXWOwQ==
+	b=siFzWCZyl36CT+mt25kyhE5bNvQElaZH/NBZZApgBNFe3qoU2flInK0YtQAZn2LSr
+	 rnDx9Me2kG1ARA/YK3k1sXnAZfnm9uDUIYiHKyFVRjgF09B7tLcjPu50HlDv/GaB/P
+	 XUNziZljNJaMfnX3McrnZICNIwyvcwpOUzhlpflTeIR3NWp5nHEZS59Lf2JiJggQTY
+	 QkH5tz9r4tOYkLpx0j3Q7oD501YgIpU0Tr4Ds437IjzKhNxW+gshotx9jlJVwnkrap
+	 tolwfQ6ilFTr6Os26G0XkR73t5SURPDRXRHNupGnjPJ7Nfs9RHVKibHosHdxGFsPch
+	 neECmjchQDc7A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	duoming@zju.edu.cn
+	rene@exactco.de
 Cc: stable@kernel.org,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-atm-general@lists.sourceforge.net,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "atm: fore200e: fix use-after-free in tasklets during device removal" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:47:37 -0500
-Message-ID: <20260301014739.1711600-1-sashal@kernel.org>
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "fbdev: ffb: fix corrupted video output on Sun FFB1" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:47:41 -0500
+Message-ID: <20260301014742.1711654-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,36 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222000-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,gmx.de,vger.kernel.org,lists.freedesktop.org];
+	TAGGED_FROM(0.00)[bounces-222001-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 2014A1CC1B4
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[instagram.com:url,1e:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email,chaos.social:url,exactco.de:email]
+X-Rspamd-Queue-Id: B01221CD16F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -106,65 +105,73 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8930878101cd40063888a68af73b1b0f8b6c79bc Mon Sep 17 00:00:00 2001
-From: Duoming Zhou <duoming@zju.edu.cn>
-Date: Tue, 10 Feb 2026 17:45:37 +0800
-Subject: [PATCH] atm: fore200e: fix use-after-free in tasklets during device
- removal
+From b28da0d092461ac239ff034a8ac3129320177ba3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>
+Date: Thu, 5 Feb 2026 16:49:58 +0100
+Subject: [PATCH] fbdev: ffb: fix corrupted video output on Sun FFB1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When the PCA-200E or SBA-200E adapter is being detached, the fore200e
-is deallocated. However, the tx_tasklet or rx_tasklet may still be running
-or pending, leading to use-after-free bug when the already freed fore200e
-is accessed again in fore200e_tx_tasklet() or fore200e_rx_tasklet().
+Fix Sun FFB1 corrupted video out ([1] and [2]) by disabling overlay and
+initializing window mode to a known state. The issue never appeared on
+my FFB2+/vertical nor Elite3D/M6. It could also depend on the PROM
+version.
 
-One of the race conditions can occur as follows:
+/SUNW,ffb@1e,0: FFB at 000001fc00000000, type 11, DAC pnum[236c] rev[10] manuf_rev[4]
+X (II) /dev/fb0: Detected FFB1, Z-buffer, Single-buffered.
+X (II) /dev/fb0: BT9068 (PAC1) ramdac detected (with normal cursor control)
+X (II) /dev/fb0: Detected Creator/Creator3D
 
-CPU 0 (cleanup)           | CPU 1 (tasklet)
-fore200e_pca_remove_one() | fore200e_interrupt()
-  fore200e_shutdown()     |   tasklet_schedule()
-    kfree(fore200e)       | fore200e_tx_tasklet()
-                          |   fore200e-> // UAF
+[1] https://www.instagram.com/p/DUTcSmSjSem/
+[2] https://chaos.social/@ReneRebe/116023241660154102
 
-Fix this by ensuring tx_tasklet or rx_tasklet is properly canceled before
-the fore200e is released. Add tasklet_kill() in fore200e_shutdown() to
-synchronize with any pending or running tasklets. Moreover, since
-fore200e_reset() could prevent further interrupts or data transfers,
-the tasklet_kill() should be placed after fore200e_reset() to prevent
-the tasklet from being rescheduled in fore200e_interrupt(). Finally,
-it only needs to do tasklet_kill() when the fore200e state is greater
-than or equal to FORE200E_STATE_IRQ, since tasklets are uninitialized
-in earlier states. In a word, the tasklet_kill() should be placed in
-the FORE200E_STATE_IRQ branch within the switch...case structure.
-
-This bug was identified through static analysis.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: René Rebe <rene@exactco.de>
 Cc: stable@kernel.org
-Suggested-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260210094537.9767-1-duoming@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- drivers/atm/fore200e.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/video/fbdev/ffb.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/atm/fore200e.c b/drivers/atm/fore200e.c
-index f62e385714403..fec081db36dc4 100644
---- a/drivers/atm/fore200e.c
-+++ b/drivers/atm/fore200e.c
-@@ -373,6 +373,10 @@ fore200e_shutdown(struct fore200e* fore200e)
- 	fallthrough;
-     case FORE200E_STATE_IRQ:
- 	free_irq(fore200e->irq, fore200e->atm_dev);
-+#ifdef FORE200E_USE_TASKLET
-+	tasklet_kill(&fore200e->tx_tasklet);
-+	tasklet_kill(&fore200e->rx_tasklet);
-+#endif
+diff --git a/drivers/video/fbdev/ffb.c b/drivers/video/fbdev/ffb.c
+index 34b6abff9493e..da531b4cb4513 100644
+--- a/drivers/video/fbdev/ffb.c
++++ b/drivers/video/fbdev/ffb.c
+@@ -335,6 +335,9 @@ struct ffb_dac {
+ };
  
- 	fallthrough;
-     case FORE200E_STATE_ALLOC_BUF:
+ #define FFB_DAC_UCTRL		0x1001 /* User Control */
++#define FFB_DAC_UCTRL_OVENAB	0x00000008 /* Overlay Enable */
++#define FFB_DAC_UCTRL_WMODE	0x00000030 /* Window Mode */
++#define FFB_DAC_UCTRL_WM_COMB	0x00000000 /* Window Mode = Combined */
+ #define FFB_DAC_UCTRL_MANREV	0x00000f00 /* 4-bit Manufacturing Revision */
+ #define FFB_DAC_UCTRL_MANREV_SHIFT 8
+ #define FFB_DAC_TGEN		0x6000 /* Timing Generator */
+@@ -425,7 +428,7 @@ static void ffb_switch_from_graph(struct ffb_par *par)
+ {
+ 	struct ffb_fbc __iomem *fbc = par->fbc;
+ 	struct ffb_dac __iomem *dac = par->dac;
+-	unsigned long flags;
++	unsigned long flags, uctrl;
+ 
+ 	spin_lock_irqsave(&par->lock, flags);
+ 	FFBWait(par);
+@@ -450,6 +453,15 @@ static void ffb_switch_from_graph(struct ffb_par *par)
+ 		upa_writel((FFB_DAC_CUR_CTRL_P0 |
+ 			    FFB_DAC_CUR_CTRL_P1), &dac->value2);
+ 
++	/* Disable overlay and window modes. */
++	upa_writel(FFB_DAC_UCTRL, &dac->type);
++	uctrl = upa_readl(&dac->value);
++	uctrl &= ~FFB_DAC_UCTRL_WMODE;
++	uctrl |= FFB_DAC_UCTRL_WM_COMB;
++	uctrl &= ~FFB_DAC_UCTRL_OVENAB;
++	upa_writel(FFB_DAC_UCTRL, &dac->type);
++	upa_writel(uctrl, &dac->value);
++
+ 	spin_unlock_irqrestore(&par->lock, flags);
+ }
+ 
 -- 
 2.51.0
 
