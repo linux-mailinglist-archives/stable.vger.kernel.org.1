@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-222021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMnCLEmgo2noIgUAu9opvQ
-	(envelope-from <stable+bounces-222021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:11:21 +0100
+	id wH2/AqGco2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:55:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0DA1CD3A6
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:11:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795501CC46D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:55:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FDA133C4D1A
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:49:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54C6E30AE786
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739EE3112C1;
-	Sun,  1 Mar 2026 01:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEDA2E7648;
+	Sun,  1 Mar 2026 01:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glOZlaaq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vGp5B7Jk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337C32E7648;
-	Sun,  1 Mar 2026 01:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B098C2594B9
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329710; cv=none; b=Yqsfksll1hFuZO8adkdgt7oL3psT76tyibVnbKqdwYsQg2SQyW4RRVBf86NPyI76NtDok4Y9J887972IGtkdxuzZoC5WGl6AhgasIRGBtUskOfRQszAD5PEQS2WlwQ1mawQU6oxxKSbBTcmXSeUUEFpFwkmUDnpK/TvinOeqYtA=
+	t=1772329712; cv=none; b=SBsnjPCAFDhlArUlgHzMFxcreRkiYKTJK73qY6bXfd6PVdJWZpwJW6XDN5d6zNFAMDj8i9qSFM+wF99q4GhDlEdRDAqn5zG+VbpnD6XjxhyQNLzVEjLutcgOys7J+AzH0p6xYt4mIkYLVgWeXBgkhg8lFn5JXPwDeFjrJFJ+pwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329710; c=relaxed/simple;
-	bh=ZJp8jepPGTeIobzo4wInAXLC7My00PWii8FmCl8y+qc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vFLMy2Gah4G3B+g3Ix65CvCNzFIX/DigDhWlYnUmy3ogoKjdh6xunwWnW8DCPb5B8j7+PhUd6tQ33j6/YUC1LMwysY/c56Cg+TROx3E24Ht1dH02FOVj+ToHw90zWrRdwuH/yGcpOvEI7euLK8Wa0oyknbHFZaglUQifvPGTl4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glOZlaaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368C7C19421;
-	Sun,  1 Mar 2026 01:48:29 +0000 (UTC)
+	s=arc-20240116; t=1772329712; c=relaxed/simple;
+	bh=GnqiyrPx6H54np56kyfyEaN9ZySH9ie2NjzrGMOZrMw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BoHuwVxBpMjTMZPgKj2CYuc9aTgms5ttUnkDmXRcl0LZKxJF5urlrrlAZvKgV3e2+132M5Qv/2q72u9VjG028rOraZd6Fh9JGi8DkyYD96rMLbc9rDsgbrbqh9ROFcwTEu2RYRrZ/wkHFhk0wsnjFwPvfzgZgnvie+paaKr3NcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vGp5B7Jk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AA8C19421;
+	Sun,  1 Mar 2026 01:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329709;
-	bh=ZJp8jepPGTeIobzo4wInAXLC7My00PWii8FmCl8y+qc=;
+	s=k20201202; t=1772329712;
+	bh=GnqiyrPx6H54np56kyfyEaN9ZySH9ie2NjzrGMOZrMw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=glOZlaaq+kCR4D0PmTyl2hUAlPLsPPG61K18aU7TV16o3OkYXqe/o9whW9rjVJuS4
-	 NX+yECj+PMAiaja9B8sv/Q/KtcK9Zrd3xin+CphMb/uVBTevhHrj6gHpKkumYaU/+Y
-	 o8Ext8poNvUGr8zJCjQlTmazMIlpT/XjXW7YkkUPCV6e3EeSbcngmcALpKW/KfI20j
-	 ifVAFOLyKPUVYpIw/AbyxSoEfx4p1WBDmGKzzHGb35utmB9I8E9aNYCdKDlmLOtHb/
-	 KsPOAzzCnyNxfaiQgthk5HWrVlJvC4ocucIbSSvu9QptLFP2//QvTM5sXCYhnl6RYY
-	 TRkiZGzgD/w9Q==
+	b=vGp5B7Jka3rukB9f2fURsBdnxL0Mlek7rZ/t0Xby71h/8FpHxDy/mDfUETCMNNclA
+	 nrjVHU51VY5DgewqRhn3XJJJ2R1cq9aQE6LkeCL/l3Rg899NgYZM5MpqwG0NpD4hb0
+	 FTh5d/Ft3bbNMjMiwOuADOLfgTaksiETqMYMxzW0GqkxgZ8Dg5izZHO88TlYCvg0VQ
+	 b7Kjcsegg+TiyfErc/KmW0XA3HdTejkwQihB+ciVrbhXXJugAZLE0xtznUuiLOTreK
+	 LW8fM8pc0J+ulCe3E9XtSBKtobmRR6U0JAi4XobC342G+IaWXuLjBpJpJuagnY+dbI
+	 zY1MOi/uJYG8g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	sdeodhar@marvell.com
-Cc: Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org
-Subject: FAILED: Patch "scsi: qla2xxx: Allow recovery for tape devices" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:48:27 -0500
-Message-ID: <20260301014828.1712655-1-sashal@kernel.org>
+	johan@kernel.org
+Cc: Yong Wu <yong.wu@mediatek.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: FAILED: Patch "memory: mtk-smi: fix device leak on larb probe" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:48:30 -0500
+Message-ID: <20260301014830.1712707-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,34 +66,34 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[marvell.com,gmail.com,oracle.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-222021-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[mediatek.com,gmail.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222022-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,marvell.com:email]
-X-Rspamd-Queue-Id: 1E0DA1CD3A6
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mediatek.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 795501CC46D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,60 +106,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b0335ee4fb94832a4ef68774ca7e7b33b473c7a6 Mon Sep 17 00:00:00 2001
-From: Shreyas Deodhar <sdeodhar@marvell.com>
-Date: Wed, 10 Dec 2025 15:45:58 +0530
-Subject: [PATCH] scsi: qla2xxx: Allow recovery for tape devices
+From 9dae65913b32d05dbc8ff4b8a6bf04a0e49a8eb6 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Fri, 21 Nov 2025 17:46:23 +0100
+Subject: [PATCH] memory: mtk-smi: fix device leak on larb probe
 
-Tape device doesn't show up after RSCNs.  To fix this, remove tape
-device specific checks which allows recovery of tape devices.
+Make sure to drop the reference taken when looking up the SMI device
+during larb probe on late probe failure (e.g. probe deferral) and on
+driver unbind.
 
-Fixes: 44c57f205876 ("scsi: qla2xxx: Changes to support FCP2 Target")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-7-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: cc8bbe1a8312 ("memory: mediatek: Add SMI driver")
+Fixes: 038ae37c510f ("memory: mtk-smi: add missing put_device() call in mtk_smi_device_link_common")
+Cc: stable@vger.kernel.org	# 4.6: 038ae37c510f
+Cc: stable@vger.kernel.org	# 4.6
+Cc: Yong Wu <yong.wu@mediatek.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251121164624.13685-3-johan@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c   | 3 ---
- drivers/scsi/qla2xxx/qla_init.c | 9 ---------
- 2 files changed, 12 deletions(-)
+ drivers/memory/mtk-smi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
-index 51c7cea71f902..02a52c2157971 100644
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3266,9 +3266,6 @@ void qla_fab_scan_finish(scsi_qla_host_t *vha, srb_t *sp)
- 			    atomic_read(&fcport->state) == FCS_ONLINE) ||
- 				do_delete) {
- 				if (fcport->loop_id != FC_NO_LOOP_ID) {
--					if (fcport->flags & FCF_FCP2_DEVICE)
--						continue;
--
- 					ql_log(ql_log_warn, vha, 0x20f0,
- 					       "%s %d %8phC post del sess\n",
- 					       __func__, __LINE__,
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index 9729e32012aa1..6ce3a492ad6f5 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -1859,15 +1859,6 @@ void qla2x00_handle_rscn(scsi_qla_host_t *vha, struct event_arg *ea)
- 	case RSCN_PORT_ADDR:
- 		fcport = qla2x00_find_fcport_by_nportid(vha, &ea->id, 1);
- 		if (fcport) {
--			if (ql2xfc2target &&
--			    fcport->flags & FCF_FCP2_DEVICE &&
--			    atomic_read(&fcport->state) == FCS_ONLINE) {
--				ql_dbg(ql_dbg_disc, vha, 0x2115,
--				       "Delaying session delete for FCP2 portid=%06x %8phC ",
--					fcport->d_id.b24, fcport->port_name);
--				return;
--			}
--
- 			if (vha->hw->flags.edif_enabled && DBELL_ACTIVE(vha)) {
- 				/*
- 				 * On ipsec start by remote port, Target port
+diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
+index dd6150d200e89..3609bfd3c64be 100644
+--- a/drivers/memory/mtk-smi.c
++++ b/drivers/memory/mtk-smi.c
+@@ -685,6 +685,7 @@ static void mtk_smi_larb_remove(struct platform_device *pdev)
+ 	device_link_remove(&pdev->dev, larb->smi_common_dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	component_del(&pdev->dev, &mtk_smi_larb_component_ops);
++	put_device(larb->smi_common_dev);
+ }
+ 
+ static int __maybe_unused mtk_smi_larb_resume(struct device *dev)
 -- 
 2.51.0
 
