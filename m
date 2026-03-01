@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-222095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGYIFayho2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222095-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:16 +0100
+	id YLZcAEido2nDIQUAu9opvQ
+	(envelope-from <stable+bounces-222096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6ABE1CD614
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 981291CC6FB
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1EB73273047
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A5BB030AB2EB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B592FE598;
-	Sun,  1 Mar 2026 01:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEACE30FC23;
+	Sun,  1 Mar 2026 01:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fpl/c7ID"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTxFSyCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F6D1A3165
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F581A3165;
+	Sun,  1 Mar 2026 01:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329887; cv=none; b=rPsFdJwnMTGaJR9Ozuh9Vt3v4XU4L0Z9u0W+kpljyQHFPMZDyi40gw2MIWHF2SWG0Y/c32ThJM1RyY7gyWDYPvc5JfG8IqecMGVsYhXoksUFJEx597miWe27Kj5No8E3DjFsZdl1RwV7/OSLKMgjSSn3u9HydERLh5g8mK8naZU=
+	t=1772329889; cv=none; b=pg/LvC98rFv3IdioZhu81XXzMPqARaV5bNBm+vpYhTbWwH80KbL/Q3jgzaVOpRYE5lVaLFU9HY+fUTEdkpHTuTCAlWtJc3CSZAvBzxKYPqcMBnopsEok17PaNJO0oxqMYuBFQRUvsffV+8GYBXb7N2WTQHalHzoIemW4QBIuUwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329887; c=relaxed/simple;
-	bh=gnPunrjRUMFd8H8KWIokCy+O4evplR15fjM26Jg+GMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o7SkPI96MTediy6wW81ngjegcvrfSVnJnFTV0dqMNuecY86Tab0UumP7ZDWnTqRWK/SnEB/z1CF6Fti2XULOFyomZAE+cHEphvro0J5rc3tfyeBEIGQbmq1meF4TVdcGk0n/glKAsPbF/HfbiXNJMnBK19ee16bJl/f94IIVtjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fpl/c7ID; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A462C19424;
-	Sun,  1 Mar 2026 01:51:26 +0000 (UTC)
+	s=arc-20240116; t=1772329889; c=relaxed/simple;
+	bh=AgSADgdW694KD7uHvIcfpYrMGEv0FmdH9BuEzfYfoOs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WIHBzSeKF9AjUxcQDRmTP3mzhT3+Cry5dBQtoGHNNpde1nui/fHNG+cVXUDCEfIFnYkwLBKdwBlb6CK3HKSXdL240F31/SUjfQuE37t39DXWPHkIIpMK55EzjF5y40/uLF/W0/4s5g+iJQ3mfzuWVEHWJROHj/DS44QWwpkqvL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTxFSyCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844E8C19425;
+	Sun,  1 Mar 2026 01:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329886;
-	bh=gnPunrjRUMFd8H8KWIokCy+O4evplR15fjM26Jg+GMY=;
+	s=k20201202; t=1772329889;
+	bh=AgSADgdW694KD7uHvIcfpYrMGEv0FmdH9BuEzfYfoOs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Fpl/c7IDNCIvGr+EzJhclGT3Lja2u1FxPgWA1rmbsLY9kSHyPiXezifuH1ws6J1kL
-	 5k3yarYUIdQvlUumrOYIXsTfI1zJQpjZ5XlZiP58B0yoUYVZLrfLld2Fk8VveofdbK
-	 Cwyd7lXpskLvJvmI1eowUQ9WnmlO1G75nHhSSjs5YZdP+TyO8UpWsACuhLu8V4Hx0Q
-	 44On6ctXBMbdxv0b63RTC70gqyzCguUty4X4380+asSikADiyw7CkOBC6UliRs+qEh
-	 xvdDfJ0JngyXc6tITFpUq83m3+yMPs3VXhJww1lYwykN8p9Q9a4D2LtTAp31W/IABW
-	 8dwld7m6LOhnQ==
+	b=XTxFSyCTPu7GlW7pSmO5m6jhUcfe8w/D7irQ88zl/do53I/bXH4JP7UK/dTRRx13b
+	 fK9Vb93QX/w+UZ9IicJIv533n3R6USm5fakfuaCqBzrEYmHkCgXyk5j4LfuHhH+183
+	 BsT2FkkbvDZgP5rKvcVZgVSNB0flNfmebf5BnuW2RCj+QbwiFHtVNsaqYuxRKzNlep
+	 0fPLIJGhLqlxV12WNydcksLr0LAP3BupfOh6yYBh26evlWLbGB8TdQ5otq17lHaa+P
+	 tnOXoo7bxbgItzCTB545PQxmC2GDEWJOhIHt+DXIvEJf8tmLnD5h9YH5p3stkZrCmy
+	 c+5QosKp7+flQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	luca.ceresoli@bootlin.com
-Cc: Maxime Ripard <mripard@kernel.org>,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm: of: drm_of_panel_bridge_remove(): fix device_node leak" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:51:24 -0500
-Message-ID: <20260301015125.1717695-1-sashal@kernel.org>
+	djwong@kernel.org
+Cc: Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>,
+	linux-xfs@vger.kernel.org
+Subject: FAILED: Patch "xfs: mark data structures corrupt on EIO and ENODATA" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:51:26 -0500
+Message-ID: <20260301015127.1717768-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,19 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222095-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-222096-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E6ABE1CD614
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email]
+X-Rspamd-Queue-Id: 981291CC6FB
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -102,44 +103,80 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a4b4385d0523e39a7c058cb5a6c8269e513126ca Mon Sep 17 00:00:00 2001
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Fri, 9 Jan 2026 08:31:32 +0100
-Subject: [PATCH] drm: of: drm_of_panel_bridge_remove(): fix device_node leak
+From f39854a3fb2f06dc69b81ada002b641ba5b4696b Mon Sep 17 00:00:00 2001
+From: "Darrick J. Wong" <djwong@kernel.org>
+Date: Thu, 18 Dec 2025 18:40:50 -0800
+Subject: [PATCH] xfs: mark data structures corrupt on EIO and ENODATA
 
-drm_of_panel_bridge_remove() uses of_graph_get_remote_node() to get a
-device_node but does not put the node reference.
+I learned a few things this year: first, blk_status_to_errno can return
+ENODATA for critical media errors; and second, the scrub code doesn't
+mark data structures as corrupt on ENODATA or EIO.
 
-Fixes: c70087e8f16f ("drm/drm_of: add drm_of_panel_bridge_remove function")
+Currently, scrub failing to capture these errors isn't all that
+impactful -- the checking code will exit to userspace with EIO/ENODATA,
+and xfs_scrub will log a complaint and exit with nonzero status.  Most
+people treat fsck tools failing as a sign that the fs is corrupt, but
+online fsck should mark the metadata bad and keep moving.
+
 Cc: stable@vger.kernel.org # v4.15
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patch.msgid.link/20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-1-8bad3ef90b9f@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Fixes: 4700d22980d459 ("xfs: create helpers to record and deal with scrub problems")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 ---
- include/drm/drm_of.h | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/xfs/scrub/btree.c   | 2 ++
+ fs/xfs/scrub/common.c  | 4 ++++
+ fs/xfs/scrub/dabtree.c | 2 ++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/include/drm/drm_of.h b/include/drm/drm_of.h
-index 7f0256dae3f13..f3e55ea2174c0 100644
---- a/include/drm/drm_of.h
-+++ b/include/drm/drm_of.h
-@@ -5,6 +5,7 @@
- #include <linux/err.h>
- #include <linux/of_graph.h>
- #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
-+#include <linux/of.h>
- #include <drm/drm_bridge.h>
- #endif
- 
-@@ -173,6 +174,8 @@ static inline int drm_of_panel_bridge_remove(const struct device_node *np,
- 	bridge = of_drm_find_bridge(remote);
- 	drm_panel_bridge_remove(bridge);
- 
-+	of_node_put(remote);
-+
- 	return 0;
- #else
- 	return -EINVAL;
+diff --git a/fs/xfs/scrub/btree.c b/fs/xfs/scrub/btree.c
+index 8ba004979862f..40f36db9f07d5 100644
+--- a/fs/xfs/scrub/btree.c
++++ b/fs/xfs/scrub/btree.c
+@@ -42,6 +42,8 @@ __xchk_btree_process_error(
+ 		break;
+ 	case -EFSBADCRC:
+ 	case -EFSCORRUPTED:
++	case -EIO:
++	case -ENODATA:
+ 		/* Note the badness but don't abort. */
+ 		sc->sm->sm_flags |= errflag;
+ 		*error = 0;
+diff --git a/fs/xfs/scrub/common.c b/fs/xfs/scrub/common.c
+index 38d0b7d5c894b..affed35a8c96f 100644
+--- a/fs/xfs/scrub/common.c
++++ b/fs/xfs/scrub/common.c
+@@ -103,6 +103,8 @@ __xchk_process_error(
+ 		break;
+ 	case -EFSBADCRC:
+ 	case -EFSCORRUPTED:
++	case -EIO:
++	case -ENODATA:
+ 		/* Note the badness but don't abort. */
+ 		sc->sm->sm_flags |= errflag;
+ 		*error = 0;
+@@ -177,6 +179,8 @@ __xchk_fblock_process_error(
+ 		break;
+ 	case -EFSBADCRC:
+ 	case -EFSCORRUPTED:
++	case -EIO:
++	case -ENODATA:
+ 		/* Note the badness but don't abort. */
+ 		sc->sm->sm_flags |= errflag;
+ 		*error = 0;
+diff --git a/fs/xfs/scrub/dabtree.c b/fs/xfs/scrub/dabtree.c
+index dd14f355358ca..5858d4d5e279b 100644
+--- a/fs/xfs/scrub/dabtree.c
++++ b/fs/xfs/scrub/dabtree.c
+@@ -45,6 +45,8 @@ xchk_da_process_error(
+ 		break;
+ 	case -EFSBADCRC:
+ 	case -EFSCORRUPTED:
++	case -EIO:
++	case -ENODATA:
+ 		/* Note the badness but don't abort. */
+ 		sc->sm->sm_flags |= XFS_SCRUB_OFLAG_CORRUPT;
+ 		*error = 0;
 -- 
 2.51.0
 
