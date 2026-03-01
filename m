@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-221294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIMgGM2Uo2n3HQUAu9opvQ
-	(envelope-from <stable+bounces-221294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:22:21 +0100
+	id uEsSF9eUo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:22:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94211CA4DD
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:22:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0386D1CA502
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:22:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BDA83072184
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:18:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB44630743FB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7630225DB1C;
-	Sun,  1 Mar 2026 01:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB88258EE1;
+	Sun,  1 Mar 2026 01:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DH3TsAnl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SROKabUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3471724A076;
-	Sun,  1 Mar 2026 01:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E42246798;
+	Sun,  1 Mar 2026 01:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327909; cv=none; b=hC0fEkbS/wj+NbGr5Hl5kQ86bxhzfaCbkQbE3BX+jxxdVsy+f5SBvJhgHR0BeHALYiK7/1yLkq0pClgLAV8PfQ423B1E/cACQ3anN2TtXYoD9+UA6ITmuQ0TnTMAHZ3E+xfg9YK7Wm8NxXW8tkPcRhMVjpeAp3PBImgah9xojg8=
+	t=1772327911; cv=none; b=PmWeCHbAq6vfOfG2aX++2Jtn5sMYt5GAjEHRv0WtLZ6o2xsymUih4A+f3oaDp8+sYR9PBepw7yON4oRF1CksZ/2fonXNmRo/eFz0rmVJqHp6daVRBpI+Q14Lg40oBCAi4lIuOVyjkJTXPhDGr4is7NpCl62yk75TZs7K2uoSrbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327909; c=relaxed/simple;
-	bh=f1QwRXDsZKMS/2TuoSSMhTKDnJYmX/+DL2BMiCFg27w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pPryP5QcO0y33VBtSGFVg7sngbKX2sOjwxQ0neAuTkBI+kd0Nzvn4Iq0kdsQbvg+qPhV0tdIhVL8Ei2lhydDdqJbBB05FV+YAB6ZZPb2Toi+xS7KFAKgvXAITJGVliNptNanFyHsSvXYe+Ax1RtQ4yXeD9DCyme1hYz6QJfGPoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DH3TsAnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0FAC19421;
-	Sun,  1 Mar 2026 01:18:28 +0000 (UTC)
+	s=arc-20240116; t=1772327911; c=relaxed/simple;
+	bh=aD5MZEiryuJA6g6rIbaPN1U57ewDcb4MLGf6dc/rBBE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jdE53WVTiCQvU7W4OxsS+rfojSXF46Sii3smtZulco1ApHC6Xs2vzQpEnXckfWqS3rtOBUeW7YnssIgs6S1F+Nm82Mo7/fSgsVlZTFzEm+lEsR3L1xcOKMaz7dLzCcfM/i2+Fo8bmudeN1yKzWVzEqFfZwphyhpgBY3B95teNF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SROKabUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08EBC19425;
+	Sun,  1 Mar 2026 01:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327909;
-	bh=f1QwRXDsZKMS/2TuoSSMhTKDnJYmX/+DL2BMiCFg27w=;
+	s=k20201202; t=1772327911;
+	bh=aD5MZEiryuJA6g6rIbaPN1U57ewDcb4MLGf6dc/rBBE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=DH3TsAnlqLQn8JmdK/p2ldNAgdyIoSVOVpbDWCiMttFhJS8oygTJegw6Cw6enVccF
-	 O0qK8UYOoHnNG3diXEdekpH3g0FJBNwmhw4DRwiQUS47+40W4pCQjR+Jp9cozM54pB
-	 r0ZyynOMz1sIRe2NAaJUTBFtBANOzBaOyuScyfb86e4esvRKixa+lL6IdhW6sMGkU2
-	 3fQtvih3x/oi8DO5H8q9WR4BXFL0qIehc6pxM44Wr0K4PASjFH0oSXqdGBycPsEY5A
-	 WkqrRKxQSjJieO00EnxQhn4sRLoKp6w+hVbJbA6g6yG1GeDpC78M8FgAyhFSmEK0Wi
-	 KormKpW1sdpzA==
+	b=SROKabUKoRCGymKh+A2Ui5CYBkamSazDB+g1NjrRZ4ulVmA0x/SUctFyQTBw/xoSq
+	 cKQQD6APx085/+/AkQ/XjvTz22JLTp6f5QHClD06onvbALVXFkRkKm90e+0mJUu6H5
+	 103dAIko0uPQyMIlc+D4/R7yIR2jlMjDCLWqhZEYAO5PNQ4AEmDPxZKN9C7ZEFZp+x
+	 vdTWyoC3QL3kqtKsK7FMdJRXbu9V/AIyMKl2WmYaAU+hNPvbOAQCc4xVJDUEIUPWGc
+	 r+l57VYDuNnvdh9wa6SX6TrpY6J5XZsPCexsHdhd4VHGnwSaR+KMjmzulEnX+zPqKq
+	 Qa1Khn8XLkjVg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	cassel@kernel.org
 Cc: Manivannan Sadhasivam <mani@kernel.org>,
 	Shawn Lin <shawn.lin@rock-chips.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: FAILED: Patch "Revert "PCI: qcom: Don't wait for link if we can detect Link Up"" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:18:27 -0500
-Message-ID: <20260301011827.1672839-1-sashal@kernel.org>
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: FAILED: Patch "Revert "PCI: dw-rockchip: Enumerate endpoints based on dll_link_up IRQ"" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:18:29 -0500
+Message-ID: <20260301011829.1672885-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,33 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221294-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221295-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rock-chips.com:email]
-X-Rspamd-Queue-Id: B94211CA4DD
+X-Rspamd-Queue-Id: 0386D1CA502
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -104,13 +105,13 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From e9ce5b3804436301ab343bc14203a4c14b336d1b Mon Sep 17 00:00:00 2001
+From 180c3cfe36786d261a55da52a161f9e279b19a6f Mon Sep 17 00:00:00 2001
 From: Niklas Cassel <cassel@kernel.org>
-Date: Mon, 22 Dec 2025 07:42:10 +0100
-Subject: [PATCH] Revert "PCI: qcom: Don't wait for link if we can detect Link
- Up"
+Date: Mon, 22 Dec 2025 07:42:09 +0100
+Subject: [PATCH] Revert "PCI: dw-rockchip: Enumerate endpoints based on
+ dll_link_up IRQ"
 
-This reverts commit 36971d6c5a9a134c15760ae9fd13c6d5f9a36abb.
+This reverts commit 0e0b45ab5d770a748487ba0ae8f77d1fb0f0de3e.
 
 While this fake hotplugging was a nice idea, it has shown that this feature
 does not handle PCIe switches correctly:
@@ -156,34 +157,109 @@ Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Tested-by: Shawn Lin <shawn.lin@rock-chips.com>
 Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251222064207.3246632-11-cassel@kernel.org
+Link: https://patch.msgid.link/20251222064207.3246632-10-cassel@kernel.org
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c | 59 +------------------
+ 1 file changed, 3 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index 60373fe1362f8..e87ec6779d44f 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1958,10 +1958,6 @@ static int qcom_pcie_probe(struct platform_device *pdev)
+diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+index ca808d8f79753..352f513ebf036 100644
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -508,34 +508,6 @@ static const struct dw_pcie_ops dw_pcie_ops = {
+ 	.get_ltssm = rockchip_pcie_get_ltssm,
+ };
  
- 	platform_set_drvdata(pdev, pcie);
- 
--	irq = platform_get_irq_byname_optional(pdev, "global");
--	if (irq > 0)
--		pp->use_linkup_irq = true;
+-static irqreturn_t rockchip_pcie_rc_sys_irq_thread(int irq, void *arg)
+-{
+-	struct rockchip_pcie *rockchip = arg;
+-	struct dw_pcie *pci = &rockchip->pci;
+-	struct dw_pcie_rp *pp = &pci->pp;
+-	struct device *dev = pci->dev;
+-	u32 reg;
 -
- 	ret = dw_pcie_host_init(pp);
- 	if (ret) {
- 		dev_err(dev, "cannot initialize host\n");
-@@ -1975,6 +1971,7 @@ static int qcom_pcie_probe(struct platform_device *pdev)
- 		goto err_host_deinit;
- 	}
+-	reg = rockchip_pcie_readl_apb(rockchip, PCIE_CLIENT_INTR_STATUS_MISC);
+-	rockchip_pcie_writel_apb(rockchip, reg, PCIE_CLIENT_INTR_STATUS_MISC);
+-
+-	dev_dbg(dev, "PCIE_CLIENT_INTR_STATUS_MISC: %#x\n", reg);
+-	dev_dbg(dev, "LTSSM_STATUS: %#x\n", rockchip_pcie_get_ltssm_reg(rockchip));
+-
+-	if (reg & PCIE_RDLH_LINK_UP_CHGED) {
+-		if (rockchip_pcie_link_up(pci)) {
+-			msleep(PCIE_RESET_CONFIG_WAIT_MS);
+-			dev_dbg(dev, "Received Link up event. Starting enumeration!\n");
+-			/* Rescan the bus to enumerate endpoint devices */
+-			pci_lock_rescan_remove();
+-			pci_rescan_bus(pp->bridge->bus);
+-			pci_unlock_rescan_remove();
+-		}
+-	}
+-
+-	return IRQ_HANDLED;
+-}
+-
+ static irqreturn_t rockchip_pcie_ep_sys_irq_thread(int irq, void *arg)
+ {
+ 	struct rockchip_pcie *rockchip = arg;
+@@ -568,29 +540,14 @@ static irqreturn_t rockchip_pcie_ep_sys_irq_thread(int irq, void *arg)
+ 	return IRQ_HANDLED;
+ }
  
-+	irq = platform_get_irq_byname_optional(pdev, "global");
- 	if (irq > 0) {
- 		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
- 						qcom_pcie_global_irq_thread,
+-static int rockchip_pcie_configure_rc(struct platform_device *pdev,
+-				      struct rockchip_pcie *rockchip)
++static int rockchip_pcie_configure_rc(struct rockchip_pcie *rockchip)
+ {
+-	struct device *dev = &pdev->dev;
+ 	struct dw_pcie_rp *pp;
+-	int irq, ret;
+ 	u32 val;
+ 
+ 	if (!IS_ENABLED(CONFIG_PCIE_ROCKCHIP_DW_HOST))
+ 		return -ENODEV;
+ 
+-	irq = platform_get_irq_byname(pdev, "sys");
+-	if (irq < 0)
+-		return irq;
+-
+-	ret = devm_request_threaded_irq(dev, irq, NULL,
+-					rockchip_pcie_rc_sys_irq_thread,
+-					IRQF_ONESHOT, "pcie-sys-rc", rockchip);
+-	if (ret) {
+-		dev_err(dev, "failed to request PCIe sys IRQ\n");
+-		return ret;
+-	}
+-
+ 	/* LTSSM enable control mode */
+ 	val = FIELD_PREP_WM16(PCIE_LTSSM_ENABLE_ENHANCE, 1);
+ 	rockchip_pcie_writel_apb(rockchip, val, PCIE_CLIENT_HOT_RESET_CTRL);
+@@ -602,17 +559,7 @@ static int rockchip_pcie_configure_rc(struct platform_device *pdev,
+ 	pp = &rockchip->pci.pp;
+ 	pp->ops = &rockchip_pcie_host_ops;
+ 
+-	ret = dw_pcie_host_init(pp);
+-	if (ret) {
+-		dev_err(dev, "failed to initialize host\n");
+-		return ret;
+-	}
+-
+-	/* unmask DLL up/down indicator */
+-	val = FIELD_PREP_WM16(PCIE_RDLH_LINK_UP_CHGED, 0);
+-	rockchip_pcie_writel_apb(rockchip, val, PCIE_CLIENT_INTR_MASK_MISC);
+-
+-	return ret;
++	return dw_pcie_host_init(pp);
+ }
+ 
+ static int rockchip_pcie_configure_ep(struct platform_device *pdev,
+@@ -731,7 +678,7 @@ static int rockchip_pcie_probe(struct platform_device *pdev)
+ 
+ 	switch (data->mode) {
+ 	case DW_PCIE_RC_TYPE:
+-		ret = rockchip_pcie_configure_rc(pdev, rockchip);
++		ret = rockchip_pcie_configure_rc(rockchip);
+ 		if (ret)
+ 			goto deinit_clk;
+ 		break;
 -- 
 2.51.0
 
