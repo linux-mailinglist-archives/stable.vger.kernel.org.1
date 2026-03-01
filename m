@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-222115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOFVKG2do2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:09 +0100
+	id IKQ9K2Oeo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6676E1CC7D8
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1991CCBB0
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1380A306FE6F
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7EE64307E874
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84719309F08;
-	Sun,  1 Mar 2026 01:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD9C311975;
+	Sun,  1 Mar 2026 01:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRzobopH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJO8RZIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C8F2FD7BE;
-	Sun,  1 Mar 2026 01:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E1F309EE9;
+	Sun,  1 Mar 2026 01:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329940; cv=none; b=jydjZwDnVWViFPy4kwQgLicC74h2V3k986Nx29TX6HRaJfacq88CJP74KaHMcvnCgf7UJ0cWkGvYJIoFP3OKB//15iOV0T2U0829CvVCoXy2I6TyumYuLhduYbhAgaOfUuiVuumjT+uRs3uPmMGiTANZBC3Iqc78HYW4RY6k0Do=
+	t=1772329942; cv=none; b=k4PR+HniJpP0JWn/DP07mO4Hqzulh3Z90Z6AWQ3nDuSBWEEldJ53BXaikRzXF4BNOcvJiYbt2fu0VMqW1u926+dWIUnpFd6wwnBoCRdI/y4EF/yFNDjUjiPceYcFKRfKoFjwqZo8I6N+ptn5R2EJp3C+a1SOite8SPaYywmfTHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329940; c=relaxed/simple;
-	bh=8lbF1j8bYc2jjw1q7zHSl0yiArpqCszERv6Ckuw9lKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ExxbfcSDRbDj71ggWuDpT/XZ5LqAKnLEp8jMJEjH0nX+DwT0Qrz9KJE7wWPeN1KIShBeOg4K7JEBYEpEMv+EOjbgrg7oTwHd+N//5udFikheFf3EAohq5xIRDhA1XQLTBaY7pmwinwKT7C2aqD4i6DbWBreHBYInEYthpAI4z20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRzobopH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4ADC19421;
-	Sun,  1 Mar 2026 01:52:19 +0000 (UTC)
+	s=arc-20240116; t=1772329942; c=relaxed/simple;
+	bh=tL9qk+qOPUMoiwsaixGs97ph6zMCLzRS4UD8NgDGiFY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sV3809HNFUvuNlGPVjwklokA9Wu7/juRr4VLS/rbfblihCik8Scrq/oHyoFtPbORnJgfi8/2Hg6jiQQA9evp3ptQBVrTIOWbo5tv7SVKhRy9oDliF7f3q2K+wZpe8MSGiLRMjjE2mAnK4JfS/a7OhjZhmdRO9ETl8JsAc5rXxlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJO8RZIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7135C19421;
+	Sun,  1 Mar 2026 01:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329939;
-	bh=8lbF1j8bYc2jjw1q7zHSl0yiArpqCszERv6Ckuw9lKc=;
+	s=k20201202; t=1772329942;
+	bh=tL9qk+qOPUMoiwsaixGs97ph6zMCLzRS4UD8NgDGiFY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=rRzobopH0/8uqv36Pb+6xjDCWg2IwJlsVlKBCweYPBOfxYd3xlKYRssjWcbZY43XG
-	 /kbQFYNiSGU7eiXSCYS1H5Z55QCdo6rmoUvsxh9KiU4tKzXXjBtr2zU0mv173/go5f
-	 PDGXIIxaXD0F7t61aP1S3lCvNxMxhPIPru8N0gngiiAli5m2kvde2Ky8GrQ82cf7Ie
-	 DJuWv88llaIe81/CIYcekNUaeSGu+RQSUTN9MgqJI+UbjRFW/GlE2xmVpKQv8hwKj0
-	 wVrGApXSbV1PDWauTyLf3Ets2L2Vyz7mrOOEgwh+dnsr+OfbPTPgKp56E/TGeQYovC
-	 dmbiC5bxQCSBw==
+	b=rJO8RZIwaWxbjv4dr65idPt66V1LuYgWU82pMYuAgsOdCzQUOnSfLzygDt8DDb6WW
+	 LoN7jsBJaKcrEqtzmP9uVhJYeqYHDMulQhIakPyZEO59v6hc3+8cTd56kF7Y4TJXSn
+	 a5UvDhY2diVZ2S+bWgEIpJA/3Qxmto8jnCpJ9ftU0tiZGYeyYln0OCXOLCn1oiGm6z
+	 nLQHs3DBHqzJY6gJVN8cQiqwGuVJOehCWbfEO7u52P8utps7FthZ/tpKD84W/D6m2S
+	 xNgC1NcPrGnwenp+XhN5R2Iv/bI5neE1JmcBbW6seKGI84aTqKY2Pk3YMtiY5CKpZg
+	 ffZIHE03BGyWw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jinpu.wang@ionos.com
-Cc: Yu Kuai <yukuai@fnnas.com>,
-	linux-raid@vger.kernel.org
-Subject: FAILED: Patch "md/bitmap: fix GPF in write_page caused by resize race" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:52:17 -0500
-Message-ID: <20260301015218.1718763-1-sashal@kernel.org>
+	ailiop@suse.com
+Cc: NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	linux-nfs@vger.kernel.org
+Subject: FAILED: Patch "nfsd: fix return error code for nfsd_map_name_to_[ug]id" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:52:20 -0500
+Message-ID: <20260301015220.1718813-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,19 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222115-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-222116-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,fnnas.com:email,ionos.com:email]
-X-Rspamd-Queue-Id: 6676E1CC7D8
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,brown.name:email]
+X-Rspamd-Queue-Id: 2D1991CCBB0
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -102,53 +103,56 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 46ef85f854dfa9d5226b3c1c46493d79556c9589 Mon Sep 17 00:00:00 2001
-From: Jack Wang <jinpu.wang@ionos.com>
-Date: Tue, 20 Jan 2026 11:24:56 +0100
-Subject: [PATCH] md/bitmap: fix GPF in write_page caused by resize race
+From 404d779466646bf1461f2090ff137e99acaecf42 Mon Sep 17 00:00:00 2001
+From: Anthony Iliopoulos <ailiop@suse.com>
+Date: Mon, 22 Dec 2025 14:30:05 -0500
+Subject: [PATCH] nfsd: fix return error code for nfsd_map_name_to_[ug]id
 
-A General Protection Fault occurs in write_page() during array resize:
-RIP: 0010:write_page+0x22b/0x3c0 [md_mod]
+idmap lookups can time out while the cache is waiting for a userspace
+upcall reply. In that case cache_check() returns -ETIMEDOUT to callers.
 
-This is a use-after-free race between bitmap_daemon_work() and
-__bitmap_resize(). The daemon iterates over `bitmap->storage.filemap`
-without locking, while the resize path frees that storage via
-md_bitmap_file_unmap(). `quiesce()` does not stop the md thread,
-allowing concurrent access to freed pages.
+The nfsd_map_name_to_[ug]id functions currently proceed with attempting
+to map the id to a kuid despite a potentially temporary failure to
+perform the idmap lookup. This results in the code returning the error
+NFSERR_BADOWNER which can cause client operations to return to userspace
+with failure.
 
-Fix by holding `mddev->bitmap_info.mutex` during the bitmap update.
+Fix this by returning the failure status before attempting kuid mapping.
 
-Link: https://lore.kernel.org/linux-raid/20260120102456.25169-1-jinpu.wang@ionos.com
-Closes: https://lore.kernel.org/linux-raid/CAMGffE=Mbfp=7xD_hYxXk1PAaCZNSEAVeQGKGy7YF9f2S4=NEA@mail.gmail.com/T/#u
+This will return NFSERR_JUKEBOX on idmap lookup timeout so that clients
+can retry the operation instead of aborting it.
+
+Fixes: 65e10f6d0ab0 ("nfsd: Convert idmap to use kuids and kgids")
 Cc: stable@vger.kernel.org
-Fixes: d60b479d177a ("md/bitmap: add bitmap_resize function to allow bitmap resizing.")
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/md/md-bitmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4idmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index dbe4c4b9a1daf..1d4a050dab3ab 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2453,6 +2453,7 @@ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
- 		memcpy(page_address(store.sb_page),
- 		       page_address(bitmap->storage.sb_page),
- 		       sizeof(bitmap_super_t));
-+	mutex_lock(&bitmap->mddev->bitmap_info.mutex);
- 	spin_lock_irq(&bitmap->counts.lock);
- 	md_bitmap_file_unmap(&bitmap->storage);
- 	bitmap->storage = store;
-@@ -2560,7 +2561,7 @@ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
- 			set_page_attr(bitmap, i, BITMAP_PAGE_DIRTY);
- 	}
- 	spin_unlock_irq(&bitmap->counts.lock);
--
-+	mutex_unlock(&bitmap->mddev->bitmap_info.mutex);
- 	if (!init) {
- 		__bitmap_unplug(bitmap);
- 		bitmap->mddev->pers->quiesce(bitmap->mddev, 0);
+diff --git a/fs/nfsd/nfs4idmap.c b/fs/nfsd/nfs4idmap.c
+index b5b3d45979c9b..c319c31b0f647 100644
+--- a/fs/nfsd/nfs4idmap.c
++++ b/fs/nfsd/nfs4idmap.c
+@@ -672,6 +672,8 @@ __be32 nfsd_map_name_to_uid(struct svc_rqst *rqstp, const char *name,
+ 		return nfserr_inval;
+ 
+ 	status = do_name_to_id(rqstp, IDMAP_TYPE_USER, name, namelen, &id);
++	if (status)
++		return status;
+ 	*uid = make_kuid(nfsd_user_namespace(rqstp), id);
+ 	if (!uid_valid(*uid))
+ 		status = nfserr_badowner;
+@@ -707,6 +709,8 @@ __be32 nfsd_map_name_to_gid(struct svc_rqst *rqstp, const char *name,
+ 		return nfserr_inval;
+ 
+ 	status = do_name_to_id(rqstp, IDMAP_TYPE_GROUP, name, namelen, &id);
++	if (status)
++		return status;
+ 	*gid = make_kgid(nfsd_user_namespace(rqstp), id);
+ 	if (!gid_valid(*gid))
+ 		status = nfserr_badowner;
 -- 
 2.51.0
 
