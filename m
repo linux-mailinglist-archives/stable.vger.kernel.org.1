@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-221251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNnLGrKTo2lpHQUAu9opvQ
-	(envelope-from <stable+bounces-221251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:17:38 +0100
+	id KNQNLVWTo2khHQUAu9opvQ
+	(envelope-from <stable+bounces-221252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:16:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18DB1CA13D
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:17:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52FAB1CA03D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D003C305543C
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:15:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A0839301F4B2
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73CC238171;
-	Sun,  1 Mar 2026 01:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA5B23535E;
+	Sun,  1 Mar 2026 01:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AfPaOegL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hDSiwTRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADD221CC58;
-	Sun,  1 Mar 2026 01:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AC6430B90;
+	Sun,  1 Mar 2026 01:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327734; cv=none; b=ZWqkI2yRnyXTQRu4CtcfupkdqAtF/eqYYgl+tLPgj22VNO+2X3FHy4cA0kIcW0TeCbJH/3nTxdsFk5T3oS9UhAsC+HWMk0oEF1tDWLj+ixlZQ9Cu2GlrMSMfhJd8R4PzwU1IZ0RbfFTxAoACDT+SdpktY1/rXaFq/gqP8p3a7cU=
+	t=1772327736; cv=none; b=KcbhnjGrPVWAKbSiMrEWysvxlnnWqHUr0Ijk7911SZ70SZTDjao6IvB95AAgqmac4vVmPkIOOoj3GZP8wKy9oFIwRGIxYBp4BKNkwuxKsDIaLJXp7OFTJiO20t3aVresGCPjDirWgHQHcnFxy5MtHZwymIoR/o069WXHUEi5gD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327734; c=relaxed/simple;
-	bh=q1KzisR7YydyGnrLR8TJKjUW4vGofbE3oDGsOOqxC24=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GtMVfWd+PJ15VwP/+E9izrffvkH1M4KXbH7OAxkLVPYA3+YaZKzuSADmJkec6KkapadO1f2wK7y6k9hKXx3cGpra+mVqelWANaiKvhBnlqUIJ/tVQyjvOMbyGCP2hn6dfFx1VWgHvnLhfKBhM8K9aZcHrTPBx80+NQw2WsSN6uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AfPaOegL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC32C19421;
-	Sun,  1 Mar 2026 01:15:33 +0000 (UTC)
+	s=arc-20240116; t=1772327736; c=relaxed/simple;
+	bh=k/Q2SdSDuVQ9xEzNdBSgHjkvZMDM40Qn7IT7bDtZEx8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BmT2OLONOO0ylPOoWGS9jLuzdOlwq0pU7rqJrs0mTHbkBMysMpkGVUGrRXKlrD6ssoCl5bLPid/Y3sUuTC3CtRg21z+71r1Z71SfNynMrITgS9BqKEeXXNOwd0PZNe4LsA03F/liomz0qGWzIOrVe2X7qLheq058XcrOnpEYj2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hDSiwTRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06120C19421;
+	Sun,  1 Mar 2026 01:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327734;
-	bh=q1KzisR7YydyGnrLR8TJKjUW4vGofbE3oDGsOOqxC24=;
+	s=k20201202; t=1772327736;
+	bh=k/Q2SdSDuVQ9xEzNdBSgHjkvZMDM40Qn7IT7bDtZEx8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=AfPaOegLBOFU+hWGVTA7HntqYQKei6+f1zh4tqKTPTvWjVHwmTLbDD+zS9DAJCH82
-	 LyOtR1Bjg6E3iVPJg1LtLVW5wMLctcoQexT2Tdy+i4Gnu5SM6rQ/klGjkuVI3E/5Tp
-	 UQ8zYhVbaJpAtqbxcYSKIc3ln3BpD5xycVFUScTJD20VKyk0sA4OTkypGO0JjSzEoI
-	 dBtVql6y/OsENTIhRmlkThRb803IRJLxydPVbGcZmJqfCqFqB+8WpG4jGtsAW0/ag9
-	 SVthhZhIpKoMWBA2fPx3huqS17GIMd/VjHHEW2KjqRt5+I3V8a6Xsb4hnNBeEHZA2y
-	 xLMM4jnJa7dmA==
+	b=hDSiwTRW58DXiC0ueNTBWBhZLZCmZxxfa0wZtF0TMQVY4WwV+JxYgmawqY37yYp5C
+	 aMt1qMgSkhtQx8fdPl0ydRNnb2X+uqQ5aCl7nOovVMef0nuNWdPgPRo9RQj48CfLO/
+	 CkvAmnq8GG/+Yy5GbyshQIEuO1ZE1fOBwR2GBcERSkawBHsyjVE84jFrheytzgvW+9
+	 BJWegTS/ywJ4Q49Vg/2WUTraa55kvjSwM+Awke9aBM1imJEO96euuy0rXfPYszm+tZ
+	 y0KdWCo0tu0x6UHzcnwZxo6oqX87TojpmeuP+FlEMTtTEmUyyD7HgEzuhYcmtAQ9SI
+	 /wr7zwqc3Vehg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	seanjc@google.com
-Cc: Alessandro Ratti <alessandro@0x65c.net>,
-	syzbot+1522459a74d26b0ac33a@syzkaller.appspotmail.com,
-	kvm@vger.kernel.org
-Subject: FAILED: Patch "KVM: x86: Ignore -EBUSY when checking nested events from vcpu_block()" failed to apply to 6.18-stable tree
-Date: Sat, 28 Feb 2026 20:15:32 -0500
-Message-ID: <20260301011532.1668942-1-sashal@kernel.org>
+	dikshita.agarwal@oss.qualcomm.com
+Cc: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: FAILED: Patch "media: iris: remove v4l2_m2m_ioctl_{de,en}coder_cmd API usage during STOP handling" failed to apply to 6.18-stable tree
+Date: Sat, 28 Feb 2026 20:15:34 -0500
+Message-ID: <20260301011534.1669032-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,35 +65,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221251-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221252-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,1522459a74d26b0ac33a];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,0x65c.net:email]
-X-Rspamd-Queue-Id: C18DB1CA13D
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 52FAB1CA03D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.18-stable tree.
@@ -104,57 +105,70 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From ead63640d4e72e6f6d464f4e31f7fecb79af8869 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Thu, 8 Jan 2026 19:06:57 -0800
-Subject: [PATCH] KVM: x86: Ignore -EBUSY when checking nested events from
- vcpu_block()
+From 8fc707d13df517222db12b465af4aa9df05c99e1 Mon Sep 17 00:00:00 2001
+From: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Date: Sun, 2 Nov 2025 09:10:19 +0530
+Subject: [PATCH] media: iris: remove v4l2_m2m_ioctl_{de,en}coder_cmd API usage
+ during STOP handling
 
-Ignore -EBUSY when checking nested events after exiting a blocking state
-while L2 is active, as exiting to userspace will generate a spurious
-userspace exit, usually with KVM_EXIT_UNKNOWN, and likely lead to the VM's
-demise.  Continuing with the wakeup isn't perfect either, as *something*
-has gone sideways if a vCPU is awakened in L2 with an injected event (or
-worse, a nested run pending), but continuing on gives the VM a decent
-chance of surviving without any major side effects.
+Currently v4l2_m2m_ioctl_{de,enc}coder_cmd is being invoked during STOP
+command handling. However, this is not required as the iris driver has
+its own drain and stop handling mechanism in place.
 
-As explained in the Fixes commits, it _should_ be impossible for a vCPU to
-be put into a blocking state with an already-injected event (exception,
-IRQ, or NMI).  Unfortunately, userspace can stuff MP_STATE and/or injected
-events, and thus put the vCPU into what should be an impossible state.
+Using the m2m command API in this context leads to incorrect behavior,
+where the LAST flag is prematurely attached to a capture buffer,
+when there are no buffers in m2m source queue. But, in this scenario
+even though the source buffers are returned to client, hardware might
+still need to process the pending capture buffers.
 
-Don't bother trying to preserve the WARN, e.g. with an anti-syzkaller
-Kconfig, as WARNs can (hopefully) be added in paths where _KVM_ would be
-violating x86 architecture, e.g. by WARNing if KVM attempts to inject an
-exception or interrupt while the vCPU isn't running.
+Attaching LAST flag prematurely can result in the capture buffer being
+removed from the destination queue before the hardware has finished
+processing it, causing issues when the buffer is eventually returned by
+the hardware.
 
-Cc: Alessandro Ratti <alessandro@0x65c.net>
+To prevent this, remove the m2m API usage in stop handling.
+
+Fixes: d09100763bed ("media: iris: add support for drain sequence")
+Fixes: 75db90ae067d ("media: iris: Add support for drain sequence in encoder video device")
+Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Fixes: 26844fee6ade ("KVM: x86: never write to memory from kvm_vcpu_check_block()")
-Fixes: 45405155d876 ("KVM: x86: WARN if a vCPU gets a valid wakeup that KVM can't yet inject")
-Link: https://syzkaller.appspot.com/text?tag=ReproC&x=10d4261a580000
-Reported-by: syzbot+1522459a74d26b0ac33a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/671bc7a7.050a0220.455e8.022a.GAE@google.com
-Link: https://patch.msgid.link/20260109030657.994759-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- arch/x86/kvm/x86.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/platform/qcom/iris/iris_vidc.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index e4418409b468d..fe9d324da72ab 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -11597,8 +11597,7 @@ static inline int vcpu_block(struct kvm_vcpu *vcpu)
- 	if (is_guest_mode(vcpu)) {
- 		int r = kvm_check_nested_events(vcpu);
+diff --git a/drivers/media/platform/qcom/iris/iris_vidc.c b/drivers/media/platform/qcom/iris/iris_vidc.c
+index dfd94f4a84a94..bd38d84c9cc79 100644
+--- a/drivers/media/platform/qcom/iris/iris_vidc.c
++++ b/drivers/media/platform/qcom/iris/iris_vidc.c
+@@ -573,9 +573,10 @@ static int iris_dec_cmd(struct file *filp, void *fh,
  
--		WARN_ON_ONCE(r == -EBUSY);
--		if (r < 0)
-+		if (r < 0 && r != -EBUSY)
- 			return 0;
- 	}
+ 	mutex_lock(&inst->lock);
  
+-	ret = v4l2_m2m_ioctl_decoder_cmd(filp, fh, dec);
+-	if (ret)
++	if (dec->cmd != V4L2_DEC_CMD_STOP && dec->cmd != V4L2_DEC_CMD_START) {
++		ret = -EINVAL;
+ 		goto unlock;
++	}
+ 
+ 	if (inst->state == IRIS_INST_DEINIT)
+ 		goto unlock;
+@@ -606,9 +607,10 @@ static int iris_enc_cmd(struct file *filp, void *fh,
+ 
+ 	mutex_lock(&inst->lock);
+ 
+-	ret = v4l2_m2m_ioctl_encoder_cmd(filp, fh, enc);
+-	if (ret)
++	if (enc->cmd != V4L2_ENC_CMD_STOP && enc->cmd != V4L2_ENC_CMD_START) {
++		ret = -EINVAL;
+ 		goto unlock;
++	}
+ 
+ 	if (inst->state == IRIS_INST_DEINIT)
+ 		goto unlock;
 -- 
 2.51.0
 
