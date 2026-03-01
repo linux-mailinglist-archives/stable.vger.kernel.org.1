@@ -1,59 +1,75 @@
-Return-Path: <stable+bounces-222111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222112-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBaIEJ2do2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:57 +0100
+	id IOAhLuaho2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222112-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:18:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAEE81CC8BB
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54ABF1CD69D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:18:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 50D1A30E3EE9
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0150344158F
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05EF305047;
-	Sun,  1 Mar 2026 01:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE373093C1;
+	Sun,  1 Mar 2026 01:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O3z3mEad"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CMSEbp5v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F632FD681;
-	Sun,  1 Mar 2026 01:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8B3302779;
+	Sun,  1 Mar 2026 01:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329927; cv=none; b=qp5XRbHL7USvITKP2M57vBZ0BZ7HG+Yd4A2GMP/YHv6aJbFuUFZ7Ql1WMLmylOSDvCZDHPgNKDe7ZPuGG16hpDdEn+KLIw28vQsNBMIDayxfd5V2AyK9eiF4FQoTfDFxQ9Umga0gbzKIu2+Nk8+2qN9nS0IS9kmp0CDQkkORCJo=
+	t=1772329931; cv=none; b=YmxHDmaOXdAmeI/0Cts+wczke5V9+xW7v1rw6h3SpdD71P/U6mwRqDgklKU3LTthWpnlCRczWurpjbdyFjlaNW11XKruO7IRuqjOhcMBDboZQICJ9I4oZtWwhdCw/6CZh84BVfArs+527NHk4QEKX2+2kB82apY1NshK/bi947o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329927; c=relaxed/simple;
-	bh=LHfIDL0Od71IQy3hvBFo2VaqVj3BGoqhdpEsekWeTP4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pvp+kN6zOiV6nwYe/CO9yLXpImY4Gr3TKpEeHxxq0UsM3lJo//vt/X88zlV1LbmxJXspjx3xPn1gx/E9KtCenoBCSpxYRWcwib2ujdubfMRgLtuxX18Xy0o6Sh0DwgsYma1O+alT7A4egDMhh9IILVGHoQnz7W0SdIDMr+zahfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O3z3mEad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA455C19421;
-	Sun,  1 Mar 2026 01:52:06 +0000 (UTC)
+	s=arc-20240116; t=1772329931; c=relaxed/simple;
+	bh=Nw1EeV+g4V1IczrQgKHIeaJciH2dqCdwotGsG/MlDPg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TZ8VWEUoATGV70JhICcLNqhZnAQyhPxBBTt+4Qvx3hePDwwFp/mMJUfzx7bAdk8WADDZ950bSt1vFNH4iPLwjO94IpBeVInHZYdwEWEGnsDUbppqNSsgOaRDFYcdiR48Q0M/ZMv8HGfOEalNIysfUawetf/N1hhtswCzuQL933w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CMSEbp5v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B228C19421;
+	Sun,  1 Mar 2026 01:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329927;
-	bh=LHfIDL0Od71IQy3hvBFo2VaqVj3BGoqhdpEsekWeTP4=;
+	s=k20201202; t=1772329931;
+	bh=Nw1EeV+g4V1IczrQgKHIeaJciH2dqCdwotGsG/MlDPg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=O3z3mEadgsZM05alBUe0KLPmyx+MuJ+ELLWGYNiGYS8RE0FcfNcESXAqm5yupBuj/
-	 gAem9SRzBPnsDkRxo05EuQyQ3oQMuq+4Rvfr0urZ9Jv9L9BabLBdGQ24FM9oaoDz4S
-	 WMImLrh9eRawhLnojGh2+vl6UZTZuzwVZYBBC4PyTfrV7FSiNZyWUp6JYqvKaJ5avD
-	 yywsNuFgFlB7Yg7JiXHRGaWXHId2OvxgH0CAFsQpULmMUXtKmWMM69G8kfUOMK9qdz
-	 716tXEqgQEiRD3xSZzr5giJ+xxHZOD37gFguUxlsAPVeYR0vdq72VCEUQJicZy2XzK
-	 vtoRzqBbXjSNw==
+	b=CMSEbp5vNJ+3fPOApzGcQAvZKskjGRJr0y0jDtLXZSroE58GTnXw1A0y7RrcHz+eS
+	 cX+r/Mqm9MSceM0Tjcs24Im112usUQcqqkc16NVzJDMKj4ORxNyqL+jD2H57/Nf9Ti
+	 5CRNFx9aKU4NC/KwviJilYhkYImuNeDcFVzuZaWoE4QgMzQ6A1rYCwG8mOZA0DKkqT
+	 pE1CVkaPyDsDT3wrMgv2U7mToMS4YTkrXc8+Pb2vpKkD5n1eZ/qbcoQ4+Mc11snG7Q
+	 3SpzYmHloN4get1TJPmIkZeGYBa+g8gMAEol3FExeIB9ZXeQN5Lefwq/WJ6i8765tI
+	 5+WEV8rvoFCuw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mmaddireddy@nvidia.com
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	linux-pci@vger.kernel.org
-Subject: FAILED: Patch "PCI: endpoint: Fix swapped parameters in pci_{primary/secondary}_epc_epf_unlink() functions" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:52:05 -0500
-Message-ID: <20260301015205.1718530-1-sashal@kernel.org>
+	harshit.m.mogalapalli@oracle.com
+Cc: Mimi Zohar <zohar@linux.ibm.com>,
+	Alexander Graf <graf@amazon.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Betkov <bp@alien8.de>,
+	guoweikang <guoweikang.kernel@gmail.com>,
+	Henry Willard <henry.willard@oracle.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Bohac <jbohac@suse.cz>,
+	Joel Granados <joel.granados@kernel.org>,
+	Jonathan McDowell <noodles@fb.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Paul Webb <paul.x.webb@oracle.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Yifei Liu <yifei.l.liu@oracle.com>,
+	Baoquan He <bhe@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: FAILED: Patch "ima: verify the previous kernel's IMA buffer lies in addressable RAM" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:52:07 -0500
+Message-ID: <20260301015208.1718603-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,34 +81,36 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222111-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.ibm.com,amazon.com,kernel.org,alien8.de,gmail.com,oracle.com,zytor.com,redhat.com,suse.cz,fb.com,intel.com,linutronix.de,linux-foundation.org,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	TAGGED_FROM(0.00)[bounces-222112-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url,nxp.com:email]
-X-Rspamd-Queue-Id: DAEE81CC8BB
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 54ABF1CD69D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,79 +123,129 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8754dd7639ab0fd68c3ab9d91c7bdecc3e5740a8 Mon Sep 17 00:00:00 2001
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Date: Thu, 8 Jan 2026 11:57:47 +0530
-Subject: [PATCH] PCI: endpoint: Fix swapped parameters in
- pci_{primary/secondary}_epc_epf_unlink() functions
+From 10d1c75ed4382a8e79874379caa2ead8952734f9 Mon Sep 17 00:00:00 2001
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Date: Tue, 30 Dec 2025 22:16:07 -0800
+Subject: [PATCH] ima: verify the previous kernel's IMA buffer lies in
+ addressable RAM
 
-struct configfs_item_operations callbacks are defined like the following:
+Patch series "Address page fault in ima_restore_measurement_list()", v3.
 
-  int (*allow_link)(struct config_item *src, struct config_item *target);
-  void (*drop_link)(struct config_item *src, struct config_item *target);
+When the second-stage kernel is booted via kexec with a limiting command
+line such as "mem=<size>" we observe a pafe fault that happens.
 
-While pci_primary_epc_epf_link() and pci_secondary_epc_epf_link() specify
-the parameters in the correct order, pci_primary_epc_epf_unlink() and
-pci_secondary_epc_epf_unlink() specify the parameters in the wrong order,
-leading to the below kernel crash when using the unlink command in
-configfs:
+    BUG: unable to handle page fault for address: ffff97793ff47000
+    RIP: ima_restore_measurement_list+0xdc/0x45a
+    #PF: error_code(0x0000)  not-present page
 
-  Unable to handle kernel paging request at virtual address 0000000300000857
-  Mem abort info:
-  ...
-  pc : string+0x54/0x14c
-  lr : vsnprintf+0x280/0x6e8
-  ...
-  string+0x54/0x14c
-  vsnprintf+0x280/0x6e8
-  vprintk_default+0x38/0x4c
-  vprintk+0xc4/0xe0
-  pci_epf_unbind+0xdc/0x108
-  configfs_unlink+0xe0/0x208+0x44/0x74
-  vfs_unlink+0x120/0x29c
-  __arm64_sys_unlinkat+0x3c/0x90
-  invoke_syscall+0x48/0x134
-  do_el0_svc+0x1c/0x30prop.0+0xd0/0xf0
+This happens on x86_64 only, as this is already fixed in aarch64 in
+commit: cbf9c4b9617b ("of: check previous kernel's ima-kexec-buffer
+against memory bounds")
 
-Fixes: e85a2d783762 ("PCI: endpoint: Add support in configfs to associate two EPCs with EPF")
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-[mani: cced stable, changed commit message as per https://lore.kernel.org/linux-pci/aV9joi3jF1R6ca02@ryzen]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260108062747.1870669-1-mmaddireddy@nvidia.com
+
+This patch (of 3):
+
+When the second-stage kernel is booted with a limiting command line (e.g.
+"mem=<size>"), the IMA measurement buffer handed over from the previous
+kernel may fall outside the addressable RAM of the new kernel.  Accessing
+such a buffer can fault during early restore.
+
+Introduce a small generic helper, ima_validate_range(), which verifies
+that a physical [start, end] range for the previous-kernel IMA buffer lies
+within addressable memory:
+	- On x86, use pfn_range_is_mapped().
+	- On OF based architectures, use page_is_ram().
+
+Link: https://lkml.kernel.org/r/20251231061609.907170-1-harshit.m.mogalapalli@oracle.com
+Link: https://lkml.kernel.org/r/20251231061609.907170-2-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: guoweikang <guoweikang.kernel@gmail.com>
+Cc: Henry Willard <henry.willard@oracle.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Bohac <jbohac@suse.cz>
+Cc: Joel Granados <joel.granados@kernel.org>
+Cc: Jonathan McDowell <noodles@fb.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Paul Webb <paul.x.webb@oracle.com>
+Cc: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Yifei Liu <yifei.l.liu@oracle.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/pci/endpoint/pci-ep-cfs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/ima.h                |  1 +
+ security/integrity/ima/ima_kexec.c | 35 ++++++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/drivers/pci/endpoint/pci-ep-cfs.c b/drivers/pci/endpoint/pci-ep-cfs.c
-index 43feb6139fa36..8b392a8363bb1 100644
---- a/drivers/pci/endpoint/pci-ep-cfs.c
-+++ b/drivers/pci/endpoint/pci-ep-cfs.c
-@@ -68,8 +68,8 @@ static int pci_secondary_epc_epf_link(struct config_item *epf_item,
- 	return 0;
- }
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 8e29cb4e6a01d..abf8923f8fc51 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -69,6 +69,7 @@ static inline int ima_measure_critical_data(const char *event_label,
+ #ifdef CONFIG_HAVE_IMA_KEXEC
+ int __init ima_free_kexec_buffer(void);
+ int __init ima_get_kexec_buffer(void **addr, size_t *size);
++int ima_validate_range(phys_addr_t phys, size_t size);
+ #endif
  
--static void pci_secondary_epc_epf_unlink(struct config_item *epc_item,
--					 struct config_item *epf_item)
-+static void pci_secondary_epc_epf_unlink(struct config_item *epf_item,
-+					 struct config_item *epc_item)
- {
- 	struct pci_epf_group *epf_group = to_pci_epf_group(epf_item->ci_parent);
- 	struct pci_epc_group *epc_group = to_pci_epc_group(epc_item);
-@@ -132,8 +132,8 @@ static int pci_primary_epc_epf_link(struct config_item *epf_item,
- 	return 0;
+ #ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
+diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
+index 5beb69edd12fd..36a34c54de58b 100644
+--- a/security/integrity/ima/ima_kexec.c
++++ b/security/integrity/ima/ima_kexec.c
+@@ -12,6 +12,8 @@
+ #include <linux/kexec.h>
+ #include <linux/of.h>
+ #include <linux/ima.h>
++#include <linux/mm.h>
++#include <linux/overflow.h>
+ #include <linux/reboot.h>
+ #include <asm/page.h>
+ #include "ima.h"
+@@ -294,3 +296,36 @@ void __init ima_load_kexec_buffer(void)
+ 		pr_debug("Error restoring the measurement list: %d\n", rc);
+ 	}
  }
- 
--static void pci_primary_epc_epf_unlink(struct config_item *epc_item,
--				       struct config_item *epf_item)
-+static void pci_primary_epc_epf_unlink(struct config_item *epf_item,
-+				       struct config_item *epc_item)
- {
- 	struct pci_epf_group *epf_group = to_pci_epf_group(epf_item->ci_parent);
- 	struct pci_epc_group *epc_group = to_pci_epc_group(epc_item);
++
++/*
++ * ima_validate_range - verify a physical buffer lies in addressable RAM
++ * @phys: physical start address of the buffer from previous kernel
++ * @size: size of the buffer
++ *
++ * On success return 0. On failure returns -EINVAL so callers can skip
++ * restoring.
++ */
++int ima_validate_range(phys_addr_t phys, size_t size)
++{
++	unsigned long start_pfn, end_pfn;
++	phys_addr_t end_phys;
++
++	if (check_add_overflow(phys, (phys_addr_t)size - 1, &end_phys))
++		return -EINVAL;
++
++	start_pfn = PHYS_PFN(phys);
++	end_pfn = PHYS_PFN(end_phys);
++
++#ifdef CONFIG_X86
++	if (!pfn_range_is_mapped(start_pfn, end_pfn))
++#else
++	if (!page_is_ram(start_pfn) || !page_is_ram(end_pfn))
++#endif
++	{
++		pr_warn("IMA: previous kernel measurement buffer %pa (size 0x%zx) lies outside available memory\n",
++			&phys, size);
++		return -EINVAL;
++	}
++
++	return 0;
++}
 -- 
 2.51.0
 
