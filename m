@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CB2eNx2lo2lXJAUAu9opvQ
-	(envelope-from <stable+bounces-221454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:31:57 +0100
+	id EEe+FwyYo2lIHwUAu9opvQ
+	(envelope-from <stable+bounces-221455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F2B1CDA5D
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:31:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2481CB159
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B735B31519C9
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:25:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39C0E3034660
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910F427B35B;
-	Sun,  1 Mar 2026 01:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C2C284693;
+	Sun,  1 Mar 2026 01:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9zHLOD7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BzVk8W5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5628C2727EB
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC43927B35B;
+	Sun,  1 Mar 2026 01:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328305; cv=none; b=U4FzSyAGENxxExmGhOHw3eRt05Qj/N5kxmAiM4Jszg0lZuGlBNxhRQDYeVTd/KyCvJR5CIuORfuaBYMqt2tdUcLe8Yz5qZhzHVuGvqL6ELpOJwYE40QCXvFS9ngugmBjQI5gdxTluaXGFBL4rWiOkUFc5unOm2MXYjz3LkOw9/M=
+	t=1772328307; cv=none; b=T9ru5fdyB0+OHVdS/WMKQUqw3u9cwKFsdVPk3op0XsmF4xgs0ES/jiPoDCG5umwK74181jJB4HQJVXyYj/h0EkfTVVvpof2vjk9YwlK4ACw6BPmN+04+BiW21ztuKTgn7/fqaGpZKxxZoi2oay/Tv2cvtVLDutc+QBZFWHezvVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328305; c=relaxed/simple;
-	bh=1kohjlHpBOE1cT/yofHfpcyfxcJume9ZHRM0PgSF/CE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=untuFfadnPxg/f6eu+LKwpxXRG8CAqoTvFl2M5QRMPSpODag3TWO5K2soaGGj6yGDdjKtdbfrVAJnTUbCsIGKaN4FnZFuxly1iNF5YLVIBnXZNeZjKm5gB1cTOTsf9ZdQLbyKGdBHLlKzvk1BAS4hPVOnb7V14N5QEMjH2L6etI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9zHLOD7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C65DC19421;
-	Sun,  1 Mar 2026 01:25:04 +0000 (UTC)
+	s=arc-20240116; t=1772328307; c=relaxed/simple;
+	bh=+odzO1ce/Q0/4IAKctaTJazyYz7fUnEuuwoMQKclE1s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ONXlOnmNaXk8TAyMGRvZuyuqpRewUt3q4rt0oR4mXnpJpgvvtU8NTkWFo95MHONTz2SxBZw4IVoRvHrUjz6/53l+lA9MT2+3LazDUU4bcRhOzXIKoNwZKdqR9AykrVgmlBvJTpfQotL5qTA+Owx2bETBLscyUktsAB18NHB02Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BzVk8W5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1275C19425;
+	Sun,  1 Mar 2026 01:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328305;
-	bh=1kohjlHpBOE1cT/yofHfpcyfxcJume9ZHRM0PgSF/CE=;
+	s=k20201202; t=1772328307;
+	bh=+odzO1ce/Q0/4IAKctaTJazyYz7fUnEuuwoMQKclE1s=;
 	h=From:To:Cc:Subject:Date:From;
-	b=k9zHLOD7KlLGjOqmKyT9MCtIA7jhKTBN7ntVHBkv06GIlcyxIE0LaWHJwSWNwW95k
-	 goVILDIWD+ga+7u1mERYeRWwBBx9x3buBJSyGXkqpH4XZUw17oU7Ptxt4mTvttk9mm
-	 3dnd70ejbX7nDecMDqSfQWEhWr6y8CMouNfPuRf+NnfRIwBbrCA6TXxSc5WunyDR20
-	 TcyAqr7b6cS+HHjpnTjpGReyARTFC3NuIw+xLvZq28jEwxzjtXhLXBklujjLV2T3ah
-	 CHon0u2K9+huS4M7tRUbrPG6aNxz0rBhBo7TgSgfAIdqSfK1c5q5H/qjBtG14W70Nm
-	 DFgoF3b1m57Zg==
+	b=BzVk8W5F92YtqSi9n+aEe53ghCA2R4r5XM1mEBTznq4cRYI/gGISKrSsp8E/Gxc0f
+	 4UMr1Z7c/IJzWyZcgAJq6YV+4HoZqqlLzheJcSXpnh+0/ZdUUvu0ktR73K9jSIZ/EG
+	 wLJkbKUzWCSBLQ/VEvK2jEULgmBjYW4Hfcionw8bPmq42va5B569LfATAO8/VHjAft
+	 Ew85KsZu0nMC00zN/jbRF4tSc8XoMX0FSJq1mlv9CJ+fXpVzfnhvctp4ipIJ+qtExj
+	 049IeVuenIYzyCCCW3fB4lC5Joyq7QTUVYp7A7nCO48oJm8vSECgzmI8IldIw5s/ql
+	 /GLrOrQahEimQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	elver@google.com
-Cc: Boqun Feng <boqun@kernel.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "arm64: Fix non-atomic __READ_ONCE() with CONFIG_LTO=y" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:25:03 -0500
-Message-ID: <20260301012503.1682060-1-sashal@kernel.org>
+	schnelle@linux.ibm.com
+Cc: Benjamin Block <bblock@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	linux-pci@vger.kernel.org
+Subject: FAILED: Patch "Revert "PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV"" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:25:05 -0500
+Message-ID: <20260301012505.1682114-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,36 +64,33 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221454-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221455-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 72F2B1CDA5D
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AD2481CB159
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -106,52 +103,99 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From bb0c99e08ab9aa6d04b40cb63c72db9950d51749 Mon Sep 17 00:00:00 2001
-From: Marco Elver <elver@google.com>
-Date: Fri, 30 Jan 2026 14:28:24 +0100
-Subject: [PATCH] arm64: Fix non-atomic __READ_ONCE() with CONFIG_LTO=y
+From 2fa119c0e5e528453ebae9e70740e8d2d8c0ed5a Mon Sep 17 00:00:00 2001
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+Date: Tue, 16 Dec 2025 23:14:02 +0100
+Subject: [PATCH] Revert "PCI/IOV: Add PCI rescan-remove locking when
+ enabling/disabling SR-IOV"
 
-The implementation of __READ_ONCE() under CONFIG_LTO=y incorrectly
-qualified the fallback "once" access for types larger than 8 bytes,
-which are not atomic but should still happen "once" and suppress common
-compiler optimizations.
+This reverts commit 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking
+when enabling/disabling SR-IOV"), which causes a deadlock by recursively
+taking pci_rescan_remove_lock when sriov_del_vfs() is called as part of
+pci_stop_and_remove_bus_device(). For example with the following sequence
+of commands:
 
-The cast `volatile typeof(__x)` applied the volatile qualifier to the
-pointer type itself rather than the pointee. This created a volatile
-pointer to a non-volatile type, which violated __READ_ONCE() semantics.
+  $ echo <NUM> > /sys/bus/pci/devices/<pf>/sriov_numvfs
+  $ echo 1 > /sys/bus/pci/devices/<pf>/remove
 
-Fix this by casting to `volatile typeof(*__x) *`.
+A trimmed trace of the deadlock on a mlx5 device is as below:
 
-With a defconfig + LTO + debug options build, we see the following
-functions to be affected:
+  zsh/5715 is trying to acquire lock:
+  000002597926ef50 (pci_rescan_remove_lock){+.+.}-{3:3}, at: sriov_disable+0x34/0x140
 
-	xen_manage_runstate_time (884 -> 944 bytes)
-	xen_steal_clock (248 -> 340 bytes)
-	  ^-- use __READ_ONCE() to load vcpu_runstate_info structs
+  but task is already holding lock:
+  000002597926ef50 (pci_rescan_remove_lock){+.+.}-{3:3}, at: pci_stop_and_remove_bus_device_locked+0x24/0x80
+  ...
+  Call Trace:
+   [<00000259778c4f90>] dump_stack_lvl+0xc0/0x110
+   [<00000259779c844e>] print_deadlock_bug+0x31e/0x330
+   [<00000259779c1908>] __lock_acquire+0x16c8/0x32f0
+   [<00000259779bffac>] lock_acquire+0x14c/0x350
+   [<00000259789643a6>] __mutex_lock_common+0xe6/0x1520
+   [<000002597896413c>] mutex_lock_nested+0x3c/0x50
+   [<00000259784a07e4>] sriov_disable+0x34/0x140
+   [<00000258f7d6dd80>] mlx5_sriov_disable+0x50/0x80 [mlx5_core]
+   [<00000258f7d5745e>] remove_one+0x5e/0xf0 [mlx5_core]
+   [<00000259784857fc>] pci_device_remove+0x3c/0xa0
+   [<000002597851012e>] device_release_driver_internal+0x18e/0x280
+   [<000002597847ae22>] pci_stop_bus_device+0x82/0xa0
+   [<000002597847afce>] pci_stop_and_remove_bus_device_locked+0x5e/0x80
+   [<00000259784972c2>] remove_store+0x72/0x90
+   [<0000025977e6661a>] kernfs_fop_write_iter+0x15a/0x200
+   [<0000025977d7241c>] vfs_write+0x24c/0x300
+   [<0000025977d72696>] ksys_write+0x86/0x110
+   [<000002597895b61c>] __do_syscall+0x14c/0x400
+   [<000002597896e0ee>] system_call+0x6e/0x90
 
-Fixes: e35123d83ee3 ("arm64: lto: Strengthen READ_ONCE() to acquire when CONFIG_LTO=y")
+This alone is not a complete fix as it restores the issue the cited commit
+tried to solve. A new fix will be provided as a follow on.
+
+Fixes: 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV")
+Reported-by: Benjamin Block <bblock@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Acked-by: Gerd Bayer <gbayer@linux.ibm.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Boqun Feng <boqun@kernel.org>
-Signed-off-by: Marco Elver <elver@google.com>
-Tested-by: David Laight <david.laight.linux@gmail.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://patch.msgid.link/20251216-revert_sriov_lock-v3-1-dac4925a7621@linux.ibm.com
 ---
- arch/arm64/include/asm/rwonce.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/iov.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm64/include/asm/rwonce.h b/arch/arm64/include/asm/rwonce.h
-index 78beceec10cda..fc0fb42b0b641 100644
---- a/arch/arm64/include/asm/rwonce.h
-+++ b/arch/arm64/include/asm/rwonce.h
-@@ -58,7 +58,7 @@
- 	default:							\
- 		atomic = 0;						\
- 	}								\
--	atomic ? (typeof(*__x))__u.__val : (*(volatile typeof(__x))__x);\
-+	atomic ? (typeof(*__x))__u.__val : (*(volatile typeof(*__x) *)__x);\
- })
+diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
+index 00784a60ba80b..7de5b18647beb 100644
+--- a/drivers/pci/iov.c
++++ b/drivers/pci/iov.c
+@@ -629,18 +629,15 @@ static int sriov_add_vfs(struct pci_dev *dev, u16 num_vfs)
+ 	if (dev->no_vf_scan)
+ 		return 0;
  
- #endif	/* !BUILD_VDSO */
+-	pci_lock_rescan_remove();
+ 	for (i = 0; i < num_vfs; i++) {
+ 		rc = pci_iov_add_virtfn(dev, i);
+ 		if (rc)
+ 			goto failed;
+ 	}
+-	pci_unlock_rescan_remove();
+ 	return 0;
+ failed:
+ 	while (i--)
+ 		pci_iov_remove_virtfn(dev, i);
+-	pci_unlock_rescan_remove();
+ 
+ 	return rc;
+ }
+@@ -765,10 +762,8 @@ static void sriov_del_vfs(struct pci_dev *dev)
+ 	struct pci_sriov *iov = dev->sriov;
+ 	int i;
+ 
+-	pci_lock_rescan_remove();
+ 	for (i = 0; i < iov->num_VFs; i++)
+ 		pci_iov_remove_virtfn(dev, i);
+-	pci_unlock_rescan_remove();
+ }
+ 
+ static void sriov_disable(struct pci_dev *dev)
 -- 
 2.51.0
 
