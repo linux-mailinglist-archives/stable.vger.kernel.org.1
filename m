@@ -1,213 +1,128 @@
-Return-Path: <stable+bounces-221758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJVTIkCZo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:20 +0100
+	id WKIQBE2co2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-221761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A151CB581
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777EF1CC340
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 896E63053375
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80B2A3283520
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7962D9484;
-	Sun,  1 Mar 2026 01:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4942E5B09;
+	Sun,  1 Mar 2026 01:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mTPrUCpa"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Jz9jf955";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="wf/IdZ3j"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6BD82899;
-	Sun,  1 Mar 2026 01:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926932D9798;
+	Sun,  1 Mar 2026 01:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329070; cv=none; b=ufpIb3DGOcXxseoQKHJOrT9ZcOA7cAgS93iSCWZT5tetvDsU0ZwrOK9jgosJiofSv1DJ21IxudZ6UCe1Tsl0f65w9w3HIY/QZle++1MQjv8G+eoK/oc+O0okFs3N3Qz7i+zcfE7ou7Nm5iti6wH9ZLfXpl7rdbwkS8+74sBi9TI=
+	t=1772329076; cv=none; b=YIGLvIGBJUsFb5b4Nkc16LCm21QcNce8y5jIxNpz6H4eMwDYNh/SBRRTsq9K8t63k/QktXayo4ElbncM2Ghj4xfkKX00zrlleUJ5af6IzNoo6ZHHG3VxBQAlPt+GcNZI5PBEx5OsM5E81Bi5VKHOzhDPVVIj4bph96bHxFRtzV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329070; c=relaxed/simple;
-	bh=co1AthSFIq0rfOMJLFzAav4ZdGSzHYRKBuEoMntLpsg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H1ub9+gEcsCbjIFHmxZ2G9eyGx2N8FM43EZN3oz2Mv9ydl0X5Cu6KjUW1VvFZDCWHzELr5JnD5H59jaKWzimCiBomjVAFjvOeytstl9QCTegyE2utWAnkTlKffeltyZlQv/jcTZxVYiDV5OAk0WQ2ndIxqRJxUzXUAesT6ubyFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mTPrUCpa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4588AC19421;
-	Sun,  1 Mar 2026 01:37:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329069;
-	bh=co1AthSFIq0rfOMJLFzAav4ZdGSzHYRKBuEoMntLpsg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mTPrUCpa1Qa6J0y6sgM+6jZhhKTDhBdc85O5ytnHVeFJvCVIBAXcoNTXeQbvP3Kof
-	 lK6tyk2h/k2Bm6pgaxkLWWV+lgv3yAXYsamm67GghKsfazHW3KbJRjc/uKu3uI8f++
-	 RZk5FTInvg/zwYWcbG8YeaLyt6Hm7Nwuxv5FsaGoUVrcORos2UWS5kXVYKsSa6V64i
-	 apd2XipBFo/MQYYv6m942gq626V0PWGhqOJJ/JRMKYVaw8tjrNCUeV5JK3QhUpcKib
-	 EiiOViNXBruZ101JZfGXbKgdp+4/KvWVNYFn4ZCmJGMUAKM0sI+z/ON1SUwsntMlTS
-	 7WkVuxRCBZoug==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	me@ziyao.cc
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mips@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: FAILED: Patch "MIPS: Work around LLVM bug when gp is used as global register variable" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:37:47 -0500
-Message-ID: <20260301013748.1698055-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1772329076; c=relaxed/simple;
+	bh=BYdzQUQXUluLNpS/kygOSuGk/nZbOjcmhBlyHPtOvSU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XSXrAGZ1YYcORas8azrkBUGzGU4hdx0H5ZL+kgetCLE2GPIdMmjZowUjBCG/Bu8GbepCOktRfxnd7bLZFsvm/KeH6vapAOU26AegSEtr0zO3L2J5Sbe9JqDDchhGLp0rJRyKLoNZ//vuyUuQ8kbjiGtuju3qxLN+BaFK53QJHaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Jz9jf955; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=wf/IdZ3j; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4fNl7N3YFmz9tR2;
+	Sun,  1 Mar 2026 02:37:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1772329072;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lmHJlRdWO7qOd4RDxTIAgF1+/4f6K+CEHnktCEN3TKM=;
+	b=Jz9jf955eXg/mI4NHhMiXLxrckmPaJQvyNN37xq4pPC39BU2lSgMYVFPqej2Y5IWQH4fy9
+	S9xYF8059POAxrgPr/oqqUa3uWQ1F9FiBtfLKIddMQN1Irzxb1St7xaNkmIdd4Dm62PUvz
+	Zd8CQBWwwPnvyWz+qFe7o2kemeWWMLR86Tvygi+npmKwwJe7uwD1oq4Pjx89f06YVzHigT
+	RG7qx/+cCVLAXm9YaXXxgc+4ek8hhnF7Q16KrparNRcBS/hQyicXVC8S5iSCENKNAHOMSg
+	UcGzM/Vs6oNTMpUrxDX5K0Cx5TO3BX3m77DBQBbhA4MM4TDmataXibc5SslqrQ==
+Message-ID: <e477a469-09c1-4e09-b951-c262a983ee7b@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1772329071;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lmHJlRdWO7qOd4RDxTIAgF1+/4f6K+CEHnktCEN3TKM=;
+	b=wf/IdZ3jQfkzWP46xjtXBLhCs3pnO86X9DPY3OOjqchN6OLN3g0NOrX2QSX1zdaiqcWZw7
+	WUsJCfZBKYGb4Yob++LzWgCu8xfsYK968PeXJCBTBjpYTgO659aIkchYO2YJdrVmQFEo2G
+	0L4s1tMz+gO3GX2iF4M6ZXerNKggDiJksuVpcAtfWqotIpzbu74N2mo7NQ+hahqRM3c0pJ
+	HLh05U6rxWlnduCuxYABLkMclSKbokEKshg5HnzAk0iRGP2ptl7r00KJ3P1/Ab5a04hVHP
+	Tenwi4tD328xyFcy6MguYtNBrfkVjcZO6yK7En+JMdWgt8cEHteCKQByZA+kXg==
+Date: Sun, 1 Mar 2026 02:37:48 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Patchwork-Hint: ignore
-X-stable: review
-Content-Transfer-Encoding: 8bit
+Subject: Re: FAILED: Patch "clk: rs9: Reserve 8 struct clk_hw slots for for
+ 9FGV0841" failed to apply to 6.12-stable tree
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+ marek.vasut+renesas@mailbox.org
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+ Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
+References: <20260301012516.1682320-1-sashal@kernel.org>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <20260301012516.1682320-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: nzkenmm1rdcax8bydyxxzu8uufdemdoa
+X-MBO-RS-ID: b4bebc9cdd06493374a
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [8.84 / 15.00];
-	URIBL_BLACK(7.50)[ziyao.cc:email];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221758-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
-	GREYLIST(0.00)[pass,meta];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-221761-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[mailbox.org:+];
+	MISSING_XM_UA(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_SPAM(0.00)[0.977];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,gnu.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 59A151CB581
-X-Rspamd-Action: add header
-X-Spam: Yes
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[marek.vasut@mailbox.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailbox.org:mid,mailbox.org:dkim]
+X-Rspamd-Queue-Id: 777EF1CC340
+X-Rspamd-Action: no action
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-Thanks,
-Sasha
-
------------------- original commit in Linus's tree ------------------
-
-From 30bfc2d6a1132a89a5f1c3b96c59cf3e4d076ea3 Mon Sep 17 00:00:00 2001
-From: Yao Zi <me@ziyao.cc>
-Date: Thu, 5 Feb 2026 15:56:44 +0000
-Subject: [PATCH] MIPS: Work around LLVM bug when gp is used as global register
- variable
-
-On MIPS, __current_thread_info is defined as global register variable
-locating in $gp, and is simply assigned with new address during kernel
-relocation.
-
-This however is broken with LLVM, which always restores $gp if it finds
-$gp is clobbered in any form, including when intentionally through a
-global register variable. This is against GCC's documentation[1], which
-requires a callee-saved register used as global register variable not to
-be restored if it's clobbered.
-
-As a result, $gp will continue to point to the unrelocated kernel after
-the epilog of relocate_kernel(), leading to an early crash in init_idle,
-
-[    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 0000000000000000, epc == ffffffff81afada8, ra == ffffffff81afad90
-[    0.000000] Oops[#1]:
-[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G        W           6.19.0-rc5-00262-gd3eeb99bbc99-dirty #188 VOLUNTARY
-[    0.000000] Tainted: [W]=WARN
-[    0.000000] Hardware name: loongson,loongson64v-4core-virtio
-[    0.000000] $ 0   : 0000000000000000 0000000000000000 0000000000000001 0000000000000000
-[    0.000000] $ 4   : ffffffff80b80ec0 ffffffff80b53d48 0000000000000000 00000000000f4240
-[    0.000000] $ 8   : 0000000000000100 ffffffff81d82f80 ffffffff81d82f80 0000000000000001
-[    0.000000] $12   : 0000000000000000 ffffffff81776f58 00000000000005da 0000000000000002
-[    0.000000] $16   : ffffffff80b80e40 0000000000000000 ffffffff80b81614 9800000005dfbe80
-[    0.000000] $20   : 00000000540000e0 ffffffff81980000 0000000000000000 ffffffff80f81c80
-[    0.000000] $24   : 0000000000000a26 ffffffff8114fb90
-[    0.000000] $28   : ffffffff80b50000 ffffffff80b53d40 0000000000000000 ffffffff81afad90
-[    0.000000] Hi    : 0000000000000000
-[    0.000000] Lo    : 0000000000000000
-[    0.000000] epc   : ffffffff81afada8 init_idle+0x130/0x270
-[    0.000000] ra    : ffffffff81afad90 init_idle+0x118/0x270
-[    0.000000] Status: 540000e2	KX SX UX KERNEL EXL
-[    0.000000] Cause : 00000008 (ExcCode 02)
-[    0.000000] BadVA : 0000000000000000
-[    0.000000] PrId  : 00006305 (ICT Loongson-3)
-[    0.000000] Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
-[    0.000000] Stack : 9800000005dfbf00 ffffffff8178e950 0000000000000000 0000000000000000
-[    0.000000]         0000000000000000 ffffffff81970000 000000000000003f ffffffff810a6528
-[    0.000000]         0000000000000001 9800000005dfbe80 9800000005dfbf00 ffffffff81980000
-[    0.000000]         ffffffff810a6450 ffffffff81afb6c0 0000000000000000 ffffffff810a2258
-[    0.000000]         ffffffff81d82ec8 ffffffff8198d010 ffffffff81b67e80 ffffffff8197dd98
-[    0.000000]         ffffffff81d81c80 ffffffff81930000 0000000000000040 0000000000000000
-[    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[    0.000000]         0000000000000000 000000000000009e ffffffff9fc01000 0000000000000000
-[    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[    0.000000]         0000000000000000 ffffffff81ae86dc ffffffff81b3c741 0000000000000002
-[    0.000000]         ...
-[    0.000000] Call Trace:
-[    0.000000] [<ffffffff81afada8>] init_idle+0x130/0x270
-[    0.000000] [<ffffffff81afb6c0>] sched_init+0x5c8/0x6c0
-[    0.000000] [<ffffffff81ae86dc>] start_kernel+0x27c/0x7a8
-
-This bug has been reported to LLVM[2] and affects version from (at
-least) 18 to 21. Let's work around this by using inline assembly to
-assign $gp before a fix is widely available.
-
-Cc: stable@vger.kernel.org
-Link: https://gcc.gnu.org/onlinedocs/gcc-15.2.0/gcc/Global-Register-Variables.html # [1]
-Link: https://github.com/llvm/llvm-project/issues/176546 # [2]
-Signed-off-by: Yao Zi <me@ziyao.cc>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
- arch/mips/kernel/relocate.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/arch/mips/kernel/relocate.c b/arch/mips/kernel/relocate.c
-index 7f1c136ad8506..59833210542ff 100644
---- a/arch/mips/kernel/relocate.c
-+++ b/arch/mips/kernel/relocate.c
-@@ -420,7 +420,20 @@ void *__init relocate_kernel(void)
- 			goto out;
- 
- 		/* The current thread is now within the relocated image */
-+#ifndef CONFIG_CC_IS_CLANG
- 		__current_thread_info = RELOCATED(&init_thread_union);
-+#else
-+		/*
-+		 * LLVM may wrongly restore $gp ($28) in epilog even if it's
-+		 * intentionally modified. Work around this by using inline
-+		 * assembly to assign $gp. $gp couldn't be listed as output or
-+		 * clobber, or LLVM will still restore its original value.
-+		 * See also LLVM upstream issue
-+		 * https://github.com/llvm/llvm-project/issues/176546
-+		 */
-+		asm volatile("move $28, %0" : :
-+			     "r" (RELOCATED(&init_thread_union)));
-+#endif
- 
- 		/* Return the new kernel's entry point */
- 		kernel_entry = RELOCATED(start_kernel);
--- 
-2.51.0
-
-
-
-
+On 3/1/26 2:25 AM, Sasha Levin wrote:
+> The patch below does not apply to the 6.12-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+The cherry-pick worked out cleanly on 6.12.74, I also don't see anything 
+that would prevent the patch from being applied, is there maybe another 
+backport in the pipeline that is interfering with the application ?
 
