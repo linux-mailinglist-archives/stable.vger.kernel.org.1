@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-222278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKiQJECjo2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:24:00 +0100
+	id 8K2pEkKuo2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027811CD842
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:23:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F261CE494
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8E183304266
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDB803304628
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEB72F39BE;
-	Sun,  1 Mar 2026 02:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA7D2F12CE;
+	Sun,  1 Mar 2026 02:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5ksAQ91"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qXnp+zrl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00B6190664
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAB0190664;
+	Sun,  1 Mar 2026 02:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330477; cv=none; b=qMtd7zp5zt8XSQ5cw1aIfDfJ+OODhIkvm/LdaQ+VoNi7YRu5DoOG6TxHeRQd3Zw4YJcpNCQVOxUlttGV8UNHIxEyKa9Yb+JqmJmTGrPtmtaEjhjXFfSrelr50wvow8QlHiEOt60kjIEFvSpdprl1Z5bDiVwDTC4SCSejPC+86XU=
+	t=1772330480; cv=none; b=uXSNRioWT1wwX3T7XjXrQ9rvSt8lbKwp16jknb89cbuju0P+SfDicBVQpuJUxdAtmiGZUpu1ayaSoE2ch9yE/jGglk6irgyLm3CGdvNuq5Ho9lbXH9FmYoectyKu4HWtnGWeyrKYD7CbEUIiG5Nvz/IqjtSAqC9tbOHlKIjgonM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330477; c=relaxed/simple;
-	bh=4K7PwaX/QhOoJofiGqXVSPLZFI+vlHI05veTLsKOHkw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K0gTCvyazO+Klin2SDVfv9xHvb+e9UEW5V18Gi5whtO+Iwf428vmv6vKadmbu8nr/Wg/+9mJmfyf3Kt+LO6t9vNFNrdnj8Ax4IWw1SJW4Uik0M+F/+YzSuGgWziapfM2XMmYqnZGCa0XAEQedIGqlq6GrAvPIdSHGpclNK6mBNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5ksAQ91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AF6C19421;
-	Sun,  1 Mar 2026 02:01:17 +0000 (UTC)
+	s=arc-20240116; t=1772330480; c=relaxed/simple;
+	bh=hZkPE5CNYOyIS3Bm8o17c+JUNwunD0H7xdisOEU6l3g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rv98JQxjAbgCGdrfRK9emiQqEu4utJ1MH12dISyvjstjeIiDXpV5tZ4Eswgclrb+NjWJQ+Bxj2O9kamaBXulkekbIH9fXYN+eHw56RGzKmQez41gPvtUt+CsfUs9yIrCwes5HE7G/tcAqG8gqyHPM9KRvxDlgqsnxzw4cj/ep8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qXnp+zrl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C454C19424;
+	Sun,  1 Mar 2026 02:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330477;
-	bh=4K7PwaX/QhOoJofiGqXVSPLZFI+vlHI05veTLsKOHkw=;
+	s=k20201202; t=1772330480;
+	bh=hZkPE5CNYOyIS3Bm8o17c+JUNwunD0H7xdisOEU6l3g=;
 	h=From:To:Cc:Subject:Date:From;
-	b=P5ksAQ91wOHO/5DwHtC5dvU6rBUZK1fw55Dyz8lK6jKPUeGmioCofwM1pp4+eJD4V
-	 7bRiZdNJ+58LduAC+fouIe1O5130Dy/AL0Sb0Mu+7pP1sICgc8o+h3VSRux6E9wbbY
-	 pKeH+bVN2pMZnrOdB11CkipcyMQeGn73+jvH/HGweY/bw00JGWOwaKqsovHElzkL2j
-	 W243BU9LUc+ZwSkGeWLDiYIwR83H41gn526sjx3Q+DtjU6aKtnQyqhtK+XZGdLNfcL
-	 n59fswrZ4EhMWWTwFQ/4DmNqQVpgdxC68h1xWmPV7B+GWcfn9Pj3j170EjSF9MIpGz
-	 nC5mf2568/UsA==
+	b=qXnp+zrl4QCHXk1Fb81p5jf+RilL3eQT7ozDs5GdG1kJSqJxhLkRNkHMkzpDnsBh/
+	 o5C7dsjp1xyB78YxCKqKlzbiz3QOdRTSgru1qP2aJlD1Wmy3+lXYhPt62MGrxZzpe9
+	 /avbdgJ8Tb+b9lRpFutiz2KjW+ke5PIXrzijVi1i5dcZYykM9hivuPOGEQXrTbqxmY
+	 vm1vx6flQg57Gkz3Z7SYjTIh0X+5vQiKGznMOazSBGvH58/sKlcD/LPJXlvyQSIc+5
+	 JCt6XvUlM6TsY1+2TWa6uor78xq89HZxYs8C8www3RN55fKeN5645k/pcq03HEt6VI
+	 7eVUBNI01NArA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mchehab+huawei@kernel.org
-Cc: Jonathan Corbet <corbet@lwn.net>
-Subject: FAILED: Patch "docs: kdoc: avoid error_count overflows" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:01:15 -0500
-Message-ID: <20260301020116.1728465-1-sashal@kernel.org>
+	liwang@redhat.com
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: FAILED: Patch "selftests/mm/charge_reserved_hugetlb: drop mount size for hugetlbfs" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:01:17 -0500
+Message-ID: <20260301020118.1728520-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,32 +68,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-222278-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222279-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 027811CD842
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,charge_reserved_hugetlb.sh:url]
+X-Rspamd-Queue-Id: 71F261CE494
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -100,77 +107,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 802774d8539fa73487190ec45438777a3c38d424 Mon Sep 17 00:00:00 2001
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Date: Mon, 19 Jan 2026 13:04:57 +0100
-Subject: [PATCH] docs: kdoc: avoid error_count overflows
+From 1aa1dd9cc595917882fb6db67725442956f79607 Mon Sep 17 00:00:00 2001
+From: Li Wang <liwang@redhat.com>
+Date: Sun, 21 Dec 2025 20:26:38 +0800
+Subject: [PATCH] selftests/mm/charge_reserved_hugetlb: drop mount size for
+ hugetlbfs
 
-The glibc library limits the return code to 8 bits. We need to
-stick to this limit when using sys.exit(error_count).
+charge_reserved_hugetlb.sh mounts a hugetlbfs instance at /mnt/huge with a
+fixed size of 256M.  On systems with large base hugepages (e.g.  512MB),
+this is smaller than a single hugepage, so the hugetlbfs mount ends up
+with zero capacity (often visible as size=0 in mount output).
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Message-ID: <233d1674db99ed8feb405a2f781de350f0fba0ac.1768823489.git.mchehab+huawei@kernel.org>
+As a result, write_to_hugetlbfs fails with ENOMEM and the test can hang
+waiting for progress.
+
+=== Error log ===
+  # uname -r
+  6.12.0-xxx.el10.aarch64+64k
+
+  #./charge_reserved_hugetlb.sh -cgroup-v2
+  # -----------------------------------------
+  ...
+  # nr hugepages = 10
+  # writing cgroup limit: 5368709120
+  # writing reseravation limit: 5368709120
+  ...
+  # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
+  # Waiting for hugetlb memory reservation to reach size 2684354560.
+  # 0
+  # Waiting for hugetlb memory reservation to reach size 2684354560.
+  # 0
+  ...
+
+  # mount |grep /mnt/huge
+  none on /mnt/huge type hugetlbfs (rw,relatime,seclabel,pagesize=512M,size=0)
+
+  # grep -i huge /proc/meminfo
+  ...
+  HugePages_Total:      10
+  HugePages_Free:       10
+  HugePages_Rsvd:        0
+  HugePages_Surp:        0
+  Hugepagesize:     524288 kB
+  Hugetlb:         5242880 kB
+
+Drop the mount args with 'size=256M', so the filesystem capacity is sufficient
+regardless of HugeTLB page size.
+
+Link: https://lkml.kernel.org/r/20251221122639.3168038-3-liwang@redhat.com
+Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
+Signed-off-by: Li Wang <liwang@redhat.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- scripts/kernel-doc.py | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/kernel-doc.py b/scripts/kernel-doc.py
-index 7a1eaf986bcd4..1ebb16b9bb087 100755
---- a/scripts/kernel-doc.py
-+++ b/scripts/kernel-doc.py
-@@ -116,6 +116,8 @@ SRC_DIR = os.path.dirname(os.path.realpath(__file__))
+diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+index e1fe16bcbbe88..fa6713892d82d 100755
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -290,7 +290,7 @@ function run_test() {
+   setup_cgroup "hugetlb_cgroup_test" "$cgroup_limit" "$reservation_limit"
  
- sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
+   mkdir -p /mnt/huge
+-  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
++  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
  
-+WERROR_RETURN_CODE = 3
-+
- DESC = """
- Read C language source or header FILEs, extract embedded documentation comments,
- and print formatted documentation to standard output.
-@@ -176,7 +178,21 @@ class MsgFormatter(logging.Formatter):
-         return logging.Formatter.format(self, record)
+   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test" "$size" "$populate" \
+     "$write" "/mnt/huge/test" "$method" "$private" "$expect_failure" \
+@@ -344,7 +344,7 @@ function run_multiple_cgroup_test() {
+   setup_cgroup "hugetlb_cgroup_test2" "$cgroup_limit2" "$reservation_limit2"
  
- def main():
--    """Main program"""
-+    """
-+    Main program.
-+
-+    By default, the return value is:
-+
-+    - 0: success or Python version is not compatible with
-+      kernel-doc.  If -Werror is not used, it will also
-+      return 0 if there are issues at kernel-doc markups;
-+
-+    - 1: an abnormal condition happened;
-+
-+    - 2: argparse issued an error;
-+
-+    - 3: -Werror is used, and one or more unfiltered parse warnings happened.
-+    """
+   mkdir -p /mnt/huge
+-  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
++  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
  
-     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
-                                      description=DESC)
-@@ -323,16 +339,12 @@ def main():
- 
-     if args.werror:
-         print("%s warnings as errors" % error_count)    # pylint: disable=C0209
--        sys.exit(error_count)
-+        sys.exit(WERROR_RETURN_CODE)
- 
-     if args.verbose:
-         print("%s errors" % error_count)                # pylint: disable=C0209
- 
--    if args.none:
--        sys.exit(0)
--
--    sys.exit(error_count)
--
-+    sys.exit(0)
- 
- # Call main method
- if __name__ == "__main__":
+   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test1" "$size1" \
+     "$populate1" "$write1" "/mnt/huge/test1" "$method" "$private" \
 -- 
 2.51.0
 
