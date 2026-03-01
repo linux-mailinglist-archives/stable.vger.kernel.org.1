@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-221801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOmALUqco2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-221801-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:18 +0100
+	id SAaREQSdo2nFIQUAu9opvQ
+	(envelope-from <stable+bounces-221802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:57:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63C31CC331
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91AFA1CC5E0
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:57:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2647C3065EE6
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1E0832B926B
 	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7694C2FD7D3;
-	Sun,  1 Mar 2026 01:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D9E2DF126;
+	Sun,  1 Mar 2026 01:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jLSirBKo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4qiDItc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3811A2DF12A;
-	Sun,  1 Mar 2026 01:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766192C11D3
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329171; cv=none; b=GbIf9jfrlaIiSn91DWQ5mTXqKv+ZdkDi1vZddv2148FkGjKvehiYcg9iotJ8f0PKpTG57bqc4tbGZkzSUJe1RxGs0hrR0mo40/CpAJ0Hx1PAnH1e3x4hEZ0IDgKvVtwoLsKDUNAe5nGTEAV9emBpWqOZ/XSb8Q79qforZNlayx8=
+	t=1772329173; cv=none; b=irnmmwfwcnry+jPTDVvA2hE7T9PAKSNXMgjVLa0f+bpeo7LPlgqSqV8/oV1naTv6uCbFRuJ8j2vzbfgJ7aUe5ZbAKK0OBb8Dc2IPK86xdCrgxtbvI8HkkuPnQ+d5vgXefo7LtbAaUekYHF3UGaYmWCXbdF/eEJpLyQN54EhSd/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329171; c=relaxed/simple;
-	bh=ko9fHYcXPgW9Yu5KL70TWNOLqAo2KPcVQ9OgI1jhV94=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SIXXCKxudTIuo8Dn/Qiueq9f2a3Ah/8EQFWZEuzgDuGddpjS0b1vrDvA7obrHV0gKeBg31k9hCLJpfADriHERGaKD4AfumEqRU0PwUm3h9KFsgwAYv784BBbWotnfc/NzH1gXj/K6Jt/8ik1lgKXZwiU+U8Xqo5GXYO0hq1hs18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jLSirBKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B1FC19421;
-	Sun,  1 Mar 2026 01:39:30 +0000 (UTC)
+	s=arc-20240116; t=1772329173; c=relaxed/simple;
+	bh=xLAmtX6CpJX7sWovQGFE/2ZUbEacfdrmX3oqcXISffo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LgBo3u9SxkySiOQFn8Hto43ujFpLgwmlyG2kLuLy5jnqzSkvsLsnv3MIeLwp+FXXRTik3ix2aVuFwo6Ea2glONhOss8R/PR1gM8iuBDH5B33Kfslc+zaTnsvTSt/08YGoWRF+BfoOA4G7U6ucELSPcI4g0sQ5pQ9/dtybF5ZYhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4qiDItc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78A0C19421;
+	Sun,  1 Mar 2026 01:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329171;
-	bh=ko9fHYcXPgW9Yu5KL70TWNOLqAo2KPcVQ9OgI1jhV94=;
+	s=k20201202; t=1772329173;
+	bh=xLAmtX6CpJX7sWovQGFE/2ZUbEacfdrmX3oqcXISffo=;
 	h=From:To:Cc:Subject:Date:From;
-	b=jLSirBKoCewwyC3XLRPK3+meGY8Z7gDf0kEDuoIYNwyYqcpn0FjlVB/ICaqhOPzc3
-	 HRAZfxPRrTIGacFCa0dVeVHHxeXizXLLGJMPlqWzm2fM5nISRabj4Ym/rNybgDDWZD
-	 K80Ph0WqDiwKqa+bL4UB5Wrm3xOy7XmmkK9kTjEpyuvqdGKAEvv+QQFohcX3isaiP7
-	 cKrcNANcZ/AmNXKx9uiL+xYVX9ZwS252aFGCKgigH54CdWVawV7AFuFIs6nWjoLUKP
-	 XtBfdwPOaMo4LQmI1ska56wMIy6A+ULbl1jXTckv33hTy6fKUVXmHvCjT1vpSf0X9j
-	 euVwQIxX3uXTg==
+	b=R4qiDItcFC1/6kThYaF1Ufr/6v6Arja0xBjgUUXRwKktCcYtwRSpRSXDWYzx+5yDi
+	 UqC11UgGTx3IxC3X25OGN6TeO+9WNA0l2aLFpZlwjpwdjs0tkJkXoRRy4ejnC4XsUh
+	 qgZL3EhZfzFKHHLP1kKEflST7/b7eH7oPkehgL0ooKTMHr1XA6zk4kX+T+21gyJRS8
+	 6Unr+/moaCVMsonNizjorvENZbP78rLnmo8BKB4ZBxz5SchTTFAKEZb+TTGcXlLiLN
+	 YHl/KY/aVk2R5fggVziWomo/WhNA2//BiNrdEOaQWKXH1zwkfjIpy23nPSTRMJTomq
+	 3K1XEcDVubNnA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	shengjiu.wang@nxp.com
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>, Junichi@web.codeaurora.org,
-	Mihai@web.codeaurora.org, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: FAILED: Patch "ASoC: dt-bindings: asahi-kasei,ak5558: Fix the supply names" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:39:28 -0500
-Message-ID: <20260301013929.1700488-1-sashal@kernel.org>
+	alexander.deucher@amd.com
+Cc: Mario Kleiner <mario.kleiner.de@gmail.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm/amdgpu: keep vga memory on MacBooks with switchable graphics" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:39:31 -0500
+Message-ID: <20260301013931.1700539-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,35 +63,36 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:subspace.kernel.org:reject}];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	NEURAL_SPAM(0.00)[0.997];
-	R_DKIM_REJECT(0.00)[kernel.org:s=k20201202];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,lists.freedesktop.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-221801-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221802-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:-];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E63C31CC331
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,gitlab.freedesktop.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 91AFA1CC5E0
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -105,45 +105,49 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 80ca113671a005430207d351cb403c1637106212 Mon Sep 17 00:00:00 2001
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-Date: Thu, 12 Feb 2026 10:18:29 +0800
-Subject: [PATCH] ASoC: dt-bindings: asahi-kasei,ak5558: Fix the supply names
+From 096bb75e13cc508d3915b7604e356bcb12b17766 Mon Sep 17 00:00:00 2001
+From: Alex Deucher <alexander.deucher@amd.com>
+Date: Mon, 16 Feb 2026 10:02:32 -0500
+Subject: [PATCH] drm/amdgpu: keep vga memory on MacBooks with switchable
+ graphics
 
-In the original txt format binding document ak4458.txt, the supply names
-are 'AVDD-supply', 'DVDD-supply', and they are also used in driver. But in
-the commit converting to yaml format, they are changed to 'avdd-supply',
-'dvdd-supply'. After search all the dts file, these names 'AVDD-supply',
-'DVDD-supply', 'avdd-supply', 'dvdd-supply' are not used in any dts
-file. So it is safe to fix the yaml binding document.
+On Intel MacBookPros with switchable graphics, when the iGPU
+is enabled, the address of VRAM gets put at 0 in the dGPU's
+virtual address space.  This is non-standard and seems to cause
+issues with the cursor if it ends up at 0.  We have the framework
+to reserve memory at 0 in the address space, so enable it here if
+the vram start address is 0.
 
-Fixes: 829d78e3ea32 ("ASoC: dt-bindings: ak5558: Convert to dtschema")
+Reviewed-and-tested-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4302
 Cc: stable@vger.kernel.org
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260212021829.3244736-4-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Mario Kleiner <mario.kleiner.de@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 ---
- .../devicetree/bindings/sound/asahi-kasei,ak5558.yaml         | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/sound/asahi-kasei,ak5558.yaml b/Documentation/devicetree/bindings/sound/asahi-kasei,ak5558.yaml
-index 5c2f131c86c3f..18919d9112a3f 100644
---- a/Documentation/devicetree/bindings/sound/asahi-kasei,ak5558.yaml
-+++ b/Documentation/devicetree/bindings/sound/asahi-kasei,ak5558.yaml
-@@ -19,10 +19,10 @@ properties:
-   reg:
-     maxItems: 1
- 
--  avdd-supply:
-+  AVDD-supply:
-     description: A 1.8V supply that powers up the AVDD pin.
- 
--  dvdd-supply:
-+  DVDD-supply:
-     description: A 1.2V supply that powers up the DVDD pin.
- 
-   reset-gpios:
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index d35d9719d5668..6a6b334428f6d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -1068,6 +1068,16 @@ void amdgpu_gmc_get_vbios_allocations(struct amdgpu_device *adev)
+ 	case CHIP_RENOIR:
+ 		adev->mman.keep_stolen_vga_memory = true;
+ 		break;
++	case CHIP_POLARIS10:
++	case CHIP_POLARIS11:
++	case CHIP_POLARIS12:
++		/* MacBookPros with switchable graphics put VRAM at 0 when
++		 * the iGPU is enabled which results in cursor issues if
++		 * the cursor ends up at 0.  Reserve vram at 0 in that case.
++		 */
++		if (adev->gmc.vram_start == 0)
++			adev->mman.keep_stolen_vga_memory = true;
++		break;
+ 	default:
+ 		adev->mman.keep_stolen_vga_memory = false;
+ 		break;
 -- 
 2.51.0
 
