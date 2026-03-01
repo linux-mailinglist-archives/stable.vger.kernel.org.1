@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KF1gHxGqo2nfJQUAu9opvQ
-	(envelope-from <stable+bounces-221922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:53:05 +0100
+	id KP0/Jxaqo2nfJQUAu9opvQ
+	(envelope-from <stable+bounces-221923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:53:10 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3C81CE04E
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:53:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E81A1CE055
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:53:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 123503302672
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:44:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60AC83304E44
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE5B2D9484;
-	Sun,  1 Mar 2026 01:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F812EA481;
+	Sun,  1 Mar 2026 01:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H+DId0lP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQvF9rki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8F42D9798;
-	Sun,  1 Mar 2026 01:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEDE2D9798;
+	Sun,  1 Mar 2026 01:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329467; cv=none; b=UDKZTJHhap0xZN7toZUo9P+3hk/HrELR/N5tEHIi2ukIs4xNJ53IPIrIA7AngYEvke+TLzG+aalRTlRL1RvrGMYp2n0A9cwQ9SIr0LWx+9tIxkFt3NsV1smaHPd1bWcIB5YnB6MS4MjCKZf1K3Xsxu0KZgCs+9Gyp7uLwmaPTqI=
+	t=1772329469; cv=none; b=jqq68q5lVJBZIakC5GYPaFRmsbTJiHUZQ5OUfD1cJpxUEiuD+zIo1FJbhSm8YPpj/roYdSb3B3Ks+afo/N//Rx1ydpvwIdy2hDeAPZOd2PFeRMuck9mJk8iM554tDQCgTtr1qL5AjKdSoyoIKlVuaEbjkmYiGWxAUnpC7FsYD3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329467; c=relaxed/simple;
-	bh=Bz3dRhD/8h/a5poanw0XLle94muCl2iGFZhvnYZGI/k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WNgvu9i1DiGpetb/JslGp37tIYYoPdZqKIeD1HMC4quqgvaepkWghsveAQ8gLMlXXoNUv5Fia186bIZgusMuTri6brWwyLDyu6HbgyomhCIjah6M9jwfPU7uBsWk4BJ5kb8ulU6sDo6gOqnE7dTGVwd8Y22SHpCmfVzYYXRBaHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H+DId0lP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A975C19424;
-	Sun,  1 Mar 2026 01:44:26 +0000 (UTC)
+	s=arc-20240116; t=1772329469; c=relaxed/simple;
+	bh=dIeusuMYh49EWKfCFrAnRTaIsryPK6OKr623xCdXGnM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XSeBkNSa7+VpdNvHtEn32JtmqnofnMrKJ00i8D2qdyUYvQFg92E/PGLg54rcR79eHT8TtZ5Gu58mJjJN8VU5TS3SwoCWE74h7YBKi27FGwGDtMUOdsOqoB8yXb0kHI1YTphFtDFX3QwygVSLC+3hQ0VMuimTbe7KpHemawTl4Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQvF9rki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D315DC19421;
+	Sun,  1 Mar 2026 01:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329467;
-	bh=Bz3dRhD/8h/a5poanw0XLle94muCl2iGFZhvnYZGI/k=;
+	s=k20201202; t=1772329469;
+	bh=dIeusuMYh49EWKfCFrAnRTaIsryPK6OKr623xCdXGnM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=H+DId0lPhd7IgRHYF1bb8AKvlX4kZSjE3j2JVfE3kHfC0W4Q7rY8S7fQ/5gM5j80t
-	 ZdSoy+JHRn/KvB67Xvbl8nFRYZX+4NlcW7u3rHRckgzsPOoN4E1ujC8PT8LRf9JG0Z
-	 cjwXA0qu4C3UxktKXF0wmxkc+b9xbd0MQwNw2m8AeWFttt0AGHPzXAU0/nnOHzAHD3
-	 x3kkchWSrbUGd+kLsctMDMtsQWtoi+owtqCNdvciYLyX8aqgq92UxRF8S4zL/hz+yb
-	 n15wK3B0BiC1bmiq5v52XjkPg1jPHsOut+M5hBTVjS+Ei1EcwlGHBOGC+nf1SZ7fOC
-	 xqnRSiY43Yzog==
+	b=BQvF9rkiGlVvlLcXvGLaQnF8KwYoPnwR7Clscj4pD6FraQdxw3r+LtbGgjCzGrgZ9
+	 IbRFX3BNDUv3FgY7MAxN5BOaq5t/uRcrOfdku9gqz+ppo3vv4o/2PWAMryjeEhX9OL
+	 adlgDc36fUTSV5HDTF/xG4JLBKVNv/aJlg3W4VzpbstSB8cDiCjr0HlcC/zuqsNvxF
+	 KAO7N6neh64ArNwJvhWNVIGtMOMaABXmZLaMLmDJmrxZWfgS+BNmXBtE7+tIjsijIk
+	 MVbG9r7OHeLHDH0aok1eLu/XQLfw8fkNmjFNoBI6IU3d4xlVrBPCEVsMJ/N06ukQJT
+	 vLU5fA4e8xlWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	maobibo@loongson.cn
-Cc: Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	virtualization@lists.linux.dev,
-	linux-crypto@vger.kernel.org
-Subject: FAILED: Patch "crypto: virtio: Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:44:25 -0500
-Message-ID: <20260301014425.1706675-1-sashal@kernel.org>
+	antoniu.miclaus@analog.com
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org
+Subject: FAILED: Patch "iio: gyro: itg3200: Fix unchecked return value in read_raw" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:44:27 -0500
+Message-ID: <20260301014427.1706725-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221922-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221923-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -90,7 +90,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CD3C81CE04E
+X-Rspamd-Queue-Id: 2E81A1CE055
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -103,41 +103,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a389d431053935366b88a8fbf271f1a564b9a44e Mon Sep 17 00:00:00 2001
-From: Bibo Mao <maobibo@loongson.cn>
-Date: Tue, 13 Jan 2026 11:05:55 +0800
-Subject: [PATCH] crypto: virtio: Remove duplicated virtqueue_kick in
- virtio_crypto_skcipher_crypt_req
+From b79b24f578cdb2d657db23e5fafe82c7e6a36b72 Mon Sep 17 00:00:00 2001
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Date: Thu, 29 Jan 2026 17:01:45 +0200
+Subject: [PATCH] iio: gyro: itg3200: Fix unchecked return value in read_raw
 
-With function virtio_crypto_skcipher_crypt_req(), there is already
-virtqueue_kick() call with spinlock held in function
-__virtio_crypto_skcipher_do_req(). Remove duplicated virtqueue_kick()
-function call here.
+The return value from itg3200_read_reg_s16() is stored in ret but
+never checked. The function unconditionally returns IIO_VAL_INT,
+ignoring potential I2C read failures. This causes garbage data to
+be returned to userspace when the read fails, with no error reported.
 
-Fixes: d79b5d0bbf2e ("crypto: virtio - support crypto engine framework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20260113030556.3522533-3-maobibo@loongson.cn>
+Add proper error checking to propagate the failure to callers.
+
+Fixes: 9dbf091da080 ("iio: gyro: Add itg3200")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/crypto/virtio/virtio_crypto_skcipher_algs.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/iio/gyro/itg3200_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-index 1b3fb21a2a7de..11053d1786d4d 100644
---- a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-+++ b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-@@ -541,8 +541,6 @@ int virtio_crypto_skcipher_crypt_req(
- 	if (ret < 0)
- 		return ret;
- 
--	virtqueue_kick(data_vq->vq);
--
- 	return 0;
- }
- 
+diff --git a/drivers/iio/gyro/itg3200_core.c b/drivers/iio/gyro/itg3200_core.c
+index cd8a2dae56cd9..bfe95ec1abda9 100644
+--- a/drivers/iio/gyro/itg3200_core.c
++++ b/drivers/iio/gyro/itg3200_core.c
+@@ -93,6 +93,8 @@ static int itg3200_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_RAW:
+ 		reg = (u8)chan->address;
+ 		ret = itg3200_read_reg_s16(indio_dev, reg, val);
++		if (ret)
++			return ret;
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
 -- 
 2.51.0
 
