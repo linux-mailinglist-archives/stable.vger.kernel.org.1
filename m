@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-221898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iA2sIgWbo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:53 +0100
+	id QNliKQybo2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417181CBDC1
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F2F1CBDE7
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6FA06304A566
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CD0B0303872F
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEFC32D7DD4;
-	Sun,  1 Mar 2026 01:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE032D0C63;
+	Sun,  1 Mar 2026 01:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KoK+6agm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="faoixRZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8210D145A1F;
-	Sun,  1 Mar 2026 01:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4BB145A1F;
+	Sun,  1 Mar 2026 01:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329403; cv=none; b=IUJ7rpTgQo6kdSV4SqNRu1milVRzu3MLJ8CEZgVeZ6je8coEmPSCd+KWTeKAoOsqXfSPRlAwXIhtCaRWcm9gZGchPEdeJ+lK4/SkGyRaelaK9fewo4vta44zSbbiTiTL9DJLrY2gwHyMNw3Ot29GRwVh2BteprAySinU9ehrfK8=
+	t=1772329405; cv=none; b=VOVDoGlE8UNAi0xRoTxqcKPwSIFVst4qb1CaH0MRxGQuFO536kdeE4YrME8TNsyX6FthhZ+bJjuua9GOILwq3jSFbhA1PsR99BTQFkQfmasPRRkxpqgpn69hp4m4eLyAKO/9+dS0Q6sUr3AGdX9W0OkXy+K6/1FjuMVc8sBmkEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329403; c=relaxed/simple;
-	bh=/F/ToFn6UCh1yw1eEivyu0FetzvXUx4TUhqrueZDDgg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nuw1DMkl6uKPaDc6kP8x4CjJ2PFImRV62zwkZyGtoS+nA2C+/WG57sBtPFky9O5mQchxnzT4EVdxfc+ej4GHdOWCdv4zPMuCKHqYDM1lDgWDG81/lA6xWkB0L1i5/UbrbDzXW0fc3Z1FnH699xNqdTTZME/b1zDLHOs87Lvtm1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KoK+6agm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A325BC19424;
-	Sun,  1 Mar 2026 01:43:22 +0000 (UTC)
+	s=arc-20240116; t=1772329405; c=relaxed/simple;
+	bh=UIgJpaffmdiJ9njvqxowhaNJQz4xetD64CxdmQgyFs0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t6NYqizfYOFZhtTqhcn7798vhB05gCSLt0He5waEX+fYAIfGCUG6uiZ3zKAALsliv6NLVW5IX5zRHwIP1RHCbqgvbWMUI3X88z4XSFPYNHGZmqZLQMnn/BQrqZXw6MpfGDPg/qTzRmkZb38RgGz3OL/7ay2IvCoCsmuYlEAbqNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=faoixRZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA20C19421;
+	Sun,  1 Mar 2026 01:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329403;
-	bh=/F/ToFn6UCh1yw1eEivyu0FetzvXUx4TUhqrueZDDgg=;
+	s=k20201202; t=1772329405;
+	bh=UIgJpaffmdiJ9njvqxowhaNJQz4xetD64CxdmQgyFs0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=KoK+6agmh4MNQXfEWxa5UvtWG6XyUoDmfI6yq7g5SUsqswdoufFtTfE1YKpKXO5H2
-	 TGbtuOGm+0oQTWokcIQVthmm9ii4O61pVG+njCRzs18lYOZI5MHslcl5saezeU/qTL
-	 Qo8znMYUz0EcLR8wP3hP0DtFeZuUUzg/BGHhOXFpyCLsZvUTvcThDhwNxRmrxNhR1p
-	 jfI0cQ9D1TQG1jlJDgSLZc9l3L4py18ZXu0KvZvwcUrY6DJfc8DU16fIOnzdYFAA0u
-	 iDDJEclabUCapA6VnlJ1Gg9IiikIZcU9KaZDx1dNk4gE+VRebXEXMwlZg2vZ5PZ79X
-	 zLHWK/eDJdOEA==
+	b=faoixRZNANBRZ8KoFXFTTgoZR9xPbkbvUMSEsmJibg5NVygVQ5fpsW5W5mG9jxQLy
+	 mrBfutqQEPiLReEUVdKrXCLa3+5l3xf7YUP14w2pzVMz9OuO28hi962PliEr2JW8q0
+	 tshvM2X8uZDL77TFKGq+F032+IrUNb2Taxvsvx6jQeE4bfGW71gKRasL0hnCk91WKy
+	 55kjzTCEymR4y71YMSMRM++sWwH1t6ICqQMuFSAg5lMwha2j+AUv7qkv9CyDvESqVL
+	 5Srz0+dvTj+FJNoRHVZGXkLVbuYfepXHZy1KkUVpVukTwzCM3ds8+xxufs2Jfr5ncz
+	 2kyxc54BZ4Qxw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johan@kernel.org
-Cc: Mikko Perttunen <mperttunen@nvidia.com>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	linux-clk@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: FAILED: Patch "clk: tegra: tegra124-emc: fix device leak on set_rate()" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:43:21 -0500
-Message-ID: <20260301014321.1705438-1-sashal@kernel.org>
+	djwong@kernel.org
+Cc: Christoph Hellwig <hch@lst.de>,
+	linux-xfs@vger.kernel.org
+Subject: FAILED: Patch "xfs: fix remote xattr valuelblk check" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:43:23 -0500
+Message-ID: <20260301014324.1705491-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,34 +63,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[nvidia.com,gmail.com,kernel.org,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221898-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221899-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 417181CBDC1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email]
+X-Rspamd-Queue-Id: 93F2F1CBDE7
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -106,42 +102,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From da61439c63d34ae6503d080a847f144d587e3a48 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Fri, 21 Nov 2025 17:40:03 +0100
-Subject: [PATCH] clk: tegra: tegra124-emc: fix device leak on set_rate()
+From bd3138e8912c9db182eac5fed1337645a98b7a4f Mon Sep 17 00:00:00 2001
+From: "Darrick J. Wong" <djwong@kernel.org>
+Date: Fri, 23 Jan 2026 09:27:33 -0800
+Subject: [PATCH] xfs: fix remote xattr valuelblk check
 
-Make sure to drop the reference taken when looking up the EMC device and
-its driver data on first set_rate().
+In debugging other problems with generic/753, it turns out that it's
+possible for the system go to down in the middle of a remote xattr set
+operation such that the leaf block entry is marked incomplete and
+valueblk is set to zero.  Make this no longer a failure.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
-
-Fixes: 2db04f16b589 ("clk: tegra: Add EMC clock driver")
-Fixes: 6d6ef58c2470 ("clk: tegra: tegra124-emc: Fix missing put_device() call in emc_ensure_emc_driver")
-Cc: stable@vger.kernel.org	# 4.2: 6d6ef58c2470
-Cc: Mikko Perttunen <mperttunen@nvidia.com>
-Cc: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Cc: <stable@vger.kernel.org> # v4.15
+Fixes: 13791d3b833428 ("xfs: scrub extended attribute leaf space")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/clk/tegra/clk-tegra124-emc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/scrub/attr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/tegra/clk-tegra124-emc.c b/drivers/clk/tegra/clk-tegra124-emc.c
-index 2a6db04342815..2777e70da8b99 100644
---- a/drivers/clk/tegra/clk-tegra124-emc.c
-+++ b/drivers/clk/tegra/clk-tegra124-emc.c
-@@ -197,8 +197,8 @@ static struct tegra_emc *emc_ensure_emc_driver(struct tegra_clk_emc *tegra)
- 	tegra->emc_node = NULL;
- 
- 	tegra->emc = platform_get_drvdata(pdev);
-+	put_device(&pdev->dev);
- 	if (!tegra->emc) {
--		put_device(&pdev->dev);
- 		pr_err("%s: cannot find EMC driver\n", __func__);
- 		return NULL;
+diff --git a/fs/xfs/scrub/attr.c b/fs/xfs/scrub/attr.c
+index a397c50b77943..c3c122ea2d322 100644
+--- a/fs/xfs/scrub/attr.c
++++ b/fs/xfs/scrub/attr.c
+@@ -338,7 +338,10 @@ xchk_xattr_entry(
+ 		rentry = xfs_attr3_leaf_name_remote(leaf, idx);
+ 		namesize = xfs_attr_leaf_entsize_remote(rentry->namelen);
+ 		name_end = (char *)rentry + namesize;
+-		if (rentry->namelen == 0 || rentry->valueblk == 0)
++		if (rentry->namelen == 0)
++			xchk_da_set_corrupt(ds, level);
++		if (rentry->valueblk == 0 &&
++		    !(ent->flags & XFS_ATTR_INCOMPLETE))
+ 			xchk_da_set_corrupt(ds, level);
  	}
+ 	if (name_end > buf_end)
 -- 
 2.51.0
 
