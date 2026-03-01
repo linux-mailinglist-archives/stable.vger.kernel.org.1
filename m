@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-222121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MC0uJAiio2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:18:48 +0100
+	id mFF2BK2do2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA98B1CD6CF
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:18:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1841CC8E3
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B702532796D1
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3158230EBFB3
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B447430B517;
-	Sun,  1 Mar 2026 01:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E8E2FFF90;
+	Sun,  1 Mar 2026 01:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pNVvYOUF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFQdddtU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785122F12CE
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760262E54A2;
+	Sun,  1 Mar 2026 01:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329954; cv=none; b=Sip1VVyN4KFRr4oue0t3xaTH0MC/Jwq8Xs2EJvzcvc8z7WZxcl7D/wsMy0Mo7JMWxtLU1uEOfL+Pb3AIporRoLMEZ4FwkNgZZyxEFqZbwoVSHZ4CYAi8kjK/PoD8hnm6xykiaRSzgcWyjRWbvDc9M61tLKLfi38DH5PmufHuk1M=
+	t=1772329956; cv=none; b=GXs3J5MSdL1a6uz6CuJMND6ApMdVZIuEnpRuC69+I9ZNA0OdHUT0lAK62sHt6zAcU47uiwbpJENMuvA7JvJiUSeSHsXworiwpOMun9067wX2PJ15/Oep5gzcFNZK9tonQGlkWzz5bbxdzY9ryleasgNSzrY4m7N5bH8Z/5loFqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329954; c=relaxed/simple;
-	bh=VMnN+Os703lIqCDY1dYJp2pKh+k6GIkVTnVEH6yGBoI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=asNuOEWOFjn3M+t5ZgUKsM0P41cKv25eXCBzjGI87xlCHSzapRN6CIm0LhqYIoE3RYYlcqgc1nsROKAPxzko0KpSxQqBkUkklkkFwn2P/bmpn0HLSRvKUh7GYm9FRtFsHpImoHqjs44W7LS13gIqjh6FrWbKjPaS3NOXFCE/vnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pNVvYOUF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643BFC19424;
-	Sun,  1 Mar 2026 01:52:33 +0000 (UTC)
+	s=arc-20240116; t=1772329956; c=relaxed/simple;
+	bh=3HOPbnmS4dKpQZXmQv8qJEvkgyHK0VUlvlTbJ6jt3Uk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ongmLv9BPxZoJUgjQcqKMHoZJEM/WvOrmTq+V71lgerbBWJJgUaaTi8STeo5QnXcdVWZcrSnpE3IYv52SOgTs1YWqy5xu8npmWPS4ib5k+AwOTqGu+BSfuFgWS5xkeD9+yEOckqrwLVc60u1wuC+UQI+gT+ZllLFrEFJDvEA84g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFQdddtU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0E2C19421;
+	Sun,  1 Mar 2026 01:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329954;
-	bh=VMnN+Os703lIqCDY1dYJp2pKh+k6GIkVTnVEH6yGBoI=;
+	s=k20201202; t=1772329956;
+	bh=3HOPbnmS4dKpQZXmQv8qJEvkgyHK0VUlvlTbJ6jt3Uk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=pNVvYOUFbF4LOdf7Fn3YDMejfR0vv0lJHA0/TF1B0SCus4Ot7Dh07A4fmzC9PWPTW
-	 HVf4ZpNpxg/PDCZSK2doB/Q6KJhfnLJb8dXErtRody8DmraYfGfFWJUFgLo6Jv3MoJ
-	 AwOphem3HUp789ejH+vzS+xSgqQXlEXthpN24MJPrWM7ngEjOApPtxHnOOTaszc6OY
-	 XiaUUMLfegQyr188U4Y8Y7f7qO3yGEoO2NipK6lXfqI4KMjAi98Y0ttrLUDDFZnisS
-	 r+0FffTAi3hgvMZnS5a+VUartk4Cimh7SJ7fngJV2Q4/3xzDpaTeHvVRg4E9GSsula
-	 C2YSYcGQQvbew==
+	b=MFQdddtU33Q4sBDjkDRAKH6yQW4YnlVfUPMKBuVfy4awqDX3uSbm0kZeyU94MPSBS
+	 Ji3bRp2FriofhX/cSoOD5mGpWcDzGbDwX+6bzv1Ju5I8BPdQP6cnRimoGS69q+J75N
+	 KcwdYKyiYhVcpr9ctbE7xbpGt8hdLWp7q+P0ItLmjG1OCHLlCk1JX3ANPtmnSbz0/h
+	 w2q3LmlS1hgDwaQ15sNoVHy3rH9jCSSElcPPv6heI5a6sddLW5IuHH9hbJ/hYdmToQ
+	 AifYC8Ju48bVd9GREST3AryU9jzpg5M1ELm5S57GyEa+QSluwwCUK+cCR6Jz4K3kFp
+	 nETyQJ5WCCXVQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	lihaoxiang@isrc.iscas.ac.cn
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	Su Hui <suhui@nfschina.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: FAILED: Patch "bus: fsl-mc: fix an error handling in fsl_mc_device_add()" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:52:31 -0500
-Message-ID: <20260301015232.1719081-1-sashal@kernel.org>
+	bmarzins@redhat.com
+Cc: dm-devel@lists.linux.dev
+Subject: FAILED: Patch "dm mpath: make pg_init_delay_msecs settable" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:52:34 -0500
+Message-ID: <20260301015234.1719130-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,29 +66,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222121-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-222122-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nfschina.com:email,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,nxp.com:email]
-X-Rspamd-Queue-Id: EA98B1CD6CF
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AA1841CC8E3
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,48 +101,45 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 52f527d0916bcdd7621a0c9e7e599b133294d495 Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Sat, 24 Jan 2026 18:20:54 +0800
-Subject: [PATCH] bus: fsl-mc: fix an error handling in fsl_mc_device_add()
+From 218b16992a37ea97b9e09b7659a25a864fb9976f Mon Sep 17 00:00:00 2001
+From: Benjamin Marzinski <bmarzins@redhat.com>
+Date: Tue, 27 Jan 2026 19:12:24 -0500
+Subject: [PATCH] dm mpath: make pg_init_delay_msecs settable
 
-In fsl_mc_device_add(), device_initialize() is called first.
-put_device() should be called to drop the reference if error
-occurs. And other resources would be released via put_device
--> fsl_mc_device_release. So remove redundant kfree() in
-error handling path.
+"pg_init_delay_msecs X" can be passed as a feature in the multipath
+table and is used to set m->pg_init_delay_msecs in parse_features().
+However, alloc_multipath_stage2(), which is called after
+parse_features(), resets m->pg_init_delay_msecs to its default value.
+Instead, set m->pg_init_delay_msecs in alloc_multipath(), which is
+called before parse_features(), to avoid overwriting a value passed in
+by the table.
 
-Fixes: bbf9d17d9875 ("staging: fsl-mc: Freescale Management Complex (fsl-mc) bus driver")
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
 Cc: stable@vger.kernel.org
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/b767348e-d89c-416e-acea-1ebbff3bea20@stanley.mountain/
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Suggested-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20260124102054.1613093-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/md/dm-mpath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index 08b99b0b342f3..007223549887d 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -896,11 +896,7 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
- 	return 0;
+diff --git a/drivers/md/dm-mpath.c b/drivers/md/dm-mpath.c
+index 6f9d86f4b912c..de03f9b065842 100644
+--- a/drivers/md/dm-mpath.c
++++ b/drivers/md/dm-mpath.c
+@@ -225,6 +225,7 @@ static struct multipath *alloc_multipath(struct dm_target *ti)
+ 		mutex_init(&m->work_mutex);
  
- error_cleanup_dev:
--	kfree(mc_dev->regions);
--	if (mc_bus)
--		kfree(mc_bus);
--	else
--		kfree(mc_dev);
-+	put_device(&mc_dev->dev);
+ 		m->queue_mode = DM_TYPE_NONE;
++		m->pg_init_delay_msecs = DM_PG_INIT_DELAY_DEFAULT;
  
- 	return error;
- }
+ 		m->ti = ti;
+ 		ti->private = m;
+@@ -251,7 +252,6 @@ static int alloc_multipath_stage2(struct dm_target *ti, struct multipath *m)
+ 	set_bit(MPATHF_QUEUE_IO, &m->flags);
+ 	atomic_set(&m->pg_init_in_progress, 0);
+ 	atomic_set(&m->pg_init_count, 0);
+-	m->pg_init_delay_msecs = DM_PG_INIT_DELAY_DEFAULT;
+ 	init_waitqueue_head(&m->pg_init_wait);
+ 	init_waitqueue_head(&m->probe_wait);
+ 
 -- 
 2.51.0
 
