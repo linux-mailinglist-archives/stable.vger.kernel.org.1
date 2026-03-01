@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-222236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aC5IOtqto2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:09:14 +0100
+	id wMeyEN2to2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:09:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0A81CE416
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:09:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DFAD1CE41D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:09:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00A2F32E7BD2
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41D5334A0255
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EAB2F6911;
-	Sun,  1 Mar 2026 01:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CBD2F9D82;
+	Sun,  1 Mar 2026 01:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvkj1XoC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccs/m7qa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDC92D9EFF;
-	Sun,  1 Mar 2026 01:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452482D9EFF
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330377; cv=none; b=QlyxUYqfq6bcUUR2Yf8q5iP1KT1j/uCSkPcm054cTVi4+TlFo3Dh+WqjtDpzUTph4unH1V+NihtbitRQRnC0PcJXCq4LMHu45nS8/xA8SfKowVuNzD5j1D9mhnIHCwF0SUN4XnD2+UfUEALN47twTbqqQYSw3bGLSQWYzg/SX4Q=
+	t=1772330380; cv=none; b=inAa4znWIctoOiimQzlCKUDbuilrp5WkGBzILQWix/gi7BjsI1ZvllUvTDYYFmVLSdgkCWcfNKqtCbiNj/KWJ2ato8R1J6uDZ76TrHhqQHEwKY3PZWJMQkb+nTSgr4mtczEq4iChHDYNfdyXkZafQdbT2KqnKwFzqfyrwBKNFv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330377; c=relaxed/simple;
-	bh=OW51Is089JjNz15yKdLUW1tS9iparmnon+EKCat6QiE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NK2SRu09eyBj73MQ5snSFLwAbCQ8unl8wZvDdK/D6XrKDv8ufkiTTPQyqK1niXzDfbWfTJ4XMsUZS7rTYmurdg8fPki9RR7mzfN0d5pTm6DjaXlCQN3YCPC6lkCDP4hxKG4XK1WRSZLRfTeidW5zTSP5EcFyzM97uaWXWm483GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvkj1XoC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E21C19421;
-	Sun,  1 Mar 2026 01:59:36 +0000 (UTC)
+	s=arc-20240116; t=1772330380; c=relaxed/simple;
+	bh=k8Us84mBo9Wmhf8NEndbI1nt4UatoJ3d/6lIwaZSC5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YaVq77oyXvNpctObpDBmp/nRg+1V0W8kBDeRAnF2xtGZkyb2y7PeMxADh42OHzmtAzY05h6cyy8ijLBtz/NhQJhnIKTY1S3JtAbgMFe+N+7gCG9KJ4pRSr+6cJcMREzm8fOVxvGDv9jy4rodbXtnL/9BU1twOZ9WvU2NipzQNYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccs/m7qa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B638C19421;
+	Sun,  1 Mar 2026 01:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330377;
-	bh=OW51Is089JjNz15yKdLUW1tS9iparmnon+EKCat6QiE=;
+	s=k20201202; t=1772330380;
+	bh=k8Us84mBo9Wmhf8NEndbI1nt4UatoJ3d/6lIwaZSC5k=;
 	h=From:To:Cc:Subject:Date:From;
-	b=pvkj1XoCUbyAz+0cuo1xEwyuul7/rDSj3rChVj1eNuC9d+p5iZ09vuime7wpbH+wV
-	 pp7e++pFCy2GVzMhWGSbNG1PfYfgqNFac3O6y/lj4betNqeKjyY3glTUNYcLtAG2Zc
-	 vCq6lmVwSlRRAhAtpKoxVphKmW8fqz5pOef9h3zoxWupTf2AxFjqOxYB5AYnC1p959
-	 JRX74ByF438Rn/CBYLSd3bCOa4n1dZjDSDBjshMuX4TYi3HWlenp5HAnMoRDws3vvu
-	 DgT07fb2PFrNkvbEGcwlVXPz6YHepSnGIRYsQJMuB8Sdya9KCqIU1f45iZL8j7Yhpd
-	 WDm7rUUk8H5Dg==
+	b=ccs/m7qa01nYEGtnRme0RXk9SMKLUgBWMpIaJxFeFw7awdw2gxbsCywqeNcDezKha
+	 pDm6XFihHKKscztOoFFGAs2IfzdNqqAXdFAMO0QDAb5NTzdf4c4Jmjm4GOxRVC+aV3
+	 4SVgdr/Z+i6bZF/DYCFpz7FX/aLcJ5NVEN0hKU5UBfK3eo/dXjchPxkdKnPlmRyqVf
+	 2NjBtZNbrjj7QrSaDzvDrl6WmqfdAYer4yZEuTvA1RlZ7+kf1KEfajTRoOgIE8k2/r
+	 80UQozl4ojsWerIoRJ+ET7dZIRq3kAXwwU74jh9jVJPei6mnVNRknTcojSwrU2jdHy
+	 aalAPL5MFPS6w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	khtsai@google.com
+	yangyongpeng@xiaomi.com
 Cc: stable@kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org
-Subject: FAILED: Patch "usb: gadget: f_ncm: align net_device lifecycle with bind/unbind" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 20:59:35 -0500
-Message-ID: <20260301015935.1725416-1-sashal@kernel.org>
+	Sheng Yong <shengyong1@xiaomi.com>,
+	Jinbao Liu <liujinbao1@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: FAILED: Patch "f2fs: fix IS_CHECKPOINTED flag inconsistency issue caused by concurrent atomic commit and checkpoint writes" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 20:59:37 -0500
+Message-ID: <20260301015938.1725466-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,33 +67,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222236-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222237-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4F0A81CE416
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xiaomi.com:email]
+X-Rspamd-Queue-Id: 2DFAD1CE41D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -103,372 +106,102 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 56a512a9b4107079f68701e7d55da8507eb963d9 Mon Sep 17 00:00:00 2001
-From: Kuen-Han Tsai <khtsai@google.com>
-Date: Tue, 30 Dec 2025 18:13:16 +0800
-Subject: [PATCH] usb: gadget: f_ncm: align net_device lifecycle with
- bind/unbind
+From 7633a7387eb4d0259d6bea945e1d3469cd135bbc Mon Sep 17 00:00:00 2001
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Date: Tue, 6 Jan 2026 20:12:11 +0800
+Subject: [PATCH] f2fs: fix IS_CHECKPOINTED flag inconsistency issue caused by
+ concurrent atomic commit and checkpoint writes
 
-Currently, the net_device is allocated in ncm_alloc_inst() and freed in
-ncm_free_inst(). This ties the network interface's lifetime to the
-configuration instance rather than the USB connection (bind/unbind).
+During SPO tests, when mounting F2FS, an -EINVAL error was returned from
+f2fs_recover_inode_page. The issue occurred under the following scenario
 
-This decoupling causes issues when the USB gadget is disconnected where
-the underlying gadget device is removed. The net_device can outlive its
-parent, leading to dangling sysfs links and NULL pointer dereferences
-when accessing the freed gadget device.
+Thread A                                     Thread B
+f2fs_ioc_commit_atomic_write
+ - f2fs_do_sync_file // atomic = true
+  - f2fs_fsync_node_pages
+    : last_folio = inode folio
+    : schedule before folio_lock(last_folio) f2fs_write_checkpoint
+                                              - block_operations// writeback last_folio
+                                              - schedule before f2fs_flush_nat_entries
+    : set_fsync_mark(last_folio, 1)
+    : set_dentry_mark(last_folio, 1)
+    : folio_mark_dirty(last_folio)
+    - __write_node_folio(last_folio)
+      : f2fs_down_read(&sbi->node_write)//block
+                                              - f2fs_flush_nat_entries
+                                                : {struct nat_entry}->flag |= BIT(IS_CHECKPOINTED)
+                                              - unblock_operations
+                                                : f2fs_up_write(&sbi->node_write)
+                                             f2fs_write_checkpoint//return
+      : f2fs_do_write_node_page()
+f2fs_ioc_commit_atomic_write//return
+                                             SPO
 
-Problem 1: NULL pointer dereference on disconnect
- Unable to handle kernel NULL pointer dereference at virtual address
- 0000000000000000
- Call trace:
-   __pi_strlen+0x14/0x150
-   rtnl_fill_ifinfo+0x6b4/0x708
-   rtmsg_ifinfo_build_skb+0xd8/0x13c
-   rtmsg_ifinfo+0x50/0xa0
-   __dev_notify_flags+0x4c/0x1f0
-   dev_change_flags+0x54/0x70
-   do_setlink+0x390/0xebc
-   rtnl_newlink+0x7d0/0xac8
-   rtnetlink_rcv_msg+0x27c/0x410
-   netlink_rcv_skb+0x134/0x150
-   rtnetlink_rcv+0x18/0x28
-   netlink_unicast+0x254/0x3f0
-   netlink_sendmsg+0x2e0/0x3d4
+Thread A calls f2fs_need_dentry_mark(sbi, ino), and the last_folio has
+already been written once. However, the {struct nat_entry}->flag did not
+have the IS_CHECKPOINTED set, causing set_dentry_mark(last_folio, 1) and
+write last_folio again after Thread B finishes f2fs_write_checkpoint.
 
-Problem 2: Dangling sysfs symlinks
- console:/ # ls -l /sys/class/net/ncm0
- lrwxrwxrwx ... /sys/class/net/ncm0 ->
- /sys/devices/platform/.../gadget.0/net/ncm0
- console:/ # ls -l /sys/devices/platform/.../gadget.0/net/ncm0
- ls: .../gadget.0/net/ncm0: No such file or directory
+After SPO and reboot, it was detected that {struct node_info}->blk_addr
+was not NULL_ADDR because Thread B successfully write the checkpoint.
 
-Move the net_device allocation to ncm_bind() and deallocation to
-ncm_unbind(). This ensures the network interface exists only when the
-gadget function is actually bound to a configuration.
+This issue only occurs in atomic write scenarios. For regular file
+fsync operations, the folio must be dirty. If
+block_operations->f2fs_sync_node_pages successfully submit the folio
+write, this path will not be executed. Otherwise, the
+f2fs_write_checkpoint will need to wait for the folio write submission
+to complete, as sbi->nr_pages[F2FS_DIRTY_NODES] > 0. Therefore, the
+situation where f2fs_need_dentry_mark checks that the {struct
+nat_entry}->flag /wo the IS_CHECKPOINTED flag, but the folio write has
+already been submitted, will not occur.
 
-To support pre-bind configuration (e.g., setting interface name or MAC
-address via configfs), cache user-provided options in f_ncm_opts
-using the gether_opts structure. Apply these cached settings to the
-net_device upon creation in ncm_bind().
+Therefore, for atomic file fsync, sbi->node_write should be acquired
+through __write_node_folio to ensure that the IS_CHECKPOINTED flag
+correctly indicates that the checkpoint write has been completed.
 
-Preserve the use-after-free fix from commit 6334b8e4553c ("usb: gadget:
-f_ncm: Fix UAF ncm object at re-bind after usb ep transport error").
-Check opts->net in ncm_set_alt() and ncm_disable() to ensure
-gether_disconnect() runs only if a connection was established.
-
-Fixes: 40d133d7f542 ("usb: gadget: f_ncm: convert to new function interface with backward compatibility")
+Fixes: 608514deba38 ("f2fs: set fsync mark only for the last dnode")
 Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20251230-ncm-refactor-v1-3-793e347bc7a7@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
+Signed-off-by: Jinbao Liu <liujinbao1@xiaomi.com>
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c | 128 ++++++++++++++--------------
- drivers/usb/gadget/function/u_ncm.h |   4 +-
- 2 files changed, 66 insertions(+), 66 deletions(-)
+ fs/f2fs/node.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-index 0e38330271d5a..e23adc132f886 100644
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -83,6 +83,11 @@ static inline struct f_ncm *func_to_ncm(struct usb_function *f)
- 	return container_of(f, struct f_ncm, port.func);
- }
- 
-+static inline struct f_ncm_opts *func_to_ncm_opts(struct usb_function *f)
-+{
-+	return container_of(f->fi, struct f_ncm_opts, func_inst);
-+}
-+
- /*-------------------------------------------------------------------------*/
- 
- /*
-@@ -859,6 +864,7 @@ static int ncm_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
- static int ncm_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
- {
- 	struct f_ncm		*ncm = func_to_ncm(f);
-+	struct f_ncm_opts	*opts = func_to_ncm_opts(f);
- 	struct usb_composite_dev *cdev = f->config->cdev;
- 
- 	/* Control interface has only altsetting 0 */
-@@ -881,12 +887,13 @@ static int ncm_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
- 		if (alt > 1)
- 			goto fail;
- 
--		if (ncm->netdev) {
--			DBG(cdev, "reset ncm\n");
--			ncm->netdev = NULL;
--			gether_disconnect(&ncm->port);
--			ncm_reset_values(ncm);
--		}
-+		scoped_guard(mutex, &opts->lock)
-+			if (opts->net) {
-+				DBG(cdev, "reset ncm\n");
-+				opts->net = NULL;
-+				gether_disconnect(&ncm->port);
-+				ncm_reset_values(ncm);
-+			}
- 
- 		/*
- 		 * CDC Network only sends data in non-default altsettings.
-@@ -919,7 +926,8 @@ static int ncm_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
- 			net = gether_connect(&ncm->port);
- 			if (IS_ERR(net))
- 				return PTR_ERR(net);
--			ncm->netdev = net;
-+			scoped_guard(mutex, &opts->lock)
-+				opts->net = net;
- 		}
- 
- 		spin_lock(&ncm->lock);
-@@ -1366,14 +1374,16 @@ static int ncm_unwrap_ntb(struct gether *port,
- static void ncm_disable(struct usb_function *f)
- {
- 	struct f_ncm		*ncm = func_to_ncm(f);
-+	struct f_ncm_opts	*opts = func_to_ncm_opts(f);
- 	struct usb_composite_dev *cdev = f->config->cdev;
- 
- 	DBG(cdev, "ncm deactivated\n");
- 
--	if (ncm->netdev) {
--		ncm->netdev = NULL;
--		gether_disconnect(&ncm->port);
--	}
-+	scoped_guard(mutex, &opts->lock)
-+		if (opts->net) {
-+			opts->net = NULL;
-+			gether_disconnect(&ncm->port);
-+		}
- 
- 	if (ncm->notify->enabled) {
- 		usb_ep_disable(ncm->notify);
-@@ -1433,39 +1443,44 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- {
- 	struct usb_composite_dev *cdev = c->cdev;
- 	struct f_ncm		*ncm = func_to_ncm(f);
-+	struct f_ncm_opts	*ncm_opts = func_to_ncm_opts(f);
- 	struct usb_string	*us;
- 	int			status = 0;
- 	struct usb_ep		*ep;
--	struct f_ncm_opts	*ncm_opts;
- 
- 	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
-+	struct net_device		*netdev __free(free_gether_netdev) = NULL;
- 	struct usb_request		*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_ecm(cdev->gadget))
- 		return -EINVAL;
- 
--	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
--
- 	if (cdev->use_os_string) {
- 		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
- 		if (!os_desc_table)
- 			return -ENOMEM;
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index d378549010e67..99e425e8c00ac 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1786,8 +1786,13 @@ static bool __write_node_folio(struct folio *folio, bool atomic, bool *submitted
+ 		goto redirty_out;
  	}
  
--	mutex_lock(&ncm_opts->lock);
--	gether_set_gadget(ncm_opts->net, cdev->gadget);
--	if (!ncm_opts->bound) {
--		ncm_opts->net->mtu = (ncm_opts->max_segment_size - ETH_HLEN);
--		status = gether_register_netdev(ncm_opts->net);
-+	netdev = gether_setup_default();
-+	if (IS_ERR(netdev))
-+		return -ENOMEM;
-+
-+	scoped_guard(mutex, &ncm_opts->lock) {
-+		gether_apply_opts(netdev, &ncm_opts->net_opts);
-+		netdev->mtu = ncm_opts->max_segment_size - ETH_HLEN;
- 	}
--	mutex_unlock(&ncm_opts->lock);
+-	if (atomic && !test_opt(sbi, NOBARRIER))
+-		fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
++	if (atomic) {
++		if (!test_opt(sbi, NOBARRIER))
++			fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
++		if (IS_INODE(folio))
++			set_dentry_mark(folio,
++				f2fs_need_dentry_mark(sbi, ino_of_node(folio)));
++	}
  
-+	gether_set_gadget(netdev, cdev->gadget);
-+	status = gether_register_netdev(netdev);
- 	if (status)
- 		return status;
- 
--	ncm_opts->bound = true;
--
--	ncm_string_defs[1].s = ncm->ethaddr;
-+	/* export host's Ethernet address in CDC format */
-+	status = gether_get_host_addr_cdc(netdev, ncm->ethaddr,
-+					  sizeof(ncm->ethaddr));
-+	if (status < 12)
-+		return -EINVAL;
-+	ncm_string_defs[STRING_MAC_IDX].s = ncm->ethaddr;
- 
- 	us = usb_gstrings_attach(cdev, ncm_strings,
- 				 ARRAY_SIZE(ncm_string_defs));
-@@ -1563,6 +1578,8 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 		f->os_desc_n = 1;
- 	}
- 	ncm->notify_req = no_free_ptr(request);
-+	ncm->netdev = no_free_ptr(netdev);
-+	ncm->port.ioport = netdev_priv(ncm->netdev);
- 
- 	DBG(cdev, "CDC Network: IN/%s OUT/%s NOTIFY/%s\n",
- 			ncm->port.in_ep->name, ncm->port.out_ep->name,
-@@ -1577,19 +1594,19 @@ static inline struct f_ncm_opts *to_f_ncm_opts(struct config_item *item)
- }
- 
- /* f_ncm_item_ops */
--USB_ETHERNET_CONFIGFS_ITEM(ncm);
-+USB_ETHER_OPTS_ITEM(ncm);
- 
- /* f_ncm_opts_dev_addr */
--USB_ETHERNET_CONFIGFS_ITEM_ATTR_DEV_ADDR(ncm);
-+USB_ETHER_OPTS_ATTR_DEV_ADDR(ncm);
- 
- /* f_ncm_opts_host_addr */
--USB_ETHERNET_CONFIGFS_ITEM_ATTR_HOST_ADDR(ncm);
-+USB_ETHER_OPTS_ATTR_HOST_ADDR(ncm);
- 
- /* f_ncm_opts_qmult */
--USB_ETHERNET_CONFIGFS_ITEM_ATTR_QMULT(ncm);
-+USB_ETHER_OPTS_ATTR_QMULT(ncm);
- 
- /* f_ncm_opts_ifname */
--USB_ETHERNET_CONFIGFS_ITEM_ATTR_IFNAME(ncm);
-+USB_ETHER_OPTS_ATTR_IFNAME(ncm);
- 
- static ssize_t ncm_opts_max_segment_size_show(struct config_item *item,
- 					      char *page)
-@@ -1655,34 +1672,27 @@ static void ncm_free_inst(struct usb_function_instance *f)
- 	struct f_ncm_opts *opts;
- 
- 	opts = container_of(f, struct f_ncm_opts, func_inst);
--	if (opts->bound)
--		gether_cleanup(netdev_priv(opts->net));
--	else
--		free_netdev(opts->net);
- 	kfree(opts->ncm_interf_group);
- 	kfree(opts);
- }
- 
- static struct usb_function_instance *ncm_alloc_inst(void)
- {
--	struct f_ncm_opts *opts;
-+	struct usb_function_instance *ret;
- 	struct usb_os_desc *descs[1];
- 	char *names[1];
- 	struct config_group *ncm_interf_group;
- 
--	opts = kzalloc(sizeof(*opts), GFP_KERNEL);
-+	struct f_ncm_opts *opts __free(kfree) = kzalloc(sizeof(*opts), GFP_KERNEL);
- 	if (!opts)
- 		return ERR_PTR(-ENOMEM);
-+
-+	opts->net = NULL;
- 	opts->ncm_os_desc.ext_compat_id = opts->ncm_ext_compat_id;
-+	gether_setup_opts_default(&opts->net_opts, "usb");
- 
- 	mutex_init(&opts->lock);
- 	opts->func_inst.free_func_inst = ncm_free_inst;
--	opts->net = gether_setup_default();
--	if (IS_ERR(opts->net)) {
--		struct net_device *net = opts->net;
--		kfree(opts);
--		return ERR_CAST(net);
--	}
- 	opts->max_segment_size = ETH_FRAME_LEN;
- 	INIT_LIST_HEAD(&opts->ncm_os_desc.ext_prop);
- 
-@@ -1693,26 +1703,22 @@ static struct usb_function_instance *ncm_alloc_inst(void)
- 	ncm_interf_group =
- 		usb_os_desc_prepare_interf_dir(&opts->func_inst.group, 1, descs,
- 					       names, THIS_MODULE);
--	if (IS_ERR(ncm_interf_group)) {
--		ncm_free_inst(&opts->func_inst);
-+	if (IS_ERR(ncm_interf_group))
- 		return ERR_CAST(ncm_interf_group);
--	}
- 	opts->ncm_interf_group = ncm_interf_group;
- 
--	return &opts->func_inst;
-+	ret = &opts->func_inst;
-+	retain_and_null_ptr(opts);
-+	return ret;
- }
- 
- static void ncm_free(struct usb_function *f)
- {
--	struct f_ncm *ncm;
--	struct f_ncm_opts *opts;
-+	struct f_ncm_opts *opts = func_to_ncm_opts(f);
- 
--	ncm = func_to_ncm(f);
--	opts = container_of(f->fi, struct f_ncm_opts, func_inst);
--	kfree(ncm);
--	mutex_lock(&opts->lock);
--	opts->refcnt--;
--	mutex_unlock(&opts->lock);
-+	scoped_guard(mutex, &opts->lock)
-+		opts->refcnt--;
-+	kfree(func_to_ncm(f));
- }
- 
- static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
-@@ -1736,13 +1742,15 @@ static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
- 
- 	kfree(ncm->notify_req->buf);
- 	usb_ep_free_request(ncm->notify, ncm->notify_req);
-+
-+	ncm->port.ioport = NULL;
-+	gether_cleanup(netdev_priv(ncm->netdev));
- }
- 
- static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
- {
- 	struct f_ncm		*ncm;
- 	struct f_ncm_opts	*opts;
--	int status;
- 
- 	/* allocate and initialize one new instance */
- 	ncm = kzalloc(sizeof(*ncm), GFP_KERNEL);
-@@ -1750,22 +1758,12 @@ static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
- 		return ERR_PTR(-ENOMEM);
- 
- 	opts = container_of(fi, struct f_ncm_opts, func_inst);
--	mutex_lock(&opts->lock);
--	opts->refcnt++;
- 
--	/* export host's Ethernet address in CDC format */
--	status = gether_get_host_addr_cdc(opts->net, ncm->ethaddr,
--				      sizeof(ncm->ethaddr));
--	if (status < 12) { /* strlen("01234567890a") */
--		kfree(ncm);
--		mutex_unlock(&opts->lock);
--		return ERR_PTR(-EINVAL);
--	}
-+	scoped_guard(mutex, &opts->lock)
-+		opts->refcnt++;
- 
- 	spin_lock_init(&ncm->lock);
- 	ncm_reset_values(ncm);
--	ncm->port.ioport = netdev_priv(opts->net);
--	mutex_unlock(&opts->lock);
- 	ncm->port.is_fixed = true;
- 	ncm->port.supports_multi_frame = true;
- 
-diff --git a/drivers/usb/gadget/function/u_ncm.h b/drivers/usb/gadget/function/u_ncm.h
-index 49ec095cdb4b6..d99330fe31e88 100644
---- a/drivers/usb/gadget/function/u_ncm.h
-+++ b/drivers/usb/gadget/function/u_ncm.h
-@@ -15,11 +15,13 @@
- 
- #include <linux/usb/composite.h>
- 
-+#include "u_ether.h"
-+
- struct f_ncm_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
--	bool				bound;
- 
-+	struct gether_opts		net_opts;
- 	struct config_group		*ncm_interf_group;
- 	struct usb_os_desc		ncm_os_desc;
- 	char				ncm_ext_compat_id[16];
+ 	/* should add to global list before clearing PAGECACHE status */
+ 	if (f2fs_in_warm_node_list(sbi, folio)) {
+@@ -1928,8 +1933,9 @@ int f2fs_fsync_node_pages(struct f2fs_sb_info *sbi, struct inode *inode,
+ 					if (is_inode_flag_set(inode,
+ 								FI_DIRTY_INODE))
+ 						f2fs_update_inode(inode, folio);
+-					set_dentry_mark(folio,
+-						f2fs_need_dentry_mark(sbi, ino));
++					if (!atomic)
++						set_dentry_mark(folio,
++							f2fs_need_dentry_mark(sbi, ino));
+ 				}
+ 				/* may be written by other thread */
+ 				if (!folio_test_dirty(folio))
 -- 
 2.51.0
 
