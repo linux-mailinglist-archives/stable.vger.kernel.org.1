@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-221881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IIvK8mao2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221881-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:53 +0100
+	id IKxmHdCao2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298CA1CBC5B
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E29F1CBC82
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4AD163024294
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41B73309C031
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07232BD59C;
-	Sun,  1 Mar 2026 01:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF5E2C1788;
+	Sun,  1 Mar 2026 01:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOTbw38O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSM9FuXa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A497E1A3165;
-	Sun,  1 Mar 2026 01:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2A81A3165;
+	Sun,  1 Mar 2026 01:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329362; cv=none; b=TXxr76rK2dfsDt2zBb6IqOH7dhR/lhDbQTpUlRO5gnRUXtCQ479SlHSWS+80dS/rd1rSZXtEwelCwTp/+KYWlg9S65neCGG5FSHn7xgzuq11sHKi0/ef4awQ7AoAXLTCj9ZfQLpJr8qftTXosq26PSruCaPNgsiR+xAjE24Lazs=
+	t=1772329364; cv=none; b=IK/IYVnXcD9gcdENCw8tGY/QtfSLAw7TqNMHnEPBEq0iDltDETQgeJF47VfPLqbny94Tmzz4A9LXEQte29f7WMlh9l7Ja9LHmOYQlYRaL4OUCQJbiKn9dCjmzJbSU2dLBRETwvB+bZ7vKtnGGaJ7v2CV64pV6/eaVfQkSHq+SlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329362; c=relaxed/simple;
-	bh=eYTLjnC2N0hlb2f/E2AZzfdoA2wbpnn/w0ubB5styxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JBDaMoh6Wlltq5jHgvcZJBGAm9vdeAw8pmb6tHwQGrvErPIILEbRTLbqfPVL02xwlo2gCk2CwrR4tFBIMSdqXRNstB+sb1ug28r2FhBRa68m8GMajAnsSycWd+qOKywgIqaNqXNZwoVJUf/PJzMeryy2FBPRfHybh5K2Vsei+e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOTbw38O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D12C19421;
-	Sun,  1 Mar 2026 01:42:41 +0000 (UTC)
+	s=arc-20240116; t=1772329364; c=relaxed/simple;
+	bh=AWeITYXqDp7opqHtWU2Zdvjkm1c6YHRb8mlaS7wsQYI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ihz42Vyk+m0BifFqSfT4z8MhHd6AvCFmfa46Y+ve4jWFmxaHmzugtysmcb1hNLvt1v04/0+1XDJyynzGumXJUSi1Eym2JdEk2XHOAhaE2x3V3s9MrV4V+tYaLIUaWxx5AixeLJ8qIBKuIQvr+CtA19cAuS2IaZDmH5pc5Q9sqHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSM9FuXa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28C2C19421;
+	Sun,  1 Mar 2026 01:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329362;
-	bh=eYTLjnC2N0hlb2f/E2AZzfdoA2wbpnn/w0ubB5styxE=;
+	s=k20201202; t=1772329364;
+	bh=AWeITYXqDp7opqHtWU2Zdvjkm1c6YHRb8mlaS7wsQYI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hOTbw38OnOwIC2KasvDkRHHTaWdR5emPyOKMw911I/QtRlyai/iYt2aRZwqpJqPol
-	 9QoNsfnSy9jFLHOrz0vTsuFjmr3LVs9lh8gQvkm71Ah4+8jBfj91wpuRDOkYCNA7lc
-	 +0BWTIwLiIX254PhCSaBw1vdGKPAdXLj5ujDeqDph65g6cn0+7aYnXML41q/XgT6Hk
-	 xgGhP/KGRuuS69OXDzt5/qmgVsGN2Zead9De1aC+2n7ryJWZc+ro/09chNw4ER5eXV
-	 dbuVfhJjWKFgKtlSOUq+Xd5yZQO02W/hJ0lt25s4xkWp+PCqn0PNr4blvrUIoK7UhO
-	 N2j1lrgDwk/aA==
+	b=gSM9FuXa0HgTJ1/XEzne2TebJmEZ1i3xscXWe/n59QRGU4+GxqC4LadBg/0okTc/W
+	 KVyCH2V2nOyZ9GYFeigIu8LV2xLo0OuKNRrILnuZ5ZxGJdKiacHWaCSYYahROu6ky/
+	 eVRLOtns+aOrgWSBJZJQYtqDJ+iwjBL5NuJzuidGO275Ojrv3SdM5Qd+bXkD6kIkMA
+	 UAw3KP3rRNz/z9ZkcosD879X5YmY+Hdlc/8VeFDZIoozqcwoLgS0WOShm+LRnQ1vvX
+	 aZQDhpalsHrexIR9jWZuha/G20bQuuH5sJZsGx6j687O9M+XSRAMnjzK4wkjzlaYDa
+	 ZUpatfsnogL1g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jerrysteve1101@gmail.com
-Cc: Peter Robinson <pbrobinson@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: FAILED: Patch "arm64: dts: rockchip: Do not enable hdmi_sound node on Pinebook Pro" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:42:40 -0500
-Message-ID: <20260301014240.1704581-1-sashal@kernel.org>
+	renjiang.han@oss.qualcomm.com
+Cc: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: FAILED: Patch "media: venus: vdec: fix error state assignment for zero bytesused" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:42:42 -0500
+Message-ID: <20260301014242.1704630-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,35 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,manjaro.org,sntech.de,vger.kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-221881-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-221882-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,manjaro.org:email,sntech.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pine64.org:url]
-X-Rspamd-Queue-Id: 298CA1CBC5B
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2E29F1CBC82
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -108,50 +105,49 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b18247f9dab735c9c2d63823d28edc9011e7a1ad Mon Sep 17 00:00:00 2001
-From: Jun Yan <jerrysteve1101@gmail.com>
-Date: Fri, 16 Jan 2026 23:12:53 +0800
-Subject: [PATCH] arm64: dts: rockchip: Do not enable hdmi_sound node on
- Pinebook Pro
+From 93ecd6ee95c38cb533fa25f48d3c1c8cb69f410f Mon Sep 17 00:00:00 2001
+From: Renjiang Han <renjiang.han@oss.qualcomm.com>
+Date: Thu, 11 Dec 2025 15:20:39 +0530
+Subject: [PATCH] media: venus: vdec: fix error state assignment for zero
+ bytesused
 
-Remove the redundant enabling of the hdmi_sound node in the Pinebook Pro
-board dts file, because the HDMI output is unused on this device. [1][2]
+When hfi_session_flush is issued, all queued buffers are returned to
+the V4L2 driver. Some of these buffers are not processed and have
+bytesused = 0. Currently, the driver marks such buffers as error even
+during drain operations, which can incorrectly flag EOS buffers.
 
-This change also eliminates the following kernel log warning, which is
-caused by the unenabled dependent node of hdmi_sound that ultimately
-results in the node's probe failure:
+Only capture buffers with zero payload (and not EOS) should be marked
+with VB2_BUF_STATE_ERROR. The check is performed inside the non-EOS
+branch to ensure correct handling.
 
-  platform hdmi-sound: deferred probe pending: asoc-simple-card: parse error
-
-[1] https://files.pine64.org/doc/PinebookPro/pinebookpro_v2.1_mainboard_schematic.pdf
-[2] https://files.pine64.org/doc/PinebookPro/pinebookpro_schematic_v21a_20220419.pdf
-
+Fixes: 51df3c81ba10b ("media: venus: vdec: Mark flushed buffers with error state")
+Signed-off-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
+Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
-Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
-Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://patch.msgid.link/20260116151253.9223-1-jerrysteve1101@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/media/platform/qcom/venus/vdec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-index eaaca08a76018..a6ac89567bafe 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-@@ -421,10 +421,6 @@ &gpu {
- 	status = "okay";
- };
- 
--&hdmi_sound {
--	status = "okay";
--};
+diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+index 4a6641fdffcf7..d0bd2d86a31f9 100644
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -1440,10 +1440,10 @@ static void vdec_buf_done(struct venus_inst *inst, unsigned int buf_type,
+ 				inst->drain_active = false;
+ 				inst->codec_state = VENUS_DEC_STATE_STOPPED;
+ 			}
++		} else {
++			if (!bytesused)
++				state = VB2_BUF_STATE_ERROR;
+ 		}
 -
- &i2c0 {
- 	clock-frequency = <400000>;
- 	i2c-scl-falling-time-ns = <4>;
+-		if (!bytesused)
+-			state = VB2_BUF_STATE_ERROR;
+ 	} else {
+ 		vbuf->sequence = inst->sequence_out++;
+ 	}
 -- 
 2.51.0
 
