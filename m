@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-221715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHp0FZebo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221715-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:19 +0100
+	id sBpuJpmbo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-221716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87E51CC091
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E1391CC0A8
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 688053254B41
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89196325590B
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0BE2DB784;
-	Sun,  1 Mar 2026 01:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E482C15B0;
+	Sun,  1 Mar 2026 01:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TmpEkmVL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ew1TXma6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA942D0C79
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1DF28FFFB;
+	Sun,  1 Mar 2026 01:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328964; cv=none; b=njyiSqt7y2s2cbpFAD2qr3fNwXFBvtO7EoNtqo8aoSc+7C3fu0oDvZDUtHfVGt8tm+nuWnBQ1Y1ncJ2AnkHg3pZBjwsyQk8OdA6MCJ0+0lTrCxv99hpkUFafl4MRsYo4HrmBMjIhVIMRriX6vsa8k2rguQywsazZENHBjnSm2Bs=
+	t=1772328966; cv=none; b=FxlrRGM+b5Y3JhLndIVKplN8yBb5nGCwzLu+/PF43drGSFBoR06nRoWQZYeQodUOxIfM7AEzLmIuysNRvj35dlTL3OuxFSS1UBzsKRaSqYSjsaKuVXEvqiLscPEacwLqvCVY9s8S8EeCyraXLI+ffFrcsjMtSoILkFsv8nOCBY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328964; c=relaxed/simple;
-	bh=o8QrnyXx5YcxW+HWTjGYCHtVrysbfGeXpzhFdGiZZJw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pmljeROMFdt0UYUz/ODaA8F+L3jiHNX/kRLd2hxcP4CB5WUzPygmfYMVuyWeOM3D7tMVbv0AgJdvxjQtVW9hTYd9ExWyNuQ73AHn/yGGBuqjeyVJDmGx9h6B73yq/meUrv7Ss5fSKMUxX1RfpSg97CwfZdx7PAVkgfzoQhcPeaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TmpEkmVL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F77C19421;
-	Sun,  1 Mar 2026 01:36:03 +0000 (UTC)
+	s=arc-20240116; t=1772328966; c=relaxed/simple;
+	bh=CkPETekzeBlF7y627B7GA+vMlnov3sYcWsS+6pl+hhk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ilz+YVEyp25ocFUAcirIbcSZM8MRnXQRyGCzfA34m8SvUDhzv1dgFI7Ubw4dcMGWEeMQKbpoSDjh4o02qV/twXGhE4fUA9Ph40actXynpavBURyLWudO8K4DS8MZkbvr+c6jHHuVi1uDie0SpqQQPvlX/eERtwdZyoQgQJoQEag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ew1TXma6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB20C19421;
+	Sun,  1 Mar 2026 01:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328964;
-	bh=o8QrnyXx5YcxW+HWTjGYCHtVrysbfGeXpzhFdGiZZJw=;
+	s=k20201202; t=1772328966;
+	bh=CkPETekzeBlF7y627B7GA+vMlnov3sYcWsS+6pl+hhk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=TmpEkmVLeRX5EGm3U8/LrfQy6/1E31LEuzhH+2n6CnHLW6h947oah5JgdL1FPLQ1M
-	 BEHQL7b7pFouA6gI26X2LhppY8Bfu3BiteIh30JzLMhuObUr66kS9PHEVFd1itKbFS
-	 OIUhGbpcZ/ebf8pz/PoRkzEW3BL5Ag6lcGOtJO4UdBD2Yoqx7Ia4vTMBzloHN66H4j
-	 SqXCBO9Dk7cqbvbGbKzsZH4u5V2E0Cs2uM7MNwX6cGzet/mlP4hTHcbYrBS3d5Zelm
-	 vm9ehSs+fUfV/CP0Br5nsEi9TGbWrNjGa4px/AGgkjAcc7tZGZB1oYsikpUmHKF8zQ
-	 99qg4QcYALGLQ==
+	b=ew1TXma6/HBXH3he1I328Mh5TM0S3RTxsA2R9mzxBpxivWtwbVGsrgrThbC/JY6xr
+	 AaUWU58KbZ6+FLMucO85MXRS77AOqVxqedG1IkKff8gAr5R7qglRCxGFK92ILhfEnA
+	 DPGyk2Rd5gzfgXSjRn4MFIfXNhruBg1hliOGA065MZLiH6pC/0OVXixt7yQg+clZXL
+	 TX5MqBkAwyUDk4pPb3UlTc9/39GgR1WKehn2YD38Eg1dGr65MhuWROxha2UpJoe00I
+	 ex/+Hr1bcYtzxP/3JIP1q2smis7YSUzNx75lXqrX/rqMSk5KwE5HIsNa+k81Ec9sEN
+	 po8MQMEKcksUQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	elver@google.com
-Cc: Boqun Feng <boqun@kernel.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Will Deacon <will@kernel.org>,
+	peng.fan@nxp.com
+Cc: Daniel Baluta <daniel.baluta@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "arm64: Fix non-atomic __READ_ONCE() with CONFIG_LTO=y" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:36:02 -0500
-Message-ID: <20260301013602.1695886-1-sashal@kernel.org>
+Subject: FAILED: Patch "remoteproc: imx_rproc: Fix invalid loaded resource table detection" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:36:04 -0500
+Message-ID: <20260301013604.1695936-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,36 +65,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221715-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-221716-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D87E51CC091
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email]
+X-Rspamd-Queue-Id: 1E1391CC0A8
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -106,52 +105,56 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From bb0c99e08ab9aa6d04b40cb63c72db9950d51749 Mon Sep 17 00:00:00 2001
-From: Marco Elver <elver@google.com>
-Date: Fri, 30 Jan 2026 14:28:24 +0100
-Subject: [PATCH] arm64: Fix non-atomic __READ_ONCE() with CONFIG_LTO=y
+From 26aa5295010ffaebcf8f1991c53fa7cf2ee1b20d Mon Sep 17 00:00:00 2001
+From: Peng Fan <peng.fan@nxp.com>
+Date: Thu, 29 Jan 2026 09:44:48 +0800
+Subject: [PATCH] remoteproc: imx_rproc: Fix invalid loaded resource table
+ detection
 
-The implementation of __READ_ONCE() under CONFIG_LTO=y incorrectly
-qualified the fallback "once" access for types larger than 8 bytes,
-which are not atomic but should still happen "once" and suppress common
-compiler optimizations.
+imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
+resource table even when the current firmware does not provide one.
 
-The cast `volatile typeof(__x)` applied the volatile qualifier to the
-pointer type itself rather than the pointee. This created a volatile
-pointer to a non-volatile type, which violated __READ_ONCE() semantics.
+When the device tree contains a "rsc-table" entry, priv->rsc_table is
+non-NULL and denotes where a resource table would be located if one is
+present in memory. However, when the current firmware has no resource
+table, rproc->table_ptr is NULL. The function still returns
+priv->rsc_table, and the remoteproc core interprets this as a valid loaded
+resource table.
 
-Fix this by casting to `volatile typeof(*__x) *`.
+Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
+there is no resource table for the current firmware (i.e. when
+rproc->table_ptr is NULL). This aligns the function's semantics with the
+remoteproc core: a loaded resource table is only reported when a valid
+table_ptr exists.
 
-With a defconfig + LTO + debug options build, we see the following
-functions to be affected:
+With this change, starting firmware without a resource table no longer
+triggers a crash.
 
-	xen_manage_runstate_time (884 -> 944 bytes)
-	xen_steal_clock (248 -> 340 bytes)
-	  ^-- use __READ_ONCE() to load vcpu_runstate_info structs
-
-Fixes: e35123d83ee3 ("arm64: lto: Strengthen READ_ONCE() to acquire when CONFIG_LTO=y")
+Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table")
 Cc: stable@vger.kernel.org
-Reviewed-by: Boqun Feng <boqun@kernel.org>
-Signed-off-by: Marco Elver <elver@google.com>
-Tested-by: David Laight <david.laight.linux@gmail.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://lore.kernel.org/r/20260129-imx-rproc-fix-v3-1-fc4e41e6e750@nxp.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- arch/arm64/include/asm/rwonce.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/imx_rproc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/include/asm/rwonce.h b/arch/arm64/include/asm/rwonce.h
-index 78beceec10cda..fc0fb42b0b641 100644
---- a/arch/arm64/include/asm/rwonce.h
-+++ b/arch/arm64/include/asm/rwonce.h
-@@ -58,7 +58,7 @@
- 	default:							\
- 		atomic = 0;						\
- 	}								\
--	atomic ? (typeof(*__x))__u.__val : (*(volatile typeof(__x))__x);\
-+	atomic ? (typeof(*__x))__u.__val : (*(volatile typeof(*__x) *)__x);\
- })
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 375de79168a1c..f5f916d679051 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
+ {
+ 	struct imx_rproc *priv = rproc->priv;
  
- #endif	/* !BUILD_VDSO */
++	/* No resource table in the firmware */
++	if (!rproc->table_ptr)
++		return NULL;
++
+ 	if (priv->rsc_table)
+ 		return (struct resource_table *)priv->rsc_table;
+ 
 -- 
 2.51.0
 
