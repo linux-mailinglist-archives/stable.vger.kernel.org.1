@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-221557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLsaLxGXo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:32:01 +0100
+	id sHboHWymo2mWJAUAu9opvQ
+	(envelope-from <stable+bounces-221558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:37:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DF11CAE1E
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:32:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F40E1CDBC1
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:37:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 57231302A9C6
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D64F7312C0BB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F017E2BE033;
-	Sun,  1 Mar 2026 01:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3AE2C15BB;
+	Sun,  1 Mar 2026 01:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r/HJ5NhG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hApJrmHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B3B18E02A;
-	Sun,  1 Mar 2026 01:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028712BEC2C
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328572; cv=none; b=Y1hk0S+PM0mr0oq24B2BL2hvaRjRgQnGU0y0QT3ekr4l/raBybl3MxyIehEOV5LP8eeCUmRfQNWH8WsHONRgSXq0FG1p+7gm18WrfuzN3fXP2/b6psUtMxoi7Pp5q90tg9FD6m6eb44zrhbuq1lPgCg2RHdS0+bJI0KNvE+1CCc=
+	t=1772328575; cv=none; b=ivTM3M6l2Tm+agaHkH0aFqYhL+8Knt7gL2frAYBPMTu0/ca0cyQkCu6IroHa8pYEJVmbgy6BOn5Jc07ag1c27Jh1ldsonUvNKD4mHsM4/7plhzYN7fG/UuSTPigm4mN5gDU6Ij76PPQ/1/YN3AIF5zlsXRfRckYWEaMTSX1BQfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328572; c=relaxed/simple;
-	bh=M+zI4eYL7YLs3m4YazUH2ZwRBQXskG7rZsEymWKFGeA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cviucObxooDnTAqgk6wPX+wTMSdmKmM0UeFXvsEKLjW5ED36+a2UIwlpxKhNKCryW2Y0XpgA2dMLURgHyiZWkIqJNbpfQATWp/GPVrM7qY5LBAqX+QO+2iTNbq5jfO7sAHeYRKyvTtBYBTiLIg5mAVEsCTMte2cBECNiKN22MGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r/HJ5NhG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B342C19421;
-	Sun,  1 Mar 2026 01:29:32 +0000 (UTC)
+	s=arc-20240116; t=1772328575; c=relaxed/simple;
+	bh=u4czxrtZgCB48G981RTqgVFuCUPkaBSXsTWdc63DVY4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AIo8zcLy9Wz/4j0Lo/Qo3dHNVtp7cGNSXBLApWodUTBSME7d436rRgc6iyPj0UXLQv6U8E2gakIB8nUORtH3gJqJ7v5NmLZYmyIijPfiR7WnotvMiKQa8hIYAyFJHm5vGzWe/UkrHAWpOMNQcgcPLEP/GVhVLiyx6CJUL9LUuHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hApJrmHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5446CC19421;
+	Sun,  1 Mar 2026 01:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328572;
-	bh=M+zI4eYL7YLs3m4YazUH2ZwRBQXskG7rZsEymWKFGeA=;
+	s=k20201202; t=1772328574;
+	bh=u4czxrtZgCB48G981RTqgVFuCUPkaBSXsTWdc63DVY4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=r/HJ5NhGfeb2lV3uiIhUi490OueYp2yGlI7QnPdNG5OjAIqQRx3TDDVdGhTbcZBFQ
-	 qJb4xRllYioCmwDqFE8a6H/B3rmdYd8ESUPJX50i1AwhH0gmu95QrHeVCs1q/fQYVw
-	 9gmonsMLaH93MoROAB/n5fdsqkMxVghGzA16t/yWBITcA6nnsFGn6N35+YypeZmsWo
-	 tYrjLxWPgRkP5vZPoaf3YRAAO4M8H12+vbtiKGSfVuywfCtdMRit5G8rKqLM0SG0qA
-	 yqL2JZYcKeGtJkVZXiSVuTwPg08Y/eHeGsaih6PBJwqNHrLfiLfAp6wVZfl1qgsQNg
-	 uUWEt9wYqNvGA==
+	b=hApJrmHafg/SRyWTKiKVh4ZGWQd8sdQSlidOqK+2BW07SOD8xds3EdC2l2m0zHf8n
+	 wnshGIYhZQnqoVOt6SRWJtmfJYjg7lBNirHo6BNI2cv7ZNz4KXm6+uLeBx87O0Tu6U
+	 38b7Fh1B1ofogUDeLM6Q54ry1qBOIEPRwgbTRJGLn/Nl4wsq6cmWuY6GcI0xkHplBR
+	 ZyaHW0Lhd6jMZYDGxeD3z+j9a1Xbjusk4ZKcMU/ISthfB8wx5f5QolO3i5cC1OxV5U
+	 sgIRXgihEArtAB8KbwVKbA2S3POnJale/DBNNZ9vCsbXV7+EwTWmUdnydSW6ReQAfP
+	 ezUX4ljanPBdg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	fourier.thomas@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: ethernet: ec_bhf: Fix dma_free_coherent() dma handle" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:29:30 -0500
-Message-ID: <20260301012930.1687295-1-sashal@kernel.org>
+	alexander.deucher@amd.com
+Cc: Mario Kleiner <mario.kleiner.de@gmail.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm/amdgpu: keep vga memory on MacBooks with switchable graphics" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:29:32 -0500
+Message-ID: <20260301012933.1687345-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,25 +63,26 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221557-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,lists.freedesktop.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221558-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,9 +90,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 66DF11CAE1E
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 0F40E1CDBC1
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -103,38 +105,49 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From ffe68c3766997d82e9ccaf1cdbd47eba269c4aa2 Mon Sep 17 00:00:00 2001
-From: Thomas Fourier <fourier.thomas@gmail.com>
-Date: Fri, 13 Feb 2026 17:43:39 +0100
-Subject: [PATCH] net: ethernet: ec_bhf: Fix dma_free_coherent() dma handle
+From 096bb75e13cc508d3915b7604e356bcb12b17766 Mon Sep 17 00:00:00 2001
+From: Alex Deucher <alexander.deucher@amd.com>
+Date: Mon, 16 Feb 2026 10:02:32 -0500
+Subject: [PATCH] drm/amdgpu: keep vga memory on MacBooks with switchable
+ graphics
 
-dma_free_coherent() in error path takes priv->rx_buf.alloc_len as
-the dma handle. This would lead to improper unmapping of the buffer.
+On Intel MacBookPros with switchable graphics, when the iGPU
+is enabled, the address of VRAM gets put at 0 in the dGPU's
+virtual address space.  This is non-standard and seems to cause
+issues with the cursor if it ends up at 0.  We have the framework
+to reserve memory at 0 in the address space, so enable it here if
+the vram start address is 0.
 
-Change the dma handle to priv->rx_buf.alloc_phys.
-
-Fixes: 6af55ff52b02 ("Driver for Beckhoff CX5020 EtherCAT master module.")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260213164340.77272-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-and-tested-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4302
+Cc: stable@vger.kernel.org
+Cc: Mario Kleiner <mario.kleiner.de@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 ---
- drivers/net/ethernet/ec_bhf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/ec_bhf.c b/drivers/net/ethernet/ec_bhf.c
-index 67275aa4f65b2..0c86cbb0313c3 100644
---- a/drivers/net/ethernet/ec_bhf.c
-+++ b/drivers/net/ethernet/ec_bhf.c
-@@ -423,7 +423,7 @@ static int ec_bhf_open(struct net_device *net_dev)
- 
- error_rx_free:
- 	dma_free_coherent(dev, priv->rx_buf.alloc_len, priv->rx_buf.alloc,
--			  priv->rx_buf.alloc_len);
-+			  priv->rx_buf.alloc_phys);
- out:
- 	return err;
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index d35d9719d5668..6a6b334428f6d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -1068,6 +1068,16 @@ void amdgpu_gmc_get_vbios_allocations(struct amdgpu_device *adev)
+ 	case CHIP_RENOIR:
+ 		adev->mman.keep_stolen_vga_memory = true;
+ 		break;
++	case CHIP_POLARIS10:
++	case CHIP_POLARIS11:
++	case CHIP_POLARIS12:
++		/* MacBookPros with switchable graphics put VRAM at 0 when
++		 * the iGPU is enabled which results in cursor issues if
++		 * the cursor ends up at 0.  Reserve vram at 0 in that case.
++		 */
++		if (adev->gmc.vram_start == 0)
++			adev->mman.keep_stolen_vga_memory = true;
++		break;
+ 	default:
+ 		adev->mman.keep_stolen_vga_memory = false;
+ 		break;
 -- 
 2.51.0
 
