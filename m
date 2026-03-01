@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-222396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GFULkOwo2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:19:31 +0100
+	id YGCNFj6wo2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:19:26 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D3F1CE648
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:19:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBF11CE639
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC5D13048543
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:41:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99CF73053B07
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B75230B51D;
-	Sun,  1 Mar 2026 02:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B2426ED59;
+	Sun,  1 Mar 2026 02:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gqux1boc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fk+/fKfa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434FA2FFFA5
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0572FFFA5
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:43:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772332901; cv=none; b=PNFrnugj1lGYyKk0hTUpYQHT1+ZYQATRuZHfE5cqaHjKvXW1wDNmar9+yTzIidW+lZZMR0iUrv2cPzCw1kX6h8pPF0ET0G5IXz/6isaYYi7CR1PgrtTdefScIVWc5ubfGQv6CLOoVkWnXZFoeyQ2KVPTOc7UOLPPwOdlSd8dJwA=
+	t=1772333002; cv=none; b=prC8EbMkmz7e7+hGxlZbf2yWaIi0TrwNygLm8FO14ZSZffYxk+y1RkZKXQI6Rg7YSOI5xgiHiDqSbwskqsY3Ic9r//LXI7Cfn/28A4c4khXBWk5uUbcKc4wbz7adp8M7IHFufqWq5dqSBmSGvRTtxXdJ2cWHAyaoIOyM6BQNJ8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772332901; c=relaxed/simple;
-	bh=anpL46cBIm6UrMAbUnBQkqKmbT5nOqCfjQPsoRvAfHI=;
+	s=arc-20240116; t=1772333002; c=relaxed/simple;
+	bh=StiYaJg5TnIgR97jqI7sw8c91dqPU9OEJIf6O1a7rcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UAIG0NhrQez1YjfFoXpu6rj2ZthaaVNz81Yot6AomGHTk34CpI9KulIi8WxwTqjujqL9FOyFMqWDtmzkaTKB6Cc2N7d+trMrDAIrMznA4v3z4lgRk/EnrQK7KlH5c8CPg7wlODGIS6A7tkuVrqCKEPta2Y8P76wxYwLcD2yDzho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gqux1boc; arc=none smtp.client-ip=209.85.210.177
+	 MIME-Version; b=YBGbNTktSq6UynuFedzImtt07I+265JtkFC5zrqleZGXJlqMMx7sUM+e6jzyGywpQgQFsaOrZGBUeGIXx+VS4qOedDLpRwSWK2Pc2bwvaXHFE/sESp/utoqBBEL979EHMAl5OZRZ1TQsPRzsDIyAUB0+xYDRWog3JxWvd0wq6q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fk+/fKfa; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-824b05d2786so2752402b3a.2
-        for <stable@vger.kernel.org>; Sat, 28 Feb 2026 18:41:40 -0800 (PST)
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c70fb6aa323so1092444a12.3
+        for <stable@vger.kernel.org>; Sat, 28 Feb 2026 18:43:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772332899; x=1772937699; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772333000; x=1772937800; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rtIGa5DeHX6GKNql8ZP8pFgIuTIayoQ+uGd3ozZ2QhM=;
-        b=gqux1boc96rstQk7s34oWXn0IjVf16z5kS0aUBkWyv9JgXsEHKBfS18m4wrjq+qhm7
-         VpZw1H2mLpx23eLeTf5WpWTncXiy/fx9sjj/sswCHRAsQu03na/1gmc7GtJDxeoNHDeC
-         JYbT6+XUfOXpkKMXqmKJ5/ZUvY08TxxpmMXDk0v2ZBBb2QJgVvgePKl8+eTN5oQ+zzfz
-         XTM2EPWpHGTeM+2ndnpYYYrwxYFvfDherafe0U9ndRZ2ewhzO1D2gtVxPDXJyBctw8xo
-         TK0S97XwQtgwqopFPygYGO/CRHQ5az9DlsEQSKD5/j1LVtI94v9GMxiXg0SsV3+Wk904
-         Gr1A==
+        bh=k/4+K7t1AmwyZhD8tmPo2E9QsgNK7fdWts0ll2jiHOI=;
+        b=fk+/fKfadFRQ7MYgVDN1VuVfl4regnAJCFFnKsnVI6r492dj1JHXFRU4eg4nF1DnfX
+         Yejzn8vJxjB9ZRgtAQM6GbRb0H5XgmWZk7XhDfs2CEUFjNExW2nQeOnOdG95VvIA92UL
+         mbfZDSpSfP+g/sXHSgCK6xRxdgYXcUmT9fc6kJv9vwn/IsqP2GNTyIhsBw0/fSXiF4fz
+         P17VaME0dRXVtQeQIRiama8JI8O+jWqqxq8GGRFKr/81fgM7D+mS/TCjXyDPJDTUNVdN
+         vAEwp+EeCbW1EGte+BnFhO6V09fE+E9mOqsN4noP8ILIRhWi4zBKgsb1EwThyvmWjzMS
+         MMiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772332899; x=1772937699;
+        d=1e100.net; s=20230601; t=1772333000; x=1772937800;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rtIGa5DeHX6GKNql8ZP8pFgIuTIayoQ+uGd3ozZ2QhM=;
-        b=f7/YK+dkeGS+nooPwHWIJih5070EEV6gVDZXI6PxpYv7uy6ImvLi/ui7ydexT+ai2C
-         RrAdUVLU8YQ809hTgLsk8Xyw39AbOt10GamHAjB6muZ8LVW+LK1z74VbTH3hQLZ3W4Kc
-         JA9KO51UoQKil5Q1hcTy/Kg+Ezt/ffUu1HM1lM9Q6VSZFySCa3KyRGf5xHXGSq1HPTND
-         og17NXQqw+Tv0VIX1DgDKAfBBK6e//WA/HGlIUAHoh8Vcg2SVuGNbLN3Q6I79jMhq84J
-         Sfn+aiRaSMnmERA81ZsFEilRI/0NmeYKgbi/3fzdu6LDFsNBoII/29i2Inybreab665f
-         OxEA==
-X-Gm-Message-State: AOJu0Yy5cdAuigWClDta2OV597Q5tXtZWIuCYkHI3FbUdZ5UKXbIjkrO
-	9jOQM1P5g57UceYUObQXK8nDwDP7nJ6mF4vZjHAMf8SM4TXTnZUSKMoPlwjwEWLU
-X-Gm-Gg: ATEYQzyHXfc+cMtQphiItJfmNsMvNfHVoa7VahJ+IHVvJ4x4gfm7ZhPTwtgNZGrsV70
-	jvMzhJCikAcI8OHe4S4gw4Qz2txBBZwcHJBY8gnkbkiyB6ogJ+UxQKiopDyjOTSxAANeQixPiWo
-	AEADCwBmXb5NFhUmcKGI2W1KEvmAG+kACz2ROsCaXyJUR4f8VXcKtehzPWHS3TB3rLO7rtqASXz
-	g44IhWMXKqv++JfcsrYoo8yENewHQdNFg0Z3TsX2ApMz48bRPsIIY5BN3/2M34D/cOGEPL37ipb
-	9t20emiWwwQ5k03BqGpO8o0KWDHYoRpZB1k1JkiSfMZ5qFwt8K8QoVktXdCIcMAkIRWTB/SZckP
-	J/Wj36m6OnTwvrCoanpLU1+vn9vBZYHo2HK2RH8MFgjEvcvj7JA1xm4tXiKrF8ByIhoMabtM19B
-	HSpy4iyqjAJvWmh0Yygyk6AAE6lbOF1mEmVK04YJ8oebK8X1dvI0Hnmkc=
-X-Received: by 2002:a05:6a20:a127:b0:394:f9f3:588e with SMTP id adf61e73a8af0-395c3ae862bmr8668720637.43.1772332899049;
-        Sat, 28 Feb 2026 18:41:39 -0800 (PST)
+        bh=k/4+K7t1AmwyZhD8tmPo2E9QsgNK7fdWts0ll2jiHOI=;
+        b=wx7L+lq7SDxMUcoGYRXLBmbE4RVKD5HR374RdCAePL4b7dpDObIgaqLP7HskinIoPO
+         T4nTaTJnZIBbPIAlSNz3rk4agzwwNQ2BvJZGqanHTcwzCtYplwIwgETMdsFMCzXvmSkm
+         0ZncRivP6f5FhLWUHFjscbhc1kD1ShvBKju1hWdITcbkFuWABtWFHSrKGDPAU0eWWEyz
+         2L+qF4KoI80JdkNfkYcLj8iXZHAmexjRq0WdxTFm/j8EgWeSLaoTzh6ce4SeCQA82jIT
+         DpBhFvaF5gu9qkRVrxGMrVCWMiSaQqfgibfUE8arQwYA9YmsZLU/0j0xL1QzTQYCgMSD
+         6rag==
+X-Gm-Message-State: AOJu0Yy8blfdLQmaE4JmBQ0B1CLOYiqdfcfXiTEov97g9vlb7810IVcg
+	09Tgg6yNFwZ6TmPQS+8krKmYcvljTh4VRqxHdyRfSOeBJPwvqXJApYKCFBPjAaKJ
+X-Gm-Gg: ATEYQzy5ch6ve5EJ5WHNRDSI51LFx7F4YgANtVpPLX+wp7n0XK2eZBAenRV0bnOPnoN
+	bnjPLkY19gTPXlSGleC+pyjp3e63/tt8gKjcMRuLNjJxiNsBfaQjGUQoFl6DTAvQvu7vhL5KJDw
+	0gmC7Td6DzqoT8nr9b9Vujl50GEq5064gmZNGQE5QWIcagefDzaxkyeyVk38QJBW/oVKTc1fMXr
+	91iefYh538QxvtUZ1ef3aCg992sn/UogZMZof01fZKMRMDfRMChQlALh9WB+NUO0r8qCDQ+KVzU
+	lgH5gIothcSSBQ8gP4fvXjrExuHTDkwH4CNEQMIAI7ielNsHREuw/ZyOwqkY2/wnpQo5eWJE3TS
+	WZS3h5/SvCkyT1YSnY2ak8lamdlOVBIiuVpyfKr4dZ7BXB3OF2Sln36zutY8CFx4Rc6LL1ORHHn
+	ochllWvyFaqL0swldpN4H+CNXIMjcGqlZeDSgea8CQXMsJ+3RygAumBko=
+X-Received: by 2002:a05:6a00:b42:b0:81f:9c54:65df with SMTP id d2e1a72fcca58-8274da052f5mr6154918b3a.50.1772333000173;
+        Sat, 28 Feb 2026 18:43:20 -0800 (PST)
 Received: from localhost.localdomain ([222.109.75.221])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359037af175sm11857110a91.13.2026.02.28.18.41.37
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739d55216sm9299322b3a.11.2026.02.28.18.43.18
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 28 Feb 2026 18:41:38 -0800 (PST)
+        Sat, 28 Feb 2026 18:43:19 -0800 (PST)
 From: Yuchan Nam <entropy1110@gmail.com>
 To: stable@vger.kernel.org
 Cc: sashal@kernel.org,
@@ -83,12 +83,12 @@ Cc: sashal@kernel.org,
 	linux-cifs@vger.kernel.org,
 	samba-technical@lists.samba.org,
 	Yuchan Nam <entropy1110@gmail.com>
-Subject: [PATCH 6.12.y] cifs: some missing initializations on replay
-Date: Sun,  1 Mar 2026 11:41:31 +0900
-Message-ID: <20260301024131.79122-1-entropy1110@gmail.com>
+Subject: [PATCH 6.6.y] cifs: some missing initializations on replay
+Date: Sun,  1 Mar 2026 11:43:08 +0900
+Message-ID: <20260301024308.80078-1-entropy1110@gmail.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260301012846.1686559-1-sashal@kernel.org>
-References: <20260301012846.1686559-1-sashal@kernel.org>
+In-Reply-To: <20260301013911.1700044-1-sashal@kernel.org>
+References: <20260301013911.1700044-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -109,7 +109,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[kernel.org,microsoft.com,vger.kernel.org,lists.samba.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-222396-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222397-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -126,7 +126,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 59D3F1CE648
+X-Rspamd-Queue-Id: DDBF11CE639
 X-Rspamd-Action: no action
 
 From: Shyam Prasad N <sprasad@microsoft.com>
@@ -154,10 +154,10 @@ Signed-off-by: Yuchan Nam <entropy1110@gmail.com>
  2 files changed, 3 insertions(+)
 
 diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 4e7e6ad..48d66a9 100644
+index 138b3ed..4239b68 100644
 --- a/fs/smb/client/smb2ops.c
 +++ b/fs/smb/client/smb2ops.c
-@@ -1190,6 +1190,7 @@ smb2_set_ea(const unsigned int xid, struct cifs_tcon *tcon,
+@@ -1147,6 +1147,7 @@ smb2_set_ea(const unsigned int xid, struct cifs_tcon *tcon,
  
  replay_again:
  	/* reinitialize for possible replay */
@@ -165,7 +165,7 @@ index 4e7e6ad..48d66a9 100644
  	flags = CIFS_CP_CREATE_CLOSE_OP;
  	oplock = SMB2_OPLOCK_LEVEL_NONE;
  	server = cifs_pick_channel(ses);
-@@ -1588,6 +1589,7 @@ smb2_ioctl_query_info(const unsigned int xid,
+@@ -1545,6 +1546,7 @@ smb2_ioctl_query_info(const unsigned int xid,
  
  replay_again:
  	/* reinitialize for possible replay */
@@ -174,10 +174,10 @@ index 4e7e6ad..48d66a9 100644
  	oplock = SMB2_OPLOCK_LEVEL_NONE;
  	server = cifs_pick_channel(ses);
 diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index b0ff9f7..9310dd9 100644
+index a8890ae..595f043 100644
 --- a/fs/smb/client/smb2pdu.c
 +++ b/fs/smb/client/smb2pdu.c
-@@ -2856,6 +2856,7 @@ int smb311_posix_mkdir(const unsigned int xid, struct inode *inode,
+@@ -2850,6 +2850,7 @@ int smb311_posix_mkdir(const unsigned int xid, struct inode *inode,
  
  replay_again:
  	/* reinitialize for possible replay */
