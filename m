@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-222005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDR+F9qbo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:52:26 +0100
+	id iEMOJhOco2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:53:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037C41CC15C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:52:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151A31CC21E
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:53:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7F99F303719B
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:48:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B01C3027311
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38313033D6;
-	Sun,  1 Mar 2026 01:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099AD303C8A;
+	Sun,  1 Mar 2026 01:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z/babn51"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pl+Q/25r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757D02ECE9B;
-	Sun,  1 Mar 2026 01:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DD23033FD;
+	Sun,  1 Mar 2026 01:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329673; cv=none; b=fUllzNufJdrUApWCa7a/3gGmnpUAbfnFlnfoBIodaZvVebzimyFPLeq7JK4qKJUFCO8al3P/N11cRPzGdId6x08C4XPCBWFIbbeq2fE9FZ/Od8q7GLZcnevHeBuEVnJLgfcdWujGcEdJPx4bZrvYvMWjcR8jPmYa1Bngw1IJZrk=
+	t=1772329675; cv=none; b=m079dH/BPUHih5+Jgx8Uh6urW4Ze5aPvyEThmA0CO259AgdncCu5sxlE/BLEVzIWA4vH6+sHQM+MbxnGHDEVDiNx4xiGuwMgdg1ettVe0Z1xfwXg8Y9q6ncTsSJ6tmawaazOEEaeMaDGXpUonzfIiqYdInWQx+s5+9JAU/rlqgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329673; c=relaxed/simple;
-	bh=M7AjvNGQ6ivPiRbc206heB/jGonoRNCbN3E/EnL2zjM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HInkEWesyZBJZbR+ojxemK5aVxj79Ldo6fejFx/6mQ6/kDq7MZU8UIicKiXAbnowyEocQr8jBDiA8Ev0NdfoAzEe+ZLq5k6wP6baQQn5nSXHkX5p1XDyZXMLL4p10BzNlYHbGiJb2UFASUEPC2XcPEIgvcjvUPBfjmpHgrofPfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z/babn51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1EFC19421;
-	Sun,  1 Mar 2026 01:47:52 +0000 (UTC)
+	s=arc-20240116; t=1772329675; c=relaxed/simple;
+	bh=WXeewhn+B9uQ9TAnS3fSJ9BACQ/lGAduZJ0eryomm9c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XT7Tn4I+plPRVkhycdWuWfGjxRP4zrDW7Zz0yTdfxVpKFYCjSsVno+9dzQ91EmR0ltqD5uQDXCQrh8iGVjuhhdXhfCDfoWKGjPREe4T8jslYSFEsa7Hf6O+TUjjBRAF4oPdPbhbTalRB3+bBCqvqJoFweoZ+6WEm1ygttrEw1Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pl+Q/25r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EFFC19421;
+	Sun,  1 Mar 2026 01:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329673;
-	bh=M7AjvNGQ6ivPiRbc206heB/jGonoRNCbN3E/EnL2zjM=;
+	s=k20201202; t=1772329675;
+	bh=WXeewhn+B9uQ9TAnS3fSJ9BACQ/lGAduZJ0eryomm9c=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Z/babn51pwctts/dQwb1PAK2xWkNgMYhuCVIIRfJgFA3k68Xkf5QZSmad/y2cVMOt
-	 X/kr3c3T/0oPdxemzobB+MvHgb8PuIATOdjkqU5aTve7KLraIoZ8ksyHkgsbXGmPQk
-	 S+486F3Snzb/oFw9TkP1otOJrwm1aRIqadoxHxCOugO5PHp1NXJpKk2tW1op/sJpll
-	 WnCTr8jM5gQK5lfIjk+U4qsCGsUZJCwrOlKl1jn+xj4YNNnfKPzqCzOLOesXkS+Xd5
-	 PTK+649d+L6xF3shBUwYMboJpCU5AUSMvj7FjpJgXtJyXDh2JJ5CfZ1ZttunyVl2Wl
-	 zyqsQVhPaXdMQ==
+	b=pl+Q/25rRksieTbiUVgbsRT2ywq95NKV+0fhEBMEJxW1o5PWiLFg+aRuv5wwvGPG3
+	 n90I7ng2Kjau6pszBI3c44q+vnl/mj3bZB6jp8q2iRF/LCsVyUWPMx8HCZmlIbqvw5
+	 utm8SCBvgMedA/WRlvtLrBFGSzedHIBaNd0c2H9zcyBZgqZA3oGoo7lsZA0SEKcrw8
+	 9YW2A+fqdt48R6fzLRvMlZoFS3NlMKIS/YtvrVi9aIPN5sZWeppBJReNfxWCF1l4Za
+	 WrVgdLoz2p7CUTEtOV2BHWZaCqf4x4fwWVHCGvpDmeK1Cp3hLDAkCGkuXuvgpJ2bzH
+	 S7B1/kxWQhGew==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	fourier.thomas@gmail.com
-Cc: Helge Deller <deller@gmx.de>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "fbdev: vt8500lcdfb: fix missing dma_free_coherent()" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:47:51 -0500
-Message-ID: <20260301014751.1711844-1-sashal@kernel.org>
+	pchelkin@ispras.ru
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	linux-cifs@vger.kernel.org
+Subject: FAILED: Patch "ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error paths" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:47:53 -0500
+Message-ID: <20260301014753.1711896-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,37 +63,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222005-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222006-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmx.de,lists.infradead.org,vger.kernel.org,lists.freedesktop.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gmx.de:email]
-X-Rspamd-Queue-Id: 037C41CC15C
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 151A31CC21E
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -107,45 +103,67 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 88b3b9924337336a31cefbe99a22ed09401be74a Mon Sep 17 00:00:00 2001
-From: Thomas Fourier <fourier.thomas@gmail.com>
-Date: Mon, 12 Jan 2026 15:00:27 +0100
-Subject: [PATCH] fbdev: vt8500lcdfb: fix missing dma_free_coherent()
+From a09dc10d1353f0e92c21eae2a79af1c2b1ddcde8 Mon Sep 17 00:00:00 2001
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+Date: Sat, 14 Feb 2026 18:45:14 +0300
+Subject: [PATCH] ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error
+ paths
 
-fbi->fb.screen_buffer is allocated with dma_alloc_coherent() but is not
-freed if the error path is reached.
+There are two places where ksmbd_vfs_kern_path_end_removing() needs to be
+called in order to balance what the corresponding successful call to
+ksmbd_vfs_kern_path_start_removing() has done, i.e. drop inode locks and
+put the taken references.  Otherwise there might be potential deadlocks
+and unbalanced locks which are caught like:
 
-Fixes: e7b995371fe1 ("video: vt8500: Add devicetree support for vt8500-fb and wm8505-fb")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+BUG: workqueue leaked lock or atomic: kworker/5:21/0x00000000/7596
+     last function: handle_ksmbd_work
+2 locks held by kworker/5:21/7596:
+ #0: ffff8881051ae448 (sb_writers#3){.+.+}-{0:0}, at: ksmbd_vfs_kern_path_locked+0x142/0x660
+ #1: ffff888130e966c0 (&type->i_mutex_dir_key#3/1){+.+.}-{4:4}, at: ksmbd_vfs_kern_path_locked+0x17d/0x660
+CPU: 5 PID: 7596 Comm: kworker/5:21 Not tainted 6.1.162-00456-gc29b353f383b #138
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+Workqueue: ksmbd-io handle_ksmbd_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x44/0x5b
+ process_one_work.cold+0x57/0x5c
+ worker_thread+0x82/0x600
+ kthread+0x153/0x190
+ ret_from_fork+0x22/0x30
+ </TASK>
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: d5fc1400a34b ("smb/server: avoid deadlock when linking with ReplaceIfExists")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- drivers/video/fbdev/vt8500lcdfb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/vt8500lcdfb.c b/drivers/video/fbdev/vt8500lcdfb.c
-index b08a6fdc53fd2..85c7a99a7d648 100644
---- a/drivers/video/fbdev/vt8500lcdfb.c
-+++ b/drivers/video/fbdev/vt8500lcdfb.c
-@@ -369,7 +369,7 @@ static int vt8500lcd_probe(struct platform_device *pdev)
- 	if (fbi->palette_cpu == NULL) {
- 		dev_err(&pdev->dev, "Failed to allocate palette buffer\n");
- 		ret = -ENOMEM;
--		goto failed_free_io;
-+		goto failed_free_mem_virt;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index cbb31efdbaa2e..2782eea214d0d 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6115,14 +6115,14 @@ static int smb2_create_link(struct ksmbd_work *work,
+ 				rc = -EINVAL;
+ 				ksmbd_debug(SMB, "cannot delete %s\n",
+ 					    link_name);
+-				goto out;
+ 			}
+ 		} else {
+ 			rc = -EEXIST;
+ 			ksmbd_debug(SMB, "link already exists\n");
+-			goto out;
+ 		}
+ 		ksmbd_vfs_kern_path_end_removing(&path);
++		if (rc)
++			goto out;
  	}
- 
- 	irq = platform_get_irq(pdev, 0);
-@@ -432,6 +432,9 @@ static int vt8500lcd_probe(struct platform_device *pdev)
- failed_free_palette:
- 	dma_free_coherent(&pdev->dev, fbi->palette_size,
- 			  fbi->palette_cpu, fbi->palette_phys);
-+failed_free_mem_virt:
-+	dma_free_coherent(&pdev->dev, fbi->fb.fix.smem_len,
-+			  fbi->fb.screen_buffer, fbi->fb.fix.smem_start);
- failed_free_io:
- 	iounmap(fbi->regbase);
- failed_free_res:
+ 	rc = ksmbd_vfs_link(work, target_name, link_name);
+ 	if (rc)
 -- 
 2.51.0
 
