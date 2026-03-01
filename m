@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-221513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEYkAwOXo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:31:47 +0100
+	id gAUcMQaXo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:31:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE301CAE08
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:31:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A4C1CAE0F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 12F413013FF7
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:27:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 782A43014909
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B3A25DB1C;
-	Sun,  1 Mar 2026 01:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9778D2848AD;
+	Sun,  1 Mar 2026 01:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCXzVa82"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qR2t6QaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4A4285C84;
-	Sun,  1 Mar 2026 01:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B36E72631;
+	Sun,  1 Mar 2026 01:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328454; cv=none; b=MPm9A0dgNiN7flveWQrnpXl1XjTHstwezfKmyz/7HBLgTVruqc7EAlrhtSn+RLHB35Nz8uBJz6r7rrq7NHVSEs6F4rUAI+iAUyLx7EsL8H7CIxPMb9QGWpX1Q8nCl7A+2O7RV6hIGSJMhU2QiMq8dHbbhkVaeDfavDCyeawLFOU=
+	t=1772328457; cv=none; b=C4b1aJE15RuRHoS7viu991FDLQOm6crf1v+a4+6fxjcX9LfVSWs4S+YglCCQpt4ddWzX85jShmPaPPW0A659Ivy0hhMZKeDzMGxZZYMtECfsBMpUo0Y6HV/JB+cp+MEXc9Z7bKpiaXKdgGzYV2PU5Grmx4INmstH63d86gl8Ri4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328454; c=relaxed/simple;
-	bh=Ez+yC1hvMRvZjnfxUg2X26xj5RoQS51Jad7159fXQsA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bi8+/5LcRY5StwyI/YQKZiLnAButEWTDFrm36z2TNUHdl2aP1g50qP3prIWsc3rSvJ687L+Mxs3f5u9Fhv7l4MF2TuOWiGoOkisz5y/KgLij6g7qJnil8NjHeLtOnFvasAghIfiUHKDf3oCloCMBiY2dR9zDGe9yJ60c2XgFZdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCXzVa82; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414E3C19421;
-	Sun,  1 Mar 2026 01:27:34 +0000 (UTC)
+	s=arc-20240116; t=1772328457; c=relaxed/simple;
+	bh=E6Ba3PG25QlLuuMH1dTSnCAPVA214OKMh3HqeUoYfis=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vx21eg0LA7ae6QfMDQvGnXstA5zjHGe11K1HLRuadVftfuqgc+hunBJTbQ28Hs1Tzcv3cmA04OwUlDjiUl+5y/cSE5NSQbK/h3WGEb98ivQgOc3jDpNZgboIrEvF3w68obP2/ArujRTur1pXViVc+1faBjX4JsE22MBBQSbDFIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qR2t6QaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE55C19421;
+	Sun,  1 Mar 2026 01:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328454;
-	bh=Ez+yC1hvMRvZjnfxUg2X26xj5RoQS51Jad7159fXQsA=;
+	s=k20201202; t=1772328457;
+	bh=E6Ba3PG25QlLuuMH1dTSnCAPVA214OKMh3HqeUoYfis=;
 	h=From:To:Cc:Subject:Date:From;
-	b=PCXzVa82kl0/W7qOc+JsfcSJrQJvBwEdkSAsqQC1yiudGpg5qnfn2TBGrNaAR/5Q1
-	 EhPMr1JQN2RhFsacAp4ZUslN2oXtZQMsiK4EmMYEETWWvfAR2a4msUWDLMOBm+OkaZ
-	 ZBQps4YDfU7zvDW5HwS98gijnurHTgMIjkaNykwXgI3sbSkipGhzfjcvx0Bgz65cjP
-	 OHbRZy9Ml8QKvwUlm9EWwKIq0a8YewJiLurbd5HSsAHY090NFbtTg5uAV2jCqpCyrU
-	 fqQlw0FdwFRdg7dG/g3e6Ar2CvMce8NeVYnPE4YpdS1PPSoPpwKkBIyqOPlVMFizcu
-	 GmWFyfOC13RgA==
+	b=qR2t6QaCNJM/AMZvYBjOZbFuOJk1lREKfwI4o6HOoSwZh9ETB8/Ui/Kqio4ojmkNS
+	 g+V9UoM+Y3PRUzyTmyirJ0ihStxUXVts/wLJM67z+bjO03enTgppl0de1ydi8HNWWp
+	 lrtZrR2sGI/DliCYzdv8i/POPkUDQnDr/ROqtLPs44ozppatoCWGZxqL1wvEtNrOiw
+	 eTwAdQuKhCspL152hSuExkxRLSPJuGL1T8kvjMR9ZREXnXv7sCKYmnJ12AE8ezjIOy
+	 1k6IVFUNi01LsQBhCZk2cy2608bc0MyfNqkIDyj/jrcR50AI1WknWKZICEFmbjF8ic
+	 L0qvGdhLw/Iyw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chenhuacai@kernel.org
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	loongarch@lists.linux.dev
-Subject: FAILED: Patch "LoongArch: Prefer top-down allocation after arch_mem_init()" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:27:32 -0500
-Message-ID: <20260301012733.1685068-1-sashal@kernel.org>
+	jiaxun.yang@flygoat.com
+Cc: Waldemar Brodkorb <wbx@openadk.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org
+Subject: FAILED: Patch "MIPS: rb532: Fix MMIO UART resource registration" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:27:35 -0500
+Message-ID: <20260301012735.1685115-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,19 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221513-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221514-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email]
-X-Rspamd-Queue-Id: 0FE301CAE08
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D1A4C1CAE0F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -102,47 +103,49 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2172d6ebac9372eb01fe4505a53e18cb061e103b Mon Sep 17 00:00:00 2001
-From: Huacai Chen <chenhuacai@loongson.cn>
-Date: Tue, 10 Feb 2026 19:31:13 +0800
-Subject: [PATCH] LoongArch: Prefer top-down allocation after arch_mem_init()
+From e93bb4b76cfefb302534246e892c7667491cb8cc Mon Sep 17 00:00:00 2001
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Date: Thu, 5 Feb 2026 10:08:42 +0000
+Subject: [PATCH] MIPS: rb532: Fix MMIO UART resource registration
 
-Currently we use bottom-up allocation after sparse_init(), the reason is
-sparse_init() need a lot of memory, and bottom-up allocation may exhaust
-precious low memory (below 4GB). On the other hand, SWIOTLB and CMA need
-low memories for DMA32, so swiotlb_init() and dma_contiguous_reserve()
-need bottom-up allocation.
+Since commit 6e690d54cfa8 ("serial: 8250: fix return error code in
+serial8250_request_std_resource()"), registering an 8250 MMIO port
+without mapbase no longer works, as the resource range is derived from
+mapbase/mapsize.
 
-Since swiotlb_init() and dma_contiguous_reserve() are both called in
-arch_mem_init(), we no longer need bottom-up allocation after that. So
-we set the allocation policy to top-down at the end of arch_mem_init(),
-in order to avoid later memory allocations (such as KASAN) exhaust low
-memory.
+Populate mapbase and mapsize accordingly. Also drop ugly membase KSEG1
+pointer and set UPF_IOREMAP instead, letting the 8250 core perform the
+ioremap.
 
-This solve at least two problems:
-1. Some buggy BIOSes use 0xfd000000~0xfe000000 for secondary CPUs, but
-   didn't reserve this range, which causes smpboot failures.
-2. Some DMA32 devices, such as Loongson-DRM and OHCI, cannot work with
-   KASAN enabled.
-
+Fixes: 6e690d54cfa8 ("serial: 8250: fix return error code in serial8250_request_std_resource()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reported-by: Waldemar Brodkorb <wbx@openadk.org>
+Link: https://lore.kernel.org/linux-mips/aX-d0ShTplHKZT33@waldemar-brodkorb.de/
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
- arch/loongarch/kernel/setup.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/rb532/devices.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-index 20cb6f3064568..2b260d15b2e25 100644
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -421,6 +421,7 @@ static void __init arch_mem_init(char **cmdline_p)
- 				   PFN_UP(__pa_symbol(&__nosave_end)));
- 
- 	memblock_dump_all();
-+	memblock_set_bottom_up(false);
- 
- 	early_memtest(PFN_PHYS(ARCH_PFN_OFFSET), PFN_PHYS(max_low_pfn));
- }
+diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
+index b7f6f782d9a13..ffa4d38ca95df 100644
+--- a/arch/mips/rb532/devices.c
++++ b/arch/mips/rb532/devices.c
+@@ -212,11 +212,12 @@ static struct platform_device rb532_wdt = {
+ static struct plat_serial8250_port rb532_uart_res[] = {
+ 	{
+ 		.type           = PORT_16550A,
+-		.membase	= (char *)KSEG1ADDR(REGBASE + UART0BASE),
++		.mapbase        = REGBASE + UART0BASE,
++		.mapsize        = 0x1000,
+ 		.irq		= UART0_IRQ,
+ 		.regshift	= 2,
+ 		.iotype		= UPIO_MEM,
+-		.flags		= UPF_BOOT_AUTOCONF,
++		.flags		= UPF_BOOT_AUTOCONF | UPF_IOREMAP,
+ 	},
+ 	{
+ 		.flags		= 0,
 -- 
 2.51.0
 
