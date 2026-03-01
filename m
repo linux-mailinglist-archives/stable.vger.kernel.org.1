@@ -1,210 +1,146 @@
-Return-Path: <stable+bounces-221275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221276-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kID4CjuUo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:55 +0100
+	id SHszEzyUo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221276-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:56 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A331CA34E
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E751CA35C
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C3C6303DD79
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEE5B303E4A2
 	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462812472A6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E712475F7;
 	Sun,  1 Mar 2026 01:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h0Z2SKvh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bs3HIINQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A8B1E2606
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AEB23C4F2;
+	Sun,  1 Mar 2026 01:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327864; cv=none; b=YMl4aOHL5hB0rR60Ab7ALXlzx4BsnOy8kKq2I1gaDBj7QQGisjo3Khex9qGwGVrwko6P101NGogespv8rQTP3WVj8ErMkh64KRuLgiN3TPrB/J8HTV8W0NEckHerxrMjWj6O68hgmFQFYZUEgr+lpiyjyWEhTVusEW/aqIwJzlo=
+	t=1772327864; cv=none; b=ItN0e8BPzDhHYyGEKNc5zf2G7bo78OSuJWObpgbbvR46lBjRzwxt8iA96G3yCjr+RNBLP9uYL4axFB7cv/iWGh8+SsMzPcu56/n9LieRSg1hBgAXJwnbQe1gt6VbE+nn/eVN4Ne7yLNQDiWz3wYX3mdabafWPIg355SgWgFw7Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772327864; c=relaxed/simple;
-	bh=Gpp3g3wntO4Qc0y0xYsd/8EEdtn7INOVjn/nknEVZ/k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RGoEpwXa3AcQ81PPFS4d9j97gBkh/juLpfZs6O1hIDlAFjECQt7a9b3XM1uq8R8PL6ajPHsvxj/G9e+fjhhtZlZ/l6EgbGzETyqbOUtcXbHi+orYznND07NMfjxzEK7+hPAfEzVAdkH95gD0ZcEpAiKmwbGXRJ8K0Dg3TwHd5Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h0Z2SKvh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002C8C19424;
-	Sun,  1 Mar 2026 01:17:42 +0000 (UTC)
+	bh=eLh98WI+FOsy7Bulx7NVAAoegFmPf9FOtVvOJ8S/KY4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jng/GkJ1uVw9ezqw1LuwrDxUIZwk6+9U5nWkzBGt2ZRt7/SyaPtouPQds4PddgN3wxl/DjqZuloJ5kt5ioBw5pvC6zJQYZYKi8mE+1tlHU2D8/NzVUbHWiLqBm5prLxYfOFNUHkqn1PPM44gF4gRgfKw0k5R274wTdMfRxM6H/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bs3HIINQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64405C19425;
+	Sun,  1 Mar 2026 01:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772327863;
-	bh=Gpp3g3wntO4Qc0y0xYsd/8EEdtn7INOVjn/nknEVZ/k=;
-	h=From:To:Cc:Subject:Date:From;
-	b=h0Z2SKvhaNxkRT9+hd1eb332niUyBcV4DXCK40ZEzP/dlldwW1yMcJjl1cHkOAqXc
-	 ftLNHgIXItjsV9KUuITFQApQarM3ri0G+Fn4Kl9999OtXpW5lyvloFKt8NhUwShn+r
-	 MdmOLw6/iPZNvkYFOxZi8FOr68zHEJrl+Ei4iOiqKjYTMvjrHFkCvtaDIyCsl6g3M+
-	 wZbUXRPHoBmpMZomA7IL8FZoeTXMYfFeQPclyAEMEC7SH0XlMRxDTvItywtfxxCLvV
-	 HNObVfEV08PsPy2azIwQZYCp4gzOGRw8AIgqR6L/Oti5dPlf0aENWv+T5cZFh8W2LG
-	 oE+N4huj9yFDg==
+	bh=eLh98WI+FOsy7Bulx7NVAAoegFmPf9FOtVvOJ8S/KY4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bs3HIINQ+GHYjHN4/+v2huUoyNXTTSzjTMo5TxUMYft31dfvskPujwIH62+Mhhob5
+	 E4brTbCLNRMjfL9qER5AUQOY6yHjzOabTRU+ycZguacF5ZI4WCu0+BrbUKZVnymTW4
+	 3p1amusW5wUT93xm3hFToUAqbFAEi9XHE7ek8BwlpUqyspvfLAHUM9uTtZ3Pj6D14u
+	 8G7BdPO6o69a0PfDpUUkFxt/H2g/UJhJ5k06UCf637Ifb5ZH5yL0X41YmpJ6gaZMEZ
+	 +usZozKRGudzpzDJu5QyUbrXJLJRUdT4VlIr1iIF1krGaUqqT4LkR/DEPFcJ4NWWsC
+	 Tvn4wvU8cYXBA==
+Date: Sat, 28 Feb 2026 20:17:42 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	imre.deak@intel.com
-Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm/i915/dp: Fix pipe BPP clamping due to HDR" failed to apply to 6.18-stable tree
-Date: Sat, 28 Feb 2026 20:17:41 -0500
-Message-ID: <20260301011741.1671698-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
+To: Woody Suwalski <terraluna977@gmail.com>
+Cc: Ronald Warsow <rwarsow@gmx.de>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, gregkh@linuxfoundation.org,
+	patches@lists.linux.dev, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, conor@kernel.org, hargar@microsoft.com,
+	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.19 000/844] 6.19.6-rc1 review
+Message-ID: <aaOTtnZdVF9p9qVl@laps>
+References: <20260228173244.1509663-1-sashal@kernel.org>
+ <601576c7-970a-4e9d-af5e-c818740be8e8@gmx.de>
+ <879487cc-c667-8cc6-4775-02c7de3b8c27@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Patchwork-Hint: ignore
-X-stable: review
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <879487cc-c667-8cc6-4775-02c7de3b8c27@gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221275-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221276-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmx.de,vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: 88A331CA34E
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D7E751CA35C
 X-Rspamd-Action: no action
 
-The patch below does not apply to the 6.18-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On Sat, Feb 28, 2026 at 05:13:59PM -0500, Woody Suwalski wrote:
+>Ronald Warsow wrote:
+>>On 28.02.26 18:18, Sasha Levin wrote:
+>>>
+>>>This is the start of the stable review cycle for the 6.19.6 release.
+>>>There are 844 patches in this series, all will be posted as a response
+>>>to this one.  If anyone has any issues with these being applied, please
+>>>let me know.
+>>>
+>>>Responses should be made by Mon Mar  2 05:32:25 PM UTC 2026.
+>>>Anything received after that time might be too late.
+>>>
+>>>The whole patch series can be found in one patch at:
+>>>https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.19.y&id2=v6.19.5
+>>>or in the git tree and branch at:
+>>>git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git 
+>>>linux-6.19.y
+>>>and the diffstat can be found below.
+>>>
+>>
+>>It would be nice to have a download link to an patch-*.gz what Greg 
+>>usually provides.
+>>
+>>ron
+>>
+>I second this request. Trying to setup a build for  5.10.252-rc1 was 
+>tricky...
+>We need something similar to
+>
+>https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.251-rc1.gz
 
+I've provided a link to the patchfile in the mail:
+
+>>>The whole patch series can be found in one patch at:
+>>>https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.19.y&id2=v6.19.5
+
+-- 
 Thanks,
 Sasha
-
------------------- original commit in Linus's tree ------------------
-
-From fe26ae6ac8b88fcdac5036b557c129a17fe520d2 Mon Sep 17 00:00:00 2001
-From: Imre Deak <imre.deak@intel.com>
-Date: Mon, 9 Feb 2026 15:38:16 +0200
-Subject: [PATCH] drm/i915/dp: Fix pipe BPP clamping due to HDR
-
-The pipe BPP value shouldn't be set outside of the source's / sink's
-valid pipe BPP range, ensure this when increasing the minimum pipe BPP
-value to 30 due to HDR.
-
-While at it debug print if the HDR mode was requested for a connector by
-setting the corresponding HDR connector property. This indicates
-if the requested HDR mode could not be enabled, since the selected
-pipe BPP is below 30, due to a sink capability or link BW limit.
-
-v2:
-- Also handle the case where the sink could support the target 30 BPP
-  only in DSC mode due to a BW limit, but the sink doesn't support DSC
-  or 30 BPP as a DSC input BPP. (Chaitanya)
-- Debug print the connector's HDR mode in the link config dump, to
-  indicate if a BPP >= 30 required by HDR couldn't be reached. (Ankit)
-- Add Closes: trailer. (Ankit)
-- Don't print the 30 BPP-outside of valid BPP range debug message if
-  the min BPP is already > 30 (and so a target BPP >= 30 required
-  for HDR is ensured).
-
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7052
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15503
-Fixes: ba49a4643cf53 ("drm/i915/dp: Set min_bpp limit to 30 in HDR mode")
-Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Cc: <stable@vger.kernel.org> # v6.18+
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com> # v1
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patch.msgid.link/20260209133817.395823-1-imre.deak@intel.com
-(cherry picked from commit 08b7ef16b6a03e8c966e286ee1ac608a6ffb3d4a)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
----
- drivers/gpu/drm/i915/display/intel_dp.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 7e022c47e8ac2..e9f1ee1eafae7 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2665,6 +2665,7 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
- 			       bool dsc,
- 			       struct link_config_limits *limits)
- {
-+	struct intel_display *display = to_intel_display(intel_dp);
- 	bool is_mst = intel_crtc_has_type(crtc_state, INTEL_OUTPUT_DP_MST);
- 	struct intel_connector *connector =
- 		to_intel_connector(conn_state->connector);
-@@ -2677,8 +2678,7 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
- 	limits->min_lane_count = intel_dp_min_lane_count(intel_dp);
- 	limits->max_lane_count = intel_dp_max_lane_count(intel_dp);
- 
--	limits->pipe.min_bpp = intel_dp_in_hdr_mode(conn_state) ? 30 :
--				intel_dp_min_bpp(crtc_state->output_format);
-+	limits->pipe.min_bpp = intel_dp_min_bpp(crtc_state->output_format);
- 	if (is_mst) {
- 		/*
- 		 * FIXME: If all the streams can't fit into the link with their
-@@ -2694,6 +2694,19 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
- 							respect_downstream_limits);
- 	}
- 
-+	if (!dsc && intel_dp_in_hdr_mode(conn_state)) {
-+		if (intel_dp_supports_dsc(intel_dp, connector, crtc_state) &&
-+		    limits->pipe.max_bpp >= 30)
-+			limits->pipe.min_bpp = max(limits->pipe.min_bpp, 30);
-+		else
-+			drm_dbg_kms(display->drm,
-+				    "[CONNECTOR:%d:%s] Can't force 30 bpp for HDR (pipe bpp: %d-%d DSC-support: %s)\n",
-+				    connector->base.base.id, connector->base.name,
-+				    limits->pipe.min_bpp, limits->pipe.max_bpp,
-+				    str_yes_no(intel_dp_supports_dsc(intel_dp, connector,
-+								     crtc_state)));
-+	}
-+
- 	if (dsc && !intel_dp_dsc_compute_pipe_bpp_limits(connector, limits))
- 		return false;
- 
-@@ -2825,10 +2838,11 @@ intel_dp_compute_link_config(struct intel_encoder *encoder,
- 	}
- 
- 	drm_dbg_kms(display->drm,
--		    "DP lane count %d clock %d bpp input %d compressed " FXP_Q4_FMT " link rate required %d available %d\n",
-+		    "DP lane count %d clock %d bpp input %d compressed " FXP_Q4_FMT " HDR %s link rate required %d available %d\n",
- 		    pipe_config->lane_count, pipe_config->port_clock,
- 		    pipe_config->pipe_bpp,
- 		    FXP_Q4_ARGS(pipe_config->dsc.compressed_bpp_x16),
-+		    str_yes_no(intel_dp_in_hdr_mode(conn_state)),
- 		    intel_dp_config_required_rate(pipe_config),
- 		    intel_dp_max_link_data_rate(intel_dp,
- 						pipe_config->port_clock,
--- 
-2.51.0
-
-
-
-
 
