@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-222233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBuJGvSfo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:56 +0100
+	id mJCpGfefo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9C21CD2AF
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 781921CD2BF
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0FEE9306B687
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5B5AA306BCB9
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B324A2EC083;
-	Sun,  1 Mar 2026 01:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2992F28FF;
+	Sun,  1 Mar 2026 01:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYP38pu+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d0hjCf2s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726222E7637
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75E92727FC;
+	Sun,  1 Mar 2026 01:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330370; cv=none; b=JpINuTyiocACYNSdYTSc3/KbEozxGPUIgmr0+K4iKpbPcq+4xBp2grdv7LIOQSE9fTNA1JMgjK1IN9eS42m0IC9Yyd1iEonzMDVoB/Hs6/hWqYR7tLp179/JyKxd5k3ZTaCfbNQ3porBGOIV8LQx6hWEixUkn2XTzH6aSHGAnhY=
+	t=1772330372; cv=none; b=AKNec/7nPeUNNP0M37qyREsDpPlzuFugG/hwGQ/Zql/x1w9jAFv3HtKSvr0zQwvRHJD8uUVe12pI3VKVkpQDFRhn1HxT6mLYFZRMYuY2Irkgup0cf7ILctekNqtKsq50d0+sbzBLrdE6gTI0BpWWgKaNBgp+ZS7RX0r4JkFt2Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330370; c=relaxed/simple;
-	bh=CMqus3ITimaUBp6Um8u0hwBq1NnGJYegILemxlcDbBg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n9SY2wgJb5PmuACzxfz4dzBZQnxXe+kyYel0gT3JPi+Q0h1DRgBFo4dDTX01MeGQabtYuG0KQiVEZcVdYE40I2BGMnKSjUb6dU1GlrBc8VNJ5tzg1mclTaJLVgqWty9I5StdzbKxb3MnJlZ6iHzGFbKKw+Q4dwP5VYJu86TdJzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYP38pu+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B413FC2BC86;
-	Sun,  1 Mar 2026 01:59:29 +0000 (UTC)
+	s=arc-20240116; t=1772330372; c=relaxed/simple;
+	bh=qMgwLUVJTrFifh71Terdlu6lXHy24h1A9/M0ViDBF/g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qoWH9Hhs0JnWHNrsPnfsDe+nuLLTh5wl3KLuDltbTqzBvjJzcgS5/dHHQLWQGJVq4k93XIpU8J7NMlL1h9+vD4L/Ut9VeVLfYl9SNCtqHC3SYW48c5KujvrTfrrJLfWWW/gS03cucms0u+QIVhwELKVS2+xMJkCV6/5GJpYaYOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d0hjCf2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C20C19421;
+	Sun,  1 Mar 2026 01:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330370;
-	bh=CMqus3ITimaUBp6Um8u0hwBq1NnGJYegILemxlcDbBg=;
+	s=k20201202; t=1772330372;
+	bh=qMgwLUVJTrFifh71Terdlu6lXHy24h1A9/M0ViDBF/g=;
 	h=From:To:Cc:Subject:Date:From;
-	b=DYP38pu+g2BX0r4x4BlFuwAyy1biSSLK56M5C2irsc5jHL0ThEk9WYpdvXlxAT0bp
-	 6iNrD8vv/AKQmdnyf0c80SxlfARb63ecVzxbAaBtRUSm3CKjin2dRGq2Sr1nUgHaCy
-	 gHw2axNh2TTIlHcCUSiDCvBlx04y/ufahZ84BuqjxDcrLjkBvSdbdOxyGJZ/wUjhoV
-	 htuy63tMbMkujOSwXihNRu8kYXAUIiMBirtngKFd3yT1vAAWziSHrWphGryTmoU/8v
-	 X21N9oiR5btcSbSeOJYhgZvvqNEyor97yTcLxiHlqppXi4KdzrxGWrsApCnA5iEbJZ
-	 dyP8zD1EAyokg==
+	b=d0hjCf2sRkiYrUaiMFIIBaI+dKttJigIjYbt6vOKm8phHeQ2NdlIty0rbVuDZFhwu
+	 Jncbuhq/r98nU9cwhhnOuVtL9Yk5IuZHkicZYP6wpxoWi0M0HmUC/bW2O6VTxQltbL
+	 KD0qPVBzmMisCazxyCBUHpgZecK+QulftjoVv333yUeQUI3mKbjkhxhP9Vb69FSCBt
+	 PCGovJiV/+yi/THSXillFdUt9Grs5GY+pvMIgOEVImTvAbADd3PSi5+uDpzRICrK1M
+	 6msx0yjqw1wzjhlY2DNsan7B5AI7cRhv7oW0Yk8d7Nx0xI5KBVV+l6uC1YLMJH40FY
+	 6WRefuxz7B6PA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	hanguidong02@gmail.com
-Cc: Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: FAILED: Patch "bus: fsl-mc: fix use-after-free in driver_override_show()" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 20:59:28 -0500
-Message-ID: <20260301015928.1725195-1-sashal@kernel.org>
+	vulab@iscas.ac.cn
+Cc: Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: FAILED: Patch "ARM: omap2: Fix reference count leaks in omap_control_init()" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 20:59:30 -0500
+Message-ID: <20260301015930.1725317-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,30 +69,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222233-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222234-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AB9C21CD2AF
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,iscas.ac.cn:email,kemnade.info:email,baylibre.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 781921CD2BF
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -104,49 +104,77 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 148891e95014b5dc5878acefa57f1940c281c431 Mon Sep 17 00:00:00 2001
-From: Gui-Dong Han <hanguidong02@gmail.com>
-Date: Wed, 3 Dec 2025 01:44:38 +0800
-Subject: [PATCH] bus: fsl-mc: fix use-after-free in driver_override_show()
+From 93a04ab480c8bbcb7d9004be139c538c8a0c1bc8 Mon Sep 17 00:00:00 2001
+From: Wentao Liang <vulab@iscas.ac.cn>
+Date: Wed, 17 Dec 2025 14:21:22 +0000
+Subject: [PATCH] ARM: omap2: Fix reference count leaks in omap_control_init()
 
-The driver_override_show() function reads the driver_override string
-without holding the device_lock. However, driver_override_store() uses
-driver_set_override(), which modifies and frees the string while holding
-the device_lock.
+The of_get_child_by_name() function increments the reference count
+of child nodes, causing multiple reference leaks in omap_control_init():
 
-This can result in a concurrent use-after-free if the string is freed
-by the store function while being read by the show function.
+1. scm_conf node never released in normal/error paths
+2. clocks node leak when checking existence
+3. Missing scm_conf release before np in error paths
 
-Fix this by holding the device_lock around the read operation.
+Fix these leaks by adding proper of_node_put() calls and separate error
+handling.
 
-Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
+Fixes: e5b635742e98 ("ARM: OMAP2+: control: add syscon support for register accesses")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20251202174438.12658-1-hanguidong02@gmail.com
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+Link: https://patch.msgid.link/20251217142122.1861292-1-vulab@iscas.ac.cn
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/mach-omap2/control.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index c08c04047ae2c..08b99b0b342f3 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -231,8 +231,12 @@ static ssize_t driver_override_show(struct device *dev,
- 				    struct device_attribute *attr, char *buf)
+diff --git a/arch/arm/mach-omap2/control.c b/arch/arm/mach-omap2/control.c
+index 79860b23030de..eb6fc7c61b6e0 100644
+--- a/arch/arm/mach-omap2/control.c
++++ b/arch/arm/mach-omap2/control.c
+@@ -732,7 +732,7 @@ int __init omap2_control_base_init(void)
+  */
+ int __init omap_control_init(void)
  {
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
-+	ssize_t len;
+-	struct device_node *np, *scm_conf;
++	struct device_node *np, *scm_conf, *clocks_node;
+ 	const struct of_device_id *match;
+ 	const struct omap_prcm_init_data *data;
+ 	int ret;
+@@ -753,16 +753,19 @@ int __init omap_control_init(void)
  
--	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
-+	device_lock(dev);
-+	len = sysfs_emit(buf, "%s\n", mc_dev->driver_override);
-+	device_unlock(dev);
-+	return len;
- }
- static DEVICE_ATTR_RW(driver_override);
+ 			if (IS_ERR(syscon)) {
+ 				ret = PTR_ERR(syscon);
+-				goto of_node_put;
++				goto err_put_scm_conf;
+ 			}
  
+-			if (of_get_child_by_name(scm_conf, "clocks")) {
++			clocks_node = of_get_child_by_name(scm_conf, "clocks");
++			if (clocks_node) {
++				of_node_put(clocks_node);
+ 				ret = omap2_clk_provider_init(scm_conf,
+ 							      data->index,
+ 							      syscon, NULL);
+ 				if (ret)
+-					goto of_node_put;
++					goto err_put_scm_conf;
+ 			}
++			of_node_put(scm_conf);
+ 		} else {
+ 			/* No scm_conf found, direct access */
+ 			ret = omap2_clk_provider_init(np, data->index, NULL,
+@@ -780,6 +783,9 @@ int __init omap_control_init(void)
+ 
+ 	return 0;
+ 
++err_put_scm_conf:
++	if (scm_conf)
++		of_node_put(scm_conf);
+ of_node_put:
+ 	of_node_put(np);
+ 	return ret;
 -- 
 2.51.0
 
