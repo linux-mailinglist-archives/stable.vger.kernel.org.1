@@ -1,121 +1,119 @@
-Return-Path: <stable+bounces-222407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKF5BOrVo2mdPAUAu9opvQ
-	(envelope-from <stable+bounces-222407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 07:00:10 +0100
+	id 5yHmD/jco2l5QQUAu9opvQ
+	(envelope-from <stable+bounces-222408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 07:30:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0997F1CE97B
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 07:00:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA791CE9FD
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 07:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0BB803008088
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 06:00:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ECA4B3007B32
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 06:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE601306B0A;
-	Sun,  1 Mar 2026 06:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD942E22B5;
+	Sun,  1 Mar 2026 06:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQ5nOPbv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KsznyLx7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690CB2D97BB
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 06:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D5127470
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 06:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772344804; cv=none; b=Ntlukt663r5t61mBM65IP/5OWYzbGJp4+NoH5xpg/G0RwwY341QN+1ruT9wtTxeuHXsPOF5/UweCZd9miFK6eoLsq6qwvDOnuHH9qfhidgm0H2Vwhyx4d7LPIAviwlqqPitBv/BysBKHv95K9mMrlclj0YWnX7JNcA8yPmnRsTA=
+	t=1772346610; cv=none; b=MmwZeJmBOtg5FwCseYm2cpDnLQ7tlp5LgmhdrhBP2QFNJLgVrdKB1UkRbdzTCsirFAHSCtQRSqCSE5+3theNhbxAoExvZV4kQqMJa5J3aEYxnx8zcteTiB95ziXZXEYKKoX5cHcRYHSD0f1K89SPOzTcOWrktfO0p8nRG57DEN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772344804; c=relaxed/simple;
-	bh=QKni47SVW9Uu35RdotBA7722dJSKwDszVsr/Cmo+eIU=;
+	s=arc-20240116; t=1772346610; c=relaxed/simple;
+	bh=isAkMY5xLEvuyv0ACpWczwrAEWOhgfE4drkaGkr+nJ0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g4s9jncwMxOyyd0KMPkyBdJ1aCG7VSxcTDcruc8+c6/bv0TI4NCB1w4y3jVn2qeD0RnJOHcVgyUpasqeGhRd7dfBZ/d2/oTGnRgWeMa6q4paO4F69+lXp8al9sztlq/B1D12yz2IWM++dYvdP5NaJLYOA/0hRT3Ry6xGFsNIwDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQ5nOPbv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C252C2BCB0
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 06:00:04 +0000 (UTC)
+	 To:Cc:Content-Type; b=DK8mYMrYsDXMksC7fHesVf4UUuaJGqr27AtJWBhXURQ0ESLJ7OkkTWg9OEewMTRKn2MUljl/HU19NjhCD6f0o6rHIfX0fFn/5OKxrvHCf0JicJWl6bhb+3H2pZtR/3sU5s9+EsNlGc4oJbVUZx3TdNh8mO4TGUBT6UegUo85+Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KsznyLx7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F31C2BCAF
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 06:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772344804;
-	bh=QKni47SVW9Uu35RdotBA7722dJSKwDszVsr/Cmo+eIU=;
+	s=k20201202; t=1772346609;
+	bh=isAkMY5xLEvuyv0ACpWczwrAEWOhgfE4drkaGkr+nJ0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UQ5nOPbvJlle9K2ewrCfaXDlMF3/CnrPh10KwTwRpi2D0LMPy+je0uCUAsvXqqNix
-	 lNx1yibvd0/qry8SfG6cxIc92vbq+vTTo2BsKc9Ni21+ueStrli0CqoT2x3vO7wv4z
-	 xZJQkCuee+gJYzc0nQQv5BImFGv0K7nVa78wqZ/ybG0/LD5jADhMXHodNnFsDMNM3I
-	 qTGGD6i7GgbJVwIk7GAfN/1gtMF1ylZSJ44hKqogooCFEMOVpChR5774HprQPfjnas
-	 WMpL/F/d6uJ59bZHAbJdiPXBeJTcH9Vz88oy9mhGxgLFgb0FFQAWDBV82LiWc+ANR3
-	 kw+sJEtg4zm3w==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-65f771c6b89so4937553a12.3
-        for <stable@vger.kernel.org>; Sat, 28 Feb 2026 22:00:03 -0800 (PST)
-X-Gm-Message-State: AOJu0YxOpAp9bzSakw7tO/NIRv4NPKK+hyQvtHxMXr+xDSH6XoHa1m4S
-	8GQauHXZFEz3eKG9mE/p6dLs7f4yCuY2OZes5HaKGwjzQeyYHqVA6F5It/4ChJfsrD7a4i/wfJ8
-	AaDIjndSY5pWjSXKEHUsk6GEzxPEvRnk=
-X-Received: by 2002:a05:6402:42c4:b0:65b:ec2d:e60d with SMTP id
- 4fb4d7f45d1cf-65fde2d08c7mr5450438a12.32.1772344802355; Sat, 28 Feb 2026
- 22:00:02 -0800 (PST)
+	b=KsznyLx7mDqHqIMv88Gs2ZYDwcthATtCtViiIthl2tqaVmxZ78t4tUmyhq3tSroXx
+	 zKCGnuaNohLebCcaK56Y3q+G03itoCwQRAJbhZn4y7uRPJllgoV+RDiCaM11yV3Y36
+	 cwhu7jY9aPeuNnQyoRYcCu/2tgOH1daSF7k4Zx/wREG7+u8zig/ufs3MKyrK9cmvMV
+	 Q0TxnW64N8StmFrS90HGHiyjFv5IwAnYMxTdC7/w0JFY46YZMNGslVKt4UY++t2H3H
+	 nfcEgVm67sraf7zvqVt5ELshud9TwDJ5aiuXb6OI35VkItX81OTpeombMsic/UcklL
+	 XWB6u+lxoh5Ig==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-65f73225f45so5548395a12.1
+        for <stable@vger.kernel.org>; Sat, 28 Feb 2026 22:30:08 -0800 (PST)
+X-Gm-Message-State: AOJu0Yxw+u8bQBcYoStrb6En4jpD/0vpkNhFTaWfVSx6qv0wMG9xP/R/
+	9ePz31BSn5gXtxWo/Ud1yAojx0AK1vgxjXRIuNn0DFCmH8kzNGubHvv+NlVhdKaVeX0LUj3lVKl
+	fUAAup1mnxT33eO9Hg1c/tiCgjAAa6hc=
+X-Received: by 2002:a05:6402:27c9:b0:65c:972:7085 with SMTP id
+ 4fb4d7f45d1cf-65fddaf6c47mr5131604a12.18.1772346607163; Sat, 28 Feb 2026
+ 22:30:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260301012606.1683431-1-sashal@kernel.org>
-In-Reply-To: <20260301012606.1683431-1-sashal@kernel.org>
+References: <20260301012730.1685022-1-sashal@kernel.org>
+In-Reply-To: <20260301012730.1685022-1-sashal@kernel.org>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 1 Mar 2026 13:59:51 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7QMmww2E2yZECuW=La0i3s1nKbbQvpODgPzrPci3f0HQ@mail.gmail.com>
-X-Gm-Features: AaiRm50WuaIawTrIMUAzic5HCfeMGfAec2UkDWc3Lhbmb5tQfUpf37UwpYVyxss
-Message-ID: <CAAhV-H7QMmww2E2yZECuW=La0i3s1nKbbQvpODgPzrPci3f0HQ@mail.gmail.com>
-Subject: Re: FAILED: Patch "net: stmmac: dwmac-loongson: Set clk_csr_i to
- 100-150MHz" failed to apply to 6.12-stable tree
+Date: Sun, 1 Mar 2026 14:29:55 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5b7MHvW-eB4rfMoZBPDR-bTt+xYBq-pqe7VVf=9N+PRQ@mail.gmail.com>
+X-Gm-Features: AaiRm50rwQMqz8Y6FgxjFys-UELMehhIJVhXrh0UUnegmJ_nzMcX6gZ0ojDjBkI
+Message-ID: <CAAhV-H5b7MHvW-eB4rfMoZBPDR-bTt+xYBq-pqe7VVf=9N+PRQ@mail.gmail.com>
+Subject: Re: FAILED: Patch "LoongArch: Make cpumask_of_node() robust against
+ NUMA_NO_NODE" failed to apply to 6.12-stable tree
 To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Hongliang Wang <wanghongliang@loongson.cn>, 
-	Huacai Chen <chenhuacai@loongson.cn>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org
+Cc: stable@vger.kernel.org, john.g.garry@oracle.com, 
+	Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222408-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222407-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,msgid.link:url,loongson.cn:email]
-X-Rspamd-Queue-Id: 0997F1CE97B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email]
+X-Rspamd-Queue-Id: 2EA791CE9FD
 X-Rspamd-Action: no action
 
 Hi, Sasha,
 
-On Sun, Mar 1, 2026 at 9:26=E2=80=AFAM Sasha Levin <sashal@kernel.org> wrot=
+On Sun, Mar 1, 2026 at 9:27=E2=80=AFAM Sasha Levin <sashal@kernel.org> wrot=
 e:
 >
 > The patch below does not apply to the 6.12-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
-I have already submit a patch for 6.12 some days ago:
-https://lore.kernel.org/loongarch/20260218121219.2545107-1-chenhuacai@loong=
-son.cn/T/#u
+I'm very confused because it can be applied and already here:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tre=
+e/queue-6.12
 
 Huacai
 
@@ -125,46 +123,40 @@ Huacai
 >
 > ------------------ original commit in Linus's tree ------------------
 >
-> From e1aa5ef892fb4fa9014a25e87b64b97347919d37 Mon Sep 17 00:00:00 2001
-> From: Huacai Chen <chenhuacai@loongson.cn>
-> Date: Tue, 3 Feb 2026 14:29:01 +0800
-> Subject: [PATCH] net: stmmac: dwmac-loongson: Set clk_csr_i to 100-150MHz
+> From 94b0c831eda778ae9e4f2164a8b3de485d8977bb Mon Sep 17 00:00:00 2001
+> From: John Garry <john.g.garry@oracle.com>
+> Date: Tue, 10 Feb 2026 19:31:12 +0800
+> Subject: [PATCH] LoongArch: Make cpumask_of_node() robust against NUMA_NO=
+_NODE
 >
-> Current clk_csr_i setting of Loongson STMMAC (including LS7A1000/2000
-> and LS2K1000/2000/3000) are copy & paste from other drivers. In fact,
-> Loongson STMMAC use 125MHz clocks and need 62 freq division to within
-> 2.5MHz, meeting most PHY MDC requirement. So fix by setting clk_csr_i
-> to 100-150MHz, otherwise some PHYs may link fail.
+> The arch definition of cpumask_of_node() cannot handle NUMA_NO_NODE -
+> which is a valid index - so add a check for this.
 >
 > Cc: stable@vger.kernel.org
-> Fixes: 30bba69d7db40e7 ("stmmac: pci: Add dwmac support for Loongson")
-> Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
+> Signed-off-by: John Garry <john.g.garry@oracle.com>
 > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> Link: https://patch.msgid.link/20260203062901.2158236-1-chenhuacai@loongs=
-on.cn
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 > ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  arch/loongarch/include/asm/topology.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drive=
-rs/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-> index 107a7c84ace80..c05e3e7a539cf 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-> @@ -91,8 +91,8 @@ static void loongson_default_data(struct pci_dev *pdev,
->         /* Get bus_id, this can be overwritten later */
->         plat->bus_id =3D pci_dev_id(pdev);
+> diff --git a/arch/loongarch/include/asm/topology.h b/arch/loongarch/inclu=
+de/asm/topology.h
+> index f06e7ff25bb7c..6b79d6183085a 100644
+> --- a/arch/loongarch/include/asm/topology.h
+> +++ b/arch/loongarch/include/asm/topology.h
+> @@ -12,7 +12,7 @@
 >
-> -       /* clk_csr_i =3D 20-35MHz & MDC =3D clk_csr_i/16 */
-> -       plat->clk_csr =3D STMMAC_CSR_20_35M;
-> +       /* clk_csr_i =3D 100-150MHz & MDC =3D clk_csr_i/62 */
-> +       plat->clk_csr =3D STMMAC_CSR_100_150M;
->         plat->core_type =3D DWMAC_CORE_GMAC;
->         plat->force_sf_dma_mode =3D 1;
+>  extern cpumask_t cpus_on_node[];
 >
+> -#define cpumask_of_node(node)  (&cpus_on_node[node])
+> +#define cpumask_of_node(node)  ((node) =3D=3D NUMA_NO_NODE ? cpu_all_mas=
+k : &cpus_on_node[node])
+>
+>  struct pci_bus;
+>  extern int pcibus_to_node(struct pci_bus *);
 > --
 > 2.51.0
+>
 >
 >
 >
