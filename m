@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-222295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFYgMk+fo2lzIgUAu9opvQ
-	(envelope-from <stable+bounces-222295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:11 +0100
+	id EKPFNnmfo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712CA1CD013
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594A41CD07F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DFA5E301DEC1
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:02:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D65330360AD
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432602F3C1F;
-	Sun,  1 Mar 2026 02:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477EA2F3C19;
+	Sun,  1 Mar 2026 02:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8GYwGIm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OA0IOkJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B32259C80;
-	Sun,  1 Mar 2026 02:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4172DF153;
+	Sun,  1 Mar 2026 02:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330523; cv=none; b=TPT7pgVRqSdPxP9PzhiGu+rawfnZO18IHJI8wziy4OtkLpOPIt773f02ymJ/fumhM2cN9AnyOeKTP9ivMJaGD14EdqB+5QhpOeZqOD130ZIvM42qg/mhwANpFQQRXPGOS+VKGY6XyEvvW1qRdb15GXEExLuwApRVoA0JHCCrkCA=
+	t=1772330525; cv=none; b=PDdOk4qo8hhwD5SU+xPZZHynyLzgxmsJLvYHWgujgs4GLQBlT0DlYYC06MunVz/M4T36/6a1e065cCzD1Zav2TusOdilp4fIM/T4QwhgZwRsQ12Lmd4O1kNg1ZBHMyRZd/KDra72t20ppMWuj9p3kfG1btUcTkP/NL+L9OHVaLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330523; c=relaxed/simple;
-	bh=OaARiU2V97zcxx5wDw3VqcFr9rDXhNBAk19csGgqDLU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CkF6TdGXL1uRaaVAxoAlIG6EogHFt4VbhLv53864Q0cGDhQARZjvxt/yf/GHpBQUKrvkAdAvLF+F/Q7syhGTnvO22rKhDUBYyJlKHDw2m9VJlzk7LQk3KVAxxir8WL92+yZOa0ctRxISZ1YEfKc58QqUNeEYCj7mqRqavKACYM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8GYwGIm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA37C19421;
-	Sun,  1 Mar 2026 02:02:01 +0000 (UTC)
+	s=arc-20240116; t=1772330525; c=relaxed/simple;
+	bh=mq2YmlIiOshmhBDR4FOP48Q+nreNqtr935m/ENuGyKs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MmpkprVTPMEoonyPkSy5wog3srSjl7amUVSGWVaLCwlkGokOjsl4jvkyVbMb5bIsuQkCq+fIH7kpZ8kUCAMYINTdhC1svDcalJfF9CRLaoGn1954EtON361kRdU1WieZ8V87vmHGvAwOJ0orXqThH25CnzZptyILyRjKSdaneKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OA0IOkJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D253C19421;
+	Sun,  1 Mar 2026 02:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330522;
-	bh=OaARiU2V97zcxx5wDw3VqcFr9rDXhNBAk19csGgqDLU=;
+	s=k20201202; t=1772330524;
+	bh=mq2YmlIiOshmhBDR4FOP48Q+nreNqtr935m/ENuGyKs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=N8GYwGImNiCKin0lB1Cq3ceQg5zL59wVR06jdIg9XshyURuEkhd5+Z6gUPSeGziiG
-	 o32Zz+xi9iaWyK6aDdvFBbXaYzvmVJ5XsHdnP9QKVwY9k7Jtfc0QWaBs93KYCvUUDX
-	 MoavXTHBzbkeqzle/QfqiDFdIRhqVRgegGZRie+xnoWE6OsacnjR3KV6KB6LzLmpzZ
-	 uONG1B2iz8f27PLKKsliooVht7xbkoAunJhjZ/Q0FZyQI9+zhgA+uoeyMCBWWyDTk7
-	 seCLDkNRvP6A6zgHMrvfS/0f4cGvmsx+OaNf3rGXshqMSN9t4qs+h6LIZWupa47ajP
-	 3qL5T0zZUF2YQ==
+	b=OA0IOkJQ4kColJdma+yCjMYuC0mLOTHonWE0lVfiv4MwEydv1UuzqU19Zoef+o5jp
+	 AsFkuvqUiaTh4itdmO7iaHnU+GtUP9Xos7FxW6xjlkA5Oa6pzcgsoWKTVCPNKq4MMa
+	 ViEtRHaIe+uKJY7m58eMvtuBJUCSSXLpkPpFucFl0aJSRuMLiVtq9eMC/sFfmpij20
+	 DQYpuTyh9x1ySezOfv94NUtwQn5w5RbPnnPvBgMR7CSiR5+88mKlvjF1iIz2hAxQo6
+	 1SQ/udl99xASiiAAju5RQwAoe4VvWYPy4krM5GmfdulOhn7ZUEZvMBM6+6LiOugtwy
+	 h8yjp+11iZjwA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	raag.jadav@intel.com
-Cc: Guido Trentalancia <guido@trentalancia.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-gpio@vger.kernel.org
-Subject: FAILED: Patch "pinctrl: intel: Add code name documentation" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:02:00 -0500
-Message-ID: <20260301020200.1729403-1-sashal@kernel.org>
+	jinpu.wang@ionos.com
+Cc: Yu Kuai <yukuai@fnnas.com>,
+	linux-raid@vger.kernel.org
+Subject: FAILED: Patch "md/bitmap: fix GPF in write_page caused by resize race" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:02:03 -0500
+Message-ID: <20260301020203.1729546-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,19 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222295-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222296-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,trentalancia.com:email]
-X-Rspamd-Queue-Id: 712CA1CD013
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ionos.com:email,fnnas.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 594A41CD07F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -104,79 +102,53 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From fc32c5725fbe1164d353400389d3e29d19960a3a Mon Sep 17 00:00:00 2001
-From: Raag Jadav <raag.jadav@intel.com>
-Date: Sat, 24 Jan 2026 13:44:54 +0530
-Subject: [PATCH] pinctrl: intel: Add code name documentation
+From 46ef85f854dfa9d5226b3c1c46493d79556c9589 Mon Sep 17 00:00:00 2001
+From: Jack Wang <jinpu.wang@ionos.com>
+Date: Tue, 20 Jan 2026 11:24:56 +0100
+Subject: [PATCH] md/bitmap: fix GPF in write_page caused by resize race
 
-Intel pinctrl drivers support large set of platforms and the IPs are
-often reused by their different variants, but it's currently not possible
-to figure out the exact driver that supports specific variant. Add user
-friendly documentation for them.
+A General Protection Fault occurs in write_page() during array resize:
+RIP: 0010:write_page+0x22b/0x3c0 [md_mod]
 
+This is a use-after-free race between bitmap_daemon_work() and
+__bitmap_resize(). The daemon iterates over `bitmap->storage.filemap`
+without locking, while the resize path frees that storage via
+md_bitmap_file_unmap(). `quiesce()` does not stop the md thread,
+allowing concurrent access to freed pages.
+
+Fix by holding `mddev->bitmap_info.mutex` during the bitmap update.
+
+Link: https://lore.kernel.org/linux-raid/20260120102456.25169-1-jinpu.wang@ionos.com
+Closes: https://lore.kernel.org/linux-raid/CAMGffE=Mbfp=7xD_hYxXk1PAaCZNSEAVeQGKGy7YF9f2S4=NEA@mail.gmail.com/T/#u
 Cc: stable@vger.kernel.org
-Reported-by: Guido Trentalancia <guido@trentalancia.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220056
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Acked-by: Guido Trentalancia <guido@trentalancia.com>
-[andy: added Oxford comma]
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: d60b479d177a ("md/bitmap: add bitmap_resize function to allow bitmap resizing.")
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 ---
- drivers/pinctrl/intel/Kconfig | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/md/md-bitmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/intel/Kconfig b/drivers/pinctrl/intel/Kconfig
-index e4dc9ba899bde..04c3a5b581f3c 100644
---- a/drivers/pinctrl/intel/Kconfig
-+++ b/drivers/pinctrl/intel/Kconfig
-@@ -53,7 +53,10 @@ config PINCTRL_ALDERLAKE
- 	select PINCTRL_INTEL
- 	help
- 	  This pinctrl driver provides an interface that allows configuring
--	  of Intel Alder Lake PCH pins and using them as GPIOs.
-+	  PCH pins of the following platforms and using them as GPIOs:
-+	  - Alder Lake HX, N, and S
-+	  - Raptor Lake HX, E, and S
-+	  - Twin Lake
- 
- config PINCTRL_BROXTON
- 	tristate "Intel Broxton pinctrl and GPIO driver"
-@@ -137,15 +140,17 @@ config PINCTRL_METEORLAKE
- 	select PINCTRL_INTEL
- 	help
- 	  This pinctrl driver provides an interface that allows configuring
--	  of Intel Meteor Lake pins and using them as GPIOs.
-+	  SoC pins of the following platforms and using them as GPIOs:
-+	  - Arrow Lake (all variants)
-+	  - Meteor Lake (all variants)
- 
- config PINCTRL_METEORPOINT
- 	tristate "Intel Meteor Point pinctrl and GPIO driver"
- 	select PINCTRL_INTEL
- 	help
--	  Meteor Point is the PCH of Intel Meteor Lake. This pinctrl driver
--	  provides an interface that allows configuring of PCH pins and
--	  using them as GPIOs.
-+	  This pinctrl driver provides an interface that allows configuring
-+	  PCH pins of the following platforms and using them as GPIOs:
-+	  - Arrow Lake HX and S
- 
- config PINCTRL_SUNRISEPOINT
- 	tristate "Intel Sunrisepoint pinctrl and GPIO driver"
-@@ -160,7 +165,11 @@ config PINCTRL_TIGERLAKE
- 	select PINCTRL_INTEL
- 	help
- 	  This pinctrl driver provides an interface that allows configuring
--	  of Intel Tiger Lake PCH pins and using them as GPIOs.
-+	  PCH pins of the following platforms and using them as GPIOs:
-+	  - Alder Lake H, P, PS, and U
-+	  - Raptor Lake H, P, PS, PX, and U
-+	  - Rocket Lake S
-+	  - Tiger Lake (all variants)
- 
- source "drivers/pinctrl/intel/Kconfig.tng"
- endmenu
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index dbe4c4b9a1daf..1d4a050dab3ab 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2453,6 +2453,7 @@ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
+ 		memcpy(page_address(store.sb_page),
+ 		       page_address(bitmap->storage.sb_page),
+ 		       sizeof(bitmap_super_t));
++	mutex_lock(&bitmap->mddev->bitmap_info.mutex);
+ 	spin_lock_irq(&bitmap->counts.lock);
+ 	md_bitmap_file_unmap(&bitmap->storage);
+ 	bitmap->storage = store;
+@@ -2560,7 +2561,7 @@ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
+ 			set_page_attr(bitmap, i, BITMAP_PAGE_DIRTY);
+ 	}
+ 	spin_unlock_irq(&bitmap->counts.lock);
+-
++	mutex_unlock(&bitmap->mddev->bitmap_info.mutex);
+ 	if (!init) {
+ 		__bitmap_unplug(bitmap);
+ 		bitmap->mddev->pers->quiesce(bitmap->mddev, 0);
 -- 
 2.51.0
 
