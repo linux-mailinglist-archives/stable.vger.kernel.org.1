@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-221254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221255-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uE7CBNWTo2khHQUAu9opvQ
-	(envelope-from <stable+bounces-221254-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:18:13 +0100
+	id KPizOuCTo2lpHQUAu9opvQ
+	(envelope-from <stable+bounces-221255-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:18:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC41C1CA1EF
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:18:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB931CA215
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:18:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 210DA305F4D7
+	by sea.lore.kernel.org (Postfix) with ESMTP id F19D030626F6
 	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DA122F77B;
-	Sun,  1 Mar 2026 01:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB90B242D6B;
+	Sun,  1 Mar 2026 01:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8Pdm36c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nbzslnwI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA053430B90;
-	Sun,  1 Mar 2026 01:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C37B242D97;
+	Sun,  1 Mar 2026 01:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327742; cv=none; b=nbZFF6kj1M1HwLIrsbPtCEQ+aUgc4v3pjWIG5YS6u6AEEmx4KNwBX2IBwSyorXDmJMoMWrP9GVjtGb6Fwk+suoBU6FGsWPm56ugJhGx58mpO9WCB7YGphaWhBq+Wfti8lAprRmqB+3W3YSAebDOdn8caJBvUSIS6YKy3GudpaaM=
+	t=1772327744; cv=none; b=dc8Vk6+4bFE69GMuOo/qxX11ndTuyacBZ+/920YdxOhFGX5m9lA9xtUYDhN5x25Yih5Kgx8eMWxCGqcQNqcAxrlGy7evxr4mwItpS5JRoe0wlSgUPYk9T1QQvUQ9QglCZIzf9xVh66+ZfAL6cPWUo8EcfgNhWmCYTWC90xJNbs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327742; c=relaxed/simple;
-	bh=OAaoWngE4iLEgGq6+OrogRicXN9Jfngd7Pwwn07cWrg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AKxo+SBWQjHjl0k22AmZOw2uJoXs3M8Fkj2rb5A8KnJY88CNm8aIvA6mmZQBVkyr401GaassU5ciEnxTGG9BpqxhsD1jNAanAcJ+5UX4ErVw2S8D5oktxjeLUl41CXzGI2ezPuGZksoJwWHsiyMmzJeEU27rtbIc9Kkq3Do2MZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8Pdm36c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D18C19421;
-	Sun,  1 Mar 2026 01:15:40 +0000 (UTC)
+	s=arc-20240116; t=1772327744; c=relaxed/simple;
+	bh=e594n7l7XvAJ8Da7xNSTJBcqLKR70JUvP8QgJI6kD98=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kaeMgpo6GNitmdc0Kb9WMOn38Wk1v3Plgqh97lhVvqEiGWtDmeidC+F/M+4csJ2pooIm7rC9YZMHbSK4CtLSK3VZ2wdm+Pn2+aInsNaWDZQhaxc3LMPZqpTI2Ci1BW74gDGYv5mqD7ZAudENwTBofEzcHHlP2MfJZEXuJcNXiYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nbzslnwI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5CAC19421;
+	Sun,  1 Mar 2026 01:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327741;
-	bh=OAaoWngE4iLEgGq6+OrogRicXN9Jfngd7Pwwn07cWrg=;
+	s=k20201202; t=1772327744;
+	bh=e594n7l7XvAJ8Da7xNSTJBcqLKR70JUvP8QgJI6kD98=;
 	h=From:To:Cc:Subject:Date:From;
-	b=D8Pdm36cezKFsz8qwd4Pz9NOeKr5IcVVwG1pnNt6VcusqeATfQvt9aO34hq2rQ2Eb
-	 2KIYVzJ5yg+OShwWwtUArLLwOzOd9tgtubpauqW4VHB6RfqkaTmaSpQ1IUHFh9Ihxn
-	 7eZlSWHfTFrhGBGaBykTr8sOne9zpajLMxxL1RjJCUI/OjEhxB+oBXqNhwKF4MW6ty
-	 0/sLBruiybkyai3aPpP6v1CoIFGQrMQKR+n3iCLMW/n0TZrYdDAG3Zy2Hi1hVYkOYq
-	 L6ekJZFVNdyHKAkfIENOLLFMx90gBAsulaMQLX/ZiiV01ALvEtFtbyCgIz310d/38Y
-	 rygPovdzg5OOw==
+	b=nbzslnwIow3d5f5A7aLOLPTjEhrjQMPivSnCPYTgcDh4UsByxMLacrpRHxHY8IoLR
+	 hD5X1xfLaXEnzYyMiJT6NDlpPJPSk+hr6sleqRuIB/wZlAeSxpPG+ul5OAqIGvHO6c
+	 8scMX9I8dHsOhwoQVvfeYutTFE0ICGhGnjp+i1uAt4+3grgE3J8Uwub3+6FsxucNGt
+	 xoUaq+GxAu1r78GGgqrP1T36douTEZk0qI7IpmmaQb2lRjRbv5cPmhZ6B/FMaUeLQE
+	 7AghSQ5IrgJkHLjpiMQm2yP9zmkvNnryL1IB4DaKPspE4UavdoOUcdqWIDGiYrS2Ds
+	 RDI83PeE2bp1A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	dikshita.agarwal@oss.qualcomm.com
-Cc: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	linux-media@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: FAILED: Patch "media: iris: Add missing platform data entries for SM8750" failed to apply to 6.18-stable tree
-Date: Sat, 28 Feb 2026 20:15:39 -0500
-Message-ID: <20260301011539.1669217-1-sashal@kernel.org>
+	yi.zhang@huawei.com
+Cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	stable@kernel.org,
+	Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org
+Subject: FAILED: Patch "ext4: don't set EXT4_GET_BLOCKS_CONVERT when splitting before submitting I/O" failed to apply to 6.18-stable tree
+Date: Sat, 28 Feb 2026 20:15:42 -0500
+Message-ID: <20260301011542.1669353-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,13 +70,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221254-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221255-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -85,15 +84,15 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: AC41C1CA1EF
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huaweicloud.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: 7BB931CA215
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.18-stable tree.
@@ -106,54 +105,100 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From bbef55f414100853d5bcea56a41f8b171bac8fcb Mon Sep 17 00:00:00 2001
-From: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-Date: Thu, 18 Dec 2025 12:24:09 +0530
-Subject: [PATCH] media: iris: Add missing platform data entries for SM8750
+From feaf2a80e78f89ee8a3464126077ba8683b62791 Mon Sep 17 00:00:00 2001
+From: Zhang Yi <yi.zhang@huawei.com>
+Date: Sat, 29 Nov 2025 18:32:35 +0800
+Subject: [PATCH] ext4: don't set EXT4_GET_BLOCKS_CONVERT when splitting before
+ submitting I/O
 
-Two platform-data fields for SM8750 were missed:
+When allocating blocks during within-EOF DIO and writeback with
+dioread_nolock enabled, EXT4_GET_BLOCKS_PRE_IO was set to split an
+existing large unwritten extent. However, EXT4_GET_BLOCKS_CONVERT was
+set when calling ext4_split_convert_extents(), which may potentially
+result in stale data issues.
 
-  - get_vpu_buffer_size = iris_vpu33_buf_size
-    Without this, the driver fails to allocate the required internal
-    buffers, leading to basic decode/encode failures during session
-    bring-up.
+Assume we have an unwritten extent, and then DIO writes the second half.
 
-  - max_core_mbps = ((7680 * 4320) / 256) * 60
-    Without this capability exposed, capability checks are incomplete and
-    v4l2-compliance for encoder fails.
+   [UUUUUUUUUUUUUUUU] on-disk extent        U: unwritten extent
+   [UUUUUUUUUUUUUUUU] extent status tree
+            |<-   ->| ----> dio write this range
 
-Fixes: a5925a2ce077 ("media: iris: add VPU33 specific encoding buffer calculation")
-Fixes: a6882431a138 ("media: iris: Add support for ENUM_FRAMESIZES/FRAMEINTERVALS for encoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+First, ext4_iomap_alloc() call ext4_map_blocks() with
+EXT4_GET_BLOCKS_PRE_IO, EXT4_GET_BLOCKS_UNWRIT_EXT and
+EXT4_GET_BLOCKS_CREATE flags set. ext4_map_blocks() find this extent and
+call ext4_split_convert_extents() with EXT4_GET_BLOCKS_CONVERT and the
+above flags set.
+
+Then, ext4_split_convert_extents() calls ext4_split_extent() with
+EXT4_EXT_MAY_ZEROOUT, EXT4_EXT_MARK_UNWRIT2 and EXT4_EXT_DATA_VALID2
+flags set, and it calls ext4_split_extent_at() to split the second half
+with EXT4_EXT_DATA_VALID2, EXT4_EXT_MARK_UNWRIT1, EXT4_EXT_MAY_ZEROOUT
+and EXT4_EXT_MARK_UNWRIT2 flags set. However, ext4_split_extent_at()
+failed to insert extent since a temporary lack -ENOSPC. It zeroes out
+the first half but convert the entire on-disk extent to written since
+the EXT4_EXT_DATA_VALID2 flag set, but left the second half as unwritten
+in the extent status tree.
+
+   [0000000000SSSSSS]  data                S: stale data, 0: zeroed
+   [WWWWWWWWWWWWWWWW]  on-disk extent      W: written extent
+   [WWWWWWWWWWUUUUUU]  extent status tree
+
+Finally, if the DIO failed to write data to the disk, the stale data in
+the second half will be exposed once the cached extent entry is gone.
+
+Fix this issue by not passing EXT4_GET_BLOCKS_CONVERT when splitting
+an unwritten extent before submitting I/O, and make
+ext4_split_convert_extents() to zero out the entire extent range
+to zero for this case, and also mark the extent in the extent status
+tree for consistency.
+
+Fixes: b8a8684502a0 ("ext4: Introduce FALLOC_FL_ZERO_RANGE flag for fallocate")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Cc: stable@kernel.org
+Message-ID: <20251129103247.686136-4-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- drivers/media/platform/qcom/iris/iris_platform_gen2.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/extents.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_platform_gen2.c b/drivers/media/platform/qcom/iris/iris_platform_gen2.c
-index b2d8559dd2b85..c932dc026616e 100644
---- a/drivers/media/platform/qcom/iris/iris_platform_gen2.c
-+++ b/drivers/media/platform/qcom/iris/iris_platform_gen2.c
-@@ -1056,6 +1056,7 @@ const struct iris_platform_data sm8750_data = {
- 	.get_instance = iris_hfi_gen2_get_instance,
- 	.init_hfi_command_ops = iris_hfi_gen2_command_ops_init,
- 	.init_hfi_response_ops = iris_hfi_gen2_response_ops_init,
-+	.get_vpu_buffer_size = iris_vpu33_buf_size,
- 	.vpu_ops = &iris_vpu35_ops,
- 	.set_preset_registers = iris_set_sm8550_preset_registers,
- 	.icc_tbl = sm8550_icc_table,
-@@ -1088,6 +1089,7 @@ const struct iris_platform_data sm8750_data = {
- 	.num_vpp_pipe = 4,
- 	.max_session_count = 16,
- 	.max_core_mbpf = NUM_MBS_8K * 2,
-+	.max_core_mbps = ((7680 * 4320) / 256) * 60,
- 	.dec_input_config_params_default =
- 		sm8550_vdec_input_config_params_default,
- 	.dec_input_config_params_default_size =
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 1fee84ea20af1..91b56de60c905 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3746,15 +3746,19 @@ static struct ext4_ext_path *ext4_split_convert_extents(handle_t *handle,
+ 	/* Convert to unwritten */
+ 	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
+ 		split_flag |= EXT4_EXT_DATA_ENTIRE_VALID1;
+-	/* Convert to initialized */
+-	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
++	/* Split the existing unwritten extent */
++	} else if (flags & (EXT4_GET_BLOCKS_UNWRIT_EXT |
++			    EXT4_GET_BLOCKS_CONVERT)) {
+ 		/*
+ 		 * It is safe to convert extent to initialized via explicit
+ 		 * zeroout only if extent is fully inside i_size or new_size.
+ 		 */
+ 		split_flag |= ee_block + ee_len <= eof_block ?
+ 			      EXT4_EXT_MAY_ZEROOUT : 0;
+-		split_flag |= (EXT4_EXT_MARK_UNWRIT2 | EXT4_EXT_DATA_VALID2);
++		split_flag |= EXT4_EXT_MARK_UNWRIT2;
++		/* Convert to initialized */
++		if (flags & EXT4_GET_BLOCKS_CONVERT)
++			split_flag |= EXT4_EXT_DATA_VALID2;
+ 	}
+ 	flags |= EXT4_GET_BLOCKS_SPLIT_NOMERGE;
+ 	return ext4_split_extent(handle, inode, path, map, split_flag, flags,
+@@ -3930,7 +3934,7 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
+ 	/* get_block() before submitting IO, split the extent */
+ 	if (flags & EXT4_GET_BLOCKS_SPLIT_NOMERGE) {
+ 		path = ext4_split_convert_extents(handle, inode, map, path,
+-				flags | EXT4_GET_BLOCKS_CONVERT, allocated);
++						  flags, allocated);
+ 		if (IS_ERR(path))
+ 			return path;
+ 		/*
 -- 
 2.51.0
 
