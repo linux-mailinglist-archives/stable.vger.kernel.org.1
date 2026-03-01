@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-222138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHQvFweeo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222138-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:43 +0100
+	id eFq3Fh6io2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:19:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9051CCA61
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0201CD6DE
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0F01B3017798
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C9EF3284B08
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E482FCC0E;
-	Sun,  1 Mar 2026 01:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB4F3019DC;
+	Sun,  1 Mar 2026 01:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPmwmDJW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYE4SELG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6CE3009C7;
-	Sun,  1 Mar 2026 01:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B323009C7;
+	Sun,  1 Mar 2026 01:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329996; cv=none; b=b8KFb3DCsYy2iqXVYeolgi5PFnJzkHRv5qVy2pcge4oucftZF+Lh4E8N+TMnbyxq0ZUcj1yQxEDpiX+ew7SNyoL1/kYrvkdPRMF9Xft48og40baVM2m0DZNcC1xkmV60JjVzcZOU7wEC0c1KrKiLbYQJLdPbXJZb6i+3Cm5H0P4=
+	t=1772329998; cv=none; b=nR1iTP/sbRUdU75fk5t2v/rvCEFWxVC6BhGymybSboXZ+2ikdyRD8RXdzEdG8uAUs40GefmRKZsrldlLo8uukzO84eTEpWaoAhUNpvnZMjU6DW+nk4/OE2bVIkWHNbO/PUnBuEEtY7K5pOI4ft+h3KFp/M3hT49yrkYLfoRDeXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329996; c=relaxed/simple;
-	bh=nwnikz7Y97S+6RINtBisdr3vqkYaqZ5m2FkQ+sicu4Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZDGnLKtt+8PrZKOC4ivLEWqaPkOr5VT39wLhKgsCmGEbTuTJN2HILd8qrAC0C1K4/X95qBsapOkotMbqweRxfGWHeYe2aElXaev5gF/yqpFB6wiuGS5/Ba8FMWVAwVmcTRbUQshQIp/Zry6qdBVntJwh9mfdjHKhnsUeLizQ8Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPmwmDJW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D3FC19424;
-	Sun,  1 Mar 2026 01:53:15 +0000 (UTC)
+	s=arc-20240116; t=1772329998; c=relaxed/simple;
+	bh=NVmAom0BU6nsWTd3B9XM3tdvJu76GZ12EIQjBF6Y/mE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IaOTw1E89ykQQ1IDaBaW6Gw7I8CBJvbqH5eMMc0Hi0K2SOJXC6qnhX5KAIQleQOcQvQFeRYe4xUVhy8UucP/MwxyoSocNguK5ctL+HpXGhRPVSuW8oLyZLjf8Y0Gj+cEUVhyTW3C9TZX5Cx9soN2gmmCXuVJpWCWApqgLYkAUBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYE4SELG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35BCC19424;
+	Sun,  1 Mar 2026 01:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329996;
-	bh=nwnikz7Y97S+6RINtBisdr3vqkYaqZ5m2FkQ+sicu4Q=;
+	s=k20201202; t=1772329998;
+	bh=NVmAom0BU6nsWTd3B9XM3tdvJu76GZ12EIQjBF6Y/mE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=FPmwmDJWtifR9D++epTFHsytCM2HBr6nwjI5RWj4kXlCXlGMBQA8xxY5vO/NB8mXq
-	 cRaNx6bkSwfGUf3lnc9+F7/MTzvb9KRr7mE2iF68a5n9jbuRXvcGOIz3oeN/Dwgdji
-	 HBKJ+lna9aclO08A0I/WozX+64iWQkP/nCoZ9xGWP1NYnSMrXQPYK0NqnponDnWt69
-	 Pj9cHg4jHAHygasTC7fZtcmI0bPub49dpWFPYJePHjFE05LbuOlcQnVKP5X10jQ//x
-	 3c3Esvv3u4BZajmA6f+y9Hba5ilg3rMQEuyzodJcqU5Fzj8jzpTwpp6202jsRgj27r
-	 PMUfuXjjMMWdQ==
+	b=PYE4SELG7XOP0mDItFlQeFiU8TCpJJ3puoDXTsS6ZZJvkfXhFAUGDZBlGMxaFhSzB
+	 7t0HLIA08WAJP+dkde7mv2xige5Ey4Px0z7aWQev/10AVagBveOP1HMTprFpQoPEIr
+	 uxlFlR5VwwsiLJUIp4gazHnE0Mav28DJbFC+YFiiNW4OAyK57DqavW93fncSl3CZbr
+	 lbe6UDQv1kjoQ6D6NqVMoA3OdZiTJco+6wHSWNohZibNMzoPBcNVBpHRdIgMWA4eJn
+	 hZVS4jJRTu/Nd8wfpPGw9mtdnGXofYMpTD5PrPjPI/XwFnU2TPwqbOBv2EE7xSC+KF
+	 bKjwWEMo4Zh7A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	schnelle@linux.ibm.com
-Cc: Benjamin Block <bblock@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	linux-pci@vger.kernel.org
-Subject: FAILED: Patch "PCI/IOV: Fix race between SR-IOV enable/disable and hotplug" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:53:13 -0500
-Message-ID: <20260301015314.1719938-1-sashal@kernel.org>
+	jinbaohong@synology.com
+Cc: Qu Wenruo <wqu@suse.com>,
+	Robbie Ko <robbieko@synology.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	linux-btrfs@vger.kernel.org
+Subject: FAILED: Patch "btrfs: continue trimming remaining devices on failure" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:53:16 -0500
+Message-ID: <20260301015316.1719989-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,33 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222138-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222139-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8E9051CCA61
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,synology.com:email,suse.com:email]
+X-Rspamd-Queue-Id: AC0201CD6DE
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -104,63 +105,45 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a5338e365c4559d7b4d7356116b0eb95b12e08d5 Mon Sep 17 00:00:00 2001
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-Date: Tue, 16 Dec 2025 23:14:03 +0100
-Subject: [PATCH] PCI/IOV: Fix race between SR-IOV enable/disable and hotplug
+From 912d1c6680bdb40b72b1b9204706f32b6eb842c3 Mon Sep 17 00:00:00 2001
+From: jinbaohong <jinbaohong@synology.com>
+Date: Wed, 28 Jan 2026 07:06:38 +0000
+Subject: [PATCH] btrfs: continue trimming remaining devices on failure
 
-Commit 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking when
-enabling/disabling SR-IOV") tried to fix a race between the VF removal
-inside sriov_del_vfs() and concurrent hot unplug by taking the PCI
-rescan/remove lock in sriov_del_vfs(). Similarly the PCI rescan/remove lock
-was also taken in sriov_add_vfs() to protect addition of VFs.
+Commit 93bba24d4b5a ("btrfs: Enhance btrfs_trim_fs function to handle
+error better") intended to make device trimming continue even if one
+device fails, tracking failures and reporting them at the end. However,
+it used 'break' instead of 'continue', causing the loop to exit on the
+first device failure.
 
-This approach however causes deadlock on trying to remove PFs with SR-IOV
-enabled because PFs disable SR-IOV during removal and this removal happens
-under the PCI rescan/remove lock. So the original fix had to be reverted.
+Fix this by replacing 'break' with 'continue'.
 
-Instead of taking the PCI rescan/remove lock in sriov_add_vfs() and
-sriov_del_vfs(), fix the race that occurs with SR-IOV enable and disable vs
-hotplug higher up in the callchain by taking the lock in
-sriov_numvfs_store() before calling into the driver's sriov_configure()
-callback.
-
-Fixes: 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV")
-Reported-by: Benjamin Block <bblock@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251216-revert_sriov_lock-v3-2-dac4925a7621@linux.ibm.com
+Fixes: 93bba24d4b5a ("btrfs: Enhance btrfs_trim_fs function to handle error better")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Robbie Ko <robbieko@synology.com>
+Signed-off-by: jinbaohong <jinbaohong@synology.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 ---
- drivers/pci/iov.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/extent-tree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
-index 7de5b18647beb..4a659c34935e1 100644
---- a/drivers/pci/iov.c
-+++ b/drivers/pci/iov.c
-@@ -495,7 +495,9 @@ static ssize_t sriov_numvfs_store(struct device *dev,
- 
- 	if (num_vfs == 0) {
- 		/* disable VFs */
-+		pci_lock_rescan_remove();
- 		ret = pdev->driver->sriov_configure(pdev, 0);
-+		pci_unlock_rescan_remove();
- 		goto exit;
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index a91bce05ffb4c..b63296e9abf48 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -6688,7 +6688,7 @@ int btrfs_trim_fs(struct btrfs_fs_info *fs_info, struct fstrim_range *range)
+ 		if (ret) {
+ 			dev_failed++;
+ 			dev_ret = ret;
+-			break;
++			continue;
+ 		}
  	}
- 
-@@ -507,7 +509,9 @@ static ssize_t sriov_numvfs_store(struct device *dev,
- 		goto exit;
- 	}
- 
-+	pci_lock_rescan_remove();
- 	ret = pdev->driver->sriov_configure(pdev, num_vfs);
-+	pci_unlock_rescan_remove();
- 	if (ret < 0)
- 		goto exit;
- 
+ 	mutex_unlock(&fs_devices->device_list_mutex);
 -- 
 2.51.0
 
