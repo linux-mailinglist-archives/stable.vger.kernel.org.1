@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-221808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221809-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCV1FjyZo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:16 +0100
+	id qLEPHj2Zo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221809-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4011CB56A
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38BEA1CB579
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C9303028110
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 177893028C09
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511CC2D949F;
-	Sun,  1 Mar 2026 01:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBECB2E1758;
+	Sun,  1 Mar 2026 01:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BXV/tgXm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WoL/0kEz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EEF13B58A;
-	Sun,  1 Mar 2026 01:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4FE2E06ED
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329188; cv=none; b=JnOtnf02/bXPBXWzRLAlCe8qcTkR/+EO15bj2X0IA6M34PVuUJxyc4e3iRsIFbzGb0tWPdyKZMrZY0q3PJaZcHKXWyI/xuDO3Xz9P7CqJwIxy7q5KMFKP8sGLQCtrr/Q4tQiEhFrmp6nbQfzjeU1puMRRU2Trn/wMNuCR6LO900=
+	t=1772329190; cv=none; b=NpAk6FiSzwyFOVS9BSsirUX8y0n7btMX+wsn5M65A8BNHxGE9nQRnUzUgna3BSZATWpE07GnnpmfIyPn/P16pM8PTFPBgFoItqXACueMcnN/ljVEO/3tSiRbc3Cv3r+fVLdgmT8MAZMaqjVcKgzy0fRqiZG3Nwn9QsdMqzGzsMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329188; c=relaxed/simple;
-	bh=MtS5LB5x87ffvn9/v5UZWctpxo+E2I06z3cVHfHYO94=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fth/VM3Sv55cn/B8DdocGM1UySAHsgAQ7d+3c+Orq8BNZmcqzf3gPqNQSaU1xsCka4szgI8yKknlSMR+vT0BZfF9ab/Z+UtCkIDGEI/0WiXmsuL1Z1oEZ7fhdjbJTQenKeCPYjFTSuIGByuf1ztTfFl65HtSETvWVpqKm87CsZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BXV/tgXm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F31CC19421;
-	Sun,  1 Mar 2026 01:39:47 +0000 (UTC)
+	s=arc-20240116; t=1772329190; c=relaxed/simple;
+	bh=MiGfFnNFniXRLrsXeRBv0h2l3XaChwtsNbdMoEX/w7I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XY3Hh4JkNnHHTMo80Yg0HWMHifCgXq9sW2yxEb8y02kZDzOOUazoUNtibO+OzK5G0KH/jo3kq1G8il7AX61PSr02Pr1MzPCxcGMg6n4zl7hEE8f+Jlhhgf0fDZ73IyVfnhcTgILPG0ZMZVr+4I5LhP3h4Y7bwCB2oIrXOIUSGAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WoL/0kEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B67C19421;
+	Sun,  1 Mar 2026 01:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329188;
-	bh=MtS5LB5x87ffvn9/v5UZWctpxo+E2I06z3cVHfHYO94=;
+	s=k20201202; t=1772329190;
+	bh=MiGfFnNFniXRLrsXeRBv0h2l3XaChwtsNbdMoEX/w7I=;
 	h=From:To:Cc:Subject:Date:From;
-	b=BXV/tgXmiZi5VmZ1ohVWYfIY0nVZkhEwe9wyJx4PIfnl/6rC3odxDQ0xLt39Q04y5
-	 Qnt0OXJjZHagLY6ne1RldZlWFE9rDdhsP9wQKd8cgv3W1kGGtvehxYCrDFgf6sHPt9
-	 Psh2YwRq6SULDK0y2dYd27cHs7MMdvktUCKVkYdTY/Ut+5b0aFgzb1FDbuvvIjrsKS
-	 uUCX/wF/FitDLQ2ei4dO1FT3a1hwkJzWaLXDbi+EzKgQuqYq/yM48k56GznwIN4tax
-	 oEMEGOGHrRp/4Srlpv28XlYpkJ36timfgFZb5nb/Xoi62tk/E6ld6rl4GDl4D22NvP
-	 mDBPjzlraoyYQ==
+	b=WoL/0kEzbl9qRnwxeR5MQQ9e4gKc6QTH1T7xoWNMVclwzHhviyQEjB9KCL80CPKM+
+	 T97E1DCuQDChMjsyWoCVkDJadatLhQuKINJrViZlanAGnQpEaSUgMJjqa26KKDGLAr
+	 Wd69tqnmPX+vPgQ2Tb9X9gEi6NbiNkQqDwxH2bNN8rZGtVtd4w6txPhAuHL+B+PEEZ
+	 n59d0pf8QdbOwoHFW0OWvHREW0l/9Pemv99+NGpwUx05fuOB8MuFLyI8oa8OKFD53Z
+	 DGZcGXPtc+6XiWYPy8mVO8U5BqfFBP+ar0JxIsqferHtawHyDhsZfEni7Jj0EzHZ5O
+	 WtEA/4BtM0g5w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	den@valinux.co.jp
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	ntb@lists.linux.dev
-Subject: FAILED: Patch "NTB: ntb_transport: Fix too small buffer for debugfs_name" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:39:45 -0500
-Message-ID: <20260301013946.1700849-1-sashal@kernel.org>
+	johan@kernel.org
+Cc: Yong Wu <yong.wu@mediatek.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: FAILED: Patch "memory: mtk-smi: fix device leaks on common probe" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:39:48 -0500
+Message-ID: <20260301013948.1700901-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,26 +75,27 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221808-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[mediatek.com,gmail.com,kernel.org,lists.infradead.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221809-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CE4011CB56A
+X-Rspamd-Queue-Id: 38BEA1CB579
 X-Rspamd-Action: no action
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
@@ -103,42 +105,48 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6a4b50585d74fe45d3ade1e3e86ba8aae79761a5 Mon Sep 17 00:00:00 2001
-From: Koichiro Den <den@valinux.co.jp>
-Date: Wed, 7 Jan 2026 13:24:57 +0900
-Subject: [PATCH] NTB: ntb_transport: Fix too small buffer for debugfs_name
+From 6cfa038bddd710f544076ea2ef7792fc82fbedd6 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Fri, 21 Nov 2025 17:46:22 +0100
+Subject: [PATCH] memory: mtk-smi: fix device leaks on common probe
 
-The buffer used for "qp%d" was only 4 bytes, which truncates names like
-"qp10" to "qp1" and causes multiple queues to share the same directory.
+Make sure to drop the reference taken when looking up the SMI device
+during common probe on late probe failure (e.g. probe deferral) and on
+driver unbind.
 
-Enlarge the buffer and use sizeof() to avoid truncation.
-
-Fixes: fce8a7bb5b4b ("PCI-Express Non-Transparent Bridge Support")
-Cc: <stable@vger.kernel.org> # v3.9+
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Fixes: 47404757702e ("memory: mtk-smi: Add device link for smi-sub-common")
+Fixes: 038ae37c510f ("memory: mtk-smi: add missing put_device() call in mtk_smi_device_link_common")
+Cc: stable@vger.kernel.org	# 5.16: 038ae37c510f
+Cc: stable@vger.kernel.org	# 5.16
+Cc: Yong Wu <yong.wu@mediatek.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251121164624.13685-2-johan@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/ntb/ntb_transport.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/memory/mtk-smi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-index a7dd983adf7b0..50f3b1f1b9262 100644
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -1252,9 +1252,9 @@ static int ntb_transport_init_queue(struct ntb_transport_ctx *nt,
- 	qp->tx_max_entry = tx_size / qp->tx_max_frame;
+diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
+index 733e22f695ab7..dd6150d200e89 100644
+--- a/drivers/memory/mtk-smi.c
++++ b/drivers/memory/mtk-smi.c
+@@ -674,6 +674,7 @@ static int mtk_smi_larb_probe(struct platform_device *pdev)
+ err_pm_disable:
+ 	pm_runtime_disable(dev);
+ 	device_link_remove(dev, larb->smi_common_dev);
++	put_device(larb->smi_common_dev);
+ 	return ret;
+ }
  
- 	if (nt->debugfs_node_dir) {
--		char debugfs_name[4];
-+		char debugfs_name[8];
+@@ -917,6 +918,7 @@ static void mtk_smi_common_remove(struct platform_device *pdev)
+ 	if (common->plat->type == MTK_SMI_GEN2_SUB_COMM)
+ 		device_link_remove(&pdev->dev, common->smi_common_dev);
+ 	pm_runtime_disable(&pdev->dev);
++	put_device(common->smi_common_dev);
+ }
  
--		snprintf(debugfs_name, 4, "qp%d", qp_num);
-+		snprintf(debugfs_name, sizeof(debugfs_name), "qp%d", qp_num);
- 		qp->debugfs_dir = debugfs_create_dir(debugfs_name,
- 						     nt->debugfs_node_dir);
- 
+ static int __maybe_unused mtk_smi_common_resume(struct device *dev)
 -- 
 2.51.0
 
