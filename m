@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-222117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222118-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELBEHmaeo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:18 +0100
+	id qE/BCqedo2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222118-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205091CCBBF
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 955DB1CC8CD
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9F9530E913A
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 45C6A30E98DD
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176D830B50A;
-	Sun,  1 Mar 2026 01:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBC02FDC20;
+	Sun,  1 Mar 2026 01:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hfZ3+FJz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0yypgzt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC255309EFB;
-	Sun,  1 Mar 2026 01:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A06221FBB
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329944; cv=none; b=Ki42e4EHPCRZffv9jIRjUaNtvUPCIrRQY7RHsr7k6NatcYBDw6HSmv1ik8NoruQE/V81DVKzGKvbtxnixRUrnhqp3teZ3rBUHxFxkJCVClzDzfSBcbShs40hb3Gm8fXKtQQwxXLfinpNo8yVcGQbOHWwuRIpUrZUsgy7CC/lNdQ=
+	t=1772329947; cv=none; b=AlDzwuHNocWHY4HrRJsUhiNzVvnfJaGlasxVT4hy6aPQcMUBPWZAksx+PdbKocwe6dZjdnQX76FRlzPyPZOoQl2l9jFEApwUzHk9JF+7rUUbqEo4ZVlzBJkPPk7DuhLD/0mJWNINrkp68XkQJVGCkq6GtwqKMkizxRFrYb0bO1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329944; c=relaxed/simple;
-	bh=jKksJ4zyYJVFHRuQ964R3sPbsjzbLDXLamyNKUQX+9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ithyQCAnsGhC61FXr6ZwlHBPYkz0zepV3+UaYeqaz8MYJPSd6u0InEUUqAbtEUmf/d0B+HoUBomFoYrrxPHv+OFMMBhicrJ/TYkfB/Eqw8ZI5h8wzVRu5jzbtlspACJ+m3U68N2BWW+YwC/yb6kd/h7B7iyPzuOIpEwQE2DaHz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hfZ3+FJz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64B2C19421;
-	Sun,  1 Mar 2026 01:52:23 +0000 (UTC)
+	s=arc-20240116; t=1772329947; c=relaxed/simple;
+	bh=eSH/epSalkFOYEVt6UOhEJpECxpdgQxRvntgP02NzTE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RR3XRyKaQibF91HvibKXfLa2fw5Cd+Yn8vzEvMooBKWS+uPS2/z3yuULcmVxoA8u768PEY03jLlzqLPYTlI+9ft0jUoUjvePYYyvZiavXwKjtX4BDfbZWrf6HSB2lJFDTfwLa8KuF7SDjqCMrR/KPy95buIp+QAfp6rEUMjo+sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0yypgzt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A63BC19421;
+	Sun,  1 Mar 2026 01:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329944;
-	bh=jKksJ4zyYJVFHRuQ964R3sPbsjzbLDXLamyNKUQX+9k=;
+	s=k20201202; t=1772329947;
+	bh=eSH/epSalkFOYEVt6UOhEJpECxpdgQxRvntgP02NzTE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hfZ3+FJzzoWlHfIkHngThF18U7+hwuWDKDKKckrhdRF6LHRdar/90kmLbY1f+dYyt
-	 1n4ZdCipf1st9xugRey3rT/oK5m8xTKxGXPMXpROzmOk4PPCpsQf7P7S610HNrHzlv
-	 I0Di7+WhlwFPX9FylaxbdcJqko9TkQmim83hoS+2b+RsiyI2X3m0RTB3S5v19Itowh
-	 Pf/FWvw/DkqK2y3zd9HZ0AWXiNnaWf2syz4SV2WW+U7lYGyWOlvO+ZAvPl+ZakLyYj
-	 M32jk1J9lg+YjDMtqA0nI7Z1afJvLpmLAYAtuHatXHqAIGn0UITPL+Y5+8uIzPLVtr
-	 I15ZuSSW+ifog==
+	b=I0yypgztqHYHudhBA6ByA6knGUXoboWc2PlZ+XhbgEniQWl5akFhn6IQfYkd0Wjs0
+	 qzicJi12uTR2v/UKr+qFY1E8mPeqnhsdaOtVJTp3dneWEig21BSimo5UF+BK+I+9za
+	 nlxGMqFz02xAG9LswMnw6XagAmh5CgBNpNQJfpjIUsjC9ri+p3ffDv6p27A5MrhcnN
+	 CVPkmxdMWa4791DvD7t1j0H9Z0BXrcsyEzrihEoEu1U7E6pCG4ci9EQRNg8NGsV3UC
+	 pD0uRqd4L6kvqBNSlWlv/mnKeA7blIVJ0NCiXQ1/h1YUBJfRcnHEt7DNWMheLyKXtL
+	 i55ZzeVDmRqHg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ilpo.jarvinen@linux.intel.com
-Cc: =?UTF-8?q?Malte=20Schr=C3=B6der?= <malte+lkml@tnxip.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org
-Subject: FAILED: Patch "PCI: Fix bridge window alignment with optional resources" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:52:22 -0500
-Message-ID: <20260301015222.1718862-1-sashal@kernel.org>
+	kartikey406@gmail.com
+Cc: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Subject: FAILED: Patch "mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:52:24 -0500
+Message-ID: <20260301015225.1718913-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,37 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222117-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[syzkaller.appspotmail.com,gmail.com,sina.com,linux-foundation.org,kvack.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222118-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable,d8d4c31d40f868eaea30];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tnxip.de:email]
-X-Rspamd-Queue-Id: 205091CCBBF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email,appspotmail.com:email,sina.com:email]
+X-Rspamd-Queue-Id: 955DB1CC8CD
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -104,102 +108,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7e90360e6d4599795b6f4e094e20d0bdf3b2615f Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 19 Dec 2025 19:40:14 +0200
-Subject: [PATCH] PCI: Fix bridge window alignment with optional resources
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 5747435e0fd474c24530ef1a6822f47e7d264b27 Mon Sep 17 00:00:00 2001
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Mon, 12 Jan 2026 16:06:12 +0530
+Subject: [PATCH] mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
 
-pbus_size_mem() has two alignments, one for required resources in min_align
-and another in add_align that takes account optional resources.
+When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
+vmalloc cleanup triggers expensive stack unwinding that acquires RCU read
+locks.  Processing a large purge_list without rescheduling can cause the
+task to hold CPU for extended periods (10+ seconds), leading to RCU stalls
+and potential OOM conditions.
 
-The add_align is applied to the bridge window through the realloc_head
-list. It can happen, however, that add_align is larger than min_align but
-calculated size1 and size0 are equal due to extra tailroom (e.g., hotplug
-reservation, tail alignment), and therefore no entry is created to the
-realloc_head list. Without the bridge appearing in the realloc head,
-add_align is lost when pbus_size_mem() returns.
+The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
+where iterating through hundreds or thousands of vmap_area entries and
+freeing their associated shadow pages causes:
 
-The problem is visible in this log for 0000:05:00.0 which lacks
-add_size ... add_align ... line that would indicate it was added into
-the realloc_head list:
-
-  pci 0000:05:00.0: PCI bridge to [bus 06-16]
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
   ...
-  pci 0000:06:00.0: bridge window [mem 0x00100000-0x001fffff] to [bus 07] requires relaxed alignment rules
-  pci 0000:06:06.0: bridge window [mem 0x00100000-0x001fffff] to [bus 0a] requires relaxed alignment rules
-  pci 0000:06:07.0: bridge window [mem 0x00100000-0x003fffff] to [bus 0b] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x00800000-0x00ffffff 64bit pref] to [bus 0c-14] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] add_size 100000 add_align 1000000
-  pci 0000:06:0c.0: bridge window [mem 0x00100000-0x001fffff] to [bus 15] requires relaxed alignment rules
-  pci 0000:06:0d.0: bridge window [mem 0x00100000-0x001fffff] to [bus 16] requires relaxed alignment rules
-  pci 0000:06:0d.0: bridge window [mem 0x00100000-0x001fffff] to [bus 16] requires relaxed alignment rules
-  pci 0000:05:00.0: bridge window [mem 0xd4800000-0xd97fffff]: assigned
-  pci 0000:05:00.0: bridge window [mem 0x1060000000-0x10607fffff 64bit pref]: assigned
-  pci 0000:06:08.0: bridge window [mem size 0x04900000]: can't assign; no space
-  pci 0000:06:08.0: bridge window [mem size 0x04900000]: failed to assign
+  task:kworker/0:17 state:R running task stack:28840 pid:6229
+  ...
+  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
+  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
 
-While this bug itself seems old, it has likely become more visible after
-the relaxed tail alignment that does not grossly overestimate the size
-needed for the bridge window.
+Each call to kasan_release_vmalloc() can free many pages, and with
+page_owner tracking, each free triggers save_stack() which performs stack
+unwinding under RCU read lock.  Without yielding, this creates an
+unbounded RCU critical section.
 
-Make sure add_align > min_align too results in adding an entry into the
-realloc head list. In addition, add handling to the cases where add_size is
-zero while only alignment differs.
+Add periodic cond_resched() calls within the loop to allow:
+- RCU grace periods to complete
+- Other tasks to run
+- Scheduler to preempt when needed
 
-Fixes: d74b9027a4da ("PCI: Consider additional PF's IOV BAR alignment in sizing and assigning")
-Reported-by: Malte Schröder <malte+lkml@tnxip.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Malte Schröder <malte+lkml@tnxip.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251219174036.16738-2-ilpo.jarvinen@linux.intel.com
+The fix uses need_resched() for immediate response under load, with a
+batch count of 32 as a guaranteed upper bound to prevent worst-case stalls
+even under light load.
+
+Link: https://lkml.kernel.org/r/20260112103612.627247-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
+Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
+Suggested-by: Uladzislau Rezki <urezki@gmail.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/pci/setup-bus.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ mm/vmalloc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 6e90f46f52afd..4b918ff4d2d8b 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -14,6 +14,7 @@
-  *	     tighter packing. Prefetchable range support.
-  */
- 
-+#include <linux/align.h>
- #include <linux/bitops.h>
- #include <linux/bug.h>
- #include <linux/init.h>
-@@ -456,7 +457,7 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
- 					"%s %pR: ignoring failure in optional allocation\n",
- 					res_name, res);
- 			}
--		} else if (add_size > 0) {
-+		} else if (add_size > 0 || !IS_ALIGNED(res->start, align)) {
- 			res->flags |= add_res->flags &
- 				 (IORESOURCE_STARTALIGN|IORESOURCE_SIZEALIGN);
- 			if (pci_reassign_resource(dev, idx, add_size, align))
-@@ -1442,12 +1443,13 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 
- 	resource_set_range(b_res, min_align, size0);
- 	b_res->flags |= IORESOURCE_STARTALIGN;
--	if (bus->self && size1 > size0 && realloc_head) {
-+	if (bus->self && realloc_head && (size1 > size0 || add_align > min_align)) {
- 		b_res->flags &= ~IORESOURCE_DISABLED;
--		add_to_list(realloc_head, bus->self, b_res, size1-size0, add_align);
-+		add_size = size1 > size0 ? size1 - size0 : 0;
-+		add_to_list(realloc_head, bus->self, b_res, add_size, add_align);
- 		pci_info(bus->self, "bridge window %pR to %pR add_size %llx add_align %llx\n",
- 			   b_res, &bus->busn_res,
--			   (unsigned long long) (size1 - size0),
-+			   (unsigned long long) add_size,
- 			   (unsigned long long) add_align);
- 	}
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 32d6ee92d4ff8..ca4c653286870 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2273,11 +2273,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
+ 	reclaim_list_global(&decay_list);
  }
+ 
++#define KASAN_RELEASE_BATCH_SIZE 32
++
+ static void
+ kasan_release_vmalloc_node(struct vmap_node *vn)
+ {
+ 	struct vmap_area *va;
+ 	unsigned long start, end;
++	unsigned int batch_count = 0;
+ 
+ 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
+ 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
+@@ -2287,6 +2290,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
+ 			kasan_release_vmalloc(va->va_start, va->va_end,
+ 				va->va_start, va->va_end,
+ 				KASAN_VMALLOC_PAGE_RANGE);
++
++		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
++			cond_resched();
++			batch_count = 0;
++		}
+ 	}
+ 
+ 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
 -- 
 2.51.0
 
