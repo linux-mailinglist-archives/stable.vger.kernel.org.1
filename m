@@ -1,181 +1,155 @@
-Return-Path: <stable+bounces-222201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKKiB3qto2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:07:38 +0100
+	id 2BdcMVaho2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:15:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BFE1CE3CA
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:07:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CFA1CD55C
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 764FB3063D5C
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:58:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B51A0300752E
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21AB2BD5BD;
-	Sun,  1 Mar 2026 01:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076C716132A;
+	Sun,  1 Mar 2026 02:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BrEMMNke"
+	dkim=pass (2048-bit key) header.d=mattwhitlock.name header.i=@mattwhitlock.name header.b="1BKgacgw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from siberian.tulip.relay.mailchannels.net (siberian.tulip.relay.mailchannels.net [23.83.218.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8597A1E4AF;
-	Sun,  1 Mar 2026 01:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330293; cv=none; b=jdZ2qTKr9MlVkSPLJBm4fPwIXY06LIBH1DUtuwwfbVK13TC2fbkMMyEdiL7QaHR6ASONA6C6ZlL1TC1wszEmr+3vlTWt54dhJcSdKXiQBlX8/spuo4ITOQKaXqrFsYQ0XzXx7vapw530LHzQge+XI+iPNl+XfhtfRfA28g60LBM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330293; c=relaxed/simple;
-	bh=FwMN8wkS7r66nHonUOtpzcdNeY1TZLlQ/khHZEWSn18=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sRJO0qq2xxq043k/udYzK9RvHdd0VUQ5Vv46Dlesl5eW5IDlwyqWWY+6sD40undiCigLZ8Hjh1bCB4eR276YMMyVIh+RjTbQs35ZgzfxAR3H1UfXR0VeDHA83SE80G3l/PkRRyLHnG21STEln1Dg6/RZVIk0T0dPLigq0KuS5rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BrEMMNke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC98C19421;
-	Sun,  1 Mar 2026 01:58:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330293;
-	bh=FwMN8wkS7r66nHonUOtpzcdNeY1TZLlQ/khHZEWSn18=;
-	h=From:To:Cc:Subject:Date:From;
-	b=BrEMMNkekFwS0OnT6BmKpfxjcah2va1qrS5vcM+hZErxuvdatiB1inFw3TCohXGnQ
-	 zsAuPUAkVa+ZBmcLAUnb2JGY3dSwqLQRjYn8nXFDJVfPIIzeFYYDmzzs3uKLlD3jqk
-	 up3hAv7pls9xnP3dWri74igINVsk9ZjYs/VTCwSJyKXavBfCV5o5j2RZhd4PV58GTn
-	 oLo6Z2ol7H7LDaUqNeBkAYRmu/fg6BY6OKNKtsbmVAruQhlwPqbNtzf5prLeTcurVw
-	 eYKgAKb7JC3ML9wV/lKFU4/lgX1Ru+aTW070yBQtf1pIf0DHKnOE35XxKWBdTO7Mqi
-	 bmsrdUD3NJrnQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	rene@exactco.de
-Cc: stable@kernel.org,
-	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "fbdev: ffb: fix corrupted video output on Sun FFB1" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:55:48 -0500
-Message-ID: <20260301015811.1723144-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075B673463
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.246
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772331346; cv=pass; b=r4HuYFIUtpzTi4tb/596tJ4R70hp9zOyfMooGfPm5jQaSGRYiS1BmAK29AmeITZJp0+AA0fu2vqNOBnfRJF4cxEdJQDMM3UDFQsrcwiJthgMgRNS7sXX466QVrC2hn89le0Qhm7teqEIGDDZU3aphSDntEEN7gaOUcElkcR9YMA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772331346; c=relaxed/simple;
+	bh=XslPH37Q/0YbH2/nGeyGdzH/vPrf3ZHqWM8VLVE1XXU=;
+	h=From:To:Cc:Subject:Date:MIME-Version:Message-ID:In-Reply-To:
+	 References:Content-Type; b=OBWb8WZjWk2d27OgTq4qdyE0RuMLuAs/E//h8FszyIOisl+yBFywlG6Iru4lAyPlqmNFDezeJQUSSe44FubkOA3MAMOSBTWE3SlLae+As6/WNQfgDGeI6EbmzFH6KbSb7PT3HvEmYeT3+ZNwH26/mPJHKnCi3L1ng2a+HmsboTY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mattwhitlock.name; spf=pass smtp.mailfrom=mattwhitlock.name; dkim=pass (2048-bit key) header.d=mattwhitlock.name header.i=@mattwhitlock.name header.b=1BKgacgw; arc=pass smtp.client-ip=23.83.218.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mattwhitlock.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mattwhitlock.name
+X-Sender-Id: dreamhost|x-authsender|matt@whitlock.name
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 2774D7E136B;
+	Sun, 01 Mar 2026 01:57:33 +0000 (UTC)
+Received: from pdx1-sub0-mail-a249.dreamhost.com (100-105-14-226.trex-nlb.outbound.svc.cluster.local [100.105.14.226])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id AC3B67E1539;
+	Sun, 01 Mar 2026 01:57:32 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1772330252;
+	b=MDkYninpMydDLG5jiu+erLGE+yj/ZyNRSsf+A7Rg6PPaLHE6uqR1r9PQ63laaFhoxakNbP
+	I5LG0rDO+qOIiaHCGrAQ/1Z8FQqBzZf6eHaZ02GuVoGxy+aK9XFRZG2zRRPfMDBSgm6qKB
+	8XXh+KAGas1L1D3bNeWaDaDyhPfl///omcbOuajn4itHScvn1N8v7l+jDLXUk+4T22wvUk
+	oCh+E9GewUC+obhunLZ7bHSlJ5uJ1hv7DhJDAv+vhWG7rHCSbefNZN0i9sl/MiVdbtRkOa
+	TgSAo22Qx2pZqACHK52qDBUh4tV4SSrZb1nTsIt7M5HJrtKcneYUhMnF91MqNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1772330252;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XslPH37Q/0YbH2/nGeyGdzH/vPrf3ZHqWM8VLVE1XXU=;
+	b=Sg0zjrzAjlN+Rf38Frt2UAE4y754F33lxWEeq0m9yJ3LOLq2jrpdiS7GbdzgX3MTEfNjl7
+	bpVINp+3REiLiXtBExBIJaKTJscTxaWwxzRJHb9PEJRe0/c2EZ5rjkbM3u9VjCuf3XF5V1
+	9/+r3LVv8eSirTXuFfpaKla8uSn+ZKxANLvlQG+8Ue38QszEYSPKm+A1ipyrzhCDuBpOvL
+	NsF92f3pCrZ7RYRAyV00OsGCOloVRg9cdMEYPDSMZUxWCxXSi8T5Y8gcVDJmbeKZCCLZC3
+	9FtPiGekDowdC5ByIQeB0AEdm0vHvoevo5QcoNv/v3SuKiHkYjd9bXvurzJ5uQ==
+ARC-Authentication-Results: i=1;
+	rspamd-7f65b64645-95599;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=kernel@mattwhitlock.name
+X-Sender-Id: dreamhost|x-authsender|matt@whitlock.name
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|matt@whitlock.name
+X-MailChannels-Auth-Id: dreamhost
+X-Inform-White: 1a102fc8411714e1_1772330253036_12967548
+X-MC-Loop-Signature: 1772330253035:3583424461
+X-MC-Ingress-Time: 1772330253035
+Received: from pdx1-sub0-mail-a249.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.105.14.226 (trex/7.1.3);
+	Sun, 01 Mar 2026 01:57:33 +0000
+Received: from localhost (unknown [70.8.171.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: matt@whitlock.name)
+	by pdx1-sub0-mail-a249.dreamhost.com (Postfix) with ESMTPSA id 4fNlZ40yvJz1054;
+	Sat, 28 Feb 2026 17:57:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mattwhitlock.name;
+	s=dreamhost; t=1772330252;
+	bh=XslPH37Q/0YbH2/nGeyGdzH/vPrf3ZHqWM8VLVE1XXU=;
+	h=From:To:Cc:Subject:Date:Content-Type:Content-Transfer-Encoding;
+	b=1BKgacgwm66T7lvpEZrZKmLDZxa3tGrsX0n6DE1Endn8dW9set9L9wqDib0koci+t
+	 MFzFPP8T485ehKtMTMoMVL2NZwbUuYN7JZ5XPdoFnH8o1n/pTd2DCyMH4xGCHaMiXB
+	 kGTyeTiobX+UaE1kI0pMrJq+KUBBUdc6mJZ8pgUf0fmIt0aQnhlR0Quly+nFPbIHLc
+	 0YbzZ3doAMRk29l43Xk86bSF+/BRzLDTtkiZoePpR9yWEDweVfhP8BC0tqM7QJxbkP
+	 6YQi9YCjF9gxM6qklbuJkDXZPt1MqNemXDwkJGlrgECEcWcAWWHIqE/zbu0+B+I6Dr
+	 805oNe86He2dw==
+From: Matt Whitlock <kernel@mattwhitlock.name>
+To: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>,
+ Mikulas Patocka <mpatocka@redhat.com>,
+ <dm-devel@lists.linux.dev>
+Subject: Re: FAILED: Patch "dm-unstripe: fix mapping bug when there are =?iso-8859-1?Q?multiple_targets_in_a_table"_failed_to_apply_to_6.12-stabl?=
+ =?iso-8859-1?Q?e_tree?=
+Date: Sat, 28 Feb 2026 20:57:28 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Patchwork-Hint: ignore
-X-stable: review
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <c6f5ccd7-84dd-4efe-8842-8d08693d1d5a@mattwhitlock.name>
+In-Reply-To: <20260301012206.1678262-1-sashal@kernel.org>
+References: <20260301012206.1678262-1-sashal@kernel.org>
+User-Agent: Trojita/v0.7-781-gfddd17b7; Qt/6.10.2; xcb; Linux; Gentoo Linux
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[mattwhitlock.name:s=dreamhost];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222391-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmx.de,vger.kernel.org,lists.freedesktop.org];
-	TAGGED_FROM(0.00)[bounces-222201-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mattwhitlock.name:mid,mattwhitlock.name:dkim];
+	DMARC_NA(0.00)[mattwhitlock.name];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[mattwhitlock.name:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[kernel@mattwhitlock.name,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[instagram.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1e:email,exactco.de:email]
-X-Rspamd-Queue-Id: 69BFE1CE3CA
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 58CFA1CD55C
 X-Rspamd-Action: no action
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-Thanks,
-Sasha
-
------------------- original commit in Linus's tree ------------------
-
-From b28da0d092461ac239ff034a8ac3129320177ba3 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>
-Date: Thu, 5 Feb 2026 16:49:58 +0100
-Subject: [PATCH] fbdev: ffb: fix corrupted video output on Sun FFB1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Fix Sun FFB1 corrupted video out ([1] and [2]) by disabling overlay and
-initializing window mode to a known state. The issue never appeared on
-my FFB2+/vertical nor Elite3D/M6. It could also depend on the PROM
-version.
-
-/SUNW,ffb@1e,0: FFB at 000001fc00000000, type 11, DAC pnum[236c] rev[10] manuf_rev[4]
-X (II) /dev/fb0: Detected FFB1, Z-buffer, Single-buffered.
-X (II) /dev/fb0: BT9068 (PAC1) ramdac detected (with normal cursor control)
-X (II) /dev/fb0: Detected Creator/Creator3D
-
-[1] https://www.instagram.com/p/DUTcSmSjSem/
-[2] https://chaos.social/@ReneRebe/116023241660154102
-
-Signed-off-by: René Rebe <rene@exactco.de>
-Cc: stable@kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- drivers/video/fbdev/ffb.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/video/fbdev/ffb.c b/drivers/video/fbdev/ffb.c
-index 34b6abff9493e..da531b4cb4513 100644
---- a/drivers/video/fbdev/ffb.c
-+++ b/drivers/video/fbdev/ffb.c
-@@ -335,6 +335,9 @@ struct ffb_dac {
- };
- 
- #define FFB_DAC_UCTRL		0x1001 /* User Control */
-+#define FFB_DAC_UCTRL_OVENAB	0x00000008 /* Overlay Enable */
-+#define FFB_DAC_UCTRL_WMODE	0x00000030 /* Window Mode */
-+#define FFB_DAC_UCTRL_WM_COMB	0x00000000 /* Window Mode = Combined */
- #define FFB_DAC_UCTRL_MANREV	0x00000f00 /* 4-bit Manufacturing Revision */
- #define FFB_DAC_UCTRL_MANREV_SHIFT 8
- #define FFB_DAC_TGEN		0x6000 /* Timing Generator */
-@@ -425,7 +428,7 @@ static void ffb_switch_from_graph(struct ffb_par *par)
- {
- 	struct ffb_fbc __iomem *fbc = par->fbc;
- 	struct ffb_dac __iomem *dac = par->dac;
--	unsigned long flags;
-+	unsigned long flags, uctrl;
- 
- 	spin_lock_irqsave(&par->lock, flags);
- 	FFBWait(par);
-@@ -450,6 +453,15 @@ static void ffb_switch_from_graph(struct ffb_par *par)
- 		upa_writel((FFB_DAC_CUR_CTRL_P0 |
- 			    FFB_DAC_CUR_CTRL_P1), &dac->value2);
- 
-+	/* Disable overlay and window modes. */
-+	upa_writel(FFB_DAC_UCTRL, &dac->type);
-+	uctrl = upa_readl(&dac->value);
-+	uctrl &= ~FFB_DAC_UCTRL_WMODE;
-+	uctrl |= FFB_DAC_UCTRL_WM_COMB;
-+	uctrl &= ~FFB_DAC_UCTRL_OVENAB;
-+	upa_writel(FFB_DAC_UCTRL, &dac->type);
-+	upa_writel(uctrl, &dac->value);
-+
- 	spin_unlock_irqrestore(&par->lock, flags);
- }
- 
--- 
-2.51.0
-
-
-
-
+On Saturday, 28 February 2026 20:22:06 EST, Sasha Levin wrote:=0A> The patch =
+below does not apply to the 6.12-stable tree.=0A=0AI believe this assertion i=
+s incorrect. The patch *does* apply cleanly to 6.12.74, 6.6.127, 6.1.164, and=
+ 5.15.201. In fact the dm-unstripe.c files in all of those branches are almos=
+t identical. Maybe something is broken in whatever system is managing the pat=
+ches?
 
