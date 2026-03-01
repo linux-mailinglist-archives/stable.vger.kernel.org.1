@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-221670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBUcAquno2mWJAUAu9opvQ
-	(envelope-from <stable+bounces-221670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:42:51 +0100
+	id oEOdFSSYo2lIHwUAu9opvQ
+	(envelope-from <stable+bounces-221671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F9311CDD5D
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:42:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312841CB1E3
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26DB9322B374
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A8F4630236A2
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5BC2D7DEF;
-	Sun,  1 Mar 2026 01:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41C429A9E9;
+	Sun,  1 Mar 2026 01:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pTUYtjP7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EXPHOSHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8112513B58A
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E462DCBFA;
+	Sun,  1 Mar 2026 01:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328848; cv=none; b=oSMTdUrHl9OwP7NTtZq2gR6bvLkOUlTRAmkU7XxvCaaSstsTB3mWns8XwG94K3OWCyuyC6V4Gk1v34h2U/aIc9QNk5+uzLMsT7lpuABgcdGFloODvyA4/LCDePm0l8CMrEaKNgEPdVCwMb5AUjjd0RlvtPPbNnP3hm14IrwVx5Y=
+	t=1772328850; cv=none; b=Zc4RxBLbDu9Yfg9l3d351paipxyjS52HmzJu6VQUt8/w/ox8dbbPHUj1YDqLcLu+qBCnPiAAuQHDB9EUeQWy1d1VU+LW8inEN98BJikOYAccyVNs/4kenSk0timMmOR81+kckaqVJpHMxDxdmv0bUiap+ZXf01nf0+jQuZvnj5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328848; c=relaxed/simple;
-	bh=M3PMPSPG0Bw7uWjv8jBev8cZ9ajjLVnHRfgSr/agZlo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I0NJTWD42sAUpcUifDSCMKzFIYSapp7MyTq14TOR+AnI4ams2YHUEewtxmvmlr8tPkSKlHrinxeBgXHUInQ8Be8Dk1LOpGPnNhFjFzc3xHtu84R2p5ls/DtReIv1GKaKwXmoExU/07Ib/AOzrURYXo1OSwLLQOURFBb2ZWacbBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pTUYtjP7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A239FC19424;
-	Sun,  1 Mar 2026 01:34:07 +0000 (UTC)
+	s=arc-20240116; t=1772328850; c=relaxed/simple;
+	bh=QFSBwemuK/Ezurn+3FTimlFFWA1Wz0vk+7K1iBB9Z0o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=elGPjAnHJvD25pwxRk4RXupECPB7gY9HC+UfU5YWyvRsa1WMAuTV5FpKrnof+EWloWHRRvQa0FtenlD5s8k+u5XyA3u8AjZMYFzJsOPuJ+AHpHxoIVyivuIem1ZnNfslYH+OAlTgr0/6E9jZPriOlqWeNpdW2NpzwLGCj6rtJsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EXPHOSHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C675BC19421;
+	Sun,  1 Mar 2026 01:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328848;
-	bh=M3PMPSPG0Bw7uWjv8jBev8cZ9ajjLVnHRfgSr/agZlo=;
+	s=k20201202; t=1772328850;
+	bh=QFSBwemuK/Ezurn+3FTimlFFWA1Wz0vk+7K1iBB9Z0o=;
 	h=From:To:Cc:Subject:Date:From;
-	b=pTUYtjP7ip5LpWTV4kifsZRsimZue5nXfBDNRnIuXZLkdr5PvG8hBlpWmQ/BdGzgM
-	 MxPS3GKZGQN5C88eZui9iHoOuj35Fq5/yvT5/2eDfdoMN7U9yBnGFL/psX+LoK3uNS
-	 H74F0t35lGM2MudGkPpwTNbmvgo33km/wpGNKiXnDHhjHABy/1puiQG/3SrJAAn4VK
-	 HOkbXo6NA+RsUmrWu9E+IGBuPNFozwFz7PyHNaop1a7Qy7G0zGqpT5y3/0haWb5wsZ
-	 EclNN5yyNEZUm/iZfolQHnz0FSUY5ksWlgTv9f6WjPHwJYZV64LhFYHe+CcX0gUF2I
-	 YT7LzdXV+6iNA==
+	b=EXPHOSHOW3tLo1kpv59PLterzenZXWjnxuhPO1j8SUk055gz6mTKxOkXFmx+I6U8G
+	 YeOcYAxlkxMqhL5/UJCcjItuKaGhVIzFFuCiPntb3C/S9ylOdGLnjESSYttcJbcGW4
+	 dYLTxhdgEknM9b7L+jSqroBKJqCYATCvY4Y5p5OyD5IOZ/5s2l3rOtYCCBLdLSsrIy
+	 xX2OiJb/3A6FJ06/s7klJ2r3tz+Xv7bGcvTU6jQ4eFklrvUStG8ZAhGDjBkFxNC86r
+	 UCwco/LIgiCFqwZZ33ojj4ORy6qQnaRnO5+qiI1pdI+sChOULSbEEBScbDR/zCUwPU
+	 eMJQIyeZH/A9g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	luca.ceresoli@bootlin.com
-Cc: Maxime Ripard <mripard@kernel.org>,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm: of: drm_of_panel_bridge_remove(): fix device_node leak" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:34:06 -0500
-Message-ID: <20260301013406.1693491-1-sashal@kernel.org>
+	ii4gsp@gmail.com
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org
+Subject: FAILED: Patch "Input: synaptics_i2c - guard polling restart in resume" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:34:08 -0500
+Message-ID: <20260301013408.1693540-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,28 +68,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221671-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221670-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5F9311CDD5D
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 312841CB1E3
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -102,44 +103,48 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a4b4385d0523e39a7c058cb5a6c8269e513126ca Mon Sep 17 00:00:00 2001
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Fri, 9 Jan 2026 08:31:32 +0100
-Subject: [PATCH] drm: of: drm_of_panel_bridge_remove(): fix device_node leak
+From 870c2e7cd881d7a10abb91f2b38135622d9f9f65 Mon Sep 17 00:00:00 2001
+From: Minseong Kim <ii4gsp@gmail.com>
+Date: Wed, 21 Jan 2026 10:02:02 -0800
+Subject: [PATCH] Input: synaptics_i2c - guard polling restart in resume
 
-drm_of_panel_bridge_remove() uses of_graph_get_remote_node() to get a
-device_node but does not put the node reference.
+synaptics_i2c_resume() restarts delayed work unconditionally, even when
+the input device is not opened. Guard the polling restart by taking the
+input device mutex and checking input_device_enabled() before re-queuing
+the delayed work.
 
-Fixes: c70087e8f16f ("drm/drm_of: add drm_of_panel_bridge_remove function")
-Cc: stable@vger.kernel.org # v4.15
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patch.msgid.link/20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-1-8bad3ef90b9f@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Fixes: eef3e4cab72ea ("Input: add driver for Synaptics I2C touchpad")
+Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260121063738.799967-1-ii4gsp@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- include/drm/drm_of.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/input/mouse/synaptics_i2c.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/drm/drm_of.h b/include/drm/drm_of.h
-index 7f0256dae3f13..f3e55ea2174c0 100644
---- a/include/drm/drm_of.h
-+++ b/include/drm/drm_of.h
-@@ -5,6 +5,7 @@
- #include <linux/err.h>
- #include <linux/of_graph.h>
- #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
-+#include <linux/of.h>
- #include <drm/drm_bridge.h>
- #endif
+diff --git a/drivers/input/mouse/synaptics_i2c.c b/drivers/input/mouse/synaptics_i2c.c
+index c8ddfff2605ff..29da66af36d74 100644
+--- a/drivers/input/mouse/synaptics_i2c.c
++++ b/drivers/input/mouse/synaptics_i2c.c
+@@ -615,13 +615,16 @@ static int synaptics_i2c_resume(struct device *dev)
+ 	int ret;
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	struct synaptics_i2c *touch = i2c_get_clientdata(client);
++	struct input_dev *input = touch->input;
  
-@@ -173,6 +174,8 @@ static inline int drm_of_panel_bridge_remove(const struct device_node *np,
- 	bridge = of_drm_find_bridge(remote);
- 	drm_panel_bridge_remove(bridge);
+ 	ret = synaptics_i2c_reset_config(client);
+ 	if (ret)
+ 		return ret;
  
-+	of_node_put(remote);
-+
+-	mod_delayed_work(system_dfl_wq, &touch->dwork,
+-				msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
++	guard(mutex)(&input->mutex);
++	if (input_device_enabled(input))
++		mod_delayed_work(system_dfl_wq, &touch->dwork,
++				 msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
+ 
  	return 0;
- #else
- 	return -EINVAL;
+ }
 -- 
 2.51.0
 
