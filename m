@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-221396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOUKM0yXo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:33:00 +0100
+	id EFU4Jk6Vo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F021CAEF3
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:33:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47DAB1CA71B
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40E13311F46C
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:22:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 220963028EAC
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0EF2727EB;
-	Sun,  1 Mar 2026 01:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334C5274B4A;
+	Sun,  1 Mar 2026 01:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vKdDX9sK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PrgY9zbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F31430BA3;
-	Sun,  1 Mar 2026 01:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA301EF091;
+	Sun,  1 Mar 2026 01:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328156; cv=none; b=Ys+QJMIlp/MqjuZvRG3DADveGgqLtcr5ZktdMoR/ByISQZ8B1K4+O2WI1b0yHHsHwuORCCKQvJxXKLrAhNXw3atfPwkTfQbWlT1wNikUYIkko5uLOpV83V81qaBY2tX6kql1aHozf0RrTpbo1FxMKDyjYy43ZF0kVRD9lv1SR1U=
+	t=1772328159; cv=none; b=kr20VJ7xcv5zStDr+ElKQhBKN7EmqlsiFl9aaAwoelMKnoF+xSYK2PmI6QeF0c33ndOOKYA2M3bBkDHD8KNr/yMb+yt6Vw5NNHYeDuFvVM5zKpf0oyNJANhTLG9znuE0OKa0FK4U64jEw0MTh5zmeTbHFojnuiUL/ppRE1IRfeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328156; c=relaxed/simple;
-	bh=65C2mrNhGiy3QC7+aT8erXPJ9ILvDaYmZDnE5lePJ4E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QQykvMD8Un5PZz3vlPYNdMg8KmebeyOknObUGaz8iPP49I0RRJYV8IY00R1yHvRyUGWzosrVPZqcJipuiQLtgvTzQXRbUKaFtb0IxBIs6JFBWQ9sRYR/rWtEb03XYe9ojpWd9VLRwZSwG4b0LqSNkbjDpA25fFcEYqiHMvBVZII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vKdDX9sK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E4DC19421;
-	Sun,  1 Mar 2026 01:22:35 +0000 (UTC)
+	s=arc-20240116; t=1772328159; c=relaxed/simple;
+	bh=kLWXaNgVZ2kxxuEVRjfTLq1xSWeKJAWj9SQubazwqSk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f6JyUFoZbOw+8XYJv+iGXAjtDsx9jnJE+RJsd9gTnbXa9Mkr0VUYyp/u/Q17ehLHl40ZT0K/PHyxFanzx/jzmdMT19nE4+T6cbciopisiyAqzbMXJbTJchwKmXqUTgI9Gm6VczQjzIOvCNdUBFsypfEbCP0JZfWY0pTfpmCbIOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PrgY9zbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC3CC2BC86;
+	Sun,  1 Mar 2026 01:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328156;
-	bh=65C2mrNhGiy3QC7+aT8erXPJ9ILvDaYmZDnE5lePJ4E=;
+	s=k20201202; t=1772328158;
+	bh=kLWXaNgVZ2kxxuEVRjfTLq1xSWeKJAWj9SQubazwqSk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=vKdDX9sK2PZQ0FgAq2cnmB5C+4XId7Ry/TzuANoJiGhGk4ZYNHAQSk1MInx8/kCO7
-	 3vFnHzWaKWQZDC2TaW3ThbdIrTYvidqqkSi3lln+1ewWLC3PT0VkcYKu/AYCvfbHPO
-	 5YTvtwZ9HeBA8oGgi9QtOVBL4yBaRD027glwLCJjg+l7ClZyFpu5aKONz4er+4yydf
-	 McoPNPUVcrf+y+8s3Jtnu9+nynZP1SNd0TJeaQk1nbTVYxZVp5tZ5WdoP7xnf09d4O
-	 C6GI9R/id5a8avDog6QDhrsfnljQAUhboQYgnm+/uO9P9fVSeK8a/kFyWTv6sXcdzw
-	 p/dAnfcYpuavQ==
+	b=PrgY9zbexjlkgc6Q7ik/43Qr5B38km8/ZQNXfhEu8EsuYkVAY4NjJRz2P72zGE6zN
+	 O8RsEu1yT8GmcXvNbYpYl3/SvGCUd87hWknzqmzkdhr7U4XBffY5iYbYQuICnJ/d5V
+	 IZE319eVoiVPgNj3MrMPFwwYk3B/ibMi9h9Nbqobx66QwvjIRj59JhNUei6Q3wrpyc
+	 pglDwhvXOfHgtPTmwX8bxh7/49LliCBkPhLfRWkXZRE/vya/R9ZWwmrY6NfiOogtI7
+	 zb05uxgfQLnz1rlgM7uc70tWYMsCgJ+fQTGkUCz/IEvjxhoSPeDuyCZRy4jH4uyTKL
+	 Gg8HOLlhoCDCA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	hch@lst.de
-Cc: Mark Tinguely <mark.tinguely@oracle.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	linux-xfs@vger.kernel.org
-Subject: FAILED: Patch "xfs: remove xfs_attr_leaf_hasname" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:22:34 -0500
-Message-ID: <20260301012234.1679000-1-sashal@kernel.org>
+	benjamin.gaignard@collabora.com
+Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: FAILED: Patch "media: verisilicon: AV1: Fix tile info buffer size" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:22:36 -0500
+Message-ID: <20260301012237.1679051-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,32 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221396-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221397-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 72F021CAEF3
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,collabora.com:email]
+X-Rspamd-Queue-Id: 47DAB1CA71B
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -103,157 +105,46 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3a65ea768b8094e4699e72f9ab420eb9e0f3f568 Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Fri, 9 Jan 2026 16:17:40 +0100
-Subject: [PATCH] xfs: remove xfs_attr_leaf_hasname
+From a505ca2db89ad92a8d8d27fa68ebafb12e04a679 Mon Sep 17 00:00:00 2001
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Date: Wed, 14 Jan 2026 10:07:10 +0100
+Subject: [PATCH] media: verisilicon: AV1: Fix tile info buffer size
 
-The calling convention of xfs_attr_leaf_hasname() is problematic, because
-it returns a NULL buffer when xfs_attr3_leaf_read fails, a valid buffer
-when xfs_attr3_leaf_lookup_int returns -ENOATTR or -EEXIST, and a
-non-NULL buffer pointer for an already released buffer when
-xfs_attr3_leaf_lookup_int fails with other error values.
+Each tile info is composed of: row_sb, col_sb, start_pos
+and end_pos (4 bytes each). So the total required memory
+is AV1_MAX_TILES * 16 bytes.
+Use the correct #define to allocate the buffer and avoid
+writing tile info in non-allocated memory.
 
-Fix this by simply open coding xfs_attr_leaf_hasname in the callers, so
-that the buffer release code is done by each caller of
-xfs_attr3_leaf_read.
-
-Cc: stable@vger.kernel.org # v5.19+
-Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
-Reported-by: Mark Tinguely <mark.tinguely@oracle.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Fixes: 727a400686a2c ("media: verisilicon: Add Rockchip AV1 decoder")
+Cc: stable@vger.kernel.org
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- fs/xfs/libxfs/xfs_attr.c | 75 +++++++++++++---------------------------
- 1 file changed, 24 insertions(+), 51 deletions(-)
+ .../media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c   | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/xfs/libxfs/xfs_attr.c b/fs/xfs/libxfs/xfs_attr.c
-index 866abae58fe1e..9e6b18d6ae003 100644
---- a/fs/xfs/libxfs/xfs_attr.c
-+++ b/fs/xfs/libxfs/xfs_attr.c
-@@ -50,7 +50,6 @@ STATIC int xfs_attr_shortform_addname(xfs_da_args_t *args);
-  */
- STATIC int xfs_attr_leaf_get(xfs_da_args_t *args);
- STATIC int xfs_attr_leaf_removename(xfs_da_args_t *args);
--STATIC int xfs_attr_leaf_hasname(struct xfs_da_args *args, struct xfs_buf **bp);
+diff --git a/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c b/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c
+index 500e94bcb0293..e4e21ad373233 100644
+--- a/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c
++++ b/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c
+@@ -381,12 +381,12 @@ int rockchip_vpu981_av1_dec_init(struct hantro_ctx *ctx)
+ 		return -ENOMEM;
+ 	av1_dec->global_model.size = GLOBAL_MODEL_SIZE;
  
- /*
-  * Internal routines when attribute list is more than one block.
-@@ -979,11 +978,12 @@ xfs_attr_lookup(
- 		return error;
+-	av1_dec->tile_info.cpu = dma_alloc_coherent(vpu->dev, AV1_MAX_TILES,
++	av1_dec->tile_info.cpu = dma_alloc_coherent(vpu->dev, AV1_TILE_INFO_SIZE,
+ 						    &av1_dec->tile_info.dma,
+ 						    GFP_KERNEL);
+ 	if (!av1_dec->tile_info.cpu)
+ 		return -ENOMEM;
+-	av1_dec->tile_info.size = AV1_MAX_TILES;
++	av1_dec->tile_info.size = AV1_TILE_INFO_SIZE;
  
- 	if (xfs_attr_is_leaf(dp)) {
--		error = xfs_attr_leaf_hasname(args, &bp);
--
--		if (bp)
--			xfs_trans_brelse(args->trans, bp);
--
-+		error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner,
-+				0, &bp);
-+		if (error)
-+			return error;
-+		error = xfs_attr3_leaf_lookup_int(bp, args);
-+		xfs_trans_brelse(args->trans, bp);
- 		return error;
- 	}
- 
-@@ -1222,27 +1222,6 @@ xfs_attr_shortform_addname(
-  * External routines when attribute list is one block
-  *========================================================================*/
- 
--/*
-- * Return EEXIST if attr is found, or ENOATTR if not
-- */
--STATIC int
--xfs_attr_leaf_hasname(
--	struct xfs_da_args	*args,
--	struct xfs_buf		**bp)
--{
--	int                     error = 0;
--
--	error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner, 0, bp);
--	if (error)
--		return error;
--
--	error = xfs_attr3_leaf_lookup_int(*bp, args);
--	if (error != -ENOATTR && error != -EEXIST)
--		xfs_trans_brelse(args->trans, *bp);
--
--	return error;
--}
--
- /*
-  * Remove a name from the leaf attribute list structure
-  *
-@@ -1253,25 +1232,22 @@ STATIC int
- xfs_attr_leaf_removename(
- 	struct xfs_da_args	*args)
- {
--	struct xfs_inode	*dp;
--	struct xfs_buf		*bp;
-+	struct xfs_inode	*dp = args->dp;
- 	int			error, forkoff;
-+	struct xfs_buf		*bp;
- 
- 	trace_xfs_attr_leaf_removename(args);
- 
--	/*
--	 * Remove the attribute.
--	 */
--	dp = args->dp;
--
--	error = xfs_attr_leaf_hasname(args, &bp);
--	if (error == -ENOATTR) {
-+	error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner, 0, &bp);
-+	if (error)
-+		return error;
-+	error = xfs_attr3_leaf_lookup_int(bp, args);
-+	if (error != -EEXIST) {
- 		xfs_trans_brelse(args->trans, bp);
--		if (args->op_flags & XFS_DA_OP_RECOVERY)
-+		if (error == -ENOATTR && (args->op_flags & XFS_DA_OP_RECOVERY))
- 			return 0;
- 		return error;
--	} else if (error != -EEXIST)
--		return error;
-+	}
- 
- 	xfs_attr3_leaf_remove(bp, args);
- 
-@@ -1295,23 +1271,20 @@ xfs_attr_leaf_removename(
-  * Returns 0 on successful retrieval, otherwise an error.
-  */
- STATIC int
--xfs_attr_leaf_get(xfs_da_args_t *args)
-+xfs_attr_leaf_get(
-+	struct xfs_da_args	*args)
- {
--	struct xfs_buf *bp;
--	int error;
-+	struct xfs_buf		*bp;
-+	int			error;
- 
- 	trace_xfs_attr_leaf_get(args);
- 
--	error = xfs_attr_leaf_hasname(args, &bp);
--
--	if (error == -ENOATTR)  {
--		xfs_trans_brelse(args->trans, bp);
--		return error;
--	} else if (error != -EEXIST)
-+	error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner, 0, &bp);
-+	if (error)
- 		return error;
--
--
--	error = xfs_attr3_leaf_getvalue(bp, args);
-+	error = xfs_attr3_leaf_lookup_int(bp, args);
-+	if (error == -EEXIST)
-+		error = xfs_attr3_leaf_getvalue(bp, args);
- 	xfs_trans_brelse(args->trans, bp);
- 	return error;
- }
+ 	av1_dec->film_grain.cpu = dma_alloc_coherent(vpu->dev,
+ 						     ALIGN(sizeof(struct rockchip_av1_film_grain), 2048),
 -- 
 2.51.0
 
