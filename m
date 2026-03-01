@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-221637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2F9KMlmno2mWJAUAu9opvQ
-	(envelope-from <stable+bounces-221637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:41:29 +0100
+	id aAZEIF2no2mWJAUAu9opvQ
+	(envelope-from <stable+bounces-221638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:41:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358061CDCE9
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:41:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28231CDCF8
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:41:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59198312D42F
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:33:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37ADB32076B6
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A490277C9D;
-	Sun,  1 Mar 2026 01:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27AF2DD60E;
+	Sun,  1 Mar 2026 01:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSFmv45m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JhGkm+A3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D90C1EDA0F;
-	Sun,  1 Mar 2026 01:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CA42C033C;
+	Sun,  1 Mar 2026 01:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328768; cv=none; b=iU6Ra0H3a/8qh5sUmlak7epyStX2riGAo0J4YSjd1v+9CcrQC14tZlDp+R0wiCAKy3NX+GsKmT3sRBwpqBZkVM8wwOWcblnPZMLzT5+37SUa0v+JPXA91J7MWSLn226WuOT+XmPiycWy9aAqOe+9ceBWCvQgcc/2/XUe34xLr90=
+	t=1772328770; cv=none; b=eBGpXKdDQXRfqDWCXDWIHz+io4qGHSsCrNn9uB3T+SISeGkjouTGVmBI1MpszZvT6cezIdb9jxWwxm98bwUJsI+Xx3SEhOmFk2Pt453xPhRyi9B4wHBZbx9LRYfxwpVEBCBvbXUskunxbXoT6UQDt52yKnv50dTBjXw6+MLiToI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328768; c=relaxed/simple;
-	bh=pQ42qVVfpEdDx78lBiJv4+SbIBADwbKS7t2sX1XubYQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V78iB8YusRJUVUKqzcGUibP8f5860zSwYaN5ISKksn5XwmbWB91mF4Fc5AlUaNo/L3oPbgZqeIAIQTFzdjPzXSaGdq4HAJrnV5PTkdNHzgRt0OwF1yoo/TPKpEIRKgvDUxoYDFio8Si0Fm8Sde+JKC0bJuajb7zFhCkRsYU4PU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSFmv45m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682CBC19424;
-	Sun,  1 Mar 2026 01:32:47 +0000 (UTC)
+	s=arc-20240116; t=1772328770; c=relaxed/simple;
+	bh=5nLNgNVtMzks8jb7vnpIYtG8JI1sZKNiG/e8cI5yKt8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KnC5PpfvE5g/YORB9AAW5vaI4nSIndE/w+7WWJv5ViHoOLHjZ6iEUn5HY+X2GD6UiWccGtIBQM7G1+M4fx13y3+osnZcYp+/bKfSfhDz1PkWDx7Xoo8VgyEOYh2xjagHLtajnuvxl6zKHkyi+raPnmVGeJm5hE0Ofs2+LEKIEH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JhGkm+A3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43C0C19424;
+	Sun,  1 Mar 2026 01:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328767;
-	bh=pQ42qVVfpEdDx78lBiJv4+SbIBADwbKS7t2sX1XubYQ=;
+	s=k20201202; t=1772328770;
+	bh=5nLNgNVtMzks8jb7vnpIYtG8JI1sZKNiG/e8cI5yKt8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=YSFmv45mNq6/wCVe2ELP9WjmogJpefq5DEnCkC2w1Gv7Xv/qg9aoioSfGXu48XVZ4
-	 m/TVwCCUBB73/D5xAkh7iifF3naVj3WYDFvXHzfd2fC268u5jScp8KRJ8hwUyWHYDe
-	 jhEiEtrpB9M4QuNnOBUZOBTAbkLXxPKSb3zGW/LNVK0DLiNknnrEwJfjgzw3GDi1gu
-	 gfWOxtzuy9u7BBF6UJd8X1kZ9TEFS3pOcHgRglMi0u8wOXU6RB5IbLRKIXO4VGJw+R
-	 N217Uj4J8ObqFnKwiT0DVxfsQTsLHNMFa7GmXu0tDM84JMQ4cjv6GunzZGyFHn7MG3
-	 9khhYdpwGKSSA==
+	b=JhGkm+A3XE0MCLNNAb4El2ye912rApEIk44ei0iKMlPkvWNlWmFcb8LMdrlRRctYF
+	 fX5mWa2KSI4PBHRrrh8KWYj7JJwE8rGw1PFWxQg9bBfcljMFmiEndAxL6ArbWe0IWV
+	 yYNF8GEFjOQE6uhtAMJDnwQldcTh3ejMesAzjRLbhHSBgZZSU9AlRI39xih+IWmj7W
+	 IkF8f3FsynB494SgrPV6RrvP+PqpHCERovrsK62mYXfE/3jrDRs1zTuumwBFBVKWr5
+	 8wV7iRAFyIriPHlsXf7g7m9L0gh69uHTiNBwORl8La7KOllfx66Bg6J3wtVyX0FyeH
+	 TLSO1GAGSo6eA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johan@kernel.org
-Cc: Kevin Hilman <khilman@baylibre.com>,
-	linux-omap@vger.kernel.org
-Subject: FAILED: Patch "bus: omap-ocp2scp: fix OF populate on driver rebind" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:32:45 -0500
-Message-ID: <20260301013246.1691844-1-sashal@kernel.org>
+	mehdi.djait@linux.intel.com
+Cc: Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	linux-media@vger.kernel.org
+Subject: FAILED: Patch "media: i2c: ov01a10: Fix digital gain range" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:32:48 -0500
+Message-ID: <20260301013248.1691913-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,29 +69,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221637-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-221638-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 358061CDCE9
+	TAGGED_RCPT(0.00)[stable,cisco];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: F28231CDCF8
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -102,66 +104,37 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5eb63e9bb65d88abde647ced50fe6ad40c11de1a Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Fri, 19 Dec 2025 12:01:19 +0100
-Subject: [PATCH] bus: omap-ocp2scp: fix OF populate on driver rebind
+From 91848c99ed6a98daf77f4cb7d44cf3f13bc6998f Mon Sep 17 00:00:00 2001
+From: Mehdi Djait <mehdi.djait@linux.intel.com>
+Date: Thu, 8 Jan 2026 14:57:38 +0100
+Subject: [PATCH] media: i2c: ov01a10: Fix digital gain range
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+Digital gain wraps-around at the maximum of 16838 / 0x3fff.
+Fix the maximum digital gain by setting it to 0x3fff.
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
-
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org      # 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251219110119.23507-1-johan@kernel.org
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Fixes: 0827b58dabff ("media: i2c: add ov01a10 image sensor driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- drivers/bus/omap-ocp2scp.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/media/i2c/ov01a10.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bus/omap-ocp2scp.c b/drivers/bus/omap-ocp2scp.c
-index e4dfda7b3b102..eee5ad191ea9c 100644
---- a/drivers/bus/omap-ocp2scp.c
-+++ b/drivers/bus/omap-ocp2scp.c
-@@ -17,15 +17,6 @@
- #define OCP2SCP_TIMING 0x18
- #define SYNC2_MASK 0xf
+diff --git a/drivers/media/i2c/ov01a10.c b/drivers/media/i2c/ov01a10.c
+index 1aeba3df4cbfc..8a29e5b4b6ba0 100644
+--- a/drivers/media/i2c/ov01a10.c
++++ b/drivers/media/i2c/ov01a10.c
+@@ -63,7 +63,7 @@
+ #define OV01A10_REG_DIGITAL_GAIN_GR	CCI_REG24(0x3513)
+ #define OV01A10_REG_DIGITAL_GAIN_R	CCI_REG24(0x3516)
+ #define OV01A10_DGTL_GAIN_MIN		0
+-#define OV01A10_DGTL_GAIN_MAX		0x3ffff
++#define OV01A10_DGTL_GAIN_MAX		0x3fff
+ #define OV01A10_DGTL_GAIN_STEP		1
+ #define OV01A10_DGTL_GAIN_DEFAULT	1024
  
--static int ocp2scp_remove_devices(struct device *dev, void *c)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--
--	platform_device_unregister(pdev);
--
--	return 0;
--}
--
- static int omap_ocp2scp_probe(struct platform_device *pdev)
- {
- 	int ret;
-@@ -79,7 +70,7 @@ static int omap_ocp2scp_probe(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- 
- err0:
--	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
-+	of_platform_depopulate(&pdev->dev);
- 
- 	return ret;
- }
-@@ -87,7 +78,7 @@ static int omap_ocp2scp_probe(struct platform_device *pdev)
- static void omap_ocp2scp_remove(struct platform_device *pdev)
- {
- 	pm_runtime_disable(&pdev->dev);
--	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
-+	of_platform_depopulate(&pdev->dev);
- }
- 
- #ifdef CONFIG_OF
 -- 
 2.51.0
 
