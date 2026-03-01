@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221856-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMRuCLaao2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221855-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:34 +0100
+	id kBSfB1Oao2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221856-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70BF1CBBE5
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3321CB9AF
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B0837309951C
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 47243307AFC5
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55062E36F8;
-	Sun,  1 Mar 2026 01:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDB02E7637;
+	Sun,  1 Mar 2026 01:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MEckp6yd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IVp5OLPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976D42D9484;
-	Sun,  1 Mar 2026 01:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17EB2E62A2;
+	Sun,  1 Mar 2026 01:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329299; cv=none; b=HBQvfZZHoa0m76guEDUkaHDqR8Fl97EZAygrWbx9Lcgv8dhd5Oz0wcl+zr3L2g2y7PA7/1tmOEgfd5lvUACcOm9kTQvijGvKi8SkOPRs6rsnm+OdZDKEBoX2DmxfPISP1eJZbPYR3Emr7x6MtGmfDAY6RYsuPAjnNVXxW2lym9M=
+	t=1772329302; cv=none; b=WnMALMBtTJNxp0GF9uh3eLsa7y5QrklkKLhqcY0nGQp7iOJ3VyviA/ACwlU5ZDlpsTgltx+4y6VqzskUYUhneBeH7hJvN3Jc7hBJ1MbPKyJEvjo8Q8E204yrXKErTSxMq0B11vJFwS6lvHeQ0UASMLj2IFfYZuMkmWmiF4BtI+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329299; c=relaxed/simple;
-	bh=TjK96KVMnWT4QXd4EnwpEaJFRh0NLRfbkfOtGhlGLRQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HVQ/dq4wredWfuw6Mehwhri9VRZmgKeJ4WSGMOKe2i8MO6SQ0jR1ait0ciMIKQT9nSEkMwkMGPWrAnROGBRs0BFWNRqXnsC9EZRdmC0/rp71o/6zK8dfAr84bCYHD3cxL4/bWKus2az0ouhLkgZRlT6WPMhDWVIlHj549oMzoDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MEckp6yd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BEFC19421;
-	Sun,  1 Mar 2026 01:41:38 +0000 (UTC)
+	s=arc-20240116; t=1772329302; c=relaxed/simple;
+	bh=7aS7uWLJzc/CmUIYAyQYWenvsPeWzBwoFZ0cqdjS8xg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YotIZ+85nVnhYtgaVZXMbQdCn/ElyNVuminW6dCpx5Cy9wZ9meQSI1PGiedBg56vEUAEF0Ppo2/+nBu5lWr/PebM75/EfDD8POSRkl3vEI584pAXXSSlLoppeR83Sqt6qTao0A6ShDmYgk28ACQSmVO9xMhA3Y23NLoSbrzDZZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IVp5OLPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383EBC19421;
+	Sun,  1 Mar 2026 01:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329299;
-	bh=TjK96KVMnWT4QXd4EnwpEaJFRh0NLRfbkfOtGhlGLRQ=;
+	s=k20201202; t=1772329301;
+	bh=7aS7uWLJzc/CmUIYAyQYWenvsPeWzBwoFZ0cqdjS8xg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=MEckp6ydKJwd1p8tbjogP81ylEOqpLCj56UNmcruv0o++LyP+tlmrYuTQyTJKMX7u
-	 BAaY+fnRSmOiUN5Q+1D+flWOuhTy8Pt9fBKKkFPj/6OINbBw3Ic2eKNW0RqRouamqL
-	 3kvrYlqrvicpwYPlqCsie7XKtg+I3oQJZUkDvsPmfzpGF0/EBPUEIZ2J/U0M/qkQLV
-	 gmMfMG44GlgGo538A3h8Q896TbOSeqtNj3nnoyzlmtgl8zWVUVj+KusIBdESoIp0Ct
-	 SQ9dzlv1etNXJ8YmZz+BRcjWTHpj6qj7XTjAQbnELM+Cb/vjPntfg0pqbuEeNztN0o
-	 kAINYP/CJ7yBw==
+	b=IVp5OLPs6Jx3LXp3tELYfVx1OJXdkYpX5hM1RLNwWtuJpXE/Lu51WkaZbyAgi8QRW
+	 28QqZIh4OPV92v4lV6Q8ILMmz7VfI9VIXiZJE51dTKqF0BQ4rQHGbUuX3sCHDnD4jq
+	 I+ccOhw4ka2bPrqArOzfTut9eTh1PB84oQp9Q/buDhJR3pCbvgQrgczzJB/6TWTl09
+	 te4FPgSqNkINDp8Jnkdg9w2WSYST6tsF/Kqrxc7MRm/ZyqEu20eetBPUSWYTTXZCbM
+	 SCZN6nyZYRAom3VHc84Il5ymj9d8r2a/wV8EUlczKcqzq28ZCzPavZtoQ9V+PQ/jhn
+	 nFEuy8iaPcWcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	xiaolei.wang@windriver.com
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	linux-media@vger.kernel.org
-Subject: FAILED: Patch "media: i2c: ov5647: use our own mutex for the ctrl lock" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:41:37 -0500
-Message-ID: <20260301014137.1703297-1-sashal@kernel.org>
+	mliang@purestorage.com
+Cc: Mohamed Khalfella <mkhalfella@purestorage.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	dm-devel@lists.linux.dev
+Subject: FAILED: Patch "dm: clear cloned request bio pointer when last clone bio completes" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:41:39 -0500
+Message-ID: <20260301014140.1703346-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,35 +63,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221855-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221856-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,windriver.com:email]
-X-Rspamd-Queue-Id: B70BF1CBBE5
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[purestorage.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AF3321CB9AF
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -104,39 +103,78 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 973e42fd5d2b397bff34f0c249014902dbf65912 Mon Sep 17 00:00:00 2001
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
-Date: Fri, 5 Dec 2025 15:19:18 +0800
-Subject: [PATCH] media: i2c: ov5647: use our own mutex for the ctrl lock
+From fb8a6c18fb9a6561f7a15b58b272442b77a242dd Mon Sep 17 00:00:00 2001
+From: Michael Liang <mliang@purestorage.com>
+Date: Fri, 9 Jan 2026 15:52:54 -0700
+Subject: [PATCH] dm: clear cloned request bio pointer when last clone bio
+ completes
 
-__v4l2_ctrl_handler_setup() and __v4l2_ctrl_modify_range() contains an
-assertion to verify that the v4l2_ctrl_handler::lock is held, as it should
-only be called when the lock has already been acquired. Therefore use our
-own mutex for the ctrl lock, otherwise a warning will be reported.
+Stale rq->bio values have been observed to cause double-initialization of
+cloned bios in request-based device-mapper targets, leading to
+use-after-free and double-free scenarios.
 
-Fixes: 4974c2f19fd8 ("media: ov5647: Support gain, exposure and AWB controls")
+One such case occurs when using dm-multipath on top of a PCIe NVMe
+namespace, where cloned request bios are freed during
+blk_complete_request(), but rq->bio is left intact. Subsequent clone
+teardown then attempts to free the same bios again via
+blk_rq_unprep_clone().
+
+The resulting double-free path looks like:
+
+  nvme_pci_complete_batch()
+    nvme_complete_batch()
+      blk_mq_end_request_batch()
+        blk_complete_request()        // called on a DM clone request
+          bio_endio()                 // first free of all clone bios
+          ...
+        rq->end_io()                  // end_clone_request()
+          dm_complete_request(tio->orig)
+            dm_softirq_done()
+              dm_done()
+                dm_end_request()
+                  blk_rq_unprep_clone()  // second free of clone bios
+
+Fix this by clearing the clone request's bio pointer when the last cloned
+bio completes, ensuring that later teardown paths do not attempt to free
+already-released bios.
+
+Signed-off-by: Michael Liang <mliang@purestorage.com>
+Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-[Sakari Ailus: Fix a minor conflict.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- drivers/media/i2c/ov5647.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/dm-rq.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
-index 1041732104fa7..6285e234962e0 100644
---- a/drivers/media/i2c/ov5647.c
-+++ b/drivers/media/i2c/ov5647.c
-@@ -1248,6 +1248,8 @@ static int ov5647_init_controls(struct ov5647 *sensor)
+diff --git a/drivers/md/dm-rq.c b/drivers/md/dm-rq.c
+index 5e08546696145..923252fb57aec 100644
+--- a/drivers/md/dm-rq.c
++++ b/drivers/md/dm-rq.c
+@@ -109,14 +109,21 @@ static void end_clone_bio(struct bio *clone)
+ 	 */
+ 	tio->completed += nr_bytes;
  
- 	v4l2_ctrl_handler_init(&sensor->ctrls, 14);
++	if (!is_last)
++		return;
++	/*
++	 * At this moment we know this is the last bio of the cloned request,
++	 * and all cloned bios have been released, so reset the clone request's
++	 * bio pointer to avoid double free.
++	 */
++	tio->clone->bio = NULL;
++ exit:
+ 	/*
+ 	 * Update the original request.
+ 	 * Do not use blk_mq_end_request() here, because it may complete
+ 	 * the original request before the clone, and break the ordering.
+ 	 */
+-	if (is_last)
+- exit:
+-		blk_update_request(tio->orig, BLK_STS_OK, tio->completed);
++	blk_update_request(tio->orig, BLK_STS_OK, tio->completed);
+ }
  
-+	sensor->ctrls.lock = &sensor->lock;
-+
- 	v4l2_ctrl_new_std(&sensor->ctrls, &ov5647_ctrl_ops,
- 			  V4L2_CID_AUTOGAIN, 0, 1, 1, 0);
- 
+ static struct dm_rq_target_io *tio_from_request(struct request *rq)
 -- 
 2.51.0
 
