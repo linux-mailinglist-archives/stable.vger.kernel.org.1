@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-221905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YIq0OCObo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:23 +0100
+	id +J8jK8+po2nfJQUAu9opvQ
+	(envelope-from <stable+bounces-221906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:51:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8101A1CBE39
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 316781CDFDC
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF2FA305040E
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0623031E46D5
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06752D3EEA;
-	Sun,  1 Mar 2026 01:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D407C2D3EEA;
+	Sun,  1 Mar 2026 01:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CTp3ZKdN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t2MQlUm7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63858243969;
-	Sun,  1 Mar 2026 01:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B4826FA6F;
+	Sun,  1 Mar 2026 01:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329423; cv=none; b=uYyDD6t58oHMx5DSS+5OPrwFWP0ZFpfZk0HGt+VeZhKC0hjaz1OXcrLCef9MUd/sdWxLdIWGIGlQ3rSPFU1aj1H1Mp88kLvNsvbAiCFsxCklaDowqhnVLJb77LNTf7RD2+jlX72wEH/wuDw0rmwYw7r+pejovro9ymbHr/S+0NM=
+	t=1772329425; cv=none; b=KnQvBczZa6n7vEi8qxlXm0HHMoSlToYfC7tfrruZH0ywbUoTih4yWVyh2v2gYSnPB4Ltn9zmpHb+uSR6h6wNSaaxB1xYB+aJIsaLS/I4qhzXmX+KHxEQ4fBCXxdPQSrkVeUEmAiZ0IfAcs2qe0Kf9cH1qo8U01pZwv13916nKuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329423; c=relaxed/simple;
-	bh=hJJuiw3GAYR2FvDa2Coyv3SaBthkTG7S3N1qAOIfwj4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GtDQH1PcWN3ljaLaeDD2fm8WIPF75dVlX0EPNDlGYFQD23hZaFwEDDeY0yEubyx4SecG2yx8N/NTJN0JyUNt0YgpwKiuXeGnlhcVNDA4c5OdxraHmVoEER58wxbB0r+cuSPgbGH1lv+yAO0lWr8xULf5y98rssEtN6UcJfvIS1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CTp3ZKdN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0FDC19421;
-	Sun,  1 Mar 2026 01:43:42 +0000 (UTC)
+	s=arc-20240116; t=1772329425; c=relaxed/simple;
+	bh=MTijXJeepNYQflIlsBqoYCNUcfakTVTaxVfg7KjqOh4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uESfGUhTg7TkUGgqV5WflcQygRalvCbt2sBDNCZA226x1n4MFfdRzjBC3tvqFQkiTuM7E7F84xXiQxAiZt2NpeYaR0MqatmTaFspKsYKhSTFo7RrD06JhvGirIZB1g+VD16eWUyD4ijTj2eXcuy2d4XdNUSJ7v40c2/VpWW2jXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t2MQlUm7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EFEC19421;
+	Sun,  1 Mar 2026 01:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329423;
-	bh=hJJuiw3GAYR2FvDa2Coyv3SaBthkTG7S3N1qAOIfwj4=;
+	s=k20201202; t=1772329425;
+	bh=MTijXJeepNYQflIlsBqoYCNUcfakTVTaxVfg7KjqOh4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=CTp3ZKdNEa7hqQKwNi4UocUH1zUGqwkAnfn4V/KTwQZoX+eew/EWFt9GN7lewEhat
-	 tGdk7nXeX2qCxz7a6aSkg10QlpIhm3hOn5cRnjSknBMWXQxXHB7/8Z+9xfAnVN1l9x
-	 z2fVHS1CyypUp96yuhx6xAv+vD1rDOG9lj+y5yC16xoc2nEG/zfILDrkK7yXqJ9oto
-	 FX/+5EETn8pymDA4wNp2LgFEy3gbZT9CM4wjv2LlbQS5hwWaMHzZIJyu1JN5skULhd
-	 0QndZZlA02b6J+g0XYHoJwwkpn1wwIrF2l7yuIVSMyRAJp+uriojfLOi+frb6czLpo
-	 5/WvWUbpNdVEA==
+	b=t2MQlUm7JMkrqZxPeJvdoWF1IfA0JpoTSUf5NNGg4YNAXBW89vZfW5z31l+AlqDiW
+	 Pqyz01FPi7GYP+n7iDQZ+FLigzr2k338NR+JcMU/WQqKmd0nVBHRAhcvMlWklgSW0G
+	 dfeMX23Td6TWH23ItEuYLqtIbEtmFVn1kMln9JjplMpiB769H+lBoLfc9tigqTmt4/
+	 fP8HS5bJSwQA9bARCfEJ2Y760dn4GDAWzc65mThhvfVkeElhKmLVzST/V98Ogch/in
+	 6tlUgvZrB8KvuxxHUbI/cDMNubUJgzh+OKZZRXWWBzt3XaBwT7Cu0JweCEmNdC6jvn
+	 Zn3KKtx2U4wnw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	djwong@kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	linux-xfs@vger.kernel.org
-Subject: FAILED: Patch "xfs: fix freemap adjustments when adding xattrs to leaf blocks" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:43:39 -0500
-Message-ID: <20260301014341.1705790-1-sashal@kernel.org>
+	jinpu.wang@ionos.com
+Cc: Yu Kuai <yukuai@fnnas.com>,
+	linux-raid@vger.kernel.org
+Subject: FAILED: Patch "md/bitmap: fix GPF in write_page caused by resize race" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:43:43 -0500
+Message-ID: <20260301014343.1705844-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,29 +67,28 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-221906-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221905-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lst.de:email]
-X-Rspamd-Queue-Id: 8101A1CBE39
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 316781CDFDC
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -102,136 +101,53 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3eefc0c2b78444b64feeb3783c017d6adc3cd3ce Mon Sep 17 00:00:00 2001
-From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Fri, 23 Jan 2026 09:27:31 -0800
-Subject: [PATCH] xfs: fix freemap adjustments when adding xattrs to leaf
- blocks
+From 46ef85f854dfa9d5226b3c1c46493d79556c9589 Mon Sep 17 00:00:00 2001
+From: Jack Wang <jinpu.wang@ionos.com>
+Date: Tue, 20 Jan 2026 11:24:56 +0100
+Subject: [PATCH] md/bitmap: fix GPF in write_page caused by resize race
 
-xfs/592 and xfs/794 both trip this assertion in the leaf block freemap
-adjustment code after ~20 minutes of running on my test VMs:
+A General Protection Fault occurs in write_page() during array resize:
+RIP: 0010:write_page+0x22b/0x3c0 [md_mod]
 
- ASSERT(ichdr->firstused >= ichdr->count * sizeof(xfs_attr_leaf_entry_t)
-					+ xfs_attr3_leaf_hdr_size(leaf));
+This is a use-after-free race between bitmap_daemon_work() and
+__bitmap_resize(). The daemon iterates over `bitmap->storage.filemap`
+without locking, while the resize path frees that storage via
+md_bitmap_file_unmap(). `quiesce()` does not stop the md thread,
+allowing concurrent access to freed pages.
 
-Upon enabling quite a lot more debugging code, I narrowed this down to
-fsstress trying to set a local extended attribute with namelen=3 and
-valuelen=71.  This results in an entry size of 80 bytes.
+Fix by holding `mddev->bitmap_info.mutex` during the bitmap update.
 
-At the start of xfs_attr3_leaf_add_work, the freemap looks like this:
-
-i 0 base 448 size 0 rhs 448 count 46
-i 1 base 388 size 132 rhs 448 count 46
-i 2 base 2120 size 4 rhs 448 count 46
-firstused = 520
-
-where "rhs" is the first byte past the end of the leaf entry array.
-This is inconsistent -- the entries array ends at byte 448, but
-freemap[1] says there's free space starting at byte 388!
-
-By the end of the function, the freemap is in worse shape:
-
-i 0 base 456 size 0 rhs 456 count 47
-i 1 base 388 size 52 rhs 456 count 47
-i 2 base 2120 size 4 rhs 456 count 47
-firstused = 440
-
-Important note: 388 is not aligned with the entries array element size
-of 8 bytes.
-
-Based on the incorrect freemap, the name area starts at byte 440, which
-is below the end of the entries array!  That's why the assertion
-triggers and the filesystem shuts down.
-
-How did we end up here?  First, recall from the previous patch that the
-freemap array in an xattr leaf block is not intended to be a
-comprehensive map of all free space in the leaf block.  In other words,
-it's perfectly legal to have a leaf block with:
-
- * 376 bytes in use by the entries array
- * freemap[0] has [base = 376, size = 8]
- * freemap[1] has [base = 388, size = 1500]
- * the space between 376 and 388 is free, but the freemap stopped
-   tracking that some time ago
-
-If we add one xattr, the entries array grows to 384 bytes, and
-freemap[0] becomes [base = 384, size = 0].  So far, so good.  But if we
-add a second xattr, the entries array grows to 392 bytes, and freemap[0]
-gets pushed up to [base = 392, size = 0].  This is bad, because
-freemap[1] hasn't been updated, and now the entries array and the free
-space claim the same space.
-
-The fix here is to adjust all freemap entries so that none of them
-collide with the entries array.  Note that this fix relies on commit
-2a2b5932db6758 ("xfs: fix attr leaf header freemap.size underflow") and
-the previous patch that resets zero length freemap entries to have
-base = 0.
-
-Cc: <stable@vger.kernel.org> # v2.6.12
-Fixes: 1da177e4c3f415 ("Linux-2.6.12-rc2")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/linux-raid/20260120102456.25169-1-jinpu.wang@ionos.com
+Closes: https://lore.kernel.org/linux-raid/CAMGffE=Mbfp=7xD_hYxXk1PAaCZNSEAVeQGKGy7YF9f2S4=NEA@mail.gmail.com/T/#u
+Cc: stable@vger.kernel.org
+Fixes: d60b479d177a ("md/bitmap: add bitmap_resize function to allow bitmap resizing.")
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 ---
- fs/xfs/libxfs/xfs_attr_leaf.c | 36 +++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+ drivers/md/md-bitmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/libxfs/xfs_attr_leaf.c b/fs/xfs/libxfs/xfs_attr_leaf.c
-index c8c9737f04563..c0d6252271378 100644
---- a/fs/xfs/libxfs/xfs_attr_leaf.c
-+++ b/fs/xfs/libxfs/xfs_attr_leaf.c
-@@ -1476,6 +1476,7 @@ xfs_attr3_leaf_add_work(
- 	struct xfs_attr_leaf_name_local *name_loc;
- 	struct xfs_attr_leaf_name_remote *name_rmt;
- 	struct xfs_mount	*mp;
-+	int			old_end, new_end;
- 	int			tmp;
- 	int			i;
- 
-@@ -1568,17 +1569,36 @@ xfs_attr3_leaf_add_work(
- 	if (be16_to_cpu(entry->nameidx) < ichdr->firstused)
- 		ichdr->firstused = be16_to_cpu(entry->nameidx);
- 
--	ASSERT(ichdr->firstused >= ichdr->count * sizeof(xfs_attr_leaf_entry_t)
--					+ xfs_attr3_leaf_hdr_size(leaf));
--	tmp = (ichdr->count - 1) * sizeof(xfs_attr_leaf_entry_t)
--					+ xfs_attr3_leaf_hdr_size(leaf);
-+	new_end = ichdr->count * sizeof(struct xfs_attr_leaf_entry) +
-+					xfs_attr3_leaf_hdr_size(leaf);
-+	old_end = new_end - sizeof(struct xfs_attr_leaf_entry);
-+
-+	ASSERT(ichdr->firstused >= new_end);
- 
- 	for (i = 0; i < XFS_ATTR_LEAF_MAPSIZE; i++) {
--		if (ichdr->freemap[i].base == tmp) {
--			ichdr->freemap[i].base += sizeof(xfs_attr_leaf_entry_t);
-+		int		diff = 0;
-+
-+		if (ichdr->freemap[i].base == old_end) {
-+			/*
-+			 * This freemap entry starts at the old end of the
-+			 * leaf entry array, so we need to adjust its base
-+			 * upward to accomodate the larger array.
-+			 */
-+			diff = sizeof(struct xfs_attr_leaf_entry);
-+		} else if (ichdr->freemap[i].size > 0 &&
-+			   ichdr->freemap[i].base < new_end) {
-+			/*
-+			 * This freemap entry starts in the space claimed by
-+			 * the new leaf entry.  Adjust its base upward to
-+			 * reflect that.
-+			 */
-+			diff = new_end - ichdr->freemap[i].base;
-+		}
-+
-+		if (diff) {
-+			ichdr->freemap[i].base += diff;
- 			ichdr->freemap[i].size -=
--				min_t(uint16_t, ichdr->freemap[i].size,
--						sizeof(xfs_attr_leaf_entry_t));
-+				min_t(uint16_t, ichdr->freemap[i].size, diff);
- 		}
- 
- 		/*
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index dbe4c4b9a1daf..1d4a050dab3ab 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2453,6 +2453,7 @@ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
+ 		memcpy(page_address(store.sb_page),
+ 		       page_address(bitmap->storage.sb_page),
+ 		       sizeof(bitmap_super_t));
++	mutex_lock(&bitmap->mddev->bitmap_info.mutex);
+ 	spin_lock_irq(&bitmap->counts.lock);
+ 	md_bitmap_file_unmap(&bitmap->storage);
+ 	bitmap->storage = store;
+@@ -2560,7 +2561,7 @@ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
+ 			set_page_attr(bitmap, i, BITMAP_PAGE_DIRTY);
+ 	}
+ 	spin_unlock_irq(&bitmap->counts.lock);
+-
++	mutex_unlock(&bitmap->mddev->bitmap_info.mutex);
+ 	if (!init) {
+ 		__bitmap_unplug(bitmap);
+ 		bitmap->mddev->pers->quiesce(bitmap->mddev, 0);
 -- 
 2.51.0
 
