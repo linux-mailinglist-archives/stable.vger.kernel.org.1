@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-221759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGxlAUOZo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:23 +0100
+	id 4PnBMUico2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-221760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92581CB598
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CCB1CC31D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 099BB30219D1
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 607B83282ED5
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD702DFA2F;
-	Sun,  1 Mar 2026 01:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64B72E2EF9;
+	Sun,  1 Mar 2026 01:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPOHqrOc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LsQUjSBp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8074482899;
-	Sun,  1 Mar 2026 01:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7892182899;
+	Sun,  1 Mar 2026 01:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329072; cv=none; b=S+J03L8lZZ4tOpz9XEGJOi+Dpfme9pdO1rrwsTlaudYl99pp/5eC6V7lehWfMtgLej0nzwKto5JFM8e0to/jwCwwlwg964182RrHyJgiOvFcLOWdxpsEP6hdlKsqZgZnn0nNqRYMXM1RhRRGCq0TyTA2zNQcQzmVXXXQSFB53Lw=
+	t=1772329074; cv=none; b=JBpNVbFywXTUDL185EUgyYhfaX2+RRL4I8YE1bdj6r75z6qhlGxhVaheVN5yy5Ae3BRKPTkL+rzQxjMoh5ZknmzfZkQk01ui5VqB3PaPcvUf7ULnXd+W20KJzfdOMm6V8zs6hX0IO5zykDpG3XlAJSt2jAnYeLa/VInmEEBJjhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329072; c=relaxed/simple;
-	bh=mjUcYPePh3DsTnivUBVNFIQU4C3qm8TF/8qlGoDr5Go=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CdYMykrwuBpdHTT8PcY5BG2fpcqjHSdv+zp9OCr+CUfLPRcD3/N+DaW2YiHyFxnT74u//zVeXt4lXDdW/VIXJdkRfkUiob1i1oGRDpkSuJBUqISFr2rPL5qs6rEWMM2y5QZOqeGEEEwEX6EfHIFxB42lj/S/SA6IkVO/qUmGBWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPOHqrOc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7CAC19421;
-	Sun,  1 Mar 2026 01:37:51 +0000 (UTC)
+	s=arc-20240116; t=1772329074; c=relaxed/simple;
+	bh=4R4BGyKKPwJ2unF3DVW/G3JhpVVNedvuU6aK9H8iWJA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WZum7o1v7Hr+7Klg2Di/7Z2wBThI49kTnmi20QIKwrXfP+RWuY2WjKPylY/Iyj4VbEHTK7pdVAKlfnjdzLM6crNyr5RUULktl0IUQgaCiLk+GMvhDEiuw2IKnQILf4Yqg8ZcUKtUV0EiUPqpXvBTJgS1Ikgy5gj5P8X9oDBroNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LsQUjSBp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB81FC19421;
+	Sun,  1 Mar 2026 01:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329072;
-	bh=mjUcYPePh3DsTnivUBVNFIQU4C3qm8TF/8qlGoDr5Go=;
+	s=k20201202; t=1772329074;
+	bh=4R4BGyKKPwJ2unF3DVW/G3JhpVVNedvuU6aK9H8iWJA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=HPOHqrOcyFETkS8yc6WZgX2rPd1ywx3h5t8fRHmDqvAYkNVwpTrhMiGeVygATZY/0
-	 X9ahudHPyGH+8GHMkqYMyB6mVZmQ9m97pSCKeDmKPIDUKCdFSSxZ6+ANbx1Fqh5WXB
-	 2SETumevPbuFsYv/j9oQoLcEct6nDeq2mQPxqNqhLWolnKlA6OsVmcDhGPk84kCzTX
-	 wpkM+BV7W277Po9RHSNJs9ZMuGUm99Q8iRRXzBa4nxafTGos6Sq+CD0jHIsQkIOe76
-	 NNCKZBuAvbxF5j8MdK4E+b7FCbCjb17+Ne44dAQ6Z2qyHzex4EoECJTjnuAhjtVkbt
-	 22C8wQelZ/E4Q==
+	b=LsQUjSBpfTn9FXcDP988bApLBw9Ru36N0ifboqB4YghfN3kMNy3RAZcX1UngDo2TD
+	 dq7OrNDZ+ldYn+F111T4U4MJCVuPAw/OILeYvQeBls4et1pwYlPoTPgy1mWqMTZD31
+	 +dmmaIqyn6lVUbFTmfnuTHYj6/hLPm1Gmikng487CHqzG3E8MCggvhIcVTgf8xP6YW
+	 Zj+/yXi3C+/UlMXrAoAA4ZCl2PptaY/u8MmUDRpcIfbRPfu6YoBXmXlTpNe+vP4Slu
+	 YbvEkHLwBmrhq0cgB7xwkEJggz3T0+kqmIcZvQ3Y4PFO3fDExfV63Paqu0FZhNhitU
+	 6mFE7Ox0dqG/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chenhuacai@kernel.org
+	yangtiezhu@loongson.cn
 Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	loongarch@lists.linux.dev
-Subject: FAILED: Patch "LoongArch: Prefer top-down allocation after arch_mem_init()" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:37:50 -0500
-Message-ID: <20260301013750.1698102-1-sashal@kernel.org>
+	loongarch@lists.linux.dev,
+	linux-rt-devel@lists.linux.dev
+Subject: FAILED: Patch "LoongArch: Handle percpu handler address for ORC unwinder" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:37:52 -0500
+Message-ID: <20260301013752.1698147-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,19 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221759-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-221760-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,loongson.cn:email]
-X-Rspamd-Queue-Id: A92581CB598
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 37CCB1CC31D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -102,47 +103,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2172d6ebac9372eb01fe4505a53e18cb061e103b Mon Sep 17 00:00:00 2001
-From: Huacai Chen <chenhuacai@loongson.cn>
+From 055c7e75190e0be43037bd663a3f6aced194416e Mon Sep 17 00:00:00 2001
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 Date: Tue, 10 Feb 2026 19:31:13 +0800
-Subject: [PATCH] LoongArch: Prefer top-down allocation after arch_mem_init()
+Subject: [PATCH] LoongArch: Handle percpu handler address for ORC unwinder
 
-Currently we use bottom-up allocation after sparse_init(), the reason is
-sparse_init() need a lot of memory, and bottom-up allocation may exhaust
-precious low memory (below 4GB). On the other hand, SWIOTLB and CMA need
-low memories for DMA32, so swiotlb_init() and dma_contiguous_reserve()
-need bottom-up allocation.
+After commit 4cd641a79e69 ("LoongArch: Remove unnecessary checks for ORC
+unwinder"), the system can not boot normally under some configs (such as
+enable KASAN), there are many error messages "cannot find unwind pc".
 
-Since swiotlb_init() and dma_contiguous_reserve() are both called in
-arch_mem_init(), we no longer need bottom-up allocation after that. So
-we set the allocation policy to top-down at the end of arch_mem_init(),
-in order to avoid later memory allocations (such as KASAN) exhaust low
-memory.
+The kernel boots normally with the defconfig, so no problem found out at
+the first time. Here is one way to reproduce:
 
-This solve at least two problems:
-1. Some buggy BIOSes use 0xfd000000~0xfe000000 for secondary CPUs, but
-   didn't reserve this range, which causes smpboot failures.
-2. Some DMA32 devices, such as Loongson-DRM and OHCI, cannot work with
-   KASAN enabled.
+  cd linux
+  make mrproper defconfig -j"$(nproc)"
+  scripts/config -e KASAN
+  make olddefconfig all -j"$(nproc)"
+  sudo make modules_install
+  sudo make install
+  sudo reboot
+
+The address that can not unwind is not a valid kernel address which is
+between "pcpu_handlers[cpu]" and "pcpu_handlers[cpu] + vec_sz" due to
+the code of eentry was copied to the new area of pcpu_handlers[cpu] in
+setup_tlb_handler(), handle this special case to get the valid address
+to unwind normally.
 
 Cc: stable@vger.kernel.org
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- arch/loongarch/kernel/setup.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/loongarch/include/asm/setup.h |  3 +++
+ arch/loongarch/kernel/unwind_orc.c | 16 ++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-index 20cb6f3064568..2b260d15b2e25 100644
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -421,6 +421,7 @@ static void __init arch_mem_init(char **cmdline_p)
- 				   PFN_UP(__pa_symbol(&__nosave_end)));
+diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
+index 3c2fb16b11b64..f81375e5e89c0 100644
+--- a/arch/loongarch/include/asm/setup.h
++++ b/arch/loongarch/include/asm/setup.h
+@@ -7,6 +7,7 @@
+ #define _LOONGARCH_SETUP_H
  
- 	memblock_dump_all();
-+	memblock_set_bottom_up(false);
+ #include <linux/types.h>
++#include <linux/threads.h>
+ #include <asm/sections.h>
+ #include <uapi/asm/setup.h>
  
- 	early_memtest(PFN_PHYS(ARCH_PFN_OFFSET), PFN_PHYS(max_low_pfn));
- }
+@@ -14,6 +15,8 @@
+ 
+ extern unsigned long eentry;
+ extern unsigned long tlbrentry;
++extern unsigned long pcpu_handlers[NR_CPUS];
++extern long exception_handlers[VECSIZE * 128 / sizeof(long)];
+ extern char init_command_line[COMMAND_LINE_SIZE];
+ extern void tlb_init(int cpu);
+ extern void cpu_cache_init(void);
+diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/unwind_orc.c
+index d6b3688a1ce97..11ba3e4ac9eee 100644
+--- a/arch/loongarch/kernel/unwind_orc.c
++++ b/arch/loongarch/kernel/unwind_orc.c
+@@ -352,6 +352,22 @@ static inline unsigned long bt_address(unsigned long ra)
+ {
+ 	extern unsigned long eentry;
+ 
++#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
++	int cpu;
++	int vec_sz = sizeof(exception_handlers);
++
++	for_each_possible_cpu(cpu) {
++		if (!pcpu_handlers[cpu])
++			continue;
++
++		if (ra >= pcpu_handlers[cpu] &&
++		    ra < pcpu_handlers[cpu] + vec_sz) {
++			ra = ra + eentry - pcpu_handlers[cpu];
++			break;
++		}
++	}
++#endif
++
+ 	if (ra >= eentry && ra < eentry +  EXCCODE_INT_END * VECSIZE) {
+ 		unsigned long func;
+ 		unsigned long type = (ra - eentry) / VECSIZE;
 -- 
 2.51.0
 
