@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-222384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4C/FLzygo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:11:08 +0100
+	id 0E61DUago2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:11:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893641CD379
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:11:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C97E81CD397
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E2CA23093610
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:05:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7EAEC30B1E29
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD583043D6;
-	Sun,  1 Mar 2026 02:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3337230595C;
+	Sun,  1 Mar 2026 02:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apQ7eytK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isAfmsfZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31C82EE262;
-	Sun,  1 Mar 2026 02:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAC62EE262;
+	Sun,  1 Mar 2026 02:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330744; cv=none; b=aaiCmZaeETZFS+V8vWLzubuaVfB97l2MTreXjs1PEuhBfrlr8LiIa8s65uTV1ySSVkbVx/QmZhA/xM3jYyfrd8HwA+esxo9Whs8z3RxPTrVM5KiGEKrVxoWo56FSw+czhhCl4vOWQTwbVXdIpQqzwzHtZ133434F5H3z8djG9X4=
+	t=1772330747; cv=none; b=b3RAQuJDDheVkvClPxa5FT5vv8O3tYG+WpHHjBlnBjwJMI24gz1G6QPn/21z/ee5zYo/DrvMUYXQE8BurwGrWWUlGaJcNv5/ODJ9cQDwsGiu9CJ6NhK5iPUJ0m6PLsNP61T2ZQ0OWzFgZ4kJpWnw2vGMioIVGH+CcAv3+h/UFTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330744; c=relaxed/simple;
-	bh=7AT2OuJbEYaeFOWUkritLUcUxbuaElGtSVRpK9XkyH0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HlLfLw6m71WFIQf1Y158g70vuQiHziVYpMiFi/DpdOtbenRwalTXcce7P7rg22THhd6XqBqOCl/0N0DDO+sj/J2+h6l6H/j9AycClswxWkke/fY6Z4rbpUgrnEgan7KSQPuyNlZ0q4yW+56JKWNqhU4+h0SIygrFmX0KafGDsS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apQ7eytK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175ACC19424;
-	Sun,  1 Mar 2026 02:05:44 +0000 (UTC)
+	s=arc-20240116; t=1772330747; c=relaxed/simple;
+	bh=x2o42VTPQAD77oDP6EAvRHF8itnSuz61zWDMTx9ZtzY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m5GLiE4ObbdnpIQrNchjtXfDqZ+p/C4gaxKzA+S6NfaZlYfjqJEXpTrxcsdx1kd7cVaJ12ZUhYFM0R98dlUkOEmqDqTgSSUEDFaA/p225L2etaWKEMgKTaKMBOArK1iumT9xBjs0ULIUhnKXVpYCOOVSy1H0Dv4+LgAtkwy0Q74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isAfmsfZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59208C19421;
+	Sun,  1 Mar 2026 02:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330744;
-	bh=7AT2OuJbEYaeFOWUkritLUcUxbuaElGtSVRpK9XkyH0=;
+	s=k20201202; t=1772330746;
+	bh=x2o42VTPQAD77oDP6EAvRHF8itnSuz61zWDMTx9ZtzY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=apQ7eytKwnjDqu7nPPcbqMta4vQzSPuybbHWWBOJKLpkn8yhsff2e78UQBAW3eiv8
-	 0hforTCOf8ldmj9f5Db2R8AXBO1fLLKeWGrLTT8pE0n+C44zE/LE8FqI+4esdnk8AH
-	 Qqn3ZFfyBYMP114il6oh0J1P68tXhY1eX+FhfM8GsUBWNIxwlItBxVz+UUpe4KGi/H
-	 ii/YQaQPWLGayqCDD3Pmeywbffk+M0pfPkWCq5EGhCKIsGahCONjuZRlhXOOrdf7Bx
-	 Uk4gTCdoLho4TNbvzpR+7qoe+/26jiyy5uy1nKfIO8/ghN848DLL2/k0XuVmJViV2N
-	 xAmA2vK8AS+vA==
+	b=isAfmsfZnbucr7iZWGDrH5QM7iFPJBsc3VfJg5uP8NhC/PnEgJMh+XfcFCD9fhBSs
+	 5uIk0xk/2kE2vAC+vLaa4Rx8KZKSmfTZKKGYchKPFetKnwY0uXBxv7rzpQyjKG5GZO
+	 y6t7KPJfaIeXLycOCPnXLlANx+oACWkvfx9fV17p3Hh8EKlITgUrboyRZ0vlMHdoBn
+	 RZJGa9hruUw6FKuttgziOi8k/Ykf3O1LXwc65HyO1LH04JTmmVoUDbdoH/KU3lMeat
+	 FsA2avH5rfvDUi59HJuWdMo3JRBz1S1QiE2rNh/SXzNhx1gjxqH2DDya8eSV3uAdKq
+	 6vHL01BohKKJw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	enelsonmoore@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: arcnet: com20020-pci: fix support for 2.5Mbit cards" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:05:42 -0500
-Message-ID: <20260301020542.1734518-1-sashal@kernel.org>
+	lossin@kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	rust-for-linux@vger.kernel.org
+Subject: FAILED: Patch "rust: pin-init: replace clippy `expect` with `allow`" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:05:44 -0500
+Message-ID: <20260301020545.1734572-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,30 +67,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222384-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222385-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 893641CD379
+X-Rspamd-Queue-Id: C97E81CD397
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -104,79 +102,80 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From c7d9be66b71af490446127c6ffcb66d6bb71b8b9 Mon Sep 17 00:00:00 2001
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Thu, 12 Feb 2026 20:55:09 -0800
-Subject: [PATCH] net: arcnet: com20020-pci: fix support for 2.5Mbit cards
+From a58b8764aed9648357b1c5b6368c9943ba33b7f9 Mon Sep 17 00:00:00 2001
+From: Benno Lossin <lossin@kernel.org>
+Date: Sun, 15 Feb 2026 14:22:30 +0100
+Subject: [PATCH] rust: pin-init: replace clippy `expect` with `allow`
 
-Commit 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
-converted the com20020-pci driver to use a card info structure instead
-of a single flag mask in driver_data. However, it failed to take into
-account that in the original code, driver_data of 0 indicates a card
-with no special flags, not a card that should not have any card info
-structure. This introduced a null pointer dereference when cards with
-no flags were probed.
+`clippy` has changed behavior in [1] (Rust 1.95) where it no longer
+warns about the `let_and_return` lint when a comment is placed between
+the let binding and the return expression. Nightly thus fails to build,
+because the expectation is no longer fulfilled.
 
-Commit bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in
-com20020pci_probe()") then papered over this issue by rejecting cards
-with no driver_data instead of resolving the problem at its source.
+Thus replace the expectation with an `allow`.
 
-Fix the original issue by introducing a new card info structure for
-2.5Mbit cards that does not set any flags and using it if no
-driver_data is present.
+[ The errors were:
 
-Fixes: 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
-Fixes: bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in com20020pci_probe()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Link: https://patch.msgid.link/20260213045510.32368-1-enelsonmoore@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+      error: this lint expectation is unfulfilled
+          --> rust/pin-init/src/lib.rs:1279:10
+           |
+      1279 | #[expect(clippy::let_and_return)]
+           |          ^^^^^^^^^^^^^^^^^^^^^^
+           |
+           = note: `-D unfulfilled-lint-expectations` implied by `-D warnings`
+           = help: to override `-D warnings` add `#[allow(unfulfilled_lint_expectations)]`
+
+      error: this lint expectation is unfulfilled
+          --> rust/pin-init/src/lib.rs:1295:10
+           |
+      1295 | #[expect(clippy::let_and_return)]
+           |          ^^^^^^^^^^^^^^^^^^^^^^
+
+    - Miguel ]
+
+Link: https://github.com/rust-lang/rust-clippy/pull/16461 [1]
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+Cc: stable@vger.kernel.org # Needed in 6.18.y and later.
+Link: https://patch.msgid.link/20260215132232.1549861-1-lossin@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- drivers/net/arcnet/com20020-pci.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ rust/pin-init/src/lib.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-index 19e411b2e3a77..dbadda08dce23 100644
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -115,6 +115,8 @@ static const struct attribute_group com20020_state_group = {
- 	.attrs = com20020_state_attrs,
- };
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 8dc9dd5ac6fd3..3da65db9e2dd3 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -1276,13 +1276,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+ ///
+ /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
+ ///   pointer must result in a valid `U`.
+-#[expect(clippy::let_and_return)]
+ pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T, E>) -> impl PinInit<U, E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+     let res = unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinned_init(ptr.cast::<T>())) };
+     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
+     // cycle when computing the type returned by this function)
++    #[allow(clippy::let_and_return)]
+     res
+ }
  
-+static struct com20020_pci_card_info card_info_2p5mbit;
-+
- static void com20020pci_remove(struct pci_dev *pdev);
+@@ -1292,13 +1292,13 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+ ///
+ /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
+ ///   pointer must result in a valid `U`.
+-#[expect(clippy::let_and_return)]
+ pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+     let res = unsafe { init_from_closure(|ptr: *mut U| init.__init(ptr.cast::<T>())) };
+     // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
+     // cycle when computing the type returned by this function)
++    #[allow(clippy::let_and_return)]
+     res
+ }
  
- static int com20020pci_probe(struct pci_dev *pdev,
-@@ -140,7 +142,7 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 
- 	ci = (struct com20020_pci_card_info *)id->driver_data;
- 	if (!ci)
--		return -EINVAL;
-+		ci = &card_info_2p5mbit;
- 
- 	priv->ci = ci;
- 	mm = &ci->misc_map;
-@@ -347,6 +349,18 @@ static struct com20020_pci_card_info card_info_5mbit = {
- 	.flags = ARC_IS_5MBIT,
- };
- 
-+static struct com20020_pci_card_info card_info_2p5mbit = {
-+	.name = "ARC-PCI",
-+	.devcount = 1,
-+	.chan_map_tbl = {
-+		{
-+			.bar = 2,
-+			.offset = 0x00,
-+			.size = 0x08,
-+		},
-+	},
-+};
-+
- static struct com20020_pci_card_info card_info_sohard = {
- 	.name = "SOHARD SH ARC-PCI",
- 	.devcount = 1,
 -- 
 2.51.0
 
