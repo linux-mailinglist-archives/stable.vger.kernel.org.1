@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-221404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4P1hM1mVo2n3HQUAu9opvQ
-	(envelope-from <stable+bounces-221404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:41 +0100
+	id AB8+G4WWo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:29:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7480B1CA748
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22AD1CACAB
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:29:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF5D730217ED
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:22:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBB0330817C5
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A750F27CCF0;
-	Sun,  1 Mar 2026 01:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B995280CD5;
+	Sun,  1 Mar 2026 01:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdXQsWN8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XYNEqeiE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6B72773D3
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F9F430BA3
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328175; cv=none; b=sNUhGAo5strx7gbv+iBTkoSp508O/Q/9WcF4NbQuFvLgaDToOhtL9hj2ZGuHJTAum5UGe2AymFnCar/t/Xu7X6DdvIcYU25smFlVrw+7uJ36vgSc0UVnkDHoKMHvDghyxdmn1g+lBQ4+33IiTFMB6Y/ZIrAbt/vRrLhkf53la1k=
+	t=1772328177; cv=none; b=n4A11ZGR5YD3zZnFbepNY2BBWCpHpfWE/D3FAVegbXo8lZxCh2DeTIC4i5QrCrqem5hpstPvCOCsAoOnJNSadB3pL/kHVSHE7Kg+wyvxFro43TdDMArxJHk6zdbhx6yzaAHqVNVAabIn+1xT855r0j+s1LCAI13P2wv/TR5NROE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328175; c=relaxed/simple;
-	bh=w6M4AzFziMqscW0jmKdidVYtI2GLL5Gui6Vf8tBkPY4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cko6ZEYvU9RLX7TEnnWwLWbZN02nwfI9UoDU3/DNi4nsEQ9KtsAdzAtHl5PjDw0NaqAc72crmBO3PmKKODNw3NoDER2Cj6aGA1jyO3pYOMuxGIErJij3KbCBK3esYVeBYv9RL0DLx2ufDfQaWU570mulkDVYlPyanswwPGwd8fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdXQsWN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4F2C19421;
-	Sun,  1 Mar 2026 01:22:54 +0000 (UTC)
+	s=arc-20240116; t=1772328177; c=relaxed/simple;
+	bh=CD22GsfcD8LTC/ZqADJ6I6CL4lJ5jv2EThLz1A8XVO8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=spjopO794EmrCnkniMEk4Fw+TGYXPfv/7GiHgHlhIsdjooXlQw1US52bYcREVvAqczfYF77L9WXzF+I0yTtH8wXKT0PYdSFBGU+DwMyVUquWyXkYQ8RQJgkAd/uQPXWZ6R9V3U/P/BPS56Sf/IE/YwfcZzZDwfFoCfagqtbdc2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XYNEqeiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC20C19421;
+	Sun,  1 Mar 2026 01:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328175;
-	bh=w6M4AzFziMqscW0jmKdidVYtI2GLL5Gui6Vf8tBkPY4=;
+	s=k20201202; t=1772328177;
+	bh=CD22GsfcD8LTC/ZqADJ6I6CL4lJ5jv2EThLz1A8XVO8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=fdXQsWN8kmVuI6IQvJv/EnCei0c9w96+je5nFAj2CYfmbE3VzeneJ0t7sDda1k8Uz
-	 qUBP+trUCIdep72Zo4GupQecjKmOWUOYjOjBUjrTkmcL+vd0qboG1qCW4t3KuhCmvG
-	 NC3pDafPTPu5kjF7bEfIlvG0+utd32wSyQDvnylV/1fX0ow9voRZC1iVmpF/2farvj
-	 7ZkMIZkGIRrmVh8q6kalu5w6VEA8DX1cPD77nvwiwmkC6v1p4DrsIpgxx3u3NemW9m
-	 ULMraz8u8Q/dqeGStEVCJIRHPR0HjvIl1bKSGboIbdjePceeWzVn81fPUPYkBmNN+A
-	 rttNElJuK0FLA==
+	b=XYNEqeiE5QaEJrxH8psddDAI1+OhQVaYx0rPuNRU5F7ZXsmNJaNTzAsuFa66VsHPx
+	 lCpXOv6D3v1k36pgPOhWbx1+NZmq9F60JNuvGvR4hY32YYStVUPDa2z88fJhilLaxL
+	 HtF+aZqYvb4PkVKS51tSP5QspGFJPpXJIp0utbJwyqQzbos+FAUzclXjXkDD69nyKx
+	 XXM8tox2eOYmSp5Cl2BJXIE+GWs/x9ajMVFLkCxNIdElJi6KQDDp4JTPyy9yfLh5x6
+	 fMzunvdPzMCq6yhWo0XZFYr6q1WXZvzFrwH7O+h6I1l2VLnkTm2O0fAK5966pCLgty
+	 IVxrPtP9jLYCQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	luca.ceresoli@bootlin.com
-Cc: Maxime Ripard <mripard@kernel.org>,
+	sanjay.kumar.yadav@intel.com
+Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
 	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm: of: drm_of_panel_bridge_remove(): fix device_node leak" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:22:53 -0500
-Message-ID: <20260301012253.1679471-1-sashal@kernel.org>
+Subject: FAILED: Patch "drm/buddy: Prevent BUG_ON by validating rounded allocation" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:22:55 -0500
+Message-ID: <20260301012255.1679520-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,36 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221405-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221404-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 7480B1CA748
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url,msgid.link:url,amd.com:email,intel.com:email]
+X-Rspamd-Queue-Id: D22AD1CACAB
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -102,44 +104,74 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a4b4385d0523e39a7c058cb5a6c8269e513126ca Mon Sep 17 00:00:00 2001
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Fri, 9 Jan 2026 08:31:32 +0100
-Subject: [PATCH] drm: of: drm_of_panel_bridge_remove(): fix device_node leak
+From 5488a29596cdba93a60a79398dc9b69d5bdadf92 Mon Sep 17 00:00:00 2001
+From: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+Date: Thu, 8 Jan 2026 17:02:29 +0530
+Subject: [PATCH] drm/buddy: Prevent BUG_ON by validating rounded allocation
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-drm_of_panel_bridge_remove() uses of_graph_get_remote_node() to get a
-device_node but does not put the node reference.
+When DRM_BUDDY_CONTIGUOUS_ALLOCATION is set, the requested size is
+rounded up to the next power-of-two via roundup_pow_of_two().
+Similarly, for non-contiguous allocations with large min_block_size,
+the size is aligned up via round_up(). Both operations can produce a
+rounded size that exceeds mm->size, which later triggers
+BUG_ON(order > mm->max_order).
 
-Fixes: c70087e8f16f ("drm/drm_of: add drm_of_panel_bridge_remove function")
-Cc: stable@vger.kernel.org # v4.15
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patch.msgid.link/20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-1-8bad3ef90b9f@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Example scenarios:
+- 9G CONTIGUOUS allocation on 10G VRAM memory:
+  roundup_pow_of_two(9G) = 16G > 10G
+- 9G allocation with 8G min_block_size on 10G VRAM memory:
+  round_up(9G, 8G) = 16G > 10G
+
+Fix this by checking the rounded size against mm->size. For
+non-contiguous or range allocations where size > mm->size is invalid,
+return -EINVAL immediately. For contiguous allocations without range
+restrictions, allow the request to fall through to the existing
+__alloc_contig_try_harder() fallback.
+
+This ensures invalid user input returns an error or uses the fallback
+path instead of hitting BUG_ON.
+
+v2: (Matt A)
+- Add Fixes, Cc stable, and Closes tags for context
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6712
+Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
+Cc: <stable@vger.kernel.org> # v6.7+
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Suggested-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Link: https://patch.msgid.link/20260108113227.2101872-5-sanjay.kumar.yadav@intel.com
 ---
- include/drm/drm_of.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/drm_buddy.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/drm/drm_of.h b/include/drm/drm_of.h
-index 7f0256dae3f13..f3e55ea2174c0 100644
---- a/include/drm/drm_of.h
-+++ b/include/drm/drm_of.h
-@@ -5,6 +5,7 @@
- #include <linux/err.h>
- #include <linux/of_graph.h>
- #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
-+#include <linux/of.h>
- #include <drm/drm_bridge.h>
- #endif
+diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+index 8308116058cc1..fd34d3755f7c5 100644
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -1156,6 +1156,15 @@ int drm_buddy_alloc_blocks(struct drm_buddy *mm,
+ 	order = fls(pages) - 1;
+ 	min_order = ilog2(min_block_size) - ilog2(mm->chunk_size);
  
-@@ -173,6 +174,8 @@ static inline int drm_of_panel_bridge_remove(const struct device_node *np,
- 	bridge = of_drm_find_bridge(remote);
- 	drm_panel_bridge_remove(bridge);
- 
-+	of_node_put(remote);
++	if (order > mm->max_order || size > mm->size) {
++		if ((flags & DRM_BUDDY_CONTIGUOUS_ALLOCATION) &&
++		    !(flags & DRM_BUDDY_RANGE_ALLOCATION))
++			return __alloc_contig_try_harder(mm, original_size,
++							 original_min_size, blocks);
 +
- 	return 0;
- #else
- 	return -EINVAL;
++		return -EINVAL;
++	}
++
+ 	do {
+ 		order = min(order, (unsigned int)fls(pages) - 1);
+ 		BUG_ON(order > mm->max_order);
 -- 
 2.51.0
 
