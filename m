@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-222321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eF8xBuWfo2noIgUAu9opvQ
-	(envelope-from <stable+bounces-222321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:41 +0100
+	id 8P/jDeqfo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C20E1CD231
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700A11CD249
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B9BCD3067B36
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:03:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 67AAF3069E49
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCA52FDC27;
-	Sun,  1 Mar 2026 02:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684592FDC27;
+	Sun,  1 Mar 2026 02:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SPHUKhXO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCr+IIbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A163613B58A;
-	Sun,  1 Mar 2026 02:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C44113B58A;
+	Sun,  1 Mar 2026 02:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330591; cv=none; b=RhpLguJstTccFHc39D6RwHr8/UcOjjdSO6Cw9NEcKVjX5IaF9BmYhluUNzUQmsxRjhyFrW7n8f5H8in51QgNUgB4nNMr+aTuUV1Z/Gy2ZJTNibECmXHXk+CiHCrErUZu4LaS2HcXOjoU6AyIQE5P6b5SZUYcwjBiGTMyfPkUx9U=
+	t=1772330594; cv=none; b=ghdYhZMfEh6xyJ4G/p+MyJpgIlWMTjkk/Y1tTiD3r9LSV5KKK5FcMUUVVguzITY0kj8tycl+QXZQTORTVki3o75t2m1RMv08dD0lbOMazCrPLuX7cw+HEzTZUxwu5q+FDw+ZSca+feydoIGXs6KLncakJia5kQkhu7WWT8wHLWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330591; c=relaxed/simple;
-	bh=WU80f5l1RMCJl5rxGkTU++19cKKrmlmqqP103liP7DI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bpviAwtsGBPyFKLmIXNi50Ox8iCXY6lyYGIuqHCRzjn7ZRs7aQc6eSUdaZVuwwLFZHxPlVOfsdhD8kfJsh8fETGZFY1KqSJU0PitdjS40WilplZnIC9TPC3tpdEhULHjoHFHK+zJ/x6cjD2Rqk4A1vUkW3OIGXIQmIctemok/UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SPHUKhXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8D7C19424;
-	Sun,  1 Mar 2026 02:03:10 +0000 (UTC)
+	s=arc-20240116; t=1772330594; c=relaxed/simple;
+	bh=OCgSm9Dz4TygZ5WhD58rtVpczEmAwYpt2PIP7yJz1Fs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eIluogc/zpUi05e7QATs5vAZoEqq4+vmHoct7Qp4Y6AESY2Z3OLMK/YnPqhqc3GxNPofh7ERT9pH1wits6T0XZ9RXcsA9xE/uLI57PWOUerlLwgEfGxIuh761qHzTupdlAC1o8KuwTM5nrLhRAPdIcSCXe1zbIBYVgvpfVsLQVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCr+IIbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E30AC19421;
+	Sun,  1 Mar 2026 02:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330591;
-	bh=WU80f5l1RMCJl5rxGkTU++19cKKrmlmqqP103liP7DI=;
+	s=k20201202; t=1772330594;
+	bh=OCgSm9Dz4TygZ5WhD58rtVpczEmAwYpt2PIP7yJz1Fs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=SPHUKhXO44WWEJDrhRDvZK6kNVxe6iEWOWtY7IXwICw5RQX6/v3ZqTaeMWRMc+i4u
-	 v9yE5ZVYHcIeMNqO5fqaqx7rDTxxtWZ52qjhJYJsJr3iqyhDMRlx46PY0MJlVm0yzL
-	 pU85rO6H5hosGMbd16ZFkdoQEuIb2RIDc3DaiXAH1j8miS93uU3S5oxcN2WJ1c3beY
-	 MCu5mUoBLjsJkHLGipf3lgZct5a6IBIkmoTXqZC7Sd2OlmHPnM0GQruvUp8NclLVKk
-	 KusRjqiJZq2jwhFWQWJ47G6UGYLiXZgidaGRF0rvWeKoY8Xpv1wgNBf3zAtcq0JO3L
-	 Uvy92MKlLun8w==
+	b=UCr+IIbeYL2cwJlETcFZhA7MeMsnowTaOLSosejQeWF160Vj+IDySc6++FSeAGP2H
+	 wW18ApZ05Xlyfzr4Cxf0i+UTaVtg0N+2fhW8O1E53TEusZPhSK9Gbs5u9kuTHXJsGd
+	 XgF6WbVfIJwof7Fh1n8L5x/IrYgzuTNsxbQpb5u6jt4WN41826QS2IYGr3zdczupPw
+	 u38U4+u8AVguMGZKhr76QK0zJPsMT/94gextGTnQBaDqAuQRbcmty0xqhDy+MsPTeu
+	 IRgq5RZN6eqPMoeNmdwACVh2dPPLZ5cKsUffijjsMMQ+bndg1QC2RncLg5AoBecZcl
+	 /Ot3pviWiOo8Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jinbaohong@synology.com
-Cc: Qu Wenruo <wqu@suse.com>,
-	Robbie Ko <robbieko@synology.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	linux-btrfs@vger.kernel.org
-Subject: FAILED: Patch "btrfs: continue trimming remaining devices on failure" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:03:09 -0500
-Message-ID: <20260301020309.1731147-1-sashal@kernel.org>
+	thomasyen@google.com
+Cc: Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: FAILED: Patch "scsi: ufs: core: Flush exception handling work when RPM level is zero" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:03:11 -0500
+Message-ID: <20260301020312.1731206-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,13 +71,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222321-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222322-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -84,15 +85,15 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[synology.com:email,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8C20E1CD231
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,oracle.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,acm.org:email]
+X-Rspamd-Queue-Id: 700A11CD249
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -105,45 +106,50 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 912d1c6680bdb40b72b1b9204706f32b6eb842c3 Mon Sep 17 00:00:00 2001
-From: jinbaohong <jinbaohong@synology.com>
-Date: Wed, 28 Jan 2026 07:06:38 +0000
-Subject: [PATCH] btrfs: continue trimming remaining devices on failure
+From f8ef441811ec413717f188f63d99182f30f0f08e Mon Sep 17 00:00:00 2001
+From: Thomas Yen <thomasyen@google.com>
+Date: Fri, 30 Jan 2026 00:51:51 +0800
+Subject: [PATCH] scsi: ufs: core: Flush exception handling work when RPM level
+ is zero
 
-Commit 93bba24d4b5a ("btrfs: Enhance btrfs_trim_fs function to handle
-error better") intended to make device trimming continue even if one
-device fails, tracking failures and reporting them at the end. However,
-it used 'break' instead of 'continue', causing the loop to exit on the
-first device failure.
+Ensure that the exception event handling work is explicitly flushed during
+suspend when the runtime power management level is set to UFS_PM_LVL_0.
 
-Fix this by replacing 'break' with 'continue'.
+When the RPM level is zero, the device power mode and link state both
+remain active. Previously, the UFS core driver bypassed flushing exception
+event handling jobs in this configuration. This created a race condition
+where the driver could attempt to access the host controller to handle an
+exception after the system had already entered a deep power-down state,
+resulting in a system crash.
 
-Fixes: 93bba24d4b5a ("btrfs: Enhance btrfs_trim_fs function to handle error better")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Robbie Ko <robbieko@synology.com>
-Signed-off-by: jinbaohong <jinbaohong@synology.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Explicitly flush this work and disable auto BKOPs before the suspend
+callback proceeds. This guarantees that pending exception tasks complete
+and prevents illegal hardware access during the power-down sequence.
+
+Fixes: 57d104c153d3 ("ufs: add UFS power management support")
+Signed-off-by: Thomas Yen <thomasyen@google.com>
+Cc: Stable Tree <stable@vger.kernel.org>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260129165156.956601-1-thomasyen@google.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 ---
- fs/btrfs/extent-tree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index a91bce05ffb4c..b63296e9abf48 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -6688,7 +6688,7 @@ int btrfs_trim_fs(struct btrfs_fs_info *fs_info, struct fstrim_range *range)
- 		if (ret) {
- 			dev_failed++;
- 			dev_ret = ret;
--			break;
-+			continue;
- 		}
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 66223d2908532..8349fe2090db6 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -9998,6 +9998,8 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+ 
+ 	if (req_dev_pwr_mode == UFS_ACTIVE_PWR_MODE &&
+ 			req_link_state == UIC_LINK_ACTIVE_STATE) {
++		ufshcd_disable_auto_bkops(hba);
++		flush_work(&hba->eeh_work);
+ 		goto vops_suspend;
  	}
- 	mutex_unlock(&fs_devices->device_list_mutex);
+ 
 -- 
 2.51.0
 
