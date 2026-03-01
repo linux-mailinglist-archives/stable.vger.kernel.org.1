@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-221711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KL9PLayYo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221711-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:38:52 +0100
+	id QOt2OrGYo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:38:57 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501FA1CB398
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D081CB3A7
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:38:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1771B302B18F
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0E92F303DDC0
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B712EA498;
-	Sun,  1 Mar 2026 01:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C692ECE9B;
+	Sun,  1 Mar 2026 01:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HO0ANwvQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZAq7/EGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9972C11DE
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5866C2EB5A6;
+	Sun,  1 Mar 2026 01:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328954; cv=none; b=CmGLKiIydiMPqNQJHpiMctcJRLg97cYaM12QRZSu9vLeuzzPSqh5YontNNZNkzaXFf/c0Rskoye0RAPEOV5FotFUTgPzjwQH9dhJLTGDAXAN4KTAUBmHljieQfllSqec004atBg+qAJ6nMgngF5oTKSItRsBPh2sLH7DfPSoGEM=
+	t=1772328957; cv=none; b=ekqdOicm2qpLZYMTAqShOzpQXBRZm3RFrzpi7QWO2myqrJQ+a7iy8LJngBPJ29lPr4Dx7jIfwF9S2n+qNpwEw8ESOGF3lgsxaK0zX+uAqnyOWC1mSY7CL8u24NsmBpXPKmRiODT0icudt4Ev6xkVRghPkiwbHfxb96fLrA+5on4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328954; c=relaxed/simple;
-	bh=ohj4DoCarwyjJRCMadR2LGn2TfMpTMhKMWSsqNw+PLE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=omuyjBCEkZSc1C1WAkwN9/U4Nc883jpPyy7jt0oe8HqTZMvjzcR6IWUjAQ/U7/dnl3nXGFKx4u22jw3qy1KUmZE6jUuchHaYw8wyVrE6fVcD8LEumPPxT4BFuxtH3nxmZOnyfU5q0w8Ymc1RwaHN9muay8OfxhXmGhQqeGPN8OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HO0ANwvQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADB2C19421;
-	Sun,  1 Mar 2026 01:35:53 +0000 (UTC)
+	s=arc-20240116; t=1772328957; c=relaxed/simple;
+	bh=FHqyZkrjy3NcVknmPYcrwFCsqm9qJ28GFnOBVinlato=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fMmpdCqb6AEnnzuV6CYBIEJBZnK4iRvEsBkmduKVboi6CkBAn2OIVAn/Rh9H/yCycZF8VUIW1jHBNf4VduTY3+Rn1ZLulXgu5o2lTxGHey3ViHgtk4HOcEB8N6TPoGw+CErOf0RF0MMXbyOu3NXqfQGPfLtIAG3SyQuYSVfrj5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZAq7/EGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2889FC19421;
+	Sun,  1 Mar 2026 01:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328954;
-	bh=ohj4DoCarwyjJRCMadR2LGn2TfMpTMhKMWSsqNw+PLE=;
+	s=k20201202; t=1772328957;
+	bh=FHqyZkrjy3NcVknmPYcrwFCsqm9qJ28GFnOBVinlato=;
 	h=From:To:Cc:Subject:Date:From;
-	b=HO0ANwvQTB1PbQwhOQEUmo+CjWt7vI0IePcIjr4sMvnuCOkVtv2kFlnMbXHjbxHRE
-	 FmOnVNMBXpU6DOaZmKH3o3M3W+lJEZ4JfuO3UdEm2gUtenqzITZIJvAJd+a/+cUjCS
-	 yt5Q+62t7elEacS4U4kM6VZjtgZZ5DM/QhGvnlJ1tHycK7s2Wkm9dP9TFPsKVdk16T
-	 pKepK7UdmfRLD2v+i4avyMSISLBxhdqZWpVxGyimLKpq3GD1zRZIAr7pNqWW39dh0u
-	 ePl0gfqawcMUdvRHGg7Q3963QNBKaXN1P2B0sVVFMQOMSzSVCJU/8Yvlu6HhfpAFXr
-	 jHFDSYrXZHglw==
+	b=ZAq7/EGXclWaVRoq8g9sNeHuAmW72ouyq6llxOLQpwVnt/vLNbVd80GxlVMzPhuVv
+	 SQj5E9C8+qXPzGtHXsF9keyxBCyw13qcceX6Apgyzt/C+QuGB6TfcqQineS+hy1zJ+
+	 FOt27A+lswwMSYuG1PvOhv0CLeLOtH5QopUpAoEcb9H63J5kaMADM8o9BBiszbcard
+	 n7RRkTC2M47SqdIKRylNZ641kp+J0px8Br2k83DFlRqaWGSRAa2vvKpygMhoOiDyCo
+	 22LxR6WrCXG7MAKbrYPSV9xhQv13YEBy+KfNohG1jYKYtrt1dO9Du+bZSj1njdT5dR
+	 t+VrQnI7dHWrw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	lihaoxiang@isrc.iscas.ac.cn
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>
-Subject: FAILED: Patch "rapidio: replace rio_free_net() with kfree() in rio_scan_alloc_net()" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:35:52 -0500
-Message-ID: <20260301013552.1695686-1-sashal@kernel.org>
+	heming.zhao@suse.com
+Cc: Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	ocfs2-devel@lists.linux.dev,
+	linux-hardening@vger.kernel.org
+Subject: FAILED: Patch "ocfs2: fix reflink preserve cleanup issue" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:35:54 -0500
+Message-ID: <20260301013555.1695736-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,35 +69,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[fasheh.com,evilplan.org,oracle.com,gmail.com,live.cn,huawei.com,linux-foundation.org,lists.linux.dev,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221712-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221711-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,kernel.crashing.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 501FA1CB398
+X-Rspamd-Queue-Id: 55D081CB3A7
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -104,42 +109,50 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 666183dcdd9ad3b8156a1df7f204f728f720380f Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Wed, 21 Jan 2026 09:35:08 +0800
-Subject: [PATCH] rapidio: replace rio_free_net() with kfree() in
- rio_scan_alloc_net()
+From 5138c936c2c82c9be8883921854bc6f7e1177d8c Mon Sep 17 00:00:00 2001
+From: Heming Zhao <heming.zhao@suse.com>
+Date: Wed, 10 Dec 2025 09:57:24 +0800
+Subject: [PATCH] ocfs2: fix reflink preserve cleanup issue
 
-When idtab allocation fails, net is not registered with rio_add_net() yet,
-so kfree(net) is sufficient to release the memory.  Set mport->net to NULL
-to avoid dangling pointer.
+commit c06c303832ec ("ocfs2: fix xattr array entry __counted_by error")
+doesn't handle all cases and the cleanup job for preserved xattr entries
+still has bug:
+- the 'last' pointer should be shifted by one unit after cleanup
+  an array entry.
+- current code logic doesn't cleanup the first entry when xh_count is 1.
 
-Link: https://lkml.kernel.org/r/20260121013508.195836-1-lihaoxiang@isrc.iscas.ac.cn
-Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
+Note, commit c06c303832ec is also a bug fix for 0fe9b66c65f3.
+
+Link: https://lkml.kernel.org/r/20251210015725.8409-2-heming.zhao@suse.com
+Fixes: 0fe9b66c65f3 ("ocfs2: Add preserve to reflink.")
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/rapidio/rio-scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ocfs2/xattr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/rapidio/rio-scan.c b/drivers/rapidio/rio-scan.c
-index c12941f71e2cb..dcd6619a4b027 100644
---- a/drivers/rapidio/rio-scan.c
-+++ b/drivers/rapidio/rio-scan.c
-@@ -854,7 +854,8 @@ static struct rio_net *rio_scan_alloc_net(struct rio_mport *mport,
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index 5fd85f5178689..e434a62dd69f9 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -6395,6 +6395,10 @@ static int ocfs2_reflink_xattr_header(handle_t *handle,
+ 					(void *)last - (void *)xe);
+ 				memset(last, 0,
+ 				       sizeof(struct ocfs2_xattr_entry));
++				last = &new_xh->xh_entries[le16_to_cpu(new_xh->xh_count)] - 1;
++			} else {
++				memset(xe, 0, sizeof(struct ocfs2_xattr_entry));
++				last = NULL;
+ 			}
  
- 		if (idtab == NULL) {
- 			pr_err("RIO: failed to allocate destID table\n");
--			rio_free_net(net);
-+			kfree(net);
-+			mport->net = NULL;
- 			net = NULL;
- 		} else {
- 			net->enum_data = idtab;
+ 			/*
 -- 
 2.51.0
 
