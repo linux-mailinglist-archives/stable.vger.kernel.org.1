@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-221663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GACTGAKbo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221663-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:50 +0100
+	id SCC7LNmao2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688BC1CBD92
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 559791CBCC5
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5A27B303843F
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C7F23225B9B
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7E02DB7B7;
-	Sun,  1 Mar 2026 01:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E8F28FFFB;
+	Sun,  1 Mar 2026 01:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fLMt2QnN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i4/4Vw/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40141E0B86;
-	Sun,  1 Mar 2026 01:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6301E0B86;
+	Sun,  1 Mar 2026 01:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328832; cv=none; b=HMY+C7euS7OdFf+dGbKM6Ppze9Meeh8BN/I4e7FX0t1ahdhYzsMSpxtjUPMXFBgjn/u7dlLkN/cNxCGLOfEAHGTe9ky5z2dn/FnqxfFE3kfcFJiITHrfb81yAth35DP4RMMZH7WabuyTOTbeqpaVCcuPvuQeMkW3GV+YBDX4jlI=
+	t=1772328834; cv=none; b=L1+2GlWGH5djVOOf+qI6IlDoISBK0Ggb3lpMs/WwrfQfwZm2H8vxZ3jgYxQs7PGLWqya2u2tGnhMy1jdJdXadOvrWCWn9mVZsHvbkXtK88f/ThPDy+7xkERRBbqExaHyFP71y4N4AD6IdMb5D+4Esu5yT5kwl/pZeEVNEZun400=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328832; c=relaxed/simple;
-	bh=xCgUwPogV42OkBJoUqReJ5nIgdvO6C+Voz98jiui1AI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h8e1CwJRmXIDMAwf1QzMRmESmiDz+/EYhvGVbZWkGS8iqgIBHtSSZdziRvUcxuGwcs81L6wdViykrHfkPOcLQVwT1G2NppfLlMUFOv45L0EDvIlbeq0BKRntMOYDtGDBeoUOhY1FKLqyg5NyfWdL8/v2Wf7aPQv1UK8IjBOj0J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fLMt2QnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1368C19421;
-	Sun,  1 Mar 2026 01:33:50 +0000 (UTC)
+	s=arc-20240116; t=1772328834; c=relaxed/simple;
+	bh=d6h7B37TyLSlc0xF2POy+QzXfB5ZoddwmViLl5/odXY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kkXI+dL/4Prn8aPFrLzdhJPlvBEHgA3OVLxavFsfEPFzyfLc90U1RdkZFTvd19bIWoGuhT7jbQkih+T5J7OAbig8MJjQ4szsl1KgUbA+PvCqPW6BpfbvY3Ln/cPXYMhWqXz9/dZcjBWs6UbWduAh0iyyfSL9TByPziBD6I0yXxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i4/4Vw/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BACC19421;
+	Sun,  1 Mar 2026 01:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328831;
-	bh=xCgUwPogV42OkBJoUqReJ5nIgdvO6C+Voz98jiui1AI=;
+	s=k20201202; t=1772328834;
+	bh=d6h7B37TyLSlc0xF2POy+QzXfB5ZoddwmViLl5/odXY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=fLMt2QnNSnJMiKHYBeAjaM5al+awyjRu0DQCvnyjURPsRNrw1cDayFOHe5w4U/z2W
-	 o44N0/QN8wikZvUYt8e0KTcwB1ZKpy1DFpLdmSc7eS8P3JM1gcyhwkD7xPEJBLg6ZU
-	 U8PvUsI0mbnvAh7OeCpQMEf/NBSzt1axNmbfMAs5P+G0ooIGbLJVkGzVvbVgRFncTY
-	 Tk9sidPRjebKOD5d9R0q814g0B7+KwpnItAhWvziOECwejs5nGx+g5Oyal10BRgmIL
-	 HxaTQFbaUylscPr+0jfrhTwHKG6sIBwdJk11FdxJNMQbjZGFJIJmMYis7kZc0ZgCpm
-	 MIb/Ojv0aLNMg==
+	b=i4/4Vw/ObLFs99uUbpjoqc23fVAq3jG4ke2K+aAwNjBLEKZg2HWG0vtwubZsoFyQ8
+	 RmxCcHpl1kDYpY/EiYh4V7hC6TFwZKdRaZlF1xCXf4SRFqXZsPu+irvKojEqCruMQk
+	 yh32+F3cnb1Sf9Onsydx4G7xq33YQfMJxczIYbudRw4t9nrR6ed2cLkC+5wuEl2iGn
+	 fObTzRFpJgvyFLF+FOY+cU6kHOSMK5YQWsrzbmgwEG9ZUiId26+qzKZPgAQphP1QaO
+	 VHlPI0wF/B8guph2xHCDQgehQCWwQUATgYDH6GSUsCPTj5kvKzxIeCcHFVw9mSW/3i
+	 kePx9/zN97JMw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	liwang@redhat.com
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: FAILED: Patch "selftests/mm/charge_reserved_hugetlb: drop mount size for hugetlbfs" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:33:49 -0500
-Message-ID: <20260301013349.1693131-1-sashal@kernel.org>
+	djwong@kernel.org
+Cc: Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>,
+	linux-xfs@vger.kernel.org
+Subject: FAILED: Patch "xfs: mark data structures corrupt on EIO and ENODATA" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:33:52 -0500
+Message-ID: <20260301013352.1693181-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,33 +64,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221663-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221664-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:email,charge_reserved_hugetlb.sh:url]
-X-Rspamd-Queue-Id: 688BC1CBD92
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email]
+X-Rspamd-Queue-Id: 559791CBCC5
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -107,88 +103,80 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1aa1dd9cc595917882fb6db67725442956f79607 Mon Sep 17 00:00:00 2001
-From: Li Wang <liwang@redhat.com>
-Date: Sun, 21 Dec 2025 20:26:38 +0800
-Subject: [PATCH] selftests/mm/charge_reserved_hugetlb: drop mount size for
- hugetlbfs
+From f39854a3fb2f06dc69b81ada002b641ba5b4696b Mon Sep 17 00:00:00 2001
+From: "Darrick J. Wong" <djwong@kernel.org>
+Date: Thu, 18 Dec 2025 18:40:50 -0800
+Subject: [PATCH] xfs: mark data structures corrupt on EIO and ENODATA
 
-charge_reserved_hugetlb.sh mounts a hugetlbfs instance at /mnt/huge with a
-fixed size of 256M.  On systems with large base hugepages (e.g.  512MB),
-this is smaller than a single hugepage, so the hugetlbfs mount ends up
-with zero capacity (often visible as size=0 in mount output).
+I learned a few things this year: first, blk_status_to_errno can return
+ENODATA for critical media errors; and second, the scrub code doesn't
+mark data structures as corrupt on ENODATA or EIO.
 
-As a result, write_to_hugetlbfs fails with ENOMEM and the test can hang
-waiting for progress.
+Currently, scrub failing to capture these errors isn't all that
+impactful -- the checking code will exit to userspace with EIO/ENODATA,
+and xfs_scrub will log a complaint and exit with nonzero status.  Most
+people treat fsck tools failing as a sign that the fs is corrupt, but
+online fsck should mark the metadata bad and keep moving.
 
-=== Error log ===
-  # uname -r
-  6.12.0-xxx.el10.aarch64+64k
-
-  #./charge_reserved_hugetlb.sh -cgroup-v2
-  # -----------------------------------------
-  ...
-  # nr hugepages = 10
-  # writing cgroup limit: 5368709120
-  # writing reseravation limit: 5368709120
-  ...
-  # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
-  # Waiting for hugetlb memory reservation to reach size 2684354560.
-  # 0
-  # Waiting for hugetlb memory reservation to reach size 2684354560.
-  # 0
-  ...
-
-  # mount |grep /mnt/huge
-  none on /mnt/huge type hugetlbfs (rw,relatime,seclabel,pagesize=512M,size=0)
-
-  # grep -i huge /proc/meminfo
-  ...
-  HugePages_Total:      10
-  HugePages_Free:       10
-  HugePages_Rsvd:        0
-  HugePages_Surp:        0
-  Hugepagesize:     524288 kB
-  Hugetlb:         5242880 kB
-
-Drop the mount args with 'size=256M', so the filesystem capacity is sufficient
-regardless of HugeTLB page size.
-
-Link: https://lkml.kernel.org/r/20251221122639.3168038-3-liwang@redhat.com
-Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
-Signed-off-by: Li Wang <liwang@redhat.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # v4.15
+Fixes: 4700d22980d459 ("xfs: create helpers to record and deal with scrub problems")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 ---
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/xfs/scrub/btree.c   | 2 ++
+ fs/xfs/scrub/common.c  | 4 ++++
+ fs/xfs/scrub/dabtree.c | 2 ++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index e1fe16bcbbe88..fa6713892d82d 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -290,7 +290,7 @@ function run_test() {
-   setup_cgroup "hugetlb_cgroup_test" "$cgroup_limit" "$reservation_limit"
- 
-   mkdir -p /mnt/huge
--  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
-+  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
- 
-   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test" "$size" "$populate" \
-     "$write" "/mnt/huge/test" "$method" "$private" "$expect_failure" \
-@@ -344,7 +344,7 @@ function run_multiple_cgroup_test() {
-   setup_cgroup "hugetlb_cgroup_test2" "$cgroup_limit2" "$reservation_limit2"
- 
-   mkdir -p /mnt/huge
--  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
-+  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
- 
-   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test1" "$size1" \
-     "$populate1" "$write1" "/mnt/huge/test1" "$method" "$private" \
+diff --git a/fs/xfs/scrub/btree.c b/fs/xfs/scrub/btree.c
+index 8ba004979862f..40f36db9f07d5 100644
+--- a/fs/xfs/scrub/btree.c
++++ b/fs/xfs/scrub/btree.c
+@@ -42,6 +42,8 @@ __xchk_btree_process_error(
+ 		break;
+ 	case -EFSBADCRC:
+ 	case -EFSCORRUPTED:
++	case -EIO:
++	case -ENODATA:
+ 		/* Note the badness but don't abort. */
+ 		sc->sm->sm_flags |= errflag;
+ 		*error = 0;
+diff --git a/fs/xfs/scrub/common.c b/fs/xfs/scrub/common.c
+index 38d0b7d5c894b..affed35a8c96f 100644
+--- a/fs/xfs/scrub/common.c
++++ b/fs/xfs/scrub/common.c
+@@ -103,6 +103,8 @@ __xchk_process_error(
+ 		break;
+ 	case -EFSBADCRC:
+ 	case -EFSCORRUPTED:
++	case -EIO:
++	case -ENODATA:
+ 		/* Note the badness but don't abort. */
+ 		sc->sm->sm_flags |= errflag;
+ 		*error = 0;
+@@ -177,6 +179,8 @@ __xchk_fblock_process_error(
+ 		break;
+ 	case -EFSBADCRC:
+ 	case -EFSCORRUPTED:
++	case -EIO:
++	case -ENODATA:
+ 		/* Note the badness but don't abort. */
+ 		sc->sm->sm_flags |= errflag;
+ 		*error = 0;
+diff --git a/fs/xfs/scrub/dabtree.c b/fs/xfs/scrub/dabtree.c
+index dd14f355358ca..5858d4d5e279b 100644
+--- a/fs/xfs/scrub/dabtree.c
++++ b/fs/xfs/scrub/dabtree.c
+@@ -45,6 +45,8 @@ xchk_da_process_error(
+ 		break;
+ 	case -EFSBADCRC:
+ 	case -EFSCORRUPTED:
++	case -EIO:
++	case -ENODATA:
+ 		/* Note the badness but don't abort. */
+ 		sc->sm->sm_flags |= XFS_SCRUB_OFLAG_CORRUPT;
+ 		*error = 0;
 -- 
 2.51.0
 
