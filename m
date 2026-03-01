@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-221279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNiaJQCUo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:18:56 +0100
+	id 6JflMI6Uo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:21:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292FA1CA25C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:18:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCFB1CA3F7
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:21:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 11F68302C36F
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:17:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 771813055838
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5371125228C;
-	Sun,  1 Mar 2026 01:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8EE244665;
+	Sun,  1 Mar 2026 01:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s+Wk4Bdh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o9epFzzR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C512472A6;
-	Sun,  1 Mar 2026 01:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8059FC8F0;
+	Sun,  1 Mar 2026 01:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327871; cv=none; b=uHCwK/Zuqy+rh5Mgx3Fj4PWPiogZ+MELyfEMM8+pxDwVTMU+iWCIomU27KOxMRHeSgMf4D/b9D63KoSSMAaxHeQxuvC9jEyx2GQbG4W+UZMJWD85/hbCCaJB9cRNXNY90OfvWQMjRU/Bq3BOZnre5m5MaRszdJsQGjUcu3+2jAQ=
+	t=1772327873; cv=none; b=qK9w1YfPj6aszX5md0NjTcT8Q0lUubelL6A+Y7aI38WMFv7Gw22gRKk1+NO4CML0YWeKe8WnJAURCbfB23gh5sgit9c+ld0uA+zFrSJw6pnB7NRuB7+cuMj+5FY3ULjORGwAyM67QNYzeotVmHYV42yKQvestKwQLtXCihPLUOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327871; c=relaxed/simple;
-	bh=ZNx1Src5DyMhIFcNsTdBGZj9lJxXjAkxpLCfYHFxMic=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cb9WdNGO/vyRhQeZL1udyJajq1sCoT65Mzu2bik4Ne7pgxw8WvcGDE4DGi6G1+eCXbca9sG3ZTYkxX5UGI2M1Neu6Ue2ZwTgYqQmMmsE7FWXSXZsLC+Ky2UpGz2yE8LnaoUNV1uaMlJ8BbORDLyzHfNC1KmulnP5iUezF0fhz+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s+Wk4Bdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F0BC19425;
-	Sun,  1 Mar 2026 01:17:50 +0000 (UTC)
+	s=arc-20240116; t=1772327873; c=relaxed/simple;
+	bh=637j4WVCCchTClFwqFEVLHakjn0wpO08whm57q8uveI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cKRLEQvQyLPp6yGQ6Y1iVmy0/TwiPPJsBnpkGGmMxkTHTu6M2zgZ6DmXnT46JMHBHQEs38pP22KtxYpVQzWsD7VrynCWZfEVpO9NC/eUjAWkBZrdDZPrlOg/k1Jq8+e80P9DDTb/c5EX2ZzfetavCXx2bRZXAMu76SkXKhEGPLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o9epFzzR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDDBC19421;
+	Sun,  1 Mar 2026 01:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327870;
-	bh=ZNx1Src5DyMhIFcNsTdBGZj9lJxXjAkxpLCfYHFxMic=;
+	s=k20201202; t=1772327873;
+	bh=637j4WVCCchTClFwqFEVLHakjn0wpO08whm57q8uveI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=s+Wk4BdhHn2LilFR35CQo1FgUDfPp0XdnlfLOSCJz5KHFCkAXrkKy2YgQ+ihz6IIg
-	 z2wywEZ0nLdeILwx29gOuJb6L1YjJkAD+lJplDNfD71PqAxVJ84+e/TIv7BWUn2m+v
-	 miNtU3D94yB1nqV2gUrGUMcHAXd18ZX1ZGYl8PYYR/ZDz4xc0wJVDwZjtaLCdQ9lSr
-	 0nfEyuTV4Aqts68iV6PRexumpgqaD3+G1Xn7WEGTThOeSLzJYBOQTzpYt+198rs5ju
-	 TozZ2XZbYc/quooMia/RXsXzSqKDw43KFqNnDbdqGbrFA63OaUOKobK6Z7J0tCs5h1
-	 OuM3UtnjSztdQ==
+	b=o9epFzzRck9Xb35FfQj3K2O25cuR9/tBeQZXN4AOpI6MYt94b1ePlNQERHiBhrxUm
+	 OuqvWGU5Ub4WWoP8w0D1qB8u2rWfR3R/6ymsTefSosptfLIsVs+Hi9tymPvtKKugYx
+	 KqYjSFmaCeGtq4xofnh6NXJjSjP6g6aRtn/crsufKtw/ZhYEonzXnKbOciOl1jqyNP
+	 D5qrjptNZM+4FSSgp1qH/TqQGTLScli5HZ52GIHscAxxHnEY3wZlbnhhaK0h+GLIu7
+	 QYzI0oGrkbnQHJ9+2yVJkb39WsbQbJ6WVrDWzljt5ytavk/p9cfc7HINGu0iMwLmpk
+	 1fH502K8DFaAw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	enelsonmoore@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: arcnet: com20020-pci: fix support for 2.5Mbit cards" failed to apply to 6.18-stable tree
-Date: Sat, 28 Feb 2026 20:17:48 -0500
-Message-ID: <20260301011749.1671856-1-sashal@kernel.org>
+	yazen.ghannam@amd.com
+Cc: Michal Pecio <michal.pecio@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+	linux-acpi@vger.kernel.org
+Subject: FAILED: Patch "x86/acpi/boot: Correct acpi_is_processor_usable() check again" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:17:51 -0500
+Message-ID: <20260301011751.1671911-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,38 +65,39 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221279-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,alien8.de,kernel.org,linux.intel.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221280-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 292FA1CA25C
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,intel.com:email,alien8.de:email]
+X-Rspamd-Queue-Id: EFCFB1CA3F7
 X-Rspamd-Action: no action
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
@@ -104,79 +107,131 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From c7d9be66b71af490446127c6ffcb66d6bb71b8b9 Mon Sep 17 00:00:00 2001
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Thu, 12 Feb 2026 20:55:09 -0800
-Subject: [PATCH] net: arcnet: com20020-pci: fix support for 2.5Mbit cards
+From adbf61cc47cb72b102682e690ad323e1eda652c2 Mon Sep 17 00:00:00 2001
+From: Yazen Ghannam <yazen.ghannam@amd.com>
+Date: Tue, 11 Nov 2025 14:53:57 +0000
+Subject: [PATCH] x86/acpi/boot: Correct acpi_is_processor_usable() check again
 
-Commit 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
-converted the com20020-pci driver to use a card info structure instead
-of a single flag mask in driver_data. However, it failed to take into
-account that in the original code, driver_data of 0 indicates a card
-with no special flags, not a card that should not have any card info
-structure. This introduced a null pointer dereference when cards with
-no flags were probed.
+ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
+used in conjunction with the "Enabled" MADT LAPIC flag to determine if
+a CPU can be enabled/hotplugged by the OS after boot.
 
-Commit bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in
-com20020pci_probe()") then papered over this issue by rejecting cards
-with no driver_data instead of resolving the problem at its source.
+Before the new bit was defined, the "Enabled" bit was explicitly
+described like this (ACPI v6.0 wording provided):
 
-Fix the original issue by introducing a new card info structure for
-2.5Mbit cards that does not set any flags and using it if no
-driver_data is present.
+  "If zero, this processor is unusable, and the operating system
+  support will not attempt to use it"
 
-Fixes: 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
-Fixes: bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in com20020pci_probe()")
+This means that CPU hotplug (based on MADT) is not possible. Many BIOS
+implementations follow this guidance. They may include LAPIC entries in
+MADT for unavailable CPUs, but since these entries are marked with
+"Enabled=0" it is expected that the OS will completely ignore these
+entries.
+
+However, QEMU will do the same (include entries with "Enabled=0") for
+the purpose of allowing CPU hotplug within the guest.
+
+Comment from QEMU function pc_madt_cpu_entry():
+
+  /* ACPI spec says that LAPIC entry for non present
+   * CPU may be omitted from MADT or it must be marked
+   * as disabled. However omitting non present CPU from
+   * MADT breaks hotplug on linux. So possible CPUs
+   * should be put in MADT but kept disabled.
+   */
+
+Recent Linux topology changes broke the QEMU use case. A following fix
+for the QEMU use case broke bare metal topology enumeration.
+
+Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
+for guests and to maintain the ACPI spec behavior for bare metal.
+
+Remove an unnecessary check added to fix a bare metal case introduced by
+the QEMU "fix".
+
+  [ bp: Change logic as Michal suggested. ]
+  [ mingo: Removed misapplied -stable tag. ]
+
+Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check")
+Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present package")
+Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.com
+Reported-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
 Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Link: https://patch.msgid.link/20260213045510.32368-1-enelsonmoore@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 ---
- drivers/net/arcnet/com20020-pci.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
+ arch/x86/kernel/cpu/topology.c | 15 ---------------
+ 2 files changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-index 19e411b2e3a77..dbadda08dce23 100644
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -115,6 +115,8 @@ static const struct attribute_group com20020_state_group = {
- 	.attrs = com20020_state_attrs,
- };
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 9fa321a95eb33..d6138b2b633a3 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -35,6 +35,7 @@
+ #include <asm/smp.h>
+ #include <asm/i8259.h>
+ #include <asm/setup.h>
++#include <asm/hypervisor.h>
  
-+static struct com20020_pci_card_info card_info_2p5mbit;
-+
- static void com20020pci_remove(struct pci_dev *pdev);
+ #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
+ static int __initdata acpi_force = 0;
+@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_flags)
+ 	if (lapic_flags & ACPI_MADT_ENABLED)
+ 		return true;
  
- static int com20020pci_probe(struct pci_dev *pdev,
-@@ -140,7 +142,7 @@ static int com20020pci_probe(struct pci_dev *pdev,
+-	if (!acpi_support_online_capable ||
+-	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
+-		return true;
++	if (acpi_support_online_capable)
++		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
  
- 	ci = (struct com20020_pci_card_info *)id->driver_data;
- 	if (!ci)
--		return -EINVAL;
-+		ci = &card_info_2p5mbit;
+-	return false;
++	/*
++	 * QEMU expects legacy "Enabled=0" LAPIC entries to be counted as usable
++	 * in order to support CPU hotplug in guests.
++	 */
++	return !hypervisor_is_type(X86_HYPER_NATIVE);
+ }
  
- 	priv->ci = ci;
- 	mm = &ci->misc_map;
-@@ -347,6 +349,18 @@ static struct com20020_pci_card_info card_info_5mbit = {
- 	.flags = ARC_IS_5MBIT,
- };
+ static int __init
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index f55ea3cdbf88e..23190a786d310 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -27,7 +27,6 @@
+ #include <xen/xen.h>
  
-+static struct com20020_pci_card_info card_info_2p5mbit = {
-+	.name = "ARC-PCI",
-+	.devcount = 1,
-+	.chan_map_tbl = {
-+		{
-+			.bar = 2,
-+			.offset = 0x00,
-+			.size = 0x08,
-+		},
-+	},
-+};
-+
- static struct com20020_pci_card_info card_info_sohard = {
- 	.name = "SOHARD SH ARC-PCI",
- 	.devcount = 1,
+ #include <asm/apic.h>
+-#include <asm/hypervisor.h>
+ #include <asm/io_apic.h>
+ #include <asm/mpspec.h>
+ #include <asm/msr.h>
+@@ -236,20 +235,6 @@ static __init void topo_register_apic(u32 apic_id, u32 acpi_id, bool present)
+ 		cpuid_to_apicid[cpu] = apic_id;
+ 		topo_set_cpuids(cpu, apic_id, acpi_id);
+ 	} else {
+-		u32 pkgid = topo_apicid(apic_id, TOPO_PKG_DOMAIN);
+-
+-		/*
+-		 * Check for present APICs in the same package when running
+-		 * on bare metal. Allow the bogosity in a guest.
+-		 */
+-		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
+-		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
+-			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
+-				     apic_id);
+-			topo_info.nr_rejected_cpus++;
+-			return;
+-		}
+-
+ 		topo_info.nr_disabled_cpus++;
+ 	}
+ 
 -- 
 2.51.0
 
