@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221921-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IeOOOqdo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221920-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:14 +0100
+	id gH0gLTqbo2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221921-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EA361CC9F0
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6F71CBE9C
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D6263112588
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:44:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 19C1E3070B9C
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60312DECCB;
-	Sun,  1 Mar 2026 01:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351C92E06E6;
+	Sun,  1 Mar 2026 01:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdBkSaBV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ggw4yKIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97652D948A;
-	Sun,  1 Mar 2026 01:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF4B2D9484
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329462; cv=none; b=TDjpdMUpqv7qGXo2g3L7ms7TE0bPBLmser873bXT13L1ulPtHf4IGQZ7mWVdKtDQfLinxYdZVE/EBOUHby5u9oVlClb2FkodyB66TF/xjP6pMcZPJAaT1iJE7E5vYEhOiKgmAjdmgNx22TKg1TvCyPuQwqOEfbMk4gpXUlpjEuY=
+	t=1772329465; cv=none; b=OfsvyFjLtMNRZarFHEPArkMmlL5TiG7JenN26c5zbNn0WtrxZ4UMAqosLCOQHqqaiLG6fboMjbqKf8Rdowqlr7P5Y79VZ+THlLjW94ODI4FQt/sT8bVrXbAlz61I6SfuzkZp6Kg+JmWBQ4gvDfP9drisgtQ/LcpCjTy3EgUIA20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329462; c=relaxed/simple;
-	bh=7kFMypEo0miwfr9ouPQ1cW9YogqbGEvmRjmx6PHQVrQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lUN2pkuMteG7UMWuVwKVJ1lfUayBRIozo+jj7fnk/BQ+ulrfNG1RkuCSWP3x1MU4igjMaa8rAmsLtXU2mFTcP6sqY04CFQyCOAAHOZbJhmos4zQ3JDLoXCPeajMKGTLOGgoZGUxtECqOaBJ2c4ygGICv7ZMy+iA/D99PL4fR2kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdBkSaBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EEDC19421;
-	Sun,  1 Mar 2026 01:44:21 +0000 (UTC)
+	s=arc-20240116; t=1772329465; c=relaxed/simple;
+	bh=XoA7in5yZn4JoNSojI/rGTgznURkwgyR3C7uNZAnx3w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zrw0cTR3gu6ZqE6NbU8CNa9tI2YI9HfNE/q5YerXY+qWeqqKWYJeD4VgHj9KcmJcADqVraU8VHcVucrAJ7cjulztfo1c/up+STUjn407azUtUIgvr3rTGKIzMMwRqFbgzmD48mAmE6EUgPfp+G+xM55YeW2caIXBPLKhrtdIovY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ggw4yKIs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A477C19421;
+	Sun,  1 Mar 2026 01:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329462;
-	bh=7kFMypEo0miwfr9ouPQ1cW9YogqbGEvmRjmx6PHQVrQ=;
+	s=k20201202; t=1772329464;
+	bh=XoA7in5yZn4JoNSojI/rGTgznURkwgyR3C7uNZAnx3w=;
 	h=From:To:Cc:Subject:Date:From;
-	b=OdBkSaBVc2PD3P+EMpK3XZh/lwHP6Ei9NYJM+WG+TLQ1zfiVWq4U6zIijBstpdyYd
-	 isvcfar6i9QHZsBZDuFAEUCkGe6uAHi96k6i8uyoreTlv4Bbku0yJ+k9GtkVkRhVXo
-	 hNNxkNxS2jIqBakMZUxQjWxhpHP5KIptVibGsbP1rgwkVBKhhWFBOqItNTqd+07f59
-	 04Xp2/tPGppKYA7jMTE7As6mqS+i6do+jg6tIq9u/VnhAP1BMlETUCtM2I6Vj0MdtO
-	 B4sVgkiqxQe23Fwh25almqUlXJHdSKGwRnfLBSd8M/yt4MF52O66t68YRrthjqFRBA
-	 lofIjLWYJKZYw==
+	b=Ggw4yKIsdDpHCFVu4C49N8bjRpVD4znaegpWz4Kaax/dAu/tLUn9LbgZk2SIFqAqF
+	 o3pyN37ga0ClMlzRqE19ctAFwdDqyjcqKgFaBE5MUgh/q0TXVW5WhIoC4V5+tTm8jd
+	 c4nx9sF6qjk7axg+4XyLDAPZpUa3dIW8IsQndVcrXDbBIHay6Py15jU+XSUiYS2r6J
+	 CvkacOufgPmCaMQKK2uEuKJ5aV1fYwAnIHZiNLJljuJl69Aws2XoJImygPheXXdT0X
+	 96wVeeiHtm3C7fwaXuxVk8GFPiWeioGPeZFOFcR+DZIUMZ671MK+rBHz9GNzEvRSbJ
+	 wkPjSQzsvsIcg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	zenmchen@gmail.com
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	linux-bluetooth@vger.kernel.org
-Subject: FAILED: Patch "Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:44:20 -0500
-Message-ID: <20260301014420.1706579-1-sashal@kernel.org>
+	lgs201920130244@gmail.com
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: FAILED: Patch "powerpc/smp: Add check for kcalloc() failure in parse_thread_groups()" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:44:22 -0500
+Message-ID: <20260301014423.1706624-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,13 +68,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221920-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221921-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -86,12 +86,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mpg.de:email]
-X-Rspamd-Queue-Id: 5EA361CC9F0
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[csgroup.eu:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5F6F71CBE9C
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -104,81 +104,38 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6c0568b7741a346088fd6dfced2d871f7d481d06 Mon Sep 17 00:00:00 2001
-From: Zenm Chen <zenmchen@gmail.com>
-Date: Thu, 29 Jan 2026 10:28:19 +0800
-Subject: [PATCH] Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
+From 33c1c6d8a28a2761ac74b0380b2563cf546c2a3a Mon Sep 17 00:00:00 2001
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Tue, 23 Sep 2025 21:32:35 +0800
+Subject: [PATCH] powerpc/smp: Add check for kcalloc() failure in
+ parse_thread_groups()
 
-Add USB ID 7392:e611 for Edimax EW-7611UXB which is RTL8851BU-based
-Wi-Fi + Bluetooth adapter.
+As kcalloc() may fail, check its return value to avoid a NULL pointer
+dereference when passing it to of_property_read_u32_array().
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below:
-
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=7392 ProdID=e611 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=802.11ax WLAN Adapter
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtw89_8851bu_git
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org # 6.6.x
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
+Cc: stable@vger.kernel.org
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250923133235.1862108-1-lgs201920130244@gmail.com
 ---
- drivers/bluetooth/btusb.c | 2 ++
+ arch/powerpc/kernel/smp.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 8c34a17edae5d..fcec8e589e814 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -529,6 +529,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x7392, 0xe611), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 292fee8809bc8..cad3358fa4c35 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -822,6 +822,8 @@ static int parse_thread_groups(struct device_node *dn,
  
- 	/* Realtek 8852AE Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
+ 	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
+ 	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
++	if (!thread_group_array)
++		return -ENOMEM;
+ 	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
+ 					 thread_group_array, count);
+ 	if (ret)
 -- 
 2.51.0
 
