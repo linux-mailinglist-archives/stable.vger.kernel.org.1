@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-221686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNljOSSbo2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:24 +0100
+	id UB+0LCebo2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5111CBE40
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC331CBE47
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B06A3238B6F
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE8303239549
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05F92F28FC;
-	Sun,  1 Mar 2026 01:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AE62D9ECA;
+	Sun,  1 Mar 2026 01:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+lg8y6I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bENkxgun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41C72EA73D
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0EF299A84;
+	Sun,  1 Mar 2026 01:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328889; cv=none; b=JT5wGBntAWpr/DG+GncjNZraym+lqM9XkKEGlRrsYE2SHoSeeTfOAAm4md/1i12oYEiOqe1N+JWcGmBHPV3pXBMx9F6IVjipawJP9QUPSf9yFht7S8Xkz2a5sxh01vfQRjhDm5qBBf98OmUWiSgGuysh2Kmg/Zxwn2JCaUKdsNU=
+	t=1772328892; cv=none; b=uCEOHTb2tTPwp3r46gd038FFQo20xKRb2mn0jQfKta9QLP5eM2GbXJPV9C8tXMmtoyNmdC8I+MFDm0MOzR1yi9gOUAEBdJAjanWJFm9rwVo2vnFb018oOltrm3Uf9ufsgn3sZzP/dnJo/svyQmdOaXvYvCI/uoIUQ3c0/KkvXhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328889; c=relaxed/simple;
-	bh=jWkehmdHRdNML8Klfewn0GYwQY0usiVjsOmqTcmQnw0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XysqVwcWLPShkGSz8KH8u2AcwKlZljIlpJl2uTJS7qwuS8uE1VoBm8qdg0gAwsoRwykEW81w9TX9n4vKurbw4pm6qFuLk7ePb7Lq07N0am5QYzcwIDUk/a53vPTngT9LFkwSZrLlpXdj6us502dR5PdsQ4Ac3JLQ6P/lwhmLsZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+lg8y6I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19FBAC19421;
-	Sun,  1 Mar 2026 01:34:49 +0000 (UTC)
+	s=arc-20240116; t=1772328892; c=relaxed/simple;
+	bh=8DCQeCSSWvQHYJdYiVuUEkRQe1ZKNmF2R7rsNIhlDy4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ce1943rHVlos88xzH9oeYgCL0zTpRlPZPlJ+OfeFxSv5ICL60OumrQkrxz5Uw9O4dZZ1SzTFEDgAQYqmWz2rPIT0hUtu22iNu2r4QBWZMSvW4LsKGhoRTnULN1hGMOas3dMFr94nEUF0l0x1T5JJW3L34uLUOEhcAwaUyoVHjPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bENkxgun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52717C19421;
+	Sun,  1 Mar 2026 01:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328889;
-	bh=jWkehmdHRdNML8Klfewn0GYwQY0usiVjsOmqTcmQnw0=;
+	s=k20201202; t=1772328891;
+	bh=8DCQeCSSWvQHYJdYiVuUEkRQe1ZKNmF2R7rsNIhlDy4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=R+lg8y6IabBwY8bJhLniQXYvOFlKysIYnS7B+qp/P6nsMo8wQiVP/sSDkObgdf08Z
-	 4Fv6ZBpFt4hpFFiU5KNG48JpkT/+N8cX3HrHtfc0uE83rnbMWxTUAWxFjNIqCcGVbj
-	 cs+dRKVVyWd5E52Hdl6nQngPsb+dy/T6Nx5t5YJ8A68vFwrb9UW6V+GqpebIkYuRVw
-	 U+6BlyJ37SZ6E3gWkQhA3ngwPIkoj/7jLNY5tY9K9CIx9VTJ0rEd7QRq0QdxjImPFn
-	 1XPQTrNlCsWMUNlFoy11F4ggc/B6OEjjJpEUh6YYVyAL94MUZlbsOvoP2x3uhejEtg
-	 ytKaEMc/YpkVw==
+	b=bENkxgunRdyORKPnUaYOuK7p/nwLzlQCqyR/9+6vIAoc8k4DvW+Aga2oKOlbv21nB
+	 k8svYg6G0KEtRU46/l8ZoKj+pXTld9tfScNzTz6l3Co5fu9X6SmgNYbNYMJ+A1k52s
+	 gqkpOMta8c9dwhQo/tjuMBEPny+Tu6qklPeo0UyNIXYrz7tKZPO50kqjN6xY70W4uF
+	 jNaYufvK4olo2PdCzSSti6fNmU4PmI8+uhOh350tBVDU3rrfbSqiKO3uaYWMTOeleJ
+	 k5kXTJb72MCaNEUik4KALx8Ki9V+pjUVIMCjJ2nzia+tXOhBFnv36c98BMepcSnl6l
+	 mJeBhJfPo/y2w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	krzysztof.kozlowski@oss.qualcomm.com
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: FAILED: Patch "nvmem: Drop OF node reference on nvmem_add_one_cell() failure" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:34:47 -0500
-Message-ID: <20260301013448.1694370-1-sashal@kernel.org>
+	ailiop@suse.com
+Cc: NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	linux-nfs@vger.kernel.org
+Subject: FAILED: Patch "nfsd: fix return error code for nfsd_map_name_to_[ug]id" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:34:49 -0500
+Message-ID: <20260301013450.1694419-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,19 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221686-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221687-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 4B5111CBE40
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,oracle.com:email,brown.name:email]
+X-Rspamd-Queue-Id: 2AC331CBE47
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -102,39 +103,56 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f397bc0781553d01b4cdba506c09334a31cb0ec5 Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Date: Fri, 16 Jan 2026 17:08:43 +0000
-Subject: [PATCH] nvmem: Drop OF node reference on nvmem_add_one_cell() failure
+From 404d779466646bf1461f2090ff137e99acaecf42 Mon Sep 17 00:00:00 2001
+From: Anthony Iliopoulos <ailiop@suse.com>
+Date: Mon, 22 Dec 2025 14:30:05 -0500
+Subject: [PATCH] nfsd: fix return error code for nfsd_map_name_to_[ug]id
 
-If nvmem_add_one_cell() failed, the ownership of "child" (or "info.np"),
-thus its OF reference, is not passed further and function should clean
-up by putting the reference it got via earlier of_node_get().  Note that
-this is independent of references obtained via for_each_child_of_node()
-loop.
+idmap lookups can time out while the cache is waiting for a userspace
+upcall reply. In that case cache_check() returns -ETIMEDOUT to callers.
 
-Fixes: 50014d659617 ("nvmem: core: use nvmem_add_one_cell() in nvmem_add_cells_from_of()")
+The nfsd_map_name_to_[ug]id functions currently proceed with attempting
+to map the id to a kuid despite a potentially temporary failure to
+perform the idmap lookup. This results in the code returning the error
+NFSERR_BADOWNER which can cause client operations to return to userspace
+with failure.
+
+Fix this by returning the failure status before attempting kuid mapping.
+
+This will return NFSERR_JUKEBOX on idmap lookup timeout so that clients
+can retry the operation instead of aborting it.
+
+Fixes: 65e10f6d0ab0 ("nfsd: Convert idmap to use kuids and kgids")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260116170846.733558-2-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/nvmem/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfs4idmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index 387c88c552595..ff68fd5ad3d6f 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -831,6 +831,7 @@ static int nvmem_add_cells_from_dt(struct nvmem_device *nvmem, struct device_nod
- 		kfree(info.name);
- 		if (ret) {
- 			of_node_put(child);
-+			of_node_put(info.np);
- 			return ret;
- 		}
- 	}
+diff --git a/fs/nfsd/nfs4idmap.c b/fs/nfsd/nfs4idmap.c
+index b5b3d45979c9b..c319c31b0f647 100644
+--- a/fs/nfsd/nfs4idmap.c
++++ b/fs/nfsd/nfs4idmap.c
+@@ -672,6 +672,8 @@ __be32 nfsd_map_name_to_uid(struct svc_rqst *rqstp, const char *name,
+ 		return nfserr_inval;
+ 
+ 	status = do_name_to_id(rqstp, IDMAP_TYPE_USER, name, namelen, &id);
++	if (status)
++		return status;
+ 	*uid = make_kuid(nfsd_user_namespace(rqstp), id);
+ 	if (!uid_valid(*uid))
+ 		status = nfserr_badowner;
+@@ -707,6 +709,8 @@ __be32 nfsd_map_name_to_gid(struct svc_rqst *rqstp, const char *name,
+ 		return nfserr_inval;
+ 
+ 	status = do_name_to_id(rqstp, IDMAP_TYPE_GROUP, name, namelen, &id);
++	if (status)
++		return status;
+ 	*gid = make_kgid(nfsd_user_namespace(rqstp), id);
+ 	if (!gid_valid(*gid))
+ 		status = nfserr_badowner;
 -- 
 2.51.0
 
