@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-222076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKvbDW2do2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222076-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:09 +0100
+	id ICQRKHCdo2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF321CC7D1
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F3D1CC7DF
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0BB13303B5E9
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D70230D1022
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFA430B50A;
-	Sun,  1 Mar 2026 01:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3876309F1C;
+	Sun,  1 Mar 2026 01:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIVTM3YL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E1o8RXJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF6F309F19;
-	Sun,  1 Mar 2026 01:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A481B2F4A14;
+	Sun,  1 Mar 2026 01:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329840; cv=none; b=FzC0xko3eoPCpenMNk/wy4oWab2UEhzb8GQ6tvY8GaPzgJJVo+qlPcs/5fpSIZ20SKdoblDu67kmv7nKDPwO40B7l50X7EvTFFlB4VxQRX+8rMtRmgDIdXz8IcdThaTVK6knQ0wmRVUaYoawCDeW7AVUOgYZwGjPLIBDEQCcEhM=
+	t=1772329842; cv=none; b=DcMzMoDy5e2MtFQTzAyS0GYS19eUbyb+xQJuV8PID1UPg4ydIf5fFYYjESHN9qpcIeNq8W1cD/rIoFzCHyLCaS1PjWNZQyjEufXkqQNAfpUgBEo53OgAb0JWdfp/p7pJ+OQJZ6iGmd/9KdkXAd9Zp6XeRVLgyayHOzryxwkeoZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329840; c=relaxed/simple;
-	bh=P61Jt+ayGwDe7d5A4AL1fyN6GNlmJKTX29d3c3wAIXE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WsLrmh1J3VBftMUe0sPUkUqjYREUCKVPzW69T+6Ur+Xgbvw6OTn811zvCCsbgRmwvJ6XaFP2OBn0K4Y3sF+/7SD/OiMrtPZX9ecu8Kkc0Z8ADdXNhDf9j8U9tMPZV2tziw19kopbY97WhjKTAw610O7+1fnGfvIXY/k5+TirKgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIVTM3YL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70941C19421;
-	Sun,  1 Mar 2026 01:50:39 +0000 (UTC)
+	s=arc-20240116; t=1772329842; c=relaxed/simple;
+	bh=gJ1xQMRsWu7Br/kltlf6P7ml2382LPJtCPJGdP180ZI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hj2ak0A7NdA7yFXujQaZNnLwY0nkBYoMKMra2if48F7qDpAC7GbDDrT3fSlUsozZxbKKl/rjCOyQwffb6lTYblkNq3OCNJGwD8ehcipYlvNw3bAx0SUzaXwQRm07PxGr1ruGNt+b/dU7tAjoyW7qMahSNr/DGe7J7aAxgG7osys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E1o8RXJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65BAC19421;
+	Sun,  1 Mar 2026 01:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329840;
-	bh=P61Jt+ayGwDe7d5A4AL1fyN6GNlmJKTX29d3c3wAIXE=;
+	s=k20201202; t=1772329842;
+	bh=gJ1xQMRsWu7Br/kltlf6P7ml2382LPJtCPJGdP180ZI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=RIVTM3YLD8QTcJNK0yn6usDzQ4meXwzZrZMtnNKdxICrhIJwmxkMxYMt78Pf3Ule/
-	 owX2Ydl4xomgSbXQdLzLi42PebHFjiYRgiTVXqbAwJN2GqvEKEVZIeIFrD/0r7l3xH
-	 Zb94hE/JjLYqFibs4S9n4mOfj/HQ3jgIwf5nQ3DKgfaXpGnMxnBRKlpExUaddmiymL
-	 qwoWfG6bQONoO6TH7f7D0zNqK75xu2+mIfjgTFaGv1DItbKL8RUDjxoQ1tDYwD4JaK
-	 V7wc4AXtRSsUIB41fBrOHQijKP9xyIvWFs2eIRuOhBskhrPyPwH4XSUExZmX2iM6ES
-	 OvO0TLHnSdCKw==
+	b=E1o8RXJEEkJSPXpHaATbN801N42e/d2W3RMAktDA5Mum2Y67erFkYshe4Y/tf+zFt
+	 p88ikP4v99hxbP6KI/tiSJ/CHHdmVKRVBl5xs3rlPKWTRur4Hy+57c2HybokJsXq8U
+	 hABKyLv6Pm7SEc+zAuNYrM3QbNIrT8CFor21EgRuH6iABbYoRhrI+T7VjpkPT8CBii
+	 sVO+AqgkcB4ke/MVCzRyuubbx2rnEQWlDcGF0eIzCzB7CElfCABlczmoYEag2ceSob
+	 e760hxDbajA7S+DeGFQx4rD/r623EaDn5MMrV6Jhyz448CpY5Ac/9yZtt8I6fet6zB
+	 5FzbcVf1nn+SA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	schnelle@linux.ibm.com
-Cc: Benjamin Block <bblock@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	linux-s390@vger.kernel.org
-Subject: FAILED: Patch "s390/pci: Handle futile config accesses of disabled devices directly" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:50:38 -0500
-Message-ID: <20260301015038.1716685-1-sashal@kernel.org>
+	yi.zhang@huawei.com
+Cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	stable@kernel.org,
+	Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org
+Subject: FAILED: Patch "ext4: don't cache extent during splitting extent" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:50:40 -0500
+Message-ID: <20260301015040.1716755-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,33 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222076-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222077-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CFF321CC7D1
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,huaweicloud.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 22F3D1CC7DF
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -104,88 +105,77 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 84d875e69818bed600edccb09be4a64b84a34a54 Mon Sep 17 00:00:00 2001
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-Date: Thu, 8 Jan 2026 16:45:53 +0100
-Subject: [PATCH] s390/pci: Handle futile config accesses of disabled devices
- directly
+From 8b4b19a2f96348d70bfa306ef7d4a13b0bcbea79 Mon Sep 17 00:00:00 2001
+From: Zhang Yi <yi.zhang@huawei.com>
+Date: Sat, 29 Nov 2025 18:32:37 +0800
+Subject: [PATCH] ext4: don't cache extent during splitting extent
 
-On s390 PCI busses and slots with multiple functions may have holes
-because PCI functions are passed-through by the hypervisor on a per
-function basis and some functions may be in standby or reserved. This
-fact is indicated by returning true from the
-hypervisor_isolated_pci_functions() helper and triggers common code to
-scan all possible devfn values. Via pci_scan_single_device() this in
-turn causes config reads for the device and vendor IDs, even for PCI
-functions which are in standby and thereofore disabled.
+Caching extents during the splitting process is risky, as it may result
+in stale extents remaining in the status tree. Moreover, in most cases,
+the corresponding extent block entries are likely already cached before
+the split happens, making caching here not particularly useful.
 
-So far these futile config reads, as well as potentially writes, which
-can never succeed were handled by the PCI load/store instructions
-themselves. This works as the platform just returns an error for
-a disabled and thus not usable function handle. It does cause spamming
-of error logs and additional overhead though.
+Assume we have an unwritten extent, and then DIO writes the first half.
 
-Instead check if the used function handle is enabled in zpci_cfg_load()
-and zpci_cfg_write() and if not enable directly return -ENODEV. Also
-refactor zpci_cfg_load() and zpci_cfg_store() slightly to accommodate
-the new logic while meeting modern kernel style guidelines.
+  [UUUUUUUUUUUUUUUU] on-disk extent        U: unwritten extent
+  [UUUUUUUUUUUUUUUU] extent status tree
+  |<-   ->| ----> dio write this range
 
-Cc: stable@vger.kernel.org
-Fixes: a50297cf8235 ("s390/pci: separate zbus creation from scanning")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+First, when ext4_split_extent_at() splits this extent, it truncates the
+existing extent and then inserts a new one. During this process, this
+extent status entry may be shrunk, and calls to ext4_find_extent() and
+ext4_cache_extents() may occur, which could potentially insert the
+truncated range as a hole into the extent status tree. After the split
+is completed, this hole is not replaced with the correct status.
+
+  [UUUUUUU|UUUUUUUU] on-disk extent        U: unwritten extent
+  [UUUUUUU|HHHHHHHH] extent status tree    H: hole
+
+Then, the outer calling functions will not correct this remaining hole
+extent either. Finally, if we perform a delayed buffer write on this
+latter part, it will re-insert the delayed extent and cause an error in
+space accounting.
+
+In adition, if the unwritten extent cache is not shrunk during the
+splitting, ext4_cache_extents() also conflicts with existing extents
+when caching extents. In the future, we will add checks when caching
+extents, which will trigger a warning. Therefore, Do not cache extents
+that are being split.
+
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Cc: stable@kernel.org
+Message-ID: <20251129103247.686136-6-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- arch/s390/pci/pci.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ fs/ext4/extents.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 57f3980b98a92..7f44b0644a20e 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -231,24 +231,33 @@ int zpci_fmb_disable_device(struct zpci_dev *zdev)
- static int zpci_cfg_load(struct zpci_dev *zdev, int offset, u32 *val, u8 len)
- {
- 	u64 req = ZPCI_CREATE_REQ(zdev->fh, ZPCI_PCIAS_CFGSPC, len);
-+	int rc = -ENODEV;
- 	u64 data;
--	int rc;
-+
-+	if (!zdev_enabled(zdev))
-+		goto out_err;
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index daecf3f0b367c..be9fd2ab86679 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3199,6 +3199,9 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
+ 	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) &&
+ 	       (split_flag & EXT4_EXT_DATA_VALID2));
  
- 	rc = __zpci_load(&data, req, offset);
--	if (!rc) {
--		data = le64_to_cpu((__force __le64) data);
--		data >>= (8 - len) * 8;
--		*val = (u32) data;
--	} else
--		*val = 0xffffffff;
-+	if (rc)
-+		goto out_err;
-+	data = le64_to_cpu((__force __le64)data);
-+	data >>= (8 - len) * 8;
-+	*val = (u32)data;
-+	return 0;
++	/* Do not cache extents that are in the process of being modified. */
++	flags |= EXT4_EX_NOCACHE;
 +
-+out_err:
-+	PCI_SET_ERROR_RESPONSE(val);
- 	return rc;
- }
+ 	ext_debug(inode, "logical block %llu\n", (unsigned long long)split);
  
- static int zpci_cfg_store(struct zpci_dev *zdev, int offset, u32 val, u8 len)
- {
- 	u64 req = ZPCI_CREATE_REQ(zdev->fh, ZPCI_PCIAS_CFGSPC, len);
-+	int rc = -ENODEV;
- 	u64 data = val;
--	int rc;
+ 	ext4_ext_show_leaf(inode, path);
+@@ -3381,6 +3384,9 @@ static struct ext4_ext_path *ext4_split_extent(handle_t *handle,
+ 	ee_len = ext4_ext_get_actual_len(ex);
+ 	unwritten = ext4_ext_is_unwritten(ex);
+ 
++	/* Do not cache extents that are in the process of being modified. */
++	flags |= EXT4_EX_NOCACHE;
 +
-+	if (!zdev_enabled(zdev))
-+		return rc;
- 
- 	data <<= (8 - len) * 8;
- 	data = (__force u64) cpu_to_le64(data);
+ 	if (map->m_lblk + map->m_len < ee_block + ee_len) {
+ 		split_flag1 = split_flag & EXT4_EXT_MAY_ZEROOUT;
+ 		flags1 = flags | EXT4_GET_BLOCKS_SPLIT_NOMERGE;
 -- 
 2.51.0
 
