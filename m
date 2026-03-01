@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-221306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLIzKkGVo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:17 +0100
+	id 2N7CF0uVo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C811CA6D4
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 093B11CA713
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30FFA30A6C69
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:19:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 02E3430AC5FC
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96F425A2A2;
-	Sun,  1 Mar 2026 01:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546EA2594B9;
+	Sun,  1 Mar 2026 01:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qbSjK7fu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RZ6qolNz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAA8243969;
-	Sun,  1 Mar 2026 01:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1696B24A076;
+	Sun,  1 Mar 2026 01:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327939; cv=none; b=pJxXQ/sgXm1CInD2AHs9t3eyY3zBYp/zvDtnorVfFwbYNkrN+TQSBtZvMwSXmN977ZkUwoeQzUcwoOXMk13IFqF9L7tum+qI+2UdKkoUKVlUFpYcsiNUxgvpknCJJNeSnCeWGU4Tvp7lBkh2FNG9Lr5fguideeNUMsMDaol6LvM=
+	t=1772327942; cv=none; b=XIdzUP4NLfBm3M0UwL6N8HKlbC/IgOTXkYmkssoshkfoecAl5V2UVukhjCcF1Z2g02n26bYy6Ak/K6nPvOXHB7pKIr+vU7fM5PR0gTA7fkPVSS6dpUZSIdAQ/3eSmS8m7oX5NUIud/p/3CPnSiNRmTVVjiW2pEHWBC4qRDh8mE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327939; c=relaxed/simple;
-	bh=Ro6Z7KBUjHow4F9zwtKSLIVB7zKCwWulCgr+e1Ggkts=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lahcfCqmq+Tz/u69wSqBQy5thTM73Xhw5oEvbBjDQ0nHEMFUsym9EfQLEkcOgZZnM7CVK+Mar8wHE9Z7/yBGZiSuOUkNhstKkVO0GqjQ4U2yKuov9x9VRm2NUprMRCM2Jsrwc6MzvaCLSrw31p/47YXjXSLawBGK6J6MfzjsrpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qbSjK7fu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC441C19421;
-	Sun,  1 Mar 2026 01:18:58 +0000 (UTC)
+	s=arc-20240116; t=1772327942; c=relaxed/simple;
+	bh=UjAzZ2KRBnSlhhiqG1iN7IwjVD1fMhKONsQjSkYLGBI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g0G+AszrEaxlgJbsnmmW1/cBPPiT70WLx+QB+FUVgfiYzZwIiXqA/KrQoL4fQaQXixl+aXlpEwghMS3H7JUjjkKvYWJlxMP5QP3a8k3TeN6dvf+6ZsoJ78bUAE5Te8PXfzjILUGC4TCvm8dx7AOu177DtnZFelPO49CMsOpDiFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RZ6qolNz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C78BC19421;
+	Sun,  1 Mar 2026 01:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327939;
-	bh=Ro6Z7KBUjHow4F9zwtKSLIVB7zKCwWulCgr+e1Ggkts=;
+	s=k20201202; t=1772327942;
+	bh=UjAzZ2KRBnSlhhiqG1iN7IwjVD1fMhKONsQjSkYLGBI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=qbSjK7fu6xFeZlTit386GKXxOfkEnVQXFTUuMBOw2+uDLo8UG+94kSB4szSngQRmN
-	 /1Bb0UGISb563lFkN6/EBIzLnDbxAqlmItwe+sHROZZ5GFagyAtDmwrn0UV8Io6d9e
-	 kR4rDc0prruOmOlBkQxeJQ6vpZ/650f4MWmfloL2ff9QcDE9rEhPFQiDOUdVbFjCSO
-	 bBRoLzMWmJwrpjy+VjGzh01fXZs0aQzm1PbXvySMuUAKTqxfu72zRgY0eCMMgEradP
-	 w1WBgKB8a+JolEG/6PNMPXYHdPPfQlGrF78nXzln1OR35Zz5dx4nkwDF332DX3MNBs
-	 IsSCnO+wFc+pQ==
+	b=RZ6qolNzZbPjhABC5WSRoDpH0VFZ+LQeqFhxv05ALclLUXTATtLLEDFs8JF8duQl8
+	 1N36bga6jZdKYYzbrFJ/uyxJmksE4JLekaVoTO7M+17AOqfquP3sxjpzz8qunlUM88
+	 C03bUbOBAbzbfLMaAciVvEalSVD1A4MU3QRifVEPbiwIu585t+guXBNqDFy+jcAdfX
+	 Yn8MtdDemdQSARCX6PNXApdzpeuoti9sX7EPcMYGxGzVW0WphfL8+bXh4hdZTNbLLM
+	 1+GzU+JFhGk12WQaUG4Funhk5uPujIjKpbn6p8FxfX+pJ6rwVu3Cyhtsz4bCGpyhmT
+	 2UQft4D7TmzxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	benjamin.gaignard@collabora.com
-Cc: Jianfeng Liu <liujianfeng1994@gmail.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	linux-media@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "media: verisilicon: AV1: Fix enable cdef computation" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:18:57 -0500
-Message-ID: <20260301011857.1673450-1-sashal@kernel.org>
+	abelvesa@kernel.org
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: FAILED: Patch "arm64: dts: qcom: x1e80100: Add missing TCSR ref clock to the DP PHYs" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:18:59 -0500
+Message-ID: <20260301011900.1673538-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,34 +65,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221307-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,collabora.com,kernel.org,vger.kernel.org,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221306-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: 10C811CA6D4
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[aec2a00:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 093B11CA713
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -107,58 +104,65 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From e0f99b810e1181374370f91cd996d761549e147f Mon Sep 17 00:00:00 2001
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Date: Tue, 9 Dec 2025 11:34:01 +0100
-Subject: [PATCH] media: verisilicon: AV1: Fix enable cdef computation
+From 0907cab01ff9746ecf08592edd9bd85d2636be58 Mon Sep 17 00:00:00 2001
+From: Abel Vesa <abel.vesa@linaro.org>
+Date: Wed, 24 Dec 2025 12:53:29 +0200
+Subject: [PATCH] arm64: dts: qcom: x1e80100: Add missing TCSR ref clock to the
+ DP PHYs
 
-If all the fields of the CDEF parameters are zero (which is the default),
-then av1_enable_cdef register needs to be unset
-(despite the V4L2_AV1_SEQUENCE_FLAG_ENABLE_CDEF possibly being set).
+The DP PHYs on X1E80100 need the ref clock which is provided by the
+TCSR CC.
 
-Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Fixes: 727a400686a2c ("media: verisilicon: Add Rockchip AV1 decoder")
-Cc: stable@vger.kernel.org
-Reported-by: Jianfeng Liu <liujianfeng1994@gmail.com>
-Closes: https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/4786
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[hverkuil: dropped Link tag since it just duplicated the Closes: URL]
+The current X Elite devices supported upstream work fine without this
+clock, because the boot firmware leaves this clock enabled. But we should
+not rely on that. Also, even though this change breaks the ABI, it is
+needed in order to make the driver disables this clock along with the
+other ones, for a proper bring-down of the entire PHY.
+
+So lets attach it to each of the DP PHYs in order to do that.
+
+Cc: stable@vger.kernel.org # v6.9
+Fixes: 1940c25eaa63 ("arm64: dts: qcom: x1e80100: Add display nodes")
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20251224-phy-qcom-edp-add-missing-refclk-v5-3-3f45d349b5ac@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 ---
- .../platform/verisilicon/rockchip_vpu981_hw_av1_dec.c  | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/hamoa.dtsi | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c b/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c
-index e4703bb6be7c1..f4f7cb45b1f1b 100644
---- a/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c
-+++ b/drivers/media/platform/verisilicon/rockchip_vpu981_hw_av1_dec.c
-@@ -1396,8 +1396,16 @@ static void rockchip_vpu981_av1_dec_set_cdef(struct hantro_ctx *ctx)
- 	u16 luma_sec_strength = 0;
- 	u32 chroma_pri_strength = 0;
- 	u16 chroma_sec_strength = 0;
-+	bool enable_cdef;
- 	int i;
+diff --git a/arch/arm64/boot/dts/qcom/hamoa.dtsi b/arch/arm64/boot/dts/qcom/hamoa.dtsi
+index 51ad2b2e6375f..03629639dcfb6 100644
+--- a/arch/arm64/boot/dts/qcom/hamoa.dtsi
++++ b/arch/arm64/boot/dts/qcom/hamoa.dtsi
+@@ -5929,9 +5929,11 @@ mdss_dp2_phy: phy@aec2a00 {
+ 			      <0 0x0aec2000 0 0x1c8>;
  
-+	enable_cdef = !(cdef->bits == 0 &&
-+			cdef->damping_minus_3 == 0 &&
-+			cdef->y_pri_strength[0] == 0 &&
-+			cdef->y_sec_strength[0] == 0 &&
-+			cdef->uv_pri_strength[0] == 0 &&
-+			cdef->uv_sec_strength[0] == 0);
-+	hantro_reg_write(vpu, &av1_enable_cdef, enable_cdef);
- 	hantro_reg_write(vpu, &av1_cdef_bits, cdef->bits);
- 	hantro_reg_write(vpu, &av1_cdef_damping, cdef->damping_minus_3);
+ 			clocks = <&dispcc DISP_CC_MDSS_DPTX2_AUX_CLK>,
+-				 <&dispcc DISP_CC_MDSS_AHB_CLK>;
++				 <&dispcc DISP_CC_MDSS_AHB_CLK>,
++				 <&tcsr TCSR_EDP_CLKREF_EN>;
+ 			clock-names = "aux",
+-				      "cfg_ahb";
++				      "cfg_ahb",
++				      "ref";
  
-@@ -1953,8 +1961,6 @@ static void rockchip_vpu981_av1_dec_set_parameters(struct hantro_ctx *ctx)
- 			 !!(ctrls->frame->flags & V4L2_AV1_FRAME_FLAG_SHOW_FRAME));
- 	hantro_reg_write(vpu, &av1_switchable_motion_mode,
- 			 !!(ctrls->frame->flags & V4L2_AV1_FRAME_FLAG_IS_MOTION_MODE_SWITCHABLE));
--	hantro_reg_write(vpu, &av1_enable_cdef,
--			 !!(ctrls->sequence->flags & V4L2_AV1_SEQUENCE_FLAG_ENABLE_CDEF));
- 	hantro_reg_write(vpu, &av1_allow_masked_compound,
- 			 !!(ctrls->sequence->flags
- 			    & V4L2_AV1_SEQUENCE_FLAG_ENABLE_MASKED_COMPOUND));
+ 			power-domains = <&rpmhpd RPMHPD_MX>;
+ 
+@@ -5949,9 +5951,11 @@ mdss_dp3_phy: phy@aec5a00 {
+ 			      <0 0x0aec5000 0 0x1c8>;
+ 
+ 			clocks = <&dispcc DISP_CC_MDSS_DPTX3_AUX_CLK>,
+-				 <&dispcc DISP_CC_MDSS_AHB_CLK>;
++				 <&dispcc DISP_CC_MDSS_AHB_CLK>,
++				 <&tcsr TCSR_EDP_CLKREF_EN>;
+ 			clock-names = "aux",
+-				      "cfg_ahb";
++				      "cfg_ahb",
++				      "ref";
+ 
+ 			power-domains = <&rpmhpd RPMHPD_MX>;
+ 
 -- 
 2.51.0
 
