@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-222108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHXSIkieo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:48 +0100
+	id tpwFK2mso2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:03:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F591CCB44
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192B31CE271
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:03:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D40C33048122
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9375A3278CAE
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E164C303A01;
-	Sun,  1 Mar 2026 01:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C077303A0A;
+	Sun,  1 Mar 2026 01:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Em5r34kQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CPoyxD5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A431F2D0C63;
-	Sun,  1 Mar 2026 01:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBC776026;
+	Sun,  1 Mar 2026 01:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329920; cv=none; b=enhUOfXQG9fO/BAKbRUPQrVl8YRJO3/dOGuklo72TLfAx8FsDyGV3HqRC0c4AE0OviV8ZnERn5jqau/af9hAHCtMFV7nve/qaXrMhDGvxRQoEU8VmeqfAwhiWQEGZ23g/uhItgo0KcSXENwrz/H27cPDGw0XhIg8FDKRSrPvgaI=
+	t=1772329923; cv=none; b=E0j6WqNJnTVVDQ8F3CZniBBJwk83qLUZq3ot5qnSH9Vb2B5D6qAfzyD7g0zW4USrKh3c18Y2b5ZNvS6nwW8SdRZ7LT+/YuH+UH+L5jlOuirB9aJSgO8TshMocsOkOXxGpf5cJjwQWyPMB50kaULnCwKnI6eABIhrh/AQrN1U3ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329920; c=relaxed/simple;
-	bh=Obvp3N105qtvD+0LiXG2EqtQecuK3Dvjk48WhtzHaNg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sqJ+BL/vy/Cl+mbicSusBVkDAnZFMa5tbrnjpKYRfA6oR3MgYK8j4uHwIn4mCglBOqTaBrSgHyPH7zrqRTFs8NhKDZN1ALExMvTmXysuV6iDofd8kbpxiVJUd9tz4qaELX2ElHZCPAdHbT9lGPbeXWOeGPyfzo0V03aOPCpbyec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Em5r34kQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8410C19421;
-	Sun,  1 Mar 2026 01:51:59 +0000 (UTC)
+	s=arc-20240116; t=1772329923; c=relaxed/simple;
+	bh=Az8LLLGv7p4NyyEga/O67fntIWNIPrpfEX+5iLQtwew=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jj1qQ5FLhuT+E5BZlZkQhUTUdqynwKMKYt5jKk83QMktEfo0YeEiggY0OEDhTaCItbf5jNpueDPwwQUKyUOzfbR/b2TJOCcdrAZ0JwRBEbunvyGlziUyhFRZlGjd7rOqC0/oAUN7B95NI0Y4vEZwdBsvo2Lpzxw61Po2UnzJk/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CPoyxD5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC5AC19421;
+	Sun,  1 Mar 2026 01:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329920;
-	bh=Obvp3N105qtvD+0LiXG2EqtQecuK3Dvjk48WhtzHaNg=;
+	s=k20201202; t=1772329922;
+	bh=Az8LLLGv7p4NyyEga/O67fntIWNIPrpfEX+5iLQtwew=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Em5r34kQ9NWUSR4j/FGpJsd2Nwx4vAg6MuRfE/Pj4xxSEZSn+18AOUxtqMAQkrwo8
-	 TkQUGzL4Ev9K6aThlYDfSBUhcrhoFxJPNwCaKSkuRpgLwPwwkEC+Myg6BrOWT0sPM5
-	 Tihtl2ko4w9N4ZW8n6mRz0FED8rwnGK955VXllaVsfDxcC+cJXmWQkMdWOFCy6KGpl
-	 PNk8R0ledairzdpYlsPGUpUbddMZ4fe94Z4/yY6G7/2kFOMJGFKP+/76E/Orwjv8DC
-	 X522CLP/Y187KffflXNZrDqQM8qgNUQGfWlZuEWLBvk6e7HsCR55J4hCQb57inxOAQ
-	 hp1D3ZeMgETNA==
+	b=CPoyxD5siAnETgnWjuZm77kAXJ7I9IoKjEHvDcKG+bk/+D02BG+rQoFSKWzRzJdbF
+	 RPX4NItLpr1RznSSR7xRlUubxvhUD1nz2iHmVmVzo8H7ueIePCmY0SIeje/ZZXO9XO
+	 P1MLZcWrxU6cFAsu047UUbbZFtWgWqcD4BOMO0sBLhhrnGwJh303qceLA4t6/e0BuB
+	 HepwqZ9+wllQnkTfi+RFceAAtonNkJ8F0eNP5TAnmTTjojpqcgVfoO0M4jEcKjYBrv
+	 d4CI8sYS1KLivOe5qrI7ubxv//lLADkLE+EbquBBzM1M/WaT0b98jBP3jTb2nrEi3D
+	 i7+ng2Ks40Hdw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	djwong@kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	linux-xfs@vger.kernel.org
-Subject: FAILED: Patch "xfs: fix remote xattr valuelblk check" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:51:58 -0500
-Message-ID: <20260301015158.1718383-1-sashal@kernel.org>
+	raag.jadav@intel.com
+Cc: Guido Trentalancia <guido@trentalancia.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-gpio@vger.kernel.org
+Subject: FAILED: Patch "pinctrl: intel: Add code name documentation" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:52:00 -0500
+Message-ID: <20260301015201.1718433-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,19 +69,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222108-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-222109-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 43F591CCB44
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,trentalancia.com:email]
+X-Rspamd-Queue-Id: 192B31CE271
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -102,40 +104,79 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From bd3138e8912c9db182eac5fed1337645a98b7a4f Mon Sep 17 00:00:00 2001
-From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Fri, 23 Jan 2026 09:27:33 -0800
-Subject: [PATCH] xfs: fix remote xattr valuelblk check
+From fc32c5725fbe1164d353400389d3e29d19960a3a Mon Sep 17 00:00:00 2001
+From: Raag Jadav <raag.jadav@intel.com>
+Date: Sat, 24 Jan 2026 13:44:54 +0530
+Subject: [PATCH] pinctrl: intel: Add code name documentation
 
-In debugging other problems with generic/753, it turns out that it's
-possible for the system go to down in the middle of a remote xattr set
-operation such that the leaf block entry is marked incomplete and
-valueblk is set to zero.  Make this no longer a failure.
+Intel pinctrl drivers support large set of platforms and the IPs are
+often reused by their different variants, but it's currently not possible
+to figure out the exact driver that supports specific variant. Add user
+friendly documentation for them.
 
-Cc: <stable@vger.kernel.org> # v4.15
-Fixes: 13791d3b833428 ("xfs: scrub extended attribute leaf space")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
+Reported-by: Guido Trentalancia <guido@trentalancia.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220056
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Acked-by: Guido Trentalancia <guido@trentalancia.com>
+[andy: added Oxford comma]
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- fs/xfs/scrub/attr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pinctrl/intel/Kconfig | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/fs/xfs/scrub/attr.c b/fs/xfs/scrub/attr.c
-index a397c50b77943..c3c122ea2d322 100644
---- a/fs/xfs/scrub/attr.c
-+++ b/fs/xfs/scrub/attr.c
-@@ -338,7 +338,10 @@ xchk_xattr_entry(
- 		rentry = xfs_attr3_leaf_name_remote(leaf, idx);
- 		namesize = xfs_attr_leaf_entsize_remote(rentry->namelen);
- 		name_end = (char *)rentry + namesize;
--		if (rentry->namelen == 0 || rentry->valueblk == 0)
-+		if (rentry->namelen == 0)
-+			xchk_da_set_corrupt(ds, level);
-+		if (rentry->valueblk == 0 &&
-+		    !(ent->flags & XFS_ATTR_INCOMPLETE))
- 			xchk_da_set_corrupt(ds, level);
- 	}
- 	if (name_end > buf_end)
+diff --git a/drivers/pinctrl/intel/Kconfig b/drivers/pinctrl/intel/Kconfig
+index e4dc9ba899bde..04c3a5b581f3c 100644
+--- a/drivers/pinctrl/intel/Kconfig
++++ b/drivers/pinctrl/intel/Kconfig
+@@ -53,7 +53,10 @@ config PINCTRL_ALDERLAKE
+ 	select PINCTRL_INTEL
+ 	help
+ 	  This pinctrl driver provides an interface that allows configuring
+-	  of Intel Alder Lake PCH pins and using them as GPIOs.
++	  PCH pins of the following platforms and using them as GPIOs:
++	  - Alder Lake HX, N, and S
++	  - Raptor Lake HX, E, and S
++	  - Twin Lake
+ 
+ config PINCTRL_BROXTON
+ 	tristate "Intel Broxton pinctrl and GPIO driver"
+@@ -137,15 +140,17 @@ config PINCTRL_METEORLAKE
+ 	select PINCTRL_INTEL
+ 	help
+ 	  This pinctrl driver provides an interface that allows configuring
+-	  of Intel Meteor Lake pins and using them as GPIOs.
++	  SoC pins of the following platforms and using them as GPIOs:
++	  - Arrow Lake (all variants)
++	  - Meteor Lake (all variants)
+ 
+ config PINCTRL_METEORPOINT
+ 	tristate "Intel Meteor Point pinctrl and GPIO driver"
+ 	select PINCTRL_INTEL
+ 	help
+-	  Meteor Point is the PCH of Intel Meteor Lake. This pinctrl driver
+-	  provides an interface that allows configuring of PCH pins and
+-	  using them as GPIOs.
++	  This pinctrl driver provides an interface that allows configuring
++	  PCH pins of the following platforms and using them as GPIOs:
++	  - Arrow Lake HX and S
+ 
+ config PINCTRL_SUNRISEPOINT
+ 	tristate "Intel Sunrisepoint pinctrl and GPIO driver"
+@@ -160,7 +165,11 @@ config PINCTRL_TIGERLAKE
+ 	select PINCTRL_INTEL
+ 	help
+ 	  This pinctrl driver provides an interface that allows configuring
+-	  of Intel Tiger Lake PCH pins and using them as GPIOs.
++	  PCH pins of the following platforms and using them as GPIOs:
++	  - Alder Lake H, P, PS, and U
++	  - Raptor Lake H, P, PS, PX, and U
++	  - Rocket Lake S
++	  - Tiger Lake (all variants)
+ 
+ source "drivers/pinctrl/intel/Kconfig.tng"
+ endmenu
 -- 
 2.51.0
 
