@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-221690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJtDD1iYo2lIHwUAu9opvQ
-	(envelope-from <stable+bounces-221690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:28 +0100
+	id EB3jEtmno2mWJAUAu9opvQ
+	(envelope-from <stable+bounces-221691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:43:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FEC41CB298
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF4A1CDDA5
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:43:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 637D9303123C
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68DB3323AE27
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C182D9EFF;
-	Sun,  1 Mar 2026 01:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E7F2C11E4;
+	Sun,  1 Mar 2026 01:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9jK/JGc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcWuQgQZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A50029D270;
-	Sun,  1 Mar 2026 01:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB64F13B58A;
+	Sun,  1 Mar 2026 01:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328902; cv=none; b=acr65VErh2G4UZr5tB5rpsifv7zw8GqfNfa612v/1idRA1XpQv4AU/xGCiKktg83CXmRG/X3I2eMAfpCPmfEijpJAfsO+Ag73EBLRTgyind/LgfDunFgMhzhE6lYV5JokyNY3CknnTIHTCT/r2j/+Gck9NW+9ZYUNOyCfKqGrVc=
+	t=1772328906; cv=none; b=LbfUOK0mBm1NDYTAMSd8D8Djz1YuOz3fZxClYhfoYLRhb2KlbCCaMPMrJEhAlHUYdlwm14FCe2oB3Cj6P4y5HCxktoTydbOiWc5wjMCQvd0yF2P4V5O4AQeY179EWIkOEHuShAivPpco6KfMHdfH7m0MnXrdA37qx2afl17NE/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328902; c=relaxed/simple;
-	bh=b9w8recNid+acJTcf7jLVEtTeYKu+683o36tHpeaZ9A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uM1Kdmp8RHpfqDS+nNye4AhST+iVB3vzlpu7Kjg5w8sqEZBwLbKH42kAbSKwTyNcbECdXkD1Ad61tgqumutYCQ2oeD7aCH4K/NORcWtN8qLwQbOfmpkTt0h/hy1wzoQ6BDlYuiMOb/Ibr9elF/28lkw/62V0+EvaGMwiNeubL60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b9jK/JGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABB7C19421;
-	Sun,  1 Mar 2026 01:34:59 +0000 (UTC)
+	s=arc-20240116; t=1772328906; c=relaxed/simple;
+	bh=g0NMfMMbeDJwj2doTKxCYu4tYJcSzjOnwwonHzsqPMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xdi3DnjkWKevVoq1J+RlnOm9VPb72smj4gyFNgr9xwKqYBh1vN8DGY4hjiBE2zOap29lgsb+ykkHhtss9xqwDe2BJxFTLgtHf+FOt8i0l5N4lcG0rjSjIuY3yoBgI+Ab6/J3lMHbgeG7tkrCG1iWkJP8r4qf2O4XMuuQ73XliWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcWuQgQZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2599C4AF0D;
+	Sun,  1 Mar 2026 01:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328902;
-	bh=b9w8recNid+acJTcf7jLVEtTeYKu+683o36tHpeaZ9A=;
+	s=k20201202; t=1772328905;
+	bh=g0NMfMMbeDJwj2doTKxCYu4tYJcSzjOnwwonHzsqPMc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=b9jK/JGcXb7fonOnGRK94rq4bBEOhWW9fuWmR0E2BtxbH9Yh0W79oB3EKKPqYXOnr
-	 F0sSo7/VUm9SJbhZPk4VqXUGQr7lTxykeNJLuGxepncQpf6PMWN+khxjVBewh0npR2
-	 wtXsujhvYkKzLqMzE6ZuN4TnDfJP2FZaOHC1jBNI66pBUNYBbtAF514cvjZSkZhZ9h
-	 w8WDKIcSFzmuLLBRModQrwvO9+FJFmQZ//mSaPji3WoYz97qQQZsd1NXqPVkSd9PTp
-	 0XJp8BOpPjtxuswmf4tyvENaI7JmFBBMSlnZrxG8Rmta20UDd+rzi97IN561mvtz0r
-	 qIcuBt7f8tb9g==
+	b=BcWuQgQZ2pzqnTtpYW6kXaOg5lqO4jpWOWtWjdaRqaTNxGLT3Yvufe5xOLjxsuPNA
+	 fcWCygrEevVzFuPTHMlDNwQf4S2/o2oMYIDeHF1BXAzEMM6OL7OiHbtnt2CfZX9p1+
+	 x1Y8DM/zR4DXVA6KXaSnNZrwNj/yGyPUi5WT/E8FILqDjw9ooZfsX4nCbKcysClPS1
+	 EjLWGZ4Xp0Dc5sbpxPrvZ3PUBwHutgSPEYlutrZJkN8sYguHt8VSHTjQQK/mZ2vAwG
+	 Xgztu2ZM4cI+QGq89KCBBWuwbhs0QOmfZ9O3vcV5AJfmVSnl6dfKtP0crcuxdkybxi
+	 6jwe7rG0ioInQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	harshit.m.mogalapalli@oracle.com
 Cc: Mimi Zohar <zohar@linux.ibm.com>,
 	Alexander Graf <graf@amazon.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
 	Borislav Betkov <bp@alien8.de>,
 	guoweikang <guoweikang.kernel@gmail.com>,
 	Henry Willard <henry.willard@oracle.com>,
@@ -63,13 +64,11 @@ Cc: Mimi Zohar <zohar@linux.ibm.com>,
 	Sourabh Jain <sourabhjain@linux.ibm.com>,
 	Thomas Gleinxer <tglx@linutronix.de>,
 	Yifei Liu <yifei.l.liu@oracle.com>,
-	Baoquan He <bhe@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: FAILED: Patch "ima: verify the previous kernel's IMA buffer lies in addressable RAM" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:34:58 -0500
-Message-ID: <20260301013458.1694571-1-sashal@kernel.org>
+	devicetree@vger.kernel.org
+Subject: FAILED: Patch "of/kexec: refactor ima_get_kexec_buffer() to use ima_validate_range()" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:35:02 -0500
+Message-ID: <20260301013502.1694624-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -88,28 +87,29 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linux.ibm.com,amazon.com,kernel.org,redhat.com,alien8.de,gmail.com,oracle.com,zytor.com,suse.cz,fb.com,intel.com,linutronix.de,linux-foundation.org,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[23];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_FROM(0.00)[bounces-221691-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221690-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linux.ibm.com,amazon.com,kernel.org,alien8.de,gmail.com,oracle.com,zytor.com,redhat.com,suse.cz,fb.com,intel.com,linutronix.de,linux-foundation.org,vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9FEC41CB298
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DCF4A1CDDA5
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -122,45 +122,21 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 10d1c75ed4382a8e79874379caa2ead8952734f9 Mon Sep 17 00:00:00 2001
+From 4d02233235ed0450de9c10fcdcf3484e3c9401ce Mon Sep 17 00:00:00 2001
 From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Date: Tue, 30 Dec 2025 22:16:07 -0800
-Subject: [PATCH] ima: verify the previous kernel's IMA buffer lies in
- addressable RAM
+Date: Tue, 30 Dec 2025 22:16:08 -0800
+Subject: [PATCH] of/kexec: refactor ima_get_kexec_buffer() to use
+ ima_validate_range()
 
-Patch series "Address page fault in ima_restore_measurement_list()", v3.
+Refactor the OF/DT ima_get_kexec_buffer() to use a generic helper to
+validate the address range.  No functional change intended.
 
-When the second-stage kernel is booted via kexec with a limiting command
-line such as "mem=<size>" we observe a pafe fault that happens.
-
-    BUG: unable to handle page fault for address: ffff97793ff47000
-    RIP: ima_restore_measurement_list+0xdc/0x45a
-    #PF: error_code(0x0000)  not-present page
-
-This happens on x86_64 only, as this is already fixed in aarch64 in
-commit: cbf9c4b9617b ("of: check previous kernel's ima-kexec-buffer
-against memory bounds")
-
-
-This patch (of 3):
-
-When the second-stage kernel is booted with a limiting command line (e.g.
-"mem=<size>"), the IMA measurement buffer handed over from the previous
-kernel may fall outside the addressable RAM of the new kernel.  Accessing
-such a buffer can fault during early restore.
-
-Introduce a small generic helper, ima_validate_range(), which verifies
-that a physical [start, end] range for the previous-kernel IMA buffer lies
-within addressable memory:
-	- On x86, use pfn_range_is_mapped().
-	- On OF based architectures, use page_is_ram().
-
-Link: https://lkml.kernel.org/r/20251231061609.907170-1-harshit.m.mogalapalli@oracle.com
-Link: https://lkml.kernel.org/r/20251231061609.907170-2-harshit.m.mogalapalli@oracle.com
+Link: https://lkml.kernel.org/r/20251231061609.907170-3-harshit.m.mogalapalli@oracle.com
 Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 Cc: Alexander Graf <graf@amazon.com>
 Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
 Cc: Borislav Betkov <bp@alien8.de>
 Cc: guoweikang <guoweikang.kernel@gmail.com>
 Cc: Henry Willard <henry.willard@oracle.com>
@@ -175,76 +151,45 @@ Cc: Sohil Mehta <sohil.mehta@intel.com>
 Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
 Cc: Thomas Gleinxer <tglx@linutronix.de>
 Cc: Yifei Liu <yifei.l.liu@oracle.com>
-Cc: Baoquan He <bhe@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- include/linux/ima.h                |  1 +
- security/integrity/ima/ima_kexec.c | 35 ++++++++++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
+ drivers/of/kexec.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/ima.h b/include/linux/ima.h
-index 8e29cb4e6a01d..abf8923f8fc51 100644
---- a/include/linux/ima.h
-+++ b/include/linux/ima.h
-@@ -69,6 +69,7 @@ static inline int ima_measure_critical_data(const char *event_label,
- #ifdef CONFIG_HAVE_IMA_KEXEC
- int __init ima_free_kexec_buffer(void);
- int __init ima_get_kexec_buffer(void **addr, size_t *size);
-+int ima_validate_range(phys_addr_t phys, size_t size);
- #endif
+diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
+index 1ee2d31816aeb..c4cf3552c0183 100644
+--- a/drivers/of/kexec.c
++++ b/drivers/of/kexec.c
+@@ -128,7 +128,6 @@ int __init ima_get_kexec_buffer(void **addr, size_t *size)
+ {
+ 	int ret, len;
+ 	unsigned long tmp_addr;
+-	unsigned long start_pfn, end_pfn;
+ 	size_t tmp_size;
+ 	const void *prop;
  
- #ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
-diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
-index 5beb69edd12fd..36a34c54de58b 100644
---- a/security/integrity/ima/ima_kexec.c
-+++ b/security/integrity/ima/ima_kexec.c
-@@ -12,6 +12,8 @@
- #include <linux/kexec.h>
- #include <linux/of.h>
- #include <linux/ima.h>
-+#include <linux/mm.h>
-+#include <linux/overflow.h>
- #include <linux/reboot.h>
- #include <asm/page.h>
- #include "ima.h"
-@@ -294,3 +296,36 @@ void __init ima_load_kexec_buffer(void)
- 		pr_debug("Error restoring the measurement list: %d\n", rc);
- 	}
- }
-+
-+/*
-+ * ima_validate_range - verify a physical buffer lies in addressable RAM
-+ * @phys: physical start address of the buffer from previous kernel
-+ * @size: size of the buffer
-+ *
-+ * On success return 0. On failure returns -EINVAL so callers can skip
-+ * restoring.
-+ */
-+int ima_validate_range(phys_addr_t phys, size_t size)
-+{
-+	unsigned long start_pfn, end_pfn;
-+	phys_addr_t end_phys;
-+
-+	if (check_add_overflow(phys, (phys_addr_t)size - 1, &end_phys))
-+		return -EINVAL;
-+
-+	start_pfn = PHYS_PFN(phys);
-+	end_pfn = PHYS_PFN(end_phys);
-+
-+#ifdef CONFIG_X86
-+	if (!pfn_range_is_mapped(start_pfn, end_pfn))
-+#else
-+	if (!page_is_ram(start_pfn) || !page_is_ram(end_pfn))
-+#endif
-+	{
-+		pr_warn("IMA: previous kernel measurement buffer %pa (size 0x%zx) lies outside available memory\n",
-+			&phys, size);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
+@@ -144,17 +143,9 @@ int __init ima_get_kexec_buffer(void **addr, size_t *size)
+ 	if (!tmp_size)
+ 		return -ENOENT;
+ 
+-	/*
+-	 * Calculate the PFNs for the buffer and ensure
+-	 * they are with in addressable memory.
+-	 */
+-	start_pfn = PHYS_PFN(tmp_addr);
+-	end_pfn = PHYS_PFN(tmp_addr + tmp_size - 1);
+-	if (!page_is_ram(start_pfn) || !page_is_ram(end_pfn)) {
+-		pr_warn("IMA buffer at 0x%lx, size = 0x%zx beyond memory\n",
+-			tmp_addr, tmp_size);
+-		return -EINVAL;
+-	}
++	ret = ima_validate_range(tmp_addr, tmp_size);
++	if (ret)
++		return ret;
+ 
+ 	*addr = __va(tmp_addr);
+ 	*size = tmp_size;
 -- 
 2.51.0
 
