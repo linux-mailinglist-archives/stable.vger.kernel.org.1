@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-221469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAEVBiKWo2lPHgUAu9opvQ
-	(envelope-from <stable+bounces-221469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:28:02 +0100
+	id gJtFJiOWo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:28:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF891CAAD5
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:28:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 523201CAAE5
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:28:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9535430269DA
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:25:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F1DEE302DE04
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F306284662;
-	Sun,  1 Mar 2026 01:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B32284662;
+	Sun,  1 Mar 2026 01:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtz2YYIv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iFS4vs1N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228DD274B42
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4E02727EB;
+	Sun,  1 Mar 2026 01:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328342; cv=none; b=C+WmaIDW8R3+cLRUVeRb+QlFMiVbInaRADCOnhe3pJY2eMr8b2Kvhqzk9MojZ1MIVlxxmgenqO1gE8k3APaapKeQ1vIVzOXWozHwsF3E4pXH5rC/eDakMFDvge2cSi4dGlxl6rz3WAw7cfcY6JaGpPuIDK0o5aIWI3860YXDbck=
+	t=1772328344; cv=none; b=ggCA06CgGQpa3qXtLOSqRb1Lp74SjKpE4vbJoH6gmUW2Vcf78vPhlHaD88JSC5Mtedc3ED5gPdgPmZ0RPjDLgDADpK+MJeMDR85cACLXSkK0qja8Os7Ce/1SOP8bNXTENPq27yEVGxNMyvsmk463IyUJt291VG0m0GIyq82l0Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328342; c=relaxed/simple;
-	bh=iYfT2cToUYqsGSZq9JRF4W4eu/WYwHdaJ+xiafr+s90=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DRX5m9BeJ0gTGDWTyHW1pNG/VGhSSqH1QYeOXDBss+MD5p3WcspZV0CiREgU5gh2dpxsL9uji9jHeQNmpuZ6QRcz6pRfOhNdTmQ08w9LsAMOStH8uP9GAc4GMcpEWD6+z8HNmm9CGDTvQ/9pSZU3BUh/ts+1GMwzHRdqd2R6Wiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtz2YYIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552F2C2BC86;
-	Sun,  1 Mar 2026 01:25:41 +0000 (UTC)
+	s=arc-20240116; t=1772328344; c=relaxed/simple;
+	bh=PTbVhQdhuoSDv0R21b6Dg1tWdcgSpG74Jjny7ZQ8uJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q7JYqJ1BaKQjAaKIkhzRUAJGdlIBSYdDmrnrjbTWCuKXRlQBkZaEFOKLy45ack2W1uhwxgVH+dMpDJnwb9Ltr6aB0u5snMSyMTzv/f2ulQ9+O/X/aOyiqdgtl40LtwSr6gIFeuiHTZ6KMG7ngKjTYa3FrEynsNm99kFqmbJTmgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iFS4vs1N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F33C19421;
+	Sun,  1 Mar 2026 01:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328342;
-	bh=iYfT2cToUYqsGSZq9JRF4W4eu/WYwHdaJ+xiafr+s90=;
+	s=k20201202; t=1772328344;
+	bh=PTbVhQdhuoSDv0R21b6Dg1tWdcgSpG74Jjny7ZQ8uJI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=dtz2YYIvaHVcvY1YgWtdcKUKeBRNnlZ615V2AVRCegJb9ycSnWz1bnLZMAE8eypZo
-	 2G6+bCNUD4iFnYdeJACu/BCMDqukiylgNllK8YzpRmVY2WL+R50j+ntXc9asvlLFxl
-	 VpaKVSsMArGSnT7x0uS+pWOm0NNO7zB2ur/V83ZiMiT70ByZlx+UHkQHPyfi5qIrYV
-	 Nt1ur1wEruw3JRo+0j6DKFxhEwDN0+jlUZAVbIgkZZ7Dkzw8UW/42zzIL22vso0QpF
-	 mBt8+BTzMnNWzMjjA/cX6v8sHt5OXVVa7UU/V4LqJyatLrY9885LHmYU3i4SeVQ8qy
-	 8/zkpW/X6CQLg==
+	b=iFS4vs1NiAPdNuS4nVayuY69USOBchfDP/JnN1zdWWjHurxmxxEUQb93LZ/dfmwmi
+	 ug9DndvF8rVWKOmE+8g01AZhajBCQR/Kg5B+4KAT9MZHvW2xoo93yIEDxJIcATQYSU
+	 lyuEArjssdclF44fze3KHG9gJGGuA6qP+fpcYFiOGmQrjd145XlqjKHG3BGJukE/by
+	 LvQJWiYehIDKGGEr6SM8DYE2F/ACw12ESMx9tPjWAkO4XvDi7btlgpAdQxS2RGZxa5
+	 2UG5N7fMUUqeGPr9HM0hUl3ojPA9GvSGszqG2oWJmrW/eX6pT3cJzEEOrjkZbT0r7n
+	 AGiwHmRO8Tm1A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	yifan1.zhang@amd.com
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm/amdgpu: Protect GPU register accesses in powergated state in some paths" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:25:39 -0500
-Message-ID: <20260301012540.1682831-1-sashal@kernel.org>
+	linusw@kernel.org
+Cc: Niklas Cassel <cassel@kernel.org>,
+	linux-ide@vger.kernel.org
+Subject: FAILED: Patch "ata: pata_ftide010: Fix some DMA timings" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:25:42 -0500
+Message-ID: <20260301012542.1682920-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,19 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221469-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221470-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: ADF891CAAD5
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 523201CAAE5
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -104,59 +102,42 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 39fc2bc4da0082c226cbee331f0a5d44db3997da Mon Sep 17 00:00:00 2001
-From: Yifan Zhang <yifan1.zhang@amd.com>
-Date: Mon, 2 Feb 2026 13:17:39 +0800
-Subject: [PATCH] drm/amdgpu: Protect GPU register accesses in powergated state
- in some paths
+From ff4a46c278ac6a4b3f39be1492a4568b6dcc6105 Mon Sep 17 00:00:00 2001
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 3 Feb 2026 11:23:01 +0100
+Subject: [PATCH] ata: pata_ftide010: Fix some DMA timings
 
-Ungate GPU CG/PG in device_fini_hw and device_halt to protect GPU
-register accesses, e.g. GC registers are accessed in amdgpu_irq_disable_all()
-and amdgpu_fence_driver_hw_fini().
+The FTIDE010 has been missing some timing settings since its
+inception, since the upstream OpenWrt patch was missing these.
 
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The community has since come up with the appropriate timings.
+
+Fixes: be4e456ed3a5 ("ata: Add driver for Faraday Technology FTIDE010")
 Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/ata/pata_ftide010.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index c1ffc63e23ab5..528990a595ec9 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3504,9 +3504,6 @@ static int amdgpu_device_ip_fini_early(struct amdgpu_device *adev)
- 		}
- 	}
+diff --git a/drivers/ata/pata_ftide010.c b/drivers/ata/pata_ftide010.c
+index c3a8384c3e04d..c41da296eb389 100644
+--- a/drivers/ata/pata_ftide010.c
++++ b/drivers/ata/pata_ftide010.c
+@@ -122,10 +122,10 @@ static const u8 mwdma_50_active_time[3] = {6, 2, 2};
+ static const u8 mwdma_50_recovery_time[3] = {6, 2, 1};
+ static const u8 mwdma_66_active_time[3] = {8, 3, 3};
+ static const u8 mwdma_66_recovery_time[3] = {8, 2, 1};
+-static const u8 udma_50_setup_time[6] = {3, 3, 2, 2, 1, 1};
++static const u8 udma_50_setup_time[6] = {3, 3, 2, 2, 1, 9};
+ static const u8 udma_50_hold_time[6] = {3, 1, 1, 1, 1, 1};
+-static const u8 udma_66_setup_time[7] = {4, 4, 3, 2, };
+-static const u8 udma_66_hold_time[7] = {};
++static const u8 udma_66_setup_time[7] = {4, 4, 3, 2, 1, 9, 9};
++static const u8 udma_66_hold_time[7] = {4, 2, 1, 1, 1, 1, 1};
  
--	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
--	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
--
- 	amdgpu_amdkfd_suspend(adev, true);
- 	amdgpu_amdkfd_teardown_processes(adev);
- 	amdgpu_userq_suspend(adev);
-@@ -4902,6 +4899,9 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
- 		amdgpu_virt_fini_data_exchange(adev);
- 	}
- 
-+	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
-+	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
-+
- 	/* disable all interrupts */
- 	amdgpu_irq_disable_all(adev);
- 	if (adev->mode_info.mode_config_initialized) {
-@@ -7360,6 +7360,9 @@ void amdgpu_device_halt(struct amdgpu_device *adev)
- 	amdgpu_xcp_dev_unplug(adev);
- 	drm_dev_unplug(ddev);
- 
-+	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
-+	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
-+
- 	amdgpu_irq_disable_all(adev);
- 
- 	amdgpu_fence_driver_hw_fini(adev);
+ /*
+  * We set 66 MHz for all MWDMA modes
 -- 
 2.51.0
 
