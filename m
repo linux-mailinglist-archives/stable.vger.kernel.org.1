@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-222218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222219-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EL4MIIKeo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222218-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:46 +0100
+	id IF+qOoSeo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222219-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:48 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FD11CCC49
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA36B1CCC66
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 47691306A66E
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 84AAE301E5F5
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E507D2FD1BF;
-	Sun,  1 Mar 2026 01:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6206D2F39B4;
+	Sun,  1 Mar 2026 01:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDC0rz4O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dn2ecYMr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80822D9EFF;
-	Sun,  1 Mar 2026 01:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257F827FB05;
+	Sun,  1 Mar 2026 01:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330332; cv=none; b=deTeawGOd6t8BqWoWIN6kSKw59pp9uwpouOuk9EGZumGte/9NtebU2ZW+6BFPRUxnoZP05944Jfe/DywnX46wfa2OjuKV91F1izYiOl3qDQvP0NrkuTR+lPkAywuTsg5Fz84sgQ3wQTryYole/+KMM31f+8WwwLM/VFDSUOgI7Q=
+	t=1772330335; cv=none; b=PtV0uGScoM57f9vb23+yfZVD3mi7+apV6fghijUpBIG3S4J6OZcM0jtFhEOrh5Y7EwzXlNwzYeBgoRDA0rO+FxM86/NVUpT0zimm76kv2RFnlDFp3VZiDn/NeYpwo+nmMb7XaW2bexeuA1EnYQjM2gE5Z+ES2i7GMKWzEtvx1XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330332; c=relaxed/simple;
-	bh=4hi9eizbb3IBmM61iBKMizRqoDTJ319WiFH9XhM/H/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b8/4rHG47sM+Bu4tQgGaMbCBQsMZqUuXZMvPvL36gxP+JM+1HwE1f6UnX5/Mkz0Z96zKjGyXRwi2P12zISBgeaRINHaZ/vKJgbT0GYZcKZJK/R+T9VRAXVVIIRFNXZn+jX4ROHXRbL9Wo+8/9jxGfdaHA1gKPEYz6UDqWwC0llA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDC0rz4O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD28C19421;
-	Sun,  1 Mar 2026 01:58:51 +0000 (UTC)
+	s=arc-20240116; t=1772330335; c=relaxed/simple;
+	bh=ApWAfmB3gOEEzhxQry+UJTCONJqJcd+MLEwvz5oVR+Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UmU5AesNBp85Yd0H9XYBmjO4N4L532AwEzQlNJ1UVugLy+E1nWnhtMrFkrmzyjTCX2FJK1hkApylPeMvrdGSaOZWM+ofYUJwcBGgxoYTn78uOAEML8MdNXuFnHudbVsqFfNTMq9oAcUF9Az4ehH6MwMyS2yGQiak01a60MDtN5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dn2ecYMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50EEFC19421;
+	Sun,  1 Mar 2026 01:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330332;
-	bh=4hi9eizbb3IBmM61iBKMizRqoDTJ319WiFH9XhM/H/0=;
+	s=k20201202; t=1772330334;
+	bh=ApWAfmB3gOEEzhxQry+UJTCONJqJcd+MLEwvz5oVR+Q=;
 	h=From:To:Cc:Subject:Date:From;
-	b=aDC0rz4OUIjgfh7m+ifp2tCqkac8J5pJBeMsMyZAcI4Zi9BF+w/VM2/gcvIr885er
-	 Mr+YsTz2V9o/vrMbR26ckBr9hHKx7pOuJ3BM/ZK6wspsBHdd1XRRTBVvGpAMF1KotW
-	 ItyZ72Ep8YGlUAdOWtQAwEIbLIxrRR2Z+lKrkrnhTw3w2fPoszQq1YWpx7NK9DHQGl
-	 f6Q5cHW8ThpsMDDRjMzOfbi4dgNaO8FkR2gFZT6vK4gMJOcEFyfCr5JpJLBZGAPdzT
-	 zwRut6Ox9TAvKPd+k4v9kxZMbdajW6ZAxJ22ZMZgUCdMLhWAgz0BcKBjdHM+lwrr5p
-	 196fpC6gpeZxA==
+	b=dn2ecYMrCC4MBJJfA8ozc9ecIy0zzeHfu3A4LBXHKaC4fnw7qMd0pRwlBj2xvNJy3
+	 QNrZGjkE2fXRqyUO/B8QPn1fWwYaCmW+MfIBK561peaDNHOKnOBfZLDoLJ1uOWZSg6
+	 r0wwzkaDHTdlU4LkxqHMgOqEEBCVPO6WRa31NdeSmRsGjFfPn7O3rMDs3Hh1qlnOqt
+	 YKqYVrr+8UCyLrYKqoA0tbSzukZOc5nlBOPWyZdzjsXfuOcH5PTdiDbYDSRaK1mN5m
+	 y+lgBzfxT+c8KhWdPEn+FDeG24BjnBneVc5PPSlM6ZcACJsyRQOQdbp/1s+o9dOszT
+	 NwvNVXE3TNk+w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	sdeodhar@marvell.com
-Cc: Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org
-Subject: FAILED: Patch "scsi: qla2xxx: Allow recovery for tape devices" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 20:58:50 -0500
-Message-ID: <20260301015850.1724443-1-sashal@kernel.org>
+	hanguidong02@gmail.com
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
+	linux-remoteproc@vger.kernel.org
+Subject: FAILED: Patch "rpmsg: core: fix race in driver_override_show() and use core helper" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 20:58:52 -0500
+Message-ID: <20260301015853.1724493-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,25 +72,25 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[marvell.com,gmail.com,oracle.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-222218-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222219-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,marvell.com:email,oracle.com:email]
-X-Rspamd-Queue-Id: 25FD11CCC49
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BA36B1CCC66
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -105,60 +103,123 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b0335ee4fb94832a4ef68774ca7e7b33b473c7a6 Mon Sep 17 00:00:00 2001
-From: Shreyas Deodhar <sdeodhar@marvell.com>
-Date: Wed, 10 Dec 2025 15:45:58 +0530
-Subject: [PATCH] scsi: qla2xxx: Allow recovery for tape devices
+From 42023d4b6d2661a40ee2dcf7e1a3528a35c638ca Mon Sep 17 00:00:00 2001
+From: Gui-Dong Han <hanguidong02@gmail.com>
+Date: Wed, 3 Dec 2025 01:49:48 +0800
+Subject: [PATCH] rpmsg: core: fix race in driver_override_show() and use core
+ helper
 
-Tape device doesn't show up after RSCNs.  To fix this, remove tape
-device specific checks which allows recovery of tape devices.
+The driver_override_show function reads the driver_override string
+without holding the device_lock. However, the store function modifies
+and frees the string while holding the device_lock. This creates a race
+condition where the string can be freed by the store function while
+being read by the show function, leading to a use-after-free.
 
-Fixes: 44c57f205876 ("scsi: qla2xxx: Changes to support FCP2 Target")
+To fix this, replace the rpmsg_string_attr macro with explicit show and
+store functions. The new driver_override_store uses the standard
+driver_set_override helper. Since the introduction of
+driver_set_override, the comments in include/linux/rpmsg.h have stated
+that this helper must be used to set or clear driver_override, but the
+implementation was not updated until now.
+
+Because driver_set_override modifies and frees the string while holding
+the device_lock, the new driver_override_show now correctly holds the
+device_lock during the read operation to prevent the race.
+
+Additionally, since rpmsg_string_attr has only ever been used for
+driver_override, removing the macro simplifies the code.
+
+Fixes: 39e47767ec9b ("rpmsg: Add driver_override device attribute for rpmsg_device")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-7-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20251202174948.12693-1-hanguidong02@gmail.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c   | 3 ---
- drivers/scsi/qla2xxx/qla_init.c | 9 ---------
- 2 files changed, 12 deletions(-)
+ drivers/rpmsg/rpmsg_core.c | 66 ++++++++++++++++----------------------
+ 1 file changed, 27 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
-index 51c7cea71f902..02a52c2157971 100644
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3266,9 +3266,6 @@ void qla_fab_scan_finish(scsi_qla_host_t *vha, srb_t *sp)
- 			    atomic_read(&fcport->state) == FCS_ONLINE) ||
- 				do_delete) {
- 				if (fcport->loop_id != FC_NO_LOOP_ID) {
--					if (fcport->flags & FCF_FCP2_DEVICE)
--						continue;
+diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+index 5d661681a9b6c..96964745065b1 100644
+--- a/drivers/rpmsg/rpmsg_core.c
++++ b/drivers/rpmsg/rpmsg_core.c
+@@ -352,50 +352,38 @@ field##_show(struct device *dev,					\
+ }									\
+ static DEVICE_ATTR_RO(field);
+ 
+-#define rpmsg_string_attr(field, member)				\
+-static ssize_t								\
+-field##_store(struct device *dev, struct device_attribute *attr,	\
+-	      const char *buf, size_t sz)				\
+-{									\
+-	struct rpmsg_device *rpdev = to_rpmsg_device(dev);		\
+-	const char *old;						\
+-	char *new;							\
+-									\
+-	new = kstrndup(buf, sz, GFP_KERNEL);				\
+-	if (!new)							\
+-		return -ENOMEM;						\
+-	new[strcspn(new, "\n")] = '\0';					\
+-									\
+-	device_lock(dev);						\
+-	old = rpdev->member;						\
+-	if (strlen(new)) {						\
+-		rpdev->member = new;					\
+-	} else {							\
+-		kfree(new);						\
+-		rpdev->member = NULL;					\
+-	}								\
+-	device_unlock(dev);						\
+-									\
+-	kfree(old);							\
+-									\
+-	return sz;							\
+-}									\
+-static ssize_t								\
+-field##_show(struct device *dev,					\
+-	     struct device_attribute *attr, char *buf)			\
+-{									\
+-	struct rpmsg_device *rpdev = to_rpmsg_device(dev);		\
+-									\
+-	return sprintf(buf, "%s\n", rpdev->member);			\
+-}									\
+-static DEVICE_ATTR_RW(field)
 -
- 					ql_log(ql_log_warn, vha, 0x20f0,
- 					       "%s %d %8phC post del sess\n",
- 					       __func__, __LINE__,
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index 9729e32012aa1..6ce3a492ad6f5 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -1859,15 +1859,6 @@ void qla2x00_handle_rscn(scsi_qla_host_t *vha, struct event_arg *ea)
- 	case RSCN_PORT_ADDR:
- 		fcport = qla2x00_find_fcport_by_nportid(vha, &ea->id, 1);
- 		if (fcport) {
--			if (ql2xfc2target &&
--			    fcport->flags & FCF_FCP2_DEVICE &&
--			    atomic_read(&fcport->state) == FCS_ONLINE) {
--				ql_dbg(ql_dbg_disc, vha, 0x2115,
--				       "Delaying session delete for FCP2 portid=%06x %8phC ",
--					fcport->d_id.b24, fcport->port_name);
--				return;
--			}
--
- 			if (vha->hw->flags.edif_enabled && DBELL_ACTIVE(vha)) {
- 				/*
- 				 * On ipsec start by remote port, Target port
+ /* for more info, see Documentation/ABI/testing/sysfs-bus-rpmsg */
+ rpmsg_show_attr(name, id.name, "%s\n");
+ rpmsg_show_attr(src, src, "0x%x\n");
+ rpmsg_show_attr(dst, dst, "0x%x\n");
+ rpmsg_show_attr(announce, announce ? "true" : "false", "%s\n");
+-rpmsg_string_attr(driver_override, driver_override);
++
++static ssize_t driver_override_store(struct device *dev,
++				     struct device_attribute *attr,
++				     const char *buf, size_t count)
++{
++	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
++	int ret;
++
++	ret = driver_set_override(dev, &rpdev->driver_override, buf, count);
++	if (ret)
++		return ret;
++
++	return count;
++}
++
++static ssize_t driver_override_show(struct device *dev,
++				    struct device_attribute *attr, char *buf)
++{
++	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
++	ssize_t len;
++
++	device_lock(dev);
++	len = sysfs_emit(buf, "%s\n", rpdev->driver_override);
++	device_unlock(dev);
++	return len;
++}
++static DEVICE_ATTR_RW(driver_override);
+ 
+ static ssize_t modalias_show(struct device *dev,
+ 			     struct device_attribute *attr, char *buf)
 -- 
 2.51.0
 
