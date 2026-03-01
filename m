@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-221379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCc+CB6Wo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:58 +0100
+	id GIiBMyOWo2lPHgUAu9opvQ
+	(envelope-from <stable+bounces-221380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:28:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05151CAABD
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4A91CAAE4
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:28:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 41AD230197EE
+	by sin.lore.kernel.org (Postfix) with ESMTP id D044B3001A7A
 	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090D8278161;
-	Sun,  1 Mar 2026 01:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E25C17C211;
+	Sun,  1 Mar 2026 01:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KoqesAgv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avRx4wjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB0917C211;
-	Sun,  1 Mar 2026 01:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024ED2BD0B
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328114; cv=none; b=lCub0+YXzF5D0CtpYqKR3+DTJgo2fYYckHMGKIm4WVkdWMteYQivbpv0JbyLfk7XZW8357tcbIoYaij73+IiyehTNaEX1ryVWZhWOyytpXIiqSxuKqYHXdp81nlFlpWMc5axawFPLQvOGZ8vTDGVs9snsVOZGq4a+DiPP0oj6+E=
+	t=1772328117; cv=none; b=rntFi2A90LWMaj+/aYybl3Ahj/RreGyQEp0ZWCrjejiPkUw+uRKlFvgXgu1F2WdRJ0dGivSVVHC8XcWFTisSQkq6InSNnjfm4PUpNeOrfuerAVwjyxVrBIkpASKGUq2kUBOVMOThJCVck1WOTdefQsGF7kPSGRnUu00IHHqE5X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328114; c=relaxed/simple;
-	bh=stuHyNvDx2dKkk43VzzX+Ii97SAG2WbEBlfAgbDqt3Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d22BSGNzEAtSSkh7Y3f9dCh8jTB6ztDiW2qQ33lTlQz67PkENXJRguKFg+HmTHgEHF1qmeRGLnPQB2+AS3A/QzRhKwE5tbsMieBlTwQv4u/xTyjHlpLc30xtJz4MKKqJrdkL5BQeC75tjJF3Z/XvJHdCW+wcAtKFTyIFysmXM3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KoqesAgv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3896C19421;
-	Sun,  1 Mar 2026 01:21:53 +0000 (UTC)
+	s=arc-20240116; t=1772328117; c=relaxed/simple;
+	bh=QymPUe1Ua5OHXJ9i+OgJ5XozqZ0nkB5DpJKgrtIWmPI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M/uChcwSO6Q+FlmAJBukCM9hGhSUayeq59vWvrIxgP88WPVIXv40hf8WxL4mnrYVu0DHBqJwFqtp54iCszjdhTQNjsAbynCaNtwWanqkhH3tfxnJz2j56/CJPBvRDJG2OrYtoGSIpECni+p0K5AlNHUh2K8hZoXaTCuERTlEppE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avRx4wjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642A8C19421;
+	Sun,  1 Mar 2026 01:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328114;
-	bh=stuHyNvDx2dKkk43VzzX+Ii97SAG2WbEBlfAgbDqt3Y=;
+	s=k20201202; t=1772328116;
+	bh=QymPUe1Ua5OHXJ9i+OgJ5XozqZ0nkB5DpJKgrtIWmPI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=KoqesAgv7sU0vm9GsTUp+lolksQ2e8by7GeZPSDLet313UTGIr4iMHu9a/2chJVGZ
-	 wnsfAfiF+x1GvRBv1u+s8WGc3uB1eA5vctti+1vGyZWhSWfTytOPfv/5XDRFvNYQmJ
-	 3zS/kDeg9roU9rga65m5jCLY5hxp/QZhzcMDY3J88SJaYJlL0aPMDPOWNTBl+8UE2v
-	 rHPgUoqaX1bcTiRQcUpw5j23MehhebavWw5tLRjELf+PfgKk3fFokoxJqHsEcPswe7
-	 bUkPF3NLkk58WYB/1/HSDsCBiDW8dqn9tQW25wLkzZnZe3avv8idg1/XjilJny0+JX
-	 UTl3jdsQmo3yA==
+	b=avRx4wjPMjAy/O0V8QqieecBT5U1KohQRCZssOPclumCVAX/ZhtPixl17QxZXqcSK
+	 D/tVWpFBAak6GSFi6KZxSLp8ooG1yF/9sQ3Z08BmrAn+gpWTlb32a/KmZRijOXoTJs
+	 hEmHcPlXETWw/X05ibHQN+lIHmnp94UOfKirUaTT1FxXj499zAUfRGubJ4eUIiOVEK
+	 yE9XMpEWz3m2CKE9Ck4zwN3ImzM3Xs+z22j76nUE3rh6H4CNghD56y+JGrci31BPd9
+	 hSw3yPz6kJIu8yRZ3zWqcZtX9DXeET/5Blu6U1lP55q/UeHFSxHsprI74uzxBPZRJv
+	 qhLgJyi7hlo/A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	schnelle@linux.ibm.com
-Cc: Benjamin Block <bblock@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	linux-s390@vger.kernel.org
-Subject: FAILED: Patch "s390/pci: Handle futile config accesses of disabled devices directly" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:21:52 -0500
-Message-ID: <20260301012152.1677954-1-sashal@kernel.org>
+	bartosz.golaszewski@oss.qualcomm.com
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>
+Subject: FAILED: Patch "reset: gpio: suppress bind attributes in sysfs" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:21:54 -0500
+Message-ID: <20260301012155.1678013-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,19 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221379-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221380-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E05151CAABD
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email,pengutronix.de:email]
+X-Rspamd-Queue-Id: CE4A91CAAE4
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -104,88 +102,38 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 84d875e69818bed600edccb09be4a64b84a34a54 Mon Sep 17 00:00:00 2001
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-Date: Thu, 8 Jan 2026 16:45:53 +0100
-Subject: [PATCH] s390/pci: Handle futile config accesses of disabled devices
- directly
+From 16de4c6a8fe9ff497ca1aba33ef0dbee09f11952 Mon Sep 17 00:00:00 2001
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Date: Thu, 4 Dec 2025 10:44:12 +0100
+Subject: [PATCH] reset: gpio: suppress bind attributes in sysfs
 
-On s390 PCI busses and slots with multiple functions may have holes
-because PCI functions are passed-through by the hypervisor on a per
-function basis and some functions may be in standby or reserved. This
-fact is indicated by returning true from the
-hypervisor_isolated_pci_functions() helper and triggers common code to
-scan all possible devfn values. Via pci_scan_single_device() this in
-turn causes config reads for the device and vendor IDs, even for PCI
-functions which are in standby and thereofore disabled.
+This is a special device that's created dynamically and is supposed to
+stay in memory forever. We also currently don't have a devlink between
+it and the actual reset consumer. Suppress sysfs bind attributes so that
+user-space can't unbind the device because - as of now - it will cause a
+use-after-free splat from any user that puts the reset control handle.
 
-So far these futile config reads, as well as potentially writes, which
-can never succeed were handled by the PCI load/store instructions
-themselves. This works as the platform just returns an error for
-a disabled and thus not usable function handle. It does cause spamming
-of error logs and additional overhead though.
-
-Instead check if the used function handle is enabled in zpci_cfg_load()
-and zpci_cfg_write() and if not enable directly return -ENODEV. Also
-refactor zpci_cfg_load() and zpci_cfg_store() slightly to accommodate
-the new logic while meeting modern kernel style guidelines.
-
+Fixes: cee544a40e44 ("reset: gpio: Add GPIO-based reset controller")
 Cc: stable@vger.kernel.org
-Fixes: a50297cf8235 ("s390/pci: separate zbus creation from scanning")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- arch/s390/pci/pci.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ drivers/reset/reset-gpio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 57f3980b98a92..7f44b0644a20e 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -231,24 +231,33 @@ int zpci_fmb_disable_device(struct zpci_dev *zdev)
- static int zpci_cfg_load(struct zpci_dev *zdev, int offset, u32 *val, u8 len)
- {
- 	u64 req = ZPCI_CREATE_REQ(zdev->fh, ZPCI_PCIAS_CFGSPC, len);
-+	int rc = -ENODEV;
- 	u64 data;
--	int rc;
-+
-+	if (!zdev_enabled(zdev))
-+		goto out_err;
- 
- 	rc = __zpci_load(&data, req, offset);
--	if (!rc) {
--		data = le64_to_cpu((__force __le64) data);
--		data >>= (8 - len) * 8;
--		*val = (u32) data;
--	} else
--		*val = 0xffffffff;
-+	if (rc)
-+		goto out_err;
-+	data = le64_to_cpu((__force __le64)data);
-+	data >>= (8 - len) * 8;
-+	*val = (u32)data;
-+	return 0;
-+
-+out_err:
-+	PCI_SET_ERROR_RESPONSE(val);
- 	return rc;
- }
- 
- static int zpci_cfg_store(struct zpci_dev *zdev, int offset, u32 val, u8 len)
- {
- 	u64 req = ZPCI_CREATE_REQ(zdev->fh, ZPCI_PCIAS_CFGSPC, len);
-+	int rc = -ENODEV;
- 	u64 data = val;
--	int rc;
-+
-+	if (!zdev_enabled(zdev))
-+		return rc;
- 
- 	data <<= (8 - len) * 8;
- 	data = (__force u64) cpu_to_le64(data);
+diff --git a/drivers/reset/reset-gpio.c b/drivers/reset/reset-gpio.c
+index e5512b3b596b5..626c4c639c155 100644
+--- a/drivers/reset/reset-gpio.c
++++ b/drivers/reset/reset-gpio.c
+@@ -111,6 +111,7 @@ static struct auxiliary_driver reset_gpio_driver = {
+ 	.id_table	= reset_gpio_ids,
+ 	.driver	= {
+ 		.name = "reset-gpio",
++		.suppress_bind_attrs = true,
+ 	},
+ };
+ module_auxiliary_driver(reset_gpio_driver);
 -- 
 2.51.0
 
