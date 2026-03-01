@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-221858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OG6+CWWao2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:13 +0100
+	id GCcdNcWao2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9E01CBA11
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DA21CBC3F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BE2FA3033251
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0C397309BFC7
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B732D5937;
-	Sun,  1 Mar 2026 01:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7D22D6407;
+	Sun,  1 Mar 2026 01:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOsTHtfn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/Hd+4Yt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FF62C0294;
-	Sun,  1 Mar 2026 01:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8E628FFFB;
+	Sun,  1 Mar 2026 01:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329306; cv=none; b=FzDPzhkrvZc8B9VL7iI0t+BaQSoeKLmiCdX4QjztZKN855Ddv/xJ/OlV0tv/mujcIgklnU8sSJNCSYHZGWu3IyCQOOslMOV6sXR/POM62exp0zlqbiqhiPZWQHTKE6jt3/9mfvCesnohMmyU1VIG/qUGhQ509/oGv5odz+nDfCA=
+	t=1772329309; cv=none; b=pN63WTJ9SGmTVlUxFJ7Zc3vl8sO0vijGRh0+c8xog9kouaskfmIxPF6X3Z6ZQKavFYmCbu15XCdz7Afb4Y6eDUpKG+D6P6d/oUa/0sqHVtIqYCTPVUTO9w/6xFlxXkeRUhrCN+8ZP739Ee0kZ+iQQIL6oHVLSSgRWj3D98OzPeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329306; c=relaxed/simple;
-	bh=CIIr3NGEKkFaMC9e9pMh/KuEXB73QvfJAuEq6KNACa4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qnmhPIv+l60fjIq/yWaN3VL0QLHekJgYPhju/Mo9P+s0b5Ciczyzl2AElzQEX3X1ETTwGIOrX2L7gQ2C/aBKCK8eJdOCRWrTn9Qhejwmih4I5vJi8twbOAt6CAuIgIUKvjRucmh++f9yjiLCHGLgDaMsF5blAj28wt4hANkrGAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOsTHtfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB713C19421;
-	Sun,  1 Mar 2026 01:41:45 +0000 (UTC)
+	s=arc-20240116; t=1772329309; c=relaxed/simple;
+	bh=IHZDL0D+oeZGepCiaU/mA6M/ynyOb9TIqoCKpxjwbqY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eJqubkSC08q9i3H6pVG+QjHU7VugoiDFxLXRbWGFic9iLf9UiizPctDki/qe5CkpX0eV/gWBPsgA9a/ZPk90g8AGLaDXnwsc8KCKVkuKT8m3NIOF4NSZ72ZYiNSe5Cp7bbZA3C/bdHm7Q+DWKENy2y9Mux7VhRuzHQ0QNSIw3Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/Hd+4Yt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5355DC19421;
+	Sun,  1 Mar 2026 01:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329306;
-	bh=CIIr3NGEKkFaMC9e9pMh/KuEXB73QvfJAuEq6KNACa4=;
+	s=k20201202; t=1772329309;
+	bh=IHZDL0D+oeZGepCiaU/mA6M/ynyOb9TIqoCKpxjwbqY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=LOsTHtfndjt9qBC3ZEFAHvNyFFX8GFdAIYOQ3UBEKTlh+q1/DjeTgQuiO2CUO+V0q
-	 DC5uFDK0Hsyee44rFvP7Yh9sx14yYV7JTDtfTbxpSobw75K/7NqN+StYmsN+0g1mnG
-	 utytV8ZkqoTi4zAuq2imGXvK9LocdAefp+a283eyuy+Z89Zl5ppHKJkeWkTQ2dW54r
-	 gBIVU4UtB7JBcgLgmyJifbKCBunS+GofijBiciP4qIYSVROjKLUacJ+TGPu3YCcyuo
-	 DITZt+MhCgVnIikreW4VK0W/Q0NfDLTvDNe2FzAWRDwE7HnvaTnGeBJEHeInNtrDPb
-	 tSPAJcPL+NPSQ==
+	b=Y/Hd+4YtEc1ED+CsK4tprXoz3sp4lNuESrMt4QGvMt3tYOS6bj9LwUt3Y94S9Fq9a
+	 wQfizreAsXL1OVY1zxW47cQGtxaquDfsB3xlpbVKWFmqGmCAU4DEvhv51EjASqPSVU
+	 5Ca9McRkDe/uMUKZYslmj2Bc7kPIqfii86fBQ1AXgREesQ8MBTvYEaQrS/dIk7H9eh
+	 bggCAN+biEYBHAri4xzABovk0Vdg3t0EPiDp8p+mEr1ALkwEt0ffxTVRcqDfPfjeC4
+	 QAi4f4X0KAcZBIkVdW4bObld8gjPpEddrBrDsDYad7Wad0HsJ1a+8qv13h3ke92ulv
+	 WLBubwnjryZ+Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mpatocka@redhat.com
-Cc: dm-devel@lists.linux.dev
-Subject: FAILED: Patch "dm-integrity: fix a typo in the code for write/discard race" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:41:44 -0500
-Message-ID: <20260301014144.1703446-1-sashal@kernel.org>
+	dlemoal@kernel.org
+Cc: Xingui Yang <yangxingui@huawei.com>,
+	Igor Pylypiv <ipylypiv@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	linux-ide@vger.kernel.org
+Subject: FAILED: Patch "ata: libata-scsi: avoid Non-NCQ command starvation" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:41:46 -0500
+Message-ID: <20260301014147.1703496-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,29 +71,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221858-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221859-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CE9E01CBA11
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,oracle.com:email]
+X-Rspamd-Queue-Id: A1DA21CBC3F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -101,40 +106,272 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From c698b7f417801fcd79f0dc844250b3361d38e6b8 Mon Sep 17 00:00:00 2001
-From: Mikulas Patocka <mpatocka@redhat.com>
-Date: Mon, 12 Jan 2026 21:15:27 +0100
-Subject: [PATCH] dm-integrity: fix a typo in the code for write/discard race
+From 0ea84089dbf62a92dc7889c79e6b18fc89260808 Mon Sep 17 00:00:00 2001
+From: Damien Le Moal <dlemoal@kernel.org>
+Date: Wed, 17 Dec 2025 16:40:48 +0900
+Subject: [PATCH] ata: libata-scsi: avoid Non-NCQ command starvation
 
-If we send a write followed by a discard, it may be possible that the
-discarded data end up being overwritten by the previous write from the
-journal. The code tries to prevent that, but there was a typo in this
-logic that made it not being activated as it should be.
+When a non-NCQ command is issued while NCQ commands are being executed,
+ata_scsi_qc_issue() indicates to the SCSI layer that the command issuing
+should be deferred by returning SCSI_MLQUEUE_XXX_BUSY.  This command
+deferring is correct and as mandated by the ACS specifications since
+NCQ and non-NCQ commands cannot be mixed.
 
-Note that if we end up here the second time (when discard_retried is
-true), it means that the write bio is actually racing with the discard
-bio, and in this situation it is not specified which of them should win.
+However, in the case of a host adapter using multiple submission queues,
+when the target device is under a constant load of NCQ commands, there
+are no guarantees that requeueing the non-NCQ command will be executed
+later and it may be deferred again repeatedly as other submission queues
+can constantly issue NCQ commands from different CPUs ahead of the
+non-NCQ command. This can lead to very long delays for the execution of
+non-NCQ commands, and even complete starvation for these commands in the
+worst case scenario.
 
+Since the block layer and the SCSI layer do not distinguish between
+queueable (NCQ) and non queueable (non-NCQ) commands, libata-scsi SAT
+implementation must ensure forward progress for non-NCQ commands in the
+presence of NCQ command traffic. This is similar to what SAS HBAs with a
+hardware/firmware based SAT implementation do.
+
+Implement such forward progress guarantee by limiting requeueing of
+non-NCQ commands from ata_scsi_qc_issue(): when a non-NCQ command is
+received and NCQ commands are in-flight, do not force a requeue of the
+non-NCQ command by returning SCSI_MLQUEUE_XXX_BUSY and instead return 0
+to indicate that the command was accepted but hold on to the qc using
+the new deferred_qc field of struct ata_port.
+
+This deferred qc will be issued using the work item deferred_qc_work
+running the function ata_scsi_deferred_qc_work() once all in-flight
+commands complete, which is checked with the port qc_defer() callback
+return value indicating that no further delay is necessary. This check
+is done using the helper function ata_scsi_schedule_deferred_qc() which
+is called from ata_scsi_qc_complete(). This thus excludes this mechanism
+from all internal non-NCQ commands issued by ATA EH.
+
+When a port deferred_qc is non NULL, that is, the port has a command
+waiting for the device queue to drain, the issuing of all incoming
+commands (both NCQ and non-NCQ) is deferred using the regular busy
+mechanism. This simplifies the code and also avoids potential denial of
+service problems if a user issues too many non-NCQ commands.
+
+Finally, whenever ata EH is scheduled, regardless of the reason, a
+deferred qc is always requeued so that it can be retried once EH
+completes. This is done by calling the function
+ata_scsi_requeue_deferred_qc() from ata_eh_set_pending(). This avoids
+the need for any special processing for the deferred qc in case of NCQ
+error, link or device reset, or device timeout.
+
+Reported-by: Xingui Yang <yangxingui@huawei.com>
+Reported-by: Igor Pylypiv <ipylypiv@google.com>
+Fixes: bdb01301f3ea ("scsi: Add host and host template flag 'host_tagset'")
 Cc: stable@vger.kernel.org
-Fixes: 31843edab7cb ("dm integrity: improve discard in journal mode")
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Tested-by: Igor Pylypiv <ipylypiv@google.com>
+Tested-by: Xingui Yang <yangxingui@huawei.com>
 ---
- drivers/md/dm-integrity.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-core.c |  5 +++
+ drivers/ata/libata-eh.c   |  6 +++
+ drivers/ata/libata-scsi.c | 93 +++++++++++++++++++++++++++++++++++++++
+ drivers/ata/libata.h      |  2 +
+ include/linux/libata.h    |  3 ++
+ 5 files changed, 109 insertions(+)
 
-diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
-index 170bf67a2edd9..79d60495454a5 100644
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -2411,7 +2411,7 @@ static void dm_integrity_map_continue(struct dm_integrity_io *dio, bool from_map
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index b961054817845..e888f24456929 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5644,6 +5644,7 @@ struct ata_port *ata_port_alloc(struct ata_host *host)
+ 	mutex_init(&ap->scsi_scan_mutex);
+ 	INIT_DELAYED_WORK(&ap->hotplug_task, ata_scsi_hotplug);
+ 	INIT_DELAYED_WORK(&ap->scsi_rescan_task, ata_scsi_dev_rescan);
++	INIT_WORK(&ap->deferred_qc_work, ata_scsi_deferred_qc_work);
+ 	INIT_LIST_HEAD(&ap->eh_done_q);
+ 	init_waitqueue_head(&ap->eh_wait_q);
+ 	init_completion(&ap->park_req_pending);
+@@ -6256,6 +6257,10 @@ static void ata_port_detach(struct ata_port *ap)
+ 		}
+ 	}
  
- 		new_pos = find_journal_node(ic, dio->range.logical_sector, &next_sector);
- 		if (unlikely(new_pos != NOT_FOUND) ||
--		    unlikely(next_sector < dio->range.logical_sector - dio->range.n_sectors)) {
-+		    unlikely(next_sector < dio->range.logical_sector + dio->range.n_sectors)) {
- 			remove_range_unlocked(ic, &dio->range);
- 			spin_unlock_irq(&ic->endio_wait.lock);
- 			queue_work(ic->commit_wq, &ic->commit_work);
++	/* Make sure the deferred qc work finished. */
++	cancel_work_sync(&ap->deferred_qc_work);
++	WARN_ON(ap->deferred_qc);
++
+ 	/* Tell EH to disable all devices */
+ 	ap->pflags |= ATA_PFLAG_UNLOADING;
+ 	ata_port_schedule_eh(ap);
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index f4c9541d1910e..72a22b6c96821 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -918,6 +918,12 @@ static void ata_eh_set_pending(struct ata_port *ap, bool fastdrain)
+ 
+ 	ap->pflags |= ATA_PFLAG_EH_PENDING;
+ 
++	/*
++	 * If we have a deferred qc, requeue it so that it is retried once EH
++	 * completes.
++	 */
++	ata_scsi_requeue_deferred_qc(ap);
++
+ 	if (!fastdrain)
+ 		return;
+ 
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index be620bc045848..e7898bf56308d 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1658,8 +1658,77 @@ static void ata_qc_done(struct ata_queued_cmd *qc)
+ 	done(cmd);
+ }
+ 
++void ata_scsi_deferred_qc_work(struct work_struct *work)
++{
++	struct ata_port *ap =
++		container_of(work, struct ata_port, deferred_qc_work);
++	struct ata_queued_cmd *qc;
++	unsigned long flags;
++
++	spin_lock_irqsave(ap->lock, flags);
++
++	/*
++	 * If we still have a deferred qc and we are not in EH, issue it. In
++	 * such case, we should not need any more deferring the qc, so warn if
++	 * qc_defer() says otherwise.
++	 */
++	qc = ap->deferred_qc;
++	if (qc && !ata_port_eh_scheduled(ap)) {
++		WARN_ON_ONCE(ap->ops->qc_defer(qc));
++		ap->deferred_qc = NULL;
++		ata_qc_issue(qc);
++	}
++
++	spin_unlock_irqrestore(ap->lock, flags);
++}
++
++void ata_scsi_requeue_deferred_qc(struct ata_port *ap)
++{
++	struct ata_queued_cmd *qc = ap->deferred_qc;
++	struct scsi_cmnd *scmd;
++
++	lockdep_assert_held(ap->lock);
++
++	/*
++	 * If we have a deferred qc when a reset occurs or NCQ commands fail,
++	 * do not try to be smart about what to do with this deferred command
++	 * and simply retry it by completing it with DID_SOFT_ERROR.
++	 */
++	if (!qc)
++		return;
++
++	scmd = qc->scsicmd;
++	ap->deferred_qc = NULL;
++	ata_qc_free(qc);
++	scmd->result = (DID_SOFT_ERROR << 16);
++	scsi_done(scmd);
++}
++
++static void ata_scsi_schedule_deferred_qc(struct ata_port *ap)
++{
++	struct ata_queued_cmd *qc = ap->deferred_qc;
++
++	lockdep_assert_held(ap->lock);
++
++	/*
++	 * If we have a deferred qc, then qc_defer() is defined and we can use
++	 * this callback to determine if this qc is good to go, unless EH has
++	 * been scheduled.
++	 */
++	if (!qc)
++		return;
++
++	if (ata_port_eh_scheduled(ap)) {
++		ata_scsi_requeue_deferred_qc(ap);
++		return;
++	}
++	if (!ap->ops->qc_defer(qc))
++		queue_work(system_highpri_wq, &ap->deferred_qc_work);
++}
++
+ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
+ {
++	struct ata_port *ap = qc->ap;
+ 	struct scsi_cmnd *cmd = qc->scsicmd;
+ 	u8 *cdb = cmd->cmnd;
+ 	bool have_sense = qc->flags & ATA_QCFLAG_SENSE_VALID;
+@@ -1689,6 +1758,8 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
+ 	}
+ 
+ 	ata_qc_done(qc);
++
++	ata_scsi_schedule_deferred_qc(ap);
+ }
+ 
+ static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
+@@ -1698,6 +1769,16 @@ static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
+ 	if (!ap->ops->qc_defer)
+ 		goto issue;
+ 
++	/*
++	 * If we already have a deferred qc, then rely on the SCSI layer to
++	 * requeue and defer all incoming commands until the deferred qc is
++	 * processed, once all on-going commands complete.
++	 */
++	if (ap->deferred_qc) {
++		ata_qc_free(qc);
++		return SCSI_MLQUEUE_DEVICE_BUSY;
++	}
++
+ 	/* Check if the command needs to be deferred. */
+ 	ret = ap->ops->qc_defer(qc);
+ 	switch (ret) {
+@@ -1716,6 +1797,18 @@ static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
+ 	}
+ 
+ 	if (ret) {
++		/*
++		 * We must defer this qc: if this is not an NCQ command, keep
++		 * this qc as a deferred one and report to the SCSI layer that
++		 * we issued it so that it is not requeued. The deferred qc will
++		 * be issued with the port deferred_qc_work once all on-going
++		 * commands complete.
++		 */
++		if (!ata_is_ncq(qc->tf.protocol)) {
++			ap->deferred_qc = qc;
++			return 0;
++		}
++
+ 		/* Force a requeue of the command to defer its execution. */
+ 		ata_qc_free(qc);
+ 		return ret;
+diff --git a/drivers/ata/libata.h b/drivers/ata/libata.h
+index 89dd0ae2b9918..9b4e578ad07ec 100644
+--- a/drivers/ata/libata.h
++++ b/drivers/ata/libata.h
+@@ -166,6 +166,8 @@ void ata_scsi_sdev_config(struct scsi_device *sdev);
+ int ata_scsi_dev_config(struct scsi_device *sdev, struct queue_limits *lim,
+ 		struct ata_device *dev);
+ int __ata_scsi_queuecmd(struct scsi_cmnd *scmd, struct ata_device *dev);
++void ata_scsi_deferred_qc_work(struct work_struct *work);
++void ata_scsi_requeue_deferred_qc(struct ata_port *ap);
+ 
+ /* libata-eh.c */
+ extern unsigned int ata_internal_cmd_timeout(struct ata_device *dev, u8 cmd);
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index aa88244f3d838..d612d4c1660a7 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -899,6 +899,9 @@ struct ata_port {
+ 	u64			qc_active;
+ 	int			nr_active_links; /* #links with active qcs */
+ 
++	struct work_struct	deferred_qc_work;
++	struct ata_queued_cmd	*deferred_qc;
++
+ 	struct ata_link		link;		/* host default link */
+ 	struct ata_link		*slave_link;	/* see ata_slave_link_init() */
+ 
 -- 
 2.51.0
 
