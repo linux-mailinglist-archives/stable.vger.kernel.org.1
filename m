@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNcNKUGZo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:21 +0100
+	id iL1SOgiao2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:44:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386251CB589
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:41:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9B51CB83D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0886230292EE
+	by sto.lore.kernel.org (Postfix) with ESMTP id A31A5307A43B
 	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7E92E5B09;
-	Sun,  1 Mar 2026 01:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9712EC0A1;
+	Sun,  1 Mar 2026 01:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6agGvEu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GPTZatHq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15B42D948D;
-	Sun,  1 Mar 2026 01:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614E92E5B1B
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329193; cv=none; b=S570dm0uwfwRzvkjwG9BHAn4i3sHYeDPeO1F1I6bwBR9C0369EBCIWwMLYPw5SEbQNL/DVDhgZWlkNs1HgsZJ+79T+cgP7QiYufBqp4TJ61LFWYVYgHPuvhTK/qCSnQN6BLHLk8EiOyUl4zNbKNJDTeAk4efmB+zBDOe03pjyQs=
+	t=1772329195; cv=none; b=F1xxw/6Di8AnJ7Los7HuOY2Cvb9bzLtRo1MUx8/t9H1GiHx7BAjfffvw3ii3TapvkhT8uWlCQ3aZYUSweEtONCq8pJW8KU5OWucn2ZyhNVRk6kKdLZ+89zYjiTDx6/+Avx5lSPUT2YM3KDrTPHaO+p6Gke/Ocg5rmeKGXLQrLUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329193; c=relaxed/simple;
-	bh=QmY453AXwD4mPrBeO7AHb93Fv7VSEIN9xrMLMeODI/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=epCUNwBcSzekekN8gF3X9JwQhG+jNpobaTyPwn1MJF5gR0cZjSOd/wOt17o/1aLAyzPxGQbPtn6ZXeWDO2M/Xv64vBi5cMmInjQImfnbm19RwCJCwH41oXzsv52UCh6KZmx92LykxxtIEuzuRFFCpwG38vQCGMO/GiG66RLD72o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6agGvEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3527FC19421;
-	Sun,  1 Mar 2026 01:39:52 +0000 (UTC)
+	s=arc-20240116; t=1772329195; c=relaxed/simple;
+	bh=7fHVgM3cnjLo1FnmfhwFNIUS5jXt44mN2T0kR0b2yns=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gW6kfIyW6R/vA0aFFi053g6BF+icraIznxkhHudzfgcyi82RPY0HVfj0Ayuzb84qlm2h6vm+R4b+iVmbCoaq/SvzR/stgaGwbuNWvYvhLttWO4Jb4IrWI78Uz0fGMEToT9Zf7MUzOV4nMnK8AWgR0Dl1npVzKvCGgVQwUDexx5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GPTZatHq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EA4C19425;
+	Sun,  1 Mar 2026 01:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329192;
-	bh=QmY453AXwD4mPrBeO7AHb93Fv7VSEIN9xrMLMeODI/M=;
+	s=k20201202; t=1772329195;
+	bh=7fHVgM3cnjLo1FnmfhwFNIUS5jXt44mN2T0kR0b2yns=;
 	h=From:To:Cc:Subject:Date:From;
-	b=J6agGvEunkSvStGh0dSuOjsltMfc7gzm1Gknxftfm6DJiytJnWQLFQSwOlCEdXL38
-	 geOZqnjsaJbi2YcW9mpmV2O3D8v86NXbYbX3BdZdkDbQsNRhZjXK2Y6rat5fFencC9
-	 vmGUdvIL5xj0rYoEOTO0IINreBSSQno47mQh2QiwLKFeQmPwbuw92yWoCyQUMK+0om
-	 npnS1p4c6ZNTeujwG1OeZW7W5oBo5tCe8V17JyfzZcrm/P+NRUNIvNZUDQT1YhoBRH
-	 6f7rI3l+qzJo46oCm0rY6PzYjmWJI8XVaR4AQQ/jL+06jtZhOsy42lqToxmeLjAwt2
-	 SxiSUAQWseyEw==
+	b=GPTZatHqUeV+8VFfY12j6KvdRe57MTi15l/q6DdAHKOTxCmTp6gHTJs4raxbiniOu
+	 U6tcxgWNJZik9r11UbH2wLZa3ybYJawBZoTA47cgMCp/QHYZitsF+F0gB/6+v8TFy0
+	 hXIPESNmzGHdRyhutFgGUobMCQyE9EToe+abdLAVHLNun19IFWTiAvkacd39fIdTee
+	 SVorkA3+Nu8Hta3bvPO922UXr+iyUF7zB6tIR+HZ+cxPOn2rVMaVcnnEszZaJDJ62B
+	 k389o04p21/bTKACoNkd/WpAiLOG5QsJILxxw6JuRmNp0gwwAs7u4OwTqdrpWhDuEn
+	 G5DAGeJhc0GqQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chris.brandt@renesas.com
-Cc: Hugo Villeneuve <hugo@hugovil.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-renesas-soc@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: FAILED: Patch "clk: renesas: rzg2l: Fix intin variable size" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:39:50 -0500
-Message-ID: <20260301013951.1700954-1-sashal@kernel.org>
+	olvaffe@gmail.com
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm/panthor: fix for dma-fence safe access rules" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:39:53 -0500
+Message-ID: <20260301013953.1701005-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,35 +64,35 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221810-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221811-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.994];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,renesas.com:email,glider.be:email,hugovil.com:email]
-X-Rspamd-Queue-Id: 386251CB589
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arm.com:email,collabora.com:email]
+X-Rspamd-Queue-Id: AD9B51CB83D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -105,39 +105,49 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a00655d98cd885472c311f01dff3e668d1288d0a Mon Sep 17 00:00:00 2001
-From: Chris Brandt <chris.brandt@renesas.com>
-Date: Fri, 14 Nov 2025 14:37:11 -0500
-Subject: [PATCH] clk: renesas: rzg2l: Fix intin variable size
+From efe24898485c5c831e629d9c6fb9350c35cb576f Mon Sep 17 00:00:00 2001
+From: Chia-I Wu <olvaffe@gmail.com>
+Date: Thu, 4 Dec 2025 09:45:45 -0800
+Subject: [PATCH] drm/panthor: fix for dma-fence safe access rules
 
-INTIN is a 12-bit register value, so u8 is too small.
+Commit 506aa8b02a8d6 ("dma-fence: Add safe access helpers and document
+the rules") details the dma-fence safe access rules. The most common
+culprit is that drm_sched_fence_get_timeline_name may race with
+group_free_queue.
 
-Fixes: 1561380ee72f ("clk: renesas: rzg2l: Add FOUTPOSTDIV clk support")
-Cc: stable@vger.kernel.org
-Reported-by: Hugo Villeneuve <hugo@hugovil.com>
-Closes: https://lore.kernel.org/20251107113058.f334957151d1a8dd94dd740b@hugovil.com
-Signed-off-by: Chris Brandt <chris.brandt@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20251114193711.3277912-1-chris.brandt@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Cc: stable@vger.kernel.org # v6.17+
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patch.msgid.link/20251204174545.399059-1-olvaffe@gmail.com
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_sched.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index 64d1ef6e4c943..dfe0f5e87d8cf 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -122,8 +122,8 @@ struct div_hw_data {
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index a17b067a04392..0f83e778d89aa 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -23,6 +23,7 @@
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
++#include <linux/rcupdate.h>
  
- struct rzg2l_pll5_param {
- 	u32 pl5_fracin;
-+	u16 pl5_intin;
- 	u8 pl5_refdiv;
--	u8 pl5_intin;
- 	u8 pl5_postdiv1;
- 	u8 pl5_postdiv2;
- 	u8 pl5_spread;
+ #include "panthor_devfreq.h"
+ #include "panthor_device.h"
+@@ -943,6 +944,9 @@ static void group_release_work(struct work_struct *work)
+ 						   release_work);
+ 	u32 i;
+ 
++	/* dma-fences may still be accessing group->queues under rcu lock. */
++	synchronize_rcu();
++
+ 	for (i = 0; i < group->queue_count; i++)
+ 		group_free_queue(group, group->queues[i]);
+ 
 -- 
 2.51.0
 
