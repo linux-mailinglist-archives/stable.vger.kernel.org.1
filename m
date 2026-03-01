@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-222315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AX0CM6fo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:18 +0100
+	id GJIyMqquo2nUJwUAu9opvQ
+	(envelope-from <stable+bounces-222316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:12:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4AF1CD1CA
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E901CE52D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:12:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1CE4E3061CF7
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:03:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B450E3524AC0
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF20D2FDC20;
-	Sun,  1 Mar 2026 02:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C493016EE;
+	Sun,  1 Mar 2026 02:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qi+gOWS9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WNuF/uFS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D8A2F39BE
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760D313D53C;
+	Sun,  1 Mar 2026 02:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330575; cv=none; b=rztsxE7LlvP4yqSlulSJU6xH/bmTa0XohkCDBZEjiLeeDSbNSOSo43I88hHdu5kjq3Sg8KYubNmVxJObDEQnEGZw4ap53g/CZAvdsmArGkNuAY/3os8lRNw1LbwTUT92INxuxAomXe1W8kSosSmAOA3inboBZyqwXbBssTedTAI=
+	t=1772330578; cv=none; b=bPYDHzJohtDyj/PLy6W+FKdxVtO+1MuYYmjbM8XnBC9nZ4kPnfhkp0afzRU6b7NtiWhuSs8jqUha8kyca/GNTzPmmzJtdRXapL+SLeR8PzIoQBiW7tBZ9356Zwh2JN+kJZX0FPfuVGggLOKJwH8xpadI8X+Y2gMpHdKS+tyMmck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330575; c=relaxed/simple;
-	bh=BFi/3XGd2R89tXXV5aaDr3W9A2DMeFgKI1tae4DzzPc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iKL842eWhs0RGCRpEtKP6tNcLSJoI2VVjbbMZ7Qy2Qga343EZ+pIm/VXFDJeyMh9qfHoJIVByenPMmyv0JQoMJeY8LpvVgDnxSRlevRhAy1InRRg74cqOxbfEXt/BNrqGNZwbO+9VGL0Q2D8Hky+ywr63fjpBi0fdpLPsvMooCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qi+gOWS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9121C2BC86;
-	Sun,  1 Mar 2026 02:02:54 +0000 (UTC)
+	s=arc-20240116; t=1772330578; c=relaxed/simple;
+	bh=qaosfLo4AHWp+gGW+BnVKv6cOTQ+cuQJjo83LZp2dvA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hg0MY6TlAyKK5/i5l91ew37EORThmjQevt0WjH6BIvMP9FfEaF3aX0Pf1fAkO6gg7g/2Iv05EVosn00FtGdOXbZnM+7mQgSSY+Gj1Q+zOAoEa8ZaCkeHptT0kYjAA22kjkPHPuE+o56ZAAKq7MZ36vex11GXPHxFQJexbORGYtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WNuF/uFS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DDFC19421;
+	Sun,  1 Mar 2026 02:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330575;
-	bh=BFi/3XGd2R89tXXV5aaDr3W9A2DMeFgKI1tae4DzzPc=;
+	s=k20201202; t=1772330578;
+	bh=qaosfLo4AHWp+gGW+BnVKv6cOTQ+cuQJjo83LZp2dvA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Qi+gOWS9+el6ecizycxkQ3pFNgUhIs4pKfhEhJxbfWU4Un5YIQSVuzK/2RX1JxsiG
-	 a7mzeMblrtoMQYbtvqfYk8P+r+hbpQnxT5Nkocj8bdMyxu14c2Uyp1GP7ZbSENaprF
-	 J6A/StxLEfSpE9oUwO47mrfcbTSdY9NOmPCGaaNoSb4Dk6RcOFM/gNB1Ajvl002Bkj
-	 2AYaJP+3goI8wgkyKAXTKdKrXUp5YkM+xCXmlaUptUINHVP59ien7fNEbGe+Nc1pRH
-	 OqCBIbFBeP+EeF1Yg99pUYJdLBYhtvotH34DucJFlI/Qq+m91bxkkTMfBQ5UEFwpMJ
-	 UHtpz6DJ2c/YA==
+	b=WNuF/uFSe1caoQol4SuvX2kfdf9hIoNxzfMSHMF6DPQWCUibgZJGxTrsja147eCBz
+	 bQNovDyFsdyXNly3lo3MBZnL06mFP4snGGoAeEZArfF0Eo2U5zgs3Al+85JwlIRhw/
+	 zJtW39LPmB1aTmrXOJFr8ALR5sVCfdHx77j3PvZe6GMLtAl+0KFunaZFYQA6CVP1xc
+	 VmxJ/2CFjFelm5T1CALpZ9jixq7dSLjb+2I+/el2y9EF3q07iZbmD4pDE6wNK+prGk
+	 L8wyRwOUZDlvAQLjsgM/K8cmO3wVkgIetro1jVfZFpjyyHixDAVxqYnS5geGqy6OWp
+	 c6e3bFh00prnw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	lihaoxiang@isrc.iscas.ac.cn
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>
-Subject: FAILED: Patch "rapidio: replace rio_free_net() with kfree() in rio_scan_alloc_net()" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:02:53 -0500
-Message-ID: <20260301020253.1730819-1-sashal@kernel.org>
+	heming.zhao@suse.com
+Cc: Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	ocfs2-devel@lists.linux.dev,
+	linux-hardening@vger.kernel.org
+Subject: FAILED: Patch "ocfs2: fix reflink preserve cleanup issue" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:02:55 -0500
+Message-ID: <20260301020256.1730870-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,36 +69,35 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,kernel.crashing.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222315-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[fasheh.com,evilplan.org,oracle.com,gmail.com,live.cn,huawei.com,linux-foundation.org,lists.linux.dev,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-222316-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iscas.ac.cn:email,crashing.org:email]
-X-Rspamd-Queue-Id: 8F4AF1CD1CA
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,oracle.com:email,suse.com:email,evilplan.org:email,fasheh.com:email,live.cn:email]
+X-Rspamd-Queue-Id: B0E901CE52D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -105,42 +110,50 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 666183dcdd9ad3b8156a1df7f204f728f720380f Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Wed, 21 Jan 2026 09:35:08 +0800
-Subject: [PATCH] rapidio: replace rio_free_net() with kfree() in
- rio_scan_alloc_net()
+From 5138c936c2c82c9be8883921854bc6f7e1177d8c Mon Sep 17 00:00:00 2001
+From: Heming Zhao <heming.zhao@suse.com>
+Date: Wed, 10 Dec 2025 09:57:24 +0800
+Subject: [PATCH] ocfs2: fix reflink preserve cleanup issue
 
-When idtab allocation fails, net is not registered with rio_add_net() yet,
-so kfree(net) is sufficient to release the memory.  Set mport->net to NULL
-to avoid dangling pointer.
+commit c06c303832ec ("ocfs2: fix xattr array entry __counted_by error")
+doesn't handle all cases and the cleanup job for preserved xattr entries
+still has bug:
+- the 'last' pointer should be shifted by one unit after cleanup
+  an array entry.
+- current code logic doesn't cleanup the first entry when xh_count is 1.
 
-Link: https://lkml.kernel.org/r/20260121013508.195836-1-lihaoxiang@isrc.iscas.ac.cn
-Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
+Note, commit c06c303832ec is also a bug fix for 0fe9b66c65f3.
+
+Link: https://lkml.kernel.org/r/20251210015725.8409-2-heming.zhao@suse.com
+Fixes: 0fe9b66c65f3 ("ocfs2: Add preserve to reflink.")
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/rapidio/rio-scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ocfs2/xattr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/rapidio/rio-scan.c b/drivers/rapidio/rio-scan.c
-index c12941f71e2cb..dcd6619a4b027 100644
---- a/drivers/rapidio/rio-scan.c
-+++ b/drivers/rapidio/rio-scan.c
-@@ -854,7 +854,8 @@ static struct rio_net *rio_scan_alloc_net(struct rio_mport *mport,
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index 5fd85f5178689..e434a62dd69f9 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -6395,6 +6395,10 @@ static int ocfs2_reflink_xattr_header(handle_t *handle,
+ 					(void *)last - (void *)xe);
+ 				memset(last, 0,
+ 				       sizeof(struct ocfs2_xattr_entry));
++				last = &new_xh->xh_entries[le16_to_cpu(new_xh->xh_count)] - 1;
++			} else {
++				memset(xe, 0, sizeof(struct ocfs2_xattr_entry));
++				last = NULL;
+ 			}
  
- 		if (idtab == NULL) {
- 			pr_err("RIO: failed to allocate destID table\n");
--			rio_free_net(net);
-+			kfree(net);
-+			mport->net = NULL;
- 			net = NULL;
- 		} else {
- 			net->enum_data = idtab;
+ 			/*
 -- 
 2.51.0
 
