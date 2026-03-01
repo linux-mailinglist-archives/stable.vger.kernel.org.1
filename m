@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-221548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLk7N2+Yo2lIHwUAu9opvQ
-	(envelope-from <stable+bounces-221548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:51 +0100
+	id uKEVIuKWo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:31:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3DBE1CB2DF
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E461CADBE
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:31:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 41ABC3053373
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6F00630175DF
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F71288C20;
-	Sun,  1 Mar 2026 01:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F7128FFFB;
+	Sun,  1 Mar 2026 01:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmiAXkpN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qrtYTaTZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14ACC430BB5;
-	Sun,  1 Mar 2026 01:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA5728851C;
+	Sun,  1 Mar 2026 01:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328542; cv=none; b=NaEC2VDf6940GMyuddb6IkigcjRrCbPwo7JcWceWj0AB9fzVgmIJNiRGRzUgOtJjHDYJLCAjHDJ7dgToOPpQx9o8S/dDLa6Ud8rnb5ZPW4w7vtJLKbeVj3glZcgjdH0RcW16XFnvKL9iIgM2SpYgKjFpJv73dKYnNhTfu+14exw=
+	t=1772328556; cv=none; b=JFvY6LoHrknwb1SVrJx1fEQqWc/OWlpW2NZIpV0gzSPksUs8HoJ/mdbA6VFfRECiMr72yoQXylGz8hCIahVzEEtJi/Mk7wOWIqVP4Qvnf05fXbrc4NNkpJuHDWbAvOmjRWCOYb7TK1G+I2zU6BTWd21fI8Y2RYqFYFKJR9fswWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328542; c=relaxed/simple;
-	bh=yCFWfBeF+PZWVyzX7yo0tje+vkMpIDDmkqMn7lQz3oM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WpQSZjvyhNClKx+I38kxsO0RISQpxCMWSwYESVuIgQVpuOPMzE/BY70ErooDXSqfgaWdkuhjYQ+AVIijxztFIbDL1LZcRrxHX0nuDfCWd/jzFei38HWeEQkocAxYrMAR+9prqXn3u518TSK4vkaAvbYeOg8ai95QQf5vqEw/4jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmiAXkpN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79121C19421;
-	Sun,  1 Mar 2026 01:29:01 +0000 (UTC)
+	s=arc-20240116; t=1772328556; c=relaxed/simple;
+	bh=d8LEJhUrXE7nx3KVR/NfjI60j0q3smueBCCi8kTMZXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=O+s9FjVGZyGpAbRnRNVnF/wtdSFdjNEiKJmwok47qizAkdjv6aPVqcQlPHCbXFo7TEyhiMuEwfkEHTnoTS50334nhUjSbycRsWmexNAiyfMEr2ZOCzB4WUjKQEPUw4kYwAN7xQieAZlpYAhZ5K4mQ81FjIlxstc7KUd91gH0mvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qrtYTaTZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42D1C19421;
+	Sun,  1 Mar 2026 01:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328542;
-	bh=yCFWfBeF+PZWVyzX7yo0tje+vkMpIDDmkqMn7lQz3oM=;
+	s=k20201202; t=1772328556;
+	bh=d8LEJhUrXE7nx3KVR/NfjI60j0q3smueBCCi8kTMZXk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=NmiAXkpN0YXZskNBYaqO00ycoX0M98kHron4VtUpMVskZ+Km3VSzcENyVZGEJuEeY
-	 yB7a0AsUzRFP5fOqwIWq7l+Qmk7BaYodC2R9HgX9exKlL8Br1xMM58Oqe6KEm8J5ta
-	 Ga6cAtHLZIIME4EYlq1yCmaIuZwuHIkthzBpWjoX6XplWv6MWGTBMOuX6l6dQcHI9K
-	 3/hX8IobIsRyBZISAU7cBb6zf08DYSBIB4HIZ22o7KhZzGF2m77ZlfGAb/mrIAukmj
-	 UHKUvZ1iKQr9E3jalHJl8Od3a/4CAA0jv06wMEe0tsccP1e9L2pCT69wfjjIO5Ulr8
-	 Typ+3v8xODvSg==
+	b=qrtYTaTZ0Bl6ZXxI+LlO8y6OgM3xgWWucuGjQfjuZ+qYXNAE0PHN468wLUI+8P0Nu
+	 J+RoNEJxbyDEtzqV7+eSNTM7nxZWfBhcjBLjwp/P6J0MG5wTR3fYANb01WDkCK64gu
+	 wP08OK56rWweNPXRg9P9/DPb/0aBz8I03sPRaCrGvANEdQAKqBLK0V0R5YTX1PR1Zg
+	 ESDCHwUzrbfRCOZZxGa2UoMh9wBkuwmBcqRsz//hvzjhlWK46apuTjYK65Mzj64oOw
+	 Y+7N++EWOKrLuja4XeevS5mwBnwnV/F9E74SaTbZHoXXxITrS1ubEWtRyIOgjJnJ3B
+	 JODOEic3Swr3g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	guspatagonico@gmail.com
-Cc: Mark Brown <broonie@kernel.org>,
-	linux-sound@vger.kernel.org
-Subject: FAILED: Patch "ASoC: amd: yc: Add DMI quirk for ASUS Vivobook Pro 15X M6501RR" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:29:00 -0500
-Message-ID: <20260301012900.1686856-1-sashal@kernel.org>
+	ast@fiberby.net
+Cc: Gabriel Krisman Bertazi <krisman@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	io-uring@vger.kernel.org
+Subject: FAILED: Patch "io_uring/cmd_net: fix too strict requirement on ioctl" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:29:02 -0500
+Message-ID: <20260301012914.1686902-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,36 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-221548-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221549-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D3DBE1CB2DF
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,suse.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 13E461CADBE
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -102,47 +103,64 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From ff9cadd1a2c0b2665b7377ac79540d66f212e7e3 Mon Sep 17 00:00:00 2001
-From: Gustavo Salvini <guspatagonico@gmail.com>
-Date: Tue, 10 Feb 2026 12:51:56 -0300
-Subject: [PATCH] ASoC: amd: yc: Add DMI quirk for ASUS Vivobook Pro 15X
- M6501RR
+From 600b665b903733bd60334e86031b157cc823ee55 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
+Date: Mon, 16 Feb 2026 10:27:18 +0000
+Subject: [PATCH] io_uring/cmd_net: fix too strict requirement on ioctl
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The ASUS Vivobook Pro 15X (M6501RR) with AMD Ryzen 9 6900HX has an
-internal DMIC that is not detected without a DMI quirk entry, as the
-BIOS does not set the AcpDmicConnected ACPI _DSD property.
+Attempting SOCKET_URING_OP_SETSOCKOPT on an AF_NETLINK socket resulted
+in an -EOPNOTSUPP, as AF_NETLINK doesn't have an ioctl in its struct
+proto, but only in struct proto_ops.
 
-Adding the DMI entry enables the ACP6x DMIC machine driver to probe
-successfully.
+Prior to the blamed commit, io_uring_cmd_sock() only had two cmd_op
+operations, both requiring ioctl, thus the check was warranted.
+
+Since then, 4 new cmd_op operations have been added, none of which
+depend on ioctl. This patch moves the ioctl check, so it only applies
+to the original operations.
+
+AFAICT, the ioctl requirement was unintentional, and it wasn't
+visible in the blamed patch within 3 lines of context.
 
 Cc: stable@vger.kernel.org
-
-Signed-off-by: Gustavo Salvini <guspatagonico@gmail.com>
-Link: https://patch.msgid.link/20260210155156.29079-1-guspatagonico@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a5d2f99aff6b ("io_uring/cmd: Introduce SOCKET_URING_OP_GETSOCKOPT")
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ io_uring/cmd_net.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 67f2fee193980..f1a63475100d1 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -696,7 +696,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "XyloD5_RBU"),
- 		}
- 	},
--
-+	{
-+			.driver_data = &acp6x_card,
-+			.matches = {
-+				DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+				DMI_MATCH(DMI_PRODUCT_NAME, "Vivobook_ASUSLaptop M6501RR_M6501RR"),
-+			}
-+		},
- 	{}
- };
+diff --git a/io_uring/cmd_net.c b/io_uring/cmd_net.c
+index cb2775936fb84..57ddaf8746117 100644
+--- a/io_uring/cmd_net.c
++++ b/io_uring/cmd_net.c
+@@ -160,16 +160,19 @@ int io_uring_cmd_sock(struct io_uring_cmd *cmd, unsigned int issue_flags)
+ 	struct proto *prot = READ_ONCE(sk->sk_prot);
+ 	int ret, arg = 0;
  
+-	if (!prot || !prot->ioctl)
+-		return -EOPNOTSUPP;
+-
+ 	switch (cmd->cmd_op) {
+ 	case SOCKET_URING_OP_SIOCINQ:
++		if (!prot || !prot->ioctl)
++			return -EOPNOTSUPP;
++
+ 		ret = prot->ioctl(sk, SIOCINQ, &arg);
+ 		if (ret)
+ 			return ret;
+ 		return arg;
+ 	case SOCKET_URING_OP_SIOCOUTQ:
++		if (!prot || !prot->ioctl)
++			return -EOPNOTSUPP;
++
+ 		ret = prot->ioctl(sk, SIOCOUTQ, &arg);
+ 		if (ret)
+ 			return ret;
 -- 
 2.51.0
 
