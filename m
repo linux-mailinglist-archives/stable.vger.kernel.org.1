@@ -1,161 +1,143 @@
-Return-Path: <stable+bounces-222460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLdENuI0pGmnaQUAu9opvQ
-	(envelope-from <stable+bounces-222460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 13:45:22 +0100
+	id CX1+LaE5pGksawUAu9opvQ
+	(envelope-from <stable+bounces-222461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 14:05:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6591CFB20
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 13:45:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E2B1CFBDE
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 14:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CEBEF3016D2B
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 12:44:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9CF1D30157FA
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 13:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A563290C9;
-	Sun,  1 Mar 2026 12:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB6231717D;
+	Sun,  1 Mar 2026 13:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dWrltFQo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixU6JQep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08A432470F;
-	Sun,  1 Mar 2026 12:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CE31391;
+	Sun,  1 Mar 2026 13:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772369088; cv=none; b=Hht4ceOJc9KXZX1eBjvi1OiYITV2K7xA5+cZXufqHmEtB0gL4n/lmpKfo2bMRaqWzpXznXhHdZnOWEgZSENjdlJXLnx86VVRecrjN6xuF+fVwgmsCQStxMLOS9mvUs2g9Zgns9sqB9So2Slizn5vcs4OdRXqzgGrWyi0xLb90K0=
+	t=1772370332; cv=none; b=NM+ouRft81ehm7SbmlaX+QMVXXg+c6/f2jK7zaEuA7+Mkh3hbwppHChVC5edKSW73mZSCFXw05ev95l8Vhdt7rYe+I2daLKUBPgUyRz2cwo2fVoBIhPV4p5dA8ZEhiI1BeaTPcCoqqFg5ipkzaFNvLOixR6td+rxSm3E7P6nhro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772369088; c=relaxed/simple;
-	bh=c0O1o6E/FKKOB1cD9nHfj9XMKn6pEYlcjVQe6vhxUz4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f9ANci69/oC7hQy9Mm5jXA6SB5/cbOZ8iRsAmzEGsfRTcztnY0ouQvbPyi3KJ4UPhrhRiF3k1N+fLa4R13Dk4vZ8LTw0zMTcFHCMZjBBmBVUFEVpBOqf/UP+GHZjF/kDaGSM2VBHkTcyIStDuqqKOrYwH00XR39Mz1lCveTd1w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dWrltFQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B40FC116C6;
-	Sun,  1 Mar 2026 12:44:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772369087;
-	bh=c0O1o6E/FKKOB1cD9nHfj9XMKn6pEYlcjVQe6vhxUz4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=dWrltFQo7z0es0hF9ILRPuDIhLxmy14/3tV+OYHQreIcHytVa6yAADKJrPZNeFYBn
-	 sZ1l7yddZwv4yXX5G83xaS0PBqSMQTBLqmPHo+rO4n+boY6mJ1NsC8ezn7vh5V9Zfh
-	 Nzd/zF6KP7am9wypfbiO81+5fjnOG/9F8YlUyoSj8hz3JSXi2iWfVJVs1yVu03l38U
-	 aILSHb4XmF/9rutbKjHwAisRmMW3FzSS3FsaCIpdkdknxNb6gNzsBorn9BrxVktW6b
-	 JcWthw3KBuFlb72T8VbnDPXntUccsbXtORgi8QL63wgbZWy7SA6koj7OPKXpiRN4eC
-	 zyP16FNIaFgqA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vwgA9-0000000EwV8-1Wem;
-	Sun, 01 Mar 2026 12:44:45 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Oliver Neukum <oneukum@suse.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH] usb: cdc-acm: Restore CAP_BRK functionnality to CH343
-Date: Sun,  1 Mar 2026 12:44:40 +0000
-Message-ID: <20260301124440.1192752-1-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1772370332; c=relaxed/simple;
+	bh=uxTfCcbfKfHW0EnnMzDrdW0Amb3YtxxetmIfbXDIa/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jLR4KPmenOtXaduA5l42OBf6SpaM+KikpY3RIVchoOiDx+He6pDMA59Sa32YhPP80CRqukaekcdbMif/N26/dp4t9uPMMXadx/eNxlPK4BqhIme2uiGzv7Lf5xwEZ5pgLtqSfbH5yRID32Hb8UFi8bMLVakTtR9WL4rstPS+Y04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixU6JQep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC98C116C6;
+	Sun,  1 Mar 2026 13:05:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1772370331;
+	bh=uxTfCcbfKfHW0EnnMzDrdW0Amb3YtxxetmIfbXDIa/A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ixU6JQepEcXC7U22m2Tnq0Yiv6x+9nBPs1j3eLggafY2nYix73p5sLGqgXDcMZukO
+	 V+J3R/VQp8ilF/T1rk+NKzn/wiE9XjMki+NBKIe5FhcqoD6cjY64KR66iM+Q4VQRG2
+	 KgfK2g+ox7p7kywln7PZgwsmp8TX5Pj0EJ/5aiEs=
+Date: Sun, 1 Mar 2026 08:05:20 -0500
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Aleksandrs Vinarskis <alex@vinarskis.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: st_sensors: fix trigger allocation
+Message-ID: <2026030112-footpad-overpass-228b@gregkh>
+References: <20260228-st-iio-trigger-v1-1-abf5909e547f@vinarskis.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, oneukum@suse.com, gregkh@linuxfoundation.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260228-st-iio-trigger-v1-1-abf5909e547f@vinarskis.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222460-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-222461-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,suse.com:email]
-X-Rspamd-Queue-Id: 7E6591CFB20
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vinarskis.com:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 30E2B1CFBDE
 X-Rspamd-Action: no action
 
-The CH343 USB/serial adapter is as buggy as it is popular (very).
-One of its quirks is that despite being capable of signalling a
-BREAK condition, it doesn't advertise it.
+On Sat, Feb 28, 2026 at 06:11:02PM +0100, Aleksandrs Vinarskis wrote:
+> Current hardcoded name prevents adding multiple st-sensors devices
+> on the same platform. Fix by aligning trigger name with other drivers.
+> 
+> Signed-off-by: Aleksandrs Vinarskis <alex@vinarskis.com>
+> ---
+> Some platforms such as Dell XPS 9345 contains multiple accelerometers.
+> Fix st_sensors that currently only allows one device at the time.
+> ---
+>  drivers/iio/common/st_sensors/st_sensors_trigger.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> index 8a8ab688d7980f6dd43c660f90a0eba32c38388b..3b5615d1b6dd66ee0af6ccc83eb2fbd7b2c64d29 100644
+> --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> @@ -124,8 +124,9 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+>  	unsigned long irq_trig;
+>  	int err;
+>  
+> -	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
+> -					     indio_dev->name);
+> +	sdata->trig = devm_iio_trigger_alloc(parent, "%s-dev%d",
+> +					     indio_dev->name,
+> +					     iio_device_id(indio_dev));
+>  	if (sdata->trig == NULL) {
+>  		dev_err(parent, "failed to allocate iio trigger.\n");
+>  		return -ENOMEM;
+> 
+> ---
+> base-commit: 3fa5e5702a82d259897bd7e209469bc06368bf31
+> change-id: 20260228-st-iio-trigger-8ee1f219b566
+> 
+> Best regards,
+> -- 
+> Aleksandrs Vinarskis <alex@vinarskis.com>
+> 
+> 
 
-This used to work nonetheless until 66aad7d8d3ec5 ("usb: cdc-acm:
-return correct error code on unsupported break") applied some
-reasonable restrictions, preventing breaks from being emitted on
-devices that do not advertise CAP_BRK.
+<formletter>
 
-Add a quirk for this particular device, so that breaks can still
-be produced on some of my machines attached to my console server.
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-Fixes: 66aad7d8d3ec5 ("usb: cdc-acm: return correct error code on unsupported break")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/usb/class/cdc-acm.c | 5 +++++
- drivers/usb/class/cdc-acm.h | 1 +
- 2 files changed, 6 insertions(+)
-
-diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
-index ad38c746270af..7ede29d4c7c13 100644
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1379,6 +1379,8 @@ static int acm_probe(struct usb_interface *intf,
- 		acm->ctrl_caps = h.usb_cdc_acm_descriptor->bmCapabilities;
- 	if (quirks & NO_CAP_LINE)
- 		acm->ctrl_caps &= ~USB_CDC_CAP_LINE;
-+	if (quirks & MISSING_CAP_BRK)
-+		acm->ctrl_caps |= USB_CDC_CAP_BRK;
- 	acm->ctrlsize = ctrlsize;
- 	acm->readsize = readsize;
- 	acm->rx_buflimit = num_rx_buf;
-@@ -2002,6 +2004,9 @@ static const struct usb_device_id acm_ids[] = {
- 	.driver_info = IGNORE_DEVICE,
- 	},
- 
-+	/* CH343 supports CAP_BRK, but doesn't advertise it */
-+	{ USB_DEVICE(0x1a86, 0x55d3), .driver_info = MISSING_CAP_BRK, },
-+
- 	/* control interfaces without any protocol set */
- 	{ USB_INTERFACE_INFO(USB_CLASS_COMM, USB_CDC_SUBCLASS_ACM,
- 		USB_CDC_PROTO_NONE) },
-diff --git a/drivers/usb/class/cdc-acm.h b/drivers/usb/class/cdc-acm.h
-index 759ac15631d3e..76f73853a60b6 100644
---- a/drivers/usb/class/cdc-acm.h
-+++ b/drivers/usb/class/cdc-acm.h
-@@ -113,3 +113,4 @@ struct acm {
- #define CLEAR_HALT_CONDITIONS		BIT(5)
- #define SEND_ZERO_PACKET		BIT(6)
- #define DISABLE_ECHO			BIT(7)
-+#define MISSING_CAP_BRK			BIT(8)
--- 
-2.47.3
-
+</formletter>
 
