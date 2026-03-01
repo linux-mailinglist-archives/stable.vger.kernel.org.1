@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-222165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222166-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KN3sEtKdo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:50 +0100
+	id ADfcAC6ho2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222166-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:15:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C9D1CC984
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7457F1CD526
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:15:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7388C3020203
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C4D43108AEF
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E9A2E7648;
-	Sun,  1 Mar 2026 01:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293EF2E2DF2;
+	Sun,  1 Mar 2026 01:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSO/b0VR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efpgoZ2d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8862E430BA3;
-	Sun,  1 Mar 2026 01:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E016E430BA3;
+	Sun,  1 Mar 2026 01:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330062; cv=none; b=quVUdB1rjzqH1CPKxEHtHHnq5HH5x92qnH5yYauOGPeI1fQFRL8eg6KQLaXHLcpc7cl/i0vMhtCkWzuDjEMksJAbbRE6y2egOh+0l27r1FBV4EpJX1g10AwCdxYeE+d8jZZkwLDsDcd0eycxFhwfsrPzUjYqFzSsNpnxVp2n5JI=
+	t=1772330064; cv=none; b=k2uqpAxILPmhHIckQY3PxFrjo6X1yONVDJdU37oqPmYyp7WHB9ib0abS9W2WAw6K5cvRV1JB2fx4qIuaEffT9QiLg9NoSDw03aKQBiqJ7m39h38Z8chl4IkptLJDxLfyNu3hymZnf5tEr7XAxs1sM3ok4twLc0ULXWealMIHxNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330062; c=relaxed/simple;
-	bh=P00VzaMUBMDnjsh85U0Jr3rE9YPzjS2K8q1ybbz0jyM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uQ6T3SS2ZTVSfBx6ZYZbAjPLRWqaXgMW2gWutVi66jtmGHPv54fX/Ydz/broctvYjzps9Cdk2DVayt0xbpRp8wHDmUhG4zjMzeBh3MhdT2JVfYd+RZzU4NxYZct6TWOLvdqdBw5HQQ25t6uj6UE0w3S1OFHeLtaRm6bkDSBlriI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSO/b0VR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57149C19421;
-	Sun,  1 Mar 2026 01:54:21 +0000 (UTC)
+	s=arc-20240116; t=1772330064; c=relaxed/simple;
+	bh=MlVdY6HGiGK9KNYeaIYq86NIx1C+5S8gAoArW7dzpAU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pj/U+vVdNWRyY7BeTDb2mlgbojuG6o31HvxuBI4iiqK3kQoqTJcG/K2B2kA7N/9pZBqdZ0hGwIkerJjHU5365nPHbAspgzyXDajCZF3ojMlTkJdDYUV0bLlzOB/LnUA3UIgYyX9QRi2z23pxHIOm8zxsx3kod7Kkb7SxcwxXFPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efpgoZ2d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D980CC19421;
+	Sun,  1 Mar 2026 01:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330062;
-	bh=P00VzaMUBMDnjsh85U0Jr3rE9YPzjS2K8q1ybbz0jyM=;
+	s=k20201202; t=1772330064;
+	bh=MlVdY6HGiGK9KNYeaIYq86NIx1C+5S8gAoArW7dzpAU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=YSO/b0VR3WyIInHxvEdSO4dB09CuDueKpw94cluxFSUHL0QOFvnY2X+6etIT/3+MJ
-	 0qCt4WXtBnia3tn42+QsfU4Vh/tYCYoQ3R4aInnIOtEnhMh+U55FpbaorzB/A1sTBJ
-	 lxsIH4oaf/TqrUyG/H8dXu4VwtHH1bvpwaDdl9phaKpSxqMuTRvX+9atcZGRYIbktz
-	 P9Qs15HVyytRh11l7NiQ9mkiXO64c3fZROxZoh0HJjBvapp3exmrJQq256fuwwzeCW
-	 aTMoNQN8Sg0i4IKNarbmYh7i/E09iyD6JLmS0K4ea995BKgVTEen0pJWKIN8BIsxwk
-	 gexQ1DDBftPkQ==
+	b=efpgoZ2dEKVS3VzrZlFFwMLN7Ht2J/LWwWIGqh/PT2pc+ZZ2H6rOOoJbfuS079B6M
+	 td4ovGiAOMnzqfBnwQSll8NyL1GEUyPiY6Tz8CezErFXqoe+25oSgVrEvgxvh5DVgT
+	 GOLT87PLDkXooY0TOjYoafWxTK/rHIDF41GwdxW0/ktcDkg7iEXhZWG5E5WSxlV99V
+	 wzAzZyJRtibIYcKA8dRhRxWixy1ZgNsroOAS4qi7Ag1kVSg96dQ2D5cYUa5rmy7Jjl
+	 O+gtGmclE+j7Sqi0+ZTAjjCs6T6wEhKAXoITil9N/3Z0b/XROUbDybHa6ZMDukEMr2
+	 pbBov5O4EXfEg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	metze@samba.org
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
+Cc: Steve French <smfrench@gmail.com>,
 	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	linux-cifs@vger.kernel.org,
 	samba-technical@lists.samba.org,
 	Steve French <stfrench@microsoft.com>
-Subject: FAILED: Patch "smb: server: let send_done handle a completion without IB_SEND_SIGNALED" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:54:19 -0500
-Message-ID: <20260301015420.1721305-1-sashal@kernel.org>
+Subject: FAILED: Patch "smb: client: remove pointless sc->recv_io.credits.count rollback" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:54:22 -0500
+Message-ID: <20260301015422.1721353-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,9 +75,9 @@ X-Spamd-Result: default: False [8.84 / 15.00];
 	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,talpey.com,vger.kernel.org,lists.samba.org,microsoft.com];
-	GREYLIST(0.00)[pass,meta];
-	TAGGED_FROM(0.00)[bounces-222165-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org];
+	GREYLIST(0.00)[pass,body];
+	TAGGED_FROM(0.00)[bounces-222166-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -86,18 +87,18 @@ X-Spamd-Result: default: False [8.84 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_SPAM(0.00)[0.460];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_SPAM(0.00)[0.400];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samba.org:email,talpey.com:email]
-X-Rspamd-Queue-Id: 27C9D1CC984
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samba.org:email,talpey.com:email]
+X-Rspamd-Queue-Id: 7457F1CD526
 X-Rspamd-Action: add header
 X-Spam: Yes
 
@@ -111,76 +112,48 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9da82dc73cb03e85d716a2609364572367a5ff47 Mon Sep 17 00:00:00 2001
+From 6858531e5e8d68828eec349989cefce3f45a487f Mon Sep 17 00:00:00 2001
 From: Stefan Metzmacher <metze@samba.org>
-Date: Thu, 22 Jan 2026 18:16:47 +0100
-Subject: [PATCH] smb: server: let send_done handle a completion without
- IB_SEND_SIGNALED
+Date: Thu, 22 Jan 2026 18:16:51 +0100
+Subject: [PATCH] smb: client: remove pointless sc->recv_io.credits.count
+ rollback
 
-With smbdirect_send_batch processing we likely have requests without
-IB_SEND_SIGNALED, which will be destroyed in the final request
-that has IB_SEND_SIGNALED set.
+We either reach this code path before we call
+new_credits = manage_credits_prior_sending(sc),
+which means new_credits is still 0
+or the connection is already broken as
+smbd_post_send() already called
+smbd_disconnect_rdma_connection().
 
-If the connection is broken all requests are signaled
-even without explicit IB_SEND_SIGNALED.
+This will also simplify further changes.
 
 Cc: <stable@vger.kernel.org> # 6.18.x
-Cc: Namjae Jeon <linkinjeon@kernel.org>
 Cc: Steve French <smfrench@gmail.com>
 Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
 Cc: linux-cifs@vger.kernel.org
 Cc: samba-technical@lists.samba.org
 Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/smb/server/transport_rdma.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ fs/smb/client/smbdirect.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 5c0cc5064e8c0..c94068b78a1d2 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -1059,6 +1059,31 @@ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
- 		    ib_wc_status_msg(wc->status), wc->status,
- 		    wc->opcode);
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index f2ae35a9f047f..c9fcd35e0c77a 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1288,9 +1288,6 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
+ 					    DMA_TO_DEVICE);
+ 	mempool_free(request, sc->send_io.mem.pool);
  
-+	if (unlikely(!(sendmsg->wr.send_flags & IB_SEND_SIGNALED))) {
-+		/*
-+		 * This happens when smbdirect_send_io is a sibling
-+		 * before the final message, it is signaled on
-+		 * error anyway, so we need to skip
-+		 * smbdirect_connection_free_send_io here,
-+		 * otherwise is will destroy the memory
-+		 * of the siblings too, which will cause
-+		 * use after free problems for the others
-+		 * triggered from ib_drain_qp().
-+		 */
-+		if (wc->status != IB_WC_SUCCESS)
-+			goto skip_free;
-+
-+		/*
-+		 * This should not happen!
-+		 * But we better just close the
-+		 * connection...
-+		 */
-+		pr_err("unexpected send completion wc->status=%s (%d) wc->opcode=%d\n",
-+		       ib_wc_status_msg(wc->status), wc->status, wc->opcode);
-+		smb_direct_disconnect_rdma_connection(sc);
-+		return;
-+	}
-+
- 	/*
- 	 * Free possible siblings and then the main send_io
- 	 */
-@@ -1072,6 +1097,7 @@ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
- 	lcredits += 1;
- 
- 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
-+skip_free:
- 		pr_err("Send error. status='%s (%d)', opcode=%d\n",
- 		       ib_wc_status_msg(wc->status), wc->status,
- 		       wc->opcode);
+-	/* roll back the granted receive credits */
+-	atomic_sub(new_credits, &sc->recv_io.credits.count);
+-
+ err_alloc:
+ 	atomic_inc(&sc->send_io.credits.count);
+ 	wake_up(&sc->send_io.credits.wait_queue);
 -- 
 2.51.0
 
