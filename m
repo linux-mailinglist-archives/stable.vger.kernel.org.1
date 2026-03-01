@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-222082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0J6aMjOdo2nFIQUAu9opvQ
-	(envelope-from <stable+bounces-222082-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:11 +0100
+	id eFvEOnydo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5250F1CC685
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B11E51CC80A
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0D60D30D5710
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7EB2D30755FC
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB902FE07D;
-	Sun,  1 Mar 2026 01:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F2C30C602;
+	Sun,  1 Mar 2026 01:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRNGGIVY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b52vWwsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3EE2E2DF2;
-	Sun,  1 Mar 2026 01:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF2430BF72;
+	Sun,  1 Mar 2026 01:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329854; cv=none; b=Rt71/+nUvkNdzipU4FK6XZ1SG4gbuEEwI4mOzSUKJ3gIdgw9xP+II/Shn/6jAIDRzjx2I3fbCNtcCp4TeKn6q9BYBX572cV0lYSRkbTFI8ZMhQ2v2AZhWOVYtaS9Ek7r1JNQ10j6zw99VpVswa7W2WteXQBTLIu3paKlmTMzVAc=
+	t=1772329856; cv=none; b=Xmly6ubPBG15szXdiBRtLiga0/QUJFK3B2EMjgy5ytmFTPx4Fo5olTcpWiTEJWRiDmHtVu15r3U5RyyObPaf4Lk7sl1oCuNW79ratYUUWqWBMPxq3XZGAPAkATF/D1IBAG4lrAIoiXnFiL/sNoFokyyAUaaoivSp0CpAzUEcI1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329854; c=relaxed/simple;
-	bh=cn39srFQaKK4TsxsQrYhyHOXIS/GA4mnM0ICMjTyQKs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Akjg/PTSg9cEMoWTe40UZ7Cw6je7UNak89FnfkRwRDzgmdsS+pd/RDbi84OXEfjCx2doT7WAU1weYh+6AktLsBgtOo+lCmDAKFSj4jZWa6d0CKClM6v5Ah0/cewyyYde6h2PkzPLek2m0FRFNCZUXQMuUCxvGkeLQzp9I+iKMkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRNGGIVY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA282C19424;
-	Sun,  1 Mar 2026 01:50:53 +0000 (UTC)
+	s=arc-20240116; t=1772329856; c=relaxed/simple;
+	bh=1g8BNWltZEIjJcemLzjMBmwOisFWXxeXZjkyAaKRqjo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IAWymvFrcCzbncErrdYWYe+dlYy+utU4lzxr/4E/05opGMa6DvCDRZ9Q/+i9srCb0lna4mpNXGdxEVJftG6z20o7uY7xXfhQKdyrXYt8yfYaH15pJv08XrWUhL6CB0WNI1IO/kVOZATQUiZdZV12SCTDVU9NoDZg4GUFGfYhabU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b52vWwsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E22AC19424;
+	Sun,  1 Mar 2026 01:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329854;
-	bh=cn39srFQaKK4TsxsQrYhyHOXIS/GA4mnM0ICMjTyQKs=;
+	s=k20201202; t=1772329856;
+	bh=1g8BNWltZEIjJcemLzjMBmwOisFWXxeXZjkyAaKRqjo=;
 	h=From:To:Cc:Subject:Date:From;
-	b=fRNGGIVYFhMC+lli9lR0L4xPUJ8ytITrqzMWBBnKzuQ2SgZH1Hwtk24iZosUyGKmu
-	 au6tBD+7Lbie1ancgC2EZv6Ri2SxmK8ByCmAzTMH0wkz9lnPT5AcqKyCrNa6skJql2
-	 mIA5C2479KaZErFRwD1g4qQWi1lww+aKjxXz3gH681tcfQEnLnPRdPnGyvQYFOXXdI
-	 RNlOJCakJ1mCu3nmseExnYBCWPC2NjHmXnePMz8Oj7vTq6yyEPngvlMDXl+TgG4jV8
-	 yKHsdxThElXugEjPN9IGZpT5g8MOFYsekew2nMC3R0uvK0E4kJr9r/PyoAXd5AO7PS
-	 xnt/tyv3kgong==
+	b=b52vWwsJ4m1eOCqU8BH3KXebj8KGv6aV3tYwPAf4sxTS/FtQDHFSVTf52cHXRQo53
+	 WVbeCmuO1u/yHyKFDhqtcSwOEF2r3MlSGSOeHrKw0kQ6mTMi80lhZzRfn13bufmERA
+	 qWBoEVvqnvdypWhIftc2ZEBEwDJ9lSJCHCySJH1YKRZ+8Dp0enGYheI9VfwKk4LNI6
+	 WqN0a/HYlntLZ9/HB2WydPiA6ZYX5iZ5DYtGFT0GVwbaVmPfyaymSH8Z8jseW6rwDe
+	 vusY1a/L7IOkeIVgPeCfkMrHU5Lnr+7C28gVE9/GkK9e5LJSHO9GSY+mPijppW3E7p
+	 JAR4V5zu+A8Dg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jack@suse.cz
-Cc: Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	stable@kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org
-Subject: FAILED: Patch "ext4: always allocate blocks only from groups inode can use" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:50:52 -0500
-Message-ID: <20260301015052.1717003-1-sashal@kernel.org>
+	mpatocka@redhat.com
+Cc: Ondrej Kozina <okozina@redhat.com>,
+	dm-devel@lists.linux.dev
+Subject: FAILED: Patch "dm-integrity: fix recalculation in bitmap mode" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:50:54 -0500
+Message-ID: <20260301015055.1717050-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,33 +63,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222082-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222083-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,suse.de:email,suse.cz:email]
-X-Rspamd-Queue-Id: 5250F1CC685
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B11E51CC80A
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -106,106 +102,69 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4865c768b563deff1b6a6384e74a62f143427b42 Mon Sep 17 00:00:00 2001
-From: Jan Kara <jack@suse.cz>
-Date: Wed, 14 Jan 2026 19:28:18 +0100
-Subject: [PATCH] ext4: always allocate blocks only from groups inode can use
+From 118ba36e446c01e3cd34b3eedabf1d9436525e1d Mon Sep 17 00:00:00 2001
+From: Mikulas Patocka <mpatocka@redhat.com>
+Date: Mon, 19 Jan 2026 15:06:02 +0100
+Subject: [PATCH] dm-integrity: fix recalculation in bitmap mode
 
-For filesystems with more than 2^32 blocks inodes using indirect block
-based format cannot use blocks beyond the 32-bit limit.
-ext4_mb_scan_groups_linear() takes care to not select these unsupported
-groups for such inodes however other functions selecting groups for
-allocation don't. So far this is harmless because the other selection
-functions are used only with mb_optimize_scan and this is currently
-disabled for inodes with indirect blocks however in the following patch
-we want to enable mb_optimize_scan regardless of inode format.
+There's a logic quirk in the handling of suspend in the bitmap mode:
 
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260114182836.14120-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+This is the sequence of calls if we are reloading a dm-integrity table:
+* dm_integrity_ctr reads a superblock with the flag SB_FLAG_DIRTY_BITMAP
+  set.
+* dm_integrity_postsuspend initializes a journal and clears the flag
+  SB_FLAG_DIRTY_BITMAP.
+* dm_integrity_resume sees the superblock with SB_FLAG_DIRTY_BITMAP set -
+  thus it interprets the journal as if it were a bitmap.
+
+This quirk causes recalculation problem if the user increases the size of
+the device in the bitmap mode.
+
+Fix this by reading a fresh copy on the superblock in
+dm_integrity_resume. This commit also fixes another logic quirk - the
+branch that sets bitmap bits if the device was extended should only be
+executed if the flag SB_FLAG_DIRTY_BITMAP is set.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Tested-by: Ondrej Kozina <okozina@redhat.com>
+Fixes: 468dfca38b1a ("dm integrity: add a bitmap mode")
+Cc: stable@vger.kernel.org
 ---
- fs/ext4/mballoc.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ drivers/md/dm-integrity.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index dd29558ad753b..910b454b4a21e 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -892,6 +892,21 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
- 	}
- }
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index 380527f43b2a1..a9c0157bf42fe 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -3788,14 +3788,27 @@ static void dm_integrity_resume(struct dm_target *ti)
+ 	struct dm_integrity_c *ic = ti->private;
+ 	__u64 old_provided_data_sectors = le64_to_cpu(ic->sb->provided_data_sectors);
+ 	int r;
++	__le32 flags;
  
-+static ext4_group_t ext4_get_allocation_groups_count(
-+				struct ext4_allocation_context *ac)
-+{
-+	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
+ 	DEBUG_print("resume\n");
+ 
+ 	ic->wrote_to_journal = false;
+ 
++	flags = ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING);
++	r = sync_rw_sb(ic, REQ_OP_READ);
++	if (r)
++		dm_integrity_io_error(ic, "reading superblock", r);
++	if ((ic->sb->flags & flags) != flags) {
++		ic->sb->flags |= flags;
++		r = sync_rw_sb(ic, REQ_OP_WRITE | REQ_FUA);
++		if (unlikely(r))
++			dm_integrity_io_error(ic, "writing superblock", r);
++	}
 +
-+	/* non-extent files are limited to low blocks/groups */
-+	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
-+		ngroups = EXT4_SB(ac->ac_sb)->s_blockfile_groups;
-+
-+	/* Pairs with smp_wmb() in ext4_update_super() */
-+	smp_rmb();
-+
-+	return ngroups;
-+}
-+
- static int ext4_mb_scan_groups_xa_range(struct ext4_allocation_context *ac,
- 					struct xarray *xa,
- 					ext4_group_t start, ext4_group_t end)
-@@ -899,7 +914,7 @@ static int ext4_mb_scan_groups_xa_range(struct ext4_allocation_context *ac,
- 	struct super_block *sb = ac->ac_sb;
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	enum criteria cr = ac->ac_criteria;
--	ext4_group_t ngroups = ext4_get_groups_count(sb);
-+	ext4_group_t ngroups = ext4_get_allocation_groups_count(ac);
- 	unsigned long group = start;
- 	struct ext4_group_info *grp;
- 
-@@ -951,7 +966,7 @@ static int ext4_mb_scan_groups_p2_aligned(struct ext4_allocation_context *ac,
- 	ext4_group_t start, end;
- 
- 	start = group;
--	end = ext4_get_groups_count(ac->ac_sb);
-+	end = ext4_get_allocation_groups_count(ac);
- wrap_around:
- 	for (i = ac->ac_2order; i < MB_NUM_ORDERS(ac->ac_sb); i++) {
- 		ret = ext4_mb_scan_groups_largest_free_order_range(ac, i,
-@@ -1001,7 +1016,7 @@ static int ext4_mb_scan_groups_goal_fast(struct ext4_allocation_context *ac,
- 	ext4_group_t start, end;
- 
- 	start = group;
--	end = ext4_get_groups_count(ac->ac_sb);
-+	end = ext4_get_allocation_groups_count(ac);
- wrap_around:
- 	i = mb_avg_fragment_size_order(ac->ac_sb, ac->ac_g_ex.fe_len);
- 	for (; i < MB_NUM_ORDERS(ac->ac_sb); i++) {
-@@ -1083,7 +1098,7 @@ static int ext4_mb_scan_groups_best_avail(struct ext4_allocation_context *ac,
- 		min_order = fls(ac->ac_o_ex.fe_len);
- 
- 	start = group;
--	end = ext4_get_groups_count(ac->ac_sb);
-+	end = ext4_get_allocation_groups_count(ac);
- wrap_around:
- 	for (i = order; i >= min_order; i--) {
- 		int frag_order;
-@@ -1182,11 +1197,7 @@ static int ext4_mb_scan_groups(struct ext4_allocation_context *ac)
- 	int ret = 0;
- 	ext4_group_t start;
- 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
--	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
--
--	/* non-extent files are limited to low blocks/groups */
--	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
--		ngroups = sbi->s_blockfile_groups;
-+	ext4_group_t ngroups = ext4_get_allocation_groups_count(ac);
- 
- 	/* searching for the right group start from the goal value specified */
- 	start = ac->ac_g_ex.fe_group;
+ 	if (ic->provided_data_sectors != old_provided_data_sectors) {
+ 		if (ic->provided_data_sectors > old_provided_data_sectors &&
+ 		    ic->mode == 'B' &&
++		    ic->sb->flags & cpu_to_le32(SB_FLAG_DIRTY_BITMAP) &&
+ 		    ic->sb->log2_blocks_per_bitmap_bit == ic->log2_blocks_per_bitmap_bit) {
+ 			rw_journal_sectors(ic, REQ_OP_READ, 0,
+ 					   ic->n_bitmap_blocks * (BITMAP_BLOCK_SIZE >> SECTOR_SHIFT), NULL);
 -- 
 2.51.0
 
