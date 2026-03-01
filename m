@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-221719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECQbBiOoo2mWJAUAu9opvQ
-	(envelope-from <stable+bounces-221719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:44:51 +0100
+	id eBQdASaoo2mWJAUAu9opvQ
+	(envelope-from <stable+bounces-221720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:44:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782DF1CDDE0
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:44:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BF41CDDE8
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:44:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 203D23044A68
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4CAB43257FBE
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF712BE033;
-	Sun,  1 Mar 2026 01:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880602DC350;
+	Sun,  1 Mar 2026 01:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZ87Uxde"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WWyD63Z9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B5313B58A
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF3B13B58A;
+	Sun,  1 Mar 2026 01:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328974; cv=none; b=PQaYowQRQw/muTRaTAGYa1WwhrV2ukxdjhLrB29up/XLte1gVK9EiqUUtckpyYv8I+oQDco5wSA2co2g9w2yxCzobnsMbBAev5t1t141zOIew75k/mGcX13ME9CP3MjGvHg/F8XDLJcXdpjwDN5pkk9S7CElf27KEvfs1+TvwZg=
+	t=1772328976; cv=none; b=ezLoxdaRSxvMAxDNYWYyQwUBipth9plrMEkFON5v1/xctWYrbSwzc37c+qx0f38hKSc+mFWG6MoIBXlTuYMkvcdH+Ylj2C29wMhFsQo+hTVb9OCGs3/K1PoXngvsGwy8JRhq5qSubthnnuOO09LmZyJcaCTDjhVzwytiIBYWE+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328974; c=relaxed/simple;
-	bh=ACsspPuUG8M6gMZ0NsHZ6NHTtvbKJsozobCJ4pMgmKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lo1vi8NhB5FLvePVBv82qn4dFuIGL9O4TkEdm/2IBUP9JrAc0kCC1CB5YDEbvpupMe7MyLve90waejx6zJjwAOiDwTkHEcZ3e8Y843SjgkpfCmL5tAPYh9J+BftQ0niKHpe0LndJQ8hVR+jRRGQa+2ggpzlJSHgwoeXbDRFKLuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZ87Uxde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F187C2BC86;
-	Sun,  1 Mar 2026 01:36:13 +0000 (UTC)
+	s=arc-20240116; t=1772328976; c=relaxed/simple;
+	bh=QtjNuD//9YELcVnrZEJeLGQvrXeQIUP9U0k2jUI711Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vs0oVY4xZS9jOokYYTZQMCIMZgAGmTtslqklccaKVQGwZf4UBwhibCS9An7EqcpJkfRdwQYxphKAMXta2b9ITGV6UhpW6jJkgGOjvNDYNbpi2ov/fnS/Pa9ll3ECVGvm6RkbEODaem6RY4JcAW2FWUf36K++oj8FeQ8QYLDgzlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WWyD63Z9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46B7C19421;
+	Sun,  1 Mar 2026 01:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328974;
-	bh=ACsspPuUG8M6gMZ0NsHZ6NHTtvbKJsozobCJ4pMgmKg=;
+	s=k20201202; t=1772328976;
+	bh=QtjNuD//9YELcVnrZEJeLGQvrXeQIUP9U0k2jUI711Y=;
 	h=From:To:Cc:Subject:Date:From;
-	b=LZ87UxdeDtVnTJZvmOBSt9ubBZpC8LMCG9zzoYp6t/ANRgjhufc7zcGiSt5Xhj2XB
-	 0OqsHhP1LvhwojsA/ddlDHrQQ+fF+cwqNWaL9biGkd7yLTpWHClyrDJjTq8FEFjIyE
-	 tp+xlELsmm83NQY0rjaoRISqV8uNFvo6KpazKToXKN3xARPFDaoBxITQAn8FdUwJy8
-	 0zF8jimU14FWFwGYsK+uswKBCbFtJpTYI2wcuctZjQO5BZLmRcEiJ/eqmeH5TDtSte
-	 cNF9SquRnhY7CJEgJq5akZOWnnQjbY9FH+aETG33H4IK2XlCHAeX26hFd5jXU4x63q
-	 VLDp4yeezietA==
+	b=WWyD63Z9rgt9ejx7u8kYA8fXQscVvwuSrn/5H2cFqYl4JrbljHPbYRrETu+hjYGfI
+	 QIvXj/ZywMDlMR3dE+BnhNGDXXXpa6hqhad5L6bV9N/POzuMCLbECRSyuc1KeXhBGK
+	 HkqtXsOtLRuHDGwWduFLnNZ1YxbMlgw9L+Sjj3mRg96u1Wg+9YUVqJlAcChYUCLZK0
+	 A5CBgaYijiX1wkzr87WETFcYhvpu6FjIoMgsdKUQJUkV2SupB+mCCG9DujEFlLBHBi
+	 mMMPMFJ4cceojUFU26aGh385ZfBJpaC255MvpEP1zR3Znsv0/klOZFYACae6ZjYPZt
+	 QAay989b1bqDA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	harry.yoo@oracle.com
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	linux-mm@kvack.org
-Subject: FAILED: Patch "mm/slab: use unsigned long for orig_size to ensure proper metadata align" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:36:11 -0500
-Message-ID: <20260301013612.1696087-1-sashal@kernel.org>
+	linusw@kernel.org
+Cc: Niklas Cassel <cassel@kernel.org>,
+	linux-ide@vger.kernel.org
+Subject: FAILED: Patch "ata: pata_ftide010: Fix some DMA timings" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:36:14 -0500
+Message-ID: <20260301013614.1696150-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,26 +62,24 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,suse.cz,kvack.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221719-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-221720-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,9 +87,9 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email]
-X-Rspamd-Queue-Id: 782DF1CDDE0
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 59BF41CDDE8
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -105,103 +102,42 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b85f369b81aed457acbea4ad3314218254a72fd2 Mon Sep 17 00:00:00 2001
-From: Harry Yoo <harry.yoo@oracle.com>
-Date: Tue, 13 Jan 2026 15:18:37 +0900
-Subject: [PATCH] mm/slab: use unsigned long for orig_size to ensure proper
- metadata align
+From ff4a46c278ac6a4b3f39be1492a4568b6dcc6105 Mon Sep 17 00:00:00 2001
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 3 Feb 2026 11:23:01 +0100
+Subject: [PATCH] ata: pata_ftide010: Fix some DMA timings
 
-When both KASAN and SLAB_STORE_USER are enabled, accesses to
-struct kasan_alloc_meta fields can be misaligned on 64-bit architectures.
-This occurs because orig_size is currently defined as unsigned int,
-which only guarantees 4-byte alignment. When struct kasan_alloc_meta is
-placed after orig_size, it may end up at a 4-byte boundary rather than
-the required 8-byte boundary on 64-bit systems.
+The FTIDE010 has been missing some timing settings since its
+inception, since the upstream OpenWrt patch was missing these.
 
-Note that 64-bit architectures without HAVE_EFFICIENT_UNALIGNED_ACCESS
-are assumed to require 64-bit accesses to be 64-bit aligned.
-See HAVE_64BIT_ALIGNED_ACCESS and commit adab66b71abf ("Revert:
-"ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"") for more details.
+The community has since come up with the appropriate timings.
 
-Change orig_size from unsigned int to unsigned long to ensure proper
-alignment for any subsequent metadata. This should not waste additional
-memory because kmalloc objects are already aligned to at least
-ARCH_KMALLOC_MINALIGN.
-
-Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo
-Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Fixes: be4e456ed3a5 ("ata: Add driver for Faraday Technology FTIDE010")
 Cc: stable@vger.kernel.org
-Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo/
-Link: https://patch.msgid.link/20260113061845.159790-2-harry.yoo@oracle.com
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 ---
- mm/slub.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/ata/pata_ftide010.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 152fe53d0fb5a..2c000dddcf74f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -854,7 +854,7 @@ static inline bool slab_update_freelist(struct kmem_cache *s, struct slab *slab,
-  * request size in the meta data area, for better debug and sanity check.
-  */
- static inline void set_orig_size(struct kmem_cache *s,
--				void *object, unsigned int orig_size)
-+				void *object, unsigned long orig_size)
- {
- 	void *p = kasan_reset_tag(object);
+diff --git a/drivers/ata/pata_ftide010.c b/drivers/ata/pata_ftide010.c
+index c3a8384c3e04d..c41da296eb389 100644
+--- a/drivers/ata/pata_ftide010.c
++++ b/drivers/ata/pata_ftide010.c
+@@ -122,10 +122,10 @@ static const u8 mwdma_50_active_time[3] = {6, 2, 2};
+ static const u8 mwdma_50_recovery_time[3] = {6, 2, 1};
+ static const u8 mwdma_66_active_time[3] = {8, 3, 3};
+ static const u8 mwdma_66_recovery_time[3] = {8, 2, 1};
+-static const u8 udma_50_setup_time[6] = {3, 3, 2, 2, 1, 1};
++static const u8 udma_50_setup_time[6] = {3, 3, 2, 2, 1, 9};
+ static const u8 udma_50_hold_time[6] = {3, 1, 1, 1, 1, 1};
+-static const u8 udma_66_setup_time[7] = {4, 4, 3, 2, };
+-static const u8 udma_66_hold_time[7] = {};
++static const u8 udma_66_setup_time[7] = {4, 4, 3, 2, 1, 9, 9};
++static const u8 udma_66_hold_time[7] = {4, 2, 1, 1, 1, 1, 1};
  
-@@ -864,10 +864,10 @@ static inline void set_orig_size(struct kmem_cache *s,
- 	p += get_info_end(s);
- 	p += sizeof(struct track) * 2;
- 
--	*(unsigned int *)p = orig_size;
-+	*(unsigned long *)p = orig_size;
- }
- 
--static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
-+static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
- {
- 	void *p = kasan_reset_tag(object);
- 
-@@ -880,7 +880,7 @@ static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
- 	p += get_info_end(s);
- 	p += sizeof(struct track) * 2;
- 
--	return *(unsigned int *)p;
-+	return *(unsigned long *)p;
- }
- 
- #ifdef CONFIG_SLUB_DEBUG
-@@ -1195,7 +1195,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 	if (slub_debug_orig_size(s))
--		off += sizeof(unsigned int);
-+		off += sizeof(unsigned long);
- 
- 	off += kasan_metadata_size(s, false);
- 
-@@ -1407,7 +1407,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 		if (s->flags & SLAB_KMALLOC)
--			off += sizeof(unsigned int);
-+			off += sizeof(unsigned long);
- 	}
- 
- 	off += kasan_metadata_size(s, false);
-@@ -8040,7 +8040,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 
- 		/* Save the original kmalloc request size */
- 		if (flags & SLAB_KMALLOC)
--			size += sizeof(unsigned int);
-+			size += sizeof(unsigned long);
- 	}
- #endif
- 
+ /*
+  * We set 66 MHz for all MWDMA modes
 -- 
 2.51.0
 
