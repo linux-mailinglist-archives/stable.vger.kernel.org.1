@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-222232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222233-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yD81HZOio2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:21:07 +0100
+	id KBuJGvSfo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222233-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1911CD78D
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:21:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9C21CD2AF
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23EE6348E1CC
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0FEE9306B687
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC0C2EE262;
-	Sun,  1 Mar 2026 01:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B324A2EC083;
+	Sun,  1 Mar 2026 01:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PhnCdvWf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYP38pu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5D32C21F7;
-	Sun,  1 Mar 2026 01:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726222E7637
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330368; cv=none; b=lySzm0EJPGWWbCTR1Lq5wGbA2vF6/zU82o1FHvkHvUy+ZD5SbjSqJkzPLyZhq4zMT5PqyRCIdLGmnjgKNU0HdO6tE5O5/D9qichPYchD07E8LVSg2mos6hJevJtieA2rHSG69DNEp8yuiNQneZ42fU0VWmhTQKvjkjsNekkePyM=
+	t=1772330370; cv=none; b=JpINuTyiocACYNSdYTSc3/KbEozxGPUIgmr0+K4iKpbPcq+4xBp2grdv7LIOQSE9fTNA1JMgjK1IN9eS42m0IC9Yyd1iEonzMDVoB/Hs6/hWqYR7tLp179/JyKxd5k3ZTaCfbNQ3porBGOIV8LQx6hWEixUkn2XTzH6aSHGAnhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330368; c=relaxed/simple;
-	bh=CGCR+eTo2gn+7VZ0xFdIRYhJtIbX1iy+cbgSQq3g5rw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=paaER3XU1VPWWcn5h0OidFutxiDzzl/VkKbKZW3TuPH/gOAG2swqMVbLc9vyAZh6/5vy429csmF/VUZcev8+AQfGG8jpwTRDdx+golKetsGYEH4Kj5z9QvXa1UuCO3jC5lPKfl4yphnYF/Nh0Lclt1NMuNea+TptB2UGPm53gbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PhnCdvWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41162C19421;
-	Sun,  1 Mar 2026 01:59:27 +0000 (UTC)
+	s=arc-20240116; t=1772330370; c=relaxed/simple;
+	bh=CMqus3ITimaUBp6Um8u0hwBq1NnGJYegILemxlcDbBg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n9SY2wgJb5PmuACzxfz4dzBZQnxXe+kyYel0gT3JPi+Q0h1DRgBFo4dDTX01MeGQabtYuG0KQiVEZcVdYE40I2BGMnKSjUb6dU1GlrBc8VNJ5tzg1mclTaJLVgqWty9I5StdzbKxb3MnJlZ6iHzGFbKKw+Q4dwP5VYJu86TdJzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYP38pu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B413FC2BC86;
+	Sun,  1 Mar 2026 01:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330368;
-	bh=CGCR+eTo2gn+7VZ0xFdIRYhJtIbX1iy+cbgSQq3g5rw=;
+	s=k20201202; t=1772330370;
+	bh=CMqus3ITimaUBp6Um8u0hwBq1NnGJYegILemxlcDbBg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=PhnCdvWfU6qHYNlbo68+DHXRntwDjrm2mmU2fFPFjWCcQlfT2IjQizPoCpmV/OaOp
-	 T4Ly9tS4IzIe6mMHhKOCWj+RTqyyJUKOjx0IisOa234k4gonEHhmp3wc+YcrUtrhRh
-	 Kf/kbo88VZTfngCSXa8gdQlUDjU+DAn/jwgpkGQuo0tQfMErPAQmdi0j5aAnnuF7Cd
-	 bIzInaRMnUmCunMqyKJ8lrgCYJt1e/ppgWD5vNbcH1Ip71eWkkKZAK+qmTM5SuFo7s
-	 ij/9bGqEhXunUPru7DcS411u8wZIHW9ka9w9b4EA8tDI3IxKb0QEjx1e8HApFDz9ic
-	 bN5oxLwanySqw==
+	b=DYP38pu+g2BX0r4x4BlFuwAyy1biSSLK56M5C2irsc5jHL0ThEk9WYpdvXlxAT0bp
+	 6iNrD8vv/AKQmdnyf0c80SxlfARb63ecVzxbAaBtRUSm3CKjin2dRGq2Sr1nUgHaCy
+	 gHw2axNh2TTIlHcCUSiDCvBlx04y/ufahZ84BuqjxDcrLjkBvSdbdOxyGJZ/wUjhoV
+	 htuy63tMbMkujOSwXihNRu8kYXAUIiMBirtngKFd3yT1vAAWziSHrWphGryTmoU/8v
+	 X21N9oiR5btcSbSeOJYhgZvvqNEyor97yTcLxiHlqppXi4KdzrxGWrsApCnA5iEbJZ
+	 dyP8zD1EAyokg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	haoxiang_li2024@163.com
-Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	linux-media@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: FAILED: Patch "media: mtk-mdp: Fix error handling in probe function" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 20:59:25 -0500
-Message-ID: <20260301015926.1725145-1-sashal@kernel.org>
+	hanguidong02@gmail.com
+Cc: Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: FAILED: Patch "bus: fsl-mc: fix use-after-free in driver_override_show()" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 20:59:28 -0500
+Message-ID: <20260301015928.1725195-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,36 +63,35 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,163.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222232-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222233-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.987];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email]
-X-Rspamd-Queue-Id: DA1911CD78D
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AB9C21CD2AF
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -107,72 +104,48 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8a8a3232abac5b972058a5f2cb3e33199d2a8648 Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <haoxiang_li2024@163.com>
-Date: Wed, 8 Oct 2025 16:55:03 +0800
-Subject: [PATCH] media: mtk-mdp: Fix error handling in probe function
+From 148891e95014b5dc5878acefa57f1940c281c431 Mon Sep 17 00:00:00 2001
+From: Gui-Dong Han <hanguidong02@gmail.com>
+Date: Wed, 3 Dec 2025 01:44:38 +0800
+Subject: [PATCH] bus: fsl-mc: fix use-after-free in driver_override_show()
 
-Add mtk_mdp_unregister_m2m_device() on the error handling path to prevent
-resource leak.
+The driver_override_show() function reads the driver_override string
+without holding the device_lock. However, driver_override_store() uses
+driver_set_override(), which modifies and frees the string while holding
+the device_lock.
 
-Add check for the return value of vpu_get_plat_device() to prevent null
-pointer dereference. And vpu_get_plat_device() increases the reference
-count of the returned platform device. Add platform_device_put() to
-prevent reference leak.
+This can result in a concurrent use-after-free if the string is freed
+by the store function while being read by the show function.
 
-Fixes: c8eb2d7e8202 ("[media] media: Add Mediatek MDP Driver")
+Fix this by holding the device_lock around the read operation.
+
+Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20251202174438.12658-1-hanguidong02@gmail.com
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 ---
- .../media/platform/mediatek/mdp/mtk_mdp_core.c   | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c b/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c
-index 80fdc6ff57e0e..f78fa30f18648 100644
---- a/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c
-+++ b/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c
-@@ -194,11 +194,17 @@ static int mtk_mdp_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index c08c04047ae2c..08b99b0b342f3 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -231,8 +231,12 @@ static ssize_t driver_override_show(struct device *dev,
+ 				    struct device_attribute *attr, char *buf)
+ {
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
++	ssize_t len;
  
- 	mdp->vpu_dev = vpu_get_plat_device(pdev);
-+	if (!mdp->vpu_dev) {
-+		dev_err(&pdev->dev, "Failed to get vpu device\n");
-+		ret = -ENODEV;
-+		goto err_vpu_get_dev;
-+	}
-+
- 	ret = vpu_wdt_reg_handler(mdp->vpu_dev, mtk_mdp_reset_handler, mdp,
- 				  VPU_RST_MDP);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to register reset handler\n");
--		goto err_m2m_register;
-+		goto err_reg_handler;
- 	}
- 
- 	platform_set_drvdata(pdev, mdp);
-@@ -206,7 +212,7 @@ static int mtk_mdp_probe(struct platform_device *pdev)
- 	ret = vb2_dma_contig_set_max_seg_size(&pdev->dev, DMA_BIT_MASK(32));
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to set vb2 dma mag seg size\n");
--		goto err_m2m_register;
-+		goto err_reg_handler;
- 	}
- 
- 	pm_runtime_enable(dev);
-@@ -214,6 +220,12 @@ static int mtk_mdp_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
-+err_reg_handler:
-+	platform_device_put(mdp->vpu_dev);
-+
-+err_vpu_get_dev:
-+	mtk_mdp_unregister_m2m_device(mdp);
-+
- err_m2m_register:
- 	v4l2_device_unregister(&mdp->v4l2_dev);
+-	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
++	device_lock(dev);
++	len = sysfs_emit(buf, "%s\n", mc_dev->driver_override);
++	device_unlock(dev);
++	return len;
+ }
+ static DEVICE_ATTR_RW(driver_override);
  
 -- 
 2.51.0
