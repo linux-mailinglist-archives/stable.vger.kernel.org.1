@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HwyD/qVo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:22 +0100
+	id QMOJMfuVo2lPHgUAu9opvQ
+	(envelope-from <stable+bounces-221478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23481CAA45
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CEF91CAA54
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1CED53014A38
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:26:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 05BA1301FBA1
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8836D27FB3A;
-	Sun,  1 Mar 2026 01:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD60E28466C;
+	Sun,  1 Mar 2026 01:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvfrrMuS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Czlm4l2T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4C928466C
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FF71F9F70;
+	Sun,  1 Mar 2026 01:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328361; cv=none; b=lg2mc/dfC7FKcJE7C3NjK8axeXCST2iOAsCBltfwD2PrSCpw5FmFPw5zlndeZduFw0lC0uun582vwYKQeYVdNim9TKXOG0hMDDuOJsqEQQc7w9UXYJuLt4wYRfzxeprJaYzsJghUM7saSPMuKLCa7mFdKVfszUYxpwNWkTJ9m/w=
+	t=1772328363; cv=none; b=G+8qu1mM6cC3+nOS8mGEZwm0kKapCb+autoHoRzf8Z+vMS3YMhvfHyaCUug+rfBqe7MWLJbjhmCiCEGS8aeye6/lO/j4T42CiOA4MLpU33xoQs4cjg5kmZ8LnFm34ZW3HgjP4Nnp8qDjVSPe4yqQZjNS6B+Fmt+XPKtgaZGaBSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328361; c=relaxed/simple;
-	bh=HmeO96EzGOW33qi49IOXOtz5wmcVF770WRnYU5a+q0c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M0QuTE5uaZShVyF1fmDR6CnPom4JULuKXMj5ppJM5GQpLLuV22g1mj0b8rLdZv8Kdc4Ve1KxNfggtYWT5kR1mdZE+HW3vZnnzHWy0WaQLqipCE5zrSGBaVAfgwN8MaXAbYKO6+4PuW4bEEoh7KFqw7gTFH7v5v5s49tiDCntjNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvfrrMuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E1EC19421;
-	Sun,  1 Mar 2026 01:26:00 +0000 (UTC)
+	s=arc-20240116; t=1772328363; c=relaxed/simple;
+	bh=lTUvn597iCBFVcfGwIAqC7pBe9DN++a0LDbHXHKAKFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R32mZjZ498G4xcahwvxRQFdf3KuWykm503HY1OHoC+Lf6ByGJh9LfaHcG/DieQkFyYZKMiUByUpJPloLhOYi0oD8ZBhlbGgnH2yzFokmqixUdj6gtyei2EAvy0mVdNM7qqWWDqgrpyyh5sxmle9PEqvguzuwnDUf4GwW0h7JSYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Czlm4l2T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD57FC19421;
+	Sun,  1 Mar 2026 01:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328361;
-	bh=HmeO96EzGOW33qi49IOXOtz5wmcVF770WRnYU5a+q0c=;
+	s=k20201202; t=1772328363;
+	bh=lTUvn597iCBFVcfGwIAqC7pBe9DN++a0LDbHXHKAKFU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hvfrrMuSrvBU8nSVTluTF1IHUQwrN3IaqdBA9i6vPKt9MwsJ0IpD4M5oJasULkeqm
-	 /UGBHBFJp5L/mbhUERf7FnIiCA1ikWdSVbfBChwJ8c8Wqg4UbAbj29PgyDxkqIH+fe
-	 kS52twZjR7r6lj4A/z2+Rnt+q8GszKukauAndMXxxLIc0sgGBYOLAPb28eG8qgt1zn
-	 plqTTPHeBDFPlXW6W7uJmcbf0vapdKfrB5pb+US+blv2kwPUhiI3JeXcTu67SgUqnc
-	 KQpnCSP9DBKHNPRBPPgVIdk5Lg1kAA2qKheQENvHXpLkKjxaSeyQIzI262p+3aSMjp
-	 cyr+6MgTtSFSw==
+	b=Czlm4l2TVCNHOIyXaFgFmGAJ3ht5+zxIEzPHqdAB5+AnoQJ8sHYqEsq3bZQEdwZ7R
+	 LxRHOjKPlVa8JlIBCapD9gNqfGDhXtrYZNn21ZKofsG7jvQo2dEHEm1iGeXh2neiMy
+	 MKvRjFWcPFI2Fop86AkF+sCiRgC59w7Efmifj4OuSMSW4bjn8pV6Ka3BfkqqasfVoY
+	 vEWe5qV/Ly8U9rMF6asGtCFVoScCa4NsMCRVxVuoFmc93ZNbSdVZ667ta/WTvfLaWB
+	 I+jKmDfF++4/LqUEF7T3b2CUHtf+Pwh9vb6xga4UAJ1tefc/Np0ulbeXI3Cr5d9/eU
+	 kj9xSOQGWWwKg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	andrea.scian@dave.eu
-Cc: stable@kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	linux-mtd@lists.infradead.org
-Subject: FAILED: Patch "mtd: rawnand: pl353: Fix software ECC support" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:25:59 -0500
-Message-ID: <20260301012559.1683274-1-sashal@kernel.org>
+	jszhang@kernel.org
+Cc: stable <stable@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org
+Subject: FAILED: Patch "usb: dwc2: fix resume failure if dr_mode is host" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:26:01 -0500
+Message-ID: <20260301012601.1683328-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221477-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221478-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,8 +89,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,dave.eu:email]
-X-Rspamd-Queue-Id: A23481CAA45
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 7CEF91CAA54
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -103,34 +103,47 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 89b831ebdaca0df4ca3b226f7e7a1d1db1629060 Mon Sep 17 00:00:00 2001
-From: Andrea Scian <andrea.scian@dave.eu>
-Date: Wed, 4 Feb 2026 18:41:44 +0100
-Subject: [PATCH] mtd: rawnand: pl353: Fix software ECC support
+From a52e4f2dff413b58c7200e89bb6540bd995e1269 Mon Sep 17 00:00:00 2001
+From: Jisheng Zhang <jszhang@kernel.org>
+Date: Thu, 29 Jan 2026 10:15:34 +0800
+Subject: [PATCH] usb: dwc2: fix resume failure if dr_mode is host
 
-We need to set also write_page_raw in ecc structure to allow
-choosing SW ECC instead of HW one, otherwise write operation fail.
+commit 13b1f8e25bfd1 ("usb: dwc2: Force mode optimizations") removed the
+dwc2_force_mode(hsotg, true) in dwc2_force_dr_mode() if dr_mode is host.
 
-Fixes: 08d8c62164a322 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
-Signed-off-by: Andrea Scian <andrea.scian@dave.eu>
-Cc: stable@kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+But this brings a bug: the controller fails to resume back as host,
+further debugging shows that the controller is resumed as peripheral.
+The reason is dwc2_force_dr_mode() missed the host mode forcing, and
+when resuming from s2ram, GINTSTS is 0 by default, dwc2_is_device_mode
+in dwc2_resume() misreads this as the controller is in peripheral mode.
+
+Fix the resume failure by adding back the dwc2_force_mode(hsotg, true).
+
+Then an obvious question is: why this bug hasn't been observed and fixed
+for about six years? There are two resons: most dwc2 platforms set the
+dr_mode as otg; Some platforms don't have suspend & resume support yet.
+
+Fixes: 13b1f8e25bfd1 ("usb: dwc2: Force mode optimizations")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://patch.msgid.link/20260129021534.10411-1-jszhang@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/pl35x-nand-controller.c | 1 +
+ drivers/usb/dwc2/core.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/nand/raw/pl35x-nand-controller.c b/drivers/mtd/nand/raw/pl35x-nand-controller.c
-index 11bd90e3f18cb..7f012b7c3eaec 100644
---- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
-+++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
-@@ -976,6 +976,7 @@ static int pl35x_nand_attach_chip(struct nand_chip *chip)
- 		fallthrough;
- 	case NAND_ECC_ENGINE_TYPE_NONE:
- 	case NAND_ECC_ENGINE_TYPE_SOFT:
-+		chip->ecc.write_page_raw = nand_monolithic_write_page_raw;
- 		break;
- 	case NAND_ECC_ENGINE_TYPE_ON_HOST:
- 		ret = pl35x_nand_init_hw_ecc_controller(nfc, chip);
+diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+index c3d24312db0fe..f375c5185bfe2 100644
+--- a/drivers/usb/dwc2/core.c
++++ b/drivers/usb/dwc2/core.c
+@@ -578,6 +578,7 @@ void dwc2_force_dr_mode(struct dwc2_hsotg *hsotg)
+ {
+ 	switch (hsotg->dr_mode) {
+ 	case USB_DR_MODE_HOST:
++		dwc2_force_mode(hsotg, true);
+ 		/*
+ 		 * NOTE: This is required for some rockchip soc based
+ 		 * platforms on their host-only dwc2.
 -- 
 2.51.0
 
