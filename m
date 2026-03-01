@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-222374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uN5EFYOho2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:16:35 +0100
+	id 0ITnGKOho2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59BB81CD595
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:16:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968861CD5E9
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CEF523038EFF
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:05:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B63A4303DF71
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E62303A15;
-	Sun,  1 Mar 2026 02:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99162FFFB5;
+	Sun,  1 Mar 2026 02:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P4djLiKH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vLw2Dxta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A424413D53C;
-	Sun,  1 Mar 2026 02:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3142FE59C;
+	Sun,  1 Mar 2026 02:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330719; cv=none; b=uhPFte7IrZpmiSpkb3FkKzvCZofw1pRWscMTIoQroh84DHrpwKQxneXvFZ+cWvBSehLdjVgwI8DaOnJPno4kChi6UA6xhtSCy75Mu2hAinsjuPaooO9Z0nZ5SnuSh0H++PEBAhQpwBNU4Ohqwn5KT05LprG6aLF+BJXtVvNATcA=
+	t=1772330724; cv=none; b=M8Z9bN6X9J6beY/MpB61oIsNmF71QdLQFbZcbiItG1ZfxKABxSK8YcbMxZksMpZtkMVUtevrAtrU4Q8fBmqEkTEkH7tk8dOU4iLgwpvKB2aDF7U+xiQ4KfGbWi73hHLhfG8kqigvykpwUpVXixRs3dOXNs5yXzpbclQ6L1qGTo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330719; c=relaxed/simple;
-	bh=djFcnYcDM4zx77hWUyJrgolYMXmQg0/ObrXZM5RnnsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hRMh5VqLJNZkxAhIbgBPhEtB9jiE0tuX0VgeHAFds70lQQmNaKawCFv8LG/Fj/fVxE2SuhM4EzuqHmX1IQ3ncXuJXX/XzGKeKRN657tM1PGnhSwRRP+E1xGF1XYlRqDfLW9RiVZu8//G8Bnh0dBRsVN59zi3jqi6I6cMR18WCIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P4djLiKH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7983C19421;
-	Sun,  1 Mar 2026 02:05:18 +0000 (UTC)
+	s=arc-20240116; t=1772330724; c=relaxed/simple;
+	bh=E8bZfk1m4w0ex3MMS3VmfA8XccNPAJX6qmf5KIxzNdk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z7rtWs3nUEdt6DMMp+7677fz1qGSnlvXKUG715GCbgmKewq/8UoIcNiGVl2AUCoQoOiLmfvLizc5DUjOWWvvuukp7qoDREW4AR8BY4J31VjbamBP/L/917EhpvpQKOE5wxC3FqzP1VoC2MRo9yscIL8HD5YTTMmtk8vtigI+4RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vLw2Dxta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB03C19421;
+	Sun,  1 Mar 2026 02:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330719;
-	bh=djFcnYcDM4zx77hWUyJrgolYMXmQg0/ObrXZM5RnnsY=;
+	s=k20201202; t=1772330724;
+	bh=E8bZfk1m4w0ex3MMS3VmfA8XccNPAJX6qmf5KIxzNdk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=P4djLiKHJcwpgsUQVxCiV6RiQ7Y3wgnNFt51Gz+YJeYLhJBn3nX/jwy0gCFokIiYV
-	 OpPmRiBoSISKDJQxjdwoqsm0qiGkPAEiN0s2ryHG0kn5KpZ5XOYzsvY7j94a2hwPGW
-	 PumMSeGDxGyv0V5jjEGYJh/ZZfDVbo0wM3OEc2T1iRsZbbJow3ZBCNQ+Wf/UCQQd3Z
-	 3rzlqO0ZF0dvH3C4gwECueVEwmMMFeIkskQuz2woDHv0Altsm5gBB2VaCaguV2dDmq
-	 HJlj89sR2S8gYzFbzs9kygq8u4i+MYNd4Svm89eAo5zFjNKHI7bynJU7M62vVe3QXS
-	 MbGJuljyqVd4Q==
+	b=vLw2DxtatSJ/ZZ81CShMZmTB37+7LqfR2DgUBqEmL5pUuWhcrev5hMTvKemxgnEs3
+	 lDcF7eHfHYe7snCTusAcaYz/kRnwEfdJg1CTJsO5mnI/mDub/oBsTC3yY6HqbBZFyX
+	 tOGOIesbF7gOfpWvp2IfZYgBUvMQyMmbDcx5uxa4FcdvCqtQ5bSyT9rEtf9lLe1vb4
+	 +BoXWwkqo840bEh4DcrMHfYdusd0/O7emnEVth7/2LgHe2AwnAkCMipbflpJR2l5Ox
+	 iLNiY+DTepj6uOSxqT4mQobiie6qada7mhxyiM1MHcb5k20h+fXXWY7jO+HiyZHosM
+	 AEtrUpo/ptO9g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	enelsonmoore@gmail.com
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	duoming@zju.edu.cn
+Cc: stable@kernel.org,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: FAILED: Patch "net: intel: fix PCI device ID conflict between i40e and ipw2200" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:05:17 -0500
-Message-ID: <20260301020517.1733972-1-sashal@kernel.org>
+	linux-atm-general@lists.sourceforge.net,
+	netdev@vger.kernel.org
+Subject: FAILED: Patch "atm: fore200e: fix use-after-free in tasklets during device removal" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:05:19 -0500
+Message-ID: <20260301020522.1734023-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,30 +71,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222374-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222375-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:email,intel.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 59BB81CD595
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,zju.edu.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 968861CD5E9
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -107,68 +106,65 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From d03e094473ecdeb68d853752ba467abe13e1de44 Mon Sep 17 00:00:00 2001
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Mon, 9 Feb 2026 18:12:34 -0800
-Subject: [PATCH] net: intel: fix PCI device ID conflict between i40e and
- ipw2200
+From 8930878101cd40063888a68af73b1b0f8b6c79bc Mon Sep 17 00:00:00 2001
+From: Duoming Zhou <duoming@zju.edu.cn>
+Date: Tue, 10 Feb 2026 17:45:37 +0800
+Subject: [PATCH] atm: fore200e: fix use-after-free in tasklets during device
+ removal
 
-The ID 8086:104f is matched by both i40e and ipw2200. The same device
-ID should not be in more than one driver, because in that case, which
-driver is used is unpredictable. Fix this by taking advantage of the
-fact that i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
-devices use PCI_CLASS_NETWORK_OTHER to differentiate the devices.
+When the PCA-200E or SBA-200E adapter is being detached, the fore200e
+is deallocated. However, the tx_tasklet or rx_tasklet may still be running
+or pending, leading to use-after-free bug when the already freed fore200e
+is accessed again in fore200e_tx_tasklet() or fore200e_rx_tasklet().
 
-Fixes: 2e45d3f4677a ("i40e: Add support for X710 B/P & SFP+ cards")
-Cc: stable@vger.kernel.org
-Acked-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Link: https://patch.msgid.link/20260210021235.16315-1-enelsonmoore@gmail.com
+One of the race conditions can occur as follows:
+
+CPU 0 (cleanup)           | CPU 1 (tasklet)
+fore200e_pca_remove_one() | fore200e_interrupt()
+  fore200e_shutdown()     |   tasklet_schedule()
+    kfree(fore200e)       | fore200e_tx_tasklet()
+                          |   fore200e-> // UAF
+
+Fix this by ensuring tx_tasklet or rx_tasklet is properly canceled before
+the fore200e is released. Add tasklet_kill() in fore200e_shutdown() to
+synchronize with any pending or running tasklets. Moreover, since
+fore200e_reset() could prevent further interrupts or data transfers,
+the tasklet_kill() should be placed after fore200e_reset() to prevent
+the tasklet from being rescheduled in fore200e_interrupt(). Finally,
+it only needs to do tasklet_kill() when the fore200e state is greater
+than or equal to FORE200E_STATE_IRQ, since tasklets are uninitialized
+in earlier states. In a word, the tasklet_kill() should be placed in
+the FORE200E_STATE_IRQ branch within the switch...case structure.
+
+This bug was identified through static analysis.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Suggested-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260210094537.9767-1-duoming@zju.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c  | 8 +++++++-
- drivers/net/wireless/intel/ipw2x00/ipw2200.c | 8 +++++++-
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/atm/fore200e.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index d3bc3207054f9..02de186dcc8f5 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -75,7 +75,13 @@ static const struct pci_device_id i40e_pci_tbl[] = {
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_BASE_T4), 0},
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_BASE_T_BC), 0},
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_SFP), 0},
--	{PCI_VDEVICE(INTEL, I40E_DEV_ID_10G_B), 0},
-+	/*
-+	 * This ID conflicts with ipw2200, but the devices can be differentiated
-+	 * because i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
-+	 * devices use PCI_CLASS_NETWORK_OTHER.
-+	 */
-+	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, I40E_DEV_ID_10G_B),
-+		PCI_CLASS_NETWORK_ETHERNET << 8, 0xffff00, 0},
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_KX_X722), 0},
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_QSFP_X722), 0},
- 	{PCI_VDEVICE(INTEL, I40E_DEV_ID_SFP_X722), 0},
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-index 09035a77e775f..b0e769da94156 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-@@ -11387,7 +11387,13 @@ static const struct pci_device_id card_ids[] = {
- 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2754, 0, 0, 0},
- 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2761, 0, 0, 0},
- 	{PCI_VENDOR_ID_INTEL, 0x1043, 0x8086, 0x2762, 0, 0, 0},
--	{PCI_VDEVICE(INTEL, 0x104f), 0},
-+	/*
-+	 * This ID conflicts with i40e, but the devices can be differentiated
-+	 * because i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
-+	 * devices use PCI_CLASS_NETWORK_OTHER.
-+	 */
-+	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x104f),
-+		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, 0},
- 	{PCI_VDEVICE(INTEL, 0x4220), 0},	/* BG */
- 	{PCI_VDEVICE(INTEL, 0x4221), 0},	/* BG */
- 	{PCI_VDEVICE(INTEL, 0x4223), 0},	/* ABG */
+diff --git a/drivers/atm/fore200e.c b/drivers/atm/fore200e.c
+index f62e385714403..fec081db36dc4 100644
+--- a/drivers/atm/fore200e.c
++++ b/drivers/atm/fore200e.c
+@@ -373,6 +373,10 @@ fore200e_shutdown(struct fore200e* fore200e)
+ 	fallthrough;
+     case FORE200E_STATE_IRQ:
+ 	free_irq(fore200e->irq, fore200e->atm_dev);
++#ifdef FORE200E_USE_TASKLET
++	tasklet_kill(&fore200e->tx_tasklet);
++	tasklet_kill(&fore200e->rx_tasklet);
++#endif
+ 
+ 	fallthrough;
+     case FORE200E_STATE_ALLOC_BUF:
 -- 
 2.51.0
 
