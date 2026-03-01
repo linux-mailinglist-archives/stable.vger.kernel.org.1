@@ -1,176 +1,181 @@
-Return-Path: <stable+bounces-222450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222451-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFt1IJUepGlkXgUAu9opvQ
-	(envelope-from <stable+bounces-222450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 12:10:13 +0100
+	id 8PW7DUsjpGmMYAUAu9opvQ
+	(envelope-from <stable+bounces-222451-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 12:30:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D581CF472
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 12:10:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B6A1CF576
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 12:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C05A301E95A
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 10:57:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 95933301476D
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 11:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177E93002D1;
-	Sun,  1 Mar 2026 10:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3082EDD7E;
+	Sun,  1 Mar 2026 11:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P2T2em7j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQjonMJP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951D427442
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 10:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38D31FC0EF;
+	Sun,  1 Mar 2026 11:30:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772362646; cv=none; b=N41A6DeKEa7GQu+nk5vtN/C73qwaskXf3y8p9UNYAWzJIcvMOYfcPIMojD913OdjsygDzqD90m546YrLsBOWSWp17oB9d6ggfxOhKOHA0tyAxtaQT8KgXSPpj3XxHsuV65dZufMw3SIazp7gbZwKGGh2iG/CjH49FMIM9nb5dYM=
+	t=1772364615; cv=none; b=TbfMhRf8ogjRRyp3goUMVJPEIDzz1yQvsI42m4wWiMvlu+Ten5gMSjodnBFwK3phr6QNt667tW+Dni4MLIUuCr6dHkIo9aZkiYiCPttzne8irJGmcul0Z27Uf3F+/M5yhZBR6uQIDl6Rt6cxjwcxgbmXeSLEJ7OkxbJGjEaWOHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772362646; c=relaxed/simple;
-	bh=aXygDM+VTYBD+bNZSZXs02M9hT65PduMe8k6EMsjVeE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JMcyLfnhJIfEDEX7crLaiNDI3BVBEJF053PeNjL/wzp/PsZm6DwGna+Osa+XLXKQk/eWXkZMH/TPSVVFz4QG7MbbcoTCpyPm5QgPLdlX2ggfi/ZVxbfo1piaCAceEBuchflAuy9r4j7geWAeDoSdxoKBzlrOyGqOpkYciHIpJzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P2T2em7j; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c7103601c8cso1529162a12.2
-        for <stable@vger.kernel.org>; Sun, 01 Mar 2026 02:57:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772362644; x=1772967444; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x/PUY/W2xLVyfoFf7iYt6HuXRzFvXPfeO6RS8rO/tLc=;
-        b=P2T2em7juamaFKAu79SLRXws7f0BT9BU+VJrjcmK9C/16hBwg11/iim6yuTcRXqQZH
-         RFKMeJTry06/yL0+F66jWWDeZ5IG923tztE/bxMlujWMmHd6pB1GiPOIiBvx5c/VPwht
-         w/GgpuPTSRmuv/gdOKc93aWcuiZSvLaQgg8aaQ41DCxXPnO2t5g0AOHamjJMf0fr3wMV
-         KswUPdiGcWH6e6Sb6666k87PmuGF3ZvWvrnpw4Q/KVOI+ukYQvINJEIz+MU99V53i6oG
-         7ldegbG0NV1ektI/gKthJYKxbfQjJyhs/tgSqRY/nLrtFAseGihdeSSAUB+lnB1nxNpP
-         htbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772362644; x=1772967444;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x/PUY/W2xLVyfoFf7iYt6HuXRzFvXPfeO6RS8rO/tLc=;
-        b=bHMiYEqgt3+jMqQk7AuTda1YK2p/2EJbEKcbLfRWXr9naaK/f77X77qpXzVs6vCS/6
-         XR9BuvCD+Av+8itj5QM80VOo3UA4mCa0S8Y3xqoHOCVpRRLz3T8eUHUo+VAgoNUML27D
-         UVtYqTRM4fP9F+l6lYKuf6TrkutpxYS0rUPHmnR7om9zHItHdIByVkS8etdSRf4dt2a6
-         Dw1iX5laTVYABvhGbQv3zD8gbchrQ76tBX644GdaqyA4AU+ZhDvjjswjRL6r621xM5GU
-         eiPTAaQfZ5RkXL8oFx42X4SOmYqeujFjBuvR3WGHzxn4x4F1TUPK36z4DQXhFgQp3soF
-         cPXA==
-X-Forwarded-Encrypted: i=1; AJvYcCXVcP8z16F4ALzitYiqmwAqmM+Y7RRYhaIh04AMo9RAMfmfYbqLGuaiSzJGuHBF1ZfIM/d1aw4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn5SzxeO+AFb0+LnluazH5OqpT5MvdNBJE/qqOgdOD3Rxc/nPo
-	a9QMkzvT+X1FzEv+p7bLoggHQVSBy0XkT/3r6s3Gcgn/T93eFBG9xZfy
-X-Gm-Gg: ATEYQzwv8W/UOUVZrpomo+Ev53hxSlwe3gHFPVwVG2LMhO6McNfuLArY7B9S9EvMc/S
-	ce9ITdJF4aJMSb/5y+rZrJYSJJ5+CpovDuWD+Jk/vJUK7hQI/8w9pkoR0I0cynUYFnR8gVVVmgO
-	uMaSLc6lRKBdMBUm86hCgkgyPUK7ne32bKNaNAqKXm3QlYIvJz7KHr/ROfE7ByfbquZBvXkztdD
-	lub7AJxlybhw8L/BYoo7dnMPmxqWrNuB+N2MEBZJN3d+reDkX/vq/20cXHY6e8qmq6MPbGVa+eh
-	E2wd4sMks2Un+O4bRhDWRR7SC2RBkZZv7LbPWUn7Fbqr88eW7VKgfY8s4YImvYR2L4tVqgHAHdh
-	YsfPWRhTxP2Ir3yKRu/SgT90RKKM0DH1LwvzXudnAeJGFjQUne/s2K7WV3r9j+ZHUf/FUIrGZMw
-	T6c0jr4UskkqsLx8g=
-X-Received: by 2002:a17:90b:4fc6:b0:354:c3a4:397 with SMTP id 98e67ed59e1d1-35965d02b63mr6792314a91.32.1772362643916;
-        Sun, 01 Mar 2026 02:57:23 -0800 (PST)
-Received: from hope.. ([159.65.159.133])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359833ef647sm2220754a91.3.2026.03.01.02.57.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Mar 2026 02:57:23 -0800 (PST)
-From: Roshan Kumar <roshaen09@gmail.com>
-To: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net
-Cc: chopps@labn.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Roshan Kumar <roshaen09@gmail.com>
-Subject: [PATCH] xfrm: iptfs: validate inner IPv4 header length in IPTFS payload
-Date: Sun,  1 Mar 2026 10:56:38 +0000
-Message-ID: <20260301105638.11479-1-roshaen09@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1772364615; c=relaxed/simple;
+	bh=u+p0UmuTEdO0c/v9oX5OAyz3hCwhKypKchQNPZWM0F8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BdA0PLH38TjFx8YSWDawSTgTCqeQoi4cwf3kS8/ofrQQdjVZEADH/wcJMgz6RB8n6eSi/58VI8yw0aSfcJx++20QfWLVmtxTsm0w3JWk7DdPNSROYCSXZpjZ2iFh/s0BPBvYxcVXZfY/JsixfvWwksLcalyUR8vzxooBO4EMUU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQjonMJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EFAC116C6;
+	Sun,  1 Mar 2026 11:30:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772364614;
+	bh=u+p0UmuTEdO0c/v9oX5OAyz3hCwhKypKchQNPZWM0F8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=aQjonMJP0XsEzmPTwHdxSMhhBHIcp3Wi9sW5d68IoFWXbb6Mwn3PA97uTSl95B2CN
+	 bYXGamEzrbjDW5IPHzi4OJwGW+D5wMNMu0iaDmxA+C+cwMMWSfK5HZz1OLE4ID68AF
+	 /wMbzIndTrG2phaEDM7r+SGoIrLZyw8KWWwnZYYoRvBbFGfpbkB3Dj2oQdoEIB2z3R
+	 Fc/bUVhQGFHMxCG3BtxMl960LL0+mArL+IwUHc8JD7PmGL0GSQvwlaz/HOz/vy7vvX
+	 ZySu35mHwQtANHmbfjlyUeNAS1aYG695qUvdH8tMkEB3HAPA68Ta2wDFA4xOrSk/h8
+	 7N5DmyNxGUYTQ==
+Date: Sun, 1 Mar 2026 11:30:06 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Aleksandrs Vinarskis <alex@vinarskis.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] iio: st_sensors: fix trigger allocation
+Message-ID: <20260301113006.41af67bb@jic23-huawei>
+In-Reply-To: <4FQ68Smsz_F43-ks0XkXrc7KG3Ngp1kNuSerbAMvDFkgsR_p6MyzTvFB6_pozp-R2WrQqvB2NsKhaDBXjcjAEL8uLeiiyl0tWGGpaHCFYKQ=@vinarskis.com>
+References: <20260228-st-iio-trigger-v1-1-abf5909e547f@vinarskis.com>
+	<20195663-2091-41eb-b4b3-e8542d29ae32@baylibre.com>
+	<4FQ68Smsz_F43-ks0XkXrc7KG3Ngp1kNuSerbAMvDFkgsR_p6MyzTvFB6_pozp-R2WrQqvB2NsKhaDBXjcjAEL8uLeiiyl0tWGGpaHCFYKQ=@vinarskis.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [4.34 / 15.00];
-	RECEIVED_BLOCKLISTDE(3.00)[159.65.159.133:received];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222450-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[labn.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
-	R_DKIM_ALLOW(0.00)[gmail.com:s=20230601];
-	GREYLIST(0.00)[pass,body];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[roshaen09@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-222451-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.834];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B9D581CF472
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A3B6A1CF576
 X-Rspamd-Action: no action
 
-Add validation of the inner IPv4 packet tot_len and ihl fields parsed
-from decrypted IPTFS payloads in __input_process_payload(). A crafted
-ESP packet containing an inner IPv4 header with tot_len=0 causes an
-infinite loop: iplen=0 leads to capturelen=min(0, remaining)=0, so the
-data offset never advances and the while(data < tail) loop never
-terminates, spinning forever in softirq context.
+On Sun, 01 Mar 2026 10:50:10 +0000
+Aleksandrs Vinarskis <alex@vinarskis.com> wrote:
 
-Reject inner IPv4 packets where tot_len < ihl*4 or ihl*4 < sizeof(struct
-iphdr), which catches both the tot_len=0 case and malformed ihl values.
-The normal IP stack performs this validation in ip_rcv_core(), but IPTFS
-extracts and processes inner packets before they reach that layer.
+> On Saturday, February 28th, 2026 at 20:22, David Lechner <dlechner@baylibre.com> wrote:
+> 
+> > On 2/28/26 11:11 AM, Aleksandrs Vinarskis wrote:  
+> > > Current hardcoded name prevents adding multiple st-sensors devices
+> > > on the same platform. Fix by aligning trigger name with other drivers.
+> > >
+> > > Signed-off-by: Aleksandrs Vinarskis <alex@vinarskis.com>
+> > > ---
+> > > Some platforms such as Dell XPS 9345 contains multiple accelerometers.
+> > > Fix st_sensors that currently only allows one device at the time.
+> > > ---
+> > >  drivers/iio/common/st_sensors/st_sensors_trigger.c | 5 +++--
+> > >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> > > index 8a8ab688d7980f6dd43c660f90a0eba32c38388b..3b5615d1b6dd66ee0af6ccc83eb2fbd7b2c64d29 100644
+> > > --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> > > +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+> > > @@ -124,8 +124,9 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+> > >  	unsigned long irq_trig;
+> > >  	int err;
+> > >
+> > > -	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
+> > > -					     indio_dev->name);
+> > > +	sdata->trig = devm_iio_trigger_alloc(parent, "%s-dev%d",
+> > > +					     indio_dev->name,
+> > > +					     iio_device_id(indio_dev));  
+> > 
+> > Is this something that could potentially break userspace? Or are all of these
+> > just "always there" triggers that userspace doesn't have to touch?  
+> 
+> I don't see why it would. This simply makes the name of the registered
+> trigger globally unique, the same way like other drivers already do.
+> Userspace does care about these but it relies on capabilities as per
+> my understanding to figure what sensor it is. I have tested it with
+> `monitor-sensors`, which relies on `iio-sensor-proxy`: in both cases
+> accelerator device was detected.
 
-Reported-by: Roshan Kumar <roshaen09@gmail.com>
-Fixes: 6c82d2433671 ("xfrm: iptfs: add basic receive packet (tunnel egress) handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roshan Kumar <roshaen09@gmail.com>
----
- net/xfrm/xfrm_iptfs.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Most userspace hopefully relies on the relationship between the trigger
+and the device (basically that they have the same parent) rather than the
+explicit name, but it is always possible someone does have a script using
+this name.  I don't think these drivers are setting a default (which is
+reasonable as IIRC they have always supported other triggers and people
+have a habit of not wiring the interrupts up).
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 050a82101ca5..4cd0747367bd 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -991,6 +991,11 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
- 
- 			iplen = be16_to_cpu(iph->tot_len);
- 			iphlen = iph->ihl << 2;
-+			if (iplen < iphlen || iphlen < sizeof(*iph)) {
-+				XFRM_INC_STATS(net,
-+					       LINUX_MIB_XFRMINHDRERROR);
-+				goto done;
-+			}
- 			protocol = cpu_to_be16(ETH_P_IP);
- 			XFRM_MODE_SKB_CB(skbseq->root_skb)->tos = iph->tos;
- 		} else if (iph->version == 0x6) {
--- 
-2.48.1
+So David's right that this could cause a user visible regression. 
+We might get away with it though.
+
+Today, iio_trigger_acquire_by_name() just matches the first one with a
+given string.   This isn't a fast path so we could be a little cleverer
+and add a heuristic that first tries to find a trigger with that name
+and a common parent device.  If that fails, it just falls back to the
+current approach?  That way it would do the right thing in cases like
+the one seen here, but we'd not be able to have one ST sensor trigger
+off a specific other on - not sure that's a big loss however as it
+is fairly unusual to do that for similar sensor types.
+
+What do people think?  Alex, would that work for your case?
+
+Jonathan
+
+
+
+> 
+> Alex
+> 
+> >   
+> > >  	if (sdata->trig == NULL) {
+> > >  		dev_err(parent, "failed to allocate iio trigger.\n");
+> > >  		return -ENOMEM;
+> > >
+> > > ---
+> > > base-commit: 3fa5e5702a82d259897bd7e209469bc06368bf31
+> > > change-id: 20260228-st-iio-trigger-8ee1f219b566
+> > >
+> > > Best regards,  
+> > 
+> >   
 
 
