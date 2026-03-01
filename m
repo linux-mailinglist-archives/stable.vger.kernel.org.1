@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-221441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OPuE7SVo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:26:12 +0100
+	id MMSbH8CVo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:26:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0701CA981
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:26:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 174C61CA9AF
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2B494301E7FB
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0629D302ECAB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F158283CAF;
-	Sun,  1 Mar 2026 01:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438D528466C;
+	Sun,  1 Mar 2026 01:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+9aLqr2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YBs49Hzp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5482727EB;
-	Sun,  1 Mar 2026 01:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070732727EB
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328273; cv=none; b=NqUz7PblLBU3v83tlES5B78oFcHbHob+6632tHZy2YpLBocBHwmaW+R3QUJlHLnev0woTcDoVpKKQm2P5bw4z5P3L0WCwz7nboTpqilG3VWz22JX2HaNvbm6F9t0ZylismocHROz9TLGELgx3FIzAeLZc93jt7aIWjO1YNNmwZg=
+	t=1772328276; cv=none; b=mtH27YbJmGb2Gc9crpdrD030AI8WYInyB+1DXsLeY3Zxb2K/Yzj0zOegGeqY/20Svf2lVp4+iU3sLhBkPFt5W7UlgDhSJXJsPiRVaM0+Xf7qndKhmF5u9cXDiXsbR7vN1l+HPc3iYT5WOB7FPsXH7hGDEirZ+vAH3FLT/I5ErZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328273; c=relaxed/simple;
-	bh=33tf+UTlnYFWPRgWmuI27t1Jb1dMSbIMechrgXXTFBQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iCAkNfwqAb3leMf3ZSR3kH2mWBOz+dpHj1iq2iXpkzUPBIrdP/nlK2RidIRNk3uO43MF9UIs8+6MdwQzL1phGsOijg9nfpTUYloGtF1QInb7ZYqWvRdjjVzV2osr1eWLYb03K0Aj2THO/sz+NfE8zysyGyH2VOapk0wqIwvUwzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+9aLqr2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB6ECC19421;
-	Sun,  1 Mar 2026 01:24:32 +0000 (UTC)
+	s=arc-20240116; t=1772328276; c=relaxed/simple;
+	bh=WZYvYsbaDrkbZfvWiKNS3s0peY5M15DSV9k5w42HmV4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PTU85qDXpH6jEXz/QzcYVDfJfRoHT+PX2lXwhWoWKrpY9DJTreeuzHLcXeiHVMXSLbdOBouwOwjcT1sw8AulPPOIrhDJt1Y8MYrh090qAThMWGiPDJgkKVPGsSMsrFLwghHD/yamWvUUlkwHrlczeuub4+rjT8kHcz4U4RhCrGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YBs49Hzp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA736C19421;
+	Sun,  1 Mar 2026 01:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328273;
-	bh=33tf+UTlnYFWPRgWmuI27t1Jb1dMSbIMechrgXXTFBQ=;
+	s=k20201202; t=1772328275;
+	bh=WZYvYsbaDrkbZfvWiKNS3s0peY5M15DSV9k5w42HmV4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=T+9aLqr2oZIrzOJtOzKIhhvvTFW50lqQxen5gB2jY8Hq5nue4mP7X+PhQDbpGvgBW
-	 M9XsnkGzKLEv+ZFxsw/QF47qY1ZM3cTXoGENjLPJXGXAy3qA/wH6T2oMC/8SwYN1S7
-	 e+KttncGrfqjTIN27YoeLCitkkRhfx8swvPvMXwqKHIT+aN25Tl1q6yhe2gNYG5JGb
-	 20pZQQ554Csxc5SSTQlDeF1BdymyoJncVePMo/Luwy3gNI8gecTAItt/73gDb2Be62
-	 uyOSreA/oiLAdJxZOQ7CERwS+GzkrcgA/NmfZWTUCSCCQgnV3ptHf5A4txD+/8xnF4
-	 MEZddrlsLIl6g==
+	b=YBs49HzpxEkVq8XjRg6tNv2rDP6u/A/Zw+izruFxagBlHGThkKXeoZPfjd3jTnk8a
+	 X9O/W3gyJw4vQJQCzYyALB/AIv7Ll3KnfavjcyKnGaRY14CJAPo9MOBJZYnvTfxso0
+	 iqb3CSy5DfGhzX/SlUF/uX6/1nw7uzCaODS7GDVeoVMbVgn7DVXJD8eW97AkAo50nb
+	 TMB5kMOTUBIUPem1xBHDo1WDeyncM2VNbUJHjEz18qhZhM+0B5ItePQ5sAzA1atrCv
+	 5/WpnWutqXtXEVtNFG8pohsHb0X96K/6GqHEkSl8nnTdg3Ah/kUb/T+xlOHYZDMm0F
+	 9A6Va1dH0FYxw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	nathan@kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: FAILED: Patch "ACPI: APEI: GHES: Disable KASAN instrumentation when compile testing with clang < 18" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:24:31 -0500
-Message-ID: <20260301012431.1681397-1-sashal@kernel.org>
+	lihaoxiang@isrc.iscas.ac.cn
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+	Su Hui <suhui@nfschina.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: FAILED: Patch "bus: fsl-mc: fix an error handling in fsl_mc_device_add()" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:24:33 -0500
+Message-ID: <20260301012433.1681444-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,33 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221441-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221442-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: EA0701CA981
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,nfschina.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iscas.ac.cn:email,linaro.org:email]
+X-Rspamd-Queue-Id: 174C61CA9AF
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -103,55 +105,48 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b584bfbd7ec417f257f651cc00a90c66e31dfbf1 Mon Sep 17 00:00:00 2001
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 14 Jan 2026 16:27:11 -0700
-Subject: [PATCH] ACPI: APEI: GHES: Disable KASAN instrumentation when compile
- testing with clang < 18
+From 52f527d0916bcdd7621a0c9e7e599b133294d495 Mon Sep 17 00:00:00 2001
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Date: Sat, 24 Jan 2026 18:20:54 +0800
+Subject: [PATCH] bus: fsl-mc: fix an error handling in fsl_mc_device_add()
 
-After a recent innocuous change to drivers/acpi/apei/ghes.c, building
-ARCH=arm64 allmodconfig with clang-17 or older (which has both
-CONFIG_KASAN=y and CONFIG_WERROR=y) fails with:
+In fsl_mc_device_add(), device_initialize() is called first.
+put_device() should be called to drop the reference if error
+occurs. And other resources would be released via put_device
+-> fsl_mc_device_release. So remove redundant kfree() in
+error handling path.
 
-  drivers/acpi/apei/ghes.c:902:13: error: stack frame size (2768) exceeds limit (2048) in 'ghes_do_proc' [-Werror,-Wframe-larger-than]
-    902 | static void ghes_do_proc(struct ghes *ghes,
-        |             ^
-
-A KASAN pass that removes unneeded stack instrumentation, enabled by
-default in clang-18 [1], drastically improves stack usage in this case.
-
-To avoid the warning in the common allmodconfig case when it can break
-the build, disable KASAN for ghes.o when compile testing with clang-17
-and older. Disabling KASAN outright may hide legitimate runtime issues,
-so live with the warning in that case; the user can either increase the
-frame warning limit or disable -Werror, which they should probably do
-when debugging with KASAN anyways.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2148
-Link: https://github.com/llvm/llvm-project/commit/51fbab134560ece663517bf1e8c2a30300d08f1a [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260114-ghes-avoid-wflt-clang-older-than-18-v1-1-9c8248bfe4f4@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: bbf9d17d9875 ("staging: fsl-mc: Freescale Management Complex (fsl-mc) bus driver")
+Cc: stable@vger.kernel.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/b767348e-d89c-416e-acea-1ebbff3bea20@stanley.mountain/
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Suggested-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20260124102054.1613093-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 ---
- drivers/acpi/apei/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/apei/Makefile b/drivers/acpi/apei/Makefile
-index 5db61dfb46915..1a0b85923cd42 100644
---- a/drivers/acpi/apei/Makefile
-+++ b/drivers/acpi/apei/Makefile
-@@ -1,6 +1,10 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_ACPI_APEI)		+= apei.o
- obj-$(CONFIG_ACPI_APEI_GHES)	+= ghes.o
-+# clang versions prior to 18 may blow out the stack with KASAN
-+ifeq ($(CONFIG_COMPILE_TEST)_$(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_y_)
-+KASAN_SANITIZE_ghes.o := n
-+endif
- obj-$(CONFIG_ACPI_APEI_PCIEAER)	+= ghes_helpers.o
- obj-$(CONFIG_ACPI_APEI_EINJ)	+= einj.o
- einj-y				:= einj-core.o
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index 08b99b0b342f3..007223549887d 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -896,11 +896,7 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
+ 	return 0;
+ 
+ error_cleanup_dev:
+-	kfree(mc_dev->regions);
+-	if (mc_bus)
+-		kfree(mc_bus);
+-	else
+-		kfree(mc_dev);
++	put_device(&mc_dev->dev);
+ 
+ 	return error;
+ }
 -- 
 2.51.0
 
