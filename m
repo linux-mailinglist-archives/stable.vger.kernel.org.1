@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-221390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EeYIUGVo2n3HQUAu9opvQ
-	(envelope-from <stable+bounces-221390-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:17 +0100
+	id EKtaF0OVo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 226DF1CA6D5
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2CB1CA6E2
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ADA0930185E1
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:22:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2034B3012229
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2B4279DAD;
-	Sun,  1 Mar 2026 01:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E1B2749C1;
+	Sun,  1 Mar 2026 01:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbyuDEph"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PwaKSHDF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD032BD0B;
-	Sun,  1 Mar 2026 01:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884722BD0B;
+	Sun,  1 Mar 2026 01:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328141; cv=none; b=C1T8V6hTWtLg2OqXdiNBFiZlNT2Oq0ghaxHfcmvashHOUvvK3cg4LDO9Tg/nQ398JxaYO6vrSkYNsuo/pnB/XitupZMV35QdQqiK61JDW/R+kvIybDbKY6SZsQqOGUvUWC/ICgd1wfGiO4kJcEq/bBI0kGkafz6ElBAHzUqwfIg=
+	t=1772328143; cv=none; b=Jt88IppmTlOtHr9InH3qcb4OovXtJxuA/PLhwS6Es9KMwe2UliU5rscchMaa4qMkWHt5wFXy9dqAASXne6GhLiZaEW/6UnIjcZFuTsYix/4j2FwMu8s6nsg4V2RE0rd8txVOjsDE+eC7pZtJpWNzSoZLzNqqo5ymwrTlSi91Dco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328141; c=relaxed/simple;
-	bh=enbfl7CPle6WFkjpMVD+2IY9JcsTP4Svo/FEFgb60Ao=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=swe20dZX9NHQcpV6er8Z/LnQeRdtj0mdyHbpguXhxiPdGWL+HTOOLrb2AAOpGexkbkZUhc8FHiZTTGHEt0fw1vcPEeq27dEp3kfIwrTG7pqFsT+2aOLilegzg+87oit7MCG4TrjZF0pvJCpOpaEkht0Uwv+nUl3y83qtCXRZkfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbyuDEph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281CEC19424;
-	Sun,  1 Mar 2026 01:22:20 +0000 (UTC)
+	s=arc-20240116; t=1772328143; c=relaxed/simple;
+	bh=3udxCldliSMHTiQ1S/MVj2hfIr5+GBtaPZMiJjz7lh0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FVVprKp2nHp1YyFaypaV4XjtsT6GkyNup9eaozDmYUnP5sGr5AjyGlyx7ajVpYKkGtoifiYNMWi+nJeqhz97iCoXZbpRpdwxsBXJJRH4ppdKu4EUFrsH1p5dyH5h0v9bJumknLJ2cEL5qLThqO7ydKOPRpRXUQ7mr3DbdReZtXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PwaKSHDF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB00AC19421;
+	Sun,  1 Mar 2026 01:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328140;
-	bh=enbfl7CPle6WFkjpMVD+2IY9JcsTP4Svo/FEFgb60Ao=;
+	s=k20201202; t=1772328143;
+	bh=3udxCldliSMHTiQ1S/MVj2hfIr5+GBtaPZMiJjz7lh0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hbyuDEphdq/PI96X7wcrzmH1juFzZ41YZjihU+fUPG0yNTy8tXZ2+/4Sg1Ty0O5EN
-	 jIFnszE2hPJwfvdT+pgouGHTBK5If0z4doZLJ9XnZLH7/zNqu4GBOPEMzgL+DjsKkk
-	 4tXzvPg37VPFbfZGXR1FU27X1Vf1JwCTH4d6W4W9dARQWrIyxh/VGFsgNdkqw6xqJC
-	 p7WtTAAsj+WDNbXwFI1zHF0PLftnjBxjsTUU+vb6Gv0K8RHBq0vbzUkaSiCXv/JiZU
-	 F44WS1jy0pNgrv7FCr1PCglnaOSg/ffz5l7ah/X3ra0Ec8ahoZNreFXN8Z5svtSP4C
-	 mTafq9o3vC1gQ==
+	b=PwaKSHDFXQKXXk3+JilfE0iusK2PI+9eN7fXWipnCMqb2G0v04yt2Cjisnqw/e5C1
+	 w6qqjSCj99znYPSoxZjxv2iofs4a+pcE+cgMPdM0fJsym0wKvrcxX7toGasQRP6rYI
+	 e7epYKfVydp6c8jQ/jpyUeXBTal45xRrlU5W6Jn6RvIsTAaP5mzhROYO03/Nbs01At
+	 u/29s2QkNfqZheWz9kE06SZUND6pjiKFtJ1ODomo+IUAW/Y/x0r0ARVQ5hT+0ycHAT
+	 CBa61oBZOsVQR7yLIOFxHrYI7AH3MCd2dqhmtqKUyL9K/8gp6bmhA8SFniRCqaRVoY
+	 QeisGsajMwbNQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	renjiang.han@oss.qualcomm.com
-Cc: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	linux-media@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: FAILED: Patch "media: venus: vdec: fix error state assignment for zero bytesused" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:22:18 -0500
-Message-ID: <20260301012219.1678606-1-sashal@kernel.org>
+	zilin@seu.edu.cn
+Cc: Zhang Yi <yi.zhang@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	stable@kernel.org,
+	linux-ext4@vger.kernel.org
+Subject: FAILED: Patch "ext4: fix memory leak in ext4_ext_shift_extents()" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:22:21 -0500
+Message-ID: <20260301012221.1678711-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221390-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221391-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -87,12 +87,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 226DF1CA6D5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,huawei.com:email,seu.edu.cn:email]
+X-Rspamd-Queue-Id: 0A2CB1CA6E2
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -105,49 +105,43 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 93ecd6ee95c38cb533fa25f48d3c1c8cb69f410f Mon Sep 17 00:00:00 2001
-From: Renjiang Han <renjiang.han@oss.qualcomm.com>
-Date: Thu, 11 Dec 2025 15:20:39 +0530
-Subject: [PATCH] media: venus: vdec: fix error state assignment for zero
- bytesused
+From ca81109d4a8f192dc1cbad4a1ee25246363c2833 Mon Sep 17 00:00:00 2001
+From: Zilin Guan <zilin@seu.edu.cn>
+Date: Thu, 25 Dec 2025 08:48:00 +0000
+Subject: [PATCH] ext4: fix memory leak in ext4_ext_shift_extents()
 
-When hfi_session_flush is issued, all queued buffers are returned to
-the V4L2 driver. Some of these buffers are not processed and have
-bytesused = 0. Currently, the driver marks such buffers as error even
-during drain operations, which can incorrectly flag EOS buffers.
+In ext4_ext_shift_extents(), if the extent is NULL in the while loop, the
+function returns immediately without releasing the path obtained via
+ext4_find_extent(), leading to a memory leak.
 
-Only capture buffers with zero payload (and not EOS) should be marked
-with VB2_BUF_STATE_ERROR. The check is performed inside the non-EOS
-branch to ensure correct handling.
+Fix this by jumping to the out label to ensure the path is properly
+released.
 
-Fixes: 51df3c81ba10b ("media: venus: vdec: Mark flushed buffers with error state")
-Signed-off-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
-Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: a18ed359bdddc ("ext4: always check ext4_ext_find_extent result")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20251225084800.905701-1-zilin@seu.edu.cn
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 ---
- drivers/media/platform/qcom/venus/vdec.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ext4/extents.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index 4a6641fdffcf7..d0bd2d86a31f9 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -1440,10 +1440,10 @@ static void vdec_buf_done(struct venus_inst *inst, unsigned int buf_type,
- 				inst->drain_active = false;
- 				inst->codec_state = VENUS_DEC_STATE_STOPPED;
- 			}
-+		} else {
-+			if (!bytesused)
-+				state = VB2_BUF_STATE_ERROR;
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 27eb2c1df0128..e0295e0339b49 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -5406,7 +5406,8 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 		if (!extent) {
+ 			EXT4_ERROR_INODE(inode, "unexpected hole at %lu",
+ 					 (unsigned long) *iterator);
+-			return -EFSCORRUPTED;
++			ret = -EFSCORRUPTED;
++			goto out;
  		}
--
--		if (!bytesused)
--			state = VB2_BUF_STATE_ERROR;
- 	} else {
- 		vbuf->sequence = inst->sequence_out++;
- 	}
+ 		if (SHIFT == SHIFT_LEFT && *iterator >
+ 		    le32_to_cpu(extent->ee_block)) {
 -- 
 2.51.0
 
