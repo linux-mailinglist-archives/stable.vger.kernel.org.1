@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-221242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFBSFTSTo2khHQUAu9opvQ
-	(envelope-from <stable+bounces-221242-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:15:32 +0100
+	id +Hk7L1aTo2khHQUAu9opvQ
+	(envelope-from <stable+bounces-221243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:16:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB29D1C9FDB
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:15:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D0711CA044
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:16:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E1C1D3019FFD
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:15:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EFE4303CC1B
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E85422D7A9;
-	Sun,  1 Mar 2026 01:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1DA22DFA4;
+	Sun,  1 Mar 2026 01:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnRHsxKE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AiuQGxsR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B1D1F7541;
-	Sun,  1 Mar 2026 01:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4451F7541;
+	Sun,  1 Mar 2026 01:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327710; cv=none; b=iY0SsxYgb5uc5PCYGPXAjFBknmEGokD9sAxo6XKNUuqUJx0ctoorbM693bnhL3KZf1bZ/j2j7+iYRDV22MP14r0HFfs9jRlPUOC72LpavEdM/6twU56Fy/jBGjyx8rSedxuG1dIBnMu1VPU/6Wyvbkqb/8/f/wLCK1sc28nqf5U=
+	t=1772327713; cv=none; b=sxX7/T5UGSJ9//upnviVYevaJRabxuXnzKvOo1Fb0tYCjlvup2S3Xpd+GPATkyxCER3jfa50E9a+ptBd9Q8ZCf3hyxJXx2pNOvoHfHLtf9qoTb8x4wdQSE0CxfPHMzxC5M7/REyjpI272rT0bEpUl624YKbJuiakfnyE/gpEYrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327710; c=relaxed/simple;
-	bh=l3mnD9GnnU+gbqL3tSw5oKgcACxypQ5ZjSNrcLhhefE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f+0EZulvB8UXVfssgZM1tCjmiD+bibhCuqEya/kjfdhWCkePD4qmUNBGFJ4XnTYeQAaKeMosTjN8BDwM6toRkkBFu7mvbaeLxIHR7ZWkt5z0wuMWUycHKdo1oADNkH0UuhNfqWc0GPtbHtzBoIqVIW4p6RT3pXORsoyM2K9G5bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnRHsxKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD91CC19421;
-	Sun,  1 Mar 2026 01:15:09 +0000 (UTC)
+	s=arc-20240116; t=1772327713; c=relaxed/simple;
+	bh=TzfHRjikC4mXJxw70nHiI3sTzBTXHcO+bZfXpx2LNN4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TuxaueZpbJyK7pe51NXgiJqdPVrJzLi+UkCCN05lgTiC0ylD1gm3AJd14sm0CGjBSVYulCdqEW6WcD30yvKa4A3MOLFnnyp6TH0wtkZzWQlMClD38nQYAMX1iK4yq4NBExGi8eL3GvRPD1HIP7qC400JkJZJ5tpPbUnHSRcLe84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AiuQGxsR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FD6C19421;
+	Sun,  1 Mar 2026 01:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327710;
-	bh=l3mnD9GnnU+gbqL3tSw5oKgcACxypQ5ZjSNrcLhhefE=;
+	s=k20201202; t=1772327713;
+	bh=TzfHRjikC4mXJxw70nHiI3sTzBTXHcO+bZfXpx2LNN4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=BnRHsxKEu37tj5vOkrwCP40f/dWalXUfB/gS2c2hZ7gZRu8lmsvv5xBRZg16dyRQa
-	 GoYw/XIi7970FbQK6wwlilk8A5pQS+HgyvdcLeSx5ZpCMXyvmaFXDu+nmVD4EqCzTA
-	 7E7SsVtaromLfCYRz/8SPb3m/iFMyjCXku8FIgyyTdP5sfDArhMxQvdK04jtV9JvLB
-	 Sbg1/EE2MKkpO73EPoXA40NrhOTRmyRSJygjtze/OIgTe0GnToQdKU0yvpOy+Jhlrq
-	 9u4Pv6VOPl095O4kZJvCKOZdClgaMCU0n7dLmQoLqUa/nWDeTQwJJYmBFLXkX63cLM
-	 6pqZzaQHO3ASg==
+	b=AiuQGxsRCZg0oJfOV35WUubgio+51vBxqANQq2p7lNL9zf5NHMG7hG1YTL+QHvgjP
+	 gBjgl2JcVrZRRaeEkqESHaJuPMVdnDvZHbZ6TLeITaIukj8uuJFrTfNZbD9pi0zUSd
+	 bhYt2uV3c8S4HX7f13PM/JM+yP5H20Lo19uPVgUBBmagc3oeAEilXubw1JeBYT1Dp1
+	 8enhFiA6Dz+zeJFa/cWtrTZfhEGpz4SK1bb4vS7kz7s5/cZ2ja3DlnPk3dQpSJSsHi
+	 UHPHeWF4taGfJFDwgN86JrHMotajBKDUHgujwfzbDlF01LYqPx3HSbSxH127EpMJQu
+	 SryZSdf1DmX8w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	yazen.ghannam@amd.com
-Cc: Michal Pecio <michal.pecio@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	linux-acpi@vger.kernel.org
-Subject: FAILED: Patch "x86/acpi/boot: Correct acpi_is_processor_usable() check again" failed to apply to 6.18-stable tree
-Date: Sat, 28 Feb 2026 20:15:08 -0500
-Message-ID: <20260301011508.1668080-1-sashal@kernel.org>
+	s-vadapalli@ti.com
+Cc: kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: FAILED: Patch "PCI: j721e: Add config guards for Cadence Host and Endpoint library APIs" failed to apply to 6.18-stable tree
+Date: Sat, 28 Feb 2026 20:15:10 -0500
+Message-ID: <20260301011511.1668175-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,36 +66,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,alien8.de,kernel.org,linux.intel.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221242-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221243-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,alien8.de:email]
-X-Rspamd-Queue-Id: DB29D1C9FDB
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,ti.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 4D0711CA044
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.18-stable tree.
@@ -107,129 +106,128 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From adbf61cc47cb72b102682e690ad323e1eda652c2 Mon Sep 17 00:00:00 2001
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-Date: Tue, 11 Nov 2025 14:53:57 +0000
-Subject: [PATCH] x86/acpi/boot: Correct acpi_is_processor_usable() check again
+From 4b361b1e92be255ff923453fe8db74086cc7cf66 Mon Sep 17 00:00:00 2001
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+Date: Mon, 17 Nov 2025 17:02:06 +0530
+Subject: [PATCH] PCI: j721e: Add config guards for Cadence Host and Endpoint
+ library APIs
 
-ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
-used in conjunction with the "Enabled" MADT LAPIC flag to determine if
-a CPU can be enabled/hotplugged by the OS after boot.
+Commit under Fixes enabled loadable module support for the driver under
+the assumption that it shall be the sole user of the Cadence Host and
+Endpoint library APIs. This assumption guarantees that we won't end up
+in a case where the driver is built-in and the library support is built
+as a loadable module.
 
-Before the new bit was defined, the "Enabled" bit was explicitly
-described like this (ACPI v6.0 wording provided):
+With the introduction of [1], this assumption is no longer valid. The
+SG2042 driver could be built as a loadable module, implying that the
+Cadence Host library is also selected as a loadable module. However, the
+pci-j721e.c driver could be built-in as indicated by CONFIG_PCI_J721E=y
+due to which the Cadence Endpoint library is built-in. Despite the
+library drivers being built as specified by their respective consumers,
+since the 'pci-j721e.c' driver has references to the Cadence Host
+library APIs as well, we run into a build error as reported at [0].
 
-  "If zero, this processor is unusable, and the operating system
-  support will not attempt to use it"
+Fix this by adding config guards as a temporary workaround. The proper
+fix is to split the 'pci-j721e.c' driver into independent Host and
+Endpoint drivers as aligned at [2].
 
-This means that CPU hotplug (based on MADT) is not possible. Many BIOS
-implementations follow this guidance. They may include LAPIC entries in
-MADT for unavailable CPUs, but since these entries are marked with
-"Enabled=0" it is expected that the OS will completely ignore these
-entries.
+[0]: https://lore.kernel.org/r/202511111705.MZ7ls8Hm-lkp@intel.com/
+[1]: commit 1c72774df028 ("PCI: sg2042: Add Sophgo SG2042 PCIe driver")
+[2]: https://lore.kernel.org/r/37f6f8ce-12b2-44ee-a94c-f21b29c98821@app.fastmail.com/
 
-However, QEMU will do the same (include entries with "Enabled=0") for
-the purpose of allowing CPU hotplug within the guest.
-
-Comment from QEMU function pc_madt_cpu_entry():
-
-  /* ACPI spec says that LAPIC entry for non present
-   * CPU may be omitted from MADT or it must be marked
-   * as disabled. However omitting non present CPU from
-   * MADT breaks hotplug on linux. So possible CPUs
-   * should be put in MADT but kept disabled.
-   */
-
-Recent Linux topology changes broke the QEMU use case. A following fix
-for the QEMU use case broke bare metal topology enumeration.
-
-Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
-for guests and to maintain the ACPI spec behavior for bare metal.
-
-Remove an unnecessary check added to fix a bare metal case introduced by
-the QEMU "fix".
-
-  [ bp: Change logic as Michal suggested. ]
-  [ mingo: Removed misapplied -stable tag. ]
-
-Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check")
-Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present package")
-Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.com
-Reported-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
-Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
+Fixes: a2790bf81f0f ("PCI: j721e: Add support to build as a loadable module")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202511111705.MZ7ls8Hm-lkp@intel.com/
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251117113246.1460644-1-s-vadapalli@ti.com
 ---
- arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
- arch/x86/kernel/cpu/topology.c | 15 ---------------
- 2 files changed, 8 insertions(+), 19 deletions(-)
+ drivers/pci/controller/cadence/pci-j721e.c | 41 +++++++++++++---------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 9fa321a95eb33..d6138b2b633a3 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -35,6 +35,7 @@
- #include <asm/smp.h>
- #include <asm/i8259.h>
- #include <asm/setup.h>
-+#include <asm/hypervisor.h>
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index ecd1b03124006..6f2501479c701 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -620,9 +620,11 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 			gpiod_set_value_cansleep(pcie->reset_gpio, 1);
+ 		}
  
- #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
- static int __initdata acpi_force = 0;
-@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_flags)
- 	if (lapic_flags & ACPI_MADT_ENABLED)
- 		return true;
+-		ret = cdns_pcie_host_setup(rc);
+-		if (ret < 0)
+-			goto err_pcie_setup;
++		if (IS_ENABLED(CONFIG_PCI_J721E_HOST)) {
++			ret = cdns_pcie_host_setup(rc);
++			if (ret < 0)
++				goto err_pcie_setup;
++		}
  
--	if (!acpi_support_online_capable ||
--	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
--		return true;
-+	if (acpi_support_online_capable)
-+		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
+ 		break;
+ 	case PCI_MODE_EP:
+@@ -632,9 +634,11 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 			goto err_get_sync;
+ 		}
  
--	return false;
-+	/*
-+	 * QEMU expects legacy "Enabled=0" LAPIC entries to be counted as usable
-+	 * in order to support CPU hotplug in guests.
-+	 */
-+	return !hypervisor_is_type(X86_HYPER_NATIVE);
- }
+-		ret = cdns_pcie_ep_setup(ep);
+-		if (ret < 0)
+-			goto err_pcie_setup;
++		if (IS_ENABLED(CONFIG_PCI_J721E_EP)) {
++			ret = cdns_pcie_ep_setup(ep);
++			if (ret < 0)
++				goto err_pcie_setup;
++		}
  
- static int __init
-diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index f55ea3cdbf88e..23190a786d310 100644
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -27,7 +27,6 @@
- #include <xen/xen.h>
+ 		break;
+ 	}
+@@ -659,10 +663,11 @@ static void j721e_pcie_remove(struct platform_device *pdev)
+ 	struct cdns_pcie_ep *ep;
+ 	struct cdns_pcie_rc *rc;
  
- #include <asm/apic.h>
--#include <asm/hypervisor.h>
- #include <asm/io_apic.h>
- #include <asm/mpspec.h>
- #include <asm/msr.h>
-@@ -236,20 +235,6 @@ static __init void topo_register_apic(u32 apic_id, u32 acpi_id, bool present)
- 		cpuid_to_apicid[cpu] = apic_id;
- 		topo_set_cpuids(cpu, apic_id, acpi_id);
- 	} else {
--		u32 pkgid = topo_apicid(apic_id, TOPO_PKG_DOMAIN);
--
--		/*
--		 * Check for present APICs in the same package when running
--		 * on bare metal. Allow the bogosity in a guest.
--		 */
--		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
--		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
--			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
--				     apic_id);
--			topo_info.nr_rejected_cpus++;
--			return;
--		}
--
- 		topo_info.nr_disabled_cpus++;
+-	if (pcie->mode == PCI_MODE_RC) {
++	if (IS_ENABLED(CONFIG_PCI_J721E_HOST) &&
++	    pcie->mode == PCI_MODE_RC) {
+ 		rc = container_of(cdns_pcie, struct cdns_pcie_rc, pcie);
+ 		cdns_pcie_host_disable(rc);
+-	} else {
++	} else if (IS_ENABLED(CONFIG_PCI_J721E_EP)) {
+ 		ep = container_of(cdns_pcie, struct cdns_pcie_ep, pcie);
+ 		cdns_pcie_ep_disable(ep);
+ 	}
+@@ -728,10 +733,12 @@ static int j721e_pcie_resume_noirq(struct device *dev)
+ 			gpiod_set_value_cansleep(pcie->reset_gpio, 1);
+ 		}
+ 
+-		ret = cdns_pcie_host_link_setup(rc);
+-		if (ret < 0) {
+-			clk_disable_unprepare(pcie->refclk);
+-			return ret;
++		if (IS_ENABLED(CONFIG_PCI_J721E_HOST)) {
++			ret = cdns_pcie_host_link_setup(rc);
++			if (ret < 0) {
++				clk_disable_unprepare(pcie->refclk);
++				return ret;
++			}
+ 		}
+ 
+ 		/*
+@@ -741,10 +748,12 @@ static int j721e_pcie_resume_noirq(struct device *dev)
+ 		for (enum cdns_pcie_rp_bar bar = RP_BAR0; bar <= RP_NO_BAR; bar++)
+ 			rc->avail_ib_bar[bar] = true;
+ 
+-		ret = cdns_pcie_host_init(rc);
+-		if (ret) {
+-			clk_disable_unprepare(pcie->refclk);
+-			return ret;
++		if (IS_ENABLED(CONFIG_PCI_J721E_HOST)) {
++			ret = cdns_pcie_host_init(rc);
++			if (ret) {
++				clk_disable_unprepare(pcie->refclk);
++				return ret;
++			}
+ 		}
  	}
  
 -- 
