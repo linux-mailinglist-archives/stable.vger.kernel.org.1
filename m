@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-222075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4M92FS+do2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:07 +0100
+	id IKvbDW2do2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D9E1CC66F
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF321CC7D1
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B76A1303BA44
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0BB13303B5E9
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A6B31578B;
-	Sun,  1 Mar 2026 01:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFA430B50A;
+	Sun,  1 Mar 2026 01:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aEXUDtNT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIVTM3YL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1142F4A14;
-	Sun,  1 Mar 2026 01:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF6F309F19;
+	Sun,  1 Mar 2026 01:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329837; cv=none; b=aDCJak1cfoUvh6G7clsHBDRuvLYICjs6YVHPXP/8MXE1MTwS5YjIOPqceZFrEtnf9qM+1acUskRj60nJkw6odC3hi/rw++qSbQvHDYptmUvaXbDWvemV98QYKsrJQpvw74YDq7Ig0nlC0slh2a7QUQszcek+advYYyGOEkURqX4=
+	t=1772329840; cv=none; b=FzC0xko3eoPCpenMNk/wy4oWab2UEhzb8GQ6tvY8GaPzgJJVo+qlPcs/5fpSIZ20SKdoblDu67kmv7nKDPwO40B7l50X7EvTFFlB4VxQRX+8rMtRmgDIdXz8IcdThaTVK6knQ0wmRVUaYoawCDeW7AVUOgYZwGjPLIBDEQCcEhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329837; c=relaxed/simple;
-	bh=z/F18W3yeYEEKP/XRb0tQ9lHrofFH7UhSOKRPZW07lw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SMVVr6+IP3emtJn+kze4YqNFOE3ce626ARhk5gjcHEIFFM6OLZS4kNNvAJptzqwoPVOaffz//J992t23fLHFpoIW2lWUtXWSgBl0sdqwZG82P0184cZAcHmhokZHE1KXkyJj3s1/GxVB+G5VB50Cw0PaoAJD9udmHBF58/qf2w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aEXUDtNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA46C19424;
-	Sun,  1 Mar 2026 01:50:37 +0000 (UTC)
+	s=arc-20240116; t=1772329840; c=relaxed/simple;
+	bh=P61Jt+ayGwDe7d5A4AL1fyN6GNlmJKTX29d3c3wAIXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WsLrmh1J3VBftMUe0sPUkUqjYREUCKVPzW69T+6Ur+Xgbvw6OTn811zvCCsbgRmwvJ6XaFP2OBn0K4Y3sF+/7SD/OiMrtPZX9ecu8Kkc0Z8ADdXNhDf9j8U9tMPZV2tziw19kopbY97WhjKTAw610O7+1fnGfvIXY/k5+TirKgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIVTM3YL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70941C19421;
+	Sun,  1 Mar 2026 01:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329837;
-	bh=z/F18W3yeYEEKP/XRb0tQ9lHrofFH7UhSOKRPZW07lw=;
+	s=k20201202; t=1772329840;
+	bh=P61Jt+ayGwDe7d5A4AL1fyN6GNlmJKTX29d3c3wAIXE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=aEXUDtNTGCFr2bWbuWaWdjTGGodS367LxvgptoosfD9RjL/gDxGB9xHRTFUGyFaQg
-	 js4BlY1KH5Nxzmb7jI1SDkN9Re+IM1OjFBpetV84NJTsjuXuPzahzgo9vw+LJIkzek
-	 LcirTw5RC2BiLsw5F55FdAF2inMxFNW0XmcfieGniX4+yd66LVOzSvDdvf0ga925kp
-	 sYuiRc4GFgNEGijnnd2AQOJPSX+Vme5FEmKi8rpFNHO0dG/aUQ8G/dSRuhlHnNQMXV
-	 G/ts/JV2IoYXsypLaFsoeB6hO+A+vKB5x7XvgMqaSOYvKYK1pTi27XlYOYinlw1pU0
-	 RfaiGpvqHglUg==
+	b=RIVTM3YLD8QTcJNK0yn6usDzQ4meXwzZrZMtnNKdxICrhIJwmxkMxYMt78Pf3Ule/
+	 owX2Ydl4xomgSbXQdLzLi42PebHFjiYRgiTVXqbAwJN2GqvEKEVZIeIFrD/0r7l3xH
+	 Zb94hE/JjLYqFibs4S9n4mOfj/HQ3jgIwf5nQ3DKgfaXpGnMxnBRKlpExUaddmiymL
+	 qwoWfG6bQONoO6TH7f7D0zNqK75xu2+mIfjgTFaGv1DItbKL8RUDjxoQ1tDYwD4JaK
+	 V7wc4AXtRSsUIB41fBrOHQijKP9xyIvWFs2eIRuOhBskhrPyPwH4XSUExZmX2iM6ES
+	 OvO0TLHnSdCKw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	lihaoxiang@isrc.iscas.ac.cn
-Cc: Brian Masney <bmasney@redhat.com>,
-	Thierry Reding <treding@nvidia.com>,
-	linux-clk@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: FAILED: Patch "clk: tegra: tegra124-emc: Fix potential memory leak in tegra124_clk_register_emc()" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:50:35 -0500
-Message-ID: <20260301015036.1716634-1-sashal@kernel.org>
+	schnelle@linux.ibm.com
+Cc: Benjamin Block <bblock@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	linux-s390@vger.kernel.org
+Subject: FAILED: Patch "s390/pci: Handle futile config accesses of disabled devices directly" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:50:38 -0500
+Message-ID: <20260301015038.1716685-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222075-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222076-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -90,8 +90,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: C2D9E1CC66F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CFF321CC7D1
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -104,39 +104,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From fce0d0bd9c20fefd180ea9e8362d619182f97a1d Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Thu, 15 Jan 2026 13:05:42 +0800
-Subject: [PATCH] clk: tegra: tegra124-emc: Fix potential memory leak in
- tegra124_clk_register_emc()
+From 84d875e69818bed600edccb09be4a64b84a34a54 Mon Sep 17 00:00:00 2001
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+Date: Thu, 8 Jan 2026 16:45:53 +0100
+Subject: [PATCH] s390/pci: Handle futile config accesses of disabled devices
+ directly
 
-If clk_register() fails, call kfree to release "tegra".
+On s390 PCI busses and slots with multiple functions may have holes
+because PCI functions are passed-through by the hypervisor on a per
+function basis and some functions may be in standby or reserved. This
+fact is indicated by returning true from the
+hypervisor_isolated_pci_functions() helper and triggers common code to
+scan all possible devfn values. Via pci_scan_single_device() this in
+turn causes config reads for the device and vendor IDs, even for PCI
+functions which are in standby and thereofore disabled.
 
-Fixes: 2db04f16b589 ("clk: tegra: Add EMC clock driver")
+So far these futile config reads, as well as potentially writes, which
+can never succeed were handled by the PCI load/store instructions
+themselves. This works as the platform just returns an error for
+a disabled and thus not usable function handle. It does cause spamming
+of error logs and additional overhead though.
+
+Instead check if the used function handle is enabled in zpci_cfg_load()
+and zpci_cfg_write() and if not enable directly return -ENODEV. Also
+refactor zpci_cfg_load() and zpci_cfg_store() slightly to accommodate
+the new logic while meeting modern kernel style guidelines.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Brian Masney <bmasney@redhat.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fixes: a50297cf8235 ("s390/pci: separate zbus creation from scanning")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 ---
- drivers/clk/tegra/clk-tegra124-emc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/s390/pci/pci.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/clk/tegra/clk-tegra124-emc.c b/drivers/clk/tegra/clk-tegra124-emc.c
-index 2a6db04342815..0f6fb776b2298 100644
---- a/drivers/clk/tegra/clk-tegra124-emc.c
-+++ b/drivers/clk/tegra/clk-tegra124-emc.c
-@@ -538,8 +538,10 @@ struct clk *tegra124_clk_register_emc(void __iomem *base, struct device_node *np
- 	tegra->hw.init = &init;
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 57f3980b98a92..7f44b0644a20e 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -231,24 +231,33 @@ int zpci_fmb_disable_device(struct zpci_dev *zdev)
+ static int zpci_cfg_load(struct zpci_dev *zdev, int offset, u32 *val, u8 len)
+ {
+ 	u64 req = ZPCI_CREATE_REQ(zdev->fh, ZPCI_PCIAS_CFGSPC, len);
++	int rc = -ENODEV;
+ 	u64 data;
+-	int rc;
++
++	if (!zdev_enabled(zdev))
++		goto out_err;
  
- 	clk = clk_register(NULL, &tegra->hw);
--	if (IS_ERR(clk))
-+	if (IS_ERR(clk)) {
-+		kfree(tegra);
- 		return clk;
-+	}
+ 	rc = __zpci_load(&data, req, offset);
+-	if (!rc) {
+-		data = le64_to_cpu((__force __le64) data);
+-		data >>= (8 - len) * 8;
+-		*val = (u32) data;
+-	} else
+-		*val = 0xffffffff;
++	if (rc)
++		goto out_err;
++	data = le64_to_cpu((__force __le64)data);
++	data >>= (8 - len) * 8;
++	*val = (u32)data;
++	return 0;
++
++out_err:
++	PCI_SET_ERROR_RESPONSE(val);
+ 	return rc;
+ }
  
- 	tegra->prev_parent = clk_hw_get_parent_by_index(
- 		&tegra->hw, emc_get_parent(&tegra->hw))->clk;
+ static int zpci_cfg_store(struct zpci_dev *zdev, int offset, u32 val, u8 len)
+ {
+ 	u64 req = ZPCI_CREATE_REQ(zdev->fh, ZPCI_PCIAS_CFGSPC, len);
++	int rc = -ENODEV;
+ 	u64 data = val;
+-	int rc;
++
++	if (!zdev_enabled(zdev))
++		return rc;
+ 
+ 	data <<= (8 - len) * 8;
+ 	data = (__force u64) cpu_to_le64(data);
 -- 
 2.51.0
 
