@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-221271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OITGDiaUo2lpHQUAu9opvQ
-	(envelope-from <stable+bounces-221271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:34 +0100
+	id 4Pd8BSqUo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF31F1CA2FA
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 888E61CA302
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E374C3037442
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:17:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28AA4303AF26
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E819C244670;
-	Sun,  1 Mar 2026 01:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41BB24169D;
+	Sun,  1 Mar 2026 01:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eS3WovQk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T78uilr6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2AB23EABA;
-	Sun,  1 Mar 2026 01:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C2023C4F2
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327854; cv=none; b=Vl3xIpu30UrQKorBdOOpX5ojfeWUbllE4tw1nIdB4eMkqWFH5WzMkWIbovpTqRZjwi1Vr1mByHJVQdBjyg93TI1A04tG5jhVADQNrzWDxvaNB7tUqN4GLo3SRaz2fk7Q5LJpQmHfwLiXCLhBGblS20SJYc1b+R9GouVJBnmNBrg=
+	t=1772327856; cv=none; b=nUuZQm0MLsxHUTqimSMXXOQ0K+g4431T/PxypCBUfpLM0CYTIe67cF8cZMd241QMcSi7uGMFQD+U4JMW08BLnq/FF3l/Y3drhVAAgLG5uMbeC23upkc8EvfTHy7t9SJXq6TYdT/0ygJybYe7f/4BxP0W74EIu+drpBnWaZ2zIrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327854; c=relaxed/simple;
-	bh=Oo7HI7gZ/7OGgdEacUFLxqe0nxPxWp1WsRPts8VqBTk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KsaeWMAQ1CfVBShDIEUhSYIk4nZl5WBdu05SNlVMvSoep08bzIPxOIsGcueyYUTKqQuSbmA16ds1uzTWZlgf2+AE+cbH1vNIe51qADGK0HQQhhdgEJwz1RkBG6sx3sYzMEyW5gMd/x5WyydhV24NBevIhFVEWiSEHP0ETTC8XII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eS3WovQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9958C19421;
-	Sun,  1 Mar 2026 01:17:33 +0000 (UTC)
+	s=arc-20240116; t=1772327856; c=relaxed/simple;
+	bh=zcArhl0GoQilinOJ1PmLSQPty16J9IbWGZMnHeqUveY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X2taG0AflMK1306Ksh6/KKfmT+MSWisR7DUgbsYtGV/LZhfQu3N24vmissdf7cIDtQ8R+rShLC5P+rUjpMhnuw+sLZ3fZvvBarRsNxxx9wKPJVBf+2iHtGOR1060X2rsqTNjdh1cXpxsa8ta1M2d3xk0RAtql6i5dP+gPJ4wcYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T78uilr6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1771CC19421;
+	Sun,  1 Mar 2026 01:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327854;
-	bh=Oo7HI7gZ/7OGgdEacUFLxqe0nxPxWp1WsRPts8VqBTk=;
+	s=k20201202; t=1772327856;
+	bh=zcArhl0GoQilinOJ1PmLSQPty16J9IbWGZMnHeqUveY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=eS3WovQkr4HMVxSZ2H7XONfIJ6W4TBWczk/P7WeBT2Ch2bxcc2mHelnvHZJH4nlAc
-	 K9hzGF3lYINz89chAFRsSuxNYXCnXVPdAf2IUGD74Z2/2rHKnAlq3T6z9pjxv9T5Wc
-	 MmK3UucQy/eQn34eUKMSH/xXRlVuLWXnvc6DY8HnXoG7RCUi9kuf8FB/7z97mh8vSQ
-	 1xV5Ihob8ZpJ0nB3pCunj18ce+yu7oFX0TRWWPOlXhiGK9U+6FHPbjP9u6v/lv374B
-	 sxgKAa0VDWfreF52ZpygedV8jOr7drw5Iv5AaYABP8RMhVOHxV+dwYIbA4CqS9UeiM
-	 FCKom7TwaOwUg==
+	b=T78uilr62xic7TU/6Tq2katOXgyevE6Gf9iSB08uO83ms218iti7Ar0/wNLmvpQCF
+	 GRf1uYJmLeMbXlF+ln3R/Fex6BAokUrZc+GfWEor7ibGX8tE5IcX7Y+jRSAwV6rV+/
+	 ZKH8fMc/i/JRe232AvuIIxdHGgEWTvVsX2KJ5Buc3pZDTXLMROmCktpFO8wTycyD3X
+	 HveALLZv52mjPi9btj9Y8JOxO9NxM2UmPWjYoNyE/ToyTbtkblMxgDs/0drWJuIaSw
+	 3xGkgQqzx5PWkSzDeTBmF/2lXMlVLukIqkdR42hKOD/nLY6TjZPaSIVYvRXoTA1eNP
+	 vFLPtkfhAdcmA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	yangtiezhu@loongson.cn
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	loongarch@lists.linux.dev,
-	linux-rt-devel@lists.linux.dev
-Subject: FAILED: Patch "LoongArch: Handle percpu handler address for ORC unwinder" failed to apply to 6.18-stable tree
-Date: Sat, 28 Feb 2026 20:17:32 -0500
-Message-ID: <20260301011732.1671502-1-sashal@kernel.org>
+	harry.yoo@oracle.com
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	linux-mm@kvack.org
+Subject: FAILED: Patch "mm/slab: use prandom if !allow_spin" failed to apply to 6.18-stable tree
+Date: Sat, 28 Feb 2026 20:17:34 -0500
+Message-ID: <20260301011734.1671547-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,19 +67,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221271-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221272-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CF31F1CA2FA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,oracle.com:email]
+X-Rspamd-Queue-Id: 888E61CA302
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.18-stable tree.
@@ -103,88 +103,146 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 055c7e75190e0be43037bd663a3f6aced194416e Mon Sep 17 00:00:00 2001
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Date: Tue, 10 Feb 2026 19:31:13 +0800
-Subject: [PATCH] LoongArch: Handle percpu handler address for ORC unwinder
+From a1e244a9f177894969c6cd5ebbc6d72c19fc4a7a Mon Sep 17 00:00:00 2001
+From: Harry Yoo <harry.yoo@oracle.com>
+Date: Tue, 10 Feb 2026 17:19:00 +0900
+Subject: [PATCH] mm/slab: use prandom if !allow_spin
 
-After commit 4cd641a79e69 ("LoongArch: Remove unnecessary checks for ORC
-unwinder"), the system can not boot normally under some configs (such as
-enable KASAN), there are many error messages "cannot find unwind pc".
+When CONFIG_SLAB_FREELIST_RANDOM is enabled and get_random_u32()
+is called in an NMI context, lockdep complains because it acquires
+a local_lock:
 
-The kernel boots normally with the defconfig, so no problem found out at
-the first time. Here is one way to reproduce:
+  ================================
+  WARNING: inconsistent lock state
+  6.19.0-rc5-slab-for-next+ #325 Tainted: G                 N
+  --------------------------------
+  inconsistent {INITIAL USE} -> {IN-NMI} usage.
+  kunit_try_catch/8312 [HC2[2]:SC0[0]:HE0:SE1] takes:
+  ffff88a02ec49cc0 (batched_entropy_u32.lock){-.-.}-{3:3}, at: get_random_u32+0x7f/0x2e0
+  {INITIAL USE} state was registered at:
+    lock_acquire+0xd9/0x2f0
+    get_random_u32+0x93/0x2e0
+    __get_random_u32_below+0x17/0x70
+    cache_random_seq_create+0x121/0x1c0
+    init_cache_random_seq+0x5d/0x110
+    do_kmem_cache_create+0x1e0/0xa30
+    __kmem_cache_create_args+0x4ec/0x830
+    create_kmalloc_caches+0xe6/0x130
+    kmem_cache_init+0x1b1/0x660
+    mm_core_init+0x1d8/0x4b0
+    start_kernel+0x620/0xcd0
+    x86_64_start_reservations+0x18/0x30
+    x86_64_start_kernel+0xf3/0x140
+    common_startup_64+0x13e/0x148
+  irq event stamp: 76
+  hardirqs last  enabled at (75): [<ffffffff8298b77a>] exc_nmi+0x11a/0x240
+  hardirqs last disabled at (76): [<ffffffff8298b991>] sysvec_irq_work+0x11/0x110
+  softirqs last  enabled at (0): [<ffffffff813b2dda>] copy_process+0xc7a/0x2350
+  softirqs last disabled at (0): [<0000000000000000>] 0x0
 
-  cd linux
-  make mrproper defconfig -j"$(nproc)"
-  scripts/config -e KASAN
-  make olddefconfig all -j"$(nproc)"
-  sudo make modules_install
-  sudo make install
-  sudo reboot
+  other info that might help us debug this:
+   Possible unsafe locking scenario:
 
-The address that can not unwind is not a valid kernel address which is
-between "pcpu_handlers[cpu]" and "pcpu_handlers[cpu] + vec_sz" due to
-the code of eentry was copied to the new area of pcpu_handlers[cpu] in
-setup_tlb_handler(), handle this special case to get the valid address
-to unwind normally.
+         CPU0
+         ----
+    lock(batched_entropy_u32.lock);
+    <Interrupt>
+      lock(batched_entropy_u32.lock);
 
+   *** DEADLOCK ***
+
+Fix this by using pseudo-random number generator if !allow_spin.
+This means kmalloc_nolock() users won't get truly random numbers,
+but there is not much we can do about it.
+
+Note that an NMI handler might interrupt prandom_u32_state() and
+change the random state, but that's safe.
+
+Link: https://lore.kernel.org/all/0c33bdee-6de8-4d9f-92ca-4f72c1b6fb9f@suse.cz
+Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Link: https://patch.msgid.link/20260210081900.329447-3-harry.yoo@oracle.com
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- arch/loongarch/include/asm/setup.h |  3 +++
- arch/loongarch/kernel/unwind_orc.c | 16 ++++++++++++++++
- 2 files changed, 19 insertions(+)
+ mm/slub.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
-index 3c2fb16b11b64..f81375e5e89c0 100644
---- a/arch/loongarch/include/asm/setup.h
-+++ b/arch/loongarch/include/asm/setup.h
-@@ -7,6 +7,7 @@
- #define _LOONGARCH_SETUP_H
+diff --git a/mm/slub.c b/mm/slub.c
+index 90f0e66671300..591e41e5acc49 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -43,6 +43,7 @@
+ #include <linux/prefetch.h>
+ #include <linux/memcontrol.h>
+ #include <linux/random.h>
++#include <linux/prandom.h>
+ #include <kunit/test.h>
+ #include <kunit/test-bug.h>
+ #include <linux/sort.h>
+@@ -3311,8 +3312,11 @@ static void *next_freelist_entry(struct kmem_cache *s,
+ 	return (char *)start + idx;
+ }
  
- #include <linux/types.h>
-+#include <linux/threads.h>
- #include <asm/sections.h>
- #include <uapi/asm/setup.h>
- 
-@@ -14,6 +15,8 @@
- 
- extern unsigned long eentry;
- extern unsigned long tlbrentry;
-+extern unsigned long pcpu_handlers[NR_CPUS];
-+extern long exception_handlers[VECSIZE * 128 / sizeof(long)];
- extern char init_command_line[COMMAND_LINE_SIZE];
- extern void tlb_init(int cpu);
- extern void cpu_cache_init(void);
-diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/unwind_orc.c
-index d6b3688a1ce97..11ba3e4ac9eee 100644
---- a/arch/loongarch/kernel/unwind_orc.c
-+++ b/arch/loongarch/kernel/unwind_orc.c
-@@ -352,6 +352,22 @@ static inline unsigned long bt_address(unsigned long ra)
++static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
++
+ /* Shuffle the single linked freelist based on a random pre-computed sequence */
+-static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
++static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
++			     bool allow_spin)
  {
- 	extern unsigned long eentry;
+ 	void *start;
+ 	void *cur;
+@@ -3323,7 +3327,19 @@ static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
+ 		return false;
  
-+#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
-+	int cpu;
-+	int vec_sz = sizeof(exception_handlers);
+ 	freelist_count = oo_objects(s->oo);
+-	pos = get_random_u32_below(freelist_count);
++	if (allow_spin) {
++		pos = get_random_u32_below(freelist_count);
++	} else {
++		struct rnd_state *state;
 +
-+	for_each_possible_cpu(cpu) {
-+		if (!pcpu_handlers[cpu])
-+			continue;
-+
-+		if (ra >= pcpu_handlers[cpu] &&
-+		    ra < pcpu_handlers[cpu] + vec_sz) {
-+			ra = ra + eentry - pcpu_handlers[cpu];
-+			break;
-+		}
++		/*
++		 * An interrupt or NMI handler might interrupt and change
++		 * the state in the middle, but that's safe.
++		 */
++		state = &get_cpu_var(slab_rnd_state);
++		pos = prandom_u32_state(state) % freelist_count;
++		put_cpu_var(slab_rnd_state);
 +	}
+ 
+ 	page_limit = slab->objects * s->size;
+ 	start = fixup_red_left(s, slab_address(slab));
+@@ -3350,7 +3366,8 @@ static inline int init_cache_random_seq(struct kmem_cache *s)
+ 	return 0;
+ }
+ static inline void init_freelist_randomization(void) { }
+-static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
++static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
++				    bool allow_spin)
+ {
+ 	return false;
+ }
+@@ -3441,7 +3458,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	alloc_slab_obj_exts_early(s, slab);
+ 	account_slab(slab, oo_order(oo), s, flags);
+ 
+-	shuffle = shuffle_freelist(s, slab);
++	shuffle = shuffle_freelist(s, slab, allow_spin);
+ 
+ 	if (!shuffle) {
+ 		start = fixup_red_left(s, start);
+@@ -8341,6 +8358,9 @@ void __init kmem_cache_init_late(void)
+ {
+ 	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM, 0);
+ 	WARN_ON(!flushwq);
++#ifdef CONFIG_SLAB_FREELIST_RANDOM
++	prandom_init_once(&slab_rnd_state);
 +#endif
-+
- 	if (ra >= eentry && ra < eentry +  EXCCODE_INT_END * VECSIZE) {
- 		unsigned long func;
- 		unsigned long type = (ra - eentry) / VECSIZE;
+ }
+ 
+ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
 -- 
 2.51.0
 
