@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-221734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGweIZ6co2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:55:42 +0100
+	id ALkNEUuoo2mWJAUAu9opvQ
+	(envelope-from <stable+bounces-221735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:45:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876061CC451
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:55:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97E81CDE24
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:45:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C162F3091FDC
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAA4F326E044
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A234B2E36F8;
-	Sun,  1 Mar 2026 01:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3E82F6927;
+	Sun,  1 Mar 2026 01:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KRCtyx+n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1RndX4D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644561CD2C;
-	Sun,  1 Mar 2026 01:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEBC2E541E;
+	Sun,  1 Mar 2026 01:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329009; cv=none; b=f99bS3Zrf8ehQjvvLkQvOKjTsZ4aJVe5csqTZQRM0D6Xl3cyl2EDPA6Gjo2IS65d+ome/k7uLi7MlLS0z5vKzxWbhUk69bOy1mE3USbNlBwM7Evwcwy8UrZf70LHeLNw5LeVr7ZSKGcbc7yWvsBRNdc0ThhCr6F8peX1/lfj0UQ=
+	t=1772329012; cv=none; b=bqywDxcPJTGww74HFA3rCVSHHaeKTx6vBo9VyWzVGNyU8d/IAp4BmNPQRpb6ERImDtZu++/GEHOQC8xnaEhgmGgM1q4EfRCh9rWfG0TP8mc5GzOKB/u7fBKVNzKbapiUYBNoWX12AO3UaSXjcXJatUK/ZsbGswgM4dJwc6R6q/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329009; c=relaxed/simple;
-	bh=5EjnYxd/w+opfXpnAg3URS1vovrcncDPGiCMwDsEUSw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iDe5wFDPvzIgKgolNpFGgNToZyzyA2m9LzzJqXbh35swO/rZn+rqKDwQNM5UI5WpASbRy3fjeQkK2qb24BkxIi+6MOKaFiFSBIDGRN/MmptUrf5jQEQr4pbSd2HLRzeNnzkbXYSNnsp7z0TBoCIevrW9A1SHbYxe7r0L2dllk04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KRCtyx+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A7EC19421;
-	Sun,  1 Mar 2026 01:36:48 +0000 (UTC)
+	s=arc-20240116; t=1772329012; c=relaxed/simple;
+	bh=2s72+O3jarkBgEFE8YPNu/ouBbkadF49rLmP3r9NhLE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZXM3uZUOB3VKAKoBPoZE9cvfjrRhGv9O6uJJVNnpQHFjp8KAjV2UzZlVekXR7AqMYX0bZ9eps8OuoLw4jOb/3nIRruKRKZRmh+dUAlFQCA4GX0CFjUlOHa1qBcLT/BGm0h+S08oiCMCqp3tCmHj+2CrkpbZebItBvhDGEAGW9Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1RndX4D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BFBC19421;
+	Sun,  1 Mar 2026 01:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329009;
-	bh=5EjnYxd/w+opfXpnAg3URS1vovrcncDPGiCMwDsEUSw=;
+	s=k20201202; t=1772329011;
+	bh=2s72+O3jarkBgEFE8YPNu/ouBbkadF49rLmP3r9NhLE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=KRCtyx+nKjZ/5zQjSg0g4i4/ruy7ZYnyhbuvnJp4UMcG1/+yjB1WcMIcZBQgP/IXe
-	 YdwufK0j4M+aj82RacQ6tihxxnbvZ7veEgeKriw8bO+9bxQjLVz47BWsjCmGuF9Pmj
-	 9OhDbH1HannZPM+EdjTv/Ii+o6QLadQVLFps7ORkF/cdOjpNa2C+20bDXCvDfugZ3k
-	 LCPJSAoPw3ZxW9YrjPMsGlwN3dzQEzpqqDIayDyZAsaYhb0z3OYw82v0wNsrscXNOd
-	 AXbrSvDtsc43MiOzOpf13oo8xyiw4tiZ2JHAbxA1Nxd0Pnq7vObLm0wcvl2A+c0hew
-	 p+rlTensMh0/w==
+	b=Y1RndX4DkEbnNRnvUZkq/5hMW79EAEXq4UsNdx1M3icpm3RfjvDvIg1Wz1zY3DKdn
+	 NwmOlKEqVSOQ/QFt9k3fuj+HgyEN5QeYkjQmjKZLHA5ONHwmt0WyQA8+JiXH9xQ5YR
+	 2Fq3EurTo2Rzwa6JADvuYCSYyZb0UVf/wGR/e0hqvP1AdqPW+8vNqTwmNl4yAd70s3
+	 iylEhBaqi2mAuqdT3J/QRxEzIxB4OudixrspHBT1dP9ox92/E6byyyRcaG3TMSp8F9
+	 UPCB53Ajv1ieQJ6oP48bu8ZKu+TEkYzX2XHdL4cmng7WReiN9SZuNs0xdNf6xkt8/x
+	 /HgvCmh+dxA/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	haokexin@gmail.com
-Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	matttbe@kernel.org
+Cc: syzbot+f56f7d56e2c6e11a01b6@syzkaller.appspotmail.com,
+	Mat Martineau <martineau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	linux-omap@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: cpsw_new: Fix unnecessary netdev unregistration in cpsw_probe() error path" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:36:47 -0500
-Message-ID: <20260301013647.1696839-1-sashal@kernel.org>
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev
+Subject: FAILED: Patch "mptcp: pm: in-kernel: always set ID as avail when rm endp" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:36:49 -0500
+Message-ID: <20260301013649.1696888-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,35 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-221734-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221735-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,f56f7d56e2c6e11a01b6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 876061CC451
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: B97E81CDE24
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -106,87 +105,162 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 62db84b7efa63b78aed9fdbdae90f198771be94c Mon Sep 17 00:00:00 2001
-From: Kevin Hao <haokexin@gmail.com>
-Date: Thu, 5 Feb 2026 10:47:02 +0800
-Subject: [PATCH] net: cpsw_new: Fix unnecessary netdev unregistration in
- cpsw_probe() error path
+From d191101dee25567c2af3b28565f45346c33d65f5 Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Thu, 5 Feb 2026 18:34:21 +0100
+Subject: [PATCH] mptcp: pm: in-kernel: always set ID as avail when rm endp
 
-The current error handling in cpsw_probe() has two issues:
-- cpsw_unregister_ports() may be called before cpsw_register_ports() has
-  been executed.
+Syzkaller managed to find a combination of actions that was generating
+this warning:
 
-- cpsw_unregister_ports() is already invoked within cpsw_register_ports()
-  in case of a register_netdev() failure, but the error path would call
-  it again.
+  WARNING: net/mptcp/pm_kernel.c:1074 at __mark_subflow_endp_available net/mptcp/pm_kernel.c:1074 [inline], CPU#1: syz.7.48/2535
+  WARNING: net/mptcp/pm_kernel.c:1074 at mptcp_pm_nl_fullmesh net/mptcp/pm_kernel.c:1446 [inline], CPU#1: syz.7.48/2535
+  WARNING: net/mptcp/pm_kernel.c:1074 at mptcp_pm_nl_set_flags_all net/mptcp/pm_kernel.c:1474 [inline], CPU#1: syz.7.48/2535
+  WARNING: net/mptcp/pm_kernel.c:1074 at mptcp_pm_nl_set_flags+0x5de/0x640 net/mptcp/pm_kernel.c:1538, CPU#1: syz.7.48/2535
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 2535 Comm: syz.7.48 Not tainted 6.18.0-03987-gea5f5e676cf5 #17 PREEMPT(voluntary)
+  Hardware name: QEMU Ubuntu 25.10 PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_kernel.c:1074 [inline]
+  RIP: 0010:mptcp_pm_nl_fullmesh net/mptcp/pm_kernel.c:1446 [inline]
+  RIP: 0010:mptcp_pm_nl_set_flags_all net/mptcp/pm_kernel.c:1474 [inline]
+  RIP: 0010:mptcp_pm_nl_set_flags+0x5de/0x640 net/mptcp/pm_kernel.c:1538
+  Code: 89 c7 e8 c5 8c 73 fe e9 f7 fd ff ff 49 83 ef 80 e8 b7 8c 73 fe 4c 89 ff be 03 00 00 00 e8 4a 29 e3 fe eb ac e8 a3 8c 73 fe 90 <0f> 0b 90 e9 3d ff ff ff e8 95 8c 73 fe b8 a1 ff ff ff eb 1a e8 89
+  RSP: 0018:ffffc9001535b820 EFLAGS: 00010287
+  netdevsim0: tun_chr_ioctl cmd 1074025677
+  RAX: ffffffff82da294d RBX: 0000000000000001 RCX: 0000000000080000
+  RDX: ffffc900096d0000 RSI: 00000000000006d6 RDI: 00000000000006d7
+  netdevsim0: linktype set to 823
+  RBP: ffff88802cdb2240 R08: 00000000000104ae R09: ffffffffffffffff
+  R10: ffffffff82da27d4 R11: 0000000000000000 R12: 0000000000000000
+  R13: ffff88801246d8c0 R14: ffffc9001535b8b8 R15: ffff88802cdb1800
+  FS:  00007fc6ac5a76c0(0000) GS:ffff8880f90c8000(0000) knlGS:0000000000000000
+  netlink: 'syz.3.50': attribute type 5 has an invalid length.
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  netlink: 1232 bytes leftover after parsing attributes in process `syz.3.50'.
+  CR2: 0000200000010000 CR3: 0000000025b1a000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   mptcp_pm_set_flags net/mptcp/pm_netlink.c:277 [inline]
+   mptcp_pm_nl_set_flags_doit+0x1d7/0x210 net/mptcp/pm_netlink.c:282
+   genl_family_rcv_msg_doit+0x117/0x180 net/netlink/genetlink.c:1115
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x3a8/0x3f0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x16d/0x240 net/netlink/af_netlink.c:2550
+   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+   netlink_unicast+0x3e9/0x4c0 net/netlink/af_netlink.c:1344
+   netlink_sendmsg+0x4ab/0x5b0 net/netlink/af_netlink.c:1894
+   sock_sendmsg_nosec net/socket.c:718 [inline]
+   __sock_sendmsg+0xc9/0xf0 net/socket.c:733
+   ____sys_sendmsg+0x272/0x3b0 net/socket.c:2608
+   ___sys_sendmsg+0x2de/0x320 net/socket.c:2662
+   __sys_sendmsg net/socket.c:2694 [inline]
+   __do_sys_sendmsg net/socket.c:2699 [inline]
+   __se_sys_sendmsg net/socket.c:2697 [inline]
+   __x64_sys_sendmsg+0x110/0x1a0 net/socket.c:2697
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xed/0x360 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7fc6adb66f6d
+  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007fc6ac5a6ff8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+  RAX: ffffffffffffffda RBX: 00007fc6addf5fa0 RCX: 00007fc6adb66f6d
+  RDX: 0000000000048084 RSI: 00002000000002c0 RDI: 000000000000000e
+  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  netlink: 'syz.5.51': attribute type 2 has an invalid length.
+  R13: 00007fff25e91fe0 R14: 00007fc6ac5a7ce4 R15: 00007fff25e920d7
+   </TASK>
 
-Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
+The actions that caused that seem to be:
+
+ - Create an MPTCP endpoint for address A without any flags
+ - Create a new MPTCP connection from address A
+ - Remove the MPTCP endpoint: the corresponding subflows will be removed
+ - Recreate the endpoint with the same ID, but with the subflow flag
+ - Change the same endpoint to add the fullmesh flag
+
+In this case, msk->pm.local_addr_used has been kept to 0 as expected,
+but the corresponding bit in msk->pm.id_avail_bitmap was still unset
+after having removed the endpoint, causing the splat later on.
+
+When removing an endpoint, the corresponding endpoint ID was only marked
+as available for "signal" types with an announced address, plus all
+"subflow" types, but not the other types like an endpoint corresponding
+to the initial subflow. In these cases, re-creating an endpoint with the
+same ID didn't signal/create anything. Here, adding the fullmesh flag
+was creating the splat when calling __mark_subflow_endp_available() from
+mptcp_pm_nl_fullmesh(), because msk->pm.local_addr_used was set to 0
+while the ID was marked as used.
+
+To fix this issue, the corresponding bit in msk->pm.id_avail_bitmap can
+always be set as available when removing an MPTCP in-kernel endpoint. In
+other words, moving the call to __set_bit() to do it in all cases,
+except for "subflow" types where this bit is handled in a dedicated
+helper.
+
+Note: instead of adding a new spin_(un)lock_bh that would be taken in
+all cases, do all the actions requiring the spin lock under the same
+block.
+
+This modification potentially fixes another issue reported by syzbot,
+see [1]. But without a reproducer or more details about what exactly
+happened before, it is hard to confirm.
+
+Fixes: e255683c06df ("mptcp: pm: re-using ID of unused removed ADD_ADDR")
 Cc: stable@vger.kernel.org
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://patch.msgid.link/20260205-cpsw-error-path-v1-1-6e58bae6b299@gmail.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/606
+Reported-by: syzbot+f56f7d56e2c6e11a01b6@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/68fcfc4a.050a0220.346f24.02fb.GAE@google.com [1]
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260205-net-mptcp-misc-fixes-6-19-rc8-v2-1-c2720ce75c34@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_new.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ net/mptcp/pm_kernel.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 21af0a10626aa..b9fc31eb06134 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -2003,7 +2003,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 	/* setup netdevs */
- 	ret = cpsw_create_ports(cpsw);
- 	if (ret)
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 
- 	/* Grab RX and TX IRQs. Note that we also have RX_THRESHOLD and
- 	 * MISC IRQs which are always kept disabled with this driver so
-@@ -2017,14 +2017,14 @@ static int cpsw_probe(struct platform_device *pdev)
- 			       0, dev_name(dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
+diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
+index b26675054b0dc..4972c19fc73e2 100644
+--- a/net/mptcp/pm_kernel.c
++++ b/net/mptcp/pm_kernel.c
+@@ -1056,10 +1056,8 @@ static bool mptcp_pm_remove_anno_addr(struct mptcp_sock *msk,
+ 	ret = mptcp_remove_anno_list_by_saddr(msk, addr);
+ 	if (ret || force) {
+ 		spin_lock_bh(&msk->pm.lock);
+-		if (ret) {
+-			__set_bit(addr->id, msk->pm.id_avail_bitmap);
++		if (ret)
+ 			msk->pm.add_addr_signaled--;
+-		}
+ 		mptcp_pm_remove_addr(msk, &list);
+ 		spin_unlock_bh(&msk->pm.lock);
  	}
+@@ -1097,17 +1095,15 @@ static int mptcp_nl_remove_subflow_and_signal_addr(struct net *net,
+ 					  !(entry->flags & MPTCP_PM_ADDR_FLAG_IMPLICIT));
  
- 	ret = devm_request_irq(dev, cpsw->irqs_table[1], cpsw_tx_interrupt,
- 			       0, dev_name(dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 	}
+ 		list.ids[0] = mptcp_endp_get_local_id(msk, addr);
+-		if (remove_subflow) {
+-			spin_lock_bh(&msk->pm.lock);
+-			mptcp_pm_rm_subflow(msk, &list);
+-			spin_unlock_bh(&msk->pm.lock);
+-		}
  
- 	if (!cpsw->cpts)
-@@ -2034,7 +2034,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 			       0, dev_name(&pdev->dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching misc irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 	}
+-		if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
+-			spin_lock_bh(&msk->pm.lock);
++		spin_lock_bh(&msk->pm.lock);
++		if (remove_subflow)
++			mptcp_pm_rm_subflow(msk, &list);
++		if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)
+ 			__mark_subflow_endp_available(msk, list.ids[0]);
+-			spin_unlock_bh(&msk->pm.lock);
+-		}
++		else /* mark endp ID as available, e.g. Signal or MPC endp */
++			__set_bit(addr->id, msk->pm.id_avail_bitmap);
++		spin_unlock_bh(&msk->pm.lock);
  
- 	/* Enable misc CPTS evnt_pend IRQ */
-@@ -2043,7 +2043,7 @@ static int cpsw_probe(struct platform_device *pdev)
- skip_cpts:
- 	ret = cpsw_register_notifiers(cpsw);
- 	if (ret)
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 
- 	ret = cpsw_register_devlink(cpsw);
- 	if (ret)
-@@ -2065,8 +2065,6 @@ static int cpsw_probe(struct platform_device *pdev)
- 
- clean_unregister_notifiers:
- 	cpsw_unregister_notifiers(cpsw);
--clean_unregister_netdev:
--	cpsw_unregister_ports(cpsw);
- clean_cpts:
- 	cpts_release(cpsw->cpts);
- 	cpdma_ctlr_destroy(cpsw->dma);
+ 		if (msk->mpc_endpoint_id == entry->addr.id)
+ 			msk->mpc_endpoint_id = 0;
 -- 
 2.51.0
 
