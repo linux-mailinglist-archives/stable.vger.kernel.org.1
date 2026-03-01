@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-222189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222190-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFp9IPSso2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222189-lists+stable=lfdr.de@vger.kernel.org>)
+	id SI+rNvSso2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222190-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:05:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E39271CE320
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:05:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 460EF1CE321
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 837D5329F433
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0CF6329F44E
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A330130B517;
-	Sun,  1 Mar 2026 01:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180BD2773EC;
+	Sun,  1 Mar 2026 01:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SvgZh3gy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q559ejkc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662DC2DB7B5;
-	Sun,  1 Mar 2026 01:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8C927281D;
+	Sun,  1 Mar 2026 01:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330120; cv=none; b=X20wSEFnnRvev9XoPsQubU82umL3exz6wVon7sp6chra/I3AsKtYja12/H7YgcdNjLqS/jZp4bRMK34Gg5xcZMJnyNUITe5g4Wf+JcQItsUIu/mAF/+AhSilPQzYDKiWXccX+UZ5EZV6x16iBXksLk/nLLNzAlZEwOoSG/2xLmQ=
+	t=1772330122; cv=none; b=nk1otxA2R7qjSWnAhvbyuar8QEHexw8P+t1ZQT0bI6z8fW3emOvILJjakT5BUebtKIh1ufLEpk2uLssfU9o4VQbnhenl8JSMKHYqOLXCxHYUC5vwgy3U4EjJkiXFQg9KsxgGB4ZLJ9KyknCc06MYPs8UkiOg/GjbTH1SHubeg6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330120; c=relaxed/simple;
-	bh=0pTxAGVlKbMivZuPzyc+wak+hRdqT70/3tz5oR7nXRU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cTBxNr3fK29x3Z/uAOiuIVUX+DJxZM8yKl/Dxxl7zOpu7ZzlpRehHv/DC/+JdtYR6hg7CSTJKrjThrp12EbB6vgcy6on6+U95EwhRNHXaPpu+c0Quba9cFcaqWXcb3GUt/V+7t0fUgmy4SwOMWOWoQFQtVLseGdtIMsiAGSOt3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SvgZh3gy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF876C19421;
-	Sun,  1 Mar 2026 01:55:19 +0000 (UTC)
+	s=arc-20240116; t=1772330122; c=relaxed/simple;
+	bh=VCATElnsvig6h+2ikJy3K3apHNgIODHvAUxvlK0Jd/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g1ZzHrzKFtwG8C1wx7bg+Gn4y4yMFSZ4CKWX/OkvnFBhiKplYjRjDClJpsvZVPEpGqSAGy1kaFfwHnLiEeGbnE5/YLQmvWKgFNCvowJ5faz4oSV8LVr+tH1tYLN+rTxrP1CCRPSB9geE2O6L0njz5wsGHeLTh5I4WrT9D64mt0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q559ejkc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B026C19421;
+	Sun,  1 Mar 2026 01:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330120;
-	bh=0pTxAGVlKbMivZuPzyc+wak+hRdqT70/3tz5oR7nXRU=;
+	s=k20201202; t=1772330122;
+	bh=VCATElnsvig6h+2ikJy3K3apHNgIODHvAUxvlK0Jd/M=;
 	h=From:To:Cc:Subject:Date:From;
-	b=SvgZh3gy2q407rFTeI6bCArNg0QsYMBT4wv4WeVEMgYhVY6zjdHL3OOIMoP/safZp
-	 k03lCajLE6YWhvh4mn5Aknyg61xLHrjcYRTlh04W7lv8JZ8xGpvDcIRXF4NFHM9NdA
-	 FKMbEg+Fqzx0kXhjnfXJs8Hxd3ghpxFEOM2GFV5GJFrm3lZNb2hgSesCjMCEffishS
-	 PCiB5yOaT2Aos7gr6qHbfnuYH8vpW3/JMau4vjNsHVWMsatcUNEOV1p7MTk09QCRAC
-	 6RTQ7HDOuQTipCead6f5LehqvcveZV0qf3K1Ctlm++Im8w23tMpVxfrpXWv0kbeYSR
-	 CSfBMvNfaXzIA==
+	b=Q559ejkcrWbRksuYXrhSkzjHTj1+skQoSWJVRFRyo6L7jCudCHzhp/GGfnq7nys4g
+	 1LiPpu+IlMOX3+/dT9hSlsAA8HjYwfqkF3nBn7KI0y77t5wZ4w711gPQr2FEIGfvsw
+	 VPSGkZmqqYHjNVekoZMYEefC59sGE3ZoT7CAq3zTLbwwhu85iT+8sgracEaw8SMh7B
+	 5aMMWmZI7dJevil8G2GdF2QccAc5N+1iZDI22kRR1hfQNu0NZOH01Nj+HX8B12uQt8
+	 vmpR/4WgWaMiR7s3W6Q6DA5yJi4fkDOpIP/D7x2D0BuzOmqVhd8I9N+/qyGPbzUfvm
+	 brBoSwTGRJxNA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	yangtiezhu@loongson.cn
 Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	loongarch@lists.linux.dev
-Subject: FAILED: Patch "LoongArch: Disable instrumentation for setup_ptwalker()" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:55:18 -0500
-Message-ID: <20260301015518.1722495-1-sashal@kernel.org>
+	loongarch@lists.linux.dev,
+	linux-rt-devel@lists.linux.dev
+Subject: FAILED: Patch "LoongArch: Handle percpu handler address for ORC unwinder" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:55:20 -0500
+Message-ID: <20260301015520.1722542-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,19 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222189-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-222190-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E39271CE320
+X-Rspamd-Queue-Id: 460EF1CE321
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -102,51 +103,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7cb37af61f09c9cfd90c43c9275307c16320cbf2 Mon Sep 17 00:00:00 2001
+From 055c7e75190e0be43037bd663a3f6aced194416e Mon Sep 17 00:00:00 2001
 From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Date: Tue, 10 Feb 2026 19:31:17 +0800
-Subject: [PATCH] LoongArch: Disable instrumentation for setup_ptwalker()
+Date: Tue, 10 Feb 2026 19:31:13 +0800
+Subject: [PATCH] LoongArch: Handle percpu handler address for ORC unwinder
 
-According to Documentation/dev-tools/kasan.rst, software KASAN modes use
-compiler instrumentation to insert validity checks. Such instrumentation
-might be incompatible with some parts of the kernel, and therefore needs
-to be disabled, just use the attribute __no_sanitize_address to disable
-instrumentation for the low level function setup_ptwalker().
+After commit 4cd641a79e69 ("LoongArch: Remove unnecessary checks for ORC
+unwinder"), the system can not boot normally under some configs (such as
+enable KASAN), there are many error messages "cannot find unwind pc".
 
-Otherwise bringing up the secondary CPUs failed when CONFIG_KASAN is set
-(especially when PTW is enabled), here are the call chains:
+The kernel boots normally with the defconfig, so no problem found out at
+the first time. Here is one way to reproduce:
 
-    smpboot_entry()
-      start_secondary()
-        cpu_probe()
-          per_cpu_trap_init()
-            tlb_init()
-              setup_tlb_handler()
-                setup_ptwalker()
+  cd linux
+  make mrproper defconfig -j"$(nproc)"
+  scripts/config -e KASAN
+  make olddefconfig all -j"$(nproc)"
+  sudo make modules_install
+  sudo make install
+  sudo reboot
 
-The reason is the PGD registers are configured in setup_ptwalker(), but
-KASAN instrumentation may cause TLB exceptions before that.
+The address that can not unwind is not a valid kernel address which is
+between "pcpu_handlers[cpu]" and "pcpu_handlers[cpu] + vec_sz" due to
+the code of eentry was copied to the new area of pcpu_handlers[cpu] in
+setup_tlb_handler(), handle this special case to get the valid address
+to unwind normally.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- arch/loongarch/mm/tlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/asm/setup.h |  3 +++
+ arch/loongarch/kernel/unwind_orc.c | 16 ++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/arch/loongarch/mm/tlb.c b/arch/loongarch/mm/tlb.c
-index 4014c44695878..aaf7d685cc2aa 100644
---- a/arch/loongarch/mm/tlb.c
-+++ b/arch/loongarch/mm/tlb.c
-@@ -202,7 +202,7 @@ void __update_tlb(struct vm_area_struct *vma, unsigned long address, pte_t *ptep
- 	local_irq_restore(flags);
- }
+diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
+index 3c2fb16b11b64..f81375e5e89c0 100644
+--- a/arch/loongarch/include/asm/setup.h
++++ b/arch/loongarch/include/asm/setup.h
+@@ -7,6 +7,7 @@
+ #define _LOONGARCH_SETUP_H
  
--static void setup_ptwalker(void)
-+static void __no_sanitize_address setup_ptwalker(void)
+ #include <linux/types.h>
++#include <linux/threads.h>
+ #include <asm/sections.h>
+ #include <uapi/asm/setup.h>
+ 
+@@ -14,6 +15,8 @@
+ 
+ extern unsigned long eentry;
+ extern unsigned long tlbrentry;
++extern unsigned long pcpu_handlers[NR_CPUS];
++extern long exception_handlers[VECSIZE * 128 / sizeof(long)];
+ extern char init_command_line[COMMAND_LINE_SIZE];
+ extern void tlb_init(int cpu);
+ extern void cpu_cache_init(void);
+diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/unwind_orc.c
+index d6b3688a1ce97..11ba3e4ac9eee 100644
+--- a/arch/loongarch/kernel/unwind_orc.c
++++ b/arch/loongarch/kernel/unwind_orc.c
+@@ -352,6 +352,22 @@ static inline unsigned long bt_address(unsigned long ra)
  {
- 	unsigned long pwctl0, pwctl1;
- 	unsigned long pgd_i = 0, pgd_w = 0;
+ 	extern unsigned long eentry;
+ 
++#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
++	int cpu;
++	int vec_sz = sizeof(exception_handlers);
++
++	for_each_possible_cpu(cpu) {
++		if (!pcpu_handlers[cpu])
++			continue;
++
++		if (ra >= pcpu_handlers[cpu] &&
++		    ra < pcpu_handlers[cpu] + vec_sz) {
++			ra = ra + eentry - pcpu_handlers[cpu];
++			break;
++		}
++	}
++#endif
++
+ 	if (ra >= eentry && ra < eentry +  EXCCODE_INT_END * VECSIZE) {
+ 		unsigned long func;
+ 		unsigned long type = (ra - eentry) / VECSIZE;
 -- 
 2.51.0
 
