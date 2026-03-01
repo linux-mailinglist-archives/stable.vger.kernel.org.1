@@ -1,182 +1,115 @@
-Return-Path: <stable+bounces-222399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222400-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KA/MJH2to2kmJwUAu9opvQ
-	(envelope-from <stable+bounces-222399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:07:41 +0100
+	id GCugJjevo2kOKAUAu9opvQ
+	(envelope-from <stable+bounces-222400-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:15:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50BF1CE3D8
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:07:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9820D1CE5AD
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B23EB3013A55
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 03:07:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D3A6F3009817
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 03:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0920E2E7657;
-	Sun,  1 Mar 2026 03:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F81630BF70;
+	Sun,  1 Mar 2026 03:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cglqG2LM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5LPLrPF"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C225B1C84BC
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 03:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C6C3093D3;
+	Sun,  1 Mar 2026 03:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772334458; cv=none; b=nPuZiVcB1cylqa+b8NQuNO9QqzBqLGVief+TmhqwiZRXu7h9OouJ+aBBhNzCX5L3JDWI77g6p9tWcDxjH50jmplpo3nWUJ/hq0kGY1EFDTlOVVTLg2p7W38pp/Du1RQ2Pv3KdC5RjZQr00flt2q32B5RJwfjHC3B+yi/UxS124M=
+	t=1772334893; cv=none; b=DUqiBgyWyXglejntTPOhed4a4VpBRnZ2xL0ZHYw/fWscwcgCpGmuaWZLMvobrW2PQ3a2TLS1Ttjuy0FBwMRH7qbqnSJ7Ak0X2tGHUIVg1KVeIURUNlfZOgbtF2NdoU8kHikQ8aMUnuLf2BdfbkHlDTyrpIhqbN83etL9h+lfIUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772334458; c=relaxed/simple;
-	bh=hKQNrL/AZLKy1NB5ZJ+yy+NKtspYuEG5RGgibqy1QMw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JUcnB2U8cZuE/NldlkJz2JTsFc2xFe8lWy615zuyMHtRdIWtpZpVqbqJkV3CVRMeezMEM1L4RPStuGmtdjhWtyhxYWa01h7iW/0sOqlsCCFI9B2lHC8XzZSEbEs4zbCrk2kCjgFRxOX3RFwXYX+LqLptmu/+mCVF96JK/kYm0B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cglqG2LM; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Y6
-	QQddfKkJfQoZYe+pcFO3eslbKA5OV6/U+zi9R2P6g=; b=cglqG2LMAI05Qz1BO3
-	HDVQIFrbyvshWTmnDZOdI84T2wHflGgLbSPcFpyNdETyhrH1xEXrZ+KnGqKqHqxZ
-	m/9QgGDiB2Uzo5uV3zpfdf1Yeuul1JqFEjxW3z4zZEfawgY+KsP5E2tncGvrvQKC
-	dU3nftVMwSLLxU56EQDrZuKlQ=
-Received: from China-163-team (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgDnMYtRraNpp0OeQg--.228S2;
-	Sun, 01 Mar 2026 11:07:00 +0800 (CST)
-From: Wenshan Lan <jetlan9@163.com>
-To: gregkh@linuxfoundation.org,
+	s=arc-20240116; t=1772334893; c=relaxed/simple;
+	bh=cztyXyeNUtJ2suFuxPdzJBanyjZeXjZQOti7SdfAox8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sfgUAwSZwI2h0Vfx2NsR0P6BT6Ym7J6MBK0IH+QzJqEGW0bOBCh1U2tyeTRmlSRhClpK+jZzDw/dQERbezS5cOju7GPSqSQ+gEjEzksVAKZ01O6Q8460NzvjU6amilvSLAKRjek7jwpeTd7LsuvHJSkf8RP+sfhiWSpExtE0a2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5LPLrPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EB0C19425;
+	Sun,  1 Mar 2026 03:14:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772334892;
+	bh=cztyXyeNUtJ2suFuxPdzJBanyjZeXjZQOti7SdfAox8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e5LPLrPFO0XYtOvyoaJ8UZ6IuA2cX9A8f/+qAYQgz2OJ4a255Z6ZMsC7n79xxGEoW
+	 Z+PBv2SuvNhdWzW8RDa0bXQbMiD3JGcgxX/rRQy2aeMu7H9l3YzwMlQO5Lwmi6jpeK
+	 xjCMsXILdBMZIR1XJe7CKk8yFal+m9UhEVo25KXxaHZy3IPYM+dIBEtbL+pVbvTrgT
+	 zwlQ5uRjzxabJps7y02wZ9e8eXZOos2cDJq/CPk3PBTLXZzhBI5S5dPhpclz8CEviZ
+	 Kiv0L6m+Z68eUaSmJ15w+503WoMy8yiEAURS7QOQ/eB1sGsy50RBM286NAbX/+MsTI
+	 TBaSm/36UugHg==
+Date: Sat, 28 Feb 2026 19:13:59 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>, Rae Moar <raemoar63@gmail.com>,
 	stable@vger.kernel.org
-Cc: Guodong Xu <guodong@riscstar.com>,
-	Juan Li <lijuan@linux.spacemit.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 5.15.y] dmaengine: mmp_pdma: Fix race condition in mmp_pdma_residue()
-Date: Sun,  1 Mar 2026 11:06:21 +0800
-Message-Id: <20260301030621.2448938-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH] lib/crypto: tests: Depend on library options rather than
+ selecting them
+Message-ID: <20260301031359.GA2271@sol>
+References: <20260226191749.39397-1-ebiggers@kernel.org>
+ <CAMuHMdXH94DvcDKN1zTzTBOrcn_zAfZZZJCyGbxjfs8DBya5_Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgDnMYtRraNpp0OeQg--.228S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CFWUuw4kGF15Zw4rXFyDAwb_yoW5JF4xpF
-	W5Jay5GrWqqr40vFsrG3W8Zr15Xrs0grWUurW2gwnrZ345Jr1YvFn7Cay2vFWUJry7ZFnx
-	AF43Jw1Fk3yDGrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE-VynUUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbCxBTDjGmjrVSSfgAA3A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdXH94DvcDKN1zTzTBOrcn_zAfZZZJCyGbxjfs8DBya5_Q@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222399-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222400-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[riscstar.com,linux.spacemit.com,kernel.org,163.com];
-	DKIM_TRACE(0.00)[163.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,zx2c4.com,gondor.apana.org.au,googlegroups.com,linux.dev,google.com,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,spacemit.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,riscstar.com:email]
-X-Rspamd-Queue-Id: C50BF1CE3D8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9820D1CE5AD
 X-Rspamd-Action: no action
 
-From: Guodong Xu <guodong@riscstar.com>
+On Fri, Feb 27, 2026 at 09:32:50AM +0100, Geert Uytterhoeven wrote:
+> You can make those library symbols visible if KUNIT_ALL_TESTS, like
+> I suggested (after I sent my earlier reports to you) in [1], and like
+> Vladimir already did in [2].
 
-[ Upstream commit a143545855bc2c6e1330f6f57ae375ac44af00a7 ]
+Sure, but that would help only when KUNIT_ALL_TESTS is enabled.
 
-Add proper locking in mmp_pdma_residue() to prevent use-after-free when
-accessing descriptor list and descriptor contents.
+I think for now I'll just add a .kunitconfig file that enables
+everything needed to enable all the crypto libraries with KUnit tests.
 
-The race occurs when multiple threads call tx_status() while the tasklet
-on another CPU is freeing completed descriptors:
-
-CPU 0                              CPU 1
------                              -----
-mmp_pdma_tx_status()
-mmp_pdma_residue()
-  -> NO LOCK held
-     list_for_each_entry(sw, ..)
-                                   DMA interrupt
-                                   dma_do_tasklet()
-                                     -> spin_lock(&desc_lock)
-                                        list_move(sw->node, ...)
-                                        spin_unlock(&desc_lock)
-  |                                     dma_pool_free(sw) <- FREED!
-  -> access sw->desc <- UAF!
-
-This issue can be reproduced when running dmatest on the same channel with
-multiple threads (threads_per_chan > 1).
-
-Fix by protecting the chain_running list iteration and descriptor access
-with the chan->desc_lock spinlock.
-
-Signed-off-by: Juan Li <lijuan@linux.spacemit.com>
-Signed-off-by: Guodong Xu <guodong@riscstar.com>
-Link: https://patch.msgid.link/20251216-mmp-pdma-race-v1-1-976a224bb622@riscstar.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-[ Minor context conflict resolved. ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
----
- drivers/dma/mmp_pdma.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/dma/mmp_pdma.c b/drivers/dma/mmp_pdma.c
-index 26d11885c50e..a15efd4d0c84 100644
---- a/drivers/dma/mmp_pdma.c
-+++ b/drivers/dma/mmp_pdma.c
-@@ -764,6 +764,7 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
- {
- 	struct mmp_pdma_desc_sw *sw;
- 	u32 curr, residue = 0;
-+	unsigned long flags;
- 	bool passed = false;
- 	bool cyclic = chan->cyclic_first != NULL;
- 
-@@ -779,6 +780,8 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
- 	else
- 		curr = readl(chan->phy->base + DSADR(chan->phy->idx));
- 
-+	spin_lock_irqsave(&chan->desc_lock, flags);
-+
- 	list_for_each_entry(sw, &chan->chain_running, node) {
- 		u32 start, end, len;
- 
-@@ -822,6 +825,7 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
- 			continue;
- 
- 		if (sw->async_tx.cookie == cookie) {
-+			spin_unlock_irqrestore(&chan->desc_lock, flags);
- 			return residue;
- 		} else {
- 			residue = 0;
-@@ -829,6 +833,8 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
- 		}
- 	}
- 
-+	spin_unlock_irqrestore(&chan->desc_lock, flags);
-+
- 	/* We should only get here in case of cyclic transactions */
- 	return residue;
- }
--- 
-2.43.0
-
+- Eric
 
