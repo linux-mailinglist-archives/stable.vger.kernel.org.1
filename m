@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-221436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mI8MDZiVo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:44 +0100
+	id 4HxEMfKko2lXJAUAu9opvQ
+	(envelope-from <stable+bounces-221437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:31:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6221CA8B9
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 620041CDA24
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:31:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A852302DE46
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3BFB3031808
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72119280CD5;
-	Sun,  1 Mar 2026 01:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813CD27E1C5;
+	Sun,  1 Mar 2026 01:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uGiMgIWe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="husj1rxr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D58C8F0;
-	Sun,  1 Mar 2026 01:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CCAC8F0;
+	Sun,  1 Mar 2026 01:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328261; cv=none; b=mGt9TDCWdC6xSf4oetq7uILZy/YbobZEnxTYR0b+Vd1kJBDUM7uD5OkzYNLtPktxWoLs8Aj6oOrMVC63cAhPKz3iXo8uvus/ApoElhnyy91t9+Og3Sbm+zlXR8IBqdePFNF6lq2jMJZNmQwK4mKcvM9lh3oSB/68FhAVnO/Klps=
+	t=1772328263; cv=none; b=K3EA65KuDfuKWEVoCCuFe26FU344+YPkEgtbxp+bqj0c/e3H//heylo/KYw6lSbydjGh9cX/HRYom50uYmY/HhGoc3FMdqInmfQTQEU95zOBAiBC24vzrQfcHdID+TscWcpJoc1T+2vdjpXT+ahWACYzTr3/bzULlrZNkZYGVcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328261; c=relaxed/simple;
-	bh=TvgroZ0sZYDxi0fQhh2y5kq3EdgNaJE6ljx3Qly1Qng=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rVwe72MTmm0U4lMt+vzf7zTktmj+m3SyKOdFmgNv3XYwgAOx+0qJQIUGRKOaRvEvR0SI6GySyi0ACLXH9/lA/1Hf3uwCE5WQWT7N9UD6EktXAk3qtn5W0ZtvCsCGJCj+YVTQLl3Xua0W0pu40nHirdc2M6f1T7xKFgus/ibYosY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uGiMgIWe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58137C19421;
-	Sun,  1 Mar 2026 01:24:20 +0000 (UTC)
+	s=arc-20240116; t=1772328263; c=relaxed/simple;
+	bh=ipazECDcqer34PkhZzEYOQwthLWQmfOseCJHjGmGwf0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s9gfZe4PxAABRv9iE0PhNNlIz6OsbfWvHv85ClQNJfu9dXes9DGEME3QKL1v/PI4XoNcuQhW0C+vaTQKtv/TczYfvwQtv4QHTU5mtACsafvvIBpCQRsUFd4+4VHifkfXk7Sv3N0lZJkgCyq7SHBpifVDiMRbTnrBPe5uHUpGB24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=husj1rxr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7E5C19421;
+	Sun,  1 Mar 2026 01:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328261;
-	bh=TvgroZ0sZYDxi0fQhh2y5kq3EdgNaJE6ljx3Qly1Qng=;
+	s=k20201202; t=1772328263;
+	bh=ipazECDcqer34PkhZzEYOQwthLWQmfOseCJHjGmGwf0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=uGiMgIWezquotecvuX4vqLfBDDqN9odvjI/tCPU6qii6jqq/NdgX94pt6FL252bId
-	 6cjIJ5R9ttTUfM/bXjwHevO8DmhJq9RogN8t3zc1TRKdWqwL9bulNVAZ2LfrgYEtOI
-	 Ah3aDmIrQ1Nx/z5rEmbyrhMIPbOCQewGOwcvh0kPvmQ8LnJeuuK/FV0x7LEyddqATZ
-	 3e4uDLI1UswfJb1RNUDef7ai1jUjyKA9DZUp75zoCADgpoCf5aYLbhU0D9w/2CnF0y
-	 b8N6OxYMxUjRKHympxA+0pXrUxm1FIsmxdCzlYljbuzxLGd9CVW00Bgd9XKGiCw9Ck
-	 Opg9MnjD4Q3GQ==
+	b=husj1rxru1YPKylzj+o8YaWX3AkfyR+O+JlcL3rrfgjSZ0lM03rvIOZHzyAClYfOV
+	 yEOlo2sGqaC5EJjpSvE8E/oei/iDo0MWWXU22tD43VqiWTT4UOAChvIcVn8IfiMc3v
+	 WQHAVKecV6UYku6hIu3YH9TwN8sf4eqv8PHs+jeu0ns6/s8rYHBFXVk/0Glx92YeMf
+	 WnxKSie8xxT44Orde8k4yJQhztYR/18NM2YvacLCjVlVYb7DT2v9yN2Pj09pft5iHu
+	 VSCuwNnyV6MsjvoFlg9mx/bNzYFwAW9yyi8LHCP8yU+k8s41rfzgTHRvoZQss8e7/3
+	 2TV8rTMqKNZsw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	haotienh@nvidia.com
-Cc: stable <stable@kernel.org>,
-	Wayne Chang <waynec@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: FAILED: Patch "usb: gadget: tegra-xudc: Add handling for BLCG_COREPLL_PWRDN" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:24:18 -0500
-Message-ID: <20260301012419.1681142-1-sashal@kernel.org>
+	bmarzins@redhat.com
+Cc: dm-devel@lists.linux.dev
+Subject: FAILED: Patch "dm mpath: make pg_init_delay_msecs settable" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:24:21 -0500
+Message-ID: <20260301012421.1681192-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,29 +66,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221436-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-221437-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EA6221CA8B9
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 620041CDA24
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -105,73 +101,45 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1132e90840abf3e7db11f1d28199e9fbc0b0e69e Mon Sep 17 00:00:00 2001
-From: Haotien Hsu <haotienh@nvidia.com>
-Date: Sat, 24 Jan 2026 01:31:21 +0800
-Subject: [PATCH] usb: gadget: tegra-xudc: Add handling for BLCG_COREPLL_PWRDN
+From 218b16992a37ea97b9e09b7659a25a864fb9976f Mon Sep 17 00:00:00 2001
+From: Benjamin Marzinski <bmarzins@redhat.com>
+Date: Tue, 27 Jan 2026 19:12:24 -0500
+Subject: [PATCH] dm mpath: make pg_init_delay_msecs settable
 
-The COREPLL_PWRDN bit in the BLCG register must be set when the XUSB
-device controller is powergated and cleared when it is unpowergated.
-If this bit is not explicitly controlled, the core PLL may remain in an
-incorrect power state across suspend/resume or ELPG transitions.
-Therefore, update the driver to explicitly control this bit during
-powergate transitions.
+"pg_init_delay_msecs X" can be passed as a feature in the multipath
+table and is used to set m->pg_init_delay_msecs in parse_features().
+However, alloc_multipath_stage2(), which is called after
+parse_features(), resets m->pg_init_delay_msecs to its default value.
+Instead, set m->pg_init_delay_msecs in alloc_multipath(), which is
+called before parse_features(), to avoid overwriting a value passed in
+by the table.
 
-Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Link: https://patch.msgid.link/20260123173121.4093902-1-waynec@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Cc: stable@vger.kernel.org
 ---
- drivers/usb/gadget/udc/tegra-xudc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/md/dm-mpath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
-index 9d2007f448c04..7f7251c10e952 100644
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -3392,17 +3392,18 @@ static void tegra_xudc_device_params_init(struct tegra_xudc *xudc)
- {
- 	u32 val, imod;
+diff --git a/drivers/md/dm-mpath.c b/drivers/md/dm-mpath.c
+index 6f9d86f4b912c..de03f9b065842 100644
+--- a/drivers/md/dm-mpath.c
++++ b/drivers/md/dm-mpath.c
+@@ -225,6 +225,7 @@ static struct multipath *alloc_multipath(struct dm_target *ti)
+ 		mutex_init(&m->work_mutex);
  
-+	val = xudc_readl(xudc, BLCG);
- 	if (xudc->soc->has_ipfs) {
--		val = xudc_readl(xudc, BLCG);
- 		val |= BLCG_ALL;
- 		val &= ~(BLCG_DFPCI | BLCG_UFPCI | BLCG_FE |
- 				BLCG_COREPLL_PWRDN);
- 		val |= BLCG_IOPLL_0_PWRDN;
- 		val |= BLCG_IOPLL_1_PWRDN;
- 		val |= BLCG_IOPLL_2_PWRDN;
--
--		xudc_writel(xudc, val, BLCG);
-+	} else {
-+		val &= ~BLCG_COREPLL_PWRDN;
- 	}
-+	xudc_writel(xudc, val, BLCG);
+ 		m->queue_mode = DM_TYPE_NONE;
++		m->pg_init_delay_msecs = DM_PG_INIT_DELAY_DEFAULT;
  
- 	if (xudc->soc->port_speed_quirk)
- 		tegra_xudc_limit_port_speed(xudc);
-@@ -3953,6 +3954,7 @@ static void tegra_xudc_remove(struct platform_device *pdev)
- static int __maybe_unused tegra_xudc_powergate(struct tegra_xudc *xudc)
- {
- 	unsigned long flags;
-+	u32 val;
+ 		m->ti = ti;
+ 		ti->private = m;
+@@ -251,7 +252,6 @@ static int alloc_multipath_stage2(struct dm_target *ti, struct multipath *m)
+ 	set_bit(MPATHF_QUEUE_IO, &m->flags);
+ 	atomic_set(&m->pg_init_in_progress, 0);
+ 	atomic_set(&m->pg_init_count, 0);
+-	m->pg_init_delay_msecs = DM_PG_INIT_DELAY_DEFAULT;
+ 	init_waitqueue_head(&m->pg_init_wait);
+ 	init_waitqueue_head(&m->probe_wait);
  
- 	dev_dbg(xudc->dev, "entering ELPG\n");
- 
-@@ -3965,6 +3967,10 @@ static int __maybe_unused tegra_xudc_powergate(struct tegra_xudc *xudc)
- 
- 	spin_unlock_irqrestore(&xudc->lock, flags);
- 
-+	val = xudc_readl(xudc, BLCG);
-+	val |= BLCG_COREPLL_PWRDN;
-+	xudc_writel(xudc, val, BLCG);
-+
- 	clk_bulk_disable_unprepare(xudc->soc->num_clks, xudc->clks);
- 
- 	regulator_bulk_disable(xudc->soc->num_supplies, xudc->supplies);
 -- 
 2.51.0
 
