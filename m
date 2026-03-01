@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-221728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221729-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6BQuJY+co2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-221728-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:55:27 +0100
+	id 8F0gMuSYo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221729-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:39:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0FC1CC417
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:55:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F311CB41F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:39:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 094D4308FBEB
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34D573045D6A
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA3C2F3C37;
-	Sun,  1 Mar 2026 01:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65D82C1780;
+	Sun,  1 Mar 2026 01:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pyXlL3VW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ep1ZeNAh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8742DFA2F;
-	Sun,  1 Mar 2026 01:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1ED2DF153
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328995; cv=none; b=UOmnNIbOVB7Bd59t2oOcw8EEwrFPNGw5puN5ahPGr5tcMao6s6WPo0Cgbf0QPs+fsR33T4utF7pTRzZxaeMCF1y98IoM/bHQgmhVptVp5Gwf3Vf1K+7tGSWx4Pbn1GwSx3rAZ1JE9vN+gipw6sjLV4iLJl2sJ+OQQPwhPmjn/QA=
+	t=1772328997; cv=none; b=e8oFGTY+Q4E+dg3RifHtLg+hQ+k5eR0uRaEp6ee6hzmoRVEfoFo2c5J9+sITAAX9EJKtbR1HcbD05FevRhcvlMkWeFi+h1DXV9nSTJD2Ix4q0Dw3ECfvnXECJBJ1glKiJARb0sIYo8NwZWBhUoYBC0TpchWuWrAik+Rc2RUk38M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328995; c=relaxed/simple;
-	bh=fgMY/FfoG3d93MvsOo/ErI3rU1hYiCm2fQTtsVBVS9Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B8gw62oLGkVfUGLkyD1fcJj7ebpQATd/MfOukWZ/3aOxMwPvKug4D+TwGi4buX8g5RE1dTveCSB+5PjI4X2xO/K5ny3qSAUmld5r2Rv/64/iFIddhGNPFbzDwL0Z2H6wHdT3n5gMP473eJx++YIfr2aOHRhaseaPimEWhWU8zVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pyXlL3VW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F859C19425;
-	Sun,  1 Mar 2026 01:36:34 +0000 (UTC)
+	s=arc-20240116; t=1772328997; c=relaxed/simple;
+	bh=Ef3oMqyJLLJHr6yYBQV4SNc/6gwsQAJjrfPzg+JtCGY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RDZNR5sa7Rrl7ckmtJwSAMQR5U3cq/3bedAHOXVGFvkZDkcGemVwipXBx9nnzrhq1bGfQCtPx09R9uML/aRvA81vDVVKJw11oOV6T0eiEjzlv4WpGXAG4UE/E66CuZoz2HyVqHbh/RscJ8cYJ2CMepD4upj4jue0wjRIRmhJ9fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ep1ZeNAh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5FEC19421;
+	Sun,  1 Mar 2026 01:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328995;
-	bh=fgMY/FfoG3d93MvsOo/ErI3rU1hYiCm2fQTtsVBVS9Y=;
+	s=k20201202; t=1772328997;
+	bh=Ef3oMqyJLLJHr6yYBQV4SNc/6gwsQAJjrfPzg+JtCGY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=pyXlL3VWl1BPqU4Lyj0JrkrAExIDSoF09RvEaNkPokkWCPOn+0ZO2OWJlLh744Vqi
-	 jzEukFLaVGNB9/c10UYP+mhrxEFc2Hcnm2H/FS1gHjDE7f+DJ/Sq55/Xhw5ZSLtAVd
-	 OGNi0Tqi2zo3ZVC2yXVrfD74DE1hS1F6kkOXc5Gd2msT2cJsErYbGStOQANnqT4sLK
-	 reV4UMHiLZ8Ifrzj8C7Gm/GvdYdW+24BqitQrHAZi2DA8J77mS0hc+x4Gg8/wbhIHy
-	 DGyhLzLXm9SQ/wl1XimtgYp6FGF6kEOthr1PgCZYo/EXFjedG5Q52U0EFtZMWNDZPr
-	 hn2XBc28d6/0Q==
+	b=Ep1ZeNAhR+Pb+Oij9WnfyNsuKvFmWzprAO7ahvBXAEzvqPVdxlXCin5bR2Xdq+OWA
+	 lUDUk/oV6FkrvgzhcwButWs9ONvlvqosr7tIvnrEeOA2e5SUpxw+4MqyjC1WrElsEo
+	 V4dfw1hux3qU/UdT6+kyZOH+rreyylgaj1XMt9ZwCXQXA81U0ZxuFEYA4Da8dTsyaC
+	 J8mnY/8rdx0+xVW1gs9Szk+mYZC77DYvZc3R6IuJjgRkex295W/iTA179lxEnTJyCx
+	 +ln4KAmpSTEVrOWwleTZmorPwgK56dvHEhcBKf1DBNg9/vPdz56rYqH1/libU8bjyq
+	 7v3jakU1gFigQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jszhang@kernel.org
-Cc: stable <stable@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org
-Subject: FAILED: Patch "usb: dwc2: fix resume failure if dr_mode is host" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:36:33 -0500
-Message-ID: <20260301013633.1696541-1-sashal@kernel.org>
+	Philip.Yang@amd.com
+Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm/amdgpu: Use 5-level paging if gmc support 57-bit VA" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:36:35 -0500
+Message-ID: <20260301013635.1696593-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,36 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221728-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221729-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: BF0FC1CC417
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 90F311CB41F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -103,47 +103,65 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a52e4f2dff413b58c7200e89bb6540bd995e1269 Mon Sep 17 00:00:00 2001
-From: Jisheng Zhang <jszhang@kernel.org>
-Date: Thu, 29 Jan 2026 10:15:34 +0800
-Subject: [PATCH] usb: dwc2: fix resume failure if dr_mode is host
+From 3b948dd0366a0b64c02e4ed1aefdf7825942e803 Mon Sep 17 00:00:00 2001
+From: Philip Yang <Philip.Yang@amd.com>
+Date: Tue, 27 Jan 2026 13:52:33 -0500
+Subject: [PATCH] drm/amdgpu: Use 5-level paging if gmc support 57-bit VA
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-commit 13b1f8e25bfd1 ("usb: dwc2: Force mode optimizations") removed the
-dwc2_force_mode(hsotg, true) in dwc2_force_dr_mode() if dr_mode is host.
+Regardless if CPU enable 5-level paging, GPU vm use 5-level paging if
+gmc init with 57-bit address space support, because
 
-But this brings a bug: the controller fails to resume back as host,
-further debugging shows that the controller is resumed as peripheral.
-The reason is dwc2_force_dr_mode() missed the host mode forcing, and
-when resuming from s2ram, GINTSTS is 0 by default, dwc2_is_device_mode
-in dwc2_resume() misreads this as the controller is in peripheral mode.
+ARM64 4-level paging support 48-bit VA, x86 and GPU 4-level paging
+support 47-bit VA, require 5-level paging on GPU to support ARM64.
 
-Fix the resume failure by adding back the dwc2_force_mode(hsotg, true).
+NPA address space 52-bit mapping on NPA GPU VM require 5-level paging.
 
-Then an obvious question is: why this bug hasn't been observed and fixed
-for about six years? There are two resons: most dwc2 platforms set the
-dr_mode as otg; Some platforms don't have suspend & resume support yet.
+Debugger trap get device snapshot expect LDS and Scratch base, limit
+above 57-bit, which is set only for 5-level paging.
 
-Fixes: 13b1f8e25bfd1 ("usb: dwc2: Force mode optimizations")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://patch.msgid.link/20260129021534.10411-1-jszhang@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.19.x
 ---
- drivers/usb/dwc2/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 17 -----------------
+ 1 file changed, 17 deletions(-)
 
-diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
-index c3d24312db0fe..f375c5185bfe2 100644
---- a/drivers/usb/dwc2/core.c
-+++ b/drivers/usb/dwc2/core.c
-@@ -578,6 +578,7 @@ void dwc2_force_dr_mode(struct dwc2_hsotg *hsotg)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index 6a2ea200d90c8..31383583fc682 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2360,26 +2360,9 @@ void amdgpu_vm_adjust_size(struct amdgpu_device *adev, uint32_t min_vm_size,
+ 			   unsigned max_bits)
  {
- 	switch (hsotg->dr_mode) {
- 	case USB_DR_MODE_HOST:
-+		dwc2_force_mode(hsotg, true);
- 		/*
- 		 * NOTE: This is required for some rockchip soc based
- 		 * platforms on their host-only dwc2.
+ 	unsigned int max_size = 1 << (max_bits - 30);
+-	bool sys_5level_pgtable = false;
+ 	unsigned int vm_size;
+ 	uint64_t tmp;
+ 
+-#ifdef CONFIG_X86_64
+-	/*
+-	 * Refer to function configure_5level_paging() for details.
+-	 */
+-	sys_5level_pgtable = (native_read_cr4() & X86_CR4_LA57);
+-#endif
+-
+-	/*
+-	 * If GPU supports 5-level page table, but system uses 4-level page table,
+-	 * then use 4-level page table on GPU
+-	 */
+-	if (max_level == 4 && !sys_5level_pgtable) {
+-		min_vm_size = 256 * 1024;
+-		max_level = 3;
+-	}
+-
+ 	/* adjust vm size first */
+ 	if (amdgpu_vm_size != -1) {
+ 		vm_size = amdgpu_vm_size;
 -- 
 2.51.0
 
