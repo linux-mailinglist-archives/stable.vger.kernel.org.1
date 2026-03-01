@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-222110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kF0dLE6eo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:54 +0100
+	id EBaIEJ2do2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49BAE1CCB55
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEE81CC8BB
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F33843048EDC
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50D1A30E3EE9
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD162EA481;
-	Sun,  1 Mar 2026 01:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05EF305047;
+	Sun,  1 Mar 2026 01:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHXAP3CC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O3z3mEad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B543043D2;
-	Sun,  1 Mar 2026 01:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F632FD681;
+	Sun,  1 Mar 2026 01:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329925; cv=none; b=Lff47faaEDOEyGX6VvGu+SDRQHfPyxjW2/oaVTieRLOJ0I3v8E/qPYDeOK24cfKAyaXS280LwD56lWK4Y5IuFuBpkFBlgncSmt2ZlD6ucFEvo6u8oIkv47DYwJsL0bvno5Qh3P4oXz0M7m7PAnLvK945UMaRM9VL5NuwD0YNbbI=
+	t=1772329927; cv=none; b=qp5XRbHL7USvITKP2M57vBZ0BZ7HG+Yd4A2GMP/YHv6aJbFuUFZ7Ql1WMLmylOSDvCZDHPgNKDe7ZPuGG16hpDdEn+KLIw28vQsNBMIDayxfd5V2AyK9eiF4FQoTfDFxQ9Umga0gbzKIu2+Nk8+2qN9nS0IS9kmp0CDQkkORCJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329925; c=relaxed/simple;
-	bh=fsjZWzQE9JKGOk6Xc2Non6p9aIclBrU7krhXKQRrRRE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cxLm8vm7QGcrD5Wmw3nKN2r+5gZtEKyIrgMsNsGoyDDg8S0wdo4EUz3O+PXPRweryDDobNF3Rl5fCa3N42j97brbRw387ZG1W1+KmGTMKn9eH/0XZ0QcBisM1pgXw+QZQQCw26mmOwV/96RaFagz9whONzsOXEkjiBAkQmr6ZvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHXAP3CC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A454CC19421;
-	Sun,  1 Mar 2026 01:52:04 +0000 (UTC)
+	s=arc-20240116; t=1772329927; c=relaxed/simple;
+	bh=LHfIDL0Od71IQy3hvBFo2VaqVj3BGoqhdpEsekWeTP4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pvp+kN6zOiV6nwYe/CO9yLXpImY4Gr3TKpEeHxxq0UsM3lJo//vt/X88zlV1LbmxJXspjx3xPn1gx/E9KtCenoBCSpxYRWcwib2ujdubfMRgLtuxX18Xy0o6Sh0DwgsYma1O+alT7A4egDMhh9IILVGHoQnz7W0SdIDMr+zahfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O3z3mEad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA455C19421;
+	Sun,  1 Mar 2026 01:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329925;
-	bh=fsjZWzQE9JKGOk6Xc2Non6p9aIclBrU7krhXKQRrRRE=;
+	s=k20201202; t=1772329927;
+	bh=LHfIDL0Od71IQy3hvBFo2VaqVj3BGoqhdpEsekWeTP4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=qHXAP3CC/lLWCRhVqyCmZkBcJB3QeoLklzcrbYXO6LH6iNkwp7DBBtxqetxC3eTGF
-	 uzAxWpXHpV+qPHCP9z8Yqhtro20RPjAOTPP2Et6MW2TIZrk+boBpxQqaH/DrX5GrNt
-	 p2E1uni2XtyVnZR92BYs+sYz1S2GFgF+UoBUiPG79bhMwH+lQDPMiFYeia1be4PABm
-	 qMmvoM5DLNUF2qS7FD4WkfXFtOJHr+foeepFSZnYXK/CgFmJ+9n6y//emOJsLRkcJL
-	 6Ajie87m3vL+IuNEOCIY/S9HSkQ5fBwK9lb/DunJePyfzjNfna/+CnadYhhH9VCOUU
-	 Ia1F3Xmsv1dwg==
+	b=O3z3mEadgsZM05alBUe0KLPmyx+MuJ+ELLWGYNiGYS8RE0FcfNcESXAqm5yupBuj/
+	 gAem9SRzBPnsDkRxo05EuQyQ3oQMuq+4Rvfr0urZ9Jv9L9BabLBdGQ24FM9oaoDz4S
+	 WMImLrh9eRawhLnojGh2+vl6UZTZuzwVZYBBC4PyTfrV7FSiNZyWUp6JYqvKaJ5avD
+	 yywsNuFgFlB7Yg7JiXHRGaWXHId2OvxgH0CAFsQpULmMUXtKmWMM69G8kfUOMK9qdz
+	 716tXEqgQEiRD3xSZzr5giJ+xxHZOD37gFguUxlsAPVeYR0vdq72VCEUQJicZy2XzK
+	 vtoRzqBbXjSNw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	kovalev@altlinux.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	kvm@vger.kernel.org
-Subject: FAILED: Patch "KVM: x86: Add SRCU protection for reading PDPTRs in __get_sregs2()" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:52:03 -0500
-Message-ID: <20260301015203.1718480-1-sashal@kernel.org>
+	mmaddireddy@nvidia.com
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	linux-pci@vger.kernel.org
+Subject: FAILED: Patch "PCI: endpoint: Fix swapped parameters in pci_{primary/secondary}_epc_epf_unlink() functions" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:52:05 -0500
+Message-ID: <20260301015205.1718530-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,33 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222111-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222110-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxtesting.org:url]
-X-Rspamd-Queue-Id: 49BAE1CCB55
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url,nxp.com:email]
+X-Rspamd-Queue-Id: DAEE81CC8BB
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -102,88 +105,79 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 95d848dc7e639988dbb385a8cba9b484607cf98c Mon Sep 17 00:00:00 2001
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-Date: Sat, 24 Jan 2026 01:28:01 +0300
-Subject: [PATCH] KVM: x86: Add SRCU protection for reading PDPTRs in
- __get_sregs2()
+From 8754dd7639ab0fd68c3ab9d91c7bdecc3e5740a8 Mon Sep 17 00:00:00 2001
+From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Date: Thu, 8 Jan 2026 11:57:47 +0530
+Subject: [PATCH] PCI: endpoint: Fix swapped parameters in
+ pci_{primary/secondary}_epc_epf_unlink() functions
 
-Add SRCU read-side protection when reading PDPTR registers in
-__get_sregs2().
+struct configfs_item_operations callbacks are defined like the following:
 
-Reading PDPTRs may trigger access to guest memory:
-kvm_pdptr_read() -> svm_cache_reg() -> load_pdptrs() ->
-kvm_vcpu_read_guest_page() -> kvm_vcpu_gfn_to_memslot()
+  int (*allow_link)(struct config_item *src, struct config_item *target);
+  void (*drop_link)(struct config_item *src, struct config_item *target);
 
-kvm_vcpu_gfn_to_memslot() dereferences memslots via __kvm_memslots(),
-which uses srcu_dereference_check() and requires either kvm->srcu or
-kvm->slots_lock to be held. Currently only vcpu->mutex is held,
-triggering lockdep warning:
+While pci_primary_epc_epf_link() and pci_secondary_epc_epf_link() specify
+the parameters in the correct order, pci_primary_epc_epf_unlink() and
+pci_secondary_epc_epf_unlink() specify the parameters in the wrong order,
+leading to the below kernel crash when using the unlink command in
+configfs:
 
-=============================
-WARNING: suspicious RCU usage in kvm_vcpu_gfn_to_memslot
-6.12.59+ #3 Not tainted
+  Unable to handle kernel paging request at virtual address 0000000300000857
+  Mem abort info:
+  ...
+  pc : string+0x54/0x14c
+  lr : vsnprintf+0x280/0x6e8
+  ...
+  string+0x54/0x14c
+  vsnprintf+0x280/0x6e8
+  vprintk_default+0x38/0x4c
+  vprintk+0xc4/0xe0
+  pci_epf_unbind+0xdc/0x108
+  configfs_unlink+0xe0/0x208+0x44/0x74
+  vfs_unlink+0x120/0x29c
+  __arm64_sys_unlinkat+0x3c/0x90
+  invoke_syscall+0x48/0x134
+  do_el0_svc+0x1c/0x30prop.0+0xd0/0xf0
 
-include/linux/kvm_host.h:1062 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz.5.1717/15100:
- #0: ff1100002f4b00b0 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x1d5/0x1590
-
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xf0/0x120 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x1e3/0x270 kernel/locking/lockdep.c:6824
- __kvm_memslots include/linux/kvm_host.h:1062 [inline]
- __kvm_memslots include/linux/kvm_host.h:1059 [inline]
- kvm_vcpu_memslots include/linux/kvm_host.h:1076 [inline]
- kvm_vcpu_gfn_to_memslot+0x518/0x5e0 virt/kvm/kvm_main.c:2617
- kvm_vcpu_read_guest_page+0x27/0x50 virt/kvm/kvm_main.c:3302
- load_pdptrs+0xff/0x4b0 arch/x86/kvm/x86.c:1065
- svm_cache_reg+0x1c9/0x230 arch/x86/kvm/svm/svm.c:1688
- kvm_pdptr_read arch/x86/kvm/kvm_cache_regs.h:141 [inline]
- __get_sregs2 arch/x86/kvm/x86.c:11784 [inline]
- kvm_arch_vcpu_ioctl+0x3e20/0x4aa0 arch/x86/kvm/x86.c:6279
- kvm_vcpu_ioctl+0x856/0x1590 virt/kvm/kvm_main.c:4663
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:907 [inline]
- __se_sys_ioctl fs/ioctl.c:893 [inline]
- __x64_sys_ioctl+0x18b/0x210 fs/ioctl.c:893
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xbd/0x1d0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Fixes: e85a2d783762 ("PCI: endpoint: Add support in configfs to associate two EPCs with EPF")
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+[mani: cced stable, changed commit message as per https://lore.kernel.org/linux-pci/aV9joi3jF1R6ca02@ryzen]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Cc: stable@vger.kernel.org
-Fixes: 6dba94035203 ("KVM: x86: Introduce KVM_GET_SREGS2 / KVM_SET_SREGS2")
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://patch.msgid.link/20260123222801.646123-1-kovalev@altlinux.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://patch.msgid.link/20260108062747.1870669-1-mmaddireddy@nvidia.com
 ---
- arch/x86/kvm/x86.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/endpoint/pci-ep-cfs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 386cdb775fd48..1ea94f4a3dcbc 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -12145,9 +12145,11 @@ static void __get_sregs2(struct kvm_vcpu *vcpu, struct kvm_sregs2 *sregs2)
- 		return;
- 
- 	if (is_pae_paging(vcpu)) {
-+		kvm_vcpu_srcu_read_lock(vcpu);
- 		for (i = 0 ; i < 4 ; i++)
- 			sregs2->pdptrs[i] = kvm_pdptr_read(vcpu, i);
- 		sregs2->flags |= KVM_SREGS2_FLAGS_PDPTRS_VALID;
-+		kvm_vcpu_srcu_read_unlock(vcpu);
- 	}
+diff --git a/drivers/pci/endpoint/pci-ep-cfs.c b/drivers/pci/endpoint/pci-ep-cfs.c
+index 43feb6139fa36..8b392a8363bb1 100644
+--- a/drivers/pci/endpoint/pci-ep-cfs.c
++++ b/drivers/pci/endpoint/pci-ep-cfs.c
+@@ -68,8 +68,8 @@ static int pci_secondary_epc_epf_link(struct config_item *epf_item,
+ 	return 0;
  }
  
+-static void pci_secondary_epc_epf_unlink(struct config_item *epc_item,
+-					 struct config_item *epf_item)
++static void pci_secondary_epc_epf_unlink(struct config_item *epf_item,
++					 struct config_item *epc_item)
+ {
+ 	struct pci_epf_group *epf_group = to_pci_epf_group(epf_item->ci_parent);
+ 	struct pci_epc_group *epc_group = to_pci_epc_group(epc_item);
+@@ -132,8 +132,8 @@ static int pci_primary_epc_epf_link(struct config_item *epf_item,
+ 	return 0;
+ }
+ 
+-static void pci_primary_epc_epf_unlink(struct config_item *epc_item,
+-				       struct config_item *epf_item)
++static void pci_primary_epc_epf_unlink(struct config_item *epf_item,
++				       struct config_item *epc_item)
+ {
+ 	struct pci_epf_group *epf_group = to_pci_epf_group(epf_item->ci_parent);
+ 	struct pci_epc_group *epc_group = to_pci_epc_group(epc_item);
 -- 
 2.51.0
 
