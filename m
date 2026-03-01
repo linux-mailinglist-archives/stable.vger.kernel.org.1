@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-222144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJ4NByWio2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:19:17 +0100
+	id WBtvLKido2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A009B1CD6F6
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:19:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD601CC8D4
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5938345614D
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E64963079AB5
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5928274B5F;
-	Sun,  1 Mar 2026 01:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757013043D6;
+	Sun,  1 Mar 2026 01:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fTJw4NzH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOddRsU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A0E2F7ADE
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BA82673AA;
+	Sun,  1 Mar 2026 01:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330010; cv=none; b=UHmXq0se1oudtCzswzeuWPxZOmRdTNn5uNbL8uR0x70kuAlGX6Zws5gV+tHxhjzwojgDBEZ8h/jmIfiSC/M8QTQgMzFAnnjL8FRDXZO3h6yUfGjZ0xsFRTOCy73Pm7neqAXumo9svkvKQKwAx0D7q1a+j6eHniysmowuYPAYjd0=
+	t=1772330013; cv=none; b=NUiqVJp3QZJfG4XvvRwgnuTI/+Q0bMpCGBlig0cGq6GHk6Mi39muNXwcR6XEhj9wK2UODtBfW4wRW5nMFLo9RkM35Gmlw261RUlT+s8aRA6YzfnV7dlX19rmpiR+UMEoo/0RABtfY2fHsrze+NukXclkoCAToWPX3Rx9NJR517A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330010; c=relaxed/simple;
-	bh=KeF1EjDxd9GxW048ylxTKI+8UBUwg/UtPEADTnoQPdA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CUACFfsI1FJ6bYGEIRjmTOj/FiLZTfJaXYG9nxzSmPsqXuusXOVJXk9llzU59kJSdDfeRrZLHB8hEEAPQURsxCqsWYf0Te5FbUoaTKHcwjcP8cUYwaOSiTZOtrbkGA+RJWP2WEEx2+hG4DAgqNdOfbTCWltQ+k0gg+98f0LS+cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fTJw4NzH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C63C19425;
-	Sun,  1 Mar 2026 01:53:29 +0000 (UTC)
+	s=arc-20240116; t=1772330013; c=relaxed/simple;
+	bh=m//5EPiVXtnYd+Vv9GFepWBjGz6xDc1+KTMmYrip5JM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j/t56tBmYBGJY++Y8gGecFy4hBRQ4ohFl5G5F74HTCZ84/UG8E2BjF2SphZ7a+azzDhJAmC0Y3MM8ATXESHNrpAYJ1f1DWjZlrfKuVGqy1WpPrFTs9c4V2oyunTUbgoXXmMZixA2xPTahpV91hppIokmAM1cCRrcyJaWEWEgjrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOddRsU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F79C19421;
+	Sun,  1 Mar 2026 01:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330010;
-	bh=KeF1EjDxd9GxW048ylxTKI+8UBUwg/UtPEADTnoQPdA=;
+	s=k20201202; t=1772330013;
+	bh=m//5EPiVXtnYd+Vv9GFepWBjGz6xDc1+KTMmYrip5JM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=fTJw4NzHVBVXxWOLM0vSrn4DAnGkaB6Ke+//bOuFSKAKIQxKHoXF8YYvU5XEUTHDy
-	 hxYh5XX5P0F0NOruIfv/6WQi52NZ11lstnBg6GRDqiTgKInRouZxxXFr3a3y12MLgs
-	 9D+XsbKcAqE6V3GDpg5176m/JrCSogDWs3B6zyrGIHrWATT2yWStwMIUdgzb/PnVjU
-	 aT/kRVIcE9CBFnGoKla3jqQJ9aVJ2mQQZcVk8ZK9dW5gG/6JbvY06I/eSquU3nv8AJ
-	 k6Te377RzsY6iNk+80pnTMAtsBxMGfAyWWg75BUZt4skHp/eF//cZthXKrX6PAE2r7
-	 5XShXsvq4IHtw==
+	b=IOddRsU7K6yLw8GTW8cdTIugL8LXjtLImvk/M2pnFWoxxJJdX3rvzocV1+W/MTW9+
+	 v7hE3JRwthB8R9GtVM7AP+bQxK95HV3RgwFkCu7gL5lTuMK7qfQHMAc3l4KcWGewIb
+	 lx7bpBpvizM08n4DxORGpXYaZtNK7iqbE5KV0zSjmuAjFZGIufJ00zQ/KzmBNK0ZzC
+	 7kToFRE9zB7vhjYV/8ii9RdAeNcAXGUD2I2W4k1vEGvsnu5/5BZkwXLJ5FECec+KxR
+	 NcupyNkpxWebaa13rqm2locCJtCLFU39gdZm8aSJU8nsKQDDhhJLW6rnFi6z0e5mJ+
+	 NEukr4ATeYsFA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	andrea.scian@dave.eu
-Cc: stable@kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	linux-mtd@lists.infradead.org
-Subject: FAILED: Patch "mtd: rawnand: pl353: Fix software ECC support" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:53:28 -0500
-Message-ID: <20260301015328.1720267-1-sashal@kernel.org>
+	prashanth.k@oss.qualcomm.com
+Cc: stable <stable@kernel.org>,
+	Samuel Wu <wusamuel@google.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org
+Subject: FAILED: Patch "usb: dwc3: gadget: Move vbus draw to workqueue context" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:53:30 -0500
+Message-ID: <20260301015331.1720317-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,33 +66,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222144-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222145-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dave.eu:email]
-X-Rspamd-Queue-Id: A009B1CD6F6
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,qualcomm.com:email,msgid.link:url,synopsys.com:email]
+X-Rspamd-Queue-Id: 5AD601CC8D4
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -103,34 +105,125 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 89b831ebdaca0df4ca3b226f7e7a1d1db1629060 Mon Sep 17 00:00:00 2001
-From: Andrea Scian <andrea.scian@dave.eu>
-Date: Wed, 4 Feb 2026 18:41:44 +0100
-Subject: [PATCH] mtd: rawnand: pl353: Fix software ECC support
+From 54aaa3b387c2f580a99dc86a9cc2eb6dfaf599a7 Mon Sep 17 00:00:00 2001
+From: Prashanth K <prashanth.k@oss.qualcomm.com>
+Date: Wed, 4 Feb 2026 11:11:55 +0530
+Subject: [PATCH] usb: dwc3: gadget: Move vbus draw to workqueue context
 
-We need to set also write_page_raw in ecc structure to allow
-choosing SW ECC instead of HW one, otherwise write operation fail.
+Currently dwc3_gadget_vbus_draw() can be called from atomic
+context, which in turn invokes power-supply-core APIs. And
+some these PMIC APIs have operations that may sleep, leading
+to kernel panic.
 
-Fixes: 08d8c62164a322 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
-Signed-off-by: Andrea Scian <andrea.scian@dave.eu>
-Cc: stable@kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fix this by moving the vbus_draw into a workqueue context.
+
+Fixes: 99288de36020 ("usb: dwc3: add an alternate path in vbus_draw callback")
+Cc: stable <stable@kernel.org>
+Tested-by: Samuel Wu <wusamuel@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260204054155.3063825-1-prashanth.k@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/pl35x-nand-controller.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/core.c   | 19 ++++++++++++++++++-
+ drivers/usb/dwc3/core.h   |  4 ++++
+ drivers/usb/dwc3/gadget.c |  8 +++-----
+ 3 files changed, 25 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/pl35x-nand-controller.c b/drivers/mtd/nand/raw/pl35x-nand-controller.c
-index 11bd90e3f18cb..7f012b7c3eaec 100644
---- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
-+++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
-@@ -976,6 +976,7 @@ static int pl35x_nand_attach_chip(struct nand_chip *chip)
- 		fallthrough;
- 	case NAND_ECC_ENGINE_TYPE_NONE:
- 	case NAND_ECC_ENGINE_TYPE_SOFT:
-+		chip->ecc.write_page_raw = nand_monolithic_write_page_raw;
- 		break;
- 	case NAND_ECC_ENGINE_TYPE_ON_HOST:
- 		ret = pl35x_nand_init_hw_ecc_controller(nfc, chip);
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index c07ffe82c8504..161a4d58b2cec 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2155,6 +2155,20 @@ static int dwc3_get_num_ports(struct dwc3 *dwc)
+ 	return 0;
+ }
+ 
++static void dwc3_vbus_draw_work(struct work_struct *work)
++{
++	struct dwc3 *dwc = container_of(work, struct dwc3, vbus_draw_work);
++	union power_supply_propval val = {0};
++	int ret;
++
++	val.intval = 1000 * (dwc->current_limit);
++	ret = power_supply_set_property(dwc->usb_psy, POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT, &val);
++
++	if (ret < 0)
++		dev_dbg(dwc->dev, "Error (%d) setting vbus draw (%d mA)\n",
++			ret, dwc->current_limit);
++}
++
+ static struct power_supply *dwc3_get_usb_power_supply(struct dwc3 *dwc)
+ {
+ 	struct power_supply *usb_psy;
+@@ -2169,6 +2183,7 @@ static struct power_supply *dwc3_get_usb_power_supply(struct dwc3 *dwc)
+ 	if (!usb_psy)
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 
++	INIT_WORK(&dwc->vbus_draw_work, dwc3_vbus_draw_work);
+ 	return usb_psy;
+ }
+ 
+@@ -2395,8 +2410,10 @@ void dwc3_core_remove(struct dwc3 *dwc)
+ 
+ 	dwc3_free_event_buffers(dwc);
+ 
+-	if (dwc->usb_psy)
++	if (dwc->usb_psy) {
++		cancel_work_sync(&dwc->vbus_draw_work);
+ 		power_supply_put(dwc->usb_psy);
++	}
+ }
+ EXPORT_SYMBOL_GPL(dwc3_core_remove);
+ 
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 08cc6f2b5c236..a35b3db1f9f3e 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1058,6 +1058,8 @@ struct dwc3_glue_ops {
+  * @role_switch_default_mode: default operation mode of controller while
+  *			usb role is USB_ROLE_NONE.
+  * @usb_psy: pointer to power supply interface.
++ * @vbus_draw_work: Work to set the vbus drawing limit
++ * @current_limit: How much current to draw from vbus, in milliAmperes.
+  * @usb2_phy: pointer to USB2 PHY
+  * @usb3_phy: pointer to USB3 PHY
+  * @usb2_generic_phy: pointer to array of USB2 PHYs
+@@ -1244,6 +1246,8 @@ struct dwc3 {
+ 	enum usb_dr_mode	role_switch_default_mode;
+ 
+ 	struct power_supply	*usb_psy;
++	struct work_struct	vbus_draw_work;
++	unsigned int		current_limit;
+ 
+ 	u32			fladj;
+ 	u32			ref_clk_per;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 384963151eced..c65291e7b8d90 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3124,8 +3124,6 @@ static void dwc3_gadget_set_ssp_rate(struct usb_gadget *g,
+ static int dwc3_gadget_vbus_draw(struct usb_gadget *g, unsigned int mA)
+ {
+ 	struct dwc3		*dwc = gadget_to_dwc(g);
+-	union power_supply_propval	val = {0};
+-	int				ret;
+ 
+ 	if (dwc->usb2_phy)
+ 		return usb_phy_set_power(dwc->usb2_phy, mA);
+@@ -3133,10 +3131,10 @@ static int dwc3_gadget_vbus_draw(struct usb_gadget *g, unsigned int mA)
+ 	if (!dwc->usb_psy)
+ 		return -EOPNOTSUPP;
+ 
+-	val.intval = 1000 * mA;
+-	ret = power_supply_set_property(dwc->usb_psy, POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT, &val);
++	dwc->current_limit = mA;
++	schedule_work(&dwc->vbus_draw_work);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ /**
 -- 
 2.51.0
 
