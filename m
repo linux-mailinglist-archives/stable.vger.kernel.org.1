@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MITiDkGlo2lXJAUAu9opvQ
-	(envelope-from <stable+bounces-221465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:32:33 +0100
+	id sP1FKjiYo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D171CDA82
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:32:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAA71CB253
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A341F3160EED
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:25:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04756303AB77
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945572848AA;
-	Sun,  1 Mar 2026 01:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA85284662;
+	Sun,  1 Mar 2026 01:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBJ4+u8r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ui2p/pOk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57809274B42;
-	Sun,  1 Mar 2026 01:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B274D274B42
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328332; cv=none; b=GSX/Tuf2nWncOaUaDxMhPBZFoMoK4YD+qgr9LM2StZBSgrR12RcIMJjL/fv73KrpO+OHGdsm78lAOa/6sU1Xlfk4EeridNm9LYxKTfus9hgVP3HmNTGkrAatxHinRuhCQ9XjuIxbqceIMBkWq7Nh4Gu16XbmTcgbKNJRkioAwPw=
+	t=1772328334; cv=none; b=uxF079Ev3w6UNfG2qhy44ccm57Pib3nlh/uJzOGZWPXK8jwge6oBT0UaXAbZEGi7hX7JtyqajzBHZnOIhDnWtQQD9ct1MOI262qykMsAM0+UKAR92P/IznRaRE73alXsXga5njRnWRTTOYSMrWZMo/TutfA2Ab1ikxhQakyUS/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328332; c=relaxed/simple;
-	bh=YoQb1GfTmltnr+4AbRnLrCMrQ9CRaLDWHMX9phNRAsQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F4nAb9xK6YAC1J5cH5VpZkJkBXDHHyts0A8N1tYcRtWJEGeQUJtJX0DYGIY1ANfs0dyrhi//4vOKj32Y1/mZ9AwYRSH+IJSJvF8ZO94iUhQli72HBSlDNG1lePwbVFUjuiKDMPBFqh2FfRzXTovmzctbE3dxEDAZmgK+79i+Jp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBJ4+u8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933BBC19421;
-	Sun,  1 Mar 2026 01:25:31 +0000 (UTC)
+	s=arc-20240116; t=1772328334; c=relaxed/simple;
+	bh=Q9Okaugaz+aU0hKuYTjGGh7QDKeQjLlPanWsAccytIw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dEUj1mDgMSQRURuN0JeC9HvZVzs5mu3nJJa1BCm18jv/pW3K1OlesgLJtsEd47i2wi5beh0lV+fmLPoXkm2PnjMC31hHV7cHAg+EJG4rJ/MWEM+EginN6fZAPf0TiiyKjdaPClIpF8KMBA3hoHRRjQODhurSMb36v88cs8aSFCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ui2p/pOk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED820C19421;
+	Sun,  1 Mar 2026 01:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328332;
-	bh=YoQb1GfTmltnr+4AbRnLrCMrQ9CRaLDWHMX9phNRAsQ=;
+	s=k20201202; t=1772328334;
+	bh=Q9Okaugaz+aU0hKuYTjGGh7QDKeQjLlPanWsAccytIw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=IBJ4+u8rObU8JfnHuWh7rVtqrnNTcfmopvl6t4/Z+ED65ihBV0Z+t9i2iYdZoFL5e
-	 z0h8WAt36wojiNDKZoGOiEdFRs0rhGbZo5BeJVPEB5WHN8Qh2n9Hf2R72HgspKQ1is
-	 PS3ojAuE1hDs6+Kd8f/TxiRAUGlNWPUVo/KpXqbycWbsPDfzOoqp52dmfd2LaRJoSh
-	 u01zqWVZ9IWek9T+aA3tvMzHpWNV4dt8Q5EjONwzo/0FR5B5qXbsdG//MF1FY4hFL0
-	 xo50ywH+rE/n9ecfnSZHAaPUk2EsuB43iduHflB7y2W0ECtvh7SK2YGilYiIVAaJ0y
-	 9aP6FamJpNNxw==
+	b=ui2p/pOkcfTuuorty0OjyEd6wRdFiDR1P8vsT4Ex/N4fGLh7I2xuMY2j9ez/rka45
+	 Jf6kBnTJjIfAdMtv8eINU+kF153ogMcmuKUoletB9iff6ooFxslpDPDB0eH68ChpjL
+	 757CqX4X9m6/mctp9CIewriTJKZiPkXtdEiet/niGB8ScYlicU52a8tmj6jsnak/g0
+	 vlDmn/3o41zrooyx0XnQ3u0rxtT0UUqdn9E8aH1XZDymk9bGkVGbgQ/uELU/qzIWBc
+	 CbtV57pg9HVOvcyP0dJxP0AQki5UP0aRanczetkDEhnXyntu06kvkRpEgPLF9Y2t79
+	 fsayBc0JSeQiw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	robin.murphy@arm.com
-Cc: Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-perf-users@vger.kernel.org
-Subject: FAILED: Patch "perf/arm-cmn: Reject unsupported hardware configurations" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:25:30 -0500
-Message-ID: <20260301012530.1682624-1-sashal@kernel.org>
+	harry.yoo@oracle.com
+Cc: kernel test robot <oliver.sang@intel.com>,
+	Hao Li <hao.li@linux.dev>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	linux-mm@kvack.org
+Subject: FAILED: Patch "mm/slab: avoid allocating slabobj_ext array from its own slab" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:25:32 -0500
+Message-ID: <20260301012532.1682677-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,29 +69,28 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-221466-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221465-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
-X-Rspamd-Queue-Id: B1D171CDA82
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DCAA71CB253
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -104,73 +103,146 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 36c0de02575ce59dfd879eb4ef63d53a68bbf9ce Mon Sep 17 00:00:00 2001
-From: Robin Murphy <robin.murphy@arm.com>
-Date: Tue, 3 Feb 2026 14:07:29 +0000
-Subject: [PATCH] perf/arm-cmn: Reject unsupported hardware configurations
+From 280ea9c3154b2af7d841f992c9fc79e9d6534e03 Mon Sep 17 00:00:00 2001
+From: Harry Yoo <harry.yoo@oracle.com>
+Date: Mon, 26 Jan 2026 21:57:14 +0900
+Subject: [PATCH] mm/slab: avoid allocating slabobj_ext array from its own slab
 
-So far we've been fairly lax about accepting both unknown CMN models
-(at least with a warning), and unknown revisions of those which we
-do know, as although things do frequently change between releases,
-typically enough remains the same to be somewhat useful for at least
-some basic bringup checks. However, we also make assumptions of the
-maximum supported sizes and numbers of things in various places, and
-there's no guarantee that something new might not be bigger and lead
-to nasty array overflows. Make sure we only try to run on things that
-actually match our assumptions and so will not risk memory corruption.
+When allocating slabobj_ext array in alloc_slab_obj_exts(), the array
+can be allocated from the same slab we're allocating the array for.
+This led to obj_exts_in_slab() incorrectly returning true [1],
+although the array is not allocated from wasted space of the slab.
 
-We have at least always failed on completely unknown node types, so
-update that error message for clarity and consistency too.
+Vlastimil Babka observed that this problem should be fixed even when
+ignoring its incompatibility with obj_exts_in_slab(), because it creates
+slabs that are never freed as there is always at least one allocated
+object.
 
+To avoid this, use the next kmalloc size or large kmalloc when
+the array can be allocated from the same cache we're allocating
+the array for.
+
+In case of random kmalloc caches, there are multiple kmalloc caches
+for the same size and the cache is selected based on the caller address.
+Because it is fragile to ensure the same caller address is passed to
+kmalloc_slab(), kmalloc_noprof(), and kmalloc_node_noprof(), bump the
+size to (s->object_size + 1) when the sizes are equal, instead of
+directly comparing the kmem_cache pointers.
+
+Note that this doesn't happen when memory allocation profiling is
+disabled, as when the allocation of the array is triggered by memory
+cgroup (KMALLOC_CGROUP), the array is allocated from KMALLOC_NORMAL.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com [1]
 Cc: stable@vger.kernel.org
-Fixes: 7819e05a0dce ("perf/arm-cmn: Revamp model detection")
-Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Link: https://patch.msgid.link/20260126125714.88008-1-harry.yoo@oracle.com
+Reviewed-by: Hao Li <hao.li@linux.dev>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- drivers/perf/arm-cmn.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ mm/slub.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 53 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index 651edd73bfcb1..4fbafc4b79843 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -2422,6 +2422,15 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 			arm_cmn_init_node_info(cmn, reg & CMN_CHILD_NODE_ADDR, dn);
- 			dn->portid_bits = xp->portid_bits;
- 			dn->deviceid_bits = xp->deviceid_bits;
-+			/*
-+			 * Logical IDs are assigned from 0 per node type, so as
-+			 * soon as we see one bigger than expected, we can assume
-+			 * there are more than we can cope with.
-+			 */
-+			if (dn->logid > CMN_MAX_NODES_PER_EVENT) {
-+				dev_err(cmn->dev, "Node ID invalid for supported CMN versions: %d\n", dn->logid);
-+				return -ENODEV;
-+			}
+diff --git a/mm/slub.c b/mm/slub.c
+index afc3e511ff395..65b6d07ef20e6 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2092,6 +2092,49 @@ static inline void init_slab_obj_exts(struct slab *slab)
+ 	slab->obj_exts = 0;
+ }
  
- 			switch (dn->type) {
- 			case CMN_TYPE_DTC:
-@@ -2471,7 +2480,7 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 				break;
- 			/* Something has gone horribly wrong */
- 			default:
--				dev_err(cmn->dev, "invalid device node type: 0x%x\n", dn->type);
-+				dev_err(cmn->dev, "Device node type invalid for supported CMN versions: 0x%x\n", dn->type);
- 				return -ENODEV;
- 			}
- 		}
-@@ -2499,6 +2508,10 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 		cmn->mesh_x = cmn->num_xps;
- 	cmn->mesh_y = cmn->num_xps / cmn->mesh_x;
++/*
++ * Calculate the allocation size for slabobj_ext array.
++ *
++ * When memory allocation profiling is enabled, the obj_exts array
++ * could be allocated from the same slab cache it's being allocated for.
++ * This would prevent the slab from ever being freed because it would
++ * always contain at least one allocated object (its own obj_exts array).
++ *
++ * To avoid this, increase the allocation size when we detect the array
++ * may come from the same cache, forcing it to use a different cache.
++ */
++static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
++					 struct slab *slab, gfp_t gfp)
++{
++	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
++	struct kmem_cache *obj_exts_cache;
++
++	/*
++	 * slabobj_ext array for KMALLOC_CGROUP allocations
++	 * are served from KMALLOC_NORMAL caches.
++	 */
++	if (!mem_alloc_profiling_enabled())
++		return sz;
++
++	if (sz > KMALLOC_MAX_CACHE_SIZE)
++		return sz;
++
++	if (!is_kmalloc_normal(s))
++		return sz;
++
++	obj_exts_cache = kmalloc_slab(sz, NULL, gfp, 0);
++	/*
++	 * We can't simply compare s with obj_exts_cache, because random kmalloc
++	 * caches have multiple caches per size, selected by caller address.
++	 * Since caller address may differ between kmalloc_slab() and actual
++	 * allocation, bump size when sizes are equal.
++	 */
++	if (s->object_size == obj_exts_cache->object_size)
++		return obj_exts_cache->object_size + 1;
++
++	return sz;
++}
++
+ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ 		        gfp_t gfp, bool new_slab)
+ {
+@@ -2100,26 +2143,26 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ 	unsigned long new_exts;
+ 	unsigned long old_exts;
+ 	struct slabobj_ext *vec;
++	size_t sz;
  
-+	if (max(cmn->mesh_x, cmn->mesh_y) > CMN_MAX_DIMENSION) {
-+		dev_err(cmn->dev, "Mesh size invalid for supported CMN versions: %dx%d\n", cmn->mesh_x, cmn->mesh_y);
-+		return -ENODEV;
-+	}
- 	/* 1x1 config plays havoc with XP event encodings */
- 	if (cmn->num_xps == 1)
- 		dev_warn(cmn->dev, "1x1 config not fully supported, translate XP events manually\n");
+ 	gfp &= ~OBJCGS_CLEAR_MASK;
+ 	/* Prevent recursive extension vector allocation */
+ 	gfp |= __GFP_NO_OBJ_EXT;
+ 
++	sz = obj_exts_alloc_size(s, slab, gfp);
++
+ 	/*
+ 	 * Note that allow_spin may be false during early boot and its
+ 	 * restricted GFP_BOOT_MASK. Due to kmalloc_nolock() only supporting
+ 	 * architectures with cmpxchg16b, early obj_exts will be missing for
+ 	 * very early allocations on those.
+ 	 */
+-	if (unlikely(!allow_spin)) {
+-		size_t sz = objects * sizeof(struct slabobj_ext);
+-
++	if (unlikely(!allow_spin))
+ 		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
+ 				     slab_nid(slab));
+-	} else {
+-		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
+-				   slab_nid(slab));
+-	}
++	else
++		vec = kmalloc_node(sz, gfp | __GFP_ZERO, slab_nid(slab));
++
+ 	if (!vec) {
+ 		/*
+ 		 * Try to mark vectors which failed to allocate.
+@@ -2133,6 +2176,9 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ 		return -ENOMEM;
+ 	}
+ 
++	VM_WARN_ON_ONCE(virt_to_slab(vec) != NULL &&
++			virt_to_slab(vec)->slab_cache == s);
++
+ 	new_exts = (unsigned long)vec;
+ 	if (unlikely(!allow_spin))
+ 		new_exts |= OBJEXTS_NOSPIN_ALLOC;
 -- 
 2.51.0
 
