@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-222150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIYTB7Kso2myJgUAu9opvQ
-	(envelope-from <stable+bounces-222150-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:04:18 +0100
+	id iGhALp6eo2lzIgUAu9opvQ
+	(envelope-from <stable+bounces-222151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:04:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69EAD1CE2D0
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:04:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7E51CCCD7
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9644345B571
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2C90930FEFE9
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D172F4A18;
-	Sun,  1 Mar 2026 01:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CA63112A1;
+	Sun,  1 Mar 2026 01:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VsVhKAfb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFH2hpik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CD72C21F2
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF363090C6;
+	Sun,  1 Mar 2026 01:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330025; cv=none; b=eBtd1dEhXNHOj3CZJkB6FGNCVbbUmSyPh5Gvn4aL4FkWWefYVs8tURqXPX6A4PN0MuxxWTAd6Kwh3ARjBIkA9zaLecKanU4P+fJwelViZ3XScsCO77ZvJqlXT/Ssc6zTjn5PJlSI2rXxzOQMuitTR32J+06PempsfPZO9iHRinY=
+	t=1772330027; cv=none; b=BynothtNMcsJ+Fkq2v31cnLAybwYzY+mfhN9uEA6DjHaj9GFzW3vNwm4fFIjDFcWVUujnRSOl4kSPuto3KQt5aKo7m9pkAt4KPO0w+NBhOXqAOeuNxEeMV7DzJTMnoYwNKuEzSzZqdZnGo2/PL7hmJbGrCqI276IP+Oj8JbBLtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330025; c=relaxed/simple;
-	bh=4C398eKwQNR1EVjDD+dhkbwxgVvI8gB22YBoGbSoz14=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WQhi2KFadhRhatGRaM6+1bRHNTSt44Nv4xAyhxBehCEI3GCEJuF/3ek1lQ2uSRoi+BH6xAouzX4NOXm5R7ytlMR80POha9ymrDn1h1InyQ9EAnOWoPuZFZOqmesAsCM8cn6SfrOqEIPu2VZDH8gWM8fWrCFvlS2sluMLU8LdXE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VsVhKAfb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21CCC19421;
-	Sun,  1 Mar 2026 01:53:44 +0000 (UTC)
+	s=arc-20240116; t=1772330027; c=relaxed/simple;
+	bh=URnU3M5r1G+SEcTaZ9fURdC5FLEbRbEaJtbMoF2LBkw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hd8c76coQRjgSLMJiKG1SYnJGwiNx1bvsHBmBBU8nBEeyKOBCFoYGsqn9eGQAZpONApQNl1dpMgJE+YiAYXoV2VtXS1KT6dWXQ6oeYCc5WocoOZQG7AhBNBckdBsm9HDM39ODt8Dr1gN4XUJ88kic3zIgV0CqcEI5IWN4SszT9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IFH2hpik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7401C19421;
+	Sun,  1 Mar 2026 01:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330025;
-	bh=4C398eKwQNR1EVjDD+dhkbwxgVvI8gB22YBoGbSoz14=;
+	s=k20201202; t=1772330027;
+	bh=URnU3M5r1G+SEcTaZ9fURdC5FLEbRbEaJtbMoF2LBkw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=VsVhKAfbDbhHsTOB+ktDKz1Hgq/55cJ6apLDJ2l2HkRRCREQFij6qN/w2yy5CoW3b
-	 HXuFjyeT35aoAMkH+oY6xj7+mrj9iUwdTFxz0IemaXrCWSRM3XBwbSL+PaQwo5fhLd
-	 lPNfCb60KAofF5cepE13s//leh7/sG1K6VWa4uCIKrXAfhu1C+22kUEzhSwQK2kKK7
-	 nHtMk1UKnoLA6Qe+vy9TWSDJyCVNaXDAfdZi1yLFNGRoU6WigqPDSZRrBDgktMe2gy
-	 EC8Dq5xWAU140al8cGOoRQu0Hix2qdxy3byV99eVXqXiLvePIsqX2EAfPtF9Wj65Jx
-	 aLJ/+mf+rRWLg==
+	b=IFH2hpikDcBg0nW5IpAHL+KqICr0Ev0ZHKnH0LJol4cetw5UsynizitbRzQK6E4bb
+	 1L1LEoDpw8ycOfd6drCifGkR8D5CSPveZk8jFVMV5Y2TyDL6JouWBrOSJs9MWy9zqo
+	 QkEqGBv7oO5HBjsLz2aa851J1sjcKjGsYvRixx1y0UQikpUwxV202npzoygp75PrNL
+	 nWDdWKVNRYPvVqFO9v9JwQkBpiQgpvcmk+LlblC6vwujdD/ZyO7tREwQD10y4ztdFx
+	 UckJPLjP13yjkzPRMvK8zwgR2HjnqLxa3lvlo3faTJ1VyUUf1AtHrSdaQUr2XaEJr8
+	 M//qg5wi7JRyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	yifan1.zhang@amd.com
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm/amdgpu: Protect GPU register accesses in powergated state in some paths" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:53:43 -0500
-Message-ID: <20260301015343.1720561-1-sashal@kernel.org>
+	haokexin@gmail.com
+Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-omap@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: FAILED: Patch "net: cpsw_new: Fix potential unregister of netdev that has not been registered yet" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:53:45 -0500
+Message-ID: <20260301015345.1720608-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,21 +67,23 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222150-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-222151-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +91,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 69EAD1CE2D0
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7A7E51CCCD7
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -104,59 +106,51 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 39fc2bc4da0082c226cbee331f0a5d44db3997da Mon Sep 17 00:00:00 2001
-From: Yifan Zhang <yifan1.zhang@amd.com>
-Date: Mon, 2 Feb 2026 13:17:39 +0800
-Subject: [PATCH] drm/amdgpu: Protect GPU register accesses in powergated state
- in some paths
+From 9d724b34fbe13b71865ad0906a4be97571f19cf5 Mon Sep 17 00:00:00 2001
+From: Kevin Hao <haokexin@gmail.com>
+Date: Thu, 5 Feb 2026 10:47:03 +0800
+Subject: [PATCH] net: cpsw_new: Fix potential unregister of netdev that has
+ not been registered yet
 
-Ungate GPU CG/PG in device_fini_hw and device_halt to protect GPU
-register accesses, e.g. GC registers are accessed in amdgpu_irq_disable_all()
-and amdgpu_fence_driver_hw_fini().
+If an error occurs during register_netdev() for the first MAC in
+cpsw_register_ports(), even though cpsw->slaves[0].ndev is set to NULL,
+cpsw->slaves[1].ndev would remain unchanged. This could later cause
+cpsw_unregister_ports() to attempt unregistering the second MAC.
+To address this, add a check for ndev->reg_state before calling
+unregister_netdev(). With this change, setting cpsw->slaves[i].ndev
+to NULL becomes unnecessary and can be removed accordingly.
 
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://patch.msgid.link/20260205-cpsw-error-path-v1-2-6e58bae6b299@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ti/cpsw_new.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index c1ffc63e23ab5..528990a595ec9 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3504,9 +3504,6 @@ static int amdgpu_device_ip_fini_early(struct amdgpu_device *adev)
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index b9fc31eb06134..7f42f58a4b031 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -1472,7 +1472,7 @@ static void cpsw_unregister_ports(struct cpsw_common *cpsw)
+ 
+ 	for (i = 0; i < cpsw->data.slaves; i++) {
+ 		ndev = cpsw->slaves[i].ndev;
+-		if (!ndev)
++		if (!ndev || ndev->reg_state != NETREG_REGISTERED)
+ 			continue;
+ 
+ 		priv = netdev_priv(ndev);
+@@ -1494,7 +1494,6 @@ static int cpsw_register_ports(struct cpsw_common *cpsw)
+ 		if (ret) {
+ 			dev_err(cpsw->dev,
+ 				"cpsw: err registering net device%d\n", i);
+-			cpsw->slaves[i].ndev = NULL;
+ 			break;
  		}
  	}
- 
--	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
--	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
--
- 	amdgpu_amdkfd_suspend(adev, true);
- 	amdgpu_amdkfd_teardown_processes(adev);
- 	amdgpu_userq_suspend(adev);
-@@ -4902,6 +4899,9 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
- 		amdgpu_virt_fini_data_exchange(adev);
- 	}
- 
-+	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
-+	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
-+
- 	/* disable all interrupts */
- 	amdgpu_irq_disable_all(adev);
- 	if (adev->mode_info.mode_config_initialized) {
-@@ -7360,6 +7360,9 @@ void amdgpu_device_halt(struct amdgpu_device *adev)
- 	amdgpu_xcp_dev_unplug(adev);
- 	drm_dev_unplug(ddev);
- 
-+	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
-+	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
-+
- 	amdgpu_irq_disable_all(adev);
- 
- 	amdgpu_fence_driver_hw_fini(adev);
 -- 
 2.51.0
 
