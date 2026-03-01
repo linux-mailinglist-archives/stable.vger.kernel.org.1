@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-222269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKBaNhyjo2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:23:24 +0100
+	id kD/DJh2jo2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:23:25 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F42D1CD825
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:23:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D3B1CD82C
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:23:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E24534CD550
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8276F32FDD70
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8A22673AA;
-	Sun,  1 Mar 2026 02:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18C02F3C1F;
+	Sun,  1 Mar 2026 02:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aoW/duLL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LoNxfbnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2761190664
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6422B190664;
+	Sun,  1 Mar 2026 02:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330455; cv=none; b=Zd3QzGAFbDAV8/cA7kBZL8FsysbIdp5TzvPPro3/OfMhHRRkq4hV3Q1K0/8KZ0KpUYp6AcIAZiWfDmAcWsmbTjgD026+74ULCAtwynjDfljJLZPlTM+PWasl23snKLZ6fLesWD0ZOw+7prizE/N1PqpUe1cmLyO08UrYx18h3eg=
+	t=1772330458; cv=none; b=aApuIZoCEbgrhFsoqzwY9At+RUsmsNIXGVkuGXqgzLh+76s1v5mqTdnjXWGurI7aNHcg2f2Z51JXqlbSurJR0uvEODtNLxJY6lksvbWNYZRP9qoOEBzTpUrWAJX1P5DR8y8O4XTcnOeKSY0y9jCHZLUbXPHxd/fhwjqbjOr18DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330455; c=relaxed/simple;
-	bh=sfpiuxyMyhOg55SUk2UWzh/KW0zWseTzzIvgv+ooAW8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JDmSThnNvHqlIH0GqfN5OqcxmD3w8HPkvPCiqIepDEgWBxiaCDLVz+ukamHTFLd9amn5EcgvpnPO7h1t1PG/yApEbpjlRvFcDwD9TST63DF5K2mAB6bLDJl9Irg4dplMpksAZ7zs9zq3CszvqCo5HqJ2oq9fVImQ8Fmq7bc5Gak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aoW/duLL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B66C19421;
-	Sun,  1 Mar 2026 02:00:55 +0000 (UTC)
+	s=arc-20240116; t=1772330458; c=relaxed/simple;
+	bh=IWfzni5/VHa9K3xvjS/F7CbD1SgblrhCU/tdIJMG2cY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FewWdir9rPnErKwE+EZgLpnDpgL9SxvyaCdAJHw2KcAdfEACTHk3XfgzFjTcROY8VGthuLqfc0HVyUfl/zApKG7jDSw123/tCx10yjX5r+qBsouDXM/cNFyx58iJIPqaAj2pEuzn2H9wap0qnnC2KD7I5F6+684wDBtPc0KhvFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LoNxfbnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7379AC19421;
+	Sun,  1 Mar 2026 02:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330455;
-	bh=sfpiuxyMyhOg55SUk2UWzh/KW0zWseTzzIvgv+ooAW8=;
+	s=k20201202; t=1772330458;
+	bh=IWfzni5/VHa9K3xvjS/F7CbD1SgblrhCU/tdIJMG2cY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=aoW/duLLEm6YO69hDkLZjJrGYGH9OTKlShLpn7t8/W7uMvag7NzjN4CnCKdg2HpwV
-	 BCa++IxYMj5XuwjWCfB2PP23UZ89iZJR1Nsn965ujSuAC6AxSLv5ZFdt3Odr+uvsjm
-	 nad+Wb2igYgojkzOU/jlktZhlITbqhDE5YpU1CStLGaO8hwQ4TqQ7Vv4v11vX7BadE
-	 xWlbDh8vwK0g8nJIt52jNEbSa0ZXw2FtdP4y5uYaGDmmWTexsXtsYDDauF3uB3nYdn
-	 /s3oKGLlltPZXAldE29UZBAbTenZYZWTTnOfhMvP49ljiZYd2rR6hJ1FrOtQbQlfVH
-	 5XGcZ+xDPFAbQ==
+	b=LoNxfbnI4S1CsLzg50ggXckmRwm6pq0f4Xfy+A59KUgIFdTbToKKIAJOQf+Ha2poi
+	 MZSOfqXR1QY1B28zJHvOknQ15atmVvWKg2PlmvBhWB/ZBtY/NvDmXhAd//ZfnAn38K
+	 B7Pz5I8Js2LTimgXtrbT+kX+Wv2T1dRcGqI202MP6Yta4pOy7EyFjUizadzI7fEiCP
+	 fw09awHkG8onPhBcK+l41aqrQ2Ywbq9URyZ3iEV+bnoJZbYSoryVhDdskr8mwoHW9j
+	 mxse/8soZiO0WAzNFfXJEGeQR9fy8/mCwlSlYIqHRrGWm3YZTNIaIEEE59rXZdPegL
+	 A5yc7Ed6bfs6A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	joonwonkang@google.com
-Cc: Jassi Brar <jassisinghbrar@gmail.com>
-Subject: FAILED: Patch "mailbox: Prevent out-of-bounds access in fw_mbox_index_xlate()" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:00:53 -0500
-Message-ID: <20260301020054.1727820-1-sashal@kernel.org>
+	sunyongjian1@huawei.com
+Cc: Zhang Yi <yi.zhang@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Ts'o <tytso@mit.edu>,
+	stable@kernel.org,
+	linux-ext4@vger.kernel.org
+Subject: FAILED: Patch "ext4: fix e4b bitmap inconsistency reports" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:00:55 -0500
+Message-ID: <20260301020056.1727865-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,34 +67,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222270-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-222269-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3F42D1CD825
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email]
+X-Rspamd-Queue-Id: 11D3B1CD82C
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -102,45 +106,125 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From fcd7f96c783626c07ee3ed75fa3739a8a2052310 Mon Sep 17 00:00:00 2001
-From: Joonwon Kang <joonwonkang@google.com>
-Date: Wed, 26 Nov 2025 06:22:50 +0000
-Subject: [PATCH] mailbox: Prevent out-of-bounds access in
- fw_mbox_index_xlate()
+From bdc56a9c46b2a99c12313122b9352b619a2e719e Mon Sep 17 00:00:00 2001
+From: Yongjian Sun <sunyongjian1@huawei.com>
+Date: Tue, 6 Jan 2026 17:08:20 +0800
+Subject: [PATCH] ext4: fix e4b bitmap inconsistency reports
 
-Although it is guided that `#mbox-cells` must be at least 1, there are
-many instances of `#mbox-cells = <0>;` in the device tree. If that is
-the case and the corresponding mailbox controller does not provide
-`fw_xlate` and of_xlate` function pointers, `fw_mbox_index_xlate()` will
-be used by default and out-of-bounds accesses could occur due to lack of
-bounds check in that function.
+A bitmap inconsistency issue was observed during stress tests under
+mixed huge-page workloads. Ext4 reported multiple e4b bitmap check
+failures like:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+ext4_mb_complex_scan_group:2508: group 350, 8179 free clusters as
+per group info. But got 8192 blocks
+
+Analysis and experimentation confirmed that the issue is caused by a
+race condition between page migration and bitmap modification. Although
+this timing window is extremely narrow, it is still hit in practice:
+
+folio_lock                        ext4_mb_load_buddy
+__migrate_folio
+  check ref count
+  folio_mc_copy                     __filemap_get_folio
+                                      folio_try_get(folio)
+                                  ......
+                                  mb_mark_used
+                                  ext4_mb_unload_buddy
+  __folio_migrate_mapping
+    folio_ref_freeze
+folio_unlock
+
+The root cause of this issue is that the fast path of load_buddy only
+increments the folio's reference count, which is insufficient to prevent
+concurrent folio migration. We observed that the folio migration process
+acquires the folio lock. Therefore, we can determine whether to take the
+fast path in load_buddy by checking the lock status. If the folio is
+locked, we opt for the slow path (which acquires the lock) to close this
+concurrency window.
+
+Additionally, this change addresses the following issues:
+
+When the DOUBLE_CHECK macro is enabled to inspect bitmap-related
+issues, the following error may be triggered:
+
+corruption in group 324 at byte 784(6272): f in copy != ff on
+disk/prealloc
+
+Analysis reveals that this is a false positive. There is a specific race
+window where the bitmap and the group descriptor become momentarily
+inconsistent, leading to this error report:
+
+ext4_mb_load_buddy                   ext4_mb_load_buddy
+  __filemap_get_folio(create|lock)
+    folio_lock
+  ext4_mb_init_cache
+    folio_mark_uptodate
+                                     __filemap_get_folio(no lock)
+                                     ......
+                                     mb_mark_used
+                                       mb_mark_used_double
+  mb_cmp_bitmaps
+                                       mb_set_bits(e4b->bd_bitmap)
+  folio_unlock
+
+The original logic assumed that since mb_cmp_bitmaps is called when the
+bitmap is newly loaded from disk, the folio lock would be sufficient to
+prevent concurrent access. However, this overlooks a specific race
+condition: if another process attempts to load buddy and finds the folio
+is already in an uptodate state, it will immediately begin using it without
+holding folio lock.
+
+Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260106090820.836242-1-sunyongjian@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 ---
- drivers/mailbox/mailbox.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/ext4/mballoc.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 2acc6ec229a45..617ba505691d3 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -489,12 +489,10 @@ EXPORT_SYMBOL_GPL(mbox_free_channel);
- static struct mbox_chan *fw_mbox_index_xlate(struct mbox_controller *mbox,
- 					     const struct fwnode_reference_args *sp)
- {
--	int ind = sp->args[0];
--
--	if (ind >= mbox->num_chans)
-+	if (sp->nargs < 1 || sp->args[0] >= mbox->num_chans)
- 		return ERR_PTR(-EINVAL);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 56d50fd3310b4..de4cacb740b33 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1706,16 +1706,17 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
  
--	return &mbox->chans[ind];
-+	return &mbox->chans[sp->args[0]];
- }
+ 	/* Avoid locking the folio in the fast path ... */
+ 	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
+-	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
++	if (IS_ERR(folio) || !folio_test_uptodate(folio) || folio_test_locked(folio)) {
++		/*
++		 * folio_test_locked is employed to detect ongoing folio
++		 * migrations, since concurrent migrations can lead to
++		 * bitmap inconsistency. And if we are not uptodate that
++		 * implies somebody just created the folio but is yet to
++		 * initialize it. We can drop the folio reference and
++		 * try to get the folio with lock in both cases to avoid
++		 * concurrency.
++		 */
+ 		if (!IS_ERR(folio))
+-			/*
+-			 * drop the folio reference and try
+-			 * to get the folio with lock. If we
+-			 * are not uptodate that implies
+-			 * somebody just created the folio but
+-			 * is yet to initialize it. So
+-			 * wait for it to initialize.
+-			 */
+ 			folio_put(folio);
+ 		folio = __filemap_get_folio(inode->i_mapping, pnum,
+ 				FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
+@@ -1764,7 +1765,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
  
- /**
+ 	/* we need another folio for the buddy */
+ 	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
+-	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
++	if (IS_ERR(folio) || !folio_test_uptodate(folio) || folio_test_locked(folio)) {
+ 		if (!IS_ERR(folio))
+ 			folio_put(folio);
+ 		folio = __filemap_get_folio(inode->i_mapping, pnum,
 -- 
 2.51.0
 
