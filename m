@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-222162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFHAFM6do2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-222162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:46 +0100
+	id QNP5ELyeo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:04:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0337E1CC978
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:00:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5CC1CCD3C
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:04:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A70530930C0
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BCAA13107317
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3C030C354;
-	Sun,  1 Mar 2026 01:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593FC30E0CC;
+	Sun,  1 Mar 2026 01:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4MQ7EKn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/zBqdF8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823151DF271;
-	Sun,  1 Mar 2026 01:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2261DF271;
+	Sun,  1 Mar 2026 01:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330054; cv=none; b=qzXB/Ak6f9/tcKhz5o/H7rhw1U6YGYmwOeWIIjk15L4RZGUgQINxJvpFxkLKfkGOp72KIRDF3FwxVXWpxBJLYol8gTB6FswI/X96TWVN9zO7fnyPWKAiomPl8uQJoJEyql/rbDNcZYRXigSEG6uAP2TqIaE7iUWH//ZBes7UPKM=
+	t=1772330057; cv=none; b=W3Ca4/jokMFYxXXfQGNsb7S9rRz0AgESJCnojbwd4mYBcj2DoonaYL+RPD6crOIYXHDTNb3TfNfbEUijhizYAa2jfQerdvrq2geyO7LmegEvDQ2QoUMaS3q6SZ0yw6XdVcsyKPvHffdtUp9SPO5pPJcZFCR7P2WY0bw+blLuuOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330054; c=relaxed/simple;
-	bh=iObxE+O0WGH08E9ThUVOzRAODclGMmtshIzKWWb3qh4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RwN8Kr1EAVA7byKCROJ4LiQmz/L6prgq195aZlPPvVMNbNxAw71OjLy77TDG1Lz3xOT9r8mL+AC8sjx1FeKplL+ynyTuNwwXNCI0LaJQzYi+qbAP4j9SmCWqi+pIb4QCG/dOofk8gl6723rAmBkpN7tKbNHYCZXqiaIEIYw8jzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W4MQ7EKn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB63FC2BC86;
-	Sun,  1 Mar 2026 01:54:13 +0000 (UTC)
+	s=arc-20240116; t=1772330057; c=relaxed/simple;
+	bh=J1aG/UaZr2+U/VfRwX48UAWqzcajQNOb2icqxSDFFSI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EGjIPwoSklbTJj2kjB+7Rla7PzttVJ9thCoIld21mQq1XprdNyRruLKL91yquxrdFKx3Ay2xyV4MiItbT4B8URHfXtxKpXoIBgNpcWwWhn7zyTkz+Oj5z2EJsrlZp1wtvhAgfBPe63hyOHgGHMgfCISi/Pyu2hf6wbZo9JPrcgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/zBqdF8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26251C19421;
+	Sun,  1 Mar 2026 01:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330054;
-	bh=iObxE+O0WGH08E9ThUVOzRAODclGMmtshIzKWWb3qh4=;
+	s=k20201202; t=1772330057;
+	bh=J1aG/UaZr2+U/VfRwX48UAWqzcajQNOb2icqxSDFFSI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=W4MQ7EKnRWj/bPWgvui6HR91qBg08Rqi2bYZMLahc5ihS+StyYCNZIz1ajVVNTOrp
-	 gv2H7E2dyATL3N+gnxdpBgwI9Gv/CRFRKgPLTKVwX8oVk0y9JBYW6VzUZYGDLRndv0
-	 9jNFOCEt/glCB496dXaQltufe7+FppgRMkgf32TnNT8DsBS4Povpe0Lb5HtDvg3DlQ
-	 L+3qWxrWstNWyG0gwXGMOGl/VwJvZPixRJ0k2k3PF3/E5hyZkC7H45ZYC5IXG/whdy
-	 5B0cobVhJUevklb7vkwmb3v4rhEzB9y72u067OLvVdcge2hxJ35pZ8h7N1feiGwDVy
-	 tx4pJVBMObQUQ==
+	b=J/zBqdF8sXRM3MiCIyfHh/W7YkG5IwDB8O4JmFrJnRbiaRZRlLbr7xF2rhJ4SHtG/
+	 GjCVXyYj37LMJIP9GpBw8rvMll5A8mPeyX7LHzb1sNlq4NQ9DX4EhE+btddFTSEQD5
+	 OKma/Q/9AnmGpPgWkChUFGpLinsNwtZi2mq7jb5f2QeFEEHuwnxLE94G0Bc8xZDK0a
+	 c0UVao/chjBf3GuQksirVuz8r1bApXsWjaS1SsoBztA7XUhGzWniQWYPY4J22uLIX1
+	 HsbDjyN1a3MNzmHctYfHNqSNFpgoHtAivo9mBKXHNGmd2FJE+4BHqCGKcuzaemv0cy
+	 cHvZxb6tL5vHg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	hanguidong02@gmail.com
-Cc: Ben Hutchings <ben@decadent.org.uk>,
-	Guenter Roeck <linux@roeck-us.net>,
-	linux-hwmon@vger.kernel.org
-Subject: FAILED: Patch "hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler optimization induced race" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:54:12 -0500
-Message-ID: <20260301015412.1721158-1-sashal@kernel.org>
+	metze@samba.org
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Steve French <stfrench@microsoft.com>
+Subject: FAILED: Patch "smb: server: make use of smbdirect_socket.send_io.bcredits" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:54:14 -0500
+Message-ID: <20260301015415.1721213-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,36 +66,40 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [8.84 / 15.00];
+	URIBL_BLACK(7.50)[talpey.com:email];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222162-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,talpey.com,vger.kernel.org,lists.samba.org,microsoft.com];
+	GREYLIST(0.00)[pass,meta];
+	TAGGED_FROM(0.00)[bounces-222163-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:email,decadent.org.uk:email]
-X-Rspamd-Queue-Id: 0337E1CC978
-X-Rspamd-Action: no action
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_SPAM(0.00)[0.428];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samba.org:email,talpey.com:email]
+X-Rspamd-Queue-Id: AF5CC1CCD3C
+X-Rspamd-Action: add header
+X-Spam: Yes
 
 The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
@@ -104,104 +111,156 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 007be4327e443d79c9dd9e56dc16c36f6395d208 Mon Sep 17 00:00:00 2001
-From: Gui-Dong Han <hanguidong02@gmail.com>
-Date: Tue, 3 Feb 2026 20:14:43 +0800
-Subject: [PATCH] hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler
- optimization induced race
+From 34abd408c8ba24d7c97bd02ba874d8c714f49db1 Mon Sep 17 00:00:00 2001
+From: Stefan Metzmacher <metze@samba.org>
+Date: Thu, 22 Jan 2026 18:16:45 +0100
+Subject: [PATCH] smb: server: make use of smbdirect_socket.send_io.bcredits
 
-Simply copying shared data to a local variable cannot prevent data
-races. The compiler is allowed to optimize away the local copy and
-re-read the shared memory, causing a Time-of-Check Time-of-Use (TOCTOU)
-issue if the data changes between the check and the usage.
+It turns out that our code will corrupt the stream of
+reassabled data transfer messages when we trigger an
+immendiate (empty) send.
 
-To enforce the use of the local variable, use READ_ONCE() when reading
-the shared data and WRITE_ONCE() when updating it. Apply these macros to
-the three identified locations (curr_sense, adc, and fault) where local
-variables are used for error validation, ensuring the value remains
-consistent.
+In order to fix this we'll have a single 'batch' credit per
+connection. And code getting that credit is free to use
+as much messages until remaining_length reaches 0, then
+the batch credit it given back and the next logical send can
+happen.
 
-Reported-by: Ben Hutchings <ben@decadent.org.uk>
-Closes: https://lore.kernel.org/all/6fe17868327207e8b850cf9f88b7dc58b2021f73.camel@decadent.org.uk/
-Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
-Fixes: b8d5acdcf525 ("hwmon: (max16065) Use local variable to avoid TOCTOU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://lore.kernel.org/r/20260203121443.5482-1-hanguidong02@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- drivers/hwmon/max16065.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ fs/smb/server/transport_rdma.c | 53 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 51 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
-index 4c9e7892a73c1..43fbb9b26b102 100644
---- a/drivers/hwmon/max16065.c
-+++ b/drivers/hwmon/max16065.c
-@@ -151,27 +151,27 @@ static struct max16065_data *max16065_update_device(struct device *dev)
- 		int i;
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 4a473df1f2b3a..38248b6a1b5ca 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -221,6 +221,7 @@ static void smb_direct_disconnect_wake_up_all(struct smbdirect_socket *sc)
+ 	 * in order to notice the broken connection.
+ 	 */
+ 	wake_up_all(&sc->status_wait);
++	wake_up_all(&sc->send_io.bcredits.wait_queue);
+ 	wake_up_all(&sc->send_io.lcredits.wait_queue);
+ 	wake_up_all(&sc->send_io.credits.wait_queue);
+ 	wake_up_all(&sc->send_io.pending.zero_wait_queue);
+@@ -1152,6 +1153,7 @@ static void smb_direct_send_ctx_init(struct smbdirect_send_batch *send_ctx,
+ 	send_ctx->wr_cnt = 0;
+ 	send_ctx->need_invalidate_rkey = need_invalidate_rkey;
+ 	send_ctx->remote_key = remote_key;
++	send_ctx->credit = 0;
+ }
  
- 		for (i = 0; i < data->num_adc; i++)
--			data->adc[i]
--			  = max16065_read_adc(client, MAX16065_ADC(i));
-+			WRITE_ONCE(data->adc[i],
-+				   max16065_read_adc(client, MAX16065_ADC(i)));
- 
- 		if (data->have_current) {
--			data->adc[MAX16065_NUM_ADC]
--			  = max16065_read_adc(client, MAX16065_CSP_ADC);
--			data->curr_sense
--			  = i2c_smbus_read_byte_data(client,
--						     MAX16065_CURR_SENSE);
-+			WRITE_ONCE(data->adc[MAX16065_NUM_ADC],
-+				   max16065_read_adc(client, MAX16065_CSP_ADC));
-+			WRITE_ONCE(data->curr_sense,
-+				   i2c_smbus_read_byte_data(client, MAX16065_CURR_SENSE));
- 		}
- 
- 		for (i = 0; i < 2; i++)
--			data->fault[i]
--			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
-+			WRITE_ONCE(data->fault[i],
-+				   i2c_smbus_read_byte_data(client, MAX16065_FAULT(i)));
- 
- 		/*
- 		 * MAX16067 and MAX16068 have separate undervoltage and
- 		 * overvoltage alarm bits. Squash them together.
- 		 */
- 		if (data->chip == max16067 || data->chip == max16068)
--			data->fault[0] |= data->fault[1];
-+			WRITE_ONCE(data->fault[0],
-+				   data->fault[0] | data->fault[1]);
- 
- 		data->last_updated = jiffies;
- 		data->valid = true;
-@@ -185,7 +185,7 @@ static ssize_t max16065_alarm_show(struct device *dev,
+ static int smb_direct_flush_send_list(struct smbdirect_socket *sc,
+@@ -1159,10 +1161,10 @@ static int smb_direct_flush_send_list(struct smbdirect_socket *sc,
+ 				      bool is_last)
  {
- 	struct sensor_device_attribute_2 *attr2 = to_sensor_dev_attr_2(da);
- 	struct max16065_data *data = max16065_update_device(dev);
--	int val = data->fault[attr2->nr];
-+	int val = READ_ONCE(data->fault[attr2->nr]);
+ 	struct smbdirect_send_io *first, *last;
+-	int ret;
++	int ret = 0;
  
- 	if (val < 0)
- 		return val;
-@@ -203,7 +203,7 @@ static ssize_t max16065_input_show(struct device *dev,
+ 	if (list_empty(&send_ctx->msg_list))
+-		return 0;
++		goto release_credit;
+ 
+ 	first = list_first_entry(&send_ctx->msg_list,
+ 				 struct smbdirect_send_io,
+@@ -1204,6 +1206,13 @@ static int smb_direct_flush_send_list(struct smbdirect_socket *sc,
+ 		smb_direct_free_sendmsg(sc, last);
+ 	}
+ 
++release_credit:
++	if (is_last && !ret && send_ctx->credit) {
++		atomic_add(send_ctx->credit, &sc->send_io.bcredits.count);
++		send_ctx->credit = 0;
++		wake_up(&sc->send_io.bcredits.wait_queue);
++	}
++
+ 	return ret;
+ }
+ 
+@@ -1229,6 +1238,25 @@ static int wait_for_credits(struct smbdirect_socket *sc,
+ 	} while (true);
+ }
+ 
++static int wait_for_send_bcredit(struct smbdirect_socket *sc,
++				 struct smbdirect_send_batch *send_ctx)
++{
++	int ret;
++
++	if (send_ctx->credit)
++		return 0;
++
++	ret = wait_for_credits(sc,
++			       &sc->send_io.bcredits.wait_queue,
++			       &sc->send_io.bcredits.count,
++			       1);
++	if (ret)
++		return ret;
++
++	send_ctx->credit = 1;
++	return 0;
++}
++
+ static int wait_for_send_lcredit(struct smbdirect_socket *sc,
+ 				 struct smbdirect_send_batch *send_ctx)
  {
- 	struct sensor_device_attribute *attr = to_sensor_dev_attr(da);
- 	struct max16065_data *data = max16065_update_device(dev);
--	int adc = data->adc[attr->index];
-+	int adc = READ_ONCE(data->adc[attr->index]);
+@@ -1430,6 +1458,16 @@ static int smb_direct_post_send_data(struct smbdirect_socket *sc,
+ 	struct smbdirect_send_io *msg;
+ 	int data_length;
+ 	struct scatterlist sg[SMBDIRECT_SEND_IO_MAX_SGE - 1];
++	struct smbdirect_send_batch _send_ctx;
++
++	if (!send_ctx) {
++		smb_direct_send_ctx_init(&_send_ctx, false, 0);
++		send_ctx = &_send_ctx;
++	}
++
++	ret = wait_for_send_bcredit(sc, send_ctx);
++	if (ret)
++		goto bcredit_failed;
  
- 	if (unlikely(adc < 0))
- 		return adc;
-@@ -216,7 +216,7 @@ static ssize_t max16065_current_show(struct device *dev,
- 				     struct device_attribute *da, char *buf)
- {
- 	struct max16065_data *data = max16065_update_device(dev);
--	int curr_sense = data->curr_sense;
-+	int curr_sense = READ_ONCE(data->curr_sense);
+ 	ret = wait_for_send_lcredit(sc, send_ctx);
+ 	if (ret)
+@@ -1482,6 +1520,13 @@ static int smb_direct_post_send_data(struct smbdirect_socket *sc,
+ 	ret = post_sendmsg(sc, send_ctx, msg);
+ 	if (ret)
+ 		goto err;
++
++	if (send_ctx == &_send_ctx) {
++		ret = smb_direct_flush_send_list(sc, send_ctx, true);
++		if (ret)
++			goto err;
++	}
++
+ 	return 0;
+ err:
+ 	smb_direct_free_sendmsg(sc, msg);
+@@ -1490,6 +1535,9 @@ static int smb_direct_post_send_data(struct smbdirect_socket *sc,
+ credit_failed:
+ 	atomic_inc(&sc->send_io.lcredits.count);
+ lcredit_failed:
++	atomic_add(send_ctx->credit, &sc->send_io.bcredits.count);
++	send_ctx->credit = 0;
++bcredit_failed:
+ 	return ret;
+ }
  
- 	if (unlikely(curr_sense < 0))
- 		return curr_sense;
+@@ -1961,6 +2009,7 @@ static int smb_direct_send_negotiate_response(struct smbdirect_socket *sc,
+ 		resp->max_fragmented_size =
+ 				cpu_to_le32(sp->max_fragmented_recv_size);
+ 
++		atomic_set(&sc->send_io.bcredits.count, 1);
+ 		sc->recv_io.expected = SMBDIRECT_EXPECT_DATA_TRANSFER;
+ 		sc->status = SMBDIRECT_SOCKET_CONNECTED;
+ 	}
 -- 
 2.51.0
 
