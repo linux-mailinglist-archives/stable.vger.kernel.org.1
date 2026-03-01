@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aG9kNyGZo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:49 +0100
+	id kHRZEBGZo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C021CB4DD
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 477C81CB4AB
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:40:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8CCA3088624
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 860F930668C0
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CF6296BD3;
-	Sun,  1 Mar 2026 01:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D8C29D29D;
+	Sun,  1 Mar 2026 01:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LU8ssF8K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vi6z7s8y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F6318E02A;
-	Sun,  1 Mar 2026 01:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D1818E02A;
+	Sun,  1 Mar 2026 01:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328594; cv=none; b=Ies3NIeBYz0ERD7tcwsyvBKGXBqzO6KJBAyBnjwSfXFA+PdUaJVkN9Up9NDPRRbuzJNkJSbDHIpLw1361JQM0DPSfWrEoQv0e/IviUEIG6bbM3uOmwTtWTvSlc9HFdaRzLZ+disBNLVoUA0gHdZw7Hw8C6bMGrKihU5tU31wzwA=
+	t=1772328597; cv=none; b=hdynma1Nf5RoGhXzB/ayRYkW/HEEe83UEWC4OgnurZeCFvIuMHiSku6YF0v1z2IF49XC6yG35gz9WFsnkbp+1ZlV4qIiEid7UGansWXAK1E/IPmtXl/dhDCybjZCnHnHCaD3lr/fagAJkOZU0KQ/iG8jHMZn1aLT0+I8zNCBnpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328594; c=relaxed/simple;
-	bh=K2cGs3E1rkxQ+FCaRNxy+ARurf+Q27Azq/49plwfPUA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cDnF1+jqnbMlr3iTktlIynAqpdBCSrs+3kIFkyI98tMxesFmsSDVVpAEuncVjHW5ZUCUVVdlqow8Bik2FXZULcoXPnJzvix+clSZTNQpzZI6Geo8jcnQ00uUt4gY1uccbKu080zpVqM54l24Ewjp6frOupd51t0GCg1NvEJxGyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LU8ssF8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B54C19421;
-	Sun,  1 Mar 2026 01:29:53 +0000 (UTC)
+	s=arc-20240116; t=1772328597; c=relaxed/simple;
+	bh=9asx+xbUbiwjE66j5ysMw/U8GoI8BeO3Nkuvf+WtAhM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a7tOc+54+zHG214f+d724Yinm4M5VadVMBuLE64bm+O5OaGHjlYbvr6gZ7S25edqA6/oZA9jbOx+ANL2hBRe99Fr9yAeiAIgYKxau9Q1GVTc3rjkk5Rxh+ZoRdPdE9ihU7pY8+iDfySk/zunU8XJxJOfF2bt7HahHUF9clliSO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vi6z7s8y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E641C19421;
+	Sun,  1 Mar 2026 01:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328594;
-	bh=K2cGs3E1rkxQ+FCaRNxy+ARurf+Q27Azq/49plwfPUA=;
+	s=k20201202; t=1772328596;
+	bh=9asx+xbUbiwjE66j5ysMw/U8GoI8BeO3Nkuvf+WtAhM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=LU8ssF8K0Ez685FcPBMNvvBrt+y72XNUtGBgoQz+ALtp2aP1mlkSBL5UnhNUEUUr/
-	 YcbvZhbd0swVlUskYYlgjEiEcvGGf9VVKlpDHiX8WQGWZyOHBRgKdqw4cXWfvph3B4
-	 cHKaxIBZgSNcSk7NvC/N8+WES/80RWKg+Zi2ckAg9DWmzHobJyzn2UzOMwbMrwbxgj
-	 kjepyHyTj+lo2XAoeyxL87MRmCc2GRx1JXSzGOhco6EnSgGTvJ7ncw8SpEwLsYRs3K
-	 s4/ITJnD6lCfLke8qU31ZcY0VKxuVQSbxGXaQbctFlIAe91FvyVxjNoloTzBfgpGyg
-	 IG+4ywNOA1ctA==
+	b=Vi6z7s8yY7yI+CHNy9oADWjZKx8PRmNVeBPJbP9wR+avDYXWlkgZq8dDBkdCDr8vD
+	 D+N5rCFOhrQmmroCcKFnjvH4FFN/r432nm8pkMYPChy8t8KBtrxqUpA8nr8sd33ET/
+	 PQ7TM53PXJLeWgSnBvLI5dpYqEEAFhgN/iYZ6rK78L8TG70D67/IUmM+kr8Fvxptfe
+	 07q4GGw7oRK8tL8HhSV0aO2h5LG3GByvwBrTpJ8g79rSFdE1yEku3bkgEkSssIWdRU
+	 9yEJhEEwEP4r+5vGm1rQoDVtIHmmB4jAzYmwIXF5jotgYmGKZnRaSBJLKj5MQuXOj8
+	 1hj3OUYi7qKFg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	den@valinux.co.jp
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	ntb@lists.linux.dev
-Subject: FAILED: Patch "NTB: ntb_transport: Fix too small buffer for debugfs_name" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:29:52 -0500
-Message-ID: <20260301012952.1687763-1-sashal@kernel.org>
+	chris.brandt@renesas.com
+Cc: stable@kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-renesas-soc@vger.kernel.org,
+	linux-clk@vger.kernel.org
+Subject: FAILED: Patch "clk: renesas: rzg2l: Select correct div round macro" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:29:54 -0500
+Message-ID: <20260301012955.1687816-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,36 +64,37 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221566-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221567-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.994];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 42C021CB4DD
+X-Rspamd-Queue-Id: 477C81CB4AB
 X-Rspamd-Action: no action
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
@@ -103,42 +104,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6a4b50585d74fe45d3ade1e3e86ba8aae79761a5 Mon Sep 17 00:00:00 2001
-From: Koichiro Den <den@valinux.co.jp>
-Date: Wed, 7 Jan 2026 13:24:57 +0900
-Subject: [PATCH] NTB: ntb_transport: Fix too small buffer for debugfs_name
+From f9451374dcfdfe669ee55b58ee6c11e8638980e4 Mon Sep 17 00:00:00 2001
+From: Chris Brandt <chris.brandt@renesas.com>
+Date: Fri, 14 Nov 2025 14:45:29 -0500
+Subject: [PATCH] clk: renesas: rzg2l: Select correct div round macro
 
-The buffer used for "qp%d" was only 4 bytes, which truncates names like
-"qp10" to "qp1" and causes multiple queues to share the same directory.
+Variable foutvco_rate is an unsigned long, not an unsigned long long.
 
-Enlarge the buffer and use sizeof() to avoid truncation.
-
-Fixes: fce8a7bb5b4b ("PCI-Express Non-Transparent Bridge Support")
-Cc: <stable@vger.kernel.org> # v3.9+
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Cc: stable@kernel.org
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://lore.kernel.org/CAMuHMdVf7dSeqAhtyxDCFuCheQRzwS-8996Rr2Ntui21uiBgdA@mail.gmail.com
+Fixes: dabf72b85f29 ("clk: renesas: rzg2l: Fix FOUTPOSTDIV clk")
+Signed-off-by: Chris Brandt <chris.brandt@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251114194529.3304361-1-chris.brandt@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/ntb/ntb_transport.c | 4 ++--
+ drivers/clk/renesas/rzg2l-cpg.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-index a7dd983adf7b0..50f3b1f1b9262 100644
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -1252,9 +1252,9 @@ static int ntb_transport_init_queue(struct ntb_transport_ctx *nt,
- 	qp->tx_max_entry = tx_size / qp->tx_max_frame;
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index dfe0f5e87d8cf..0bcf64b152e07 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -572,8 +572,8 @@ rzg2l_cpg_get_foutpostdiv_rate(struct rzg2l_pll5_param *params,
+ 	foutvco_rate = div_u64(mul_u32_u32(EXTAL_FREQ_IN_MEGA_HZ * MEGA,
+ 					   (params->pl5_intin << 24) + params->pl5_fracin),
+ 			       params->pl5_refdiv) >> 24;
+-	foutpostdiv_rate = DIV_ROUND_CLOSEST_ULL(foutvco_rate,
+-						 params->pl5_postdiv1 * params->pl5_postdiv2);
++	foutpostdiv_rate = DIV_ROUND_CLOSEST(foutvco_rate,
++					     params->pl5_postdiv1 * params->pl5_postdiv2);
  
- 	if (nt->debugfs_node_dir) {
--		char debugfs_name[4];
-+		char debugfs_name[8];
- 
--		snprintf(debugfs_name, 4, "qp%d", qp_num);
-+		snprintf(debugfs_name, sizeof(debugfs_name), "qp%d", qp_num);
- 		qp->debugfs_dir = debugfs_create_dir(debugfs_name,
- 						     nt->debugfs_node_dir);
- 
+ 	return foutpostdiv_rate;
+ }
 -- 
 2.51.0
 
