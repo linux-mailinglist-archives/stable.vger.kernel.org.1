@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-222335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAv2Cjago2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:11:02 +0100
+	id wJSYNeeuo2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:13:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDA01CD35B
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:11:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0630E1CE551
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:13:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF152308DFC3
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:04:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22B7F355E362
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095D5303A0D;
-	Sun,  1 Mar 2026 02:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94ECD3064BA;
+	Sun,  1 Mar 2026 02:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7VAdnIV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uV3vj2Do"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08152FE577;
-	Sun,  1 Mar 2026 02:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D912FE577;
+	Sun,  1 Mar 2026 02:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330624; cv=none; b=flzP3Jd600LcmiqyR2vQqOPsmer5JN5VadVSPTaCEqQIrjwRVn0XTO12VHrGAOiioJc2GJKTWYMLQYVBjnYIUwu+iNBKUJK4LgI/OyBn7j6bGDxjQImaCXc6nORc9z8lJMOuxPVicszxx4A5KiohtB9h6h/uocUqfgnRb6KX7lM=
+	t=1772330627; cv=none; b=fkGP+2eCC1giS9e192gts8P+22R74dwVktu8LFVLFadRmjbA4umrMqLryQSYTFbO4vC4g7P5uEdPzuiPtuklOgDUrETfVJ9xOM/ptwaSRyU0vosTv6VHHbg+6G+NRphnxYS+EpVHYKKPu1g2x3dHZLXKN3OCZhofpWDv7+ST/Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330624; c=relaxed/simple;
-	bh=QK6JO0BJssmBC9+Ij0Yy4Vwem8u2cyp2EqHHo+oPrlw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fw83+O0kGqvO3Y8vvvrddsj6P1HWEcfaozVEONbJ0bm+rUDpKAuzDeTSp5kabAmtAwvzW6f7e8oYdYHV+73jMe7EfEF1ntsOtR1nXd4iGDF/rcc+w3NnE0wptoJWN0pPkeXmfz6g14cVQdXi562iWYZmT7wYyxBFtBVH6etRVJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7VAdnIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8616C19421;
-	Sun,  1 Mar 2026 02:03:43 +0000 (UTC)
+	s=arc-20240116; t=1772330627; c=relaxed/simple;
+	bh=mEqABuqYKoDkvTalz1ot0pDzC2dmPjtU7x6wrz4iHeI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OTtDdxBKq48MorXWUEdSk8TalOzAdTtKaDgtzpBJzjjXxJTNLlmuoz/Ybj09BYbVA/wlLhC0J1L2KoU8ET4aA5681sr1LqqiifX7NGCz18NSRaO7BN8ExlKYzKqyhZQywHBBG65SQEi2UrD9uSlAi96bfIx+jOU5VfkDJ3yckE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uV3vj2Do; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64805C19421;
+	Sun,  1 Mar 2026 02:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330624;
-	bh=QK6JO0BJssmBC9+Ij0Yy4Vwem8u2cyp2EqHHo+oPrlw=;
+	s=k20201202; t=1772330627;
+	bh=mEqABuqYKoDkvTalz1ot0pDzC2dmPjtU7x6wrz4iHeI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=T7VAdnIVm1ajUh3QZK5nQrWBZ564EGSmG4r19rNfB9Ktbd2INnb2TmF66qeNN1eAt
-	 N6m9heYLGeD7K7fG/0cJ6FEUxDLH9A9qYmWTqRwGxXWF+BIYXXvEGjg6pyU0SNaPik
-	 QQ+DeyiOpJvSPywS1opBgrKiCJsdRLbM31G3dhA0ezOnLGRH89uVC1lEX4Z0Py1vN/
-	 /Pmf90392TsuGnF6cL4U+lqQAfjCgKg6q5VuRzWuAbo4RI65SBUDhW4KAtSVO2oD36
-	 juy7iQ3ys94vIo1p6YhogHqyRxUJbeLe/kFt+Lc1eutc56vW4dqPbr24SejxrzDFJ0
-	 C1Bht70nGV4Xg==
+	b=uV3vj2DoCBRqkl1kISATpSzi4joFjUvMDbFTXEGz2KExa8FYBGqpwJcDMTMyq5cR0
+	 ZU84TT+668MVjWQYuZcUEyAHwqX8s1MbDGv86VoKtXY982lb2lb8X5T6gj8IAV/ekD
+	 FJmDQCBJKn0bwqS/gDeHc183WGTFCayK7GELWQr8LsTjAD+6X7ptfZM+iEzRc1AulS
+	 r79EgDOQ/Gz9tRxb1p4ODFJMudb7mX6K0IGTkGzQ16fu4/QWsCP4u1oE+WGkOodpYL
+	 N/GE8cFktx9SAH+qu1YMK252uVDI17Fu4YlD+AbA7xJt9X7ey0amUOOQyCmEYS9Ej9
+	 uCLbWn6b/5A4g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	metze@samba.org
-Cc: Steve French <smfrench@gmail.com>,
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
 	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
 	linux-cifs@vger.kernel.org,
 	samba-technical@lists.samba.org,
 	Steve French <stfrench@microsoft.com>
-Subject: FAILED: Patch "smb: smbdirect: introduce smbdirect_socket.send_io.bcredits.*" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:03:42 -0500
-Message-ID: <20260301020342.1731839-1-sashal@kernel.org>
+Subject: FAILED: Patch "smb: server: make use of smbdirect_socket.send_io.bcredits" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:03:44 -0500
+Message-ID: <20260301020345.1731888-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,9 +74,9 @@ X-Spamd-Result: default: False [8.84 / 15.00];
 	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,talpey.com,vger.kernel.org,lists.samba.org,microsoft.com];
 	GREYLIST(0.00)[pass,meta];
-	TAGGED_FROM(0.00)[bounces-222335-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222336-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -87,18 +86,18 @@ X-Spamd-Result: default: False [8.84 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_SPAM(0.00)[0.393];
-	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_SPAM(0.00)[0.410];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talpey.com:email,samba.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BBDA01CD35B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samba.org:email]
+X-Rspamd-Queue-Id: 0630E1CE551
 X-Rspamd-Action: add header
 X-Spam: Yes
 
@@ -112,10 +111,10 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8e94268b21c8235d430ce1aa6dc0b15952744b9b Mon Sep 17 00:00:00 2001
+From 34abd408c8ba24d7c97bd02ba874d8c714f49db1 Mon Sep 17 00:00:00 2001
 From: Stefan Metzmacher <metze@samba.org>
-Date: Thu, 22 Jan 2026 18:16:42 +0100
-Subject: [PATCH] smb: smbdirect: introduce smbdirect_socket.send_io.bcredits.*
+Date: Thu, 22 Jan 2026 18:16:45 +0100
+Subject: [PATCH] smb: server: make use of smbdirect_socket.send_io.bcredits
 
 It turns out that our code will corrupt the stream of
 reassabled data transfer messages when we trigger an
@@ -128,60 +127,140 @@ the batch credit it given back and the next logical send can
 happen.
 
 Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Namjae Jeon <linkinjeon@kernel.org>
 Cc: Steve French <smfrench@gmail.com>
 Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
 Cc: linux-cifs@vger.kernel.org
 Cc: samba-technical@lists.samba.org
 Signed-off-by: Stefan Metzmacher <metze@samba.org>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/smb/common/smbdirect/smbdirect_socket.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ fs/smb/server/transport_rdma.c | 53 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 51 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/common/smbdirect/smbdirect_socket.h b/fs/smb/common/smbdirect/smbdirect_socket.h
-index 403a8b2cd30e4..95265192bb01b 100644
---- a/fs/smb/common/smbdirect/smbdirect_socket.h
-+++ b/fs/smb/common/smbdirect/smbdirect_socket.h
-@@ -162,6 +162,17 @@ struct smbdirect_socket {
- 			mempool_t		*pool;
- 		} mem;
- 
-+		/*
-+		 * This is a coordination for smbdirect_send_batch.
-+		 *
-+		 * There's only one possible credit, which means
-+		 * only one instance is running at a time.
-+		 */
-+		struct {
-+			atomic_t count;
-+			wait_queue_head_t wait_queue;
-+		} bcredits;
-+
- 		/*
- 		 * The local credit state for ib_post_send()
- 		 */
-@@ -371,6 +382,9 @@ static __always_inline void smbdirect_socket_init(struct smbdirect_socket *sc)
- 	INIT_DELAYED_WORK(&sc->idle.timer_work, __smbdirect_socket_disabled_work);
- 	disable_delayed_work_sync(&sc->idle.timer_work);
- 
-+	atomic_set(&sc->send_io.bcredits.count, 0);
-+	init_waitqueue_head(&sc->send_io.bcredits.wait_queue);
-+
- 	atomic_set(&sc->send_io.lcredits.count, 0);
- 	init_waitqueue_head(&sc->send_io.lcredits.wait_queue);
- 
-@@ -485,6 +499,8 @@ struct smbdirect_send_batch {
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 4a473df1f2b3a..38248b6a1b5ca 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -221,6 +221,7 @@ static void smb_direct_disconnect_wake_up_all(struct smbdirect_socket *sc)
+ 	 * in order to notice the broken connection.
  	 */
- 	bool need_invalidate_rkey;
- 	u32 remote_key;
-+
-+	int credit;
- };
+ 	wake_up_all(&sc->status_wait);
++	wake_up_all(&sc->send_io.bcredits.wait_queue);
+ 	wake_up_all(&sc->send_io.lcredits.wait_queue);
+ 	wake_up_all(&sc->send_io.credits.wait_queue);
+ 	wake_up_all(&sc->send_io.pending.zero_wait_queue);
+@@ -1152,6 +1153,7 @@ static void smb_direct_send_ctx_init(struct smbdirect_send_batch *send_ctx,
+ 	send_ctx->wr_cnt = 0;
+ 	send_ctx->need_invalidate_rkey = need_invalidate_rkey;
+ 	send_ctx->remote_key = remote_key;
++	send_ctx->credit = 0;
+ }
  
- struct smbdirect_recv_io {
+ static int smb_direct_flush_send_list(struct smbdirect_socket *sc,
+@@ -1159,10 +1161,10 @@ static int smb_direct_flush_send_list(struct smbdirect_socket *sc,
+ 				      bool is_last)
+ {
+ 	struct smbdirect_send_io *first, *last;
+-	int ret;
++	int ret = 0;
+ 
+ 	if (list_empty(&send_ctx->msg_list))
+-		return 0;
++		goto release_credit;
+ 
+ 	first = list_first_entry(&send_ctx->msg_list,
+ 				 struct smbdirect_send_io,
+@@ -1204,6 +1206,13 @@ static int smb_direct_flush_send_list(struct smbdirect_socket *sc,
+ 		smb_direct_free_sendmsg(sc, last);
+ 	}
+ 
++release_credit:
++	if (is_last && !ret && send_ctx->credit) {
++		atomic_add(send_ctx->credit, &sc->send_io.bcredits.count);
++		send_ctx->credit = 0;
++		wake_up(&sc->send_io.bcredits.wait_queue);
++	}
++
+ 	return ret;
+ }
+ 
+@@ -1229,6 +1238,25 @@ static int wait_for_credits(struct smbdirect_socket *sc,
+ 	} while (true);
+ }
+ 
++static int wait_for_send_bcredit(struct smbdirect_socket *sc,
++				 struct smbdirect_send_batch *send_ctx)
++{
++	int ret;
++
++	if (send_ctx->credit)
++		return 0;
++
++	ret = wait_for_credits(sc,
++			       &sc->send_io.bcredits.wait_queue,
++			       &sc->send_io.bcredits.count,
++			       1);
++	if (ret)
++		return ret;
++
++	send_ctx->credit = 1;
++	return 0;
++}
++
+ static int wait_for_send_lcredit(struct smbdirect_socket *sc,
+ 				 struct smbdirect_send_batch *send_ctx)
+ {
+@@ -1430,6 +1458,16 @@ static int smb_direct_post_send_data(struct smbdirect_socket *sc,
+ 	struct smbdirect_send_io *msg;
+ 	int data_length;
+ 	struct scatterlist sg[SMBDIRECT_SEND_IO_MAX_SGE - 1];
++	struct smbdirect_send_batch _send_ctx;
++
++	if (!send_ctx) {
++		smb_direct_send_ctx_init(&_send_ctx, false, 0);
++		send_ctx = &_send_ctx;
++	}
++
++	ret = wait_for_send_bcredit(sc, send_ctx);
++	if (ret)
++		goto bcredit_failed;
+ 
+ 	ret = wait_for_send_lcredit(sc, send_ctx);
+ 	if (ret)
+@@ -1482,6 +1520,13 @@ static int smb_direct_post_send_data(struct smbdirect_socket *sc,
+ 	ret = post_sendmsg(sc, send_ctx, msg);
+ 	if (ret)
+ 		goto err;
++
++	if (send_ctx == &_send_ctx) {
++		ret = smb_direct_flush_send_list(sc, send_ctx, true);
++		if (ret)
++			goto err;
++	}
++
+ 	return 0;
+ err:
+ 	smb_direct_free_sendmsg(sc, msg);
+@@ -1490,6 +1535,9 @@ static int smb_direct_post_send_data(struct smbdirect_socket *sc,
+ credit_failed:
+ 	atomic_inc(&sc->send_io.lcredits.count);
+ lcredit_failed:
++	atomic_add(send_ctx->credit, &sc->send_io.bcredits.count);
++	send_ctx->credit = 0;
++bcredit_failed:
+ 	return ret;
+ }
+ 
+@@ -1961,6 +2009,7 @@ static int smb_direct_send_negotiate_response(struct smbdirect_socket *sc,
+ 		resp->max_fragmented_size =
+ 				cpu_to_le32(sp->max_fragmented_recv_size);
+ 
++		atomic_set(&sc->send_io.bcredits.count, 1);
+ 		sc->recv_io.expected = SMBDIRECT_EXPECT_DATA_TRANSFER;
+ 		sc->status = SMBDIRECT_SOCKET_CONNECTED;
+ 	}
 -- 
 2.51.0
 
