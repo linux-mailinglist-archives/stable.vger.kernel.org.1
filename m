@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-222381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFNFKM+ho2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:51 +0100
+	id yGMWNrako2lXJAUAu9opvQ
+	(envelope-from <stable+bounces-222382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:30:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF45C1CD67F
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFCC1CD9D6
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DBFB130440C7
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:05:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A5FE32130D3
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D017305047;
-	Sun,  1 Mar 2026 02:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CBE33043D6;
+	Sun,  1 Mar 2026 02:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uWPZA8i9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OeGxshHZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46B82FFFB5;
-	Sun,  1 Mar 2026 02:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5095A2F28FF;
+	Sun,  1 Mar 2026 02:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330738; cv=none; b=KkMLW95f1oPuqZVWG4fXWjaFB+hninqb2Evc1HjbqPXI5ezH98e1GMunSYWcgZWoREyhs8V0R7BKH/x6NTNr1zduufwvoTVAOMVqWdYH6Qkj49FQ388tDaB/R4I09HkQSg0b/kOlduHrcCp3zaLALsPdCINAD8bl4hty8TsK6RM=
+	t=1772330740; cv=none; b=mg7TSZEfd4vY1x1F6jgWMTHSSwMDtGU64UvOBGNB4nGzooBj46OZr/drI9DUrE0QS3EaOJDtldtMVANWgXeTiqMc3k7BIY27MeuJNQDNKN6uhwSzDUMvpMMTtvQLPCxpevRK8WHBOPL/HDzo3PMwyVzL3Keuv1ORZ7kiTOlYVag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330738; c=relaxed/simple;
-	bh=Rn9XZWPxJypQrBewU1I+9K+TFuFknet6E3hy6X1KR3Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p/s/fq2ISDj8Ew9LddePaZKbiWLdHM59DuXlwYf5SDF+vZAyrQZd/HDivitXs9N828A5eper81EmCNI4Rgf62cSarjWFWMOkDmAVknK3QkhkXmjHK06Md0O84Mu6UQopg/yGJYHYl7DOzEJRiIb9bhgqEKHFr4fWnRuqwqpoYk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uWPZA8i9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E264C19421;
-	Sun,  1 Mar 2026 02:05:37 +0000 (UTC)
+	s=arc-20240116; t=1772330740; c=relaxed/simple;
+	bh=G1RT0I7vSpEnB1qLPLrrl+5v4n4QGRwXQyyA7m2jDro=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NK4zeEcB+ZliAJe7nTnTxzq9xKMAH9kU2PnI2IgEcBg9KSHikfjebn9rMTaftRpm3j5iMx2VNGAoTRD/yMS4OEGH5nsk1pd2DwIEI3IL3kTLPvBaguOFJOCSwQabKOjqqdFiL8YeYKqaMAO7A1CWa3o2KitFddONbrX6autcEhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OeGxshHZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D842C19421;
+	Sun,  1 Mar 2026 02:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330737;
-	bh=Rn9XZWPxJypQrBewU1I+9K+TFuFknet6E3hy6X1KR3Q=;
+	s=k20201202; t=1772330740;
+	bh=G1RT0I7vSpEnB1qLPLrrl+5v4n4QGRwXQyyA7m2jDro=;
 	h=From:To:Cc:Subject:Date:From;
-	b=uWPZA8i98fubsVkzsIPdB0AFL28791JXNdj57/pjjaV4hOBGyvMXM1h/pU9yTyQSp
-	 WiToTk0L99uuICNJkCRvhwnMhASEfuLjOvZFcqs1ZGnv10fynTidipuaF5tQZD/NS+
-	 nTWLx9cS1iFAj7KSXf/mJk4g9IKLQkWbYk3gSFgSWiV/mzqT7zVEJe835Z8PLD1DJ2
-	 os5NgGilwjA9ZjMAiQ8uU2KbYWzCemTQRjPu6tb2BkQsNXy3soQr2zYaCetzIRGDl5
-	 TAAfbkXx5IcCIk5nO1V9dRcH2EDN9PS20bhX9Uc+80Lp4llHUY+cqvTRdWYF2yjlOV
-	 ANvs36hv9MyKQ==
+	b=OeGxshHZltGxEyVAOfIzocDr7a/y+i6cS/v93O1I5vqfH49J8i8HawWt2X/GZVfCm
+	 hTR+h9zswnn+nPFZQwOmJ+3lxat2DIe4AUyJcEAKPohQShAWYwBeCf6jUryJWR/qpi
+	 ClH0a9I5tghSO9pbTh/bcdAZ7KXphrS6vw0GNDYVGTFcsE1gLi1n7BmrMT5KPMp2JZ
+	 hKh0VJDOahNZCKuZsaitGDt80z17CBJE5Y6WvayvD76lLh8usp4rvUb0DPWtDmHGtl
+	 UeW1JYir5EoKeAc5l7wDF5D526AoU8RmYwhFJwrgEjZ2sd//3qwlrks4wEmHbc0rDN
+	 a3JpL5m7l0jJQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	sprasad@microsoft.com
-Cc: Yuchan Nam <entropy1110@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: FAILED: Patch "cifs: some missing initializations on replay" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:05:35 -0500
-Message-ID: <20260301020536.1734321-1-sashal@kernel.org>
+	fourier.thomas@gmail.com
+Cc: Helge Deller <deller@gmx.de>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "fbdev: vt8500lcdfb: fix missing dma_free_coherent()" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:05:38 -0500
+Message-ID: <20260301020538.1734367-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,35 +64,37 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,vger.kernel.org,lists.samba.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-222381-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222382-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmx.de,lists.infradead.org,vger.kernel.org,lists.freedesktop.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CF45C1CD67F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email]
+X-Rspamd-Queue-Id: 3BFCC1CD9D6
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -105,62 +107,45 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 14f66f44646333d2bfd7ece36585874fd72f8286 Mon Sep 17 00:00:00 2001
-From: Shyam Prasad N <sprasad@microsoft.com>
-Date: Sat, 14 Feb 2026 15:59:13 +0530
-Subject: [PATCH] cifs: some missing initializations on replay
+From 88b3b9924337336a31cefbe99a22ed09401be74a Mon Sep 17 00:00:00 2001
+From: Thomas Fourier <fourier.thomas@gmail.com>
+Date: Mon, 12 Jan 2026 15:00:27 +0100
+Subject: [PATCH] fbdev: vt8500lcdfb: fix missing dma_free_coherent()
 
-In several places in the code, we have a label to signify
-the start of the code where a request can be replayed if
-necessary. However, some of these places were missing the
-necessary reinitializations of certain local variables
-before replay.
+fbi->fb.screen_buffer is allocated with dma_alloc_coherent() but is not
+freed if the error path is reached.
 
-This change makes sure that these variables get initialized
-after the label.
-
-Cc: stable@vger.kernel.org
-Reported-by: Yuchan Nam <entropy1110@gmail.com>
-Tested-by: Yuchan Nam <entropy1110@gmail.com>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: e7b995371fe1 ("video: vt8500: Add devicetree support for vt8500-fb and wm8505-fb")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- fs/smb/client/smb2ops.c | 2 ++
- fs/smb/client/smb2pdu.c | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/video/fbdev/vt8500lcdfb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 61c521712f863..7370d7a18cd0c 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -1185,6 +1185,7 @@ smb2_set_ea(const unsigned int xid, struct cifs_tcon *tcon,
+diff --git a/drivers/video/fbdev/vt8500lcdfb.c b/drivers/video/fbdev/vt8500lcdfb.c
+index b08a6fdc53fd2..85c7a99a7d648 100644
+--- a/drivers/video/fbdev/vt8500lcdfb.c
++++ b/drivers/video/fbdev/vt8500lcdfb.c
+@@ -369,7 +369,7 @@ static int vt8500lcd_probe(struct platform_device *pdev)
+ 	if (fbi->palette_cpu == NULL) {
+ 		dev_err(&pdev->dev, "Failed to allocate palette buffer\n");
+ 		ret = -ENOMEM;
+-		goto failed_free_io;
++		goto failed_free_mem_virt;
+ 	}
  
- replay_again:
- 	/* reinitialize for possible replay */
-+	used_len = 0;
- 	flags = CIFS_CP_CREATE_CLOSE_OP;
- 	oplock = SMB2_OPLOCK_LEVEL_NONE;
- 	server = cifs_pick_channel(ses);
-@@ -1588,6 +1589,7 @@ smb2_ioctl_query_info(const unsigned int xid,
- 
- replay_again:
- 	/* reinitialize for possible replay */
-+	buffer = NULL;
- 	flags = CIFS_CP_CREATE_CLOSE_OP;
- 	oplock = SMB2_OPLOCK_LEVEL_NONE;
- 	server = cifs_pick_channel(ses);
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 4602b4dfe8322..7f3edf42b9c3f 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2908,6 +2908,7 @@ int smb311_posix_mkdir(const unsigned int xid, struct inode *inode,
- 
- replay_again:
- 	/* reinitialize for possible replay */
-+	pc_buf = NULL;
- 	flags = 0;
- 	n_iov = 2;
- 	server = cifs_pick_channel(ses);
+ 	irq = platform_get_irq(pdev, 0);
+@@ -432,6 +432,9 @@ static int vt8500lcd_probe(struct platform_device *pdev)
+ failed_free_palette:
+ 	dma_free_coherent(&pdev->dev, fbi->palette_size,
+ 			  fbi->palette_cpu, fbi->palette_phys);
++failed_free_mem_virt:
++	dma_free_coherent(&pdev->dev, fbi->fb.fix.smem_len,
++			  fbi->fb.screen_buffer, fbi->fb.fix.smem_start);
+ failed_free_io:
+ 	iounmap(fbi->regbase);
+ failed_free_res:
 -- 
 2.51.0
 
