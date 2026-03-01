@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-222283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CK5/Cy+fo2lzIgUAu9opvQ
-	(envelope-from <stable+bounces-222283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:06:39 +0100
+	id YJQyATGfo2lzIgUAu9opvQ
+	(envelope-from <stable+bounces-222284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:06:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF64D1CCFA4
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:06:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E231CCFAB
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 811F030A7D9D
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AB1223034624
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E862F12CE;
-	Sun,  1 Mar 2026 02:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724E52C21F2;
+	Sun,  1 Mar 2026 02:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hltPHOY2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l7HTPTgI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A322C21F2
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370B4259C80
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330491; cv=none; b=DyLf2QwxVRC5ZyFMghTXQVDWbHFp61DcCsKTbmSrF1wv9pio2FZvv+hEOjJRM0VVrAn2m4fSzX4u4POoBtrMsNa44p3vcHsY2lEdaRVrmYmqGOke6ndF8a4uHfkUtdAXkKMpxdS+15Cz1x0WamcRL/D3nMdxeuvSFoJf8vKQwFQ=
+	t=1772330493; cv=none; b=L6dT7DYaNI5cd1tDA3DdqyeWxThSIPL/VrHUJhks1UZfjg/A+vjJNT1qy+7vo8ThL+BHMxHr+3VwNbebtIwPNgrffMps6Gfv+rHK7uaV3mctebBgoFIqyao/p/tx8vV8/ti6jSyZJ47FtHTRQWERufZjCKaCblox/uQDON1tNtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330491; c=relaxed/simple;
-	bh=o12VwAnW/TdaYpTsiYs8XiuPjSO1ncLmOpbn2ka9B+k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CzfMwQVNYlB29mysVmK0ZqMYLHU3EkhrqwiYgenvdlJ8wJ6zvBf4zwke/AoJQvWK7IRL3JF/0SKC532vBS9cGLLH54DOUHJYHf8oGcdycF1U7Pu6rb2FzalaYeRj9fRxN9L0l9T9f01VeTPT1t+5hdyEVr/+FH2J3fmR6t42txE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hltPHOY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66965C19421;
-	Sun,  1 Mar 2026 02:01:30 +0000 (UTC)
+	s=arc-20240116; t=1772330493; c=relaxed/simple;
+	bh=Gz1+vPZuBsRLJidp6o0RiDpBgPNBa41tp2qkgDu4CC4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lE82BLKrOfYn1kaOnB9lho1eKTOPWHPzkdhFgrmDhWB2sZDRH8o7CSsiZ+XY5vX8I3sxg2Xn8p3UR+18OKjgC+2h2smxSVfUd3wu/JBKAihruSkTiy0XEtLwDa4XPmDl5sERbU7Igksh1kcxxBjZe2hFVmmhQVC0XHh1J9qdCEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l7HTPTgI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6A0C19421;
+	Sun,  1 Mar 2026 02:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330490;
-	bh=o12VwAnW/TdaYpTsiYs8XiuPjSO1ncLmOpbn2ka9B+k=;
+	s=k20201202; t=1772330493;
+	bh=Gz1+vPZuBsRLJidp6o0RiDpBgPNBa41tp2qkgDu4CC4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hltPHOY2fv2awZPWP/1CmXE5DigffehLMsxKqPbz0T9xjwB2aQNMnANeXZBPqK5LT
-	 E3FnZodW5wiy+Eyl36MpvH7J7qQYPaRVUFYioYvYYgtvGvcflh8HTE+ezswZrIsb5v
-	 pt2J06uefIC+75pM8GIXyzuArXWuUzEBRj8IAiONZCHvd05fExk6aldpjXQzsnv1cA
-	 ga7B7RSKQqX3Kxj9wyiftLZeYStd3WHO0rLUHtaVgZ2UxmUKwqJlvzhiyPvweIBIvo
-	 fpaKKMLp+AhaA6PXXokf0k44pwyEbbxG0J56BqtcwuWFNXrW2HqhKv7rlWg/Z9uhEf
-	 E1ceq7Dc19qOw==
+	b=l7HTPTgIbRPXINy2mgnNn6Go7cV1VtED8PkUw1HY9KMUyslMrcnGK8RVqrr9XrI4L
+	 SQF5ds3psW9BiOab2Pb+fWoSlnxJSAfwVv/Y6uTSudS6OxXTJAsiO8D88z63OlBVG5
+	 nJ7y1cPSWHUbfophTBaf+UVAEtbfRd8Qr3X58pkWDy6x9+D4OYUzrEMBfvEZPQX4yR
+	 5saR1cTSl+P3SaPrAEra+528NzHkrdTKGVGBAy5bLRR73mUwu8oUv/QsZlg3hC9UWf
+	 YipKqPn6jWQwI029+xBy6isGXzgUOB9xMZnpi/N84iQn1er0HiUZjbtrHLNanQG3pz
+	 trVchpwU4qKjA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	luca.ceresoli@bootlin.com
-Cc: Maxime Ripard <mripard@kernel.org>,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm: of: drm_of_panel_bridge_remove(): fix device_node leak" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:01:28 -0500
-Message-ID: <20260301020129.1728791-1-sashal@kernel.org>
+	dianders@chromium.org
+Cc: Lee Jones <lee@kernel.org>
+Subject: FAILED: Patch "mfd: core: Add locking around 'mfd_of_node_list'" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:01:31 -0500
+Message-ID: <20260301020131.1728840-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -77,9 +76,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222283-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-222284-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,8 +87,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,bootlin.com:email]
-X-Rspamd-Queue-Id: BF64D1CCFA4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,chromium.org:email]
+X-Rspamd-Queue-Id: 69E231CCFAB
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -102,44 +101,99 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a4b4385d0523e39a7c058cb5a6c8269e513126ca Mon Sep 17 00:00:00 2001
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Fri, 9 Jan 2026 08:31:32 +0100
-Subject: [PATCH] drm: of: drm_of_panel_bridge_remove(): fix device_node leak
+From 20117c92bcf9c11afd64d7481d8f94fdf410726e Mon Sep 17 00:00:00 2001
+From: Douglas Anderson <dianders@chromium.org>
+Date: Wed, 10 Dec 2025 11:30:03 -0800
+Subject: [PATCH] mfd: core: Add locking around 'mfd_of_node_list'
 
-drm_of_panel_bridge_remove() uses of_graph_get_remote_node() to get a
-device_node but does not put the node reference.
+Manipulating a list in the kernel isn't safe without some sort of
+mutual exclusion. Add a mutex any time we access / modify
+'mfd_of_node_list' to prevent possible crashes.
 
-Fixes: c70087e8f16f ("drm/drm_of: add drm_of_panel_bridge_remove function")
-Cc: stable@vger.kernel.org # v4.15
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patch.msgid.link/20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-1-8bad3ef90b9f@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: stable@vger.kernel.org
+Fixes: 466a62d7642f ("mfd: core: Make a best effort attempt to match devices with the correct of_nodes")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patch.msgid.link/20251210113002.1.I6ceaca2cfb7eb25737012b166671f516696be4fd@changeid
+Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- include/drm/drm_of.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mfd/mfd-core.c | 36 ++++++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/include/drm/drm_of.h b/include/drm/drm_of.h
-index 7f0256dae3f13..f3e55ea2174c0 100644
---- a/include/drm/drm_of.h
-+++ b/include/drm/drm_of.h
-@@ -5,6 +5,7 @@
- #include <linux/err.h>
- #include <linux/of_graph.h>
- #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
-+#include <linux/of.h>
- #include <drm/drm_bridge.h>
- #endif
+diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
+index 6925bedddc80b..a30f93bf030aa 100644
+--- a/drivers/mfd/mfd-core.c
++++ b/drivers/mfd/mfd-core.c
+@@ -22,6 +22,7 @@
+ #include <linux/regulator/consumer.h>
  
-@@ -173,6 +174,8 @@ static inline int drm_of_panel_bridge_remove(const struct device_node *np,
- 	bridge = of_drm_find_bridge(remote);
- 	drm_panel_bridge_remove(bridge);
+ static LIST_HEAD(mfd_of_node_list);
++static DEFINE_MUTEX(mfd_of_node_mutex);
  
-+	of_node_put(remote);
-+
- 	return 0;
- #else
- 	return -EINVAL;
+ struct mfd_of_node_entry {
+ 	struct list_head list;
+@@ -104,9 +105,11 @@ static int mfd_match_of_node_to_dev(struct platform_device *pdev,
+ 	u64 of_node_addr;
+ 
+ 	/* Skip if OF node has previously been allocated to a device */
+-	list_for_each_entry(of_entry, &mfd_of_node_list, list)
+-		if (of_entry->np == np)
+-			return -EAGAIN;
++	scoped_guard(mutex, &mfd_of_node_mutex) {
++		list_for_each_entry(of_entry, &mfd_of_node_list, list)
++			if (of_entry->np == np)
++				return -EAGAIN;
++	}
+ 
+ 	if (!cell->use_of_reg)
+ 		/* No of_reg defined - allocate first free compatible match */
+@@ -128,7 +131,8 @@ static int mfd_match_of_node_to_dev(struct platform_device *pdev,
+ 
+ 	of_entry->dev = &pdev->dev;
+ 	of_entry->np = np;
+-	list_add_tail(&of_entry->list, &mfd_of_node_list);
++	scoped_guard(mutex, &mfd_of_node_mutex)
++		list_add_tail(&of_entry->list, &mfd_of_node_list);
+ 
+ 	of_node_get(np);
+ 	device_set_node(&pdev->dev, of_fwnode_handle(np));
+@@ -284,11 +288,13 @@ static int mfd_add_device(struct device *parent, int id,
+ 	if (cell->swnode)
+ 		device_remove_software_node(&pdev->dev);
+ fail_of_entry:
+-	list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
+-		if (of_entry->dev == &pdev->dev) {
+-			list_del(&of_entry->list);
+-			kfree(of_entry);
+-		}
++	scoped_guard(mutex, &mfd_of_node_mutex) {
++		list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
++			if (of_entry->dev == &pdev->dev) {
++				list_del(&of_entry->list);
++				kfree(of_entry);
++			}
++	}
+ fail_alias:
+ 	regulator_bulk_unregister_supply_alias(&pdev->dev,
+ 					       cell->parent_supplies,
+@@ -358,11 +364,13 @@ static int mfd_remove_devices_fn(struct device *dev, void *data)
+ 	if (cell->swnode)
+ 		device_remove_software_node(&pdev->dev);
+ 
+-	list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
+-		if (of_entry->dev == &pdev->dev) {
+-			list_del(&of_entry->list);
+-			kfree(of_entry);
+-		}
++	scoped_guard(mutex, &mfd_of_node_mutex) {
++		list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
++			if (of_entry->dev == &pdev->dev) {
++				list_del(&of_entry->list);
++				kfree(of_entry);
++			}
++	}
+ 
+ 	regulator_bulk_unregister_supply_alias(dev, cell->parent_supplies,
+ 					       cell->num_parent_supplies);
 -- 
 2.51.0
 
