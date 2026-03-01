@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-222485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFPJEty1pGlHpgUAu9opvQ
-	(envelope-from <stable+bounces-222485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 22:55:40 +0100
+	id kJAMI0m3pGkepwUAu9opvQ
+	(envelope-from <stable+bounces-222486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 23:01:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71551D1C23
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 22:55:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BCCB1D1C6F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 23:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9F3AA3010258
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 21:55:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6566C300AB0E
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 22:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FDE28B4E2;
-	Sun,  1 Mar 2026 21:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0965727472;
+	Sun,  1 Mar 2026 22:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="AjZ7zY0T"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="fIVZvtSl"
 X-Original-To: stable@vger.kernel.org
 Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9495827FD52
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 21:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B79E1A9FAF
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 22:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772402135; cv=none; b=GwOlZdwtEInBncF7THxmQfIZqtUflNrai+6hUdDvlkCImRdTE4HFRBBgD4YOAeOaZBgFVrCiJ8fyrYk4JiyY2kbaToNcNgVMR2/rlNms+kKhLC62XoJdLS8UctlIlFPZ1qJfIOHlFAtXazghE606tG004utH01Oi9b2KLPR/1vo=
+	t=1772402500; cv=none; b=swjy7zs/Ei4m13Ji0j/ypXxZcrNrwx0rLqh/xeJgA4tbFd8CpWSI9eSuj4j7AcUfyzEKMX/WwtNL1RpAgBG4srmp8Z05+8+8DqqevtDVj4HyHEYkRBLDuVOgppGdAGnM/LMEB1/zPpir2vv8LRKcGgggSxjW71BZd00bvNDxCZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772402135; c=relaxed/simple;
-	bh=nQxflxD3Ka/RcGafz6arawvbVsIrrFU2RttBOtj0fAc=;
+	s=arc-20240116; t=1772402500; c=relaxed/simple;
+	bh=DehidYUgF/HRhWLgqtGppChTEYVisQo8qxHwkdFJ/Go=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bQAhyDPhlDux/YwatUShu4Uemol6O+S9gtLIjXru3N91ybxdLhiMiD0/yXn5IAWRhElGbmPwu/O4/xiOlSYiGLjZMhWVTAIbln0vbP2Khud3+bsfeWJWjGWHEGIcgGzknXxKNC4TP+dEC8D/NWZGU9j8R/IPyAWYzD4XLP6t8WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=AjZ7zY0T; arc=none smtp.client-ip=44.202.169.35
+	 In-Reply-To:Content-Type; b=RjjbaI/xtV0Yap4ho03TZBn+Y3Y2wW8lRkEPD56zmPSa4Ji0xaxGXfo14AYw8hBxke+56SNjPJpRLn0xUeta1yl4FnwaB9yY6JlN8MAa+iHC0dkVSH9kn0fdxaUSEp0UPqKwJ8nS9PHLINE1ougl9kiqpAYtFdrLwInWU6/6cVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=fIVZvtSl; arc=none smtp.client-ip=44.202.169.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6002b.ext.cloudfilter.net ([10.0.30.203])
+Received: from eig-obgw-5007b.ext.cloudfilter.net ([10.0.29.167])
 	by cmsmtp with ESMTPS
-	id wMjevkJ9vKXDJwolBv2WzX; Sun, 01 Mar 2026 21:55:33 +0000
+	id whL0vn1AKKXDJwor5v2Yvc; Sun, 01 Mar 2026 22:01:39 +0000
 Received: from box5620.bluehost.com ([162.241.219.59])
 	by cmsmtp with ESMTPS
-	id wolBvr1KRPL32wolBvF69M; Sun, 01 Mar 2026 21:55:33 +0000
-X-Authority-Analysis: v=2.4 cv=MqhS63ae c=1 sm=1 tr=0 ts=69a4b5d5
+	id wor2vuZv3V6WMwor2vSlj2; Sun, 01 Mar 2026 22:01:36 +0000
+X-Authority-Analysis: v=2.4 cv=E//Npbdl c=1 sm=1 tr=0 ts=69a4b743
  a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
  a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
  a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
@@ -51,20 +51,20 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=iDiSn3xpxzVfyEpb8cxw8xsHsaM/vVKTndQxlMXXd8I=; b=AjZ7zY0Tz6L07nOwWKhSgDIleh
-	AUXzHY6nW1cPcRQWV8pCtm9XnIUZieECEyJxf8UmqsW3cN/l+vB94XQxhJfEkeRKfCUWKtpWwnhoE
-	9+sYaZL95k9DAf0yiecj+iGNW7BDaUb2wj+QW0yLTnkBBkEB4V4NUD4ZU8QShabsDKUa0jMsIXxno
-	kLsKFUSfGpStvHx1TtcZvMyX37ciHI6l14TGyOq+3EL/QCym5d77EWWxQvpnABQnOJWvW+IScHK4T
-	NETwJR8SEge7aLMAXY644sPihZhp+p+DLoZA5Zk/T9i/pKMBaDrAAKd/pYEy1FhkaHaUnqpKKW9aR
-	uNBvlESw==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:39204 helo=[10.0.1.180])
+	bh=3mMbAX3YfbnIcvKWH83X3nNx0ElNq+XaJMQRRPolmUE=; b=fIVZvtSlTwLmWURB224girZ9u3
+	NvKYbciuAS0L49m7nHeb/BgFM92hg0J5lf0WgRAe7mn61onhGyCizCCZzuOEjcldEtcFNY+0TXyJT
+	C4btgX9Ki0xXGjxhq3lH3BxYsL2atmPXFOEFdLGgULLPsRbxElJ9VprI7/igBr7u+CBY5HIw9PjiE
+	n2q+im/OnqROc28YVgUxWVc282nmrNkWyJbD1o2R6NsV02FnTB3c5wnfPS9CVZoUXuTJQDgO7Wz9u
+	iEMRPVTWfj6b44TAM7Dmg5h7USvX+pKlTwfnDLU8rMqQK00d4whKT+5dbfvOp19e2ovPotRM7F0W8
+	caSywyZg==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:41240 helo=[10.0.1.180])
 	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
 	(Exim 4.98.2)
 	(envelope-from <re@w6rz.net>)
-	id 1vwolA-00000001cKp-3DvL;
-	Sun, 01 Mar 2026 14:55:32 -0700
-Message-ID: <c4557772-9e26-4653-a93f-afea8ab75414@w6rz.net>
-Date: Sun, 1 Mar 2026 13:55:31 -0800
+	id 1vwor1-00000001eFk-3NDH;
+	Sun, 01 Mar 2026 15:01:35 -0700
+Message-ID: <203de9b5-5086-4215-80ba-7ebaab2674e1@w6rz.net>
+Date: Sun, 1 Mar 2026 14:01:34 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,7 +72,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/752] 6.18.16-rc1 review
+Subject: Re: [PATCH 6.12 000/385] 6.12.75-rc1 review
 To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
@@ -82,10 +82,10 @@ Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
  f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
  conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
  achill@achill.org, sr@sladewatkins.com
-References: <20260228174736.1542240-1-sashal@kernel.org>
+References: <20260228180001.1567994-1-sashal@kernel.org>
 Content-Language: en-US
 From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260228174736.1542240-1-sashal@kernel.org>
+In-Reply-To: <20260228180001.1567994-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -96,29 +96,29 @@ X-AntiAbuse: Sender Address Domain - w6rz.net
 X-BWhitelist: no
 X-Source-IP: 73.162.206.103
 X-Source-L: No
-X-Exim-ID: 1vwolA-00000001cKp-3DvL
+X-Exim-ID: 1vwor1-00000001eFk-3NDH
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:39204
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:41240
 X-Source-Auth: re@w6rz.net
-X-Email-Count: 40
+X-Email-Count: 19
 X-Org: HG=bhshared;ORG=bluehost;
 X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
 X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfOPFIwiB5S4eF8oF/O2xdA8DO83zAbuu4rQ3YgBQeo21nYFbyrKXR/8S3HvK8ptJC7flscfCdE/jMNHRhTup2oIADCnscJbleii92Xe+TtV3S8rSnLLh
- QzziUbSfnB/aVWB0iaMb5jSdrHT2961J96aw869MsWtNmWtQSnUz6EE8VOG0BoUAs637xTbXcq7VTg==
+X-CMAE-Envelope: MS4xfCubMxa3VpnNURPKYEbTPb1jXOOGXrwUZfPy0nmYQkx6qyWqNXTcI7/pQu+6M4IpCiN0Sdpms7AU+2OsaRzeS0NXllLBcEQB8W+4zH8oq/TrbwcNFJyo
+ UCaYPNUHRv4mBXSzTLsq1F66zjysEcu5X7miVu/XmR5eoyVcQeB7tTfxWxFPPxi+l7vBAdM4qpVXeg==
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222485-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222486-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	DMARC_NA(0.00)[w6rz.net];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
@@ -136,25 +136,25 @@ X-Spamd-Result: default: False [1.04 / 15.00];
 	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[w6rz.net:mid,w6rz.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B71551D1C23
+	DBL_BLOCKED_OPENRESOLVER(0.00)[w6rz.net:mid,w6rz.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2BCCB1D1C6F
 X-Rspamd-Action: no action
 
-On 2/28/26 09:47, Sasha Levin wrote:
-> This is the start of the stable review cycle for the 6.18.16 release.
-> There are 752 patches in this series, all will be posted as a response
+On 2/28/26 10:00, Sasha Levin wrote:
+> This is the start of the stable review cycle for the 6.12.75 release.
+> There are 385 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
-> Responses should be made by Mon Mar  2 05:47:08 PM UTC 2026.
+> Responses should be made by Mon Mar  2 05:59:55 PM UTC 2026.
 > Anything received after that time might be too late.
 >
 > The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.18.y&id2=v6.18.15
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.12.y&id2=v6.12.74
 > or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
 > and the diffstat can be found below.
 >
 > Thanks,
