@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-221931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FlzMEibo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:00 +0100
+	id OJq3AmObo2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6266C1CBEBB
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7EBE1CBF28
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 896BF303BF63
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E4CC305D6D8
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC982DB7B5;
-	Sun,  1 Mar 2026 01:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1816E2DCBFA;
+	Sun,  1 Mar 2026 01:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMJrhMXu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HjjSpeCF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809B72D9EF4
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0B32D9EF4;
+	Sun,  1 Mar 2026 01:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329490; cv=none; b=krLWBbPpq8N+vkE2Myei7q0CEPI9STSazDHytkvyJJF+hRtv5aUbAAnudMRY3KA0SjiUvgA4psKfALd06y9sMQeTTIZ/B0DnEdtTq54ZdwxTdhxMYoVDEnDJha7SdAPLLQ8EL8sAExS7sKQoUJmqEaRteaD7qnZ6fS4mopcAfgY=
+	t=1772329492; cv=none; b=I3XKU1K817XtBjLmFA4sixWxqrPEa847KjNVJvbL47awZ4gy/mdETdHCDZlPWnQUA4X0f2y2iNYYm9Wfn/WXac+hAVvD2SWDri4PFWL2ohIhhftQL3v/fmr8twGIkg2fwtlGeCakg0NU6KuQDhyZwzsxsn+3GWSop2jhSRLWevU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329490; c=relaxed/simple;
-	bh=hZ0Ygae/ObNlT1CclwW638CCFTscQAOx9yzUWVJJ8lQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Baw6CrYkTFL2OiEURPO22Oy6aXeQcO3QPLrZxyQRNdIpqs4jG3TBnpiXMWoLTqAtBFZnL4kVxvnlF7xWMM4fF7p++6pEmLUUuCLVf5AODLae9wcna6oG0/C+M382gPMffQy8ww5xkBsqaeTNkIyIiiJVpcJUQ4qWFbkE6OSRLw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMJrhMXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC55C19421;
-	Sun,  1 Mar 2026 01:44:49 +0000 (UTC)
+	s=arc-20240116; t=1772329492; c=relaxed/simple;
+	bh=N8mNW4QMdpQcQ6T5mdXS4ysJib8qZpmWVlI3Q1OL9q4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b4fhAIdFIz2nQ8b871bpnNUmHsx0OFjWp+cZg3zWFhm0Y8Ex/7qjl6TSWA1gkb/knGCUkbO0BTouP18K73My5/bGa9N+BdO7dhyNlaO4xSHiULUMEiyfaABUSpdpZYLbQh/wcsywNq3gtP5kR2QQXRsyVfXAUbVOFR0p1+eQeVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HjjSpeCF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FC1C19421;
+	Sun,  1 Mar 2026 01:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329490;
-	bh=hZ0Ygae/ObNlT1CclwW638CCFTscQAOx9yzUWVJJ8lQ=;
+	s=k20201202; t=1772329492;
+	bh=N8mNW4QMdpQcQ6T5mdXS4ysJib8qZpmWVlI3Q1OL9q4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=KMJrhMXurM56J0c11i87+1HdmRj4wwyzYv/OyzUVx0wY+ur9EsO1YV/7flwz5cPar
-	 UjTDILQUFl2yn6ttYfKdnnTz9Aa4Qr18ScFPxzEuKAdDD3mWlghLqDa6o5ZlcxOd+a
-	 BQle/JSXAN+h5B3a8C87CQcZgoGCs6/YcCAWVw9mXxvWf/+x4wiSwnyk8+TOouIOWL
-	 ituI3qqRWgTFmC7GeePs1qXzvRQm4OBUJ6amYrfiB9rfyaCxlW0je+kQu70chcpJh8
-	 UbJHYtnCl9IHoBIgAlctU5Kz7k19sMYXnndoITbctrFu+2TuBg2FI2RLx3P2mdyhd6
-	 e8zsqJtk8bd3g==
+	b=HjjSpeCFMgkmIUD5zfoZMUhzCxDH9ZgGffKqwjduGMniOLqidLPg/YjFv1+lEJXFH
+	 k34XGP+gntZlWnuitRUtKN0eVqcieQ1Wnx9joKA319NpCPhowSZEqqEHG75vPF4X5U
+	 ZkZTrOnsWbAC2zfzrAJ0f2Rt6n0LAam2ABKyibrgdpO0vDtbIunybi+CWEo0j5Wvc8
+	 ymuODD0giS7FjYYBDlUkkfvOgL/wGzeOiAwqnKpTCaurSh5AB2kHVtBx0Sz2PksO61
+	 NGaObdB+ZgdmIpgcYp2yGgeRplV9s0fJMFbTv7uo7/sv6dclGCFwFNQNaTGULpeB30
+	 WgLvS49q7wYcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	lihaoxiang@isrc.iscas.ac.cn
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>
-Subject: FAILED: Patch "rapidio: replace rio_free_net() with kfree() in rio_scan_alloc_net()" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:44:48 -0500
-Message-ID: <20260301014448.1707246-1-sashal@kernel.org>
+	schnelle@linux.ibm.com
+Cc: Benjamin Block <bblock@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	linux-pci@vger.kernel.org
+Subject: FAILED: Patch "Revert "PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV"" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:44:50 -0500
+Message-ID: <20260301014451.1707295-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,36 +64,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,kernel.crashing.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221931-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221932-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,crashing.org:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 6266C1CBEBB
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: A7EBE1CBF28
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -105,42 +104,99 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 666183dcdd9ad3b8156a1df7f204f728f720380f Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Wed, 21 Jan 2026 09:35:08 +0800
-Subject: [PATCH] rapidio: replace rio_free_net() with kfree() in
- rio_scan_alloc_net()
+From 2fa119c0e5e528453ebae9e70740e8d2d8c0ed5a Mon Sep 17 00:00:00 2001
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+Date: Tue, 16 Dec 2025 23:14:02 +0100
+Subject: [PATCH] Revert "PCI/IOV: Add PCI rescan-remove locking when
+ enabling/disabling SR-IOV"
 
-When idtab allocation fails, net is not registered with rio_add_net() yet,
-so kfree(net) is sufficient to release the memory.  Set mport->net to NULL
-to avoid dangling pointer.
+This reverts commit 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking
+when enabling/disabling SR-IOV"), which causes a deadlock by recursively
+taking pci_rescan_remove_lock when sriov_del_vfs() is called as part of
+pci_stop_and_remove_bus_device(). For example with the following sequence
+of commands:
 
-Link: https://lkml.kernel.org/r/20260121013508.195836-1-lihaoxiang@isrc.iscas.ac.cn
-Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+  $ echo <NUM> > /sys/bus/pci/devices/<pf>/sriov_numvfs
+  $ echo 1 > /sys/bus/pci/devices/<pf>/remove
+
+A trimmed trace of the deadlock on a mlx5 device is as below:
+
+  zsh/5715 is trying to acquire lock:
+  000002597926ef50 (pci_rescan_remove_lock){+.+.}-{3:3}, at: sriov_disable+0x34/0x140
+
+  but task is already holding lock:
+  000002597926ef50 (pci_rescan_remove_lock){+.+.}-{3:3}, at: pci_stop_and_remove_bus_device_locked+0x24/0x80
+  ...
+  Call Trace:
+   [<00000259778c4f90>] dump_stack_lvl+0xc0/0x110
+   [<00000259779c844e>] print_deadlock_bug+0x31e/0x330
+   [<00000259779c1908>] __lock_acquire+0x16c8/0x32f0
+   [<00000259779bffac>] lock_acquire+0x14c/0x350
+   [<00000259789643a6>] __mutex_lock_common+0xe6/0x1520
+   [<000002597896413c>] mutex_lock_nested+0x3c/0x50
+   [<00000259784a07e4>] sriov_disable+0x34/0x140
+   [<00000258f7d6dd80>] mlx5_sriov_disable+0x50/0x80 [mlx5_core]
+   [<00000258f7d5745e>] remove_one+0x5e/0xf0 [mlx5_core]
+   [<00000259784857fc>] pci_device_remove+0x3c/0xa0
+   [<000002597851012e>] device_release_driver_internal+0x18e/0x280
+   [<000002597847ae22>] pci_stop_bus_device+0x82/0xa0
+   [<000002597847afce>] pci_stop_and_remove_bus_device_locked+0x5e/0x80
+   [<00000259784972c2>] remove_store+0x72/0x90
+   [<0000025977e6661a>] kernfs_fop_write_iter+0x15a/0x200
+   [<0000025977d7241c>] vfs_write+0x24c/0x300
+   [<0000025977d72696>] ksys_write+0x86/0x110
+   [<000002597895b61c>] __do_syscall+0x14c/0x400
+   [<000002597896e0ee>] system_call+0x6e/0x90
+
+This alone is not a complete fix as it restores the issue the cited commit
+tried to solve. A new fix will be provided as a follow on.
+
+Fixes: 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV")
+Reported-by: Benjamin Block <bblock@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Acked-by: Gerd Bayer <gbayer@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251216-revert_sriov_lock-v3-1-dac4925a7621@linux.ibm.com
 ---
- drivers/rapidio/rio-scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/iov.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/rapidio/rio-scan.c b/drivers/rapidio/rio-scan.c
-index c12941f71e2cb..dcd6619a4b027 100644
---- a/drivers/rapidio/rio-scan.c
-+++ b/drivers/rapidio/rio-scan.c
-@@ -854,7 +854,8 @@ static struct rio_net *rio_scan_alloc_net(struct rio_mport *mport,
+diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
+index 00784a60ba80b..7de5b18647beb 100644
+--- a/drivers/pci/iov.c
++++ b/drivers/pci/iov.c
+@@ -629,18 +629,15 @@ static int sriov_add_vfs(struct pci_dev *dev, u16 num_vfs)
+ 	if (dev->no_vf_scan)
+ 		return 0;
  
- 		if (idtab == NULL) {
- 			pr_err("RIO: failed to allocate destID table\n");
--			rio_free_net(net);
-+			kfree(net);
-+			mport->net = NULL;
- 			net = NULL;
- 		} else {
- 			net->enum_data = idtab;
+-	pci_lock_rescan_remove();
+ 	for (i = 0; i < num_vfs; i++) {
+ 		rc = pci_iov_add_virtfn(dev, i);
+ 		if (rc)
+ 			goto failed;
+ 	}
+-	pci_unlock_rescan_remove();
+ 	return 0;
+ failed:
+ 	while (i--)
+ 		pci_iov_remove_virtfn(dev, i);
+-	pci_unlock_rescan_remove();
+ 
+ 	return rc;
+ }
+@@ -765,10 +762,8 @@ static void sriov_del_vfs(struct pci_dev *dev)
+ 	struct pci_sriov *iov = dev->sriov;
+ 	int i;
+ 
+-	pci_lock_rescan_remove();
+ 	for (i = 0; i < iov->num_VFs; i++)
+ 		pci_iov_remove_virtfn(dev, i);
+-	pci_unlock_rescan_remove();
+ }
+ 
+ static void sriov_disable(struct pci_dev *dev)
 -- 
 2.51.0
 
