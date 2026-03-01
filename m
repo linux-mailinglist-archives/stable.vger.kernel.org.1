@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-221876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IBdCq+ao2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:27 +0100
+	id aJXiGrKao2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:30 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6E71CBB94
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E527E1CBBBB
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2C6D03023336
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1C28C3095550
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2C32C032E;
-	Sun,  1 Mar 2026 01:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18AC299A84;
+	Sun,  1 Mar 2026 01:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pTfeJ4hC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Omb4JloW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608AD2BEFE8
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759AF1A3165;
+	Sun,  1 Mar 2026 01:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329350; cv=none; b=Yd+EaWgwo2bBEQXxss3H9+57sjDht8ZGduheFcSYV7qb4+ndL2nsNlevMWfgkBgD+u8JgA8JzUDXNUQ3rpNq85weIkrIup6/L5qYqaDGDxl1DloYcM01k2hV7psh2jGVSSVZNK5HOPJUwHgDSODSwC7o8jXsLOJ5l9tLAVj6uCA=
+	t=1772329352; cv=none; b=QgDBjZth7f89qwZ1cjppi8HpEEPv7JdNp9FLJgL8y6qfmbFFG3bPuJpti6QjXgV+Q1pH22pdfaB4c9fO4fd2uXfM0WBhNFzE2JhUYTW5p9jxTeQuliamCkPTBCZyO0FzkjWQwYN+phg80pxvc3I5pQzqRvkW4iYt74JS77Tqt4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329350; c=relaxed/simple;
-	bh=UPRCsRliUemJGFIYY6Mw8m3v4PHBU1sEQ/ZOFKDYvVM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L4Qhqd/GAg1bhL3oT02ksoFPGZSW27rQt7ZgTF2VdrznamVOvp6wYIUKzCRlYt2DoYGKyYcPl3J7ByjhIs2h9GtQf5eeGJ7I25CfxctTZnr9OWLUD0KYpzqW5FRsy8gxgRB5Cn+HIHWNRavJ0+8ZOTJvDqqOYWOuXwwkYXikWQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pTfeJ4hC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8FDC19421;
-	Sun,  1 Mar 2026 01:42:29 +0000 (UTC)
+	s=arc-20240116; t=1772329352; c=relaxed/simple;
+	bh=KAk+Aca2vz9KajuHbmT9nUR3+Ea6uiLegGfRQp79oPc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=abQxsRHU291o/iqvuBeeyBDWNe7nLaRkweHKjoUXi8AHDwB/gggXMUb2l9JbHtw8H73hyaiOIkOjtraVSLU1NuiWXbETLETqmE+3c5WF9izNwJYe5ovXtolRUcLDaKxshFXDvClzIfu1xHN3DacO5UGai1iqcyp7qElPFMYX3Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Omb4JloW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2CAC19421;
+	Sun,  1 Mar 2026 01:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329350;
-	bh=UPRCsRliUemJGFIYY6Mw8m3v4PHBU1sEQ/ZOFKDYvVM=;
+	s=k20201202; t=1772329352;
+	bh=KAk+Aca2vz9KajuHbmT9nUR3+Ea6uiLegGfRQp79oPc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=pTfeJ4hCNHWQbcdGHnF8w+uVhVXv6aJExBiICUTj7QJF+eYeHbGsJ3/bYYjrd4BTL
-	 BonKdL97h3P3CvpP5z6nH0uxcP9PuKX1wS8tNV5sZAp87uKaZD3bRfjbqayFHgPpE3
-	 nbscYavHU9BlLu8DHZWd/DOW9cmw9ovrhclvtLjw/yEg6VaNPqyaeaVgMVFEzuo3F/
-	 HoRf7G2XcqcHmJnImEXZ+ctwH/NuEdzCrBh+X6GmwCkWewI6dQbOaKUKVdB8lkKxj5
-	 am9u1mgF0tB8y2+kZp3B97OP12GcYdPrroI3e8GNcSV1fNOrw9aRGQY4w5Ub4VOTxa
-	 S4tGKjRTFKDaQ==
+	b=Omb4JloW1VFIVLsDBW8FIoKOExlMhMvlqBNYWHiX/WCL/cMFHMYsPBCG4Ym8VK9Up
+	 rE9alPEpWz1nmW7MgKkBdCpkqzKBDklx3IbFSwx8V5msMP4GA5EA4GtEcbiZk8eBfp
+	 aXtipnDCZ+U+2iOUV9koOW4J8MtMi6Tq2/WnqviWjaHXtXxHAPJ35y78F7tGjSS6EF
+	 wCy3jkYYkLovS6Mllyw2Td7O6bWUBjg9QqNpilB01k5SKJNIBERi4c5sJjksUEew3S
+	 tj7v6o/4oESLuPVua6dg8FjGmLbk83WiDzIhIsNbIx35SKs9ALsWKDtMuacivQdctB
+	 X+2x5peBeVEHA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	joonwonkang@google.com
-Cc: Jassi Brar <jassisinghbrar@gmail.com>
-Subject: FAILED: Patch "mailbox: Prevent out-of-bounds access in fw_mbox_index_xlate()" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:42:28 -0500
-Message-ID: <20260301014228.1704332-1-sashal@kernel.org>
+	kernel@mattwhitlock.name
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	dm-devel@lists.linux.dev
+Subject: FAILED: Patch "dm-unstripe: fix mapping bug when there are multiple targets in a table" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:42:30 -0500
+Message-ID: <20260301014230.1704377-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,19 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-221876-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221877-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BA6E71CBB94
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mattwhitlock.name:email]
+X-Rspamd-Queue-Id: E527E1CBBBB
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -102,45 +102,57 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From fcd7f96c783626c07ee3ed75fa3739a8a2052310 Mon Sep 17 00:00:00 2001
-From: Joonwon Kang <joonwonkang@google.com>
-Date: Wed, 26 Nov 2025 06:22:50 +0000
-Subject: [PATCH] mailbox: Prevent out-of-bounds access in
- fw_mbox_index_xlate()
+From 83c10e8dd43628d0bf86486616556cd749a3c310 Mon Sep 17 00:00:00 2001
+From: Matt Whitlock <kernel@mattwhitlock.name>
+Date: Sun, 18 Jan 2026 13:36:15 -0500
+Subject: [PATCH] dm-unstripe: fix mapping bug when there are multiple targets
+ in a table
 
-Although it is guided that `#mbox-cells` must be at least 1, there are
-many instances of `#mbox-cells = <0>;` in the device tree. If that is
-the case and the corresponding mailbox controller does not provide
-`fw_xlate` and of_xlate` function pointers, `fw_mbox_index_xlate()` will
-be used by default and out-of-bounds accesses could occur due to lack of
-bounds check in that function.
+The "unstriped" device-mapper target incorrectly calculates the sector
+offset on the mapped device when the target's origin is not zero.
 
+Take for example this hypothetical concatenation of the members of a
+two-disk RAID0:
+
+linearized:       0 2097152 unstriped 2 128 0 /dev/md/raid0 0
+linearized: 2097152 2097152 unstriped 2 128 1 /dev/md/raid0 0
+
+The intent in this example is to create a single device named
+/dev/mapper/linearized that comprises all of the chunks of the first disk
+of the RAID0 set, followed by all of the chunks of the second disk of the
+RAID0 set.
+
+This fails because dm-unstripe.c's map_to_core function does its
+computations based on the sector number within the mapper device rather
+than the sector number within the target. The bug turns invisible when
+the target's origin is at sector zero of the mapper device, as is the
+common case. In the example above, however, what happens is that the
+first half of the mapper device gets mapped correctly to the first disk
+of the RAID0, but the second half of the mapper device gets mapped past
+the end of the RAID0 device, and accesses to any of those sectors return
+errors.
+
+Signed-off-by: Matt Whitlock <kernel@mattwhitlock.name>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Fixes: 18a5bf270532 ("dm: add unstriped target")
 ---
- drivers/mailbox/mailbox.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/md/dm-unstripe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 2acc6ec229a45..617ba505691d3 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -489,12 +489,10 @@ EXPORT_SYMBOL_GPL(mbox_free_channel);
- static struct mbox_chan *fw_mbox_index_xlate(struct mbox_controller *mbox,
- 					     const struct fwnode_reference_args *sp)
+diff --git a/drivers/md/dm-unstripe.c b/drivers/md/dm-unstripe.c
+index e8a9432057dce..17be483595642 100644
+--- a/drivers/md/dm-unstripe.c
++++ b/drivers/md/dm-unstripe.c
+@@ -117,7 +117,7 @@ static void unstripe_dtr(struct dm_target *ti)
+ static sector_t map_to_core(struct dm_target *ti, struct bio *bio)
  {
--	int ind = sp->args[0];
--
--	if (ind >= mbox->num_chans)
-+	if (sp->nargs < 1 || sp->args[0] >= mbox->num_chans)
- 		return ERR_PTR(-EINVAL);
+ 	struct unstripe_c *uc = ti->private;
+-	sector_t sector = bio->bi_iter.bi_sector;
++	sector_t sector = dm_target_offset(ti, bio->bi_iter.bi_sector);
+ 	sector_t tmp_sector = sector;
  
--	return &mbox->chans[ind];
-+	return &mbox->chans[sp->args[0]];
- }
- 
- /**
+ 	/* Shift us up to the right "row" on the stripe */
 -- 
 2.51.0
 
