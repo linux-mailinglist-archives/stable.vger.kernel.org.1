@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-221547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221548-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SArGD2uYo2lIHwUAu9opvQ
-	(envelope-from <stable+bounces-221547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:47 +0100
+	id iLk7N2+Yo2lIHwUAu9opvQ
+	(envelope-from <stable+bounces-221548-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F311CB2CF
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3DBE1CB2DF
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CE0C2304BEAF
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 41ABC3053373
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2275E28AAEB;
-	Sun,  1 Mar 2026 01:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F71288C20;
+	Sun,  1 Mar 2026 01:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqcrPXwz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmiAXkpN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA28430BB5;
-	Sun,  1 Mar 2026 01:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14ACC430BB5;
+	Sun,  1 Mar 2026 01:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328539; cv=none; b=uVUSAhx3EMLLCEunU+Lmw3EnMAR4bBJWOnaogeDbguXM4Yo/nyo50+TAuZWbaL01qhHMulzIdV4eJMZVIjqFegSG5jEHpwoZY+eMuukyoaLdmRCaNJPCOdkn45fE3l3vPvEnsBFioG4a0fx9qWqZKLNhvbyb9OZt6GoXTboi4gE=
+	t=1772328542; cv=none; b=NaEC2VDf6940GMyuddb6IkigcjRrCbPwo7JcWceWj0AB9fzVgmIJNiRGRzUgOtJjHDYJLCAjHDJ7dgToOPpQx9o8S/dDLa6Ud8rnb5ZPW4w7vtJLKbeVj3glZcgjdH0RcW16XFnvKL9iIgM2SpYgKjFpJv73dKYnNhTfu+14exw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328539; c=relaxed/simple;
-	bh=T6ilbPT6n3N+sYAGmiaYyKSry/fnNT5u4TmPVdQ01vU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qv7Q5xL1VHwFKzrMiuEJJoqp9zLUWEpmWq1YGTbRPvj5wuHbnLACShUmNLLDv2N7opeobbDqdVkneunYMeMqaESiIKQrtQrIV1e0hUbywZjm3MgxCLrY5YC5NVUmTYAMYjOYU0HvHPY38gT+2HwXm0mybSk5FJFkjwZpEg4trpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqcrPXwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616DAC19421;
-	Sun,  1 Mar 2026 01:28:59 +0000 (UTC)
+	s=arc-20240116; t=1772328542; c=relaxed/simple;
+	bh=yCFWfBeF+PZWVyzX7yo0tje+vkMpIDDmkqMn7lQz3oM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WpQSZjvyhNClKx+I38kxsO0RISQpxCMWSwYESVuIgQVpuOPMzE/BY70ErooDXSqfgaWdkuhjYQ+AVIijxztFIbDL1LZcRrxHX0nuDfCWd/jzFei38HWeEQkocAxYrMAR+9prqXn3u518TSK4vkaAvbYeOg8ai95QQf5vqEw/4jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmiAXkpN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79121C19421;
+	Sun,  1 Mar 2026 01:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328539;
-	bh=T6ilbPT6n3N+sYAGmiaYyKSry/fnNT5u4TmPVdQ01vU=;
+	s=k20201202; t=1772328542;
+	bh=yCFWfBeF+PZWVyzX7yo0tje+vkMpIDDmkqMn7lQz3oM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=LqcrPXwzZJKaXBb2RL+EYKC/ujfVepXRi0clkMvTiwWGFS8Qcv7PAf8cpe8dL3eVS
-	 eJQz9IELhYumPIYWSPBxlDEKN2wQPj9bR7LbjxTha7pcqMZh8ZmyQXWmwVY+P2ZVI0
-	 UqjyjQaG8CKVRxSILn69BvLBU3z1LNKbvavO1o4cIzgYtfYLebHGyxiWPKuW4eoyKe
-	 ONCr+mdDqVGgcvFtBT1OrEsVI4dvyYFjCA1iJKL29oeseXSrEGkv72dbu+zKmILWQz
-	 SiPe5sWH0mifdSXDs7sgpYmTFOFQYapz5g8iAa+gE1OrWs/mT/W+AP4rWAv+/xGpdq
-	 6ImbTBhVQcu7w==
+	b=NmiAXkpN0YXZskNBYaqO00ycoX0M98kHron4VtUpMVskZ+Km3VSzcENyVZGEJuEeY
+	 yB7a0AsUzRFP5fOqwIWq7l+Qmk7BaYodC2R9HgX9exKlL8Br1xMM58Oqe6KEm8J5ta
+	 Ga6cAtHLZIIME4EYlq1yCmaIuZwuHIkthzBpWjoX6XplWv6MWGTBMOuX6l6dQcHI9K
+	 3/hX8IobIsRyBZISAU7cBb6zf08DYSBIB4HIZ22o7KhZzGF2m77ZlfGAb/mrIAukmj
+	 UHKUvZ1iKQr9E3jalHJl8Od3a/4CAA0jv06wMEe0tsccP1e9L2pCT69wfjjIO5Ulr8
+	 Typ+3v8xODvSg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	tiwai@suse.de
-Cc: linux-sound@vger.kernel.org
-Subject: FAILED: Patch "ALSA: hda/conexant: Fix headphone jack handling on Acer Swift SF314" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:28:58 -0500
-Message-ID: <20260301012858.1686809-1-sashal@kernel.org>
+	guspatagonico@gmail.com
+Cc: Mark Brown <broonie@kernel.org>,
+	linux-sound@vger.kernel.org
+Subject: FAILED: Patch "ASoC: amd: yc: Add DMI quirk for ASUS Vivobook Pro 15X M6501RR" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:29:00 -0500
+Message-ID: <20260301012900.1686856-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,30 +65,31 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-221548-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-221547-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 77F311CB2CF
+X-Rspamd-Queue-Id: D3DBE1CB2DF
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -100,60 +102,47 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7bc0df86c2384bc1e2012a2c946f82305054da64 Mon Sep 17 00:00:00 2001
-From: Takashi Iwai <tiwai@suse.de>
-Date: Tue, 17 Feb 2026 11:44:11 +0100
-Subject: [PATCH] ALSA: hda/conexant: Fix headphone jack handling on Acer Swift
- SF314
+From ff9cadd1a2c0b2665b7377ac79540d66f212e7e3 Mon Sep 17 00:00:00 2001
+From: Gustavo Salvini <guspatagonico@gmail.com>
+Date: Tue, 10 Feb 2026 12:51:56 -0300
+Subject: [PATCH] ASoC: amd: yc: Add DMI quirk for ASUS Vivobook Pro 15X
+ M6501RR
 
-Acer Swift SF314 (SSID 1025:136d) needs a bit of tweaks of the pin
-configurations for NID 0x16 and 0x19 to make the headphone / headset
-jack working.  NID 0x17 can remain as is for the working speaker, and
-the built-in mic is supported via SOF.
+The ASUS Vivobook Pro 15X (M6501RR) with AMD Ryzen 9 6900HX has an
+internal DMIC that is not detected without a DMI quirk entry, as the
+BIOS does not set the AcpDmicConnected ACPI _DSD property.
 
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221086
-Link: https://patch.msgid.link/20260217104414.62911-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Adding the DMI entry enables the ACP6x DMIC machine driver to probe
+successfully.
+
+Cc: stable@vger.kernel.org
+
+Signed-off-by: Gustavo Salvini <guspatagonico@gmail.com>
+Link: https://patch.msgid.link/20260210155156.29079-1-guspatagonico@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/hda/codecs/conexant.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/soc/amd/yc/acp6x-mach.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/conexant.c b/sound/hda/codecs/conexant.c
-index 5623d8c0a0f7c..f71123a475464 100644
---- a/sound/hda/codecs/conexant.c
-+++ b/sound/hda/codecs/conexant.c
-@@ -299,6 +299,7 @@ enum {
- 	CXT_PINCFG_SWS_JS201D,
- 	CXT_PINCFG_TOP_SPEAKER,
- 	CXT_FIXUP_HP_A_U,
-+	CXT_FIXUP_ACER_SWIFT_HP,
- };
- 
- /* for hda_fixup_thinkpad_acpi() */
-@@ -1024,6 +1025,14 @@ static const struct hda_fixup cxt_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cxt_fixup_hp_a_u,
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 67f2fee193980..f1a63475100d1 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -696,7 +696,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "XyloD5_RBU"),
+ 		}
  	},
-+	[CXT_FIXUP_ACER_SWIFT_HP] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x16, 0x0321403f }, /* Headphone */
-+			{ 0x19, 0x40f001f0 }, /* Mic */
-+			{ }
+-
++	{
++			.driver_data = &acp6x_card,
++			.matches = {
++				DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++				DMI_MATCH(DMI_PRODUCT_NAME, "Vivobook_ASUSLaptop M6501RR_M6501RR"),
++			}
 +		},
-+	},
+ 	{}
  };
  
- static const struct hda_quirk cxt5045_fixups[] = {
-@@ -1073,6 +1082,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
- 	SND_PCI_QUIRK(0x1025, 0x0543, "Acer Aspire One 522", CXT_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x054c, "Acer Aspire 3830TG", CXT_FIXUP_ASPIRE_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x054f, "Acer Aspire 4830T", CXT_FIXUP_ASPIRE_DMIC),
-+	SND_PCI_QUIRK(0x1025, 0x136d, "Acer Swift SF314", CXT_FIXUP_ACER_SWIFT_HP),
- 	SND_PCI_QUIRK(0x103c, 0x8079, "HP EliteBook 840 G3", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x807C, "HP EliteBook 820 G3", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x80FD, "HP ProBook 640 G2", CXT_FIXUP_HP_DOCK),
 -- 
 2.51.0
 
