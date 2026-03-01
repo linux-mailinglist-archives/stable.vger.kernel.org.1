@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-221685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAtoGU2Yo2lIHwUAu9opvQ
-	(envelope-from <stable+bounces-221685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:17 +0100
+	id SNljOSSbo2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C920A1CB270
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:37:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5111CBE40
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F34373035BCA
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B06A3238B6F
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1AE2EA749;
-	Sun,  1 Mar 2026 01:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05F92F28FC;
+	Sun,  1 Mar 2026 01:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcR+Ngjl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+lg8y6I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8209A299A84;
-	Sun,  1 Mar 2026 01:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41C72EA73D
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328887; cv=none; b=u4aRnitBYMt50q3pHgRIqmTyT6zd33rRFhGZqypkYEZBy7eZJ9gc1j3YavpE70JDM5mX9uRLcw1/erpFySj7LrI6pd3MufYO1LHxirITFoxttejo8p6+dsy/y+7s46g0ey6bqM1/nSx0UOWyblnzVioYU9Ue6OtFP0bMHVsr2pU=
+	t=1772328889; cv=none; b=JT5wGBntAWpr/DG+GncjNZraym+lqM9XkKEGlRrsYE2SHoSeeTfOAAm4md/1i12oYEiOqe1N+JWcGmBHPV3pXBMx9F6IVjipawJP9QUPSf9yFht7S8Xkz2a5sxh01vfQRjhDm5qBBf98OmUWiSgGuysh2Kmg/Zxwn2JCaUKdsNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328887; c=relaxed/simple;
-	bh=xShNqWjlR6nGVg/RJITDIBASqnj0RHTd2lxSzpWpuUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SNq9zLRtpoCTrPG9uIGu+crqqpGS4Jc2338W6Q3Sn7a7mxAY4gk4FRLYHmXF7vV1QOI1sQkTPV893pYaUGVGDXwqhv5HLUU2ClMxAd/n85CYEl50nrhBpygs9Fm7Fd/CXv6llbpamMUSOXnADA1WKBsgeq7gJXi/lFM0t2yXaW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcR+Ngjl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41E3C19421;
-	Sun,  1 Mar 2026 01:34:46 +0000 (UTC)
+	s=arc-20240116; t=1772328889; c=relaxed/simple;
+	bh=jWkehmdHRdNML8Klfewn0GYwQY0usiVjsOmqTcmQnw0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XysqVwcWLPShkGSz8KH8u2AcwKlZljIlpJl2uTJS7qwuS8uE1VoBm8qdg0gAwsoRwykEW81w9TX9n4vKurbw4pm6qFuLk7ePb7Lq07N0am5QYzcwIDUk/a53vPTngT9LFkwSZrLlpXdj6us502dR5PdsQ4Ac3JLQ6P/lwhmLsZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+lg8y6I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19FBAC19421;
+	Sun,  1 Mar 2026 01:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328887;
-	bh=xShNqWjlR6nGVg/RJITDIBASqnj0RHTd2lxSzpWpuUo=;
+	s=k20201202; t=1772328889;
+	bh=jWkehmdHRdNML8Klfewn0GYwQY0usiVjsOmqTcmQnw0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=fcR+NgjlKzfmZnHj6uOCD0Jd+b/VPbjYcqgKfJneCGKFjbYWpy1/cRVPVxXO7IsY6
-	 YT3btMqy0oPEeKcW71HjoblBQtr0FVwM8JXJKdquJEkS/CvD/iIGD65pn6wVODEpfk
-	 wcoZ3ZJR0rueYgK0S7nXdglhU0Tn6JYB4g2hafm9FNp2pscZWKSujt3L0+MJylVT6t
-	 vY0fwYQxHE8FBFis/MFXdblQOJQxbX5O5je4VAPHiI882gNozY23/hZ/zBAm+WZ2N8
-	 1ujX8W55X/+HmwsVeDuim+qnSEfEtF6tG2fiSS8J/mDiyUwusl9U/nX1KD58kGpWhw
-	 M5sSk60Z7qJDg==
+	b=R+lg8y6IabBwY8bJhLniQXYvOFlKysIYnS7B+qp/P6nsMo8wQiVP/sSDkObgdf08Z
+	 4Fv6ZBpFt4hpFFiU5KNG48JpkT/+N8cX3HrHtfc0uE83rnbMWxTUAWxFjNIqCcGVbj
+	 cs+dRKVVyWd5E52Hdl6nQngPsb+dy/T6Nx5t5YJ8A68vFwrb9UW6V+GqpebIkYuRVw
+	 U+6BlyJ37SZ6E3gWkQhA3ngwPIkoj/7jLNY5tY9K9CIx9VTJ0rEd7QRq0QdxjImPFn
+	 1XPQTrNlCsWMUNlFoy11F4ggc/B6OEjjJpEUh6YYVyAL94MUZlbsOvoP2x3uhejEtg
+	 ytKaEMc/YpkVw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jinpu.wang@ionos.com
-Cc: Yu Kuai <yukuai@fnnas.com>,
-	linux-raid@vger.kernel.org
-Subject: FAILED: Patch "md/bitmap: fix GPF in write_page caused by resize race" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:34:45 -0500
-Message-ID: <20260301013445.1694320-1-sashal@kernel.org>
+	krzysztof.kozlowski@oss.qualcomm.com
+Cc: Srinivas Kandagatla <srini@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: FAILED: Patch "nvmem: Drop OF node reference on nvmem_add_one_cell() failure" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:34:47 -0500
+Message-ID: <20260301013448.1694370-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,28 +67,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-221685-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221686-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C920A1CB270
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 4B5111CBE40
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -101,53 +102,39 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 46ef85f854dfa9d5226b3c1c46493d79556c9589 Mon Sep 17 00:00:00 2001
-From: Jack Wang <jinpu.wang@ionos.com>
-Date: Tue, 20 Jan 2026 11:24:56 +0100
-Subject: [PATCH] md/bitmap: fix GPF in write_page caused by resize race
+From f397bc0781553d01b4cdba506c09334a31cb0ec5 Mon Sep 17 00:00:00 2001
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Date: Fri, 16 Jan 2026 17:08:43 +0000
+Subject: [PATCH] nvmem: Drop OF node reference on nvmem_add_one_cell() failure
 
-A General Protection Fault occurs in write_page() during array resize:
-RIP: 0010:write_page+0x22b/0x3c0 [md_mod]
+If nvmem_add_one_cell() failed, the ownership of "child" (or "info.np"),
+thus its OF reference, is not passed further and function should clean
+up by putting the reference it got via earlier of_node_get().  Note that
+this is independent of references obtained via for_each_child_of_node()
+loop.
 
-This is a use-after-free race between bitmap_daemon_work() and
-__bitmap_resize(). The daemon iterates over `bitmap->storage.filemap`
-without locking, while the resize path frees that storage via
-md_bitmap_file_unmap(). `quiesce()` does not stop the md thread,
-allowing concurrent access to freed pages.
-
-Fix by holding `mddev->bitmap_info.mutex` during the bitmap update.
-
-Link: https://lore.kernel.org/linux-raid/20260120102456.25169-1-jinpu.wang@ionos.com
-Closes: https://lore.kernel.org/linux-raid/CAMGffE=Mbfp=7xD_hYxXk1PAaCZNSEAVeQGKGy7YF9f2S4=NEA@mail.gmail.com/T/#u
+Fixes: 50014d659617 ("nvmem: core: use nvmem_add_one_cell() in nvmem_add_cells_from_of()")
 Cc: stable@vger.kernel.org
-Fixes: d60b479d177a ("md/bitmap: add bitmap_resize function to allow bitmap resizing.")
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260116170846.733558-2-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md-bitmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvmem/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index dbe4c4b9a1daf..1d4a050dab3ab 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2453,6 +2453,7 @@ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
- 		memcpy(page_address(store.sb_page),
- 		       page_address(bitmap->storage.sb_page),
- 		       sizeof(bitmap_super_t));
-+	mutex_lock(&bitmap->mddev->bitmap_info.mutex);
- 	spin_lock_irq(&bitmap->counts.lock);
- 	md_bitmap_file_unmap(&bitmap->storage);
- 	bitmap->storage = store;
-@@ -2560,7 +2561,7 @@ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
- 			set_page_attr(bitmap, i, BITMAP_PAGE_DIRTY);
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 387c88c552595..ff68fd5ad3d6f 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -831,6 +831,7 @@ static int nvmem_add_cells_from_dt(struct nvmem_device *nvmem, struct device_nod
+ 		kfree(info.name);
+ 		if (ret) {
+ 			of_node_put(child);
++			of_node_put(info.np);
+ 			return ret;
+ 		}
  	}
- 	spin_unlock_irq(&bitmap->counts.lock);
--
-+	mutex_unlock(&bitmap->mddev->bitmap_info.mutex);
- 	if (!init) {
- 		__bitmap_unplug(bitmap);
- 		bitmap->mddev->pers->quiesce(bitmap->mddev, 0);
 -- 
 2.51.0
 
