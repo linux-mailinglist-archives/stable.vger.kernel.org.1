@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-221401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFMbAW+Wo2lPHgUAu9opvQ
-	(envelope-from <stable+bounces-221401-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:29:19 +0100
+	id WCYvJWCXo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:33:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714EE1CAC46
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F29DC1CAF30
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B8A63064F3A
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:22:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4CBB33079FFD
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040822750E6;
-	Sun,  1 Mar 2026 01:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275D8244665;
+	Sun,  1 Mar 2026 01:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDcIihbr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rnac5Um1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4D7430BA3
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5FA430BA3
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328168; cv=none; b=VZ/QnxU0oPbQ4G8pO4vdS0GamyoQCweeBkkT8mryaOVsb3uXlMNQam0pSU0Ryrcp/fZ4waKkR+xXoS82iAHJsW4eokAoEa0sDz+88nGWFGpTNd/l8ZwPVGy+Z09+QCa0ZsdvHe2VZEesUUBCucoQpcfS7rnCzKh+TFHtFHniaf4=
+	t=1772328170; cv=none; b=e200ZWnappwtD4TIHGhOZWKcN9uUQ+5mpb8OXJ6Uxuj/ClYkzF+E/2Tw7atAq9wpaKtK/qYlu+KjKoobrGjhhOEkq40YvKzHcdRZH4vCWaLG9ga3rTdWdRTSOLhj/U7ArjnxINKNx4iDXjFRuWYZfyMGcVTtSswgu1aJsz+Jt8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328168; c=relaxed/simple;
-	bh=SEnKEqpbJJgzhXkZ15c0atJTE45+ANLkzK1gHcuG0F8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OK4VMGzW69aQDhXntT85jb8Gv2gTh0pVZm/EfadE+8NQQkiAeB2PeN/Bwa31bCisUMu/HnYFAZdpCPDP8xCa3uOawb6vfn04hQOS7ee+WHlq2wZ4MyRaDd6V1xP52leTfU/TmE+BmGT/1LVtbaWyY2nL5k19M3LyAfFCIEviL7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDcIihbr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122D7C19424;
-	Sun,  1 Mar 2026 01:22:47 +0000 (UTC)
+	s=arc-20240116; t=1772328170; c=relaxed/simple;
+	bh=VCwwgtQOVWsZZAVSwAeUx/qChAT3POdqfLGAEgzpfUg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fzwT/9TstQ9YXCWgSERSQxDDRZU5Eo3M5WzofTS0qeoh0CK57jEYtevfxaWnCVes9oAw4R3CyEZBfKURVTp8Ft+/MUeODIlNVBpOZFK72iL/oB0By0v4eDg3rSAFLPUyHcQMTtQEHR9nRYElIhe8mbWApXZmTEwkhN6J758x1+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rnac5Um1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FA0C19421;
+	Sun,  1 Mar 2026 01:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328168;
-	bh=SEnKEqpbJJgzhXkZ15c0atJTE45+ANLkzK1gHcuG0F8=;
+	s=k20201202; t=1772328170;
+	bh=VCwwgtQOVWsZZAVSwAeUx/qChAT3POdqfLGAEgzpfUg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=cDcIihbr7qPFJ8izihFJhmVwcIb2RUXulRG1qt336uYOH2hb86BA6gZgfqTXg48vZ
-	 yFJ4NPFn9VKxITtTvl/RGiDYHZApUrk2sMJOxNYNz4VWboAlnPga11kIZG2bPeugie
-	 qKJD3SRtCmqt3jT8/sUnf3gwVUOJgEPZNh3HUnq/vm/9DjExIHnaxrcg5zaSJOlEZ/
-	 c4m5/KAK78h7gY+arH4NO+kwmjaxg94f0rhiI44BmDGB6bhp1WQQclLqep8GXdgBCN
-	 IDXjgoFBkiI3dUXYpfr7Oh+Uh+FNqGKsL3SwkMPQNtHX3wy9gCwYkXH5Vplkz4/Jhc
-	 dRgPHcKjcKHjQ==
+	b=Rnac5Um1npuuOp3mwkbNJMcfWlfbVNOPXz6TdBSAYE/KRjKvOeOGb03alSTCC3lMU
+	 b6yo0drkwYAFKHHWr3q6GvnJNsYSCLL0LgaHRZlmKF8Pu+H69vh8Zlgyo9/lzjrLTa
+	 +ocUKGmA6GXw56FSg8fIGq9PlYxYfoTjZBkM+6OQDs3Sm6OvCBjabbpEO9UPFk+tpe
+	 mRGd4zt8dwmCELjdVa/BjiEFgBRn9OAbpEfSmovQklkOwKKDwErrJZMx/dGZvs5Zv0
+	 7HdclGb+f/OD4BzBfWSTZ8OoTqh0UAaJvtEqc9ZwENmj7PSbEcx27bgxQeGYUb/eSn
+	 qXGMhxleS0p9g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	loic.poulain@oss.qualcomm.com
-Cc: stable@kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm/bridge: anx7625: Fix invalid EDID size" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:22:46 -0500
-Message-ID: <20260301012246.1679262-1-sashal@kernel.org>
+	dianders@chromium.org
+Cc: Lee Jones <lee@kernel.org>
+Subject: FAILED: Patch "mfd: core: Add locking around 'mfd_of_node_list'" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:22:48 -0500
+Message-ID: <20260301012249.1679321-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -73,24 +71,23 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221401-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-221402-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 714EE1CAC46
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: F29DC1CAF30
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -103,38 +100,99 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1d5362145de96b5d00d590605cc94cdfa572b405 Mon Sep 17 00:00:00 2001
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Date: Thu, 18 Dec 2025 16:13:07 +0100
-Subject: [PATCH] drm/bridge: anx7625: Fix invalid EDID size
+From 20117c92bcf9c11afd64d7481d8f94fdf410726e Mon Sep 17 00:00:00 2001
+From: Douglas Anderson <dianders@chromium.org>
+Date: Wed, 10 Dec 2025 11:30:03 -0800
+Subject: [PATCH] mfd: core: Add locking around 'mfd_of_node_list'
 
-DRM checks EDID block count against allocated size in drm_edid_valid
-function. We have to allocate the right EDID size instead of the max
-size to prevent the EDID to be reported as invalid.
+Manipulating a list in the kernel isn't safe without some sort of
+mutual exclusion. Add a mutex any time we access / modify
+'mfd_of_node_list' to prevent possible crashes.
 
-Cc: stable@kernel.org
-Fixes: 7c585f9a71aa ("drm/bridge: anx7625: use struct drm_edid more")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251218151307.95491-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Fixes: 466a62d7642f ("mfd: core: Make a best effort attempt to match devices with the correct of_nodes")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patch.msgid.link/20251210113002.1.I6ceaca2cfb7eb25737012b166671f516696be4fd@changeid
+Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/mfd-core.c | 36 ++++++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 6f3fdcb6afdb9..4e49e4f28d552 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -1801,7 +1801,7 @@ static const struct drm_edid *anx7625_edid_read(struct anx7625_data *ctx)
- 		return NULL;
- 	}
+diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
+index 6925bedddc80b..a30f93bf030aa 100644
+--- a/drivers/mfd/mfd-core.c
++++ b/drivers/mfd/mfd-core.c
+@@ -22,6 +22,7 @@
+ #include <linux/regulator/consumer.h>
  
--	ctx->cached_drm_edid = drm_edid_alloc(edid_buf, FOUR_BLOCK_SIZE);
-+	ctx->cached_drm_edid = drm_edid_alloc(edid_buf, edid_num * ONE_BLOCK_SIZE);
- 	kfree(edid_buf);
+ static LIST_HEAD(mfd_of_node_list);
++static DEFINE_MUTEX(mfd_of_node_mutex);
  
- out:
+ struct mfd_of_node_entry {
+ 	struct list_head list;
+@@ -104,9 +105,11 @@ static int mfd_match_of_node_to_dev(struct platform_device *pdev,
+ 	u64 of_node_addr;
+ 
+ 	/* Skip if OF node has previously been allocated to a device */
+-	list_for_each_entry(of_entry, &mfd_of_node_list, list)
+-		if (of_entry->np == np)
+-			return -EAGAIN;
++	scoped_guard(mutex, &mfd_of_node_mutex) {
++		list_for_each_entry(of_entry, &mfd_of_node_list, list)
++			if (of_entry->np == np)
++				return -EAGAIN;
++	}
+ 
+ 	if (!cell->use_of_reg)
+ 		/* No of_reg defined - allocate first free compatible match */
+@@ -128,7 +131,8 @@ static int mfd_match_of_node_to_dev(struct platform_device *pdev,
+ 
+ 	of_entry->dev = &pdev->dev;
+ 	of_entry->np = np;
+-	list_add_tail(&of_entry->list, &mfd_of_node_list);
++	scoped_guard(mutex, &mfd_of_node_mutex)
++		list_add_tail(&of_entry->list, &mfd_of_node_list);
+ 
+ 	of_node_get(np);
+ 	device_set_node(&pdev->dev, of_fwnode_handle(np));
+@@ -284,11 +288,13 @@ static int mfd_add_device(struct device *parent, int id,
+ 	if (cell->swnode)
+ 		device_remove_software_node(&pdev->dev);
+ fail_of_entry:
+-	list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
+-		if (of_entry->dev == &pdev->dev) {
+-			list_del(&of_entry->list);
+-			kfree(of_entry);
+-		}
++	scoped_guard(mutex, &mfd_of_node_mutex) {
++		list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
++			if (of_entry->dev == &pdev->dev) {
++				list_del(&of_entry->list);
++				kfree(of_entry);
++			}
++	}
+ fail_alias:
+ 	regulator_bulk_unregister_supply_alias(&pdev->dev,
+ 					       cell->parent_supplies,
+@@ -358,11 +364,13 @@ static int mfd_remove_devices_fn(struct device *dev, void *data)
+ 	if (cell->swnode)
+ 		device_remove_software_node(&pdev->dev);
+ 
+-	list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
+-		if (of_entry->dev == &pdev->dev) {
+-			list_del(&of_entry->list);
+-			kfree(of_entry);
+-		}
++	scoped_guard(mutex, &mfd_of_node_mutex) {
++		list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
++			if (of_entry->dev == &pdev->dev) {
++				list_del(&of_entry->list);
++				kfree(of_entry);
++			}
++	}
+ 
+ 	regulator_bulk_unregister_supply_alias(dev, cell->parent_supplies,
+ 					       cell->num_parent_supplies);
 -- 
 2.51.0
 
