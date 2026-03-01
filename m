@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-221433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKteA4GVo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:21 +0100
+	id 0BmVOpuVo2lPHgUAu9opvQ
+	(envelope-from <stable+bounces-221434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702041CA825
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB8F1CA8EF
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A56133024196
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 590BC301E5FC
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091622750E6;
-	Sun,  1 Mar 2026 01:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E9427E045;
+	Sun,  1 Mar 2026 01:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C3aYX4DO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQBXW7RR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0638C8F0;
-	Sun,  1 Mar 2026 01:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E78274B28;
+	Sun,  1 Mar 2026 01:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328253; cv=none; b=YveF36d64YrITh8FhRf+NARFCICapWWYCU5N/DZB09YWiMW9y8KepHzpFOq31WK56ivf/T3XkxM5hCrTZcujvBPuv0k7nXameLoWoxUDOVCVxIbSxLzfE1DT85Nt74SAsfEAbk5O8BluX8Xp0qljT1pSDRJ9EWyz7+XaWqRh688=
+	t=1772328256; cv=none; b=V9cUp8Zb+Lrr8pR3CNb4gljRH4w4hmx7PQllyrhml9/Bkod5lN2StiH0/dNCv4u8WHN3gpV9nhYqHaFulnwBXViHrnQxheThBJEPJXzZ+RwPZrEfi6b+ub1YpEbruh9JbMfZWcMVEj9K83cy6JZZT69n4R+iWu/URpxdbCLpiFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328253; c=relaxed/simple;
-	bh=Nbp/rGnzUuLFmZ6dBof+7IF9zvr4JZdQP+uO9PRHoXE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E+yheL/jlV5hwD4uxjnEaJnqi7WuU16ekVFuIJjTk6nG1mKaKYvOwsWs4Ew/Z5uyuV2OIDPrrDsV5hGS0h1ad+VUiovos339B0XVD0HTm+hsc+elCOt0K5CrApIUX06NiLgc3snAd0uc1HugkaRaDnI3gJbsj3YVY7DuXAVi+Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C3aYX4DO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12111C19421;
-	Sun,  1 Mar 2026 01:24:12 +0000 (UTC)
+	s=arc-20240116; t=1772328256; c=relaxed/simple;
+	bh=LhyFjPBbcm/DeB//4ceGtUWuP0r0UIqldr4kyDdpw9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WjYe1WMYaItJFB9oSWtNmhnwwDcYCUqiTi4WQ/DXDr40L+JPo0RoJg9wAsbSnFl4dmlKnTEgi4sqlQG1Q0RQIw2/BVnpTLf8WoCzsXhdVYqmtsShg891OFEKJS5RFe8PPO7PeCxo+lDKE/g7cpyRkdOCcQPeyHB5vuKKXvgpmIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQBXW7RR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D982C19421;
+	Sun,  1 Mar 2026 01:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328253;
-	bh=Nbp/rGnzUuLFmZ6dBof+7IF9zvr4JZdQP+uO9PRHoXE=;
+	s=k20201202; t=1772328256;
+	bh=LhyFjPBbcm/DeB//4ceGtUWuP0r0UIqldr4kyDdpw9I=;
 	h=From:To:Cc:Subject:Date:From;
-	b=C3aYX4DOmIBhaCzoSeyk1XSsuJ2GGkw/ZgExX9uFiiAfLc2SzK4gea30XRdvkFL/i
-	 YJVXRv4kxVUlJRkRTx6Lqt8HDz+Jt3qoiKaEwQ5WnYv3CaKlONy9Paxp3L4pXBJfV8
-	 JAb4jltVeZLN5UTOv9ToG8wCTktipfQGCkOTsfnrr1WQDJv9u9xqpAIRDVEo47wvjJ
-	 grKxCbwswWxV2F2WZ18hAtehTRTp28T7+k27k68QTsqGSQd6TZo4gdj1o9FxDaCrTz
-	 nWAEXq2ZgZ8jv7zhqp8RBxnncflQDLS0zgApezUeP8QS3eY08sqNU3O2QgqSYvsqQv
-	 sqnWAXKpw7S1A==
+	b=iQBXW7RRgaTTQmqU1pThHqm4CIG/HoQV6HCeDCLTs+aTM3qQrvtEg224Hert1us0d
+	 aOIf3bPGImgHQzlK1sIFv/Ys5T0Y6qoa5fLwCATaWUqoI7W+Tz7GhdOaldft7FcRSQ
+	 MU0hdTw9o1mkUOr8ltDusaHtjwqZmH/RJGAgXLeQImIAg2LUKt2YKneswTCuucLJz1
+	 y93LwXy3rcAMV6eFfyrKn2mbWSIbOz58yTiEgbZ3YkEfu39w1oYYTpo14GYygdAIzb
+	 urxcxijMWNQuXFT6gQz2EefVPCQ2DAxTjTl3Q650TzRkV4TR8qN4RuG+DzF8N0AoPp
+	 A0umL8wdaZwOw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ilpo.jarvinen@linux.intel.com
-Cc: =?UTF-8?q?Malte=20Schr=C3=B6der?= <malte+lkml@tnxip.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org
-Subject: FAILED: Patch "PCI: Fix bridge window alignment with optional resources" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:24:11 -0500
-Message-ID: <20260301012411.1680981-1-sashal@kernel.org>
+	chuck.lever@oracle.com
+Cc: Xingjing Deng <micro6947@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: FAILED: Patch "SUNRPC: auth_gss: fix memory leaks in XDR decoding error paths" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:24:13 -0500
+Message-ID: <20260301012414.1681034-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,37 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221433-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221434-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email,tnxip.de:email]
-X-Rspamd-Queue-Id: 702041CA825
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: CFB8F1CA8EF
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -104,102 +105,226 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7e90360e6d4599795b6f4e094e20d0bdf3b2615f Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 19 Dec 2025 19:40:14 +0200
-Subject: [PATCH] PCI: Fix bridge window alignment with optional resources
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 3e6397b056335cc56ef0e9da36c95946a19f5118 Mon Sep 17 00:00:00 2001
+From: Chuck Lever <chuck.lever@oracle.com>
+Date: Fri, 26 Dec 2025 10:15:32 -0500
+Subject: [PATCH] SUNRPC: auth_gss: fix memory leaks in XDR decoding error
+ paths
 
-pbus_size_mem() has two alignments, one for required resources in min_align
-and another in add_align that takes account optional resources.
+The gssx_dec_ctx(), gssx_dec_status(), and gssx_dec_name()
+functions allocate memory via gssx_dec_buffer(), which calls
+kmemdup(). When a subsequent decode operation fails, these
+functions return immediately without freeing previously
+allocated buffers, causing memory leaks.
 
-The add_align is applied to the bridge window through the realloc_head
-list. It can happen, however, that add_align is larger than min_align but
-calculated size1 and size0 are equal due to extra tailroom (e.g., hotplug
-reservation, tail alignment), and therefore no entry is created to the
-realloc_head list. Without the bridge appearing in the realloc head,
-add_align is lost when pbus_size_mem() returns.
+The leak in gssx_dec_ctx() is particularly relevant because
+the caller (gssp_accept_sec_context_upcall) initializes several
+buffer length fields to non-zero values, resulting in memory
+allocation:
 
-The problem is visible in this log for 0000:05:00.0 which lacks
-add_size ... add_align ... line that would indicate it was added into
-the realloc_head list:
+    struct gssx_ctx rctxh = {
+        .exported_context_token.len = GSSX_max_output_handle_sz,
+        .mech.len = GSS_OID_MAX_LEN,
+        .src_name.display_name.len = GSSX_max_princ_sz,
+        .targ_name.display_name.len = GSSX_max_princ_sz
+    };
 
-  pci 0000:05:00.0: PCI bridge to [bus 06-16]
-  ...
-  pci 0000:06:00.0: bridge window [mem 0x00100000-0x001fffff] to [bus 07] requires relaxed alignment rules
-  pci 0000:06:06.0: bridge window [mem 0x00100000-0x001fffff] to [bus 0a] requires relaxed alignment rules
-  pci 0000:06:07.0: bridge window [mem 0x00100000-0x003fffff] to [bus 0b] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x00800000-0x00ffffff 64bit pref] to [bus 0c-14] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] requires relaxed alignment rules
-  pci 0000:06:08.0: bridge window [mem 0x01000000-0x057fffff] to [bus 0c-14] add_size 100000 add_align 1000000
-  pci 0000:06:0c.0: bridge window [mem 0x00100000-0x001fffff] to [bus 15] requires relaxed alignment rules
-  pci 0000:06:0d.0: bridge window [mem 0x00100000-0x001fffff] to [bus 16] requires relaxed alignment rules
-  pci 0000:06:0d.0: bridge window [mem 0x00100000-0x001fffff] to [bus 16] requires relaxed alignment rules
-  pci 0000:05:00.0: bridge window [mem 0xd4800000-0xd97fffff]: assigned
-  pci 0000:05:00.0: bridge window [mem 0x1060000000-0x10607fffff 64bit pref]: assigned
-  pci 0000:06:08.0: bridge window [mem size 0x04900000]: can't assign; no space
-  pci 0000:06:08.0: bridge window [mem size 0x04900000]: failed to assign
+If, for example, gssx_dec_name() succeeds for src_name but
+fails for targ_name, the memory allocated for
+exported_context_token, mech, and src_name.display_name
+remains unreferenced and cannot be reclaimed.
 
-While this bug itself seems old, it has likely become more visible after
-the relaxed tail alignment that does not grossly overestimate the size
-needed for the bridge window.
+Add error handling with goto-based cleanup to free any
+previously allocated buffers before returning an error.
 
-Make sure add_align > min_align too results in adding an entry into the
-realloc head list. In addition, add handling to the cases where add_size is
-zero while only alignment differs.
-
-Fixes: d74b9027a4da ("PCI: Consider additional PF's IOV BAR alignment in sizing and assigning")
-Reported-by: Malte Schröder <malte+lkml@tnxip.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Malte Schröder <malte+lkml@tnxip.de>
+Reported-by: Xingjing Deng <micro6947@gmail.com>
+Closes: https://lore.kernel.org/linux-nfs/CAK+ZN9qttsFDu6h1FoqGadXjMx1QXqPMoYQ=6O9RY4SxVTvKng@mail.gmail.com/
+Fixes: 1d658336b05f ("SUNRPC: Add RPC based upcall mechanism for RPCGSS auth")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251219174036.16738-2-ilpo.jarvinen@linux.intel.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/pci/setup-bus.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/sunrpc/auth_gss/gss_rpc_xdr.c | 82 ++++++++++++++++++++++++-------
+ 1 file changed, 64 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 6e90f46f52afd..4b918ff4d2d8b 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -14,6 +14,7 @@
-  *	     tighter packing. Prefetchable range support.
-  */
+diff --git a/net/sunrpc/auth_gss/gss_rpc_xdr.c b/net/sunrpc/auth_gss/gss_rpc_xdr.c
+index 7d2cdc2bd374e..f320c0a8e6049 100644
+--- a/net/sunrpc/auth_gss/gss_rpc_xdr.c
++++ b/net/sunrpc/auth_gss/gss_rpc_xdr.c
+@@ -320,29 +320,47 @@ static int gssx_dec_status(struct xdr_stream *xdr,
  
-+#include <linux/align.h>
- #include <linux/bitops.h>
- #include <linux/bug.h>
- #include <linux/init.h>
-@@ -456,7 +457,7 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
- 					"%s %pR: ignoring failure in optional allocation\n",
- 					res_name, res);
- 			}
--		} else if (add_size > 0) {
-+		} else if (add_size > 0 || !IS_ALIGNED(res->start, align)) {
- 			res->flags |= add_res->flags &
- 				 (IORESOURCE_STARTALIGN|IORESOURCE_SIZEALIGN);
- 			if (pci_reassign_resource(dev, idx, add_size, align))
-@@ -1442,12 +1443,13 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+ 	/* status->minor_status */
+ 	p = xdr_inline_decode(xdr, 8);
+-	if (unlikely(p == NULL))
+-		return -ENOSPC;
++	if (unlikely(p == NULL)) {
++		err = -ENOSPC;
++		goto out_free_mech;
++	}
+ 	p = xdr_decode_hyper(p, &status->minor_status);
  
- 	resource_set_range(b_res, min_align, size0);
- 	b_res->flags |= IORESOURCE_STARTALIGN;
--	if (bus->self && size1 > size0 && realloc_head) {
-+	if (bus->self && realloc_head && (size1 > size0 || add_align > min_align)) {
- 		b_res->flags &= ~IORESOURCE_DISABLED;
--		add_to_list(realloc_head, bus->self, b_res, size1-size0, add_align);
-+		add_size = size1 > size0 ? size1 - size0 : 0;
-+		add_to_list(realloc_head, bus->self, b_res, add_size, add_align);
- 		pci_info(bus->self, "bridge window %pR to %pR add_size %llx add_align %llx\n",
- 			   b_res, &bus->busn_res,
--			   (unsigned long long) (size1 - size0),
-+			   (unsigned long long) add_size,
- 			   (unsigned long long) add_align);
- 	}
+ 	/* status->major_status_string */
+ 	err = gssx_dec_buffer(xdr, &status->major_status_string);
+ 	if (err)
+-		return err;
++		goto out_free_mech;
+ 
+ 	/* status->minor_status_string */
+ 	err = gssx_dec_buffer(xdr, &status->minor_status_string);
+ 	if (err)
+-		return err;
++		goto out_free_major_status_string;
+ 
+ 	/* status->server_ctx */
+ 	err = gssx_dec_buffer(xdr, &status->server_ctx);
+ 	if (err)
+-		return err;
++		goto out_free_minor_status_string;
+ 
+ 	/* we assume we have no options for now, so simply consume them */
+ 	/* status->options */
+ 	err = dummy_dec_opt_array(xdr, &status->options);
++	if (err)
++		goto out_free_server_ctx;
+ 
++	return 0;
++
++out_free_server_ctx:
++	kfree(status->server_ctx.data);
++	status->server_ctx.data = NULL;
++out_free_minor_status_string:
++	kfree(status->minor_status_string.data);
++	status->minor_status_string.data = NULL;
++out_free_major_status_string:
++	kfree(status->major_status_string.data);
++	status->major_status_string.data = NULL;
++out_free_mech:
++	kfree(status->mech.data);
++	status->mech.data = NULL;
+ 	return err;
  }
+ 
+@@ -505,28 +523,35 @@ static int gssx_dec_name(struct xdr_stream *xdr,
+ 	/* name->name_type */
+ 	err = gssx_dec_buffer(xdr, &dummy_netobj);
+ 	if (err)
+-		return err;
++		goto out_free_display_name;
+ 
+ 	/* name->exported_name */
+ 	err = gssx_dec_buffer(xdr, &dummy_netobj);
+ 	if (err)
+-		return err;
++		goto out_free_display_name;
+ 
+ 	/* name->exported_composite_name */
+ 	err = gssx_dec_buffer(xdr, &dummy_netobj);
+ 	if (err)
+-		return err;
++		goto out_free_display_name;
+ 
+ 	/* we assume we have no attributes for now, so simply consume them */
+ 	/* name->name_attributes */
+ 	err = dummy_dec_nameattr_array(xdr, &dummy_name_attr_array);
+ 	if (err)
+-		return err;
++		goto out_free_display_name;
+ 
+ 	/* we assume we have no options for now, so simply consume them */
+ 	/* name->extensions */
+ 	err = dummy_dec_opt_array(xdr, &dummy_option_array);
++	if (err)
++		goto out_free_display_name;
+ 
++	return 0;
++
++out_free_display_name:
++	kfree(name->display_name.data);
++	name->display_name.data = NULL;
+ 	return err;
+ }
+ 
+@@ -649,32 +674,34 @@ static int gssx_dec_ctx(struct xdr_stream *xdr,
+ 	/* ctx->state */
+ 	err = gssx_dec_buffer(xdr, &ctx->state);
+ 	if (err)
+-		return err;
++		goto out_free_exported_context_token;
+ 
+ 	/* ctx->need_release */
+ 	err = gssx_dec_bool(xdr, &ctx->need_release);
+ 	if (err)
+-		return err;
++		goto out_free_state;
+ 
+ 	/* ctx->mech */
+ 	err = gssx_dec_buffer(xdr, &ctx->mech);
+ 	if (err)
+-		return err;
++		goto out_free_state;
+ 
+ 	/* ctx->src_name */
+ 	err = gssx_dec_name(xdr, &ctx->src_name);
+ 	if (err)
+-		return err;
++		goto out_free_mech;
+ 
+ 	/* ctx->targ_name */
+ 	err = gssx_dec_name(xdr, &ctx->targ_name);
+ 	if (err)
+-		return err;
++		goto out_free_src_name;
+ 
+ 	/* ctx->lifetime */
+ 	p = xdr_inline_decode(xdr, 8+8);
+-	if (unlikely(p == NULL))
+-		return -ENOSPC;
++	if (unlikely(p == NULL)) {
++		err = -ENOSPC;
++		goto out_free_targ_name;
++	}
+ 	p = xdr_decode_hyper(p, &ctx->lifetime);
+ 
+ 	/* ctx->ctx_flags */
+@@ -683,17 +710,36 @@ static int gssx_dec_ctx(struct xdr_stream *xdr,
+ 	/* ctx->locally_initiated */
+ 	err = gssx_dec_bool(xdr, &ctx->locally_initiated);
+ 	if (err)
+-		return err;
++		goto out_free_targ_name;
+ 
+ 	/* ctx->open */
+ 	err = gssx_dec_bool(xdr, &ctx->open);
+ 	if (err)
+-		return err;
++		goto out_free_targ_name;
+ 
+ 	/* we assume we have no options for now, so simply consume them */
+ 	/* ctx->options */
+ 	err = dummy_dec_opt_array(xdr, &ctx->options);
++	if (err)
++		goto out_free_targ_name;
++
++	return 0;
+ 
++out_free_targ_name:
++	kfree(ctx->targ_name.display_name.data);
++	ctx->targ_name.display_name.data = NULL;
++out_free_src_name:
++	kfree(ctx->src_name.display_name.data);
++	ctx->src_name.display_name.data = NULL;
++out_free_mech:
++	kfree(ctx->mech.data);
++	ctx->mech.data = NULL;
++out_free_state:
++	kfree(ctx->state.data);
++	ctx->state.data = NULL;
++out_free_exported_context_token:
++	kfree(ctx->exported_context_token.data);
++	ctx->exported_context_token.data = NULL;
+ 	return err;
+ }
+ 
 -- 
 2.51.0
 
