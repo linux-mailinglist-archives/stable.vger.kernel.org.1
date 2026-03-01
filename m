@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-221793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8M4vGzaco2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-221793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:53:58 +0100
+	id wCu/Jymdo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-221794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:01 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CF31CC2DD
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:53:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCB71CC668
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EC7F83062619
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 94CEF306263F
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370892D9EE2;
-	Sun,  1 Mar 2026 01:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DDD2DA749;
+	Sun,  1 Mar 2026 01:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oqcZ0o9x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MqbjxH14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2082EA481;
-	Sun,  1 Mar 2026 01:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1065C25228C;
+	Sun,  1 Mar 2026 01:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329153; cv=none; b=tIhlOEdvOM/oVEBZbCnlwhYXpDR4qIfAZk4f+WsWx92FreZviWVxzERU/Y5lRpvboPeHuRxbPE2RzgKRgzGdRDDkfZ9ABO4rV0/TJJHQnu1u2a9yCb/Hdfl+oTjjGmDpMSdWJ7W/NGvgdvsCm6Lhvwsi61/lD931izqyyBoYqL8=
+	t=1772329155; cv=none; b=nlK3Gl6BezZsbugpJ5Ft3Ipr534n/4YAvLdvQLg4ld5O+BXeyF7tG5wz02MtMcrdUUZnutq7Sy5MOUqc0vofMC51pHDiZxVpJVxUjfuArJrb768SeL0PNWAjLznPMPVVqTiVMFe4SOruyZdnTN/qQ5i+It9iWPMINZMbPMp8/K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329153; c=relaxed/simple;
-	bh=OrCR5XA/sOk4k6Mo4m5UzAOxu2R+6YjL0FxDmv9CAY4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UxRdKAMoHlZCxGZZM0IM09H1j6k/Ib9SrzNAs5gmyLteCMhom8g4s7yxB4kgS26zHgiwtyY3EZjHkM8YMHN6CHTihSpNarEn8myyMHDVNncEph9MysDD1LybsAIV7AfRjk5C6JqwgWMcg3oL2bJh9FTRbCK0W5XQSnSDmzeyI/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oqcZ0o9x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360F4C19421;
-	Sun,  1 Mar 2026 01:39:12 +0000 (UTC)
+	s=arc-20240116; t=1772329155; c=relaxed/simple;
+	bh=w2e0PeI7KG2r1jLI6x0isKwnEz8/B5iEFFLH8F2BcuE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a8bLruLXa4uVF826DKlk98AMsz1c0a23Dj2NCt5DNGm2i3dNAD1uEFGMnr2bjc0hnh4Kjr7Iq8+Yjk8fvdloajzpS5u4mMXmkoNZvUXyN9b1su2sYevFbP2WtT9e/cVTyF0AZfXFTdnxmoqj0C0ufc8tOBFSM8M6BMXyGoLJ7J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MqbjxH14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87984C19424;
+	Sun,  1 Mar 2026 01:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329152;
-	bh=OrCR5XA/sOk4k6Mo4m5UzAOxu2R+6YjL0FxDmv9CAY4=;
+	s=k20201202; t=1772329154;
+	bh=w2e0PeI7KG2r1jLI6x0isKwnEz8/B5iEFFLH8F2BcuE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=oqcZ0o9xcyEA3vOpKf+xw2JUKtXodDY9W3K6rE4bMvVmsKnCLOsrl4HuG9r2uCeUN
-	 xxwJdrrlBjfQrpSDAqTyqtuPgmpoBW6pok8gBRSgiihZwIyWFi6FNhuFnCGvTaVeQn
-	 LNDMVHALHhWdd9rfy4qSAZ24Tmuj+vNc38jPnmWzAYOnqgHL93d9//WMtE1O+7ETIE
-	 2PvpRyt1DFzfnMobfDoEa9d2Ymkk3nLq82UARiiCBmn+GEzO0AFlX3P10fCph+QAak
-	 qvJdPWq8K2cguHXZeONJ2O9icR4IqvJkj/HqUynMLVi3a4UiH5Lzj0amLaDipSowGX
-	 fNWukXY35Mwgw==
+	b=MqbjxH14yBsd56WHsBrfglBWH3lyTANsICJD8DqxlpgQOm3lkuJ0AeNsZCzZllRGh
+	 1E5ZYITBIWB7VQsB6ks73j4SQIs85gutmpCnJRBHLPYSdOVGS+JXu4N0p52KpqpqFn
+	 SKAdm/pQ6IvD851DXaFyV9XEqs2DYuRDAHhEh6e8I5W0ajeNLTXjlWvWAyGqCdxKap
+	 nqgDZGeGi1KfCB83qHi9JmQPcCudlu2Quxw7brSi+vNjiqI8tpDZVI6iXASFHyAMxg
+	 Zek2OtRE8bw0+JudFYglvq+UxcuKeVcCjuXh6315bWrap0sy5w+DpZLVQnlefdeI0t
+	 6QQJsm87cvS5w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	sprasad@microsoft.com
-Cc: Yuchan Nam <entropy1110@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: FAILED: Patch "cifs: some missing initializations on replay" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:39:10 -0500
-Message-ID: <20260301013911.1700044-1-sashal@kernel.org>
+	tiwai@suse.de
+Cc: linux-sound@vger.kernel.org
+Subject: FAILED: Patch "ALSA: hda/conexant: Fix headphone jack handling on Acer Swift SF314" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:39:13 -0500
+Message-ID: <20260301013913.1700094-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,34 +62,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,vger.kernel.org,lists.samba.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-221793-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-221794-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 74CF31CC2DD
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 9CCB71CC668
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -105,62 +101,60 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 14f66f44646333d2bfd7ece36585874fd72f8286 Mon Sep 17 00:00:00 2001
-From: Shyam Prasad N <sprasad@microsoft.com>
-Date: Sat, 14 Feb 2026 15:59:13 +0530
-Subject: [PATCH] cifs: some missing initializations on replay
+From 7bc0df86c2384bc1e2012a2c946f82305054da64 Mon Sep 17 00:00:00 2001
+From: Takashi Iwai <tiwai@suse.de>
+Date: Tue, 17 Feb 2026 11:44:11 +0100
+Subject: [PATCH] ALSA: hda/conexant: Fix headphone jack handling on Acer Swift
+ SF314
 
-In several places in the code, we have a label to signify
-the start of the code where a request can be replayed if
-necessary. However, some of these places were missing the
-necessary reinitializations of certain local variables
-before replay.
+Acer Swift SF314 (SSID 1025:136d) needs a bit of tweaks of the pin
+configurations for NID 0x16 and 0x19 to make the headphone / headset
+jack working.  NID 0x17 can remain as is for the working speaker, and
+the built-in mic is supported via SOF.
 
-This change makes sure that these variables get initialized
-after the label.
-
-Cc: stable@vger.kernel.org
-Reported-by: Yuchan Nam <entropy1110@gmail.com>
-Tested-by: Yuchan Nam <entropy1110@gmail.com>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221086
+Link: https://patch.msgid.link/20260217104414.62911-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 ---
- fs/smb/client/smb2ops.c | 2 ++
- fs/smb/client/smb2pdu.c | 1 +
- 2 files changed, 3 insertions(+)
+ sound/hda/codecs/conexant.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 61c521712f863..7370d7a18cd0c 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -1185,6 +1185,7 @@ smb2_set_ea(const unsigned int xid, struct cifs_tcon *tcon,
+diff --git a/sound/hda/codecs/conexant.c b/sound/hda/codecs/conexant.c
+index 5623d8c0a0f7c..f71123a475464 100644
+--- a/sound/hda/codecs/conexant.c
++++ b/sound/hda/codecs/conexant.c
+@@ -299,6 +299,7 @@ enum {
+ 	CXT_PINCFG_SWS_JS201D,
+ 	CXT_PINCFG_TOP_SPEAKER,
+ 	CXT_FIXUP_HP_A_U,
++	CXT_FIXUP_ACER_SWIFT_HP,
+ };
  
- replay_again:
- 	/* reinitialize for possible replay */
-+	used_len = 0;
- 	flags = CIFS_CP_CREATE_CLOSE_OP;
- 	oplock = SMB2_OPLOCK_LEVEL_NONE;
- 	server = cifs_pick_channel(ses);
-@@ -1588,6 +1589,7 @@ smb2_ioctl_query_info(const unsigned int xid,
+ /* for hda_fixup_thinkpad_acpi() */
+@@ -1024,6 +1025,14 @@ static const struct hda_fixup cxt_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cxt_fixup_hp_a_u,
+ 	},
++	[CXT_FIXUP_ACER_SWIFT_HP] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x16, 0x0321403f }, /* Headphone */
++			{ 0x19, 0x40f001f0 }, /* Mic */
++			{ }
++		},
++	},
+ };
  
- replay_again:
- 	/* reinitialize for possible replay */
-+	buffer = NULL;
- 	flags = CIFS_CP_CREATE_CLOSE_OP;
- 	oplock = SMB2_OPLOCK_LEVEL_NONE;
- 	server = cifs_pick_channel(ses);
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 4602b4dfe8322..7f3edf42b9c3f 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2908,6 +2908,7 @@ int smb311_posix_mkdir(const unsigned int xid, struct inode *inode,
- 
- replay_again:
- 	/* reinitialize for possible replay */
-+	pc_buf = NULL;
- 	flags = 0;
- 	n_iov = 2;
- 	server = cifs_pick_channel(ses);
+ static const struct hda_quirk cxt5045_fixups[] = {
+@@ -1073,6 +1082,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK(0x1025, 0x0543, "Acer Aspire One 522", CXT_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x054c, "Acer Aspire 3830TG", CXT_FIXUP_ASPIRE_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x054f, "Acer Aspire 4830T", CXT_FIXUP_ASPIRE_DMIC),
++	SND_PCI_QUIRK(0x1025, 0x136d, "Acer Swift SF314", CXT_FIXUP_ACER_SWIFT_HP),
+ 	SND_PCI_QUIRK(0x103c, 0x8079, "HP EliteBook 840 G3", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x807C, "HP EliteBook 820 G3", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x80FD, "HP ProBook 640 G2", CXT_FIXUP_HP_DOCK),
 -- 
 2.51.0
 
