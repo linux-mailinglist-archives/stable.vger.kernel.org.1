@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNbBH9yqo2nfJQUAu9opvQ
-	(envelope-from <stable+bounces-221986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:56:28 +0100
+	id gJQyGFSfo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-221987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:16 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7F31CE12E
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:56:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B58EA1CD027
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A57B5336CFBE
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:47:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 310FD3373C16
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AF92C234E;
-	Sun,  1 Mar 2026 01:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE962E7657;
+	Sun,  1 Mar 2026 01:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TYOzViSM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVhrEg50"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364CB2D0C63;
-	Sun,  1 Mar 2026 01:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3472D0C63;
+	Sun,  1 Mar 2026 01:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329625; cv=none; b=GApzQj+2p22ijl5J+z2ewSBpWVmhzwIoN6UG82y44r6Adtnmzm7UDH+gFkECcRgMw4FlUBgZnkPFJnhDsDxXWpma33cpbX+gFBapBx/i+ZBwiAAo01T5FqFkD4iFclXtwjvYZVyishCmNTxLe4y0uP/5+2bgMfQ6igciD/7G6tY=
+	t=1772329627; cv=none; b=TDmdBn/WFwxBIU65d78E6sKeOOjwGEhK4yAi9RwXGCmE66b/52g2autJYVKDssEljnQWz7WfQqTmbKAVBxRRno1NqbULT7PRm+lUUPiorTOXMgDcwcVLr2nTFI4szqlMZkjN+1+CWnrVxU3aW9ifqBNrqcd48NjscOcdt8WoKh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329625; c=relaxed/simple;
-	bh=rdIHemizDPreSeo418nvu6DYCw/I+lpqEnIC4RmRwa4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JdIG2OIzUdZY1v1KjXH8QpVyZAIoXq0y+cpbAASJlgBChNbzIgBAmrhpDkHIAVnrFF4oLhC/61VfeHjd//zyD7KPJqPdgcS2v94OO/ey+OMqlFzpS6NcvNTeXxMAbcWhlGIAsq20qkNrm2wpgtnbhtuobS9pXERBwVwqBYt4JzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYOzViSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A6FC19421;
-	Sun,  1 Mar 2026 01:47:04 +0000 (UTC)
+	s=arc-20240116; t=1772329627; c=relaxed/simple;
+	bh=he7oVumGwFgLCrVHsN3ubBudK7vqjjKajAsbFNtOeAg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N4LkBbmv/u+Q5NpLXS6Eiiv1N6rnHizaDoInHA3T/zHkXZEUru1KKtluBIVvqV8yQsB8NEMsRAfdHL8Rb+ki2rMEc6/vALFNi/8gY1ExysOw4WlS7qZj1nFZr7VfwD8dpkwbkrNCYtAtPXTzkk2TgX6V7f9UM3Ithk8p0EJvTcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVhrEg50; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C896EC19421;
+	Sun,  1 Mar 2026 01:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329625;
-	bh=rdIHemizDPreSeo418nvu6DYCw/I+lpqEnIC4RmRwa4=;
+	s=k20201202; t=1772329627;
+	bh=he7oVumGwFgLCrVHsN3ubBudK7vqjjKajAsbFNtOeAg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=TYOzViSMwYz5utGtnnj1FLPG2JDkLl6unLkJnU8sF2qGa41KxepsQFNF791JMnlQB
-	 qmA7xEPdMPT6eSjOL/fS+b5Cy/RMaXG1eGBbcMp/G+LanCjk9LiTjwzxheh8WOatxF
-	 czmvKJ6aNUbFuAI6gm7W4MjD6xw4VTXXmVoxchyaiFu39P2IbNas2Xc53jXaT59EoR
-	 7uT++ELWY34J42oWDkfMGlqjQVFO28/PlOZTbZfwrPKIK+6zF6Izot2wGYh4TA/kGh
-	 gC1MtbTxC+n0ASMehTPCl9tszE/ICwguGgQrm9v8r5dbmwcLzaVS0VLmsi4eOnvlqY
-	 WG0ZZDcM/utxg==
+	b=FVhrEg502x9g4HqIU8bffLM+5OtVD9j4i5q9GzMVMpJYe4WoxmOrOV79PTxWvr8XG
+	 E4zdRFjesn/BPQxrrf5qLkam7BNpsC7ybKoexlSiZHUjxl9O1YD614l7zpUeLi1UnR
+	 Usc2NtRkYlQ9lWYRGkDaNtL6/eZZd9V8K/UiwrITfdAlSEALQeSC331fNMF6jlqJSo
+	 SegAsdUOM3FfLWZ4y1uDoCQt7wje5MUQFTLt6s/BJuySKYNjaUl+Enkf/hwiuMsYgB
+	 2krLZudGq9JYhOvpocrP/Wnp2NGlMv78SHI7KmAJT4D6eb/A62uxWtS4f9jBNPIGjn
+	 3XkW9RLGg6ctA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ethanwu@synology.com
-Cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	ceph-devel@vger.kernel.org
-Subject: FAILED: Patch "ceph: supply snapshot context in ceph_zero_partial_object()" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:47:03 -0500
-Message-ID: <20260301014703.1710243-1-sashal@kernel.org>
+	yangtiezhu@loongson.cn
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+	kasan-dev@googlegroups.com,
+	loongarch@lists.linux.dev
+Subject: FAILED: Patch "LoongArch: Rework KASAN initialization for PTW-enabled systems" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:47:05 -0500
+Message-ID: <20260301014705.1710302-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,31 +66,31 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[ibm.com,gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221986-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221987-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DD7F31CE12E
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:email]
+X-Rspamd-Queue-Id: B58EA1CD027
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -103,83 +103,163 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f16bd3fa74a2084ee7e16a8a2be7e7399b970907 Mon Sep 17 00:00:00 2001
-From: ethanwu <ethanwu@synology.com>
-Date: Thu, 25 Sep 2025 18:42:05 +0800
-Subject: [PATCH] ceph: supply snapshot context in ceph_zero_partial_object()
+From 5ec5ac4ca27e4daa234540ac32f9fc5219377d53 Mon Sep 17 00:00:00 2001
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Date: Tue, 10 Feb 2026 19:31:17 +0800
+Subject: [PATCH] LoongArch: Rework KASAN initialization for PTW-enabled
+ systems
 
-The ceph_zero_partial_object function was missing proper snapshot
-context for its OSD write operations, which could lead to data
-inconsistencies in snapshots.
+kasan_init_generic() indicates that kasan is fully initialized, so it
+should be put at end of kasan_init().
 
-Reproducer:
-../src/vstart.sh --new -x --localhost --bluestore
-./bin/ceph auth caps client.fs_a mds 'allow rwps fsname=a' mon 'allow r fsname=a' osd 'allow rw tag cephfs data=a'
-mount -t ceph fs_a@.a=/ /mnt/mycephfs/ -o conf=./ceph.conf
-dd if=/dev/urandom of=/mnt/mycephfs/foo bs=64K count=1
-mkdir /mnt/mycephfs/.snap/snap1
-md5sum /mnt/mycephfs/.snap/snap1/foo
-fallocate -p -o 0 -l 4096 /mnt/mycephfs/foo
-echo 3 > /proc/sys/vm/drop/caches
-md5sum /mnt/mycephfs/.snap/snap1/foo # get different md5sum!!
+Otherwise bringing up the primary CPU failed when CONFIG_KASAN is set
+on PTW-enabled systems, here are the call chains:
+
+    kernel_entry()
+      start_kernel()
+        setup_arch()
+          kasan_init()
+            kasan_init_generic()
+
+The reason is PTW-enabled systems have speculative accesses which means
+memory accesses to the shadow memory after kasan_init() may be executed
+by hardware before. However, accessing shadow memory is safe only after
+kasan fully initialized because kasan_init() uses a temporary PGD table
+until we have populated all levels of shadow page tables and writen the
+PGD register. Moving kasan_init_generic() later can defer the occasion
+of kasan_enabled(), so as to avoid speculative accesses on shadow pages.
+
+After moving kasan_init_generic() to the end, kasan_init() can no longer
+call kasan_mem_to_shadow() for shadow address conversion because it will
+always return kasan_early_shadow_page. On the other hand, we should keep
+the current logic of kasan_mem_to_shadow() for both the early and final
+stage because there may be instrumentation before kasan_init().
+
+To solve this, we factor out a new mem_to_shadow() function from current
+kasan_mem_to_shadow() for the shadow address conversion in kasan_init().
 
 Cc: stable@vger.kernel.org
-Fixes: ad7a60de882ac ("ceph: punch hole support")
-Signed-off-by: ethanwu <ethanwu@synology.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Tested-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- fs/ceph/file.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ arch/loongarch/mm/kasan_init.c | 78 +++++++++++++++++-----------------
+ 1 file changed, 40 insertions(+), 38 deletions(-)
 
-diff --git a/fs/ceph/file.c b/fs/ceph/file.c
-index 983390069f737..9152b47227101 100644
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -2568,6 +2568,7 @@ static int ceph_zero_partial_object(struct inode *inode,
- 	struct ceph_inode_info *ci = ceph_inode(inode);
- 	struct ceph_fs_client *fsc = ceph_inode_to_fs_client(inode);
- 	struct ceph_osd_request *req;
-+	struct ceph_snap_context *snapc;
- 	int ret = 0;
- 	loff_t zero = 0;
- 	int op;
-@@ -2582,12 +2583,25 @@ static int ceph_zero_partial_object(struct inode *inode,
- 		op = CEPH_OSD_OP_ZERO;
- 	}
+diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
+index 170da98ad4f55..0fc02ca064573 100644
+--- a/arch/loongarch/mm/kasan_init.c
++++ b/arch/loongarch/mm/kasan_init.c
+@@ -40,39 +40,43 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
+ #define __pte_none(early, pte) (early ? pte_none(pte) : \
+ ((pte_val(pte) & _PFN_MASK) == (unsigned long)__pa(kasan_early_shadow_page)))
  
-+	spin_lock(&ci->i_ceph_lock);
-+	if (__ceph_have_pending_cap_snap(ci)) {
-+		struct ceph_cap_snap *capsnap =
-+				list_last_entry(&ci->i_cap_snaps,
-+						struct ceph_cap_snap,
-+						ci_item);
-+		snapc = ceph_get_snap_context(capsnap->context);
-+	} else {
-+		BUG_ON(!ci->i_head_snapc);
-+		snapc = ceph_get_snap_context(ci->i_head_snapc);
-+	}
-+	spin_unlock(&ci->i_ceph_lock);
+-void *kasan_mem_to_shadow(const void *addr)
++static void *mem_to_shadow(const void *addr)
+ {
+-	if (!kasan_enabled()) {
++	unsigned long offset = 0;
++	unsigned long maddr = (unsigned long)addr;
++	unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
 +
- 	req = ceph_osdc_new_request(&fsc->client->osdc, &ci->i_layout,
- 					ceph_vino(inode),
- 					offset, length,
- 					0, 1, op,
- 					CEPH_OSD_FLAG_WRITE,
--					NULL, 0, 0, false);
-+					snapc, 0, 0, false);
- 	if (IS_ERR(req)) {
- 		ret = PTR_ERR(req);
- 		goto out;
-@@ -2601,6 +2615,7 @@ static int ceph_zero_partial_object(struct inode *inode,
- 	ceph_osdc_put_request(req);
++	if (maddr >= FIXADDR_START)
+ 		return (void *)(kasan_early_shadow_page);
+-	} else {
+-		unsigned long maddr = (unsigned long)addr;
+-		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
+-		unsigned long offset = 0;
+-
+-		if (maddr >= FIXADDR_START)
+-			return (void *)(kasan_early_shadow_page);
+-
+-		maddr &= XRANGE_SHADOW_MASK;
+-		switch (xrange) {
+-		case XKPRANGE_CC_SEG:
+-			offset = XKPRANGE_CC_SHADOW_OFFSET;
+-			break;
+-		case XKPRANGE_UC_SEG:
+-			offset = XKPRANGE_UC_SHADOW_OFFSET;
+-			break;
+-		case XKPRANGE_WC_SEG:
+-			offset = XKPRANGE_WC_SHADOW_OFFSET;
+-			break;
+-		case XKVRANGE_VC_SEG:
+-			offset = XKVRANGE_VC_SHADOW_OFFSET;
+-			break;
+-		default:
+-			WARN_ON(1);
+-			return NULL;
+-		}
  
- out:
-+	ceph_put_snap_context(snapc);
- 	return ret;
+-		return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
++	maddr &= XRANGE_SHADOW_MASK;
++	switch (xrange) {
++	case XKPRANGE_CC_SEG:
++		offset = XKPRANGE_CC_SHADOW_OFFSET;
++		break;
++	case XKPRANGE_UC_SEG:
++		offset = XKPRANGE_UC_SHADOW_OFFSET;
++		break;
++	case XKPRANGE_WC_SEG:
++		offset = XKPRANGE_WC_SHADOW_OFFSET;
++		break;
++	case XKVRANGE_VC_SEG:
++		offset = XKVRANGE_VC_SHADOW_OFFSET;
++		break;
++	default:
++		WARN_ON(1);
++		return NULL;
+ 	}
++
++	return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
++}
++
++void *kasan_mem_to_shadow(const void *addr)
++{
++	if (kasan_enabled())
++		return mem_to_shadow(addr);
++	else
++		return (void *)(kasan_early_shadow_page);
  }
  
+ const void *kasan_shadow_to_mem(const void *shadow_addr)
+@@ -293,11 +297,8 @@ void __init kasan_init(void)
+ 	/* Maps everything to a single page of zeroes */
+ 	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, true);
+ 
+-	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
+-					kasan_mem_to_shadow((void *)KFENCE_AREA_END));
+-
+-	/* Enable KASAN here before kasan_mem_to_shadow(). */
+-	kasan_init_generic();
++	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
++					mem_to_shadow((void *)KFENCE_AREA_END));
+ 
+ 	/* Populate the linear mapping */
+ 	for_each_mem_range(i, &pa_start, &pa_end) {
+@@ -307,13 +308,13 @@ void __init kasan_init(void)
+ 		if (start >= end)
+ 			break;
+ 
+-		kasan_map_populate((unsigned long)kasan_mem_to_shadow(start),
+-			(unsigned long)kasan_mem_to_shadow(end), NUMA_NO_NODE);
++		kasan_map_populate((unsigned long)mem_to_shadow(start),
++			(unsigned long)mem_to_shadow(end), NUMA_NO_NODE);
+ 	}
+ 
+ 	/* Populate modules mapping */
+-	kasan_map_populate((unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR),
+-		(unsigned long)kasan_mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
++	kasan_map_populate((unsigned long)mem_to_shadow((void *)MODULES_VADDR),
++		(unsigned long)mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
+ 	/*
+ 	 * KAsan may reuse the contents of kasan_early_shadow_pte directly, so we
+ 	 * should make sure that it maps the zero page read-only.
+@@ -328,4 +329,5 @@ void __init kasan_init(void)
+ 
+ 	/* At this point kasan is fully initialized. Enable error messages */
+ 	init_task.kasan_depth = 0;
++	kasan_init_generic();
+ }
 -- 
 2.51.0
 
