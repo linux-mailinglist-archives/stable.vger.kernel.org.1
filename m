@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-221722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBCaBq+bo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:43 +0100
+	id AAJpJtGYo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:39:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA2E1CC0EF
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA6E1CB3E9
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:39:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9B5A325AFCF
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE65B3015B45
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DD12DEA74;
-	Sun,  1 Mar 2026 01:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC822F1FD0;
+	Sun,  1 Mar 2026 01:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lw8VzEQo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aX7Aecg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372DE13B58A;
-	Sun,  1 Mar 2026 01:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F672C11D3;
+	Sun,  1 Mar 2026 01:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328981; cv=none; b=NCzhLvzyPHkdSCIFXAnspoS8lhCKBs+2BJm6M1SY4igzjtOgD3QHW07HGshG3FMyGDhwyVwZYa6pOtG8yuRJfc5jY3HSWb/ScPrBelosdA6YQzkpARVKFH2EWlvC7mVbTgQhCDUV/tXRrBivJsEcbEJhJWSUbSI/zOAnNhyAd3U=
+	t=1772328983; cv=none; b=JcHhZxCdxl1iJVX3M1fBU1xRKBSqfwPWJgCLWVxsViVM+Km7295ntehY5GnRPOryhQajW5H79s0AMz6rSQWUfn1UoRJzvMwkq1l66t2GPpE2au1RjP4AFB7RbtgHAKyDaQPCI5cRisW5mACROEg5f3NfY5nakIoX+0g0M6kKvkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328981; c=relaxed/simple;
-	bh=tRcoHPL1SnJU0xLlCrcYeFzmKPCMpkkyxCC7E+YL23Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MYaBeWFX1gekFXWQs9hxwK+fjDilydc7n315gnyfe1Xsio9DmiBZG4wsenjiDt906XoCjjf3ZFL7202+II8uPAemC/NgnRiUH4T81wrbeH5qTzmJuvUlQKkCDjq7xLBy7D4N1q3hDlcOlTvgwCzyATgTw160IpBHPfp5rlCOk5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lw8VzEQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E136C19421;
-	Sun,  1 Mar 2026 01:36:20 +0000 (UTC)
+	s=arc-20240116; t=1772328983; c=relaxed/simple;
+	bh=V90oJ1OWeqkKX9NpQRWU3cgiCRxBkuEE0oz7GTQkgNM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J5NVTRdg3QUtQ3lYbEEIviLh/tEj7g65k934wrAo8jIHRCRUyFXrJEz24/GK9o8vQ/YTwl6m4Nc6X1ocvoWWiXKfRJw7d2kWKW3UfZZ7LDL442B4RWTWH8CyrgMVxevpOgcflXTBO5vbLq8qw2Tk5W7FxG+eosoKNGKasuOZ6sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aX7Aecg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BC9C19421;
+	Sun,  1 Mar 2026 01:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328981;
-	bh=tRcoHPL1SnJU0xLlCrcYeFzmKPCMpkkyxCC7E+YL23Q=;
+	s=k20201202; t=1772328983;
+	bh=V90oJ1OWeqkKX9NpQRWU3cgiCRxBkuEE0oz7GTQkgNM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Lw8VzEQoN8fC/NrFfeDjHTHBOXIrjM6u2Z3sCo8oZC3oTI1uevOANXWGD2gy8fAIL
-	 hkQe7670ICAroJZxd40NP76fsD341ICkWZe4J2ng6A3gTGT3IAtU1pTocv88BxlMUM
-	 YdcSEeyiW4UPNU3xllzvCIyfFG32cJ7Jq4jEBcTskKhwiD+3BH+osEKzppJKi+paOB
-	 qy+NN6lwlEKJRaNVG7ueXuLZXMRVyWbTbtQFlwbCSioNTQ6kLACjmB4EfkdfZvMceU
-	 0dVOYMzBvl7iDBpCWDEa+LvVFM2CL/Ej1JPRQY+4AHEMOEBuUfSkVuVcNKwRgQCFVt
-	 vcD6UXONojG5Q==
+	b=aX7Aecg/qVjAjs1k+3Yp9y8TZHs9ImkKe6X5X6Ah3Qbi/XiopwX+p8Vdm/H0pSRy1
+	 pnNJI+imX66LwmjKTOR/wxbwaOodshnE9FSbOXuXiSk+ERce+zjiOseBuXRi7MIPBF
+	 1Xg+dDvc50wNDfxxQRJymMREF9U1MPJL8MCUF7LYxCxF5fcbgI8d5e8ZNLdP9LaLUz
+	 rhqcTVynk+TVYHr/62E9KqsYcJshmmqmpFIbHKxv0SdLD6Yb9qbB8f6p9IBVJNgteu
+	 zWbI3zcjGm7HNaifGgH3Q88FBNE/AdD9ivbmqM84foaZHJc6VpAQafuZDzKFUhPZF8
+	 o4jfFBD+pmgGA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	thomasyen@google.com
-Cc: Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: FAILED: Patch "scsi: ufs: core: Flush exception handling work when RPM level is zero" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:36:18 -0500
-Message-ID: <20260301013619.1696250-1-sashal@kernel.org>
+	prashanth.k@oss.qualcomm.com
+Cc: stable <stable@kernel.org>,
+	Samuel Wu <wusamuel@google.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org
+Subject: FAILED: Patch "usb: dwc3: gadget: Move vbus draw to workqueue context" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:36:21 -0500
+Message-ID: <20260301013621.1696300-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,31 +68,30 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221722-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221723-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,acm.org:email,mediatek.com:email,msgid.link:url,oracle.com:email]
-X-Rspamd-Queue-Id: 6EA2E1CC0EF
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5CA6E1CB3E9
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -106,50 +104,125 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f8ef441811ec413717f188f63d99182f30f0f08e Mon Sep 17 00:00:00 2001
-From: Thomas Yen <thomasyen@google.com>
-Date: Fri, 30 Jan 2026 00:51:51 +0800
-Subject: [PATCH] scsi: ufs: core: Flush exception handling work when RPM level
- is zero
+From 54aaa3b387c2f580a99dc86a9cc2eb6dfaf599a7 Mon Sep 17 00:00:00 2001
+From: Prashanth K <prashanth.k@oss.qualcomm.com>
+Date: Wed, 4 Feb 2026 11:11:55 +0530
+Subject: [PATCH] usb: dwc3: gadget: Move vbus draw to workqueue context
 
-Ensure that the exception event handling work is explicitly flushed during
-suspend when the runtime power management level is set to UFS_PM_LVL_0.
+Currently dwc3_gadget_vbus_draw() can be called from atomic
+context, which in turn invokes power-supply-core APIs. And
+some these PMIC APIs have operations that may sleep, leading
+to kernel panic.
 
-When the RPM level is zero, the device power mode and link state both
-remain active. Previously, the UFS core driver bypassed flushing exception
-event handling jobs in this configuration. This created a race condition
-where the driver could attempt to access the host controller to handle an
-exception after the system had already entered a deep power-down state,
-resulting in a system crash.
+Fix this by moving the vbus_draw into a workqueue context.
 
-Explicitly flush this work and disable auto BKOPs before the suspend
-callback proceeds. This guarantees that pending exception tasks complete
-and prevents illegal hardware access during the power-down sequence.
-
-Fixes: 57d104c153d3 ("ufs: add UFS power management support")
-Signed-off-by: Thomas Yen <thomasyen@google.com>
-Cc: Stable Tree <stable@vger.kernel.org>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260129165156.956601-1-thomasyen@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 99288de36020 ("usb: dwc3: add an alternate path in vbus_draw callback")
+Cc: stable <stable@kernel.org>
+Tested-by: Samuel Wu <wusamuel@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260204054155.3063825-1-prashanth.k@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/dwc3/core.c   | 19 ++++++++++++++++++-
+ drivers/usb/dwc3/core.h   |  4 ++++
+ drivers/usb/dwc3/gadget.c |  8 +++-----
+ 3 files changed, 25 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 66223d2908532..8349fe2090db6 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -9998,6 +9998,8 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index c07ffe82c8504..161a4d58b2cec 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2155,6 +2155,20 @@ static int dwc3_get_num_ports(struct dwc3 *dwc)
+ 	return 0;
+ }
  
- 	if (req_dev_pwr_mode == UFS_ACTIVE_PWR_MODE &&
- 			req_link_state == UIC_LINK_ACTIVE_STATE) {
-+		ufshcd_disable_auto_bkops(hba);
-+		flush_work(&hba->eeh_work);
- 		goto vops_suspend;
- 	}
++static void dwc3_vbus_draw_work(struct work_struct *work)
++{
++	struct dwc3 *dwc = container_of(work, struct dwc3, vbus_draw_work);
++	union power_supply_propval val = {0};
++	int ret;
++
++	val.intval = 1000 * (dwc->current_limit);
++	ret = power_supply_set_property(dwc->usb_psy, POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT, &val);
++
++	if (ret < 0)
++		dev_dbg(dwc->dev, "Error (%d) setting vbus draw (%d mA)\n",
++			ret, dwc->current_limit);
++}
++
+ static struct power_supply *dwc3_get_usb_power_supply(struct dwc3 *dwc)
+ {
+ 	struct power_supply *usb_psy;
+@@ -2169,6 +2183,7 @@ static struct power_supply *dwc3_get_usb_power_supply(struct dwc3 *dwc)
+ 	if (!usb_psy)
+ 		return ERR_PTR(-EPROBE_DEFER);
  
++	INIT_WORK(&dwc->vbus_draw_work, dwc3_vbus_draw_work);
+ 	return usb_psy;
+ }
+ 
+@@ -2395,8 +2410,10 @@ void dwc3_core_remove(struct dwc3 *dwc)
+ 
+ 	dwc3_free_event_buffers(dwc);
+ 
+-	if (dwc->usb_psy)
++	if (dwc->usb_psy) {
++		cancel_work_sync(&dwc->vbus_draw_work);
+ 		power_supply_put(dwc->usb_psy);
++	}
+ }
+ EXPORT_SYMBOL_GPL(dwc3_core_remove);
+ 
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 08cc6f2b5c236..a35b3db1f9f3e 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1058,6 +1058,8 @@ struct dwc3_glue_ops {
+  * @role_switch_default_mode: default operation mode of controller while
+  *			usb role is USB_ROLE_NONE.
+  * @usb_psy: pointer to power supply interface.
++ * @vbus_draw_work: Work to set the vbus drawing limit
++ * @current_limit: How much current to draw from vbus, in milliAmperes.
+  * @usb2_phy: pointer to USB2 PHY
+  * @usb3_phy: pointer to USB3 PHY
+  * @usb2_generic_phy: pointer to array of USB2 PHYs
+@@ -1244,6 +1246,8 @@ struct dwc3 {
+ 	enum usb_dr_mode	role_switch_default_mode;
+ 
+ 	struct power_supply	*usb_psy;
++	struct work_struct	vbus_draw_work;
++	unsigned int		current_limit;
+ 
+ 	u32			fladj;
+ 	u32			ref_clk_per;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 384963151eced..c65291e7b8d90 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3124,8 +3124,6 @@ static void dwc3_gadget_set_ssp_rate(struct usb_gadget *g,
+ static int dwc3_gadget_vbus_draw(struct usb_gadget *g, unsigned int mA)
+ {
+ 	struct dwc3		*dwc = gadget_to_dwc(g);
+-	union power_supply_propval	val = {0};
+-	int				ret;
+ 
+ 	if (dwc->usb2_phy)
+ 		return usb_phy_set_power(dwc->usb2_phy, mA);
+@@ -3133,10 +3131,10 @@ static int dwc3_gadget_vbus_draw(struct usb_gadget *g, unsigned int mA)
+ 	if (!dwc->usb_psy)
+ 		return -EOPNOTSUPP;
+ 
+-	val.intval = 1000 * mA;
+-	ret = power_supply_set_property(dwc->usb_psy, POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT, &val);
++	dwc->current_limit = mA;
++	schedule_work(&dwc->vbus_draw_work);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ /**
 -- 
 2.51.0
 
