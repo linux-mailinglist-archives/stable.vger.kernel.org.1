@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-221730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGP3JuWYo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221730-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:39:49 +0100
+	id rKSKLjqoo2m5JQUAu9opvQ
+	(envelope-from <stable+bounces-221731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:45:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE9D1CB427
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:39:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EAD81CDE08
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1114C3037D52
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E2F63265656
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC4E1E0B86;
-	Sun,  1 Mar 2026 01:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03BB29A9E9;
+	Sun,  1 Mar 2026 01:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GbnfjB3V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U7Wu8Fvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F6B190664
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41F4190664;
+	Sun,  1 Mar 2026 01:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329000; cv=none; b=Mm4fGQ9UK9blc8eWriPmDYerP/do9CsdgHwfuyDCkOJFTAifyWL5qmk5d8gwrlWfwoPIEb07xTF0txb53K1Q06Toh/bQHBcCrELckuMW6lh0ZcX6/tOMBhw7TB/a1HetOCCo7wcwjx9gJGafqZJQFBDEapH+s4w/GxF2Z8/AQwg=
+	t=1772329002; cv=none; b=sIKyrcg95xXNUc77Xsyy0BiWTzCekN6Ko5CIPcVgx2T9QbNkeF/2Ek6gTe0ZrmdfwlvO+HIbEN9FQwys/zuQkyerynNZiZYE31W3cIRTgN/vJFRkLvvTeBAPbrObiRpmK1IgtLNNNud1UFgMWZHWpDiAyNMLflWwbbRzykdHavQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329000; c=relaxed/simple;
-	bh=laWl66KswGr72UnLuhEOT52MGNcx5A9C6+6xifedHKI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WKS9lfdR9V9EKkA7btjUubr6TskdF11+nnRdWmJit5wEwhWtDf2gWWHgaqeJjvOXRHeKpxOXenIKkWbZ7cmoUhkx6V52CbWkpgKghpCemvm+vnOEtsVqqpmWVmSMcbuJzXHbvwYKZY/lDOtfFWzmM44wangqtLUaLWbdC/EOkA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GbnfjB3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48658C19421;
-	Sun,  1 Mar 2026 01:36:39 +0000 (UTC)
+	s=arc-20240116; t=1772329002; c=relaxed/simple;
+	bh=mcmW7qRb0znSGLQr6DPmCGSmcFCJ6c+r0uNGS+CmCr8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hxDAWeemtd/MvBoNEy1WJNAYCg9CFxdJ6m8jnkM2536sy+jhMpJKZDu0izLB0oCeoODEQDbaQ3d2pfR5rqYkMer488Z4uRhC1UuCjV6R9ZCUXyfOfUYTGOEHlyK02Havobgm5IdpZaLZ8+O2HsmZL5MKMDgoWnn/hZZi/X35vGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7Wu8Fvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDB5C19421;
+	Sun,  1 Mar 2026 01:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329000;
-	bh=laWl66KswGr72UnLuhEOT52MGNcx5A9C6+6xifedHKI=;
+	s=k20201202; t=1772329002;
+	bh=mcmW7qRb0znSGLQr6DPmCGSmcFCJ6c+r0uNGS+CmCr8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=GbnfjB3VaCTiYWZBNl+MQ4mIpqyMP73ZvzDazAoYZjelZY9bBdcrtPaZKel5KThtZ
-	 9hUqN+YWi7PhKGMX26QmEJ14UMxxzms+d0mfhWNBfywt8MNAP5NXnacvXktAM2I8FB
-	 QVEhtzTPykL0FhMupYRHvEtZXrlCsyimWKDS3LdQzg49VntITNhC4bJTnJY60Z2AFo
-	 iTD6eg7C8N2EEmeOhtuPTW6W1NYYgbMAJFQKbSJznaToxo21YF2p1OzV4qOkBZVLPM
-	 avs7ab5+Ep+WgWQ18ESYGFgzstNH4J8nOJYUUR8URRd8X0VMs8MmGy0XJ4KtOJuVMX
-	 aJ8u4r5IrTRKw==
+	b=U7Wu8Fvvk2PmSkgYaeHUTS3SsU/3vcpH3uFYScxyYFhRvey19kK1P5L6BNGwNWmn2
+	 26IT5x7WK+6PBWHL7EIscpXo/kbzRF9jlmdDgPEgDNTT0F5gR46Vis3u94Oqwj+Cyc
+	 e7nI7ulLbg740DWH07mUGM6LFtKneWI5A//i11iEFvjNvAyt42sPE4xb9oVbjpO6ul
+	 NuTmJ9ZCGiBElvkiO+oxbrXZ6DMYwxVkd1jUVZdnOGDRP8Lh1PueEjDOT//mbQdCAW
+	 oAZ+05FI6tGdmNpku4UMl5VO4NFgewTOBhl8sRx8vJ4/7oiIoJRP0rgaWsIYLFdRBO
+	 BMuUE773b6Ygw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mario.limonciello@amd.com
-Cc: Cal Peake <cp@absolutedigital.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm/amd: Fix hang on amdgpu unload by using pci_dev_is_disconnected()" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:36:37 -0500
-Message-ID: <20260301013638.1696641-1-sashal@kernel.org>
+	chenhuacai@kernel.org
+Cc: Hongliang Wang <wanghongliang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: FAILED: Patch "net: stmmac: dwmac-loongson: Set clk_csr_i to 100-150MHz" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:36:40 -0500
+Message-ID: <20260301013640.1696690-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,32 +67,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221730-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221731-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6AE9D1CB427
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 4EAD81CDE08
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -103,66 +106,42 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f7afda7fcd169a9168695247d07ad94cf7b9798f Mon Sep 17 00:00:00 2001
-From: Mario Limonciello <mario.limonciello@amd.com>
-Date: Thu, 5 Feb 2026 10:42:54 -0600
-Subject: [PATCH] drm/amd: Fix hang on amdgpu unload by using
- pci_dev_is_disconnected()
+From e1aa5ef892fb4fa9014a25e87b64b97347919d37 Mon Sep 17 00:00:00 2001
+From: Huacai Chen <chenhuacai@loongson.cn>
+Date: Tue, 3 Feb 2026 14:29:01 +0800
+Subject: [PATCH] net: stmmac: dwmac-loongson: Set clk_csr_i to 100-150MHz
 
-The commit 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise
-disconnect") introduced early KFD cleanup when drm_dev_is_unplugged()
-returns true. However, this causes hangs during normal module unload
-(rmmod amdgpu).
-
-The issue occurs because drm_dev_unplug() is called in amdgpu_pci_remove()
-for all removal scenarios, not just surprise disconnects. This was done
-intentionally in commit 39934d3ed572 ("Revert "drm/amdgpu: TA unload
-messages are not actually sent to psp when amdgpu is uninstalled"") to
-fix IGT PCI software unplug test failures. As a result,
-drm_dev_is_unplugged() returns true even during normal module unload,
-triggering the early KFD cleanup inappropriately.
-
-The correct check should distinguish between:
-- Actual surprise disconnect (eGPU unplugged): pci_dev_is_disconnected()
-  returns true
-- Normal module unload (rmmod): pci_dev_is_disconnected() returns false
-
-Replace drm_dev_is_unplugged() with pci_dev_is_disconnected() to ensure
-the early cleanup only happens during true hardware disconnect events.
+Current clk_csr_i setting of Loongson STMMAC (including LS7A1000/2000
+and LS2K1000/2000/3000) are copy & paste from other drivers. In fact,
+Loongson STMMAC use 125MHz clocks and need 62 freq division to within
+2.5MHz, meeting most PHY MDC requirement. So fix by setting clk_csr_i
+to 100-150MHz, otherwise some PHYs may link fail.
 
 Cc: stable@vger.kernel.org
-Reported-by: Cal Peake <cp@absolutedigital.net>
-Closes: https://lore.kernel.org/all/b0c22deb-c0fa-3343-33cf-fd9a77d7db99@absolutedigital.net/
-Fixes: 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise disconnect")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 30bba69d7db40e7 ("stmmac: pci: Add dwmac support for Loongson")
+Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://patch.msgid.link/20260203062901.2158236-1-chenhuacai@loongson.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++--
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 528990a595ec9..9758221413814 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4924,7 +4924,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
- 	 * before ip_fini_early to prevent kfd locking refcount issues by calling
- 	 * amdgpu_amdkfd_suspend()
- 	 */
--	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+	if (pci_dev_is_disconnected(adev->pdev))
- 		amdgpu_amdkfd_device_fini_sw(adev);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index 107a7c84ace80..c05e3e7a539cf 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -91,8 +91,8 @@ static void loongson_default_data(struct pci_dev *pdev,
+ 	/* Get bus_id, this can be overwritten later */
+ 	plat->bus_id = pci_dev_id(pdev);
  
- 	amdgpu_device_ip_fini_early(adev);
-@@ -4936,7 +4936,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
+-	/* clk_csr_i = 20-35MHz & MDC = clk_csr_i/16 */
+-	plat->clk_csr = STMMAC_CSR_20_35M;
++	/* clk_csr_i = 100-150MHz & MDC = clk_csr_i/62 */
++	plat->clk_csr = STMMAC_CSR_100_150M;
+ 	plat->core_type = DWMAC_CORE_GMAC;
+ 	plat->force_sf_dma_mode = 1;
  
- 	amdgpu_gart_dummy_page_fini(adev);
- 
--	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+	if (pci_dev_is_disconnected(adev->pdev))
- 		amdgpu_device_unmap_mmio(adev);
- 
- }
 -- 
 2.51.0
 
