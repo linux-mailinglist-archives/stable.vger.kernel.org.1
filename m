@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-221988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCeAHeaqo2nfJQUAu9opvQ
-	(envelope-from <stable+bounces-221988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:56:38 +0100
+	id IMynNO2qo2nfJQUAu9opvQ
+	(envelope-from <stable+bounces-221989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:56:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3AA11CE135
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:56:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 374241CE13D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:56:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 534ED321D2DA
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:47:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E19DA321F0DB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4662F3C02;
-	Sun,  1 Mar 2026 01:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405072FC011;
+	Sun,  1 Mar 2026 01:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOKHyZwq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALRNdVAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21ED52F25F5;
-	Sun,  1 Mar 2026 01:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0408F2517AF;
+	Sun,  1 Mar 2026 01:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329630; cv=none; b=i/C+ArtNVo7WhJNu+kXA16bzhAleBqVhT+Nbzvb8jkoWO7noZ2K12fLnTgDwEDBmFaH6vg39CmnbLms0Kbm19Rins6KnrUjEt8HaTVYUQVf8354pUmGlHiPwoySJwJEikv44pX0cM4fnvCWZV2Jr/3zQSgyeM3swdcM8nCvVrzw=
+	t=1772329632; cv=none; b=CWHC6pUA/VKNjqlPlIgLGf17LXL83zbLrH2GiFnVMAJwI7ncw3FTAxxorL17Cdv0/QE+oGz7sOiNlartTXjO6VLnWMcMoF54cfga46t3nfVjhFwss6zG/OCz+s3/r4jy+H5dXmS4XJFl3CACwdYyYf1cni87w1EzEGruPN4ttR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329630; c=relaxed/simple;
-	bh=3SSeFCCfAkqeNnx3CbQeqwJZweZyXC2JCytdjnmDrzs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PzR5LjZ025llCHtg2S2Dk4KQtK0GfV4mjSjmW8g8DG3FrhNR38w75HmUo1YkZnX1+Up8Mx5+0JXgpEDHDHATyk40OYvY7lcXlARGmVsWLkcw/qBr25HmxhMxs6ZUOjTQdH2yT6oziV/UR1+umrmFO1EE4M5PkEAR510/1u5hA4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOKHyZwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26784C19421;
-	Sun,  1 Mar 2026 01:47:09 +0000 (UTC)
+	s=arc-20240116; t=1772329632; c=relaxed/simple;
+	bh=rHK4REzGY1+yso1p7zplzZyMlEnnHvPxSFsoT+qjoQo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CN7i4bTF8XU14zukP1jlUo2hD/xiqbTmg8GCZiaVhwPn8zjejNv+tvR5CT0Xq/wFqGVd2WaF4ZVZSj8VcjQ8l0DMuUd6+ivZELhpMeTlQnaQs068bKt6HAROSHlOtMjanxKiWLfTZLq16VToV+RRY02U/Q6z78IicCMs81Vi+aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALRNdVAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541F4C19421;
+	Sun,  1 Mar 2026 01:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329629;
-	bh=3SSeFCCfAkqeNnx3CbQeqwJZweZyXC2JCytdjnmDrzs=;
+	s=k20201202; t=1772329631;
+	bh=rHK4REzGY1+yso1p7zplzZyMlEnnHvPxSFsoT+qjoQo=;
 	h=From:To:Cc:Subject:Date:From;
-	b=HOKHyZwqtFKbALDW4K5GqoJ6gPSXhRIOsrWNN2w2MVx+ieLYQU8NxoYrQZiv+7fo8
-	 wof/z+Kpc24lGcHoMQA/C51o98H4WbMARoaPG8Nr5Bc2uPEz9bGp6lS7cXalWMOh3c
-	 pMuHEqScPOxxdBzF9A9Fecz+e7Sd0PF9QJKfGkDl4b8jFdYrAQrV9OxR/dG2Vek6eh
-	 o4nVY3NM8E2DbJJ/THFkl6BGgL3nFdcM7rpyVAyWBl4Azf1kPB/nEbCcxU9bqs4c3+
-	 WVfgFkbqdtOJch2tkzxEqH1xAHkzrKqxoC1H8XgfMVskEX6v/a7tgdOY293Sfq19pB
-	 gFJnV2d9OXsMA==
+	b=ALRNdVAyaYrKK0/hz9gzJgYoC6bt7hsFrKGv7GRKYwfMkjBQbyKPkBaFeP228Fn2m
+	 sUO5385mCWQo5sd1ML6xdDKAti/gF8ez2I6u5jGf9ytTxr70W2jbF61i2I/pq1zVB+
+	 x0FwT6PjMBtRohtloi898qC8R0HZIDCsz90nMOofO+3kNScS0oKjtYny3zKabPGDOk
+	 UFrPPBeHU+5+kKC2kFz5laTO+KX5z4t7xQTJOOalv+t/ZYZZ8OpWllfqtzjjQk17rV
+	 w/XMfrdvnSjgYo8iOuVMxhaZqc0rdCNKqdhQ0ekweyThB3zyBDljNNX73FSgL9bzhW
+	 N4SPqI7FdhplQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	enelsonmoore@gmail.com
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: ethernet: marvell: skge: remove incorrect conflicting PCI ID" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:47:07 -0500
-Message-ID: <20260301014708.1710461-1-sashal@kernel.org>
+	mason8110@gmail.com
+Cc: Lewis Mason <lewis@ocuru.co.uk>,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org
+Subject: FAILED: Patch "ALSA: hda/realtek: Add quirk for Samsung Galaxy Book3 Pro 360 (NP965QFG)" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:47:09 -0500
+Message-ID: <20260301014710.1711055-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,28 +69,28 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-221988-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221989-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F3AA11CE135
+X-Rspamd-Queue-Id: 374241CE13D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -102,47 +103,37 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From d01103fdcb871fd83fd06ef5803d576507c6a801 Mon Sep 17 00:00:00 2001
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Thu, 5 Feb 2026 23:17:14 -0800
-Subject: [PATCH] net: ethernet: marvell: skge: remove incorrect conflicting
- PCI ID
+From 3a6b7dc431aab90744e973254604855e654294ae Mon Sep 17 00:00:00 2001
+From: Lewis Mason <mason8110@gmail.com>
+Date: Tue, 10 Feb 2026 23:13:37 +0000
+Subject: [PATCH] ALSA: hda/realtek: Add quirk for Samsung Galaxy Book3 Pro 360
+ (NP965QFG)
 
-The ID 1186:4302 is matched by both r8169 and skge. The same device ID
-should not be in more than one driver, because in that case, which
-driver is used is unpredictable. I downloaded the latest drivers for
-all hardware revisions of the D-Link DGE-530T from D-Link's website,
-and the only drivers which contain this ID are Realtek drivers.
-Therefore, remove this device ID from skge.
+The Samsung Galaxy Book3 Pro 360 NP965QFG (subsystem ID 0x144d:0xc1cb)
+uses the same Realtek ALC298 codec and amplifier configuration as the
+NP960QFG (0x144d:0xc1ca). Apply the same ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS
+fixup to enable the internal speakers.
 
-In the kernel bug report which requested addition of this device ID,
-someone created a patch to add the ID to skge. Then, it was pointed
-out that this device is an "r8169 in disguise", and a patch was created
-to add it to r8169. Somehow, both of these patches got merged. See the
-link below.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=38862
-Fixes: c074304c2bcf ("add pci-id for DGE-530T")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Link: https://patch.msgid.link/20260206071724.15268-1-enelsonmoore@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Lewis Mason <lewis@ocuru.co.uk>
+Link: https://patch.msgid.link/20260210231337.7265-1-lewis@ocuru.co.uk
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 ---
- drivers/net/ethernet/marvell/skge.c | 1 -
- 1 file changed, 1 deletion(-)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/marvell/skge.c b/drivers/net/ethernet/marvell/skge.c
-index 05349a0b2db1c..cf4e26d337bb5 100644
---- a/drivers/net/ethernet/marvell/skge.c
-+++ b/drivers/net/ethernet/marvell/skge.c
-@@ -78,7 +78,6 @@ static const struct pci_device_id skge_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_SYSKONNECT, 0x4320) }, /* SK-98xx V2.0 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4b01) },	  /* D-Link DGE-530T (rev.B) */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4c00) },	  /* D-Link DGE-530T */
--	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4302) },	  /* D-Link DGE-530T Rev C1 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4320) },	  /* Marvell Yukon 88E8001/8003/8010 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x5005) },	  /* Belkin */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_CNET, 0x434E) }, 	  /* CNet PowerG-2000 */
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 8664446648096..c11312aa5ca76 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7318,6 +7318,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x144d, 0xc872, "Samsung Galaxy Book2 Pro (NP950XEE)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc886, "Samsung Galaxy Book3 Pro (NP964XFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc1ca, "Samsung Galaxy Book3 Pro 360 (NP960QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
++	SND_PCI_QUIRK(0x144d, 0xc1cb, "Samsung Galaxy Book3 Pro 360 (NP965QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc1cc, "Samsung Galaxy Book3 Ultra (NT960XFH)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x1458, 0x900e, "Gigabyte G5 KF5 (2023)", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
 -- 
 2.51.0
 
