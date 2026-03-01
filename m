@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-221537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221538-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPCVDBaYo2lIHwUAu9opvQ
-	(envelope-from <stable+bounces-221537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:22 +0100
+	id qClIOxqYo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221538-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347851CB177
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC511CB189
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C9A643042FE4
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:28:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 19C9130440EA
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34165285C84;
-	Sun,  1 Mar 2026 01:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F3F2877DE;
+	Sun,  1 Mar 2026 01:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eGaUrFBy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Et+Z2ORQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA3F2727EB
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94871430BB5;
+	Sun,  1 Mar 2026 01:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328514; cv=none; b=n49u3XYEq9sn6kDzNqusz16BeQ0TKlvwp4FVZJ9KQpxSrHFsqIN6UId6BM8Jh3UbrK/v+PMJHLtmRZfOcdcUUx9sKElZQV/JjrCXpo7UaMvLzSgoCSwWOJSuLnriVVFfUBeywz3vEPC2Gi9MA8W7yCOjrxafdFDyNxcSk854ru0=
+	t=1772328516; cv=none; b=HmQMBKPTUDpYH1XMm7nV6R/dIg3tJN8lcLbHx6r8QvYIJdNp9jmaDBYf2GSD8maOYy8qH/iDEPWXx2rqNqcD/apRyYrtf7vyWtWKtpCNyVRIJP+tGe2Nhd79YT5ZqgRYAr5cs6IXe2DhZuNhKKMpdFRPX1BgRVyfKeXjGqflkeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328514; c=relaxed/simple;
-	bh=8bfwFCO8SIFrbKV1cwycC69fkm4iZipWVhEKQ5L6dcI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m2scRwxjwS570zWlzXZ7uQIm072SpPyafGbP855Ta06DrpKrhK4NyMr6OmBQvF6u6R2Rif5KjK3huB6L20OggrctGumWSDm26KcielrcP6CjPgY7CtnYQGRGWCFfMmODCv+NmcJTgRB+ZHWhoFfpJ4tepEYJh2UY33He9CP8eFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eGaUrFBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C623C19421;
-	Sun,  1 Mar 2026 01:28:33 +0000 (UTC)
+	s=arc-20240116; t=1772328516; c=relaxed/simple;
+	bh=Si2q11zQVF7PgHPZE4SXXVan9J85tw9T8ZHibFGTpm0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S7KHP+C9Xi/FHKrydBzr6xVrnakDCL2ai7Wt/IyMH/aVs+HDm+Itx/D9Dfjcd7/69enBNGaKKVrvdsmcHE1GIaV3YU5QXh6bs73732cVUoaKnxA2iWjGH5/x86snBpRX3iKkRToRQstEtGGInGsCNwHBrKCGfiuj7ILjztffNEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Et+Z2ORQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F67C19424;
+	Sun,  1 Mar 2026 01:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328513;
-	bh=8bfwFCO8SIFrbKV1cwycC69fkm4iZipWVhEKQ5L6dcI=;
+	s=k20201202; t=1772328516;
+	bh=Si2q11zQVF7PgHPZE4SXXVan9J85tw9T8ZHibFGTpm0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=eGaUrFBycjIxreSz5k8O47OfOVXtrnqaQYRaseR+2Q1urnt/g9M7QSF+wY+bV6+7W
-	 c6fyrD9bkONk+3gILyKLscIKyA8XQh8eZJjOqtCT6alE7fWfXE48w7QYpkJw/BarBn
-	 rRgtfCrLhUXqB98oB+T3H3ANZsGQ/OaWsfeDJn586cIWRqokJQqO2GBZlA1hhIbUeR
-	 p7jMQlRnN8ZR23ryoaJCo2NbCebuK3JHlawmTbKFJmkDf5B/sqU+PWBjUrlM3PSGY8
-	 Suh/GdmqS/JWaZtgSncYTGoM+loAt0EC1jtcX0lMKNcxbq/LbxCP5f7kgyzA64GJa5
-	 i4BspvJG+rBlg==
+	b=Et+Z2ORQBuBc+JY6Q5B4MUV4k/BCqUdZzTPbi7fygvO1yUbAiqa9YdRGRC+O5sonb
+	 W7iAb7qBjwDUURXW2iyVg0JWkd1brvm+Ge4WsuHQhcMSGwypl2BvF3Oie43UuOpPuC
+	 onn/9PvJ+0JEeKMMUuihX+UqYyK4eMJa244TMWisBhheSJCq7iaQQdLt9FXdlpmTQc
+	 nqoBiHlvYgcYqx4RUWAQsQ6BWeRNmXmfJm1WK/sQg13g6i13v2GmCJQwoKdf0tqAUz
+	 dip6GRdhj4yMhIk/FCWt1ckAZkghQix0u4RFY3V4ZG9j+n/raZtRi3hnZM14279zau
+	 zkvj32CK/4Prg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	cuichao1753@phytium.com.cn
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Gregory Price <gourry@gourry.net>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	linux-mm@kvack.org
-Subject: FAILED: Patch "mm: numa_memblks: Identify the accurate NUMA ID of CFMW" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:28:31 -0500
-Message-ID: <20260301012832.1686293-1-sashal@kernel.org>
+	qjx1298677004@gmail.com
+Cc: Justin Iurman <justin.iurman@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org
+Subject: FAILED: Patch "ipv6: ioam: fix heap buffer overflow in __ioam6_fill_trace_data()" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:28:34 -0500
+Message-ID: <20260301012834.1686345-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,32 +64,34 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221537-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-221538-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 347851CB177
+X-Rspamd-Queue-Id: BDC511CB189
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -104,86 +104,130 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f043a93fff9e3e3e648b6525483f59104b0819fa Mon Sep 17 00:00:00 2001
-From: Cui Chao <cuichao1753@phytium.com.cn>
-Date: Fri, 13 Feb 2026 14:03:47 +0800
-Subject: [PATCH] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
+From 6db8b56eed62baacaf37486e83378a72635c04cc Mon Sep 17 00:00:00 2001
+From: Qanux <qjx1298677004@gmail.com>
+Date: Wed, 11 Feb 2026 12:04:12 +0800
+Subject: [PATCH] ipv6: ioam: fix heap buffer overflow in
+ __ioam6_fill_trace_data()
 
-In some physical memory layout designs, the address space of CFMW (CXL
-Fixed Memory Window) resides between multiple segments of system memory
-belonging to the same NUMA node. In numa_cleanup_meminfo, these multiple
-segments of system memory are merged into a larger numa_memblk. When
-identifying which NUMA node the CFMW belongs to, it may be incorrectly
-assigned to the NUMA node of the merged system memory.
+On the receive path, __ioam6_fill_trace_data() uses trace->nodelen
+to decide how much data to write for each node. It trusts this field
+as-is from the incoming packet, with no consistency check against
+trace->type (the 24-bit field that tells which data items are
+present). A crafted packet can set nodelen=0 while setting type bits
+0-21, causing the function to write ~100 bytes past the allocated
+region (into skb_shared_info), which corrupts adjacent heap memory
+and leads to a kernel panic.
 
-When a CXL RAM region is created in userspace, the memory capacity of
-the newly created region is not added to the CFMW-dedicated NUMA node.
-Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
-containing RAM). This makes it impossible to clearly distinguish
-between the two types of memory, which may affect memory-tiering
-applications.
+Add a shared helper ioam6_trace_compute_nodelen() in ioam6.c to
+derive the expected nodelen from the type field, and use it:
 
-Example memory layout:
+  - in ioam6_iptunnel.c (send path, existing validation) to replace
+    the open-coded computation;
+  - in exthdrs.c (receive path, ipv6_hop_ioam) to drop packets whose
+    nodelen is inconsistent with the type field, before any data is
+    written.
 
-Physical address space:
-    0x00000000 - 0x1FFFFFFF  System RAM (node0)
-    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
-    0x40000000 - 0x5FFFFFFF  System RAM (node0)
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+Per RFC 9197, bits 12-21 are each short (4-octet) fields, so they
+are included in IOAM6_MASK_SHORT_FIELDS (changed from 0xff100000 to
+0xff1ffc00).
 
-After numa_cleanup_meminfo, the two node0 segments are merged into one:
-    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
-
-So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
-
-To address this scenario, accurately identifying the correct NUMA node
-can be achieved by checking whether the region belongs to both
-numa_meminfo and numa_reserved_meminfo.
-
-While this issue is only observed in a QEMU configuration, and no known
-end users are impacted by this problem, it is likely that some firmware
-implementation is leaving memory map holes in a CXL Fixed Memory Window.
-CXL hotplug depends on mapping free window capacity, and it seems to be
-only a coincidence to have not hit this problem yet.
-
-Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
-Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://patch.msgid.link/20260213060347.2389818-2-cuichao1753@phytium.com.cn
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Link: https://patch.msgid.link/20260211040412.86195-1-qjx1298677004@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- mm/numa_memblks.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/net/ioam6.h       |  2 ++
+ net/ipv6/exthdrs.c        |  5 +++++
+ net/ipv6/ioam6.c          | 14 ++++++++++++++
+ net/ipv6/ioam6_iptunnel.c | 10 +---------
+ 4 files changed, 22 insertions(+), 9 deletions(-)
 
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index 8f5735fda0a21..3f53464240e8d 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -570,15 +570,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
- int phys_to_target_node(u64 start)
- {
- 	int nid = meminfo_to_nid(&numa_meminfo, start);
-+	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
+diff --git a/include/net/ioam6.h b/include/net/ioam6.h
+index 2cbbee6e806aa..a75912fe247e6 100644
+--- a/include/net/ioam6.h
++++ b/include/net/ioam6.h
+@@ -60,6 +60,8 @@ void ioam6_fill_trace_data(struct sk_buff *skb,
+ 			   struct ioam6_trace_hdr *trace,
+ 			   bool is_input);
  
- 	/*
--	 * Prefer online nodes, but if reserved memory might be
--	 * hot-added continue the search with reserved ranges.
-+	 * Prefer online nodes unless the address is also described
-+	 * by reserved ranges, in which case use the reserved nid.
- 	 */
--	if (nid != NUMA_NO_NODE)
-+	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
- 		return nid;
++u8 ioam6_trace_compute_nodelen(u32 trace_type);
++
+ int ioam6_init(void);
+ void ioam6_exit(void);
  
--	return meminfo_to_nid(&numa_reserved_meminfo, start);
-+	return reserved_nid;
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index 209fdf1b1aa9b..5e3610a926cfb 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -931,6 +931,11 @@ static bool ipv6_hop_ioam(struct sk_buff *skb, int optoff)
+ 		if (hdr->opt_len < 2 + sizeof(*trace) + trace->remlen * 4)
+ 			goto drop;
+ 
++		/* Inconsistent Pre-allocated Trace header */
++		if (trace->nodelen !=
++		    ioam6_trace_compute_nodelen(be32_to_cpu(trace->type_be32)))
++			goto drop;
++
+ 		/* Ignore if the IOAM namespace is unknown */
+ 		ns = ioam6_namespace(dev_net(skb->dev), trace->namespace_id);
+ 		if (!ns)
+diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
+index 9553a32000813..08b7ac8c99b7e 100644
+--- a/net/ipv6/ioam6.c
++++ b/net/ipv6/ioam6.c
+@@ -690,6 +690,20 @@ struct ioam6_namespace *ioam6_namespace(struct net *net, __be16 id)
+ 	return rhashtable_lookup_fast(&nsdata->namespaces, &id, rht_ns_params);
  }
- EXPORT_SYMBOL_GPL(phys_to_target_node);
  
++#define IOAM6_MASK_SHORT_FIELDS 0xff1ffc00
++#define IOAM6_MASK_WIDE_FIELDS  0x00e00000
++
++u8 ioam6_trace_compute_nodelen(u32 trace_type)
++{
++	u8 nodelen = hweight32(trace_type & IOAM6_MASK_SHORT_FIELDS)
++				* (sizeof(__be32) / 4);
++
++	nodelen += hweight32(trace_type & IOAM6_MASK_WIDE_FIELDS)
++				* (sizeof(__be64) / 4);
++
++	return nodelen;
++}
++
+ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 				    struct ioam6_namespace *ns,
+ 				    struct ioam6_trace_hdr *trace,
+diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+index 1fe7894f14dd9..b9f6d892a566c 100644
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -22,9 +22,6 @@
+ #include <net/ip6_route.h>
+ #include <net/addrconf.h>
+ 
+-#define IOAM6_MASK_SHORT_FIELDS 0xff100000
+-#define IOAM6_MASK_WIDE_FIELDS 0xe00000
+-
+ struct ioam6_lwt_encap {
+ 	struct ipv6_hopopt_hdr eh;
+ 	u8 pad[2];			/* 2-octet padding for 4n-alignment */
+@@ -93,13 +90,8 @@ static bool ioam6_validate_trace_hdr(struct ioam6_trace_hdr *trace)
+ 	    trace->type.bit21 | trace->type.bit23)
+ 		return false;
+ 
+-	trace->nodelen = 0;
+ 	fields = be32_to_cpu(trace->type_be32);
+-
+-	trace->nodelen += hweight32(fields & IOAM6_MASK_SHORT_FIELDS)
+-				* (sizeof(__be32) / 4);
+-	trace->nodelen += hweight32(fields & IOAM6_MASK_WIDE_FIELDS)
+-				* (sizeof(__be64) / 4);
++	trace->nodelen = ioam6_trace_compute_nodelen(fields);
+ 
+ 	return true;
+ }
 -- 
 2.51.0
 
