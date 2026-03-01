@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-222277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NEfKCGfo2mZIgUAu9opvQ
-	(envelope-from <stable+bounces-222277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:06:25 +0100
+	id IKiQJECjo2mRIwUAu9opvQ
+	(envelope-from <stable+bounces-222278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:24:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70ED71CCF8C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:06:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 027811CD842
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:23:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 36AE83099071
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8E183304266
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5542C21F2;
-	Sun,  1 Mar 2026 02:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEB72F39BE;
+	Sun,  1 Mar 2026 02:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sltjJoe7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5ksAQ91"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F419D2F39BE;
-	Sun,  1 Mar 2026 02:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00B6190664
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 02:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330476; cv=none; b=A+S7F5e8s2jn2lmRpc2pNK8MF+ikeBvaOGgjvPoUBy1+PX6ANbceMqu4GqcAW5Wx7ix1P0kCQsJnC5Phr+hZmMCHXz1t4f6h9o1TN8U41sTHLuEI7XR7iQWPFiTeUY6dDFVE0cGf+AhsvkX2FwxK6iwrSi+a8hbwfCoV6hY7I4w=
+	t=1772330477; cv=none; b=qMtd7zp5zt8XSQ5cw1aIfDfJ+OODhIkvm/LdaQ+VoNi7YRu5DoOG6TxHeRQd3Zw4YJcpNCQVOxUlttGV8UNHIxEyKa9Yb+JqmJmTGrPtmtaEjhjXFfSrelr50wvow8QlHiEOt60kjIEFvSpdprl1Z5bDiVwDTC4SCSejPC+86XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330476; c=relaxed/simple;
-	bh=yAHzZzIXDnTlnjwuQLVbf3R0bK62VpHz/+L6w8ylnQ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ELreNVLKxPwa/uTYS7D3Bn8ztF/FEHyA+cP+joy7KeLMfTqR47rxN/ghnhyLfpplVMrn6+9cWUAcEnpPFYigGku+csr2VAzcFKeoY2P/wGu0i8CfP1r9L7sT2k6irViFYJrqpPH3NYHkHB3ot3+2Pg3rpnr7PAHTkCL/KhPQ4Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sltjJoe7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C684FC19421;
-	Sun,  1 Mar 2026 02:01:14 +0000 (UTC)
+	s=arc-20240116; t=1772330477; c=relaxed/simple;
+	bh=4K7PwaX/QhOoJofiGqXVSPLZFI+vlHI05veTLsKOHkw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K0gTCvyazO+Klin2SDVfv9xHvb+e9UEW5V18Gi5whtO+Iwf428vmv6vKadmbu8nr/Wg/+9mJmfyf3Kt+LO6t9vNFNrdnj8Ax4IWw1SJW4Uik0M+F/+YzSuGgWziapfM2XMmYqnZGCa0XAEQedIGqlq6GrAvPIdSHGpclNK6mBNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5ksAQ91; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AF6C19421;
+	Sun,  1 Mar 2026 02:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330475;
-	bh=yAHzZzIXDnTlnjwuQLVbf3R0bK62VpHz/+L6w8ylnQ0=;
+	s=k20201202; t=1772330477;
+	bh=4K7PwaX/QhOoJofiGqXVSPLZFI+vlHI05veTLsKOHkw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=sltjJoe7DBbYAUnkXJ+n+BdlejZOK/bie9uct2XYmK77oMxdqoyak35MSC8y82ZeE
-	 Rfpe1QzgxcpAs8sqqac2vIicfVkm0TS3VvY3VjWcPEVKJe1yKjLXSo8wuX+eHu34B6
-	 IUGE8Nn4NmXiZQ6hpDmy9T4k4UC93zXq72gnF+E59W5i4V3L4cLIomxK0eSzjaZ+jE
-	 RJOmYETO/VGORbfd5GcW8uhZMKMwqoVvD23lPuH0dZ7l823hgFI9DL6u5nZXgwkPYK
-	 M90kuUl5A1BIvWmKmHfj4aqcZf0WV6R616ksrtX78DHHHbrh8ds+1dZ2spwgoCQnN1
-	 VGqVp0xJeEXcQ==
+	b=P5ksAQ91wOHO/5DwHtC5dvU6rBUZK1fw55Dyz8lK6jKPUeGmioCofwM1pp4+eJD4V
+	 7bRiZdNJ+58LduAC+fouIe1O5130Dy/AL0Sb0Mu+7pP1sICgc8o+h3VSRux6E9wbbY
+	 pKeH+bVN2pMZnrOdB11CkipcyMQeGn73+jvH/HGweY/bw00JGWOwaKqsovHElzkL2j
+	 W243BU9LUc+ZwSkGeWLDiYIwR83H41gn526sjx3Q+DtjU6aKtnQyqhtK+XZGdLNfcL
+	 n59fswrZ4EhMWWTwFQ/4DmNqQVpgdxC68h1xWmPV7B+GWcfn9Pj3j170EjSF9MIpGz
+	 nC5mf2568/UsA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	bfoster@redhat.com
-Cc: Baokun Li <libaokun1@huawei.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	stable@kernel.org,
-	linux-ext4@vger.kernel.org
-Subject: FAILED: Patch "ext4: fix dirtyclusters double decrement on fs shutdown" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:01:13 -0500
-Message-ID: <20260301020113.1728288-1-sashal@kernel.org>
+	mchehab+huawei@kernel.org
+Cc: Jonathan Corbet <corbet@lwn.net>
+Subject: FAILED: Patch "docs: kdoc: avoid error_count overflows" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:01:15 -0500
+Message-ID: <20260301020116.1728465-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,29 +66,28 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222277-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-222278-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,huawei.com:email]
-X-Rspamd-Queue-Id: 70ED71CCF8C
+	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 027811CD842
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -104,121 +100,77 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 94a8cea54cd935c54fa2fba70354757c0fc245e3 Mon Sep 17 00:00:00 2001
-From: Brian Foster <bfoster@redhat.com>
-Date: Tue, 13 Jan 2026 12:19:05 -0500
-Subject: [PATCH] ext4: fix dirtyclusters double decrement on fs shutdown
+From 802774d8539fa73487190ec45438777a3c38d424 Mon Sep 17 00:00:00 2001
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Date: Mon, 19 Jan 2026 13:04:57 +0100
+Subject: [PATCH] docs: kdoc: avoid error_count overflows
 
-fstests test generic/388 occasionally reproduces a warning in
-ext4_put_super() associated with the dirty clusters count:
+The glibc library limits the return code to 8 bits. We need to
+stick to this limit when using sys.exit(error_count).
 
-  WARNING: CPU: 7 PID: 76064 at fs/ext4/super.c:1324 ext4_put_super+0x48c/0x590 [ext4]
-
-Tracing the failure shows that the warning fires due to an
-s_dirtyclusters_counter value of -1. IOW, this appears to be a
-spurious decrement as opposed to some sort of leak. Further tracing
-of the dirty cluster count deltas and an LLM scan of the resulting
-output identified the cause as a double decrement in the error path
-between ext4_mb_mark_diskspace_used() and the caller
-ext4_mb_new_blocks().
-
-First, note that generic/388 is a shutdown vs. fsstress test and so
-produces a random set of operations and shutdown injections. In the
-problematic case, the shutdown triggers an error return from the
-ext4_handle_dirty_metadata() call(s) made from
-ext4_mb_mark_context(). The changed value is non-zero at this point,
-so ext4_mb_mark_diskspace_used() does not exit after the error
-bubbles up from ext4_mb_mark_context(). Instead, the former
-decrements both cluster counters and returns the error up to
-ext4_mb_new_blocks(). The latter falls into the !ar->len out path
-which decrements the dirty clusters counter a second time, creating
-the inconsistency.
-
-To avoid this problem and simplify ownership of the cluster
-reservation in this codepath, lift the counter reduction to a single
-place in the caller. This makes it more clear that
-ext4_mb_new_blocks() is responsible for acquiring cluster
-reservation (via ext4_claim_free_clusters()) in the !delalloc case
-as well as releasing it, regardless of whether it ends up consumed
-or returned due to failure.
-
-Fixes: 0087d9fb3f29 ("ext4: Fix s_dirty_blocks_counter if block allocation failed with nodelalloc")
-Signed-off-by: Brian Foster <bfoster@redhat.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20260113171905.118284-1-bfoster@redhat.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Message-ID: <233d1674db99ed8feb405a2f781de350f0fba0ac.1768823489.git.mchehab+huawei@kernel.org>
 ---
- fs/ext4/mballoc-test.c |  2 +-
- fs/ext4/mballoc.c      | 21 +++++----------------
- 2 files changed, 6 insertions(+), 17 deletions(-)
+ scripts/kernel-doc.py | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ext4/mballoc-test.c b/fs/ext4/mballoc-test.c
-index a9416b20ff64c..4abb40d4561ce 100644
---- a/fs/ext4/mballoc-test.c
-+++ b/fs/ext4/mballoc-test.c
-@@ -567,7 +567,7 @@ test_mark_diskspace_used_range(struct kunit *test,
+diff --git a/scripts/kernel-doc.py b/scripts/kernel-doc.py
+index 7a1eaf986bcd4..1ebb16b9bb087 100755
+--- a/scripts/kernel-doc.py
++++ b/scripts/kernel-doc.py
+@@ -116,6 +116,8 @@ SRC_DIR = os.path.dirname(os.path.realpath(__file__))
  
- 	bitmap = mbt_ctx_bitmap(sb, TEST_GOAL_GROUP);
- 	memset(bitmap, 0, sb->s_blocksize);
--	ret = ext4_mb_mark_diskspace_used(ac, NULL, 0);
-+	ret = ext4_mb_mark_diskspace_used(ac, NULL);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
+ sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
  
- 	max = EXT4_CLUSTERS_PER_GROUP(sb);
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index de4cacb740b33..dd29558ad753b 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4186,8 +4186,7 @@ ext4_mb_mark_context(handle_t *handle, struct super_block *sb, bool state,
-  * Returns 0 if success or error code
-  */
- static noinline_for_stack int
--ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
--				handle_t *handle, unsigned int reserv_clstrs)
-+ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac, handle_t *handle)
- {
- 	struct ext4_group_desc *gdp;
- 	struct ext4_sb_info *sbi;
-@@ -4242,13 +4241,6 @@ ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
- 	BUG_ON(changed != ac->ac_b_ex.fe_len);
- #endif
- 	percpu_counter_sub(&sbi->s_freeclusters_counter, ac->ac_b_ex.fe_len);
--	/*
--	 * Now reduce the dirty block count also. Should not go negative
--	 */
--	if (!(ac->ac_flags & EXT4_MB_DELALLOC_RESERVED))
--		/* release all the reserved blocks if non delalloc */
--		percpu_counter_sub(&sbi->s_dirtyclusters_counter,
--				   reserv_clstrs);
++WERROR_RETURN_CODE = 3
++
+ DESC = """
+ Read C language source or header FILEs, extract embedded documentation comments,
+ and print formatted documentation to standard output.
+@@ -176,7 +178,21 @@ class MsgFormatter(logging.Formatter):
+         return logging.Formatter.format(self, record)
  
- 	return err;
- }
-@@ -6333,7 +6325,7 @@ ext4_fsblk_t ext4_mb_new_blocks(handle_t *handle,
- 			ext4_mb_pa_put_free(ac);
- 	}
- 	if (likely(ac->ac_status == AC_STATUS_FOUND)) {
--		*errp = ext4_mb_mark_diskspace_used(ac, handle, reserv_clstrs);
-+		*errp = ext4_mb_mark_diskspace_used(ac, handle);
- 		if (*errp) {
- 			ext4_discard_allocated_blocks(ac);
- 			goto errout;
-@@ -6364,12 +6356,9 @@ ext4_fsblk_t ext4_mb_new_blocks(handle_t *handle,
- out:
- 	if (inquota && ar->len < inquota)
- 		dquot_free_block(ar->inode, EXT4_C2B(sbi, inquota - ar->len));
--	if (!ar->len) {
--		if ((ar->flags & EXT4_MB_DELALLOC_RESERVED) == 0)
--			/* release all the reserved blocks if non delalloc */
--			percpu_counter_sub(&sbi->s_dirtyclusters_counter,
--						reserv_clstrs);
--	}
-+	/* release any reserved blocks */
-+	if (reserv_clstrs)
-+		percpu_counter_sub(&sbi->s_dirtyclusters_counter, reserv_clstrs);
+ def main():
+-    """Main program"""
++    """
++    Main program.
++
++    By default, the return value is:
++
++    - 0: success or Python version is not compatible with
++      kernel-doc.  If -Werror is not used, it will also
++      return 0 if there are issues at kernel-doc markups;
++
++    - 1: an abnormal condition happened;
++
++    - 2: argparse issued an error;
++
++    - 3: -Werror is used, and one or more unfiltered parse warnings happened.
++    """
  
- 	trace_ext4_allocate_blocks(ar, (unsigned long long)block);
+     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
+                                      description=DESC)
+@@ -323,16 +339,12 @@ def main():
  
+     if args.werror:
+         print("%s warnings as errors" % error_count)    # pylint: disable=C0209
+-        sys.exit(error_count)
++        sys.exit(WERROR_RETURN_CODE)
+ 
+     if args.verbose:
+         print("%s errors" % error_count)                # pylint: disable=C0209
+ 
+-    if args.none:
+-        sys.exit(0)
+-
+-    sys.exit(error_count)
+-
++    sys.exit(0)
+ 
+ # Call main method
+ if __name__ == "__main__":
 -- 
 2.51.0
 
