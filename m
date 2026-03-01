@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-222240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222241-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHGFCBago2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:10:30 +0100
+	id AAdPBBigo2noIgUAu9opvQ
+	(envelope-from <stable+bounces-222241-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:10:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7121CD30F
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53DB01CD316
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 839EC306FD38
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4D514307017D
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7892F28FF;
-	Sun,  1 Mar 2026 01:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EEB52F4A18;
+	Sun,  1 Mar 2026 01:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mq6pURcR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V0oGMMaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58802727FC;
-	Sun,  1 Mar 2026 01:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328D8262FEC;
+	Sun,  1 Mar 2026 01:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330387; cv=none; b=IhRH7pUbbiIxeJ3SIZvOL2EN5BohzqS+naJ8lWkMybTSa2A1b998E1tvhVSmlx5XayusQCQ4onM0apmdZRVJC/UtydUU1sIt8ngXJHtjCLNxJl9kCwAkUUPtykiOLuEHxF7qnmaaOsWxpGj8uy7g5ZScMcSjmM4GJheEHIbltPU=
+	t=1772330389; cv=none; b=MR8Iw7KsghsikWFmGuKA6EN+J1p+SZ5J1x8Nz/YarF3wMc4TqhFiwpqHcxo+T4mjFyB+jynxA8XZVyQXun9FIEYGUPbTXFtBtjhJBMvlmOqvoGCp2sccVAZbyqZX3Q8HzrofEkA5vm2gYplFSMl4lIxWxKeM9thkqGZSZLcg2QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330387; c=relaxed/simple;
-	bh=90FcIs+NjDarGkcvLFbKykf5R+MjETlOlp1l15GHMSQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dMTGaT92PHZ8mzi0ovQLyC2jYTOezPQ0/k+XOzTV0Vu+439JrW+iPw6CfyCNsvM5dPigttybYYAZK4jKt93NSENHhdwThfkMkvNkDm2DgWXaoWvlod1dIrytT1lSIARQxRkEnxg91GCrYEtl88whgbE2jj66PVqyBBaVW2lDkHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mq6pURcR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54706C2BC86;
-	Sun,  1 Mar 2026 01:59:46 +0000 (UTC)
+	s=arc-20240116; t=1772330389; c=relaxed/simple;
+	bh=4//siI1gkvZKxirz1w809X4fINe88q2vYRDNWZOzVq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JYDT4y3BFrItdfkQKfOhZlqJELXUVnyxpfTjX3V/MrD42HH8b3soQujNFj8723E1jBkm/wZljXNbi+886NwIgfIXo+FjKBh4VucEl4zGP+B0S0XkXt7s9oiylTez18H8JkfqqOF0Qpe4Qqxkc2MLP1OYvyWdgVRKprMl15E6no8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V0oGMMaB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9019EC19421;
+	Sun,  1 Mar 2026 01:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330386;
-	bh=90FcIs+NjDarGkcvLFbKykf5R+MjETlOlp1l15GHMSQ=;
+	s=k20201202; t=1772330389;
+	bh=4//siI1gkvZKxirz1w809X4fINe88q2vYRDNWZOzVq0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Mq6pURcRPH16aTlgfeyPEuF/5j4TJFHtIJljDPi2VEDkqq4HG23+NMTexwnIDyM26
-	 UM/yrqCtCcaoICCvCSx53MY/sRzmfFRI79WcQmW8e6fdNrNnOFq0242HBR3q6Sd6cz
-	 h0bsoGxVy/UBsTNMXSg1rRolOgtMgzzj1FfQRqOIJkq7FmStwmEXx5k/EXnKKuIB6F
-	 1/unpegrtmZ5/cibi0o/nxWDVReo7A3Ax7p6S5yxs3d3maxbP1W2MROdya5MqFQBuj
-	 EIunGcWqZJ6SmV6IeZWA/KrQL8AROESEB1Qi6yNgeKhSNH31YygBdDTc/G4rz/y2cL
-	 Xn6ik6aPtL35Q==
+	b=V0oGMMaBjfjVr6BCcGaw43eyV7EE1UsgH/2IUhSqfMaUvVLdvE6h3flfd9/dsl8Th
+	 jByCTpZSn2zsYAEdvIXr4f8FkSUMJsoQS/SpyXdwznnXpuDY19wPhK/T8K3eQidAyy
+	 r11++1f4ngDvgJ09o0Hb4hkxfcHoHZAemZaJmbGBb7XMR2R1tiybVF+05aoOUF7rDT
+	 9DgKcTyUsqZKDf0yh6xR73GJy7fx7eJocGaGs6IgsUlUTwqraiEAUHqQWLB+jDAquM
+	 Lt2tnjnQpu3XdEl0Z2WielztewpUTlazVxm9vmstQdAXgwgi0FS09K0FJLajDdmsnB
+	 0JrJb5gvuue/g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	gnoack@google.com
 Cc: Jiri Kosina <jkosina@suse.com>,
 	linux-input@vger.kernel.org
-Subject: FAILED: Patch "HID: prodikeys: Check presence of pm->input_ep82" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 20:59:44 -0500
-Message-ID: <20260301015945.1725609-1-sashal@kernel.org>
+Subject: FAILED: Patch "HID: logitech-hidpp: Check maxfield in hidpp_get_report_length()" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 20:59:47 -0500
+Message-ID: <20260301015947.1725656-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -72,7 +72,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222240-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222241-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,7 +89,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5D7121CD30F
+X-Rspamd-Queue-Id: 53DB01CD316
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -102,43 +102,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From cee8337e1bad168136aecfe6416ecd7d3aa7529a Mon Sep 17 00:00:00 2001
+From 1547d41f9f19d691c2c9ce4c29f746297baef9e9 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
-Date: Fri, 9 Jan 2026 11:58:08 +0100
-Subject: [PATCH] HID: prodikeys: Check presence of pm->input_ep82
+Date: Fri, 9 Jan 2026 13:25:58 +0100
+Subject: [PATCH] HID: logitech-hidpp: Check maxfield in
+ hidpp_get_report_length()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Fake USB devices can send their own report descriptors for which the
-input_mapping() hook does not get called.  In this case, pm->input_ep82 stays
-NULL, which leads to a crash later.
+Do not crash when a report has no fields.
 
-This does not happen with the real device, but can be provoked by imposing as
-one.
+Fake USB gadgets can send their own HID report descriptors and can define report
+structures without valid fields.  This can be used to crash the kernel over USB.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Günther Noack <gnoack@google.com>
 Signed-off-by: Jiri Kosina <jkosina@suse.com>
 ---
- drivers/hid/hid-prodikeys.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/hid-logitech-hidpp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-prodikeys.c b/drivers/hid/hid-prodikeys.c
-index 74bddb2c3e82e..6e413df38358a 100644
---- a/drivers/hid/hid-prodikeys.c
-+++ b/drivers/hid/hid-prodikeys.c
-@@ -378,6 +378,10 @@ static int pcmidi_handle_report4(struct pcmidi_snd *pm, u8 *data)
- 	bit_mask = (bit_mask << 8) | data[2];
- 	bit_mask = (bit_mask << 8) | data[3];
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index e871f1729d4b3..d0a38eff9cfa8 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -4314,7 +4314,7 @@ static int hidpp_get_report_length(struct hid_device *hdev, int id)
  
-+	/* robustness in case input_mapping hook does not get called */
-+	if (!pm->input_ep82)
-+		return 0;
-+
- 	/* break keys */
- 	for (bit_index = 0; bit_index < 24; bit_index++) {
- 		if (!((0x01 << bit_index) & bit_mask)) {
+ 	re = &(hdev->report_enum[HID_OUTPUT_REPORT]);
+ 	report = re->report_id_hash[id];
+-	if (!report)
++	if (!report || !report->maxfield)
+ 		return 0;
+ 
+ 	return report->field[0]->report_count + 1;
 -- 
 2.51.0
 
