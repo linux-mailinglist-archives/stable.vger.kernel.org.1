@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QB0MBbWpo2nfJQUAu9opvQ
-	(envelope-from <stable+bounces-221896-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:51:33 +0100
+	id uFCvFQCbo2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650431CDFAD
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:51:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5BB1CBD84
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F06CC32E4003
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE9833048EC1
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B25C2D6407;
-	Sun,  1 Mar 2026 01:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F982C1788;
+	Sun,  1 Mar 2026 01:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c71p/zOm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ky4b13cf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32DD26FA6F;
-	Sun,  1 Mar 2026 01:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049A5145A1F;
+	Sun,  1 Mar 2026 01:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329399; cv=none; b=OCv5fgqZCw9m03btPz8xbDTO8I5WYeBm2r3l04H1VtRZhAFlVI14+Rp6IegWQ2viftLwFVCbVb6IIaXLtIAcEucU79bo5TQd8GppBY4oNHT5YGhynAX1HWrWPXsLhMFdcJhwRmEEII9S0QewL1PQu5DEkfZponP58BCdiWX5QZo=
+	t=1772329401; cv=none; b=IvnjGmritrxj+DBum405/ZpaOV8nbEjXazCclFPTEly7B5AaciG8dB57d6xtCM60UnyTn8KQLk6AaViiGoAZ9Pr6UsWFS2EAaxXBWAviBD4Gx9k88EZjpTiA6avqVHr5iAM9UC2qoMZwXXTicgL1UWq0e/nY1q+wa0LOrOHi604=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329399; c=relaxed/simple;
-	bh=3NyLcyenT7hXafUxUSYG7InSKNrpnG6mAN39Y30vksE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C7uCBlq+SvJdnynsvZ69BguBi2wHSOKK/tZJ9O3U0aEHk6CfJQKI22ojk7ZxKv5Ucptb5UANoLgML+BuJaeI6vkX1llaEIjr/jlAKLXLQCqt0akRk07guvIgAZGaYp3193MbCjrCZrt+j0CXRYo7lGvPXjqtPbduNBShQkwZjwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c71p/zOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2454C19425;
-	Sun,  1 Mar 2026 01:43:17 +0000 (UTC)
+	s=arc-20240116; t=1772329401; c=relaxed/simple;
+	bh=CSveXeKFRY6NMKjZcWQcH75+UINLpctLbHpkF6zG7oU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AQgiNYaQTv0JcaD7dUfZ4MO5pWBvctP5rBoq2EzG72QeUmHD/DfQVcDwM9oh/zC1QXAz1gendj4Gx4Zo9EOppBTKXol2KgbIYeA/FtRKBFzLxvMWu3U6+tAt2/nOTXtwjEpRZLl0D2iZyVht4U5XJzL27vIbFlPXEsr4AtHClfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ky4b13cf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52628C19421;
+	Sun,  1 Mar 2026 01:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329398;
-	bh=3NyLcyenT7hXafUxUSYG7InSKNrpnG6mAN39Y30vksE=;
+	s=k20201202; t=1772329400;
+	bh=CSveXeKFRY6NMKjZcWQcH75+UINLpctLbHpkF6zG7oU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=c71p/zOmGVj5FajyzxEgodiYRigmIsaOUhFepVMl6+zVEKTYdB8Nkzx1SLSMQBRAm
-	 GvKsbl4CS+0XhaLVmJWdYaWU4tSR/2ALWuMtZJXEkL4C8DQchh2DJbMpe+TdDMlWR0
-	 11WI+fRuKDIEWbsgwJxwtp5kFfLiCFSX0P1Ph9+LTXE4bP8aiYDYuBh4CvpSDdIAtZ
-	 A25/uWpFePCANOu0T0kZdECxnUUDJ0GBRnDUdIomekPEln6Jme/dEW4UqlDndhAj0e
-	 l9L81AiSez3ywB0WW5ATf+lwhPbuClzLLyy81qZ0h+R1aiNNj3naFRAQ4sYy7wNXKO
-	 DB8DBNoYj+ztA==
+	b=Ky4b13cfkYKZQdQ0nqIgKhKquZNhZLXRyh8YJn3xZq+VyfGDE0z1ZoM2hITOWdeNc
+	 ZUxAJK3d3k8geEWPN2tPWS7AQzq2p7iS5Zl5nmu4Es3INRkzfQX1QgXx2jZ5DlMXcq
+	 xf226xuLNPgmph3phcBphbM2tqK6KlkqTL/s8At6vnReWy2/QjFSV15+dMF71OQpUl
+	 pUQVUPuFlTj18IoDRRZezuErClH+gujCYoOcA0j+ZpBsHKwOjM6zuUjz9+kxFrRPuf
+	 BASJzjXQkP0aQGvk9WcY/OKWOw2eUy4W04C6qD5v8vNy6WpIfxBlR7TwYCXevCl9Es
+	 23ktgsxCqF4OA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johan@kernel.org
-Cc: Andreas Kemnade <andreas@kemnade.info>,
-	Lee Jones <lee@kernel.org>,
-	linux-omap@vger.kernel.org
-Subject: FAILED: Patch "mfd: omap-usb-host: Fix OF populate on driver rebind" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:43:16 -0500
-Message-ID: <20260301014316.1705341-1-sashal@kernel.org>
+	briannorris@chromium.org
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	linux-pci@vger.kernel.org
+Subject: FAILED: Patch "PCI/PM: Prevent runtime suspend until devices are fully initialized" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:43:18 -0500
+Message-ID: <20260301014319.1705393-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,28 +68,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221896-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221897-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 650431CDFAD
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email,samsung.com:email]
+X-Rspamd-Queue-Id: CC5BB1CBD84
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -102,46 +103,105 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 24804ba508a3e240501c521685a1c4eb9f574f8e Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Fri, 19 Dec 2025 12:07:14 +0100
-Subject: [PATCH] mfd: omap-usb-host: Fix OF populate on driver rebind
+From 51c0996dadaea20d73eb0495aeda9cb0422243e8 Mon Sep 17 00:00:00 2001
+From: Brian Norris <briannorris@chromium.org>
+Date: Thu, 22 Jan 2026 09:48:15 -0800
+Subject: [PATCH] PCI/PM: Prevent runtime suspend until devices are fully
+ initialized
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+Previously, it was possible for a PCI device to be runtime-suspended before
+it was fully initialized. When that happened, the suspend process could
+save invalid device state, for example, before BAR assignment. Restoring
+the invalid state during resume may leave the device non-functional.
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
+Prevent runtime suspend for PCI devices until they are fully initialized by
+deferring pm_runtime_enable().
 
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org	# 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
-Link: https://patch.msgid.link/20251219110714.23919-1-johan@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+More details on how exactly this may occur:
+
+  1. PCI device is created by pci_scan_slot() or similar
+
+  2. As part of pci_scan_slot(), pci_pm_init() puts the device in D0 and
+     prevents runtime suspend prevented via pm_runtime_forbid()
+
+  3. pci_device_add() adds the underlying 'struct device' via device_add(),
+     which means user space can allow runtime suspend, e.g.,
+
+       echo auto > /sys/bus/pci/devices/.../power/control
+
+  4. PCI device receives BAR configuration
+     (pci_assign_unassigned_bus_resources(), etc.)
+
+  5. pci_bus_add_device() applies final fixups, saves device state, and
+     tries to attach a driver
+
+The device may potentially be suspended between #3 and #5, so this is racy
+with user space (udev or similar).
+
+Many PCI devices are enumerated at subsys_initcall time and so will not
+race with user space, but devices created later by hotplug or modular
+pwrctrl or host controller drivers are susceptible to this race.
+
+More runtime PM details at the first Link: below.
+
+Link: https://lore.kernel.org/all/0e35a4e1-894a-47c1-9528-fc5ffbafd9e2@samsung.com/
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+[bhelgaas: update comments per https://lore.kernel.org/r/CAJZ5v0iBNOmMtqfqEbrYyuK2u+2J2+zZ-iQd1FvyCPjdvU2TJg@mail.gmail.com]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260122094815.v5.1.I60a53c170a8596661883bd2b4ef475155c7aa72b@changeid
 ---
- drivers/mfd/omap-usb-host.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pci/bus.c | 8 ++++++++
+ drivers/pci/pci.c | 8 +++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
-index a77b6fc790f2e..4d29a6e2ed87a 100644
---- a/drivers/mfd/omap-usb-host.c
-+++ b/drivers/mfd/omap-usb-host.c
-@@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
- {
- 	pm_runtime_disable(&pdev->dev);
+diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+index 4383a36fd6ca0..41e5c45e38b5e 100644
+--- a/drivers/pci/bus.c
++++ b/drivers/pci/bus.c
+@@ -15,6 +15,7 @@
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/proc_fs.h>
+ #include <linux/slab.h>
  
--	/* remove children */
--	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
-+	if (pdev->dev.of_node)
-+		of_platform_depopulate(&pdev->dev);
-+	else
-+		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
+@@ -379,6 +380,13 @@ void pci_bus_add_device(struct pci_dev *dev)
+ 		put_device(&pdev->dev);
+ 	}
+ 
++	/*
++	 * Enable runtime PM, which potentially allows the device to
++	 * suspend immediately, only after the PCI state has been
++	 * configured completely.
++	 */
++	pm_runtime_enable(&dev->dev);
++
+ 	if (!dn || of_device_is_available(dn))
+ 		pci_dev_allow_binding(dev);
+ 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 86ccbd0efb495..d5f4b52899ada 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3199,8 +3199,14 @@ void pci_pm_init(struct pci_dev *dev)
+ poweron:
+ 	pci_pm_power_up_and_verify_state(dev);
+ 	pm_runtime_forbid(&dev->dev);
++
++	/*
++	 * Runtime PM will be enabled for the device when it has been fully
++	 * configured, but since its parent and suppliers may suspend in
++	 * the meantime, prevent them from doing so by changing the
++	 * device's runtime PM status to "active".
++	 */
+ 	pm_runtime_set_active(&dev->dev);
+-	pm_runtime_enable(&dev->dev);
  }
  
- static const struct dev_pm_ops usbhsomap_dev_pm_ops = {
+ static unsigned long pci_ea_flags(struct pci_dev *dev, u8 prop)
 -- 
 2.51.0
 
