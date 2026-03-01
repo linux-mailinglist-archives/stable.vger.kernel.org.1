@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-221444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBWuAbiVo2lPHgUAu9opvQ
-	(envelope-from <stable+bounces-221444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:26:16 +0100
+	id uKMOMfiXo2lIHwUAu9opvQ
+	(envelope-from <stable+bounces-221445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8E71CA98A
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:26:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5001CB11F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 93B62301F154
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5B6E314A7D5
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E840B27E07A;
-	Sun,  1 Mar 2026 01:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19548283CBF;
+	Sun,  1 Mar 2026 01:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALKitZ5F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N0nN8PDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2F1274B42
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB04280CD5;
+	Sun,  1 Mar 2026 01:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328280; cv=none; b=BW61457vrv0yaggliTm5OdN0pcBIt3ciQV5+CmnevjZnz3bdjMEcvMtyBQwIy7+t6UxcAGJDGWtC85o18VqNNqVhxD+mFm+GJAZZ2NrJj3x5nOUygyROYG/KWxfAJOuc1u4ALKtmNevAHtrlttgdltffBvLBUQ4RotYnQqBrDtc=
+	t=1772328282; cv=none; b=DJhd09UZwO3w5CizCIX1hQ9H2+gMrauek6OogYDIGTkvjUvbG94JDioJjAsAnyKocS9nhbJLZximhmHWiHViTC2UbNiaZtl0btMy28xFfmzd/KAkukigbSm+XC8bsWcPxSi3X/QB7iRcfn6E3Jx6BlZxGCiCghw3ZrKOuFPlCjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328280; c=relaxed/simple;
-	bh=1zHeqx5A0fPOef7dleWESDWxHRaitZC+ksGwBypNhFY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lG9Vm6RP4LIDvgx1edDNw+4kn8UEH65PQ6ImZhjcK+wQDRMwRtPM28yPXyZpppot36Bcto9W8YVkUwrYYrYpXmHl7ucG2/YsuUXgFdJ1cosVy+FN5kzKFaN097d0X9T0K/tWbzTK8sRrrAwnGukbF+EmihJwuiuQN9hVZEpDvsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALKitZ5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ED4C19421;
-	Sun,  1 Mar 2026 01:24:39 +0000 (UTC)
+	s=arc-20240116; t=1772328282; c=relaxed/simple;
+	bh=J23oACXd5l6XFKJAZU461esYc/nGqoFBeh9273Ao9Ro=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nAy7q5ZPD934dBD4iteFtTryVxBmwSU+XsuRLiktNstnGjedBq+I49ALKQH72ldQZw2eKpuUFzS/dEC1ChH9PPW0XCVW25LueN9DgZQ9ziFBI/nXQvvRoJvCokLUMYbMJrHPNa/sY9xF+ehlPV518MigSE/+ytej8S/X5+Uajwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N0nN8PDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1421FC19421;
+	Sun,  1 Mar 2026 01:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328280;
-	bh=1zHeqx5A0fPOef7dleWESDWxHRaitZC+ksGwBypNhFY=;
+	s=k20201202; t=1772328282;
+	bh=J23oACXd5l6XFKJAZU461esYc/nGqoFBeh9273Ao9Ro=;
 	h=From:To:Cc:Subject:Date:From;
-	b=ALKitZ5F9++aYMr7EF/jJ9LetV3L0DL+FJzzwXkvgC6KxT+xoUP7qlnjEBIxVek5C
-	 X00bCIMxvSZ7IynD/GjwMeP1ijTW9azgkenOr5WnxoWf15BC0kQL5ENabRSRyhY8O3
-	 K5PbHofPoIZ/N7z1J1NOrchmTQ7LyZs5IKUw1Jat8RScbKc3/7nLkUjZtNROmfbmq1
-	 06i4irXO5qn62/2Pu8RqydXqExzwyT2fokHCh+RG0V6ee+Wu9IRljYHHM5JKEgJnra
-	 Z87wQPz3IzGEBtiEWIg0OOyz6QP/NBeezQsGCVWJM//jiPl+nF2q8hDa3IklTf7a7w
-	 1EkCuCCtShu0Q==
+	b=N0nN8PDeEuLWZ2FHYk3to3HSiGNzhlzj9vhahQ75vlYpjLD6I3pqungPaXenv8HsG
+	 RobHu7b278Z4IqkVr5LStmTHe29uFMS6UDhdARIq/RotUEnsmCQJRWTMlSK0HTbZru
+	 AcdgHHExiXzqDZEuLc6/PXsTlPQo8fXwEMcEqcUVEUGt0GeByZLtd6PY84pqkTzbbs
+	 Kty93Ex7ZYBtYCIA4d7WLEMvGFQNJ+2xABx4IZye0OFAl1nDE2ujwqG/rr6+zNPCUA
+	 d2sjS19XqQfMJpCH4XDOk2hCK7JRFqp33JI/hoMAgPB1brddyRwVLm45DeFy7hYs4o
+	 XaLL+WxX00UQA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	lgs201920130244@gmail.com
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: FAILED: Patch "powerpc/smp: Add check for kcalloc() failure in parse_thread_groups()" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:24:38 -0500
-Message-ID: <20260301012438.1681542-1-sashal@kernel.org>
+	maobibo@loongson.cn
+Cc: Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	virtualization@lists.linux.dev,
+	linux-crypto@vger.kernel.org
+Subject: FAILED: Patch "crypto: virtio: Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:24:40 -0500
+Message-ID: <20260301012440.1681604-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,30 +69,28 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-221445-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221444-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,csgroup.eu:email]
-X-Rspamd-Queue-Id: 4E8E71CA98A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1D5001CB11F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -104,38 +103,41 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 33c1c6d8a28a2761ac74b0380b2563cf546c2a3a Mon Sep 17 00:00:00 2001
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Tue, 23 Sep 2025 21:32:35 +0800
-Subject: [PATCH] powerpc/smp: Add check for kcalloc() failure in
- parse_thread_groups()
+From a389d431053935366b88a8fbf271f1a564b9a44e Mon Sep 17 00:00:00 2001
+From: Bibo Mao <maobibo@loongson.cn>
+Date: Tue, 13 Jan 2026 11:05:55 +0800
+Subject: [PATCH] crypto: virtio: Remove duplicated virtqueue_kick in
+ virtio_crypto_skcipher_crypt_req
 
-As kcalloc() may fail, check its return value to avoid a NULL pointer
-dereference when passing it to of_property_read_u32_array().
+With function virtio_crypto_skcipher_crypt_req(), there is already
+virtqueue_kick() call with spinlock held in function
+__virtio_crypto_skcipher_do_req(). Remove duplicated virtqueue_kick()
+function call here.
 
-Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
+Fixes: d79b5d0bbf2e ("crypto: virtio - support crypto engine framework")
 Cc: stable@vger.kernel.org
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250923133235.1862108-1-lgs201920130244@gmail.com
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20260113030556.3522533-3-maobibo@loongson.cn>
 ---
- arch/powerpc/kernel/smp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/virtio/virtio_crypto_skcipher_algs.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 292fee8809bc8..cad3358fa4c35 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -822,6 +822,8 @@ static int parse_thread_groups(struct device_node *dn,
+diff --git a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
+index 1b3fb21a2a7de..11053d1786d4d 100644
+--- a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
++++ b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
+@@ -541,8 +541,6 @@ int virtio_crypto_skcipher_crypt_req(
+ 	if (ret < 0)
+ 		return ret;
  
- 	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
- 	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
-+	if (!thread_group_array)
-+		return -ENOMEM;
- 	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
- 					 thread_group_array, count);
- 	if (ret)
+-	virtqueue_kick(data_vq->vq);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
