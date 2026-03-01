@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-221710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JVnJ4Gbo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221710-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:57 +0100
+	id KL9PLayYo2neHgUAu9opvQ
+	(envelope-from <stable+bounces-221711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:38:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6E51CBFBC
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 501FA1CB398
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:38:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 26940308CDAF
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1771B302B18F
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804B92EA480;
-	Sun,  1 Mar 2026 01:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B712EA498;
+	Sun,  1 Mar 2026 01:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EapDrr7V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HO0ANwvQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436D22D5937;
-	Sun,  1 Mar 2026 01:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9972C11DE
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328952; cv=none; b=HYd2v4Qaj9q9Tg9Kt5uKbxObQEiAFOZILCcKTbGWIcz2VX8nKngOY5x96MwOYEA9gjMALfUQe6jesSOeT7gMqO/HzIneVB8XRWQVqYVZj2qVAYKNdixUNFjojWrbLVbOOrfnipfO6U9rKALTdCfs/7YKc8fZ5KdXovsQxzA7y0Q=
+	t=1772328954; cv=none; b=CmGLKiIydiMPqNQJHpiMctcJRLg97cYaM12QRZSu9vLeuzzPSqh5YontNNZNkzaXFf/c0Rskoye0RAPEOV5FotFUTgPzjwQH9dhJLTGDAXAN4KTAUBmHljieQfllSqec004atBg+qAJ6nMgngF5oTKSItRsBPh2sLH7DfPSoGEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328952; c=relaxed/simple;
-	bh=d6hSXjZ6oSdlFyBVHtboQvnWqS7fr7QvkPdadaMqHm4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JMLSM+BDGCO6anjJKTawiDX8AUwySYJ2ag2fHvHOUy7vaoGlTsbHPlVHGwLYU4ARHaFFADtaXZxShQl1aCdj9BGZPUMlMptGFCACIXStDYHHqYec4l2Ke6LLnmfi0wx2hphq8WmnEPS7yg0oaA6F2J2B6txQcoMeIkpfDhS+Exg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EapDrr7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EF2C19424;
-	Sun,  1 Mar 2026 01:35:51 +0000 (UTC)
+	s=arc-20240116; t=1772328954; c=relaxed/simple;
+	bh=ohj4DoCarwyjJRCMadR2LGn2TfMpTMhKMWSsqNw+PLE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=omuyjBCEkZSc1C1WAkwN9/U4Nc883jpPyy7jt0oe8HqTZMvjzcR6IWUjAQ/U7/dnl3nXGFKx4u22jw3qy1KUmZE6jUuchHaYw8wyVrE6fVcD8LEumPPxT4BFuxtH3nxmZOnyfU5q0w8Ymc1RwaHN9muay8OfxhXmGhQqeGPN8OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HO0ANwvQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADB2C19421;
+	Sun,  1 Mar 2026 01:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328952;
-	bh=d6hSXjZ6oSdlFyBVHtboQvnWqS7fr7QvkPdadaMqHm4=;
+	s=k20201202; t=1772328954;
+	bh=ohj4DoCarwyjJRCMadR2LGn2TfMpTMhKMWSsqNw+PLE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=EapDrr7Vm+3+BqZTSsSWWadFF87neitQBZOHsmsj7jq49wjatBjh/XjVTWpar3OYl
-	 6f5i1d7/HJYA5QkHzzqzr+FqCmWak7JfXMZ6mL1rffOP5W1C8dKuAMmbcw3KNL/1De
-	 2lLaOKXiM5ZBnNRtEpH33PpDvx4SRdjBodSiTjBQT4Rh0AJs3AUQIG1aJy3Pi2ngV8
-	 XPt9xXWrKYJAGfGH+kFzDkegJxVZh4wBntiw8Yo7XHQRDixrCIUtEZ8sQJHVlMbKua
-	 7T5zZdFbXnaES2lnE7H/ucHSYGVBt2G218i0J2GzAQjDsnUyxHUyIK7L/fTGMEQSiU
-	 DZjh5bfIuBsMg==
+	b=HO0ANwvQTB1PbQwhOQEUmo+CjWt7vI0IePcIjr4sMvnuCOkVtv2kFlnMbXHjbxHRE
+	 FmOnVNMBXpU6DOaZmKH3o3M3W+lJEZ4JfuO3UdEm2gUtenqzITZIJvAJd+a/+cUjCS
+	 yt5Q+62t7elEacS4U4kM6VZjtgZZ5DM/QhGvnlJ1tHycK7s2Wkm9dP9TFPsKVdk16T
+	 pKepK7UdmfRLD2v+i4avyMSISLBxhdqZWpVxGyimLKpq3GD1zRZIAr7pNqWW39dh0u
+	 ePl0gfqawcMUdvRHGg7Q3963QNBKaXN1P2B0sVVFMQOMSzSVCJU/8Yvlu6HhfpAFXr
+	 jHFDSYrXZHglw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	aha310510@gmail.com
-Cc: Inki Dae <inki.dae@samsung.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: FAILED: Patch "drm/exynos: vidi: fix to avoid directly dereferencing user pointer" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:35:50 -0500
-Message-ID: <20260301013550.1695639-1-sashal@kernel.org>
+	lihaoxiang@isrc.iscas.ac.cn
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>
+Subject: FAILED: Patch "rapidio: replace rio_free_net() with kfree() in rio_scan_alloc_net()" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:35:52 -0500
+Message-ID: <20260301013552.1695686-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,35 +63,35 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221710-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221711-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,kernel.crashing.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AC6E51CBFBC
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 501FA1CB398
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -105,62 +104,42 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From d4c98c077c7fb2dfdece7d605e694b5ea2665085 Mon Sep 17 00:00:00 2001
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Mon, 19 Jan 2026 17:25:52 +0900
-Subject: [PATCH] drm/exynos: vidi: fix to avoid directly dereferencing user
- pointer
+From 666183dcdd9ad3b8156a1df7f204f728f720380f Mon Sep 17 00:00:00 2001
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Date: Wed, 21 Jan 2026 09:35:08 +0800
+Subject: [PATCH] rapidio: replace rio_free_net() with kfree() in
+ rio_scan_alloc_net()
 
-In vidi_connection_ioctl(), vidi->edid(user pointer) is directly
-dereferenced in the kernel.
+When idtab allocation fails, net is not registered with rio_add_net() yet,
+so kfree(net) is sufficient to release the memory.  Set mport->net to NULL
+to avoid dangling pointer.
 
-This allows arbitrary kernel memory access from the user space, so instead
-of directly accessing the user pointer in the kernel, we should modify it
-to copy edid to kernel memory using copy_from_user() and use it.
-
+Link: https://lkml.kernel.org/r/20260121013508.195836-1-lihaoxiang@isrc.iscas.ac.cn
+Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ drivers/rapidio/rio-scan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index 480c99a8f9f75..9709c07e5d8f4 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -252,13 +252,27 @@ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
+diff --git a/drivers/rapidio/rio-scan.c b/drivers/rapidio/rio-scan.c
+index c12941f71e2cb..dcd6619a4b027 100644
+--- a/drivers/rapidio/rio-scan.c
++++ b/drivers/rapidio/rio-scan.c
+@@ -854,7 +854,8 @@ static struct rio_net *rio_scan_alloc_net(struct rio_mport *mport,
  
- 	if (vidi->connection) {
- 		const struct drm_edid *drm_edid;
--		const struct edid *raw_edid;
-+		const void __user *edid_userptr = u64_to_user_ptr(vidi->edid);
-+		void *edid_buf;
-+		struct edid hdr;
- 		size_t size;
- 
--		raw_edid = (const struct edid *)(unsigned long)vidi->edid;
--		size = (raw_edid->extensions + 1) * EDID_LENGTH;
-+		if (copy_from_user(&hdr, edid_userptr, sizeof(hdr)))
-+			return -EFAULT;
- 
--		drm_edid = drm_edid_alloc(raw_edid, size);
-+		size = (hdr.extensions + 1) * EDID_LENGTH;
-+
-+		edid_buf = kmalloc(size, GFP_KERNEL);
-+		if (!edid_buf)
-+			return -ENOMEM;
-+
-+		if (copy_from_user(edid_buf, edid_userptr, size)) {
-+			kfree(edid_buf);
-+			return -EFAULT;
-+		}
-+
-+		drm_edid = drm_edid_alloc(edid_buf, size);
-+		kfree(edid_buf);
- 		if (!drm_edid)
- 			return -ENOMEM;
- 
+ 		if (idtab == NULL) {
+ 			pr_err("RIO: failed to allocate destID table\n");
+-			rio_free_net(net);
++			kfree(net);
++			mport->net = NULL;
+ 			net = NULL;
+ 		} else {
+ 			net->enum_data = idtab;
 -- 
 2.51.0
 
