@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-221672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221673-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJ75KvOao2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221672-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:35 +0100
+	id 2HipHimYo2lIHwUAu9opvQ
+	(envelope-from <stable+bounces-221673-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C45A1CBD5C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E25DA1CB1F3
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82D71322CADA
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 41C983024B20
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F8A2E0914;
-	Sun,  1 Mar 2026 01:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0E12D876F;
+	Sun,  1 Mar 2026 01:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gq6QKhLD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QVMSnKh6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7F62D8796;
-	Sun,  1 Mar 2026 01:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5004C13B58A;
+	Sun,  1 Mar 2026 01:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328853; cv=none; b=Rh2Ff2TuJhKp2sw1MlaKP7STD7Mjk+Reszojx2hhKo2UrsonNGesHw0E9tT8WgtYzzjEf4U9UPeOUQLLpwoCzO9VawFJPwHx+9Pj/eTJkh6HGtQX+Uz9IIlO4f+99/8Yun31NPicF+gaFst+ZhxksNeZxqlqJ0bJJN4bg4RooXs=
+	t=1772328855; cv=none; b=b4gD7b0ma6821Q5SPsjtRVldAuV2+tetnmFa+n6musCAiDFK/faXLWxAtKZW/sUvjGS3k82aAny7a6icYJG83xqbdZ1ZRgM4JlsGOyk8pQeXqk6pkvsd9f/P3GBzw8QU6HvFkCU//5Kn/j53m+KJWedRpDD+QkDd8gLqrCMG8e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328853; c=relaxed/simple;
-	bh=CGYWZTh+50X7ujXaVbiMQc3r3HA55d1id6kLK8MGTco=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GXEIvmGMWr7CZpgehU2655JW91utBY4dT9DS9nrJVap6oSYDqH65QZkcskXG5u36+Uun2p5q5RLLgrfP0thd1mOeXLQSSEeINDTjiZovufypXdIafiW2qWhBxxwinbqDeCBUwpBwUOcMMVbX5E2sPA3EMKzRCa6kPMrrIkmQQT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gq6QKhLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19764C19421;
-	Sun,  1 Mar 2026 01:34:12 +0000 (UTC)
+	s=arc-20240116; t=1772328855; c=relaxed/simple;
+	bh=w4Wd0RTCfAOE2c7Kg7HYVCMJ6Q7eEPrDC1a2GQZvNVQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nPfpaIhSD9gN/Pdd//lLhrZe+6dvdtEWzQbDrzXBj1pgWdopxEph2vcXBLT2oPKK4on0MUm/OOM8zbdopjyFeX1XIz/7sRRn9HNGbF5UOmyKQp5V3DlChLXkNm2Mkv5VApza0xkPSD2l1zBNxaicAhTkanC8F2i2YnV4OHMssQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QVMSnKh6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F87C19421;
+	Sun,  1 Mar 2026 01:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328852;
-	bh=CGYWZTh+50X7ujXaVbiMQc3r3HA55d1id6kLK8MGTco=;
+	s=k20201202; t=1772328855;
+	bh=w4Wd0RTCfAOE2c7Kg7HYVCMJ6Q7eEPrDC1a2GQZvNVQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=gq6QKhLDW169gm5m9M9aWoVtTuVc9rSjIHD15nl775V6ewP7nn+5i1z03Ue69Afhn
-	 /EI/fd2p0MHEJzZS5cvqTIzrKroEZGMCiIZcj2pnlemmMu1dkptzwhZk5qUBPjDLFJ
-	 X9HmaGPQi2iH7ufRovdmsLEztKkGLEZ3WFPiED3kefid5PP/fGNo9s034oNLFC7osj
-	 hpq4otVTavlfsadncmoamyFYqwoWpl4VjMo0hfAOnEWdSeBkkd35d67WD1odH4otui
-	 QE3TjKgbOtMYGpvMhzaHp60zAJk+cGzergEbeJlQMr6KGOfWMK7M8fWuSO+jRJ+kU5
-	 vj5t6ViwNl7IQ==
+	b=QVMSnKh6lbcVid6jNL6kXEPD0i5Mm88dOSPoYuwVl5+lNrdAFCCTDLoIEMxepu0fp
+	 VrWqCTa6DW6cFC7GeqPKTlKeqbC5K53jLlO999EH51VnmoUMObNhGvyLCnSQV97Z5C
+	 LkSfVh8+5nQNrQKh2z1RqxgwAeFrd94PtdyFSe8mpS1BNtBcp62MLdlZfsy33LSmYU
+	 qPNIZPeBs7Qbxsg8uae1YYsJl6rVxtNLF42M7q1GXdAO7SZy5fc+sM3PLUTSsYlBjy
+	 yo3A2zm3m7sf7Kbw/vLEF1PakBDDe0IHfJoDBF1Ef8+Uk7m74hVR5/6H5tCwUYsTRg
+	 gD2x3j+Hr2Jjw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	shawn.lin@rock-chips.com
-Cc: Andrew Powers-Holmes <aholmes@omnom.net>,
-	Heiko Stuebner <heiko@sntech.de>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: FAILED: Patch "arm64: dts: rockchip: Fix rk356x PCIe range mappings" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:34:10 -0500
-Message-ID: <20260301013411.1693589-1-sashal@kernel.org>
+	johan@kernel.org
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Lee Jones <lee@kernel.org>,
+	linux-arm-msm@vger.kernel.org
+Subject: FAILED: Patch "mfd: qcom-pm8xxx: Fix OF populate on driver rebind" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:34:13 -0500
+Message-ID: <20260301013413.1693642-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +65,32 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221672-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-221673-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sntech.de:email,fe270000:email,rock-chips.com:email,fe280000:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2C45A1CBD5C
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E25DA1CB1F3
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -105,63 +103,53 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f63ea193a404481f080ca2958f73e9f364682db9 Mon Sep 17 00:00:00 2001
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Date: Mon, 5 Jan 2026 16:15:28 +0800
-Subject: [PATCH] arm64: dts: rockchip: Fix rk356x PCIe range mappings
+From 27a8acea47a93fea6ad0e2df4c20a9b51490e4d9 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Fri, 19 Dec 2025 12:09:47 +0100
+Subject: [PATCH] mfd: qcom-pm8xxx: Fix OF populate on driver rebind
 
-The pcie bus address should be mapped 1:1 to the cpu side MMIO address, so
-that there is no same address allocated from normal system memory. Otherwise
-it's broken if the same address assigned to the EP for DMA purpose.Fix it to
-sync with the vendor BSP.
+Since commit c6e126de43e7 ("of: Keep track of populated platform
+devices") child devices will not be created by of_platform_populate()
+if the devices had previously been deregistered individually so that the
+OF_POPULATED flag is still set in the corresponding OF nodes.
 
-Fixes: 568a67e742df ("arm64: dts: rockchip: Fix rk356x PCIe register and range mappings")
-Fixes: 66b51ea7d70f ("arm64: dts: rockchip: Add rk3568 PCIe2x1 controller")
-Cc: stable@vger.kernel.org
-Cc: Andrew Powers-Holmes <aholmes@omnom.net>
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/1767600929-195341-1-git-send-email-shawn.lin@rock-chips.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Switch to using of_platform_depopulate() instead of open coding so that
+the child devices are created if the driver is rebound.
+
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Cc: stable@vger.kernel.org	# 3.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251219110947.24101-1-johan@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568.dtsi      | 4 ++--
- arch/arm64/boot/dts/rockchip/rk356x-base.dtsi | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/mfd/qcom-pm8xxx.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-index e719a3df126c5..658097ed69714 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-@@ -185,7 +185,7 @@ pcie3x1: pcie@fe270000 {
- 		      <0x0 0xf2000000 0x0 0x00100000>;
- 		ranges = <0x01000000 0x0 0xf2100000 0x0 0xf2100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf2200000 0x0 0xf2200000 0x0 0x01e00000>,
--			 <0x03000000 0x0 0x40000000 0x3 0x40000000 0x0 0x40000000>;
-+			 <0x03000000 0x3 0x40000000 0x3 0x40000000 0x0 0x40000000>;
- 		reg-names = "dbi", "apb", "config";
- 		resets = <&cru SRST_PCIE30X1_POWERUP>;
- 		reset-names = "pipe";
-@@ -238,7 +238,7 @@ pcie3x2: pcie@fe280000 {
- 		      <0x0 0xf0000000 0x0 0x00100000>;
- 		ranges = <0x01000000 0x0 0xf0100000 0x0 0xf0100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf0200000 0x0 0xf0200000 0x0 0x01e00000>,
--			 <0x03000000 0x0 0x40000000 0x3 0x80000000 0x0 0x40000000>;
-+			 <0x03000000 0x3 0x80000000 0x3 0x80000000 0x0 0x40000000>;
- 		reg-names = "dbi", "apb", "config";
- 		resets = <&cru SRST_PCIE30X2_POWERUP>;
- 		reset-names = "pipe";
-diff --git a/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi b/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
-index 8893b7b6cc9ff..a2c4957a58992 100644
---- a/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
-@@ -1022,7 +1022,7 @@ pcie2x1: pcie@fe260000 {
- 		power-domains = <&power RK3568_PD_PIPE>;
- 		ranges = <0x01000000 0x0 0xf4100000 0x0 0xf4100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf4200000 0x0 0xf4200000 0x0 0x01e00000>,
--			 <0x03000000 0x0 0x40000000 0x3 0x00000000 0x0 0x40000000>;
-+			 <0x03000000 0x3 0x00000000 0x3 0x00000000 0x0 0x40000000>;
- 		resets = <&cru SRST_PCIE20_POWERUP>;
- 		reset-names = "pipe";
- 		#address-cells = <3>;
+diff --git a/drivers/mfd/qcom-pm8xxx.c b/drivers/mfd/qcom-pm8xxx.c
+index 1149f7102a365..0cf374c015ce7 100644
+--- a/drivers/mfd/qcom-pm8xxx.c
++++ b/drivers/mfd/qcom-pm8xxx.c
+@@ -577,17 +577,11 @@ static int pm8xxx_probe(struct platform_device *pdev)
+ 	return rc;
+ }
+ 
+-static int pm8xxx_remove_child(struct device *dev, void *unused)
+-{
+-	platform_device_unregister(to_platform_device(dev));
+-	return 0;
+-}
+-
+ static void pm8xxx_remove(struct platform_device *pdev)
+ {
+ 	struct pm_irq_chip *chip = platform_get_drvdata(pdev);
+ 
+-	device_for_each_child(&pdev->dev, NULL, pm8xxx_remove_child);
++	of_platform_depopulate(&pdev->dev);
+ 	irq_domain_remove(chip->irqdomain);
+ }
+ 
 -- 
 2.51.0
 
