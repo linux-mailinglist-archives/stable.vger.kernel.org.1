@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-221270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIFTFCGUo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221270-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:29 +0100
+	id OITGDiaUo2lpHQUAu9opvQ
+	(envelope-from <stable+bounces-221271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31E51CA2C7
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF31F1CA2FA
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BADA8303660F
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:17:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E374C3037442
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B84248893;
-	Sun,  1 Mar 2026 01:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E819C244670;
+	Sun,  1 Mar 2026 01:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dachz+Xt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eS3WovQk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BC82472A6
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2AB23EABA;
+	Sun,  1 Mar 2026 01:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327852; cv=none; b=J5tWVxTEpN7jMMzn0QHDmkTwPrz1Gcf/vKY+Gam7hRqLXesP3ykh1a+T+B9lY2aYT8jGPH1vTG25x0Itor95BWDDPBK9RNMkmzlIQYvalhIoJuSZvE48IktMMAc3DUPGzIMPcKcnp2q45JQvSZWAz2tN3wXj1JOrkI0+Ph9Ae/4=
+	t=1772327854; cv=none; b=Vl3xIpu30UrQKorBdOOpX5ojfeWUbllE4tw1nIdB4eMkqWFH5WzMkWIbovpTqRZjwi1Vr1mByHJVQdBjyg93TI1A04tG5jhVADQNrzWDxvaNB7tUqN4GLo3SRaz2fk7Q5LJpQmHfwLiXCLhBGblS20SJYc1b+R9GouVJBnmNBrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327852; c=relaxed/simple;
-	bh=Zs+lV6WzByO5DOJKciAmQwlU/O+C9Rh/JqGQ0kowbLM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iSbuXa+2qOJVRO03HsMXn8dEE3mRpYALKjJJdgXJ+/UNSAofzegb6F7f6tKmQgih1LsSgyWNpwMRaI31/6eMsP3fFA1JRFgpRQgWF57J68rB612DcMrdBJCO2P5+8wZQdN2Ei0OzGQzPWdeBskDvh2Bd83/InOiBAq0mY5EvIPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dachz+Xt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513BCC19421;
-	Sun,  1 Mar 2026 01:17:31 +0000 (UTC)
+	s=arc-20240116; t=1772327854; c=relaxed/simple;
+	bh=Oo7HI7gZ/7OGgdEacUFLxqe0nxPxWp1WsRPts8VqBTk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KsaeWMAQ1CfVBShDIEUhSYIk4nZl5WBdu05SNlVMvSoep08bzIPxOIsGcueyYUTKqQuSbmA16ds1uzTWZlgf2+AE+cbH1vNIe51qADGK0HQQhhdgEJwz1RkBG6sx3sYzMEyW5gMd/x5WyydhV24NBevIhFVEWiSEHP0ETTC8XII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eS3WovQk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9958C19421;
+	Sun,  1 Mar 2026 01:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327852;
-	bh=Zs+lV6WzByO5DOJKciAmQwlU/O+C9Rh/JqGQ0kowbLM=;
+	s=k20201202; t=1772327854;
+	bh=Oo7HI7gZ/7OGgdEacUFLxqe0nxPxWp1WsRPts8VqBTk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Dachz+XtA43wnzWAEs4jaSoxnIyNEUGxStL48gZi14KteLwJ5C20n987kVQDSpUK/
-	 IB3ij7Y3PYOmLkO5egId0PGyLR6DbPHKPEBqjqSbQYh9pXtL5jXECn9WBxn4sLX+Sf
-	 VSYs302S3ayfnsAI8l3XrJ8rRPi6B7Iu+y0xdQHTnS/eh30Kiryu/WWM7k8n2rHFMo
-	 xnYYb7BZNWMUw3zkliwChUnHSHEBLIMFZHayl9i5uZ1Qy0z6S2+CjkFS+H3OkyaXMl
-	 PVmGNjxW3v5k9TeEFAgVVE4ixmHyKYlb798jHBpxq8mEX2/B+tHwv+QgejFCu/Tkl4
-	 ZJjY9/7XhyU1g==
+	b=eS3WovQkr4HMVxSZ2H7XONfIJ6W4TBWczk/P7WeBT2Ch2bxcc2mHelnvHZJH4nlAc
+	 K9hzGF3lYINz89chAFRsSuxNYXCnXVPdAf2IUGD74Z2/2rHKnAlq3T6z9pjxv9T5Wc
+	 MmK3UucQy/eQn34eUKMSH/xXRlVuLWXnvc6DY8HnXoG7RCUi9kuf8FB/7z97mh8vSQ
+	 1xV5Ihob8ZpJ0nB3pCunj18ce+yu7oFX0TRWWPOlXhiGK9U+6FHPbjP9u6v/lv374B
+	 sxgKAa0VDWfreF52ZpygedV8jOr7drw5Iv5AaYABP8RMhVOHxV+dwYIbA4CqS9UeiM
+	 FCKom7TwaOwUg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mario.limonciello@amd.com
-Cc: Cal Peake <cp@absolutedigital.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "drm/amd: Fix hang on amdgpu unload by using pci_dev_is_disconnected()" failed to apply to 6.18-stable tree
-Date: Sat, 28 Feb 2026 20:17:29 -0500
-Message-ID: <20260301011730.1671451-1-sashal@kernel.org>
+	yangtiezhu@loongson.cn
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+	loongarch@lists.linux.dev,
+	linux-rt-devel@lists.linux.dev
+Subject: FAILED: Patch "LoongArch: Handle percpu handler address for ORC unwinder" failed to apply to 6.18-stable tree
+Date: Sat, 28 Feb 2026 20:17:32 -0500
+Message-ID: <20260301011732.1671502-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,18 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221270-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221271-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -89,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,absolutedigital.net:email]
-X-Rspamd-Queue-Id: B31E51CA2C7
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CF31F1CA2FA
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.18-stable tree.
@@ -104,66 +103,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f7afda7fcd169a9168695247d07ad94cf7b9798f Mon Sep 17 00:00:00 2001
-From: Mario Limonciello <mario.limonciello@amd.com>
-Date: Thu, 5 Feb 2026 10:42:54 -0600
-Subject: [PATCH] drm/amd: Fix hang on amdgpu unload by using
- pci_dev_is_disconnected()
+From 055c7e75190e0be43037bd663a3f6aced194416e Mon Sep 17 00:00:00 2001
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Date: Tue, 10 Feb 2026 19:31:13 +0800
+Subject: [PATCH] LoongArch: Handle percpu handler address for ORC unwinder
 
-The commit 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise
-disconnect") introduced early KFD cleanup when drm_dev_is_unplugged()
-returns true. However, this causes hangs during normal module unload
-(rmmod amdgpu).
+After commit 4cd641a79e69 ("LoongArch: Remove unnecessary checks for ORC
+unwinder"), the system can not boot normally under some configs (such as
+enable KASAN), there are many error messages "cannot find unwind pc".
 
-The issue occurs because drm_dev_unplug() is called in amdgpu_pci_remove()
-for all removal scenarios, not just surprise disconnects. This was done
-intentionally in commit 39934d3ed572 ("Revert "drm/amdgpu: TA unload
-messages are not actually sent to psp when amdgpu is uninstalled"") to
-fix IGT PCI software unplug test failures. As a result,
-drm_dev_is_unplugged() returns true even during normal module unload,
-triggering the early KFD cleanup inappropriately.
+The kernel boots normally with the defconfig, so no problem found out at
+the first time. Here is one way to reproduce:
 
-The correct check should distinguish between:
-- Actual surprise disconnect (eGPU unplugged): pci_dev_is_disconnected()
-  returns true
-- Normal module unload (rmmod): pci_dev_is_disconnected() returns false
+  cd linux
+  make mrproper defconfig -j"$(nproc)"
+  scripts/config -e KASAN
+  make olddefconfig all -j"$(nproc)"
+  sudo make modules_install
+  sudo make install
+  sudo reboot
 
-Replace drm_dev_is_unplugged() with pci_dev_is_disconnected() to ensure
-the early cleanup only happens during true hardware disconnect events.
+The address that can not unwind is not a valid kernel address which is
+between "pcpu_handlers[cpu]" and "pcpu_handlers[cpu] + vec_sz" due to
+the code of eentry was copied to the new area of pcpu_handlers[cpu] in
+setup_tlb_handler(), handle this special case to get the valid address
+to unwind normally.
 
 Cc: stable@vger.kernel.org
-Reported-by: Cal Peake <cp@absolutedigital.net>
-Closes: https://lore.kernel.org/all/b0c22deb-c0fa-3343-33cf-fd9a77d7db99@absolutedigital.net/
-Fixes: 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise disconnect")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/include/asm/setup.h |  3 +++
+ arch/loongarch/kernel/unwind_orc.c | 16 ++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 528990a595ec9..9758221413814 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4924,7 +4924,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
- 	 * before ip_fini_early to prevent kfd locking refcount issues by calling
- 	 * amdgpu_amdkfd_suspend()
- 	 */
--	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+	if (pci_dev_is_disconnected(adev->pdev))
- 		amdgpu_amdkfd_device_fini_sw(adev);
+diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
+index 3c2fb16b11b64..f81375e5e89c0 100644
+--- a/arch/loongarch/include/asm/setup.h
++++ b/arch/loongarch/include/asm/setup.h
+@@ -7,6 +7,7 @@
+ #define _LOONGARCH_SETUP_H
  
- 	amdgpu_device_ip_fini_early(adev);
-@@ -4936,7 +4936,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
+ #include <linux/types.h>
++#include <linux/threads.h>
+ #include <asm/sections.h>
+ #include <uapi/asm/setup.h>
  
- 	amdgpu_gart_dummy_page_fini(adev);
+@@ -14,6 +15,8 @@
  
--	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+	if (pci_dev_is_disconnected(adev->pdev))
- 		amdgpu_device_unmap_mmio(adev);
+ extern unsigned long eentry;
+ extern unsigned long tlbrentry;
++extern unsigned long pcpu_handlers[NR_CPUS];
++extern long exception_handlers[VECSIZE * 128 / sizeof(long)];
+ extern char init_command_line[COMMAND_LINE_SIZE];
+ extern void tlb_init(int cpu);
+ extern void cpu_cache_init(void);
+diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/unwind_orc.c
+index d6b3688a1ce97..11ba3e4ac9eee 100644
+--- a/arch/loongarch/kernel/unwind_orc.c
++++ b/arch/loongarch/kernel/unwind_orc.c
+@@ -352,6 +352,22 @@ static inline unsigned long bt_address(unsigned long ra)
+ {
+ 	extern unsigned long eentry;
  
- }
++#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
++	int cpu;
++	int vec_sz = sizeof(exception_handlers);
++
++	for_each_possible_cpu(cpu) {
++		if (!pcpu_handlers[cpu])
++			continue;
++
++		if (ra >= pcpu_handlers[cpu] &&
++		    ra < pcpu_handlers[cpu] + vec_sz) {
++			ra = ra + eentry - pcpu_handlers[cpu];
++			break;
++		}
++	}
++#endif
++
+ 	if (ra >= eentry && ra < eentry +  EXCCODE_INT_END * VECSIZE) {
+ 		unsigned long func;
+ 		unsigned long type = (ra - eentry) / VECSIZE;
 -- 
 2.51.0
 
