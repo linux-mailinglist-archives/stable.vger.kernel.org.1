@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-222352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AZQIu+fo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222352-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:51 +0100
+	id SLk/MvCfo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593CC1CD27C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF461CD283
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:09:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 65FD13088634
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:04:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E8F43088A6E
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED612F7ADE;
-	Sun,  1 Mar 2026 02:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FD02F5328;
+	Sun,  1 Mar 2026 02:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DMie+rQg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMJ1AQa5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B682D97AA;
-	Sun,  1 Mar 2026 02:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBE02C08AD;
+	Sun,  1 Mar 2026 02:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330668; cv=none; b=K6pHiyRzjCJMgtalEM/OmyZhF+TfBeYVwozanSFlZ0dA3TdpOtK8Scxc+EkN4bjgZoKuUlfKz6I4QoznHKIzU0dTwy05iJwrny+vXpkf0uFpUVHEKiLdsM9U/dhMPq6HKwXBjlow3rpiYdQMisC+nMpD68SqFEzZwgs7ZZGxyws=
+	t=1772330671; cv=none; b=TR/ALWvLw3yrFD9+cU0q7RYeN/hSnvdbH4bbJ+sn9slnZhSiR298QFi3zXhppBHXQjsaPbxM9hMJn1oZ2SUVH7fXYg89P2wRvChXc9VXUmqqvK9xK4P9Xern5A5H74O/9cu9BhXFjrnYIrv84VeITLOmjspx7lfvLS4IP+YKvCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330668; c=relaxed/simple;
-	bh=PtjEi62M5e1gbennm83en1UevUZJNZZqKbiet6sa0Qg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ww9T/VUR0p1DKDzVBqgZxtq0q7HB4tY7d7eZJz5o5XiMaNEGlTtAhgICb90TthVz/HJaVsANpUP7WZedmes/4w8sOERslp4prKukJI6rSpP8c4FyrqpOd5XOjbPeWTiY2a463j/+ZGpQaAXSASpodUBwyvvx+WEMZD0hD7rUEf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DMie+rQg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9367DC19425;
-	Sun,  1 Mar 2026 02:04:27 +0000 (UTC)
+	s=arc-20240116; t=1772330671; c=relaxed/simple;
+	bh=js00iyEKSsFdrbbpTpmjkc7JFJyLdft8Dy30YHxmPcw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PoOKnbjOaXp59b6PBqtSGdLgzlx6Ey5jdLSb4DHOY7ep7lhlTlMEG79ZXtNlcsxJ4WE4F3NR/IaL5SdgxZ1mc2YFxK756vy4LbfUwI+e3Bro43xATF3zVhDJDKSKTeBjqxl4Zys89C9UZoEGtXLaIV/twJeLKXf91rgNd210Phk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMJ1AQa5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF68FC19421;
+	Sun,  1 Mar 2026 02:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330668;
-	bh=PtjEi62M5e1gbennm83en1UevUZJNZZqKbiet6sa0Qg=;
+	s=k20201202; t=1772330670;
+	bh=js00iyEKSsFdrbbpTpmjkc7JFJyLdft8Dy30YHxmPcw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=DMie+rQgJ/RHr3eXMKwCb1dFNNpWAwHxpV0qFklHt9L+eqPvK1x4xkoxs0UFO3B6l
-	 z40hdBEuEEKAIzA2aZSMOOfL3KwTXGHIrOjwMxBEGIv5Dl/jc2gaXnYobULais1dZd
-	 Ll3JTLkR4NK4rTP48D98zEjUqkE9oFsR6EFpBvmHn+cnzQ+azmzkUJZTYSpDyERN/L
-	 Zi1kpeesxrDY90Bug+7MAc6KN/ons9posGVHJmJ+gUS+cK7UYLSVWwJ8gUZK69ULss
-	 6sKgltUcLHpjZ2enNyMASEimaCnZRzima+uMY7XfRlvlWrA11BwU+7bpSkCZZQriQo
-	 0JYQ95JjqJ9Wg==
+	b=lMJ1AQa5AiAQGFlqYL9H2TJ1oHmTcOHcgzq4aUWjxZiPbnXXJKyAyUzeAciIKZHLE
+	 MkAix5oOcor8n9sFe/SlWIRWlnvNtboI7ykzCOIR2W5p8Lxx0yf8Fmd6pA80o8sxzF
+	 iAThvxrqIs8zzOLB81WzCQ5U+q8SiLkaW8CXEFN+Uky5U8ZDpntbot92nNe78RpL2n
+	 gIgWEWxUr9ePX/ig76vhkd4/ch1U1EpCfRWBGJnLPAMThLGg44s3rmKsxdJvPcwDX3
+	 NrgXL4b3jObmRrE7K0qJSzmul1TXP8B9+SIh3GgHFdcTg2akQAw39Qp07Xkh77Sam/
+	 xU72fEUMvhPUw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	linkinjeon@kernel.org
-Cc: tianshuo han <hantianshuo233@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
-	linux-cifs@vger.kernel.org
-Subject: FAILED: Patch "ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off reset in error paths" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:04:26 -0500
-Message-ID: <20260301020426.1732892-1-sashal@kernel.org>
+	metze@samba.org
+Cc: Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Steve French <stfrench@microsoft.com>
+Subject: FAILED: Patch "smb: client: let smbd_post_send_negotiate_req() use smbd_post_send()" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:04:28 -0500
+Message-ID: <20260301020428.1732937-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,36 +67,40 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [8.84 / 15.00];
+	URIBL_BLACK(7.50)[talpey.com:email];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-222352-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org];
+	GREYLIST(0.00)[pass,meta];
+	TAGGED_FROM(0.00)[bounces-222353-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_SPAM(0.00)[0.865];
+	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 593CC1CD27C
-X-Rspamd-Action: no action
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,talpey.com:email,samba.org:email,send_wr.next:url]
+X-Rspamd-Queue-Id: 9BF461CD283
+X-Rspamd-Action: add header
+X-Spam: Yes
 
 The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
@@ -104,66 +112,91 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 010eb01ce23b34b50531448b0da391c7f05a72af Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Sat, 24 Jan 2026 10:55:46 +0900
-Subject: [PATCH] ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off
- reset in error paths
+From 5b1c6149657af840a02885135c700ab42e6aa322 Mon Sep 17 00:00:00 2001
+From: Stefan Metzmacher <metze@samba.org>
+Date: Thu, 22 Jan 2026 18:16:59 +0100
+Subject: [PATCH] smb: client: let smbd_post_send_negotiate_req() use
+ smbd_post_send()
 
-The problem occurs when a signed request fails smb2 signature verification
-check. In __process_request(), if check_sign_req() returns an error,
-set_smb2_rsp_status(work, STATUS_ACCESS_DENIED) is called.
-set_smb2_rsp_status() set work->next_smb2_rcv_hdr_off as zero. By resetting
-next_smb2_rcv_hdr_off to zero, the pointer to the next command in the chain
-is lost. Consequently, is_chained_smb2_message() continues to point to
-the same request header instead of advancing. If the header's NextCommand
-field is non-zero, the function returns true, causing __handle_ksmbd_work()
-to repeatedly process the same failed request in an infinite loop.
-This results in the kernel log being flooded with "bad smb2 signature"
-messages and high CPU usage.
+The server has similar logic and it makes sure that
+request->wr is used instead of a stack struct ib_send_wr send_wr.
 
-This patch fixes the issue by changing the return value from
-SERVER_HANDLER_CONTINUE to SERVER_HANDLER_ABORT. This ensures that
-the processing loop terminates immediately rather than attempting to
-continue from an invalidated offset.
+This makes sure send_done can see request->wr.send_flags
+as the next commit will check for IB_SEND_SIGNALED
 
-Reported-by: tianshuo han <hantianshuo233@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/smb/server/server.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/client/smbdirect.c | 32 +++++++-------------------------
+ 1 file changed, 7 insertions(+), 25 deletions(-)
 
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index 554ae90df906d..d2410a3f163ae 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -126,21 +126,21 @@ static int __process_request(struct ksmbd_work *work, struct ksmbd_conn *conn,
- andx_again:
- 	if (command >= conn->max_cmds) {
- 		conn->ops->set_rsp_status(work, STATUS_INVALID_PARAMETER);
--		return SERVER_HANDLER_CONTINUE;
-+		return SERVER_HANDLER_ABORT;
- 	}
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 20faa6d7f514d..88fefb901c27f 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -35,6 +35,10 @@ static void enqueue_reassembly(
+ static struct smbdirect_recv_io *_get_first_reassembly(
+ 		struct smbdirect_socket *sc);
  
- 	cmds = &conn->cmds[command];
- 	if (!cmds->proc) {
- 		ksmbd_debug(SMB, "*** not implemented yet cmd = %x\n", command);
- 		conn->ops->set_rsp_status(work, STATUS_NOT_IMPLEMENTED);
--		return SERVER_HANDLER_CONTINUE;
-+		return SERVER_HANDLER_ABORT;
- 	}
++static int smbd_post_send(struct smbdirect_socket *sc,
++			  struct smbdirect_send_batch *batch,
++			  struct smbdirect_send_io *request);
++
+ static int smbd_post_recv(
+ 		struct smbdirect_socket *sc,
+ 		struct smbdirect_recv_io *response);
+@@ -1021,7 +1025,6 @@ static int smbd_ia_open(
+ static int smbd_post_send_negotiate_req(struct smbdirect_socket *sc)
+ {
+ 	struct smbdirect_socket_parameters *sp = &sc->parameters;
+-	struct ib_send_wr send_wr;
+ 	int rc;
+ 	struct smbdirect_send_io *request;
+ 	struct smbdirect_negotiate_req *packet;
+@@ -1052,33 +1055,12 @@ static int smbd_post_send_negotiate_req(struct smbdirect_socket *sc)
+ 	request->sge[0].length = sizeof(*packet);
+ 	request->sge[0].lkey = sc->ib.pd->local_dma_lkey;
  
- 	if (work->sess && conn->ops->is_sign_req(work, command)) {
- 		ret = conn->ops->check_sign_req(work);
- 		if (!ret) {
- 			conn->ops->set_rsp_status(work, STATUS_ACCESS_DENIED);
--			return SERVER_HANDLER_CONTINUE;
-+			return SERVER_HANDLER_ABORT;
- 		}
- 	}
+-	ib_dma_sync_single_for_device(
+-		sc->ib.dev, request->sge[0].addr,
+-		request->sge[0].length, DMA_TO_DEVICE);
+-
+-	request->cqe.done = send_done;
+-
+-	send_wr.next = NULL;
+-	send_wr.wr_cqe = &request->cqe;
+-	send_wr.sg_list = request->sge;
+-	send_wr.num_sge = request->num_sge;
+-	send_wr.opcode = IB_WR_SEND;
+-	send_wr.send_flags = IB_SEND_SIGNALED;
+-
+-	log_rdma_send(INFO, "sge addr=0x%llx length=%u lkey=0x%x\n",
+-		request->sge[0].addr,
+-		request->sge[0].length, request->sge[0].lkey);
+-
+-	atomic_inc(&sc->send_io.pending.count);
+-	rc = ib_post_send(sc->ib.qp, &send_wr, NULL);
++	rc = smbd_post_send(sc, NULL, request);
+ 	if (!rc)
+ 		return 0;
  
+-	/* if we reach here, post send failed */
+-	log_rdma_send(ERR, "ib_post_send failed rc=%d\n", rc);
+-	atomic_dec(&sc->send_io.pending.count);
+-
+-	smbd_disconnect_rdma_connection(sc);
++	if (rc == -EAGAIN)
++		rc = -EIO;
+ 
+ dma_mapping_failed:
+ 	smbd_free_send_io(request);
 -- 
 2.51.0
 
