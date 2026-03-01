@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-221929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIt3I0abo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221929-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:58 +0100
+	id 8DeYJhyeo2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-221930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F0C1CBEB2
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E54D1CCAA5
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BCD1A3016897
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 070D23311BDA
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7802E36F8;
-	Sun,  1 Mar 2026 01:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78D12D9ECA;
+	Sun,  1 Mar 2026 01:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6/mnQS2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2CgJoCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E459B2BEFE8;
-	Sun,  1 Mar 2026 01:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A722BEFE8;
+	Sun,  1 Mar 2026 01:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329486; cv=none; b=PiUWh2JuG+xaL275PIqmI/c9I/kpZUHgxIr6npWEKYnm3gIrGrdyTxYjdeWjhUrPyAhvgZX3aJPXOQKV1ToV8wvYJKGMAZ0QOZ4vW1zcfnOB+wvPkstGChxPZbSKokGyRPGJKBPKjbcexCE/P0YKO9ngEVxwdHkJNcXt+DeT/fg=
+	t=1772329488; cv=none; b=f52xUa6ASj02qPvA+SwCUTQTan7zRrWsr3v5GGdgrilJDqoLS5W6sL+GeONDZxEZsZ3skUEeNAO1n+AZ7O4pz7do71S0SgGTdSfqUnbyy6NNFrSKlnLUaeq5oCynsM++vmAmVrzqw/6SIMNzEE9cCl1DxnHT4eRvJrHtq6KvpqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329486; c=relaxed/simple;
-	bh=qaQvj7puNQeQmZlZO8R2FlyFM2AU11RAZfELCSUeEq0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RkpcX/avuzdrw4NQzpg45KU0f7ixwOYzg/qzeKPk225WfS4Yox+CWcZxbhsBMgbDV5J1Ky0C9hdT6UcY0i+9QxO4DkugV+/tYHi2yQHEXhmvvjOdnUoqrXPFeCaqWuoVXGxO/Bz+aTFgfwJ6c0rNz9n+3S0arDX5OEwidnWd6cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6/mnQS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13E2C19425;
-	Sun,  1 Mar 2026 01:44:44 +0000 (UTC)
+	s=arc-20240116; t=1772329488; c=relaxed/simple;
+	bh=6Qr32JUggNVDbkyRobRS6It2MxBWU98aEjzFhAbP4wE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h8cUunLjovk+8q0Ar4oQNa0U3HpssLbTXpKHKtDVcNXNIQ9AuEu1mGkj1cEciEsihOKJgmHa4nrFUgmZNG2GeLiQ156/znZv6dB/xxmOkAAIU2mY5NRV6JrNk9Tm3vRZC/M2ddZCXXX9mcTD9Qcenwifr/HO8FZ9Kt4kaE3Pu9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2CgJoCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769F0C19421;
+	Sun,  1 Mar 2026 01:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329485;
-	bh=qaQvj7puNQeQmZlZO8R2FlyFM2AU11RAZfELCSUeEq0=;
+	s=k20201202; t=1772329488;
+	bh=6Qr32JUggNVDbkyRobRS6It2MxBWU98aEjzFhAbP4wE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=X6/mnQS2RmiXwOEgAyCOynpXKDgxynG+AKpHQcwno/sZiv2oZbcvi06ddCYNtq8Aj
-	 IbFdNw2YPpK9Uk+lmeKnoir+1DIgn4YpDH7hVS3R333RAvl4KA3OZFO2wm6GbBI7bL
-	 0Jsh+n8iSyvo/7+6X9Yoyxd2p3IrMeiM9jZ5Zq9R7h5fNMYHhkYLiLuZOcOu+yFqQP
-	 gfVEN7iok9z2OxvZ/bN1uZvUU3DPzrYgn/CdE2Nq7pUecgOwwFJ+LZuywRT5oMEV97
-	 BhT1FBEfLi6otGMs7P9lywTOU6v77AOV2giI2DauyDjCnPYlt+IztWcCPhDDnSH6gO
-	 ZnFt0l1KzvxrA==
+	b=V2CgJoCxldeY/DUAiV61i6AsD9JUgj7eeH2YgDElt8Ttocw6Vskv7UBWEggcdbclY
+	 1Idp8U3VjzgFXWQS0cxoTdzuD1qtrfDwyxRjlROUk1cHYf1sf6LbCPjNaGfbjB8nLy
+	 qD0COy9KgU5MY4jDrBpBAXQHcKTg3M5B7XQ1ckWM1VfR71dRFYva9u1Q/yflCXGJGt
+	 Cd87lT9QfVrUmFEftvje3TQRY1M1ZVT4p7xOt7hZkA6RkhOAx8pQb8+ig9dSauH7Cs
+	 Bv6cr2PbG7vxc2rdf+AiLjHYcFKwdWzihkUjfk01rGY8jOaBruQ4ST5NiwaUM0h1i+
+	 1/wLZeBGQrpuQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	heming.zhao@suse.com
-Cc: Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	ocfs2-devel@lists.linux.dev,
-	linux-hardening@vger.kernel.org
-Subject: FAILED: Patch "ocfs2: fix reflink preserve cleanup issue" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:44:43 -0500
-Message-ID: <20260301014443.1707145-1-sashal@kernel.org>
+	aha310510@gmail.com
+Cc: Inki Dae <inki.dae@samsung.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org
+Subject: FAILED: Patch "drm/exynos: vidi: fix to avoid directly dereferencing user pointer" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:44:46 -0500
+Message-ID: <20260301014446.1707199-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,34 +65,34 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[fasheh.com,evilplan.org,oracle.com,gmail.com,live.cn,huawei.com,linux-foundation.org,lists.linux.dev,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-221930-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221929-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,huawei.com:email,suse.com:email,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 50F0C1CBEB2
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email]
+X-Rspamd-Queue-Id: 1E54D1CCAA5
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -110,50 +105,62 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5138c936c2c82c9be8883921854bc6f7e1177d8c Mon Sep 17 00:00:00 2001
-From: Heming Zhao <heming.zhao@suse.com>
-Date: Wed, 10 Dec 2025 09:57:24 +0800
-Subject: [PATCH] ocfs2: fix reflink preserve cleanup issue
+From d4c98c077c7fb2dfdece7d605e694b5ea2665085 Mon Sep 17 00:00:00 2001
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Mon, 19 Jan 2026 17:25:52 +0900
+Subject: [PATCH] drm/exynos: vidi: fix to avoid directly dereferencing user
+ pointer
 
-commit c06c303832ec ("ocfs2: fix xattr array entry __counted_by error")
-doesn't handle all cases and the cleanup job for preserved xattr entries
-still has bug:
-- the 'last' pointer should be shifted by one unit after cleanup
-  an array entry.
-- current code logic doesn't cleanup the first entry when xh_count is 1.
+In vidi_connection_ioctl(), vidi->edid(user pointer) is directly
+dereferenced in the kernel.
 
-Note, commit c06c303832ec is also a bug fix for 0fe9b66c65f3.
+This allows arbitrary kernel memory access from the user space, so instead
+of directly accessing the user pointer in the kernel, we should modify it
+to copy edid to kernel memory using copy_from_user() and use it.
 
-Link: https://lkml.kernel.org/r/20251210015725.8409-2-heming.zhao@suse.com
-Fixes: 0fe9b66c65f3 ("ocfs2: Add preserve to reflink.")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 ---
- fs/ocfs2/xattr.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
-index 5fd85f5178689..e434a62dd69f9 100644
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -6395,6 +6395,10 @@ static int ocfs2_reflink_xattr_header(handle_t *handle,
- 					(void *)last - (void *)xe);
- 				memset(last, 0,
- 				       sizeof(struct ocfs2_xattr_entry));
-+				last = &new_xh->xh_entries[le16_to_cpu(new_xh->xh_count)] - 1;
-+			} else {
-+				memset(xe, 0, sizeof(struct ocfs2_xattr_entry));
-+				last = NULL;
- 			}
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+index 480c99a8f9f75..9709c07e5d8f4 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -252,13 +252,27 @@ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
  
- 			/*
+ 	if (vidi->connection) {
+ 		const struct drm_edid *drm_edid;
+-		const struct edid *raw_edid;
++		const void __user *edid_userptr = u64_to_user_ptr(vidi->edid);
++		void *edid_buf;
++		struct edid hdr;
+ 		size_t size;
+ 
+-		raw_edid = (const struct edid *)(unsigned long)vidi->edid;
+-		size = (raw_edid->extensions + 1) * EDID_LENGTH;
++		if (copy_from_user(&hdr, edid_userptr, sizeof(hdr)))
++			return -EFAULT;
+ 
+-		drm_edid = drm_edid_alloc(raw_edid, size);
++		size = (hdr.extensions + 1) * EDID_LENGTH;
++
++		edid_buf = kmalloc(size, GFP_KERNEL);
++		if (!edid_buf)
++			return -ENOMEM;
++
++		if (copy_from_user(edid_buf, edid_userptr, size)) {
++			kfree(edid_buf);
++			return -EFAULT;
++		}
++
++		drm_edid = drm_edid_alloc(edid_buf, size);
++		kfree(edid_buf);
+ 		if (!drm_edid)
+ 			return -ENOMEM;
+ 
 -- 
 2.51.0
 
