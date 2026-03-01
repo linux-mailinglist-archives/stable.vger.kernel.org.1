@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-221640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAVkOOOXo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:31 +0100
+	id wHKrF2mao2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AD01CB0DA
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70511CBA3C
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:46:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 833CB301A2FD
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:33:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E40BA320A593
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2352DF12A;
-	Sun,  1 Mar 2026 01:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E44B2D838A;
+	Sun,  1 Mar 2026 01:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GG+6w8FQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g9J/iDCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D812C033C;
-	Sun,  1 Mar 2026 01:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115192C033C;
+	Sun,  1 Mar 2026 01:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328775; cv=none; b=meOzrUO09RzdvAosOlXDRL8h4z7iV9Hc84PsT/5t23akhGBNwuJdI7wiSfAtHuU9LDXbYMQZeQFNblUaOmnYOhbms8iHBP1i6fYmkZfGYZ7VzNsmWdh3kmJk1dcSwxSrRvRe8lABeN0sI95bFBLyBjNYQkuKo4uOcWB1BHFpiME=
+	t=1772328778; cv=none; b=ixnnCCSRYrFXBwFvEyLw68sXiwoq/nS6KMFkdwg5gefo0sIySMuQAIb+JwQ0qyLvcXPTk8WFciasu6E49PgxUEPCQSQE+EBSNmoexl6tEDdPyV5ibZhd9gGlDE7UL3DxZ7hJSVq+nxCYcscu3NND3jBETIh+LYJK88X/cn9ERA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328775; c=relaxed/simple;
-	bh=Y6HuOq7P9NyjDL79wRnOIkGrroU/7stgXHHRH9NJPqA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EWWO/9d1se+dNrUQpm4+OEsmyPbsg9oYBrnGzgwTWVtfYCvUoVLrOV1LqdCEUnXmoA15aHm330ZQ/L8ErtcutuLseq9A982G4sI5/ef8S26Ui3uZaQ3dc0tnrFYoGshuYGbIfEVmPr81WMEDiSkyU8CXSYnkh8zUAKMjqJmS8Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GG+6w8FQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEF2C19421;
-	Sun,  1 Mar 2026 01:32:54 +0000 (UTC)
+	s=arc-20240116; t=1772328778; c=relaxed/simple;
+	bh=rsBDyR6oqMh1TOcvkv4T8eagCZz9OMdjCOxdgQCV2k8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tj5hEeWfKEBp0vB7BvnZIPQslv/lt+2eoMm2n7G+Gpj+L/xxmVRyzxiPQKi7rboKfo0+LiKfnq6MOlG9UiMVEavAMDhJgrz8tWuekJ3qjxSLMjVofwHI3/Ab2lQ7ROET7dfEdmWkAZQMfBdajnjOf4wRCm7R/SufxgPn8iiO/MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g9J/iDCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A441C19421;
+	Sun,  1 Mar 2026 01:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328775;
-	bh=Y6HuOq7P9NyjDL79wRnOIkGrroU/7stgXHHRH9NJPqA=;
+	s=k20201202; t=1772328777;
+	bh=rsBDyR6oqMh1TOcvkv4T8eagCZz9OMdjCOxdgQCV2k8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=GG+6w8FQwgwIm8M++7eJobcyO6h5qt6pLHz9H0UyayJGUWyIQ/ZcBZej4MNrIQL/2
-	 NU7/jICx3V8v/p3R0AsAAOrvbCjKhw+bD428rjqxs9zMBEmc4+fSJiAl11bdoXBt5v
-	 ni9PRPTr6G5Xw3+eYlyAzI457aU6PGTOv+hNtK/aGzXzXLPZcuY4mHpltxNuFsGRbI
-	 3lCdQgG0XaPVq6W2Mxyif0DZ02UfiJvpsSAIQG9W/NsNtoOxhRE1ZIooAUnxBS2RMG
-	 2Xu0bTcEP9duh8Y3Y1buwagT3CMjRW7P2bKei7kVDrYLU8ktUut84X13VriUAQZrj0
-	 vRxDlW4PXd5Mg==
+	b=g9J/iDCxdXbxAuz74Lw0LoleS84BMeVJwhSV0znmKTtNx9x9oSnNq6XDab6KrrNv/
+	 KNVxH3Zznd60lRMWhOV+4b/1PWr4maP4O5FaQ9cdNHe1yOe9xNEZD2HtSrhQisTvsY
+	 FBn/jl4QkhfYAny6TB5YwrxbElLSsdT/RUdHdjUEkzEQJuTPbXzO2KWqSRnR2Ola1y
+	 gn1jkalpK485VRCkRbzDIaNl4FGdiYNocaQnmw8eV+cxarRl5hayhHXn4mWmD5XjCa
+	 qQwwQhSZUbK9tbDhUBaJZhHAMQI83TRpSbVqA0k99iX1wM3vXBLFD2Y6P/Hs8EjW/8
+	 WsfOk7Lc3HHbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	oleg@redhat.com
-Cc: Paulo Andrade <pandrade@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	linux-trace-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: FAILED: Patch "x86/uprobes: Fix XOL allocation failure for 32-bit tasks" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:32:53 -0500
-Message-ID: <20260301013253.1692011-1-sashal@kernel.org>
+	schnelle@linux.ibm.com
+Cc: Benjamin Block <bblock@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	linux-s390@vger.kernel.org
+Subject: FAILED: Patch "s390/pci: Handle futile config accesses of disabled devices directly" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:32:55 -0500
+Message-ID: <20260301013256.1692062-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,28 +69,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221640-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221641-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A3AD01CB0DA
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D70511CBA3C
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -103,133 +104,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From d55c571e4333fac71826e8db3b9753fadfbead6a Mon Sep 17 00:00:00 2001
-From: Oleg Nesterov <oleg@redhat.com>
-Date: Sun, 11 Jan 2026 16:00:37 +0100
-Subject: [PATCH] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
+From 84d875e69818bed600edccb09be4a64b84a34a54 Mon Sep 17 00:00:00 2001
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+Date: Thu, 8 Jan 2026 16:45:53 +0100
+Subject: [PATCH] s390/pci: Handle futile config accesses of disabled devices
+ directly
 
-This script
+On s390 PCI busses and slots with multiple functions may have holes
+because PCI functions are passed-through by the hypervisor on a per
+function basis and some functions may be in standby or reserved. This
+fact is indicated by returning true from the
+hypervisor_isolated_pci_functions() helper and triggers common code to
+scan all possible devfn values. Via pci_scan_single_device() this in
+turn causes config reads for the device and vendor IDs, even for PCI
+functions which are in standby and thereofore disabled.
 
-	#!/usr/bin/bash
+So far these futile config reads, as well as potentially writes, which
+can never succeed were handled by the PCI load/store instructions
+themselves. This works as the platform just returns an error for
+a disabled and thus not usable function handle. It does cause spamming
+of error logs and additional overhead though.
 
-	echo 0 > /proc/sys/kernel/randomize_va_space
+Instead check if the used function handle is enabled in zpci_cfg_load()
+and zpci_cfg_write() and if not enable directly return -ENODEV. Also
+refactor zpci_cfg_load() and zpci_cfg_store() slightly to accommodate
+the new logic while meeting modern kernel style guidelines.
 
-	echo 'void main(void) {}' > TEST.c
-
-	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
-	gcc -m32 -fcf-protection=branch TEST.c -o test
-
-	bpftrace -e 'uprobe:./test:main {}' -c ./test
-
-"hangs", the probed ./test task enters an endless loop.
-
-The problem is that with randomize_va_space == 0
-get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
-just return the "addr == TASK_SIZE - PAGE_SIZE" hint, this addr is used
-by the stack vma.
-
-arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
-in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
-vm_unmapped_area() happily returns the high address > TASK_SIZE and then
-get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
-check.
-
-handle_swbp() doesn't report this failure (probably it should) and silently
-restarts the probed insn. Endless loop.
-
-I think that the right fix should change the x86 get_unmapped_area() paths
-to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
-CONFIG_X86_X32_ABI=y, in_x32_syscall() falsely returns true in this case
-because ->orig_ax = -1.
-
-But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
-the probed task is 32-bit to make in_ia32_syscall() true.
-
-Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
-Reported-by: Paulo Andrade <pandrade@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
+Fixes: a50297cf8235 ("s390/pci: separate zbus creation from scanning")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 ---
- arch/x86/kernel/uprobes.c | 24 ++++++++++++++++++++++++
- include/linux/uprobes.h   |  1 +
- kernel/events/uprobes.c   | 10 +++++++---
- 3 files changed, 32 insertions(+), 3 deletions(-)
+ arch/s390/pci/pci.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-index 7be8e361ca55b..619dddf54424e 100644
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -1823,3 +1823,27 @@ bool is_uprobe_at_func_entry(struct pt_regs *regs)
- 
- 	return false;
- }
-+
-+#ifdef CONFIG_IA32_EMULATION
-+unsigned long arch_uprobe_get_xol_area(void)
-+{
-+	struct thread_info *ti = current_thread_info();
-+	unsigned long vaddr;
-+
-+	/*
-+	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
-+	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
-+	 * vm_unmapped_area_info.high_limit.
-+	 *
-+	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=y case,
-+	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
-+	 * (falsely) returns true because ->orig_ax == -1.
-+	 */
-+	if (test_thread_flag(TIF_ADDR32))
-+		ti->status |= TS_COMPAT;
-+	vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+	ti->status &= ~TS_COMPAT;
-+
-+	return vaddr;
-+}
-+#endif
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index ee3d36eda45dd..f548fea2adec8 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -242,6 +242,7 @@ extern void arch_uprobe_clear_state(struct mm_struct *mm);
- extern void arch_uprobe_init_state(struct mm_struct *mm);
- extern void handle_syscall_uprobe(struct pt_regs *regs, unsigned long bp_vaddr);
- extern void arch_uprobe_optimize(struct arch_uprobe *auprobe, unsigned long vaddr);
-+extern unsigned long arch_uprobe_get_xol_area(void);
- #else /* !CONFIG_UPROBES */
- struct uprobes_state {
- };
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index a7d7d83ca1d78..dfbce021fb027 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1694,6 +1694,12 @@ static const struct vm_special_mapping xol_mapping = {
- 	.mremap = xol_mremap,
- };
- 
-+unsigned long __weak arch_uprobe_get_xol_area(void)
-+{
-+	/* Try to map as high as possible, this is only a hint. */
-+	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+}
-+
- /* Slot allocation for XOL */
- static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 57f3980b98a92..7f44b0644a20e 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -231,24 +231,33 @@ int zpci_fmb_disable_device(struct zpci_dev *zdev)
+ static int zpci_cfg_load(struct zpci_dev *zdev, int offset, u32 *val, u8 len)
  {
-@@ -1709,9 +1715,7 @@ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
- 	}
+ 	u64 req = ZPCI_CREATE_REQ(zdev->fh, ZPCI_PCIAS_CFGSPC, len);
++	int rc = -ENODEV;
+ 	u64 data;
+-	int rc;
++
++	if (!zdev_enabled(zdev))
++		goto out_err;
  
- 	if (!area->vaddr) {
--		/* Try to map as high as possible, this is only a hint. */
--		area->vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
--						PAGE_SIZE, 0, 0);
-+		area->vaddr = arch_uprobe_get_xol_area();
- 		if (IS_ERR_VALUE(area->vaddr)) {
- 			ret = area->vaddr;
- 			goto fail;
+ 	rc = __zpci_load(&data, req, offset);
+-	if (!rc) {
+-		data = le64_to_cpu((__force __le64) data);
+-		data >>= (8 - len) * 8;
+-		*val = (u32) data;
+-	} else
+-		*val = 0xffffffff;
++	if (rc)
++		goto out_err;
++	data = le64_to_cpu((__force __le64)data);
++	data >>= (8 - len) * 8;
++	*val = (u32)data;
++	return 0;
++
++out_err:
++	PCI_SET_ERROR_RESPONSE(val);
+ 	return rc;
+ }
+ 
+ static int zpci_cfg_store(struct zpci_dev *zdev, int offset, u32 val, u8 len)
+ {
+ 	u64 req = ZPCI_CREATE_REQ(zdev->fh, ZPCI_PCIAS_CFGSPC, len);
++	int rc = -ENODEV;
+ 	u64 data = val;
+-	int rc;
++
++	if (!zdev_enabled(zdev))
++		return rc;
+ 
+ 	data <<= (8 - len) * 8;
+ 	data = (__force u64) cpu_to_le64(data);
 -- 
 2.51.0
 
