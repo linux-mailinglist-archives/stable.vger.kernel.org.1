@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-222272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFzpCzSuo2m0JwUAu9opvQ
-	(envelope-from <stable+bounces-222272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:44 +0100
+	id uB9+IjWuo2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F301CE476
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B70231CE47E
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 162D534D31B0
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B2B934D4542
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A841D2C21F2;
-	Sun,  1 Mar 2026 02:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7E62F3C37;
+	Sun,  1 Mar 2026 02:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frswDLhT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gF5L4rFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0ED16132A;
-	Sun,  1 Mar 2026 02:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F264B16132A;
+	Sun,  1 Mar 2026 02:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330463; cv=none; b=tu6+6lc6tH2Mo26KYkTVmWhnT/iXqYvmf2B7OK0Co1qi0ZwkIcrfm5g0gTVOxslsuY7QgzE1qopm+kWrQAQcMAGLCjj/Zs6YQmK58gMM/D/epgu20v2nH+eqx6JC/q8z1JLfFhzEwmdizXj/VoUy0s2APMzdqVNGXDlO41BPGh4=
+	t=1772330466; cv=none; b=XlDTSm37cZs4XxAPn08AX/j06jVIrkPMJ3JQeDRKgpPmdQOxrFxzDKNK7AaoJLi6f25mT0Cu28jkS5+SklH9j3uyG9a8+BCC3qY6qDMm57leKEkbL/nc0v1Ze2/8ocEK5ywMxdoEmTigk9ScD3143FjIoPe1EhPjhtlhQsyQ79c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330463; c=relaxed/simple;
-	bh=dyxHGjJI8DjxC6R5BVOEZ5pjv5AkreDImFcN1oum+pg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cA1w6+YqKxmBHJQbFFbETJPF0fq8EhmGJMPFP7GlBiEvennBg9M12JBNyKV55jlE1XjTW143zK3sUrQ58gJbJ0KdLmYgn68MhjFKQMBNcBtPq/UQljgOWiaAG6eItCHnVZGc4s1Mv0WaC16s2Fw+kPuW0xnMCpQjv1L2geP+XpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frswDLhT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DA5C19421;
-	Sun,  1 Mar 2026 02:01:02 +0000 (UTC)
+	s=arc-20240116; t=1772330466; c=relaxed/simple;
+	bh=/65fSYzHl0ingl2Ap1KRq0o6NxKTjbEl3og3Y3XRFhw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TPV1XEJI5Eb2Pcb0dSmCOzuUMiPDrXcmKrEreK464HsuQfVi1KbR78Abt/8nVHJHy8c1KgIPu/5LY2CUPlxaL70Uk0B4FstPr7b5lzsdH4wryw3Dr9O+vDvy9BktiyhWB8o+jAawl4XI0bsbjCtKi1ztNQhGtJwtK91ooXtr1OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gF5L4rFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091CFC19421;
+	Sun,  1 Mar 2026 02:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330463;
-	bh=dyxHGjJI8DjxC6R5BVOEZ5pjv5AkreDImFcN1oum+pg=;
+	s=k20201202; t=1772330465;
+	bh=/65fSYzHl0ingl2Ap1KRq0o6NxKTjbEl3og3Y3XRFhw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=frswDLhTPIIQlnudDHnWQXOc5M6P6/VXzxVLDKLtQZg/d/rHlMEvPKUQjZoc3F5zi
-	 AUwuHvPvMTF+yb54w8yNVyN5O0pqUQU9o86F2dOKyn4gjHEdU1Yyo8uiuowJmwidGw
-	 G+oEG/docMbdBihbv89K9x7WYnyrPrRMOncQx7yv2i9L9wXV1c67qn4rfw/nzk8wBV
-	 XoudCFi1SuOKqL7mmAWf2tQwnw832vpuVNECLwkTQYfW/RBqLRi8D5Mp2ceuc58s77
-	 bDo0+05TsTggc8Q6AC9dzBPe0f3YisMnqeRLLvrqNUGTAuB079T08N5wHDPMFSvjoh
-	 vgrgk80ahzUQA==
+	b=gF5L4rFvboZd5w7RJ94bfFk50U1AwEH+cY4JLnwXmvvCu9LyCfp/pwQLqcI6mRelf
+	 9ukocyprWM9askyhKrK3oUjIqV6B3qs5IX7K2gQ54dwerycanQJtezp6zlp/tOAZTk
+	 M3mKPIIwhjIlv26SejNPPjuCFq7UtfIlpFE1nlY4Sg4cMyLu4i81LK6ok/knQsZFzL
+	 0J8l62ASa8wwtLRg6qtgy6Zp5pnp9xANBG6ACm1sDjGGKxHa17GN5XMiovE8onrdkP
+	 sdBjwJmlrvSjQ++QcPyDjUSKOEGBG808uAX915+95dD9ZusRBNG4uZDUbew4OMKP1e
+	 ewG420LqPPfSg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jerrysteve1101@gmail.com
-Cc: Peter Robinson <pbrobinson@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: FAILED: Patch "arm64: dts: rockchip: Do not enable hdmi_sound node on Pinebook Pro" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:01:00 -0500
-Message-ID: <20260301020101.1728010-1-sashal@kernel.org>
+	jack@suse.cz
+Cc: Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	stable@kernel.org,
+	Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org
+Subject: FAILED: Patch "ext4: always allocate blocks only from groups inode can use" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:01:03 -0500
+Message-ID: <20260301020103.1728070-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,35 +67,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,manjaro.org,sntech.de,vger.kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-222272-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-222273-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pine64.org:url,sntech.de:email]
-X-Rspamd-Queue-Id: 47F301CE476
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,suse.de:email,suse.cz:email]
+X-Rspamd-Queue-Id: B70231CE47E
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -108,50 +106,106 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b18247f9dab735c9c2d63823d28edc9011e7a1ad Mon Sep 17 00:00:00 2001
-From: Jun Yan <jerrysteve1101@gmail.com>
-Date: Fri, 16 Jan 2026 23:12:53 +0800
-Subject: [PATCH] arm64: dts: rockchip: Do not enable hdmi_sound node on
- Pinebook Pro
+From 4865c768b563deff1b6a6384e74a62f143427b42 Mon Sep 17 00:00:00 2001
+From: Jan Kara <jack@suse.cz>
+Date: Wed, 14 Jan 2026 19:28:18 +0100
+Subject: [PATCH] ext4: always allocate blocks only from groups inode can use
 
-Remove the redundant enabling of the hdmi_sound node in the Pinebook Pro
-board dts file, because the HDMI output is unused on this device. [1][2]
+For filesystems with more than 2^32 blocks inodes using indirect block
+based format cannot use blocks beyond the 32-bit limit.
+ext4_mb_scan_groups_linear() takes care to not select these unsupported
+groups for such inodes however other functions selecting groups for
+allocation don't. So far this is harmless because the other selection
+functions are used only with mb_optimize_scan and this is currently
+disabled for inodes with indirect blocks however in the following patch
+we want to enable mb_optimize_scan regardless of inode format.
 
-This change also eliminates the following kernel log warning, which is
-caused by the unenabled dependent node of hdmi_sound that ultimately
-results in the node's probe failure:
-
-  platform hdmi-sound: deferred probe pending: asoc-simple-card: parse error
-
-[1] https://files.pine64.org/doc/PinebookPro/pinebookpro_v2.1_mainboard_schematic.pdf
-[2] https://files.pine64.org/doc/PinebookPro/pinebookpro_schematic_v21a_20220419.pdf
-
-Cc: stable@vger.kernel.org
-Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
-Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
-Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://patch.msgid.link/20260116151253.9223-1-jerrysteve1101@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20260114182836.14120-3-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 4 ----
- 1 file changed, 4 deletions(-)
+ fs/ext4/mballoc.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-index eaaca08a76018..a6ac89567bafe 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-@@ -421,10 +421,6 @@ &gpu {
- 	status = "okay";
- };
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index dd29558ad753b..910b454b4a21e 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -892,6 +892,21 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+ 	}
+ }
  
--&hdmi_sound {
--	status = "okay";
--};
++static ext4_group_t ext4_get_allocation_groups_count(
++				struct ext4_allocation_context *ac)
++{
++	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
++
++	/* non-extent files are limited to low blocks/groups */
++	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
++		ngroups = EXT4_SB(ac->ac_sb)->s_blockfile_groups;
++
++	/* Pairs with smp_wmb() in ext4_update_super() */
++	smp_rmb();
++
++	return ngroups;
++}
++
+ static int ext4_mb_scan_groups_xa_range(struct ext4_allocation_context *ac,
+ 					struct xarray *xa,
+ 					ext4_group_t start, ext4_group_t end)
+@@ -899,7 +914,7 @@ static int ext4_mb_scan_groups_xa_range(struct ext4_allocation_context *ac,
+ 	struct super_block *sb = ac->ac_sb;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	enum criteria cr = ac->ac_criteria;
+-	ext4_group_t ngroups = ext4_get_groups_count(sb);
++	ext4_group_t ngroups = ext4_get_allocation_groups_count(ac);
+ 	unsigned long group = start;
+ 	struct ext4_group_info *grp;
+ 
+@@ -951,7 +966,7 @@ static int ext4_mb_scan_groups_p2_aligned(struct ext4_allocation_context *ac,
+ 	ext4_group_t start, end;
+ 
+ 	start = group;
+-	end = ext4_get_groups_count(ac->ac_sb);
++	end = ext4_get_allocation_groups_count(ac);
+ wrap_around:
+ 	for (i = ac->ac_2order; i < MB_NUM_ORDERS(ac->ac_sb); i++) {
+ 		ret = ext4_mb_scan_groups_largest_free_order_range(ac, i,
+@@ -1001,7 +1016,7 @@ static int ext4_mb_scan_groups_goal_fast(struct ext4_allocation_context *ac,
+ 	ext4_group_t start, end;
+ 
+ 	start = group;
+-	end = ext4_get_groups_count(ac->ac_sb);
++	end = ext4_get_allocation_groups_count(ac);
+ wrap_around:
+ 	i = mb_avg_fragment_size_order(ac->ac_sb, ac->ac_g_ex.fe_len);
+ 	for (; i < MB_NUM_ORDERS(ac->ac_sb); i++) {
+@@ -1083,7 +1098,7 @@ static int ext4_mb_scan_groups_best_avail(struct ext4_allocation_context *ac,
+ 		min_order = fls(ac->ac_o_ex.fe_len);
+ 
+ 	start = group;
+-	end = ext4_get_groups_count(ac->ac_sb);
++	end = ext4_get_allocation_groups_count(ac);
+ wrap_around:
+ 	for (i = order; i >= min_order; i--) {
+ 		int frag_order;
+@@ -1182,11 +1197,7 @@ static int ext4_mb_scan_groups(struct ext4_allocation_context *ac)
+ 	int ret = 0;
+ 	ext4_group_t start;
+ 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
+-	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
 -
- &i2c0 {
- 	clock-frequency = <400000>;
- 	i2c-scl-falling-time-ns = <4>;
+-	/* non-extent files are limited to low blocks/groups */
+-	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
+-		ngroups = sbi->s_blockfile_groups;
++	ext4_group_t ngroups = ext4_get_allocation_groups_count(ac);
+ 
+ 	/* searching for the right group start from the goal value specified */
+ 	start = ac->ac_g_ex.fe_group;
 -- 
 2.51.0
 
