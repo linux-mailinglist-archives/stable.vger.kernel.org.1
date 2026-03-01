@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBSfB1Oao2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221856-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:55 +0100
+	id EJ2NAb2ao2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3321CB9AF
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:45:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8CDE1CBC0F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47243307AFC5
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 08DF9309A7B4
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDB02E7637;
-	Sun,  1 Mar 2026 01:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742902C0F84;
+	Sun,  1 Mar 2026 01:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IVp5OLPs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NHTAVktj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17EB2E62A2;
-	Sun,  1 Mar 2026 01:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365DB2D5937;
+	Sun,  1 Mar 2026 01:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329302; cv=none; b=WnMALMBtTJNxp0GF9uh3eLsa7y5QrklkKLhqcY0nGQp7iOJ3VyviA/ACwlU5ZDlpsTgltx+4y6VqzskUYUhneBeH7hJvN3Jc7hBJ1MbPKyJEvjo8Q8E204yrXKErTSxMq0B11vJFwS6lvHeQ0UASMLj2IFfYZuMkmWmiF4BtI+A=
+	t=1772329304; cv=none; b=Gfz/Xv+XHdNuJt2K79gi8uvcnmG7VCoDQoyuArlkKijcv9ypjcK88h/DP28x1Ac4yur/WdBrJUy49eJQ4ybyvE4VW7Cd/7WyCSCAkOK8YYs0ElfAyGB152JTtz0uprwHfwc1JnlYXlkOPbmanqBI243gYBSW/fjiKZyey+SVo5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329302; c=relaxed/simple;
-	bh=7aS7uWLJzc/CmUIYAyQYWenvsPeWzBwoFZ0cqdjS8xg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YotIZ+85nVnhYtgaVZXMbQdCn/ElyNVuminW6dCpx5Cy9wZ9meQSI1PGiedBg56vEUAEF0Ppo2/+nBu5lWr/PebM75/EfDD8POSRkl3vEI584pAXXSSlLoppeR83Sqt6qTao0A6ShDmYgk28ACQSmVO9xMhA3Y23NLoSbrzDZZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IVp5OLPs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383EBC19421;
-	Sun,  1 Mar 2026 01:41:41 +0000 (UTC)
+	s=arc-20240116; t=1772329304; c=relaxed/simple;
+	bh=A7T/R1tWAJot9ujfd7hdbT8DtxnYIVt+V2qj2TzyBRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dMoh16p6EONv9EaGzRbVyJCvk4SY28flhFhbBIk2mrb/dFUR45bvmmdYTBA7OLzQHUFqGPHop9DiVhxgvJ1X3HevZQS5BN3F2nlqlqAQkedMcVLTHWcqEuXIXuRwz1x+vpw6h1tXTMDG7XrdKC/7PCypxbF0D+o3YkXrSEpEdAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NHTAVktj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876E7C19421;
+	Sun,  1 Mar 2026 01:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329301;
-	bh=7aS7uWLJzc/CmUIYAyQYWenvsPeWzBwoFZ0cqdjS8xg=;
+	s=k20201202; t=1772329304;
+	bh=A7T/R1tWAJot9ujfd7hdbT8DtxnYIVt+V2qj2TzyBRI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=IVp5OLPs6Jx3LXp3tELYfVx1OJXdkYpX5hM1RLNwWtuJpXE/Lu51WkaZbyAgi8QRW
-	 28QqZIh4OPV92v4lV6Q8ILMmz7VfI9VIXiZJE51dTKqF0BQ4rQHGbUuX3sCHDnD4jq
-	 I+ccOhw4ka2bPrqArOzfTut9eTh1PB84oQp9Q/buDhJR3pCbvgQrgczzJB/6TWTl09
-	 te4FPgSqNkINDp8Jnkdg9w2WSYST6tsF/Kqrxc7MRm/ZyqEu20eetBPUSWYTTXZCbM
-	 SCZN6nyZYRAom3VHc84Il5ymj9d8r2a/wV8EUlczKcqzq28ZCzPavZtoQ9V+PQ/jhn
-	 nFEuy8iaPcWcQ==
+	b=NHTAVktjcl9usdMNzTCkDJb9l6qPbQQOaaSK76fx4RF7OQYpOQEeETaSLsnOW7iAD
+	 HahrbhKOtrlqL4VhVEwGrBHedX6Xeqet2ObeLfI+3ovNbSm7ve7XOuz+yHuIJKZ3Kh
+	 H64xaQjcURRxcA7NLboXJzLmgJ+UTH42yUqGbo98VMsBMgFinOdzE5WIcQQoXq1Yvv
+	 KbJ8YqgPF5UAkcI2A2csgbUEAgtmbIzH2rYhOdutzGi1RcBN2MjFfhkbtpsYuK2mQ6
+	 irbfuaDBUIzsb5GwXhx5OPph4H1KgCx8dZUrLQ8PxxFCc+gstHN9i+4JokB+bkYhFE
+	 ufXsZvQvuuQnw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mliang@purestorage.com
-Cc: Mohamed Khalfella <mkhalfella@purestorage.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	dm-devel@lists.linux.dev
-Subject: FAILED: Patch "dm: clear cloned request bio pointer when last clone bio completes" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:41:39 -0500
-Message-ID: <20260301014140.1703346-1-sashal@kernel.org>
+	seanjc@google.com
+Cc: Alessandro Ratti <alessandro@0x65c.net>,
+	syzbot+1522459a74d26b0ac33a@syzkaller.appspotmail.com,
+	kvm@vger.kernel.org
+Subject: FAILED: Patch "KVM: x86: Ignore -EBUSY when checking nested events from vcpu_block()" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:41:42 -0500
+Message-ID: <20260301014142.1703393-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,34 +63,35 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221856-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221857-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[purestorage.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AF3321CB9AF
+	TAGGED_RCPT(0.00)[stable,1522459a74d26b0ac33a];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,syzkaller.appspot.com:url,0x65c.net:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: C8CDE1CBC0F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -103,78 +104,57 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From fb8a6c18fb9a6561f7a15b58b272442b77a242dd Mon Sep 17 00:00:00 2001
-From: Michael Liang <mliang@purestorage.com>
-Date: Fri, 9 Jan 2026 15:52:54 -0700
-Subject: [PATCH] dm: clear cloned request bio pointer when last clone bio
- completes
+From ead63640d4e72e6f6d464f4e31f7fecb79af8869 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Thu, 8 Jan 2026 19:06:57 -0800
+Subject: [PATCH] KVM: x86: Ignore -EBUSY when checking nested events from
+ vcpu_block()
 
-Stale rq->bio values have been observed to cause double-initialization of
-cloned bios in request-based device-mapper targets, leading to
-use-after-free and double-free scenarios.
+Ignore -EBUSY when checking nested events after exiting a blocking state
+while L2 is active, as exiting to userspace will generate a spurious
+userspace exit, usually with KVM_EXIT_UNKNOWN, and likely lead to the VM's
+demise.  Continuing with the wakeup isn't perfect either, as *something*
+has gone sideways if a vCPU is awakened in L2 with an injected event (or
+worse, a nested run pending), but continuing on gives the VM a decent
+chance of surviving without any major side effects.
 
-One such case occurs when using dm-multipath on top of a PCIe NVMe
-namespace, where cloned request bios are freed during
-blk_complete_request(), but rq->bio is left intact. Subsequent clone
-teardown then attempts to free the same bios again via
-blk_rq_unprep_clone().
+As explained in the Fixes commits, it _should_ be impossible for a vCPU to
+be put into a blocking state with an already-injected event (exception,
+IRQ, or NMI).  Unfortunately, userspace can stuff MP_STATE and/or injected
+events, and thus put the vCPU into what should be an impossible state.
 
-The resulting double-free path looks like:
+Don't bother trying to preserve the WARN, e.g. with an anti-syzkaller
+Kconfig, as WARNs can (hopefully) be added in paths where _KVM_ would be
+violating x86 architecture, e.g. by WARNing if KVM attempts to inject an
+exception or interrupt while the vCPU isn't running.
 
-  nvme_pci_complete_batch()
-    nvme_complete_batch()
-      blk_mq_end_request_batch()
-        blk_complete_request()        // called on a DM clone request
-          bio_endio()                 // first free of all clone bios
-          ...
-        rq->end_io()                  // end_clone_request()
-          dm_complete_request(tio->orig)
-            dm_softirq_done()
-              dm_done()
-                dm_end_request()
-                  blk_rq_unprep_clone()  // second free of clone bios
-
-Fix this by clearing the clone request's bio pointer when the last cloned
-bio completes, ensuring that later teardown paths do not attempt to free
-already-released bios.
-
-Signed-off-by: Michael Liang <mliang@purestorage.com>
-Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Alessandro Ratti <alessandro@0x65c.net>
 Cc: stable@vger.kernel.org
+Fixes: 26844fee6ade ("KVM: x86: never write to memory from kvm_vcpu_check_block()")
+Fixes: 45405155d876 ("KVM: x86: WARN if a vCPU gets a valid wakeup that KVM can't yet inject")
+Link: https://syzkaller.appspot.com/text?tag=ReproC&x=10d4261a580000
+Reported-by: syzbot+1522459a74d26b0ac33a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/671bc7a7.050a0220.455e8.022a.GAE@google.com
+Link: https://patch.msgid.link/20260109030657.994759-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- drivers/md/dm-rq.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/x86/kvm/x86.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-rq.c b/drivers/md/dm-rq.c
-index 5e08546696145..923252fb57aec 100644
---- a/drivers/md/dm-rq.c
-+++ b/drivers/md/dm-rq.c
-@@ -109,14 +109,21 @@ static void end_clone_bio(struct bio *clone)
- 	 */
- 	tio->completed += nr_bytes;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index e4418409b468d..fe9d324da72ab 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11597,8 +11597,7 @@ static inline int vcpu_block(struct kvm_vcpu *vcpu)
+ 	if (is_guest_mode(vcpu)) {
+ 		int r = kvm_check_nested_events(vcpu);
  
-+	if (!is_last)
-+		return;
-+	/*
-+	 * At this moment we know this is the last bio of the cloned request,
-+	 * and all cloned bios have been released, so reset the clone request's
-+	 * bio pointer to avoid double free.
-+	 */
-+	tio->clone->bio = NULL;
-+ exit:
- 	/*
- 	 * Update the original request.
- 	 * Do not use blk_mq_end_request() here, because it may complete
- 	 * the original request before the clone, and break the ordering.
- 	 */
--	if (is_last)
-- exit:
--		blk_update_request(tio->orig, BLK_STS_OK, tio->completed);
-+	blk_update_request(tio->orig, BLK_STS_OK, tio->completed);
- }
+-		WARN_ON_ONCE(r == -EBUSY);
+-		if (r < 0)
++		if (r < 0 && r != -EBUSY)
+ 			return 0;
+ 	}
  
- static struct dm_rq_target_io *tio_from_request(struct request *rq)
 -- 
 2.51.0
 
