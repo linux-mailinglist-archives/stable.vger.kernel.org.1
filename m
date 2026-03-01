@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-222250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HcuKNeeo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:05:11 +0100
+	id yM9MKkqgo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-222251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:11:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3C11CCDEC
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:05:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E794B1CD3B3
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:11:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BA591307ACF4
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:00:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E648E3079C06
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7012FC89C;
-	Sun,  1 Mar 2026 02:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B36F2F39BE;
+	Sun,  1 Mar 2026 02:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r3mDcivY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQpitqZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F7A2F4A18;
-	Sun,  1 Mar 2026 02:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5072F28FF;
+	Sun,  1 Mar 2026 02:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330410; cv=none; b=XbBpfjKWKrbJY8b5SjMs2uCPggV7O7G+yrmqFVrl2IvBZbo+Jq6Jk96luGVQ5lICuYwsEJaM7B5OZQzmC2M7hrPwLd6hiRWDgIubWPQoSL849ihmO6hp2lHce0HtVMX4o5SkYHcG/blO4gDgJHWFx98z0V6E2XkEa1D2rpdqOyI=
+	t=1772330412; cv=none; b=OtUV/VIi5Ij6uAByJPD4E7rY0Y/3LElImvIjT5shrKvTmq5mv3o/+zy2I1MsBYzpyTYWvPGcjPgzpi6V3iWnrpCtbKY66IhSih6MdU3kbp5RcDRuwVMYTuyBDuSzlXli/YeOWYLP112GkrfH4YwNivwxFz0Bfdxo/5zwVcni1xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330410; c=relaxed/simple;
-	bh=DnZythngF05Al0rnMFs3G15L0ldrKXfVYrTBJG4h+eA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V3owu4N8YLB/82iFn18J9sksG/73/Jf5nXkWjb2PxSKRvWxvocA/I3SRSdruTiYnbv1LBD7rnXcXaCK4Heq/JG5zO8PxgGstXDwqdb05RXu2e2BSn9aRjQl8l9lv2TH/JIBEurKQPWNaqhawCUlM3kILVEeivTG45K3J7AkgaI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r3mDcivY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1155BC19421;
-	Sun,  1 Mar 2026 02:00:08 +0000 (UTC)
+	s=arc-20240116; t=1772330412; c=relaxed/simple;
+	bh=57QraXiKzQUJdLu+Wg+z2Lo99mVgxtOdTCP1ePgoEU8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AliKMA7akXaq1RJfkwMlAzdnU/rWpMmdrlR3hvz46dV24oASZCUNCqUAAWC5DuWCGpaarby5cRPDFaIOXLgyB4vutpPTJvOO6f0wi201pTSm40S0+etCGhiqbdMfKNcx27t1i6mUpFCSwuBTQ4jMEtEzT3/SQpLDQfs7f1XlpeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQpitqZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875F5C19421;
+	Sun,  1 Mar 2026 02:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330409;
-	bh=DnZythngF05Al0rnMFs3G15L0ldrKXfVYrTBJG4h+eA=;
+	s=k20201202; t=1772330411;
+	bh=57QraXiKzQUJdLu+Wg+z2Lo99mVgxtOdTCP1ePgoEU8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=r3mDcivY9vQ71T6ovohJxAST89yh7bnuNCFLJc9FPSJXdGW3nba7psxheZ21W8CY5
-	 OADpoMQsn+vHC18mHbBd0ywgXtzxT3A0mO3s1wKv3SCZjWYWKTGLhRNhrtPNb/sht4
-	 3VQ0/UjyFaE3HhUUA1aA+rpsxrFBhIkXoVV5UlkG2H0hCXmMmZar5HAXbpXFaoC5NY
-	 MlSfynd+904cr5mHGO7tin89OWD9FRTQC7rfG9OWItixauvBfuFPrgCeypaRet7jY8
-	 1dKb5yV8MvNcJjOqZs+c9xbDcop9qfBRUBnzTFmSp3x/efZRsOCTehhK9lRfpYe5AT
-	 8JBzhXMry+Ymg==
+	b=nQpitqZTFyTWVtXF4jTgFNNttHng2zYSD5vr9CjGSd+/HYxcLFcZNi+ebyVzbJB0m
+	 N8WDhvwPOeFcbTmOB+VayCFK1rAyyWXvD3VAbGlGUC+yO6eqhHOQzKL+x0S41jcIFr
+	 3uruhZo7cVsm3GVCyZ3aR7s9L2Kx3d5ZWU1DzEiHp8HDvv1t9dIaSFdThZdDydLJYF
+	 bMK7bFFzbMwdaRkA01Biz+hLkqjt21wUUyYy+HJeFN4jEMgRvI5uRGjKWzr8S2F695
+	 x88kURfaMvYNrw24oSPIQ5KIkbBrzugv0CjYm1RNxc8+kjgpSaYgktFv4jUD/HojDw
+	 Gf0LHFbj5itaA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	dlemoal@kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	linux-ide@vger.kernel.org
-Subject: FAILED: Patch "ata: libata-scsi: refactor ata_scsi_translate()" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:00:07 -0500
-Message-ID: <20260301020007.1726105-1-sashal@kernel.org>
+	mpatocka@redhat.com
+Cc: dm-devel@lists.linux.dev
+Subject: FAILED: Patch "dm-integrity: fix a typo in the code for write/discard race" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:00:10 -0500
+Message-ID: <20260301020010.1726150-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,29 +66,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222250-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-222251-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: 8D3C11CCDEC
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E794B1CD3B3
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -105,158 +101,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From bb3a8154b1a1dc2c86d037482c0a2cf9186829ed Mon Sep 17 00:00:00 2001
-From: Damien Le Moal <dlemoal@kernel.org>
-Date: Wed, 17 Dec 2025 14:05:25 +0900
-Subject: [PATCH] ata: libata-scsi: refactor ata_scsi_translate()
+From c698b7f417801fcd79f0dc844250b3361d38e6b8 Mon Sep 17 00:00:00 2001
+From: Mikulas Patocka <mpatocka@redhat.com>
+Date: Mon, 12 Jan 2026 21:15:27 +0100
+Subject: [PATCH] dm-integrity: fix a typo in the code for write/discard race
 
-Factor out of ata_scsi_translate() the code handling queued command
-deferral using the port qc_defer callback and issuing the queued
-command with ata_qc_issue() into the new function ata_scsi_qc_issue(),
-and simplify the goto used in ata_scsi_translate().
-While at it, also add a lockdep annotation to check that the port lock
-is held when ata_scsi_translate() is called.
+If we send a write followed by a discard, it may be possible that the
+discarded data end up being overwritten by the previous write from the
+journal. The code tries to prevent that, but there was a typo in this
+logic that made it not being activated as it should be.
 
-No functional changes.
+Note that if we end up here the second time (when discard_retried is
+true), it means that the write bio is actually racing with the discard
+bio, and in this situation it is not specified which of them should win.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Fixes: 31843edab7cb ("dm integrity: improve discard in journal mode")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 ---
- drivers/ata/libata-scsi.c | 81 ++++++++++++++++++++++++---------------
- 1 file changed, 50 insertions(+), 31 deletions(-)
+ drivers/md/dm-integrity.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index d388a4ff9ae44..be620bc045848 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1691,6 +1691,42 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
- 	ata_qc_done(qc);
- }
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index 170bf67a2edd9..79d60495454a5 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -2411,7 +2411,7 @@ static void dm_integrity_map_continue(struct dm_integrity_io *dio, bool from_map
  
-+static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
-+{
-+	int ret;
-+
-+	if (!ap->ops->qc_defer)
-+		goto issue;
-+
-+	/* Check if the command needs to be deferred. */
-+	ret = ap->ops->qc_defer(qc);
-+	switch (ret) {
-+	case 0:
-+		break;
-+	case ATA_DEFER_LINK:
-+		ret = SCSI_MLQUEUE_DEVICE_BUSY;
-+		break;
-+	case ATA_DEFER_PORT:
-+		ret = SCSI_MLQUEUE_HOST_BUSY;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		ret = SCSI_MLQUEUE_HOST_BUSY;
-+		break;
-+	}
-+
-+	if (ret) {
-+		/* Force a requeue of the command to defer its execution. */
-+		ata_qc_free(qc);
-+		return ret;
-+	}
-+
-+issue:
-+	ata_qc_issue(qc);
-+
-+	return 0;
-+}
-+
- /**
-  *	ata_scsi_translate - Translate then issue SCSI command to ATA device
-  *	@dev: ATA device to which the command is addressed
-@@ -1714,66 +1750,49 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
-  *	spin_lock_irqsave(host lock)
-  *
-  *	RETURNS:
-- *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY if the command
-- *	needs to be deferred.
-+ *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY or SCSI_MLQUEUE_HOST_BUSY if the
-+ *	command needs to be deferred.
-  */
- static int ata_scsi_translate(struct ata_device *dev, struct scsi_cmnd *cmd,
- 			      ata_xlat_func_t xlat_func)
- {
- 	struct ata_port *ap = dev->link->ap;
- 	struct ata_queued_cmd *qc;
--	int rc;
- 
-+	lockdep_assert_held(ap->lock);
-+
-+	/*
-+	 * ata_scsi_qc_new() calls scsi_done(cmd) in case of failure. So we
-+	 * have nothing further to do when allocating a qc fails.
-+	 */
- 	qc = ata_scsi_qc_new(dev, cmd);
- 	if (!qc)
--		goto err_mem;
-+		return 0;
- 
- 	/* data is present; dma-map it */
- 	if (cmd->sc_data_direction == DMA_FROM_DEVICE ||
- 	    cmd->sc_data_direction == DMA_TO_DEVICE) {
- 		if (unlikely(scsi_bufflen(cmd) < 1)) {
- 			ata_dev_warn(dev, "WARNING: zero len r/w req\n");
--			goto err_did;
-+			cmd->result = (DID_ERROR << 16);
-+			goto done;
- 		}
- 
- 		ata_sg_init(qc, scsi_sglist(cmd), scsi_sg_count(cmd));
--
- 		qc->dma_dir = cmd->sc_data_direction;
- 	}
- 
- 	qc->complete_fn = ata_scsi_qc_complete;
- 
- 	if (xlat_func(qc))
--		goto early_finish;
--
--	if (ap->ops->qc_defer) {
--		if ((rc = ap->ops->qc_defer(qc)))
--			goto defer;
--	}
--
--	/* select device, send command to hardware */
--	ata_qc_issue(qc);
-+		goto done;
- 
--	return 0;
--
--early_finish:
--	ata_qc_free(qc);
--	scsi_done(cmd);
--	return 0;
-+	return ata_scsi_qc_issue(ap, qc);
- 
--err_did:
-+done:
- 	ata_qc_free(qc);
--	cmd->result = (DID_ERROR << 16);
- 	scsi_done(cmd);
--err_mem:
- 	return 0;
--
--defer:
--	ata_qc_free(qc);
--	if (rc == ATA_DEFER_LINK)
--		return SCSI_MLQUEUE_DEVICE_BUSY;
--	else
--		return SCSI_MLQUEUE_HOST_BUSY;
- }
- 
- /**
+ 		new_pos = find_journal_node(ic, dio->range.logical_sector, &next_sector);
+ 		if (unlikely(new_pos != NOT_FOUND) ||
+-		    unlikely(next_sector < dio->range.logical_sector - dio->range.n_sectors)) {
++		    unlikely(next_sector < dio->range.logical_sector + dio->range.n_sectors)) {
+ 			remove_range_unlocked(ic, &dio->range);
+ 			spin_unlock_irq(&ic->endio_wait.lock);
+ 			queue_work(ic->commit_wq, &ic->commit_work);
 -- 
 2.51.0
 
