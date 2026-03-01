@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-221680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGArKwubo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:59 +0100
+	id EMrsJBKbo2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA4D1CBDE0
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35BB31CBDF6
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F326D32326EC
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86A953145F2E
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A982EC57C;
-	Sun,  1 Mar 2026 01:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5619C2F49FD;
+	Sun,  1 Mar 2026 01:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UVdAM921"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJj00S21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEC82D8796;
-	Sun,  1 Mar 2026 01:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192F22E7F39;
+	Sun,  1 Mar 2026 01:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328871; cv=none; b=hrGTbY1B3TxZ0gecYLNzY6TJE/V3+6jjBk1V3YmV0jDq44l1kSK0RqdAuw/CS1GWxahQC7Jt5ex//kE23u0/rmGIeXx1SWWUQLCKarhrBPVupVnxqOhNziHplAri69azKzlN1Q1mULyCEnV/HK/9zSLptYO6W+qAs4QFPsmJaps=
+	t=1772328874; cv=none; b=A/Wz6rusjiuCY/T2v+5/Lg/S4TXu0ypiOq9bWAtbfMJtGM2cdKX1B/ut08S9LhvwXYHHUA9o46d3A63M/Tv29VWj7Nn0EM0R8d0VBHgoy4j0HiKEzJkTyg7Z31tLcOZP+ax80zrpvZECP4kB0wYdPslzq0lkWMuzUhor7WFx9wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328871; c=relaxed/simple;
-	bh=RiBamcYwskOEuKgBcIBIq9bf5o4WXmMl2RcnitfWJEQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VgpWX50CeVpRDYxtePOfiohNcwp26GR19l8Q7YqgDkIaioAnlOKSkNjwSQk7ziJvEMBKBGz7ByMPBgDxDVdLNTXOt6aJCqGRx2XlMhwf5vma2Vtl7SqSBFSmln7fcncdtdONwwyE5W6gFVGo4r+X4bVFCqbGsxIg7ZHkdvRNj5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UVdAM921; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B78C19421;
-	Sun,  1 Mar 2026 01:34:31 +0000 (UTC)
+	s=arc-20240116; t=1772328874; c=relaxed/simple;
+	bh=oR5YewzSBGYJbkaEpd88tB15mnQ/P51gX9ZgmXeJkQ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=reEyPCZl2uQ9yOUQMh+bTv/slLSHR40h6bPL/4wXnENAfOIbb2grGWlExMGE35DwQ/9DYlOXh+froEc1WxgFj20dJTY3eeQJeizY5h+fsnhErHa6ErbbjDgROftp0uGvyyJnUSbR28/SAri+tfHiNv6K4+XQZyqjwgrHx4F8eEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJj00S21; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D128C19421;
+	Sun,  1 Mar 2026 01:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328871;
-	bh=RiBamcYwskOEuKgBcIBIq9bf5o4WXmMl2RcnitfWJEQ=;
+	s=k20201202; t=1772328874;
+	bh=oR5YewzSBGYJbkaEpd88tB15mnQ/P51gX9ZgmXeJkQ4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=UVdAM9213w8bvxf3l0kKr//0CFVjGU7a7JfIqDnIq4IkPn9ndTuSjPOZ9Z7q7DNjg
-	 rxXiFC1a/ogdsxwOu/K41TXg/p/F9f40SCfBzHUZO4acyKd2iOJO0oiSoYpdH6YSem
-	 OT4gbIf16GAgEAU9YHTmSi2YF88gJ0+kCDCIAE9817F3N/9NbPWBfaXB9pz+f2sEdy
-	 lb71aqvBo+j7SVBQFf3LlGKSbesSEotehWlo5ydf7fg/X1w9gk+3/0REF4Wvt3JBZm
-	 R/xGxWrMfh2UiOH29ub70+MmJJksF51V9iXiSeMb4AdvhXyGrhCd5r1HudouGEUtey
-	 r4V/TnqbWjUig==
+	b=oJj00S21SxPd4G6JRRnzXL3KtoUQHuxSFdXDWrM5T7PVsJRCPbI5LT7xWghtyCRhv
+	 VzWVILhJ16IzKzm7GzPJKYUkkusd0wf95oASUVs94oos+IlR8ak+vcnPRl9iD2ygw4
+	 M71trFGO5emUYKZCG2gcz5tGrb2BDI9YnxrngvSy6ynk1VzOti2e8d9ZNRtT4Ko0IC
+	 zkS7w5OwZWsPZl+oCpo3omdARionVRR71yhPIhnj2Du4mRE0VKHPmlFy+seklwxmo3
+	 g+qFEJuHiaY6l7PwydD14ka4tUQN3UTLeijPePFV5uGaPZAV5bT+xVaCkF1/8aGCBA
+	 wRXQdlRIHkEIA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	kovalev@altlinux.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	kvm@vger.kernel.org
-Subject: FAILED: Patch "KVM: x86: Add SRCU protection for reading PDPTRs in __get_sregs2()" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:34:29 -0500
-Message-ID: <20260301013430.1693999-1-sashal@kernel.org>
+	djwong@kernel.org
+Cc: Christoph Hellwig <hch@lst.de>,
+	linux-xfs@vger.kernel.org
+Subject: FAILED: Patch "xfs: fix remote xattr valuelblk check" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:34:32 -0500
+Message-ID: <20260301013432.1694049-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -77,8 +77,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221680-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-221681-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -88,8 +88,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxtesting.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,altlinux.org:email]
-X-Rspamd-Queue-Id: 1CA4D1CBDE0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email]
+X-Rspamd-Queue-Id: 35BB31CBDF6
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -102,88 +102,40 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 95d848dc7e639988dbb385a8cba9b484607cf98c Mon Sep 17 00:00:00 2001
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-Date: Sat, 24 Jan 2026 01:28:01 +0300
-Subject: [PATCH] KVM: x86: Add SRCU protection for reading PDPTRs in
- __get_sregs2()
+From bd3138e8912c9db182eac5fed1337645a98b7a4f Mon Sep 17 00:00:00 2001
+From: "Darrick J. Wong" <djwong@kernel.org>
+Date: Fri, 23 Jan 2026 09:27:33 -0800
+Subject: [PATCH] xfs: fix remote xattr valuelblk check
 
-Add SRCU read-side protection when reading PDPTR registers in
-__get_sregs2().
+In debugging other problems with generic/753, it turns out that it's
+possible for the system go to down in the middle of a remote xattr set
+operation such that the leaf block entry is marked incomplete and
+valueblk is set to zero.  Make this no longer a failure.
 
-Reading PDPTRs may trigger access to guest memory:
-kvm_pdptr_read() -> svm_cache_reg() -> load_pdptrs() ->
-kvm_vcpu_read_guest_page() -> kvm_vcpu_gfn_to_memslot()
-
-kvm_vcpu_gfn_to_memslot() dereferences memslots via __kvm_memslots(),
-which uses srcu_dereference_check() and requires either kvm->srcu or
-kvm->slots_lock to be held. Currently only vcpu->mutex is held,
-triggering lockdep warning:
-
-=============================
-WARNING: suspicious RCU usage in kvm_vcpu_gfn_to_memslot
-6.12.59+ #3 Not tainted
-
-include/linux/kvm_host.h:1062 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz.5.1717/15100:
- #0: ff1100002f4b00b0 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x1d5/0x1590
-
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xf0/0x120 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x1e3/0x270 kernel/locking/lockdep.c:6824
- __kvm_memslots include/linux/kvm_host.h:1062 [inline]
- __kvm_memslots include/linux/kvm_host.h:1059 [inline]
- kvm_vcpu_memslots include/linux/kvm_host.h:1076 [inline]
- kvm_vcpu_gfn_to_memslot+0x518/0x5e0 virt/kvm/kvm_main.c:2617
- kvm_vcpu_read_guest_page+0x27/0x50 virt/kvm/kvm_main.c:3302
- load_pdptrs+0xff/0x4b0 arch/x86/kvm/x86.c:1065
- svm_cache_reg+0x1c9/0x230 arch/x86/kvm/svm/svm.c:1688
- kvm_pdptr_read arch/x86/kvm/kvm_cache_regs.h:141 [inline]
- __get_sregs2 arch/x86/kvm/x86.c:11784 [inline]
- kvm_arch_vcpu_ioctl+0x3e20/0x4aa0 arch/x86/kvm/x86.c:6279
- kvm_vcpu_ioctl+0x856/0x1590 virt/kvm/kvm_main.c:4663
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:907 [inline]
- __se_sys_ioctl fs/ioctl.c:893 [inline]
- __x64_sys_ioctl+0x18b/0x210 fs/ioctl.c:893
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xbd/0x1d0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Cc: stable@vger.kernel.org
-Fixes: 6dba94035203 ("KVM: x86: Introduce KVM_GET_SREGS2 / KVM_SET_SREGS2")
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://patch.msgid.link/20260123222801.646123-1-kovalev@altlinux.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: <stable@vger.kernel.org> # v4.15
+Fixes: 13791d3b833428 ("xfs: scrub extended attribute leaf space")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/x86/kvm/x86.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/xfs/scrub/attr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 386cdb775fd48..1ea94f4a3dcbc 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -12145,9 +12145,11 @@ static void __get_sregs2(struct kvm_vcpu *vcpu, struct kvm_sregs2 *sregs2)
- 		return;
- 
- 	if (is_pae_paging(vcpu)) {
-+		kvm_vcpu_srcu_read_lock(vcpu);
- 		for (i = 0 ; i < 4 ; i++)
- 			sregs2->pdptrs[i] = kvm_pdptr_read(vcpu, i);
- 		sregs2->flags |= KVM_SREGS2_FLAGS_PDPTRS_VALID;
-+		kvm_vcpu_srcu_read_unlock(vcpu);
+diff --git a/fs/xfs/scrub/attr.c b/fs/xfs/scrub/attr.c
+index a397c50b77943..c3c122ea2d322 100644
+--- a/fs/xfs/scrub/attr.c
++++ b/fs/xfs/scrub/attr.c
+@@ -338,7 +338,10 @@ xchk_xattr_entry(
+ 		rentry = xfs_attr3_leaf_name_remote(leaf, idx);
+ 		namesize = xfs_attr_leaf_entsize_remote(rentry->namelen);
+ 		name_end = (char *)rentry + namesize;
+-		if (rentry->namelen == 0 || rentry->valueblk == 0)
++		if (rentry->namelen == 0)
++			xchk_da_set_corrupt(ds, level);
++		if (rentry->valueblk == 0 &&
++		    !(ent->flags & XFS_ATTR_INCOMPLETE))
+ 			xchk_da_set_corrupt(ds, level);
  	}
- }
- 
+ 	if (name_end > buf_end)
 -- 
 2.51.0
 
