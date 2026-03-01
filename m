@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-221655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221656-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLNkLK+ao2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221655-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:27 +0100
+	id QH5QMuuao2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221656-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D15C1CBB9D
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 020E31CBD17
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC235321B623
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:34:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6C0CC30811AC
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68D12EA498;
-	Sun,  1 Mar 2026 01:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE732F363B;
+	Sun,  1 Mar 2026 01:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYsvRqSv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvHR35HB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A39B2C11DE;
-	Sun,  1 Mar 2026 01:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3047625228C;
+	Sun,  1 Mar 2026 01:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328811; cv=none; b=hdUQAjt9/lDN1ZdiP5ixz2htSRHeUYkfcYgLRdKNbe0f4tPeyXs8H7lqgsuiDFCoLDuPeI3Sz0u0fpdxxFtPVYG+JM4I+DuNKFtVfNikxj2omhdEiBYB2l9ikf/2m6FbWMS/3/Ay3G+/r9nEh/j0nfg4Q1j+p2ZwbC3oh17f358=
+	t=1772328814; cv=none; b=mx++dYpqg1Y99d2rIt9vXSuiymJs/ym1Uc1MBCIuJIOLfJQdh/puzfLrKhDGBkHB21i6IuSNPqv5kBJ+sxLgSWHjBPwKdo02RBm78lPGspg+T81QhArhQ4kaKUQ4dirb+8xzXXiY0MM95CqTC/AJsOXaZ7pbnCV1dGAvQK5mAvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328811; c=relaxed/simple;
-	bh=QNFjlH+gMhBy12XR4oNDDswtqryM8ZLP7ODp8ijjbDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ta7QBtUdwUICs40m1mcBBT502G19//f0g0JCGx0l9VS+U/9esW59/PbGw3DxrLaSqTCJNV+SWqZ7zj1DgLDtgjCqDgPKHg+M7YKtFK2sMrTwQPjgq1Sko76U+Hwm08jYBd2yBDCJh+vUjk+nLPbUvP9tI5InxKU8Y70T+ku1PDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYsvRqSv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B93C19421;
-	Sun,  1 Mar 2026 01:33:30 +0000 (UTC)
+	s=arc-20240116; t=1772328814; c=relaxed/simple;
+	bh=watHLnp91SSZTkWajxPVEs8Eyj4GzetMKT6JL/c5KjU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jmb1TSVaHvq3b36jLs8HIo8q8O2guvccshA58K74lkRbRlR5F+LyzcKQys86M8Zv2dwd9XgZS/zZUNe9iG0o0XJ5cn+QdTlVk3BkDxDD4UUVVjKAObmWQhFJpoFFlt6jDAr4T6/Or5q/I4JU6zehqWpOoyw/FyXeSQu6EmHUlQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvHR35HB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB5EC19425;
+	Sun,  1 Mar 2026 01:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328811;
-	bh=QNFjlH+gMhBy12XR4oNDDswtqryM8ZLP7ODp8ijjbDg=;
+	s=k20201202; t=1772328814;
+	bh=watHLnp91SSZTkWajxPVEs8Eyj4GzetMKT6JL/c5KjU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=OYsvRqSvAg7U1Zhw2qQrLM9fDTxiiIS1A7dcbqI5RTjhqZhFqK8mOc5i8Udi39eXf
-	 E+XTYtNToiY+rzeWx9Ed++0iEJM+Y9N884KIRGt1ratcAFQWpu1/KBdMEEb+rP6fqs
-	 SB68cKM7uoxlhuXmZSQTapf94h3Xas2EqOto27KeK89xd7v7FdzvvnlN3ydCTQ3RMg
-	 Pe9B69jCR42A8LPpTRMyyN2RKIb7tKJWHfLtSE8VRlSSiKpi63zUebX6hobOLoMZSM
-	 QbOuki5tKphNrLV60UoZXMtEnlBUb/L3oBoFOdzoqOe2WmG7+bJgTN5IsbWR+AlBtn
-	 cedFxVvQPh+Iw==
+	b=RvHR35HBe5BB0HkuRlJhL0QCCH5fpLrv8fTYjzb8iFXc93ETpKUzgqgPAcgeLQxkg
+	 qfepOD/JM+R1K1WnppHJMDCI+Z5jZ83qlZ9lKIKT2uina4ImM/V2LmumyYKFsMzgJq
+	 b0JZvhOPOgnQm5WgTasLu3hBiz2mbjaIorJsFyY464hQSHis7eDwRglPMFp4SkKcQ7
+	 tQY2czY06E8VkiAQbFWCwLU/YJmInLGTAOXJugfqzD1RgkIbr1Yqpw17NqqWsJoL5p
+	 zfv2UI4c0aCjEFqHFVCa8OZwP7gb2WHAtcMGYQqKp7Ci90pAMGizhGWO8RQE5Pfm+u
+	 ECRT/lW9rycJA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mpatocka@redhat.com
-Cc: Ondrej Kozina <okozina@redhat.com>,
-	dm-devel@lists.linux.dev
-Subject: FAILED: Patch "dm-integrity: fix recalculation in bitmap mode" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:33:29 -0500
-Message-ID: <20260301013329.1692734-1-sashal@kernel.org>
+	dikshita.agarwal@oss.qualcomm.com
+Cc: Mecid <mecid@mecomediagroup.de>,
+	Renjiang Han <renjiang.han@oss.qualcomm.com>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: FAILED: Patch "media: venus: vdec: restrict EOS addr quirk to IRIS2 only" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:33:31 -0500
+Message-ID: <20260301013332.1692783-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,33 +67,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-221656-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221655-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5D15C1CBB9D
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,mecomediagroup.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 020E31CBD17
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -102,69 +106,64 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 118ba36e446c01e3cd34b3eedabf1d9436525e1d Mon Sep 17 00:00:00 2001
-From: Mikulas Patocka <mpatocka@redhat.com>
-Date: Mon, 19 Jan 2026 15:06:02 +0100
-Subject: [PATCH] dm-integrity: fix recalculation in bitmap mode
+From 63c072e2937e6c9995df1b6a28523ed2ae68d364 Mon Sep 17 00:00:00 2001
+From: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Date: Tue, 25 Nov 2025 11:04:19 +0530
+Subject: [PATCH] media: venus: vdec: restrict EOS addr quirk to IRIS2 only
 
-There's a logic quirk in the handling of suspend in the bitmap mode:
+On SM8250 (IRIS2) with firmware older than 1.0.087, the firmware could
+not handle a dummy device address for EOS buffers, so a NULL device
+address is sent instead. The existing check used IS_V6() alongside a
+firmware version gate:
 
-This is the sequence of calls if we are reloading a dm-integrity table:
-* dm_integrity_ctr reads a superblock with the flag SB_FLAG_DIRTY_BITMAP
-  set.
-* dm_integrity_postsuspend initializes a journal and clears the flag
-  SB_FLAG_DIRTY_BITMAP.
-* dm_integrity_resume sees the superblock with SB_FLAG_DIRTY_BITMAP set -
-  thus it interprets the journal as if it were a bitmap.
+    if (IS_V6(core) && is_fw_rev_or_older(core, 1, 0, 87))
+        fdata.device_addr = 0;
+    else
+	fdata.device_addr = 0xdeadb000;
 
-This quirk causes recalculation problem if the user increases the size of
-the device in the bitmap mode.
+However, SC7280 which is also V6, uses a firmware string of the form
+"1.0.<commit-hash>", which the version parser translates to 1.0.0. This
+unintentionally satisfies the `is_fw_rev_or_older(..., 1, 0, 87)`
+condition on SC7280. Combined with IS_V6() matching there as well, the
+quirk is incorrectly applied to SC7280, causing VP9 decode failures.
 
-Fix this by reading a fresh copy on the superblock in
-dm_integrity_resume. This commit also fixes another logic quirk - the
-branch that sets bitmap bits if the device was extended should only be
-executed if the flag SB_FLAG_DIRTY_BITMAP is set.
+Constrain the check to IRIS2 (SM8250) only, which is the only platform
+that needed this quirk, by replacing IS_V6() with IS_IRIS2(). This
+restores correct behavior on SC7280 (no forced NULL EOS buffer address).
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Tested-by: Ondrej Kozina <okozina@redhat.com>
-Fixes: 468dfca38b1a ("dm integrity: add a bitmap mode")
+Fixes: 47f867cb1b63 ("media: venus: fix EOS handling in decoder stop command")
 Cc: stable@vger.kernel.org
+Reported-by: Mecid <mecid@mecomediagroup.de>
+Closes: https://github.com/qualcomm-linux/kernel-topics/issues/222
+Co-developed-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
+Signed-off-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
+Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Tested-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- drivers/md/dm-integrity.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/media/platform/qcom/venus/vdec.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
-index 380527f43b2a1..a9c0157bf42fe 100644
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -3788,14 +3788,27 @@ static void dm_integrity_resume(struct dm_target *ti)
- 	struct dm_integrity_c *ic = ti->private;
- 	__u64 old_provided_data_sectors = le64_to_cpu(ic->sb->provided_data_sectors);
- 	int r;
-+	__le32 flags;
+diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+index d0bd2d86a31f9..4cd69440e8753 100644
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -565,7 +565,13 @@ vdec_decoder_cmd(struct file *file, void *fh, struct v4l2_decoder_cmd *cmd)
  
- 	DEBUG_print("resume\n");
- 
- 	ic->wrote_to_journal = false;
- 
-+	flags = ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING);
-+	r = sync_rw_sb(ic, REQ_OP_READ);
-+	if (r)
-+		dm_integrity_io_error(ic, "reading superblock", r);
-+	if ((ic->sb->flags & flags) != flags) {
-+		ic->sb->flags |= flags;
-+		r = sync_rw_sb(ic, REQ_OP_WRITE | REQ_FUA);
-+		if (unlikely(r))
-+			dm_integrity_io_error(ic, "writing superblock", r);
-+	}
+ 		fdata.buffer_type = HFI_BUFFER_INPUT;
+ 		fdata.flags |= HFI_BUFFERFLAG_EOS;
+-		if (IS_V6(inst->core) && is_fw_rev_or_older(inst->core, 1, 0, 87))
 +
- 	if (ic->provided_data_sectors != old_provided_data_sectors) {
- 		if (ic->provided_data_sectors > old_provided_data_sectors &&
- 		    ic->mode == 'B' &&
-+		    ic->sb->flags & cpu_to_le32(SB_FLAG_DIRTY_BITMAP) &&
- 		    ic->sb->log2_blocks_per_bitmap_bit == ic->log2_blocks_per_bitmap_bit) {
- 			rw_journal_sectors(ic, REQ_OP_READ, 0,
- 					   ic->n_bitmap_blocks * (BITMAP_BLOCK_SIZE >> SECTOR_SHIFT), NULL);
++		/* Send NULL EOS addr for only IRIS2 (SM8250),for firmware <= 1.0.87.
++		 * SC7280 also reports "1.0.<hash>" parsed as 1.0.0; restricting to IRIS2
++		 * avoids misapplying this quirk and breaking VP9 decode on SC7280.
++		 */
++
++		if (IS_IRIS2(inst->core) && is_fw_rev_or_older(inst->core, 1, 0, 87))
+ 			fdata.device_addr = 0;
+ 		else
+ 			fdata.device_addr = 0xdeadb000;
 -- 
 2.51.0
 
