@@ -1,73 +1,59 @@
-Return-Path: <stable+bounces-221688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAyjAtWno2mWJAUAu9opvQ
-	(envelope-from <stable+bounces-221688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:43:33 +0100
+	id EISBHKeao2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5A41CDD96
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:43:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B451CBB6D
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC72D32397CE
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B8D913085F29
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECA12EC09F;
-	Sun,  1 Mar 2026 01:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB46299A84;
+	Sun,  1 Mar 2026 01:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c59hxGW5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K15GfRyG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C597C2D0C94
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7118113B58A
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328895; cv=none; b=rT402Z1lBn0V5m0A09Xx7NOqJe9GUT8O3SfEPCq6tZ2av4SddgfngOsLxsshbqIYCkgxz+LbgzmPaelFTUTsXpSjg4CrQJrATv9J8PfYi8nK2xhDf2ytka06ta/d09AJcSQmnJLrziv1qCjAn8VaFd3A+qQ9BBthVnyqvKX01pQ=
+	t=1772328898; cv=none; b=qRji6rPhyQtBEP/pYp2DigMmtICz+4XgHsgVXCkRprzPIZ1JDz9TffQTgInCts+HGSHxx37AH7lp1xQtuITvAkbsGiMwGk+vsANBomjmmA4f5Nj5m87OUHyQ1eOSwfCjqguYt2ZFFHQ0zNrKeo07yQnUYwQAKKkCnKf5d9kvCXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328895; c=relaxed/simple;
-	bh=WSR8SalTEsYdOf33Ip2DrbYlkL26U9fzs9/kV5U21gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rqhOXDo4j6fgU7F2VGxD0qk31y4ERQSZUMfkjgNyxKl0EYAKESZjncY7scG+D2mhYxkh67s0vsF2+chmNXHxjUM9XWGnHeEBvzxl/PElWR9Bnhmh+P8Bbdjcwv/y4BdmgyG0JvVjU24X7ABpMsc9VKDVJbLYZm91ABrcpP62Shg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c59hxGW5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE41C19421;
-	Sun,  1 Mar 2026 01:34:53 +0000 (UTC)
+	s=arc-20240116; t=1772328898; c=relaxed/simple;
+	bh=P5OHEuIAYXzcT4K/YlOBcPV+HDpDVi/KKJ18ucbm0J4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kQv5s9spjiqpEkToY6Sv7wpQXNgolhR+e/D2y5Rg3BaSqXMP5FAQw4maI4RByv4UxvmNpOk1yPRQWWRkP+tH8V+bdSmrs3aZ9C2ndNtxa1yKJw6ZxTTD/46rkJebf+R33oScxhj2MQBbN0ouO8Xhp6nAYQjzP19+VSTstFcIPok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K15GfRyG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F1AC19421;
+	Sun,  1 Mar 2026 01:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328895;
-	bh=WSR8SalTEsYdOf33Ip2DrbYlkL26U9fzs9/kV5U21gk=;
+	s=k20201202; t=1772328898;
+	bh=P5OHEuIAYXzcT4K/YlOBcPV+HDpDVi/KKJ18ucbm0J4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=c59hxGW5h/nsnZU3eMHyc+NEJLdYlrxyUxbch9/LOmDSawpDg0CoI/amoQGj5aywN
-	 OLMbAQHtyV9nPzJTrtMvys9KhR+HK0Lm5hVhE5j+C7HIkh58IwCnrH3rgN/HJyXQNf
-	 l0DhqMGRkp+0ezz4LsIKk4OkywPsTMIQwN+Pxh91VvXFaVPWxfxbFdT5xmfxVRLN4A
-	 EUjq5h5Mo0vcvYyDUqOLEKmzdTv+CZ6bRF9Ju9Sv4XjtNFe4U61BWJGzYvrmuPkUlu
-	 8BJhkFcAD35jBuFvwT+SASA3UFo/I9aBjVkFJ6Pq6vQJnpPYNnejxIBVWlupZhb8Vt
-	 PR0AwCRUrqf1Q==
+	b=K15GfRyG7ZweUGIeml9tHNQK+uRqb7MHz+nn+1IIGjT1Gc/Em8zM9BNbrCRWwqjzX
+	 HL7zlpEwzZlSmTYODx9szaKri5A69EeG8fj5Fb7JFUAQ+tJ/ydf/AsSUG2E7okjsEm
+	 QiKvTR+3kqzC/L1wxlGgrG0uA8+wNa0mWouW4m1RXFq+Cu1BsViEbPZC7T9FZrwQ4j
+	 A6kmedgDweKe5OiYT2VrA9lww5LT3VxPpUMqe246QK/nxSYchyKOX6ltS+4ZVG2htH
+	 8u551/fqLWsieofpWVmWKzkuPgK6WNJX9FpVF+iFKFeh1IlaQtMkpVvzyIE1lae+25
+	 Kz4z6/YD1c/hg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	harshit.m.mogalapalli@oracle.com
-Cc: Paul Webb <paul.x.webb@oracle.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Alexander Graf <graf@amazon.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Baoquan He <bhe@redhat.com>,
-	Borislav Betkov <bp@alien8.de>,
-	guoweikang <guoweikang.kernel@gmail.com>,
-	Henry Willard <henry.willard@oracle.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Bohac <jbohac@suse.cz>,
-	Joel Granados <joel.granados@kernel.org>,
-	Jonathan McDowell <noodles@fb.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Yifei Liu <yifei.l.liu@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: FAILED: Patch "x86/kexec: add a sanity check on previous kernel's ima kexec buffer" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:34:52 -0500
-Message-ID: <20260301013452.1694468-1-sashal@kernel.org>
+	kartikey406@gmail.com
+Cc: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Subject: FAILED: Patch "mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:34:55 -0500
+Message-ID: <20260301013456.1694526-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,38 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221688-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[oracle.com,linux.ibm.com,amazon.com,kernel.org,redhat.com,alien8.de,gmail.com,zytor.com,suse.cz,fb.com,intel.com,linutronix.de,linux-foundation.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[syzkaller.appspotmail.com,gmail.com,sina.com,linux-foundation.org,kvack.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221689-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable,d8d4c31d40f868eaea30];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8B5A41CDD96
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sina.com:email]
+X-Rspamd-Queue-Id: 78B451CBB6D
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -121,78 +108,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From c5489d04337b47e93c0623e8145fcba3f5739efd Mon Sep 17 00:00:00 2001
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Date: Tue, 30 Dec 2025 22:16:09 -0800
-Subject: [PATCH] x86/kexec: add a sanity check on previous kernel's ima kexec
- buffer
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 5747435e0fd474c24530ef1a6822f47e7d264b27 Mon Sep 17 00:00:00 2001
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Mon, 12 Jan 2026 16:06:12 +0530
+Subject: [PATCH] mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
 
-When the second-stage kernel is booted via kexec with a limiting command
-line such as "mem=<size>", the physical range that contains the carried
-over IMA measurement list may fall outside the truncated RAM leading to a
-kernel panic.
+When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
+vmalloc cleanup triggers expensive stack unwinding that acquires RCU read
+locks.  Processing a large purge_list without rescheduling can cause the
+task to hold CPU for extended periods (10+ seconds), leading to RCU stalls
+and potential OOM conditions.
 
-    BUG: unable to handle page fault for address: ffff97793ff47000
-    RIP: ima_restore_measurement_list+0xdc/0x45a
-    #PF: error_code(0x0000) – not-present page
+The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
+where iterating through hundreds or thousands of vmap_area entries and
+freeing their associated shadow pages causes:
 
-Other architectures already validate the range with page_is_ram(), as done
-in commit cbf9c4b9617b ("of: check previous kernel's ima-kexec-buffer
-against memory bounds") do a similar check on x86.
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
+  ...
+  task:kworker/0:17 state:R running task stack:28840 pid:6229
+  ...
+  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
+  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
 
-Without carrying the measurement list across kexec, the attestation
-would fail.
+Each call to kasan_release_vmalloc() can free many pages, and with
+page_owner tracking, each free triggers save_stack() which performs stack
+unwinding under RCU read lock.  Without yielding, this creates an
+unbounded RCU critical section.
 
-Link: https://lkml.kernel.org/r/20251231061609.907170-4-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Fixes: b69a2afd5afc ("x86/kexec: Carry forward IMA measurement log on kexec")
-Reported-by: Paul Webb <paul.x.webb@oracle.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: guoweikang <guoweikang.kernel@gmail.com>
-Cc: Henry Willard <henry.willard@oracle.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Bohac <jbohac@suse.cz>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: Jonathan McDowell <noodles@fb.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Yifei Liu <yifei.l.liu@oracle.com>
+Add periodic cond_resched() calls within the loop to allow:
+- RCU grace periods to complete
+- Other tasks to run
+- Scheduler to preempt when needed
+
+The fix uses need_resched() for immediate response under load, with a
+batch count of 32 as a guaranteed upper bound to prevent worst-case stalls
+even under light load.
+
+Link: https://lkml.kernel.org/r/20260112103612.627247-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
+Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
+Suggested-by: Uladzislau Rezki <urezki@gmail.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/x86/kernel/setup.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/vmalloc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 1b2edd07a3e17..383d4a4784f5b 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -439,9 +439,15 @@ int __init ima_free_kexec_buffer(void)
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 32d6ee92d4ff8..ca4c653286870 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2273,11 +2273,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
+ 	reclaim_list_global(&decay_list);
+ }
  
- int __init ima_get_kexec_buffer(void **addr, size_t *size)
++#define KASAN_RELEASE_BATCH_SIZE 32
++
+ static void
+ kasan_release_vmalloc_node(struct vmap_node *vn)
  {
-+	int ret;
-+
- 	if (!ima_kexec_buffer_size)
- 		return -ENOENT;
+ 	struct vmap_area *va;
+ 	unsigned long start, end;
++	unsigned int batch_count = 0;
  
-+	ret = ima_validate_range(ima_kexec_buffer_phys, ima_kexec_buffer_size);
-+	if (ret)
-+		return ret;
+ 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
+ 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
+@@ -2287,6 +2290,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
+ 			kasan_release_vmalloc(va->va_start, va->va_end,
+ 				va->va_start, va->va_end,
+ 				KASAN_VMALLOC_PAGE_RANGE);
 +
- 	*addr = __va(ima_kexec_buffer_phys);
- 	*size = ima_kexec_buffer_size;
++		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
++			cond_resched();
++			batch_count = 0;
++		}
+ 	}
  
+ 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
 -- 
 2.51.0
 
