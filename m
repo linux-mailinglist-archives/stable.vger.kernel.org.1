@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-222093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iASaBjmdo2nDIQUAu9opvQ
-	(envelope-from <stable+bounces-222093-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:17 +0100
+	id AH9MFjOeo2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16871CC69F
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:58:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B191CCAE1
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3A93F306A108
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 828EA3042964
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD252F39B4;
-	Sun,  1 Mar 2026 01:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6A92F6586;
+	Sun,  1 Mar 2026 01:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TsbMkB0/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQGmA/Uu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223BC28726E;
-	Sun,  1 Mar 2026 01:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2C51A3165;
+	Sun,  1 Mar 2026 01:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329882; cv=none; b=IzVJHpadBq0AFetJ/9hKHV1kyXr5Y0+llD7hHQ4X5FGaFe0TDlKlkVXs/MA5Ud2CDcoAeAcvjHK+C9vyfpYLCdO32KVFXRcrvBB+SZpXBDZqKC3uRN420p5MBJKSlylY9V5pdwNpfSJ517eCpLnNeTZ7LHUWPmYZL+Z0HW7Gl6c=
+	t=1772329884; cv=none; b=DbCEpK5S6lCz8bylwVbMpOdofnCz5d5yqlJ4hy3owkHCFgSLKofiOU3NB+WtCBosSAM6T36BotFSy6NpvQQXK/ApNvvti3bh4C4te9DGKFnaixHYfJtSKC6IzRNbD4Z3VLeA2zKL4jZkw4FITZ9FF1qPToWZrI7RTzjuwIlZ/Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329882; c=relaxed/simple;
-	bh=mOv9TmzW4EzgZxb7ueMc9wjwZ3QQD5/AONsSGNpFwdk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tt9gloD7BUeaIgmi0o1KVwiwkTYdjvFdYDrMDOyjYTa4xTKGn+VSGr73SDwmCwFvgoFLmB6m1l49PkvF+gQqd7yq1ahpRAxqfDGY9pFk7BIYaONqC3NnJf6vHMdztBUO5pOSo2ZoEuUTFDM56p83M8PMG55diPxB9lJ4lWkNNyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TsbMkB0/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1714DC19421;
-	Sun,  1 Mar 2026 01:51:21 +0000 (UTC)
+	s=arc-20240116; t=1772329884; c=relaxed/simple;
+	bh=NR7jY9BJNhXmlxBo2SY0ZZi0oOMfjQurKdsPFhXUbbQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JAedN4fu7glk3HQK2Uq0VYadO7Q4ZntHCCNg/5w+iiGx9IVzSldCmLfMzqYkW5y1iosNIRcab1RxZPAH0wNhdhDnpfkBtBif2ev9PLriaHYneq0Kcf4wdMxLnafc+D7IajIMzR9cxMsNA5BylxcEBOTfCKPDs4jJBsmVtfrxcE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQGmA/Uu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3280C19425;
+	Sun,  1 Mar 2026 01:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329882;
-	bh=mOv9TmzW4EzgZxb7ueMc9wjwZ3QQD5/AONsSGNpFwdk=;
+	s=k20201202; t=1772329884;
+	bh=NR7jY9BJNhXmlxBo2SY0ZZi0oOMfjQurKdsPFhXUbbQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=TsbMkB0/I4ehqS9VvETUbluDIw/2VgyRpwEWjyWVu4AV+5z7sCMJM5Hif4PlE5yp8
-	 af88wp3NQtj+0hCWZpetaALNQPlR6Gt4eAPjFvl8L70UwFH3HjnDr3eaQKS3+vcLw0
-	 wmRiPd/QTc4zB7EdbxWPSToBwH2L/jwaxklY8sfycXb4W3Fz02ESbZVGMhYaQUoH/y
-	 hA1+4z/Pg1rBV/IT8oZCm1Y0RkfGIpj/A2Y6+X7YfCGGmi50YFMl+cbEumexKpf3kX
-	 5LYgXxkaEqIwqilSaRnp9XmlsQQjaF+0pm8HO6Hzm2640LZUqw334aUwFYNXTX/YDp
-	 R7Q61vaAQ+3aA==
+	b=aQGmA/UuMg7fzSx7Wd7b6sFiAxft8DL418JKf2SabOimkTl3OavkJMkXt4E1BhYWa
+	 BJfsb1m7P6rmwBTd1UvAzYs+YoeLTpTaXdKQShmX+Vc2HnSOlojLV54SJggElVjkhe
+	 k+eEXh5dfsJnklHa/7qUih/wsejFaDzcEqpah/v2x0sYcwX/92Ee7dRC6kiZAhDpFU
+	 WHmZHPDC7zHzOH2hTZciqAXpsow0aNN7t+CHI05xlShP3AU7Jgr1WQy1IY0A6mVOzd
+	 hmLV6cI3q8s3G9wodqSKByRx00U/7vlSeF42YI0R785gayjvsuY6Ed0SA6FFXz0iUe
+	 NWolOZaRpvgvw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	liwang@redhat.com
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: FAILED: Patch "selftests/mm/charge_reserved_hugetlb: drop mount size for hugetlbfs" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:51:19 -0500
-Message-ID: <20260301015119.1717595-1-sashal@kernel.org>
+	hch@lst.de
+Cc: Mark Tinguely <mark.tinguely@oracle.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	linux-xfs@vger.kernel.org
+Subject: FAILED: Patch "xfs: remove xfs_attr_leaf_hasname" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:51:22 -0500
+Message-ID: <20260301015122.1717646-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,33 +65,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222093-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222094-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B16871CC69F
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D2B191CCAE1
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -107,88 +104,157 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1aa1dd9cc595917882fb6db67725442956f79607 Mon Sep 17 00:00:00 2001
-From: Li Wang <liwang@redhat.com>
-Date: Sun, 21 Dec 2025 20:26:38 +0800
-Subject: [PATCH] selftests/mm/charge_reserved_hugetlb: drop mount size for
- hugetlbfs
+From 3a65ea768b8094e4699e72f9ab420eb9e0f3f568 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Fri, 9 Jan 2026 16:17:40 +0100
+Subject: [PATCH] xfs: remove xfs_attr_leaf_hasname
 
-charge_reserved_hugetlb.sh mounts a hugetlbfs instance at /mnt/huge with a
-fixed size of 256M.  On systems with large base hugepages (e.g.  512MB),
-this is smaller than a single hugepage, so the hugetlbfs mount ends up
-with zero capacity (often visible as size=0 in mount output).
+The calling convention of xfs_attr_leaf_hasname() is problematic, because
+it returns a NULL buffer when xfs_attr3_leaf_read fails, a valid buffer
+when xfs_attr3_leaf_lookup_int returns -ENOATTR or -EEXIST, and a
+non-NULL buffer pointer for an already released buffer when
+xfs_attr3_leaf_lookup_int fails with other error values.
 
-As a result, write_to_hugetlbfs fails with ENOMEM and the test can hang
-waiting for progress.
+Fix this by simply open coding xfs_attr_leaf_hasname in the callers, so
+that the buffer release code is done by each caller of
+xfs_attr3_leaf_read.
 
-=== Error log ===
-  # uname -r
-  6.12.0-xxx.el10.aarch64+64k
-
-  #./charge_reserved_hugetlb.sh -cgroup-v2
-  # -----------------------------------------
-  ...
-  # nr hugepages = 10
-  # writing cgroup limit: 5368709120
-  # writing reseravation limit: 5368709120
-  ...
-  # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
-  # Waiting for hugetlb memory reservation to reach size 2684354560.
-  # 0
-  # Waiting for hugetlb memory reservation to reach size 2684354560.
-  # 0
-  ...
-
-  # mount |grep /mnt/huge
-  none on /mnt/huge type hugetlbfs (rw,relatime,seclabel,pagesize=512M,size=0)
-
-  # grep -i huge /proc/meminfo
-  ...
-  HugePages_Total:      10
-  HugePages_Free:       10
-  HugePages_Rsvd:        0
-  HugePages_Surp:        0
-  Hugepagesize:     524288 kB
-  Hugetlb:         5242880 kB
-
-Drop the mount args with 'size=256M', so the filesystem capacity is sufficient
-regardless of HugeTLB page size.
-
-Link: https://lkml.kernel.org/r/20251221122639.3168038-3-liwang@redhat.com
-Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
-Signed-off-by: Li Wang <liwang@redhat.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # v5.19+
+Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
+Reported-by: Mark Tinguely <mark.tinguely@oracle.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 ---
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/xfs/libxfs/xfs_attr.c | 75 +++++++++++++---------------------------
+ 1 file changed, 24 insertions(+), 51 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index e1fe16bcbbe88..fa6713892d82d 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -290,7 +290,7 @@ function run_test() {
-   setup_cgroup "hugetlb_cgroup_test" "$cgroup_limit" "$reservation_limit"
+diff --git a/fs/xfs/libxfs/xfs_attr.c b/fs/xfs/libxfs/xfs_attr.c
+index 866abae58fe1e..9e6b18d6ae003 100644
+--- a/fs/xfs/libxfs/xfs_attr.c
++++ b/fs/xfs/libxfs/xfs_attr.c
+@@ -50,7 +50,6 @@ STATIC int xfs_attr_shortform_addname(xfs_da_args_t *args);
+  */
+ STATIC int xfs_attr_leaf_get(xfs_da_args_t *args);
+ STATIC int xfs_attr_leaf_removename(xfs_da_args_t *args);
+-STATIC int xfs_attr_leaf_hasname(struct xfs_da_args *args, struct xfs_buf **bp);
  
-   mkdir -p /mnt/huge
--  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
-+  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
+ /*
+  * Internal routines when attribute list is more than one block.
+@@ -979,11 +978,12 @@ xfs_attr_lookup(
+ 		return error;
  
-   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test" "$size" "$populate" \
-     "$write" "/mnt/huge/test" "$method" "$private" "$expect_failure" \
-@@ -344,7 +344,7 @@ function run_multiple_cgroup_test() {
-   setup_cgroup "hugetlb_cgroup_test2" "$cgroup_limit2" "$reservation_limit2"
+ 	if (xfs_attr_is_leaf(dp)) {
+-		error = xfs_attr_leaf_hasname(args, &bp);
+-
+-		if (bp)
+-			xfs_trans_brelse(args->trans, bp);
+-
++		error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner,
++				0, &bp);
++		if (error)
++			return error;
++		error = xfs_attr3_leaf_lookup_int(bp, args);
++		xfs_trans_brelse(args->trans, bp);
+ 		return error;
+ 	}
  
-   mkdir -p /mnt/huge
--  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
-+  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
+@@ -1222,27 +1222,6 @@ xfs_attr_shortform_addname(
+  * External routines when attribute list is one block
+  *========================================================================*/
  
-   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test1" "$size1" \
-     "$populate1" "$write1" "/mnt/huge/test1" "$method" "$private" \
+-/*
+- * Return EEXIST if attr is found, or ENOATTR if not
+- */
+-STATIC int
+-xfs_attr_leaf_hasname(
+-	struct xfs_da_args	*args,
+-	struct xfs_buf		**bp)
+-{
+-	int                     error = 0;
+-
+-	error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner, 0, bp);
+-	if (error)
+-		return error;
+-
+-	error = xfs_attr3_leaf_lookup_int(*bp, args);
+-	if (error != -ENOATTR && error != -EEXIST)
+-		xfs_trans_brelse(args->trans, *bp);
+-
+-	return error;
+-}
+-
+ /*
+  * Remove a name from the leaf attribute list structure
+  *
+@@ -1253,25 +1232,22 @@ STATIC int
+ xfs_attr_leaf_removename(
+ 	struct xfs_da_args	*args)
+ {
+-	struct xfs_inode	*dp;
+-	struct xfs_buf		*bp;
++	struct xfs_inode	*dp = args->dp;
+ 	int			error, forkoff;
++	struct xfs_buf		*bp;
+ 
+ 	trace_xfs_attr_leaf_removename(args);
+ 
+-	/*
+-	 * Remove the attribute.
+-	 */
+-	dp = args->dp;
+-
+-	error = xfs_attr_leaf_hasname(args, &bp);
+-	if (error == -ENOATTR) {
++	error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner, 0, &bp);
++	if (error)
++		return error;
++	error = xfs_attr3_leaf_lookup_int(bp, args);
++	if (error != -EEXIST) {
+ 		xfs_trans_brelse(args->trans, bp);
+-		if (args->op_flags & XFS_DA_OP_RECOVERY)
++		if (error == -ENOATTR && (args->op_flags & XFS_DA_OP_RECOVERY))
+ 			return 0;
+ 		return error;
+-	} else if (error != -EEXIST)
+-		return error;
++	}
+ 
+ 	xfs_attr3_leaf_remove(bp, args);
+ 
+@@ -1295,23 +1271,20 @@ xfs_attr_leaf_removename(
+  * Returns 0 on successful retrieval, otherwise an error.
+  */
+ STATIC int
+-xfs_attr_leaf_get(xfs_da_args_t *args)
++xfs_attr_leaf_get(
++	struct xfs_da_args	*args)
+ {
+-	struct xfs_buf *bp;
+-	int error;
++	struct xfs_buf		*bp;
++	int			error;
+ 
+ 	trace_xfs_attr_leaf_get(args);
+ 
+-	error = xfs_attr_leaf_hasname(args, &bp);
+-
+-	if (error == -ENOATTR)  {
+-		xfs_trans_brelse(args->trans, bp);
+-		return error;
+-	} else if (error != -EEXIST)
++	error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner, 0, &bp);
++	if (error)
+ 		return error;
+-
+-
+-	error = xfs_attr3_leaf_getvalue(bp, args);
++	error = xfs_attr3_leaf_lookup_int(bp, args);
++	if (error == -EEXIST)
++		error = xfs_attr3_leaf_getvalue(bp, args);
+ 	xfs_trans_brelse(args->trans, bp);
+ 	return error;
+ }
 -- 
 2.51.0
 
