@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-221926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMcENwueo2l2IQUAu9opvQ
-	(envelope-from <stable+bounces-221926-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:47 +0100
+	id GCf1EQ+eo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-221927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8AE1CCA6F
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFC21CCA77
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:01:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EC5F330CCB1
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:44:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 770CD31F55C3
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D352DCF67;
-	Sun,  1 Mar 2026 01:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A032DF153;
+	Sun,  1 Mar 2026 01:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MHYFISW8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XF3q3P2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAF1243969
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D12D145A1F;
+	Sun,  1 Mar 2026 01:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329478; cv=none; b=Eu13Y4GaMKeSjHCxn5eHd+OMBc9VhI7tD1jPUuop9IOnRZGpKIOKLLMdV1Fd/rGaHQRuitonTR3EO3KJA/TkSWWS/Yol1JRt5b/vwDQ8PFt+VLlTGUdvIk5Mz4faEXNJDfBf4k7P+oxoLVfmmY3j7z3CWESVuSFVOHLd7upj9vk=
+	t=1772329480; cv=none; b=JtIFy1fJWaVK017ttei0Fu1BNDwyGJKVkYMFXugAKvmguEwOQh3yNIBhh1yUg2Fhln3AogymgBm6VbbFPzzQoWQQtG8+JJ/V6OKpD5Za/HsyyX6TPLwj/saJsnWXNLnPDQpC6XTqzmF7AOBhxmkSqlKF+TFkB2Howw4oR7I73us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329478; c=relaxed/simple;
-	bh=pU6kEI3MjC3mGmpGsqTr2Z7DlCBRGEw4W+QYa8uyaaA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M0DMW6kzWyxJLcQoKABJu/Jbt6XjQansDmU7bxLy32iD6KiGY/JAUgrpHPh2vAuTqKe6l74JaA6yJMnaLocjecs06YcDZfKcW8lyVaDPhDd4bYqfaEGpr5Ln5OFFZHx2dl/ozanHcrpKcY1RJrBJxYLlRdhytZVJwBQvnYqbXdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MHYFISW8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A253AC2BC86;
-	Sun,  1 Mar 2026 01:44:36 +0000 (UTC)
+	s=arc-20240116; t=1772329480; c=relaxed/simple;
+	bh=i45ny4Bn+1PNIcoy8/a2WfIIXlDIsIw6Wy9nXvdzvrw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KQEuaWJtiD5Rn15HDIEIm41lZOvChnn0ny8MlZ6D7CHda2hirH4TtzCrohzfjcCPcRhc6UGCfLzcIX1t2/CxsapfdX/BziMGp9TfPpINZhEHEQmAfTLkNGN7LMcKP9EFGTq8H1w+2ccd5X7OFspHhEnF8ma20PM+jdj8WjDZo7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XF3q3P2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1220C19421;
+	Sun,  1 Mar 2026 01:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329477;
-	bh=pU6kEI3MjC3mGmpGsqTr2Z7DlCBRGEw4W+QYa8uyaaA=;
+	s=k20201202; t=1772329480;
+	bh=i45ny4Bn+1PNIcoy8/a2WfIIXlDIsIw6Wy9nXvdzvrw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=MHYFISW847pnHhQH1gewElJbjOiZ7ORnwsfA6paLrukxFBii/NyEdtTnBfoQA1HW6
-	 7G5GayGMeQ9enWd8HdIWzQDohcIeq+BucxEb/K2MBG9YC8tRuBb/CXrSbv1CDc/qGY
-	 vLD4c43BM4ZuLdSlJ0VLhPK5mvwguxwSLoVtIwgsowrm/9lJflQyHtEC64umhLPq5B
-	 vH5xypQo+C5fNOoPu0w1yu5QTiBxUXF/BGV0KN4Jp7ehi0+Fb7Vk2+Yly69CPIArTp
-	 9dgFUx8+Xy/2jLpkB5GCmLVLR4bKvGhYL1eAJzs2uTISjD2Omrn8Ba2RRXxkqU/vMo
-	 dc1R6a2XcVMgQ==
+	b=XF3q3P2+BjSFSkmxQDGdRCKVyHI+NgZnc8iLwgWcBkxsMVw4X/lfK2St9ijQaSrpl
+	 zoZoBiv1VIocjjsPZyBKuq73/tj1tswCPjPjhYwkd4hvtg9YTRpi5n5xioq/6s+Vsx
+	 o79BysR5hKoweYPP/mUBjw5h7+Lak8E7WuVjsG0yU/z967eX7pdAqQlsoOLP7yY9d+
+	 wpdu+TURLMjYoEJWqcMuF1Lq7efff0mUukJrci97xecPGFqxTNNNqmJt41WfIHvARQ
+	 cSxCLOJuvkRsPePkQpFg3uNTTv4wBfu8waswMJ+7bxmPPIjKiiRUcSOP8n4s9C0KDI
+	 Sg84YiQmeX2Lw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	me@linux.beauty
-Cc: Baoquan He <bhe@redhat.com>,
-	Alexander Graf <graf@amazon.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Philipp Rudo <prudo@redhat.com>,
-	Ricardo Ribalda Delgado <ribalda@chromium.org>,
-	Ross Zwisler <zwisler@google.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	kexec@lists.infradead.org
-Subject: FAILED: Patch "kexec: derive purgatory entry from symbol" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:44:35 -0500
-Message-ID: <20260301014435.1706933-1-sashal@kernel.org>
+	aha310510@gmail.com
+Cc: Inki Dae <inki.dae@samsung.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org
+Subject: FAILED: Patch "drm/exynos: vidi: use priv->vidi_dev for ctx lookup in vidi_connection_ioctl()" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:44:38 -0500
+Message-ID: <20260301014438.1707045-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,19 +69,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221926-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221927-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -95,9 +90,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goodmis.org:email,chromium.org:email]
-X-Rspamd-Queue-Id: 3D8AE1CCA6F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email]
+X-Rspamd-Queue-Id: CEFC21CCA77
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -110,230 +105,96 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 480e1d5c64bb14441f79f2eb9421d5e26f91ea3d Mon Sep 17 00:00:00 2001
-From: Li Chen <me@linux.beauty>
-Date: Tue, 20 Jan 2026 20:40:04 +0800
-Subject: [PATCH] kexec: derive purgatory entry from symbol
+From d3968a0d85b211e197f2f4f06268a7031079e0d0 Mon Sep 17 00:00:00 2001
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Mon, 19 Jan 2026 17:25:51 +0900
+Subject: [PATCH] drm/exynos: vidi: use priv->vidi_dev for ctx lookup in
+ vidi_connection_ioctl()
 
-kexec_load_purgatory() derives image->start by locating e_entry inside an
-SHF_EXECINSTR section.  If the purgatory object contains multiple
-executable sections with overlapping sh_addr, the entrypoint check can
-match more than once and trigger a WARN.
+vidi_connection_ioctl() retrieves the driver_data from drm_dev->dev to
+obtain a struct vidi_context pointer. However, drm_dev->dev is the
+exynos-drm master device, and the driver_data contained therein is not
+the vidi component device, but a completely different device.
 
-Derive the entry section from the purgatory_start symbol when present and
-compute image->start from its final placement.  Keep the existing e_entry
-fallback for purgatories that do not expose the symbol.
+This can lead to various bugs, ranging from null pointer dereferences and
+garbage value accesses to, in unlucky cases, out-of-bounds errors,
+use-after-free errors, and more.
 
-WARNING: kernel/kexec_file.c:1009 at kexec_load_purgatory+0x395/0x3c0, CPU#10: kexec/1784
-Call Trace:
- <TASK>
- bzImage64_load+0x133/0xa00
- __do_sys_kexec_file_load+0x2b3/0x5c0
- do_syscall_64+0x81/0x610
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+To resolve this issue, we need to store/delete the vidi device pointer in
+exynos_drm_private->vidi_dev during bind/unbind, and then read this
+exynos_drm_private->vidi_dev within ioctl() to obtain the correct
+struct vidi_context pointer.
 
-[me@linux.beauty: move helper to avoid forward declaration, per Baoquan]
-  Link: https://lkml.kernel.org/r/20260128043511.316860-1-me@linux.beauty
-Link: https://lkml.kernel.org/r/20260120124005.148381-1-me@linux.beauty
-Fixes: 8652d44f466a ("kexec: support purgatories with .text.hot sections")
-Signed-off-by: Li Chen <me@linux.beauty>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Eric Biggers <ebiggers@kernel.org>
-Cc: Li Chen <me@linux.beauty>
-Cc: Philipp Rudo <prudo@redhat.com>
-Cc: Ricardo Ribalda Delgado <ribalda@chromium.org>
-Cc: Ross Zwisler <zwisler@google.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 ---
- kernel/kexec_file.c | 131 +++++++++++++++++++++++++-------------------
- 1 file changed, 74 insertions(+), 57 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_drv.h  |  1 +
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c | 14 +++++++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index eb62a97942428..2bfbb2d144e69 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -882,6 +882,60 @@ static int kexec_calculate_store_digests(struct kimage *image)
- }
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.h b/drivers/gpu/drm/exynos/exynos_drm_drv.h
+index 23646e55f142c..06c29ff2aac0e 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_drv.h
++++ b/drivers/gpu/drm/exynos/exynos_drm_drv.h
+@@ -199,6 +199,7 @@ struct drm_exynos_file_private {
+ struct exynos_drm_private {
+ 	struct device *g2d_dev;
+ 	struct device *dma_dev;
++	struct device *vidi_dev;
+ 	void *mapping;
  
- #ifdef CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY
-+/*
-+ * kexec_purgatory_find_symbol - find a symbol in the purgatory
-+ * @pi:		Purgatory to search in.
-+ * @name:	Name of the symbol.
-+ *
-+ * Return: pointer to symbol in read-only symtab on success, NULL on error.
-+ */
-+static const Elf_Sym *kexec_purgatory_find_symbol(struct purgatory_info *pi,
-+						  const char *name)
-+{
-+	const Elf_Shdr *sechdrs;
-+	const Elf_Ehdr *ehdr;
-+	const Elf_Sym *syms;
-+	const char *strtab;
-+	int i, k;
-+
-+	if (!pi->ehdr)
-+		return NULL;
-+
-+	ehdr = pi->ehdr;
-+	sechdrs = (void *)ehdr + ehdr->e_shoff;
-+
-+	for (i = 0; i < ehdr->e_shnum; i++) {
-+		if (sechdrs[i].sh_type != SHT_SYMTAB)
-+			continue;
-+
-+		if (sechdrs[i].sh_link >= ehdr->e_shnum)
-+			/* Invalid strtab section number */
-+			continue;
-+		strtab = (void *)ehdr + sechdrs[sechdrs[i].sh_link].sh_offset;
-+		syms = (void *)ehdr + sechdrs[i].sh_offset;
-+
-+		/* Go through symbols for a match */
-+		for (k = 0; k < sechdrs[i].sh_size/sizeof(Elf_Sym); k++) {
-+			if (ELF_ST_BIND(syms[k].st_info) != STB_GLOBAL)
-+				continue;
-+
-+			if (strcmp(strtab + syms[k].st_name, name) != 0)
-+				continue;
-+
-+			if (syms[k].st_shndx == SHN_UNDEF ||
-+			    syms[k].st_shndx >= ehdr->e_shnum) {
-+				pr_debug("Symbol: %s has bad section index %d.\n",
-+					name, syms[k].st_shndx);
-+				return NULL;
-+			}
-+
-+			/* Found the symbol we are looking for */
-+			return &syms[k];
-+		}
-+	}
-+
-+	return NULL;
-+}
- /*
-  * kexec_purgatory_setup_kbuf - prepare buffer to load purgatory.
-  * @pi:		Purgatory to be loaded.
-@@ -960,6 +1014,10 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
- 	unsigned long offset;
- 	size_t sechdrs_size;
- 	Elf_Shdr *sechdrs;
-+	const Elf_Sym *entry_sym;
-+	u16 entry_shndx = 0;
-+	unsigned long entry_off = 0;
-+	bool start_fixed = false;
- 	int i;
- 
- 	/*
-@@ -977,6 +1035,12 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
- 	bss_addr = kbuf->mem + kbuf->bufsz;
- 	kbuf->image->start = pi->ehdr->e_entry;
- 
-+	entry_sym = kexec_purgatory_find_symbol(pi, "purgatory_start");
-+	if (entry_sym) {
-+		entry_shndx = entry_sym->st_shndx;
-+		entry_off = entry_sym->st_value;
-+	}
-+
- 	for (i = 0; i < pi->ehdr->e_shnum; i++) {
- 		unsigned long align;
- 		void *src, *dst;
-@@ -994,6 +1058,13 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
- 
- 		offset = ALIGN(offset, align);
- 
-+		if (!start_fixed && entry_sym && i == entry_shndx &&
-+		    (sechdrs[i].sh_flags & SHF_EXECINSTR) &&
-+		    entry_off < sechdrs[i].sh_size) {
-+			kbuf->image->start = kbuf->mem + offset + entry_off;
-+			start_fixed = true;
-+		}
-+
- 		/*
- 		 * Check if the segment contains the entry point, if so,
- 		 * calculate the value of image->start based on it.
-@@ -1004,13 +1075,14 @@ static int kexec_purgatory_setup_sechdrs(struct purgatory_info *pi,
- 		 * is not set to the initial value, and warn the user so they
- 		 * have a chance to fix their purgatory's linker script.
- 		 */
--		if (sechdrs[i].sh_flags & SHF_EXECINSTR &&
-+		if (!start_fixed && sechdrs[i].sh_flags & SHF_EXECINSTR &&
- 		    pi->ehdr->e_entry >= sechdrs[i].sh_addr &&
- 		    pi->ehdr->e_entry < (sechdrs[i].sh_addr
- 					 + sechdrs[i].sh_size) &&
--		    !WARN_ON(kbuf->image->start != pi->ehdr->e_entry)) {
-+		    kbuf->image->start == pi->ehdr->e_entry) {
- 			kbuf->image->start -= sechdrs[i].sh_addr;
- 			kbuf->image->start += kbuf->mem + offset;
-+			start_fixed = true;
- 		}
- 
- 		src = (void *)pi->ehdr + sechdrs[i].sh_offset;
-@@ -1128,61 +1200,6 @@ int kexec_load_purgatory(struct kimage *image, struct kexec_buf *kbuf)
- 	return ret;
- }
- 
--/*
-- * kexec_purgatory_find_symbol - find a symbol in the purgatory
-- * @pi:		Purgatory to search in.
-- * @name:	Name of the symbol.
-- *
-- * Return: pointer to symbol in read-only symtab on success, NULL on error.
-- */
--static const Elf_Sym *kexec_purgatory_find_symbol(struct purgatory_info *pi,
--						  const char *name)
--{
--	const Elf_Shdr *sechdrs;
--	const Elf_Ehdr *ehdr;
--	const Elf_Sym *syms;
--	const char *strtab;
--	int i, k;
--
--	if (!pi->ehdr)
--		return NULL;
--
--	ehdr = pi->ehdr;
--	sechdrs = (void *)ehdr + ehdr->e_shoff;
--
--	for (i = 0; i < ehdr->e_shnum; i++) {
--		if (sechdrs[i].sh_type != SHT_SYMTAB)
--			continue;
--
--		if (sechdrs[i].sh_link >= ehdr->e_shnum)
--			/* Invalid strtab section number */
--			continue;
--		strtab = (void *)ehdr + sechdrs[sechdrs[i].sh_link].sh_offset;
--		syms = (void *)ehdr + sechdrs[i].sh_offset;
--
--		/* Go through symbols for a match */
--		for (k = 0; k < sechdrs[i].sh_size/sizeof(Elf_Sym); k++) {
--			if (ELF_ST_BIND(syms[k].st_info) != STB_GLOBAL)
--				continue;
--
--			if (strcmp(strtab + syms[k].st_name, name) != 0)
--				continue;
--
--			if (syms[k].st_shndx == SHN_UNDEF ||
--			    syms[k].st_shndx >= ehdr->e_shnum) {
--				pr_debug("Symbol: %s has bad section index %d.\n",
--						name, syms[k].st_shndx);
--				return NULL;
--			}
--
--			/* Found the symbol we are looking for */
--			return &syms[k];
--		}
--	}
--
--	return NULL;
--}
--
- void *kexec_purgatory_get_symbol_addr(struct kimage *image, const char *name)
+ 	/* for atomic commit */
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+index 64c69dd2966ec..480c99a8f9f75 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -224,9 +224,14 @@ ATTRIBUTE_GROUPS(vidi);
+ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
+ 				struct drm_file *file_priv)
  {
- 	struct purgatory_info *pi = &image->purgatory_info;
+-	struct vidi_context *ctx = dev_get_drvdata(drm_dev->dev);
++	struct exynos_drm_private *priv = drm_dev->dev_private;
++	struct device *dev = priv ? priv->vidi_dev : NULL;
++	struct vidi_context *ctx = dev ? dev_get_drvdata(dev) : NULL;
+ 	struct drm_exynos_vidi_connection *vidi = data;
+ 
++	if (!ctx)
++		return -ENODEV;
++
+ 	if (!vidi) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev,
+ 				  "user data for vidi is null.\n");
+@@ -372,6 +377,7 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
+ {
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
+ 	struct drm_device *drm_dev = data;
++	struct exynos_drm_private *priv = drm_dev->dev_private;
+ 	struct drm_encoder *encoder = &ctx->encoder;
+ 	struct exynos_drm_plane *exynos_plane;
+ 	struct exynos_drm_plane_config plane_config = { 0 };
+@@ -379,6 +385,8 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
+ 	int ret;
+ 
+ 	ctx->drm_dev = drm_dev;
++	if (priv)
++		priv->vidi_dev = dev;
+ 
+ 	plane_config.pixel_formats = formats;
+ 	plane_config.num_pixel_formats = ARRAY_SIZE(formats);
+@@ -424,8 +432,12 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
+ static void vidi_unbind(struct device *dev, struct device *master, void *data)
+ {
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
++	struct drm_device *drm_dev = data;
++	struct exynos_drm_private *priv = drm_dev->dev_private;
+ 
+ 	timer_delete_sync(&ctx->timer);
++	if (priv)
++		priv->vidi_dev = NULL;
+ }
+ 
+ static const struct component_ops vidi_component_ops = {
 -- 
 2.51.0
 
