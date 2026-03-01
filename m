@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-221461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QC+/OvyVo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:24 +0100
+	id cJ8kEgCWo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0391CAA61
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3971CAA68
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D1EA53037481
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:25:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 470003037935
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8E128466C;
-	Sun,  1 Mar 2026 01:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649292727EB;
+	Sun,  1 Mar 2026 01:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EAnOB9an"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iWFkxF+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C194F283C89;
-	Sun,  1 Mar 2026 01:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2779D284662;
+	Sun,  1 Mar 2026 01:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328322; cv=none; b=dXzzdUFwVTWFDP378ALdkkuODLc+S7DbMRfbZ578oXvqRrlUVEiOEZpDEsTmiGNRftndaYQpWR+3fA1eeNnvo3n3aeMp+8l+Y4j4tw7hZ49l1j8AwcaIM/cHrOcJxsGpDHJ9ejcqG/swxbtVOW25xhqMu2gydLu3YPPLxBcipeQ=
+	t=1772328325; cv=none; b=Ny7Bqmmmas5VUVa1JFEWvb3V7lZGDVVjlj+L2LJ+Tpkgfa8FgDJql6qSR2+k4kuHcoPoFrHc125JXP4mRBfDJYRApgrGUkZV0UbojCRYAcYA2P5xv/r4l3lZ323bP/78o5Cbh+jopdkQ9zFMNTJynVHmDffHUGuZBpSDMgOpaFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328322; c=relaxed/simple;
-	bh=p1l63WeXc4D9MuN7I3Wqx11wL6kIqX8nQK0itJKGcQI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bsowhm8jl2FSgK9Z3wBX61gXScI2P2Mn2D/4u5VS0kVeA21DgRepHdPL69yhYKd8Ls88h2uHPbTevr3neUyjCY1jTagrOzTNoSZCKlvWhpR3nCK0SYPNaRb6yOadAw0aW05KSSYvuK1f31DRvv1eZmjVEkVcFZizNOIBTmwX7jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EAnOB9an; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2502C19424;
-	Sun,  1 Mar 2026 01:25:21 +0000 (UTC)
+	s=arc-20240116; t=1772328325; c=relaxed/simple;
+	bh=cKlqKVWnKrwrQ6/zq5Uok2x+zuWHrlzQHjlMXZsL2SU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dXlaTmR5/oCUE3su/oQlNriSyaNR7HfM5GkZ8PDaWm7QMsskrUyeIzobMaojQc6bBUu+0FjQtOU2Dy9Dnfbeo13P0DPz7HWuZhAT3pvTXt1B6h7JQlKo9ncUjp96uj6vLYzcSrYXkfcNrxVJslk7Cz+3ZDrbeNolVPINZxqLDmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iWFkxF+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73075C19421;
+	Sun,  1 Mar 2026 01:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328322;
-	bh=p1l63WeXc4D9MuN7I3Wqx11wL6kIqX8nQK0itJKGcQI=;
+	s=k20201202; t=1772328325;
+	bh=cKlqKVWnKrwrQ6/zq5Uok2x+zuWHrlzQHjlMXZsL2SU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=EAnOB9an4Rt20OfuYaBR6+H2e4RHgXdlWqzo7kVyTBDu8aAyhQUAI8Onb1oOwet2i
-	 Wrmgybr0V5C4prR/Qjm70bp3kb9hQe2h540dCt5+9AodzysIDLLMoHL8QwgvyRBqJI
-	 PFyvIhSMSFfx3JMcxgB83FW33+UgPDRIjTL2BzAX5k/WNN2G4g5n78UXi7pNxt5mxL
-	 TBfM5DmmZTwF4I9TN6qVUZLcbmuW/iTQdYNCG8eu/E/TE0r3RsXTi99q6uchoZ7kJt
-	 XkzzWu6gQ0q2HT7sbCcPdB+a2CnsJn1FFX6o2UySThcsHEQcz/VMeiTV4txiYzz+lz
-	 hTs5sVSiI7YFQ==
+	b=iWFkxF+IeAVT5qGlRhTKqn0dTk4bSTJwnXtGRxFayCh9uKRW07PyLVcFWE9GJ7s94
+	 AeX9Exp0k23MmgV5wNiGl0BbiEj7ElcPMV4GII5HmWpcQENu2hv8cASKLL4Rc9fvOO
+	 rn+BOInQq2006gRQkfCHOvaxcGZQzNKKYFlr7TV/3NaUXV9xmJbrzRZRuzB7JdHMtm
+	 tE18ubF4OXrNDdBTEQcPH0WEVBYmXRQla1rkU1wEF0JUwNoMxoYOvFb0okMoEEPafx
+	 6me55+TXLUwkULnEiEWF3RCXFsgmoo01mdUlm8FchGZEnJgdeGQfwIApEVsrv89I52
+	 yn6trYZV4ZNhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	peng.fan@nxp.com
-Cc: Daniel Baluta <daniel.baluta@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "remoteproc: imx_rproc: Fix invalid loaded resource table detection" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:25:20 -0500
-Message-ID: <20260301012520.1682420-1-sashal@kernel.org>
+	naohiro.aota@wdc.com
+Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
+	linux-btrfs@vger.kernel.org
+Subject: FAILED: Patch "btrfs: zoned: fixup last alloc pointer after extent removal for RAID1" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:25:22 -0500
+Message-ID: <20260301012523.1682472-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +64,33 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221461-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221462-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email]
-X-Rspamd-Queue-Id: 8A0391CAA61
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: BD3971CAA68
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -105,56 +103,58 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 26aa5295010ffaebcf8f1991c53fa7cf2ee1b20d Mon Sep 17 00:00:00 2001
-From: Peng Fan <peng.fan@nxp.com>
-Date: Thu, 29 Jan 2026 09:44:48 +0800
-Subject: [PATCH] remoteproc: imx_rproc: Fix invalid loaded resource table
- detection
+From dda3ec9ee6b3e120603bff1b798f25b51e54ac5d Mon Sep 17 00:00:00 2001
+From: Naohiro Aota <naohiro.aota@wdc.com>
+Date: Wed, 17 Dec 2025 20:14:04 +0900
+Subject: [PATCH] btrfs: zoned: fixup last alloc pointer after extent removal
+ for RAID1
 
-imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
-resource table even when the current firmware does not provide one.
+When a block group is composed of a sequential write zone and a
+conventional zone, we recover the (pseudo) write pointer of the
+conventional zone using the end of the last allocated position.
 
-When the device tree contains a "rsc-table" entry, priv->rsc_table is
-non-NULL and denotes where a resource table would be located if one is
-present in memory. However, when the current firmware has no resource
-table, rproc->table_ptr is NULL. The function still returns
-priv->rsc_table, and the remoteproc core interprets this as a valid loaded
-resource table.
+However, if the last extent in a block group is removed, the last extent
+position will be smaller than the other real write pointer position.
+Then, that will cause an error due to mismatch of the write pointers.
 
-Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
-there is no resource table for the current firmware (i.e. when
-rproc->table_ptr is NULL). This aligns the function's semantics with the
-remoteproc core: a loaded resource table is only reported when a valid
-table_ptr exists.
+We can fixup this case by moving the alloc_offset to the corresponding
+write pointer position.
 
-With this change, starting firmware without a resource table no longer
-triggers a crash.
-
-Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://lore.kernel.org/r/20260129-imx-rproc-fix-v3-1-fc4e41e6e750@nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: 568220fa9657 ("btrfs: zoned: support RAID0/1/10 on top of raid stripe tree")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 ---
- drivers/remoteproc/imx_rproc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/zoned.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 375de79168a1c..f5f916d679051 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
- {
- 	struct imx_rproc *priv = rproc->priv;
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index d6a2480d5dc17..714f45045c84f 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1491,6 +1491,21 @@ static int btrfs_load_block_group_raid1(struct btrfs_block_group *bg,
+ 	/* In case a device is missing we have a cap of 0, so don't use it. */
+ 	bg->zone_capacity = min_not_zero(zone_info[0].capacity, zone_info[1].capacity);
  
-+	/* No resource table in the firmware */
-+	if (!rproc->table_ptr)
-+		return NULL;
++	/*
++	 * When the last extent is removed, last_alloc can be smaller than the other write
++	 * pointer. In that case, last_alloc should be moved to the corresponding write
++	 * pointer position.
++	 */
++	for (i = 0; i < map->num_stripes; i++) {
++		if (zone_info[i].alloc_offset == WP_MISSING_DEV ||
++		    zone_info[i].alloc_offset == WP_CONVENTIONAL)
++			continue;
++		if (last_alloc <= zone_info[i].alloc_offset) {
++			last_alloc = zone_info[i].alloc_offset;
++			break;
++		}
++	}
 +
- 	if (priv->rsc_table)
- 		return (struct resource_table *)priv->rsc_table;
- 
+ 	for (i = 0; i < map->num_stripes; i++) {
+ 		if (zone_info[i].alloc_offset == WP_MISSING_DEV)
+ 			continue;
 -- 
 2.51.0
 
