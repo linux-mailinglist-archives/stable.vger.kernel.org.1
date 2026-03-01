@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-221457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PbbJySlo2mWJAUAu9opvQ
-	(envelope-from <stable+bounces-221457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:32:04 +0100
+	id COWVLCilo2lXJAUAu9opvQ
+	(envelope-from <stable+bounces-221458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:32:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0834B1CDA6C
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FF41CDA73
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:32:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 197583154B86
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:25:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F31B4302EEBE
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0350E284693;
-	Sun,  1 Mar 2026 01:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB1D283CBF;
+	Sun,  1 Mar 2026 01:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p+C+6E5S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpTgvBzp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91D6274B42;
-	Sun,  1 Mar 2026 01:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EE72727EB;
+	Sun,  1 Mar 2026 01:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328312; cv=none; b=ig0AeiqyIc1XJ8FRANFhrOBry267mtz3N2/LB9AqlgvEFDCB178trRHfmzPaxZcRg2rwrdbXRKz+0mzSrdbNYbdXT8SiTWwURbfuFnSafvaQAgDszbgY944kvMSk+pvZNfi8uJVejTpKEkKgOR/PRebTeGQh1JdLBYI1K7JapDY=
+	t=1772328315; cv=none; b=UT9jL/K5R6TEDR/1OainLttpwFWPW2ywNb1aNsu1sJDrnicA8JqfGcXT3Jq0lkXmOnO89zn3NUQBq65eHgFygjSElYnMqw0vktYijW52W+T4LV0xdcDfgypxZt9euRsyPsMth2PLDr5jlSmqkH+D1VISgG+snUAOVv+Ojuhjo4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328312; c=relaxed/simple;
-	bh=/s/gefyzZLKHFfruEbLzqn0cvHKqDCWeFmV76HoXI6g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dlH0LPmC7AO+pG9ykCwvlmNVOAc2whdGTRgO+99kvUupx6lcmN+3h4TKodnljX6P0tixBEMBsA1qRkWxMmEtt/96cVw5LY9Z4M93JZUhkTbzdNkud12llqkt6RTY0aokDn9skmhgtM/NWDZUe1BjOFL7CyOvl/weBgZcNBKYHZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p+C+6E5S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44C5C2BC86;
-	Sun,  1 Mar 2026 01:25:11 +0000 (UTC)
+	s=arc-20240116; t=1772328315; c=relaxed/simple;
+	bh=y1tSg0gpsbVlAC5WHtPZe5wAvSJVAH/Yx+1WLN87+Ek=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZFnfN5ndSfwxxjZFJgOIq9uPKvF0tt84AAZeqQK9mmCM4T224jKspCZBEPntOJOEp5vYYqbkHG5gUUiY+xGMnUpJ+x8kktwPlqIAqGzraQd4Wt7TIJF6BQHkkC6dHKK+VR2hm9ANO6UR6jWwEQmdoPSjQXSraHFMMw3mEZS0tko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpTgvBzp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6F3C19421;
+	Sun,  1 Mar 2026 01:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328312;
-	bh=/s/gefyzZLKHFfruEbLzqn0cvHKqDCWeFmV76HoXI6g=;
+	s=k20201202; t=1772328315;
+	bh=y1tSg0gpsbVlAC5WHtPZe5wAvSJVAH/Yx+1WLN87+Ek=;
 	h=From:To:Cc:Subject:Date:From;
-	b=p+C+6E5SddsvVwuoyOnlpsoin9qOrPnl0tjUGkMQ0plfjPAWP3KmK6eaD25FrX5Ut
-	 R6K9GAtQuDuvV+3PfEZu8VA7F67Go4TP76weZEKZvg7vRc9aa53T1BJlhC+Yy4xudk
-	 vQXS9/MT7lN0CS97IOcR65EY3p5RN185IxQBb7R7iBqhNmFwBTsvBIYGJdFKibY1jO
-	 YE9fWFyIofPomMge+utGWuLmOJGQNtEnovsVhZPR1qWOSQmKGcS1CFvolCCfxVTdN4
-	 NMcrl9gJtHjmvJWWfhFTM8K0e5kQy5cyyx5fYWP2fUgAEWbZxQPFvkTaNMGjR3T15T
-	 s+PlvZGjH65FQ==
+	b=lpTgvBzpCQc2/atIhvylNwEs6K3UD6vLkhcrrELmAlir4PAfC/nG1NCuG4+Nu04uT
+	 7rZcmkBwOns2bQU655yeZX6kCweHZDpCXPGGwaWPYVnRp3/M0N8QX+P6pc/sSrdqnh
+	 GYbl7gqjufN2OJaHlIugwgU8YtpoupNnyhJZ+KvWX+fQtORQnQDJvHdpjuODdYYouK
+	 l0SCy1lCWC62H3wmeNpjFX9JuPo7lQORauOd2y1TGRHb1De2NUuTuSv0Bs6Omm5NCc
+	 UsaQe0KQA+Eoox8Cduj0doQHOdVJufY9f1d3wjHF7jnIOdEQZYstyhdPXCQABPwn7U
+	 xQT2xf+p5SMBw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	leitao@debian.org
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: FAILED: Patch "uprobes: Fix incorrect lockdep condition in filter_chain()" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:25:10 -0500
-Message-ID: <20260301012510.1682217-1-sashal@kernel.org>
+	heming.zhao@suse.com
+Cc: Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	ocfs2-devel@lists.linux.dev,
+	linux-hardening@vger.kernel.org
+Subject: FAILED: Patch "ocfs2: fix reflink preserve cleanup issue" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:25:12 -0500
+Message-ID: <20260301012513.1682267-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,31 +72,32 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221457-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[fasheh.com,evilplan.org,oracle.com,gmail.com,live.cn,huawei.com,linux-foundation.org,lists.linux.dev,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221458-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,infradead.org:email]
-X-Rspamd-Queue-Id: 0834B1CDA6C
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,live.cn:email,fasheh.com:email,huawei.com:email,oracle.com:email,linux-foundation.org:email,evilplan.org:email]
+X-Rspamd-Queue-Id: 31FF41CDA73
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -106,52 +110,50 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a56a38fd9196fc89401e498d70b7aa9c9679fa6e Mon Sep 17 00:00:00 2001
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 28 Jan 2026 10:16:11 -0800
-Subject: [PATCH] uprobes: Fix incorrect lockdep condition in filter_chain()
+From 5138c936c2c82c9be8883921854bc6f7e1177d8c Mon Sep 17 00:00:00 2001
+From: Heming Zhao <heming.zhao@suse.com>
+Date: Wed, 10 Dec 2025 09:57:24 +0800
+Subject: [PATCH] ocfs2: fix reflink preserve cleanup issue
 
-The list_for_each_entry_rcu() in filter_chain() uses
-rcu_read_lock_trace_held() as the lockdep condition, but the function
-holds consumer_rwsem, not the RCU trace lock.
+commit c06c303832ec ("ocfs2: fix xattr array entry __counted_by error")
+doesn't handle all cases and the cleanup job for preserved xattr entries
+still has bug:
+- the 'last' pointer should be shifted by one unit after cleanup
+  an array entry.
+- current code logic doesn't cleanup the first entry when xh_count is 1.
 
-This gives me the following output when running with some locking debug
-option enabled:
+Note, commit c06c303832ec is also a bug fix for 0fe9b66c65f3.
 
-  kernel/events/uprobes.c:1141 RCU-list traversed in non-reader section!!
-    filter_chain
-    register_for_each_vma
-    uprobe_unregister_nosync
-    __probe_event_disable
-
-Remove the incorrect lockdep condition since the rwsem provides
-sufficient protection for the list traversal.
-
-Fixes: cc01bd044e6a ("uprobes: travers uprobe's consumer list locklessly under SRCU protection")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260128-uprobe_rcu-v2-1-994ea6d32730@debian.org
+Link: https://lkml.kernel.org/r/20251210015725.8409-2-heming.zhao@suse.com
+Fixes: 0fe9b66c65f3 ("ocfs2: Add preserve to reflink.")
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- kernel/events/uprobes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/xattr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index dfbce021fb027..424ef2235b07e 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1138,7 +1138,7 @@ static bool filter_chain(struct uprobe *uprobe, struct mm_struct *mm)
- 	bool ret = false;
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index 5fd85f5178689..e434a62dd69f9 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -6395,6 +6395,10 @@ static int ocfs2_reflink_xattr_header(handle_t *handle,
+ 					(void *)last - (void *)xe);
+ 				memset(last, 0,
+ 				       sizeof(struct ocfs2_xattr_entry));
++				last = &new_xh->xh_entries[le16_to_cpu(new_xh->xh_count)] - 1;
++			} else {
++				memset(xe, 0, sizeof(struct ocfs2_xattr_entry));
++				last = NULL;
+ 			}
  
- 	down_read(&uprobe->consumer_rwsem);
--	list_for_each_entry_rcu(uc, &uprobe->consumers, cons_node, rcu_read_lock_trace_held()) {
-+	list_for_each_entry(uc, &uprobe->consumers, cons_node) {
- 		ret = consumer_filter(uc, mm);
- 		if (ret)
- 			break;
+ 			/*
 -- 
 2.51.0
 
