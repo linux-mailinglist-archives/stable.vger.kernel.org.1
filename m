@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-222090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLnmCp+ho2mRIwUAu9opvQ
-	(envelope-from <stable+bounces-222090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:03 +0100
+	id mAhVDzKeo2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-222091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE981CD5D4
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:17:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5811CCAD9
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C55503270B63
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D1D1D30254FA
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC6730FF2A;
-	Sun,  1 Mar 2026 01:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6305B2FE56E;
+	Sun,  1 Mar 2026 01:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ppc1Ktt0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBIa+S5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C19830EF7E;
-	Sun,  1 Mar 2026 01:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FC92F6586
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329874; cv=none; b=Je+sxudnUJUUyMfWsLUFSGB0cO/n6HR3nbHNdzORbnkgzZKnIcvwyvkuiVTFDDu4D8TuQhdW/LohT5ENYJ8KLv/pkVEoHb2h2RhTRgf+q3XCIxCTy1rGp+wWraoVbluQ6kfJL42AYhMQabSIIX7lwbyvI9I0ycPxam4Ag+/trGU=
+	t=1772329876; cv=none; b=BqiGEqSqKSI/TcL9BQ1ABVTsCYWleiUyCq5/1o75iesQlh4x8M64+MBjVZVgbvuwiJApo6SgkIAA9vcjA/IK1tbhWooFM0UzQkp1kxIIP994EIcznRoE8OxUB2/QBmjwR3MW5aFT2cKNxaFDXEg3+qyUKvnOQ84sKDO+ISsschI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329874; c=relaxed/simple;
-	bh=sQqpm7oWk232Md4X4fWSKvhuEGjWOzCk1UZ5A7Gfr98=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DijMagR5lfpVj245MLSRKFqAQZTY+wzqhtRpvooWV8pNeAdxVRf1GdRVKn15G195NDVs9F7juFUEbtbVKMSPZI3hD++DA+DbLreuzy/WyQ3IXprvGvug+ObjzrVxI0ZUellKSvTLDwylABSC2ML5ExpRYQrgYqCcMtGz74zn+Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ppc1Ktt0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19FCEC19424;
-	Sun,  1 Mar 2026 01:51:13 +0000 (UTC)
+	s=arc-20240116; t=1772329876; c=relaxed/simple;
+	bh=kIXkmKCw1vmR/lex8t/mSoO9BlRrmI0Oh6TjiVokUqU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IwLALSdizhaK9YZgbqHHBAGA2VlhZthqNMKMPBnE9LkPpugvSU8pI3GkjQwEqTENPOWPFoQay7m5x0AEx43Jx1L/HbSJK1+XBszGMYpY/OqyJ+IKXqSVEMfnX1TawReTDkQEsm2FYRGfl7TE1d2yxPbZs46/NhfTyCq1H5d+jRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBIa+S5W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E985C19421;
+	Sun,  1 Mar 2026 01:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329873;
-	bh=sQqpm7oWk232Md4X4fWSKvhuEGjWOzCk1UZ5A7Gfr98=;
+	s=k20201202; t=1772329876;
+	bh=kIXkmKCw1vmR/lex8t/mSoO9BlRrmI0Oh6TjiVokUqU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Ppc1Ktt0jIHI5lXZmKk7EoG3hhhPDj4xlbWhAqziEI0b8euDvt1I11yuSW0s5EhF0
-	 lcsCuVqIEqI9ETgMIC2rGZNKW6A5/WZH3uz1kbkO7nBmSYt2j/xD/09MDYH3m2cqbw
-	 xcFv1fIRLQhzO3Cq7i5V/2zpxgJehP7lwbvleiAOs8QMeLkyhjphsHtGFOq0xY9YLv
-	 GoFqPjrgSNzsl8iQom2kLREdg3SVhhrCnG3TkGVneNMfvvMTmrAAiIDMQb2CvPf6bB
-	 /A30sD6VIVQ+kTCruM6qqDAT6U18xxzA2jyQPKqnX2cbRS2FRH9HKy8GyvFULzUIJK
-	 6JQUNgawO93aA==
+	b=oBIa+S5W7jQQDZk1y70oJYZnsVSS5boGpiYIfJTgnX1BCXP2Mauf1N72jFxizmc/X
+	 5M3Gvjw3Qisqtsr4TMt/zrIyekXOedueaHCuxRwkTF/F6nHVfEMti6xrPxsDahk5qz
+	 2yyvr9Dy9MyPcMjWR5cymSzOIaKsnPLr9I4NSgQx65TCA3NtwtB1c5CpP9O8ICPo+u
+	 6x58E/vH8YPPQoVRj5n9soua6eTEdqhdOfw+AAZhSpRInwmWuNg10RjvHKgLIzgAha
+	 QKyfuwljBMGf76dpt1jmJ4XfKLKuSn+dbeicgCN2nnRa8ysZKScKfSMG9Wlg4GXE+1
+	 IHb9V0WxvzcwQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jerrysteve1101@gmail.com
-Cc: Peter Robinson <pbrobinson@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: FAILED: Patch "arm64: dts: rockchip: Do not enable hdmi_sound node on Pinebook Pro" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:51:11 -0500
-Message-ID: <20260301015112.1717437-1-sashal@kernel.org>
+	mchehab+huawei@kernel.org
+Cc: Jonathan Corbet <corbet@lwn.net>
+Subject: FAILED: Patch "docs: kdoc: avoid error_count overflows" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:51:14 -0500
+Message-ID: <20260301015114.1717496-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,31 +66,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,manjaro.org,sntech.de,vger.kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-222090-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222091-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,pine64.org:url,sntech.de:email,manjaro.org:email]
-X-Rspamd-Queue-Id: 4CE981CD5D4
+	TAGGED_RCPT(0.00)[stable,huawei];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AA5811CCAD9
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -108,50 +101,77 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b18247f9dab735c9c2d63823d28edc9011e7a1ad Mon Sep 17 00:00:00 2001
-From: Jun Yan <jerrysteve1101@gmail.com>
-Date: Fri, 16 Jan 2026 23:12:53 +0800
-Subject: [PATCH] arm64: dts: rockchip: Do not enable hdmi_sound node on
- Pinebook Pro
+From 802774d8539fa73487190ec45438777a3c38d424 Mon Sep 17 00:00:00 2001
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Date: Mon, 19 Jan 2026 13:04:57 +0100
+Subject: [PATCH] docs: kdoc: avoid error_count overflows
 
-Remove the redundant enabling of the hdmi_sound node in the Pinebook Pro
-board dts file, because the HDMI output is unused on this device. [1][2]
+The glibc library limits the return code to 8 bits. We need to
+stick to this limit when using sys.exit(error_count).
 
-This change also eliminates the following kernel log warning, which is
-caused by the unenabled dependent node of hdmi_sound that ultimately
-results in the node's probe failure:
-
-  platform hdmi-sound: deferred probe pending: asoc-simple-card: parse error
-
-[1] https://files.pine64.org/doc/PinebookPro/pinebookpro_v2.1_mainboard_schematic.pdf
-[2] https://files.pine64.org/doc/PinebookPro/pinebookpro_schematic_v21a_20220419.pdf
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
-Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
-Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://patch.msgid.link/20260116151253.9223-1-jerrysteve1101@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Message-ID: <233d1674db99ed8feb405a2f781de350f0fba0ac.1768823489.git.mchehab+huawei@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 4 ----
- 1 file changed, 4 deletions(-)
+ scripts/kernel-doc.py | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-index eaaca08a76018..a6ac89567bafe 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-@@ -421,10 +421,6 @@ &gpu {
- 	status = "okay";
- };
+diff --git a/scripts/kernel-doc.py b/scripts/kernel-doc.py
+index 7a1eaf986bcd4..1ebb16b9bb087 100755
+--- a/scripts/kernel-doc.py
++++ b/scripts/kernel-doc.py
+@@ -116,6 +116,8 @@ SRC_DIR = os.path.dirname(os.path.realpath(__file__))
  
--&hdmi_sound {
--	status = "okay";
--};
+ sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
+ 
++WERROR_RETURN_CODE = 3
++
+ DESC = """
+ Read C language source or header FILEs, extract embedded documentation comments,
+ and print formatted documentation to standard output.
+@@ -176,7 +178,21 @@ class MsgFormatter(logging.Formatter):
+         return logging.Formatter.format(self, record)
+ 
+ def main():
+-    """Main program"""
++    """
++    Main program.
++
++    By default, the return value is:
++
++    - 0: success or Python version is not compatible with
++      kernel-doc.  If -Werror is not used, it will also
++      return 0 if there are issues at kernel-doc markups;
++
++    - 1: an abnormal condition happened;
++
++    - 2: argparse issued an error;
++
++    - 3: -Werror is used, and one or more unfiltered parse warnings happened.
++    """
+ 
+     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
+                                      description=DESC)
+@@ -323,16 +339,12 @@ def main():
+ 
+     if args.werror:
+         print("%s warnings as errors" % error_count)    # pylint: disable=C0209
+-        sys.exit(error_count)
++        sys.exit(WERROR_RETURN_CODE)
+ 
+     if args.verbose:
+         print("%s errors" % error_count)                # pylint: disable=C0209
+ 
+-    if args.none:
+-        sys.exit(0)
 -
- &i2c0 {
- 	clock-frequency = <400000>;
- 	i2c-scl-falling-time-ns = <4>;
+-    sys.exit(error_count)
+-
++    sys.exit(0)
+ 
+ # Call main method
+ if __name__ == "__main__":
 -- 
 2.51.0
 
