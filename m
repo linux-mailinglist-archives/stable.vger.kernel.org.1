@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-221408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNeoCA2Vo2n3HQUAu9opvQ
-	(envelope-from <stable+bounces-221408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:23:25 +0100
+	id wetoLH+Xo2lIHwUAu9opvQ
+	(envelope-from <stable+bounces-221409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:33:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869581CA636
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:23:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF251CAF75
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:33:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB696300E630
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:23:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5150E312CB98
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01D427E074;
-	Sun,  1 Mar 2026 01:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD60D27C866;
+	Sun,  1 Mar 2026 01:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X7MDFNpf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCjXvPXw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CB5430BA3;
-	Sun,  1 Mar 2026 01:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702842727EB;
+	Sun,  1 Mar 2026 01:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328185; cv=none; b=iQsguMMN+K2FNVovZvOQ11pzspdh25UWhq4j5eg4vcA2nlDaJz3JeZI6GdlUNyquetxmXhJ5mnYznFOU5qA9B98kLk9EIEKwot24ZAUF2C1ssZtlHG7msWhhMs8UNzC2pxtwWtmVnBwFxOTB+LQh1qi25wihkQVv+rS1UbC2Hng=
+	t=1772328187; cv=none; b=sHjnz3M9GfE5hBaKs1ie/i/up/2RPPiAjH3WmGn8xPI1YwqdiiO2x+jKiIDsVF+11dlK2uv4GhGDC6uz6jKpO/LXVmdeDuSMQ+coZ7LtbIQpspK1LQlVXntNO2fzjgsG+/eTsSqJs7gtCgzvNeI6ft6FRutBfIUOKHk5aiwM+iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328185; c=relaxed/simple;
-	bh=/LTe1+l48RFM1e2HNCEBDl0sKZ+EgZ8EXC3JPpMxWEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aU1mRchDFYjHX6r0oKQRNB+a2Z1vw4BZsFTgDz85dZ0dfSfAV1WqCBWNkAn8p0LPSdSVGXZyyYkCNW60RSKzaGl7WInDQmbkYUERddgkzzxJOBJ7dz+3g2uJOh/Nk3LUu4oHlevBbq30otbqxTl14n4Pa6kP9VxMriCrMp6lQF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X7MDFNpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEC8C19421;
-	Sun,  1 Mar 2026 01:23:04 +0000 (UTC)
+	s=arc-20240116; t=1772328187; c=relaxed/simple;
+	bh=rLD6ddSdktAzCyYHHgwjId5txArjIz80B4jzDW3hrrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bog9WIEBi/T2FnFvOH7ifk41uALxSKpO9vdiM8EWWsVpMcz4IWpexbji0NP4+uZmzMQiwj5RZHhUPGpBGJSPZC3M0OGMjL68JZgJqAUNF9R4+IFdnxaN/hxn1lYG0SXE1ohTSA/rGl6P/wOl568A0t0FRfyHPkN70d7Kuu8i3N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCjXvPXw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB046C19421;
+	Sun,  1 Mar 2026 01:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328184;
-	bh=/LTe1+l48RFM1e2HNCEBDl0sKZ+EgZ8EXC3JPpMxWEc=;
+	s=k20201202; t=1772328187;
+	bh=rLD6ddSdktAzCyYHHgwjId5txArjIz80B4jzDW3hrrA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=X7MDFNpf5PFOO8DnXeLetow607jnmVv+6YIBgcthnkQqUy1A0SsksCaD+Pz6qSG97
-	 YdJQRUDqZbXqWCkWaSY4OV96WM/U8xnqs0sj3PgVPWNRHx/c9QwgSx3E6ejl2CIvl7
-	 skt3X0t3/uk0fIbkLld3JZ8yd78XKjljHgnB7u20eBkW0Z7wyNv+bDOJOylTyigpU0
-	 krhJn3H7XMX4u4reUnodJOgrA4fLMGC/86E3DsGoSBaEbmSFEvkzp2Yw/2uEahS+YL
-	 3Nb9PfwOWEyb4NMQ6+Z9/WH4C7Iy7h1n209vg0CkBRSQKyvhpR664E+aO+Q7L/7pO0
-	 H8koYG+vs52Hg==
+	b=FCjXvPXwulmQVWUv22ZX6kryBptzKN2YCvVEQ1C9EDXZcHv/VoTS3V836pnGkkQ0X
+	 Jrr8oonCmBiRiu84uG6Fw2iRLJ2kxYZ1RDsyzXWy0AD5FWQ1cOYvboVnVGeCfySixi
+	 SyAHZIBlp6ui0/0+Xn+d/sWWkJBysziJ+nS+qgCPurOZhgkJab7seWYuf1/oAdj0+I
+	 LvNiRsGefF4Vr7sNv3sHIiOcMf5f6qspJXbAZ+e6rj8np6jpcjZKUIzJEDQYnh0k3F
+	 EEcIQkpORHaCdlJM1M6XglpKuEKh7nNITgaxQxIvk+4H80Ua16OPxJ5KA+ucwaWNgn
+	 CfjTj7SRzSKiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	shawn.lin@rock-chips.com
-Cc: Andrew Powers-Holmes <aholmes@omnom.net>,
-	Heiko Stuebner <heiko@sntech.de>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: FAILED: Patch "arm64: dts: rockchip: Fix rk356x PCIe range mappings" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:23:02 -0500
-Message-ID: <20260301012303.1679675-1-sashal@kernel.org>
+	briannorris@chromium.org
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	linux-pci@vger.kernel.org
+Subject: FAILED: Patch "PCI/PM: Prevent runtime suspend until devices are fully initialized" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:23:05 -0500
+Message-ID: <20260301012305.1679733-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,33 +64,32 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221408-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-221409-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,rock-chips.com:email,sntech.de:email,fe270000:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,fe280000:email]
-X-Rspamd-Queue-Id: 869581CA636
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2EF251CAF75
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -105,63 +102,105 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f63ea193a404481f080ca2958f73e9f364682db9 Mon Sep 17 00:00:00 2001
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Date: Mon, 5 Jan 2026 16:15:28 +0800
-Subject: [PATCH] arm64: dts: rockchip: Fix rk356x PCIe range mappings
+From 51c0996dadaea20d73eb0495aeda9cb0422243e8 Mon Sep 17 00:00:00 2001
+From: Brian Norris <briannorris@chromium.org>
+Date: Thu, 22 Jan 2026 09:48:15 -0800
+Subject: [PATCH] PCI/PM: Prevent runtime suspend until devices are fully
+ initialized
 
-The pcie bus address should be mapped 1:1 to the cpu side MMIO address, so
-that there is no same address allocated from normal system memory. Otherwise
-it's broken if the same address assigned to the EP for DMA purpose.Fix it to
-sync with the vendor BSP.
+Previously, it was possible for a PCI device to be runtime-suspended before
+it was fully initialized. When that happened, the suspend process could
+save invalid device state, for example, before BAR assignment. Restoring
+the invalid state during resume may leave the device non-functional.
 
-Fixes: 568a67e742df ("arm64: dts: rockchip: Fix rk356x PCIe register and range mappings")
-Fixes: 66b51ea7d70f ("arm64: dts: rockchip: Add rk3568 PCIe2x1 controller")
+Prevent runtime suspend for PCI devices until they are fully initialized by
+deferring pm_runtime_enable().
+
+More details on how exactly this may occur:
+
+  1. PCI device is created by pci_scan_slot() or similar
+
+  2. As part of pci_scan_slot(), pci_pm_init() puts the device in D0 and
+     prevents runtime suspend prevented via pm_runtime_forbid()
+
+  3. pci_device_add() adds the underlying 'struct device' via device_add(),
+     which means user space can allow runtime suspend, e.g.,
+
+       echo auto > /sys/bus/pci/devices/.../power/control
+
+  4. PCI device receives BAR configuration
+     (pci_assign_unassigned_bus_resources(), etc.)
+
+  5. pci_bus_add_device() applies final fixups, saves device state, and
+     tries to attach a driver
+
+The device may potentially be suspended between #3 and #5, so this is racy
+with user space (udev or similar).
+
+Many PCI devices are enumerated at subsys_initcall time and so will not
+race with user space, but devices created later by hotplug or modular
+pwrctrl or host controller drivers are susceptible to this race.
+
+More runtime PM details at the first Link: below.
+
+Link: https://lore.kernel.org/all/0e35a4e1-894a-47c1-9528-fc5ffbafd9e2@samsung.com/
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+[bhelgaas: update comments per https://lore.kernel.org/r/CAJZ5v0iBNOmMtqfqEbrYyuK2u+2J2+zZ-iQd1FvyCPjdvU2TJg@mail.gmail.com]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: stable@vger.kernel.org
-Cc: Andrew Powers-Holmes <aholmes@omnom.net>
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/1767600929-195341-1-git-send-email-shawn.lin@rock-chips.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patch.msgid.link/20260122094815.v5.1.I60a53c170a8596661883bd2b4ef475155c7aa72b@changeid
 ---
- arch/arm64/boot/dts/rockchip/rk3568.dtsi      | 4 ++--
- arch/arm64/boot/dts/rockchip/rk356x-base.dtsi | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/bus.c | 8 ++++++++
+ drivers/pci/pci.c | 8 +++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-index e719a3df126c5..658097ed69714 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-@@ -185,7 +185,7 @@ pcie3x1: pcie@fe270000 {
- 		      <0x0 0xf2000000 0x0 0x00100000>;
- 		ranges = <0x01000000 0x0 0xf2100000 0x0 0xf2100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf2200000 0x0 0xf2200000 0x0 0x01e00000>,
--			 <0x03000000 0x0 0x40000000 0x3 0x40000000 0x0 0x40000000>;
-+			 <0x03000000 0x3 0x40000000 0x3 0x40000000 0x0 0x40000000>;
- 		reg-names = "dbi", "apb", "config";
- 		resets = <&cru SRST_PCIE30X1_POWERUP>;
- 		reset-names = "pipe";
-@@ -238,7 +238,7 @@ pcie3x2: pcie@fe280000 {
- 		      <0x0 0xf0000000 0x0 0x00100000>;
- 		ranges = <0x01000000 0x0 0xf0100000 0x0 0xf0100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf0200000 0x0 0xf0200000 0x0 0x01e00000>,
--			 <0x03000000 0x0 0x40000000 0x3 0x80000000 0x0 0x40000000>;
-+			 <0x03000000 0x3 0x80000000 0x3 0x80000000 0x0 0x40000000>;
- 		reg-names = "dbi", "apb", "config";
- 		resets = <&cru SRST_PCIE30X2_POWERUP>;
- 		reset-names = "pipe";
-diff --git a/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi b/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
-index 8893b7b6cc9ff..a2c4957a58992 100644
---- a/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
-@@ -1022,7 +1022,7 @@ pcie2x1: pcie@fe260000 {
- 		power-domains = <&power RK3568_PD_PIPE>;
- 		ranges = <0x01000000 0x0 0xf4100000 0x0 0xf4100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf4200000 0x0 0xf4200000 0x0 0x01e00000>,
--			 <0x03000000 0x0 0x40000000 0x3 0x00000000 0x0 0x40000000>;
-+			 <0x03000000 0x3 0x00000000 0x3 0x00000000 0x0 0x40000000>;
- 		resets = <&cru SRST_PCIE20_POWERUP>;
- 		reset-names = "pipe";
- 		#address-cells = <3>;
+diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+index 4383a36fd6ca0..41e5c45e38b5e 100644
+--- a/drivers/pci/bus.c
++++ b/drivers/pci/bus.c
+@@ -15,6 +15,7 @@
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/proc_fs.h>
+ #include <linux/slab.h>
+ 
+@@ -379,6 +380,13 @@ void pci_bus_add_device(struct pci_dev *dev)
+ 		put_device(&pdev->dev);
+ 	}
+ 
++	/*
++	 * Enable runtime PM, which potentially allows the device to
++	 * suspend immediately, only after the PCI state has been
++	 * configured completely.
++	 */
++	pm_runtime_enable(&dev->dev);
++
+ 	if (!dn || of_device_is_available(dn))
+ 		pci_dev_allow_binding(dev);
+ 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 86ccbd0efb495..d5f4b52899ada 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3199,8 +3199,14 @@ void pci_pm_init(struct pci_dev *dev)
+ poweron:
+ 	pci_pm_power_up_and_verify_state(dev);
+ 	pm_runtime_forbid(&dev->dev);
++
++	/*
++	 * Runtime PM will be enabled for the device when it has been fully
++	 * configured, but since its parent and suppliers may suspend in
++	 * the meantime, prevent them from doing so by changing the
++	 * device's runtime PM status to "active".
++	 */
+ 	pm_runtime_set_active(&dev->dev);
+-	pm_runtime_enable(&dev->dev);
+ }
+ 
+ static unsigned long pci_ea_flags(struct pci_dev *dev, u8 prop)
 -- 
 2.51.0
 
