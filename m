@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-221322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHYVGTuUo2l7HQUAu9opvQ
-	(envelope-from <stable+bounces-221322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:55 +0100
+	id mBT0CT+Uo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D34E1CA34F
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA841CA36B
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:19:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 05A5F3010638
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:19:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D4F923013465
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77E126E6F4;
-	Sun,  1 Mar 2026 01:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69E22620E5;
+	Sun,  1 Mar 2026 01:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFJUEOOT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pSVES2cI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798A525DB1C;
-	Sun,  1 Mar 2026 01:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C48430BA3;
+	Sun,  1 Mar 2026 01:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772327978; cv=none; b=giPlxoM81gRb6OTPvBIk9Wabm6uAXIMfVqXpL1kFeZwMgnKBXPSJCvS0CuFypk495S5YRzLfDjSLmKTVcNZlsprjNnEAFEa3nTFCQtFRJh1rsLcs3TugfGsCuSHbWD0BdFUdsc9kH6kYibXO7LEYGgznOUV3hQsGsddXGutfktw=
+	t=1772327980; cv=none; b=C/m8HpaZULDy18NoGObao1facvy4Mjok8DD6Y4YhTY6M8j9GEmlRPvotKkXzu3h8DLX8YKLuE/Xny3IXrPUBPy9qPZzhFDpTGxgwaUwvEfOVmulyXZtBNAm4Qk6JCKzie9wPxTntdIuLH+0stCN6CVIGWpAsLB4e1V5YtLWzat0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772327978; c=relaxed/simple;
-	bh=vEG88Hyk00Tafp4vt7H+O1aYyWOVvOlo+WTwnXnHFrc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jBapP16kwiDuFVo4TruBqibbn6AhHFSCBvyB9VyKCMWT6lvwiT3WPbchfrnpVT5LRg8n50NFaRLXnPQkAiYJ/JA8qxCm9/OqkIeyFV0SgdQRq9m9pA47MReVNrLDCmbDiFjp6phdCgQT5H2xigsO1PpOsGvdBbkXOpcZXLTq4h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFJUEOOT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B29C2BC86;
-	Sun,  1 Mar 2026 01:19:37 +0000 (UTC)
+	s=arc-20240116; t=1772327980; c=relaxed/simple;
+	bh=w7wxiMIk8xQSbCh1ZQ+xnzH9sZtwgPE5RMxqCFYeu2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lwmnt1E1Kmi64dEVR9lSvsZ+S2xkkd24GNM6c5P+3zS29WgjahI1oj4XosOf6Qpu9pvcgAeC9qUlo3mL4m48FBgGU13dN4Nh28HU6a2NTMvlqfc1rWeOY20i1INQIzL9BldFQPal7WR1Apbfo6RCLmJ8aYEIcXy2OaQa8vKeD9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pSVES2cI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFAEC19421;
+	Sun,  1 Mar 2026 01:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772327978;
-	bh=vEG88Hyk00Tafp4vt7H+O1aYyWOVvOlo+WTwnXnHFrc=;
+	s=k20201202; t=1772327980;
+	bh=w7wxiMIk8xQSbCh1ZQ+xnzH9sZtwgPE5RMxqCFYeu2c=;
 	h=From:To:Cc:Subject:Date:From;
-	b=BFJUEOOTZKKH6agKey1YkwxxawmhTlHLzgRuRffnWcnAH2YSAZKvA39s0vVP1TVV5
-	 GY8CFYRwW/y1bL4axXJbM+giBPhYh7zGlVl/R9jIHVjtbA3993qTSbPjgdsqhYFC/a
-	 bxAndcPzVL4f/JaSx1XHVdSYWaSw2F8eoRb0DV7c3KiRmO4vYDsfzSfv7hrC/7FX9J
-	 CD2VjoC4qtOU/pLOsDOjRUUrBVyDHCV/9GKNe5gXG0L/Hnh2r8E7puMgX3jRG88irE
-	 BN15LkUTf8RWCzTqW7iV+xKMrIrJb1iXiy8oKA977HUdp0bgU7qHH39tGNSgxrxS+i
-	 MJL9zQSW7WMsA==
+	b=pSVES2cItUmQxV9W7p7ng9yu9PPYirEGBja3f365FTKwoRLixBylaYJxuBFKZGXmj
+	 0tg2p4W3q7124JF/oL5YANJ61NFkEuPRKMQ04CcQuhhg45vgPuLXZoOvGaddQYZHUU
+	 LikrRkDljr7aPH3qJVxYd+dUCTgMDotMVFGezYIHZHb1feclpXGJRMcDMUlgQrIsJi
+	 NaJq1gnbHxzsUFkPYJ9WVgdxHBnC6xuA5Yayu7LqkwI/W+w+LKjS8sAF3mnKxklHxu
+	 ngg0pJ7ZR7BTR1nV+z7CfnbYPNaY9S8Djnr+ocv9hyiD9BiqNBGqgr7R4Pb0W/XV4P
+	 81HSOawluqruA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	j@jannau.net
-Cc: Sven Peter <sven@kernel.org>,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org
-Subject: FAILED: Patch "arm64: dts: apple: t8112-j473: Keep the HDMI port powered on" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:19:36 -0500
-Message-ID: <20260301011936.1674726-1-sashal@kernel.org>
+	seanjc@google.com
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>,
+	kvm@vger.kernel.org
+Subject: FAILED: Patch "KVM: nSVM: Remove a user-triggerable WARN on nested_svm_load_cr3() succeeding" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:19:38 -0500
+Message-ID: <20260301011939.1674776-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,19 +67,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221322-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221323-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,jannau.net:email]
-X-Rspamd-Queue-Id: 0D34E1CA34F
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: BFA841CA36B
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -104,63 +102,89 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3e4e729325131fe6f7473a0673f7d8cdde53f5a0 Mon Sep 17 00:00:00 2001
-From: Janne Grunau <j@jannau.net>
-Date: Thu, 8 Jan 2026 22:04:01 +0100
-Subject: [PATCH] arm64: dts: apple: t8112-j473: Keep the HDMI port powered on
+From fc3ba56385d03501eb582e4b86691ba378e556f9 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Tue, 16 Dec 2025 08:17:54 -0800
+Subject: [PATCH] KVM: nSVM: Remove a user-triggerable WARN on
+ nested_svm_load_cr3() succeeding
 
-Add the display controller and DPTX phy power-domains to the framebuffer
-node to keep the framebuffer and display out working after device probing
-finished.
-The OS has more control about the display pipeline used for the HDMI
-output on M2 based devices. The HDMI output is driven by an integrated
-DisplayPort to HDMI converter (Parade PS190). The DPTX phy is now
-controlled by the OS and no longer by firmware running on the display
-co-processor. This allows using the second display controller on the
-second USB type-c port or tunneling 2 DisplayPort connections over
-USB4/Thunderbolt.
-The m1n1 bootloader uses the second display controller to drive the HDMI
-output. Adjust for this difference compared to the notebooks as well.
+Drop the WARN in svm_set_nested_state() on nested_svm_load_cr3() failing
+as it is trivially easy to trigger from userspace by modifying CPUID after
+loading CR3.  E.g. modifying the state restoration selftest like so:
 
-Fixes: 2d5ce3fbef32 ("arm64: dts: apple: t8112: Initial t8112 (M2) device trees")
+  --- tools/testing/selftests/kvm/x86/state_test.c
+  +++ tools/testing/selftests/kvm/x86/state_test.c
+  @@ -280,7 +280,16 @@ int main(int argc, char *argv[])
+
+                 /* Restore state in a new VM.  */
+                  vcpu = vm_recreate_with_one_vcpu(vm);
+  -               vcpu_load_state(vcpu, state);
+  +
+  +               if (stage == 4) {
+  +                       state->sregs.cr3 = BIT(44);
+  +                       vcpu_load_state(vcpu, state);
+  +
+  +                       vcpu_set_cpuid_property(vcpu, X86_PROPERTY_MAX_PHY_ADDR, 36);
+  +                       __vcpu_nested_state_set(vcpu, &state->nested);
+  +               } else {
+  +                       vcpu_load_state(vcpu, state);
+  +               }
+
+                  /*
+                   * Restore XSAVE state in a dummy vCPU, first without doing
+
+generates:
+
+  WARNING: CPU: 30 PID: 938 at arch/x86/kvm/svm/nested.c:1877 svm_set_nested_state+0x34a/0x360 [kvm_amd]
+  Modules linked in: kvm_amd kvm irqbypass [last unloaded: kvm]
+  CPU: 30 UID: 1000 PID: 938 Comm: state_test Tainted: G        W           6.18.0-rc7-58e10b63777d-next-vm
+  Tainted: [W]=WARN
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:svm_set_nested_state+0x34a/0x360 [kvm_amd]
+  Call Trace:
+   <TASK>
+   kvm_arch_vcpu_ioctl+0xf33/0x1700 [kvm]
+   kvm_vcpu_ioctl+0x4e6/0x8f0 [kvm]
+   __x64_sys_ioctl+0x8f/0xd0
+   do_syscall_64+0x61/0xad0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Simply delete the WARN instead of trying to prevent userspace from shoving
+"illegal" state into CR3.  For better or worse, KVM's ABI allows userspace
+to set CPUID after SREGS, and vice versa, and KVM is very permissive when
+it comes to guest CPUID.  I.e. attempting to enforce the virtual CPU model
+when setting CPUID could break userspace.  Given that the WARN doesn't
+provide any meaningful protection for KVM or benefit for userspace, simply
+drop it even though the odds of breaking userspace are minuscule.
+
+Opportunistically delete a spurious newline.
+
+Fixes: b222b0b88162 ("KVM: nSVM: refactor the CR3 reload on migration")
 Cc: stable@vger.kernel.org
-Signed-off-by: Janne Grunau <j@jannau.net>
-Link: https://patch.msgid.link/20260108-apple-dt-pmgr-fixes-v1-1-cfdce629c0a8@jannau.net
-Signed-off-by: Sven Peter <sven@kernel.org>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20251216161755.1775409-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/arm64/boot/dts/apple/t8112-j473.dts | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/x86/kvm/svm/nested.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/apple/t8112-j473.dts b/arch/arm64/boot/dts/apple/t8112-j473.dts
-index a05951e91a022..bfa959023a0db 100644
---- a/arch/arm64/boot/dts/apple/t8112-j473.dts
-+++ b/arch/arm64/boot/dts/apple/t8112-j473.dts
-@@ -22,6 +22,25 @@ aliases {
- 	};
- };
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index ba0f11c68372b..9be67040e94d9 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1870,10 +1870,9 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 	 * thus MMU might not be initialized correctly.
+ 	 * Set it again to fix this.
+ 	 */
+-
+ 	ret = nested_svm_load_cr3(&svm->vcpu, vcpu->arch.cr3,
+ 				  nested_npt_enabled(svm), false);
+-	if (WARN_ON_ONCE(ret))
++	if (ret)
+ 		goto out_free;
  
-+/*
-+ * Keep the power-domains used for the HDMI port on.
-+ */
-+&framebuffer0 {
-+	power-domains = <&ps_dispext_cpu0>, <&ps_dptx_ext_phy>;
-+};
-+
-+/*
-+ * The M2 Mac mini uses dispext for the HDMI output so it's not necessary to
-+ * keep disp0 power-domains always-on.
-+ */
-+&ps_disp0_sys {
-+	/delete-property/ apple,always-on;
-+};
-+
-+&ps_disp0_fe {
-+	/delete-property/ apple,always-on;
-+};
-+
- /*
-  * Force the bus number assignments so that we can declare some of the
-  * on-board devices and properties that are populated by the bootloader
+ 	svm->nested.force_msr_bitmap_recalc = true;
 -- 
 2.51.0
 
