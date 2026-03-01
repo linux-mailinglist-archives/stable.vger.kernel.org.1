@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-221944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221945-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KO+cCl+eo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:11 +0100
+	id iAQJM2Ceo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-221945-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9031CCBA1
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529A01CCBA8
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73DD73326CBC
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9377F3327076
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0386E2C21F2;
-	Sun,  1 Mar 2026 01:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0EB2DA76C;
+	Sun,  1 Mar 2026 01:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BJ7VIynN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sk4J0P1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC10819D07A
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2397A19D07A
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329521; cv=none; b=HReIOQQt5SyeK3lAkT4CSQW6gDJwX9pKN53mF2XdGgNeioF33etLtPVmqAnNUUQQNPRJloGbdlDchJxPDfDSwOmX5ujGEImZDEEAv7qNytila7GDpXLywCj7oucwBsLgIWmRvIzxWgZaZ9ila0jKbQCbUBkHDVFIImHd/rSpifk=
+	t=1772329524; cv=none; b=UAAXeRGgWdYGJ3d1u61EZr1QZmXa0CzkZzv7kpErqUwKLQFxizy5nEy6YhKzS3nmUVFWJvKoA56O3S8ICy0YKq1wyCETSF+4w93bfxoDeIdwXQodEAfr5hAvZMJ+3fF5LnALZYNdIkyWewJpLt27YeX9jS5qWyVwC/ZMhMEdv2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329521; c=relaxed/simple;
-	bh=n+/nQGD9ODs1+LImW5f6+WtyZz61xcL9SGXk7Aqsp+g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RdHdB/tq55U3OWsGeBeOFnEZAHVyH/lfIVsgdz+/26uf8sgPbUYXS/zDVfSsKUoyVv58Dmfdemk/2hp/+nMVsnjso88LvPgNz8+DNDLOBeFNto6GDRqzrkBuWbDvcM1Rwx4O3cURHDs/B0MlN/cSNSQL8F1+tuceXBtE+knVquw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BJ7VIynN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E897C19421;
-	Sun,  1 Mar 2026 01:45:20 +0000 (UTC)
+	s=arc-20240116; t=1772329524; c=relaxed/simple;
+	bh=nmSfmUk2vTOuP/UDO0LJGxOzJ5e/h1JIAxQOjdzJ6HY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NBstCFedZGEJDU8y5J2EzBWj1UDZdinlbp8HHLyidP2tkBKw+qt7wk80qnuCHVTejwaUEu+Q9Q4gXsFmv0hlmY/gu6+O5rYqKYbKWlSDiPrnbpsvt/S00QpY/5mDyDXiW4QVobcc1si4B2wd0NKaPHOOPlZqEIbjAplD1wZjdwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sk4J0P1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F64C19421;
+	Sun,  1 Mar 2026 01:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329521;
-	bh=n+/nQGD9ODs1+LImW5f6+WtyZz61xcL9SGXk7Aqsp+g=;
+	s=k20201202; t=1772329524;
+	bh=nmSfmUk2vTOuP/UDO0LJGxOzJ5e/h1JIAxQOjdzJ6HY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=BJ7VIynNH+E7LW3BsnOdP1KYGXBfw1xXETNI8C3iGylnrGZW9sd3HNOKb4ax9ni1R
-	 JPvjw/3+/DRZKXbDUNxmYt+3TJ/jREscULtUgqTCjU4CH6L+lqwVZAD9S/vfI1tvSp
-	 gBnepwQZh7NFgQ2BaDk3xWoBtYY50pjSp+wBvysesQ1E0LH/xSgK4tcVz1CaHz8+rR
-	 untJjb9cSMI/S7p9ucM5mWXb9nP9JUSyrVKmshID6a8TtdnTKZuG8HHHq0HZX05BOy
-	 bM0XzLHybpiKHf7RhllBxzR6X/HUo/RvTM4hix9gHfX8JGitfQ14bAIu8eeWv4yZkI
-	 h4AqKohGZzcFA==
+	b=sk4J0P1dgPWDOg3I+BIFbGmfeqgVICKVSR0ySN7ShQClsHQ4GRcbQgCyMUcRAqCuH
+	 mJBigPtQvzWf91Wu6Xr3j4x5dBW05KRFxtbjpMQigBWFuL3xaKnVZB4oyhgImuzYbf
+	 WWl7NloKwE8UIUyMzRAsIW8yDikuxqOAyCq7M6FR/eA2H0I8NNYPbg7/KfAhG7ibJm
+	 lD4XdrJI6gtDrtRJWHskMCSGee38jJWuRtAjg8fT70wwW9LQJH7RtM1gzzbxYV5rHl
+	 2thGRcu92aZ419imOjKS8O1wInSCufuTGI9a1WJfGROGBRqlI9F58MD5xAAs6utbms
+	 hIZHn/hD4XT4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	andrea.scian@dave.eu
-Cc: stable@kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	linux-mtd@lists.infradead.org
-Subject: FAILED: Patch "mtd: rawnand: pl353: Fix software ECC support" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:45:19 -0500
-Message-ID: <20260301014519.1707904-1-sashal@kernel.org>
+	Sunday.Clement@amd.com
+Cc: Alexander Deucher <Alexander.Deucher@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm/amdkfd: Fix out-of-bounds write in kfd_event_page_set()" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:45:21 -0500
+Message-ID: <20260301014522.1707955-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,18 +69,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221944-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221945-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -88,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,dave.eu:email]
-X-Rspamd-Queue-Id: 9E9031CCBA1
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 529A01CCBA8
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -103,34 +104,42 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 89b831ebdaca0df4ca3b226f7e7a1d1db1629060 Mon Sep 17 00:00:00 2001
-From: Andrea Scian <andrea.scian@dave.eu>
-Date: Wed, 4 Feb 2026 18:41:44 +0100
-Subject: [PATCH] mtd: rawnand: pl353: Fix software ECC support
+From 8a70a26c9f34baea6c3199a9862ddaff4554a96d Mon Sep 17 00:00:00 2001
+From: Sunday Clement <Sunday.Clement@amd.com>
+Date: Mon, 2 Feb 2026 12:41:39 -0500
+Subject: [PATCH] drm/amdkfd: Fix out-of-bounds write in kfd_event_page_set()
 
-We need to set also write_page_raw in ecc structure to allow
-choosing SW ECC instead of HW one, otherwise write operation fail.
+The kfd_event_page_set() function writes KFD_SIGNAL_EVENT_LIMIT * 8
+bytes via memset without checking the buffer size parameter. This allows
+unprivileged userspace to trigger an out-of bounds kernel memory write
+by passing a small buffer, leading to  potential privilege
+escalation.
 
-Fixes: 08d8c62164a322 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
-Signed-off-by: Andrea Scian <andrea.scian@dave.eu>
-Cc: stable@kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sunday Clement <Sunday.Clement@amd.com>
+Reviewed-by: Alexander Deucher <Alexander.Deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 ---
- drivers/mtd/nand/raw/pl35x-nand-controller.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_events.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/pl35x-nand-controller.c b/drivers/mtd/nand/raw/pl35x-nand-controller.c
-index 11bd90e3f18cb..7f012b7c3eaec 100644
---- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
-+++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
-@@ -976,6 +976,7 @@ static int pl35x_nand_attach_chip(struct nand_chip *chip)
- 		fallthrough;
- 	case NAND_ECC_ENGINE_TYPE_NONE:
- 	case NAND_ECC_ENGINE_TYPE_SOFT:
-+		chip->ecc.write_page_raw = nand_monolithic_write_page_raw;
- 		break;
- 	case NAND_ECC_ENGINE_TYPE_ON_HOST:
- 		ret = pl35x_nand_init_hw_ecc_controller(nfc, chip);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_events.c b/drivers/gpu/drm/amd/amdkfd/kfd_events.c
+index 1ad312af8ff0c..13416bff77636 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_events.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_events.c
+@@ -331,6 +331,12 @@ static int kfd_event_page_set(struct kfd_process *p, void *kernel_address,
+ 	if (p->signal_page)
+ 		return -EBUSY;
+ 
++	if (size < KFD_SIGNAL_EVENT_LIMIT * 8) {
++		pr_err("Event page size %llu is too small, need at least %lu bytes\n",
++				size, (unsigned long)(KFD_SIGNAL_EVENT_LIMIT * 8));
++		return -EINVAL;
++	}
++
+ 	page = kzalloc(sizeof(*page), GFP_KERNEL);
+ 	if (!page)
+ 		return -ENOMEM;
 -- 
 2.51.0
 
