@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-221880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHmlAvGao2kwIAUAu9opvQ
-	(envelope-from <stable+bounces-221880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:33 +0100
+	id 8IIvK8mao2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42131CBD42
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:48:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298CA1CBC5B
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:47:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 784763063815
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4AD163024294
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCDA2C1788;
-	Sun,  1 Mar 2026 01:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07232BD59C;
+	Sun,  1 Mar 2026 01:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eMIiiplf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOTbw38O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F6529D270;
-	Sun,  1 Mar 2026 01:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A497E1A3165;
+	Sun,  1 Mar 2026 01:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329360; cv=none; b=OzA11Q29jD0VtN9Tlm39hF+NRkwEVJcPYlgX923tiNu+RjQvMk4513cRowZuMzv4g0BbkJiLuoO3cfE7+pzSdoTRy/OVcdCTIvkO0ffG6f/pc09Tl42rFSYkf/C6bPZaG1xWssdmXqAoGz7Vm4oHdqXSgwvJo9T9aPh6w1IARFk=
+	t=1772329362; cv=none; b=TXxr76rK2dfsDt2zBb6IqOH7dhR/lhDbQTpUlRO5gnRUXtCQ479SlHSWS+80dS/rd1rSZXtEwelCwTp/+KYWlg9S65neCGG5FSHn7xgzuq11sHKi0/ef4awQ7AoAXLTCj9ZfQLpJr8qftTXosq26PSruCaPNgsiR+xAjE24Lazs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329360; c=relaxed/simple;
-	bh=ObkNXGTWzQKyHQZgc5N68ahseGnIvLIel21ZvtZfoUg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZPOFQHuV6NQNU1nY316/UFYY9WpOvVMZ/URnx0iODTG5MpyBeZvwPWsSg7049nrnyM8ehVS1zP/uSIZsVppeynE6Frm4xPc3WP687st5wKBUHpVQH8NncKIVpNx8PWTjkFzT4tgna4DqZ4UHd/Laam4+fQUmROYviqYEdSi+GeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eMIiiplf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73CDC19421;
-	Sun,  1 Mar 2026 01:42:38 +0000 (UTC)
+	s=arc-20240116; t=1772329362; c=relaxed/simple;
+	bh=eYTLjnC2N0hlb2f/E2AZzfdoA2wbpnn/w0ubB5styxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JBDaMoh6Wlltq5jHgvcZJBGAm9vdeAw8pmb6tHwQGrvErPIILEbRTLbqfPVL02xwlo2gCk2CwrR4tFBIMSdqXRNstB+sb1ug28r2FhBRa68m8GMajAnsSycWd+qOKywgIqaNqXNZwoVJUf/PJzMeryy2FBPRfHybh5K2Vsei+e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOTbw38O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D12C19421;
+	Sun,  1 Mar 2026 01:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329359;
-	bh=ObkNXGTWzQKyHQZgc5N68ahseGnIvLIel21ZvtZfoUg=;
+	s=k20201202; t=1772329362;
+	bh=eYTLjnC2N0hlb2f/E2AZzfdoA2wbpnn/w0ubB5styxE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=eMIiiplf3sUnyiuAhhAyFMg0bsf2PIwH4vMOMmaHlDhF1/mNEiOUxMTQB4u40yC6X
-	 r8QIGqFvpiqDf75jv8XIWdWCgMAiwMczh4QmsXUZ7ziR4Eypjet2SIoVOGI26vur33
-	 NORidQOPiKVt4pz9WQxlCLTAyeuORbDpOxbGkJhoKgI2YY2tiQxSgritHVOHF/94RC
-	 IHstMmDoPo2nbvZlsXk3MyuUghNgUVDNBug/sc+vLFhK4LunZaYGC1pgONBHXWahCE
-	 FmB6PokGyssbeWc0FfiKZl5JNcBowhZFdmxUZDXfrX36YRG/5aOIpzPfJsfT/ONTGI
-	 XIIrMhSGFTHWw==
+	b=hOTbw38OnOwIC2KasvDkRHHTaWdR5emPyOKMw911I/QtRlyai/iYt2aRZwqpJqPol
+	 9QoNsfnSy9jFLHOrz0vTsuFjmr3LVs9lh8gQvkm71Ah4+8jBfj91wpuRDOkYCNA7lc
+	 +0BWTIwLiIX254PhCSaBw1vdGKPAdXLj5ujDeqDph65g6cn0+7aYnXML41q/XgT6Hk
+	 xgGhP/KGRuuS69OXDzt5/qmgVsGN2Zead9De1aC+2n7ryJWZc+ro/09chNw4ER5eXV
+	 dbuVfhJjWKFgKtlSOUq+Xd5yZQO02W/hJ0lt25s4xkWp+PCqn0PNr4blvrUIoK7UhO
+	 N2j1lrgDwk/aA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jack@suse.cz
-Cc: Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	stable@kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org
-Subject: FAILED: Patch "ext4: always allocate blocks only from groups inode can use" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:42:37 -0500
-Message-ID: <20260301014237.1704534-1-sashal@kernel.org>
+	jerrysteve1101@gmail.com
+Cc: Peter Robinson <pbrobinson@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: FAILED: Patch "arm64: dts: rockchip: Do not enable hdmi_sound node on Pinebook Pro" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:42:40 -0500
+Message-ID: <20260301014240.1704581-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,33 +67,35 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221880-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,manjaro.org,sntech.de,vger.kernel.org,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-221881-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.de:email,suse.cz:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E42131CBD42
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,manjaro.org:email,sntech.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pine64.org:url]
+X-Rspamd-Queue-Id: 298CA1CBC5B
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -106,106 +108,50 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4865c768b563deff1b6a6384e74a62f143427b42 Mon Sep 17 00:00:00 2001
-From: Jan Kara <jack@suse.cz>
-Date: Wed, 14 Jan 2026 19:28:18 +0100
-Subject: [PATCH] ext4: always allocate blocks only from groups inode can use
+From b18247f9dab735c9c2d63823d28edc9011e7a1ad Mon Sep 17 00:00:00 2001
+From: Jun Yan <jerrysteve1101@gmail.com>
+Date: Fri, 16 Jan 2026 23:12:53 +0800
+Subject: [PATCH] arm64: dts: rockchip: Do not enable hdmi_sound node on
+ Pinebook Pro
 
-For filesystems with more than 2^32 blocks inodes using indirect block
-based format cannot use blocks beyond the 32-bit limit.
-ext4_mb_scan_groups_linear() takes care to not select these unsupported
-groups for such inodes however other functions selecting groups for
-allocation don't. So far this is harmless because the other selection
-functions are used only with mb_optimize_scan and this is currently
-disabled for inodes with indirect blocks however in the following patch
-we want to enable mb_optimize_scan regardless of inode format.
+Remove the redundant enabling of the hdmi_sound node in the Pinebook Pro
+board dts file, because the HDMI output is unused on this device. [1][2]
 
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260114182836.14120-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+This change also eliminates the following kernel log warning, which is
+caused by the unenabled dependent node of hdmi_sound that ultimately
+results in the node's probe failure:
+
+  platform hdmi-sound: deferred probe pending: asoc-simple-card: parse error
+
+[1] https://files.pine64.org/doc/PinebookPro/pinebookpro_v2.1_mainboard_schematic.pdf
+[2] https://files.pine64.org/doc/PinebookPro/pinebookpro_schematic_v21a_20220419.pdf
+
+Cc: stable@vger.kernel.org
+Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://patch.msgid.link/20260116151253.9223-1-jerrysteve1101@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 ---
- fs/ext4/mballoc.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index dd29558ad753b..910b454b4a21e 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -892,6 +892,21 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
- 	}
- }
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index eaaca08a76018..a6ac89567bafe 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -421,10 +421,6 @@ &gpu {
+ 	status = "okay";
+ };
  
-+static ext4_group_t ext4_get_allocation_groups_count(
-+				struct ext4_allocation_context *ac)
-+{
-+	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
-+
-+	/* non-extent files are limited to low blocks/groups */
-+	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
-+		ngroups = EXT4_SB(ac->ac_sb)->s_blockfile_groups;
-+
-+	/* Pairs with smp_wmb() in ext4_update_super() */
-+	smp_rmb();
-+
-+	return ngroups;
-+}
-+
- static int ext4_mb_scan_groups_xa_range(struct ext4_allocation_context *ac,
- 					struct xarray *xa,
- 					ext4_group_t start, ext4_group_t end)
-@@ -899,7 +914,7 @@ static int ext4_mb_scan_groups_xa_range(struct ext4_allocation_context *ac,
- 	struct super_block *sb = ac->ac_sb;
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	enum criteria cr = ac->ac_criteria;
--	ext4_group_t ngroups = ext4_get_groups_count(sb);
-+	ext4_group_t ngroups = ext4_get_allocation_groups_count(ac);
- 	unsigned long group = start;
- 	struct ext4_group_info *grp;
- 
-@@ -951,7 +966,7 @@ static int ext4_mb_scan_groups_p2_aligned(struct ext4_allocation_context *ac,
- 	ext4_group_t start, end;
- 
- 	start = group;
--	end = ext4_get_groups_count(ac->ac_sb);
-+	end = ext4_get_allocation_groups_count(ac);
- wrap_around:
- 	for (i = ac->ac_2order; i < MB_NUM_ORDERS(ac->ac_sb); i++) {
- 		ret = ext4_mb_scan_groups_largest_free_order_range(ac, i,
-@@ -1001,7 +1016,7 @@ static int ext4_mb_scan_groups_goal_fast(struct ext4_allocation_context *ac,
- 	ext4_group_t start, end;
- 
- 	start = group;
--	end = ext4_get_groups_count(ac->ac_sb);
-+	end = ext4_get_allocation_groups_count(ac);
- wrap_around:
- 	i = mb_avg_fragment_size_order(ac->ac_sb, ac->ac_g_ex.fe_len);
- 	for (; i < MB_NUM_ORDERS(ac->ac_sb); i++) {
-@@ -1083,7 +1098,7 @@ static int ext4_mb_scan_groups_best_avail(struct ext4_allocation_context *ac,
- 		min_order = fls(ac->ac_o_ex.fe_len);
- 
- 	start = group;
--	end = ext4_get_groups_count(ac->ac_sb);
-+	end = ext4_get_allocation_groups_count(ac);
- wrap_around:
- 	for (i = order; i >= min_order; i--) {
- 		int frag_order;
-@@ -1182,11 +1197,7 @@ static int ext4_mb_scan_groups(struct ext4_allocation_context *ac)
- 	int ret = 0;
- 	ext4_group_t start;
- 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
--	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
+-&hdmi_sound {
+-	status = "okay";
+-};
 -
--	/* non-extent files are limited to low blocks/groups */
--	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
--		ngroups = sbi->s_blockfile_groups;
-+	ext4_group_t ngroups = ext4_get_allocation_groups_count(ac);
- 
- 	/* searching for the right group start from the goal value specified */
- 	start = ac->ac_g_ex.fe_group;
+ &i2c0 {
+ 	clock-frequency = <400000>;
+ 	i2c-scl-falling-time-ns = <4>;
 -- 
 2.51.0
 
