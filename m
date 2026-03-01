@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-222287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHZLAlOfo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-222287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:15 +0100
+	id 8FhgJFOuo2kmJwUAu9opvQ
+	(envelope-from <stable+bounces-222288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:11:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFE21CD020
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:07:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA051CE4A2
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 04:11:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7927C301105B
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E10AC31F6CA0
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 02:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30C52F12CE;
-	Sun,  1 Mar 2026 02:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A8F2F12CE;
+	Sun,  1 Mar 2026 02:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVF1eHkU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JKxYWgQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968CF259C80;
-	Sun,  1 Mar 2026 02:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F82190664;
+	Sun,  1 Mar 2026 02:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330500; cv=none; b=tBnHEm8Gchi2sbrbFXVuXDvzjy1sw7SDirbXzbO3A0KwB0jwDfZG8j2letb/nEZiXtcr0VIuF0f1NdErcyvGkiWsXGId9PTss3rSr9ZkAyZG4LwoUKH+NkgZtr5QO+tGAdJdusTxpSFNYAmVjzVdnRjyWydtsOJ8NSgWYIx9ZZM=
+	t=1772330502; cv=none; b=c+SW9aPQnFbjLw4umxaYXpi4hgtmUIR/oUvva/VIwEwTtVukQ/9ZYp/aEYqxuUDp3DXBLAatTZSVdISP3zay1gm5TssZKnY9T4bHS4WSr7MA/U8nez0PDExpoqvcXfR2GZquwtySUWn8Q8Y0D6/YBwaHwsB0L1fOT3f+Tb8y5t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330500; c=relaxed/simple;
-	bh=QF6Pu2yGyVyLBmMaTukg585WFg5+YfniypssSDEG1xo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rT6YsWaQHkggfN5gsnvwtY/PQ5wCfh5LBCqKIZ7WEjuUu8+BnhZSVzDCnxnSeqpx+xTSR0q9Hj5vzfs6FEWJYO5blqnxeLlM9TllocKwBQ68BNwR+N5MsK2LCpIeVN4J/fIjTGao1rP0Um2waTH5AG/DxuICqb1gDGAkg75xY4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVF1eHkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9498C19421;
-	Sun,  1 Mar 2026 02:01:39 +0000 (UTC)
+	s=arc-20240116; t=1772330502; c=relaxed/simple;
+	bh=2m5onBhn9eqSmDwMa32YrYK0vBGQc7R6OUCZK7fSNiQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VGBPRAR8IHubqDttkkFX5BsZFW93a6YLkZXNNsZbks7MYkwIYx2BoNzwU/Z/etsaRfG9FHI0IYKICeH3fl28q0KUCoxDFx9K9LuLsnqURV89fgVmEzJzpQnETOGhEDLLMyAdMfkcOK08RTPa+VUXMl1HKxRXB8K5PUrE3yRGYgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JKxYWgQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09C3C19421;
+	Sun,  1 Mar 2026 02:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330500;
-	bh=QF6Pu2yGyVyLBmMaTukg585WFg5+YfniypssSDEG1xo=;
+	s=k20201202; t=1772330502;
+	bh=2m5onBhn9eqSmDwMa32YrYK0vBGQc7R6OUCZK7fSNiQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=iVF1eHkUfPdED17zlCEEWkxnxeylf2JJ/wbcoEYZZA6CrMal2xy/1IgMdCab+MUDp
-	 2C1y3tL4gDOVtfSnhxBW8Nr1q4ZmAkdpOgo7oz15MvYFTHV+fyvyGVOKA0D0remJcC
-	 NbssLDSTwu25AaKFgJN/HrxKmR2diEYxu1HUgbBvAhFbyCnY3vQausedW6I2XaZFwz
-	 IR6ntYfnK5uqh68stRAI2JDQo2roLQ/t7CSpScLWVARz8Wf887Za4ncUqNw0WO7aDj
-	 RYv1fzdfC+vxPEyMZHpmp07z6c+p320sxvxBIaTSPpjjajkTo1XKvkO3f8F/uTLmWy
-	 gSeDVio5DHD2A==
+	b=JKxYWgQ10SOzplKdboGWdrogLa73saRL6prAbzI5pUd9gdG9SkL26iepI4dnJR6mr
+	 qDz/f0oQeIUmds3kZgjKZiqu5DSFSYHsH7gSlmuY9AKoiJnzaITvKUvqDdktwkioTd
+	 1KBojJiOv8k9ZBRw65V8er3u815Mf0b4JdN5Km8z3b1S89DcV7PQqxE8IqpS/PgSP+
+	 8/L9a1VlqsIGW8YRfZqcUqZYD3ZlLoZQDRP11cPZsmS5vlvXzoiixi43nlbHXGAMYs
+	 ee7QfJeCxsEeru5+rjEsgA8Qwdwo91SQ0K5YgjlYCMQ58KxNvNyYMPrWrqm9aQi2XK
+	 fO+JFhOuGPlmg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ii4gsp@gmail.com
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	linux-input@vger.kernel.org
-Subject: FAILED: Patch "Input: synaptics_i2c - guard polling restart in resume" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:01:38 -0500
-Message-ID: <20260301020138.1728997-1-sashal@kernel.org>
+	johan@kernel.org
+Cc: Andreas Kemnade <andreas@kemnade.info>,
+	Lee Jones <lee@kernel.org>,
+	linux-omap@vger.kernel.org
+Subject: FAILED: Patch "mfd: omap-usb-host: Fix OF populate on driver rebind" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:01:40 -0500
+Message-ID: <20260301020140.1729046-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,23 +66,21 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222287-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-222288-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 6CFE21CD020
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kemnade.info:email]
+X-Rspamd-Queue-Id: ECA051CE4A2
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.10-stable tree.
@@ -104,48 +103,46 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 870c2e7cd881d7a10abb91f2b38135622d9f9f65 Mon Sep 17 00:00:00 2001
-From: Minseong Kim <ii4gsp@gmail.com>
-Date: Wed, 21 Jan 2026 10:02:02 -0800
-Subject: [PATCH] Input: synaptics_i2c - guard polling restart in resume
+From 24804ba508a3e240501c521685a1c4eb9f574f8e Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Fri, 19 Dec 2025 12:07:14 +0100
+Subject: [PATCH] mfd: omap-usb-host: Fix OF populate on driver rebind
 
-synaptics_i2c_resume() restarts delayed work unconditionally, even when
-the input device is not opened. Guard the polling restart by taking the
-input device mutex and checking input_device_enabled() before re-queuing
-the delayed work.
+Since commit c6e126de43e7 ("of: Keep track of populated platform
+devices") child devices will not be created by of_platform_populate()
+if the devices had previously been deregistered individually so that the
+OF_POPULATED flag is still set in the corresponding OF nodes.
 
-Fixes: eef3e4cab72ea ("Input: add driver for Synaptics I2C touchpad")
-Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260121063738.799967-1-ii4gsp@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Switch to using of_platform_depopulate() instead of open coding so that
+the child devices are created if the driver is rebound.
+
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Cc: stable@vger.kernel.org	# 3.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+Link: https://patch.msgid.link/20251219110714.23919-1-johan@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- drivers/input/mouse/synaptics_i2c.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/mfd/omap-usb-host.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/mouse/synaptics_i2c.c b/drivers/input/mouse/synaptics_i2c.c
-index c8ddfff2605ff..29da66af36d74 100644
---- a/drivers/input/mouse/synaptics_i2c.c
-+++ b/drivers/input/mouse/synaptics_i2c.c
-@@ -615,13 +615,16 @@ static int synaptics_i2c_resume(struct device *dev)
- 	int ret;
- 	struct i2c_client *client = to_i2c_client(dev);
- 	struct synaptics_i2c *touch = i2c_get_clientdata(client);
-+	struct input_dev *input = touch->input;
+diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
+index a77b6fc790f2e..4d29a6e2ed87a 100644
+--- a/drivers/mfd/omap-usb-host.c
++++ b/drivers/mfd/omap-usb-host.c
+@@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
+ {
+ 	pm_runtime_disable(&pdev->dev);
  
- 	ret = synaptics_i2c_reset_config(client);
- 	if (ret)
- 		return ret;
- 
--	mod_delayed_work(system_dfl_wq, &touch->dwork,
--				msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
-+	guard(mutex)(&input->mutex);
-+	if (input_device_enabled(input))
-+		mod_delayed_work(system_dfl_wq, &touch->dwork,
-+				 msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
- 
- 	return 0;
+-	/* remove children */
+-	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
++	if (pdev->dev.of_node)
++		of_platform_depopulate(&pdev->dev);
++	else
++		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
  }
+ 
+ static const struct dev_pm_ops usbhsomap_dev_pm_ops = {
 -- 
 2.51.0
 
