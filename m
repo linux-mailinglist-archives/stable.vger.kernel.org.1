@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-221764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIH/K9qco2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:56:42 +0100
+	id qAjUL3+oo2mWJAUAu9opvQ
+	(envelope-from <stable+bounces-221765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:46:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE5D1CC538
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:56:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 397961CDE74
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5DDF330985EA
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68826305B2BD
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662EB2F25F0;
-	Sun,  1 Mar 2026 01:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C822F39A7;
+	Sun,  1 Mar 2026 01:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n0f68K2f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AaMZYgfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2991B2D9798;
-	Sun,  1 Mar 2026 01:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5612D9798;
+	Sun,  1 Mar 2026 01:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329081; cv=none; b=IgeoyHDVtZJio8ld0jATSN6ZxGRcNQ+bDF/nFLbp1pOPUtRcJ1knFYyeOIfb4Hl/FSOnHuQPzfafG1jy/FVsFUj6kH9zx81nMM6YUHL1Gbemuk6Og9hUwMZ/sm4JDv8dKjLA6tElGYb/G7w65gHzH+Z6aWdFpXHGKMoErzBtUcM=
+	t=1772329083; cv=none; b=mIeyaANsR3Rp8AbwqslqbZKEcNMmmiJaudIJ+vIqQVsls4F6Db88ybyKkDDpqKU8Lft98ABWAJEq0LxkgAb9wuqo2KBfypZNY4mPLQZHD7HsrYNQ7hH4yEgZY9LTBJOqtNW8iWkCwHBxNxjkBW3+Kkur6frw8kFlK0g7B0fj33U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329081; c=relaxed/simple;
-	bh=EPbM9DxZVolYFdbCWoX8rpqwv6N7lv9JH+vsk4wikks=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ONMXA/Gd1WRLgLZR0/nGcka/1WVXcY0+VO8UnmNWAVpOnTTQY2zy1WM7cKadr9PY6o8GuZ2xUrYfpR6G+WaJy1AIlqDq98iGY53qy3fMvKZiZbEVtbW8RqEnAAsasx3Bf3/v3xrSI3il7DzEAaV0ZSx5GShLGIvndXMeTYL0TB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n0f68K2f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DD2C19421;
-	Sun,  1 Mar 2026 01:38:00 +0000 (UTC)
+	s=arc-20240116; t=1772329083; c=relaxed/simple;
+	bh=qIZG7MMXRmedZlrLHNVgyp0PIjaX3N7tmpvi8z+WHNc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uQe0kvKTLQ8GM2sW7EY0E4cgl94VTFHu1Lb69ODMNpdvbasi/UowpR2wQ3A2NyP+RvNi3rF6k79gtFAUKDAeu+6g/BRSqGqq6uMRydvF3xD66UaOL8or3EdA5jmPL/7CdBcCq0X5JFpsZDM9fA0e6u4dk2o/+i8ylH/NTg+ziRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AaMZYgfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64ADC19421;
+	Sun,  1 Mar 2026 01:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329081;
-	bh=EPbM9DxZVolYFdbCWoX8rpqwv6N7lv9JH+vsk4wikks=;
+	s=k20201202; t=1772329083;
+	bh=qIZG7MMXRmedZlrLHNVgyp0PIjaX3N7tmpvi8z+WHNc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=n0f68K2fCBNWYhmta0iOzU05mwNgZ9zYB6dSPC5N8Ix+uX6hUt+2rXrWpkOUNOYay
-	 Dc2hij+SVkh3VYJsh8K5vCU1XiQ33emVxIGIz545bVi7DwGST2bCdRD8OQM9UfpX2A
-	 ATXYLrKHw/COvejU0hSy45rRia87i2JhDNChRBOewQ3SqAY2+d3f+j5RjNTnHBQd8k
-	 988kyjv9H0aa2jod/5oiH3kOsyvtVQ/rZVw08sApoefAfO75+8t/RDIMUKA6BR8fHU
-	 SmyN8dDN94hlMc9AhsqOcAhI8aFfiDIaei/6NZ64RTc2YrEa6RbCXh6fMQPskdLN+h
-	 dA+AsPCnjPV6A==
+	b=AaMZYgfMmKqYyTCkLe40WZ0Fb3hCIvhk3sdcf540l/kZEpF6c4lKUojyHseiVNp22
+	 PYnNPUhilBl4ZxDY5K+kEMssATC5L3GUsCeEkJFH50VbThcW3JjIn1ayWzFaVCDV3j
+	 fQnim0PRHkW3hG0fGDbYTU6VMkm5MjLK+04z9F25Z/hYt5c9d60VF/IeNxZZd8ikQ6
+	 9Le2QZmVmmmohcT/j4ssJY6t7BUt9OhQI8Q9VTLdwX9fgVQjFWdkHJSCW3XGgA7EMV
+	 gO7JdznbJ5e5jT11yXNTnnqTkcLMj0F2GxkkFmBKRORNVJpI6+7aeL45S2C3l8lnTQ
+	 kLT0HEh9Wj3jQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	jiaxun.yang@flygoat.com
-Cc: Waldemar Brodkorb <wbx@openadk.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mips@vger.kernel.org
-Subject: FAILED: Patch "MIPS: rb532: Fix MMIO UART resource registration" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:37:59 -0500
-Message-ID: <20260301013759.1698288-1-sashal@kernel.org>
+	ojeda@kernel.org
+Cc: David Wood <david@davidtw.co>,
+	Wesley Wiser <wwiser@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	rust-for-linux@vger.kernel.org
+Subject: FAILED: Patch "rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:38:01 -0500
+Message-ID: <20260301013801.1698337-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,19 +69,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221764-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[davidtw.co,gmail.com,garyguo.net,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221765-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,9 +90,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,franken.de:email,flygoat.com:email,openadk.org:email]
-X-Rspamd-Queue-Id: AFE5D1CC538
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,davidtw.co:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 397961CDE74
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -103,49 +105,61 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From e93bb4b76cfefb302534246e892c7667491cb8cc Mon Sep 17 00:00:00 2001
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 5 Feb 2026 10:08:42 +0000
-Subject: [PATCH] MIPS: rb532: Fix MMIO UART resource registration
+From 0a9be83e57de0d0ca8ca4ec610bc344f17a8e5e7 Mon Sep 17 00:00:00 2001
+From: Miguel Ojeda <ojeda@kernel.org>
+Date: Fri, 6 Feb 2026 21:45:35 +0100
+Subject: [PATCH] rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0
 
-Since commit 6e690d54cfa8 ("serial: 8250: fix return error code in
-serial8250_request_std_resource()"), registering an 8250 MMIO port
-without mapbase no longer works, as the resource range is derived from
-mapbase/mapsize.
+Custom target specifications are unstable, but starting with Rust 1.95.0,
+`rustc` requires to explicitly pass `-Zunstable-options` to use them [1]:
 
-Populate mapbase and mapsize accordingly. Also drop ugly membase KSEG1
-pointer and set UPF_IOREMAP instead, letting the 8250 core perform the
-ioremap.
+    error: error loading target specification: custom targets are unstable and require `-Zunstable-options`
+      |
+      = help: run `rustc --print target-list` for a list of built-in targets
 
-Fixes: 6e690d54cfa8 ("serial: 8250: fix return error code in serial8250_request_std_resource()")
-Cc: stable@vger.kernel.org
-Reported-by: Waldemar Brodkorb <wbx@openadk.org>
-Link: https://lore.kernel.org/linux-mips/aX-d0ShTplHKZT33@waldemar-brodkorb.de/
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+David (Rust compiler team lead), writes:
+
+   "We're destabilising custom targets to allow us to move forward with
+    build-std without accidentally exposing functionality that we'd like
+    to revisit prior to committing to. I'll start a thread on Zulip to
+    discuss with the RfL team how we can come up with an alternative
+    for them."
+
+Thus pass it.
+
+Cc: David Wood <david@davidtw.co>
+Cc: Wesley Wiser <wwiser@gmail.com>
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/151534 [1]
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Tested-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260206204535.39431-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- arch/mips/rb532/devices.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ rust/Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
-index b7f6f782d9a13..ffa4d38ca95df 100644
---- a/arch/mips/rb532/devices.c
-+++ b/arch/mips/rb532/devices.c
-@@ -212,11 +212,12 @@ static struct platform_device rb532_wdt = {
- static struct plat_serial8250_port rb532_uart_res[] = {
- 	{
- 		.type           = PORT_16550A,
--		.membase	= (char *)KSEG1ADDR(REGBASE + UART0BASE),
-+		.mapbase        = REGBASE + UART0BASE,
-+		.mapsize        = 0x1000,
- 		.irq		= UART0_IRQ,
- 		.regshift	= 2,
- 		.iotype		= UPIO_MEM,
--		.flags		= UPF_BOOT_AUTOCONF,
-+		.flags		= UPF_BOOT_AUTOCONF | UPF_IOREMAP,
- 	},
- 	{
- 		.flags		= 0,
+diff --git a/rust/Makefile b/rust/Makefile
+index 4dcc2eff51cb2..725158740fc6f 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -552,6 +552,8 @@ $(obj)/$(libpin_init_internal_name): private rustc_target_flags = --cfg kernel
+ $(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs FORCE
+ 	+$(call if_changed_dep,rustc_procmacro)
+ 
++# `rustc` requires `-Zunstable-options` to use custom target specifications
++# since Rust 1.95.0 (https://github.com/rust-lang/rust/pull/151534).
+ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L $@
+       cmd_rustc_library = \
+ 	OBJTREE=$(abspath $(objtree)) \
+@@ -562,6 +564,7 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
+ 		--crate-type rlib -L$(objtree)/$(obj) \
+ 		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
+ 		--sysroot=/dev/null \
++		-Zunstable-options \
+ 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@) \
+ 	$(cmd_objtool)
+ 
 -- 
 2.51.0
 
