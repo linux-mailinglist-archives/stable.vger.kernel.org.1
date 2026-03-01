@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-221937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPRuHj2eo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:37 +0100
+	id KDOEL0Ceo2k3IQUAu9opvQ
+	(envelope-from <stable+bounces-221938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40E81CCB06
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED491CCB1C
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 03:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90118331B29D
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5CFA331D14A
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5BB19D07A;
-	Sun,  1 Mar 2026 01:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8412DCBFA;
+	Sun,  1 Mar 2026 01:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TridZdTZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rw3wLAMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D022D9798;
-	Sun,  1 Mar 2026 01:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8B12DC349;
+	Sun,  1 Mar 2026 01:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329505; cv=none; b=YtcvzblIy2wRMzevXJ4HCHBBtfzvBIY61b8ea0LJyocYKYylbrlaHkv8oOKqYboPcryrawb+QUO36e/BhyirJBdtJqnc40d1I1Hp38P/AUdwvbo1Mu/DsnQfAfYUNn15I5h3l+4H5C8i7vlqoIxy0AUmgPkBfKWpEgMimlptZA8=
+	t=1772329507; cv=none; b=iNgH6hyou2Adodl0r+xenLdw5v0prsdp4YIATCTZBhQyomO6kzqQdl3besY28msPSbeaMTqX5yKl0oe3Inb5hikf2pjxdD+YZCvJOF0H9qSjpCBfCf8g7MrJbFyiPIyZ/8Sc949YRx4ZySdWJg8OgyqxFGG2XdfQnOz7zcPivX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329505; c=relaxed/simple;
-	bh=jkGWg05M3okTPXJcaUkkRsRkBHXGo1RXAOfT/0/6vxg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=llmrHrOI6fFefwuXDe5exZx3t2VHfW9c+s1Oqw0L5fly+PaxVJjXS8KYzf9AhczihU9CL84IVSiwvxdSij4ATG7iHnG4IZZ7/tOVxR+5ne8BeHHmSfvcYEbOwqdbKTkJhMaMZFxW8T0YbEp/N0Ih2af+imLlUFvmVRzAWQblOrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TridZdTZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2BDC19421;
-	Sun,  1 Mar 2026 01:45:03 +0000 (UTC)
+	s=arc-20240116; t=1772329507; c=relaxed/simple;
+	bh=r7w0U+t3BkYHSoclmCe+XAJmVrbSuVYfKVg+jGqjFdw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CeLF3PYhScts1dCUaHmqdjisGBekuqKMvLDcA7q3rcRtUhh/BeUOPzaLosqzBnky163cHaSZyAFRjxSvQAbe8TlG4Y4+mFGyJxDsKSjct4FAeXlXdfoK1nBacdURcpTBYVTg5lQT0U6ktUaD43Z+AgIViECYwdFme6sQaTftI5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rw3wLAMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B600C19424;
+	Sun,  1 Mar 2026 01:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329504;
-	bh=jkGWg05M3okTPXJcaUkkRsRkBHXGo1RXAOfT/0/6vxg=;
+	s=k20201202; t=1772329507;
+	bh=r7w0U+t3BkYHSoclmCe+XAJmVrbSuVYfKVg+jGqjFdw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=TridZdTZCn5VCfiqyFdss6FAikyWUZNCJ39HPLpWolMFyw0U0f3qcuvIqtKCWhUNx
-	 ov+vT8nWhBJxJhfyyQvGffxunTx7aooaR8Fk78tmiEgZ/rbnH9+y1M17sglTOq43+3
-	 XOKkiMf2E3PLWiUv0ptHTUU5QaTjvAd0IptzyJh+SZ2q/tq/LlTxe+tKzz3K9BVn0d
-	 T2EGp+3QIipxSFRYaE0WQ/nJvfWF/yxIhjHe+D9sp51RbBqilxnPizwwDzl3v+p1a6
-	 lxeAI4pGqPJg56L9/KpbgeDi/YT4mdqDaSOD9Rb8kSId/24Ln0oh93ZE/OyzckYyBG
-	 8d+fpiIQP1nmQ==
+	b=Rw3wLAMP93vKF568TyH9/YiMrMkAVBYpBk8r2vXueMJwN6DiW4IcOkGBQQrnouyZI
+	 lJzmxtGxx9CGy4nR3k7JzaGit0eB06b8ZcuLPb3fctMQC/WX4a5/Wx3rnYv5qeHoWW
+	 xHIoh8GPdilgJY1574/ssaF71TLcRblnhW9ZNaoYr/TB/a0fQB/gRInPWbnqqMhadv
+	 gcrGEGYsAmJ8PPu807GarFAxSm0aGw5kdOUIRLtFWPu0pSfU2W5yJhY6mLmlQ1+/bl
+	 BqjVzFFGasPCj1X/9XoKs/GpItuIcaADzn8RiI6HEYdB/0RoW7mctYI4/EFblOk5U4
+	 UvMbt4zAhJqqg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	peng.fan@nxp.com
-Cc: Daniel Baluta <daniel.baluta@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "remoteproc: imx_rproc: Fix invalid loaded resource table detection" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:45:02 -0500
-Message-ID: <20260301014502.1707549-1-sashal@kernel.org>
+	thomasyen@google.com
+Cc: Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: FAILED: Patch "scsi: ufs: core: Flush exception handling work when RPM level is zero" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:45:05 -0500
+Message-ID: <20260301014505.1707608-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,7 +77,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221937-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221938-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -84,15 +85,15 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: D40E81CCB06
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,mediatek.com:email]
+X-Rspamd-Queue-Id: 2ED491CCB1C
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -105,55 +106,49 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 26aa5295010ffaebcf8f1991c53fa7cf2ee1b20d Mon Sep 17 00:00:00 2001
-From: Peng Fan <peng.fan@nxp.com>
-Date: Thu, 29 Jan 2026 09:44:48 +0800
-Subject: [PATCH] remoteproc: imx_rproc: Fix invalid loaded resource table
- detection
+From f8ef441811ec413717f188f63d99182f30f0f08e Mon Sep 17 00:00:00 2001
+From: Thomas Yen <thomasyen@google.com>
+Date: Fri, 30 Jan 2026 00:51:51 +0800
+Subject: [PATCH] scsi: ufs: core: Flush exception handling work when RPM level
+ is zero
 
-imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
-resource table even when the current firmware does not provide one.
+Ensure that the exception event handling work is explicitly flushed during
+suspend when the runtime power management level is set to UFS_PM_LVL_0.
 
-When the device tree contains a "rsc-table" entry, priv->rsc_table is
-non-NULL and denotes where a resource table would be located if one is
-present in memory. However, when the current firmware has no resource
-table, rproc->table_ptr is NULL. The function still returns
-priv->rsc_table, and the remoteproc core interprets this as a valid loaded
-resource table.
+When the RPM level is zero, the device power mode and link state both
+remain active. Previously, the UFS core driver bypassed flushing exception
+event handling jobs in this configuration. This created a race condition
+where the driver could attempt to access the host controller to handle an
+exception after the system had already entered a deep power-down state,
+resulting in a system crash.
 
-Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
-there is no resource table for the current firmware (i.e. when
-rproc->table_ptr is NULL). This aligns the function's semantics with the
-remoteproc core: a loaded resource table is only reported when a valid
-table_ptr exists.
+Explicitly flush this work and disable auto BKOPs before the suspend
+callback proceeds. This guarantees that pending exception tasks complete
+and prevents illegal hardware access during the power-down sequence.
 
-With this change, starting firmware without a resource table no longer
-triggers a crash.
-
-Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://lore.kernel.org/r/20260129-imx-rproc-fix-v3-1-fc4e41e6e750@nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: 57d104c153d3 ("ufs: add UFS power management support")
+Signed-off-by: Thomas Yen <thomasyen@google.com>
+Cc: Stable Tree <stable@vger.kernel.org>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260129165156.956601-1-thomasyen@google.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 ---
- drivers/remoteproc/imx_rproc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ufs/core/ufshcd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 375de79168a1c..f5f916d679051 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
- {
- 	struct imx_rproc *priv = rproc->priv;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 66223d2908532..8349fe2090db6 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -9998,6 +9998,8 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
  
-+	/* No resource table in the firmware */
-+	if (!rproc->table_ptr)
-+		return NULL;
-+
- 	if (priv->rsc_table)
- 		return (struct resource_table *)priv->rsc_table;
+ 	if (req_dev_pwr_mode == UFS_ACTIVE_PWR_MODE &&
+ 			req_link_state == UIC_LINK_ACTIVE_STATE) {
++		ufshcd_disable_auto_bkops(hba);
++		flush_work(&hba->eeh_work);
+ 		goto vops_suspend;
+ 	}
  
 -- 
 2.51.0
