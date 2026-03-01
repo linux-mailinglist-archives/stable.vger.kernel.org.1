@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-221367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wIk6A/KUo2n3HQUAu9opvQ
-	(envelope-from <stable+bounces-221367-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:22:58 +0100
+	id 4Kb3EhuWo2l7HQUAu9opvQ
+	(envelope-from <stable+bounces-221368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE931CA574
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:22:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A801CAAB6
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:27:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C8346302C73D
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:21:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A21A305C2A7
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C2F274B5F;
-	Sun,  1 Mar 2026 01:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B2B27FB3A;
+	Sun,  1 Mar 2026 01:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qqewTdWi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QS44EVlM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F892BD0B;
-	Sun,  1 Mar 2026 01:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED58E2749C1;
+	Sun,  1 Mar 2026 01:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328085; cv=none; b=uLqTG2ZraAOwHfwNoEteiefEKKDg5mi7/EE0tb4s2RzIIybNm8jH0HEps8KwM3n3YmcHHwQUS2Tep2SruHRDyB9AVDbthqqieUWagAYq3knyPHBfTNqHR3SGVyQItOojxk39zvAoF0OeNx75ZbmDmD018SRhRhnx4zIbhTo5Uyg=
+	t=1772328088; cv=none; b=iuaExAK4nnPjYNRjzIj3p3Ze89PhnhjPbfic1wckbcvLKp5Qa6kvWOzbosQPCclstHFOM8sNBMzqdJwlCkPLUvOemLHaNuN/pHe6rlrwgVtM5VarJNOEhEQYCcqcIfuAPqsXjqeoygKqCwlQPHSXm/3TnLjP7Cf1eoKqicBOESA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328085; c=relaxed/simple;
-	bh=cStXjZw7ZuEYg6hpY1Da/79s+sXlHNHkAc0ebc5k6So=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PlYx89xBjZHbiDXh7hDChtWs14ru4zgj4p673Xwtqm0IEh37G5kmeFjbbywTGYr86W/cqDpX9GlCZmEwnG673gDGvTWms6tbMb4DGzZzVnexWGKgItZ06tT97DmoWVRwKbdBnw2f6l/wjArHcOmhJ+TCvfRF1+ja8D4Xkr75r4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qqewTdWi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37B2C2BC87;
-	Sun,  1 Mar 2026 01:21:24 +0000 (UTC)
+	s=arc-20240116; t=1772328088; c=relaxed/simple;
+	bh=7jmpjCigquPdyWW4HUmzCGZIlkMhHpQ/ZZIdZBrCyiY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bhgaLQf9J+XZ+HGvJEXLyRYZvNUt9K4Q5q6NhCZVAum8Aw/PtVQrtLfxsW/W0HfIP3+ZE/6aU50B/fG1sp29DMkCVvsgma0hlbTU0NnW6DQY3SOtlhEpSkf3ccx+y0fGb/5l1FDcvne9sSwcDVe5mvEcZx6EYy3QKTpaT2HA+JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QS44EVlM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B03EC19425;
+	Sun,  1 Mar 2026 01:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328085;
-	bh=cStXjZw7ZuEYg6hpY1Da/79s+sXlHNHkAc0ebc5k6So=;
+	s=k20201202; t=1772328087;
+	bh=7jmpjCigquPdyWW4HUmzCGZIlkMhHpQ/ZZIdZBrCyiY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=qqewTdWiS+TWTom0KgacxrEk1idMHYNuBz3yUGUsMxsFM3HP4CrKyO19Ob0WOiCHP
-	 KZvIAWf3MIK3xnsWX+yIkpLwOkDjj02YtkCO/n+YGYOAR6EmyLoZL1EA865GWPxrxz
-	 YqkHvm8UAVeek6kUffIRy9iuUHMGcvRBbc/yTZEB+5VDIdxT0rDJrUhSQcJQvQfBOQ
-	 MlGWo2B/NUB6lZoNuRni5l9zAVJ7leh0tRJco6Pn87zuQ2FHpk1FnLef8FgcUmG6oT
-	 2iaqrgzvVFMmmffbDMV9wDGi7ATUusyBeSPTF2bqTN/OeE5lTEpEFod1g1dnuNYNGY
-	 rNL9eXJHHI3sQ==
+	b=QS44EVlMStg1rNkMbOoMOtwMw5bAJaiPRlv4ourn0EdngyOZg6lYissv+JMbmtv3r
+	 R/AJc1w8eLWuaYlxmW1BV2oG6eKXyaxlj2bG7EBP2r983raZnEOTtOXpNdbWh9ARqN
+	 2I5s5M02lPGXKPFA4mZkN2OC6qS0MyiFtG8QWMdHwCj4Rtcpth1TPFrVVghTe8HnF3
+	 LcrGF0wf6ivXYlkMWCoUS6MnX8diEgTm2hGs1mzgG6o0do75khaXIRJk43KLaDc4co
+	 1FO8TA13qaVTf0l2v4SBBrXScKoLGn+EPgjUsNPffh6n9G5gWzVHX5/XdDK4WDtDcv
+	 STlc91ZCFPj8w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	alain.volmat@foss.st.com
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	linux-media@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "media: stm32: dcmipp: bytecap: clear all interrupts upon stream stop" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:21:23 -0500
-Message-ID: <20260301012123.1677297-1-sashal@kernel.org>
+	johan@kernel.org
+Cc: Kevin Hilman <khilman@baylibre.com>,
+	linux-omap@vger.kernel.org
+Subject: FAILED: Patch "bus: omap-ocp2scp: fix OF populate on driver rebind" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:21:25 -0500
+Message-ID: <20260301012126.1677346-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,35 +62,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221367-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221368-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,st.com:email]
-X-Rspamd-Queue-Id: AAE931CA574
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 73A801CAAB6
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -106,40 +102,66 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 222f1279edd9008ee35b62de156ddac84e31443c Mon Sep 17 00:00:00 2001
-From: Alain Volmat <alain.volmat@foss.st.com>
-Date: Fri, 19 Dec 2025 15:30:35 +0100
-Subject: [PATCH] media: stm32: dcmipp: bytecap: clear all interrupts upon
- stream stop
+From 5eb63e9bb65d88abde647ced50fe6ad40c11de1a Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Fri, 19 Dec 2025 12:01:19 +0100
+Subject: [PATCH] bus: omap-ocp2scp: fix OF populate on driver rebind
 
-Ensure that there are no pending interrupts after we have stopped the
-pipeline. Indeed, it could happen that new interrupt has been generated
-during the stop_streaming processing hence clear them in order to avoid
-getting a new interrupt right from the start of a next start_streaming.
+Since commit c6e126de43e7 ("of: Keep track of populated platform
+devices") child devices will not be created by of_platform_populate()
+if the devices had previously been deregistered individually so that the
+OF_POPULATED flag is still set in the corresponding OF nodes.
 
-Fixes: 28e0f3772296 ("media: stm32-dcmipp: STM32 DCMIPP camera interface driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Switch to using of_platform_depopulate() instead of open coding so that
+the child devices are created if the driver is rebound.
+
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Cc: stable@vger.kernel.org      # 3.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251219110119.23507-1-johan@kernel.org
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 ---
- drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/bus/omap-ocp2scp.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
-index 1c1b6b48918ee..b18e273ef4a3e 100644
---- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
-+++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
-@@ -512,6 +512,9 @@ static void dcmipp_bytecap_stop_streaming(struct vb2_queue *vq)
- 	/* Disable pipe */
- 	reg_clear(vcap, DCMIPP_P0FSCR, DCMIPP_P0FSCR_PIPEN);
+diff --git a/drivers/bus/omap-ocp2scp.c b/drivers/bus/omap-ocp2scp.c
+index e4dfda7b3b102..eee5ad191ea9c 100644
+--- a/drivers/bus/omap-ocp2scp.c
++++ b/drivers/bus/omap-ocp2scp.c
+@@ -17,15 +17,6 @@
+ #define OCP2SCP_TIMING 0x18
+ #define SYNC2_MASK 0xf
  
-+	/* Clear any pending interrupts */
-+	reg_write(vcap, DCMIPP_CMFCR, DCMIPP_CMIER_P0ALL);
-+
- 	spin_lock_irq(&vcap->irqlock);
+-static int ocp2scp_remove_devices(struct device *dev, void *c)
+-{
+-	struct platform_device *pdev = to_platform_device(dev);
+-
+-	platform_device_unregister(pdev);
+-
+-	return 0;
+-}
+-
+ static int omap_ocp2scp_probe(struct platform_device *pdev)
+ {
+ 	int ret;
+@@ -79,7 +70,7 @@ static int omap_ocp2scp_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
  
- 	/* Return all queued buffers to vb2 in ERROR state */
+ err0:
+-	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
++	of_platform_depopulate(&pdev->dev);
+ 
+ 	return ret;
+ }
+@@ -87,7 +78,7 @@ static int omap_ocp2scp_probe(struct platform_device *pdev)
+ static void omap_ocp2scp_remove(struct platform_device *pdev)
+ {
+ 	pm_runtime_disable(&pdev->dev);
+-	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
++	of_platform_depopulate(&pdev->dev);
+ }
+ 
+ #ifdef CONFIG_OF
 -- 
 2.51.0
 
