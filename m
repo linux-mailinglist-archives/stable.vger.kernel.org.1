@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-221939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221940-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEeDAnObo2l4IAUAu9opvQ
-	(envelope-from <stable+bounces-221939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:43 +0100
+	id EDWRH1Wbo2kwIAUAu9opvQ
+	(envelope-from <stable+bounces-221940-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B001CBF7F
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DD41CBF06
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1FB3830603C4
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F392B304EED9
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA5A2E7164;
-	Sun,  1 Mar 2026 01:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4341A2DF13E;
+	Sun,  1 Mar 2026 01:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BErxteEw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j/340FT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BF92D9ECA
-	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0734C2D9ECA;
+	Sun,  1 Mar 2026 01:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329510; cv=none; b=hjgODG759N1Fezonf1ZXtf+YudjF3BBXonVbAfmDKXUZTTM6IdwPHji2ZdK0W450dclqGQCOW10nrX0M07Ez5/M+Fty91JDZRposoI5qTGBFmb82yg+senoNrFs5xuz1u8OZwfBgL/stnfD0SXfXeAF476yhxJWMns4IX+vvK6w=
+	t=1772329512; cv=none; b=bCsf4y2MTJR4hNWvmD00J3ceA2TILcE6O0b5MsS4bYqdvmQk+u0G1UfwT8Mf6hNj8DdtnhlFXZmIlz92CRbJvxao9F5ZojN3XZpYP7PN/toRc3Jd9ds3EfNXCQy2fdTjVI2TpmcpyrBzFVT6yd76g7KkE2qebG0RA8OEbLrxw3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329510; c=relaxed/simple;
-	bh=jg534zdcz6ZbicqVI0eVcQ15m42V1YwShpeGG92oE0M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nG874o9DA5n750pq2moYsYS53/o3zZHGbAhxqQRhPqhiGc5uBxW+bJR+NMhllkKRNgGahuLPV1I+pFYa44vX7nyxmOk71qFm5u8ym9F4Zw79b6EoUEVKV9ioSMVLlV3u/cp5YGh3kfkB3MAUvSLeKFee3KTI9vl84u42U/MYgT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BErxteEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A74C19424;
-	Sun,  1 Mar 2026 01:45:08 +0000 (UTC)
+	s=arc-20240116; t=1772329512; c=relaxed/simple;
+	bh=2hxJfozeLMCWE19w0PVfe8pNj4ZbL2XeOs7k/7SUp5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D5280MCXTmLq47zh6u/EhCKBWhdANH+20hHr/XPtDPG/zt93H88Ae1C8Y+i8EhXUv2Mm9s7GsOwsBqFL5t+lRLGKHMn/zo1AkOMgG742Pf5PtjGxHMlIeKAFRPBh6a/XWxJGyYYsLKQxLt09550Pn32y5764LIEFP9nfr8c9BOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j/340FT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583FEC19421;
+	Sun,  1 Mar 2026 01:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329509;
-	bh=jg534zdcz6ZbicqVI0eVcQ15m42V1YwShpeGG92oE0M=;
+	s=k20201202; t=1772329511;
+	bh=2hxJfozeLMCWE19w0PVfe8pNj4ZbL2XeOs7k/7SUp5I=;
 	h=From:To:Cc:Subject:Date:From;
-	b=BErxteEwzzkrex8wuy1zhG2nczeL7ajymk6euZne2zYp2rFR7dud1tfZbZ+4QXWV4
-	 vTmH762E6a5qM2uRKE6tNkSF1Id0i5aDE1Ht0nM7PgP2VTt/oFzWvX+Ki74rZ2B16U
-	 c7KCqW/t7GnuTiCSG6nTmujabk2ZE1rDq1rx3NehGLgVTHeYCSUrRNYWvzAnD+BQK3
-	 5eDKijJLiKkUYe6H3NNzb7i7K6lonE/qBW8eyXN02yc/Fgyn4+rfvCkZOWSpMF3MSp
-	 gBdg8etNlEoUFA/kJrJP3kGLD4C+ewpvgBGVRwWgBv1yHC1AU6bTt5ua/ucvRvGTQn
-	 3HaoRrnZQgKfQ==
+	b=j/340FT81fREUl96E+Kzs1NUywbL+zRJLwdL/RK0S6fq+UEHKHaUXFsCBZnwmWuPB
+	 tqeN6xFEkjZEUUuI6k14Yji4F+fuII79DXej21eiHZB8ceFvOIH13rntSJaKiFnJd2
+	 xveax5ORFPt2ExntDHq8BQRCIYDCXALWtmcesD3g4TVYu/9Tv0VHNVqFpOtRbyE8um
+	 VsgOr6FJDsDzdhCELyGNCg3Rf1P1PQUmW8NoT4XoDw2nEgR5JlhszxWpICGFqLusIV
+	 PZy8fgcvFi67W8+dLYJXL9velZzLhnxQHIVcu0kfrWAU/chEmXkQy9uTCzsP4jKa/+
+	 Am3LUkSlBQGAQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	harry.yoo@oracle.com
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	linux-mm@kvack.org
-Subject: FAILED: Patch "mm/slab: use unsigned long for orig_size to ensure proper metadata align" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:45:07 -0500
-Message-ID: <20260301014507.1707658-1-sashal@kernel.org>
+	jszhang@kernel.org
+Cc: stable <stable@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org
+Subject: FAILED: Patch "usb: dwc2: fix resume failure if dr_mode is host" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:45:09 -0500
+Message-ID: <20260301014510.1707709-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,26 +63,24 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,suse.cz,kvack.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221939-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221940-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,9 +88,9 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.cz:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: 74B001CBF7F
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 30DD41CBF06
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -105,103 +103,47 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b85f369b81aed457acbea4ad3314218254a72fd2 Mon Sep 17 00:00:00 2001
-From: Harry Yoo <harry.yoo@oracle.com>
-Date: Tue, 13 Jan 2026 15:18:37 +0900
-Subject: [PATCH] mm/slab: use unsigned long for orig_size to ensure proper
- metadata align
+From a52e4f2dff413b58c7200e89bb6540bd995e1269 Mon Sep 17 00:00:00 2001
+From: Jisheng Zhang <jszhang@kernel.org>
+Date: Thu, 29 Jan 2026 10:15:34 +0800
+Subject: [PATCH] usb: dwc2: fix resume failure if dr_mode is host
 
-When both KASAN and SLAB_STORE_USER are enabled, accesses to
-struct kasan_alloc_meta fields can be misaligned on 64-bit architectures.
-This occurs because orig_size is currently defined as unsigned int,
-which only guarantees 4-byte alignment. When struct kasan_alloc_meta is
-placed after orig_size, it may end up at a 4-byte boundary rather than
-the required 8-byte boundary on 64-bit systems.
+commit 13b1f8e25bfd1 ("usb: dwc2: Force mode optimizations") removed the
+dwc2_force_mode(hsotg, true) in dwc2_force_dr_mode() if dr_mode is host.
 
-Note that 64-bit architectures without HAVE_EFFICIENT_UNALIGNED_ACCESS
-are assumed to require 64-bit accesses to be 64-bit aligned.
-See HAVE_64BIT_ALIGNED_ACCESS and commit adab66b71abf ("Revert:
-"ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"") for more details.
+But this brings a bug: the controller fails to resume back as host,
+further debugging shows that the controller is resumed as peripheral.
+The reason is dwc2_force_dr_mode() missed the host mode forcing, and
+when resuming from s2ram, GINTSTS is 0 by default, dwc2_is_device_mode
+in dwc2_resume() misreads this as the controller is in peripheral mode.
 
-Change orig_size from unsigned int to unsigned long to ensure proper
-alignment for any subsequent metadata. This should not waste additional
-memory because kmalloc objects are already aligned to at least
-ARCH_KMALLOC_MINALIGN.
+Fix the resume failure by adding back the dwc2_force_mode(hsotg, true).
 
-Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo
-Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: stable@vger.kernel.org
-Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo/
-Link: https://patch.msgid.link/20260113061845.159790-2-harry.yoo@oracle.com
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Then an obvious question is: why this bug hasn't been observed and fixed
+for about six years? There are two resons: most dwc2 platforms set the
+dr_mode as otg; Some platforms don't have suspend & resume support yet.
+
+Fixes: 13b1f8e25bfd1 ("usb: dwc2: Force mode optimizations")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://patch.msgid.link/20260129021534.10411-1-jszhang@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/usb/dwc2/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 152fe53d0fb5a..2c000dddcf74f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -854,7 +854,7 @@ static inline bool slab_update_freelist(struct kmem_cache *s, struct slab *slab,
-  * request size in the meta data area, for better debug and sanity check.
-  */
- static inline void set_orig_size(struct kmem_cache *s,
--				void *object, unsigned int orig_size)
-+				void *object, unsigned long orig_size)
+diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+index c3d24312db0fe..f375c5185bfe2 100644
+--- a/drivers/usb/dwc2/core.c
++++ b/drivers/usb/dwc2/core.c
+@@ -578,6 +578,7 @@ void dwc2_force_dr_mode(struct dwc2_hsotg *hsotg)
  {
- 	void *p = kasan_reset_tag(object);
- 
-@@ -864,10 +864,10 @@ static inline void set_orig_size(struct kmem_cache *s,
- 	p += get_info_end(s);
- 	p += sizeof(struct track) * 2;
- 
--	*(unsigned int *)p = orig_size;
-+	*(unsigned long *)p = orig_size;
- }
- 
--static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
-+static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
- {
- 	void *p = kasan_reset_tag(object);
- 
-@@ -880,7 +880,7 @@ static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
- 	p += get_info_end(s);
- 	p += sizeof(struct track) * 2;
- 
--	return *(unsigned int *)p;
-+	return *(unsigned long *)p;
- }
- 
- #ifdef CONFIG_SLUB_DEBUG
-@@ -1195,7 +1195,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 	if (slub_debug_orig_size(s))
--		off += sizeof(unsigned int);
-+		off += sizeof(unsigned long);
- 
- 	off += kasan_metadata_size(s, false);
- 
-@@ -1407,7 +1407,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 		if (s->flags & SLAB_KMALLOC)
--			off += sizeof(unsigned int);
-+			off += sizeof(unsigned long);
- 	}
- 
- 	off += kasan_metadata_size(s, false);
-@@ -8040,7 +8040,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 
- 		/* Save the original kmalloc request size */
- 		if (flags & SLAB_KMALLOC)
--			size += sizeof(unsigned int);
-+			size += sizeof(unsigned long);
- 	}
- #endif
- 
+ 	switch (hsotg->dr_mode) {
+ 	case USB_DR_MODE_HOST:
++		dwc2_force_mode(hsotg, true);
+ 		/*
+ 		 * NOTE: This is required for some rockchip soc based
+ 		 * platforms on their host-only dwc2.
 -- 
 2.51.0
 
