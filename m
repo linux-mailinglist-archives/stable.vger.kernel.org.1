@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-221530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6A70GdSYo2neHgUAu9opvQ
-	(envelope-from <stable+bounces-221530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:39:32 +0100
+	id qKsLCsyXo2lIHwUAu9opvQ
+	(envelope-from <stable+bounces-221531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70F41CB3F7
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:39:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3307F1CB07F
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:35:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C4C3319CEBA
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:28:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 243D73038ECB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB65C29C338;
-	Sun,  1 Mar 2026 01:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D0828725B;
+	Sun,  1 Mar 2026 01:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8Vo+ttC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hGPClajh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7F328725B;
-	Sun,  1 Mar 2026 01:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2507418E02A
+	for <stable@vger.kernel.org>; Sun,  1 Mar 2026 01:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328494; cv=none; b=DXPdjLlhxW96noIaO2b4kvtwav1lk8oo3SpOX4Xx7EXRiSttFeE0gFKgOctqKurRcUB6+1QIeNE7gqdzmWX3lcICiXjk9PAoQd6asxm/HLiV/DpkfFK/B7YJ3xg5yQCI8SP+hxJIJ9xR6uGMb+bGYri/I1UiivwFWMWMIeWUE/Y=
+	t=1772328498; cv=none; b=uBBfGObmQnq2ZNYzgsytq/Pb5b5vszQ3R+KGh82op9lb5hcqe4vlTxm9we4aBziVR7OkkISQ/lLkHXHF/a9OE4pPsMUtD6fFA2SAqt6pF7eIzEIU6FtS/iPplnnUCHa+VWa80IyALJPpsiTlfV3f+5K+cLU+Mzc00DqFmoe0bbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328494; c=relaxed/simple;
-	bh=caGLC4eiAMQuTnRrjh2L4wlwOWWY1jUeLUW3d4w/g0c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=feNWgHFCimEGfAsN5q8B7HRvR+GyWBVwoRqpWQ2DUbhLbqukVMmQvJyyWCC+j4h3jX1qm0P5h551MycEWB6elPtl/0N+6/6StyXuGNk9b0zzPwjogtgF8v2zrJyOrMwnb5mJd9H2lDQ5iVBi7iHIDJhIEnyFAhoGkg9BykT9CB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8Vo+ttC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE031C19424;
-	Sun,  1 Mar 2026 01:28:13 +0000 (UTC)
+	s=arc-20240116; t=1772328498; c=relaxed/simple;
+	bh=uZSPF6GPP0WbRuuCad51sajMaKr6yVGOXS/Sly8vZW0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Sz4E+N8hT4BPKgNlfiSNEYJIUCjq39m3U1bHRM1NnVXiQ91n1eKL0/B6ccDbu1sWrMonSG46304yUHrugbUeZDb5ueqLANxXaU2Ob9veosaSuvhsNCPhS0S+fO/emm29IqLXS8uJQ8egdnlUjRQ7/ir+m6Y0XWYofWiP88pI+e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hGPClajh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6FEC19421;
+	Sun,  1 Mar 2026 01:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328494;
-	bh=caGLC4eiAMQuTnRrjh2L4wlwOWWY1jUeLUW3d4w/g0c=;
+	s=k20201202; t=1772328498;
+	bh=uZSPF6GPP0WbRuuCad51sajMaKr6yVGOXS/Sly8vZW0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=i8Vo+ttCsB09oz4w2xuwNtQViEoT+KhsJ/C5HycLyVfqP2jkEXs7Ru4/q5+Q5RRUR
-	 OdwSaPXO523RMSljTiHwt/KjHw6jYv69KvVni9pm1o1aSxknD9gpLeIxPpdVAzSGJf
-	 +VAU+N+zhoPd1P3l8wBkjmkTIFOpyI0z0JHODSEdG1ynla4xFlMgS2q40eSqB7OxUH
-	 xYtQe9minaICWyUqSi0d+yd7Bkyw8Tu44cSdL3+UoHRD54UQaCa4DMR8WhBJCTjn7v
-	 cB4sMo3e4srkld38A3wnE7pO6v+J4iPgW5YYSjGtnus4ZBsAcSp8rAx3iR+CDhUysV
-	 T9w3EX3KOkLPw==
+	b=hGPClajhXIu2YvgdpTWR0SDHc6tc3X6sH8VqaUizM2AA9lYU+o4JhQnwaTGJEx4zP
+	 YTqF4YNl0+2ZRfiFAk/cY7O6rPVrZGR2kw1YddyLrrqAhnJAAI4MQEC6ZLFIE9dolA
+	 dfatPBTIhulofRj1gvG/r17Vt5esGpfR9XGMVHuiZue5TTXCUBrLD2cSVwD8g7HfgZ
+	 2i95+472FVRnCI1mLJ+0XfqflVOdzrBh3l2tAjS21ZlQm5RCnMJZuMIMa4OjthQiPz
+	 RqOEXAXgGM/k/2wjvnEqf8NvVF59sSzWPJb2bh+2Y2+/sPcISt+lXTVhOXxa8cgArP
+	 UxHhz4MWpkdlA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	fourier.thomas@gmail.com
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: FAILED: Patch "net: wan/fsl_ucc_hdlc: Fix dma_free_coherent() in uhdlc_memclean()" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:28:12 -0500
-Message-ID: <20260301012812.1685923-1-sashal@kernel.org>
+	sunpeng.li@amd.com
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: FAILED: Patch "drm/amd/display: Increase DCN35 SR enter/exit latency" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:28:14 -0500
+Message-ID: <20260301012815.1685976-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,35 +66,33 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-221530-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-221531-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.903];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C70F41CB3F7
+X-Rspamd-Queue-Id: 3307F1CB07F
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.12-stable tree.
@@ -105,54 +105,89 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 36bd7d5deef936c4e1e3cd341598140e5c14c1d3 Mon Sep 17 00:00:00 2001
-From: Thomas Fourier <fourier.thomas@gmail.com>
-Date: Fri, 6 Feb 2026 09:53:33 +0100
-Subject: [PATCH] net: wan/fsl_ucc_hdlc: Fix dma_free_coherent() in
- uhdlc_memclean()
+From 318917e1d8ecc89f820f4fabf79935f4fed718cd Mon Sep 17 00:00:00 2001
+From: Leo Li <sunpeng.li@amd.com>
+Date: Mon, 3 Nov 2025 11:14:59 -0500
+Subject: [PATCH] drm/amd/display: Increase DCN35 SR enter/exit latency
 
-The priv->rx_buffer and priv->tx_buffer are alloc'd together as
-contiguous buffers in uhdlc_init() but freed as two buffers in
-uhdlc_memclean().
+[Why & How]
 
-Change the cleanup to only call dma_free_coherent() once on the whole
-buffer.
+On Framework laptops with DDR5 modules, underflow can be observed.
+It's unclear why it only occurs on specific desktop contents. However,
+increasing enter/exit latencies by 3us seems to resolve it.
 
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260206085334.21195-2-fourier.thomas@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4463
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 ---
- drivers/net/wan/fsl_ucc_hdlc.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ .../amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c | 16 ++++++++--------
+ .../gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c |  4 ++--
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index f999798a56127..dff84731343cc 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -790,18 +790,14 @@ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
- 
- 	if (priv->rx_buffer) {
- 		dma_free_coherent(priv->dev,
--				  RX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
-+				  (RX_BD_RING_LEN + TX_BD_RING_LEN) * MAX_RX_BUF_LENGTH,
- 				  priv->rx_buffer, priv->dma_rx_addr);
- 		priv->rx_buffer = NULL;
- 		priv->dma_rx_addr = 0;
--	}
- 
--	if (priv->tx_buffer) {
--		dma_free_coherent(priv->dev,
--				  TX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
--				  priv->tx_buffer, priv->dma_tx_addr);
- 		priv->tx_buffer = NULL;
- 		priv->dma_tx_addr = 0;
-+
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index 7abe6811e4dfa..6fc5247526132 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -766,32 +766,32 @@ static struct wm_table ddr5_wm_table = {
+ 			.wm_inst = WM_A,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 31.0,
++			.sr_enter_plus_exit_time_us = 33.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_B,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 31.0,
++			.sr_enter_plus_exit_time_us = 33.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_C,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 31.0,
++			.sr_enter_plus_exit_time_us = 33.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_D,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 31.0,
++			.sr_enter_plus_exit_time_us = 33.0,
+ 			.valid = true,
+ 		},
  	}
- }
- 
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+index 817a370e80a77..8a177d5ae213e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+@@ -164,8 +164,8 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_5_soc = {
+ 		},
+ 	},
+ 	.num_states = 5,
+-	.sr_exit_time_us = 28.0,
+-	.sr_enter_plus_exit_time_us = 30.0,
++	.sr_exit_time_us = 31.0,
++	.sr_enter_plus_exit_time_us = 33.0,
+ 	.sr_exit_z8_time_us = 250.0,
+ 	.sr_enter_plus_exit_z8_time_us = 350.0,
+ 	.fclk_change_latency_us = 24.0,
 -- 
 2.51.0
 
