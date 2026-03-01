@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-221727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCJxDL2bo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221727-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:57 +0100
+	id 6BQuJY+co2l2IQUAu9opvQ
+	(envelope-from <stable+bounces-221728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:55:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD551CC120
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:51:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0FC1CC417
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A676C3172FC6
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 094D4308FBEB
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB2E13B58A;
-	Sun,  1 Mar 2026 01:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA3C2F3C37;
+	Sun,  1 Mar 2026 01:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KVDr1nnJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pyXlL3VW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3197A29A9E9;
-	Sun,  1 Mar 2026 01:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8742DFA2F;
+	Sun,  1 Mar 2026 01:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328993; cv=none; b=Uh5oSIbMDnEODeAtcq0DAV6ceDZuEC6swO8f8jxZTWEbJ4NbOMPSB/l2X7Sdy8CZbm4czx0gnj+Qx0wuiVTTB93GlLFPOfum4MIrgYeHs8JBxMZC+AaObaIeC7FMfDdPHW0vJk8FSKSRseW8+EL2ZSGnIfw2jYhB4fmgW9M/UzM=
+	t=1772328995; cv=none; b=UOmnNIbOVB7Bd59t2oOcw8EEwrFPNGw5puN5ahPGr5tcMao6s6WPo0Cgbf0QPs+fsR33T4utF7pTRzZxaeMCF1y98IoM/bHQgmhVptVp5Gwf3Vf1K+7tGSWx4Pbn1GwSx3rAZ1JE9vN+gipw6sjLV4iLJl2sJ+OQQPwhPmjn/QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328993; c=relaxed/simple;
-	bh=A1uZ6PMiuv4NKec+I6ni3b6YBsoxx37nPfmQLnNyS1Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l6pqxZHH6nI5JxOgmp0T0XAswhfvuvZqdDwSxLnTjft7cOgSFC57tJzUM4/GTQex66yitCiSRlsW9IyzEJrxPXcp1XhuNuX2Be/Xd+vu4euAXkb8Ck+yaVHHDkalgM8bmcMetiaDecLP4YC064mqtRNE9NGynPn/n0092STKHjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KVDr1nnJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1F2C19421;
-	Sun,  1 Mar 2026 01:36:32 +0000 (UTC)
+	s=arc-20240116; t=1772328995; c=relaxed/simple;
+	bh=fgMY/FfoG3d93MvsOo/ErI3rU1hYiCm2fQTtsVBVS9Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B8gw62oLGkVfUGLkyD1fcJj7ebpQATd/MfOukWZ/3aOxMwPvKug4D+TwGi4buX8g5RE1dTveCSB+5PjI4X2xO/K5ny3qSAUmld5r2Rv/64/iFIddhGNPFbzDwL0Z2H6wHdT3n5gMP473eJx++YIfr2aOHRhaseaPimEWhWU8zVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pyXlL3VW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F859C19425;
+	Sun,  1 Mar 2026 01:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328992;
-	bh=A1uZ6PMiuv4NKec+I6ni3b6YBsoxx37nPfmQLnNyS1Y=;
+	s=k20201202; t=1772328995;
+	bh=fgMY/FfoG3d93MvsOo/ErI3rU1hYiCm2fQTtsVBVS9Y=;
 	h=From:To:Cc:Subject:Date:From;
-	b=KVDr1nnJgaVGDZxkrtVQhuTazmHJAvyXTXBHiSU+QWBsB58bVn+3sBSw32ccHd1rU
-	 xxIpC1P5qJO7LqeH4vdTFD4KtAvK96zKfbwRNiE416S6DsJA+ky+bIa6xL68hNnGYu
-	 39E66BRaA9jU/JOYE4r/dCdzrXv5+VcAj5mOut6c4QF17uTzPhv5U27DDuiItZNjz9
-	 vkak3KwDKWKtiNg5rQAddi7guNG3P0zr1+PxmbcVmlwevWOjHn1l/nqFKIJV8Jq9Sm
-	 cm3uT0isGvgxjZIPSG1qliZPT1K4AHpys4gkTbSjMkcf9rKRd1CAzEEAPlqQYD1Knm
-	 Kq8zUkk/Bw1BA==
+	b=pyXlL3VWl1BPqU4Lyj0JrkrAExIDSoF09RvEaNkPokkWCPOn+0ZO2OWJlLh744Vqi
+	 jzEukFLaVGNB9/c10UYP+mhrxEFc2Hcnm2H/FS1gHjDE7f+DJ/Sq55/Xhw5ZSLtAVd
+	 OGNi0Tqi2zo3ZVC2yXVrfD74DE1hS1F6kkOXc5Gd2msT2cJsErYbGStOQANnqT4sLK
+	 reV4UMHiLZ8Ifrzj8C7Gm/GvdYdW+24BqitQrHAZi2DA8J77mS0hc+x4Gg8/wbhIHy
+	 DGyhLzLXm9SQ/wl1XimtgYp6FGF6kEOthr1PgCZYo/EXFjedG5Q52U0EFtZMWNDZPr
+	 hn2XBc28d6/0Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	hodgesd@meta.com
-Cc: Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net
-Subject: FAILED: Patch "tipc: fix RCU dereference race in tipc_aead_users_dec()" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:36:30 -0500
-Message-ID: <20260301013631.1696492-1-sashal@kernel.org>
+	jszhang@kernel.org
+Cc: stable <stable@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org
+Subject: FAILED: Patch "usb: dwc2: fix resume failure if dr_mode is host" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:36:33 -0500
+Message-ID: <20260301013633.1696541-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,18 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221727-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-221728-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -89,9 +88,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 8AD551CC120
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: BF0FC1CC417
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -104,41 +103,47 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6a65c0cb0ff20b3cbc5f1c87b37dd22cdde14a1c Mon Sep 17 00:00:00 2001
-From: Daniel Hodges <hodgesd@meta.com>
-Date: Tue, 3 Feb 2026 09:56:21 -0500
-Subject: [PATCH] tipc: fix RCU dereference race in tipc_aead_users_dec()
+From a52e4f2dff413b58c7200e89bb6540bd995e1269 Mon Sep 17 00:00:00 2001
+From: Jisheng Zhang <jszhang@kernel.org>
+Date: Thu, 29 Jan 2026 10:15:34 +0800
+Subject: [PATCH] usb: dwc2: fix resume failure if dr_mode is host
 
-tipc_aead_users_dec() calls rcu_dereference(aead) twice: once to store
-in 'tmp' for the NULL check, and again inside the atomic_add_unless()
-call.
+commit 13b1f8e25bfd1 ("usb: dwc2: Force mode optimizations") removed the
+dwc2_force_mode(hsotg, true) in dwc2_force_dr_mode() if dr_mode is host.
 
-Use the already-dereferenced 'tmp' pointer consistently, matching the
-correct pattern used in tipc_aead_users_inc() and tipc_aead_users_set().
+But this brings a bug: the controller fails to resume back as host,
+further debugging shows that the controller is resumed as peripheral.
+The reason is dwc2_force_dr_mode() missed the host mode forcing, and
+when resuming from s2ram, GINTSTS is 0 by default, dwc2_is_device_mode
+in dwc2_resume() misreads this as the controller is in peripheral mode.
 
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Cc: stable@vger.kernel.org
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Daniel Hodges <hodgesd@meta.com>
-Link: https://patch.msgid.link/20260203145621.17399-1-git@danielhodges.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix the resume failure by adding back the dwc2_force_mode(hsotg, true).
+
+Then an obvious question is: why this bug hasn't been observed and fixed
+for about six years? There are two resons: most dwc2 platforms set the
+dr_mode as otg; Some platforms don't have suspend & resume support yet.
+
+Fixes: 13b1f8e25bfd1 ("usb: dwc2: Force mode optimizations")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://patch.msgid.link/20260129021534.10411-1-jszhang@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/crypto.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc2/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 970db62bd029b..a3f9ca28c3d53 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -460,7 +460,7 @@ static void tipc_aead_users_dec(struct tipc_aead __rcu *aead, int lim)
- 	rcu_read_lock();
- 	tmp = rcu_dereference(aead);
- 	if (tmp)
--		atomic_add_unless(&rcu_dereference(aead)->users, -1, lim);
-+		atomic_add_unless(&tmp->users, -1, lim);
- 	rcu_read_unlock();
- }
- 
+diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+index c3d24312db0fe..f375c5185bfe2 100644
+--- a/drivers/usb/dwc2/core.c
++++ b/drivers/usb/dwc2/core.c
+@@ -578,6 +578,7 @@ void dwc2_force_dr_mode(struct dwc2_hsotg *hsotg)
+ {
+ 	switch (hsotg->dr_mode) {
+ 	case USB_DR_MODE_HOST:
++		dwc2_force_mode(hsotg, true);
+ 		/*
+ 		 * NOTE: This is required for some rockchip soc based
+ 		 * platforms on their host-only dwc2.
 -- 
 2.51.0
 
