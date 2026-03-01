@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-221739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-221740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGDNLP+bo2k3IQUAu9opvQ
-	(envelope-from <stable+bounces-221739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:53:03 +0100
+	id aHa7EMGbo2l4IAUAu9opvQ
+	(envelope-from <stable+bounces-221740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:52:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371BB1CC1D0
-	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:53:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3941CC132
+	for <lists+stable@lfdr.de>; Sun, 01 Mar 2026 02:52:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20C5E30F8E50
-	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 83D7A304C7C5
+	for <lists+stable@lfdr.de>; Sun,  1 Mar 2026 01:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCF42C1788;
-	Sun,  1 Mar 2026 01:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C762D9EE2;
+	Sun,  1 Mar 2026 01:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CO/WOQ/h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CElGmSx6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D47C2C11DE;
-	Sun,  1 Mar 2026 01:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C14525228C;
+	Sun,  1 Mar 2026 01:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329021; cv=none; b=cG0pX7v/FA5Qs1R5XxxV9PBkKPg5/2tsb6O+KLYzfK6K/F1IljPL+6WWq4QIppJvngwCNbG/MJwNl4GgluDeCB6Or1c5Nd55gHqLqcuUEfFVFq1sFkO6SFQbXqF/OAVz7qmHroVR9/vPNb4SynwRI3M89wrpFqP9HF3TACqv0A4=
+	t=1772329024; cv=none; b=jS4upJ6SQ0QheabKriEiYoR9fRCwZZWIK7fBZaPrY5sdI1ONqtJKxxJ/w3f89m5M7TxFT23neI4MbARFRr1gL7aG0TpGDBg8fvtUxoCZi7C4RrX5D8ogqX9ORvdAayavP6CV6v2W0kkkqMBNeCtfrv+zTOZroUhRnh4yt6gWKHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329021; c=relaxed/simple;
-	bh=/69CLpqHWKgzHdq7vAktN3HL3SgfYBfO6RJxkZ+J9pE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J6JIQFP/pHwofahC3BTlylXn2E9KMRuKRcFAjzpvBTXh1rnnZcG8t0/1/BiuV199Nw30Fxb5K7tA/P8sfOWOJRD1zM6oNtoRPG0CI4R9+RjAW+EyPtJ+W5VLxpuoaO+bra4P1UlbulW/RnZEorqPB50JsDyKxU1gcONba16Jhyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CO/WOQ/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDABC19421;
-	Sun,  1 Mar 2026 01:37:00 +0000 (UTC)
+	s=arc-20240116; t=1772329024; c=relaxed/simple;
+	bh=hmnap3UCA1hRIcivYdYwyBXezl9LNNaonhVFJ+fUd4E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qJBxt57jBOegN2hJgRlh2YpV4/wmk3Tlv2Xknpwmo7G4vXylHEf1h1fVn4k+bW4Z0iFj59XLa2BlvP+bD76p1G7zzNQOLD04rVGJD7RGAxYVezuzzoVj/nsExzxoTHmDiR4Mvj6ljVGb0s8a4ia8cY5fRsSZenzLXwjXfKMxF74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CElGmSx6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6C0C19421;
+	Sun,  1 Mar 2026 01:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329021;
-	bh=/69CLpqHWKgzHdq7vAktN3HL3SgfYBfO6RJxkZ+J9pE=;
+	s=k20201202; t=1772329024;
+	bh=hmnap3UCA1hRIcivYdYwyBXezl9LNNaonhVFJ+fUd4E=;
 	h=From:To:Cc:Subject:Date:From;
-	b=CO/WOQ/hQo/7IOTlMQUVPiRkkx7rh4PAGbKnynlpyaGA++uE/E1Onp/CYSV/QX9/f
-	 BZ7FUZ/xp+0FZ/SBCuvX2kWG8qnYbLcmi+wen1geI62Uhnbq/o3GAsoPfhXh1OHpGe
-	 H0Rnh5iU0T9RE7wSm99JFpiuAWu0AN1HufIx3TE4QJKp3STStguM1jK/Nvx+o/zWwC
-	 F3cd9XzB0UsTw6Q7fbXWnKZuy7Zxmgcu8fVgIvEIf53Z9yRU3ClxTka9rLiRJz61ys
-	 w4jPsw+8RRfM8zW0GBQZs2e+dY42pMLD22Jml/WvQ0QKQ8WdjXsLU8F9++YmLhHMLK
-	 6MSWoUy06Xggg==
+	b=CElGmSx6isYxDzbXwcTZNw/GL5VbKoVJJ6hc5HtS9PUOYyUPheclqmlBl/kyIlVcF
+	 OK/KRjNjCg1uWzPZSs3z5mwwidZX9SMDwDtZIgeAwtHtvMisGRHutx0OZkSQVQNmbi
+	 X7SjJPKczRUTfNZ8SlRE+UXhDGFzJovP3hRh1GHmErGUL7rSnINhoAt8WdZGk02Bo4
+	 Wgy7f48sH8V529QS9AnADLOngsyC6d6W8RTj7w8aoyTkdUNoXqpXbrZhz8KT6IMldH
+	 R1YUkMgZNWIwAmCe1gJEhTzANu8pfxwHPUE9fdA8D3cWiABuE2hCJ+nKq+P6EWcBbj
+	 YQ6aX3BdZHdTQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	carlos.song@nxp.com
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "i2c: imx-lpi2c: fix SMBus block read NACK after byte count" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:36:58 -0500
-Message-ID: <20260301013659.1697157-1-sashal@kernel.org>
+	sprasad@microsoft.com
+Cc: Steve French <stfrench@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: FAILED: Patch "cifs: Fix locking usage for tcon fields" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:37:01 -0500
+Message-ID: <20260301013702.1697206-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,35 +63,34 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-221739-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-221740-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.977];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,sang-engineering.com:email]
-X-Rspamd-Queue-Id: 371BB1CC1D0
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5F3941CC132
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.6-stable tree.
@@ -107,218 +103,134 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From efdc383d1cc28d45cbf5a23b5ffa997010aaacb4 Mon Sep 17 00:00:00 2001
-From: Carlos Song <carlos.song@nxp.com>
-Date: Fri, 23 Jan 2026 18:54:58 +0800
-Subject: [PATCH] i2c: imx-lpi2c: fix SMBus block read NACK after byte count
+From 96c4af418586ee9a6aab61738644366426e05316 Mon Sep 17 00:00:00 2001
+From: Shyam Prasad N <sprasad@microsoft.com>
+Date: Sun, 1 Feb 2026 00:21:13 +0530
+Subject: [PATCH] cifs: Fix locking usage for tcon fields
 
-The LPI2C controller sends a NACK at the end of a receive command
-unless another receive command is already queued in MTDR. During
-SMBus block reads, this causes the controller to NACK immediately
-after receiving the block length byte, aborting the transfer before
-the data bytes are read.
+We used to use the cifs_tcp_ses_lock to protect a lot of objects
+that are not just the server, ses or tcon lists. We later introduced
+srv_lock, ses_lock and tc_lock to protect fields within the
+corresponding structs. This was done to provide a more granular
+protection and avoid unnecessary serialization.
 
-Fix this by queueing a second receive command as soon as the block
-length byte is received, keeping MTDR non-empty and ensuring
-continuous ACKs. The initial receive command reads the block length,
-and the subsequent command reads the remaining data bytes according
-to the reported length.
+There were still a couple of uses of cifs_tcp_ses_lock to provide
+tcon fields. In this patch, I've replaced them with tc_lock.
 
-Fixes: a55fa9d0e42e ("i2c: imx-lpi2c: add low power i2c bus driver")
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Cc: <stable@vger.kernel.org> # v4.10+
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260123105459.3448822-1-carlos.song@nxp.com
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- drivers/i2c/busses/i2c-imx-lpi2c.c | 107 ++++++++++++++++++++++-------
- 1 file changed, 83 insertions(+), 24 deletions(-)
+ fs/smb/client/cached_dir.c | 4 ++--
+ fs/smb/client/smb2misc.c   | 6 +++---
+ fs/smb/client/smb2ops.c    | 8 +++-----
+ fs/smb/client/smb2pdu.c    | 2 ++
+ fs/smb/client/trace.h      | 1 +
+ 5 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-index be7134eefc2f5..f97f73faec82d 100644
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -5,6 +5,7 @@
-  * Copyright 2016 Freescale Semiconductor, Inc.
-  */
+diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+index df9977030d199..2a6b8ce80be23 100644
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -792,11 +792,11 @@ static void cfids_laundromat_worker(struct work_struct *work)
+ 		cfid->dentry = NULL;
  
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/completion.h>
- #include <linux/delay.h>
-@@ -90,6 +91,7 @@
- #define MRDR_RXEMPTY	BIT(14)
- #define MDER_TDDE	BIT(0)
- #define MDER_RDDE	BIT(1)
-+#define MSR_RDF_ASSERTED(x) FIELD_GET(MSR_RDF, (x))
+ 		if (cfid->is_open) {
+-			spin_lock(&cifs_tcp_ses_lock);
++			spin_lock(&cfid->tcon->tc_lock);
+ 			++cfid->tcon->tc_count;
+ 			trace_smb3_tcon_ref(cfid->tcon->debug_id, cfid->tcon->tc_count,
+ 					    netfs_trace_tcon_ref_get_cached_laundromat);
+-			spin_unlock(&cifs_tcp_ses_lock);
++			spin_unlock(&cfid->tcon->tc_lock);
+ 			queue_work(serverclose_wq, &cfid->close_work);
+ 		} else
+ 			/*
+diff --git a/fs/smb/client/smb2misc.c b/fs/smb/client/smb2misc.c
+index f3cb62d914502..0871b9f1f86a6 100644
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -820,14 +820,14 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
+ 	int rc;
  
- #define SCR_SEN		BIT(0)
- #define SCR_RST		BIT(1)
-@@ -482,7 +484,7 @@ static bool lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atom
+ 	cifs_dbg(FYI, "%s: tc_count=%d\n", __func__, tcon->tc_count);
+-	spin_lock(&cifs_tcp_ses_lock);
++	spin_lock(&tcon->tc_lock);
+ 	if (tcon->tc_count <= 0) {
+ 		struct TCP_Server_Info *server = NULL;
  
- static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
- {
--	unsigned int blocklen, remaining;
-+	unsigned int remaining;
- 	unsigned int temp, data;
+ 		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 				    netfs_trace_tcon_ref_see_cancelled_close);
+ 		WARN_ONCE(tcon->tc_count < 0, "tcon refcount is negative");
+-		spin_unlock(&cifs_tcp_ses_lock);
++		spin_unlock(&tcon->tc_lock);
  
- 	do {
-@@ -493,15 +495,6 @@ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomi
- 		lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
- 	} while (1);
+ 		if (tcon->ses) {
+ 			server = tcon->ses->server;
+@@ -841,7 +841,7 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
+ 	tcon->tc_count++;
+ 	trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 			    netfs_trace_tcon_ref_get_cancelled_close);
+-	spin_unlock(&cifs_tcp_ses_lock);
++	spin_unlock(&tcon->tc_lock);
  
--	/*
--	 * First byte is the length of remaining packet in the SMBus block
--	 * data read. Add it to msgs->len.
--	 */
--	if (lpi2c_imx->block_data) {
--		blocklen = lpi2c_imx->rx_buf[0];
--		lpi2c_imx->msglen += blocklen;
--	}
--
- 	remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
- 
- 	if (!remaining) {
-@@ -514,12 +507,7 @@ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomi
- 	lpi2c_imx_set_rx_watermark(lpi2c_imx);
- 
- 	/* multiple receive commands */
--	if (lpi2c_imx->block_data) {
--		lpi2c_imx->block_data = 0;
--		temp = remaining;
--		temp |= (RECV_DATA << 8);
--		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
--	} else if (!(lpi2c_imx->delivered & 0xff)) {
-+	if (!(lpi2c_imx->delivered & 0xff)) {
- 		temp = (remaining > CHUNK_DATA ? CHUNK_DATA : remaining) - 1;
- 		temp |= (RECV_DATA << 8);
- 		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-@@ -557,18 +545,77 @@ static int lpi2c_imx_write_atomic(struct lpi2c_imx_struct *lpi2c_imx,
- 	return err;
- }
- 
--static void lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
--				struct i2c_msg *msgs)
-+static unsigned int lpi2c_SMBus_block_read_length_byte(struct lpi2c_imx_struct *lpi2c_imx)
- {
--	unsigned int temp;
-+	unsigned int data;
-+
-+	data = readl(lpi2c_imx->base + LPI2C_MRDR);
-+	lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
-+
-+	return data;
-+}
-+
-+static int lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
-+			       struct i2c_msg *msgs)
-+{
-+	unsigned int temp, val, block_len;
-+	int ret;
- 
- 	lpi2c_imx->rx_buf = msgs->buf;
- 	lpi2c_imx->block_data = msgs->flags & I2C_M_RECV_LEN;
- 
- 	lpi2c_imx_set_rx_watermark(lpi2c_imx);
--	temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
--	temp |= (RECV_DATA << 8);
--	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-+
-+	if (!lpi2c_imx->block_data) {
-+		temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
-+		temp |= (RECV_DATA << 8);
-+		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-+	} else {
-+		/*
-+		 * The LPI2C controller automatically sends a NACK after the last byte of a
-+		 * receive command, unless the next command in MTDR is also a receive command.
-+		 * If MTDR is empty when a receive completes, a NACK is sent by default.
-+		 *
-+		 * To comply with the SMBus block read spec, we start with a 2-byte read:
-+		 * The first byte in RXFIFO is the block length. Once this byte arrives, the
-+		 * controller immediately updates MTDR with the next read command, ensuring
-+		 * continuous ACK instead of NACK.
-+		 *
-+		 * The second byte is the first block data byte. Therefore, the subsequent
-+		 * read command should request (block_len - 1) bytes, since one data byte
-+		 * has already been read.
-+		 */
-+
-+		writel((RECV_DATA << 8) | 0x01, lpi2c_imx->base + LPI2C_MTDR);
-+
-+		ret = readl_poll_timeout(lpi2c_imx->base + LPI2C_MSR, val,
-+					 MSR_RDF_ASSERTED(val), 1, 1000);
-+		if (ret) {
-+			dev_err(&lpi2c_imx->adapter.dev, "SMBus read count failed %d\n", ret);
-+			return ret;
-+		}
-+
-+		/* Read block length byte and confirm this SMBus transfer meets protocol */
-+		block_len = lpi2c_SMBus_block_read_length_byte(lpi2c_imx);
-+		if (block_len == 0 || block_len > I2C_SMBUS_BLOCK_MAX) {
-+			dev_err(&lpi2c_imx->adapter.dev, "Invalid SMBus block read length\n");
-+			return -EPROTO;
-+		}
-+
-+		/*
-+		 * When block_len shows more bytes need to be read, update second read command to
-+		 * keep MTDR non-empty and ensuring continuous ACKs. Only update command register
-+		 * here. All block bytes will be read out at IRQ handler or lpi2c_imx_read_atomic()
-+		 * function.
-+		 */
-+		if (block_len > 1)
-+			writel((RECV_DATA << 8) | (block_len - 2), lpi2c_imx->base + LPI2C_MTDR);
-+
-+		lpi2c_imx->msglen += block_len;
-+		msgs->len += block_len;
-+	}
-+
-+	return 0;
- }
- 
- static bool lpi2c_imx_read_chunk_atomic(struct lpi2c_imx_struct *lpi2c_imx)
-@@ -613,6 +660,10 @@ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
- 	if (!lpi2c_imx->can_use_dma)
- 		return false;
- 
-+	/* DMA is not suitable for SMBus block read */
-+	if (msg->flags & I2C_M_RECV_LEN)
-+		return false;
-+
- 	/*
- 	 * When the length of data is less than I2C_DMA_THRESHOLD,
- 	 * cpu mode is used directly to avoid low performance.
-@@ -623,10 +674,14 @@ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
- static int lpi2c_imx_pio_xfer(struct lpi2c_imx_struct *lpi2c_imx,
- 			      struct i2c_msg *msg)
- {
-+	int ret;
-+
- 	reinit_completion(&lpi2c_imx->complete);
- 
- 	if (msg->flags & I2C_M_RD) {
--		lpi2c_imx_read_init(lpi2c_imx, msg);
-+		ret = lpi2c_imx_read_init(lpi2c_imx, msg);
-+		if (ret)
-+			return ret;
- 		lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE | MIER_NDIE);
- 	} else {
- 		lpi2c_imx_write(lpi2c_imx, msg);
-@@ -638,8 +693,12 @@ static int lpi2c_imx_pio_xfer(struct lpi2c_imx_struct *lpi2c_imx,
- static int lpi2c_imx_pio_xfer_atomic(struct lpi2c_imx_struct *lpi2c_imx,
- 				     struct i2c_msg *msg)
- {
-+	int ret;
-+
- 	if (msg->flags & I2C_M_RD) {
--		lpi2c_imx_read_init(lpi2c_imx, msg);
-+		ret = lpi2c_imx_read_init(lpi2c_imx, msg);
-+		if (ret)
-+			return ret;
- 		return lpi2c_imx_read_atomic(lpi2c_imx, msg);
+ 	rc = __smb2_handle_cancelled_cmd(tcon, SMB2_CLOSE_HE, 0,
+ 					 persistent_fid, volatile_fid);
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index f6806946d0eee..653e2f29384d4 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -3107,7 +3107,9 @@ smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
+ 						struct cifs_tcon,
+ 						tcon_list);
+ 		if (tcon) {
++			spin_lock(&tcon->tc_lock);
+ 			tcon->tc_count++;
++			spin_unlock(&tcon->tc_lock);
+ 			trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 					    netfs_trace_tcon_ref_get_dfs_refer);
+ 		}
+@@ -3176,13 +3178,9 @@ smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
+  out:
+ 	if (tcon && !tcon->ipc) {
+ 		/* ipc tcons are not refcounted */
+-		spin_lock(&cifs_tcp_ses_lock);
+-		tcon->tc_count--;
++		cifs_put_tcon(tcon, netfs_trace_tcon_ref_put_dfs_refer);
+ 		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 				    netfs_trace_tcon_ref_dec_dfs_refer);
+-		/* tc_count can never go negative */
+-		WARN_ON(tcon->tc_count < 0);
+-		spin_unlock(&cifs_tcp_ses_lock);
  	}
+ 	kfree(utf16_path);
+ 	kfree(dfs_req);
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index fa22702a61a6e..a88b21e5b30e2 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4263,7 +4263,9 @@ void smb2_reconnect_server(struct work_struct *work)
  
+ 		list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
+ 			if (tcon->need_reconnect || tcon->need_reopen_files) {
++				spin_lock(&tcon->tc_lock);
+ 				tcon->tc_count++;
++				spin_unlock(&tcon->tc_lock);
+ 				trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 						    netfs_trace_tcon_ref_get_reconnect_server);
+ 				list_add_tail(&tcon->rlist, &tmp_list);
+diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
+index a584a77431132..191f02344dcdd 100644
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -189,6 +189,7 @@
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
+ 	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
++	EM(netfs_trace_tcon_ref_put_dfs_refer,		"PUT DfsRfr") \
+ 	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
+ 	EM(netfs_trace_tcon_ref_put_tlink,		"PUT Tlink ") \
+ 	EM(netfs_trace_tcon_ref_see_cancelled_close,	"SEE Cn-Cls") \
 -- 
 2.51.0
 
