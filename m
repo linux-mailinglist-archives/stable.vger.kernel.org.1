@@ -1,153 +1,130 @@
-Return-Path: <stable+bounces-222721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLdMNGUOpmmFJgAAu9opvQ
-	(envelope-from <stable+bounces-222721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:25:41 +0100
+	id yECENjYLpmkJJgAAu9opvQ
+	(envelope-from <stable+bounces-222722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:12:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E3F1E5527
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:25:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D141E4F98
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:12:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AD5E53224286
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:36:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B40F31F4496
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F603914ED;
-	Mon,  2 Mar 2026 20:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4854739A06F;
+	Mon,  2 Mar 2026 20:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valvesoftware.com header.i=@valvesoftware.com header.b="Dbi5LEw4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BaSSV0NR"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-172.mimecast.com (us-smtp-delivery-172.mimecast.com [170.10.129.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F54A355814
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 20:53:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1FC2D949B;
+	Mon,  2 Mar 2026 20:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772484809; cv=none; b=Ma7lDQAzpzFDFlxv09lZO1LdNEgHa991IvvY9VI/64PCGJZgPGYJdG1zSFlodzoJ0hZpxtu1DHvi58qj4MgdjIPN+e5nnnt9arRUGUjEGfAOQkpWDCrE+n2uiNFX9fNlH0ry94LcOPeYhKdHMsKDJ0E1qvb1SBc7uR5NHRI1rsg=
+	t=1772485125; cv=none; b=kgeJq2COA8Fx1AnDw5v9QroDzL7lns6fUUnmqhm3ATKuj0Sf2ImDrchBukurOSGyXNcddZIdbLUzHsIYFeXspcLLis6UNH9mTjfwKiHfxVtef7WC2TQoytsDuQRDZqFo6V9SFQhKbyIj2Oy8T4pCEaFJanaq/EUv2GWO1H0N1RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772484809; c=relaxed/simple;
-	bh=16uxkWL5hX4j7KosRvOHcNcAEDOs7nmqZeye1nOhNDg=;
-	h=Date:Message-ID:CC:Subject:From:To:MIME-Version:References:
-	 In-Reply-To:Content-Type; b=Qt7W8Shc/yi6Kxwv8HVFhVT4VS5/cCKoEd6nuXnYXn7QlTlhVH0CLWpU6IZSRclQDGy3vakBQ3G4opS+OmNCt3r4u1o8rvol6Kazzx1ftNLw5upzLAlWW7rjE3iO6eBjZJOnJ5OQ9hB3wK6CRyjJK+hAunlmr4mTp8nndj2e2RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=valvesoftware.com; spf=pass smtp.mailfrom=valvesoftware.com; dkim=pass (1024-bit key) header.d=valvesoftware.com header.i=@valvesoftware.com header.b=Dbi5LEw4; arc=none smtp.client-ip=170.10.129.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=valvesoftware.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valvesoftware.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valvesoftware.com;
-	s=mc20150811; t=1772484806;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=16uxkWL5hX4j7KosRvOHcNcAEDOs7nmqZeye1nOhNDg=;
-	b=Dbi5LEw4en0dZ9luuvKYVAVeFC85iku3CAkI8zZ8HJ5+tOM/jOQxGhkh6tTXUO3ILHfE+A
-	nipqibx+NQhyRBN1F2UqIgGvX8Yq/UT5dZbgoy8Bxdo453pjNp3BxVQMyqhPYq/6MGCyyb
-	g7xFgU+khNsZowXgdrhAsOEDgPx7Glc=
-Received: from smtp-02-tuk3.valvesoftware.com
- (smtp-02-blv1.valvesoftware.com [208.64.203.182]) by relay.mimecast.com
- with ESMTP with STARTTLS (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384)
- id us-mta-637-5KoDUlM7NYexLNzraLPZVA-1; Mon, 02 Mar 2026 15:53:23 -0500
-X-MC-Unique: 5KoDUlM7NYexLNzraLPZVA-1
-X-Mimecast-MFC-AGG-ID: 5KoDUlM7NYexLNzraLPZVA_1772484802
-Received: from antispam.valve.org ([172.16.1.107])
-	by smtp-02-tuk3.valvesoftware.com with esmtp (Exim 4.97)
-	(envelope-from <arunr@valvesoftware.com>)
-	id 1vxAGX-00000002kig-3oVT;
-	Mon, 02 Mar 2026 12:53:21 -0800
-Received: from antispam.valve.org (127.0.0.1) id hknsc20171sr; Mon, 2 Mar 2026 12:53:21 -0800 (envelope-from <arunr@valvesoftware.com>)
-Received: from mail2.valvemail.org ([172.16.144.23])
-	by antispam.valve.org ([172.16.1.107]) (SonicWall 10.0.15.7233)
-	with ESMTP id o202603022053210081302-5; Mon, 02 Mar 2026 12:53:21 -0800
-Received: from localhost (172.18.17.18) by mail2.valvemail.org (172.16.144.23)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 2 Mar
- 2026 12:53:21 -0800
-Date: Mon, 2 Mar 2026 12:53:21 -0800
-Message-ID: <DGSLF8NH5JAV.59WNEOEXYHV@valvesoftware.com>
-CC: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	Cryolitia PukNgae <cryolitia@uniontech.com>, Arun Raghavan
-	<arunr@valvesoftware.com>, <linux-sound@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Icenowy Zheng"
-	<uwu@icenowy.me>, <stable@vger.kernel.org>
-Subject: Re: [External Mail] [PATCH v2 1/8] Revert "ALSA: usb: Increase
- volume range that triggers a warning"
-From: Arun Raghavan <arunr@valvesoftware.com>
-To: Rong Zhang <i@rong.moe>, Jaroslav Kysela <perex@perex.cz>, "Takashi Iwai"
-	<tiwai@suse.com>
+	s=arc-20240116; t=1772485125; c=relaxed/simple;
+	bh=2EBUKM/WBoWlIQI1wT/XGIf4p8wOsibHPnBV5hseUGs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sc/e+L6TvYu0mEniJcyIQ/b5JhmckQSVYjL5WNc2xTVlf/2UOwvqvpIb6UyWkpYxZI7Z04bG+BUEaZ5zAaOjPadu/ZfCJSJy6XJxWC5w4zytkep3iRuQdxr8SJt/tZkikUkMz0IUK4lvLYlmYycKuWRyd3xocTIf7PoiCiTyYKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BaSSV0NR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B4CC19423;
+	Mon,  2 Mar 2026 20:58:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772485124;
+	bh=2EBUKM/WBoWlIQI1wT/XGIf4p8wOsibHPnBV5hseUGs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BaSSV0NRw/ZhaVIcxLUKJVhzUaVjRJlLnyJR96qoOzPBZj0uz0gO3OvI95EyZcBe7
+	 cLg0qnP2FSgMOWGwSyK71Murrv4jz8QUykgeM1q9ipIwu/k6CapDnyxmoTrHXD/LCp
+	 3CE0Ij55JkFCy8QrPLUo08seErv61QxEinAobzwlNOUBEhz+WGZN6en5rPTqVGVs9/
+	 fkFj1UirH8vYLq8lsFRihVwFz9f/edNFsDP9fWsFY0lZ1dm15q5knc9YnSsbRfs3RY
+	 KvPDLTJPO3YVNNQBDEhvBWXrKB/lDE+1TIrx4NK04C3ECWM0A7IINtLzSFzNR0+52f
+	 I6/8PbU5KQtyA==
+Date: Mon, 2 Mar 2026 15:58:43 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org, io-uring@vger.kernel.org
+Subject: Re: FAILED: Patch "io_uring/filetable: clamp alloc_hint to the
+ configured alloc range" failed to apply to 6.1-stable tree
+Message-ID: <aaX6AzNtFQ32exUW@laps>
+References: <20260301014717.1711200-1-sashal@kernel.org>
+ <eb41b6f9-08f4-4972-99d4-3340571830bc@kernel.dk>
+ <8e84b6c3-e62d-4aef-90b7-a7a0e63d8a17@kernel.dk>
+ <aaX2F5LGPcqaDXum@laps>
+ <531cfe07-2a07-4bd2-be07-9cd78890e04f@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mailer: aerc 0.21.0
-References: <20260302185900.427415-1-i@rong.moe>
- <20260302185900.427415-2-i@rong.moe>
-In-Reply-To: <20260302185900.427415-2-i@rong.moe>
-X-ClientProxiedBy: mail2.valvemail.org (172.16.144.23) To mail2.valvemail.org
- (172.16.144.23)
-X-Mlf-DSE-Version: 6871
-X-Mlf-Rules-Version: s20260226225627; ds20230628172248;
-	di20260302185333; ri20160318003319; fs20260302184959
-X-Mlf-Smartnet-Version: 20210917223710
-X-Mlf-Envelope-From: arunr@valvesoftware.com
-X-Mlf-Version: 10.0.15.7233
-X-Mlf-License: BSV_C_AP_T_R
-X-Mlf-UniqueId: o202603022053210081302
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Ksrd3a62vafWSctSFXiWG7A8pJw7TF0pF6uMSqkXj3A_1772484802
-X-Mimecast-Originator: valvesoftware.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E7E3F1E5527
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <531cfe07-2a07-4bd2-be07-9cd78890e04f@kernel.dk>
+X-Rspamd-Queue-Id: 79D141E4F98
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[valvesoftware.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[valvesoftware.com:s=mc20150811];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[valvesoftware.com:dkim,valvesoftware.com:email,valvesoftware.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,rong.moe:email];
-	TAGGED_FROM(0.00)[bounces-222721-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[valvesoftware.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arunr@valvesoftware.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-222722-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[8]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Mon Mar 2, 2026 at 10:58 AM PST, Rong Zhang wrote:
-> UAC uses 2 bytes to store volume values, so the maximum volume range is
-> 0xFFFF (65535, val =3D -32768/32767/1).
+On Mon, Mar 02, 2026 at 01:45:51PM -0700, Jens Axboe wrote:
+>On 3/2/26 1:41 PM, Sasha Levin wrote:
+>> On Mon, Mar 02, 2026 at 01:38:37PM -0700, Jens Axboe wrote:
+>>> On 3/1/26 6:15 AM, Jens Axboe wrote:
+>>>> On 2/28/26 6:47 PM, Sasha Levin wrote:
+>>>>> The patch below does not apply to the 6.1-stable tree.
+>>>>> If someone wants it applied there, or to any other stable or longterm
+>>>>> tree, then please email the backport, including the original git commit
+>>>>> id to <stable@vger.kernel.org>.
+>>>>
+>>>> And this one also picks cleanly into 6.1-stable. Not sure what is
+>>>> going on at your end?
+>>>
+>>> Are these and the other "FAILED" false positives getting applied or
+>>> not? I didn't hear anything back on any of them.
+>>
+>> Appologies for all of this. There's an explanation of what happened here:
+>> https://lore.kernel.org/all/aaWWE5uQqz_eG69i@laps/
+>>
+>> These should be part of the -rc2 I did earlier today.
 >
-> The reverted commit bumpped the range of triggering the warning to >
-> 65535, effectively making the range check a no-op. It didn't fix
-> anything but covered any potential problems and deviated from the
-> original intention of the range check.
->
-> This reverts commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62.
->
-> Fixes: 6b971191fcfc ("ALSA: usb: Increase volume range that triggers a wa=
-rning")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Rong Zhang <i@rong.moe>
+>Gotcha, yeah it's not easy to know when you don't hear back, either
+>as a reply or as a new "added to stable" email. For those of us that
+>do take stable seriously, I 100% need to know if something is landing
+>or not.
 
-Thanks for catching and fixing this.
+You're right (and thanks for all the backports!). I had a plan to review all of
+these again after the release, but I should have sent something out first.
 
-Acked-by: Arun Raghavan <arunr@valvesoftware.com>
-
+-- 
+Thanks,
+Sasha
 
