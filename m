@@ -1,156 +1,182 @@
-Return-Path: <stable+bounces-222678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222677-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOvmECbepWkvHgAAu9opvQ
-	(envelope-from <stable+bounces-222678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 19:59:50 +0100
+	id QGcLEXPepWkvHgAAu9opvQ
+	(envelope-from <stable+bounces-222677-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:01:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A00191DE894
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 19:59:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902971DE8F3
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4180305247D
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 18:59:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D9F63078393
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 18:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFC0377001;
-	Mon,  2 Mar 2026 18:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B1233F36B;
+	Mon,  2 Mar 2026 18:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="IopU1XMI"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="I/OwAVBF"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FD3375AD8;
-	Mon,  2 Mar 2026 18:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772477966; cv=pass; b=t6vjLlniGxt1vortLX70+lI1uRdtsI8sfFjza3ApL9huwayBgWgvoIC/UqRx8FIDnTLfC14UDZU/9efibDJ+ugAMp3UgxFSWSIrNvd+nSQyfWrPm9IAGS8mcQ5OW3Vfq7EjTHTFKJYcg2WX0Ji+atkiws7L1gmgieogNkPVH/kI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772477966; c=relaxed/simple;
-	bh=ZmnG1mvLC+nqfqk1ivL295tgmudCFqWeCE+Ry39YMC4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOWVJcCYCHmwhI8O2Ee0bPtVd3viE0jsRF9G1+KDkJ64wpIs9nQDsPGqt84IXTnuulIxdRGY9n2DyUl75jRMd7HYT8HzJ0QFf7Qn1XcKDNSnw6Rg8cn0GHDXdI4ApDop6Gib1eKxWSO9y3rF9gFnFbfwreSkt844T7xcH1dyM9M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=IopU1XMI; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
-ARC-Seal: i=1; a=rsa-sha256; t=1772477951; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=aeA15Y/c+tit1VCdaK7rv78xw8PkK7x8I61+OTFYA4ti7W0u3E/K4SsucctGCU4kQsVgbsJFyfVfXu8idiVKC1GCFPg0zf9vM2Gt6bO7V5g7cYiBRFzYZTh/2/9TN0J+zgMOPz+NcKUysixZKOoZFi1/2wTVJHO2PhAuV+KHZow=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1772477951; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=m5MkS0FlgjmLHAzJnS3KdKIY+xY7EDfUNnbvaa6b+l4=; 
-	b=Pg6/wBX9Xu0UuSDOGVY98gKe7e6CNeXqxm2zOQzb4fo/glvvF2ovlPQljVLM+QijTPW1dyMWNEtaPRgkk5gbBCaBR85cJVW5P1rBEJv4zBvkU2/tIWL+6UrnYww/5vNhAtIgm36CftLD76hDbA5K2BR/KcHf4/C4Aaq+quJTt9I=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=rong.moe;
-	spf=pass  smtp.mailfrom=i@rong.moe;
-	dmarc=pass header.from=<i@rong.moe>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772477951;
-	s=zmail2048; d=rong.moe; i=i@rong.moe;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=m5MkS0FlgjmLHAzJnS3KdKIY+xY7EDfUNnbvaa6b+l4=;
-	b=IopU1XMIA+Rn5ltQhog/8UorJnmP67MUPZnrfC847Wmdpt2GcGdTnL5H40ntLpNn
-	NMZT4xsQZ5zBxCpTs4of8GIy8w5XlHKGUmgJmfCuJ62QwHHFgMT0xX90tLpzFSPmZHn
-	gxdSBN4rRf0jY1/rXgSRIlxj0z5D8P69JbWlSM8x+Gnyn3rIpmucfHoFI+w/oY0ngYv
-	Y1e8UZsxgp8FVxQ9einMDopCMm8NqqpwJEubt/PHAYUtE+93YbiPKTsZ5dCV7nb8U7o
-	z/BBk016F2i/SZUNeD4XpWKQVFCeL4bL8SRKnBMVlOHlDvtXZcrvL7gyAKp7EV0cRd3
-	nJbfHKCxZw==
-Received: by mx.zohomail.com with SMTPS id 1772477949830999.8581879892873;
-	Mon, 2 Mar 2026 10:59:09 -0800 (PST)
-From: Rong Zhang <i@rong.moe>
-To: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Rong Zhang <i@rong.moe>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Cryolitia PukNgae <cryolitia@uniontech.com>,
-	Arun Raghavan <arunr@valvesoftware.com>,
-	linux-sound@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Icenowy Zheng <uwu@icenowy.me>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/8] Revert "ALSA: usb: Increase volume range that triggers a warning"
-Date: Tue,  3 Mar 2026 02:58:52 +0800
-Message-ID: <20260302185900.427415-2-i@rong.moe>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260302185900.427415-1-i@rong.moe>
-References: <20260302185900.427415-1-i@rong.moe>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7AA3112AD
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 18:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772477946; cv=none; b=AOL1Bc2YXT7wYFDcTZqQwD2liynBVp2azow1U4p19rnVbl5Mg+HlS/kg37viEP+tfTml7q1VoNVyJs1fXqUCDi+25NvEkHEDx7/bvmoH6lJmXPreoo6eQvJkl7AWYgbTqEI1h8BlpEg5DAZJXvbDEp/JCKL81TSJSJR3Pf5trSU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772477946; c=relaxed/simple;
+	bh=s5EKg+1yE3wOM7QCpwJWxpcAZxhHOu8IU6N8y9zKZ3s=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=El5wuozJsT7419buG5fYs61QeTW06M4xilS4Qy+YS5yL/MpIB8xudqPkBIE7ANsdcsb9i6MgK1PLlNJkPyL7Frn6s3pCEx5396IIMo+M2TsrJoyeP7cpPLY5sdz80thkkYZO2JvY7mU/m5XV8G8WorBxY+CiLq5hzRZ6NCOJuCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=I/OwAVBF; arc=none smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-12732e6a123so6709302c88.1
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 10:59:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1772477944; x=1773082744; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WrwVy3YII9Wwn21t12F/haJHhROvNIT0daDtZY95fOA=;
+        b=I/OwAVBFPEJNqTpFNwRDdVkafefzWaXG9D256KHvERKDpaIs7beXcNnbAQnMtaugRZ
+         vXYyNWjXfuTBoF+FaP8xcHLiuqFWPUV8YrIvxw12qoAxanD2dxNP/Ha1a1xiXbnpYWIa
+         t0McQ6iy3aFt5RXmypfK0a0jDTiftBgICN7l8Cf+M359rIR6ju5DyhFYhetdFqvO/nqp
+         DQFLtF4MoblIo6xxysMCVAWh5UrBkLmA23NR9h9cHzR4Rsdx3bGOLJOVMNtlFitts8FX
+         ZfXq3bvhsPjPTID9vRk0yHD7ogcgLqyhYkK39/RLZpojInEaaReq3+YipJ+izPzeRSoX
+         wtuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772477944; x=1773082744;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WrwVy3YII9Wwn21t12F/haJHhROvNIT0daDtZY95fOA=;
+        b=cmxs+PnAKpzTc9PrE7R2gRnbPN81rTOnRD9upUw2hNKjNsuCX0Jza24mAkzrd5mCyX
+         7kMtOThv7tBwap0/aLQNbMLUfrBaz9kDqBwjQa4Xm5T5CDKnzZ4iBPol1bnRWYKKtDP0
+         ZKenVgc21P3PoWjYFNRTRwLTDNVvcR0khtU6x6k1/p7vMH7NnraLRudXit/yxFhSuYes
+         4YwYI6c7bhSUunzYTKyLVea2HFhZ0NTXfhObULLT7VznVOGEDkFzag5k80sq+XfUeUM3
+         mZ2Rv8DbCUMx4Hk8nf5mJ1uBbivDWKDnknCUWUWJnMYigqkQDpZd7eoFy5NyEBZUuSg+
+         O3rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVeg8pTFd3z0JU6n6np7rlQl16mQ0s7xdRtpOpNQc24YFmaA7BFLcpAhY9tf9hAy5M1c+8NVro=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziEXYlFLzvJ6/1aS6v9NIRkLyKn1vjoGyVaSwcFmjxMa/XPi2e
+	bAebicLd35ClxB4/gHw2hAKrE5pDRY4eiHInktFDMTqQ1UmsSezGkwU80Ik1uPTW12Y/zz6jRJq
+	qlHkZ
+X-Gm-Gg: ATEYQzxvbpsmu/6VvZcXcP0xR5kFuWqDYGvpvgUxi6kHbuj8c2NLP61qWyNcwoshnB1
+	1OEjRqBWNpubPX2U82mCqDOSNASg10d70TWSSQtTVXby1ilWLWcsg+z9yrH3s8YcpIjmbA6sxeA
+	vJ6ug1OLvAkTw4hiwdFUv7FeI5GGLUTFTc10sTn5WifcrDVTA5KAJZE7Kv0zet+Gvlgy2YbEuCg
+	Gd1nra/FLq+HbnQnO/pyf7u2u6jjhDt6ywOW/GJNbkLZlJts+Du5woZRuWf0euMdRM28ityJMzC
+	v/fyQI1HORXUTm5EoOry7n0YT7XDhDqxQg5/iuPEteJ8jmDpfyCyH/0Hy9KbzQCR9cB1YptT+m5
+	+JAiAyFvI+ah4OCTrjmhDqbRk27xkGje4Ev/+8JSyp/AgBJb3Wzmj5LNrJGN0y1851RCYX6Ej/W
+	2KqCnGxiOW2GQ3Moj+dj4yFFWN0EM=
+X-Received: by 2002:a05:7022:238d:b0:124:9e46:82d6 with SMTP id a92af1059eb24-1278fd44677mr5362811c88.25.1772477944491;
+        Mon, 02 Mar 2026 10:59:04 -0800 (PST)
+Received: from c9e0f4cb7c74 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12789a52ab0sm19474421c88.15.2026.03.02.10.59.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 10:59:03 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: A00191DE894
+Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable-rc/linux-6.12.y: (build) variable 'link' is
+ uninitialized
+ when used here [-Werror,-Wuniniti...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Mon, 02 Mar 2026 18:59:03 -0000
+Message-ID: <177247794302.54.10729798312271632115@c9e0f4cb7c74>
+X-Rspamd-Queue-Id: 902971DE8F3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[rong.moe,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[rong.moe:s=zmail2048];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-clang-21-x86-kselftest-69a5bdcc7136242fe39183a8/.config];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222678-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222677-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[i@rong.moe,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[rong.moe:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kernelci.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rong.moe:dkim,rong.moe:email,rong.moe:mid]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,kernelci.org:url,kernelci.org:email,kernelci-org.20230601.gappssmtp.com:dkim]
 X-Rspamd-Action: no action
 
-UAC uses 2 bytes to store volume values, so the maximum volume range is
-0xFFFF (65535, val = -32768/32767/1).
 
-The reverted commit bumpped the range of triggering the warning to >
-65535, effectively making the range check a no-op. It didn't fix
-anything but covered any potential problems and deviated from the
-original intention of the range check.
 
-This reverts commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62.
 
-Fixes: 6b971191fcfc ("ALSA: usb: Increase volume range that triggers a warning")
-Cc: stable@vger.kernel.org
-Signed-off-by: Rong Zhang <i@rong.moe>
+
+Hello,
+
+New build issue found on stable-rc/linux-6.12.y:
+
 ---
- sound/usb/mixer.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ variable 'link' is uninitialized when used here [-Werror,-Wuninitialized] in drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn31/dcn31_hwseq.o (drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn31/dcn31_hwseq.c) [logspec:kbuild,kbuild.compiler.error]
+---
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index ac8c71ba94834..df0d3df9c7ece 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1813,10 +1813,11 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
- 
- 	range = (cval->max - cval->min) / cval->res;
- 	/*
--	 * There are definitely devices with a range of ~20,000, so let's be
--	 * conservative and allow for a bit more.
-+	 * Are there devices with volume range more than 255? I use a bit more
-+	 * to be sure. 384 is a resolution magic number found on Logitech
-+	 * devices. It will definitively catch all buggy Logitech devices.
- 	 */
--	if (range > 65535) {
-+	if (range > 384) {
- 		usb_audio_warn(mixer->chip,
- 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
- 			       range);
--- 
-2.51.0
+- dashboard: https://d.kernelci.org/i/maestro:cd9264dd300837f09031feeef4bdd834c69924a5
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  fac02d83d8b6fcecda7507122864f61a79894f17
 
+
+Please include the KernelCI tag when submitting a fix:
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+
+Log excerpt:
+=====================================================
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn31/dcn31_hwseq.c:534:3: error: variable 'link' is uninitialized when used here [-Werror,-Wuninitialized]
+  534 |                 link->phy_state.symclk_ref_cnts.otg = 0;
+      |                 ^~~~
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn31/dcn31_hwseq.c:509:22: note: initialize the variable 'link' to silence this warning
+  509 |         struct dc_link *link;
+      |                             ^
+      |                              = NULL
+1 error generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## x86_64_defconfig+kselftest+x86-board on (x86_64):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-x86-kselftest-69a5bdcc7136242fe39183a8/.config
+- dashboard: https://d.kernelci.org/build/maestro:69a5bdcc7136242fe39183a8
+
+
+#kernelci issue maestro:cd9264dd300837f09031feeef4bdd834c69924a5
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
