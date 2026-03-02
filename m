@@ -1,241 +1,249 @@
-Return-Path: <stable+bounces-222740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SKZBDLoYpmmeKQAAu9opvQ
-	(envelope-from <stable+bounces-222740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:09:46 +0100
+	id yPaREx0cpmmeKQAAu9opvQ
+	(envelope-from <stable+bounces-222741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:24:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F25A1E6597
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:09:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DA71E6926
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:24:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C364031B55C0
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 22:28:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B24B930DAC44
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 22:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35FF31E83F;
-	Mon,  2 Mar 2026 22:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD082D73BD;
+	Mon,  2 Mar 2026 22:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="twALcp3N"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="LLW0fW+n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6633E31A06C;
-	Mon,  2 Mar 2026 22:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772490527; cv=none; b=FjNbEMgQGGw1FeSyf5LdgWwNMoWAfYJDLOrrRNoJgO5RlIr56+P6QEiQCITB1Vu4Z5df3Rgx+JDM1uK3/VztxMmfPI6i+MhkAmDtygivB+y5d+0R/347rcvPtXUtMnWMqXGtP6UipcrSCSBXXfuxKzkJB2iQJPwTmvWAiKCQxEc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772490527; c=relaxed/simple;
-	bh=Mzw9ZSYa0WyWWwpW0clcX9lo+Bk7602YPpbpkRLXTAA=;
-	h=Date:To:From:Subject:Message-Id; b=fo7/78j9VrFN7JhE4j7lnTANBh4QVzRWT5mOSmRbHet/mdprk7dVRUlBVy0oWSxCx+SwK8/TKSjNtZRSE0HjOxJclfhvhrdy5R5W2I+rXN/pNaJqmnqafIdSxrSdmwQYjgk9uwTnW2ZYn40Sd7zRM2d6wUVomD5ujJwtHDzswkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=twALcp3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59E2C19423;
-	Mon,  2 Mar 2026 22:28:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772490527;
-	bh=Mzw9ZSYa0WyWWwpW0clcX9lo+Bk7602YPpbpkRLXTAA=;
-	h=Date:To:From:Subject:From;
-	b=twALcp3NMBrn5nNGlbZpgWpROkSIJLfT8OzqjtIhGjwUL3k2PwmPlukRJd/lwRUZY
-	 mLoWwgiSQpblZ8C8i0lXADpWqM1Mge/RvrZ9RknCrtqEfY04bDGkD2tVIBMdgLwZP5
-	 I/NU+OV6eBYFU85Ac3o1u74X34LlisPHTj/XDwJA=
-Date: Mon, 02 Mar 2026 14:28:46 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,ryan.roberts@arm.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,lance.yang@linux.dev,hughd@google.com,dev.jain@arm.com,david@kernel.org,bas@dfinity.org,baolin.wang@linux.alibaba.com,baohua@kernel.org,ziy@nvidia.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260302222846.D59E2C19423@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2842F282F03;
+	Mon,  2 Mar 2026 22:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772492169; cv=pass; b=e/U5oG0gJfy2NPaK0443C6VDNxZ2Nusq3YNKNeINFVSZDLVGP3o5qMHXx4RGgEcZA2p16dtDUFXCDf9buPJZhC9SvkDTuB3jM8MEdwLxwpQQcHmymH0e4Sa1xhUhmY3Ys5KvMnTsVsT0CBtEzAw0KCAH80mZceFZkZH/3C63WXw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772492169; c=relaxed/simple;
+	bh=YApuTjoaVVAlTMd0uOR2e6gALCspefAhrYxFXZzjvqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xz0Njp0CDFMvCFPZ0L+ZFqEk/NIFF5maqtiadNO5a3YIMIW344xRxzb9vpL03MsyEQnjLch53sa2n3JAA/ZlWUZugNKhoUoVOCgowDQrGM6AQjjv4H7T3CbmkZEgMR4slUw3Skm4Xf/QVfFSBC1itdywnOT3x5mTjI8TfnKkSNE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=LLW0fW+n; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1772492149; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=PA5Vyg5JJ1o6mkYIZByEs94sAGp8NKHm8ncmEqH5HF7vxyOiD4eUTr4pLSVQpca/hkrmEvuCT3+8h4EJYR44S3yLiJ20IE2x1RXW6UW4NrhfSwadyvOiX5PZo4jnrKiAVyqsoGhduspSb6k6fNZxu5VZyfHr1p26D6sathwn5oY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1772492149; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/zdY8KHrZuIUijPdIoSdoYLMGu+rk0Tb9iREEpfohNo=; 
+	b=lI7YhxZOD31+07z7vfs0KsXrAJ0I1W+9Yg0sHaPZtjwIvfSYrv8Ftqn7sMV0Q4rty/IYdyNUaf6ISQyB8FVJ4EF4RREGR0COEHPsRBYHnk0la/pwoFIlTdh7IX3bHJ4XmOT2Jb0kCGNCH8I9MWLSeCzGLkMqqpkCnEQjyqlYj2Q=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
+	dmarc=pass header.from=<sebastian.reichel@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772492149;
+	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=/zdY8KHrZuIUijPdIoSdoYLMGu+rk0Tb9iREEpfohNo=;
+	b=LLW0fW+n6DCCwrKRfbBtuS2n8xKR/023CjQ2eKRWWHSd2RYMNkal4Lzk0CtZsG+Y
+	cM4+wJ2JzSIdt5mT7gZkrU1EUnM53fGRklsruE6Qggj0UHHorYCu4aXcwJ8Bi/BWPXh
+	H56omdqdNVlGCCGqs872JfF1hBrja8zgsUm261ss=
+Received: by mx.zohomail.com with SMTPS id 1772492147652172.17855840863865;
+	Mon, 2 Mar 2026 14:55:47 -0800 (PST)
+Received: by venus (Postfix, from userid 1000)
+	id 0804C180411; Mon, 02 Mar 2026 23:55:44 +0100 (CET)
+Date: Mon, 2 Mar 2026 23:55:44 +0100
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, 
+	Finley Xiao <finley.xiao@rock-chips.com>, Frank Zhang <rmxpzlb@gmail.com>, linux-pm@vger.kernel.org, 
+	Detlev Casanova <detlev.casanova@collabora.com>, Heiko Stuebner <heiko@sntech.de>, 
+	linux-rockchip@lists.infradead.org, stable@vger.kernel.org, Chaoyi Chen <chaoyi.chen@rock-chips.com>
+Subject: Re: [PATCH v3] pmdomain: rockchip: Fix PD_VCODEC for RK3588
+Message-ID: <aaYVOClMqnXIUvjf@venus>
+References: <1771988101-49877-1-git-send-email-shawn.lin@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 4F25A1E6597
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4zfusrcm7v6ffvo5"
+Content-Disposition: inline
+In-Reply-To: <1771988101-49877-1-git-send-email-shawn.lin@rock-chips.com>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.1.1.4.3/272.480.55
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: A9DA71E6926
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222740-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_CC(0.00)[linaro.org,rock-chips.com,gmail.com,vger.kernel.org,collabora.com,sntech.de,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-222741-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DKIM_TRACE(0.00)[collabora.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sebastian.reichel@collabora.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:dkim,collabora.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 
-The patch titled
-     Subject: mm/huge_memory: fix a folio_split() race condition with folio_try_get()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch
+--4zfusrcm7v6ffvo5
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3] pmdomain: rockchip: Fix PD_VCODEC for RK3588
+MIME-Version: 1.0
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch
+Hi,
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On Wed, Feb 25, 2026 at 10:55:01AM +0800, Shawn Lin wrote:
+> From the RK3588 TRM Table 7-1 RK3588 Voltage Domain and Power Domain Summ=
+ary,
+> PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltage=
+s to
+> be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support =
+landed[1].
+> The panic looks like below:
+>=20
+>   rockchip-pm-domain fd8d8000.power-management:power-controller: failed t=
+o set domain 'rkvdec0' on, val=3D0
+>   rockchip-pm-domain fd8d8000.power-management:power-controller: failed t=
+o set domain 'rkvdec1' on, val=3D0
+>   ...
+>   Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
+>   Workqueue: pm genpd_power_off_work_fn
+>   Call trace:
+>   show_stack+0x18/0x24 (C)
+>   dump_stack_lvl+0x40/0x84
+>   dump_stack+0x18/0x24
+>   vpanic+0x1ec/0x4fc
+>   vpanic+0x0/0x4fc
+>   check_panic_on_warn+0x0/0x94
+>   arm64_serror_panic+0x6c/0x78
+>   do_serror+0xc4/0xcc
+>   el1h_64_error_handler+0x3c/0x5c
+>   el1h_64_error+0x6c/0x70
+>   regmap_mmio_read32le+0x18/0x24 (P)
+>   regmap_bus_reg_read+0xfc/0x130
+>   regmap_read+0x188/0x1ac
+>   regmap_read+0x54/0x78
+>   rockchip_pd_power+0xcc/0x5f0
+>   rockchip_pd_power_off+0x1c/0x4c
+>   genpd_power_off+0x84/0x120
+>   genpd_power_off+0x1b4/0x260
+>   genpd_power_off_work_fn+0x38/0x58
+>   process_scheduled_works+0x194/0x2c4
+>   worker_thread+0x2ac/0x3d8
+>   kthread+0x104/0x124
+>   ret_from_fork+0x10/0x20
+>   SMP: stopping secondary CPUs
+>   Kernel Offset: disabled
+>   CPU features: 0x3000000,000e0005,40230521,0400720b
+>   Memory Limit: none
+>   ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
+>=20
+> Chaoyi pointed out the PD_VCODEC is the parent of PD_RKVDEC0/1 and PD_VEN=
+C0/1, so checking
+> the PD_VCODEC is enough.
+>=20
+> [1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.c=
+asanova@collabora.com/
+> Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
+> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+>=20
+> ---
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Greetings,
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+-- Sebastian
 
-------------------------------------------------------
-From: Zi Yan <ziy@nvidia.com>
-Subject: mm/huge_memory: fix a folio_split() race condition with folio_try_get()
-Date: Mon, 2 Mar 2026 15:31:59 -0500
+>=20
+> Changes in v3:
+> - drop tags
+> - rework it for just changing PD_VCODEC(chaoyi)
+>=20
+> Changes in v2:
+> - collect tags
+> - correct TRM section(Sebastian)
+>=20
+>  drivers/pmdomain/rockchip/pm-domains.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/ro=
+ckchip/pm-domains.c
+> index 997e93c..44d3484 100644
+> --- a/drivers/pmdomain/rockchip/pm-domains.c
+> +++ b/drivers/pmdomain/rockchip/pm-domains.c
+> @@ -1311,7 +1311,7 @@ static const struct rockchip_domain_info rk3576_pm_=
+domains[] =3D {
+>  static const struct rockchip_domain_info rk3588_pm_domains[] =3D {
+>  	[RK3588_PD_GPU]		=3D DOMAIN_RK3588("gpu",     0x0, BIT(0),  0,       0x=
+0, 0,       BIT(1),  0x0, BIT(0),  BIT(0),  false, true),
+>  	[RK3588_PD_NPU]		=3D DOMAIN_RK3588("npu",     0x0, BIT(1),  BIT(1),  0x=
+0, 0,       0,       0x0, 0,       0,       false, true),
+> -	[RK3588_PD_VCODEC]	=3D DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  =
+0x0, 0,       0,       0x0, 0,       0,       false, false),
+> +	[RK3588_PD_VCODEC]	=3D DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  =
+0x0, 0,       0,       0x0, 0,       0,       false, true),
+>  	[RK3588_PD_NPUTOP]	=3D DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       =
+0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
+>  	[RK3588_PD_NPU1]	=3D DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x=
+0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
+>  	[RK3588_PD_NPU2]	=3D DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x=
+0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
+> --=20
+> 2.7.4
+>=20
+>=20
 
-During a pagecache folio split, the values in the related xarray should
-not be changed from the original folio at xarray split time until all
-after-split folios are well formed and stored in the xarray.  Current use
-of xas_try_split() in __split_unmapped_folio() lets some after-split
-folios show up at wrong indices in the xarray.  When these misplaced
-after-split folios are unfrozen, before correct folios are stored via
-__xa_store(), and grabbed by folio_try_get(), they are returned to
-userspace at wrong file indices, causing data corruption.  More detailed
-explanation is at the bottom.
+--4zfusrcm7v6ffvo5
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
-It
-1. creates a memfd,
-2. forks,
-3. in the child process, maps the file with large folios (via shmem code
-   path) and reads the mapped file continuously with 16 threads,
-4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
-   large folio.
+-----BEGIN PGP SIGNATURE-----
 
-Data corruption can be observed without the fix.  Basically, data from a
-wrong page->index is returned.
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmmmFWwACgkQ2O7X88g7
++prm0w//c/OObis4A9+I6pXVvUB0m0bE1+Jpj/1KGWaM9zA+Y7wpeE2w3GaWPdN+
+UgbQ3oH/0+1QL4zZ173YeiLf8h7VqseZF+S2+6YzjWnDsEpWRBwncXrw5e0MoAPN
+8L/QfhrxUOD4RDLo6rBVsA+p+y61+mEGJrNKwbTqXQn7EATEQnHzIGLcF7xIKIaB
+HKiX0tQ5yspsZ3SsjeEkUfteyS2+t4g2CIoDbOv2s5gv+N4+Os2WdlbzOrew5d3c
+l0NQ0wH/OOVmGR9U2YWg/tu/O65+BlXMpE7iXexJ0xynkYwzVRiTAiI8lDTJ1wbb
+HivXw6EKQjbihbV9IWGkbfActInVuGVUAn494yyNBNr0F6Ro1r+JR2Fm4sDwBEHi
+yH3ZAShn0sPmrxi0lZ4+5QD+PDtrkyBfYMAQXHJJwoWs8hf3pDZ8k2uJei5sjCne
+QXmIJlalS3cv7Kxhq09V46NiMSFhB7aPweQUj8oZFTmIhXzQIPZMI/sp0zoi2Ztr
+J9vmq1bNsyGI5hFIedF4ZJ5CilQqmSHbedzXEgVcJCRXAeqI0yQyTzL6L4+BJVg7
+CVIQLNdXdI+FM89hITqgD3fYjhFXrlCelppNeSit9RtuOoJhaYbrS4MdkfbDj7FX
+W592zfgPsMbHVkxj4AwGm4AOl6VVvCPtm7UAFFSP5iMQJeYBs20=
+=Wz7p
+-----END PGP SIGNATURE-----
 
-Fix it by using the original folio in xas_try_split() calls, so that
-folio_try_get() can get the right after-split folios after the original
-folio is unfrozen.
-
-Uniform split, split_huge_page*(), is not affected, since it uses
-xas_split_alloc() and xas_split() only once and stores the original folio
-in the xarray.  Change xas_split() used in uniform split branch to use the
-original folio to avoid confusion.
-
-Fixes below points to the commit introduces the code, but folio_split() is
-used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
-truncate operation").
-
-More details:
-
-For example, a folio f is split non-uniformly into f, f2, f3, f4 like
-below:
-+----------------+---------+----+----+
-|       f        |    f2   | f3 | f4 |
-+----------------+---------+----+----+
-but the xarray would look like below after __split_unmapped_folio() is
-done:
-+----------------+---------+----+----+
-|       f        |    f2   | f3 | f3 |
-+----------------+---------+----+----+
-
-After __split_unmapped_folio(), the code changes the xarray and unfreezes
-after-split folios:
-
-1. unfreezes f2, __xa_store(f2)
-2. unfreezes f3, __xa_store(f3)
-3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
-4. unfreezes f.
-
-Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
-xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
-f3 is wrongly returned to user.
-
-After the fix, the xarray looks like below after __split_unmapped_folio():
-+----------------+---------+----+----+
-|       f        |    f    | f  | f  |
-+----------------+---------+----+----+
-so that the race window no longer exists.
-
-Link: https://lkml.kernel.org/r/20260302203159.3208341-1-ziy@nvidia.com
-Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: Bas van Dijk <bas@dfinity.org>
-Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/huge_memory.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
---- a/mm/huge_memory.c~mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get
-+++ a/mm/huge_memory.c
-@@ -3635,6 +3635,7 @@ static int __split_unmapped_folio(struct
- 	const bool is_anon = folio_test_anon(folio);
- 	int old_order = folio_order(folio);
- 	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
-+	struct folio *old_folio = folio;
- 	int split_order;
- 
- 	/*
-@@ -3656,11 +3657,17 @@ static int __split_unmapped_folio(struct
- 			 * irq is disabled to allocate enough memory, whereas
- 			 * non-uniform split can handle ENOMEM.
- 			 */
--			if (split_type == SPLIT_TYPE_UNIFORM)
--				xas_split(xas, folio, old_order);
--			else {
-+			if (split_type == SPLIT_TYPE_UNIFORM) {
-+				xas_split(xas, old_folio, old_order);
-+			} else {
- 				xas_set_order(xas, folio->index, split_order);
--				xas_try_split(xas, folio, old_order);
-+				/*
-+				 * use the to-be-split folio, so that a parallel
-+				 * folio_try_get() waits on it until xarray is
-+				 * updated with after-split folios and
-+				 * the original one is unfrozen.
-+				 */
-+				xas_try_split(xas, old_folio, old_order);
- 				if (xas_error(xas))
- 					return xas_error(xas);
- 			}
-_
-
-Patches currently in -mm which might be from ziy@nvidia.com are
-
-mm-cma-move-put_page_testzero-out-of-vm_warn_on-in-cma_release.patch
-mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch
-
+--4zfusrcm7v6ffvo5--
 
