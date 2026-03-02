@@ -1,127 +1,189 @@
-Return-Path: <stable+bounces-222607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222608-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WN4QLLqapWnxEgYAu9opvQ
-	(envelope-from <stable+bounces-222607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:12:10 +0100
+	id 8AbAOcObpWmfEwYAu9opvQ
+	(envelope-from <stable+bounces-222608-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:16:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A381DA719
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:12:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B231DA852
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:16:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE3B73059AB1
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 14:05:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D5F63081B22
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 14:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE9A3F23DD;
-	Mon,  2 Mar 2026 14:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BEC3FD13A;
+	Mon,  2 Mar 2026 14:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKLiSzKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxZuvCQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CF73FB066
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 14:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C1D3FD12C;
+	Mon,  2 Mar 2026 14:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772460357; cv=none; b=Zcu2Wd9Av0e44ahe+CE62S/8RI5PHNotHHV/wK08sbKKUM9MKvpEro9Jdgvipp/vm5V2O5EjB1/TFgPWiCbqYfLgpmuakCIigmHhZZu16+TY4fmaj1N4W4F5KUqIzoB9N+M7/7M4AZgctDMK5Lk7kFwvGJuaLq7doQ3OhVs9tQo=
+	t=1772460622; cv=none; b=E5P7YqzJUTlSwHnxt8Jih+Q1icRmVA+KG8QroG+kPKaQj7Y0sdGazMlV1M42+kbmD9D84sTVX8Dz708CXKJ2o7fx3ZxAQwA87Jx6t70u69OAeHXLV4OPOcPVC1UDoqKAkrA2mjE4SWAKD0qjgTNldr9mb6YT5viEzgFwqpQk9sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772460357; c=relaxed/simple;
-	bh=QXoOraSuBz+Dt8jV1pHCfQO70vsAR0gJLEmUXyrxxEI=;
+	s=arc-20240116; t=1772460622; c=relaxed/simple;
+	bh=agTjp2LcqjbzxQoqMEdQOc+B/FIEf+v1kHZ4Y+6e8ZU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fGMUTCkUo6H0qveFHiVYoOnyqTW/84CLlnVSLjFEXDPcndlcPfOP58NnoWCH7cScPU99bsfa9gJozJod68jKduZh8qXL4WFqmeaATRgJAHenwcY69RDS4Q5hhTvpccKsIvZlqMFT5/ywFnNq0BeEqfABXYzW4TaayaXCayyrZgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKLiSzKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7341CC19423;
-	Mon,  2 Mar 2026 14:05:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772460356;
-	bh=QXoOraSuBz+Dt8jV1pHCfQO70vsAR0gJLEmUXyrxxEI=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=nUJhDyZEaBaoEmGxRmoWQCx0lXMHNvSEWNwlq9rCDzi/OwHwSeRH+ZoM+Op7uumRwpUTzx8HvJw0QrmxzjxKmxwP4ExZZoEciAxg1TcOubO2Q/ezkXqsrRQTfhEtAPE74itN7xvwd01dvxbVX2QlyWuzciocMGu7QnruoMlihgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxZuvCQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454BFC19423;
+	Mon,  2 Mar 2026 14:10:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1772460622;
+	bh=agTjp2LcqjbzxQoqMEdQOc+B/FIEf+v1kHZ4Y+6e8ZU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BKLiSzKJImMMklWAz+8bSgbFCe7SpYJ+MVyx8+0/8/ln5o3au1QRnOuEQLXkkDk2n
-	 IpSPIWM+EpCLBaXNaggNZosOk40fGwoOIGJonvigT5r5aTqfh9akXi3lZBKa+ghngh
-	 dfXMx3s/6DbvA20j2xPRJGtWXqLJGCxpdKmzcrAuSML+1CHHLkrakfnIoMNFEEQdQ1
-	 ltaUX0KpDKepeaQEChaJXoZ9V9tyw79ALUrcdzmZzesfe/tFuvtIBRkL7JGr5+yB8X
-	 +jHSFUVM/QHYQFSsVNOWjcMy/fd8mN4yDe/zhUYoOdLMHO9Fdj3k1jS0pQ9TEV7xvc
-	 BK5LdXEMSMwFw==
-Date: Mon, 2 Mar 2026 09:05:55 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Subject: Re: Consider applying patch to 6.12.y
-Message-ID: <aaWZQ5JG4ndWDxov@laps>
-References: <CANiq72mESZc2RfL2_5wt=LEg6M_7TZ__uELZ2tN=XGwB5Md_vg@mail.gmail.com>
+	b=VxZuvCQTMogBZWCdFnFSCYQUITCKpVKPznyHvEc3n9dEg4z1iKkxHlMG6aaLqPXz3
+	 0nQeY5EM/BHBRnpTXeD4ynrm1zaLBby+WAartDUMqAIvahS8bIGiOkN9C5gher12hz
+	 1gY9jGk1MSFnIVKvqJJVlDrb3JAXzZ3Qn0yyqhSQ=
+Date: Mon, 2 Mar 2026 09:10:11 -0500
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: "Barry K. Nathan" <barryn@pobox.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@nabladev.com,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/385] 6.12.75-rc1 review
+Message-ID: <2026030203-detector-overlook-93cd@gregkh>
+References: <20260228180001.1567994-1-sashal@kernel.org>
+ <41b35d0e-bd7e-4bcd-a22c-cd96ee6c43d8@pobox.com>
+ <aaWWE5uQqz_eG69i@laps>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANiq72mESZc2RfL2_5wt=LEg6M_7TZ__uELZ2tN=XGwB5Md_vg@mail.gmail.com>
+In-Reply-To: <aaWWE5uQqz_eG69i@laps>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222607-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222608-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FREEMAIL_CC(0.00)[pobox.com,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.989];
+	NEURAL_HAM(-0.00)[-0.041];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 37A381DA719
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 61B231DA852
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 02:15:49AM +0100, Miguel Ojeda wrote:
->Hi Greg, Sasha,
->
->Sending this separately in case you don't track all replies to the
->`FAILED:` messages:
->
->  https://lore.kernel.org/rust-for-linux/CANiq72nHESphKjW7uXm2D7HCNWNxmZ3nv+CSgrzEGgSKZ4_taA@mail.gmail.com/
->
->I am not sure why the patch failed to apply -- I would like to
->understand what happened there, in case I am missing something. I
->suspect something odd happened, since other of those `FAILED:`
->messages were strange too, i.e. most of them didn't seem to apply the
->`# ...` instructions, which is why most failed.
->
->But at least for that particular one, the patch should still be
->applied and it should have been cherry-pickable as far as I can tell:
->
->  0a9be83e57de ("rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0")
->
->So if you cannot apply it, please let me know!
+On Mon, Mar 02, 2026 at 08:52:19AM -0500, Sasha Levin wrote:
+> On Sun, Mar 01, 2026 at 10:05:02PM -0800, Barry K. Nathan wrote:
+> > On 2/28/26 10:00, Sasha Levin wrote:
+> > > This is the start of the stable review cycle for the 6.12.75 release.
+> > > There are 385 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > > 
+> > > Responses should be made by Mon Mar  2 05:59:55 PM UTC 2026.
+> > > Anything received after that time might be too late.
+> > > 
+> > > The whole patch series can be found in one patch at:
+> > >         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.12.y&id2=v6.12.74
+> > > or in the git tree and branch at:
+> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> > > and the diffstat can be found below.
+> > > 
+> > > Thanks,
+> > > Sasha
+> > 
+> > I just now noticed a sizable discrepancy between what's in the
+> > stable-queue and what's in -rc1, for 5.10.y through 6.12.y. (6.18.y
+> > and 6.19.y appear unaffected.)
+> > 
+> > To make sure this is an apples-to-apples comparison, I'll compare with
+> > the stable-queue as of commit 2370009958172f632d48973387e7b6ae116086b1
+> > ("Drop a broken ACPI patch"); I'd expect the queue as of that commit to
+> > match the -rc1 patches, if I'm not mistaken.
+> > 
+> > 
+> >                      # of patches in         # of patches in
+> >                      stable mailing list     stable-queue git
+> >                      thread                  @ 237000995817
+> > 
+> > 5.10.252-rc1          147                     334
+> > 5.15.202-rc1          164                     411
+> > 6.1.165-rc1           232                     533
+> > 6.6.128-rc1           283                     683
+> > 6.12.75-rc1           385                     953
+> > 6.18.16-rc1           752                     751
+> > 6.19.6-rc1            844                     843
+> > 
+> > The off-by-one difference for 6.18.y/6.19.y is expected, since
+> > (unlike the stable-queue itself) the -rc1 patch and the mailing
+> > list thread include a Makefile patch to update the version number.
+> > 
+> > For the other kernels, though, it looks to me like something
+> > went wrong somewhere. Of course I could be mistaken, but that's
+> > how it appears to me.
+> > 
+> > In any case, I figured I should bring this to your attention.
+> 
+> Barry, this is a great catch. Thank you!
+> 
+> The root cause turned out to be a bug in git-quiltimport. One of the
+> patches queued has the literal text "\0" in its subject line:
+> 
+>   selftests: tc_actions: don't dump 2MB of \0 to stdout
+> 
+> git-quiltimport constructs commit messages using echo(1):
+> 
+>   commit=$( { echo "$SUBJECT"; echo; cat "$tmp_msg"; } | git commit-tree $tree -p $commit)
+> 
+> The problem is that echo interprets backslash escape sequences, so
+> "\0" gets expanded into an actual NUL byte (0x00). git commit-tree
+> then rejects the commit with:
+> 
+>   error: a NUL byte in commit log message not allowed.
+> 
+> This caused git-quiltimport to bail out mid-way through building
+> several trees during -rc construction. The trees that had this patch
+> queued (5.10 through 6.12) only got a partial set of patches into
+> the -rc branch, while 6.18 and 6.19 were unaffected because they
+> hadn't hit the problematic patch yet.
+> 
+> 6.18 and 6.19 were also previously released by Greg, who uses actual
+> quilt rather than git-quiltimport, so he wouldn't have run into this.
 
-Hi Miguel,
+But I use git-quiltimport when creating the releases, so did I somehow
+not apply things properly when that happens, skipping patches in the
+releaase?
 
-It's already in the 6.12 tree. There's a quick explanation of what went wrong
-with those queues (and caused the FAILED: spam) here:
-https://lore.kernel.org/all/aaWWE5uQqz_eG69i@laps/ .
+thanks,
 
-I'll spin up -rc2 with those missing commits.
-
--- 
-Thanks,
-Sasha
+greg k-h
 
