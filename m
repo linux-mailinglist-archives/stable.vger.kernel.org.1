@@ -1,158 +1,169 @@
-Return-Path: <stable+bounces-222612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mxv2AHmdpWlvCAAAu9opvQ
-	(envelope-from <stable+bounces-222612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:23:53 +0100
+	id QB1eIRCgpWmuCAAAu9opvQ
+	(envelope-from <stable+bounces-222613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:34:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84CC11DAB56
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:23:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FDD1DAF26
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:34:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7A083056157
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 14:16:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48E91310C488
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 14:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8590407562;
-	Mon,  2 Mar 2026 14:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8A73E0C74;
+	Mon,  2 Mar 2026 14:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bsg2aane"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODWTOi8d"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D9A3DA7FC;
-	Mon,  2 Mar 2026 14:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772460955; cv=none; b=RjiPaCAx3ueP+HXkJHi1ghHRJZc9swtrF8fvlZ491MzmVLnn5V7vp9+Xud1J5bhnYBzkt7teBEUS981M6eEFJP9vLqb23DIQ2jCggWcoNi4hqkQ6QwAzLfy1sEL4utojZFYnV+Fi0Zb6peaJXniIGjf0vD+QwcmEXbwcWq1nmtU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772460955; c=relaxed/simple;
-	bh=pQQsCniROcPjC6d+VRj/iFcR4pZ8qZujZDbz/KpKee8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gvCATGaYuNi2yAGzuo+kF1GEuJ8oyo6bbEWtZbO7lVxH2y2IH6dtZO32QY8RRvHEgzrbCpYrZH2fW//Y/pRVaktmMiEf113Sjj4B8gwolMI/n7HmbHkML2gL+hmExS/vZTUNlEXgthAiR7ix0hzqL5roAPpITPD+hxJJPFib5wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bsg2aane; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C88C2BC86;
-	Mon,  2 Mar 2026 14:15:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772460955;
-	bh=pQQsCniROcPjC6d+VRj/iFcR4pZ8qZujZDbz/KpKee8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bsg2aaneh+3q8BefK6Jsi2wEgucNOHaYa8a06q2komNGlfraeKdCFTjY+IHZSo/Gn
-	 AdsxiOeZPty9MnwabnEgDyKkeSU+Tt0sJy+g7UXQIn+xnf24OLUYqYfK+/EnvHce/U
-	 kHA7O4/K6bNIGKwnng0Qi6TcryMAUGYJWpzVR+ROmFACA18mQEdloQa3KxU08yh987
-	 ZL7/cCUu8TnPWXcn0Pd747kq8wS46+zta2YC/1BUW2CZMzrZf1IqfY7GmWwrbdB076
-	 BaWzT9j8ddwvEqeiWxYDzxTiwUK6db6a7ExqTO5SuxuihZwk1kbRIrz7k8NYRy79DN
-	 LyUnIVPoNqSSQ==
-Date: Mon, 2 Mar 2026 19:45:41 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Benjamin Block <bblock@linux.ibm.com>
-Cc: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>, 
-	bhelgaas@google.com, helgaas@kernel.org, sebott@linux.ibm.com, schnelle@linux.ibm.com, 
-	alifm@linux.ibm.com, julianr@linux.ibm.com, dtatulea@nvidia.com, 
-	ionut_n2001@yahoo.com, sunlightlinux@gmail.com, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/1] PCI/IOV: Add reentrant locking in
- sriov_add_vfs/sriov_del_vfs for complete serialization
-Message-ID: <cq3z34gmevzczk6gpvqfz5whevsjdodq4ls2j2jhxqx2apgngu@sowonwmqy6ol>
-References: <20260228120138.51197-2-ionut.nechita@windriver.com>
- <20260228120138.51197-4-ionut.nechita@windriver.com>
- <mvhrbhqxnxeitx4incfykvlgtcfs2jcrlje2warhujzvbyns4e@7eyme5xdea7g>
- <20260228163955.GH13050@p1gen4-pw042f0m>
- <vogl77sk53qas4nnqb4jrmduofxhuhpcgipdkab5meuswd3hhr@l6rfqqndskfv>
- <20260302101105.GA1971507@p1gen4-pw042f0m>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ED032142B
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 14:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772461247; cv=pass; b=M3u60VcVp+L9XMVm38VCvV9ypnn2hJgRlOwOJmNEOpd608uSUoKWKJgGUA+7ImcMDvPwdL51YhXobi8dGqzDcUasH7KXwCikOEjmNxU2zCesQJmXT37n6SeyHiqXQl3cxJkU/QLRDyzYyiEAT0sRZy95PDYfzoBb1QWPYBYqvwA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772461247; c=relaxed/simple;
+	bh=v1iJCitIlusxSvV0ZmYGh6EV90eFcXE9L9mACC4oXLY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nRJXKwInTG/dIFWctdncuBZ4F4ZQwldtH3eRhMBLWs3uxe5Bl8UEyktW7u00ldMsrWVeZmbCG28btGhyUXsBwYvgih9qCBEOQPWtrDhS6QyKwiPlj5VbRERbAKLLfyTfG5ydqxxSqQGeWzJmSZc/iZDLW1Ev9L9Fn0skqQENEdg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODWTOi8d; arc=pass smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2bd5658b901so208582eec.3
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 06:20:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772461245; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dscg05vJf03qMYjE7SbikTuyXTJV65RVKL3TLvGm82E9bNKnSvRVhl3cpAlNbajDS0
+         0uWj2C/iaR/RfWDU6irdYO2cU8B5XgBXmVCv1Jx8aZIDmqPdkQ/LlKxlyLbaxmzKD+xe
+         0Io+sZqORX0LRO1UhT9hfrCH+5K1HNNPND+KlT3sYx6ufYg9as1KjMqik0b10ORt+TRc
+         kcUQDu/sbfZrz558aWb7bEd2C4hAQRPqnBW/pI/0UEFk5eTPApO1wotSgKaa+7v/fF6w
+         /ex2L3a3v+E95XA2UFTtJtMm8VmjVyX7lQVwhil4oraCZeRjTXsyf//C+6P6iU5JXFKK
+         zHxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=u8dgdlnRXlNMes5eV5ld7vZ3X2CzhT0OJUL+NBisd6k=;
+        fh=QjeR5B6v8nNIwIATbDSIjOO50W9eBKTsXOGEzVBRmMo=;
+        b=gmoIFKQ8A8SohsjrNMKomKdvJMFRIrDq5Z/OuN7CbbG3n/S4tJpiuRkJ7fduYoOyl1
+         ZvIaUJDLrnmw7jPXdeFFodXsgQImkxRc25WuCNpxngGqpVBYWoF/4hg8XUro264hbHA4
+         M4//6vdosgCi4jfjlmEX9hLB5TMt885HX9d8YxP8axw8qUQmexWk6a+ekZZT4fXEFD1m
+         ZyEnkNrdX5VwCjhBPdIsqHACIcBBghbC2FnY+jVQ7l98MDjw/FCdX/WwpOWELs2PTPRb
+         WPFk8ra6m06j6DBm0J37/bweC/S9mqQuRfwkVm3J9V2+0prykw4qOg3T3cgz2YwwOmpM
+         JC6w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772461245; x=1773066045; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u8dgdlnRXlNMes5eV5ld7vZ3X2CzhT0OJUL+NBisd6k=;
+        b=ODWTOi8djhSnmrTmzpyzAfTvKnr7So3zRqcluaI5l64R/lMyt8PJ1jyQg4GeBirKFR
+         zBfxv2VQXsPvfFDXAV0/fBKDGVN459ceP1Xn/z1kNNGGEOyFN5GdjxWK58qEUk2j9rOX
+         utzft21XNJfPNj+YWBPz6GiwBF7WevcmN+6CSFGUVw8VSsYPxaxR+wVbOgM7yGLYv/hS
+         f1ZYF5ZMFcxX0v5aonQYHE7xYN0+owk7Ro6c0bBf5tATc1x89kdAY2Qt87hauSJfXnxL
+         cpE1BZFrLed4oF4XHm6uXEUv/R+v72WVq9K+Xpfiw04/gG5L7hUi314HtocAvU4Xh/JX
+         pt9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772461245; x=1773066045;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=u8dgdlnRXlNMes5eV5ld7vZ3X2CzhT0OJUL+NBisd6k=;
+        b=jACzcWSyiJ7nmmGLMhkUd2o3rxpFdI8I5c9nZrSn0N7ngvVxyfaO1OEbASrW91k7p/
+         WdiGXKnvYhlnA7/0lCAVUenVU6YbkyeVRX/Sb9rI17usXiBuSxnIfv0EE+kjrn+UfavX
+         sbuCb/SqkXTCNsPZzaHBUJKO8lErEzm18ePnLnBOb5Aci0xKT/0C2y9+OyD95WgvbJYM
+         cVGzack+zlGMhRTxJ/jkG6z/+EWh+kbZ8O5WYaudxv6dZ6zpmDiY6tl3q6csyDaGpuKD
+         m3WXfSB7i9pkqeAC+olyQbAW4EXXfBSzqwTD3fgkPBi2hy6OA9b854azFVdldbmQOfV5
+         SAgw==
+X-Forwarded-Encrypted: i=1; AJvYcCVGqT3m5G1aXdu1seqq8/w+tYMHSeyZ8WswhgUqmnAGgp4R6WVoUQzkwNvV82lkCNraBt7T6Mg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+xeuc3zkqf+2v0mTfFC8Wjh+DruTpCG8unWiY1+g8KGMOWmzi
+	3mfcOwMMIyOPCVmRsRDqS/A0MKs/4RJDy0hqPtTmfLk9Q91VKACfRUv2zDvvbmSibjmeLZ3g+3q
+	z1B6MrFqExdoniLEj4kgYyzhzT9BYU4E=
+X-Gm-Gg: ATEYQzyuJeb/mvLbKQaPR8lpCVxnhL26Jgh/L2/mjjRE5ZCyN9n+/xfQuY16rBJuSjk
+	+jl9bbt98Dp7uGypOWEzDlEv5YwMApDgwjvhnMWsfeT3qzek4DPPczwpINP4fjFZLPG4LB7mArT
+	8ZTPoI+I12trlXnAg2HjPVN4Jk1jf3q+HSoMxo46KtQhOMiJbD7B6OJziF3thPa53HPHDRp0eKk
+	HcrQpkPG4/B2StbUlKHOlvVxPZaZXQZ3JHTcV3fUeG57xT6SPLKJVjSunoamtPFc8ji/+0k/dZ1
+	Fju6fC54G4uHnjXc6BPdBZ33vvX95JmT5dbw5TnkiyTf6tu3fkl5l6Ub5teJVpuBPFLHlZm1QZh
+	d8RwuzfxWhZQz5S72O6n5+bSvDeB95eYeGk9O8Ow=
+X-Received: by 2002:a05:7300:dc90:b0:2bd:d8e6:90a9 with SMTP id
+ 5a478bee46e88-2bde1cf8740mr2816706eec.3.1772461245499; Mon, 02 Mar 2026
+ 06:20:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260302101105.GA1971507@p1gen4-pw042f0m>
-X-Rspamd-Queue-Id: 84CC11DAB56
+References: <20260302140424.4097655-1-lossin@kernel.org> <20260302140424.4097655-2-lossin@kernel.org>
+ <DGSCXPXGW2SW.D8VR5QI5OVNT@garyguo.net>
+In-Reply-To: <DGSCXPXGW2SW.D8VR5QI5OVNT@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 2 Mar 2026 15:20:33 +0100
+X-Gm-Features: AaiRm53KptjDkt8bfE05WqYGIUTryLO7FU3MhlZQUv_hDS9KcrKY5zr_tkTNAew
+Message-ID: <CANiq72mWrPR32O-1rgs7fz0aJTS2rcjGMd7omwvr2cSQkM9rig@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] rust: pin-init: internal: init: document
+ load-bearing fact of field accessors
+To: Gary Guo <gary@garyguo.net>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 26FDD1DAF26
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RBL_SENDERSCORE_REPUT_BLOCKED(0.00)[172.234.253.10:from];
-	FREEMAIL_CC(0.00)[windriver.com,google.com,kernel.org,linux.ibm.com,nvidia.com,yahoo.com,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-222612-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222613-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[172.234.253.10:from];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[kernel.org,protonmail.com,google.com,umich.edu,gmail.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DNSWL_BLOCKED(0.00)[100.90.174.1:received,10.30.226.201:received,172.234.253.10:from];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[10.30.226.201:received,100.90.174.1:received];
-	TO_DN_SOME(0.00)[];
-	DWL_DNSWL_BLOCKED(0.00)[kernel.org:dkim];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,windriver.com:email]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 11:11:05AM +0100, Benjamin Block wrote:
-> On Mon, Mar 02, 2026 at 11:43:04AM +0530, Manivannan Sadhasivam wrote:
-> > On Sat, Feb 28, 2026 at 05:39:55PM +0100, Benjamin Block wrote:
-> > > On Sat, Feb 28, 2026 at 08:43:33PM +0530, Manivannan Sadhasivam wrote:
-> > > > On Sat, Feb 28, 2026 at 02:01:40PM +0200, Ionut Nechita (Wind River) wrote:
-> > > > > From: Ionut Nechita <ionut.nechita@windriver.com>
-> > > > > Instead, introduce owner tracking for pci_rescan_remove_lock via a new
-> > > > > pci_lock_rescan_remove_reentrant() helper. This function checks if the
-> > > > > current task already holds the lock:
-> > > > >  - If the lock is not held: acquires it and returns true, providing
-> > > > >    full serialization against concurrent hotplug events (including
-> > > > >    platform-generated events on s390).
-> > > > >  - If the lock is already held by the current task (reentrant call from
-> > > > >    remove_store or sriov_numvfs_store paths): returns false without
-> > > > >    re-acquiring, avoiding deadlock while the caller already provides
-> > > > >    the necessary serialization.
-> > > > >  - If the lock is held by another task (concurrent hotplug): blocks
-> > > > >    until the lock is released, then acquires it, providing complete
-> > > > >    serialization. This is the key improvement over a trylock approach.
-> > > > 
-> > > > Just curious. Why can't you use mutex_trylock() here?
-> > > 
-> > > One problem with mutex_trylock() is we don't know whether we ourself or
-> > > someone else is holding the lock when it fails, we just know someone holds it;
-> > > and we can't wait for someone else to release it when there is a chance we
-> > > hold it ourself already. That was the problem with
-> > > 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV")
-> > > before it was reverted.
-> > 
-> > Okay, thanks for the info. I also failed to notice the mention of 'trylock' in
-> > the cover letter.
-> > 
-> > But I think, instead of caching the owner task struct locally, you can make use
-> > of mutex_get_owner() to extact the embedded owner task struct.
-> 
-> True. Didn't know/see that one, yet. We'd have to treat the return value as
-> `struct task_struct *` to compare it, but I see debug_show_blocker() already
-> does that effectively (when I saw the function returns ulong, I thought it was
-> meant to be treated as transparent value).
+On Mon, Mar 2, 2026 at 3:14=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+>     Cc: stable@vger.kernel.org # 6.12.y and 6.6.y: need commit 42415d163e=
+5d ("rust: pin-init: add references to previously initialized fields")
 
-Yeah, I don't know the reasoning behind it. But atleast it avoids caching the
-task struct pointer locally.
+Yeah, something like that is what I would have probably written. The
+docs seem to suggest a format like this:
 
-- Mani
+  Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y: 42415d163e5d: rust:
+pin-init: add references to previously initialized fields
+  Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y, 6.18.y, 6.19.y
 
--- 
-மணிவண்ணன் சதாசிவம்
+i.e. first the prerequisite, then a line without it to indicate "this commi=
+t".
+
+Cheers,
+Miguel
 
