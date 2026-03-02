@@ -1,156 +1,148 @@
-Return-Path: <stable+bounces-222734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222736-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEYbMQEVpmnlJgAAu9opvQ
-	(envelope-from <stable+bounces-222734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:53:53 +0100
+	id qBQJEuMTpmnlJgAAu9opvQ
+	(envelope-from <stable+bounces-222736-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:49:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D359D1E5F64
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:53:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CABB1E5EA8
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7FB17301DD22
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 22:15:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 32E4C304A12D
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 22:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0043101A8;
-	Mon,  2 Mar 2026 22:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935002D7D2E;
+	Mon,  2 Mar 2026 22:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="F2kxvZ2M"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g+Cgq56G"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A537B1DE3B7
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 22:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF9F282F1F
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 22:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772489755; cv=none; b=SFZLQojiUcvQgBeu1LN2ReBdsh7aS+tfqKmPPucqvJi0V8vGk3M8MuXbitQWlvyQt3dBeoaBjhesdHPTBFwbRureTGeIWqqgYVA1jM8EhiCHox4uE7+RMuOz1TIyBRADFbIO8tRTaxjRbyeED+0FIuoBz0/PGuC5e3X5OGQJFgk=
+	t=1772489862; cv=none; b=ql4h5xa5pdOjQwacw3TVkkjhT7o9R+J/7XnWu6BhNUWV42Y/WlMlSu+zdR9pXDPw8ypdB3YoFVGwg9JRZPFqOEQMjuPiJkim2/VVBrLTweha19B6LKFUewR7JDgJPrcy3+q9x437xbveAZ5J2JsTFZr9uvKXhdtwVfpg8//5EG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772489755; c=relaxed/simple;
-	bh=3PWGNQWyNk/t7DuU6EFalPDiWOaZR6qb0ZgKj5rQyP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pSC4glCIa0lMyMbFRahat1cDxwdfwwXk7lacvdUUXnHDYkeLhCDfu3O+vME3lhIn+pKSjnRECFaPTWI2IBlfN6QucAc+9m20fdBcePLYqDiAg0bYcYAmyDyYeKz6SskiSyTfqaIUoIJAd/c4hIPD6TweeBO1uSNwByY2nQg3io4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=F2kxvZ2M; arc=none smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1275750cf9cso3987725c88.0
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 14:15:54 -0800 (PST)
+	s=arc-20240116; t=1772489862; c=relaxed/simple;
+	bh=e5cz2bIVLbsU+cAPQA9qjkP/tzkHzHpAi6s7NlZ4zYw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FSbW12s4BQVTlrIS/J/5+YboJjqKc/jpRdHNoaKA1UjiJpVrba5E7AF8kDOtRSqVyEF0sUkRuqJcGXxGut7BCEGUYg45fozQ9Z5cAm+6MYK7ZdbbyMijulcOd5FR7YRyXBzZg4/BLj5VNdbT1Xb9TWOPTBVn8Wvgi5opGZ9TVAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g+Cgq56G; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-439ac15f35fso2205481f8f.0
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 14:17:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1772489754; x=1773094554; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ztIYWooLOO1cwWd3Kc3iHmLMLIi+yIAsGLzg2kuGjrw=;
-        b=F2kxvZ2M0YuGbNxWeLB+3pf/wqYPXqQF5++L5WS6aznEBYZTMtlnpryXNXItqVgD2l
-         wdL2r8ME9TanDtRR7LV2jeS3DbimOxOk+V/c5kSb/NtnTL6XxM/7QMCE75ZcmE0/3gS6
-         l5WwQCfNcV7Ssvd5mPL+TAuswJW/YI/KISPLI=
+        d=gmail.com; s=20230601; t=1772489860; x=1773094660; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=20ZBvw+8A17JrzKBL3m55KShBJ8EWIYwmxPjaH7SOVY=;
+        b=g+Cgq56GKNXjRgcpH+R3pudFJZol/HdQb7EjXM+tstBiGT18Pp6c41cSgku7oDllCz
+         +Ld+BcEgylUkgHnVSlg1JYMtF71szWuapD1ierRfTTHCUgemsd2jTkF9ije+d0NC0AfB
+         O3a0MnOmaC8sDt+/Bh3nlTT2vKVAhTB/5ptTLhHjAWiGPF9vFiok3QUJkjbPZHCx598N
+         h4JfOC1LCsISTtOyBUT/cly2k/WdnZs/Bqp+v52qjHlFAZj+lCseSkBQR1E502MWw2UM
+         NP0jnIkchYlt5PoXAV5mFlkjeGPq+10Z3cRxQuE/tiYkeYtV/ux5aIR5Kp0LA9OyhG2o
+         7Rng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772489754; x=1773094554;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ztIYWooLOO1cwWd3Kc3iHmLMLIi+yIAsGLzg2kuGjrw=;
-        b=lN4Q5xGyhqZMpQgoM52cOFMGc32qfDJYcOkZr4QUWdWXRhMJZF++I5i/RGfMkw79JN
-         0ylc9zTON6q4gsiQLF4yG5aE5c2QE87MRs9JXumtgoJ9Nsvyods7498QKbsXQgfR0m5P
-         Pmyt67inNDFA4520o6gVwoN5OzRmYERJsM+87HwiwNaoMgXOxNtWiood5ddK/PU1I6gw
-         xpmcTjhTlSlK9aqGwCoSEmlUMK6SJLA2p6pxgEOaWxiWxHzF+r/n5faTBkPTbKBiicYc
-         h/AMkLEr/XFidsQP+PHt3tR0WvgHeK3qTRqp1YbaNW2brTrxlJbQKpoaEw/V0NnwpZTi
-         3x/g==
-X-Forwarded-Encrypted: i=1; AJvYcCV7ceJSxcweqUBgrPRo/teXl6vPMOcmghULuVj/1etatHklwKnCVdAhDB6GCmApgD+7a+mq1Vg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR+4hbzXkJ7E7pmVfHUYumUXlquOuXnqWFInIAQA5kLKEIBS/M
-	WCUczPRVAilghC/gJDSI+/E2K8UEMZB1z6WhaE+78oc+68gM6w8/7Mf76gQeoTGiEQ==
-X-Gm-Gg: ATEYQzw6HZw4lgzqtKCHHP0pTYdDVAkrRpinbA2pRMsrOW4CJCVINnM/nK0+TUjLdd5
-	MBeoSJumHSz0NrXgEQVimUffCszpjQqlWnSvEW03AINxtGYvovuB5VSjk6AcT0rnqfpfyiv+W7n
-	I8SXfu9Mxh2SXvIAi0720QILpaIvNobb6q4I5bEdsJO++M1FQWi9XQdeAKvbXBhqAcpuZaa65Xp
-	TFB/IpN3AP98iP97VT6VzDvFS2wSFhnIhnAPk83LsJMNerlGADjJNbu0SJxN93DW3IO+p8y2YUW
-	O3yndcKeujSOrQ5VeQ5yXaqp0n5GrO8H1IO78G04OkHBi2nEIXcWYNurQTmqyU/WEm8OgeTCcOF
-	gSOnSiGB6BEbWNRno4UVrTK26wuhXvkvnsWQnbwnmk8iUbywTwozUSm+Z2vhxiXmw8Mlwzj+LIo
-	9Gn/8V09N/JajSidmseBEi1s5xUCFmN7YXl6/8+yuJI5VIOS7BK0auEiU=
-X-Received: by 2002:a05:7022:4591:b0:123:3488:89a3 with SMTP id a92af1059eb24-1278fc24c3amr4689181c88.24.1772489753735;
-        Mon, 02 Mar 2026 14:15:53 -0800 (PST)
-Received: from fedora64.linuxtx.org ([216.147.124.134])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12789a43a18sm19182815c88.13.2026.03.02.14.15.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 14:15:53 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Mon, 2 Mar 2026 15:15:50 -0700
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	gregkh@linuxfoundation.org, patches@lists.linux.dev,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@nabladev.com,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.19 000/850] 6.19.6-rc2 review
-Message-ID: <aaYMFrii2n0ZhkeR@fedora64.linuxtx.org>
-References: <20260302160834.2518716-1-sashal@kernel.org>
+        d=1e100.net; s=20230601; t=1772489860; x=1773094660;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=20ZBvw+8A17JrzKBL3m55KShBJ8EWIYwmxPjaH7SOVY=;
+        b=ckZtPtchVTf7C2+WlAjvKE5MCtgQnFQvD+RtG0EwIAwUFxOJtcQDlIreEJngUS3Ttv
+         r4LBXFahZUmB+wxiQpo6J9jHadtPpzl2EzHLuspx/dRfsUAl3Asl6CdjFVhvAIhf5/rs
+         tqllN7u49uTCIvt+v4a0eABWcwPRpT/BsUOYGFO3PrdKtrNFJABVA25ydEsJMRNzrbUw
+         HRVPA0Fz+g9SS8fuY9ticnNL5T37OVWr0DOsaiVzH18u6zO6TK3qnqWAMH0fuJlu43CS
+         MA5joI3lxFy1Cn19KnexBKSAJslYV7wZY9zLZKbRTK5Nb+d/+qucg9twUnZH0/50q9Fs
+         GRRw==
+X-Forwarded-Encrypted: i=1; AJvYcCWflhWJX17VW2rC4X0puRCjQjwp3Ml2iOxdIBBm0e1WglPmdHScrALWjFUQaQH4YE1puflFOoM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5nT75m4M0VXjRc4O35m0OLYC/SvJnVKnWlIqxgCvVcAri2dpo
+	rJsatBvDADy26xxlsXQMt1l3pKn1PE2smn286unkDSScko2Ss+kzRBJbobrMnw==
+X-Gm-Gg: ATEYQzzONvKsQ4RqPTMBW4na6Jye1zGQY5u7dTBBJo3qx5CVoxnmpiuypAV/lhp31nc
+	suFTkd83+nX971sb4HaOrP1kjz1aer1+EyJIR7viNgqhPx+E0JL2CWdYiuc/wc8WH2oS0ZUwGLE
+	SGHRMCGBaI02wpw9cjPnzSwNmrzS514ho3hUUi6E8+6+aSPMhHXMacOXkk8mtlFXclx+Rxs33I+
+	5TbJ6wEMDrKHGmVknieGMgnICeUSOoRDQj/i1Y44l+Fhhc7+uVzmY3a2lrTpCCLxakacAofq9E8
+	qkQnhvRN1azuCtnA3zTAq3tDvMiaIFMs3CIvhLAYu3JO/C66eyTgQwrhVOlQcbZAiC2SL4rBnW2
+	atHdwXqpxOUwApW9cFxS3YssjnYrfRgZ0VMFFtGLqHottSnoSA+34vQqcZ/1QNSzOq0HkXEKvvM
+	hOKE7b6yKnLf/CJPyPhqNDaR8PJqQtSUIvHxcTSLMwi3hvyvlAxHCd6gduZj5BGC0QoQ4uGDteZ
+	/p5tPkbh05/DOd1gghiarauk4zJ3D7wWA3+PZZGYN0BZmnxWyVRCZ9/7hkBjMzqWz5cAM1UKJYx
+	8g==
+X-Received: by 2002:a05:6000:3106:b0:439:8f32:8674 with SMTP id ffacd0b85a97d-4399de3e2b8mr25504482f8f.53.1772489859516;
+        Mon, 02 Mar 2026 14:17:39 -0800 (PST)
+Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439ac9f3e5bsm21544589f8f.37.2026.03.02.14.17.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Mar 2026 14:17:39 -0800 (PST)
+Message-ID: <0350d0fd-3037-4c04-b9ae-31bdb1913ada@gmail.com>
+Date: Mon, 2 Mar 2026 22:17:35 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302160834.2518716-1-sashal@kernel.org>
-X-Rspamd-Queue-Id: D359D1E5F64
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] io_uring/zcrx: fix post open error handling
+To: io-uring@vger.kernel.org
+Cc: axboe@kernel.dk, netdev@vger.kernel.org, stable@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>
+References: <ae4f2296e2c33bb65ef2a1487b120033879e493f.1772489730.git.asml.silence@gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <ae4f2296e2c33bb65ef2a1487b120033879e493f.1772489730.git.asml.silence@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4CABB1E5EA8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[linuxtx.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[fedoraproject.org : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222734-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222736-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxtx.org:+];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jforbes@fedoraproject.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,fedoraproject.org:email,linuxtx.org:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 11:08:34AM -0500, Sasha Levin wrote:
+On 3/2/26 22:15, Pavel Begunkov wrote:
+> [ upstream commit 5d540e4508950c674d6feef1d95463d039bbf4f5 ]
 > 
-> This is the start of the stable review cycle for the 6.19.6 release.
-> There are 850 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> 5d540e4508950 ("io_uring/zcrx: fix post open error handling") fixes some
+> post queue open problems. Instead of picking all dependencies for that
+> patch just move post open error handling out of the way, so once a queue
+> is open we can always report a success.
 > 
-> Responses should be made by Wed Mar  4 04:07:42 PM UTC 2026.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
->         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.19.y&id2=v6.19.5
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
-> and the diffstat can be found below.
-> 
-> Thanks,
-> Sasha
+> Move copy_to_user earlier before open,  and xa_store() should already
+> never fail as the slot is explicitly pre-allocated.
 
-Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+I somehow lost a stable-6.18 label in the process
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+-- 
+Pavel Begunkov
+
 
