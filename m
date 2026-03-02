@@ -1,146 +1,140 @@
-Return-Path: <stable+bounces-222714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGLnKi0Apml5IwAAu9opvQ
-	(envelope-from <stable+bounces-222714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:25:01 +0100
+	id 2HNUFL0Apml5IwAAu9opvQ
+	(envelope-from <stable+bounces-222715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:27:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275A91E2C17
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:25:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2AB1E2E41
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6AD0931311DE
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:03:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 82D4D30AACA5
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF651A6823;
-	Mon,  2 Mar 2026 20:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05BF3BED6D;
+	Mon,  2 Mar 2026 20:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="NQq5OgWx"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RLTXvBuI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082001A681E
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 20:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEA63BE17E
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 20:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772483928; cv=none; b=jqruaPB7s9Pmc7SR8aFgdzu6fW+L2osPlgqAmzqfXA9j0duCkEAkuPFUL0i6ErO/hxbrX8m7lHvhUWtBig4AUsWcusJ1xTklY1Vghf7ysoRjwqhvGyZ7+3FsNjU0IcLeRTXZ8BgYavx3ui1g9vII5Pa1e9WeY1cMYm1+Donda6Q=
+	t=1772484107; cv=none; b=k7I9HrfTAKUhJUOqwW1f+jS1u2n2ed15G3XQLO+mLgfl+LrD88i2dZE5XU4bgX24wbb6PF7o7O5r4VOm91bMVz1uS7/Iya/TxRbW2zJ/jwrZRbD7QDfPYlf7V9c/n91+0LUUz0cUN6GpFiBraBshzSn1/i47wy9V9HOdnIxg2fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772483928; c=relaxed/simple;
-	bh=LXcLtM/kx7LU+eZlrjtF73nwVPSE1zWdexmOQkeMCho=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=n/OmR7sA3kpONNjY2v2ZvldVfS9WHKGFbsmS3EM0NEXkSFYpb5pVZnJpU+gocHF7gi83tksb46dYauLYArUTEWZq7Vq+2ooq4FUM2MUa0p9CANVf8yThFvZFwt6EusG6/Vx0DLCI5TQxo/tkAkaV3Si/4CLNL3J2F0HbgEb1uWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=NQq5OgWx; arc=none smtp.client-ip=209.85.161.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6775a46c6dfso1969571eaf.2
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 12:38:46 -0800 (PST)
+	s=arc-20240116; t=1772484107; c=relaxed/simple;
+	bh=R/MIcxqUVQTwE5wwGHyGtW9Y/bGlblc1zMp+2swWJbA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nNLAUj/eToPMQtJr2yGhJ5GCilhqMRc5kjtxD4B6nU3kpZtmiBn7U0Xhzl0Tq5qYrm55AiLFJWL4rHS4EwUIuInhBZVjiNLrXYfJTkVvoiFzTGmgMpap2DMC4tBu0IMjRmKhFt96cXNVaaNVG5hOixYJ1l2pnAxYMpvzTaHVavM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RLTXvBuI; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-358df8fbd1cso4237699a91.0
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 12:41:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1772483926; x=1773088726; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4cKiqpuNfqgg10fw7W0nzEjdq3eU52N2TAy+H6AH4n8=;
-        b=NQq5OgWxEM7hGOsbZzwJG0wmEinJUC40nP1NvDddqc+HpPuKP/x1oBBR88lvAFTLcQ
-         aFZ0ycwKjJLkr582aFXTBAds/KugiOQ8EAT4XZtc+jmxdKetBK7IlHODpOZrC9ke+gKm
-         deKRK/Eh/NihzOrm5lSz4JIkc+mNE7ogXsSV2bJ0JJopKP/j6ewtQZdTRwsfJGsK1YNs
-         VcYN8zHekdfRphcYZyAo4SBkDQuIIm5QqhzKjlrsJLA+FhosHUrFr4gkiEFnxdxfP/y9
-         Nqqm2atB/bbwuQesRaB2kdDsi4CV+mU6IyrgJiUnHjqXxZmpAxnZe0vh7GhekVLcOgf6
-         BOpg==
+        d=google.com; s=20230601; t=1772484106; x=1773088906; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LgZDmqmpagJozBHMzfcbK0Tu/J0kjNTVJeXoQ0mkXOo=;
+        b=RLTXvBuIv+tpS/Y4nq4dGMGUemVDivwhhxcYUlswcPt7lFpV1LDYYeCDiH8SDr+eSE
+         A7yPRj5NMUJYu0L1Dw8nOnlecvKDeh2XVosoiBXFX4i4LmPteiyV+nwigY8Pos5Qg+xa
+         /wLjHqB2SIbcTZV9IbkOEy8brhzKgqJpMqD3BrzydBIb5fMREdE1tVSaT40xtYfIs3JS
+         9kI+3YXL/JwYOM6nqL+OWQVUVtHmjlfJObefcFp0VwxtfvYU9OIndFgAyZIf380a9Wmh
+         652egbnj1UvdeMZnt0dwhmCK9kemdK+EwkUufdmU6vAfw6AdrdeTu6keJjMXg6itRGEh
+         AjEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772483926; x=1773088726;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4cKiqpuNfqgg10fw7W0nzEjdq3eU52N2TAy+H6AH4n8=;
-        b=HTYyRbkuX/Nm+CTGNccekEPewM1h6RmOYTjuDe+RS8sRX1QYuxQH95mvEOV5gVFNC1
-         ndRPKR9oDbXEj0fldBB3yVP23M57ND6AgOqOM6sR8RmOKcKdHv6LT4y6hr3ee8TNh9q3
-         DMTkZ/X25s46RvW0SLwt4e/dLCMJpc0T5xIOrlQH+BqSYxVkZVk35G+P9cmpii3P7uqg
-         SYCQJiIDgR57AqAylMPa8/WVlbyIHiX304/cRsXVSoidZo3wq7NMkXw7Z4uAxDnE9KOO
-         FCU+JF8CVdpN8pdi598bNGxaSo1BYOwbZ9KWDoYNvSUoncS+LmiZRfLBe9VJIoO2Pzu3
-         yCsg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHm52m3rd0+KAHQ5vcCA9v54ejcT7CvJlqAnRLlUJ74kUlutXHn8qgaatpIGzN8l7emBvt8hE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqfICjJfuT4SGJB4CgSWsnSgewZ5F5iAQS6pSS71en0srjDFsX
-	lqIVveXxTo0Fb92reTEorchqT9ver9tw2/pdNj9itvxUV+VHNygy8wz+6w5KQC2dysA=
-X-Gm-Gg: ATEYQzxN50aE3EAWOx2LqfjzITKSkG7JIgmvinpyoS/pgYSyc62Qs1cc6vOlqAd2L4i
-	r/ipFZ8ftbQG2nT8gisa4t81BFofY78+eNUQ85vn6gsTddOAsQ0Nx0zDCifvd7bhoaffTQL4zFl
-	7wpQ655iIPyaIIT63hYv3rVAHBExLQsz39CUayHY+XsPkH0ku2jQPwaHl/Odt/6xDdNx/P6QaZR
-	s3k/J9YWD7wy4rs0iBjDeXrhnFmnjImDxwsgrlZo94YNNqiIl2ktujrE5M1DjyEY4ZDhxbbVCOC
-	Vr4Cp0xs3w5vLWFGwrSLBrb4MlsKVN0/CuwQJhW8hOZMOx3o+lmw6RbG7Egi2NsH9X8WmkJRIBX
-	SxSkm2UW8qhcnxmVCHNeBVPU6u+fkmPSslt/WbehRsIYiDr3fCx3ljhHFtUmRK0NWgwyAl0eu8Y
-	XtZD39wFQtkBjpdMVJfFZyYlJVOAqqHMr31lJ7FZY0x8wh5J0rMRjLXq4hbMmyqMDjv21pwomdr
-	vqJwDxn5w==
-X-Received: by 2002:a05:6820:1794:b0:679:a650:cc0b with SMTP id 006d021491bc7-679faf3393amr7841867eaf.51.1772483925842;
-        Mon, 02 Mar 2026 12:38:45 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-679f2be9b8bsm9798153eaf.5.2026.03.02.12.38.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Mar 2026 12:38:44 -0800 (PST)
-Message-ID: <8e84b6c3-e62d-4aef-90b7-a7a0e63d8a17@kernel.dk>
-Date: Mon, 2 Mar 2026 13:38:37 -0700
+        d=1e100.net; s=20230601; t=1772484106; x=1773088906;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LgZDmqmpagJozBHMzfcbK0Tu/J0kjNTVJeXoQ0mkXOo=;
+        b=fBq8zc/usucXQeqcF9cYV7K9seADc1M7JQVK/Xbx509ZiX9m+/zxPHARw8XwtHWUvb
+         /Pk2QXeYcnp3Ik9Cr6GbEI1GcJc94j2yfAECy4uCUagp67ZjECAhGYFRaj9WvBiOW3+/
+         bkps/L50vcCbTJSuadcHkmKCVsmZ6egl2lF8ERgq4kNKVKfx0dEkfSQQNg5+5lHiMBzD
+         x554G/56cT40bw6Yu4OcJvHutPjnFDn/JIPVuk4SauDVQsD0EkW2vh/Luxn0RisQHJK1
+         zQ2V38A01uhiwNSEY9xAakPdmbax7nmKuCcFT5GEoL0JIvoej1wCoidzoMzhDwuEohiu
+         8Mdg==
+X-Forwarded-Encrypted: i=1; AJvYcCXyPdMq+G4C/pv7bRLTnet3MytMoDAwIXzvOmdZmnxrIo8bQyC0eBHZuXmsicWCRc2D6pfHXvI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBEuqr11uTHX+m2OwsyuwWpyOLEErH6o7UitEtlcAl06JZeWMe
+	6NUY4UsfsZiBQeJr68N7wb2QjXe7ZO8UtiDzknWrpDMlJS7iZrpvTXCCRcef1XmxYECvsyyPQEz
+	bwanllQ==
+X-Received: from pjwo3.prod.google.com ([2002:a17:90a:d243:b0:359:8c13:8588])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:524a:b0:356:7b41:d348
+ with SMTP id 98e67ed59e1d1-35965cd00e3mr10408302a91.20.1772484105712; Mon, 02
+ Mar 2026 12:41:45 -0800 (PST)
+Date: Mon, 2 Mar 2026 12:41:44 -0800
+In-Reply-To: <CAO9r8zMJ8rvzS00eXJ7RPkRPicg2BwB4eq+xVtKXFWn5ZUamUw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: Patch "io_uring/filetable: clamp alloc_hint to the
- configured alloc range" failed to apply to 6.1-stable tree
-From: Jens Axboe <axboe@kernel.dk>
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: io-uring@vger.kernel.org
-References: <20260301014717.1711200-1-sashal@kernel.org>
- <eb41b6f9-08f4-4972-99d4-3340571830bc@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <eb41b6f9-08f4-4972-99d4-3340571830bc@kernel.dk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 275A91E2C17
+Mime-Version: 1.0
+References: <20260225005950.3739782-1-yosry@kernel.org> <20260225005950.3739782-3-yosry@kernel.org>
+ <CAO9r8zMJ8rvzS00eXJ7RPkRPicg2BwB4eq+xVtKXFWn5ZUamUw@mail.gmail.com>
+Message-ID: <aaX2CKeO831_Nx3r@google.com>
+Subject: Re: [PATCH v3 2/8] KVM: nSVM: Sync interrupt shadow to cached vmcb12
+ after VMRUN of L2
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: EE2AB1E2E41
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-222714-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222715-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel-dk.20230601.gappssmtp.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kernel.dk:mid]
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 3/1/26 6:15 AM, Jens Axboe wrote:
-> On 2/28/26 6:47 PM, Sasha Levin wrote:
->> The patch below does not apply to the 6.1-stable tree.
->> If someone wants it applied there, or to any other stable or longterm
->> tree, then please email the backport, including the original git commit
->> id to <stable@vger.kernel.org>.
+On Fri, Feb 27, 2026, Yosry Ahmed wrote:
+> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> > index de90b104a0dd5..9909ff237e5ca 100644
+> > --- a/arch/x86/kvm/svm/nested.c
+> > +++ b/arch/x86/kvm/svm/nested.c
+> > @@ -521,6 +521,7 @@ void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
+> >         u32 mask;
+> >         svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
+> >         svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
+> > +       svm->nested.ctl.int_state       = svm->vmcb->control.int_state;
 > 
-> And this one also picks cleanly into 6.1-stable. Not sure what is
-> going on at your end?
+> FWIW, this is an incomplete fix. KVM might update the interrupt shadow
+> after this point through __svm_skip_emulated_instruction(), and that
+> won't be captured in svm->nested.ctl.int_state.
+> 
+> I think it's not worth fixing that case too, and any further effort
+> should go toward teaching KVM_GET_NESTED_STATE to pull state from the
+> correct place as discussed earlier.
 
-Are these and the other "FAILED" false positives getting applied or
-not? I didn't hear anything back on any of them.
-
--- 
-Jens Axboe
-
++1.  FWIW, AMD doesn't have a MOV/POP SS shadow, so practically speaking the only
+impact is that an STI shadow could get extended for one extra instruction.  Unless
+the guest is doing e.g. "sti; hlt; cli", that's a non-issue.
 
