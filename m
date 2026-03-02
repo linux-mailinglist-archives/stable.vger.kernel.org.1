@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-222600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222601-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAYcAlyXpWmPEQYAu9opvQ
-	(envelope-from <stable+bounces-222600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:57:48 +0100
+	id kDd8OXWZpWnxEgYAu9opvQ
+	(envelope-from <stable+bounces-222601-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:06:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4781DA39D
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:57:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5871DA5F4
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:06:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1902830E43B0
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:52:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B526F3047374
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46F6385539;
-	Mon,  2 Mar 2026 13:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4A73FB05D;
+	Mon,  2 Mar 2026 13:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M3Eji0Q+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iSx9Hmt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B682D97BB;
-	Mon,  2 Mar 2026 13:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308173FB057;
+	Mon,  2 Mar 2026 13:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772459541; cv=none; b=ECIqgIcvAvu1HUwEJEx1cWOC59cbU6vzf2mGHPe5+dUUlheMGGYJsKgN1QSnIic2lrOPBGEHE0iHYklt7QYYNqlVavSBlHay1Ccb/pyqbXjg+I9s8HMuKlo/dpfEw+zgNwBhNE2xpPQeO3XkJ0QD9mEwY3J2sccv4Y2VTSISZLE=
+	t=1772459908; cv=none; b=ZiWuAlUG6n6/rxLqSg7Nvu+ekUkFV8Zj1XYMlb9CQywZ7R2X0iNpVvhNG5WRZBD9VqePMB6STwZh40EnHz99almIqyZ06twujhLEo+wuUGtScpCrG8Ftf0f8xoPsF9Q7e99Frcxa+32iZrE7vIPVjOEZAicw+9l5Obgck8Bhg1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772459541; c=relaxed/simple;
-	bh=6gfMUTzTUSlChUd4RFMxjyxhJAdG8HDKJNuSWu1BIH4=;
+	s=arc-20240116; t=1772459908; c=relaxed/simple;
+	bh=GgqKjJN/rOk5xgaTihQE2wv4/AmImW7P7d/dDc2JBJU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hAy4l0jIg4ENjAhsuOqThz3055coHwCABPdeGx0twC5tqI/yBQGcy5mnWUorJLSm4OmiSe7CHjIL0GHumFPTTf16T1BBAzIX0i8LQo0Wm0rN5hNUB9ADLjAI6fA3TraZL33eGsTz58l04MY3/uoDbHcShFWCldxg3F5fOBDsKqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M3Eji0Q+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F78DC19423;
-	Mon,  2 Mar 2026 13:52:21 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=jBW1GBKXEIk6jy8vU01ctUerFE1Iqk5kd9fl5kX2noqEJc5zYrMCd0GskB6BfeEaThk8Ogkvh+GSn1bwabL3v6egTUYqj660E4hcbX++SPyYl/194qm5WUTgvgGbdEs7g+Kafhqb8EEACOtbt69yqPqH9foDmMd4pkLN95I+ufY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSx9Hmt5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9067C19423;
+	Mon,  2 Mar 2026 13:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772459541;
-	bh=6gfMUTzTUSlChUd4RFMxjyxhJAdG8HDKJNuSWu1BIH4=;
+	s=k20201202; t=1772459907;
+	bh=GgqKjJN/rOk5xgaTihQE2wv4/AmImW7P7d/dDc2JBJU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M3Eji0Q+Ii1HMOWh/kkgUtteiPM8ZSXaqYtmiUBDALoLGm6rD0j4Qx/lu+9qyTTcq
-	 GaF42WTHpLa4r2nDy/p2iS/2D8heUlCIuF3fyvYEr4cMjN1Mnya9NG46E3F/e+8+kq
-	 ap/OEu36X0H8M42OK3PKHewd3L0nf3EJ2NxfrQUx9qmUqRWSSwz0Ol4vxlRuaugtAv
-	 f/bv+70Mzqn1UsDFKtqCc5S88y4Qgapx6ZqLFxRs1nyDsfMggp/GQF4aBH/6/bKNyX
-	 e9773XMHYHVUoNjKnysMDSVMW09AOQ9lg4USQksdMd3nECpijwu42cOX9UoWOVFUuW
-	 gPLz4VEfC2DuQ==
-Date: Mon, 2 Mar 2026 08:52:19 -0500
+	b=iSx9Hmt5By8+PdJFO4mmDpgH0NepzkfFt54xbCZhgYGM4UtEKPhrxBNYkZJeez/BO
+	 mgcXLHU3/Hsm91/BBWbYGirE7pXLAVnbQaLkwNMnQ0MTFPSAdzm4vHwnbVgRfJZoD2
+	 7cYsfFbNWNKeKm3pfbfLJw3EFVwCk99qWu2NnuOAOZFEoZTr+3dX+96iWrP7x4iZ/X
+	 4bRFO/qRc8nPjoilU2jZlXv87IhvhSPOqWBCcn1J9KnC9mO3AaXEVv4Px4Jdhv4jT2
+	 liUQhkxK3W73m2vYT+GFTXmKCUr9OXAATCaBRo1+rXzqv4sKuHJEg1BP7wr8QX0ZzG
+	 gq6mgFxBXMiJA==
+Date: Mon, 2 Mar 2026 08:58:26 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: "Barry K. Nathan" <barryn@pobox.com>
+To: Jiri Slaby <jirislaby@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	gregkh@linuxfoundation.org, patches@lists.linux.dev,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@nabladev.com,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.12 000/385] 6.12.75-rc1 review
-Message-ID: <aaWWE5uQqz_eG69i@laps>
-References: <20260228180001.1567994-1-sashal@kernel.org>
- <41b35d0e-bd7e-4bcd-a22c-cd96ee6c43d8@pobox.com>
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Subject: Re: [PATCH 6.19 164/844] drm/amdgpu: Refactor amdgpu_gem_va_ioctl
+ for Handling Last Fence Update and Timeline Management v4
+Message-ID: <aaWXgu3t5xFcIuTC@laps>
+References: <20260228173244.1509663-1-sashal@kernel.org>
+ <20260228173244.1509663-165-sashal@kernel.org>
+ <ff07a4ff-ecd4-4953-a191-cc45bf17cc52@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,123 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <41b35d0e-bd7e-4bcd-a22c-cd96ee6c43d8@pobox.com>
+In-Reply-To: <ff07a4ff-ecd4-4953-a191-cc45bf17cc52@kernel.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222600-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222601-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5B4781DA39D
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: BA5871DA5F4
 X-Rspamd-Action: no action
 
-On Sun, Mar 01, 2026 at 10:05:02PM -0800, Barry K. Nathan wrote:
->On 2/28/26 10:00, Sasha Levin wrote:
->>This is the start of the stable review cycle for the 6.12.75 release.
->>There are 385 patches in this series, all will be posted as a response
->>to this one.  If anyone has any issues with these being applied, please
->>let me know.
+On Mon, Mar 02, 2026 at 09:24:00AM +0100, Jiri Slaby wrote:
+>On 28. 02. 26, 18:21, Sasha Levin wrote:
+>>From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 >>
->>Responses should be made by Mon Mar  2 05:59:55 PM UTC 2026.
->>Anything received after that time might be too late.
->>
->>The whole patch series can be found in one patch at:
->>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.12.y&id2=v6.12.74
->>or in the git tree and branch at:
->>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
->>and the diffstat can be found below.
->>
->>Thanks,
->>Sasha
+>>[ Upstream commit bd8150a1b3370a9f7761c5814202a3fe5a79f44f ]
 >
->I just now noticed a sizable discrepancy between what's in the
->stable-queue and what's in -rc1, for 5.10.y through 6.12.y. (6.18.y
->and 6.19.y appear unaffected.)
->
->To make sure this is an apples-to-apples comparison, I'll compare with
->the stable-queue as of commit 2370009958172f632d48973387e7b6ae116086b1
->("Drop a broken ACPI patch"); I'd expect the queue as of that commit to
->match the -rc1 patches, if I'm not mistaken.
->
->
->                      # of patches in         # of patches in
->                      stable mailing list     stable-queue git
->                      thread                  @ 237000995817
->
->5.10.252-rc1          147                     334
->5.15.202-rc1          164                     411
->6.1.165-rc1           232                     533
->6.6.128-rc1           283                     683
->6.12.75-rc1           385                     953
->6.18.16-rc1           752                     751
->6.19.6-rc1            844                     843
->
->The off-by-one difference for 6.18.y/6.19.y is expected, since
->(unlike the stable-queue itself) the -rc1 patch and the mailing
->list thread include a Makefile patch to update the version number.
->
->For the other kernels, though, it looks to me like something
->went wrong somewhere. Of course I could be mistaken, but that's
->how it appears to me.
->
->In any case, I figured I should bring this to your attention.
+>A new fix appeared:
+>efdc66fe12b0 drm/amdgpu: Refactor amdgpu_gem_va_ioctl for Handling 
+>Last Fence Update and Timeline Management v7
 
-Barry, this is a great catch. Thank you!
-
-The root cause turned out to be a bug in git-quiltimport. One of the
-patches queued has the literal text "\0" in its subject line:
-
-   selftests: tc_actions: don't dump 2MB of \0 to stdout
-
-git-quiltimport constructs commit messages using echo(1):
-
-   commit=$( { echo "$SUBJECT"; echo; cat "$tmp_msg"; } | git commit-tree $tree -p $commit)
-
-The problem is that echo interprets backslash escape sequences, so
-"\0" gets expanded into an actual NUL byte (0x00). git commit-tree
-then rejects the commit with:
-
-   error: a NUL byte in commit log message not allowed.
-
-This caused git-quiltimport to bail out mid-way through building
-several trees during -rc construction. The trees that had this patch
-queued (5.10 through 6.12) only got a partial set of patches into
-the -rc branch, while 6.18 and 6.19 were unaffected because they
-hadn't hit the problematic patch yet.
-
-6.18 and 6.19 were also previously released by Greg, who uses actual
-quilt rather than git-quiltimport, so he wouldn't have run into this.
-
-This also explains the bogus FAILED emails that went out for patches
-that actually apply cleanly - since the patches never made it into the
--rc branch, my scripts concluded they had failed to apply.
-
-I'll propose a fix for git to use printf '%s\n' instead of echo on
-that line, which doesn't interpret escape sequences.
+Queued up, thanks!
 
 -- 
 Thanks,
