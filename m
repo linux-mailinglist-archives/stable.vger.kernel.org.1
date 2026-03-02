@@ -1,166 +1,155 @@
-Return-Path: <stable+bounces-222511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIxYIMsdpWlV3wUAu9opvQ
-	(envelope-from <stable+bounces-222511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 06:19:07 +0100
+	id EDsNIIQmpWm14AUAu9opvQ
+	(envelope-from <stable+bounces-222512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 06:56:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20DF1D30E6
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 06:19:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B741D34DD
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 06:56:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90E22301DE1B
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 05:18:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65BFB302AF3E
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 05:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CBF30F7EF;
-	Mon,  2 Mar 2026 05:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F74376498;
+	Mon,  2 Mar 2026 05:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="KOlKjNAU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AVteTH9i"
 X-Original-To: stable@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0F429B216
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 05:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BF4377039;
+	Mon,  2 Mar 2026 05:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772428729; cv=none; b=fe0c4H5QAApfSbYyDnCRbjngcNVD5gLz+AV5qN5AOUmBakjSL1yS2RWkYC7eyjOB2aqFUHrugol3vWOWApNkzyBranMEGoVXLnyEURRhHwfHu4i5bfIJcJrUx6ptGNKIYTTpqTT0yvW8dPkGapLVYL7mPPVCJGzgq8T6w+2jI4Y=
+	t=1772430878; cv=none; b=GLG0pKyLyrbrP1fkmGm+UxnUfPEyOS5X3i19/RgMnsE2Tq9wWKy95in5d6apb8XLnwhFxE9ofck/NDTk0VcO/sXTx9HRZteTsw2daI64ayIj8q2hQX4BmAvcp2rOlgBuIjOtNcfrWUWRRVl2tlJOgMQ3Z5522JIHYc5c7/mBaEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772428729; c=relaxed/simple;
-	bh=Q75ZmdLlia7sEiGJLLDfNyYoHRBMGUFe8pXR9H8tlYk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C/gSocNJzr/+0RjH+jDdGqxDWGh67tCZvv08s/p34wDpMbEbSLwQbJHDloGhy8QWDET3P33r1kZbXnLARU2FLx+Npdf3+8b/I1SjG8qyNrpx5Bp02nJdFSeU/Vp0KlwSph9Ds0DjpIL+1kRruhR7xn1cfuxfG1ugmyfVBV0Gj7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=KOlKjNAU; arc=none smtp.client-ip=35.89.44.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6002b.ext.cloudfilter.net ([10.0.30.203])
-	by cmsmtp with ESMTPS
-	id wuUgvPNd4VCBNwvg6vTup4; Mon, 02 Mar 2026 05:18:46 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id wvg5v91OdPL32wvg5vVzDb; Mon, 02 Mar 2026 05:18:45 +0000
-X-Authority-Analysis: v=2.4 cv=MqhS63ae c=1 sm=1 tr=0 ts=69a51db5
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=iSCEMxFwHz8iC8jQE04FzLO1+phOm2JeE/ol0ybRx/c=; b=KOlKjNAUqaqaGrN+7vlvrfvMgI
-	kQIHMDCp65nhpfOed1W6GuQA7hWGKpW68Fqu6irTOPxyCVRDp00+RBcm1iNJshEqXHUN6t44y3LUf
-	GEbSu0MHsWSsuHsUbnijAeAD9kp0SAiJOCwnxY3Ch31t3TIlRaYT0sRfVYBrcfi2VJZ8OnEu3TEc5
-	tJcHuW4NO/vZOHPb3NEs/PeVnhSEvX9ppssgWJ2zxyAjaYM4NRjGdPDo2KbjSiHNlRc62MqW/6LnN
-	z2+tW6fAppYO/NuDuxncuq1jBwKb/8HA21Xhu90+X4s8XYXxjbSOgmfIZUdzDoSmaAVXm2d/mbT9E
-	vCJwZ+HA==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:44622 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vwvg5-00000000MC9-0E5w;
-	Sun, 01 Mar 2026 22:18:45 -0700
-Message-ID: <b36e2b64-714f-4865-86fa-58e89f4e4ad9@w6rz.net>
-Date: Sun, 1 Mar 2026 21:18:43 -0800
+	s=arc-20240116; t=1772430878; c=relaxed/simple;
+	bh=We9U0buQY89VHStsTKcDwDx1abOLAC2rkgbiis/y/oM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jCyi8lQw7WLPCTuilYXqREGlavlskF2TO11UafMjXmpKOiWk+AtFDP/3yP3giqDgXSS4GDApAoxpTGFZtyLWNrKYluBNbyiY5voqPvbkMl+GiC/L0QxSfMPsbDuEmK6Zp47h7tHdYGoJjGSslXXcBK52WO/Er9JkruE0IDJ7xrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AVteTH9i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 678FDC19423;
+	Mon,  2 Mar 2026 05:54:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772430877;
+	bh=We9U0buQY89VHStsTKcDwDx1abOLAC2rkgbiis/y/oM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AVteTH9iweErloLwBUlMvRqiKdau5qnPU/BPI8iiBg5AkWaTt4s8KcfAM4FmMb+ED
+	 /DMwHJpKardkWDyBwKrVf8uTARNnPlYnveRYmYHRBeF44CMi8NefNPrxEo0JnlGAiz
+	 o25qkLcNskvkkfYo6PadMB5sz2CsyoQ2pvnKZWjVEtxOvC593FiSlD5RHqptT2WVPh
+	 MkaveH25s1qZamr9cezjLAO4Hvu0/4pabppvhKKG6IUgcBHqbuc78REU07oNUsbPZl
+	 plxydGCVpjAQJBXkYYuX1HH+a8DQNK5uhGSP71c7u4YCqlQJu79zFGHQJ9QvLP5Otl
+	 fJmoGqUpLTogQ==
+Date: Mon, 2 Mar 2026 11:24:23 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Daniel Hodges <git@danielhodges.dev>, kwilczynski@kernel.org, 
+	kishon@kernel.org, bhelgaas@google.com, mhi@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] PCI: epf-mhi: return 0 on success instead of positive
+ jiffies
+Message-ID: <xfodklav2bbej7v3ldg6equxkkkzwyadxnvuakuhrixfuc2ueo@sektmxhns7c4>
+References: <20260206200529.10784-1-git@danielhodges.dev>
+ <20260227191510.GA3904799@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/164] 5.15.202-rc1 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260228181458.1600528-1-sashal@kernel.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260228181458.1600528-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1vwvg5-00000000MC9-0E5w
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:44622
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 19
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfDvPz5w/LNR3U13L8i6jR16riN7cYoIkpKVlqmzi2H+P9Jp6egwTc+DBJd8BGYfJaiiDQg1HJKYpqJsiVF0oveRO0uzTe7Ehj4iBYuzPJGk9C3xDQxcG
- xHepmVoAGhOEejSjyaCIa6DgWVHBw8AXKIn7rTVqbViljRTHnQYiYDaU7zCCOT9PlJM1fYSn+Fy/TA==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260227191510.GA3904799@bhelgaas>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222511-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[w6rz.net];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222512-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_X_SOURCE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	HAS_X_ANTIABUSE(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: E20DF1D30E6
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,danielhodges.dev:email]
+X-Rspamd-Queue-Id: 42B741D34DD
 X-Rspamd-Action: no action
 
-On 2/28/26 10:14, Sasha Levin wrote:
-> This is the start of the stable review cycle for the 5.15.202 release.
-> There are 164 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Mon Mar  2 06:14:56 PM UTC 2026.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.15.y&id2=v5.15.201
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> Thanks,
-> Sasha
+On Fri, Feb 27, 2026 at 01:15:10PM -0600, Bjorn Helgaas wrote:
+> On Fri, Feb 06, 2026 at 03:05:29PM -0500, Daniel Hodges wrote:
+> > wait_for_completion_timeout() returns the number of jiffies remaining
+> > on success (positive value) or 0 on timeout. The pci_epf_mhi_edma_read()
+> > and pci_epf_mhi_edma_write() functions use the return value directly as
+> > their own return value, only converting timeout (0) to -ETIMEDOUT.
+> > 
+> > On success, they return the positive jiffies value. The callers in
+> > drivers/bus/mhi/ep/ring.c check for errors with "if (ret < 0)" for
+> > read_sync and "if (ret)" for write_sync. This causes write_sync success
+> > cases to be incorrectly treated as errors since the positive jiffies
+> > value is non-zero.
+> > 
+> > Fix by setting ret to 0 when wait_for_completion_timeout() succeeds.
+> > 
+> > Fixes: 7b99aaaddabb ("PCI: epf-mhi: Add eDMA support")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Daniel Hodges <git@danielhodges.dev>
+> 
+> Thanks for the patch!
+> 
+> Two questions: first, is there any reason why __mhi_ep_cache_ring()
+> tests for "ret < 0" but mhi_ep_ring_add_element() tests for "ret"
+> (non-zero)?  Could/should they both test just for non-zero, which I
+> think is the typical style?
+> 
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Yes, agree. I've sent a patch to fix this. Thanks for spotting!
 
-Tested-by: Ron Economos <re@w6rz.net>
+> Second, the subject and commit log are perfectly correct but basically
+> at the level of describing the C code.  I propose something along
+> these lines:
+> 
+>   PCI: epf-mhi: Return 0, not remaining timeout, when eDMA ops complete
+> 
+>   pci_epf_mhi_edma_read() and pci_epf_mhi_edma_write() start DMA
+>   operations and wait for completion with a timeout.
+> 
+>   On successful completion, they previously returned the remaining
+>   timeout, which callers may treat as an error.  In particular,
+>   mhi_ep_ring_add_element(), which calls pci_epf_mhi_edma_write() via
+>   mhi_cntrl->write_sync(), interprets any non-zero return value as
+>   failure.
+> 
+>   Return 0 on success instead of the remaining timeout to prevent
+>   mhi_ep_ring_add_element() from treating successful completion as an
+>   error.
+> 
 
+Ammended the commit with the above, thanks!
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
