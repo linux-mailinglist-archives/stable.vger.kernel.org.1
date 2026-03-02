@@ -1,140 +1,119 @@
-Return-Path: <stable+bounces-222715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HNUFL0Apml5IwAAu9opvQ
-	(envelope-from <stable+bounces-222715-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:27:25 +0100
+	id GLjeNy8MpmkJJgAAu9opvQ
+	(envelope-from <stable+bounces-222716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:16:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2AB1E2E41
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:27:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD841E51DB
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 82D4D30AACA5
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:11:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3BD6378FA58
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05BF3BED6D;
-	Mon,  2 Mar 2026 20:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D08D4DD6DF;
+	Mon,  2 Mar 2026 20:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RLTXvBuI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhhfr3dP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEA63BE17E
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 20:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3674C3C2793;
+	Mon,  2 Mar 2026 20:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772484107; cv=none; b=k7I9HrfTAKUhJUOqwW1f+jS1u2n2ed15G3XQLO+mLgfl+LrD88i2dZE5XU4bgX24wbb6PF7o7O5r4VOm91bMVz1uS7/Iya/TxRbW2zJ/jwrZRbD7QDfPYlf7V9c/n91+0LUUz0cUN6GpFiBraBshzSn1/i47wy9V9HOdnIxg2fE=
+	t=1772484121; cv=none; b=oOt6VzADjv4akMcmEW/2WUiKiazrE5qQrNWWLZj0D7lsM64x9mELTIA0sX4bcfGZmJJsjFkoQbrllUcHZu+VYJRvdCQwE+STmbWgK0TytsQPS5g3kCy7XgJk3khefB0BK6IaIlOeERvOouUyxQ1q5McN2JbNM5btAZF5/90beQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772484107; c=relaxed/simple;
-	bh=R/MIcxqUVQTwE5wwGHyGtW9Y/bGlblc1zMp+2swWJbA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nNLAUj/eToPMQtJr2yGhJ5GCilhqMRc5kjtxD4B6nU3kpZtmiBn7U0Xhzl0Tq5qYrm55AiLFJWL4rHS4EwUIuInhBZVjiNLrXYfJTkVvoiFzTGmgMpap2DMC4tBu0IMjRmKhFt96cXNVaaNVG5hOixYJ1l2pnAxYMpvzTaHVavM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RLTXvBuI; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-358df8fbd1cso4237699a91.0
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 12:41:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772484106; x=1773088906; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LgZDmqmpagJozBHMzfcbK0Tu/J0kjNTVJeXoQ0mkXOo=;
-        b=RLTXvBuIv+tpS/Y4nq4dGMGUemVDivwhhxcYUlswcPt7lFpV1LDYYeCDiH8SDr+eSE
-         A7yPRj5NMUJYu0L1Dw8nOnlecvKDeh2XVosoiBXFX4i4LmPteiyV+nwigY8Pos5Qg+xa
-         /wLjHqB2SIbcTZV9IbkOEy8brhzKgqJpMqD3BrzydBIb5fMREdE1tVSaT40xtYfIs3JS
-         9kI+3YXL/JwYOM6nqL+OWQVUVtHmjlfJObefcFp0VwxtfvYU9OIndFgAyZIf380a9Wmh
-         652egbnj1UvdeMZnt0dwhmCK9kemdK+EwkUufdmU6vAfw6AdrdeTu6keJjMXg6itRGEh
-         AjEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772484106; x=1773088906;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LgZDmqmpagJozBHMzfcbK0Tu/J0kjNTVJeXoQ0mkXOo=;
-        b=fBq8zc/usucXQeqcF9cYV7K9seADc1M7JQVK/Xbx509ZiX9m+/zxPHARw8XwtHWUvb
-         /Pk2QXeYcnp3Ik9Cr6GbEI1GcJc94j2yfAECy4uCUagp67ZjECAhGYFRaj9WvBiOW3+/
-         bkps/L50vcCbTJSuadcHkmKCVsmZ6egl2lF8ERgq4kNKVKfx0dEkfSQQNg5+5lHiMBzD
-         x554G/56cT40bw6Yu4OcJvHutPjnFDn/JIPVuk4SauDVQsD0EkW2vh/Luxn0RisQHJK1
-         zQ2V38A01uhiwNSEY9xAakPdmbax7nmKuCcFT5GEoL0JIvoej1wCoidzoMzhDwuEohiu
-         8Mdg==
-X-Forwarded-Encrypted: i=1; AJvYcCXyPdMq+G4C/pv7bRLTnet3MytMoDAwIXzvOmdZmnxrIo8bQyC0eBHZuXmsicWCRc2D6pfHXvI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBEuqr11uTHX+m2OwsyuwWpyOLEErH6o7UitEtlcAl06JZeWMe
-	6NUY4UsfsZiBQeJr68N7wb2QjXe7ZO8UtiDzknWrpDMlJS7iZrpvTXCCRcef1XmxYECvsyyPQEz
-	bwanllQ==
-X-Received: from pjwo3.prod.google.com ([2002:a17:90a:d243:b0:359:8c13:8588])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:524a:b0:356:7b41:d348
- with SMTP id 98e67ed59e1d1-35965cd00e3mr10408302a91.20.1772484105712; Mon, 02
- Mar 2026 12:41:45 -0800 (PST)
-Date: Mon, 2 Mar 2026 12:41:44 -0800
-In-Reply-To: <CAO9r8zMJ8rvzS00eXJ7RPkRPicg2BwB4eq+xVtKXFWn5ZUamUw@mail.gmail.com>
+	s=arc-20240116; t=1772484121; c=relaxed/simple;
+	bh=+gWOD8yqeGsJ0eX1W/xc36dz/JG4OnOtFx1cvmAT0uE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OLUI4WS5Wjp81mEUxYhryhANj/IxZruuK7iC1xy6fXHqW+nfDM6P74fKNStS+5UcCuyOWLjIhOZocgcp9WuCE3SBuHysQuWX8n6hhC/Lh+Peq6Pzfqcn72v8f1PDMb2VaO4te8GtGeHSTZbvI/6CXsBjzgOVVyqd/aemMuaHh6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhhfr3dP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A1DC19423;
+	Mon,  2 Mar 2026 20:42:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772484121;
+	bh=+gWOD8yqeGsJ0eX1W/xc36dz/JG4OnOtFx1cvmAT0uE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jhhfr3dPuea9l2dh0lsqH+96h320+98IEwoRlnL2P+QYMU8121LJGdiVNSIylfIXm
+	 HTWU6c0JLP9laKZvcI2+dV90Y6uPOEqUkecBSlvJQAFfn4cp2kh/WkIgkvQ/gahvz3
+	 zNfAZmJjez0CVDAWHUZ4fKIwLZlEjBPEOoKAk8X/5hUUQ+w3EO2RIyZeIzu/QlKQLW
+	 qEckb7d3bZqWNrGVLKtIn2noioDs2wtYVl3peTPUGpzkQZmmSDLSgvDIuNzJUObgDV
+	 BLy+4GcNr8glQdCU8ObfOYM9m9VbhZZ/qeIbymW/4L5YoeF9F+bzmBSkoYTOXk1VNZ
+	 k8oJGF92J+/Tw==
+Date: Mon, 2 Mar 2026 15:41:59 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org, io-uring@vger.kernel.org
+Subject: Re: FAILED: Patch "io_uring/filetable: clamp alloc_hint to the
+ configured alloc range" failed to apply to 6.1-stable tree
+Message-ID: <aaX2F5LGPcqaDXum@laps>
+References: <20260301014717.1711200-1-sashal@kernel.org>
+ <eb41b6f9-08f4-4972-99d4-3340571830bc@kernel.dk>
+ <8e84b6c3-e62d-4aef-90b7-a7a0e63d8a17@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260225005950.3739782-1-yosry@kernel.org> <20260225005950.3739782-3-yosry@kernel.org>
- <CAO9r8zMJ8rvzS00eXJ7RPkRPicg2BwB4eq+xVtKXFWn5ZUamUw@mail.gmail.com>
-Message-ID: <aaX2CKeO831_Nx3r@google.com>
-Subject: Re: [PATCH v3 2/8] KVM: nSVM: Sync interrupt shadow to cached vmcb12
- after VMRUN of L2
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: EE2AB1E2E41
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <8e84b6c3-e62d-4aef-90b7-a7a0e63d8a17@kernel.dk>
+X-Rspamd-Queue-Id: 7BD841E51DB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222715-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222716-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026, Yosry Ahmed wrote:
-> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > index de90b104a0dd5..9909ff237e5ca 100644
-> > --- a/arch/x86/kvm/svm/nested.c
-> > +++ b/arch/x86/kvm/svm/nested.c
-> > @@ -521,6 +521,7 @@ void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
-> >         u32 mask;
-> >         svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
-> >         svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
-> > +       svm->nested.ctl.int_state       = svm->vmcb->control.int_state;
-> 
-> FWIW, this is an incomplete fix. KVM might update the interrupt shadow
-> after this point through __svm_skip_emulated_instruction(), and that
-> won't be captured in svm->nested.ctl.int_state.
-> 
-> I think it's not worth fixing that case too, and any further effort
-> should go toward teaching KVM_GET_NESTED_STATE to pull state from the
-> correct place as discussed earlier.
+On Mon, Mar 02, 2026 at 01:38:37PM -0700, Jens Axboe wrote:
+>On 3/1/26 6:15 AM, Jens Axboe wrote:
+>> On 2/28/26 6:47 PM, Sasha Levin wrote:
+>>> The patch below does not apply to the 6.1-stable tree.
+>>> If someone wants it applied there, or to any other stable or longterm
+>>> tree, then please email the backport, including the original git commit
+>>> id to <stable@vger.kernel.org>.
+>>
+>> And this one also picks cleanly into 6.1-stable. Not sure what is
+>> going on at your end?
+>
+>Are these and the other "FAILED" false positives getting applied or
+>not? I didn't hear anything back on any of them.
 
-+1.  FWIW, AMD doesn't have a MOV/POP SS shadow, so practically speaking the only
-impact is that an STI shadow could get extended for one extra instruction.  Unless
-the guest is doing e.g. "sti; hlt; cli", that's a non-issue.
+Appologies for all of this. There's an explanation of what happened here:
+https://lore.kernel.org/all/aaWWE5uQqz_eG69i@laps/
+
+These should be part of the -rc2 I did earlier today.
+
+-- 
+Thanks,
+Sasha
 
