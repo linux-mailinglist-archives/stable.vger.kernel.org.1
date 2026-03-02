@@ -1,157 +1,190 @@
-Return-Path: <stable+bounces-222733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJZjC+sLpmkJJgAAu9opvQ
-	(envelope-from <stable+bounces-222733-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:15:07 +0100
+	id KFD7CfcWpmkCKQAAu9opvQ
+	(envelope-from <stable+bounces-222735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:02:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE411E5154
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:15:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEEB1E6306
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:02:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1356B301980D
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 22:15:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B61A130FAB31
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 22:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BD631E823;
-	Mon,  2 Mar 2026 22:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DCA31B114;
+	Mon,  2 Mar 2026 22:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="IPFZb4Tg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EnCf88kX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8886E31A06C
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 22:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14E5282F09
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 22:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772489700; cv=none; b=lswnOlntX4yPYSeL67nQgT3BCsybnuz2Duu5CZC9Nq8li4GOh0nAXXl9t4JEzS+e5HZta0bFVmjEupEpPWHhm0lolfPdNevitEY7OEFY9TXVlChHvmZdgoPhU76PzVE6zGmUy7dF5xSQy+j2T1ZK0Hf87CI7iP7rqilCrx1Gx1g=
+	t=1772489756; cv=none; b=VPBQ2zLGfik6MpXQ078NNHO42UrWVq97Ip7zdJ6IlgPgaJDRbwpfnBBOUV2ZsZb3LuS8+wofCzM+M+RUZOMYXXyepiJBZc/3e92v8ugWUATp1MjbWplhWX+nk1cjD0SzdkJxU4wyR9Elm81QJf+GN17IGANNUQuRV2Ait2+L0TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772489700; c=relaxed/simple;
-	bh=7tUyLlF5oSfxEFoTpeVKj6AEeiuw6YGNR5YAq2t1Tm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gNRbzZuiGmfz8Sat4w2O1CUKCJ5g591jShxjvbK7GiRxLy8UwMOSRRgnDMw05ulsgtxrVeCG+fWXmvdFr8F+nFq7lefYY6EIXqHvJtyfLa7fNnyb5Gqw6AwC6oH+1vZHnbswm3yuZNL2ZMUVqMyQauiIrlfjpEfVEFhfzuzHg/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=IPFZb4Tg; arc=none smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso4679613eec.1
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 14:14:58 -0800 (PST)
+	s=arc-20240116; t=1772489756; c=relaxed/simple;
+	bh=YUz7XkOJSBI3WZbGiiZQlw/847UhILJigam52BcVlq8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CfVlMq/RovjWDw+PhR0VbZgZ9E9+U96eSu7Kaa6VQOfE7/tzLzOvmLJ6XdvtsDrBVK4XGomvNAQWLd9pQ/tYujyM4KV1a6NbgUBkHprGQ/1bkxC5Nw01PqubsjLHOy2hC8Y5XS/x28CDY5NcUIOj3m12Ycj2WIHWOlioMw7xx0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EnCf88kX; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4806f3fc50bso53737895e9.0
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 14:15:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1772489698; x=1773094498; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jXt41I/9ZWGWF2H15Qu2+W0y8hiMFnOM4RdPPak0JGs=;
-        b=IPFZb4TgrzKpQJmj1imJsIq+SCd0b+pXJpn3UGac8uZsdEl/fmyxiE9+YXLp3Gr+qU
-         xgVhhcb6UhcEPRcdV8vT7QX5gUMhPCUtkxDhnJt3/a26JWw8CoSphQCEKLIJe6cacfZr
-         Q7riYA/g7K9LkOlqV1Q2SK/LxzLUGwyGyL6Ug=
+        d=gmail.com; s=20230601; t=1772489753; x=1773094553; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tjm/TIZUMwWxgmitP9S97CxYmmwICsTxtpvet48XIIw=;
+        b=EnCf88kXZy7wtQwiUXFh3CvBPHA2VAIJo6XPd9L2v9WtVZKr1YbQec7ctEGncqdvr+
+         K4+uA7RZHSLLAu6NHqo4+Ph8rgGvTx8Tuw/gNEOh+ROsXpIN/AQYzJ4ofVzimNdKtl/8
+         FC3AMEcmFVrpTb82m3j0qcawpfJKMw2f41EPejTzmOvd7UK/skB7ibMDvFDrBhlW/DZY
+         NfgiXaVJ4OeKir6hkqAPOohgaxsu7BXYFCJThqOZ5lwsCA2S6eDE/vhi5Kx2onOJREu5
+         YfmSdrD1Va7TPKrKfDf6O4maNJ7we7n+6KEt06UcbCeefIgvLYpR5HZl7sl4rTZAlwlb
+         r8rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772489698; x=1773094498;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jXt41I/9ZWGWF2H15Qu2+W0y8hiMFnOM4RdPPak0JGs=;
-        b=taWnOiSidy1sR+OkCi5pRAlxf3BC2cu2/Q/zvdY7cXFe3jY6uH5pybd03mkPFjg8O/
-         uoqyM8Xt+eT7Uu1Z4aTnUQAtzeY6tLkwZeN0Qi2PxrwTZIbUVrLwwXzK93eJFI4YlVHU
-         NErYOtMHmp6xI+Uv97vle4RFZOKts97Cw8Dyf7aHf81vEZWQpS5g1aWxuq66Yv+AwjJd
-         PWNfOliKBtm6YWg3xi8r46cTaTf7OP+MoP6fv8CZEPEN+TZGf1ItuOS42ACKV0f6cjbH
-         Ze8Prl1unoS3nxlT1DETZdnEQFeZdigtIFVEfihLU6CBD95gJEx6tQ4+7ELscTRt+wtx
-         hrIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW8XRWPhrvsOBo5W63ahVZ5s0pynnZTLLRI3fRJZCPJ52SYcBPpuDhb6XliEjU9kNy76q0ExwM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHy78zQ/gF8xGjMtA2DuLap9+EELLag7IUl7BqdhUMDZs8ywrM
-	8UtMqFejge/bnyK8Se8zHFtYIxhM/a4Lr+S++K984FTbgoCiLFNHd7e53S7dLQlutPtd7ro5/nu
-	3gfiNaA==
-X-Gm-Gg: ATEYQzwK42qQy6XOtCfkumSgNIeLmAL59YOmd8Q+zL9J/UwYwvg7PFZ+l1st97aNbdv
-	Q+QZP4b9GlO4nV546cwQZ96Vgqp1Z1hFIduzEzN89jMQYQcdzQLF5mmd5g60NN/l0pqT5NRUzL1
-	9VLg8QwmUH5yigrNx4u7PJG2byE2KjnrW3zqvzw+jhfnb725fFBsiewEKajSeIkYu3tnYMLX8jv
-	uPHJTusThh6kHUUiKMswE1HC2mUNsXElITGNwIMtleR0HCLeaMvTkKvXNv+IpqQHeZgqb4XjJyH
-	sp8zoq7rBeEVFkh6GXujb3Ot0l+nPl+2FLZm8ptCl7ueibuuwfi9W59UAhxZwSpN09iz8BVMJWh
-	p16dgEnf1shU+pC4j7CKC1XpQm7ubgJ0TPci3W+kH9DvBqrCqJSgKxOJinUdCOJdl102kwWrmE1
-	kgmU98B2kZqe4v7QQq+0qzVbJq9Spaw7OH0wFBBFuiBvvE
-X-Received: by 2002:a05:7301:9f06:b0:2be:171c:5048 with SMTP id 5a478bee46e88-2be171c53cemr1383663eec.5.1772489697595;
-        Mon, 02 Mar 2026 14:14:57 -0800 (PST)
-Received: from fedora64.linuxtx.org ([216.147.124.134])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bdfb3f898asm6594316eec.29.2026.03.02.14.14.55
+        d=1e100.net; s=20230601; t=1772489753; x=1773094553;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tjm/TIZUMwWxgmitP9S97CxYmmwICsTxtpvet48XIIw=;
+        b=GuDRUccgf2vh1s1SvmgRHDT8SZAEl6ol6FdiZi4gxcZisvWVlRczTk2uxjwYgBYOVc
+         xV6+2P7OQwIDoI+O/n3ChripZnVZuPGYtR/01U7G7rFNmFx3zNQcOjyg6wL8Q6MOhiGG
+         XCHlKfgCBf7uTOrOIcstQRQ4EN026/kOdrAn0QwYr+K84XwikiTD+wfDV6c0B/Bzqidz
+         ur5c4WMoD5u8gPx1/SNudAYAYNIojzR/jS7N1Bqa1gzoV4FJ8eTNYUBAXxUtzXL4M5gS
+         jf3M/bZrbuyn6P0EDYbN2lFpo43SfjyxaL6u7hqnIPq1ZEQRUCbOO6Uv2iZA0tydFjqP
+         l3hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVD+JzMLL41tp3ihvdU3vUmR3AtuQb8EHKIZKuKM28k/YW7rikspR0UoXxsNCiwC0XGuT39BMk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQ2l2DIqbjshHhjigzY6Z7X5Slz/QD1FZsfOfwSZI5ZsCTd++w
+	ckF/DhjjpxI0jV+K3cv2np+D5N1ij48Z+2vinnRbuVD1U0wTG6FXusgT
+X-Gm-Gg: ATEYQzx42r18geudiLC2XTHchTNilDZmpKUP/6e4mXQ1TFwaQ35YsTP62v1BHCxbX/L
+	gAG8LuGguPtnDQxLhPHivkDU6Kfivh1G0CoRwLqm3Nrbf/qDJsZ4HHLQ6W/BPlri5U1vmdYK9vu
+	iKjROoFM27Rfhp4RoAZurX7AZv+m+pvkFrT8qo2TCy1YUP4KaQUap2lR78dyBwX1loKb4r88VUr
+	7m+ZgkUwoCgF0LeQqKrOZUhZHgoreGqWHKwruWZW9bpLZzgl121/qyTkkDI714xUePB3cg+gDjx
+	MQX+v0HoX6guAvDvPIJTP7qHxozt/CAP7fIyCpMf1eU+O6IHGAVtp5+0nMFTf9BpXM8gtqNp4Da
+	JL1K1c2AVYBciqecu8uRi3uZgUlh9DiV7UxYHZaK9V26t6pVA/Aw/OZHHN8Z2XEWA4I3EaJm7zs
+	JE9nPLngENAPIs2gKMkhHBLdo11Sw+CizvUXuowdv2C5qAvpVzmbz6ADNQHHF4GqZHsUYojFQP4
+	V5eVA6P2wr+LCgqv/H33mFFUQYs4w==
+X-Received: by 2002:a05:600c:5306:b0:483:6d42:25c6 with SMTP id 5b1f17b1804b1-483c9bc4210mr262615115e9.23.1772489752652;
+        Mon, 02 Mar 2026 14:15:52 -0800 (PST)
+Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4399c60f764sm30736816f8f.3.2026.03.02.14.15.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 14:14:56 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Mon, 2 Mar 2026 15:14:54 -0700
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	gregkh@linuxfoundation.org, patches@lists.linux.dev,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@nabladev.com,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.18 000/757] 6.18.16-rc2 review
-Message-ID: <aaYL3gXI4Czb_Q9I@fedora64.linuxtx.org>
-References: <20260302160853.2519610-1-sashal@kernel.org>
+        Mon, 02 Mar 2026 14:15:52 -0800 (PST)
+From: Pavel Begunkov <asml.silence@gmail.com>
+To: io-uring@vger.kernel.org
+Cc: asml.silence@gmail.com,
+	axboe@kernel.dk,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 1/1] io_uring/zcrx: fix post open error handling
+Date: Mon,  2 Mar 2026 22:15:43 +0000
+Message-ID: <ae4f2296e2c33bb65ef2a1487b120033879e493f.1772489730.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302160853.2519610-1-sashal@kernel.org>
-X-Rspamd-Queue-Id: 0CE411E5154
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BDEEB1E6306
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[linuxtx.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[fedoraproject.org : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222733-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxtx.org:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.dk,vger.kernel.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222735-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jforbes@fedoraproject.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,fedora64.linuxtx.org:mid,fedoraproject.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 11:08:53AM -0500, Sasha Levin wrote:
-> 
-> This is the start of the stable review cycle for the 6.18.16 release.
-> There are 757 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed Mar  4 04:08:47 PM UTC 2026.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
->         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.18.y&id2=v6.18.15
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> Thanks,
-> Sasha
+[ upstream commit 5d540e4508950c674d6feef1d95463d039bbf4f5 ]
 
-Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+5d540e4508950 ("io_uring/zcrx: fix post open error handling") fixes some
+post queue open problems. Instead of picking all dependencies for that
+patch just move post open error handling out of the way, so once a queue
+is open we can always report a success.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Move copy_to_user earlier before open,  and xa_store() should already
+never fail as the slot is explicitly pre-allocated.
+
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+---
+ io_uring/zcrx.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
+
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index c524be7109c2..208d03443020 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -625,6 +625,14 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
+ 	if (ret)
+ 		goto netdev_put_unlock;
+ 
++	reg.zcrx_id = id;
++	if (copy_to_user(arg, &reg, sizeof(reg)) ||
++	    copy_to_user(u64_to_user_ptr(reg.region_ptr), &rd, sizeof(rd)) ||
++	    copy_to_user(u64_to_user_ptr(reg.area_ptr), &area, sizeof(area))) {
++		ret = -EFAULT;
++		goto netdev_put_unlock;
++	}
++
+ 	mp_param.mp_ops = &io_uring_pp_zc_ops;
+ 	mp_param.mp_priv = ifq;
+ 	ret = __net_mp_open_rxq(ifq->netdev, reg.if_rxq, &mp_param, NULL);
+@@ -633,21 +641,11 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
+ 	netdev_unlock(ifq->netdev);
+ 	ifq->if_rxq = reg.if_rxq;
+ 
+-	reg.zcrx_id = id;
+-
+ 	scoped_guard(mutex, &ctx->mmap_lock) {
+ 		/* publish ifq */
+-		ret = -ENOMEM;
+-		if (xa_store(&ctx->zcrx_ctxs, id, ifq, GFP_KERNEL))
+-			goto err;
++		xa_store(&ctx->zcrx_ctxs, id, ifq, GFP_KERNEL);
+ 	}
+ 
+-	if (copy_to_user(arg, &reg, sizeof(reg)) ||
+-	    copy_to_user(u64_to_user_ptr(reg.region_ptr), &rd, sizeof(rd)) ||
+-	    copy_to_user(u64_to_user_ptr(reg.area_ptr), &area, sizeof(area))) {
+-		ret = -EFAULT;
+-		goto err;
+-	}
+ 	return 0;
+ netdev_put_unlock:
+ 	netdev_put(ifq->netdev, &ifq->netdev_tracker);
+-- 
+2.53.0
+
 
