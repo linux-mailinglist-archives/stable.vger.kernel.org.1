@@ -1,159 +1,173 @@
-Return-Path: <stable+bounces-222718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHGdEusBpmmzIwAAu9opvQ
-	(envelope-from <stable+bounces-222718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:32:27 +0100
+	id uFWCCwYQpmkkJwAAu9opvQ
+	(envelope-from <stable+bounces-222719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:32:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BDC1E3375
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:32:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CFA1E591B
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:32:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22148341BAB5
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:21:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D78553402D19
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993B43CF0BF;
-	Mon,  2 Mar 2026 20:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29A0384CD2;
+	Mon,  2 Mar 2026 20:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="r6SPk81H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tIhx94tz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EF6249EB
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 20:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7288A384CBF;
+	Mon,  2 Mar 2026 20:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772484356; cv=none; b=JIn6maNQR+Sr6Hj7c+dchtvT2GZJBfHk4SS425hdKOdm9tqbmUxo8XPVHpecJClOrKfpG4uzxNCsQVgq4hDJ0VxG8aV7GRNPLvQXdYH9LQqqd2ziFJ5u9662OGdxQOFhcRt2TGBrdfEtgmCtn91XSV28VZWhw1IMQ1PsJTONWac=
+	t=1772484549; cv=none; b=CFVmA3LfQqg/nemYSpKOmN5gI4dNJ48m2Gr5nkBNO24O6dMxhmSoKW37tnpb74SWiFqYQnFKEgUYMGOL95jP94ZEjsJ+MnU0UlVwi+xh1qZFW7J3UBhrHPiDsdscbfLomwrolcP+pIi6BcYXCl1CXKIJhVUdlX8Ao3szifvZ81c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772484356; c=relaxed/simple;
-	bh=dh2KeC0FHh2tfpycGhTqg/+ghsqdACtQk+amNEmzqaE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zu7SEyFD/60uLlfew5zPbczaiwRlVCDmgVhdUaprGw781C6cXNmSxHyfx+fay6jsHCo/qbKNty0lQ0YjRIXiPhmvCEVao3Wwqv7UY4VcTrZUKC0L+sA0ihfS9U75dHE4qbspFzDdbmmf6yTW+fz8u/6wg0cPP/C53rDO2vpVTfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=r6SPk81H; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-4638e6bb8a5so2068360b6e.0
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 12:45:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1772484354; x=1773089154; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v68RHoeeN2biRUEE8nKGOAckVRccNLWB9PTIqaEQqtk=;
-        b=r6SPk81HLM4VSQTwkzce+x37H727l/RVg8o03pQ5Wvh7Ux/8TvAjAZ175b6IzlcM4H
-         GvN1nJscZEXJONa2VX2hrPNbViTGIDM9I/07HQuh5KbvEX1Ro4mQsO9D9pyEBWJnCjYZ
-         l004cCGmI5wHizK9haJWMvdwuEFzgiy0KwMTXkppNkY5vgXKsXRmcmrVVe3+edLOUBXV
-         DVGXf42sUyVD0b19pFDDtRJZmLBlNfoOPTPC4HDkyOOXjRL664JftndtUOBJVOU20ZS8
-         QWlEz7G64HMWtWxP+cf6QSQcTJJA4LDS6sOcMVkfeCBb2/fIgr1jNa8sXcxr+ahnlbej
-         AMWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772484354; x=1773089154;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v68RHoeeN2biRUEE8nKGOAckVRccNLWB9PTIqaEQqtk=;
-        b=AAXNedHxsb8yf/VOAGjNc1e8IZNp1oc245YawY4O9zrPJcG622fbtHT5kvJZ9HLuo6
-         cIuvGgBkMoxT4Vl++CG4mQPkSITSUbb8tQnsMJe+S1+xVjxJV00wN2mBePe7xBctQD+H
-         YuoSYjmBWtljph42rhYbyKhvmTMByYJ5DVRsnd2YgScjz5+Xaf+LSdjZo2dMD9konjtO
-         5Jb1shAb7VU+gZPfgsJpAyEmylsB7QuN0Y9xDuFl7OOu50GNdF2SfmmokU3GFR6YJ/LG
-         IL8FMCbmFaa2dF+Bs3389OPZ+93clM3vhAF2gx9rzIfb6D/j286l5HGK+fMl/OyDGPLu
-         GCNQ==
-X-Gm-Message-State: AOJu0YydZztnQ7OtcoF7ZQZswxQr8/Ct729Nwzt3prPQEQFaf12lBVPW
-	OKb96rPNQJLpwObAkQHh/IwhmccpJiqPEz5gb+PJgh6Afd9OjZkXGXkfWxHpjnTQUMI=
-X-Gm-Gg: ATEYQzzHzlS59IuN84DOhpKFvsfTYDPb0WOIhjRUJGZ8rVb65w3LZVtUx6dMKpR8ggZ
-	8NTcP6oOO/rpVGjhz2UoS9PiwvuIrhusGmHa7lE0U/YQ/++8A+U8pHPWHj3vd4Fekzs0pwOI5N3
-	C4R+3+zIsscZ/IAiTf9dAqWgjsyPASVygtaa4HvUv2Kmdz/4uHjaqEHIAIcaEPWkLg/Q9r/+Wa5
-	pvVr2zfHlz8oQEveTGG/2dUP68eGPxmdZqu5HKBRfShSXcWLcyV0mOoqW/D9E7cCVvZGD8qSHIt
-	/nWZZ91YjmBZ+KMgqdf9lWxTsaEEVHAARTFqUf5adXJ5wsiY6vA6DRN/tE7IND8uzjsm72X0eBn
-	2sF5CBmrNhfoYX1rbTlY5/pz4cOtUssM77yF/HWLabVQTw/u7NyoB4+POJK8kwCu9o6eM5h8uLw
-	rG7781N4XWBQEl7VpmJuua632YViZ6x6japiM8VfmoSxLbZpqEiyWh1sKxopm9oUOMnY4AsKFYd
-	Z9TJ8K/4g==
-X-Received: by 2002:a05:6808:1719:b0:463:4f2e:c518 with SMTP id 5614622812f47-464beca7006mr6410351b6e.61.1772484353719;
-        Mon, 02 Mar 2026 12:45:53 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-464bb59b66fsm8262084b6e.10.2026.03.02.12.45.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Mar 2026 12:45:52 -0800 (PST)
-Message-ID: <531cfe07-2a07-4bd2-be07-9cd78890e04f@kernel.dk>
-Date: Mon, 2 Mar 2026 13:45:51 -0700
+	s=arc-20240116; t=1772484549; c=relaxed/simple;
+	bh=B3ZA9o5zRO2yOzXEjcCbY3SyEa0cr+byBzCZz1FWVSU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oGUNckHEj2cxPI2ckdtoQ94zonWgNJcurmA/Mj9DOytDPLwiHfjDZpoghEG4CgGmdScr2J5oKBN9K4W4ekc5n8t2SLtU1/GXbpU4+HCcP12Cfsra5KLRE8jOM2EY4uqJgKpqpnLuQSlNHVl8CupSXDCtnXWXT27RQTw1KRFe4ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tIhx94tz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FFEC19423;
+	Mon,  2 Mar 2026 20:49:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772484549;
+	bh=B3ZA9o5zRO2yOzXEjcCbY3SyEa0cr+byBzCZz1FWVSU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tIhx94tz3/cMKL2ABo3XqtxfzJfDq3/32HQ2MaLoxvOIYAA2u/7pDHO7p4lxEbCu4
+	 6Psq/0w8VEjYZ1GnLCsqJd2ayH9WAki0rJenNYpPYFJwnSVj52gONlhtHuepsCg/RR
+	 YejxX2Mbx2Yd4/wKMlhEB75ipQNJJTt8DhXGf9OkjnVdBgUqzQbmzN+0qxsY1BJxso
+	 5/pPqb7B8xiGO/xk1ijNvrbXdmsTAZ4oet005wtapib7nEETgGTYOL1CXL1KNZtlGg
+	 EgwW98wLV2AoBvAyr7X4KucIKrtxUPLU1a26fu1tKi8yGBwZKbISx1PLSbZBYUCZKk
+	 DM2d/xDtQF5bA==
+Date: Mon, 2 Mar 2026 13:49:03 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
+	Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Nicolas Schier <nsc@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Rainer Fiebig <jrf@mailbox.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: Re: -next build error due to "kbuild: Leave objtool binary around
+ with 'make clean'"
+Message-ID: <20260302204903.GA2007498@ax162>
+References: <20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org>
+ <03045f41-fe4c-44ff-b01c-6e325d82255a@leemhuis.info>
+ <aaXofbe_5QGYYuMB@kitsune.suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: Patch "io_uring/filetable: clamp alloc_hint to the
- configured alloc range" failed to apply to 6.1-stable tree
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, io-uring@vger.kernel.org
-References: <20260301014717.1711200-1-sashal@kernel.org>
- <eb41b6f9-08f4-4972-99d4-3340571830bc@kernel.dk>
- <8e84b6c3-e62d-4aef-90b7-a7a0e63d8a17@kernel.dk> <aaX2F5LGPcqaDXum@laps>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <aaX2F5LGPcqaDXum@laps>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B0BDC1E3375
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aaXofbe_5QGYYuMB@kitsune.suse.cz>
+X-Rspamd-Queue-Id: 85CFA1E591B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-222718-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222719-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:mid,kernel-dk.20230601.gappssmtp.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 3/2/26 1:41 PM, Sasha Levin wrote:
-> On Mon, Mar 02, 2026 at 01:38:37PM -0700, Jens Axboe wrote:
->> On 3/1/26 6:15 AM, Jens Axboe wrote:
->>> On 2/28/26 6:47 PM, Sasha Levin wrote:
->>>> The patch below does not apply to the 6.1-stable tree.
->>>> If someone wants it applied there, or to any other stable or longterm
->>>> tree, then please email the backport, including the original git commit
->>>> id to <stable@vger.kernel.org>.
->>>
->>> And this one also picks cleanly into 6.1-stable. Not sure what is
->>> going on at your end?
->>
->> Are these and the other "FAILED" false positives getting applied or
->> not? I didn't hear anything back on any of them.
-> 
-> Appologies for all of this. There's an explanation of what happened here:
-> https://lore.kernel.org/all/aaWWE5uQqz_eG69i@laps/
-> 
-> These should be part of the -rc2 I did earlier today.
+On Mon, Mar 02, 2026 at 08:43:57PM +0100, Michal Suchánek wrote:
+> On Mon, Mar 02, 2026 at 08:18:17PM +0100, Thorsten Leemhuis wrote:
+> > On 2/28/26 06:40, Nathan Chancellor wrote:
+> > > The difference between 'make clean' and 'make mrproper' is documented in
+> > > 'make help' as:
+> > > 
+> > >   clean     - Remove most generated files but keep the config and
+> > >               enough build support to build external modules
+> > >   mrproper  - Remove all generated files + config + various backup files
+> > > 
+> > > After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
+> > > target"), running 'make clean' then attempting to build an external
+> > > module with the resulting build directory fails with
+> > > 
+> > >   $ make ARCH=x86_64 O=build clean
+> > > 
+> > >   $ make -C build M=... MO=...
+> > >   ...
+> > >   /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
+> > > 
+> > > as 'make clean' removes the objtool binary.
+> > > 
+> > > Split the objtool clean target into mrproper and clean like Kbuild does
+> > > and remove all generated artifacts with 'make clean' except for the
+> > > objtool binary, which is removed with 'make mrproper'.
+> > 
+> > Thx for fixing this regression, sadly this caused my daily -next rpm
+> > builds for Fedora to fail on x86_64 during a "make mrproper":
+> > 
+> > ""
+> > kernel.spec:2485: InitBuildVars: Copy files
+> > + /usr/bin/make -s 'HOSTCFLAGS=-O2  -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -m64 -march=x86-64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -mtls-dialect=gnu2   ' 'HOSTLDFLAGS=-Wl,-z,relro -Wl,--as-needed  -Wl,-z,pack-relative-relocs -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -Wl,--build-id=sha1 -specs=/usr/lib/rpm/redhat/redhat-package-notes ' -j32 mrproper
+> > find: cannot delete ‘/builddir/build/BUILD/kernel-7.0.0-build/kernel-next-20260302/linux-7.0.0-0.0.next.20260302.121.vanilla.fc42.x86_64/tools/objtool/.check.o.cmd’: No such file or directory
+> > find: cannot delete ‘/builddir/build/BUILD/kernel-7.0.0-build/kernel-next-20260302/linux-7.0.0-0.0.next.20260302.121.vanilla.fc42.x86_64/tools/objtool/.elf.o.cmd’: No such file or directory
+> > [and many more like these]
+> > ""
+> > For the full build log, see:
+> > https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-42-x86_64/10183736-next-next-all/builder-live.log.gz
+> > 
+> > This is almost exactly the rpm spec file that is used in Fedora rawhide.
+> > The sections that causes this looks like this:
+> > 
+> > """
+> >     %{log_msg "InitBuildVars: Copy files"}
+> >     %{make} %{?_smp_mflags} mrproper
+...
+> Or does the objtool_clean run multiple times in parallel, once through
+> the clean target, and once as dependency of the mrproper target?
 
-Gotcha, yeah it's not easy to know when you don't hear back, either
-as a reply or as a new "added to stable" email. For those of us that
-do take stable seriously, I 100% need to know if something is landing
-or not.
+More than likely this based on my reading of the submake processes from
+the build log. For what it's worth, I cannot reproduce this error on
+either a really fast or really slow build machine but it should not be
+hard to avoid by using 'xargs rm -f' like the rest of Kbuild does for
+removing things, which should suppress the error if the file does not
+exist. Thorsten, could you see if this diff makes a difference for you?
+If so, I'll squash it in with a note.
 
--- 
-Jens Axboe
-
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index 50d3e38e6137..76bcd4e85de3 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -142,7 +142,7 @@ $(LIBSUBCMD)-clean:
+ 	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
+ 
+ clean: $(LIBSUBCMD)-clean
+-	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
++	$(Q)find $(OUTPUT) \( -name '*.o' -o -name '\.*.cmd' -o -name '\.*.d' \) -type f -print | xargs $(RM)
+ 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/cpu-feature-names.c $(OUTPUT)fixdep
+ 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
+ 	$(Q)$(RM) -- $(OUTPUT)FEATURE-DUMP.objtool
 
