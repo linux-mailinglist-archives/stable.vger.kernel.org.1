@@ -1,399 +1,353 @@
-Return-Path: <stable+bounces-222594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MB6rGmKPpWmoDgYAu9opvQ
-	(envelope-from <stable+bounces-222594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:23:46 +0100
+	id aNuhFSuSpWmoDgYAu9opvQ
+	(envelope-from <stable+bounces-222595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:35:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C41FA1D9AFA
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:23:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5528C1D9E10
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:35:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A92E303EC04
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:23:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 95D0F300D76D
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC76A3CC9F2;
-	Mon,  2 Mar 2026 13:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD8631717A;
+	Mon,  2 Mar 2026 13:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qLl8Jwbh"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="auJIEYia";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="RwYed+3p"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3C9361DDC
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 13:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772457819; cv=none; b=fPUFrmQS7nwsA6kfvBsIi6ET6CtFIOjpazpekjr0qxXfidbJrqY/UMspPzbS5czovMvCRgByD8eVL1IDYRoil7LkFst2hUiDpCqYa49j10GhZktGKdCURMxdny7U3a7U8dPGwVv37imA0jsxVkiYACVuE1T54KX+oDZSZCUBNSs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772457819; c=relaxed/simple;
-	bh=i6kS87qUnZ6mbCIR/lWF042B2JkLiPFC6Xd85F77Ur8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xo+CdEiZxeM1X+OMasMLPQ1ib0nV1+VL7ejcyh1wc+bdD5dOKaNuiMoN95RUVGazW5P+2WxdoobsicrtVyibEQgjyV4UkSo3bUd534wgtNQxnFt+IuG70CLiZyNjgZuZu/KR4DvMRpGDR/McfnI/+sGZXcz+tFrhq5c3JEED0IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qLl8Jwbh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2FEC2BCB1
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 13:23:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772457819;
-	bh=i6kS87qUnZ6mbCIR/lWF042B2JkLiPFC6Xd85F77Ur8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qLl8Jwbh1f3JGoHnGUaxIUCKyx6rLdXSQ0w4ZbmKt6OcB2GISud/HJmNKnYG4PReT
-	 3DkYExGKaX7D6F8m7/HU9Jm/0uWbmT4zRZJwDcWBbAjh8VkYVshz61x+e+W/prNWhJ
-	 kj8K1pAItuA2czQ8aEWyoXttfTTwJsZbSThMCjxducprbz0hUexK1l+FxNJyFQzuNz
-	 MoNgEUgcYz0C9FO0RkZTo7oPh5tf3OxXO7w+IeCy5jz/XXxI2jYtSJSVeIFJtxie9d
-	 nCeM5EM7kNUBRJEFxAF0VwHxDV6nQ6aof2ZzBsPEEJZQlyxBE62KTe3xvSUdiYyTMA
-	 7iuoZO6XRqfvA==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b932fe2e1a7so617932866b.1
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 05:23:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW9gNlJ+Fx2kj1qZqLiNAi+OcpDAiz0ux6Inau0qGav86HLxr5CQGb4Ti0fkrVzARtOyJF5cbU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoikNqId/vDZRoD89iLnb2wOZGM3RfpFgSj32mOL53o+sp6A1N
-	t4RqYQLTq3WEcoGscv0u/e9A1KVdsXPJRRdZXbbM8/ht+/ZvZAIFUYSFsByJfbLmc+f4q5c/y6H
-	CCSHhJeeYXIRxhZm7QGJa5qC5JKY0C6M=
-X-Received: by 2002:a17:907:7b8c:b0:b8f:abff:9cf2 with SMTP id
- a640c23a62f3a-b9376378cadmr770535666b.4.1772457817202; Mon, 02 Mar 2026
- 05:23:37 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F5C286D7D;
+	Mon,  2 Mar 2026 13:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772458285; cv=fail; b=HgwHKRY+bZfUqvLxZLnqk71f3V7jErSYQjyPcQxQ8mPNQKqVLXxBt5bKKOlcvAznTZnTSZXtoXMvWBUSlUen7aCv1SrXAXvJ+I13mh2/3yebzbuG5rChmR5EHwfyNRkAD5yfq5+EgmCr8jaAHO6KSgR8ZbK8DH4iFSsU3s47ydI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772458285; c=relaxed/simple;
+	bh=aMjhWkB6a1PhoVHxyObrO9oYWWb2fU2/7rUaC5p3J50=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=n2Jnxy0GyHzZOpR26fle+ATG8fhfA9VMFjtjtPA601PFLMeeXOjJEhOHr7BwIY2Ay255ryHnyOPV0nH58QmtpQkGQRZI1mvP/uzkRaN9l9Zj7CHRmkZlj6mWb9Zk+F63W6s7DNOJuZzE2VnQkTpwr7hfqO+kmj8x00GqfOiYa54=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=auJIEYia; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=RwYed+3p; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 622BtukK1059814;
+	Mon, 2 Mar 2026 13:30:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=HnnGjhKZSZ9h3UoLl+
+	mjz6VZHSqTUwF3d+sCO60apxM=; b=auJIEYia35V7U/wumkf1jLRKbxIMu4upvV
+	CncP1RIwQ/tQqBguPPY4zqLvAdFDCx8OQPt9QZ8V0Bz23jBYpFdFdC4UTiwvcdJl
+	XQezPStXDbIFpKEiBX+7Zb/ezJ7/8/Ez4zzZ4S3hAaFKw1UjddOvxtcXNaodkqvs
+	wXZTroF9d6+q7Xrzmy+iJF36PoUpQCL2IZW4S9yzRmzgZxpbTf8EXLeShRvy2hzm
+	Xe8jqs+8ZN17qEUoQ3GMs7OW+yHIMq/gXjc4VdsW8USGfJ3KgcGgMtlHWdEn+uDU
+	hRB475Fy/+Q7Kd3Nl6UVp6qRXO+W4GYpR0JfOuqdivfYan507C5Q==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cna3t073j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 02 Mar 2026 13:30:36 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 622DMbkq037803;
+	Mon, 2 Mar 2026 13:30:35 GMT
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012020.outbound.protection.outlook.com [52.101.48.20])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ckptd7dqp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 02 Mar 2026 13:30:35 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UCEg0xjj5ib2ygT/o7oktHQOhTq184v2BFKKADVdJjHH/KuAPNpc8sSagMakXiJPK4su0dBVjgbvOEXkimDMfVNG22o5dXKopRVw8jR2bp3KrDrt8Z1tb+IvGjkqxuGFi0mfSM2nfzMIokDWy2UAIji2+y2ddCyA472v8fZKnROimm7lHQgx9ggwLEB9KpoUdwu3buvpiFjnNfiuonVx220EV2TN6+bkwJ7bIEKj4XBKaAHAIIHei/wSTj9gU/mw5WhFPNrj/o5fVSyXNR7xCnW5oj/PCj5b7+VjPEp6v0ScavrXDZqaxLs6hdJdMtjWeJQQgJaJgUgZD61Hc9DVZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HnnGjhKZSZ9h3UoLl+mjz6VZHSqTUwF3d+sCO60apxM=;
+ b=b9y64HbA5mmCHtqmNQEGcQuIOR+gzHo8qv4cSvHk6SuAAB/+alC4tAw/fEegw6hJJO2PAq+aeLDlSwHlBGhVTzAMHPDzAUg5HYIgbBhIVePt/KIMfPuRXUNqdr72wMfWQohKHn6Sl504iQhZfXBWgQzLD9vOA7ZGeR+uRY+ir2LOwU130rzJYW3y6ySaoyDxBlaSZaXN0Ov0McVpRDVg6HeMIeJursitAqxWS3jca28S+0e+VfWef5CRJc+7iOG3MPEvgUeItoXYa65+9PnnFVcnfDQgLNivj8h50jbp66PbxRqvErcLByQg9nQ3Q8BVT8k0Ugg5Nt6C0ZoqYqCm4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HnnGjhKZSZ9h3UoLl+mjz6VZHSqTUwF3d+sCO60apxM=;
+ b=RwYed+3pH0DLJA3EYcmeL4m1umghEhFBUWkx/T0N7jBs9YQTDagfQskc9zmke3UPVspyBmJ/pUwF+bUkiugzCez++4Wp7G7XYFBnje1BO83Ps4eIwxwUh5gJfH52NaXFqd6jowiCyS+HUeCFqkWQhCAgmRNpCVavXDNwiNQfRXY=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CH2PR10MB4182.namprd10.prod.outlook.com (2603:10b6:610:7a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 13:30:31 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711%4]) with mapi id 15.20.9632.010; Mon, 2 Mar 2026
+ 13:30:31 +0000
+Date: Mon, 2 Mar 2026 13:30:25 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Lance Yang <lance.yang@linux.dev>,
+        Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>,
+        Eero Kelly <eero.kelly@dfinity.org>,
+        Andrew Battat <andrew.battat@dfinity.org>,
+        Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: fix a folio_split() race condition with
+ folio_try_get()
+Message-ID: <54a4d554-d4cd-47d2-bdc1-8796c5d7d947@lucifer.local>
+References: <20260228010614.2536430-1-ziy@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260228010614.2536430-1-ziy@nvidia.com>
+X-ClientProxiedBy: AS4P190CA0044.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d1::8) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260302110202.790279-1-gality369@gmail.com>
-In-Reply-To: <20260302110202.790279-1-gality369@gmail.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Mon, 2 Mar 2026 13:23:00 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H5rGH11B7+2r6DG9N60W5X97KthYniHKPdFAXidoTaZUQ@mail.gmail.com>
-X-Gm-Features: AaiRm53fZPfnnr3g8kqNWKcnwLjXEOrRTrViwwXceKkXfayIXF4jyrQ_3DsLlpE
-Message-ID: <CAL3q7H5rGH11B7+2r6DG9N60W5X97KthYniHKPdFAXidoTaZUQ@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: reject global extent/csum roots without offset 0
- when extent_tree_v2 is off
-To: ZhengYuan Huang <gality369@gmail.com>
-Cc: linux-btrfs@vger.kernel.org, clm@fb.com, dsterba@suse.com, 
-	josef@toxicpanda.com, linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, 
-	r33s3n6@gmail.com, zzzccc427@gmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH2PR10MB4182:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8b78dac9-d6db-424a-0d31-08de785fdfdc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	SISaXIYC1rb9xQb3OfcC3+HtErP/ZWd/xY4aeJ9a5t7T1wyQz9k/bnAXCwyUEHgPSFeHFNlR/8ZO2odCL4ujRjS6itdohqxAWX7/mUCiZ1R5Ozw3amjppYJUSZ26dYTJjdbQdv9CHy1bl7pkOf8F60bDUJ2roja5xIsW9d+vNMNaid04OmxmNTPVT07/I+Qbje6fh++tyRdKGpmr536BBB+MhzVcQv+ZSXagPn717V0uZ3XLqH5wPXwUZhZ43KobOkuYHGvIVFKC0hRUhdErflliBRmpDsFfEoYFvWyw7OHUbf5L0P/S23ghyJ/qLRbF1PAKi3KOKmEcybzyqR3J2ckXYCrJqCLYPcTgUIjJJLle6teCXbCfyo1mhMPEOsZNDZyP+iTcPw93Qijbjy6skS1Z8g+f2iZ8E8JhOXoXu6JxqFVAtKhyQoTyER3wFHimJQhV8AEk+a0luEqq717hobbVxT+gsbVHuwP01Km1uwZEx9NLl6E9xiZ5IvoqKY/Zm2UayiIZB3nCPagwUdrc0IkzAM7S/4SNy5U+7Kz3MvMokyjcIviUlqEH08ftDd8K2e57SvPTFG9T0myyDTsUnqZJD8lsQwAOaBgAOC9zR+GkN5DRp5JWMalLKE94QVlDbsqukszEgEZVaFu8aVZkwXdNHkbXDYn0VN16lQdYZUIy34VMdmEXqaCtoKIbeSGfSzVu0ayRGYi61OexATvxLykNok7wpJfTTtE0zi+/63o=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hGbIAKYEi08wlnoS1D7xmwwiaZ3cAnFBo5URm6pYxo8x/636TFpVK1sfwDQg?=
+ =?us-ascii?Q?n/WpPVxxwCHIMB+sGsMFiNP7vy7f/SzQLsdRp0Bzd2u8RyiZ71QD0E3U4/Z0?=
+ =?us-ascii?Q?fDKG3RLSO3t+VA8Wr00pSqTiVyfKHWwfYSoZRxxpP5ccTEmipf5bME09a7n9?=
+ =?us-ascii?Q?GgRWQMxZDj2LR8YdykS0CrI2SIRlfPdUHxxSjhwNQQJQ7hEnTdMuXfxKS8QO?=
+ =?us-ascii?Q?Q70IVT8uLohs+ooMoTHAFUmPeOmrrEF0azH6jpI1JAlGd4NPsTI4BFV/5tb1?=
+ =?us-ascii?Q?pVJygpW5OEo+zFqcc2SZ4ca9GgnF8bEfgkMU5V/FIodlVt3F9UeLTXTWaVkO?=
+ =?us-ascii?Q?xdiJUZFAVozDmpUo3uYy0IdPlimNzlTPQ/S0VY5YPWblZywQZmKoA70xSLEo?=
+ =?us-ascii?Q?9/fwWhqUx1bM4tx7iO9Z9tbziEdSBK0NyVLLxV+qvUO2WSS2LgEzoPoMpX5V?=
+ =?us-ascii?Q?Smu1O5JGN88I2kUccSXVxwJnzZM6x/J+3JBlN+/WlMOHzLPn7v59Yb806SRt?=
+ =?us-ascii?Q?waxJEj1FImpuV18Dlp2/BCGzIomxZPXSxyFPRBtz88z4dpYPK2Udzv8x5Jyw?=
+ =?us-ascii?Q?dEOzR7sKFmpvNY3/Qafm1BXLSbHyR/MpgjhK+0EC/22I973QzdT+Bza2LVQH?=
+ =?us-ascii?Q?wkzTSW7YlnDfWDxloK4uDRWp/VlenVSrXL1HCLxQERYJyqh+98kSfiHOLgI5?=
+ =?us-ascii?Q?89uz1mLlb0lb2RB5h3R+JxRaRCncLBcEtBaZVKtgO46H/Q9fJeARt6A1zQX9?=
+ =?us-ascii?Q?P1Ox9MlnpzavZkjcC8bp5YFYcHKETv5yWP6+GJ8zPqrHbUOpXISf8ko8kefa?=
+ =?us-ascii?Q?LAjVMH/wfqAn1K5AkLZiqGBvaZgB203hD/HjlW0MmFuDzPDlRb0VX4uwUAD8?=
+ =?us-ascii?Q?oMncjQM/6YiO9NSNmR/2fez9uYyErunYJ2WAe7NjvkYnsT0s3CuS6vHfL4GH?=
+ =?us-ascii?Q?SoLRPgnBx61JweQ7/j3A6hPLnuLKSiZTDPkc1NE8yQsiMngf0VpY4xtQvxrI?=
+ =?us-ascii?Q?+flTnqySIq5nXzXRrMGE+MpDhFP5T8vW9KqEkzzXwpAumR/pwJeE4c0JEfak?=
+ =?us-ascii?Q?Lp9Tq6v7nuoKo/HYr4ULcfVeBJX+9lZTKQVq8K3GM0s0vUxa+bOXbTy6gZio?=
+ =?us-ascii?Q?r8SmDw0APIwbKIu8dRvK3UupHsBkSqKcHiqpTZ15m3RHQdZQt6GT7WNIU+iu?=
+ =?us-ascii?Q?L50EmxQi0WCpB6FNlfxTqLG3/6o8zaVAPuNx9QalqhmubYDcoyq+lmlW34f/?=
+ =?us-ascii?Q?wDRDhbpLOj/4QlqY7sXFlxUhndd9W4wFKJxzyUX7+6nAhKsAVXwiQ6kuM8iO?=
+ =?us-ascii?Q?0CERvN8GStw8p5gfrBqqn6ZHMd78rlzQgQjvyqv2h+C6IPK+JEWk+l7WC490?=
+ =?us-ascii?Q?5yE50fsWQWGtxwWUrIcKP8oyrnJMkjknx0bMQbp38+AYy4S/GJXRJpRwsdy6?=
+ =?us-ascii?Q?fS4banLd9tglic5yg2RHpLm0EcShhnoM4XTMTh8/wj+Ysb+KGBobxk3b9iq5?=
+ =?us-ascii?Q?K8GZuwRlWPlsHRMwZU9Q0OtzDX0FtKNfyc0ZGTj4MXMBu4Usm+ESQQbBskdw?=
+ =?us-ascii?Q?rBPEc7Owjs9bdiW5uY7lIo+cfJmTVYmhrtPL5x7rmktuexpgYjL+zfk35taz?=
+ =?us-ascii?Q?wWj6OepEXn+wutrsTqF6W3ojmaAFjbXKX3Xxsx+2HlXe4nS01atOF7vXi9nZ?=
+ =?us-ascii?Q?dPBrZ8jAJfj1jqWDirRKntV5bNzu99Tk97P+qOYj9S1/5DapraqBR3gTy/WU?=
+ =?us-ascii?Q?OZvCjS9KDY/gOqgAtq84K2EoFv/Wi6o=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	whCu8vdbSnefCcuAbY+x32pqJyuAHkrAZ/1cwdUrIBdeh5wRbydfqirrcqtjTfZFVVTD2p5RtsbERFfOFRq9kslx+THiSzBiUK69z/aIe8wIfXE/cvqSQVEDRDRoEjUtnD7tk7pNgPagEdV7RnVw1NHOAhTiKZbQdG4WFsrT9h0UE/dPKEs60mrSfIYFlSOUo5iU8rIefLBOfgCScz8tvv5PPC5vGOHY95bmZAAgrq/73585wd8X8+VsSqlrk2RbDrEbXMOAQBErN5zPoBaEork6Hy7hGDhos5jB+wkamvkLnclozTcT/ci8RnXsZ/sGcYkNuAwHlS45u3Dtob+PQM07a0oOSO36xMj6+kXn0PQiSx4Al90z8Y0M0mkodLkBhF+/vY6KnwjrX1mm+0D5KAnivbKmE3Nd+ENEEvSKDJAuy/X9T/LZRXoXvWXKct/q5+YmwzIyaEjZ9lz64D6OpDQgDvy+Gq9AbvhKP403C5xWuX3GU/cO0OoSKSXo40PHVyjCtuZAIV8KAsuCrNpZgrCPCDgP8484KjLJTWZApzk6ib64+JUDnC2MNDz349LXB7iDTLz1Uhzc9yGqALDVOrCzHCnYAkj8vJURqsJxQFo=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b78dac9-d6db-424a-0d31-08de785fdfdc
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 13:30:30.9592
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9qY0noD8vtQf7Snkhrzdlk+Nw72s7GbUXFC5uVynEO/BiFBQRmmNngKBhfHw5Xg36B5+vKfq4CeQJzhK72a0vSILJDPJdW4llsKYhaCJ7XI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4182
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-02_03,2026-02-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 phishscore=0
+ spamscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
+ definitions=main-2603020114
+X-Authority-Analysis: v=2.4 cv=L9MQguT8 c=1 sm=1 tr=0 ts=69a590fd b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=RD47p0oAkeU5bO7t-o6f:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=m6ntEmJwAAAA:8 a=Ikd4Dj_1AAAA:8 a=QlgwaIoH2ZZKSwNeNA0A:9
+ a=CjuIK1q_8ugA:10 a=-07UcHROD-JCDqjaZ46G:22 cc=ntf awl=host:13810
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAyMDExNCBTYWx0ZWRfX+BiSuuFe+tZ6
+ uIUxAwGlq6miXjX/T/m6pqOaDhuvqaqEEGcYuPf/SG4oS4PZr2xlgMBfLZxWHLajtp9qQB49UwE
+ ScZfQ+kecXo9+9e2t44by92oNUlh/Q/Y9avuWUCKAZ4cNQwpRHhv6YzltfRWQKJEc3t2YX21XyF
+ s5yiKGfmDQfnhKOUBDBwz2OS6qBIHGFQXDBE4xt2/v6NXIxFq324nqvGd7+2SBc/0xUZB5MjB67
+ OFooIATWuYs+Cy6xtDuJeD3ErTXyUlyQ71iK/gwAJ43dweaAMowG7mrZTL8qkUTfXWU6Saa0SkG
+ u2/bTsan34/L0t1JuAzRyBY9kFmq+70hB85MF9Pun2/12/9hRwW7q7H8sVWoYL/Sdhw513DFa1M
+ melWnKoc4ulRg0yVfK1js2zGVX8kp6YmYzW2qw/1ZL/QDKi+ksXdBzwiCrWlfXOQaHOp4dUhRrn
+ bgtQULBz1LwL41PxME4OgWSGJ+0iJG6af3Cl+LTE=
+X-Proofpoint-GUID: zF3iJdA6A0V_lDIfiq1GKHZzciYznBRH
+X-Proofpoint-ORIG-GUID: zF3iJdA6A0V_lDIfiq1GKHZzciYznBRH
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,fb.com,suse.com,toxicpanda.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-222594-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222595-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.onmicrosoft.com:dkim,lucifer.local:mid,nvidia.com:email,oracle.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.970];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lorenzo.stoakes@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: C41FA1D9AFA
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 5528C1D9E10
 X-Rspamd-Action: no action
 
-On Mon, Mar 2, 2026 at 11:03=E2=80=AFAM ZhengYuan Huang <gality369@gmail.co=
-m> wrote:
+On Fri, Feb 27, 2026 at 08:06:14PM -0500, Zi Yan wrote:
+> During a pagecache folio split, the values in the related xarray should not
+> be changed from the original folio at xarray split time until all
+> after-split folios are well formed and stored in the xarray. Current use
+> of xas_try_split() in __split_unmapped_folio() lets some after-split folios
+> show up at wrong indices in the xarray. When these misplaced after-split
+> folios are unfrozen, before correct folios are stored via __xa_store(), and
+> grabbed by folio_try_get(), they are returned to userspace at wrong file
+> indices, causing data corruption.
 >
-> Without EXTENT_TREE_V2, btrfs_extent_root() and btrfs_csum_root() always
-> look up the global roots at offset 0. A crafted image can provide only
-> non-zero offsets for the extent/csum global roots, so the offset 0 lookup
-> returns NULL and later leads to a NULL dereference
-> (e.g. in backup_super_roots()).
+> Fix it by using the original folio in xas_try_split() calls, so that
+> folio_try_get() can get the right after-split folios after the original
+> folio is unfrozen.
 >
-> Fix this by detecting this at mount time: when loading extent/csum
-> global roots without EXTENT_TREE_V2, require that an offset 0 root item
-> exists, otherwise fail the mount with -EUCLEAN.
+> Uniform split, split_huge_page*(), is not affected, since it uses
+> xas_split_alloc() and xas_split() only once and stores the original folio
+> in the xarray.
 >
-> Tested with a crafted image that has only non-zero offset global roots,
-> which triggers the KASAN null-ptr-deref in backup_super_roots() before
-> the fix, and fails the mount with -EUCLEAN after the fix.
+> Fixes below points to the commit introduces the code, but folio_split() is
+> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+> truncate operation").
 >
-> Fixes: f7238e509404 ("btrfs: add support for multiple global roots")
-> Cc: stable@vger.kernel.org # v5.18+
-> Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-
-This was already fixed in for-next:
-
-https://lore.kernel.org/linux-btrfs/cover.1770580436.git.fdmanana@suse.com/
-
-Always check the github for-next branch before sending patches:
-
-https://github.com/btrfs/linux/commits/for-next/
-
-Thanks.
-
+> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+> Reported-by: Bas van Dijk <bas@dfinity.org>
+> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Cc: <stable@vger.kernel.org>
 > ---
-> A KASAN null-ptr-deref was triggered when mounting a crafted btrfs
-> image and then doing a simple write/rename workload (e.g. moving any
-> file into the mountpoint). The crash happens later during a transaction
-> commit, in the super backup roots path.
+>  mm/huge_memory.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 >
-> Root cause
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 56db54fa48181..e4ed0404e8b55 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3647,6 +3647,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+>  	const bool is_anon = folio_test_anon(folio);
+>  	int old_order = folio_order(folio);
+>  	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
+> +	struct folio *origin_folio = folio;
+
+NIT: 'origin' folio is a bit ambigious, maybe old_folio, since it is of order old_order?
+
+>  	int split_order;
 >
-> backup_super_roots() looks up both the extent and csum roots through
-> the "global roots" rb-tree:
->
-> extent_root =3D btrfs_extent_root(fs_info, 0);
-> csum_root =3D btrfs_csum_root(fs_info, 0);
->
-> and then unconditionally dereferences extent_root->node and
-> csum_root->node.
->
-> Both btrfs_extent_root() and btrfs_csum_root() build a key with:
->
-> .offset =3D btrfs_global_root_id(fs_info, bytenr)
->
-> and btrfs_global_root_id() returns 0 when the filesystem does not have
-> the EXTENT_TREE_V2 incompat feature. This means that for
-> non-extent_tree_v2 filesystems, the implementation assumes that there is
-> always a global root item for:
->
-> (BTRFS_EXTENT_TREE_OBJECTID, BTRFS_ROOT_ITEM_KEY, offset=3D0)
-> (BTRFS_CSUM_TREE_OBJECTID, BTRFS_ROOT_ITEM_KEY, offset=3D0)
->
-> However, an image without an offset =3D 0 root item can still be
-> successfully mounted. The mount-time validation logic for the csum tree
-> resides in load_global_roots_objectid(). Currently,
-> load_global_roots_objectid() loads whatever root items exist for
-> a given objectid, but it does not validate that offset =3D 0
-> exists when EXTENT_TREE_V2 is not enabled. With a crafted image,
-> the first (and only) root item for the csum tree (and similarly for
-> extent) can have a large non-zero offset (e.g. 0x10000000000).
-> load_global_roots_objectid() inserts that root into the rb-tree, but
-> there is no entry for offset 0. Later, btrfs_csum_root(..., 0) looks up
-> offset 0, returns NULL, and backup_super_roots() dereferences it,
-> causing the crash.
->
-> So the bug is an invariant mismatch:
->
-> - lookup side (btrfs_{extent,csum}_root) assumes offset=3D0 exists when
-> extent_tree_v2 is off
->
-> - load side (load_global_roots_objectid) does not enforce that assumption
->
-> Fix
-> =3D=3D=3D
-> Teach load_global_roots_objectid() to enforce the "offset 0 must exist"
-> invariant for the extent and csum trees when EXTENT_TREE_V2 is not enable=
-d.
-> If at least one root item is found but none has offset 0, fail the mount
-> with -EUCLEAN and emit an explicit error message. This prevents later
-> NULL dereferences and also avoids propagating a corrupted/unsupported
-> global-root layout into runtime.
->
-> Note: extent_root is subject to the same assumption and is fixed by the
-> same check (backup_super_roots dereferences extent_root->node as well).
->
-> KASAN report
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Oops: general protection fault, probably for non-canonical address 0xdfff=
-fc0000000003: 0000 [#1] SMP KASAN NOPTI
-> KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-> CPU: 0 UID: 0 PID: 34 Comm: kworker/u8:1 Tainted: G           OE       6.=
-18.0 #1 PREEMPT(voluntary)
-> Tainted: [O]=3DOOT_MODULE, [E]=3DUNSIGNED_MODULE
-> Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-de=
-bian-1.16.3-2 04/01/2014
-> Workqueue: events_unbound btrfs_async_reclaim_data_space
-> RIP: 0010:backup_super_roots fs/btrfs/disk-io.c:1680 [inline]
-> RIP: 0010:write_all_supers+0x2d56/0x4980 fs/btrfs/disk-io.c:4022
-> Code: 40 38 f2 7f 08 84 d2 0f 85 72 19 00 00 49 8d 7c 24 18 41 88 9e 9a 0=
-0 00 00 48 ba 00 00 00 00 00 fc ff df 48 89 fe 48 c1 ee 03 <80> 3c 16 00 0f=
- 85 33 19 00 00 48 ba 00 00 00 00 00 fc ff df 49 8b
-> RSP: 0018:ffff88800a617758 EFLAGS: 00010216
-> RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-> RDX: dffffc0000000000 RSI: 0000000000000003 RDI: 0000000000000018
-> RBP: ffff88800a617898 R08: 1ffff110023f53a8 R09: 0000000000000000
-> R10: ffff8880173a8000 R11: 0000000000000001 R12: 0000000000000000
-> R13: ffff888000000000 R14: ffff88800b676d23 R15: ffffea0000000000
-> FS:  0000000000000000(0000) GS:ffff8880e4d3e000(0000) knlGS:0000000000000=
-000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00005baa3c26f678 CR3: 000000000e9b8000 CR4: 00000000000006f0
-> Call Trace:
-> <TASK>
-> ? __pfx_write_all_supers+0x10/0x10 fs/btrfs/disk-io.c:3980
-> ? btrfs_commit_transaction+0x2818/0x3d90 fs/btrfs/transaction.c:2526
-> ? __lock_release kernel/locking/lockdep.c:5574 [inline]
-> ? lock_release+0x122/0x2a0 kernel/locking/lockdep.c:5889
-> btrfs_commit_transaction+0x28cc/0x3d90 fs/btrfs/transaction.c:2541
-> ? __pfx_btrfs_commit_transaction+0x10/0x10 fs/btrfs/transaction.c:1919
-> ? start_transaction+0x244/0x1740 fs/btrfs/transaction.c:780
-> btrfs_commit_current_transaction+0x55/0xf0 fs/btrfs/transaction.c:2010
-> flush_space+0x7d1/0xc40 fs/btrfs/space-info.c:888
-> ? mark_usage kernel/locking/lockdep.c:4674 [inline]
-> ? __lock_acquire+0x43e/0x21e0 kernel/locking/lockdep.c:5191
-> ? __pfx_flush_space+0x10/0x10 include/trace/events/btrfs.h:2362
-> ? instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
-> ? atomic_try_cmpxchg_acquire include/linux/atomic/atomic-instrumented.h:1=
-301 [inline]
-> ? queued_spin_lock include/asm-generic/qspinlock.h:111 [inline]
-> ? do_raw_spin_lock+0x133/0x290 kernel/locking/spinlock_debug.c:116
-> ? find_held_lock+0x31/0x90 kernel/locking/lockdep.c:5350
-> ? spin_unlock include/linux/spinlock.h:391 [inline]
-> ? do_async_reclaim_data_space+0x369/0x5e0 fs/btrfs/space-info.c:1441
-> ? __kasan_check_read+0x11/0x20 mm/kasan/shadow.c:31
-> ? instrument_atomic_read include/linux/instrumented.h:68 [inline]
-> ? atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
-> ? queued_spin_is_locked include/asm-generic/qspinlock.h:57 [inline]
-> ? debug_spin_unlock kernel/locking/spinlock_debug.c:101 [inline]
-> ? do_raw_spin_unlock+0x59/0x200 kernel/locking/spinlock_debug.c:141
-> do_async_reclaim_data_space+0x3c1/0x5e0 fs/btrfs/space-info.c:1410
-> btrfs_async_reclaim_data_space+0x3f/0xb0 fs/btrfs/space-info.c:1458
-> process_one_work+0x8e0/0x1980 kernel/workqueue.c:3263
-> ? __pfx_process_one_work+0x10/0x10 include/linux/list.h:226
-> ? move_linked_works+0x1a8/0x2c0 kernel/workqueue.c:1165
-> ? assign_work+0x19d/0x240 kernel/workqueue.c:1206
-> ? __lock_is_held kernel/locking/lockdep.c:5601 [inline]
-> ? lock_is_held_type+0xa3/0x130 kernel/locking/lockdep.c:5940
-> process_scheduled_works kernel/workqueue.c:3346 [inline]
-> worker_thread+0x683/0xf80 kernel/workqueue.c:3427
-> ? __pfx_worker_thread+0x10/0x10 kernel/workqueue.c:3570
-> kthread+0x3f0/0x850 kernel/kthread.c:463
-> ? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
-> ? trace_hardirqs_on+0x53/0x60 kernel/trace/trace_preemptirq.c:79
-> ? __raw_spin_unlock_irq include/linux/spinlock_api_smp.h:159 [inline]
-> ? _raw_spin_unlock_irq+0x27/0x70 kernel/locking/spinlock.c:202
-> ? spin_unlock_irq include/linux/spinlock.h:401 [inline]
-> ? calculate_sigpending+0x7c/0xb0 kernel/signal.c:194
-> ? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
-> ret_from_fork+0x50f/0x610 arch/x86/kernel/process.c:158
-> ? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
-> ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-> </TASK>
-> Modules linked in:
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:backup_super_roots fs/btrfs/disk-io.c:1680 [inline]
-> RIP: 0010:write_all_supers+0x2d56/0x4980 fs/btrfs/disk-io.c:4022
-> Code: 40 38 f2 7f 08 84 d2 0f 85 72 19 00 00 49 8d 7c 24 18 41 88 9e 9a 0=
-0 00 00 48 ba 00 00 00 00 00 fc ff df 48 89 fe 48 c1 ee 03 <80> 3c 16 00 0f=
- 85 33 19 00 00 48 ba 00 00 00 00 00 fc ff df 49 8b
-> RSP: 0018:ffff88800a617758 EFLAGS: 00010216
-> RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-> RDX: dffffc0000000000 RSI: 0000000000000003 RDI: 0000000000000018
-> RBP: ffff88800a617898 R08: 1ffff110023f53a8 R09: 0000000000000000
-> R10: ffff8880173a8000 R11: 0000000000000001 R12: 0000000000000000
-> R13: ffff888000000000 R14: ffff88800b676d23 R15: ffffea0000000000
-> FS:  0000000000000000(0000) GS:ffff8880e4d3e000(0000) knlGS:0000000000000=
-000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00005baa3c26f678 CR3: 000000000e9b8000 CR4: 00000000000006f0
-> ----------------
-> Code disassembly (best guess):
->    0:   40 38 f2                cmp    %sil,%dl
->    3:   7f 08                   jg     0xd
->    5:   84 d2                   test   %dl,%dl
->    7:   0f 85 72 19 00 00       jne    0x197f
->    d:   49 8d 7c 24 18          lea    0x18(%r12),%rdi
->   12:   41 88 9e 9a 00 00 00    mov    %bl,0x9a(%r14)
->   19:   48 ba 00 00 00 00 00    movabs $0xdffffc0000000000,%rdx
->   20:   fc ff df
->   23:   48 89 fe                mov    %rdi,%rsi
->   26:   48 c1 ee 03             shr    $0x3,%rsi
-> * 2a:   80 3c 16 00             cmpb   $0x0,(%rsi,%rdx,1) <-- trapping in=
-struction
->   2e:   0f 85 33 19 00 00       jne    0x1967
->   34:   48 ba 00 00 00 00 00    movabs $0xdffffc0000000000,%rdx
->   3b:   fc ff df
->   3e:   49                      rex.WB
->   3f:   8b                      .byte 0x8b
->
-> Reproduction (v6.18, x86_64, KASAN)
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> 1. Download the crafted image (tested with Linux v6.18 + KASAN):
->   https://drive.google.com/file/d/1xV0pjI3N-D83IzH62dphWCAD0RR-sV4U/view
-> 2. Attach it as a block device (example assumes it shows up as /dev/vda),
-> then mount it read-write:
->   mkdir -p /mnt/btrfs
->   mount /dev/vda /mnt/btrfs
-> 3. Trigger any metadata update, e.g. move a file into the mountpoint:
->   echo test > /tmp/1.txt
->   mv /tmp/1.txt /mnt/btrfs/
-> 4. Result:
-> The system hits a NULL pointer dereference in the commit path, with KASAN
-> reporting the fault at backup_super_roots() (fs/btrfs/disk-io.c).
->
-> Thanks,
-> ZhengYuan Huang
-> ---
->  fs/btrfs/disk-io.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
->
-> diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-> index 0aa7e5d1b05f..900e462d8ea1 100644
-> --- a/fs/btrfs/disk-io.c
-> +++ b/fs/btrfs/disk-io.c
-> @@ -2119,6 +2119,18 @@ static int load_global_roots_objectid(struct btrfs=
-_root *tree_root,
->         };
->         bool found =3D false;
->
-> +       /*
-> +        * Without EXTENT_TREE_V2 we only have a single global extent/csu=
-m root.
-> +        * btrfs_extent_root() and btrfs_csum_root() always look it up wi=
-th offset
-> +        * 0 (btrfs_global_root_id() returns 0). If we load only non-zero=
- offsets
-> +        * here, later users will see NULL and can crash (e.g. when backi=
-ng up
-> +        * super roots during a commit).
-> +        */
-> +       bool need_offset0 =3D !btrfs_fs_incompat(fs_info, EXTENT_TREE_V2)=
- &&
-> +                     (objectid =3D=3D BTRFS_EXTENT_TREE_OBJECTID ||
-> +                      objectid =3D=3D BTRFS_CSUM_TREE_OBJECTID);
-> +       bool found_offset0 =3D false;
-> +
->         /* If we have IGNOREDATACSUMS skip loading these roots. */
->         if (objectid =3D=3D BTRFS_CSUM_TREE_OBJECTID &&
->             btrfs_test_opt(fs_info, IGNOREDATACSUMS)) {
-> @@ -2144,6 +2156,8 @@ static int load_global_roots_objectid(struct btrfs_=
-root *tree_root,
->                 btrfs_item_key_to_cpu(path->nodes[0], &key, path->slots[0=
-]);
->                 if (key.objectid !=3D objectid)
->                         break;
-> +               if (need_offset0 && key.offset =3D=3D 0)
-> +                       found_offset0 =3D true;
->                 btrfs_release_path(path);
->
->                 /*
-> @@ -2169,6 +2183,13 @@ static int load_global_roots_objectid(struct btrfs=
-_root *tree_root,
->         }
->         btrfs_release_path(path);
->
-> +       if (need_offset0 && found && !found_offset0) {
-> +               btrfs_err(fs_info,
-> +                         "missing global %s root item with offset 0 (ext=
-ent_tree_v2 not enabled)",
-> +                         name);
-> +               return -EUCLEAN;
-> +       }
-> +
->         if (objectid =3D=3D BTRFS_EXTENT_TREE_OBJECTID)
->                 fs_info->nr_global_roots =3D max_global_id + 1;
->
+>  	/*
+> @@ -3672,7 +3673,13 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+>  				xas_split(xas, folio, old_order);
+
+Aside, but this 'if (foo) bar(); else { ... }' pattern is horrible, think it's
+justifiable to put both in {}... :)
+
+>  			else {
+>  				xas_set_order(xas, folio->index, split_order);
+> -				xas_try_split(xas, folio, old_order);
+> +				/*
+> +				 * use the original folio, so that a parallel
+> +				 * folio_try_get() waits on it until xarray is
+> +				 * updated with after-split folios and
+> +				 * the original one is unfrozen.
+> +				 */
+> +				xas_try_split(xas, origin_folio, old_order);
+
+Hmm, but won't we have already split the original folio by now? So is
+origin_folio/old_folio a pointer to what was the original folio but now is
+that but with weird tail page setup? :) like:
+
+|------------------------|
+|           f            |
+|------------------------|
+^old_folio  ^ split_at
+
+|-----------|------------|
+|     f     |     f2     |
+|-----------|------------|
+^old_folio
+
+|-----------|-----|------|
+|     f     |  f3 |  f4  |
+|-----------|-----|------|
+^old_folio
+
+etc.
+
+So the xarray would contain:
+
+|-----------|-----|------|
+|    f      |  f  |   f  |
+|-----------|-----|------|
+
+Wouldn't it after this?
+
+Oh I guess before it'd contain:
+
+|-----------|-----|------|
+|     f     |  f4 |  f4  |
+|-----------|-----|------|
+
+Right?
+
+
+You saying you'll later put the correct xas entries in post-split. Where does
+that happen?
+
+And why was it a problem when these new folios were unfrozen?
+
+(Since the folio is a pointer to an offset in the vmemmap)
+
+I guess if you update that later in the xas, it's ok, and everything waits on
+the right thing so this is probably fine, and the f4 f4 above is probably not
+fine...
+
+I'm guessing the original folio is kept frozen during the operation?
+
+Anyway please help my confusion not so familiar with this code :)
+
+
+>  				if (xas_error(xas))
+>  					return xas_error(xas);
+>  			}
 > --
-> 2.43.0
+> 2.51.0
 >
->
+
+Thanks, Lorenzo
 
