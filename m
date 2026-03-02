@@ -1,118 +1,199 @@
-Return-Path: <stable+bounces-222691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222692-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKEJNyropWlLHwAAu9opvQ
-	(envelope-from <stable+bounces-222691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:42:34 +0100
+	id iNNnKJ7opWlLHwAAu9opvQ
+	(envelope-from <stable+bounces-222692-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:44:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A84C1DEE7C
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:42:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 208F91DEED7
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0AD143026A6A
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 19:42:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0D69304C107
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 19:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D757947DD6A;
-	Mon,  2 Mar 2026 19:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5211A47DD66;
+	Mon,  2 Mar 2026 19:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZuZjr/60"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="QbQ6ER0m";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="h1HL6xps";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="QbQ6ER0m";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="h1HL6xps"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C5147D950;
-	Mon,  2 Mar 2026 19:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FDA47DD52
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 19:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772480549; cv=none; b=Nlb1Txu+12sLYYWLo+4lOYBRHlUEGO5jtWFNz23LpO/Bu4V+xsBHr1iLrUQNMEXvCoLvLiit1Y+m1gGCLkmktXAr2fnr170t00aCIJG6kD8m0EhvXsxoaaEl9Psg1Ik5BcrnTFJuZQTPP7MwuaX6krqyomMP7vuOatoDWMAmvpk=
+	t=1772480649; cv=none; b=dNr5eQrkR4zhyLgfXNWI/02QWtlhYKq3kgKFePhgFP8oEVDjpIHFYEIfYra/jdw4eGkt7+ITam4xx5bKHlOt6DZwPJPzWX5WRC+o4R0piuJQia/8vUxJeg5koVJ3EZSVz1/Q0CMSGjpJbP7QlnEfKMLDn7tzE5ov2tDfFSv30vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772480549; c=relaxed/simple;
-	bh=JPYvrKxoYGEZTL5J1MUdq9CGTebDSQtlDwt5Cv600V4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=CG1EQvmySxZQnpBkJPTypiT8LUJ4+xw5PDy/+uv/5PyN65lhKHgGAt04JYXOSh1Sp3l97XeefTgmZO1s3JviZkNNiFJTamlckjLHA6LDh+Jp9iYS2sxc1R1GtDKh7WXC6IQGWZyd0Xcb+aOOmMTDNM4NO/YJmcMRoUea/6zoUrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZuZjr/60; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAE8C19423;
-	Mon,  2 Mar 2026 19:42:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772480548;
-	bh=JPYvrKxoYGEZTL5J1MUdq9CGTebDSQtlDwt5Cv600V4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ZuZjr/60wdzKtA0aVnr3EDkDaIvHTlAKRvUTIAvi4DyWUHVkH61GxdxijLiO8HyJJ
-	 BqNGx0nmawGVWpxRJjmai7eiR1AOlUlclQTfgobE/sw6Uh76aDm5Tc0HyE5Nhva8PY
-	 rwsc/t5BjqrtKFOtkyvGVLwudLwcEiwJP5tyc8IaB3S7SjIfHt1CHM8xwZkN7CZ0cq
-	 e87z98fI5J7m4w4WuuakgbEIn9uf7+XtRFiPh6qU5zEsWcah1zw5iTkNhdzfpoCurC
-	 Ln+cC/cXjFnp3ramIveloSC1gvvdovOkcaYjNyG93HbMJUKAJjwFD0KH2B1FDj3s4r
-	 ok7+/MKet9E6Q==
-From: Leon Romanovsky <leon@kernel.org>
-To: jgg@ziepe.ca, Abhijit Gangurde <abhijit.gangurde@amd.com>
-Cc: allen.hubbe@amd.com, nikhil.agarwal@amd.com, linux-rdma@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260227061809.2979990-1-abhijit.gangurde@amd.com>
-References: <20260227061809.2979990-1-abhijit.gangurde@amd.com>
-Subject: Re: [PATCH 1/1] RDMA/ionic: Preserve and set Ethernet source MAC
- after ib_ud_header_init()
-Message-Id: <177248054555.993928.15778358538433900026.b4-ty@kernel.org>
-Date: Mon, 02 Mar 2026 14:42:25 -0500
+	s=arc-20240116; t=1772480649; c=relaxed/simple;
+	bh=fHGGZvnVoNDAh0GUgE9y3qLz9XfHnEuMiR1NWmo6/9E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SEeKiX3gxtrK37M7uoh+oB4Qjf3wgk0XAcvW8NIgB6CgUNCFJeN8jjPqUJK7W3Bzu9n3hXdRhGV2pOIiMR+8jtGsNS959xtNLS7VeerjTF3xoPAIzaGhrud1FkIl4tVdUrWJqkUaskYWGmAFM9tUiJpt+yprqSzT0vtvMOfs7tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=QbQ6ER0m; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=h1HL6xps; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=QbQ6ER0m; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=h1HL6xps; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0F76B5BD7E;
+	Mon,  2 Mar 2026 19:43:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772480639; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZFKvUMV/pdTWAEgmZVY9iX/QrVjbj5WYVaguJK5UY1o=;
+	b=QbQ6ER0mEWlmEosPzFk0ogS4jEiTC4QXLlmWS4vcxE3a1YsADDsnu8fFD9nWn0dCQ5Nca9
+	cl0EySISRF0JIIQ8yXNJ4eCyCoa3imJeGBe4WZ0JSqfz7FTclXKrlj2sY/TBXcoTWcUJsq
+	8uWVq74IsGV2jav7784KT5Jvcj/kn0k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772480639;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZFKvUMV/pdTWAEgmZVY9iX/QrVjbj5WYVaguJK5UY1o=;
+	b=h1HL6xpsUPEbjPW/acgOkSpfe2LIa5GP7QiRZI+cdSGBnTVfi1ljjEHuvsLFEB8HYxe/Fh
+	Me7C7qg7vJJCj/Aw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772480639; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZFKvUMV/pdTWAEgmZVY9iX/QrVjbj5WYVaguJK5UY1o=;
+	b=QbQ6ER0mEWlmEosPzFk0ogS4jEiTC4QXLlmWS4vcxE3a1YsADDsnu8fFD9nWn0dCQ5Nca9
+	cl0EySISRF0JIIQ8yXNJ4eCyCoa3imJeGBe4WZ0JSqfz7FTclXKrlj2sY/TBXcoTWcUJsq
+	8uWVq74IsGV2jav7784KT5Jvcj/kn0k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772480639;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZFKvUMV/pdTWAEgmZVY9iX/QrVjbj5WYVaguJK5UY1o=;
+	b=h1HL6xpsUPEbjPW/acgOkSpfe2LIa5GP7QiRZI+cdSGBnTVfi1ljjEHuvsLFEB8HYxe/Fh
+	Me7C7qg7vJJCj/Aw==
+Date: Mon, 2 Mar 2026 20:43:57 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Rainer Fiebig <jrf@mailbox.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: Re: -next build error due to "kbuild: Leave objtool binary around
+ with 'make clean'"
+Message-ID: <aaXofbe_5QGYYuMB@kitsune.suse.cz>
+References: <20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org>
+ <03045f41-fe4c-44ff-b01c-6e325d82255a@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-47773
-X-Rspamd-Queue-Id: 8A84C1DEE7C
+In-Reply-To: <03045f41-fe4c-44ff-b01c-6e325d82255a@leemhuis.info>
+X-Spam-Score: -4.30
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 208F91DEED7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222691-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222692-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[msuchanek@suse.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,copr.fedorainfracloud.org:url,suse.de:dkim,kitsune.suse.cz:mid]
 X-Rspamd-Action: no action
 
-
-On Fri, 27 Feb 2026 11:48:09 +0530, Abhijit Gangurde wrote:
-> ionic_build_hdr() populated the Ethernet source MAC (hdr->eth.smac_h) by
-> passing the header’s storage directly to rdma_read_gid_l2_fields().
-> However, ib_ud_header_init() is called after that and re-initializes the
-> UD header, which wipes the previously written smac_h. As a result, packets
-> are emitted with an zero source MAC address on the wire.
+On Mon, Mar 02, 2026 at 08:18:17PM +0100, Thorsten Leemhuis wrote:
+> On 2/28/26 06:40, Nathan Chancellor wrote:
+> > The difference between 'make clean' and 'make mrproper' is documented in
+> > 'make help' as:
+> > 
+> >   clean     - Remove most generated files but keep the config and
+> >               enough build support to build external modules
+> >   mrproper  - Remove all generated files + config + various backup files
+> > 
+> > After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
+> > target"), running 'make clean' then attempting to build an external
+> > module with the resulting build directory fails with
+> > 
+> >   $ make ARCH=x86_64 O=build clean
+> > 
+> >   $ make -C build M=... MO=...
+> >   ...
+> >   /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
+> > 
+> > as 'make clean' removes the objtool binary.
+> > 
+> > Split the objtool clean target into mrproper and clean like Kbuild does
+> > and remove all generated artifacts with 'make clean' except for the
+> > objtool binary, which is removed with 'make mrproper'.
 > 
-> Correct the source MAC by reading the GID-derived smac into a temporary
-> buffer and copy it after ib_ud_header_init() completes.
+> Thx for fixing this regression, sadly this caused my daily -next rpm
+> builds for Fedora to fail on x86_64 during a "make mrproper":
 > 
-> [...]
+> ""
+> kernel.spec:2485: InitBuildVars: Copy files
+> + /usr/bin/make -s 'HOSTCFLAGS=-O2  -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -m64 -march=x86-64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -mtls-dialect=gnu2   ' 'HOSTLDFLAGS=-Wl,-z,relro -Wl,--as-needed  -Wl,-z,pack-relative-relocs -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -Wl,--build-id=sha1 -specs=/usr/lib/rpm/redhat/redhat-package-notes ' -j32 mrproper
+> find: cannot delete ‘/builddir/build/BUILD/kernel-7.0.0-build/kernel-next-20260302/linux-7.0.0-0.0.next.20260302.121.vanilla.fc42.x86_64/tools/objtool/.check.o.cmd’: No such file or directory
+> find: cannot delete ‘/builddir/build/BUILD/kernel-7.0.0-build/kernel-next-20260302/linux-7.0.0-0.0.next.20260302.121.vanilla.fc42.x86_64/tools/objtool/.elf.o.cmd’: No such file or directory
+> [and many more like these]
+> ""
+> For the full build log, see:
+> https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-42-x86_64/10183736-next-next-all/builder-live.log.gz
+> 
+> This is almost exactly the rpm spec file that is used in Fedora rawhide.
+> The sections that causes this looks like this:
+> 
+> """
+>     %{log_msg "InitBuildVars: Copy files"}
+>     %{make} %{?_smp_mflags} mrproper
 
-Applied, thanks!
+And how would find -delete fail?
 
-[1/1] RDMA/ionic: Preserve and set Ethernet source MAC after ib_ud_header_init()
-      https://git.kernel.org/rdma/rdma/c/cbbdb148c62814
+Does that mean that the files in question are broken links?
 
-Best regards,
--- 
-Leon Romanovsky <leon@kernel.org>
+Does that mean in the clean phase these erren't broken?
 
+When did they break?
+
+Or does the objtool_clean run multiple times in parallel, once through
+the clean target, and once as dependency of the mrproper target?
+
+Thanks
+
+Michal
 
