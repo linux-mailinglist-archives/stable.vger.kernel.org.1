@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-222679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHBOC5DfpWkvHgAAu9opvQ
-	(envelope-from <stable+bounces-222679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:05:52 +0100
+	id iGjWFSbgpWkvHgAAu9opvQ
+	(envelope-from <stable+bounces-222680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:08:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3025A1DE9CC
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:05:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF9A1DE9F8
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:08:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 051E7300BE31
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 19:05:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 67061300B514
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 19:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4CD309F09;
-	Mon,  2 Mar 2026 19:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D63D309F09;
+	Mon,  2 Mar 2026 19:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+0XXKHg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jG3eTvVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCEA1F16B;
-	Mon,  2 Mar 2026 19:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D498B1F16B;
+	Mon,  2 Mar 2026 19:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772478344; cv=none; b=iEx3RWEfI6eaREjfgdkJZz2MUMsw+Wb5WGRIsdsbl65xp58iDDUE6oC5jAgOzvwSvfX2W68piEjh/0Fw2YgcFCR5CeGXqjY/hrGpM75VZFKzgP4PRGdvfgA1+VDQGFYqnfNJ+htQ6jdFFUAct8PiIh6J4RpBpcWxtPuqMxDunuk=
+	t=1772478496; cv=none; b=dFCy2b3Lr/tiCIpkRiHLLKDL0RK9sTWQ/CDJKHkafo7cYL4CjHsoL0x9hm9fvQmQg7U8mjyIwBpA6dgvIPKVKVHzZnKc3x9fHhzWYSx5qAnpkrUS9YSp0v6dVK7+Y15seMbWBjjTIBthSJcTSSH3bwm6DaisJrmbWsibgutiESs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772478344; c=relaxed/simple;
-	bh=Rs0xjjVXHNzPEJvNlyD9Y9f5tY776JO3uZf6IxhqsxM=;
+	s=arc-20240116; t=1772478496; c=relaxed/simple;
+	bh=3JXvH4oSMURopXr7jJq1ghSNhKaWWIudYsUQYYkmulE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HCFI9dCYouQ+KB7osWOZz7d/CyK6Egooz2Ybn4PU327pCYMaO3LZ/2vfuvakqu1wZIeVjuOaGo0PJNln1JxFF8z3xvT9b8p2DW8D57I+SHSWI2irFS56e/d2D7ZvYUQ2tjR797uXc/oA5FIt9pkalah+uSV6T8ghiD6VUFOT5RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+0XXKHg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F41AC19423;
-	Mon,  2 Mar 2026 19:05:39 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=U/OC+BfbzC1OL1knjKicyjLZwBQPAAP9xWgRumWVsr6zAppc+2yBuLmDxZMxzge8dBSQDLbPuoigfJcsFjhI95i3nsZc+mvu5gnndUMXZcZsvc9llV4Ia4jTLQIaI6AtQ9aMOxmr9w6tNuOHQ8P6quxZ6LhzSlmsJmGOnPesgUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jG3eTvVT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BADC19425;
+	Mon,  2 Mar 2026 19:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772478344;
-	bh=Rs0xjjVXHNzPEJvNlyD9Y9f5tY776JO3uZf6IxhqsxM=;
+	s=k20201202; t=1772478496;
+	bh=3JXvH4oSMURopXr7jJq1ghSNhKaWWIudYsUQYYkmulE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M+0XXKHgJxkwHL/M/gTgaKnfv4ZoRocr2sM9unMSykbt8TJjqWyU6s9EOzEw6n/rd
-	 lxuOQe9dK6iMMIHzoMqiEKO9hAm7D8lI5XUCENgUdURMd95vu+A3sQou5/7xw+HD9k
-	 RkAfE+v8qIh/mk7JGLyaTY0lquc7gPaEAFU+s9BDU8kyFG02ZomDWhdfV3AyCQQaKl
-	 itRR0slcD07SdcAn5ckkR+mAFJq52zeZ+J+EC2z7d2izdjBUDZvKY3555pzCsqaMwl
-	 pp/iTIYQwhcPFVnaBOdH2OFF79m4qxo9NcSskpMmPlH3hx7gKaRQWhMJUCQJxvHVif
-	 SbJD8T0CXz0xQ==
-Message-ID: <99bb6e08-2c70-4b52-8fbc-1233173fc195@kernel.org>
-Date: Mon, 2 Mar 2026 20:05:37 +0100
+	b=jG3eTvVT5YX9l2V2Cv/KhMbWoHg5K7BayaSKlflwZVrDtyzpOqmr798uMpffHaVkW
+	 t+sGh8nF63T53/62Y3WwM5C0wCnJaCCWZK8uyzAedFiuCWpAKXg6CVNC7gJtKMKlqq
+	 gdW74oN/TV1drOtNakxMLWHUUhlYkkb/Aex4KXHUwHZbpmmfbtam+qnn1JiFbNJpAg
+	 YE1sZ+J7lckqrJfwKKxqhIbMhDX3Tbid0IpiRYfTHahXNzFFDImESMDGSVd2c/zd44
+	 K2hgK9R1iDUCuxrt+OgHRkrOTE97G2DgpB3KSRTVXRr4o7d6JpI8p/UqAziMz69+Lw
+	 +slj5QIb/aheA==
+Message-ID: <d0caf165-8d07-4d20-840f-eadfd7e7c238@kernel.org>
+Date: Mon, 2 Mar 2026 20:08:12 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,21 +53,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] mm/huge_memory: Fix use of NULL folio in
- move_pages_huge_pmd()
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH v2 2/3] mm/huge_memory: Prevent huge zeropage refcount
+ corruption in PMD move
+To: Matthew Wilcox <willy@infradead.org>
 Cc: Chris Down <chris@chrisdown.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>
-References: <aaBVg6nPQz-WvyzT@chrisdown.name>
- <27c260d2-796f-48a6-8b1c-751ab172d480@lucifer.local>
- <89d988b7-846f-48aa-9b69-c316f2179d61@kernel.org>
- <479c691e-1330-462d-9d7d-25cfda1f190b@lucifer.local>
+ Andrew Morton <akpm@linux-foundation.org>, kernel-team@fb.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <aaBVz7eb6-VBCvaz@chrisdown.name>
+ <6147cf80-9d02-4c5c-ab81-8cb9b00044f0@kernel.org>
+ <aaXL6oJamjnfhh5d@casper.infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -114,10 +108,10 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <479c691e-1330-462d-9d7d-25cfda1f190b@lucifer.local>
+In-Reply-To: <aaXL6oJamjnfhh5d@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3025A1DE9CC
+X-Rspamd-Queue-Id: 5EF9A1DE9F8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -127,75 +121,42 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-222680-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222679-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 3/2/26 18:43, Lorenzo Stoakes wrote:
-> On Mon, Mar 02, 2026 at 06:35:46PM +0100, David Hildenbrand (Arm) wrote:
->>
->>>
->>> I prefer my version at [0].
->>>
->>> Cleaner to actually pull out the zero_folio into a local variable, and also we
->>> should mark it special to be consistent with other codepaths.
->>
->> I argued in v1 that we should handle it similar to an ordinary move
->> during mremap()->move_huge_pmd() and not split it over two patches.
->>
->> It's still split over two patches, which doesn't make sense.
+On 3/2/26 18:42, Matthew Wilcox wrote:
+> On Thu, Feb 26, 2026 at 04:17:31PM +0100, David Hildenbrand (Arm) wrote:
+>> It doesn't make sense to leave something partially fixed in #1. It's
+>> been completely broken from the start. folio_mk_pmd() should never have
+>> been used.
 > 
-> Yes, let's not do that, I made the same comment.
-> 
->>
->> https://lore.kernel.org/linux-mm/0b653dcd-842b-4360-bc1c-8fe779efbc23@kernel.org/
->>
->> I don't think there is no need to get the folio involved at all if we
->> know that we have a well-prepared PMD (zero folio, makred as special).
->>
->> The less code we have that has to deal with setting PMDs special (and
->> possible messing it up), the better.
-> 
-> Yup I agree, I replied accordingly. That's a more elegant thing than duplicating
-> huge zero installation code.
-> 
-> I had just assumed that there was _some reason_ why we wouldn't want to do that
-> given the original patch from Suren didn't just do that, and for the sakes of a
-> backport no need to think too deep on it.
-> 
-> But you're right I don't think there's any reason we need to diverge from what
-> mremap() would do.
-> 
-> That does have:
-> 
-> 		if (vma_has_uffd_without_event_remap(vma))
-> 			pmd = clear_uffd_wp_pmd(pmd);
-> 
-> Though rather than unconditonally invoking clear_uffd_wp_pmd().
-> 
-> Is that correct?
+> ... mk_huge_pmd() should never have been used ;-)
 
-My conclusion was that UFFDIO_MOVE will never move uffd-wp information
-(just like we currently don't do for any moved PTEs).
+Heh, yes!
 
-mremap() might sometimes. But it also effectively moves all (most) uffd
-VMA properties, so it has slightly different semantics.
+You made me grep for it and find some leftovers:
+
+arch/powerpc/mm/book3s64/pgtable.c: * pmd_mkhuge() and mk_huge_pmd()
+when we update all the
+
+Anybody fancy sending a cleanup? :)
 
 -- 
 Cheers,
