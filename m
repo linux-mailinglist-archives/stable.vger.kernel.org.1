@@ -1,173 +1,193 @@
-Return-Path: <stable+bounces-222719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFWCCwYQpmkkJwAAu9opvQ
-	(envelope-from <stable+bounces-222719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:32:38 +0100
+	id wFIPJNAEpmnvIwAAu9opvQ
+	(envelope-from <stable+bounces-222720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:44:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85CFA1E591B
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:32:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336CC1E3E76
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D78553402D19
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:29:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 60D35306FE48
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29A0384CD2;
-	Mon,  2 Mar 2026 20:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D7C38C406;
+	Mon,  2 Mar 2026 20:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tIhx94tz"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CgPkmcCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7288A384CBF;
-	Mon,  2 Mar 2026 20:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B82038C2A0;
+	Mon,  2 Mar 2026 20:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772484549; cv=none; b=CFVmA3LfQqg/nemYSpKOmN5gI4dNJ48m2Gr5nkBNO24O6dMxhmSoKW37tnpb74SWiFqYQnFKEgUYMGOL95jP94ZEjsJ+MnU0UlVwi+xh1qZFW7J3UBhrHPiDsdscbfLomwrolcP+pIi6BcYXCl1CXKIJhVUdlX8Ao3szifvZ81c=
+	t=1772484648; cv=none; b=je9O/ZQWmignDYNDgqHeG6EG28D4rKa4c+PAB8soGGX2BTljc0fgenVDtgAye/fhfQ8D10F5/iX3D+pYiyDNX5W2PfDwjNEY801Y4XwRN0ZQqLTy/4qEMPb+swxQ7hn8xhMunkGNH7ZRRLqoPGw7cImwOxb08GnhLf5VZ/4ARK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772484549; c=relaxed/simple;
-	bh=B3ZA9o5zRO2yOzXEjcCbY3SyEa0cr+byBzCZz1FWVSU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oGUNckHEj2cxPI2ckdtoQ94zonWgNJcurmA/Mj9DOytDPLwiHfjDZpoghEG4CgGmdScr2J5oKBN9K4W4ekc5n8t2SLtU1/GXbpU4+HCcP12Cfsra5KLRE8jOM2EY4uqJgKpqpnLuQSlNHVl8CupSXDCtnXWXT27RQTw1KRFe4ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tIhx94tz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FFEC19423;
-	Mon,  2 Mar 2026 20:49:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772484549;
-	bh=B3ZA9o5zRO2yOzXEjcCbY3SyEa0cr+byBzCZz1FWVSU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tIhx94tz3/cMKL2ABo3XqtxfzJfDq3/32HQ2MaLoxvOIYAA2u/7pDHO7p4lxEbCu4
-	 6Psq/0w8VEjYZ1GnLCsqJd2ayH9WAki0rJenNYpPYFJwnSVj52gONlhtHuepsCg/RR
-	 YejxX2Mbx2Yd4/wKMlhEB75ipQNJJTt8DhXGf9OkjnVdBgUqzQbmzN+0qxsY1BJxso
-	 5/pPqb7B8xiGO/xk1ijNvrbXdmsTAZ4oet005wtapib7nEETgGTYOL1CXL1KNZtlGg
-	 EgwW98wLV2AoBvAyr7X4KucIKrtxUPLU1a26fu1tKi8yGBwZKbISx1PLSbZBYUCZKk
-	 DM2d/xDtQF5bA==
-Date: Mon, 2 Mar 2026 13:49:03 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
-	Thorsten Leemhuis <linux@leemhuis.info>
-Cc: Nicolas Schier <nsc@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Rainer Fiebig <jrf@mailbox.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: Re: -next build error due to "kbuild: Leave objtool binary around
- with 'make clean'"
-Message-ID: <20260302204903.GA2007498@ax162>
-References: <20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org>
- <03045f41-fe4c-44ff-b01c-6e325d82255a@leemhuis.info>
- <aaXofbe_5QGYYuMB@kitsune.suse.cz>
+	s=arc-20240116; t=1772484648; c=relaxed/simple;
+	bh=pCLHO0vnQiSXr/GSP2+voEAuCidxHvmeIhB2m/IisHs=;
+	h=Date:To:From:Subject:Message-Id; b=MqLqajV/rekDJWe1niQ1OKm8Z9Yd0U+82grydNeOMYj95PScuNZhh9qrKlQnaYWXPhTSasSyd+UuqCkW0CXuEbLEWAybDeQ4xs5Imo8xVH++ljk1C+5Z0gPH72FIIJdB0NdJMxJJYF3S4km+SJ8Y9d2w78GeFMSe12YXlqB8bIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CgPkmcCQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54B7C19425;
+	Mon,  2 Mar 2026 20:50:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772484647;
+	bh=pCLHO0vnQiSXr/GSP2+voEAuCidxHvmeIhB2m/IisHs=;
+	h=Date:To:From:Subject:From;
+	b=CgPkmcCQhXBI+a9KVqhec9owuSTntaLGCod+2L2hODJDFpZkJCFC6CXpnoA02DGwj
+	 cCHUSUKBkbhl/brKQeCkCq6AMZYYLqA/kOfFTaPQ1DwNssFNNcLHnXz7GV19zui9zL
+	 vsTKJ/Qs4hFWKZe5Upq28cDAQO3wm1w9aO4TFpjI=
+Date: Mon, 02 Mar 2026 12:50:46 -0800
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,willy@infradead.org,surenb@google.com,stable@vger.kernel.org,ryan.roberts@arm.com,rppt@kernel.org,npache@redhat.com,liam.howlett@oracle.com,lance.yang@linux.dev,dev.jain@arm.com,david@kernel.org,baolin.wang@linux.alibaba.com,baohua@kernel.org,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-huge_memory-fix-memory-corruption-on-huge-zero-page-move.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260302205047.A54B7C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aaXofbe_5QGYYuMB@kitsune.suse.cz>
-X-Rspamd-Queue-Id: 85CFA1E591B
+X-Rspamd-Queue-Id: 336CC1E3E76
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-222720-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222719-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 08:43:57PM +0100, Michal Suchánek wrote:
-> On Mon, Mar 02, 2026 at 08:18:17PM +0100, Thorsten Leemhuis wrote:
-> > On 2/28/26 06:40, Nathan Chancellor wrote:
-> > > The difference between 'make clean' and 'make mrproper' is documented in
-> > > 'make help' as:
-> > > 
-> > >   clean     - Remove most generated files but keep the config and
-> > >               enough build support to build external modules
-> > >   mrproper  - Remove all generated files + config + various backup files
-> > > 
-> > > After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
-> > > target"), running 'make clean' then attempting to build an external
-> > > module with the resulting build directory fails with
-> > > 
-> > >   $ make ARCH=x86_64 O=build clean
-> > > 
-> > >   $ make -C build M=... MO=...
-> > >   ...
-> > >   /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
-> > > 
-> > > as 'make clean' removes the objtool binary.
-> > > 
-> > > Split the objtool clean target into mrproper and clean like Kbuild does
-> > > and remove all generated artifacts with 'make clean' except for the
-> > > objtool binary, which is removed with 'make mrproper'.
-> > 
-> > Thx for fixing this regression, sadly this caused my daily -next rpm
-> > builds for Fedora to fail on x86_64 during a "make mrproper":
-> > 
-> > ""
-> > kernel.spec:2485: InitBuildVars: Copy files
-> > + /usr/bin/make -s 'HOSTCFLAGS=-O2  -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -m64 -march=x86-64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -mtls-dialect=gnu2   ' 'HOSTLDFLAGS=-Wl,-z,relro -Wl,--as-needed  -Wl,-z,pack-relative-relocs -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -Wl,--build-id=sha1 -specs=/usr/lib/rpm/redhat/redhat-package-notes ' -j32 mrproper
-> > find: cannot delete ‘/builddir/build/BUILD/kernel-7.0.0-build/kernel-next-20260302/linux-7.0.0-0.0.next.20260302.121.vanilla.fc42.x86_64/tools/objtool/.check.o.cmd’: No such file or directory
-> > find: cannot delete ‘/builddir/build/BUILD/kernel-7.0.0-build/kernel-next-20260302/linux-7.0.0-0.0.next.20260302.121.vanilla.fc42.x86_64/tools/objtool/.elf.o.cmd’: No such file or directory
-> > [and many more like these]
-> > ""
-> > For the full build log, see:
-> > https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-42-x86_64/10183736-next-next-all/builder-live.log.gz
-> > 
-> > This is almost exactly the rpm spec file that is used in Fedora rawhide.
-> > The sections that causes this looks like this:
-> > 
-> > """
-> >     %{log_msg "InitBuildVars: Copy files"}
-> >     %{make} %{?_smp_mflags} mrproper
-...
-> Or does the objtool_clean run multiple times in parallel, once through
-> the clean target, and once as dependency of the mrproper target?
 
-More than likely this based on my reading of the submake processes from
-the build log. For what it's worth, I cannot reproduce this error on
-either a really fast or really slow build machine but it should not be
-hard to avoid by using 'xargs rm -f' like the rest of Kbuild does for
-removing things, which should suppress the error if the file does not
-exist. Thorsten, could you see if this diff makes a difference for you?
-If so, I'll squash it in with a note.
+The patch titled
+     Subject: mm/huge_memory: fix memory corruption on huge zero page move
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-huge_memory-fix-memory-corruption-on-huge-zero-page-move.patch
 
-diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index 50d3e38e6137..76bcd4e85de3 100644
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -142,7 +142,7 @@ $(LIBSUBCMD)-clean:
- 	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-fix-memory-corruption-on-huge-zero-page-move.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: mm/huge_memory: fix memory corruption on huge zero page move
+Date: Mon, 2 Mar 2026 17:06:19 +0000
+
+In commit eb1521dad8f3 ("userfaultfd: handle zeropage moves by
+UFFDIO_MOVE"), handling was added to enable the moving of huge zero pages
+in move_pages_huge_pmd().
+
+This achieves this by setting src_folio to NULL, and adding subsequent
+checks for src_folio being NULL to determine whether to perform the usual
+move operations or to simply establish the huge zero page in the
+destination.
+
+As part of this change, when installing the destination huge zero page it
+invoked mk_huge_pmd() on src_page, correctly.
+
+However, commit e3981db444a0 ("mm: add folio_mk_pmd()") updated the code
+in the huge zero page branch from mk_huge_pmd(src_page, ...) to
+folio_mk_pmd(src_folio, ...), where src_folio is guaranteed to be NULL at
+this point.
+
+This resulted in an invocation of folio_mk_pmd(NULL, ...) in effect, which
+causes an invocation of page_to_pfn(0) and results in the installation of
+a corrupted PMD entry and undefined behaviour.
+
+This patch fixes the issue by obtaining the zero folio via
+page_folio(src_page) and feeding this into folio_mk_pmd().  This retains
+the use of folio_mk_pmd() whilst avoiding the memory corruption.
+
+Additionally, this code path was not updated to reflect the changes
+introduced by commit d82d09e48219 ("mm/huge_memory: mark PMD mappings of
+the huge zero folio special"), meaning a zero huge folio was installed but
+not marked special in this case.
+
+This patch additionally fixes that issue by invoking pmd_mkspecial().
+
+With thanks to Chris Down who exposed this bug by adding an explicit test
+for UFFDIO_MOVE in commit f07254dce67d ("selftests/mm: add UFFDIO_MOVE
+huge zeropage PMD regression test").
+
+Link: https://lkml.kernel.org/r/20260302170619.867056-1-lorenzo.stoakes@oracle.com
+Fixes: e3981db444a0 ("mm: add folio_mk_pmd()")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/huge_memory.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+--- a/mm/huge_memory.c~mm-huge_memory-fix-memory-corruption-on-huge-zero-page-move
++++ a/mm/huge_memory.c
+@@ -2796,8 +2796,12 @@ int move_pages_huge_pmd(struct mm_struct
+ 		/* Follow mremap() behavior and treat the entry dirty after the move */
+ 		_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
+ 	} else {
++		struct folio *zero_folio = page_folio(src_page);
++
++		VM_WARN_ON_ONCE_FOLIO(!is_huge_zero_folio(zero_folio), zero_folio);
+ 		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
+-		_dst_pmd = folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
++		_dst_pmd = folio_mk_pmd(zero_folio, dst_vma->vm_page_prot);
++		_dst_pmd = pmd_mkspecial(_dst_pmd);
+ 	}
+ 	set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
  
- clean: $(LIBSUBCMD)-clean
--	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
-+	$(Q)find $(OUTPUT) \( -name '*.o' -o -name '\.*.cmd' -o -name '\.*.d' \) -type f -print | xargs $(RM)
- 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/cpu-feature-names.c $(OUTPUT)fixdep
- 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
- 	$(Q)$(RM) -- $(OUTPUT)FEATURE-DUMP.objtool
+_
+
+Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+
+mm-huge_memory-fix-memory-corruption-on-huge-zero-page-move.patch
+
 
