@@ -1,280 +1,243 @@
-Return-Path: <stable+bounces-222627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFN3KUuupWleEQAAu9opvQ
-	(envelope-from <stable+bounces-222627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:35:39 +0100
+	id yBehGv2upWleEQAAu9opvQ
+	(envelope-from <stable+bounces-222629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:38:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFEC1DBF2D
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED06C1DBFAC
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:38:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F23C304D25C
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 15:28:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A33CE3071F08
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 15:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD2C41B375;
-	Mon,  2 Mar 2026 15:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D79411632;
+	Mon,  2 Mar 2026 15:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r9gCK//1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SPTGbWXM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1855C41B344;
-	Mon,  2 Mar 2026 15:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C96430B86
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 15:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772465295; cv=none; b=bLS8Coa9Moqp4zztd3la/5TIqyMNXcilFrVxDnDELxYjk8TfZPMItbJly8Be2acyeeJdHSflkm5ooOgZmpyoZkDm4+XGqUPVVRhmHhC/fvHmOSP6qp2Y8DsB2bxZQrAhPGUt9VckbsnKpqTZ6grLYGc1f1HMF3R/apsBwM2HWYg=
+	t=1772465382; cv=none; b=G9pk/eq//3PzUnq7O8j3gA3B+ZpkUOseKBSAZLMAQj/h4XFFMCAicKP380B5i5CZq2tVipAdINO9Kr0VEV2vwXqS18XKnagwBDi38r3e6ldIGiSvKTZitLetBS+y6b72qIBL4sJakrpyZtjbCoVw9aYRotXTNs+DLnDYD3p/Ihg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772465295; c=relaxed/simple;
-	bh=bLBAyZ1BexHi7dQN3dUIva97z4hRfah1yjE2p8lfp+4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IVRilyn0SzEgm5/L0Y5Tgct3tnBPYn+rfGu1sQhLzQthziDPTlWppQ084udInkoV9wlIt2xxFtT4wKh9jcU/g6lfd+ySfj8tTgchfpncascl4F5rMHR2lwf3tRj1hdZZPZgmX2YNFgad7owLKkzPjBcJHZTOqQCp/aH5OgOytvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r9gCK//1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9B8C19423;
-	Mon,  2 Mar 2026 15:28:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772465294;
-	bh=bLBAyZ1BexHi7dQN3dUIva97z4hRfah1yjE2p8lfp+4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=r9gCK//1M15CcqoJAY0n92aVVUqokthG4UqgAiNM62ZoGveq2ft2l5TFdox26xFxq
-	 CZQuG6r5pD2FJWHlojAbgGBDZPti65Jh7rmtO0vgqYK3Kqnk/8+dQxmE1dGbvhRyk5
-	 663Ez/MG1esVyeJQePMh3Uz7RF7aX/LLxPETOl2ZhZFYpNWSRKZZdQjECNg8iBEKVF
-	 XHMUgNg6H04oyxT4o1hiP/5IQzFQ+MYtsjue1PF50rvTWB87FIcBjtYzw4S3LvHnNM
-	 WXJpFkAFTNDm3WvQ6lZDaH6B0HkhqdSlE5HlZQVy2EVUOrdkttjpYBJdJmUFMeLXsw
-	 TvDFQjadOYPjA==
-Message-ID: <bf956adb-06bc-4b68-b846-7dddb9413867@kernel.org>
-Date: Mon, 2 Mar 2026 16:28:08 +0100
+	s=arc-20240116; t=1772465382; c=relaxed/simple;
+	bh=LJJKy7Fe/PT3Yuhs1o1SBj6leRNoU6IWfw41Sd5dA6A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KaHXonYUcBOny/6vkWIAroL5QSV6eTFrcAtPI6YYwmL2MATzTnw3ZUDHi5HQFfSH7TGVszn1CXKt8im2FD61XMmchI8DtSXDyWafAaVf2LEyP2HbRtntw4t1NNe1aGm4kMO3AP4Xd55piK07exJTimgPqzd99nHxKrIQLrY4lq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SPTGbWXM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772465378;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ARSXNjyFHvD1TNKISCOmgpXRH3q80QbXv48i66yWf9Y=;
+	b=SPTGbWXMw+LIMtcqqXvYQB0dnIOQ0cmDa6bhMi2c01fY1Ovj4eg2Ge1Yw+94Zse0TxpglL
+	wwO1wk83XLlvibLUNd7D4GrN6Q1o3AzXFO75CVeEHlsaTh2RV/k44NQkvxHEhBZ9n5Onx6
+	k/uNubacYe/M6gI03Odef0q+RF/GCIk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-u4FtJRc3Oh2jNWVLjRouyQ-1; Mon,
+ 02 Mar 2026 10:29:33 -0500
+X-MC-Unique: u4FtJRc3Oh2jNWVLjRouyQ-1
+X-Mimecast-MFC-AGG-ID: u4FtJRc3Oh2jNWVLjRouyQ_1772465372
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0DD1019560B7;
+	Mon,  2 Mar 2026 15:29:32 +0000 (UTC)
+Received: from fedora (unknown [10.45.224.37])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 003AD1800297;
+	Mon,  2 Mar 2026 15:29:28 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon,  2 Mar 2026 16:29:31 +0100 (CET)
+Date: Mon, 2 Mar 2026 16:29:27 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Paulo Andrade <pandrade@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: [PATCH 6.6.y] x86/uprobes: Fix XOL allocation failure for 32-bit
+ tasks
+Message-ID: <aaWs1z8mExRodXo6@redhat.com>
+References: <20260301013253.1692011-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 1/2] arm64/mm: Enable batched TLB flush in
- unmap_hotplug_range()
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: mark.rutland@arm.com, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Yang Shi <yang@os.amperecomputing.com>, Christoph Lameter <cl@gentwo.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260224062423.972404-1-anshuman.khandual@arm.com>
- <20260224062423.972404-2-anshuman.khandual@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260224062423.972404-2-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0EFEC1DBF2D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260301013253.1692011-1-sashal@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Queue-Id: ED06C1DBFAC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222627-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222629-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[oleg@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-On 2/24/26 07:24, Anshuman Khandual wrote:
-> During a memory hot remove operation, both linear and vmemmap mappings for
-> the memory range being removed, get unmapped via unmap_hotplug_range() but
-> mapped pages get freed only for vmemmap mapping. This is just a sequential
-> operation where each table entry gets cleared, followed by a leaf specific
-> TLB flush, and then followed by memory free operation when applicable.
-> 
-> This approach was simple and uniform both for vmemmap and linear mappings.
-> But linear mapping might contain CONT marked block memory where it becomes
-> necessary to first clear out all entire in the range before a TLB flush.
-> This is as per the architecture requirement. Hence batch all TLB flushes
-> during the table tear down walk and finally do it in unmap_hotplug_range().
-> 
-> Prior to this fix, it was hypothetically possible for a speculative access
-> to a higher address in the contiguous block to fill the TLB with shattered
-> entries for the entire contiguous range after a lower address had already
-> been cleared and invalidated. Due to the table entries being shattered, the
-> subsequent TLB invalidation for the higher address would not then clear the
-> TLB entries for the lower address, meaning stale TLB entries could persist.
-> 
-> Besides it also helps in improving the performance via TLBI range operation
-> along with reduced synchronization instructions. The time spent executing
-> unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
-> in KVM guest.
-> 
-> This scheme is not applicable during vmemmap mapping tear down where memory
-> needs to be freed and hence a TLB flush is required after clearing out page
-> table entry.
-> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
-> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/arm64/mm/mmu.c | 81 +++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 67 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index a6a00accf4f9..dfb61d218579 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -1458,10 +1458,32 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
->  
->  		WARN_ON(!pte_present(pte));
->  		__pte_clear(&init_mm, addr, ptep);
-> -		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-> -		if (free_mapped)
-> +		if (free_mapped) {
-> +			/*
-> +			 * If page is part of an existing contiguous
-> +			 * memory block, individual TLB invalidation
-> +			 * here would not be appropriate. Instead it
-> +			 * will require clearing all entries for the
-> +			 * memory block and subsequently a TLB flush
-> +			 * for the entire range.
-> +			 */
+[ Upstream commit d55c571e4333fac71826e8db3b9753fadfbead6a ]
 
-I'm not sure about repeating these longish comments a couple of times :)
+This script
 
-For example, I think you can drop the ones regarding the TLB flush
-("TLB flush is batched in unmap_hotplug_range ...") completely.
-unmap_hotplug_range(), the only caller, is pretty clear about that. And
-anybody reading that code should be able to spot the "!free_mapped" case
-easily.
+	#!/usr/bin/bash
 
-Alternatively, just say
+	echo 0 > /proc/sys/kernel/randomize_va_space
 
-	/* unmap_hotplug_range() flushes TLB for !free_mapped */
+	echo 'void main(void) {}' > TEST.c
 
-"TLB flush is essential for freeing memory." is rather obvious when
-freeing memory, so I would drop that as well.
+	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
+	gcc -m32 -fcf-protection=branch TEST.c -o test
 
-Regarding pte_cont(), can we shorten that to
+	bpftrace -e 'uprobe:./test:main {}' -c ./test
 
-	/* CONT blocks in the vmemmap are not supported. */
+"hangs", the probed ./test task enters an endless loop.
 
-Anybody who wants to figure *why* can lookup your patch where you add
-that comment+check.
+The problem is that with randomize_va_space == 0
+get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
+just return the "addr == TASK_SIZE - PAGE_SIZE" hint, this addr is used
+by the stack vma.
 
+arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
+in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
+vm_unmapped_area() happily returns the high address > TASK_SIZE and then
+get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
+check.
 
-I did not check whether people suggested to add these comments in
-previous versions. But to me they don't add a lot of real value that
-couldn't be had from the code already (or common sense: freeing requires
-prior TLB flush).
+handle_swbp() doesn't report this failure (probably it should) and silently
+restarts the probed insn. Endless loop.
 
-> +			WARN_ON(pte_cont(pte));
-> +
-> +			/*
-> +			 * TLB flush is essential for freeing memory.
-> +			 */
-> +			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
->  			free_hotplug_page_range(pte_page(pte),
->  						PAGE_SIZE, altmap);
-> +		}
+I think that the right fix should change the x86 get_unmapped_area() paths
+to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
+CONFIG_X86_X32_ABI=y, in_x32_syscall() falsely returns true in this case
+because ->orig_ax = -1.
 
-[...]
+But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
+the probed task is 32-bit to make in_ia32_syscall() true.
 
->  		WARN_ON(!pud_table(pud));
-> @@ -1553,6 +1597,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
->  static void unmap_hotplug_range(unsigned long addr, unsigned long end,
->  				bool free_mapped, struct vmem_altmap *altmap)
->  {
-> +	unsigned long start = addr;
->  	unsigned long next;
->  	pgd_t *pgdp, pgd;
->  
-> @@ -1574,6 +1619,14 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
->  		WARN_ON(!pgd_present(pgd));
->  		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
->  	} while (addr = next, addr < end);
-> +
-> +	/*
-> +	 * Batched TLB flush only for linear mapping which
-> +	 * might contain CONT blocks, and does not require
-> +	 * freeing up memory as well.
-> +	 */
+Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
+Reported-by: Paulo Andrade <pandrade@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
+---
+ arch/x86/kernel/uprobes.c | 24 ++++++++++++++++++++++++
+ include/linux/uprobes.h   |  1 +
+ kernel/events/uprobes.c   | 10 +++++++---
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
-Also, here, I don't think the comment really adds value.
-
-* !free_mapped -> linear mapping, no freeing of memory
-* CONT blocks -> irrelevant, you can batch in either case
-
-> +	if (!free_mapped)
-> +		flush_tlb_kernel_range(start, end);
->  }
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 6402fb3089d2..aac2a2c5c6c5 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -1102,3 +1102,27 @@ bool arch_uretprobe_is_alive(struct return_instance *ret, enum rp_check ctx,
+ 	else
+ 		return regs->sp <= ret->stack;
+ }
++
++#ifdef CONFIG_IA32_EMULATION
++unsigned long arch_uprobe_get_xol_area(void)
++{
++	struct thread_info *ti = current_thread_info();
++	unsigned long vaddr;
++
++	/*
++	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
++	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
++	 * vm_unmapped_area_info.high_limit.
++	 *
++	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=y case,
++	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
++	 * (falsely) returns true because ->orig_ax == -1.
++	 */
++	if (test_thread_flag(TIF_ADDR32))
++		ti->status |= TS_COMPAT;
++	vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++	ti->status &= ~TS_COMPAT;
++
++	return vaddr;
++}
++#endif
+diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+index d91e32aff5a1..a5ec2b024a22 100644
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -140,6 +140,7 @@ extern bool arch_uretprobe_is_alive(struct return_instance *ret, enum rp_check c
+ extern bool arch_uprobe_ignore(struct arch_uprobe *aup, struct pt_regs *regs);
+ extern void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 					 void *src, unsigned long len);
++extern unsigned long arch_uprobe_get_xol_area(void);
+ #else /* !CONFIG_UPROBES */
+ struct uprobes_state {
+ };
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 6304238293ae..3b96952bd6ec 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1449,6 +1449,12 @@ void uprobe_munmap(struct vm_area_struct *vma, unsigned long start, unsigned lon
+ 		set_bit(MMF_RECALC_UPROBES, &vma->vm_mm->flags);
+ }
+ 
++unsigned long __weak arch_uprobe_get_xol_area(void)
++{
++	/* Try to map as high as possible, this is only a hint. */
++	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++}
++
+ /* Slot allocation for XOL */
+ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+ {
+@@ -1464,9 +1470,7 @@ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+ 	}
+ 
+ 	if (!area->vaddr) {
+-		/* Try to map as high as possible, this is only a hint. */
+-		area->vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
+-						PAGE_SIZE, 0, 0);
++		area->vaddr = arch_uprobe_get_xol_area();
+ 		if (IS_ERR_VALUE(area->vaddr)) {
+ 			ret = area->vaddr;
+ 			goto fail;
 -- 
-Cheers,
+2.52.0
 
-David
+
 
