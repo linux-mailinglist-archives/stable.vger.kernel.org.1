@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-222671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222672-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHETBArSpWm1GwAAu9opvQ
-	(envelope-from <stable+bounces-222671-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 19:08:10 +0100
+	id sMiaBV3SpWk0HAAAu9opvQ
+	(envelope-from <stable+bounces-222672-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 19:09:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A13EF1DE3F5
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 19:08:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 657A21DE461
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 19:09:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 15AB83026A63
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 18:08:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 710AC304A5AE
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 18:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214C0317172;
-	Mon,  2 Mar 2026 18:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD9C330D43;
+	Mon,  2 Mar 2026 18:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JfeASf6g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NxdItUqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A423126D7;
-	Mon,  2 Mar 2026 18:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193BB31AF1B;
+	Mon,  2 Mar 2026 18:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772474884; cv=none; b=OdsSI7ecVDv9uyPnp71KEnSgEfwmObtCWDjGxk276MZ+9s993RGbqRJByiBVsjrLozh5s2d+i9GXo+Q8vZlSWK9U1zFlmDgOvQcnaF/rui1ElNtGuzeHcsNlX1lxH5dppKle1IfJb3xxiEvU6avmJPQ0JwcjLzFohbPkWqW0yDA=
+	t=1772474968; cv=none; b=VNcsnmT1nEFYQBeI+6t7KaiMxqjlYk2YBoGIB5gBHE8izS8XA/Ehp5bV+52X5+A+jlnwasfIQMFXfaD3hkyVPRCQezUP+n3DCcqZnqxx/3637VOZORIxcZMnWSXyzL4x/CIzVe0sDUsXL55poc9++uXecoAb6qYi9LRwpVgv0DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772474884; c=relaxed/simple;
-	bh=FN/j2igpSwXZlTH47039eaQB+TToiNBvVbGGLdA6lG0=;
+	s=arc-20240116; t=1772474968; c=relaxed/simple;
+	bh=zALYTjWqPzZUdXtvAVy46PlKCt/tZ7V8BFj6VXwC/YM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kNHVTTkSW7WPzrI2ygYAwivq/fLffmBe+91xT8JnWDxd5/Zsf4ZVYun62MMFNGR9qw/3i8dLMGqE0Il/WDuEdqIHVNUFFPaq9hLDbK6Tsc5GGoE4XS4LPqEBKY1B5AmSw3ZOw5/sT1fV5Gs3RV4hwiXA4VDHr0aPIhJDt6S4Sik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JfeASf6g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A64C19423;
-	Mon,  2 Mar 2026 18:08:04 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OPHHLWUfCQX5+xCUoMXsTihxHt8rZBjpA2PQLqYjffGVJ72Pwl92jMwrsqucgR6wg6PVwvj/ZYY8Y5irxbez90PYT63kDq7OmzH6IDCH/wnQsQaQ4rj3IG+4ofsDQscFat1j/oQB0iqd/L7efq78XJ5I5YOAT1krgeqNtWOU6Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NxdItUqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D79C19423;
+	Mon,  2 Mar 2026 18:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772474884;
-	bh=FN/j2igpSwXZlTH47039eaQB+TToiNBvVbGGLdA6lG0=;
+	s=k20201202; t=1772474967;
+	bh=zALYTjWqPzZUdXtvAVy46PlKCt/tZ7V8BFj6VXwC/YM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JfeASf6gWY18MwrMOh6YrQg7l8+Kq2Ob31KG7VZOkDay1FgGxmt/+016kj6NSKoyQ
-	 mAYQ6Xni6n2/95QB0n2WHDJE3vvjwBmJsfzwXlgRrR44bBsRlejLeyWXIC1bZTRq0Q
-	 L/TKAZRsMDFRly6pUttHOF7SNIRcXg2nfzCP7sDbDZXFRth+5ccibEI/Ad8ohFgFao
-	 IAxXG7mFCces691fJSgNzFshYT5PmNnWX//U3jQQHiWk+BzYFKd/WqqbUeSKHy+qUg
-	 n1U6SXlsYjUmqZH4GmpstQ2RzY+MF69+eZoTzXZ6zcdkGMgK5tldypwLIyBp1My4NO
-	 lIpdbvOza1OpA==
-Date: Mon, 2 Mar 2026 13:07:47 -0500
+	b=NxdItUqNi7uaw0u0bnJJwVLHPR9++r5vs3IxeRkQPyw7mVyZEafzUwkjnbgmKJ6/m
+	 F0AaJUNWNAfBfiQlJwNCImxlSGagrfjPcCud4miwHaRd5G1Um6WZF+ufiRFriztSlW
+	 t/EpTALEQnOAFnX93tsFxx3hdi+aZiPic5B1N8Gps2VBvtGeLqPAz7OJId2uA3EeKs
+	 OgMHo2644VKuNu79Aa5dbr5t/mzbYcJEkOLh/x6HKcAw3K41du3KaGvO1od+TBYZD+
+	 TI2dxoU49XzbE+J5vbgV84LoISamY4J4P3Ek4bIlO/8XUqCqbgbWQXGAm6AMTP3Mon
+	 3ArhYT7g7pPOg==
+Date: Mon, 2 Mar 2026 13:09:25 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Peter Schneider <pschneider1968@googlemail.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+To: Peter Schneider <pschneider1968@googlemail.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
 	gregkh@linuxfoundation.org, patches@lists.linux.dev,
 	torvalds@linux-foundation.org, akpm@linux-foundation.org,
 	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
@@ -58,81 +58,76 @@ Cc: Peter Schneider <pschneider1968@googlemail.com>,
 	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
 	sr@sladewatkins.com
 Subject: Re: [PATCH 6.1 000/533] 6.1.165-rc2 review
-Message-ID: <aaXR88OfyuzhWaqw@laps>
+Message-ID: <aaXSVaGrwY-k80m5@laps>
 References: <20260302160943.2522184-1-sashal@kernel.org>
  <66461c13-1bb3-473c-b57f-adba9db4f756@googlemail.com>
- <7cfc1cde-a8e1-4802-831c-3e082b22fa73@oracle.com>
- <aaXNvoIGNjR86bKY@laps>
- <06e95a5d-70c7-430a-8caf-7af0da26bcf1@oracle.com>
+ <aaXNiwFkUEy8SaTm@laps>
+ <abe2fb5f-61b3-4597-b27b-c6c61f5efc7d@googlemail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <06e95a5d-70c7-430a-8caf-7af0da26bcf1@oracle.com>
-X-Rspamd-Queue-Id: A13EF1DE3F5
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <abe2fb5f-61b3-4597-b27b-c6c61f5efc7d@googlemail.com>
+X-Rspamd-Queue-Id: 657A21DE461
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222671-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222672-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[googlemail.com,vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[googlemail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.988];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,oracle.com,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 11:28:18PM +0530, Harshit Mogalapalli wrote:
->Hi Sasha,
+On Mon, Mar 02, 2026 at 06:57:53PM +0100, Peter Schneider wrote:
+>Am 02.03.2026 um 18:48 schrieb Sasha Levin:
+>[...]
 >
->>>Also I see something unusual -->
->>>
->>>6.1.165-rc1 --> 232 patches.
->>>
->>>6.1.165-rc2 --> 533 patches.
->>>
->>>Can you please check ?
+>>I'll drop it and push the -rc2 branch again for all affected kernels.
 >>
->>That's the reason for -rc2 :) See:
->>
->>https://lore.kernel.org/all/aaWWE5uQqz_eG69i@laps/
 >
->Thanks, but shouldn't the 533 - 232 = 301 patches be sent to stable 
->mailing list ?
+>Wouldn't it better to push a -rc3 branch then, so as to not create confusion? (I'm confused now... 🤔🙄)
 >
->Also not speaking about 6.1.y, but when rc1 passes tests, I don't 
->trigger tests for rc2. Should I always retrigger tests for 6.12.X-rc2 
->?
+>Or did you actually mean rc3?
 >
->Usually rc1 --> rc2 --> its mostly 2-5 patches in general.
+>Also, the causing patch ("x86/kexec: add a sanity check on previous 
+>kernel's ima kexec buffer") is in all others 6.x.y -rc2s from today, 
+>so maybe Harshit should quickly check to which 6.x.y stable branches 
+>this patch was meant to be backported/included?
 
-Yup, this one ended up being a bit bigger :)
+I just force pushed a new -rc2, and dropped the offending patch from all
+branches for now.
 
-I didn't send out the whole batch of mails, but it's indeed a larger update.
+This one will end up being a slightly bigger release, and we can revisit this
+commit and any others we had to drop for the next cycle.
 
 -- 
 Thanks,
