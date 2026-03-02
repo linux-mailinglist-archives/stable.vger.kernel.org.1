@@ -1,170 +1,143 @@
-Return-Path: <stable+bounces-222538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEpFJV1FpWkl7gUAu9opvQ
-	(envelope-from <stable+bounces-222538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 09:07:57 +0100
+	id WGmLOlVHpWkg7AUAu9opvQ
+	(envelope-from <stable+bounces-222539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 09:16:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD14F1D468E
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 09:07:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABF91D4869
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 09:16:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2E9D30115BE
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 08:07:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0426C302D09F
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 08:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB88322B8B;
-	Mon,  2 Mar 2026 08:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA4432FA19;
+	Mon,  2 Mar 2026 08:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f265tYXK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XPAbS4j+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A5C25CC74;
-	Mon,  2 Mar 2026 08:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB00437702A;
+	Mon,  2 Mar 2026 08:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772438872; cv=none; b=ZbqApqCzv6PpdMSI+5hVdg7ZpTFdJ0KcrWNNCkFpd9APrbbVn21ohsPj3PTm4Pbo6pqwY6Td5mqIvOUaCKF69hK8g+JBBMcR0fN4bM4QpwZ8yeFF2IWezPAsOWicfH/l0ButSDEPa08h/Smtb0VDINJWXWy4DG25QmR0xfBRqbQ=
+	t=1772439315; cv=none; b=tUcMek1kBVbwyVdmyk4y7Oair80JnQqCmac89P3bav2Jnh9DVk42DnqNrK4juAW9KHOtqI+d+5I9A6ZbnVea6VcKDUPWtiH1EGAqaoCMoe4OhbqySDfRpvukf+fBAWYMDFR0nak1svLf0/BkQ11fdxcli8+ZTx9SFNvpyhDK45s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772438872; c=relaxed/simple;
-	bh=65OL+UbZCPewWQrLAd9t4ijSWo7rOXix30szLQxZzoE=;
+	s=arc-20240116; t=1772439315; c=relaxed/simple;
+	bh=ogf+dW0jgzU/ujSUsfgwYUpCCFyWfFNawVSWe/prOzk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S1Wzklv5qj0ErF+jsY5bys3l+AMopVmfBsg/w4rMFqQYsMMoF/YxUXjkOtGFPuftuYF0bpxZh9zeHZk68J3bE1Vz9LdpwmUVRaeoVliHZXaV7q5qQiCRnVEhE9rMwtMMBUJ+Yo/UIc5WuuBWd0E27qlahBqODut3Ckgpp/uG/w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f265tYXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1661C19423;
-	Mon,  2 Mar 2026 08:07:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772438871;
-	bh=65OL+UbZCPewWQrLAd9t4ijSWo7rOXix30szLQxZzoE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f265tYXK2uhqW1tsBNJANRpZgw7EjVRFcLF84b1UZDYM2Dt2xvA5xS4JSCgz4o+xb
-	 GeYS5tpjNI0845wu+qbpo9KU4dHkiRuUE6aYbPN+whhx5a9aRmr5vySqSDvl7G1k7P
-	 dHPgLMn8m2N4c3eeR6MqrhBYpBsDIXkJjlooH3+ZzxM1Hv7YZGaHopj9TPAOc3COya
-	 +5cKaD3OSGSIydmR+qqP47BGJeJ+FoGf1o6PFPScG9r8FlGv57Gez0VeFr4oVsQESl
-	 w1lxxIpbAN1cHGUM2I0iS+mfD9WoTE/CG1SYCOEd4IICbLk/Q/Ws1XF3Y6lOik2CH9
-	 jmszF3PeFUa8A==
-Date: Mon, 2 Mar 2026 13:37:38 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Qiang Yu <qiang.yu@oss.qualcomm.com>
-Cc: Qiang Yu <quic_qianyu@quicinc.com>, mhi@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] bus: mhi: host: pci_generic: Switch to async power up to
- avoid boot delays
-Message-ID: <vnqrsrglpmzizk2vtee3aohuwop5wynd463bkq6kknq4ploiox@frv5z5yk3kha>
-References: <20260122-mhi_async_probe-v1-1-b5cb2a3629d0@oss.qualcomm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DEf2rZowHI/UTyjxsERUkCRvYfNFxESDHvzM6yZKv0SLh+u5CKwDtgyrVuZXGe8OitrzkL2OCav4mA4KYSOlZlD1vJ1xGNdFkLPQ4dr1yero3M9sCqypCSvYK0ADBH3ysuAWmXu2WSq6qGh3Z9feqPGQ7ZU6VV2Vlo494RVK2mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XPAbS4j+; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772439312; x=1803975312;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ogf+dW0jgzU/ujSUsfgwYUpCCFyWfFNawVSWe/prOzk=;
+  b=XPAbS4j+tZUSF7qVfDW5IO9UppWeXCgN8lc26n+t8LsBwD1UyKj37zzl
+   IgkZkgv2NVoE3J0Y/4EL/UnIyFyMco+I4pzwguRAhOq0fp5xOrV3dYPDw
+   6rbkrP57i7SeCcVpL8Qf3PIAyWWrHgd6uX8SNX9nNmTgVZtVeqhXNVv6G
+   Igj/zJ8SKki3MvQrSf9mp4LCDQWM1nJ/68Oh3wROHkAlp8Lck45NOTaaN
+   dpKql4cbOS5bHEuk0BCwH5q7BSH7oAn0cS1+nFcrOvMFwfD2ejGeT+4Nm
+   zXNI2LBSdPU6GU/hmjJBHcfN7BSjxz5Ht+JoJpVXdEfpacU3edC9dX/PK
+   Q==;
+X-CSE-ConnectionGUID: oepsYyDyS8+nHbBs2AvyCg==
+X-CSE-MsgGUID: SFR066rgQMWh/vBVjekopg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="77280434"
+X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; 
+   d="scan'208";a="77280434"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 00:15:11 -0800
+X-CSE-ConnectionGUID: 2sQLAYcKQFuyseDtrMXaBA==
+X-CSE-MsgGUID: yjOca1ToSoSg3LLNgWelaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; 
+   d="scan'208";a="248080058"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.52])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 00:15:09 -0800
+Date: Mon, 2 Mar 2026 10:15:06 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Aleksandrs Vinarskis <alex@vinarskis.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: st_sensors: fix trigger allocation
+Message-ID: <aaVHCueMg4fBtypt@ashevche-desk.local>
+References: <20260228-st-iio-trigger-v1-1-abf5909e547f@vinarskis.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260122-mhi_async_probe-v1-1-b5cb2a3629d0@oss.qualcomm.com>
+In-Reply-To: <20260228-st-iio-trigger-v1-1-abf5909e547f@vinarskis.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-222539-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222538-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: DD14F1D468E
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ashevche-desk.local:mid,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4ABF91D4869
 X-Rspamd-Action: no action
 
-On Thu, Jan 22, 2026 at 12:53:48AM -0800, Qiang Yu wrote:
-> Some modem devices can take significant time (up to 20 secs for sdx75) to
-> enter mission mode during initialization. Currently, mhi_sync_power_up()
-> waits for this entire process to complete, blocking other driver probes
-> and delaying system boot.
-> 
-> Switch to mhi_async_power_up() so probe can return immediately while MHI
-> initialization continues in the background. This eliminates lengthy boot
-> delays and allows other drivers to probe in parallel, improving overall
-> system boot performance.
-> 
+On Sat, Feb 28, 2026 at 06:11:02PM +0100, Aleksandrs Vinarskis wrote:
+> Current hardcoded name prevents adding multiple st-sensors devices
+> on the same platform. Fix by aligning trigger name with other drivers.
 
-This part is fine.
+...
 
-> Add pm_runtime_forbid() in remove path to prevent device suspend during
-> driver reinstallation. This issue is specific to async power up: with
-> sync power up, pm_runtime_put_noidle() is called after mission mode is
-> reached because mhi_sync_power_up() waits for mission mode event. With
-> async power up, pm_runtime_put_noidle() is called immediately while power
-> up process continues in background, which can cause the device to
-> suspend and mhi init fail if pm_runtime_allow() from a previous probe
-> is still active.
-> 
+> -	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
+> -					     indio_dev->name);
+> +	sdata->trig = devm_iio_trigger_alloc(parent, "%s-dev%d",
+> +					     indio_dev->name,
+> +					     iio_device_id(indio_dev));
 
-pm_runtime_forbid() should be called at the start of the remove() callback to
-prevent the device from auto suspending during cleanup and to fix the issue you
-described above.
+I think you need to split this to more complex approach, id est:
+- register the first one as with the current name
+- use indexed variant for the rest
 
-So do in a separate patch and add a Fixes tag pointing to the commit that added
-the Runtime PM support.
+It will give something like %s-trigger, %s-trigger1 (if start from 0),
+and so on. This way you won't break user space when it was defined for
+a single trigger.
 
-- Mani
-
-> Fixes: 5571519009d0 ("bus: mhi: host: pci_generic: Add SDX75 based modem support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
-> ---
->  drivers/bus/mhi/host/pci_generic.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
-> index 0884a384b77fc3f56fa62a12351933132ffc9293..fc0952e46ae5e4854c7165ed60b850729843d458 100644
-> --- a/drivers/bus/mhi/host/pci_generic.c
-> +++ b/drivers/bus/mhi/host/pci_generic.c
-> @@ -1393,7 +1393,7 @@ static int mhi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  		goto err_unregister;
->  	}
->  
-> -	err = mhi_sync_power_up(mhi_cntrl);
-> +	err = mhi_async_power_up(mhi_cntrl);
->  	if (err) {
->  		dev_err(&pdev->dev, "failed to power up MHI controller\n");
->  		goto err_unprepare;
-> @@ -1447,6 +1447,7 @@ static void mhi_pci_remove(struct pci_dev *pdev)
->  		mhi_soc_reset(mhi_cntrl);
->  
->  	mhi_unregister_controller(mhi_cntrl);
-> +	pm_runtime_forbid(&pdev->dev);
->  }
->  
->  static void mhi_pci_shutdown(struct pci_dev *pdev)
-> 
-> ---
-> base-commit: 91a0b0dce350766675961892ba4431363c4e29f7
-> change-id: 20260113-mhi_async_probe-a7b0867b6e2e
-> 
-> Best regards,
-> -- 
-> Qiang Yu <qiang.yu@oss.qualcomm.com>
-> 
+(Yes, I have read all emails in this thread as of time of replying to it.)
 
 -- 
-மணிவண்ணன் சதாசிவம்
+With Best Regards,
+Andy Shevchenko
+
+
 
