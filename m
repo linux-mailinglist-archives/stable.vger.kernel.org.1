@@ -1,353 +1,275 @@
-Return-Path: <stable+bounces-222595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNuhFSuSpWmoDgYAu9opvQ
-	(envelope-from <stable+bounces-222595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:35:39 +0100
+	id 0EgzDr6RpWmREAYAu9opvQ
+	(envelope-from <stable+bounces-222596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:33:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5528C1D9E10
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:35:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 939BB1D9D68
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:33:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 95D0F300D76D
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:31:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6191306295A
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD8631717A;
-	Mon,  2 Mar 2026 13:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED313FB061;
+	Mon,  2 Mar 2026 13:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="auJIEYia";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="RwYed+3p"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OJ0ksvPW"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F5C286D7D;
-	Mon,  2 Mar 2026 13:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772458285; cv=fail; b=HgwHKRY+bZfUqvLxZLnqk71f3V7jErSYQjyPcQxQ8mPNQKqVLXxBt5bKKOlcvAznTZnTSZXtoXMvWBUSlUen7aCv1SrXAXvJ+I13mh2/3yebzbuG5rChmR5EHwfyNRkAD5yfq5+EgmCr8jaAHO6KSgR8ZbK8DH4iFSsU3s47ydI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772458285; c=relaxed/simple;
-	bh=aMjhWkB6a1PhoVHxyObrO9oYWWb2fU2/7rUaC5p3J50=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=n2Jnxy0GyHzZOpR26fle+ATG8fhfA9VMFjtjtPA601PFLMeeXOjJEhOHr7BwIY2Ay255ryHnyOPV0nH58QmtpQkGQRZI1mvP/uzkRaN9l9Zj7CHRmkZlj6mWb9Zk+F63W6s7DNOJuZzE2VnQkTpwr7hfqO+kmj8x00GqfOiYa54=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=auJIEYia; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=RwYed+3p; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 622BtukK1059814;
-	Mon, 2 Mar 2026 13:30:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=HnnGjhKZSZ9h3UoLl+
-	mjz6VZHSqTUwF3d+sCO60apxM=; b=auJIEYia35V7U/wumkf1jLRKbxIMu4upvV
-	CncP1RIwQ/tQqBguPPY4zqLvAdFDCx8OQPt9QZ8V0Bz23jBYpFdFdC4UTiwvcdJl
-	XQezPStXDbIFpKEiBX+7Zb/ezJ7/8/Ez4zzZ4S3hAaFKw1UjddOvxtcXNaodkqvs
-	wXZTroF9d6+q7Xrzmy+iJF36PoUpQCL2IZW4S9yzRmzgZxpbTf8EXLeShRvy2hzm
-	Xe8jqs+8ZN17qEUoQ3GMs7OW+yHIMq/gXjc4VdsW8USGfJ3KgcGgMtlHWdEn+uDU
-	hRB475Fy/+Q7Kd3Nl6UVp6qRXO+W4GYpR0JfOuqdivfYan507C5Q==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cna3t073j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 02 Mar 2026 13:30:36 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 622DMbkq037803;
-	Mon, 2 Mar 2026 13:30:35 GMT
-Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012020.outbound.protection.outlook.com [52.101.48.20])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ckptd7dqp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 02 Mar 2026 13:30:35 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UCEg0xjj5ib2ygT/o7oktHQOhTq184v2BFKKADVdJjHH/KuAPNpc8sSagMakXiJPK4su0dBVjgbvOEXkimDMfVNG22o5dXKopRVw8jR2bp3KrDrt8Z1tb+IvGjkqxuGFi0mfSM2nfzMIokDWy2UAIji2+y2ddCyA472v8fZKnROimm7lHQgx9ggwLEB9KpoUdwu3buvpiFjnNfiuonVx220EV2TN6+bkwJ7bIEKj4XBKaAHAIIHei/wSTj9gU/mw5WhFPNrj/o5fVSyXNR7xCnW5oj/PCj5b7+VjPEp6v0ScavrXDZqaxLs6hdJdMtjWeJQQgJaJgUgZD61Hc9DVZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HnnGjhKZSZ9h3UoLl+mjz6VZHSqTUwF3d+sCO60apxM=;
- b=b9y64HbA5mmCHtqmNQEGcQuIOR+gzHo8qv4cSvHk6SuAAB/+alC4tAw/fEegw6hJJO2PAq+aeLDlSwHlBGhVTzAMHPDzAUg5HYIgbBhIVePt/KIMfPuRXUNqdr72wMfWQohKHn6Sl504iQhZfXBWgQzLD9vOA7ZGeR+uRY+ir2LOwU130rzJYW3y6ySaoyDxBlaSZaXN0Ov0McVpRDVg6HeMIeJursitAqxWS3jca28S+0e+VfWef5CRJc+7iOG3MPEvgUeItoXYa65+9PnnFVcnfDQgLNivj8h50jbp66PbxRqvErcLByQg9nQ3Q8BVT8k0Ugg5Nt6C0ZoqYqCm4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D890C317161
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 13:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772458340; cv=none; b=T0w3GS2KMPZbHy1wxp9+yKzJjVcy6UpFAofzEkFp9URHTtzOyF9gN25qPEi0JiMt6xuVJKSWI4fM8yIgzxmrp2DkZrZ2jCe2vj4HfQOO4gph1TgJxqXDd8PHpgSyt3hxzcPkeu1i1QHoK+GvAItgr4VQlUdbkbNmezFEWjyHJkc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772458340; c=relaxed/simple;
+	bh=/v9rUDNVeFCUg4ml76H2sT8dZY4AQ6D46+Mye12m2Wc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ethee814+TF/YSNYp5locSdyjcKuCbutFnjepMNBbetF6THyslhgvDWQM6z1ayfhy0wOm+1ZvWA6g8RjfhREaE8VKRFNlKEDDfSjsY6fNSsWCvsKCGYzCp0RDQqaGQaCaCWB1UGg0xTb8PqASbeFgleZN5SY9HY3ezhWN05qnak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OJ0ksvPW; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-65c0d2f5fe1so8894620a12.3
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 05:32:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HnnGjhKZSZ9h3UoLl+mjz6VZHSqTUwF3d+sCO60apxM=;
- b=RwYed+3pH0DLJA3EYcmeL4m1umghEhFBUWkx/T0N7jBs9YQTDagfQskc9zmke3UPVspyBmJ/pUwF+bUkiugzCez++4Wp7G7XYFBnje1BO83Ps4eIwxwUh5gJfH52NaXFqd6jowiCyS+HUeCFqkWQhCAgmRNpCVavXDNwiNQfRXY=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CH2PR10MB4182.namprd10.prod.outlook.com (2603:10b6:610:7a::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
- 2026 13:30:31 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711%4]) with mapi id 15.20.9632.010; Mon, 2 Mar 2026
- 13:30:31 +0000
-Date: Mon, 2 Mar 2026 13:30:25 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>,
-        Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>,
-        Eero Kelly <eero.kelly@dfinity.org>,
-        Andrew Battat <andrew.battat@dfinity.org>,
-        Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: fix a folio_split() race condition with
- folio_try_get()
-Message-ID: <54a4d554-d4cd-47d2-bdc1-8796c5d7d947@lucifer.local>
-References: <20260228010614.2536430-1-ziy@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260228010614.2536430-1-ziy@nvidia.com>
-X-ClientProxiedBy: AS4P190CA0044.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d1::8) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=linaro.org; s=google; t=1772458336; x=1773063136; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ovH8NF9OBNMsdXoNg2WPMRmni3UPoclCGTCz4c6VJFU=;
+        b=OJ0ksvPWbcy1OySYyoANO3mkzRiGUxZA9XLARWUl3iJWkybwmP5etn3JCrxQRKc8Go
+         4t4MrV25GYDQvOvBLDbYY/sBzjvxm/vvIWN3te0ouUahZWx4wRr0fTf48tOAzLxsvfJp
+         WEfqAV6Aqhi8Lctl0LXf2muGyhirpWSVDwnuMOKDY+Jqv0X5i3uznCyZ/Z8ZENoEy8Vf
+         W89ZeI7Q0fvuMpZhDARH6Ct32ht3aR5wQY2+k0et8p82Tn+zwxWQhotQVU8ZQMUU7o6O
+         yiNvDeehpDPRzE3ipBDhPnarzuntLyIF1K+bDAlEMbb6kB1zSWBhm3LiiebHGNSyYano
+         Sdbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772458336; x=1773063136;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ovH8NF9OBNMsdXoNg2WPMRmni3UPoclCGTCz4c6VJFU=;
+        b=lQ5noVjNsJcP7jU3oge5Nmivr5NYIRjHWj9rdqSQcCEPfFbAwVXY/okfQmnKyNM1Bv
+         EGl8KnPnYQru8uOyKSqxIVWFJE5B4jWtfZYTlHiMtVGwF6S7mvtIOaJxKi/mkFlQ5Tw5
+         SGE5leSvF1tyOsfUdBKkFw8T+Pws+jzNAvuW4FIUk5QeW2q/Qwq102D6NPeWzywV9hR6
+         Xgy28aip1iGUHP14KVME+gHU6gcVKMZLo51cdUO6/qw3bN/uWI+1XmJhDuwyjHrlGgde
+         sOMLViOHE2XMtMAVFzHSMglLZDNUYQR+tD8CXo9ywxqrP5ZIh754LnpoLytzisDRa8Lk
+         ecfw==
+X-Forwarded-Encrypted: i=1; AJvYcCXSdg9NIDbwtveUdEqKWR5vvU5YOSbawHBkyFcAmUP5DAXA/Y5OS7qbgjFBBP1+bt4NhPkHcXM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxpe4kfLYRaPxH6pkaTTSbcGKCGqKoTC6KOWRz+V6uguKthx/fJ
+	uPyoWLaN3yIn1M0aG5mfmGIgkbK/K7OE23S0gAKhWrUbsO9wKilx4l2Bv7orjF368HVcJRVnurA
+	amEf4driStg==
+X-Gm-Gg: ATEYQzw0QJKp5t448kpc55IFl99tzmQsChSPKLeGWerUImQpXDb4CatYK2Il0csPrTN
+	ZTwvye2NoibeJspNziOl+Jh59OL5BzS+cxiB0KvXqnLqLGBOuJ41p6nEZ+3duRalgiXTaQGykvD
+	bN3bQRHBGzQHSETplmHdHGoWOmbkR7+9GQr8nLqPBNtFQgV+cJCsuOupIj05G5yABA6KrDEdFhl
+	WUkr8OJuuG3qZbFrH47o8PqFaKBKS0SHWLe0OeNVx9VwYl0aTo3TtJiQwjOlIedyC/C6YHajlxB
+	PGEjzqdJ7bVfInVGhebphmVHCwunmyw2CaJDRqDyjf2mGEHO6y2nBNFEiDwpu/BLKd5Uhzhfpe5
+	Sc7AaJEBUHLv3s8gUP6MM3oSMy3A+Z+4HnbpV7rO31G/vP3ppvv/B+1auuF60dgar0aNU5n1EK9
+	V8theeIF06kbEEkYXa7tK2wUTmkXgJ4iCmT/XKZtwcLcayNop38oScj1DMDc8woa4Bw3LsWZahM
+	QjQwG0vkipyFzo=
+X-Received: by 2002:a05:6402:398b:b0:65f:a9f5:750b with SMTP id 4fb4d7f45d1cf-65fddaf6f25mr5895152a12.15.1772458335689;
+        Mon, 02 Mar 2026 05:32:15 -0800 (PST)
+Received: from puffmais2.c.googlers.com (221.210.91.34.bc.googleusercontent.com. [34.91.210.221])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65fabf6d1c6sm3282988a12.17.2026.03.02.05.32.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 05:32:15 -0800 (PST)
+From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Subject: [PATCH v3 00/11] power: supply: max17042: support Maxim MAX77759
+ fuel gauge
+Date: Mon, 02 Mar 2026 13:31:59 +0000
+Message-Id: <20260302-max77759-fg-v3-0-3c5f01dbda23@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH2PR10MB4182:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b78dac9-d6db-424a-0d31-08de785fdfdc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	SISaXIYC1rb9xQb3OfcC3+HtErP/ZWd/xY4aeJ9a5t7T1wyQz9k/bnAXCwyUEHgPSFeHFNlR/8ZO2odCL4ujRjS6itdohqxAWX7/mUCiZ1R5Ozw3amjppYJUSZ26dYTJjdbQdv9CHy1bl7pkOf8F60bDUJ2roja5xIsW9d+vNMNaid04OmxmNTPVT07/I+Qbje6fh++tyRdKGpmr536BBB+MhzVcQv+ZSXagPn717V0uZ3XLqH5wPXwUZhZ43KobOkuYHGvIVFKC0hRUhdErflliBRmpDsFfEoYFvWyw7OHUbf5L0P/S23ghyJ/qLRbF1PAKi3KOKmEcybzyqR3J2ckXYCrJqCLYPcTgUIjJJLle6teCXbCfyo1mhMPEOsZNDZyP+iTcPw93Qijbjy6skS1Z8g+f2iZ8E8JhOXoXu6JxqFVAtKhyQoTyER3wFHimJQhV8AEk+a0luEqq717hobbVxT+gsbVHuwP01Km1uwZEx9NLl6E9xiZ5IvoqKY/Zm2UayiIZB3nCPagwUdrc0IkzAM7S/4SNy5U+7Kz3MvMokyjcIviUlqEH08ftDd8K2e57SvPTFG9T0myyDTsUnqZJD8lsQwAOaBgAOC9zR+GkN5DRp5JWMalLKE94QVlDbsqukszEgEZVaFu8aVZkwXdNHkbXDYn0VN16lQdYZUIy34VMdmEXqaCtoKIbeSGfSzVu0ayRGYi61OexATvxLykNok7wpJfTTtE0zi+/63o=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hGbIAKYEi08wlnoS1D7xmwwiaZ3cAnFBo5URm6pYxo8x/636TFpVK1sfwDQg?=
- =?us-ascii?Q?n/WpPVxxwCHIMB+sGsMFiNP7vy7f/SzQLsdRp0Bzd2u8RyiZ71QD0E3U4/Z0?=
- =?us-ascii?Q?fDKG3RLSO3t+VA8Wr00pSqTiVyfKHWwfYSoZRxxpP5ccTEmipf5bME09a7n9?=
- =?us-ascii?Q?GgRWQMxZDj2LR8YdykS0CrI2SIRlfPdUHxxSjhwNQQJQ7hEnTdMuXfxKS8QO?=
- =?us-ascii?Q?Q70IVT8uLohs+ooMoTHAFUmPeOmrrEF0azH6jpI1JAlGd4NPsTI4BFV/5tb1?=
- =?us-ascii?Q?pVJygpW5OEo+zFqcc2SZ4ca9GgnF8bEfgkMU5V/FIodlVt3F9UeLTXTWaVkO?=
- =?us-ascii?Q?xdiJUZFAVozDmpUo3uYy0IdPlimNzlTPQ/S0VY5YPWblZywQZmKoA70xSLEo?=
- =?us-ascii?Q?9/fwWhqUx1bM4tx7iO9Z9tbziEdSBK0NyVLLxV+qvUO2WSS2LgEzoPoMpX5V?=
- =?us-ascii?Q?Smu1O5JGN88I2kUccSXVxwJnzZM6x/J+3JBlN+/WlMOHzLPn7v59Yb806SRt?=
- =?us-ascii?Q?waxJEj1FImpuV18Dlp2/BCGzIomxZPXSxyFPRBtz88z4dpYPK2Udzv8x5Jyw?=
- =?us-ascii?Q?dEOzR7sKFmpvNY3/Qafm1BXLSbHyR/MpgjhK+0EC/22I973QzdT+Bza2LVQH?=
- =?us-ascii?Q?wkzTSW7YlnDfWDxloK4uDRWp/VlenVSrXL1HCLxQERYJyqh+98kSfiHOLgI5?=
- =?us-ascii?Q?89uz1mLlb0lb2RB5h3R+JxRaRCncLBcEtBaZVKtgO46H/Q9fJeARt6A1zQX9?=
- =?us-ascii?Q?P1Ox9MlnpzavZkjcC8bp5YFYcHKETv5yWP6+GJ8zPqrHbUOpXISf8ko8kefa?=
- =?us-ascii?Q?LAjVMH/wfqAn1K5AkLZiqGBvaZgB203hD/HjlW0MmFuDzPDlRb0VX4uwUAD8?=
- =?us-ascii?Q?oMncjQM/6YiO9NSNmR/2fez9uYyErunYJ2WAe7NjvkYnsT0s3CuS6vHfL4GH?=
- =?us-ascii?Q?SoLRPgnBx61JweQ7/j3A6hPLnuLKSiZTDPkc1NE8yQsiMngf0VpY4xtQvxrI?=
- =?us-ascii?Q?+flTnqySIq5nXzXRrMGE+MpDhFP5T8vW9KqEkzzXwpAumR/pwJeE4c0JEfak?=
- =?us-ascii?Q?Lp9Tq6v7nuoKo/HYr4ULcfVeBJX+9lZTKQVq8K3GM0s0vUxa+bOXbTy6gZio?=
- =?us-ascii?Q?r8SmDw0APIwbKIu8dRvK3UupHsBkSqKcHiqpTZ15m3RHQdZQt6GT7WNIU+iu?=
- =?us-ascii?Q?L50EmxQi0WCpB6FNlfxTqLG3/6o8zaVAPuNx9QalqhmubYDcoyq+lmlW34f/?=
- =?us-ascii?Q?wDRDhbpLOj/4QlqY7sXFlxUhndd9W4wFKJxzyUX7+6nAhKsAVXwiQ6kuM8iO?=
- =?us-ascii?Q?0CERvN8GStw8p5gfrBqqn6ZHMd78rlzQgQjvyqv2h+C6IPK+JEWk+l7WC490?=
- =?us-ascii?Q?5yE50fsWQWGtxwWUrIcKP8oyrnJMkjknx0bMQbp38+AYy4S/GJXRJpRwsdy6?=
- =?us-ascii?Q?fS4banLd9tglic5yg2RHpLm0EcShhnoM4XTMTh8/wj+Ysb+KGBobxk3b9iq5?=
- =?us-ascii?Q?K8GZuwRlWPlsHRMwZU9Q0OtzDX0FtKNfyc0ZGTj4MXMBu4Usm+ESQQbBskdw?=
- =?us-ascii?Q?rBPEc7Owjs9bdiW5uY7lIo+cfJmTVYmhrtPL5x7rmktuexpgYjL+zfk35taz?=
- =?us-ascii?Q?wWj6OepEXn+wutrsTqF6W3ojmaAFjbXKX3Xxsx+2HlXe4nS01atOF7vXi9nZ?=
- =?us-ascii?Q?dPBrZ8jAJfj1jqWDirRKntV5bNzu99Tk97P+qOYj9S1/5DapraqBR3gTy/WU?=
- =?us-ascii?Q?OZvCjS9KDY/gOqgAtq84K2EoFv/Wi6o=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	whCu8vdbSnefCcuAbY+x32pqJyuAHkrAZ/1cwdUrIBdeh5wRbydfqirrcqtjTfZFVVTD2p5RtsbERFfOFRq9kslx+THiSzBiUK69z/aIe8wIfXE/cvqSQVEDRDRoEjUtnD7tk7pNgPagEdV7RnVw1NHOAhTiKZbQdG4WFsrT9h0UE/dPKEs60mrSfIYFlSOUo5iU8rIefLBOfgCScz8tvv5PPC5vGOHY95bmZAAgrq/73585wd8X8+VsSqlrk2RbDrEbXMOAQBErN5zPoBaEork6Hy7hGDhos5jB+wkamvkLnclozTcT/ci8RnXsZ/sGcYkNuAwHlS45u3Dtob+PQM07a0oOSO36xMj6+kXn0PQiSx4Al90z8Y0M0mkodLkBhF+/vY6KnwjrX1mm+0D5KAnivbKmE3Nd+ENEEvSKDJAuy/X9T/LZRXoXvWXKct/q5+YmwzIyaEjZ9lz64D6OpDQgDvy+Gq9AbvhKP403C5xWuX3GU/cO0OoSKSXo40PHVyjCtuZAIV8KAsuCrNpZgrCPCDgP8484KjLJTWZApzk6ib64+JUDnC2MNDz349LXB7iDTLz1Uhzc9yGqALDVOrCzHCnYAkj8vJURqsJxQFo=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b78dac9-d6db-424a-0d31-08de785fdfdc
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 13:30:30.9592
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9qY0noD8vtQf7Snkhrzdlk+Nw72s7GbUXFC5uVynEO/BiFBQRmmNngKBhfHw5Xg36B5+vKfq4CeQJzhK72a0vSILJDPJdW4llsKYhaCJ7XI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4182
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_03,2026-02-27_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 phishscore=0
- spamscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
- definitions=main-2603020114
-X-Authority-Analysis: v=2.4 cv=L9MQguT8 c=1 sm=1 tr=0 ts=69a590fd b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=RD47p0oAkeU5bO7t-o6f:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=m6ntEmJwAAAA:8 a=Ikd4Dj_1AAAA:8 a=QlgwaIoH2ZZKSwNeNA0A:9
- a=CjuIK1q_8ugA:10 a=-07UcHROD-JCDqjaZ46G:22 cc=ntf awl=host:13810
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAyMDExNCBTYWx0ZWRfX+BiSuuFe+tZ6
- uIUxAwGlq6miXjX/T/m6pqOaDhuvqaqEEGcYuPf/SG4oS4PZr2xlgMBfLZxWHLajtp9qQB49UwE
- ScZfQ+kecXo9+9e2t44by92oNUlh/Q/Y9avuWUCKAZ4cNQwpRHhv6YzltfRWQKJEc3t2YX21XyF
- s5yiKGfmDQfnhKOUBDBwz2OS6qBIHGFQXDBE4xt2/v6NXIxFq324nqvGd7+2SBc/0xUZB5MjB67
- OFooIATWuYs+Cy6xtDuJeD3ErTXyUlyQ71iK/gwAJ43dweaAMowG7mrZTL8qkUTfXWU6Saa0SkG
- u2/bTsan34/L0t1JuAzRyBY9kFmq+70hB85MF9Pun2/12/9hRwW7q7H8sVWoYL/Sdhw513DFa1M
- melWnKoc4ulRg0yVfK1js2zGVX8kp6YmYzW2qw/1ZL/QDKi+ksXdBzwiCrWlfXOQaHOp4dUhRrn
- bgtQULBz1LwL41PxME4OgWSGJ+0iJG6af3Cl+LTE=
-X-Proofpoint-GUID: zF3iJdA6A0V_lDIfiq1GKHZzciYznBRH
-X-Proofpoint-ORIG-GUID: zF3iJdA6A0V_lDIfiq1GKHZzciYznBRH
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAFCRpWkC/23MQQ6CMBCF4auQrq2ZVqHgynsYFwVmYBKlpjUNh
+ vTuFlaSuHwv+f5FBPSMQVyKRXiMHNhNeZwOhehGOw0ouc9baNAVaF3Jp52NMWUjaZBA55agVlW
+ Hvcji5ZF43mq3e94jh7fzny0e1fr+70QlQRKBhdoasA1dHzxZ747OD2INRf2LzR7rjLGEFktSj
+ SLY4ZTSF95xp/fkAAAA
+X-Change-ID: 20260226-max77759-fg-0f4bf0816ced
+To: Hans de Goede <hansg@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, 
+ Purism Kernel Team <kernel@puri.sm>, Sebastian Reichel <sre@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Ramakrishna Pallala <ramakrishna.pallala@intel.com>
+Cc: Peter Griffin <peter.griffin@linaro.org>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, Juan Yescas <jyescas@google.com>, 
+ Amit Sunil Dhamne <amitsd@google.com>, kernel-team@android.com, 
+ linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
+ Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222595-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.onmicrosoft.com:dkim,lucifer.local:mid,nvidia.com:email,oracle.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[20];
-	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lorenzo.stoakes@oracle.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222596-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 5528C1D9E10
+	FROM_NEQ_ENVFROM(0.00)[andre.draszik@linaro.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uevent.name:url,sysfs.technology:url,linaro.org:mid,linaro.org:dkim,linaro.org:email,sysfs.online:url]
+X-Rspamd-Queue-Id: 939BB1D9D68
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 08:06:14PM -0500, Zi Yan wrote:
-> During a pagecache folio split, the values in the related xarray should not
-> be changed from the original folio at xarray split time until all
-> after-split folios are well formed and stored in the xarray. Current use
-> of xas_try_split() in __split_unmapped_folio() lets some after-split folios
-> show up at wrong indices in the xarray. When these misplaced after-split
-> folios are unfrozen, before correct folios are stored via __xa_store(), and
-> grabbed by folio_try_get(), they are returned to userspace at wrong file
-> indices, causing data corruption.
->
-> Fix it by using the original folio in xas_try_split() calls, so that
-> folio_try_get() can get the right after-split folios after the original
-> folio is unfrozen.
->
-> Uniform split, split_huge_page*(), is not affected, since it uses
-> xas_split_alloc() and xas_split() only once and stores the original folio
-> in the xarray.
->
-> Fixes below points to the commit introduces the code, but folio_split() is
-> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
-> truncate operation").
->
-> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
-> Reported-by: Bas van Dijk <bas@dfinity.org>
-> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Cc: <stable@vger.kernel.org>
-> ---
->  mm/huge_memory.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 56db54fa48181..e4ed0404e8b55 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3647,6 +3647,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->  	const bool is_anon = folio_test_anon(folio);
->  	int old_order = folio_order(folio);
->  	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
-> +	struct folio *origin_folio = folio;
+Hi,
 
-NIT: 'origin' folio is a bit ambigious, maybe old_folio, since it is of order old_order?
+This series adds support for the fuel gauge integrated into the Maxim
+MAX77759, which is a companion PMIC intended for use in mobile phones
+and tablets and is used on Google Pixel 6 and 6 Pro (oriole and raven).
 
->  	int split_order;
->
->  	/*
-> @@ -3672,7 +3673,13 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->  				xas_split(xas, folio, old_order);
+Amongst others, the PMIC contains a fuel gauge employing the Maxim
+ModelGauge m5 algorithm, that is similar to the ones supported by the
+max17042 driver and binding.
 
-Aside, but this 'if (foo) bar(); else { ... }' pattern is horrible, think it's
-justifiable to put both in {}... :)
+The Maxim ModelGauge m5 algorithm, as well as previous generations like
+m3 on max17047/max17050, requires the host to save/restore some
+register values across power cycles to maintain full accuracy.
+Extending the driver for such support is out of scope in this initial
+series.
 
->  			else {
->  				xas_set_order(xas, folio->index, split_order);
-> -				xas_try_split(xas, folio, old_order);
-> +				/*
-> +				 * use the original folio, so that a parallel
-> +				 * folio_try_get() waits on it until xarray is
-> +				 * updated with after-split folios and
-> +				 * the original one is unfrozen.
-> +				 */
-> +				xas_try_split(xas, origin_folio, old_order);
+The series starts with binding updates, followed by driver updates and
+improvements in preparation for finally adding max77759 support.
 
-Hmm, but won't we have already split the original folio by now? So is
-origin_folio/old_folio a pointer to what was the original folio but now is
-that but with weird tail page setup? :) like:
+A DT update for Pixel 6 has been posted in
+https://lore.kernel.org/all/20260302-max77759-fg-dts-v2-1-12f1109a6fee@linaro.org/
 
-|------------------------|
-|           f            |
-|------------------------|
-^old_folio  ^ split_at
+Note: While there was a previous attempt to add support for this fuel
+gauge via a new driver [1], development seems to have come to a halt,
+and extending this driver here seems more appropriate. The patches here
+are unrelated to that other attempt, other than supporting the same
+device.
 
-|-----------|------------|
-|     f     |     f2     |
-|-----------|------------|
-^old_folio
+Test results:
+    $ ./test_power_supply_properties.sh max170xx_battery
+    TAP version 13
+    1..33
+    # Testing device max170xx_battery
+    ok 1 max170xx_battery.exists
+    ok 2 max170xx_battery.uevent.NAME
+    ok 3 max170xx_battery.sysfs.type
+    ok 4 max170xx_battery.uevent.TYPE
+    ok 5 max170xx_battery.sysfs.usb_type # SKIP
+    ok 6 max170xx_battery.sysfs.online # SKIP
+    # Reported: '1' ()
+    ok 7 max170xx_battery.sysfs.present
+    # Reported: 'Unknown'
+    ok 8 max170xx_battery.sysfs.status
+    # Reported: '92' % ()
+    ok 9 max170xx_battery.sysfs.capacity
+    ok 10 max170xx_battery.sysfs.capacity_level # SKIP
+    ok 11 max170xx_battery.sysfs.model_name # SKIP
+    ok 12 max170xx_battery.sysfs.manufacturer # SKIP
+    ok 13 max170xx_battery.sysfs.serial_number # SKIP
+    # Reported: 'Li-ion'
+    ok 14 max170xx_battery.sysfs.technology
+    # Reported: '36032' ()
+    ok 15 max170xx_battery.sysfs.cycle_count
+    # Reported: 'System'
+    ok 16 max170xx_battery.sysfs.scope
+    ok 17 max170xx_battery.sysfs.input_current_limit # SKIP
+    ok 18 max170xx_battery.sysfs.input_voltage_limit # SKIP
+    # Reported: '4323906' uV (4.32391 V)
+    ok 19 max170xx_battery.sysfs.voltage_now
+    # Reported: '3660000' uV (3.66 V)
+    ok 20 max170xx_battery.sysfs.voltage_min
+    # Reported: '4320000' uV (4.32 V)
+    ok 21 max170xx_battery.sysfs.voltage_max
+    # Reported: '3300000' uV (3.3 V)
+    ok 22 max170xx_battery.sysfs.voltage_min_design
+    ok 23 max170xx_battery.sysfs.voltage_max_design # SKIP
+    # Reported: '289687' uA (289.687 mA)
+    ok 24 max170xx_battery.sysfs.current_now
+    ok 25 max170xx_battery.sysfs.current_max # SKIP
+    # Reported: '3942000' uAh (3.942 Ah)
+    ok 26 max170xx_battery.sysfs.charge_now
+    # Reported: '4330000' uAh (4.33 Ah)
+    ok 27 max170xx_battery.sysfs.charge_full
+    # Reported: '4524000' uAh (4.524 Ah)
+    ok 28 max170xx_battery.sysfs.charge_full_design
+    ok 29 max170xx_battery.sysfs.power_now # SKIP
+    ok 30 max170xx_battery.sysfs.energy_now # SKIP
+    ok 31 max170xx_battery.sysfs.energy_full # SKIP
+    ok 32 max170xx_battery.sysfs.energy_full_design # SKIP
+    ok 33 max170xx_battery.sysfs.energy_full_design # SKIP
+    # 15 skipped test(s) detected.  Consider enabling relevant config options to improve coverage.
+    # Totals: pass:18 fail:0 xfail:0 xpass:0 skip:15 error:0
 
-|-----------|-----|------|
-|     f     |  f3 |  f4  |
-|-----------|-----|------|
-^old_folio
+Cheers,
+Andre'
 
-etc.
+Link: https://lore.kernel.org/all/20250915-b4-gs101_max77759_fg-v6-0-31d08581500f@uclouvain.be/ [1]
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+---
+Changes in v3:
+- update commit message patch 5 (dev_err_probe)
+- drop stray comment patch 6 (overflow)
+- add Fixes tag to patch 6 (overflow) (Pete)
+- collect tags
+- Link to v2: https://lore.kernel.org/r/20260227-max77759-fg-v2-0-e50be5f191f0@linaro.org
 
-So the xarray would contain:
+Changes in v2:
+- collect tags
+- update commit message subject prefix of patch 10 to avoid duplication
+- patch 11 (time to full reporting):
+  - limit to max17055 & max77759, the datasheet for max17047 and
+    max17050 describes the register as 'reserved'. I was mislead by the
+    comment and enum ordering in max17042_battery.h
+  - report as POWER_SUPPLY_PROP_TIME_TO_FULL_NOW (not _AVG). The
+    max17050 datasheet is a bit clearer than the max77759 one on that.
+- Link to v1: https://lore.kernel.org/r/20260226-max77759-fg-v1-0-ff0a08a70a9f@linaro.org
 
-|-----------|-----|------|
-|    f      |  f  |   f  |
-|-----------|-----|------|
+---
+André Draszik (11):
+      dt-bindings: power: supply: max17042: add support for max77759
+      dt-bindings: power: supply: max17042: support shunt-resistor-micro-ohms
+      dt-bindings: power: supply: max17042: drop formatting specifier |
+      power: supply: max17042: fix a comment typo (then -> than)
+      power: supply: max17042: use dev_err_probe() where appropriate
+      power: supply: max17042: avoid overflow when determining health
+      power: supply: max17042: time to empty is meaningless when charging
+      power: supply: max17042: support standard shunt-resistor-micro-ohms DT property
+      power: supply: max17042: initial support for Maxim MAX77759
+      power: supply: max17042: consider task period (max77759)
+      power: supply: max17042: report time to full (max17055 & max77759)
 
-Wouldn't it after this?
+ .../bindings/power/supply/maxim,max17042.yaml      |  21 ++--
+ drivers/power/supply/max17042_battery.c            | 130 ++++++++++++++++++---
+ include/linux/power/max17042_battery.h             |  25 +++-
+ 3 files changed, 148 insertions(+), 28 deletions(-)
+---
+base-commit: 3fa5e5702a82d259897bd7e209469bc06368bf31
+change-id: 20260226-max77759-fg-0f4bf0816ced
 
-Oh I guess before it'd contain:
+Best regards,
+-- 
+André Draszik <andre.draszik@linaro.org>
 
-|-----------|-----|------|
-|     f     |  f4 |  f4  |
-|-----------|-----|------|
-
-Right?
-
-
-You saying you'll later put the correct xas entries in post-split. Where does
-that happen?
-
-And why was it a problem when these new folios were unfrozen?
-
-(Since the folio is a pointer to an offset in the vmemmap)
-
-I guess if you update that later in the xas, it's ok, and everything waits on
-the right thing so this is probably fine, and the f4 f4 above is probably not
-fine...
-
-I'm guessing the original folio is kept frozen during the operation?
-
-Anyway please help my confusion not so familiar with this code :)
-
-
->  				if (xas_error(xas))
->  					return xas_error(xas);
->  			}
-> --
-> 2.51.0
->
-
-Thanks, Lorenzo
 
