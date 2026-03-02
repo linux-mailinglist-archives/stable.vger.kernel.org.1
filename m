@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-222603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222604-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0M0mCbyZpWnxEgYAu9opvQ
-	(envelope-from <stable+bounces-222603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:07:56 +0100
+	id MM08LTSYpWnXEgYAu9opvQ
+	(envelope-from <stable+bounces-222604-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:01:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8F41DA645
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:07:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 981A21DA46C
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:01:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA5353054206
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 14:00:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AF02B301F6A2
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 14:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271E43FB044;
-	Mon,  2 Mar 2026 14:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873103FB049;
+	Mon,  2 Mar 2026 14:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ewY/0WdU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cPu09c9E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDED73F23D9;
-	Mon,  2 Mar 2026 14:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494763A1E81;
+	Mon,  2 Mar 2026 14:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772460001; cv=none; b=hsWKX9Lcz7emwtgk6ujWsgGYCBAkRo1p1utE0WUIBq9R5aaZZYKc2+5ns/5NXVA1drvnSgftuhlDbstFE0d0xDqmAV9EhH+wU3l1lLQR5ZWPQgi0av+GMFrlt5fImwsNgYC/EnijxDInc9qdfXv1M7y3Pq0iytsTnYjBP+8isk8=
+	t=1772460076; cv=none; b=FtYhj4nitXh9aF+9Vo5C8OKdb3oH+KbTFdytSIAee8mosYKaNA6RhDBd+bUF0UuK2sbEk40YWryj7D+Q5Yhd6aidHeZg0ry6T4u66QyhnXuf05ljGC16GZ8Kt6Uv1fR2U8LjGwW3A4TGiFPRJhlXjVRdN1XBcTnQ5qGaIyUp70o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772460001; c=relaxed/simple;
-	bh=Jop44HVklrI7DjKMtDwksgo6hcl1CuU5HgBN5PPGDbk=;
+	s=arc-20240116; t=1772460076; c=relaxed/simple;
+	bh=tUpfG0c7TtjX7Rl8Yb87VI1i/wWvp11fpw81NXXqqYg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U7rjZrCoBPkOdABYVxvKqBXDEk8QO8h/nPfY6mI8vXKVnqf+BMXwYnWYSQXmE44Tq7vzxhgft2FKFuEj78sOoOP+7TdBl0SPDlubkdCdfEuBzqmSOHeOed3c0S56NfcgVIz+tbVdh8WxkB4OH2SZiZJA3WiygnQvle58MXnzaJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ewY/0WdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61056C19423;
-	Mon,  2 Mar 2026 14:00:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=apHRg+27X7R0zT/vGMXO542zcCAAllyQ/dqiOg+QSRdBzmPn0QphERgCvTAwjUdzEKiUHXIDtjMOFyw+lp58lKtxDpatoVpMeeiYHsf1Ne04sny1P98jZ1tBkEu+zehPpfJ0kH6VDsvheoyHUCSRKDEbAPk8sqEAejpHLR4YvLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cPu09c9E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53E9C2BC87;
+	Mon,  2 Mar 2026 14:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772460001;
-	bh=Jop44HVklrI7DjKMtDwksgo6hcl1CuU5HgBN5PPGDbk=;
+	s=k20201202; t=1772460075;
+	bh=tUpfG0c7TtjX7Rl8Yb87VI1i/wWvp11fpw81NXXqqYg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ewY/0WdUhmYKV6RE6wL0enGCZRQWFGEDNDL25j2I8YARqc6DZHEi8V1JAH5yxblzs
-	 fEdbi4hFkKDlLlSGXYWS5RCrsYUQLxL+WRb1XcrEivL9ak5GgOiD4RT0VPeEC+jDET
-	 xzZvXsMc0Tw66AqiyjGeCFT10lv6EWHyrx8+O5LmIN2S0AZRUGciBLuki6nZc9QLP3
-	 DzbXfbKPGh20yIZs+P/npRJH8Ha6HB7dgdyeUcGvs/uAShjPxMUFYcPeG9R9R7hIwB
-	 NmGWX7pnqx6JllR8n+Xp5GBdHiyIs7bxCgevV75F65840G+et8m9E9svCWialAtzTD
-	 lln566Exkobhw==
-Date: Mon, 2 Mar 2026 09:00:00 -0500
+	b=cPu09c9EzdWvAhzk0o9FL7IrrIFc40AtcRLnOL5hWUDV/4j6IjKZ/5JJVlxzKjx0v
+	 Zxvop8L7J75tvxrbS0Q3QBsR2uLqGqnbadmY0zPolKwKpLWFSSQ6v2cOC1qAg1v4dm
+	 DQSK9IogseuZldYsONIExQhvgfp4TVnz6Xtlz8124VbjmQ+YyxDNegpSEg/dJFR1qh
+	 n1adKuHRHtwtNXem/FJ6ZNq3tOWUFIh+wB+xiNbUR3sGN92dEBlPDcvT8v54YMXvQf
+	 lDnRXm+YWpurrRxmvds7kP59U1v695wR7nhYozk3a1xiXrz9id9vppWMeklRaWVKpV
+	 IEKpN2wssqFmQ==
+Date: Mon, 2 Mar 2026 09:01:14 -0500
 From: Sasha Levin <sashal@kernel.org>
 To: Jiri Slaby <jirislaby@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Navaneeth K <knavaneeth786@gmail.com>,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 6.19 374/844] most: core: fix resource leak in
- most_register_interface error paths
-Message-ID: <aaWX4I0rOM3BX3Ei@laps>
+	Marc Zyngier <maz@kernel.org>, Hyesoo Yu <hyesoo.yu@samsung.com>,
+	Quentin Perret <qperret@google.com>, Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 6.19 831/844] arm64: Force the use of CNTVCT_EL0 in
+ __delay()
+Message-ID: <aaWYKgwkuINjzFKi@laps>
 References: <20260228173244.1509663-1-sashal@kernel.org>
- <20260228173244.1509663-375-sashal@kernel.org>
- <229d3499-6600-4245-9ee3-219266f83cd6@kernel.org>
+ <20260228173244.1509663-832-sashal@kernel.org>
+ <636f00d8-dcba-4724-9184-35a14426aae9@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,48 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <229d3499-6600-4245-9ee3-219266f83cd6@kernel.org>
+In-Reply-To: <636f00d8-dcba-4724-9184-35a14426aae9@kernel.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-222603-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222604-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,linaro.org,linuxfoundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RSPAMD_EMAILBL_FAIL(0.00)[maz.kernel.org:query timed out];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AE8F41DA645
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 981A21DA46C
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 08:08:20AM +0100, Jiri Slaby wrote:
->On 28. 02. 26, 18:24, Sasha Levin wrote:
->>From: Navaneeth K <knavaneeth786@gmail.com>
+On Mon, Mar 02, 2026 at 08:07:29AM +0100, Jiri Slaby wrote:
+>On 28. 02. 26, 18:32, Sasha Levin wrote:
+>>From: Marc Zyngier <maz@kernel.org>
 >>
->>[ Upstream commit 1f4c9d8a1021281750c6cda126d6f8a40cc24e71 ]
+>>[ Upstream commit 29cc0f3aa7c64d3b3cb9d94c0a0984ba6717bf72 ]
+>...
+>>--- a/arch/arm64/lib/delay.c
+>>+++ b/arch/arm64/lib/delay.c
+>>@@ -23,9 +23,20 @@ static inline unsigned long xloops_to_cycles(unsigned long xloops)
+>>  	return (xloops * loops_per_jiffy * HZ) >> 32;
+>>  }
+>>+/*
+>>+ * Force the use of CNTVCT_EL0 in order to have the same base as WFxT.
+>>+ * This avoids some annoying issues when CNTVOFF_EL2 is not reset 0 on a
+>>+ * KVM host running at EL1 until we do a vcpu_put() on the vcpu. When
+>>+ * running at EL2, the effective offset is always 0.
+>>+ *
+>>+ * Note that userspace cannot change the offset behind our back either,
+>>+ * as the vcpu mutex is held as long as KVM_RUN is in progress.
+>>+ */
+>>+#define __delay_cycles()	__arch_counter_get_cntvct_stable()
 >
->This one is fixed by:
->2c198c272f9c most: core: fix leak on early registration failure
+>This needs:
+>e5cb94ba5f96 arm64: Fix sampling the "stable" virtual counter in 
+>preemptible section
 
 Queued up, thanks!
 
