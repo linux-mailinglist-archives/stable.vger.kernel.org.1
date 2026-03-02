@@ -1,159 +1,167 @@
-Return-Path: <stable+bounces-222620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oM2FKv2lpWngCwAAu9opvQ
-	(envelope-from <stable+bounces-222620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:00:13 +0100
+	id qGG9H9WppWmpDgAAu9opvQ
+	(envelope-from <stable+bounces-222621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:16:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0D91DB4D2
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:00:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A991DBA17
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:16:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2E8533020A71
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 15:00:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2F363052606
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 15:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D374014A8;
-	Mon,  2 Mar 2026 15:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E886F40756E;
+	Mon,  2 Mar 2026 15:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="BxDIgoO2";
-	dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="fSolzkRG"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oT5+jyWw"
 X-Original-To: stable@vger.kernel.org
-Received: from devnull.danielhodges.dev (vps-2f6e086e.vps.ovh.us [135.148.138.8])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C67199FBA;
-	Mon,  2 Mar 2026 14:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.148.138.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF77387597
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 15:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772463600; cv=none; b=blVm8RuBTPM/Xb+T88AfodF2SUSJdj3wejTEgpjAtlFMD6wy3SvKKUWbV0lf3Mg38Ly4dMRkYQ72rjlosZKY7PEi5fEJ3nuaS8hV8rt0XooTe2iOmr1SUSBs+L5Bt4Vrv1XUQdsF6zRiSiUuJ6vrKvneo/Q8Y66tF4siKhYnN/M=
+	t=1772464304; cv=none; b=bRirO9tlPmqXQRrVPpHanVCGwwMap8zS7PHfRzLLNxCX5/KfGtxVncwINTSOsEslNY4+9TrNIVNOtmVf9THvuLnckMiAu65C/mYdrJoJEYGEDu1abuupK+mxiqgGiK4pIPCn7Ze2M/Pr/yUBnegaF9FlvMa20CsLrIHfWDx9Y/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772463600; c=relaxed/simple;
-	bh=DxGkIkDdEwOD3ij4b6DLXS5/weC/z7I8vQkG0UlUNoI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mYb9Sx1s/m5Svjki4CuA6H4GGZLsUUKiwS32HC4K5FbVdpSA+QdNB9A9y1e2MnOimVDgJtVpUcwv83aEmybdYBwilN4vw6ZWvEy8hCIef7QgywuoZkdbiM8PUahxi8scFNUo0s1cLhOM/8RkGt597Re9caq8GBDCHzO2DmcKmi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev; spf=pass smtp.mailfrom=danielhodges.dev; dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=BxDIgoO2; dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=fSolzkRG; arc=none smtp.client-ip=135.148.138.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danielhodges.dev
-DKIM-Signature: v=1; a=rsa-sha256; s=202510r; d=danielhodges.dev; c=relaxed/relaxed;
-	h=Message-ID:Subject:To:From:Date; t=1772463586; bh=ogl6TU85WTxGAdTtdjcpJC8
-	6XT6gSVzMS3pwvCYPadI=; b=BxDIgoO2UcmsQCz/yrwpPsHDvA4HsNrjLM5/l02bT9R7LaGyNj
-	y3rZm58smFX7kdg2GOkRAds4HgF6OaHfVLwF5Dw64NaloxmcINS5cBravS0/aNjHbyQWxHufcNB
-	YC6FUf2Cmjb+nTAcxIy1PaYomYqD2kt8dExD6dQA2zgS7i3CNkqqU+HbYFofN8S3v+4Ea7AZtoX
-	SOcXKJ2dej8lAGMvMszmlmAI5dh5UXKdgvxuLLztmH49jjqV2nw6FkX7dnAAbjxccNvJabrMFvb
-	o3dA7PAmv38Obj+7fNYNj/+ezqnpsCzDTsyqp5s12zi5oISThGNgA4hg/+EDHG+qoGw==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202510e; d=danielhodges.dev; c=relaxed/relaxed;
-	h=Message-ID:Subject:To:From:Date; t=1772463586; bh=ogl6TU85WTxGAdTtdjcpJC8
-	6XT6gSVzMS3pwvCYPadI=; b=fSolzkRGWj67YSeNdvUvZMfxe+aNi0ZoGLsTgv2ja1INmLdHKF
-	eAw/6uMMLLo76jD8ES47/vmGmh5OMqcJW3Ag==;
-Date: Mon, 2 Mar 2026 09:59:46 -0500
-From: Daniel Hodges <daniel@danielhodges.dev>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, 
-	Daniel Hodges <git@danielhodges.dev>, kwilczynski@kernel.org, kishon@kernel.org, bhelgaas@google.com, 
-	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: epf-mhi: return 0 on success instead of positive
- jiffies
-Message-ID: <nedv4u2zt6logpxggnpyuuj6ad23w5kbkfmke6cvh3gfz4zetx@u2z2ivn6xwve>
-References: <20260206200529.10784-1-git@danielhodges.dev>
- <20260227191510.GA3904799@bhelgaas>
- <xfodklav2bbej7v3ldg6equxkkkzwyadxnvuakuhrixfuc2ueo@sektmxhns7c4>
+	s=arc-20240116; t=1772464304; c=relaxed/simple;
+	bh=KCBtXYwww92nUUG2zAgJgef7ktaJj2c3DTMGMJdUk1g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xw+mbo8xEvv7N7opvr+GiCOPFx64s50YVGzPK5/4IcpBTaeIVvTObSI7ymvzHyBVrB1FH6mK9Mh3+MOkNzFv2QHgKMiBhJUIDLMAOkXw1xKJkEYIuZsBxMJUBFGzU2w+UUunmjtiImtMBdHoxLT8fjEQAjYZtG7uLgz6VHxQYAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oT5+jyWw; arc=none smtp.client-ip=91.218.175.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <6a568d3c-daf3-46ba-a3ce-0a0deca824c2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772464301;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jXXw9BNPUOHdywM1sGGDpV4CuKnSXirRfOqdKTWATAU=;
+	b=oT5+jyWwG/YxILKJmwFoom9NuVkMPFACb21bQYP02+BuJNutRR82NYY4ImmIDBhgFQ/5gR
+	sfpjsJtrYJFEB8GJg9Fx1BbwjJqXGIgL+gQPoU7+5lJI75HtJA2X/KGCd0sgCBDh2FnPzG
+	hZGcZvbRoFHZQzg6m6SI1Dz7B6yg2fE=
+Date: Mon, 2 Mar 2026 23:11:27 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <xfodklav2bbej7v3ldg6equxkkkzwyadxnvuakuhrixfuc2ueo@sektmxhns7c4>
-X-Rspamd-Queue-Id: 8E0D91DB4D2
+Subject: Re: [PATCH] mm/huge_memory: fix a folio_split() race condition with
+ folio_try_get()
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Bas van Dijk <bas@dfinity.org>, Eero Kelly <eero.kelly@dfinity.org>,
+ Andrew Battat <andrew.battat@dfinity.org>,
+ Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260228010614.2536430-1-ziy@nvidia.com>
+ <d9e30bef-621f-444a-a1b0-510c50927d9b@linux.dev>
+ <64fa6a73-8952-4ee1-b7c3-8b0ebef3ea78@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <64fa6a73-8952-4ee1-b7c3-8b0ebef3ea78@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: D3A991DBA17
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[danielhodges.dev,reject];
-	R_DKIM_ALLOW(-0.20)[danielhodges.dev:s=202510r,danielhodges.dev:s=202510e];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222620-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222621-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[danielhodges.dev:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[daniel@danielhodges.dev,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[danielhodges.dev:dkim,danielhodges.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,dfinity.org:email]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 11:24:23AM +0530, Manivannan Sadhasivam wrote:
-> On Fri, Feb 27, 2026 at 01:15:10PM -0600, Bjorn Helgaas wrote:
-> > On Fri, Feb 06, 2026 at 03:05:29PM -0500, Daniel Hodges wrote:
-> > > wait_for_completion_timeout() returns the number of jiffies remaining
-> > > on success (positive value) or 0 on timeout. The pci_epf_mhi_edma_read()
-> > > and pci_epf_mhi_edma_write() functions use the return value directly as
-> > > their own return value, only converting timeout (0) to -ETIMEDOUT.
-> > > 
-> > > On success, they return the positive jiffies value. The callers in
-> > > drivers/bus/mhi/ep/ring.c check for errors with "if (ret < 0)" for
-> > > read_sync and "if (ret)" for write_sync. This causes write_sync success
-> > > cases to be incorrectly treated as errors since the positive jiffies
-> > > value is non-zero.
-> > > 
-> > > Fix by setting ret to 0 when wait_for_completion_timeout() succeeds.
-> > > 
-> > > Fixes: 7b99aaaddabb ("PCI: epf-mhi: Add eDMA support")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-> > 
-> > Thanks for the patch!
-> > 
-> > Two questions: first, is there any reason why __mhi_ep_cache_ring()
-> > tests for "ret < 0" but mhi_ep_ring_add_element() tests for "ret"
-> > (non-zero)?  Could/should they both test just for non-zero, which I
-> > think is the typical style?
-> > 
-> 
-> Yes, agree. I've sent a patch to fix this. Thanks for spotting!
-> 
-> > Second, the subject and commit log are perfectly correct but basically
-> > at the level of describing the C code.  I propose something along
-> > these lines:
-> > 
-> >   PCI: epf-mhi: Return 0, not remaining timeout, when eDMA ops complete
-> > 
-> >   pci_epf_mhi_edma_read() and pci_epf_mhi_edma_write() start DMA
-> >   operations and wait for completion with a timeout.
-> > 
-> >   On successful completion, they previously returned the remaining
-> >   timeout, which callers may treat as an error.  In particular,
-> >   mhi_ep_ring_add_element(), which calls pci_epf_mhi_edma_write() via
-> >   mhi_cntrl->write_sync(), interprets any non-zero return value as
-> >   failure.
-> > 
-> >   Return 0 on success instead of the remaining timeout to prevent
-> >   mhi_ep_ring_add_element() from treating successful completion as an
-> >   error.
-> > 
-> 
-> Ammended the commit with the above, thanks!
-> 
-> - Mani
 
-Thanks for cleaning up! I meant to get around to this, but got a little
-distracted with some other things.
 
--Daniel
+On 2026/3/2 22:28, David Hildenbrand (Arm) wrote:
+> On 2/28/26 04:10, Lance Yang wrote:
+>>
+>>
+>> On 2026/2/28 09:06, Zi Yan wrote:
+>>> During a pagecache folio split, the values in the related xarray
+>>> should not
+>>> be changed from the original folio at xarray split time until all
+>>> after-split folios are well formed and stored in the xarray. Current use
+>>> of xas_try_split() in __split_unmapped_folio() lets some after-split
+>>> folios
+>>> show up at wrong indices in the xarray. When these misplaced after-split
+>>> folios are unfrozen, before correct folios are stored via
+>>> __xa_store(), and
+>>> grabbed by folio_try_get(), they are returned to userspace at wrong file
+>>> indices, causing data corruption.
+>>>
+>>> Fix it by using the original folio in xas_try_split() calls, so that
+>>> folio_try_get() can get the right after-split folios after the original
+>>> folio is unfrozen.
+>>>
+>>> Uniform split, split_huge_page*(), is not affected, since it uses
+>>> xas_split_alloc() and xas_split() only once and stores the original folio
+>>> in the xarray.
+>>>
+>>> Fixes below points to the commit introduces the code, but
+>>> folio_split() is
+>>> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+>>> truncate operation").
+>>>
+>>> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used)
+>>> functions for folio_split()")
+>>> Reported-by: Bas van Dijk <bas@dfinity.org>
+>>> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-
+>>> sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>> Cc: <stable@vger.kernel.org>
+>>> ---
+>>
+>> Thanks for the fix!
+>>
+>> I also made a C reproducer and tested this patch - the corruption
+>> disappeared.
+> 
+> Should we link that reproducer somehow from the patch description?
+
+Yes, the original reproducer provided by Bas is available here[1].
+
+Regarding the C reproducer, Zi plans to add it to selftests in a
+follow-up patch (as we discussed off-list).
+
+[1] https://github.com/dfinity/thp-madv-remove-test
+
+Cheers,
+Lance
 
