@@ -1,210 +1,188 @@
-Return-Path: <stable+bounces-222548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLAMJ4xTpWkR9AUAu9opvQ
-	(envelope-from <stable+bounces-222548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:08:28 +0100
+	id 2LOvCudUpWnR9AUAu9opvQ
+	(envelope-from <stable+bounces-222549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:14:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195131D5443
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:08:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ABD81D55D1
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:14:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DEA6302B811
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 09:06:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57E3130416DB
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 09:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6CC387581;
-	Mon,  2 Mar 2026 09:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF9238D01F;
+	Mon,  2 Mar 2026 09:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="irWNKPM6"
+	dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b="kq6yykSq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+Received: from smtp1.tecnico.ulisboa.pt (smtp1.tecnico.ulisboa.pt [193.136.128.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDD9430B8B;
-	Mon,  2 Mar 2026 09:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC69638D009;
+	Mon,  2 Mar 2026 09:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.136.128.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772442383; cv=none; b=sSsXcSDYu54DlF+cwYGVvn++IUgV3L9DRbld8p0/A138vSK3vCgpWdqmcAWvekwDgQ/WdU6ps3yqMwhirUJ4vopDXw874zVOLrhg2W2fRtsYiJAb2YGE7r4hNNKoulB/uc6nz60nuP5J7cJ0zLZ4JMiEv1RzG2KR0dYZr6+f/Gg=
+	t=1772442649; cv=none; b=sOJGPFxzG6ZFy5mNOohPBzXWmizqof4ekx596vccJdZOzqjTNU0i9HOCXYUUjqEEUVUGNJj7keeuURhrgu803q6jPFTF+0z6BxTrskqfXFBUYlddQzPHyHqIsKw2R5RnOei1/adO74MuGqtphH5QMeGfp9GdK2AFeHg1a33guvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772442383; c=relaxed/simple;
-	bh=r0rUJ79XcHw2ctvPIG/bEBzM1XM+kCL7v2UyEDImRrA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VfhIh2qCaunmq7Bug80j4RjYww9Xo2njwPLS3sLnrpGufjrkf/iCIljsqcYWsjxyd02WN0oV2gwHfS1agP6c2lvKFW7ZMIbgIm+jh/AvwDfZdGPhiTCsrWlkEbAcNlZMlop2MKOcVjhvvYEOJyrNvfl4UvDEW/NpULcNxiwrouw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=irWNKPM6; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4418B1486B3E;
-	Mon,  2 Mar 2026 10:06:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1772442371; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=+lsuT024m5YlWSyMVvPIE+Thxn5KQ85ifvO/KH6mvxg=;
-	b=irWNKPM6vLX1zRPhRfcyiOsxZj+EmMdaq/iHt2CJPLyV1rBPR5KfIFFtX+HqKr4vOnkLZP
-	RuLXVRvkuzI0BpbK63/bwtiTSEYEJAW5f7wtin1AAWjmVZpTLdqXoROYsdXMIbyjO767MM
-	VbZGC1rKY1P91+1fv0RQrXiwGcpSOKX0yA6D3oUX+ScoVf5znsfwpqvxGfQo+EkkREKFcR
-	7ornFY+EU7HAr8hnzMzel65PMYpFLuv30GJVSoYAGK6+ldVyU3xfNsmEQ19T5n+E+Mm5mX
-	bToNbi9iU5xc5H4PUizJEI6OyjKVkycyt8LT2+5idgG5/xb0OMWPLelFq/TPkQ==
-Date: Mon, 2 Mar 2026 10:06:05 +0100
-From: Alexander Dahl <ada@thorsis.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, haokexin@gmail.com,
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Subject: Re: FAILED: Patch "net: macb: Fix tx/rx malfunction after phy link
- down and up" failed to apply to 6.12-stable tree
-Message-ID: <20260302-afloat-stubbly-1858603fbb0c@thorsis.com>
-Mail-Followup-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	haokexin@gmail.com, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-References: <20260301012805.1685772-1-sashal@kernel.org>
+	s=arc-20240116; t=1772442649; c=relaxed/simple;
+	bh=EbiUbBamIZ6iQCnBuNSz7FJjjmgw1YlSiC2B9C7jRP4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k4o4ZljERrGKtlw+kzQrUGjSfCKKifP0cSID63+975nP/UIvPqz3HoMg+OQsMyMW+SmKq2Ww3lKZPiR2XAkboAehYTCtkoGD0A566hR4D1welXDxUIMMD/o02vbKAhFDdYP9mciA63C+uUavszCapvSeTj2P9yPTMWdYtOXOjoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt; spf=pass smtp.mailfrom=tecnico.ulisboa.pt; dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b=kq6yykSq; arc=none smtp.client-ip=193.136.128.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tecnico.ulisboa.pt
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTP id 31F2B600298F;
+	Mon,  2 Mar 2026 09:10:46 +0000 (WET)
+X-Virus-Scanned: by amavis-2.13.0 (20230106) (Debian) at tecnico.ulisboa.pt
+Received: from smtp1.tecnico.ulisboa.pt ([127.0.0.1])
+ by localhost (smtp1.tecnico.ulisboa.pt [127.0.0.1]) (amavis, port 10025)
+ with LMTP id 9zY3EXe9AjZ4; Mon,  2 Mar 2026 09:10:43 +0000 (WET)
+Received: from mail1.tecnico.ulisboa.pt (mail1.ist.utl.pt [IPv6:2001:690:2100:1::b3dd:b9ac])
+	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTPS id 40B36600298D;
+	Mon,  2 Mar 2026 09:10:42 +0000 (WET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tecnico.ulisboa.pt;
+	s=mail2; t=1772442643;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ALlF6/vIv/5xuYr1Gfj3RVY3fMyDzf4HKQYtSC25+Y4=;
+	b=kq6yykSqCccGOyxQkZiYYRl4InB8BhUZ8Xs18tk1CsbLkx6x53sO9TssNNE4IQhab0mX6+
+	mb3f/niCWn5KWXeAD5nzC5awUAM303Ro18H9t/o5YH1z0MZuCK+pPUcOAct8XEZBfweJ6/
+	JaPuliwJ/uWR9AkGnIhkO7AEN5brKWsABtzVwup+36oZZO+MKN9STQ6AJeRxjf2235/aaf
+	Tvs7tkK8V+ZBYxYPq4cpM8wrosSRCEkYKrXw7A2U4RMH61DqyiywtVGIWr7xu6PDJDTPwS
+	rMiYO2GxfTgSTrUCfVfRW0WGtlsN4J0d2zzg9YBFMz81nTzxt0XULAhWB7ZrSw==
+Received: from [IPV6:2001:8a0:fbec:a900:2c09:2fb0:9be7:36e0] (unknown [IPv6:2001:8a0:fbec:a900:2c09:2fb0:9be7:36e0])
+	(Authenticated sender: ist187313)
+	by mail1.tecnico.ulisboa.pt (Postfix) with ESMTPSA id D502136013D;
+	Mon,  2 Mar 2026 09:10:40 +0000 (WET)
+Message-ID: <1663dc81-0685-4de9-8cf7-6065a644e7af@tecnico.ulisboa.pt>
+Date: Mon, 2 Mar 2026 09:10:29 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260301012805.1685772-1-sashal@kernel.org>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/6] Fixes to Tegra USB role switching and phy handling
+To: Mathias Nyman <mathias.nyman@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, JC Kuo <jckuo@nvidia.com>,
+ Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>
+Cc: linux-usb@vger.kernel.org, linux-tegra@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+ devicetree@vger.kernel.org, stable@vger.kernel.org
+References: <20260127-diogo-tegra_phy-v2-0-787b9eed3ed5@tecnico.ulisboa.pt>
+Content-Language: en-US
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+In-Reply-To: <20260127-diogo-tegra_phy-v2-0-787b9eed3ed5@tecnico.ulisboa.pt>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[thorsis.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[thorsis.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[tecnico.ulisboa.pt,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[tecnico.ulisboa.pt:s=mail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222548-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,redhat.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222549-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[intel.com,linuxfoundation.org,gmail.com,nvidia.com,kernel.org,linaro.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tecnico.ulisboa.pt:mid,tecnico.ulisboa.pt:dkim,ulisboa.pt:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ada@thorsis.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[thorsis.com:+];
+	FROM_NEQ_ENVFROM(0.00)[diogo.ivo@tecnico.ulisboa.pt,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[tecnico.ulisboa.pt:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,dt];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:url,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,thorsis.com:mid,thorsis.com:dkim,thorsis.com:email]
-X-Rspamd-Queue-Id: 195131D5443
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 7ABD81D55D1
 X-Rspamd-Action: no action
 
-Hello Sasha,
+Hello,
 
-Am Sat, Feb 28, 2026 at 08:28:05PM -0500 schrieb Sasha Levin:
-> The patch below does not apply to the 6.12-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+Gentle ping on this series.
 
-I tried cherry-pick the upstream commit
-bf9cf80cab81e39701861a42877a28295ade266f on top of v6.12.74 (current
-state of the linux-6.12.y branch) and it produced no conflicts.
-In fact the diff is very much the same as below, so I'm a little
-puzzled why it failed at your side?
+Best regards,
+Diogo
 
-I'd like to see this fix in 6.12 stable, because it fixes an actual
-problem for us (see msg ids below [1] [2]).  How to proceed here?
-E-mail as suggested above?
-
-Greets
-Alex
-
-[1] <20260219-knapsack-thirteen-7d9e83451a40@thorsis.com>
-[2] <20260219-raffle-unvisited-891b68df5aef@thorsis.com>
-
+On 1/27/26 15:11, Diogo Ivo wrote:
+> Hello,
 > 
-> Thanks,
-> Sasha
+> This patch series contains fixes/improvements for USB role switching on the
+> Tegra210 and Tegra186 SoCs.
 > 
-> ------------------ original commit in Linus's tree ------------------
+> The first patch addresses a wrong check on the logic that disables the
+> VBUS regulator.
 > 
-> From bf9cf80cab81e39701861a42877a28295ade266f Mon Sep 17 00:00:00 2001
-> From: Kevin Hao <haokexin@gmail.com>
-> Date: Sun, 8 Feb 2026 16:45:52 +0800
-> Subject: [PATCH] net: macb: Fix tx/rx malfunction after phy link down and up
+> The second patch removes a redundant mutex lock when setting the PHY
+> mode.
 > 
-> In commit 99537d5c476c ("net: macb: Relocate mog_init_rings() callback
-> from macb_mac_link_up() to macb_open()"), the mog_init_rings() callback
-> was moved from macb_mac_link_up() to macb_open() to resolve a deadlock
-> issue. However, this change introduced a tx/rx malfunction following
-> phy link down and up events. The issue arises from a mismatch between
-> the software queue->tx_head, queue->tx_tail, queue->rx_prepared_head,
-> and queue->rx_tail values and the hardware's internal tx/rx queue
-> pointers.
+> The third patch guarantees proper ordering of events when switching PHY
+> roles.
 > 
-> According to the Zynq UltraScale TRM [1], when tx/rx is disabled, the
-> internal tx queue pointer resets to the value in the tx queue base
-> address register, while the internal rx queue pointer remains unchanged.
-> The following is quoted from the Zynq UltraScale TRM:
->   When transmit is disabled, with bit [3] of the network control register
->   set low, the transmit-buffer queue pointer resets to point to the address
->   indicated by the transmit-buffer queue base address register. Disabling
->   receive does not have the same effect on the receive-buffer queue
->   pointer.
+> The remaining patches are included to standardize the PHY .set_mode()
+> callback between Tegra186 and Tegra210.
 > 
-> Additionally, there is no need to reset the RBQP and TBQP registers in a
-> phy event callback. Therefore, move macb_init_buffers() to macb_open().
-> In a phy link up event, the only required action is to reset the tx
-> software head and tail pointers to align with the hardware's behavior.
+> With this patch series this feature can only be controlled from userspace,
+> by writing the desired role to sysfs as
 > 
-> [1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm
+> echo "role" > /sys/class/usb_role/usb2-0-role-switch/role
 > 
-> Fixes: 99537d5c476c ("net: macb: Relocate mog_init_rings() callback from macb_mac_link_up() to macb_open()")
-> Signed-off-by: Kevin Hao <haokexin@gmail.com>
-> Cc: stable@vger.kernel.org
-> Link: https://patch.msgid.link/20260208-macb-init-ring-v1-1-939a32c14635@gmail.com
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> with role being one of {device, host, none}.
+> 
+> Further patches will enable automatic role switching via the 'cros_ec_typec'
+> driver which is currently broken on Smaug.
+> 
+> Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 > ---
->  drivers/net/ethernet/cadence/macb_main.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
+> Changes in v2:
+> - Remove DT patches already taken to be upstreamed
+> - Add standardization between Tegra210 and Tegra186
+> - Address review comments from v1, detailed descriptions in each patch
+> - Link to v1: https://lore.kernel.org/r/20251204-diogo-tegra_phy-v1-0-51a2016d0be8@tecnico.ulisboa.pt
 > 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 6511ecd5856bd..4ebb40adfab37 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -705,14 +705,12 @@ static void macb_mac_link_up(struct phylink_config *config,
->  		if (rx_pause)
->  			ctrl |= MACB_BIT(PAE);
->  
-> -		/* Initialize rings & buffers as clearing MACB_BIT(TE) in link down
-> -		 * cleared the pipeline and control registers.
-> -		 */
-> -		macb_init_buffers(bp);
-> -
-> -		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
-> +		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-> +			queue->tx_head = 0;
-> +			queue->tx_tail = 0;
->  			queue_writel(queue, IER,
->  				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
-> +		}
->  	}
->  
->  	macb_or_gem_writel(bp, NCFGR, ctrl);
-> @@ -2954,6 +2952,7 @@ static int macb_open(struct net_device *dev)
->  	}
->  
->  	bp->macbgem_ops.mog_init_rings(bp);
-> +	macb_init_buffers(bp);
->  
->  	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
->  		napi_enable(&queue->napi_rx);
-> -- 
-> 2.51.0
+> ---
+> Diogo Ivo (6):
+>        phy: tegra: xusb: Fix USB2 port regulator disable logic
+>        usb: xhci: tegra: Remove redundant mutex when setting phy mode
+>        phy: tegra: xusb: Fix ordering issue when switching roles on USB2 ports
+>        phy: tegra: xusb: Add ID override support to padctl
+>        phy: tegra: xusb: Move .set_mode() to a shared location
+>        phy: tegra: xusb: Move T186 .set_mode() to common implementation
 > 
+>   drivers/phy/tegra/xusb-tegra186.c   | 73 +++++----------------------------
+>   drivers/phy/tegra/xusb-tegra210.c   | 42 +------------------
+>   drivers/phy/tegra/xusb.c            | 80 +++++++++++++++++++++++++++++++++++++
+>   drivers/phy/tegra/xusb.h            |  4 ++
+>   drivers/usb/gadget/udc/tegra-xudc.c |  4 ++
+>   drivers/usb/host/xhci-tegra.c       | 14 ++++---
+>   include/linux/phy/tegra/xusb.h      |  3 ++
+>   7 files changed, 111 insertions(+), 109 deletions(-)
+> ---
+> base-commit: b02a5530af8abe0d3cd4852ba48990716e962934
+> change-id: 20251201-diogo-tegra_phy-86c89cab7377
 > 
-> 
-> 
-> 
+> Best regards,
 
