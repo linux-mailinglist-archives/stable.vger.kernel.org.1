@@ -1,199 +1,213 @@
-Return-Path: <stable+bounces-222628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222624-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +P1FAPGvpWleEQAAu9opvQ
-	(envelope-from <stable+bounces-222628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:42:41 +0100
+	id 2INQMCyspWmpDgAAu9opvQ
+	(envelope-from <stable+bounces-222624-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:26:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B36A1DC0E3
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:42:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 344501DBCC7
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 553723042DD1
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 15:29:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55F38304C498
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 15:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A25842188A;
-	Mon,  2 Mar 2026 15:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F493FB065;
+	Mon,  2 Mar 2026 15:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dAePMUsl"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDE2411627
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 15:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3980A239E7E;
+	Mon,  2 Mar 2026 15:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772465300; cv=none; b=O7pMtyIyM05EWsD0QIMJW+/hh0yME+GgRKjrr9qh/Qx05dPIiDlylr9j8atEAm07QWlQoEnbi1xnAZcrBonAJG4NHXlwk0LT35comlO7Z1KH7xEuRsdeiRWrzcjnXL70F/55fpCO00nzbzumt1vAbjlgDd9Wd+bJdtEkwlGWAj8=
+	t=1772464815; cv=none; b=XK73Uxv8n2ZbxSH+uhrH35V/vIVhs2FeruPEYNpkuQtfeWWwWw+2eG3BW1VfI/XnXAV0g/QCE6mEbkfzTLwTV4+WJ6BexJH1edyOjJqeDX/HPGc5WP8MsG/Dlqk7AyLdSgu83uOf0iItH54A316rlC6U9itvIobgL2C4Sy2q9AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772465300; c=relaxed/simple;
-	bh=drYsaPY8dWo0WJz5khsG3VUZw1IfGqFR2tTcZzLZ7Fw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OSwOx3VNPviF4elkJ/XLG4kHRpDDbvZ0JBymr88f96cAOktw3yPJIQLD3M2qhoryReeT8QGiLD9FyJuQdwaGdccJhxLgzraL+WyIZcFo/0LeN8937dztRPlqII2w9B9qHIKT6zgNtGX6kqltCYCHopi90/yrCmBWaVrkA6tYecI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Bj-0004kS-Jc; Mon, 02 Mar 2026 16:28:03 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Bd-003P11-09;
-	Mon, 02 Mar 2026 16:27:58 +0100
-Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 2049F4F5474;
-	Mon, 02 Mar 2026 15:27:58 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH net 11/12] can: gs_usb: gs_can_open(): always configure bitrates before starting device
-Date: Mon,  2 Mar 2026 16:16:17 +0100
-Message-ID: <20260302152755.1700177-12-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260302152755.1700177-1-mkl@pengutronix.de>
-References: <20260302152755.1700177-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1772464815; c=relaxed/simple;
+	bh=NttodxkxgQ0+Wuae1gj+GL2lTzibr5H9ZVE6vBA5iZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YCgu2C2YAfvwXQCTieC+TbH8d6ULZ5Dd2oDrbimJPoLfUW8/8XgMhL2mdIiudpO0puwiRVaPASACI5c0lDJRodG7K355wf2e/JINnOxPWs+nyfH3WgilHWfamneuKf3h6P28RMDT0WOty+UFOqpEOiC3BCdzF7MYj++D7cwwtjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dAePMUsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913CFC19423;
+	Mon,  2 Mar 2026 15:20:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772464814;
+	bh=NttodxkxgQ0+Wuae1gj+GL2lTzibr5H9ZVE6vBA5iZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dAePMUslBZ6PfDOx7xtQgCFDVnmpS4wqFN5Ikkhk9jkOA0bUeXQQyoVR1PEWoR6oD
+	 vjz3xlr/7Vs66yvFepQscknuCSmvdT0+uU/6wxxXhHOss2ryOjEQlrIAYtERl9C6gM
+	 ncexRd0VuN2yOQqgdvt6tm/KSSBCKb0AiYs6Klw3ejRBs0HubLr1Sz3QyAyrw5ZTmo
+	 N8HxFxEWM4Ypk7t4sUIOA0bCt1zgv/zCL6jOgXoMItj+OAz+QVxF11Bn2lsmFWJmhy
+	 rszQtZ+jzw5aIEzV4gZsU+a39Ep+wkHMPToJI/vZplkb7yTiknN4iGwnl9bFaRAvJc
+	 RQnenvB5rhG0w==
+Date: Mon, 2 Mar 2026 10:20:12 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: "Barry K. Nathan" <barryn@pobox.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@nabladev.com,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/385] 6.12.75-rc1 review
+Message-ID: <aaWqrI1fLkusYqMV@laps>
+References: <20260228180001.1567994-1-sashal@kernel.org>
+ <41b35d0e-bd7e-4bcd-a22c-cd96ee6c43d8@pobox.com>
+ <aaWWE5uQqz_eG69i@laps>
+ <2026030203-detector-overlook-93cd@gregkh>
+ <2026030210-projector-excuse-90a7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Rspamd-Queue-Id: 1B36A1DC0E3
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <2026030210-projector-excuse-90a7@gregkh>
+X-Rspamd-Queue-Id: 344501DBCC7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_FROM(0.00)[bounces-222628-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222624-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.922];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_CC(0.00)[pobox.com,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:mid,pengutronix.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-So far the driver populated the struct can_priv::do_set_bittiming() and
-struct can_priv::fd::do_set_data_bittiming() callbacks.
+On Mon, Mar 02, 2026 at 09:21:49AM -0500, Greg KH wrote:
+>On Mon, Mar 02, 2026 at 09:10:11AM -0500, Greg KH wrote:
+>> On Mon, Mar 02, 2026 at 08:52:19AM -0500, Sasha Levin wrote:
+>> > On Sun, Mar 01, 2026 at 10:05:02PM -0800, Barry K. Nathan wrote:
+>> > > On 2/28/26 10:00, Sasha Levin wrote:
+>> > > > This is the start of the stable review cycle for the 6.12.75 release.
+>> > > > There are 385 patches in this series, all will be posted as a response
+>> > > > to this one.  If anyone has any issues with these being applied, please
+>> > > > let me know.
+>> > > >
+>> > > > Responses should be made by Mon Mar  2 05:59:55 PM UTC 2026.
+>> > > > Anything received after that time might be too late.
+>> > > >
+>> > > > The whole patch series can be found in one patch at:
+>> > > >         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.12.y&id2=v6.12.74
+>> > > > or in the git tree and branch at:
+>> > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+>> > > > and the diffstat can be found below.
+>> > > >
+>> > > > Thanks,
+>> > > > Sasha
+>> > >
+>> > > I just now noticed a sizable discrepancy between what's in the
+>> > > stable-queue and what's in -rc1, for 5.10.y through 6.12.y. (6.18.y
+>> > > and 6.19.y appear unaffected.)
+>> > >
+>> > > To make sure this is an apples-to-apples comparison, I'll compare with
+>> > > the stable-queue as of commit 2370009958172f632d48973387e7b6ae116086b1
+>> > > ("Drop a broken ACPI patch"); I'd expect the queue as of that commit to
+>> > > match the -rc1 patches, if I'm not mistaken.
+>> > >
+>> > >
+>> > >                      # of patches in         # of patches in
+>> > >                      stable mailing list     stable-queue git
+>> > >                      thread                  @ 237000995817
+>> > >
+>> > > 5.10.252-rc1          147                     334
+>> > > 5.15.202-rc1          164                     411
+>> > > 6.1.165-rc1           232                     533
+>> > > 6.6.128-rc1           283                     683
+>> > > 6.12.75-rc1           385                     953
+>> > > 6.18.16-rc1           752                     751
+>> > > 6.19.6-rc1            844                     843
+>> > >
+>> > > The off-by-one difference for 6.18.y/6.19.y is expected, since
+>> > > (unlike the stable-queue itself) the -rc1 patch and the mailing
+>> > > list thread include a Makefile patch to update the version number.
+>> > >
+>> > > For the other kernels, though, it looks to me like something
+>> > > went wrong somewhere. Of course I could be mistaken, but that's
+>> > > how it appears to me.
+>> > >
+>> > > In any case, I figured I should bring this to your attention.
+>> >
+>> > Barry, this is a great catch. Thank you!
+>> >
+>> > The root cause turned out to be a bug in git-quiltimport. One of the
+>> > patches queued has the literal text "\0" in its subject line:
+>> >
+>> >   selftests: tc_actions: don't dump 2MB of \0 to stdout
+>> >
+>> > git-quiltimport constructs commit messages using echo(1):
+>> >
+>> >   commit=$( { echo "$SUBJECT"; echo; cat "$tmp_msg"; } | git commit-tree $tree -p $commit)
+>> >
+>> > The problem is that echo interprets backslash escape sequences, so
+>> > "\0" gets expanded into an actual NUL byte (0x00). git commit-tree
+>> > then rejects the commit with:
+>> >
+>> >   error: a NUL byte in commit log message not allowed.
+>> >
+>> > This caused git-quiltimport to bail out mid-way through building
+>> > several trees during -rc construction. The trees that had this patch
+>> > queued (5.10 through 6.12) only got a partial set of patches into
+>> > the -rc branch, while 6.18 and 6.19 were unaffected because they
+>> > hadn't hit the problematic patch yet.
+>> >
+>> > 6.18 and 6.19 were also previously released by Greg, who uses actual
+>> > quilt rather than git-quiltimport, so he wouldn't have run into this.
+>>
+>> But I use git-quiltimport when creating the releases, so did I somehow
+>> not apply things properly when that happens, skipping patches in the
+>> releaase?
+>
+>As we talked about this on irc, turns out it's a bash vs. dash issue.
+>Bash works fine, dash does not, hence the problem only showing up for
+>one of us.
+>
+>Glad that's figured out :)
 
-Before bringing up the interface, user space has to configure the bitrates.
-With these callbacks the configuration is directly forwarded into the CAN
-hardware. Then the interface can be brought up.
+For those curious, try running the following in your terminal:
 
-An ifdown-ifup cycle (without changing the bit rates) doesn't re-configure
-the bitrates in the CAN hardware. This leads to a problem with the
-CANable-2.5 [1] firmware, which resets the configured bit rates during
-ifdown.
+  $ /bin/sh -c 'echo "hello \0 world"' | xxd | head -1
 
-To fix the problem remove both bit timing callbacks and always configure
-the bitrates in the struct net_device_ops::ndo_open() callback.
+With a dash shell, you'll see:
 
-[1] https://github.com/Elmue/CANable-2.5-firmware-Slcan-and-Candlelight
+  00000000: 6865 6c6c 6f20 0020 776f 726c 640a       hello . world.
 
-Cc: stable@vger.kernel.org
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://patch.msgid.link/20260219-gs_usb-always-configure-bitrates-v2-1-671f8ba5b0a5@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/usb/gs_usb.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+With a bash shell, you'll see:
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 9d27d6f0c0b5..ec9a7cbbbc69 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -772,9 +772,8 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	}
- }
- 
--static int gs_usb_set_bittiming(struct net_device *netdev)
-+static int gs_usb_set_bittiming(struct gs_can *dev)
- {
--	struct gs_can *dev = netdev_priv(netdev);
- 	struct can_bittiming *bt = &dev->can.bittiming;
- 	struct gs_device_bittiming dbt = {
- 		.prop_seg = cpu_to_le32(bt->prop_seg),
-@@ -791,9 +790,8 @@ static int gs_usb_set_bittiming(struct net_device *netdev)
- 				    GFP_KERNEL);
- }
- 
--static int gs_usb_set_data_bittiming(struct net_device *netdev)
-+static int gs_usb_set_data_bittiming(struct gs_can *dev)
- {
--	struct gs_can *dev = netdev_priv(netdev);
- 	struct can_bittiming *bt = &dev->can.fd.data_bittiming;
- 	struct gs_device_bittiming dbt = {
- 		.prop_seg = cpu_to_le32(bt->prop_seg),
-@@ -1057,6 +1055,20 @@ static int gs_can_open(struct net_device *netdev)
- 	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
- 		flags |= GS_CAN_MODE_HW_TIMESTAMP;
- 
-+	rc = gs_usb_set_bittiming(dev);
-+	if (rc) {
-+		netdev_err(netdev, "failed to set bittiming: %pe\n", ERR_PTR(rc));
-+		goto out_usb_kill_anchored_urbs;
-+	}
-+
-+	if (ctrlmode & CAN_CTRLMODE_FD) {
-+		rc = gs_usb_set_data_bittiming(dev);
-+		if (rc) {
-+			netdev_err(netdev, "failed to set data bittiming: %pe\n", ERR_PTR(rc));
-+			goto out_usb_kill_anchored_urbs;
-+		}
-+	}
-+
- 	/* finally start device */
- 	dev->can.state = CAN_STATE_ERROR_ACTIVE;
- 	dm.flags = cpu_to_le32(flags);
-@@ -1370,7 +1382,6 @@ static struct gs_can *gs_make_candev(unsigned int channel,
- 	dev->can.state = CAN_STATE_STOPPED;
- 	dev->can.clock.freq = le32_to_cpu(bt_const.fclk_can);
- 	dev->can.bittiming_const = &dev->bt_const;
--	dev->can.do_set_bittiming = gs_usb_set_bittiming;
- 
- 	dev->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC;
- 
-@@ -1394,7 +1405,6 @@ static struct gs_can *gs_make_candev(unsigned int channel,
- 		 * GS_CAN_FEATURE_BT_CONST_EXT is set.
- 		 */
- 		dev->can.fd.data_bittiming_const = &dev->bt_const;
--		dev->can.fd.do_set_data_bittiming = gs_usb_set_data_bittiming;
- 	}
- 
- 	if (feature & GS_CAN_FEATURE_TERMINATION) {
+  00000000: 6865 6c6c 6f20 5c30 2077 6f72 6c64 0a    hello \0 world.
+
 -- 
-2.51.0
-
+Thanks,
+Sasha
 
