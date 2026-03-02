@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-222604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MM08LTSYpWnXEgYAu9opvQ
-	(envelope-from <stable+bounces-222604-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:01:24 +0100
+	id IChfDauapWnxEgYAu9opvQ
+	(envelope-from <stable+bounces-222605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:11:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981A21DA46C
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:01:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A4E1DA704
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 15:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AF02B301F6A2
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 14:01:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BDCC8301C6BC
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 14:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873103FB049;
-	Mon,  2 Mar 2026 14:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E823FB06D;
+	Mon,  2 Mar 2026 14:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cPu09c9E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2xj67eF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494763A1E81;
-	Mon,  2 Mar 2026 14:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF213FB057;
+	Mon,  2 Mar 2026 14:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772460076; cv=none; b=FtYhj4nitXh9aF+9Vo5C8OKdb3oH+KbTFdytSIAee8mosYKaNA6RhDBd+bUF0UuK2sbEk40YWryj7D+Q5Yhd6aidHeZg0ry6T4u66QyhnXuf05ljGC16GZ8Kt6Uv1fR2U8LjGwW3A4TGiFPRJhlXjVRdN1XBcTnQ5qGaIyUp70o=
+	t=1772460188; cv=none; b=r02z2Qem1NLCzvEg7T251IB7+3aLsxuQydM8qr2ZjQDBy91L6VVkZrIWr5b71DkCISNBycE0yqhB43IbftjOfZCS7PLKLN7G2t4FYyUfXQl3vp0INu+qCMN0wvgYzn7wTHDdajacQbqkZw3+GZcHYEjhmC6trnaLtASOS1gEWvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772460076; c=relaxed/simple;
-	bh=tUpfG0c7TtjX7Rl8Yb87VI1i/wWvp11fpw81NXXqqYg=;
+	s=arc-20240116; t=1772460188; c=relaxed/simple;
+	bh=uS+jEDkHQBDcJ1fEw4c3e2YaXyaB/oeV4gKk2RwKeRs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=apHRg+27X7R0zT/vGMXO542zcCAAllyQ/dqiOg+QSRdBzmPn0QphERgCvTAwjUdzEKiUHXIDtjMOFyw+lp58lKtxDpatoVpMeeiYHsf1Ne04sny1P98jZ1tBkEu+zehPpfJ0kH6VDsvheoyHUCSRKDEbAPk8sqEAejpHLR4YvLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cPu09c9E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53E9C2BC87;
-	Mon,  2 Mar 2026 14:01:15 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=D263go3uJJ5he6D/RgZ9sD1Z+ETAKo4Y8cmqrNG1cM5lx3JU23/ihHJ7RbsqC8sRnrY8yTGzj6tKX+LogD5ReS9G9XR0DB/DEU0liEF/++EwqmoFCqVul8+9yoW05E4TIeuSG0TtEpS7yBMhf7r5MowIHAKvXyJUq1XxB3iUi0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2xj67eF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B09C19423;
+	Mon,  2 Mar 2026 14:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772460075;
-	bh=tUpfG0c7TtjX7Rl8Yb87VI1i/wWvp11fpw81NXXqqYg=;
+	s=k20201202; t=1772460187;
+	bh=uS+jEDkHQBDcJ1fEw4c3e2YaXyaB/oeV4gKk2RwKeRs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cPu09c9EzdWvAhzk0o9FL7IrrIFc40AtcRLnOL5hWUDV/4j6IjKZ/5JJVlxzKjx0v
-	 Zxvop8L7J75tvxrbS0Q3QBsR2uLqGqnbadmY0zPolKwKpLWFSSQ6v2cOC1qAg1v4dm
-	 DQSK9IogseuZldYsONIExQhvgfp4TVnz6Xtlz8124VbjmQ+YyxDNegpSEg/dJFR1qh
-	 n1adKuHRHtwtNXem/FJ6ZNq3tOWUFIh+wB+xiNbUR3sGN92dEBlPDcvT8v54YMXvQf
-	 lDnRXm+YWpurrRxmvds7kP59U1v695wR7nhYozk3a1xiXrz9id9vppWMeklRaWVKpV
-	 IEKpN2wssqFmQ==
-Date: Mon, 2 Mar 2026 09:01:14 -0500
+	b=a2xj67eFK9JHGvAYXEwBCssHFpgaV6iLmtGA066xshF7A6OYPOFrmeIRy8YkWSV0d
+	 NtmE6zLvkLjpe1n6pUTyxyZP51VH6yUeyYubxwYt8Opck5iMw7CQlxRZWLoVuPHwyR
+	 62aDZfnyad997BxQjSDEEQNrXkCCSOznKNVyuk0v6ECT4NUh0ogGUUKzzTzKkACnLc
+	 DWKNwoxTU9PAG8p6opCXAkL4+MDDT1OPWTtL9zwf427gCexX0EYDjCqY7Z/9kzMITR
+	 5PpeJmVLIvKZqig4iIYkv1wXh8kHQ8lZjBhq5BF8X1sPqL/RKSh2i90De9zxDYTpWV
+	 8zgbqhyBzNFNA==
+Date: Mon, 2 Mar 2026 09:03:06 -0500
 From: Sasha Levin <sashal@kernel.org>
 To: Jiri Slaby <jirislaby@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>, Hyesoo Yu <hyesoo.yu@samsung.com>,
-	Quentin Perret <qperret@google.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 6.19 831/844] arm64: Force the use of CNTVCT_EL0 in
- __delay()
-Message-ID: <aaWYKgwkuINjzFKi@laps>
+	"Darrick J. Wong" <djwong@kernel.org>, r772577952@gmail.com,
+	Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 6.19 689/844] xfs: only call xf{array,blob}_destroy if we
+ have a valid pointer
+Message-ID: <aaWYmj7D2SB64ViX@laps>
 References: <20260228173244.1509663-1-sashal@kernel.org>
- <20260228173244.1509663-832-sashal@kernel.org>
- <636f00d8-dcba-4724-9184-35a14426aae9@kernel.org>
+ <20260228173244.1509663-690-sashal@kernel.org>
+ <91b4797a-77a3-4955-86d4-06ac4def8704@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,64 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <636f00d8-dcba-4724-9184-35a14426aae9@kernel.org>
+In-Reply-To: <91b4797a-77a3-4955-86d4-06ac4def8704@kernel.org>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222604-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222605-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,lst.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.994];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RSPAMD_EMAILBL_FAIL(0.00)[maz.kernel.org:query timed out];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 981A21DA46C
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 31A4E1DA704
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 08:07:29AM +0100, Jiri Slaby wrote:
->On 28. 02. 26, 18:32, Sasha Levin wrote:
->>From: Marc Zyngier <maz@kernel.org>
+On Mon, Mar 02, 2026 at 08:06:04AM +0100, Jiri Slaby wrote:
+>On 28. 02. 26, 18:30, Sasha Levin wrote:
+>>From: "Darrick J. Wong" <djwong@kernel.org>
 >>
->>[ Upstream commit 29cc0f3aa7c64d3b3cb9d94c0a0984ba6717bf72 ]
+>>[ Upstream commit ba408d299a3bb3c5309f40c5326e4fb83ead4247 ]
 >...
->>--- a/arch/arm64/lib/delay.c
->>+++ b/arch/arm64/lib/delay.c
->>@@ -23,9 +23,20 @@ static inline unsigned long xloops_to_cycles(unsigned long xloops)
->>  	return (xloops * loops_per_jiffy * HZ) >> 32;
->>  }
->>+/*
->>+ * Force the use of CNTVCT_EL0 in order to have the same base as WFxT.
->>+ * This avoids some annoying issues when CNTVOFF_EL2 is not reset 0 on a
->>+ * KVM host running at EL1 until we do a vcpu_put() on the vcpu. When
->>+ * running at EL2, the effective offset is always 0.
->>+ *
->>+ * Note that userspace cannot change the offset behind our back either,
->>+ * as the vcpu mutex is held as long as KVM_RUN is in progress.
->>+ */
->>+#define __delay_cycles()	__arch_counter_get_cntvct_stable()
+>>--- a/fs/xfs/scrub/dir_repair.c
+>>+++ b/fs/xfs/scrub/dir_repair.c
+>>@@ -172,8 +172,12 @@ xrep_dir_teardown(
+>>  	struct xrep_dir		*rd = sc->buf;
+>>  	xrep_findparent_scan_teardown(&rd->pscan);
+>>-	xfblob_destroy(rd->dir_names);
+>>-	xfarray_destroy(rd->dir_entries);
+>>+	if (rd->dir_names)
+>>+		xfblob_destroy(rd->dir_names);
+>>+	rd->dir_names = NULL;
+>>+	if (rd->dir_entries)
+>>+		xfarray_destroy(rd->dir_entries);
+>>+	rd->dir_names = NULL;
 >
->This needs:
->e5cb94ba5f96 arm64: Fix sampling the "stable" virtual counter in 
->preemptible section
+>This cut&paste error is fixed by:
+>e764dd439d68 xfs: fix copy-paste error in previous fix
 
 Queued up, thanks!
 
