@@ -1,88 +1,66 @@
-Return-Path: <stable+bounces-222709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gB5GEfL6pWljIgAAu9opvQ
-	(envelope-from <stable+bounces-222709-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:02:42 +0100
+	id gCSMGtX7pWnvIgAAu9opvQ
+	(envelope-from <stable+bounces-222711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:06:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BA31E1857
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:02:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED031E1B26
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:06:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6CC4330F62D8
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 20:48:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6BED23042DC9
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 20:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA0147ECFF;
-	Mon,  2 Mar 2026 20:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB9739151E;
+	Mon,  2 Mar 2026 20:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EN4sIbBH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7H+cHSV"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F0D382385;
-	Mon,  2 Mar 2026 20:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007B439150F;
+	Mon,  2 Mar 2026 20:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772483629; cv=none; b=O2leacNgMXJTW6OWpA8hpk/KQVbPRtHo0AaVnszN4EfF/D71+kj1ygOGFKzsBDzbw0KHBuqG4T9RuBOvfg7XzaHErbheNkPFsIQsWHdPSWBA6TmBd5mCdrSts5gKG/Q72OOlr4AP/QetLPDgtRrd1v5p43ysaV08xsHsYo5g1Ak=
+	t=1772483748; cv=none; b=kHjXV5IWF53vBLpEIkizlxs7yOhGH2eMDY8oXZyeyWdR4S+08oteEEHrHr3lGsG/d5nYURqJ0kDXP7wv2LObXAujX77Cx9MDJq5keEeZE3EzaU63o0HZSXZVhgLSx10rAmYCLO9mdpkP1XLWDG7XavWKaAjzniswVCaaocuNits=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772483629; c=relaxed/simple;
-	bh=8OogfMIhqpJmvSOuDItyCiOh2Iao9nb8IfUV5zKlBKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AwBi33w+B1kaCQTt+BaJChU6Ow4uZKcP9MMqj8hAO0rTHP/iHFaKZtcaMLhSTY9jpRsxXDLK/pMuROaB3J+ZJRehf4NCKMZnZP27KtBre6TG78UvtAh3BZgeAcC26ehTVtZbFV8TrgGH+nXo0ljYChX/8daFlTUBud1QX3v6ysI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EN4sIbBH; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 622Bxp8J1210015;
-	Mon, 2 Mar 2026 20:33:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=lx/c25tISjemDlf4Q
-	BUKY5eA8DcTv+7gKChhoPKjTEk=; b=EN4sIbBH2TmJBA9U3xNgCWxNBvSWW18/c
-	YA7g8tWBtSwEFilGTe6chFo74pTRsULWu8RG4AhOMI4aV6YVhz7u5oZp0BJJA6Fp
-	Z/qcOew4u4LQGIyM8RVh4vg5eZb0JiBZzM+rZytxlXhlEPDwJkEj88IETpkeJTVK
-	DNx+/t+OzcB1+RYfj3mP62UmTqxrK9CcdqhcgKMi0z7QP0jDYHdjuQfZ+ejv8Rmz
-	P0cvnIUdKrEvb+Ce0D0vJ+rJFsb40eGfoLqB2NSJUOkVqWrHCW3vqUWGf1nfuqwm
-	2M+miBw75tXzJhgFJtxymu2fHuLn6KYdUeiZBkivw6OwPMVZSY6Qw==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksjd8dae-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Mar 2026 20:33:42 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 622GQPcv028922;
-	Mon, 2 Mar 2026 20:33:41 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmapryrxf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Mar 2026 20:33:41 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 622KXdxp42205552
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 2 Mar 2026 20:33:39 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE55558043;
-	Mon,  2 Mar 2026 20:33:39 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8448058053;
-	Mon,  2 Mar 2026 20:33:38 +0000 (GMT)
-Received: from IBM-D32RQW3.ibm.com (unknown [9.61.253.18])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  2 Mar 2026 20:33:38 +0000 (GMT)
-From: Farhan Ali <alifm@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
-        stable@vger.kernel.org, kbusch@kernel.org, alifm@linux.ibm.com,
-        schnelle@linux.ibm.com, mjrosato@linux.ibm.com,
-        Julian Ruess <julianr@linux.ibm.com>
-Subject: [PATCH v10 9/9] vfio: Remove the pcie check for VFIO_PCI_ERR_IRQ_INDEX
-Date: Mon,  2 Mar 2026 12:33:24 -0800
-Message-ID: <20260302203325.3826-10-alifm@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260302203325.3826-1-alifm@linux.ibm.com>
-References: <20260302203325.3826-1-alifm@linux.ibm.com>
+	s=arc-20240116; t=1772483748; c=relaxed/simple;
+	bh=S5U+nwWUo/YnHQ0SZdVhUDJM12nU0GQ5riZpJ10XbZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mFyzMOZijhrAQQ4S3R5L5ZzwltBU8U/An1nwZdp01454Wcvs6lt4LoYh/YK19bHqFBK+1Z/4kY+gteOvAAnLqmcX7DRItuZEqiY+ZPgH1hH2synk7w1W9VEHgcVsDrcshOM0AjcqaCW9lg50bnmTJnEFPO4Q9XmNcRFYOnAkbK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7H+cHSV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5390AC19423;
+	Mon,  2 Mar 2026 20:35:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772483747;
+	bh=S5U+nwWUo/YnHQ0SZdVhUDJM12nU0GQ5riZpJ10XbZc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=p7H+cHSVsjHeIxOS0kYtWolV9OZyHx4WpNP8CseckZ6OI1zW/CM6vJN12OuSxt42v
+	 cqbyNQayItg/RWluGatL/h7gkrQcbHua7vvMdFlhr+tqA7v/TDoWxTTNLYS3bqmB3C
+	 Mkmt5aVQCtZNeuI7LMY/AoGKni78sQe57NTF4I3QEYjUOgWCBwL7Jv9wRzz3mVyHE9
+	 +8Fwi7JOeLbEtUj0IxR7stizRXol+axM6Idxw8mZIwYd9tV4BzgWO44HHeThLDJX/9
+	 XxDYAsKd9wV4KXEOHnUFek7etut8gykh55Vgf0XfggjMq/vMQu5xreqHWQJSXyEjYp
+	 1H/jYqbWwhcYg==
+From: Eric Biggers <ebiggers@kernel.org>
+To: netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net/tcp-md5: Fix MAC comparison to be constant-time
+Date: Mon,  2 Mar 2026 12:34:09 -0800
+Message-ID: <20260302203409.13388-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,116 +68,156 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=M9BA6iws c=1 sm=1 tr=0 ts=69a5f426 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=9wliL4UQvNVLrYCoNVcA:9
-X-Proofpoint-ORIG-GUID: yegKC0-XCN24WaHlhkU3EULszsKh4PXe
-X-Proofpoint-GUID: yegKC0-XCN24WaHlhkU3EULszsKh4PXe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAyMDE1NSBTYWx0ZWRfX5JJGuJXZizHQ
- 59ds8s2qVX0ZD7sJplMc6/j6nSnQEGrlL663eWdDFkv4pKrTzcYLDEB5iIgj//tqIvQJ6Uy1fbU
- NmanBn8tUDpFWKcz7uNvQXkCGDsMB7ZfGgETus19MvRVSnI2ku4ZTc/Egl6MeKIGB8vZ+csbktM
- IxTrsvvCwGLu/CCPzbYRFmTkoQILix8tdbeO0iXWj5N/nYBoEd9tOIPIHjbzTxQ7b4okm6TBz7g
- OsrAy0403TGQXQqKAdQJZMpvtCFQcliL1aULuPDX7qS0NYPEznorOHZQuoBzyPGGoU2FF8b4Tlx
- 5WXhF2vtNWreLD8W15xzIqDvHX2si8k2avW4GqvtBLc3PZ0uzOfoafOI66fd0LcCRuxiJHhBg6R
- eUzAQCdClj9LMafp/10VPvUeduvh2fwZUi6i3sLGqkVaEIGBWDJ9JALPXk9ioqSZix+IRsou9ls
- +9GDLdGDoL7QNtOjp3A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_05,2026-03-02_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0
- bulkscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603020155
-X-Rspamd-Queue-Id: 07BA31E1857
+X-Rspamd-Queue-Id: BED031E1B26
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222711-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222709-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-We are configuring the error signaling on the vast majority of devices and
-it's extremely rare that it fires anyway. This allows userspace to be
-notified on errors for legacy PCI devices. The Internal Shared Memory (ISM)
-device on s390 is one such device. For PCI devices on IBM s390 error
-recovery involves platform firmware and notification to operating system
-is done by architecture specific way. So the ISM device can still be
-recovered when notified of an error.
+To prevent timing attacks, MACs need to be compared in constant
+time.  Use the appropriate helper function for this.
 
-Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+Fixes: cfb6eeb4c860 ("[TCP]: MD5 Signature Option (RFC2385) support.")
+Fixes: 658ddaaf6694 ("tcp: md5: RST: getting md5 key from listener")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_core.c  | 8 ++------
- drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
- 2 files changed, 3 insertions(+), 8 deletions(-)
+ net/ipv4/Kconfig    | 1 +
+ net/ipv4/tcp.c      | 3 ++-
+ net/ipv4/tcp_ipv4.c | 3 ++-
+ net/ipv6/tcp_ipv6.c | 3 ++-
+ 4 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index f1bd1266b88f..cfd9a51cd194 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -786,8 +786,7 @@ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_typ
- 			return (flags & PCI_MSIX_FLAGS_QSIZE) + 1;
- 		}
- 	} else if (irq_type == VFIO_PCI_ERR_IRQ_INDEX) {
--		if (pci_is_pcie(vdev->pdev))
--			return 1;
-+		return 1;
- 	} else if (irq_type == VFIO_PCI_REQ_IRQ_INDEX) {
- 		return 1;
+diff --git a/net/ipv4/Kconfig b/net/ipv4/Kconfig
+index b71c22475c515..45f5d401460c5 100644
+--- a/net/ipv4/Kconfig
++++ b/net/ipv4/Kconfig
+@@ -759,10 +759,11 @@ config TCP_AO
+ 	  If unsure, say N.
+ 
+ config TCP_MD5SIG
+ 	bool "TCP: MD5 Signature Option support (RFC2385)"
+ 	select CRYPTO_LIB_MD5
++	select CRYPTO_LIB_UTILS
+ 	help
+ 	  RFC2385 specifies a method of giving MD5 protection to TCP sessions.
+ 	  Its main (only?) use is to protect BGP sessions between core routers
+ 	  on the Internet.
+ 
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 8cdc26e8ad689..202a4e57a2188 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -242,10 +242,11 @@
+  */
+ 
+ #define pr_fmt(fmt) "TCP: " fmt
+ 
+ #include <crypto/md5.h>
++#include <crypto/utils.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/types.h>
+ #include <linux/fcntl.h>
+ #include <linux/poll.h>
+@@ -4968,11 +4969,11 @@ tcp_inbound_md5_hash(const struct sock *sk, const struct sk_buff *skb,
+ 	 */
+ 	if (family == AF_INET)
+ 		tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
+ 	else
+ 		tp->af_specific->calc_md5_hash(newhash, key, NULL, skb);
+-	if (memcmp(hash_location, newhash, 16) != 0) {
++	if (crypto_memneq(hash_location, newhash, 16)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
+ 		trace_tcp_hash_md5_mismatch(sk, skb);
+ 		return SKB_DROP_REASON_TCP_MD5FAILURE;
  	}
-@@ -1163,11 +1162,8 @@ static int vfio_pci_ioctl_get_irq_info(struct vfio_pci_core_device *vdev,
- 	switch (info.index) {
- 	case VFIO_PCI_INTX_IRQ_INDEX ... VFIO_PCI_MSIX_IRQ_INDEX:
- 	case VFIO_PCI_REQ_IRQ_INDEX:
--		break;
- 	case VFIO_PCI_ERR_IRQ_INDEX:
--		if (pci_is_pcie(vdev->pdev))
--			break;
--		fallthrough;
-+		break;
- 	default:
- 		return -EINVAL;
+ 	return SKB_NOT_DROPPED_YET;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index d53d39be291a5..910c25cb24e10 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -86,10 +86,11 @@
+ #include <linux/inetdevice.h>
+ #include <linux/btf_ids.h>
+ #include <linux/skbuff_ref.h>
+ 
+ #include <crypto/md5.h>
++#include <crypto/utils.h>
+ 
+ #include <trace/events/tcp.h>
+ 
+ #ifdef CONFIG_TCP_MD5SIG
+ static void tcp_v4_md5_hash_hdr(char *md5_hash, const struct tcp_md5sig_key *key,
+@@ -837,11 +838,11 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb,
+ 		key = tcp_md5_do_lookup(sk1, l3index, addr, AF_INET);
+ 		if (!key)
+ 			goto out;
+ 
+ 		tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
+-		if (memcmp(md5_hash_location, newhash, 16) != 0)
++		if (crypto_memneq(md5_hash_location, newhash, 16))
+ 			goto out;
  	}
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index 33944d4d9dc4..64f80f64ff57 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -859,8 +859,7 @@ int vfio_pci_set_irqs_ioctl(struct vfio_pci_core_device *vdev, uint32_t flags,
- 	case VFIO_PCI_ERR_IRQ_INDEX:
- 		switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
- 		case VFIO_IRQ_SET_ACTION_TRIGGER:
--			if (pci_is_pcie(vdev->pdev))
--				func = vfio_pci_set_err_trigger;
-+			func = vfio_pci_set_err_trigger;
- 			break;
- 		}
- 		break;
+ 
+ 	if (key) {
+ 		rep.opt[0] = htonl((TCPOPT_NOP << 24) |
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index e46a0efae0123..5195a46b951ea 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -66,10 +66,11 @@
+ 
+ #include <linux/proc_fs.h>
+ #include <linux/seq_file.h>
+ 
+ #include <crypto/md5.h>
++#include <crypto/utils.h>
+ 
+ #include <trace/events/tcp.h>
+ 
+ static void tcp_v6_send_reset(const struct sock *sk, struct sk_buff *skb,
+ 			      enum sk_rst_reason reason);
+@@ -1046,11 +1047,11 @@ static void tcp_v6_send_reset(const struct sock *sk, struct sk_buff *skb,
+ 		if (!key.md5_key)
+ 			goto out;
+ 		key.type = TCP_KEY_MD5;
+ 
+ 		tcp_v6_md5_hash_skb(newhash, key.md5_key, NULL, skb);
+-		if (memcmp(md5_hash_location, newhash, 16) != 0)
++		if (crypto_memneq(md5_hash_location, newhash, 16))
+ 			goto out;
+ 	}
+ #endif
+ 
+ 	if (th->ack)
+
+base-commit: 9439a661c2e80485406ce2c90b107ca17858382d
 -- 
-2.43.0
+2.53.0
 
 
