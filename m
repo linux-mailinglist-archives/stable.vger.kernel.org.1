@@ -1,251 +1,203 @@
-Return-Path: <stable+bounces-222586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222587-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PNJNbaLpWmoDgYAu9opvQ
-	(envelope-from <stable+bounces-222586-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:08:06 +0100
+	id oDuqGiONpWmoDgYAu9opvQ
+	(envelope-from <stable+bounces-222587-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:14:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7881D97C7
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:08:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBD41D9938
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 74F88301DA5E
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:02:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 603A7301B79E
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A973D5236;
-	Mon,  2 Mar 2026 13:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A373E0C51;
+	Mon,  2 Mar 2026 13:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P34GWGZM"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GAcW6Rob"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012049.outbound.protection.outlook.com [40.107.209.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A4836EA97;
-	Mon,  2 Mar 2026 13:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772456566; cv=none; b=riKIwqc0D84/cgpoYA+yN7mjWXXOp3OXtVm+g0Krj88b/vmylp7x6qojs85pD6+q+py228g/uct16cpVJF83Ja0zMNE1Y3vpytvYrbruFWgT4CJbxh9xCEDA4v4Tlh8xCIfCT6oMg8ByFMCdWwaxq4AqqTKsB1zfrSQnKzHgNxE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772456566; c=relaxed/simple;
-	bh=tvQbPWh9zBD8AmK6ovLnwO1ZZ2dYVs2CTC8gfkbuoP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hVg3sXUCYTDdUBZFTUiENq1zT24tDZ0KBbvH4NIB8b6InRpq92Z+g0zx18uUturhsMvaxesxqEVHNMab2mTkIC9b3dbHIeHHqoOcOLEwc5paXXAI9fB63nobdX/05rzXJNfi9tWaKAiMATallyB+R6uGChuIt/i2D4ej84eOdbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P34GWGZM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D56C19423;
-	Mon,  2 Mar 2026 13:02:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772456565;
-	bh=tvQbPWh9zBD8AmK6ovLnwO1ZZ2dYVs2CTC8gfkbuoP0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P34GWGZM5JlkPygmke9K4O46YU16DBi5pIlrUBDSoNn9iYWsoXGx4j1sd2SlgAgUg
-	 mwPIxF1Wid7RIVJRJOQaB11Mk4kDdM72uJjMT8hE1OYVoMLcK7odUEGQ6XKGnRul8r
-	 BPLCJHUvqsBJ4yqaFbH/RBc5VolCEwETirMLf+zde2PQKa3MLQP65BkBFfmEZAFGoM
-	 ubNcTq0O1BXzC7PqJtZupuLWTqgsTi/ol9n3f+Bk9YXpJ/Aydkd0FOmteLNSwekWQC
-	 dzHGbN8DCgHkPgpShpHUeQD2eLrtU52GLTvHSmRocO3Wv5SLOpW7Maj2QX0pdcOiQH
-	 WQiSyS3tSMfzw==
-Date: Mon, 2 Mar 2026 18:32:31 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Neeraj Soni <neeraj.soni@oss.qualcomm.com>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
-	Abel Vesa <abelvesa@kernel.org>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] soc: qcom: ice: Fix race between qcom_ice_probe()
- and of_qcom_ice_get()
-Message-ID: <tbmsoi5the4y2gbocwbqecictrbrpwxx4grugaimc24bu5oacu@4yucsbmyhv5d>
-References: <20260223-qcom-ice-fix-v3-0-6ca5846329f7@oss.qualcomm.com>
- <20260223-qcom-ice-fix-v3-1-6ca5846329f7@oss.qualcomm.com>
- <5e9a399a-074b-4b41-2e10-f2ed654eafcf@oss.qualcomm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD313AE6E8;
+	Mon,  2 Mar 2026 13:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772457236; cv=fail; b=LwXZ/Zz5SMcL3uzwRxaQzi2rQ8p4nF3i5AX8ym/yZSgFddjupgZZSmaOOU5IhsY5tbW64iN/AI1MmztxKD2JdvjWcWI+mLjNjeTFh/D0yvysU5TsqhBh1n1jrADcdO74boggeYSPE0Yr31xhz036DrfJcZ4u7TQqawjspsorGWA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772457236; c=relaxed/simple;
+	bh=C7Xkjc+M1Lp4PxHDZ+zzew89ThuW6pKcYrzFC8abA6E=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=gA/30Ot9bLZmPkxT/HHdddi7aeBPb8I/TtkUj4nTuo6x2IP0MFGeQ/2Q3VYRTdO8aMTouqK1W1YqM3Yw6jYp0oCe8sv6bcWXTaFo4US3lhXbZNsk2Q8ijPi7JCRDwAVRU2QCk26oVURAysYdxMdcTryvWiNyNNIJWyuTKTSj1AY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GAcW6Rob; arc=fail smtp.client-ip=40.107.209.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J/DPfnYc04VO7CMEfsMxDP66ysQlZjW/w5sKpEqqvtQ9jK5LvghuQ6zDkKX9RiXFW1yWKQ+ezECFdy21wjJc31L8YtcQnFieg6UC6xTm92gF23Lu2l+czzEqJ/JWFKiTrTCVLfx01n0QaSSS/K06Z1+KCKqxP+vUbI5Ep6zTd5PTJjr4nzV4dmoT62FAbLi2RRZvC4RFy0qUWsk+N6By9xmbFvvZXmFLySnz2zkSg6uJQuYPynBW13kYVjOY4fiwbqp+sbRnjG38YR6IUmcMdrJkNRO01F1rnwlonnSnH7xaZFDh1mLvV2KurScS5LSF46xIdKrK8CsK7pvlfyp6ZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DaXYEais+x5SoDpMd+NnrQINu8g2y5yjfnR0aYHXFeM=;
+ b=yCj5c8rcn4JrKVQrbSqmMoaQZf3YgrK8zehgExUJYBl5tZZI2oBt/eoz4sCmi8AaQX5KfvB821WBSOKYcgu1daLoLpJ6PIqLmdDizq+HrWxKeTkMfDTKkoNpDiiVebDqCRgJI0OV8QJ/1r5eqL0LWcop3JFFVYSb01wGG+TuK92jFlwOBLgvub61hZdMl9gca/aRjT/IdDAWTZ854Ct9wTU2MLbQvicWskYuO1BGqJg2kosDe8flZBDlTxBfhMLB1AvLib9nnyTLYAvrZzSa1WJajbp8iooV0G+sDU1qS72yvy2UlxesdCLgAZBCwHWHKdHPVFC8UE9aMlPFO0HuEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DaXYEais+x5SoDpMd+NnrQINu8g2y5yjfnR0aYHXFeM=;
+ b=GAcW6RobXEZavdsabCCaGi42QdSkmLAY+1znN5unVsVFRvdaBEqREuZphhzQJSTgjs7bjXf3FDiOsxYAQslqbHYeps+s2A8CZ43PEuMABoo4F2wSOJBNAb3dmJ9r2loWyQWoJUoYDHx4QYnrEmV5LEDRywEqUlAG7WS7hzq7aEl6vP4WwknTiWsAWR0T9+Blv1l1pnSI5xkDqkiV04Lk+GQfSrps4uMLgiDKz9ACPjsde1J7L2DzXtBQVvbbk4iOiA8wvyIJmwI8uPdVZiziEdA/6EOQOvIgBsgmIteDV88f1EVvH9pXC9FCHOIYp36KAXxm5B6fEEaq8mObn9y+qg==
+Received: from CYZPR05CA0028.namprd05.prod.outlook.com (2603:10b6:930:a3::12)
+ by SA1PR12MB5615.namprd12.prod.outlook.com (2603:10b6:806:229::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 13:13:44 +0000
+Received: from CY4PEPF0000EE3F.namprd03.prod.outlook.com
+ (2603:10b6:930:a3:cafe::f0) by CYZPR05CA0028.outlook.office365.com
+ (2603:10b6:930:a3::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.21 via Frontend Transport; Mon,
+ 2 Mar 2026 13:13:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CY4PEPF0000EE3F.mail.protection.outlook.com (10.167.242.17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9654.16 via Frontend Transport; Mon, 2 Mar 2026 13:13:44 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 2 Mar
+ 2026 05:13:32 -0800
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Mon, 2 Mar 2026 05:13:31 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Mon, 2 Mar 2026 05:13:31 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Sasha Levin <sashal@kernel.org>
+CC: Sasha Levin <sashal@kernel.org>, <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <torvalds@linux-foundation.org>,
+	<akpm@linux-foundation.org>, <linux@roeck-us.net>, <shuah@kernel.org>,
+	<patches@kernelci.org>, <lkft-triage@lists.linaro.org>, <pavel@nabladev.com>,
+	<jonathanh@nvidia.com>, <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <achill@achill.org>, <sr@sladewatkins.com>,
+	<linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.10 000/147] 5.10.252-rc1 review
+In-Reply-To: <20260228181731.1605473-1-sashal@kernel.org>
+References: <20260228181731.1605473-1-sashal@kernel.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5e9a399a-074b-4b41-2e10-f2ed654eafcf@oss.qualcomm.com>
+Message-ID: <d76b50a3-0403-41f8-917d-4b88ebb6a6df@drhqmail202.nvidia.com>
+Date: Mon, 2 Mar 2026 05:13:31 -0800
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3F:EE_|SA1PR12MB5615:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e5c0f33-78d3-4a31-1bb0-08de785d8824
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|7416014|376014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	efx0GzXLcg+pSTXC5JfwRhzn8mDKhmS1kVHqYQfXB1Q1/3ecYxPnJLFdHoUNMEav17VwdZr16pHWmSTb4/lUpSlMsa8dcp8hZAYXAVTFy19Dg+ZxD8LWJt0NYRlBE31zR6IXT+cQBa/UP/d+QRY1VWnIiFLkz9askpteqxUP1qSNIBQMoObzQ1osMfgzJTZPl8dKahqDEoOrzC2Cp7BdNCLBuUTbrQnuz9vQytbPS4F7AgXtZAIte8oLQTZAKX9MxUumgnc5AJtp3W9JwMuEYg/fak4crgDx43g1+A5eTnv4XVe4/D+8CMxpeW9CofxDhzhIQIbURnbcgttNz21SbPJTWVj2JG4OtulvB1Sru+eQ+a845EEh0xD2pz7psvo2MuSwQc3T/6+WWErO9+7dYj9ksVN+dLWmnxuI03HKuLw9xLvHLR7jmsezlCYhYBBLx+sszQF0ychyZNoUcyvyZiIRJF6XCsznYkRcpgajnVc8ddORJONGXZBPGZuJO7pDj7qiorJh2PpezSP2e73D+9bSl5/yz+GIsiSUzlqVYrTN0fzDNP04R5NRIFUk4U7BdvFBHpuUdnZ9V8MffsNR/j0FnbHbBoOTgvyfTmefNVsT1UIM187kWhdCVAvkbaIS5J9flogKRJs5Jh/qxAeIH7kY4an8dGgPdQAu24+uOD4pgmsltfe2JiOB9E+HfZvzJJBoYPaQiOxNZIy0+KTzG/+o9W/VNN4FTq105Mq4lDteoww0fK3/0JwLfGdKgN8nz68qhNGIikNuV/yx8xET1Hs16O6plzeuFsDJz/xMQUIAeVRhMTyo3tkPwylWV5vNfzyo64roUv1fY4t9re8dHg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(7416014)(376014)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	lxHm8r4kt6n/IM8ezmYNlsUhIRnvwxwfFqAMWaNw7TgTjtPz4ao7a/0G1e1WezfnQMQ7X5JAaSRszw19GdeQyHJ8CYSZpFvsRzB1dp+NEkvbisrgKy79ohZ9DZeVw0xnKxvj2utiEukcQ3QNwql8dwuZY+kHIGeF+yReGEPtTLZk5PHueIF2/nUC/bgh0VwDQDOo8r6q2OzhzgzFyGKv1Nb1+EEaIgZ1PucfWwWDf/rj8bJ5AyaxuXojG+74TxONGUmN3/nBtyBYQLkicwp9frQVpgWwQxaNAmNf2E9UNwADZon+FHLy1JjWMV8V9hFi4zh3y1ORFsyksReJab3VLntUA7Q2clcBth2u5kpD1BXP1zXCnJ50LrpdS5bQ+MuI5uclI39y6zjumZJJz432KvgyTStFblm/eGUL++iOia5zPlDc1TYPVnSmhspvfVuR
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 13:13:44.3142
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e5c0f33-78d3-4a31-1bb0-08de785d8824
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE3F.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5615
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222586-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222587-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,Nvidia.com:dkim,nvidia.com:email];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DD7881D97C7
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jonathanh@nvidia.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 9FBD41D9938
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 03:41:54PM +0530, Neeraj Soni wrote:
+On Sat, 28 Feb 2026 13:17:31 -0500, Sasha Levin wrote:
 > 
+> This is the start of the stable review cycle for the 5.10.252 release.
+> There are 147 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> On 2/23/2026 1:32 PM, Manivannan Sadhasivam via B4 Relay wrote:
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > 
-> > The current platform driver design causes probe ordering races with
-> > consumers (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE
-> > probe fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops
-> > with -EPROBE_DEFER, leaving consumers non-functional even when ICE should
-> > be gracefully disabled. devm_of_qcom_ice_get() doesn't know if the ICE
-> > driver probe has failed due to above reasons or it is waiting for the SCM
-> > driver.
-> > 
-> > Moreover, there is no devlink dependency between ICE and consumer drivers
-> > as 'qcom,ice' is not considered as a DT 'supplier'. So the consumer drivers
-> > have no idea of when the ICE driver is going to probe.
-> > 
-> > To address these issues, introduce a global ice_handle to store the valid
-> > ICE handle pointer, and set during successful ICE driver probe. On probe
-> > failure, set it to an error pointer and propagate the error from
-> > of_qcom_ice_get().
-> > 
-> > Additionally, add a global ice_mutex to synchronize qcom_ice_probe() and
-> > of_qcom_ice_get().
-> > 
-> > Note that this change only fixes the standalone ICE DT node bindings and
-> > not the ones with 'ice' range embedded in the consumer nodes, where there
-> > is no issue.
-> > 
-> > Cc: <stable@vger.kernel.org> # 6.4
-> > Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
-> > Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> >  drivers/soc/qcom/ice.c | 44 +++++++++++++++++++++++++++-----------------
-> >  1 file changed, 27 insertions(+), 17 deletions(-)
-> > 
-> > diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
-> > index b203bc685cad..3c3c189e24f9 100644
-> > --- a/drivers/soc/qcom/ice.c
-> > +++ b/drivers/soc/qcom/ice.c
-> > @@ -113,6 +113,9 @@ struct qcom_ice {
-> >  	u8 hwkm_version;
-> >  };
-> >  
-> > +static DEFINE_MUTEX(ice_mutex);
-> > +static struct qcom_ice *ice_handle;
-> > +
-> >  static bool qcom_ice_check_supported(struct qcom_ice *ice)
-> >  {
-> >  	u32 regval = qcom_ice_readl(ice, QCOM_ICE_REG_VERSION);
-> > @@ -608,7 +611,6 @@ static struct qcom_ice *qcom_ice_create(struct device *dev,
-> >  static struct qcom_ice *of_qcom_ice_get(struct device *dev)
-> >  {
-> >  	struct platform_device *pdev = to_platform_device(dev);
-> > -	struct qcom_ice *ice;
-> >  	struct resource *res;
-> >  	void __iomem *base;
-> >  	struct device_link *link;
-> > @@ -631,6 +633,22 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
-> >  		return qcom_ice_create(&pdev->dev, base);
-> >  	}
-> >  
-> > +	guard(mutex)(&ice_mutex);
-> > +
-> > +	/*
-> > +	 * If ice_handle is NULL, then it means the ICE driver is not probed
-> > +	 * yet. So return -EPROBE_DEFER to let the client try later.
-> > +	 */
-> > +	if (!ice_handle)
-> > +		return ERR_PTR(-EPROBE_DEFER);
-> > +
-> > +	/*
-> > +	 * If ice_handle has error code, then it means the ICE driver has probe
-> > +	 * failed. So return the handle for the client to digest it.
-> > +	 */
-> > +	if (IS_ERR(ice_handle))
-> > +		return ice_handle;
-> > +
-> >  	/*
-> >  	 * If the consumer node does not provider an 'ice' reg range
-> >  	 * (legacy DT binding), then it must at least provide a phandle
-> > @@ -647,24 +665,16 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
-> >  		return ERR_PTR(-EPROBE_DEFER);
-> >  	}
-> >  
-> > -	ice = platform_get_drvdata(pdev);
-> > -	if (!ice) {
-> > -		dev_err(dev, "Cannot get ice instance from %s\n",
-> > -			dev_name(&pdev->dev));
-> > -		platform_device_put(pdev);
-> > -		return ERR_PTR(-EPROBE_DEFER);
-> > -	}
-> > -
-> >  	link = device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_SUPPLIER);
-> >  	if (!link) {
-> >  		dev_err(&pdev->dev,
-> >  			"Failed to create device link to consumer %s\n",
-> >  			dev_name(dev));
-> >  		platform_device_put(pdev);
-> > -		ice = ERR_PTR(-EINVAL);
-> > +		return ERR_PTR(-EINVAL);
-> >  	}
-> >  
-> > -	return ice;
-> > +	return ice_handle;
-> >  }
-> >  
-> >  static void qcom_ice_put(const struct qcom_ice *ice)
-> > @@ -716,20 +726,20 @@ EXPORT_SYMBOL_GPL(devm_of_qcom_ice_get);
-> >  
-> >  static int qcom_ice_probe(struct platform_device *pdev)
-> >  {
-> > -	struct qcom_ice *engine;
-> >  	void __iomem *base;
-> >  
-> > +	guard(mutex)(&ice_mutex);
-> > +
-> >  	base = devm_platform_ioremap_resource(pdev, 0);
-> >  	if (IS_ERR(base)) {
-> >  		dev_warn(&pdev->dev, "ICE registers not found\n");
-> > +		ice_handle = base;
-> >  		return PTR_ERR(base);
-> >  	}
-> >  
-> > -	engine = qcom_ice_create(&pdev->dev, base);
-> > -	if (IS_ERR(engine))
-> > -		return PTR_ERR(engine);
-> > -
-> > -	platform_set_drvdata(pdev, engine);
+> Responses should be made by Mon Mar  2 06:17:30 PM UTC 2026.
+> Anything received after that time might be too late.
 > 
-> This allows the driver to set the data per ICE device instance which allows
-> the addition of multiple ICE platform devices. For example this patch:
-> https://lore.kernel.org/all/20260217052526.2335759-1-neeraj.soni@oss.qualcomm.com/
-> utilizes this capability. I think it doesen't harm to keep this support. 
-> Moreover, the issue which your patch intends to address do not need this to be removed.
+> The whole patch series can be found in one patch at:
+>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.10.y&id2=v5.10.251
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 > 
+> Thanks,
+> Sasha
 
-Hmm, ok. I figured out that if we store the err ptr in drvdata, we can fix the
-race and also allow multiple ice instances in a SoC. So sent v4 incorporating
-this change.
+All tests passing for Tegra ...
 
-- Mani
+Test results for stable-v5.10:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    80 tests:	80 pass, 0 fail
 
--- 
-மணிவண்ணன் சதாசிவம்
+Linux version:	5.10.252-rc1-g403b311f5d6e
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
+
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+
+Jon
 
