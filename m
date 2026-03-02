@@ -1,167 +1,118 @@
-Return-Path: <stable+bounces-222690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIwKLZvnpWlLHwAAu9opvQ
-	(envelope-from <stable+bounces-222690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:40:11 +0100
+	id UKEJNyropWlLHwAAu9opvQ
+	(envelope-from <stable+bounces-222691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:42:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97791DEE5D
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:40:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A84C1DEE7C
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:42:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E95E3310F73C
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 19:36:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0AD143026A6A
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 19:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA43A47DD43;
-	Mon,  2 Mar 2026 19:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D757947DD6A;
+	Mon,  2 Mar 2026 19:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZuZjr/60"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A28E47D95D;
-	Mon,  2 Mar 2026 19:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C5147D950;
+	Mon,  2 Mar 2026 19:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772480171; cv=none; b=iqrB/njmVJ1n3jtoMeYruuPoLk28ZSfqd58VpygLbprt8gawTKllq5hC8Pt/vMsAnXBe9I9EIWASpsgL573ojB/ex2AqbZVAr5XFJbrYhNNQFLBpvtE3T7EgaM1V/aPxhj5xUaK7MZjqP5lQXThaebWfZIvSHrVgoP7xuDD7/+0=
+	t=1772480549; cv=none; b=Nlb1Txu+12sLYYWLo+4lOYBRHlUEGO5jtWFNz23LpO/Bu4V+xsBHr1iLrUQNMEXvCoLvLiit1Y+m1gGCLkmktXAr2fnr170t00aCIJG6kD8m0EhvXsxoaaEl9Psg1Ik5BcrnTFJuZQTPP7MwuaX6krqyomMP7vuOatoDWMAmvpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772480171; c=relaxed/simple;
-	bh=D6QtHe4YlHW386A63Ro+xk6XcXNexurtw+/+MWgaJZ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQj8iTlZipr1FUfBa9lIeYaM0Y2RJGQxtpww7EveYo4t7k4yEf8bWIyQR3NxhVjUAObFQWiBL6IbwjjSJtqSonZGC73F4HU8Rravnu3/ys5CdfJZEAZdiwBy30V+LVs2JNt6R5TQVk9h2yjjZPCKEGV6lc7i1wjR6U4tXB0BkzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: sashal@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	patches@lists.linux.dev,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 000/684] 6.6.128-rc2 review
-Date: Mon,  2 Mar 2026 19:35:55 +0000
-Message-ID: <20260302193559.3432-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260302160934.2521545-1-sashal@kernel.org>
-References: <20260302160934.2521545-1-sashal@kernel.org>
+	s=arc-20240116; t=1772480549; c=relaxed/simple;
+	bh=JPYvrKxoYGEZTL5J1MUdq9CGTebDSQtlDwt5Cv600V4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=CG1EQvmySxZQnpBkJPTypiT8LUJ4+xw5PDy/+uv/5PyN65lhKHgGAt04JYXOSh1Sp3l97XeefTgmZO1s3JviZkNNiFJTamlckjLHA6LDh+Jp9iYS2sxc1R1GtDKh7WXC6IQGWZyd0Xcb+aOOmMTDNM4NO/YJmcMRoUea/6zoUrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZuZjr/60; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAE8C19423;
+	Mon,  2 Mar 2026 19:42:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772480548;
+	bh=JPYvrKxoYGEZTL5J1MUdq9CGTebDSQtlDwt5Cv600V4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ZuZjr/60wdzKtA0aVnr3EDkDaIvHTlAKRvUTIAvi4DyWUHVkH61GxdxijLiO8HyJJ
+	 BqNGx0nmawGVWpxRJjmai7eiR1AOlUlclQTfgobE/sw6Uh76aDm5Tc0HyE5Nhva8PY
+	 rwsc/t5BjqrtKFOtkyvGVLwudLwcEiwJP5tyc8IaB3S7SjIfHt1CHM8xwZkN7CZ0cq
+	 e87z98fI5J7m4w4WuuakgbEIn9uf7+XtRFiPh6qU5zEsWcah1zw5iTkNhdzfpoCurC
+	 Ln+cC/cXjFnp3ramIveloSC1gvvdovOkcaYjNyG93HbMJUKAJjwFD0KH2B1FDj3s4r
+	 ok7+/MKet9E6Q==
+From: Leon Romanovsky <leon@kernel.org>
+To: jgg@ziepe.ca, Abhijit Gangurde <abhijit.gangurde@amd.com>
+Cc: allen.hubbe@amd.com, nikhil.agarwal@amd.com, linux-rdma@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20260227061809.2979990-1-abhijit.gangurde@amd.com>
+References: <20260227061809.2979990-1-abhijit.gangurde@amd.com>
+Subject: Re: [PATCH 1/1] RDMA/ionic: Preserve and set Ethernet source MAC
+ after ib_ud_header_init()
+Message-Id: <177248054555.993928.15778358538433900026.b4-ty@kernel.org>
+Date: Mon, 02 Mar 2026 14:42:25 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D97791DEE5D
+X-Mailer: b4 0.15-dev-47773
+X-Rspamd-Queue-Id: 8A84C1DEE7C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-222691-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222690-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[librecast.net];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.871];
-	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,librecast.net:mid]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-# Librecast Test Results (FAIL)
 
-020/020 [ OK ] liblcrq
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+On Fri, 27 Feb 2026 11:48:09 +0530, Abhijit Gangurde wrote:
+> ionic_build_hdr() populated the Ethernet source MAC (hdr->eth.smac_h) by
+> passing the header’s storage directly to rdma_read_gid_l2_fields().
+> However, ib_ud_header_init() is called after that and re-initializes the
+> UD header, which wipes the previously written smac_h. As a result, packets
+> are emitted with an zero source MAC address on the wire.
+> 
+> Correct the source MAC by reading the GID-derived smac into a temporary
+> buffer and copy it after ib_ud_header_init() completes.
+> 
+> [...]
 
-CPU/kernel: Linux auntie 6.6.128-rc2-ge6906aa7f5ea #1 SMP PREEMPT_DYNAMIC Mon Mar  2 17:31:27 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+Applied, thanks!
 
-Builds, boots and passes network tests.  Fails to poweroff.
+[1/1] RDMA/ionic: Preserve and set Ethernet source MAC after ib_ud_header_init()
+      https://git.kernel.org/rdma/rdma/c/cbbdb148c62814
 
-Bisects to commit 3ba77c48498f0fa29456e2435d7d49eafc0a279c (upstream 4589712e0111352973131bad975023b25569287c) and affects 6.6.y and 6.12.y. Other kernels are unaffected, including mainline.
-
-$ git bisect log
-git bisect start
-# status: waiting for both good and bad commits
-# bad: [e6906aa7f5ea74831bc56d675e1173abf4d1d5a8] Linux 6.6.128-rc2
-git bisect bad e6906aa7f5ea74831bc56d675e1173abf4d1d5a8
-# status: waiting for good commit(s), bad commit known
-# good: [7a137e9bfa0e1919555d60f9dc0c05a7a5ba75d0] Linux 6.6.127
-git bisect good 7a137e9bfa0e1919555d60f9dc0c05a7a5ba75d0
-# good: [4f052e01c0df1f3dc9d89125466b3fa8ee4373d6] hfsplus: fix volume corruption issue for generic/498
-git bisect good 4f052e01c0df1f3dc9d89125466b3fa8ee4373d6
-# bad: [2f93eb27e8efeb0002eba89a82778d569a336279] thermal: int340x: Fix sysfs group leak on DLVR registration failure
-git bisect bad 2f93eb27e8efeb0002eba89a82778d569a336279
-# bad: [8a4170ff96cdf6899b63a78bc588e96ecf0d6063] wifi: rtw88: 8822b: Avoid WARNING in rtw8822b_config_trx_mode()
-git bisect bad 8a4170ff96cdf6899b63a78bc588e96ecf0d6063
-# good: [51de6101987dace2f4a6235f5b6bd57dc4487a46] media: dvb-core: dmxdevfilter must always flush bufs
-git bisect good 51de6101987dace2f4a6235f5b6bd57dc4487a46
-# good: [21129c98b9191dcb1590084871266ab228a8daf1] hyper-v: Mark inner union in hv_kvp_exchg_msg_value as packed
-git bisect good 21129c98b9191dcb1590084871266ab228a8daf1
-# bad: [73c2788b3f488c6d559abb2a4acce54fc6108530] ASoC: sunxi: sun50i-dmic: Add missing check for devm_regmap_init_mmio
-git bisect bad 73c2788b3f488c6d559abb2a4acce54fc6108530
-# bad: [059f60a78995ad5f3dea512a1b8d31067f3cce42] drm/atmel-hlcdc: fix use-after-free of drm_crtc_commit after release
-git bisect bad 059f60a78995ad5f3dea512a1b8d31067f3cce42
-# bad: [3ba77c48498f0fa29456e2435d7d49eafc0a279c] drm/amd/display: Ensure link output is disabled in backend reset for PLL_ON
-git bisect bad 3ba77c48498f0fa29456e2435d7d49eafc0a279c
-# good: [a7953ccb0261ccb358d15f9d51cd85eb6e7fdbda] virt: vbox: uapi: Mark inner unions in packed structs as packed
-git bisect good a7953ccb0261ccb358d15f9d51cd85eb6e7fdbda
-# first bad commit: [3ba77c48498f0fa29456e2435d7d49eafc0a279c] drm/amd/display: Ensure link output is disabled in backend reset for PLL_ON
-
-commit 3ba77c48498f0fa29456e2435d7d49eafc0a279c
-Author: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Date:   Tue Jan 6 11:11:19 2026 -0500
-
-    drm/amd/display: Ensure link output is disabled in backend reset for PLL_ON
-
-    [ Upstream commit 4589712e0111352973131bad975023b25569287c ]
-
-    [Why]
-    We're missing the code to actually disable the link output when we have
-    to leave the SYMCLK_ON but the TX remains OFF.
-
-    [How]
-    Port the code from DCN401 that detects SYMCLK_ON_TX_OFF and disable
-    the link output when the backend is reset.
-
-    Reviewed-by: Ovidiu (Ovi) Bunea <ovidiu.bunea@amd.com>
-    Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-    Signed-off-by: Matthew Stewart <matthew.stewart2@amd.com>
-    Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-    Signed-off-by: Sasha Levin <sashal@kernel.org>
-
- drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+Best regards,
+-- 
+Leon Romanovsky <leon@kernel.org>
 
 
