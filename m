@@ -1,214 +1,241 @@
-Return-Path: <stable+bounces-222737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOI8G84XpmmOKQAAu9opvQ
-	(envelope-from <stable+bounces-222737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:05:50 +0100
+	id SKZBDLoYpmmeKQAAu9opvQ
+	(envelope-from <stable+bounces-222740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:09:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35CA1E647C
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F25A1E6597
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:09:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8022230CB8A8
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 22:23:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C364031B55C0
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 22:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D66282F38;
-	Mon,  2 Mar 2026 22:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35FF31E83F;
+	Mon,  2 Mar 2026 22:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cWfQn2xt"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="twALcp3N"
 X-Original-To: stable@vger.kernel.org
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012005.outbound.protection.outlook.com [40.107.209.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98950282F16
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 22:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772490183; cv=fail; b=q+GhLZNe67+VE34x1sC3edW0hGCMpHJsFUCdo93xT3bSyGzYOoTqfpr9kBDgVIEwITy0AeP9Y33no6btz2fBmdLX/FGKZfj5DntTyMgfkFkxwgPJqwQdnw/dY/gsbHxEX5nMUhG2/tIi18K6TNB2d997U2eqh3gBKocMuD5eGfE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772490183; c=relaxed/simple;
-	bh=P5zi4r3RlBngz3v8Y8ERTevT9kIE4PH1plWXBUCRBLI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rjlY+3dAhAUUIhUFzjcpGeroF9bmx3y0EKkHAONSVsAN52X9FIfSVwNR02eJmrmxYu2EAAiRY65kRbp46ugsSnuJZ79/7OSdUy7UbQeJiErozzrbY2B7cIRHNxb3BQLrL6VD70ASvl7Qe7KjDenYRvgMrFA5cOuG3Ukgbsq9m48=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cWfQn2xt; arc=fail smtp.client-ip=40.107.209.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W/N0oqOgBY+9YFBTpkM/BhnkUwzkaTt3juvNQbAzcLC2yHabqLxeCUFb2iPpjes5N9UEMPrTchl1x5RnACJTkdfTCeeUXuhKgON3WadWxIPZ3DXzW1ZzTx0MFdhavOSV8ItCx+BpSynUH7GYTocfH9biVayD7RUX4hl21TIpmYjJKRF0KkRS5j8npXE8HNvnDzwE1h7hWMUKzdFyxOPHyCigrWyOZ2U8qCjAnZxJBBOZgZacegIl5MhIwSWZC8659McwdE/HqzyiYN6mJ1IMIy9abGbRTzn6eYQdHpsMrr9QVdg/BkQY6ypOKtnhytIa/gnzJ1yaclK+lyOmiTgGHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XJkM0jhFO/R5tdrTkCNBYcXhSOhPb9kuwnN3udADqPk=;
- b=h2blaNUdzXmdt2ddIwwa8j3LBy15bxrHTluEurkxYouStW0gXqnlYi7TUdz78LxcuWAvVAArP/Htzd9934iaGV/cI56L4XdMM4ZfCH1J0Gd25/rl8n69gYkv7GkhJq4ypI76h+3a9LL/VTJ5dWWMAfCU5WiyjSlxcxtEbP8YGaVo2GbwiDkSe0aUQim2V5pYZbPI1gaIaGH0PaDI0F3y/koFDLzX4tfit6midFheTgN+GnxXe3+E9xGAsBQkX/Kc9so2YGHY7WOV/kUkaiK591mGUV7BIR4ySg6x6cI2bnJTNMBx5MtWzVKV5GeB/LkPqq8GP1NjQYUy2biW3/CGHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XJkM0jhFO/R5tdrTkCNBYcXhSOhPb9kuwnN3udADqPk=;
- b=cWfQn2xtGWtp17WN5+pnoB9SawFYRG0XeApZ3CV+E8erlxWh4YLibeK+9C30eBVaRec+PSSB/ooluwwvzcWnQvaQbb+TWQzjw+uimhC6+FN2p0t+UJbrCQKILAfInQeBqEgu2vfQmDRcGihDTe0auxNsphUko8mfSANmox7zdWlD2L+5VMZOHk6hj/tSRfg2Q5ENAfWpwyiT6n/i0SSVw6YZbEUpyksR2vUZAzJe2iFc2xLhkCueJ4bV7/p5fKxTp4SEiEQ/0kY9rX35+Z70uWsSCKvdMBfi55h6O9SztnrIoFK0tcEKSXB7l/5JIZtL2Beb0WR2lWsiQeiV1/wgmQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by BL3PR12MB6473.namprd12.prod.outlook.com (2603:10b6:208:3b9::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.18; Mon, 2 Mar
- 2026 22:22:58 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9654.014; Mon, 2 Mar 2026
- 22:22:55 +0000
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: iommu@lists.linux.dev,
-	Joerg Roedel <joro@8bytes.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>
-Cc: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	patches@lists.linux.dev,
-	Samiullah Khawaja <skhawaja@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH rc 2/2] iommupt: Fix short gather if the unmap goes into a large mapping
-Date: Mon,  2 Mar 2026 18:22:53 -0400
-Message-ID: <2-v1-13a02eb0e031+a5-iommu_gather_jgg@nvidia.com>
-In-Reply-To: <0-v1-13a02eb0e031+a5-iommu_gather_jgg@nvidia.com>
-References:
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BL1PR13CA0179.namprd13.prod.outlook.com
- (2603:10b6:208:2bd::34) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6633E31A06C;
+	Mon,  2 Mar 2026 22:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772490527; cv=none; b=FjNbEMgQGGw1FeSyf5LdgWwNMoWAfYJDLOrrRNoJgO5RlIr56+P6QEiQCITB1Vu4Z5df3Rgx+JDM1uK3/VztxMmfPI6i+MhkAmDtygivB+y5d+0R/347rcvPtXUtMnWMqXGtP6UipcrSCSBXXfuxKzkJB2iQJPwTmvWAiKCQxEc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772490527; c=relaxed/simple;
+	bh=Mzw9ZSYa0WyWWwpW0clcX9lo+Bk7602YPpbpkRLXTAA=;
+	h=Date:To:From:Subject:Message-Id; b=fo7/78j9VrFN7JhE4j7lnTANBh4QVzRWT5mOSmRbHet/mdprk7dVRUlBVy0oWSxCx+SwK8/TKSjNtZRSE0HjOxJclfhvhrdy5R5W2I+rXN/pNaJqmnqafIdSxrSdmwQYjgk9uwTnW2ZYn40Sd7zRM2d6wUVomD5ujJwtHDzswkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=twALcp3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59E2C19423;
+	Mon,  2 Mar 2026 22:28:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772490527;
+	bh=Mzw9ZSYa0WyWWwpW0clcX9lo+Bk7602YPpbpkRLXTAA=;
+	h=Date:To:From:Subject:From;
+	b=twALcp3NMBrn5nNGlbZpgWpROkSIJLfT8OzqjtIhGjwUL3k2PwmPlukRJd/lwRUZY
+	 mLoWwgiSQpblZ8C8i0lXADpWqM1Mge/RvrZ9RknCrtqEfY04bDGkD2tVIBMdgLwZP5
+	 I/NU+OV6eBYFU85Ac3o1u74X34LlisPHTj/XDwJA=
+Date: Mon, 02 Mar 2026 14:28:46 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,ryan.roberts@arm.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,lance.yang@linux.dev,hughd@google.com,dev.jain@arm.com,david@kernel.org,bas@dfinity.org,baolin.wang@linux.alibaba.com,baohua@kernel.org,ziy@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260302222846.D59E2C19423@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|BL3PR12MB6473:EE_
-X-MS-Office365-Filtering-Correlation-Id: aa5e3f64-88c0-448d-b81b-08de78aa3ff7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	p1PrjC68yz44x5a5juCeap0i9VALp651dytXBKnkbTRpnsSwizYPA9am0nUGDplvAe/iICJH2Zvrar6ehHC2DF74OsPxi3FK4vWyJ0GIEIH1EO8bKxX5cdaXEm8RcqmcS/zh7oI7ciMNGB9itF+jE3hNvihDcFSQYIZ0NMgtA1eHJe5OkpUo4U+Gi8BFNqdF3SIQUKDW/QSt/2uk9t4GP8plGeY/uU0arlUqI6nuYPJqiXTtWcEs6B/AiVKXUMG7xph9iKLMZXXf0+cDkslYQ52GegPfGe6yMJOvAZz9wZcUlPPkcuMyBXP4OwEuQIDhrA+VpJPTCFin557V1zJW+TETdzUgG7NULvXGoOiEQpJAPAIrDrNfbWB3Vd7u2Bz5SXyN/P2cFO7Drp5zzXPa4ovwNFAzKSSA9CNNbK5abF2qa4mBmdkKSgdSksZcwc8iaXf+eoWSaa04TR+5Fvqwh8AL8TsBjnBhqlEC3bTIVFajhAOuaaypFunOPR7FeYWnltlRKi6hcSIxkqdEclx7c78lSj87SK99MVlUJHROz848w2MiEhPJmyOxDVfKLsqR/3Je8gz38fQZvcmiDzZmod6/ZiL2hfuHRjC0s6yKcbNwEHlrDQKZnKcoTgkyvyfOW/gtfOHHbX5tneSf7soRTGHtg8lF1dSWIHX9ilm2ct4Ah8S7mJiFGHH8GI9zFvShulpquaK6J3cl+73JimAr/CC03XkXmqLH8m3P9KI89+w=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?I6ZzCbOZTyLhJKuG6pY11RgPxkBziqeKagX81hUpNaYwEMCa5HzHS3fStj0f?=
- =?us-ascii?Q?+8uKy+/O/2P05B4K3noWMarFTguRagnawCA7eJCldaYIbttlMLDgknau6Zaq?=
- =?us-ascii?Q?G/NrkoW6hrzGSqb0zE78JDttbchfBmKkBw4M/46i3qyVQ3nXaAeCZOxLEb2o?=
- =?us-ascii?Q?Mp09rofuWRgL2y9mTcfdqm02V+dAalqdx6IobErizViDwwkOsPp8VB3gjFJL?=
- =?us-ascii?Q?Q94dW/T6swU/fbXATPWLDFMsGHj1S5SGUrQBnhHQbgcnbLutNd9/UKdraC+N?=
- =?us-ascii?Q?YE4lqFALGz+j2LvI5Aoz8OTH3NulyKWecSsby4tcMOuBRQwCF3IiKx495/dj?=
- =?us-ascii?Q?Lb8MouBqIiBYxgY9kj66sq575GxT2nYEipAWGLQKFp5y3DoPQRvOjnHmz7TJ?=
- =?us-ascii?Q?7/NECNk7NGY/pK0EEpbj5ycdc0F2iCU6b1a5BR4TjLeeC7RD/PIvL6S5CwU6?=
- =?us-ascii?Q?WByyrWWG8oKFVxaRvxJ7pJ6hNUu5rmTH456fpKm0RWPWgGgGhCJZcQLrbbqJ?=
- =?us-ascii?Q?UTas7eQJ7z3NG36j3QswUaVYW9ZuM+H4y/rZkT3esk8Qo68w2fYUiGr6jECd?=
- =?us-ascii?Q?Haj2T2WWRlLscSV1WK1t44WgLGX3S5jZhH0+mocZfxPQjqqkV4qUJSBP7Cjs?=
- =?us-ascii?Q?XhRpzeWGDK2ERs30dGh/5kBwhkjJ4k3RSVq+yG8Vfg5L9Z9jtbtb6sgjmjoM?=
- =?us-ascii?Q?lZkHuWmsE9oO9xuoEnknn+n1itmHK4D2FXteZP83WpVgXRzqYBG0ygUcLLz7?=
- =?us-ascii?Q?yH7ikRXwYk2rfcMqxHOnROUskW8we4hKkWmrVtbP2b2eZ8nTENNO9Nvi8Eh1?=
- =?us-ascii?Q?hOASCsCVctkz1YupcAPuEEkHW7j7QAzintyIdiC9Z7lCWu+sPwfSkPxbqFvL?=
- =?us-ascii?Q?EGPzxCRcQ8/z7YoHkMAlMmWZ3uggFUsCM9BjJgmFvmi3vPzM7oXtfVmcd+o7?=
- =?us-ascii?Q?+9pAhjLpF8LITS3qFKiWkSObgBpjzL6BJZb7gSxGC9X70uQbAFr85i2VqlCl?=
- =?us-ascii?Q?GJWU73W2fE+cu0BEunvfPsJMkBlW+HiV3rwk++2h+wq/Bds+o2ooU2Eg8iVf?=
- =?us-ascii?Q?eMIYvyiE80/bG+PjkX+FC58M14BP0xfBi5UQjLZk4xK5cgwoQYMKo/o2zrgb?=
- =?us-ascii?Q?/D7UPDbI9DH/nK6WfIzbRANrlbZ9p7g/n9e472ZKg+XlaOmWBTEm3zXPVMF6?=
- =?us-ascii?Q?qD+dZgf1+P4uHeL3IlQaOhSfy16RZRxHKgorVDZBoBC+b5Jr80aN79zXLggQ?=
- =?us-ascii?Q?29hSm6Rcm5+sjdjL20OBDQuk614mc3/PUlO2FEoCHkzaSsbSIGlNqBZWcoLn?=
- =?us-ascii?Q?5X1Fk2gdvYFN+xEMyx/Qj8Lc91YD9gPzIYgI9tl1RCQ5sJ58AbEMd/T/Hb2B?=
- =?us-ascii?Q?w5uX5iLZZOIYnEY8/Ov/SvaKEjKDm6lWC6Ut2kyNLitv2kdaK5BsldRU98TM?=
- =?us-ascii?Q?U7zEDkMwc0pHSE/Hq5vE+1MSmukwEQMTay5VweWqK3t+0ycRbXW23bFBSSLQ?=
- =?us-ascii?Q?LWw8aRuEXYRlRdrXP0bu8zL9AdhPUvJ3oS9pDiFWFfvfczuAmstd9iFyhSbD?=
- =?us-ascii?Q?/9P62U0h9OlxanEQMWlFJ9hcErBhlXrKTi9vh2kdqrS0Nh18QpL7oPbEMB75?=
- =?us-ascii?Q?kwC1ZW3dKUw9xKXtta28uIPh8dxxWSMgwMY3DaUC9eLFsc7C6iTucZf4hA2+?=
- =?us-ascii?Q?SuTtWQDlWtK+SUh7D8my1471VkMbjpmbkz1OjvTd7ukAjV5rF3V2Y5n9t3rC?=
- =?us-ascii?Q?ZPOyU82AVw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aa5e3f64-88c0-448d-b81b-08de78aa3ff7
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 22:22:55.0066
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +KdclZErws7HoaRaxt0RWuSM8+sl/Z0Bru/pGD3IB+H5Zf0MPO76ag5fcnpsqqwS
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6473
-X-Rspamd-Queue-Id: C35CA1E647C
+X-Rspamd-Queue-Id: 4F25A1E6597
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222740-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222737-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:mid,nvidia.com:email,Nvidia.com:dkim]
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-unmap has the odd behavior that it can unmap more than requested if the
-ending point lands within the middle of a large or contiguous IOPTE.
 
-In this case the gather should flush everything unmapped which can be
-larger than what was requested to be unmapped. The gather was only
-flushing the range requested to be unmapped, not extending to the extra
-range, resulting in a short invalidation if the caller hits this special
-condition.
+The patch titled
+     Subject: mm/huge_memory: fix a folio_split() race condition with folio_try_get()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch
 
-This was found by the new invalidation/gather test I am adding in
-preparation for ARMv8. Claude deduced the root cause.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch
 
-As far as I remember nothing relies on unmapping a large entry, so this is
-likely not a triggerable bug.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Cc: stable@vger.kernel.org
-Fixes: 7c53f4238aa8 ("iommupt: Add unmap_pages op")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Zi Yan <ziy@nvidia.com>
+Subject: mm/huge_memory: fix a folio_split() race condition with folio_try_get()
+Date: Mon, 2 Mar 2026 15:31:59 -0500
+
+During a pagecache folio split, the values in the related xarray should
+not be changed from the original folio at xarray split time until all
+after-split folios are well formed and stored in the xarray.  Current use
+of xas_try_split() in __split_unmapped_folio() lets some after-split
+folios show up at wrong indices in the xarray.  When these misplaced
+after-split folios are unfrozen, before correct folios are stored via
+__xa_store(), and grabbed by folio_try_get(), they are returned to
+userspace at wrong file indices, causing data corruption.  More detailed
+explanation is at the bottom.
+
+The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
+It
+1. creates a memfd,
+2. forks,
+3. in the child process, maps the file with large folios (via shmem code
+   path) and reads the mapped file continuously with 16 threads,
+4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
+   large folio.
+
+Data corruption can be observed without the fix.  Basically, data from a
+wrong page->index is returned.
+
+Fix it by using the original folio in xas_try_split() calls, so that
+folio_try_get() can get the right after-split folios after the original
+folio is unfrozen.
+
+Uniform split, split_huge_page*(), is not affected, since it uses
+xas_split_alloc() and xas_split() only once and stores the original folio
+in the xarray.  Change xas_split() used in uniform split branch to use the
+original folio to avoid confusion.
+
+Fixes below points to the commit introduces the code, but folio_split() is
+used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+truncate operation").
+
+More details:
+
+For example, a folio f is split non-uniformly into f, f2, f3, f4 like
+below:
++----------------+---------+----+----+
+|       f        |    f2   | f3 | f4 |
++----------------+---------+----+----+
+but the xarray would look like below after __split_unmapped_folio() is
+done:
++----------------+---------+----+----+
+|       f        |    f2   | f3 | f3 |
++----------------+---------+----+----+
+
+After __split_unmapped_folio(), the code changes the xarray and unfreezes
+after-split folios:
+
+1. unfreezes f2, __xa_store(f2)
+2. unfreezes f3, __xa_store(f3)
+3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
+4. unfreezes f.
+
+Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
+xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
+f3 is wrongly returned to user.
+
+After the fix, the xarray looks like below after __split_unmapped_folio():
++----------------+---------+----+----+
+|       f        |    f    | f  | f  |
++----------------+---------+----+----+
+so that the race window no longer exists.
+
+Link: https://lkml.kernel.org/r/20260302203159.3208341-1-ziy@nvidia.com
+Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: Bas van Dijk <bas@dfinity.org>
+Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/iommu/generic_pt/iommu_pt.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
-index 3e33fe64feab22..7e7a6e7abdeed1 100644
---- a/drivers/iommu/generic_pt/iommu_pt.h
-+++ b/drivers/iommu/generic_pt/iommu_pt.h
-@@ -1057,7 +1057,7 @@ size_t DOMAIN_NS(unmap_pages)(struct iommu_domain *domain, unsigned long iova,
+ mm/huge_memory.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+--- a/mm/huge_memory.c~mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get
++++ a/mm/huge_memory.c
+@@ -3635,6 +3635,7 @@ static int __split_unmapped_folio(struct
+ 	const bool is_anon = folio_test_anon(folio);
+ 	int old_order = folio_order(folio);
+ 	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
++	struct folio *old_folio = folio;
+ 	int split_order;
  
- 	pt_walk_range(&range, __unmap_range, &unmap);
- 
--	gather_range_pages(iotlb_gather, iommu_table, iova, len,
-+	gather_range_pages(iotlb_gather, iommu_table, iova, unmap.unmapped,
- 			   &unmap.free_list);
- 
- 	return unmap.unmapped;
--- 
-2.43.0
+ 	/*
+@@ -3656,11 +3657,17 @@ static int __split_unmapped_folio(struct
+ 			 * irq is disabled to allocate enough memory, whereas
+ 			 * non-uniform split can handle ENOMEM.
+ 			 */
+-			if (split_type == SPLIT_TYPE_UNIFORM)
+-				xas_split(xas, folio, old_order);
+-			else {
++			if (split_type == SPLIT_TYPE_UNIFORM) {
++				xas_split(xas, old_folio, old_order);
++			} else {
+ 				xas_set_order(xas, folio->index, split_order);
+-				xas_try_split(xas, folio, old_order);
++				/*
++				 * use the to-be-split folio, so that a parallel
++				 * folio_try_get() waits on it until xarray is
++				 * updated with after-split folios and
++				 * the original one is unfrozen.
++				 */
++				xas_try_split(xas, old_folio, old_order);
+ 				if (xas_error(xas))
+ 					return xas_error(xas);
+ 			}
+_
+
+Patches currently in -mm which might be from ziy@nvidia.com are
+
+mm-cma-move-put_page_testzero-out-of-vm_warn_on-in-cma_release.patch
+mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch
 
 
