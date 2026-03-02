@@ -1,162 +1,188 @@
-Return-Path: <stable+bounces-222500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPp4FdfkpGmquwUAu9opvQ
-	(envelope-from <stable+bounces-222500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 02:16:07 +0100
+	id KF/kAlz0pGmcwgUAu9opvQ
+	(envelope-from <stable+bounces-222501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 03:22:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4631D2453
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 02:16:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526DE1D273E
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 03:22:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 306C03014116
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 01:16:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EEE83010510
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 02:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343E22BCFB;
-	Mon,  2 Mar 2026 01:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c7n/RFSZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC801284669;
+	Mon,  2 Mar 2026 02:22:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D3F4A23
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 01:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772414164; cv=pass; b=n5urTErME8YjwvHo0gojwc2lfQ7YduaWneTyom6HRyFi1+X85CHW7be30c3WbFdsdltYxp71c99Y9eTVDuQSGDhs3GqOMCRc6HFKQFPIV2PIWtrnHjkiaboxZOVe7rxAu3bl8ZHjF3H3eiDBUXtD3waeUQ6at/xMUaVtfOfu7k0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772414164; c=relaxed/simple;
-	bh=LYqYld5JJNR7Y+dd3q0fiVF2xhuqJ763EnML4t4kM00=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=UFfNiwAPKKPTZIL8vtNnoN26Lhd9jqSKWWNUPKB6aDZCuLQVIkdTgwQuNRMKEOvaWOm975oqp0aGo8LXkBiBJKo3qHcGdrSSn/yMt30BuZDts7CxSl+0I5T9r5qT9rTKsGqDQjNXFc1upMcbvq88uxUG7LzEPVkPjWZjJaJbUDQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c7n/RFSZ; arc=pass smtp.client-ip=74.125.82.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2be07cafe27so22139eec.1
-        for <stable@vger.kernel.org>; Sun, 01 Mar 2026 17:16:02 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772414162; cv=none;
-        d=google.com; s=arc-20240605;
-        b=V+rfeTcwuTFFeF92ZI1p7/tKc6sWS8H6C+5hXBeXV+MwPRRkmPgaMsvNz+7nPUE9Ph
-         W5fU349C7e8+G1fkzgYlzdjGhIM1exwCzKHVGZRB0nq3+m34Ojn8osQgY26TBPNrBdQV
-         CCyV8oK3PQNaya+ubhRhjqoWKh8jSCCsdzPE3mD/rIlxJdH/v+jQYk8ZtY5sOmnMyfyG
-         JuVq+GtUlUjXDV2bTlUIyGcOj7MTBee+6cIxvNpzBSLiFdUFeuBhyCDakBzcS3X6f69M
-         FkNO1le+N3djXbaHxouIboComNmsc1V+kCK8ug4EZjWT0Q92+NU5ldHrfnuu9oR6wRsW
-         CPoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=Ag54x+BLSUfMRXYtNZC4SCt0TY1A6476YfhZrbmxKNM=;
-        fh=c98oz+cWbRoaOFB5igAXzWL7ueyEcdrkA8R/oRtNQLY=;
-        b=iuhUppZkq/11uIfUjzXP12vA4JQdcmCCvIkU/XmsdsRlb9i/tqWboVr60Xc6twNhA4
-         Jhl8J1s9//jLuadLpqxgrlcnCEZt0aujjPWolFuRoJQ4s2XihLceMuSpndyJQ0T/x1/Q
-         zw6oYKnKu0PH7dbPY8J6OPDtTcw4y7WJe/u37CTGyR+2cfVlSRGhWeqr8JlItMZU0jRb
-         ZaisrFNcBn/AgjZBvRisS9MjxQS3jpUzn9jUMTpjZlw3k9AAEyUjZaC8L7UTZUun2fMS
-         8+jWr3cKKjX6k8C68KqbZ1ijN3afu4F3Aez63JdIJZ2eyTU5lQ9svLCjqTjEzonM5O5D
-         1Q4A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772414162; x=1773018962; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Ag54x+BLSUfMRXYtNZC4SCt0TY1A6476YfhZrbmxKNM=;
-        b=c7n/RFSZRKJ8nx2glKVtIx5yc+IUxK6cNsUA2IkefjnByo+ZESLofm6mQIw7mHstVG
-         QeHFaTSv7i9R49mKveA8w/Vt0UbHxDIW+vUx1Rl6oSE2fdXrMOd60JuVLhkSGOdhwMws
-         KIxHZphoNtmIW9rajiNplcJSUvlBisaUN2CR8o+j24sRI7YTldHuZPoU15xJNHugL/wk
-         q0Aaf6602CX5P4J56QjXd0VpL/0I2IGeUaNr0gQmMsbaaquczEMUQqcuHuvON+4/g8JF
-         X0ZMFNfturhe2tBbh1NegHoRgmB3qIbnS0VE+cSS1K5whdcfOR4kFSyUTy1SRBv6TPvz
-         560w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772414162; x=1773018962;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ag54x+BLSUfMRXYtNZC4SCt0TY1A6476YfhZrbmxKNM=;
-        b=Me6/JAWAvjQD4glJ5acr8Q0iryRam1QuX9RYczULuz11oGwaYJlEIR0QvjknrbgkdY
-         xSLhpe7e5dwHa1yMZlzsNLDQ3H5pD49YrzvA+GQweIs7f9AVSBY/HpCL4hcZPXWE3wJQ
-         o6r2nA17gtJudMQVbMa/Ra6H1l28ylj5DS5GS3PGosgG4kxVC3y9TGQNEEwD435aAbTs
-         sPk7YMrI9U3jijIpCj8DytirQ1wz/nh4kKMQW3SoMmDsTFOr1FK/+abbD+eUBnXSaL2j
-         BB/ChTAglirDHYJGq4mbZ+FVXlzoEHGkdYcQG/67jvYfe63p4gkOPP+pwMObxSYcv9Xq
-         Qwew==
-X-Forwarded-Encrypted: i=1; AJvYcCXSx7KaUPoZQyREEh8nvBfsHvuGyaYkd9AvEXg2Ge5ew55PQru8C7lGyObXA5bb/Kra54gfT3A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWAs6eHDXYerch+Qu8QW1UR5pgVeZnpHD36WcKmKtqNFYg+eDq
-	nJRyg9T9UjQy9bRsJN1vOnypEIMQd27LMeLQTU0ogzOTlcfYBwh8zO8/6FqA9jTD1vcJBos5V36
-	5o7p5FJcNuch09ZDMoPMoNsyBG2dOu2o=
-X-Gm-Gg: ATEYQzz2qIKx5xwIhjqOVmaFQ+oTrLMN4w+VTV+M4T3lmEEKq1ncAV+eU6ONZ+Z8/7G
-	yBjmcv6ueQH9BN0iUMo7LjbHEXO4zQ5ts3ncMCfQpeitD7NgyKihTtAzIvtTGz28lDQ6EKaRI5U
-	BsM/1LGzMkstcqOE+Hz1j/cvDrIuyN9MaLOTG5RaGLjXpqeOrOhpZ6OS3AOPOj5tJenTVPPns2i
-	yDUOclWnmvNk+cI4peOnLCPxYj3kSNhwKhfVSxOABcAmYU6n2o6+3n+/5bzJgxK+bRM5VGf6mek
-	f/GrfrErTr15URWQIwUouMoP6An0iPWQ4xCw8/AN5Mc2lYZV16iHCcmwJdL+U7wUNZ+126u7vAs
-	MLiJrgK3otUvo4r77Ev67YY3yuThayEgxoFWIIqw=
-X-Received: by 2002:a05:7300:6412:b0:2bd:d111:cf18 with SMTP id
- 5a478bee46e88-2bde1e87317mr1868758eec.8.1772414161758; Sun, 01 Mar 2026
- 17:16:01 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70059175A8D;
+	Mon,  2 Mar 2026 02:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772418126; cv=none; b=B7bbyQafjzbq0hW2ZBHw16qkI2iW+RYh9DfWWaKsv/2ETv2Cr3qWYa7YLA6OssQy9kHxJdxkyP+vkML6kodFZKQ3xpSwoyGG08wP+/cWXE+ubPcnvZ/P+Bm94RcyW/9bRSSn352aY1OZ7v+BrYGBRaQbOM5DfR/tkkhdMWU87ZI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772418126; c=relaxed/simple;
+	bh=4ODW+gVPwkrj2pak7U9SMn9U1HrnAuRyY02jANk5SF0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MfNeL/QkvKIvP+aw9F8VneExz5ZvDpV0JclkgfF38YIAW+Ihjhwnq5dUWRhucXczx2gaxZ482cB/Ac8ECcR7u9sVuhCX6JUOvSWjKgz0JRNBoP/dsvINYMrCKTsqGbTtRJwVsDSqwj0aTd137fTGXs11cRuF/g7AtHKfxmLg5zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [127.0.0.2] (unknown [210.73.43.101])
+	by APP-03 (Coremail) with SMTP id rQCowAD3E9s39KRp6CWmCQ--.11902S2;
+	Mon, 02 Mar 2026 10:21:43 +0800 (CST)
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+Subject: [PATCH 0/3] riscv: kfence: Handle the spurious fault after
+ kfence_unprotect()
+Date: Mon, 02 Mar 2026 10:21:29 +0800
+Message-Id: <20260302-handle-kfence-protect-spurious-fault-v1-0-25c82c879d9c@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 2 Mar 2026 02:15:49 +0100
-X-Gm-Features: AaiRm52d0xAr7FLEdwWAVZQ0SvYAAQB6T1cHf3dbWP8uV1UsR_xpbJJXtBiCCac
-Message-ID: <CANiq72mESZc2RfL2_5wt=LEg6M_7TZ__uELZ2tN=XGwB5Md_vg@mail.gmail.com>
-Subject: Consider applying patch to 6.12.y
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACn0pGkC/yWNQQ6CMBAAv0L27JpSDShfIZiUstWNQHHbEhPC3
+ 23kOHOY2SCQMAVoig2EVg7s5wzlqQD7MvOTkIfMoJWulNY3zHIYCd+OZku4iI9kI4YlCfsU0Jk
+ 0Rqx0qZRx/b2+XCGnFiHH3/+m7Q4W+qR8i4eE3gRC66eJY1Os9Vmh2PKx7dDt+w98ojvypQAAA
+ A==
+X-Change-ID: 20260228-handle-kfence-protect-spurious-fault-62100afb9734
+To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+ Dmitry Vyukov <dvyukov@google.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ kasan-dev@googlegroups.com, Palmer Dabbelt <palmer@rivosinc.com>, 
+ Vivian Wang <wangruikang@iscas.ac.cn>, stable@vger.kernel.org, 
+ Yanko Kaneti <yaneti@declera.com>
+X-Mailer: b4 0.14.3
+X-CM-TRANSID:rQCowAD3E9s39KRp6CWmCQ--.11902S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCF13tr4ftFy8Xw1DurWktFb_yoW5urW5pF
+	s3JryfKr4DJryxXw13Z3Wjqr1rJw1xtw1Fg3WfJw1Fyw15Zr4Dtrn5trZ5XF98Wr97Ar1U
+	Aa10vr1UCrn0k37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4UMxAIw28IcxkI7VAKI4
+	8JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xv
+	wVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjx
+	v20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20E
+	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
+	AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbBMNUUUUUU==
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-1.46 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222500-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: AF4631D2453
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FROM_NEQ_ENVFROM(0.00)[wangruikang@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222501-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid]
+X-Rspamd-Queue-Id: 526DE1D273E
 X-Rspamd-Action: no action
 
-Hi Greg, Sasha,
+kfence_unprotect() on RISC-V doesn't flush TLBs, because we can't send
+IPIs in some contexts where kfence objects are allocated. This leads to
+spurious faults and kfence false positives.
 
-Sending this separately in case you don't track all replies to the
-`FAILED:` messages:
+Avoid these spurious faults using the same "new_vmalloc" mechanism,
+which I have renamed new_valid_map_cpus to avoid confusion, since the
+kfence pool comes from the linear mapping, not vmalloc.
 
-  https://lore.kernel.org/rust-for-linux/CANiq72nHESphKjW7uXm2D7HCNWNxmZ3nv+CSgrzEGgSKZ4_taA@mail.gmail.com/
+Commit b3431a8bb336 ("riscv: Fix IPIs usage in kfence_protect_page()")
+only seemed to consider false negatives, which are indeed tolerable.
+False positives on the other hand are not okay since they waste
+developer time (or just my time somehow?) and spam kmsg making
+diagnosing other problems difficult.
 
-I am not sure why the patch failed to apply -- I would like to
-understand what happened there, in case I am missing something. I
-suspect something odd happened, since other of those `FAILED:`
-messages were strange too, i.e. most of them didn't seem to apply the
-`# ...` instructions, which is why most failed.
+Patch 3 is the implementation to poke (what was called) new_vmalloc upon
+kfence_unprotect(). Patch 1 and 2 are just refactoring. In particular
+Patch 1 is just a substitution job, to make reviewing easier.
 
-But at least for that particular one, the patch should still be
-applied and it should have been cherry-pickable as far as I can tell:
+How this was found
+------------------
 
-  0a9be83e57de ("rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0")
+This came up after a user reported some nonsensical kfence
+use-after-free reports relating to k1_emac on SpacemiT K1, like this:
 
-So if you cannot apply it, please let me know!
+    [   64.160199] ==================================================================
+    [   64.164773] BUG: KFENCE: use-after-free read in sk_skb_reason_drop+0x22/0x1e8
+    [   64.164773]
+    [   64.173365] Use-after-free read at 0xffffffd77fecc0cc (in kfence-#101):
+    [   64.179962]  sk_skb_reason_drop+0x22/0x1e8
+    [   64.179972]  dev_kfree_skb_any_reason+0x32/0x3c
 
-Thanks!
+    [...]
 
-Cheers,
-Miguel
+    [   64.181440] kfence-#101: 0xffffffd77fecc000-0xffffffd77fecc0cf, size=208, cache=skbuff_head_cache
+    [   64.181440]
+    [   64.181450] allocated by task 142 on cpu 1 at 63.665866s (0.515583s ago):
+    [   64.181476]  __alloc_skb+0x66/0x244
+    [   64.181484]  alloc_skb_with_frags+0x3a/0x1ac
+
+    [...]
+
+    [   64.182917] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.0.0-rc1-dirty #34 PREEMPTLAZY
+    [   64.182926] Hardware name: Banana Pi BPI-F3 (DT)
+    [   64.183111] ==================================================================
+
+In particular, these supposed use-after-free accesses:
+
+- Were never reported by KASAN despite being rather easy to reproduce
+- Never contain a "freed by task" section
+- Never happen on the same CPU as the "allocated by task" info
+- And, most importantly, were not found to have been caused by the
+  object being freed by anyone at that point
+
+An interesting corollary of this observation is that the SpacemiT X60
+CPU *does* cache invalid PTEs, and for a significant amount of time, or
+at least long enough to be observable in practice. Or maybe only in an
+wfi, given how most of these reports I've seen had the faulting CPU in
+an IRQ?
+
+---
+Vivian Wang (3):
+      riscv: mm: Rename new_vmalloc into new_valid_map_cpus
+      riscv: mm: Extract helper mark_new_valid_map()
+      riscv: kfence: Call mark_new_valid_map() for kfence_unprotect()
+
+ arch/riscv/include/asm/cacheflush.h | 27 +++++++++++++----------
+ arch/riscv/include/asm/kfence.h     |  7 ++++--
+ arch/riscv/kernel/entry.S           | 44 +++++++++++++++++++------------------
+ arch/riscv/mm/init.c                |  2 +-
+ 4 files changed, 44 insertions(+), 36 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260228-handle-kfence-protect-spurious-fault-62100afb9734
+
+Best regards,
+-- 
+Vivian "dramforever" Wang
+
 
