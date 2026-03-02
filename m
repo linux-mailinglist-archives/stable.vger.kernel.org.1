@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-222526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id g3XzCuQ2pWnt5wUAu9opvQ
-	(envelope-from <stable+bounces-222526-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 08:06:12 +0100
+	id AFptFTo3pWnt5wUAu9opvQ
+	(envelope-from <stable+bounces-222527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 08:07:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD6F1D3A72
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 08:06:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A741D3A81
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 08:07:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 698DB3017C13
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 07:06:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6CACA3018C18
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 07:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3509E319871;
-	Mon,  2 Mar 2026 07:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EC2319871;
+	Mon,  2 Mar 2026 07:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r+NeTfMW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MzNeGT4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE58430BAC;
-	Mon,  2 Mar 2026 07:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A13430BAC;
+	Mon,  2 Mar 2026 07:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772435168; cv=none; b=UhEak4Hg4lFSKliLwDCxtVI0i/yhBiMDl9Vbx3MnO9MD/BYy5saWNfL7Z3bKhPiEVTllEZdCBjC2Ld3BL6QaehDNDWJT5kZTxQxpdSg4bmQsf9bxtIGfwTEnvVNsS0MUaKW82HtkO64Q0c8aaEB/E1xtydJ1yLplBca2BqJHkeM=
+	t=1772435253; cv=none; b=CgKDBR1Pqnrxl6aUL/s6PnufECCFj3Q4csXElBRKHIA4z/91q8pS9cyEi+/toyS+sXNfZ1TU3DGcH1jG5HyMQAVVAvcahyVmQrWGC7JqkMI3Ra5EslC1CvMoTMoleDYfENPGogOQnE3Asu+uCCDO6o3CkvncDORqIZ6XjbbIGUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772435168; c=relaxed/simple;
-	bh=RA6l1f9t4IEg0Is0+F+8AMQo023+TlbtfQVd/FoeBew=;
+	s=arc-20240116; t=1772435253; c=relaxed/simple;
+	bh=JjkjyZnuoN+YL+PIRUgpfU912rxCOKq6r/vzXcWFNJc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zau1XZXwOhTkMfWAKhsODy0nNUuV4iAJkRuAcjSUxkObheQjJim901bxDH5Lj99NLD2+71Lo+dbvhBrD1Q7rLJK2eY2xFCdZ2EfR7AZBmNLOR3U8Awx1vz2JTvH1d5HZcjvV6bCzehAMM1E6HqT87H3WCwCLWMQgUEBD9OVagZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r+NeTfMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403BAC19423;
-	Mon,  2 Mar 2026 07:06:06 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Ht7Qi9iXb4I2Rnlag9Ut9EbDyOzHE3JTaT65IUEeoaCqpCNFb0FGVYn2JRG6O6E6Wqbbny1bP0sZ0H0BYbn/bH+VzZcDLKLFcyKL+spRAPOCiUmch2ErFC7JXe9hnCrR6q3cQ4coo8IiGstJrZfLMhZ7LCcaRGI4wN35SPi7m+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MzNeGT4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6D8C2BCAF;
+	Mon,  2 Mar 2026 07:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772435167;
-	bh=RA6l1f9t4IEg0Is0+F+8AMQo023+TlbtfQVd/FoeBew=;
+	s=k20201202; t=1772435252;
+	bh=JjkjyZnuoN+YL+PIRUgpfU912rxCOKq6r/vzXcWFNJc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=r+NeTfMW3ZEJQYcO4/zLjO1l+H9WlOallSW79U29mSFQyZGztCZAUm7xXtMkBi1pF
-	 p/T/8z0RqhoRalmCTeLkh+17D5rcJzy7j+EJF514mL6lSJGyGlBbQlavRH4PM9HNay
-	 L+zvM3KzXb7G4QLcq4+92/0WKEDmMTq+Vi/3PrNR36dXXqAmRsfWYbkD44EJNaFgGK
-	 BIYGf4rkflqyaT9LKLmMUO0PHfxKFXzw9Pqr46/cYbjb0VClQ8XXHiGPqLax3M0aES
-	 9G6kBZi2nsbyPvyE9yT1/sgIXFMWhnBBoIi12PGkjs/FkOG4IMn0Gbs620WBsKVfem
-	 wEXqnTYzICjTA==
-Message-ID: <91b4797a-77a3-4955-86d4-06ac4def8704@kernel.org>
-Date: Mon, 2 Mar 2026 08:06:04 +0100
+	b=MzNeGT4dVtzMftaHr52Sp8/jC8mQ4zVe3AM1DW6+xLO5y9hmlGmk2Zzdo0nzvnnty
+	 IvG8HcsPZ2HLyjNxOIcosNJDThJFeoEokIbJQicmQDqqEptFU3K9WI+angNprl1C+n
+	 QpldFLyzrwu6l4JeIf0ggr1SnvxmSiHy0nspeX5N7hkY8unZMW9g1Mrmj0WGIXawfU
+	 Dp4m/FsVncR7j3RS/hnb8oLIm1TfqhG6EGEz7eSqOCfZ1vJSzkeSHJDMP+mYTGS6x7
+	 jekNlede71qXSPPEpyVPgYR3PIbUJHOM5eC4dEOiCSP6gHHPX3w7T56qbrOdYY1hXr
+	 9L7A8tRbbVvjg==
+Message-ID: <636f00d8-dcba-4724-9184-35a14426aae9@kernel.org>
+Date: Mon, 2 Mar 2026 08:07:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,14 +53,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 689/844] xfs: only call xf{array,blob}_destroy if we
- have a valid pointer
+Subject: Re: [PATCH 6.19 831/844] arm64: Force the use of CNTVCT_EL0 in
+ __delay()
 To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
-Cc: "Darrick J. Wong" <djwong@kernel.org>, r772577952@gmail.com,
- Christoph Hellwig <hch@lst.de>
+Cc: Marc Zyngier <maz@kernel.org>, Hyesoo Yu <hyesoo.yu@samsung.com>,
+ Quentin Perret <qperret@google.com>, Will Deacon <will@kernel.org>
 References: <20260228173244.1509663-1-sashal@kernel.org>
- <20260228173244.1509663-690-sashal@kernel.org>
+ <20260228173244.1509663-832-sashal@kernel.org>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -105,62 +105,64 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20260228173244.1509663-690-sashal@kernel.org>
+In-Reply-To: <20260228173244.1509663-832-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-222527-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222526-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,lst.de];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7CD6F1D3A72
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D3A741D3A81
 X-Rspamd-Action: no action
 
-On 28. 02. 26, 18:30, Sasha Levin wrote:
-> From: "Darrick J. Wong" <djwong@kernel.org>
+On 28. 02. 26, 18:32, Sasha Levin wrote:
+> From: Marc Zyngier <maz@kernel.org>
 > 
-> [ Upstream commit ba408d299a3bb3c5309f40c5326e4fb83ead4247 ]
+> [ Upstream commit 29cc0f3aa7c64d3b3cb9d94c0a0984ba6717bf72 ]
 ...
-> --- a/fs/xfs/scrub/dir_repair.c
-> +++ b/fs/xfs/scrub/dir_repair.c
-> @@ -172,8 +172,12 @@ xrep_dir_teardown(
->   	struct xrep_dir		*rd = sc->buf;
+> --- a/arch/arm64/lib/delay.c
+> +++ b/arch/arm64/lib/delay.c
+> @@ -23,9 +23,20 @@ static inline unsigned long xloops_to_cycles(unsigned long xloops)
+>   	return (xloops * loops_per_jiffy * HZ) >> 32;
+>   }
 >   
->   	xrep_findparent_scan_teardown(&rd->pscan);
-> -	xfblob_destroy(rd->dir_names);
-> -	xfarray_destroy(rd->dir_entries);
-> +	if (rd->dir_names)
-> +		xfblob_destroy(rd->dir_names);
-> +	rd->dir_names = NULL;
-> +	if (rd->dir_entries)
-> +		xfarray_destroy(rd->dir_entries);
-> +	rd->dir_names = NULL;
+> +/*
+> + * Force the use of CNTVCT_EL0 in order to have the same base as WFxT.
+> + * This avoids some annoying issues when CNTVOFF_EL2 is not reset 0 on a
+> + * KVM host running at EL1 until we do a vcpu_put() on the vcpu. When
+> + * running at EL2, the effective offset is always 0.
+> + *
+> + * Note that userspace cannot change the offset behind our back either,
+> + * as the vcpu mutex is held as long as KVM_RUN is in progress.
+> + */
+> +#define __delay_cycles()	__arch_counter_get_cntvct_stable()
 
-This cut&paste error is fixed by:
-e764dd439d68 xfs: fix copy-paste error in previous fix
+This needs:
+e5cb94ba5f96 arm64: Fix sampling the "stable" virtual counter in 
+preemptible section
 
 -- 
 js
