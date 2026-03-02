@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-222625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222626-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLpcDparpWmpDgAAu9opvQ
-	(envelope-from <stable+bounces-222625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:24:06 +0100
+	id wN/uL4CspWmpDgAAu9opvQ
+	(envelope-from <stable+bounces-222626-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:28:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC63B1DBC1D
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:24:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394891DBD1F
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 16:27:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 95521301C554
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 15:22:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4683B304F4B0
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 15:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE83240F8E6;
-	Mon,  2 Mar 2026 15:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020D23FD13D;
+	Mon,  2 Mar 2026 15:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Sp1XOY7M"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="gI3wxZtM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D6C38F62E;
-	Mon,  2 Mar 2026 15:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500D9430BB1;
+	Mon,  2 Mar 2026 15:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772464922; cv=none; b=qfyCqv/xQQDJ0PXpfcR8r2y4l7CXMWs5nbYzqjj18pEVhu0MwExawMv5dzfDUV80mMD8sRc0r/vtOBEBldc5Hz4T6i33mLQ44ZeE8uHuAEPBB4w6fBvoFzskMmv1RdeBqGxPo0Wog24DuIWtyNpmNj/W3nW/EcS6creLA2CHstM=
+	t=1772465122; cv=none; b=WlMprsGdOguYM4Qb6JONRPVLZAOjP/Vy65UlKJoaGLdrtdplrE35g5QsYI9680VdsYJcu27+zmURNgOZceIGRgEuc2GccLO1FQ5K59PgrlT7AdwsrIjTXPp1Nbf/+TRI6E391ccaV9XXjmqD8ClrkSzblFWV3AonfW+8DAefejk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772464922; c=relaxed/simple;
-	bh=thvntZTQipQ90OEnlP5d4+3JWJJD2y/hGnLtVDAEoFQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ii+hi5Ldjj5rFUWa1t+W+ovkhsuRIRbDBc0HMCYAgQeaJAdhwv/M20kl6kzDgXh80OYdfnYMvQUw4T7Ug49VnqTvOIKr6vQMlhyalMcgTRdxtoz1Iqkmdq335SfhQ0vFCcH7eqyftA8TW2BXBjUbcS4gIVLvvg9zPPtge5Frym8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Sp1XOY7M; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 3DD7EC40F86;
-	Mon,  2 Mar 2026 15:22:16 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DCE165FE89;
-	Mon,  2 Mar 2026 15:21:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4EF7A10369578;
-	Mon,  2 Mar 2026 16:21:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772464917; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=KX8LyfkGSnwWJK3wQK4qJ9fwSRGCapjjd7Xu/oRsfOY=;
-	b=Sp1XOY7MQ1zk8WE2oJ+NgQVnj6orYIwfCpXq7fcStXzRAPTbHwZTbSH8QtKq1g+tMuTPoR
-	Mjg6O+5U53e/cPQwYf9mVbpUvimmSclHJv5EjRqr936QS6GKL9dG6JD9zX4kt7VSstXWlL
-	8yNbfNU1k6OVyVzbK6SdVdXFOilEsc5yJFHuNiIdzwcvds9f+oJe57k/PXR+VfjUsEGYOQ
-	hHRsQOmWmNsRfznGmfO+FL+gPnYuZdvwnqXlcXl9XE9coe9XrTJlX+WX4sbycwRLCKLiG9
-	IlqwafFJsvgP7m40PNNPE8vIGi8n77wA76IfYR7VLEstJIWCYy+Zswr53wtmDg==
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
-To: Robert Marko <robert.marko@sartura.hr>, andrew@lunn.ch,
- sebastian.hesselbarth@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Robert Marko <robert.marko@sartura.hr>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: marvell: uDPU: add ethernet aliases
-In-Reply-To: <20260127123250.527714-1-robert.marko@sartura.hr>
-References: <20260127123250.527714-1-robert.marko@sartura.hr>
-Date: Mon, 02 Mar 2026 16:21:54 +0100
-Message-ID: <87v7fefe99.fsf@BLaptop.bootlin.com>
+	s=arc-20240116; t=1772465122; c=relaxed/simple;
+	bh=6YiO3aEEMJaPzYYMxUMPBSbOzfWX3uI2ARHdUHzLVj4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uBzqIZOfxr6qA1+2yK0bTiq6FAfkxJi8kKqVHusPGW6BfgrWtb74jjMXkKn23Gi4DUSyN98yXef0ZkZ+QfMnmRkMoCvsQ8AChdSTpBIyHk4rVs8W53hfWxIPIbEITbO6l8C0hcI0N/kN/aomg49csCUn1fCPLWOYIMX1QUMi8f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=gI3wxZtM; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1772465113; x=1772724313;
+	bh=QrkeH5U9fQQelEPd+SKbWGI2+T7gqRMRbmw70mxyA5Q=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=gI3wxZtMJ/YHHlteofLz9tgobEzpL4Cy+Z9E67K/zgs+K4HCuBi9JZu+CAj1VnrFm
+	 ZjLozTRCYoee2ap48PIJ6dtnP4lpad17OEzsIbkqSNOE50HB1H0HKoUAi/S5Gm3ddM
+	 nvm7yj70l4eLnRl7JUY6+uzyBrb2SyWR7FXYMcq8gI4TW8G9oYACAWIgBce9rNQ7CK
+	 IANgjqpJ8abwcF5jznJygyp7bwgZoXEh2MI4uob6hzbt7+uhLUtacM5WpWLxbdIyKP
+	 W8gZ8DZhPXwiufkBOrCZT2ZmJxXIfVyiaR6jaGMNytcHUKf125jkZt68qHuRov6Dkc
+	 6CYaUQiELOPDw==
+Date: Mon, 02 Mar 2026 15:25:10 +0000
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: m.wieczorretman@pm.me, Farrah Chen <farrah.chen@intel.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v8 1/3] x86/cpu: Clear feature bits disabled at compile-time
+Message-ID: <cb4c2a6a0e67320b24244658b724acc1bf9686ef.1772453012.git.m.wieczorretman@pm.me>
+In-Reply-To: <cover.1772453012.git.m.wieczorretman@pm.me>
+References: <cover.1772453012.git.m.wieczorretman@pm.me>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: bec042c3e9c91a789964897fc23067bf2f58798d
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,87 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: CC63B1DBC1D
+X-Rspamd-Queue-Id: 394891DBD1F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[pm.me,quarantine];
+	R_DKIM_ALLOW(-0.20)[pm.me:s=protonmail3];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222625-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222626-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[bootlin.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[sartura.hr,lunn.ch,gmail.com,kernel.org,lists.infradead.org,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregory.clement@bootlin.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[pm.me:+];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[m.wieczorretman@pm.me,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,bootlin.com:dkim,bootlin.com:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pm.me:dkim,pm.me:mid,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Robert Marko <robert.marko@sartura.hr> writes:
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-> On eDPU plus, which is an updated revision of eDPU which uses an external
-> MV88E6361 switch we are relying on U-Boot to detect the board, and then
-> enable and disable the required nodes for that revision.
->
-> However, it seems that I missed adding the required aliases for ethernet
-> controllers, and this worked as in OpenWrt we had added those locally.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 660b8b2f3944 ("arm64: dts: marvell: eDPU: add support for version =
-with external switch")
-> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+If some config options are disabled during compile time, they still are
+enumerated in macros that use the x86_capability bitmask - cpu_has() or
+this_cpu_has().
 
-Applied on mvebu/dt64
+The features are also visible in /proc/cpuinfo even though they are not
+enabled - which is contrary to what the documentation states about the
+file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
+split_lock_detect, user_shstk, avx_vnni and enqcmd.
 
-Thanks,
+Once the cpu_caps_cleared array is initialized with the autogenerated
+disabled bitmask apply_forced_caps() will clear the corresponding bits
+in boot_cpu_data.x86_capability[] and other secondary cpus'
+cpu_data.x86_capability[]. Thus features disabled at compile time won't
+show up in /proc/cpuinfo.
 
-Gregory
-> ---
->  arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi b/arch/arm=
-64/boot/dts/marvell/armada-3720-uDPU.dtsi
-> index 242820845707..cd856c0aba71 100644
-> --- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
-> +++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
-> @@ -15,6 +15,11 @@
->  #include "armada-372x.dtsi"
->=20=20
->  / {
-> +	aliases {
-> +		ethernet0 =3D &eth0;
-> +		ethernet1 =3D &eth1;
-> +	};
-> +
->  	chosen {
->  		stdout-path =3D "serial0:115200n8";
->  	};
-> --=20
-> 2.52.0
->
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220348
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: <stable@vger.kernel.org> # 6.18.x
+---
+Changelog v6:
+- Remove patch message portions that are not just describing the diff.
 
+ arch/x86/kernel/cpu/common.c       | 3 ++-
+ arch/x86/tools/cpufeaturemasks.awk | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 1c3261cae40c..9aa11224a038 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -732,7 +732,8 @@ static const char *table_lookup_model(struct cpuinfo_x8=
+6 *c)
+ }
+=20
+ /* Aligned to unsigned long to avoid split lock in atomic bitmap ops */
+-__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
+));
++__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
+)) =3D
++=09DISABLED_MASK_INITIALIZER;
+ __u32 cpu_caps_set[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long));
+=20
+ #ifdef CONFIG_X86_32
+diff --git a/arch/x86/tools/cpufeaturemasks.awk b/arch/x86/tools/cpufeature=
+masks.awk
+index 173d5bf2d999..b7f4e775a365 100755
+--- a/arch/x86/tools/cpufeaturemasks.awk
++++ b/arch/x86/tools/cpufeaturemasks.awk
+@@ -82,6 +82,12 @@ END {
+ =09=09}
+ =09=09printf " 0\t\\\n";
+ =09=09printf "\t) & (1U << ((x) & 31)))\n\n";
++
++=09=09printf "\n#define %s_MASK_INITIALIZER\t\t\t\\", s;
++=09=09printf "\n\t{\t\t\t\t\t\t\\";
++=09=09for (i =3D 0; i < ncapints; i++)
++=09=09=09printf "\n\t\t%s_MASK%d,\t\t\t\\", s, i;
++=09=09printf "\n\t}\n\n";
+ =09}
+=20
+ =09printf "#endif /* _ASM_X86_CPUFEATUREMASKS_H */\n";
 --=20
-Gr=C3=A9gory CLEMENT, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.53.0
+
+
 
