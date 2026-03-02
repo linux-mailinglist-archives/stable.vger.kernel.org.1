@@ -1,279 +1,205 @@
-Return-Path: <stable+bounces-222517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMBPNU8upWmj5AUAu9opvQ
-	(envelope-from <stable+bounces-222517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:29:35 +0100
+	id uHHPLo0vpWkZ5QUAu9opvQ
+	(envelope-from <stable+bounces-222518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:34:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B951D3721
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:29:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247E51D37E0
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:34:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2973E3008A7E
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 06:29:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E040300B109
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 06:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C453164D6;
-	Mon,  2 Mar 2026 06:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFBF314B73;
+	Mon,  2 Mar 2026 06:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FEKqQ67r"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="jnIW/xdx";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ofEGStyC"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D802D21B905
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 06:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A60201004;
+	Mon,  2 Mar 2026 06:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772432971; cv=none; b=cz0GuKL410poWy2ILio5k+wyIi94ujpR+tFchPW3ruRNok0oEOyfd/0vealwHzyb1nPAKd9WYEVebjSzL3c9woQN16rkZgqOphhx2Qe7gN0KzZkCZi5KY4XSbDeGUXFuYcD8sqH6Y0btoikacZgpeKC0e9ogIqbTAJ3V2xFDImE=
+	t=1772433288; cv=none; b=BC5TlWYAehgnL7CihD9Ns6Bkp/UflnKJ9Tl4z4cp31aP1FOC/ciCXjrpjbLN8hIEciq2RCdbyaGzXzLmhgXu3tyFHCNUBcZU7PkVW5YeoW/TU1qoD5U81mMdvC/YUmtGMQQfJ4bzdxQ+eHTbWWo5fbGEyWQUKssrn74A+czdeCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772432971; c=relaxed/simple;
-	bh=Q2EOswIlTT65Gw+A24Wdnw+0KorL9qBvjn+K5S/m6oc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=JgtMMoXtuKkuvGNqBCf2aRwEqsvrJkqy9m7/EJEqYmNzASiRzU7l6Yri6GSGDcbYzfeTY9Fy4iK6nZaFdfPe72ag23YOtQmRZGboSxTojlRencPRJ0+WEcmHeArUVr12F75qdRQh/JRpx0YBEtfxTuKZz7TnG6aQeli7OR6oRhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FEKqQ67r; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772432966;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Rym3aUWuenq1lQZSGDfzIxn3F9KxsbvCY1oHj0DwIM=;
-	b=FEKqQ67rTWOAjWtHeWhw+xjcu/h0GspbFI1MhnO/kCHpG/e6GRQDcq90EQFErEsXZ2SxbX
-	ol5CJUYmFpR6wlsWGgYcQTO3IO7dVr6CpsRGiYvagmtti2jMcWRag5REwc/MFWjyB7+tMt
-	6T/w1smcvdWXJEs/LLYEfanKAnEZTbg=
+	s=arc-20240116; t=1772433288; c=relaxed/simple;
+	bh=vRO+oHmk5YGGkTB88G6/eykYcRBEka1Mo09t9KaR6AU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cQdByjWR34WP55vUWoDwoCcxIKseqZdczSmSuykFPBL7+s+yvAkpgMma+dIvuvBxk+DCiI0+7sbsCrUGHASdbLrgi3z838WIz7elydJ2hNPshdRj7bwL+YPgUjNBmUpPwF+cULYBiusg7HTBv5lubvs5KfxZ1bZVPwf6M02OW4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=jnIW/xdx; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ofEGStyC; arc=none smtp.client-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfout.stl.internal (Postfix) with ESMTP id C552E1D001A8;
+	Mon,  2 Mar 2026 01:34:45 -0500 (EST)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-08.internal (MEProxy); Mon, 02 Mar 2026 01:34:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772433285;
+	 x=1772519685; bh=Yizj12luU/DOkZYFAXinlxaAGnXOovaAVzGZmDXvoeQ=; b=
+	jnIW/xdxK+ClcP4hzDuC5vkpAkEKNF2sw5/LST39h3iRvTJZlvsjZDrX6zfPkG+o
+	RpuhVtUpSiRIKlMtjjJkpNl53ZW9iD0EzzZWj2KfjHCxBc+vTL8fipMhkmuyopM8
+	kQn7fNC6x3TJN1ZR1jlgFQ2uh7wC2uTrwn6pWOmsDeP46bM7waG4K9uniUIiiDPk
+	cGjaq5EVl1BsLR6GvZVEYcEDrEJ1XZQnfshKBXr1fDBl4oHYWwbZ3TzURqyn4w9n
+	NT953Yl2zqjtyyT0RVcPQjoVutANVG7wm2NUeXUU0KxIvCgUfepB20AY3nPIZZnZ
+	/wilXJcZtXRPSS6qJD4TUg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772433285; x=
+	1772519685; bh=Yizj12luU/DOkZYFAXinlxaAGnXOovaAVzGZmDXvoeQ=; b=o
+	fEGStyC8hzKqAOFpGQNPFnf1l2/tOirsc5b0csE8ZK0ERBDeFVrcPTOd3ncQzVaG
+	1Fr7VwNPiHkx6zcUDHg2R9fns1yWXkBXuJfaM3Td5bgIkkDadqaGPKepaqq4rqaR
+	H0jMJNZoUGCnR4I+EdnDqWFXUoqeXwldCKLZQw/pNmfoJJghl1oK8rN/9oYLESdq
+	wVbb4EUX1a2ZintW7P9zcYUHeMY+28mIyVycsUu4KV7wu3Hla/c0q+h3nKrQBUxF
+	ah3V6z1LTrO5/+5PAI9TZWM2lUjV8dKj8V5eU6c5L1vWWYMl0bdI8QJMJ4fS3wU8
+	VMh9We7xK5crihbMEZHhw==
+X-ME-Sender: <xms:hS-lab_BJ3Lafy_SBbq4w6Ow5P4GCWiIStjND7Dee3nSGeXA6SJAPg>
+    <xme:hS-laYHMIVuPIzjrqZLdVXrfzjGjf6-gQllFBki9-W0zyC1AlGRux-iFLWhy9Exlb
+    D7bUnv4s57VzQJy12LXBUDpJsEqYgjf7dubZkAs3Y0I949q7iH9OFE>
+X-ME-Received: <xmr:hS-laaIGxg6289RFhwz2AIRTji2pJqmPSKt5kcJHeGEOZZpj2_164sbU6VV_-ul95Sx866HLTSc5uvXd3T8SU0qZfneayQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheeileeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpedfuegrrhhr
+    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeduvddtleefjeffkefgkeefkefgkeevleelheekueehteeutddvveeg
+    feeijeetkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpegsrghrrhihnhesphhosghogidrtghomhdpnhgspghrtghpthhtohepvddupdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehsrghshhgrlheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthht
+    ohepphgrthgthhgvsheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehtoh
+    hrvhgrlhgusheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohep
+    rghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlih
+    hnuhigsehrohgvtghkqdhushdrnhgvthdprhgtphhtthhopehshhhurghhsehkvghrnhgv
+    lhdrohhrgh
+X-ME-Proxy: <xmx:hS-laTcQcGvBM9EyhQR6jOiJRGDmQnnZdLqzc9NUBsj-flZw4-0SJg>
+    <xmx:hS-lafVVK634R554Ehsslyg4KVXxKH90AGfxUQ62ag4b4TEdImteKA>
+    <xmx:hS-laSFfRQl-XAW18X3XiZDRU0ab-boLb1yyFMIkFUfzo9Dsc9sUfQ>
+    <xmx:hS-laYXEktz-5AMOfG5QYdgNi_qCTCfZcP51G8l5z9zGqcRw_ALUEg>
+    <xmx:hS-laTk0h6V7kwzhA36cD9Ur_hlh0yqC9jMKI3nFC21-49E5PviH2dx8>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Mar 2026 01:34:42 -0500 (EST)
+Message-ID: <761b2e6e-6e49-496d-8fe7-39d4f628405b@pobox.com>
+Date: Sun, 1 Mar 2026 22:34:41 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.1\))
-Subject: Re: [PATCH] mmc: sdhci-pci-gli: fix GL9750 DMA write corruption
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
-In-Reply-To: <TYZPR01MB42609CF11A0C011930B4C067D77EA@TYZPR01MB4260.apcprd01.prod.exchangelabs.com>
-Date: Sun, 1 Mar 2026 22:28:55 -0800
-Cc: Adrian Hunter <adrian.hunter@intel.com>,
- Ulf Hansson <ulf.hansson@linaro.org>,
- "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <240846BF-3951-4B14-925C-1FA324161C0F@linux.dev>
-References: <20260227075909.3860183-1-matthew.schwartz@linux.dev>
- <1e71a22b-48d5-4a5f-87d5-860a6cb9a04d@intel.com>
- <752b26fc-45e2-4c4b-aa9b-48a1112b837a@linux.dev>
- <TYZPR01MB42609CF11A0C011930B4C067D77EA@TYZPR01MB4260.apcprd01.prod.exchangelabs.com>
-To: =?utf-8?B?IkJlbkNodWFuZ1vojormmbrph49dIg==?= <Ben.Chuang@genesyslogic.com.tw>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 000/844] 6.19.6-rc1 review
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ gregkh@linuxfoundation.org, patches@lists.linux.dev,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260228173244.1509663-1-sashal@kernel.org>
+ <9623f4e6-41b4-4dc8-a6ff-cf0de3604dfb@pobox.com>
+ <bf650251-9254-4d42-9224-0b8db08042c7@pobox.com> <aaTef1CyYVhpE4k2@laps>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <aaTef1CyYVhpE4k2@laps>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-222517-lists,stable=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-222518-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.schwartz@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,genesyslogic.com.tw:email,linaro.org:email,linux.dev:mid,linux.dev:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: 37B951D3721
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pobox.com:mid,pobox.com:dkim,pobox.com:email,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: 247E51D37E0
 X-Rspamd-Action: no action
 
+On 3/1/26 16:49, Sasha Levin wrote:
+> On Sun, Mar 01, 2026 at 08:43:43AM -0800, Barry K. Nathan wrote:
+>> On 3/1/26 00:49, Barry K. Nathan wrote:
+>>> Unfortunately, 6.19.6-rc1 won't even build for me:
+>>>
+>>> Warning: drivers/gpu/drm/i915/intel_wakeref.h:156 expecting prototype for __intel_wakeref_put(). Prototype was for INTEL_WAKEREF_PUT_ASYNC() instead
+>>> 1 warnings as errors
+>>> make[9]: *** [drivers/gpu/drm/i915/Makefile:449: drivers/gpu/drm/i915/intel_wakeref.hdrtest] Error 3
+>>> make[8]: *** [scripts/Makefile.build:546: drivers/gpu/drm/i915] Error 2
+>>> make[8]: *** Waiting for unfinished jobs....
+>>>
+>>> This only happens with 6.19.6-rc1, not any of this weekend's other
+>>> stable rc's. (I'm still testing 6.12.75-rc1 and 6.18.16-rc1, but
+>>> they're doing well so far. I have successfully built 5.15.202-rc1
+>>> and 6.1.165-rc1 but I won't have a chance to do any further testing
+>>> of them before they're released.)
+>>>
+>>> As soon as I can (in the next hour or two) I'll minimize my config
+>>> a little to shorten the compile time, then I'll start bisecting.
+>>
+>> Result of bisecting:
+>> first bad commit: [0ef5d235ab57bc90831ddf38eb1742ff68f345e1]
+>> docs: kdoc: fix logic to handle unissued warnings
+>>
+>> This commit breaks the i915 DRM build if (and only if)
+>> CONFIG_DRM_I915_WERROR=y, whether CONFIG_WERROR is enabled or
+>> disabled. However, the "bad" commit is definitely fixing a real
+>> bug, and this build failure doesn't happen on current mainline
+>> as of this writing (commit eb71ab2bf722), so I don't think
+>> dropping the patch is the correct way forward.
+>>
+>> Rather, adding commit 524696a19e34598c9173fdd5b32fb7e5d16a91d3
+>>    drm/i915/wakeref: clean up INTEL_WAKEREF_PUT_* flag macros
+>> (it applies cleanly) fixes the warning, thereby fixing the build.
+>>
+>> The resulting kernel works fine in my testing, too. I'm using
+>> 6.19.6-rc1 + 524696a19e34598c9173fdd5b32fb7e5d16a91d3 to write
+>> and send this email from my ThinkPad T14 Gen 1, which uses the
+>> i915 DRM driver for its Intel integrated graphics. (I also
+>> tested it on my 2017 MacBook Air, which also uses i915 DRM for
+>> its Intel integrated graphics.)
+> 
+> I'll queue 524696a19e345 up, thanks for the report!
 
+You're welcome.
 
-> On Mar 1, 2026, at 6:54=E2=80=AFPM, BenChuang[=E8=8E=8A=E6=99=BA=E9=87=8F=
-] <Ben.Chuang@genesyslogic.com.tw> wrote:
->=20
-> Hi Matthew,
->=20
->> -----Original Message-----
->> From: Matthew Schwartz <matthew.schwartz@linux.dev>
->> Sent: Saturday, February 28, 2026 9:27 AM
->> To: Adrian Hunter <adrian.hunter@intel.com>; Ulf Hansson =
-<ulf.hansson@linaro.org>; BenChuang[=E8=8E=8A=E6=99=BA=E9=87=8F]
->> <Ben.Chuang@genesyslogic.com.tw>
->> Cc: linux-mmc@vger.kernel.org; linux-kernel@vger.kernel.org; =
-stable@vger.kernel.org
->> Subject: Re: [PATCH] mmc: sdhci-pci-gli: fix GL9750 DMA write =
-corruption
->>=20
->> On 2/27/26 1:16 AM, Adrian Hunter wrote:
->>> On 27/02/2026 09:59, Matthew Schwartz wrote:
->>>> The GL9750 SD host controller has intermittent data corruption =
-during
->>>> DMA write operations. The GM_BURST register's R_OSRC_Lmt field
->>>> (bits 17:16), which limits outstanding DMA read requests from =
-system
->>>> memory, is not being cleared during initialization. The Windows =
-driver
->>>> sets R_OSRC_Lmt to zero, limiting requests to the smallest unit.
->>>>=20
->>>> Clear R_OSRC_Lmt to match the Windows driver behavior. This =
-eliminates
->>>> write corruption verified with f3write/f3read tests while =
-maintaining
->>>> DMA performance.
->>>>=20
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: e51df6ce668a ("mmc: host: sdhci-pci: Add Genesys Logic =
-GL975x support")
->>>> Closes:
->> https://lore.kernel.org/linux-mmc/33d12807-5c72-41c
->> =
-e-8679-57aa11831fad%40linux.dev%2F&data=3D05%7C02%7Cben.chuang%40genesyslo=
-gic.com.tw%7Cf7d89cd3b9ef4ee8f58
->> =
-208de76687497%7C4e753840bf6b40a19645185818deeb52%7C0%7C0%7C639078388197698=
-028%7CUnknown%7CTWFpb
->> =
-GZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjo=
-iTWFpbCIsIldUIjoyfQ%3D%3D%7C0%
->> =
-7C%7C%7C&sdata=3DxdnJIB74XZ4LQYBgHseMZWvDSwO1mg4x0jCNxqMMoco%3D&reserved=3D=
-0
->>>> Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
->>>=20
->>> Ben wrote "So I think your patch setting R_OSRC_Lmt to zero is =
-reasonable."
->>> Can be have a Reviewed-by tag also?
->>=20
->> Wasn't sure about the etiquette of adding a Reviewed-by without an =
-explicit tag in an email,
->> but happy to re-spin a v2 and add that if it's wanted.
->>=20
->>>=20
->>> Nevertheless:
->>>=20
->>> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
->>>=20
->>>> ---
->>>> Link to RFC:
->> https://lore.kernel.org/all/20260117234800.931664-1
->> =
--matthew.schwartz%40linux.dev%2F&data=3D05%7C02%7Cben.chuang%40genesyslogi=
-c.com.tw%7Cf7d89cd3b9ef4ee8f58208
->> =
-de76687497%7C4e753840bf6b40a19645185818deeb52%7C0%7C0%7C639078388197757693=
-%7CUnknown%7CTWFpbGZsb
->> =
-3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWF=
-pbCIsIldUIjoyfQ%3D%3D%7C0%7C%
->> =
-7C%7C&sdata=3DhG%2FsvJa9fEfEPXIcB81%2FG33pbxg54SxC2SX5WuKxCZw%3D&reserved=3D=
-0
->>>> Changes from RFC -> v1: use the proper name for the register field
->>>> ---
->>>> drivers/mmc/host/sdhci-pci-gli.c | 8 ++++++++
->>>> 1 file changed, 8 insertions(+)
->>>>=20
->>>> diff --git a/drivers/mmc/host/sdhci-pci-gli.c =
-b/drivers/mmc/host/sdhci-pci-gli.c
->>>> index b0f91cc9e40e4..7a7be3f7bee6b 100644
->>>> --- a/drivers/mmc/host/sdhci-pci-gli.c
->>>> +++ b/drivers/mmc/host/sdhci-pci-gli.c
->>>> @@ -26,6 +26,9 @@
->>>> #define   GLI_9750_WT_EN_ON           0x1
->>>> #define   GLI_9750_WT_EN_OFF          0x0
->>>>=20
->>>> +#define SDHCI_GLI_9750_GM_BURST_SIZE                0x510
->>>> +#define   SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT     GENMASK(17, =
-16)
->>>> +
->=20
-> Please move the definition of 0x510 register before the definition of =
-0x540 register.
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-Sure, I can move it.
-
-> i.e.
->=20
-> #define   GLI_9750_MISC_TX1_DLY_VALUE    0x5
-> #define   SDHCI_GLI_9750_MISC_SSC_OFF    BIT(26)
->=20
-> +#define        SDHCI_GLI_9750_GM_BURST_SIZE              0x510
-> +#define          SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT   =
-GENMASK(17, 16)
-> +
-> #define SDHCI_GLI_9750_TUNING_CONTROL            0x540
-> #define   SDHCI_GLI_9750_TUNING_CONTROL_EN          BIT(4)
-> #define   GLI_9750_TUNING_CONTROL_EN_ON             0x1
->=20
->>>> #define SDHCI_GLI_9750_CFG2          0x848
->>>> #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
->>>> #define   GLI_9750_CFG2_L1DLY_VALUE    0x1F
->>>> @@ -629,6 +632,11 @@ static void gl9750_hw_setting(struct =
-sdhci_host *host)
->>>>=20
->>>>   gl9750_wt_on(host);
->>>>=20
->>>> +  /* clear R_OSRC_Lmt to avoid DMA write corruption */
->>>> +  value =3D sdhci_readl(host, SDHCI_GLI_9750_GM_BURST_SIZE);
->>>> +  value &=3D ~SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT;
->>>> +  sdhci_writel(host, value, SDHCI_GLI_9750_GM_BURST_SIZE);
->>>> +
->=20
-> I recall that sdhci_reset() resets the 0x510 register to its default =
-value.
-> So please test this by removing the card and reinserting the card =
-again, and
-> see if the value still matches expectations. If not, perhaps the above =
-code
-> can be added to gli_set_9750().
-
-I will double check this before sending out a V2 that addresses your =
-earlier comment.
-
-Thanks for the review,
-Matt
-
->=20
-> Best regards,
-> Ben Chuang
->=20
->>>>   value =3D sdhci_readl(host, SDHCI_GLI_9750_CFG2);
->>>>   value &=3D ~SDHCI_GLI_9750_CFG2_L1DLY;
->>>>   /* set ASPM L1 entry delay to 7.9us */
->>>=20
->=20
-> ________________________________
->=20
-> Genesys Logic Email Confidentiality Notice:
-> This mail and any attachments may contain information that is =
-confidential, proprietary, privileged or otherwise protected by law. The =
-mail is intended solely for the named addressee (or a person responsible =
-for delivering it to the addressee). If you are not the intended =
-recipient of this mail, you are not authorized to read, print, copy or =
-disseminate this mail.
->=20
-> If you have received this email in error, please notify us immediately =
-by reply email and immediately delete this message and any attachments =
-from your system. Please be noted that any unauthorized use, =
-dissemination, distribution or copying of this email is strictly =
-prohibited.
-> ________________________________
-
-
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
