@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-222533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKQpIO8+pWm36gUAu9opvQ
-	(envelope-from <stable+bounces-222533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 08:40:31 +0100
+	id MITPJgg/pWm36gUAu9opvQ
+	(envelope-from <stable+bounces-222534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 08:40:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E71C1D4103
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 08:40:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FCA1D411A
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 08:40:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 631C0303E2F6
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 07:37:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1AAD302C5CB
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 07:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E05E38553D;
-	Mon,  2 Mar 2026 07:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A2D3859C2;
+	Mon,  2 Mar 2026 07:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="Yu6lHSvH"
+	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="S+lcLrGS"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-76.freemail.mail.aliyun.com (out30-76.freemail.mail.aliyun.com [115.124.30.76])
+Received: from out30-77.freemail.mail.aliyun.com (out30-77.freemail.mail.aliyun.com [115.124.30.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98420383C84;
-	Mon,  2 Mar 2026 07:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4A830C618;
+	Mon,  2 Mar 2026 07:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772437041; cv=none; b=PZRI2lvaxU6OcSb8aimVYIXUyu+JMjdMIL/Ry9QbUrRID85AiiNfiRrCMasyG9IiPaJhlVXGnw2w2kJT7oY6Qz13P5zRoGy9hOvSXIr2J1QpphchES7emgeggWSsEQ5XCtzGTVZrX/SMVKV6drBKxJSj5wa6rCunBXyc9I+ajPA=
+	t=1772437042; cv=none; b=oIyBJQaN23ERdvS5zGqT/7NP2taRoAIQ/2sxP2jLyeubQGc0YHtuZbnz2MGinjI5segb3PWFXRW/jI8VY4/NPXudCd4j2IZsL86AxEvF5kfda8Lq0bH1asv7l7gF1xRttuxz6u9AZMFcT/gaP2g88hJ3I9A8l50jmcxgECXvDVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772437041; c=relaxed/simple;
-	bh=/Ak/8butzfWPVAMmnWQ+bEf9wyueuDou4auueWLjXlo=;
+	s=arc-20240116; t=1772437042; c=relaxed/simple;
+	bh=Ff41Zes6jf50ZyzjrXCM9kt3tblMrdZ4M4R8vN5saZ8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k+zGBeeOxfGirp8bvLnJ3qMqV3Q3sLLK/R8WtY6Z0YyESfBzfXGMVu6ngJGpS022g4N9kXBJuaPYmCUPg3OFNDWZBewf41l71RnC4BY3vVjYXBD+4efhdvXJk/7gp3aDb49dY+JfYfZlvKziVfjTdzJLh+4rJFM/tMbq5I4pK08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=Yu6lHSvH; arc=none smtp.client-ip=115.124.30.76
+	 MIME-Version; b=eGT+/qjTO3DEMzBACOf+0rbuL0jzKX4TVbrOnx0Oxxx/wgH7lcoggm+GCiF6gT80AjvrZQOP46HL1f8UyThv7vYMKkyEQalfNu0Iq/rofDUtsc2qE9EvlLqFVOlHXfzNe5Nuq0j4MvKAXKndK8E9tyD0e9mE7OKWup57ruh0pFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=S+lcLrGS; arc=none smtp.client-ip=115.124.30.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=aliyun.com; s=s1024;
-	t=1772437036; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=2juYv6kGAaXC300qzkC93wjo3j/CiglNV95eZLqzBhs=;
-	b=Yu6lHSvHFx6awE7CLMCWgTuI9otZBzFhZhqpsgy8ZFBlIaj9CT6BWNFqXCKa454Hqf84aRqLri5lrLGBXLyQdJzR1xB9RrMxlIatqKJSAaMU9/5Pr9IzWroVDY/2MdDGDkqu8pO5PEUZWVLFsaKNoqhEnYEr03HwQhYAp3cROUs=
-Received: from China-team(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0X-2840U_1772437035 cluster:ay36)
+	t=1772437038; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=W5bB1/y6hbLBBi7VUi+Ckh0OiWFLTDJMfuSqAZO0h5w=;
+	b=S+lcLrGSXwlr0mz/sMG0YgwiqKekUoMGzSYr2x95Y/NYRHWqHe7JJWXkApibLoyum4Hwm+LEEJ9+ekPGsQWxWuxqjyadsCU+Rgb3araHcBofDENlXhllIO1brPRKLY7TuU/jDXXZdTD2D2mZ/IXAcZ6FJN3Uur+hEQ5ZMj+kNLA=
+Received: from China-team(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0X-2840m_1772437036 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 02 Mar 2026 15:37:16 +0800
+          Mon, 02 Mar 2026 15:37:17 +0800
 From: Ruohan Lan <ruohanlan@aliyun.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: edumazet@google.com,
 	dsahern@kernel.org,
 	netdev@vger.kernel.org,
 	Ruohan Lan <ruohanlan@aliyun.com>
-Subject: [PATCH 6.6.y 2/3] net: dst: introduce dst->dev_rcu
-Date: Mon,  2 Mar 2026 15:36:29 +0800
-Message-Id: <20260302073630.988982-3-ruohanlan@aliyun.com>
+Subject: [PATCH 6.6.y 3/3] net: use dst_dev_rcu() in sk_setup_caps()
+Date: Mon,  2 Mar 2026 15:36:30 +0800
+Message-Id: <20260302073630.988982-4-ruohanlan@aliyun.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260302073630.988982-1-ruohanlan@aliyun.com>
 References: <20260302073630.988982-1-ruohanlan@aliyun.com>
@@ -70,12 +70,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[aliyun.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[aliyun.com:s=s1024];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222533-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222534-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[google.com,kernel.org,vger.kernel.org,aliyun.com];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -91,114 +91,145 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[aliyun.com:mid,aliyun.com:dkim,aliyun.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 0E71C1D4103
+X-Rspamd-Queue-Id: 39FCA1D411A
 X-Rspamd-Action: no action
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit caedcc5b6df1b2e2b5f39079e3369c1d4d5c5f50 ]
+[ Upstream commit 99a2ace61b211b0be861b07fbaa062fca4b58879 ]
 
-Followup of commit 88fe14253e18 ("net: dst: add four helpers
-to annotate data-races around dst->dev").
+Use RCU to protect accesses to dst->dev from sk_setup_caps()
+and sk_dst_gso_max_size().
 
-We want to gradually add explicit RCU protection to dst->dev,
-including lockdep support.
+Also use dst_dev_rcu() in ip6_dst_mtu_maybe_forward(),
+and ip_dst_mtu_maybe_forward().
 
-Add an union to alias dst->dev_rcu and dst->dev.
-
-Add dst_dev_net_rcu() helper.
+ip4_dst_hoplimit() can use dst_dev_net_rcu().
 
 Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250828195823.3958522-2-edumazet@google.com
+Link: https://patch.msgid.link/20250828195823.3958522-6-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Minor context conflict resolved. ]
+[ Adjust context ]
 Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
 ---
- include/net/dst.h | 16 +++++++++++-----
- net/core/dst.c    |  2 +-
- net/ipv4/route.c  |  4 ++--
- 3 files changed, 14 insertions(+), 8 deletions(-)
+ include/net/ip.h        |  7 +++++--
+ include/net/ip6_route.h |  2 +-
+ include/net/route.h     |  2 +-
+ net/core/sock.c         | 16 ++++++++++------
+ 4 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/dst.h b/include/net/dst.h
-index ea3b050f8b38..af2a0810f23d 100644
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -24,7 +24,10 @@
- struct sk_buff;
- 
- struct dst_entry {
--	struct net_device       *dev;
-+	union {
-+		struct net_device       *dev;
-+		struct net_device __rcu *dev_rcu;
-+	};
- 	struct  dst_ops	        *ops;
- 	unsigned long		_metrics;
- 	unsigned long           expires;
-@@ -571,9 +574,12 @@ static inline void skb_dst_update_pmtu_no_confirm(struct sk_buff *skb, u32 mtu)
- 
- static inline struct net_device *dst_dev_rcu(const struct dst_entry *dst)
+diff --git a/include/net/ip.h b/include/net/ip.h
+index d8bf1f0a6919..ff63b1835be8 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -458,9 +458,12 @@ static inline unsigned int ip_dst_mtu_maybe_forward(const struct dst_entry *dst,
+ 						    bool forwarding)
  {
--	/* In the future, use rcu_dereference(dst->dev) */
--	WARN_ON_ONCE(!rcu_read_lock_held());
--	return READ_ONCE(dst->dev);
-+	return rcu_dereference(dst->dev_rcu);
-+}
-+
-+static inline struct net *dst_dev_net_rcu(const struct dst_entry *dst)
-+{
-+	return dev_net_rcu(dst_dev_rcu(dst));
- }
+ 	const struct rtable *rt = container_of(dst, struct rtable, dst);
+-	struct net *net = dev_net(dst->dev);
++	struct net *net;
++	const struct net_device *dev;
+ 	unsigned int mtu;
  
- static inline struct net_device *skb_dst_dev_rcu(const struct sk_buff *skb)
-@@ -598,7 +604,7 @@ static inline struct net *skb_dst_dev_net(const struct sk_buff *skb)
++	dev = dst_dev_rcu(dst);
++	net = dev_net_rcu(dev);
+ 	if (READ_ONCE(net->ipv4.sysctl_ip_fwd_use_pmtu) ||
+ 	    ip_mtu_locked(dst) ||
+ 	    !forwarding) {
+@@ -474,7 +477,7 @@ static inline unsigned int ip_dst_mtu_maybe_forward(const struct dst_entry *dst,
+ 	if (mtu)
+ 		goto out;
  
- static inline struct net *skb_dst_dev_net_rcu(const struct sk_buff *skb)
- {
--	return dev_net_rcu(skb_dst_dev(skb));
-+	return dev_net_rcu(skb_dst_dev_rcu(skb));
- }
+-	mtu = READ_ONCE(dst->dev->mtu);
++	mtu = READ_ONCE(dev->mtu);
  
- struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
-diff --git a/net/core/dst.c b/net/core/dst.c
-index ac67706e5f87..744592cbbd24 100644
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -152,7 +152,7 @@ void dst_dev_put(struct dst_entry *dst)
- 		dst->ops->ifdown(dst, dev);
- 	WRITE_ONCE(dst->input, dst_discard);
- 	WRITE_ONCE(dst->output, dst_discard_out);
--	WRITE_ONCE(dst->dev, blackhole_netdev);
-+	rcu_assign_pointer(dst->dev_rcu, blackhole_netdev);
- 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
- 			   GFP_ATOMIC);
- }
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index fcabacec89c7..a4f8cd48ca45 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1042,7 +1042,7 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
- 		return;
+ 	if (unlikely(ip_mtu_locked(dst))) {
+ 		if (rt->rt_uses_gateway && mtu > 576)
+diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
+index 392232fcd703..dca39485e672 100644
+--- a/include/net/ip6_route.h
++++ b/include/net/ip6_route.h
+@@ -333,7 +333,7 @@ static inline unsigned int ip6_dst_mtu_maybe_forward(const struct dst_entry *dst
  
+ 	mtu = IPV6_MIN_MTU;
  	rcu_read_lock();
--	net = dev_net_rcu(dst->dev);
-+	net = dst_dev_net_rcu(dst);
- 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
- 		lock = true;
- 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
-@@ -1340,7 +1340,7 @@ static unsigned int ipv4_default_advmss(const struct dst_entry *dst)
- 	struct net *net;
- 
- 	rcu_read_lock();
--	net = dev_net_rcu(dst->dev);
-+	net = dst_dev_net_rcu(dst);
- 	advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
- 				   net->ipv4.ip_rt_min_advmss);
+-	idev = __in6_dev_get(dst->dev);
++	idev = __in6_dev_get(dst_dev_rcu(dst));
+ 	if (idev)
+ 		mtu = idev->cnf.mtu6;
  	rcu_read_unlock();
+diff --git a/include/net/route.h b/include/net/route.h
+index 27c17aff0bbe..af1a9ec559b2 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -363,7 +363,7 @@ static inline int ip4_dst_hoplimit(const struct dst_entry *dst)
+ 		const struct net *net;
+ 
+ 		rcu_read_lock();
+-		net = dev_net_rcu(dst->dev);
++		net = dst_dev_net_rcu(dst);
+ 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
+ 		rcu_read_unlock();
+ 	}
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 0e52847c57f8..d9e6084b33e9 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2440,7 +2440,7 @@ void sk_free_unlock_clone(struct sock *sk)
+ }
+ EXPORT_SYMBOL_GPL(sk_free_unlock_clone);
+ 
+-static u32 sk_dst_gso_max_size(struct sock *sk, struct dst_entry *dst)
++static u32 sk_dst_gso_max_size(struct sock *sk, const struct net_device *dev)
+ {
+ 	bool is_ipv6 = false;
+ 	u32 max_size;
+@@ -2450,8 +2450,8 @@ static u32 sk_dst_gso_max_size(struct sock *sk, struct dst_entry *dst)
+ 		   !ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr));
+ #endif
+ 	/* pairs with the WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
+-	max_size = is_ipv6 ? READ_ONCE(dst_dev(dst)->gso_max_size) :
+-			READ_ONCE(dst_dev(dst)->gso_ipv4_max_size);
++	max_size = is_ipv6 ? READ_ONCE(dev->gso_max_size) :
++			READ_ONCE(dev->gso_ipv4_max_size);
+ 	if (max_size > GSO_LEGACY_MAX_SIZE && !sk_is_tcp(sk))
+ 		max_size = GSO_LEGACY_MAX_SIZE;
+ 
+@@ -2460,9 +2460,12 @@ static u32 sk_dst_gso_max_size(struct sock *sk, struct dst_entry *dst)
+ 
+ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
+ {
++	const struct net_device *dev;
+ 	u32 max_segs = 1;
+ 
+-	sk->sk_route_caps = dst_dev(dst)->features;
++	rcu_read_lock();
++	dev = dst_dev_rcu(dst);
++	sk->sk_route_caps = dev->features;
+ 	if (sk_is_tcp(sk))
+ 		sk->sk_route_caps |= NETIF_F_GSO;
+ 	if (sk->sk_route_caps & NETIF_F_GSO)
+@@ -2474,13 +2477,14 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
+ 			sk->sk_route_caps &= ~NETIF_F_GSO_MASK;
+ 		} else {
+ 			sk->sk_route_caps |= NETIF_F_SG | NETIF_F_HW_CSUM;
+-			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dst);
++			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dev);
+ 			/* pairs with the WRITE_ONCE() in netif_set_gso_max_segs() */
+-			max_segs = max_t(u32, READ_ONCE(dst_dev(dst)->gso_max_segs), 1);
++			max_segs = max_t(u32, READ_ONCE(dev->gso_max_segs), 1);
+ 		}
+ 	}
+ 	sk->sk_gso_max_segs = max_segs;
+ 	sk_dst_set(sk, dst);
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(sk_setup_caps);
+ 
 -- 
 2.43.0
 
