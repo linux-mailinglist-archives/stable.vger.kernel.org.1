@@ -1,166 +1,138 @@
-Return-Path: <stable+bounces-222642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAKZFCG4pWkiFQAAu9opvQ
-	(envelope-from <stable+bounces-222642-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 17:17:37 +0100
+	id uOGBKv69pWn8FQAAu9opvQ
+	(envelope-from <stable+bounces-222643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 17:42:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB461DC926
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 17:17:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1EA01DD152
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 17:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7E4E30396B3
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 16:11:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E32F7303B7C8
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 16:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A1341C0AA;
-	Mon,  2 Mar 2026 16:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD653E5576;
+	Mon,  2 Mar 2026 16:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PD5EYLbp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9h+xb8e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E594014A7
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 16:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EDC32AAA0
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 16:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772467912; cv=none; b=NJagBQm6kK67WVOaEY40bCXwhX2hvZI6BG0gurYFWRJaxxeWJh4nAkzwKnN5zP+A4B/POOq31V+rix+q50jxTgJhQRQQmjA8v0W38efvjIan8wKU1uH/RS3XdiAp4PCDpS8n3XxUSGVeCi+25q4GM8DOaYdEXgqjAnmDpZFsNIA=
+	t=1772468745; cv=none; b=jlsa8hEuTppBirP4l2OtwKgo/j5eZ8HsL8mQ1kS+HiptNi/ewf82PkpO+1XlzoymuCvuuja5PcMEpRM8XeVe9Oj6URav96Ri3acRTZ4+QnmpseD5iOy9VkkTG/LiYuoI4QxVaFXIVFtDCx4GUq9ZvG8hhRQgOCAn2c/o1jVRCpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772467912; c=relaxed/simple;
-	bh=FdNYlROhuINV1ZK5m4jv48YEZrLmzMvdmZd2mlMdZ8s=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NHV9i9NrfM3hGiGRluRpN5DunXZS9sy04MNbnnCJ72s+BjajsLfi62csQ/osLKZAsKTi5nEBY4QvvUygt954YxKzlNMzFrB2QCiNsU51v7oeu9iuE4GE1ZL8efdx7+FG5Bf4A+vMp1maWhVnVEk7LX4mbiv+1+fdF409J3OYpwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PD5EYLbp; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae44db60c2so16768645ad.2
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 08:11:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772467910; x=1773072710; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DXjiZiaUu0ZaFdaT6kkKBQZZcQF/ZcN9DW8r7pZ6DfI=;
-        b=PD5EYLbp77xsWYMKmVMivgOa4rBabOdWds7eZdc+aQg/UMDjS/GQKq4COeKKiXqupr
-         rOzpJSuAhRlc6FKIIpdZuEOwcU/NAWeN8uuVIpjLbov0oIahdjIqyT0fL9BfFf9emwDb
-         KXOq6satPMlcte95vEjoA45NDqHvtZZyPkFI/76LzObms5uwyDFwE0bEYh7AByNv4xJS
-         Uuyc2/y6vYIAINa17XZtsnmeRb+3WNlLDNPOi0LcwiZpqOscDa/GUrcmBrunJgU/o8E9
-         vMmNjCUjydcAwsrvyoJ1vAdlM7PxV7Sq68NucOpL14hudIXtBncXEH2pgdY5xHI0gHpk
-         rsSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772467910; x=1773072710;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DXjiZiaUu0ZaFdaT6kkKBQZZcQF/ZcN9DW8r7pZ6DfI=;
-        b=QVGhCdGdibtLXo0PYUl+Ewi4bU1i/YLXW3GHIX8+3gPX/dUKgApSUHDWJW35SBNrnm
-         TQ/oAX4hajz54Fjxvjmd99b1Pw7HSTE7FoRLSut95Qxw95jIqM86mlboa0mniQNQCQ9a
-         K1AKwxsy7756JfpwMbh8bIMas4o3pkRwNif/V/QIDab4GJomOEjwkagciPl7G1EYp5j1
-         5bSCmYWeq6D18TA6ca9CAb1E+WPNnkDzyFl1hCVn8Rza/KKDOpJxij17JWauqZzs2s32
-         mcSeFccIl0bkVqe+b1xW+rjTGt5iApB8Y9jmNJO/rySfZT6zfA98lLvV5sZLi+gpylUF
-         6g/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVI9w0FDnyZZ9dI1BArxhSJDhAmqHluqUU7VNWwRFFM3hcrTsCl6vcVBCtJ2KoXUh09eBJhd1Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8uK5Y0x1FUdHBvaqAXz8fSh5Ey26scxkICXO5fKhgBLJnoT9E
-	g2TJuLvGBqyu0YmXm/yuwNMcGmCTIEHiDnOODHWyIAPPMNmdwaZgOtRrWSA2DVv/ltBtU647R1G
-	EBvegUA==
-X-Received: from pllx22.prod.google.com ([2002:a17:902:7c16:b0:2ab:194e:4d54])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ccc8:b0:2ae:5628:a170
- with SMTP id d9443c01a7336-2ae5628afe4mr34644475ad.46.1772467910234; Mon, 02
- Mar 2026 08:11:50 -0800 (PST)
-Date: Mon, 2 Mar 2026 08:11:48 -0800
-In-Reply-To: <CAO9r8zP-chd6VcS5zGgU=g_AWAu9ytqnxzemQ9BKdV61rRHimQ@mail.gmail.com>
+	s=arc-20240116; t=1772468745; c=relaxed/simple;
+	bh=Eb8a6VSy1LD+wZus7oxbv1V7UbuB13SEtCAWl8sK5Rs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IPJlf6I4A+pyzRIjIPv+B/zGsdbOkJY4zsmG9KVhiQSslxMg8+Z4kD2ypcHCU7VqC6srNjC0FOE34a7/ImTxzV/1+EEyvb1xTh83suoy3O5M5BMyMgBjwSZ/eejO9Ce+5doqtdILzwBVzWlTd2s0aBcubwR/AWtTC3NJAV+DuHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9h+xb8e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A67C2BCB6
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 16:25:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772468745;
+	bh=Eb8a6VSy1LD+wZus7oxbv1V7UbuB13SEtCAWl8sK5Rs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=k9h+xb8eJhYENAoTxdOjfdmmT5H8l08A7yTozBIYdAfg9/IVHIOfww1qt7UzTA1ep
+	 njDJns/J5lsGxvetLBbnj6Gfmayq5t0C0zwSWuKySxd87dvKvuI81LqVbUPtaBvOOp
+	 EaYfIFzWHyZpMH17thQAn72OHw66NNN8fPzcO2saMaahPMFiTr5X3ssXVoX6cs6gUQ
+	 tleo3PR7XdglI4fMLyOdW1uBtpV7EBJeevobhh9OVqa77yUiRxhUUPhOujkuN4kx9P
+	 aCC0XlBTB9g1Fc3Qiuyazakt28XPdiHYlyH3dx5RsMHHE6IzDjS7TqHvHTQzr4kRt/
+	 i2wiQ6MwWvMgQ==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-389fa352b0eso62320991fa.1
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 08:25:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV9xcU5qbIpgBxYSWnS3yRI9BtC+ctcFB3EIs0z0VQ2lYl8j9YVrzHkwfaGm4N42dOZHKl0nq0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyblWsTFVhqkyYVoaDL6PvknJJng7VrSF4HL6d/36l3AJw2g2zZ
+	VIp/BngsrGnGx8bV16NmGiYJSgqOlkGG+CVmE+mY7rGYSIk2MpmaSmrTyz1nCcZQIGwwX+i0A1P
+	9JTCDR8v6FcfwWk67K+ug/H/jpnjqRkM=
+X-Received: by 2002:a2e:a541:0:b0:38a:27e:b91b with SMTP id
+ 38308e7fff4ca-38a027ebc18mr98604811fa.30.1772468743960; Mon, 02 Mar 2026
+ 08:25:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260224223405.3270433-1-yosry@kernel.org> <20260224223405.3270433-17-yosry@kernel.org>
- <aaIxtBYRNCHdEvsV@google.com> <CAO9r8zMRkFfxm_zs88uc_ijARrU4XxHQQZAQFmC_t0H9qdbM-A@mail.gmail.com>
- <aaI_XogE98GvJjAU@google.com> <CAO9r8zP-chd6VcS5zGgU=g_AWAu9ytqnxzemQ9BKdV61rRHimQ@mail.gmail.com>
-Message-ID: <aaW2xBf0uxHS4wyN@google.com>
-Subject: Re: [PATCH v6 16/31] KVM: nSVM: Unify handling of VMRUN failures with
- proper cleanup
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: BFB461DC926
+MIME-Version: 1.0
+References: <20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org>
+ <CANiq72kkxS9ACvR52q03AN+WdFV96cK+tvejnnDXKZTKuKZH9g@mail.gmail.com>
+ <CAJ-ks9kiWZr=82sztLfYqtp-fvsQ2QTgTYqNg5hSsZMKCsvjZA@mail.gmail.com>
+ <CANiq72m8Bx=1s1+_OFxE=PFOjKrtuh_uhsomTA9VwQ4=Fz4d0g@mail.gmail.com>
+ <CAJ-ks9=zWmVnspkfCqPH=+-_qZ0YZVyNrs2xMvRRvEmr-mNMcQ@mail.gmail.com>
+ <CAJ-ks9nMHtAaLc_LHOWqa_hTRqVcBNpGsaC49VFh2O+_3AoY+A@mail.gmail.com>
+ <CANiq72m43pEweeWdg0qiGH8Yq6MyMJnFYsxhfYHeZu6LPxFPUQ@mail.gmail.com> <CAJ-ks9kk_zqO-7JiaWGPP8+EOsC_iutGEOW7hZtmKTF6W4oh7w@mail.gmail.com>
+In-Reply-To: <CAJ-ks9kk_zqO-7JiaWGPP8+EOsC_iutGEOW7hZtmKTF6W4oh7w@mail.gmail.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Mon, 2 Mar 2026 11:25:06 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9=uZLf=n9ascyU6pEr47A4mPRF-GGuJbFKkCSiC6rnQeg@mail.gmail.com>
+X-Gm-Features: AaiRm50sKf-ZskhYVnsfYIbvDoXSFDPEzRiFUURdb9O4ScNGGcq5XD0_a7AS2rE
+Message-ID: <CAJ-ks9=uZLf=n9ascyU6pEr47A4mPRF-GGuJbFKkCSiC6rnQeg@mail.gmail.com>
+Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: define scripts
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, David Gow <davidgow@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Fiona Behrens <me@kloenk.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: F1EA01DD152
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222642-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222643-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[collabora.com,kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,kloenk.dev];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[tamird@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,hcr0.pg:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026, Yosry Ahmed wrote:
-> > > As for refactoring the code, I didn't really do it for SMM, but I
-> > > think the code is generally cleaner with the single VMRUN failure
-> > > path.
-> >
-> > Except for the minor detail of being wrong :-)
-> 
-> I guess we're nitpicking now :P
-> 
-> > My preference is to completely drop these:
-> >
-> >   KVM: nSVM: Unify handling of VMRUN failures with proper cleanup
-> >   KVM: nSVM: Refactor minimal #VMEXIT handling out of nested_svm_vmexit()
-> >   KVM: nSVM: Call nested_svm_init_mmu_context() before switching to VMCB02
-> >   KVM: nSVM: Call nested_svm_merge_msrpm() from enter_svm_guest_mode()
-> >   KVM: nSVM: Call enter_guest_mode() before switching to VMCB02
-> >
-> > > I am fine with dropping the stable@ tag from everything from this
-> > > point onward, or re-ordering the patches to keep it for the missing
-> > > consistency checks.
-> >
-> > And then moving these to the end of the series (or at least, beyond the stable@
-> > patches):
-> >
-> >   KVM: nSVM: Make nested_svm_merge_msrpm() return an errno
-> 
-> I don't think there's much value in keeping this now, it was mainly needed for:
-> 
-> >   KVM: nSVM: Call nested_svm_merge_msrpm() from enter_svm_guest_mode()
-> 
-> But I can keep it if you like it on its own.
-
-Hmm.  I don't have a strong preference.  Let's skip it for now.  As much as I
-dislike boolean returns, 0/-errno isn't obviously better in this case, and we
-can always change it later.
-
-> >   KVM: nSVM: Drop nested_vmcb_check_{save/control}() wrappers
-> 
-> This one will still be needed ahead of the consistency checks, specifically:
+On Fri, Jan 30, 2026 at 3:25=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
+> wrote:
 >
-> > KVM: nSVM: Add missing consistency check for hCR0.PG and NP_ENABLE
-> 
-> As we pass in L1's CR0, and with the wrappers in place it isn't
-> obviously correct that the current CR0 is L1's.
+> On Fri, Jan 30, 2026 at 3:23=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > On Fri, Jan 30, 2026 at 9:15=E2=80=AFPM Tamir Duberstein <tamird@kernel=
+.org> wrote:
+> > >
+> > > Applied to rust-analyzer-next. Thanks all!
+> >
+> > Please see the other thread (and please reset the branch to e.g.
+> > v6.19-rc7 for now -- we should avoid giving linux-next unneeded
+> > conflicts).
+>
+> Ack, done.
 
-Oh, gotcha.  I'm a-ok keeping that one in the stable@ path, it's not at all
-scary.
+This is now applied to `rust-analyzer-next` for real. Thanks all!
 
