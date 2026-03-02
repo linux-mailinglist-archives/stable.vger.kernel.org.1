@@ -1,123 +1,77 @@
-Return-Path: <stable+bounces-222553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ALVIKh5apWlp+AUAu9opvQ
-	(envelope-from <stable+bounces-222553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:36:30 +0100
+	id uO9FA7JcpWlc+QUAu9opvQ
+	(envelope-from <stable+bounces-222555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:47:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182351D5A20
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:36:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654551D5BE8
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 111273024182
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 09:36:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CCF23055DE6
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 09:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E72A38F638;
-	Mon,  2 Mar 2026 09:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66BC37703E;
+	Mon,  2 Mar 2026 09:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HG76QltA";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Xd0fVBn6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gNLr1yVQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF63838E5F9
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 09:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD0B430BA1
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 09:45:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772444187; cv=none; b=Z4VwBaJDXMjpfc22CYyXSv90Ax5/wLkYj6YXGsDI2OYebrBLN5doeoBXZ++WDSLmGTjlxkQedX048vMWQDY2QOh3AsWGM0rI9xjqII9esKVZDwpZb0Gh7D9mwy7dlhiNmFRVrmG479ltcp2ioYi38Hbt1oha05uTaWJ3DgVZ7SU=
+	t=1772444724; cv=none; b=f6otqSZz/9Zp0zZ98Z4a4/LR4ZEHO5gNk5G3r1EoQeYaWLDPx0oowUR8dNhB3rqbQXz/O8k7GEMAmnxldMHS8ir4DYeUDiyriH6KIR2PKw0T7dasn6TbixB8WKAcVU5q3oEWg/QNhL0WUzWZcRNqILwcvqYqo2RrDKerUMT4t2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772444187; c=relaxed/simple;
-	bh=W/+pREnN5e1VxpAxRAovD9rwDlgzw5wWA1UEsPKKJ3A=;
+	s=arc-20240116; t=1772444724; c=relaxed/simple;
+	bh=LoTwO3EeQS+4MjHXcMfxYZRi+8u5iJZGZBFTvyVt7Vg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p+eqdBMc8YaknwU4nSj7sD5ilBbeNbVcuE0ZXXNDmTTCublb5JJ6WF3xpLaYZfxvWfhzc5RWP0DSDj0sQZKBhDTiBz95KBWgmJ9YzNwNSs5ZBoYBVDdlJ0fiYo1m5j8nLvy5fLpFME0b6Hf3tzdxmEcDLMU6lfDP00tt+Q1XZN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HG76QltA; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Xd0fVBn6; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6229JZ843742101
-	for <stable@vger.kernel.org>; Mon, 2 Mar 2026 09:36:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=W/+pREnN5e1VxpAxRAovD9rw
-	Dlgzw5wWA1UEsPKKJ3A=; b=HG76QltAhcQoR3rz/gGVhRMMFMawMLGtmyEzEBQ/
-	RVn1dkPrPp7w7+lOS4gOYluBGrH8G9B0Ngrw/1d9yHFBn1SWYWj3APSGXjtue+Tp
-	nc3pwToZyyB+TBlRFFCcEJ9JHLZuGPSTVNBMP5d2oVXnuslbXtlxqXQnFEbW8jTc
-	4J+G78idwZ1/QAaJjZo9kc5sMYjuafub4CcrbJ5Q0Loiq3SmF72vDJEnBzfn+l/n
-	npLhRwUs5fShAO9at6WAiQICN6QPr+ylP7ZQw9+aMIAhngBJuqNL4G02CZSxeCMd
-	dw/LsSencxfv2Wl7lxzCaV68ySRF4iORUxyheU89jbltZQ==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cn7trg266-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 02 Mar 2026 09:36:26 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8c71304beb4so2730700285a.3
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 01:36:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772444185; x=1773048985; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=W/+pREnN5e1VxpAxRAovD9rwDlgzw5wWA1UEsPKKJ3A=;
-        b=Xd0fVBn6bDSxnJBYVTLBhfrPrwS3N3yODnQBom9+Pc5NuEkAgEV+MEUEsJdbs0WtF1
-         x2a8J1eD9A0pa9D/JpdlW9oPKWqn+idFva3gcwJgBiMtqVIWX10XezcHyS7QPxFatEcE
-         dAS+dBIKiyrJ+hC9B7RCZxLqheZFQNKqYozZs4e1KXKxDAaXtg6ibYcIRHeb7aK6ruMt
-         O3i584BvgPVdH+lF1WNPOIyLCJaLwrzvhhgZHPoREYk48Bkr2mTTHpNpg5TXpCIORMS9
-         pxE16l+rr65Evj/NMDc4huTWFlm2K4mvP27F8R/3Xzim+5eJLPCy5jg2SEMAaNgBmbN9
-         ls5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772444185; x=1773048985;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W/+pREnN5e1VxpAxRAovD9rwDlgzw5wWA1UEsPKKJ3A=;
-        b=HpFZUOIvkHf6Sequx8+/5qmLUhyswEJEo7cfX3Usvgg+Ra/7QqkiU7HFT6JPuKk3tz
-         KNqOvkK3iuXRQcvIrODOIWcaYKUnwMn5Bf5+qTNQNp20czi/GAJT0MyTCJPICCsGQ56I
-         ulUUbqad7F4KmM5cLQVJ0J+BuuYn3DXcFPmkon4jlyataCEiEVRRT4fjl+g5W2+RcRsE
-         Hgt9nz4uRira0otj5TwGELv+1rGZ6eKGXOgfyQkBWIrytrCUutT9hqzXPlO/jZSOFAQR
-         RQb/BgSgx8zpkvP6ivF1aYWr6BmcRXrteS9LqFrO/XSja6PKs8eGNVGHY4Ezaqtv99nc
-         yuYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0bwZgnXB/y3GT3XktLImzlb5Qd57S2GaqMqvmEDvt3xHYo2+4sjPZx/N3b1NlZvqx3czFZ1Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRjqEAV74zyNIJ0A1OIqAJ7i0ipt0/2F92AKgxvZtqJKAVo/IN
-	+m+QZO2/Yr2SzreqRZMw3P458Y2yq+RT+rlEVUB43LLZudWViIoay8yG8GnlYrhVmD0d0TfBS3k
-	vafm4aocoCd1C36jPS6zMW5q3dg4ov4rReJwCsiiUXdplDj7oT1is/pVun8s=
-X-Gm-Gg: ATEYQzwSe+HBFp5M64mFHN3e6gitzc1JQU5WuJF9I3ZIUFKHnW4wBwNJ3BzysKEPTPE
-	ij9nsHuqlj3iI7MpDo2VTx4BHDgo+Uv3lgGRDgh75eod1zPMvYGNUAJ015tU1JzlPhKnbfJTo2Y
-	pHNTLTiFbYk2XaeLmUl1yOKphT+iUOBmOUjJsQj6Mf0ScdIn7giLFytOQgkINWSWIkTxMMS1TVy
-	yVhuEmGiu+VUw2zJmDEkA8obxZDyPkpUVKFvZerNgmEObW/kNQXKshroD9Wxycm2zssj7L/5u0q
-	BeZY9sL0whStyKYtFjzguU92Xy+ZTn2ox8HDPguyvcuKIgCS7hCEObMNRBH+m/U7po696UWNEEg
-	wCT1CDjvodaPZFDNLI5M3sjTp+Yapjb/r8Nd1
-X-Received: by 2002:a05:620a:370c:b0:8ca:4288:b175 with SMTP id af79cd13be357-8cbc8e1d882mr1703928085a.55.1772444184976;
-        Mon, 02 Mar 2026 01:36:24 -0800 (PST)
-X-Received: by 2002:a05:620a:370c:b0:8ca:4288:b175 with SMTP id af79cd13be357-8cbc8e1d882mr1703923985a.55.1772444184259;
-        Mon, 02 Mar 2026 01:36:24 -0800 (PST)
-Received: from oss.qualcomm.com ([86.121.162.109])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd6f2f88sm381265025e9.2.2026.03.02.01.36.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 01:36:23 -0800 (PST)
-Date: Mon, 2 Mar 2026 11:36:21 +0200
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: Rob Clark <robin.clark@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Abel Vesa <abelvesa@kernel.org>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] (no cover subject)
-Message-ID: <nu4hcmawoq6kzug7lx7pmhp3f4tep2ttpo3mugdk5fg2mviqn2@p7nfdcllvnbb>
-References: <20260302-glymur-fix-dp-bindings-reg-clocks-v2-0-e99b6f871e3b@oss.qualcomm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=HuI0BPqpoouywH5cW1ilrj93ZCJHi9wfuIcsaNoZUjyQQwR2aN00JlVELjCSfZtveSMTt77DGtvwO2QSouAnNfqTTU4+0pjhZr7dmvKvRRvmwMcsSTEpFHffXY8tJakJMpG8nO6eBxRtxW5awBGxXJZA/teKubH5kkcIXM9brCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gNLr1yVQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772444722;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yPtVXkP8KA5UW6r/Q7mKGuCwCo9/GepMlst5FcQcDt4=;
+	b=gNLr1yVQEH9pSmkjefc6F8ihjtqNBuniQZ/OfRakV/TkIgxEAWDXgWkcZWCGmCag3w9uLY
+	XMjfD7KlKTJqD/YQFaRiZZf7Ezg319TYs7ezKXRyMsUOGh+o9j768tSmpNbcMmjWerNpCF
+	N8++g9oY9QNAdCReYJ8V0J/MUt9GTHM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-14-o2-0LF2ZO9ichR68xRjLMw-1; Mon,
+ 02 Mar 2026 04:45:18 -0500
+X-MC-Unique: o2-0LF2ZO9ichR68xRjLMw-1
+X-Mimecast-MFC-AGG-ID: o2-0LF2ZO9ichR68xRjLMw_1772444717
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A7C4E1956058;
+	Mon,  2 Mar 2026 09:45:17 +0000 (UTC)
+Received: from fedora (unknown [10.45.224.37])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 983871800598;
+	Mon,  2 Mar 2026 09:45:14 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon,  2 Mar 2026 10:45:17 +0100 (CET)
+Date: Mon, 2 Mar 2026 10:45:12 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Paulo Andrade <pandrade@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: Re: FAILED: Patch "x86/uprobes: Fix XOL allocation failure for
+ 32-bit tasks" failed to apply to 6.18-stable tree
+Message-ID: <aaVcKHr3GMmOIdvM@redhat.com>
+References: <20260301011537.1669125-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -126,71 +80,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260302-glymur-fix-dp-bindings-reg-clocks-v2-0-e99b6f871e3b@oss.qualcomm.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAyMDA3OSBTYWx0ZWRfX8/WMh7V06V1i
- UyUuPxhNasvGa1JyF6zUu9P8luiZ2uH6XK/jDw/3Y7lUrDH7Dl+ikpEeA6PdGKC56RMLo1pp3je
- mwRNQZMCTcGkDUnLbi0PG4RM0Ydq/zsVwfQFfYZAK9M72sio3iXHCsZJLHetLN09GqTE6lhSZzJ
- wOCpP9e6TZ/da/kYVx2Xlf62AZi8VpNyIo/6C8sgG6eTBgkxojXdXjq1M70w1YwwjgUXgiMU2uw
- 34PBjsPIZXmhQ2Nnp9+PigBvUujzhMzWqi/mjJoPJ4k+82u6ysrm+17fkBkkQWDmdfoAFFZzVEk
- KWX2IHJ58h65XcKixv+QkAXAPGuwyO8seymAb62T+Cx7tYoJadWzpQQTV/XYqMqWOgfZg9/+K6Q
- lCqDhlTkFciikdb7KO2A29QZ+EHhv77XDVlo2xjg8D6XfsYpB8XxVWJmmXK+iHiEE5i9U2xrV+Q
- vLuzrpT0Ud1sXDJc8ng==
-X-Authority-Analysis: v=2.4 cv=TNhIilla c=1 sm=1 tr=0 ts=69a55a1a cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=oauzzCmhM186DRC0Y2yWPg==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=Zo8LqNs0DLUyECXxfzQA:9 a=CjuIK1q_8ugA:10
- a=VxAk22fqlfwA:10 a=IoWCM6iH3mJn3m4BftBB:22 a=FO4_E8m0qiDe52t0p3_H:22
-X-Proofpoint-ORIG-GUID: fIOEVXxi8g8mmH25225-qsNETJKlP5cg
-X-Proofpoint-GUID: fIOEVXxi8g8mmH25225-qsNETJKlP5cg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_02,2026-02-27_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 bulkscore=0 lowpriorityscore=0
- malwarescore=0 spamscore=0 phishscore=0 suspectscore=0 impostorscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
- definitions=main-2603020079
+In-Reply-To: <20260301011537.1669125-1-sashal@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-222555-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222553-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,linux.intel.com,suse.de,ffwll.ch,quicinc.com];
-	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oss.qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abel.vesa@oss.qualcomm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[oleg@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 182351D5A20
+X-Rspamd-Queue-Id: 654551D5BE8
 X-Rspamd-Action: no action
 
-On 26-03-02 11:33:18, Abel Vesa wrote:
-> Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-> ---
-> Changes in v2:
-> - Fixed the reg ranges in the example node in qcom,glymur-mdss.yaml as well.
-> - Link to v1: https://patch.msgid.link/20260227-glymur-fix-dp-bindings-reg-clocks-v1-1-99f7b42b43aa@oss.qualcomm.com
+On 02/28, Sasha Levin wrote:
+>
+> The patch below does not apply to the 6.18-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-Ignore this please.
+I never know how to react to "failed to apply to stabe" emails. I am going
+to send [PATCH 6.18.y] in reply to this email.
+
+Is it OK?
+
+Oleg.
+
+> Thanks,
+> Sasha
+> 
+> ------------------ original commit in Linus's tree ------------------
+> 
+> From d55c571e4333fac71826e8db3b9753fadfbead6a Mon Sep 17 00:00:00 2001
+> From: Oleg Nesterov <oleg@redhat.com>
+> Date: Sun, 11 Jan 2026 16:00:37 +0100
+> Subject: [PATCH] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
+> 
+> This script
+> 
+> 	#!/usr/bin/bash
+> 
+> 	echo 0 > /proc/sys/kernel/randomize_va_space
+> 
+> 	echo 'void main(void) {}' > TEST.c
+> 
+> 	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
+> 	gcc -m32 -fcf-protection=branch TEST.c -o test
+> 
+> 	bpftrace -e 'uprobe:./test:main {}' -c ./test
+> 
+> "hangs", the probed ./test task enters an endless loop.
+> 
+> The problem is that with randomize_va_space == 0
+> get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
+> just return the "addr == TASK_SIZE - PAGE_SIZE" hint, this addr is used
+> by the stack vma.
+> 
+> arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
+> in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
+> vm_unmapped_area() happily returns the high address > TASK_SIZE and then
+> get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
+> check.
+> 
+> handle_swbp() doesn't report this failure (probably it should) and silently
+> restarts the probed insn. Endless loop.
+> 
+> I think that the right fix should change the x86 get_unmapped_area() paths
+> to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
+> CONFIG_X86_X32_ABI=y, in_x32_syscall() falsely returns true in this case
+> because ->orig_ax = -1.
+> 
+> But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
+> the probed task is 32-bit to make in_ia32_syscall() true.
+> 
+> Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
+> Reported-by: Paulo Andrade <pandrade@redhat.com>
+> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
+> Cc: stable@vger.kernel.org
+> Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
+> ---
+>  arch/x86/kernel/uprobes.c | 24 ++++++++++++++++++++++++
+>  include/linux/uprobes.h   |  1 +
+>  kernel/events/uprobes.c   | 10 +++++++---
+>  3 files changed, 32 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+> index 7be8e361ca55b..619dddf54424e 100644
+> --- a/arch/x86/kernel/uprobes.c
+> +++ b/arch/x86/kernel/uprobes.c
+> @@ -1823,3 +1823,27 @@ bool is_uprobe_at_func_entry(struct pt_regs *regs)
+>  
+>  	return false;
+>  }
+> +
+> +#ifdef CONFIG_IA32_EMULATION
+> +unsigned long arch_uprobe_get_xol_area(void)
+> +{
+> +	struct thread_info *ti = current_thread_info();
+> +	unsigned long vaddr;
+> +
+> +	/*
+> +	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
+> +	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
+> +	 * vm_unmapped_area_info.high_limit.
+> +	 *
+> +	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=y case,
+> +	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
+> +	 * (falsely) returns true because ->orig_ax == -1.
+> +	 */
+> +	if (test_thread_flag(TIF_ADDR32))
+> +		ti->status |= TS_COMPAT;
+> +	vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
+> +	ti->status &= ~TS_COMPAT;
+> +
+> +	return vaddr;
+> +}
+> +#endif
+> diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+> index ee3d36eda45dd..f548fea2adec8 100644
+> --- a/include/linux/uprobes.h
+> +++ b/include/linux/uprobes.h
+> @@ -242,6 +242,7 @@ extern void arch_uprobe_clear_state(struct mm_struct *mm);
+>  extern void arch_uprobe_init_state(struct mm_struct *mm);
+>  extern void handle_syscall_uprobe(struct pt_regs *regs, unsigned long bp_vaddr);
+>  extern void arch_uprobe_optimize(struct arch_uprobe *auprobe, unsigned long vaddr);
+> +extern unsigned long arch_uprobe_get_xol_area(void);
+>  #else /* !CONFIG_UPROBES */
+>  struct uprobes_state {
+>  };
+> diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+> index a7d7d83ca1d78..dfbce021fb027 100644
+> --- a/kernel/events/uprobes.c
+> +++ b/kernel/events/uprobes.c
+> @@ -1694,6 +1694,12 @@ static const struct vm_special_mapping xol_mapping = {
+>  	.mremap = xol_mremap,
+>  };
+>  
+> +unsigned long __weak arch_uprobe_get_xol_area(void)
+> +{
+> +	/* Try to map as high as possible, this is only a hint. */
+> +	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
+> +}
+> +
+>  /* Slot allocation for XOL */
+>  static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+>  {
+> @@ -1709,9 +1715,7 @@ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+>  	}
+>  
+>  	if (!area->vaddr) {
+> -		/* Try to map as high as possible, this is only a hint. */
+> -		area->vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
+> -						PAGE_SIZE, 0, 0);
+> +		area->vaddr = arch_uprobe_get_xol_area();
+>  		if (IS_ERR_VALUE(area->vaddr)) {
+>  			ret = area->vaddr;
+>  			goto fail;
+> -- 
+> 2.51.0
+> 
+> 
+> 
+> 
+
 
