@@ -1,35 +1,35 @@
-Return-Path: <stable+bounces-222686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WF+DC6nmpWlLHwAAu9opvQ
-	(envelope-from <stable+bounces-222686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:36:09 +0100
+	id uG6FMF/npWlLHwAAu9opvQ
+	(envelope-from <stable+bounces-222688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:39:11 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB96C1DEDCE
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:36:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57BFC1DEE46
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 20:39:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4CB653067791
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 19:35:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2D4430F26DB
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 19:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5635B47DD53;
-	Mon,  2 Mar 2026 19:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1020747DD77;
+	Mon,  2 Mar 2026 19:36:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B5922A7E9;
-	Mon,  2 Mar 2026 19:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6069647D947;
+	Mon,  2 Mar 2026 19:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772480139; cv=none; b=g98++u5DTex4Np/C98snAjy8FInT9eRQF/ocu8rDyFvK1PkyRXT27Emw0s6H68B2niHnIq85/+K51nsEqm92pvBeF8tAvMhBPShw9I3zJM2agGiO8VvNR3gpNuBGXxzh3VJvfTTMZcaooy0NIBT+0yCF0NQR/BWteXuPpuImTlI=
+	t=1772480159; cv=none; b=FpXy/BPXOSu2sxgE8wgjRkYrL5NI3EjMRFi0WT8LlAYSZuwpT+WT15n5A07T2H4Lljb4frcGa3i7xU6zxrKUUo1/X9+Kq3wnv/T9g7A2IdTlRBehVJl+BSBTlLJYVrNV3kexjy7KJlAM5eX1dVAHpLnu9R/y+CRLgsFcf+A/RRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772480139; c=relaxed/simple;
-	bh=JmPatbRSJs8KfGL70UYgCJ7fty+9YCYHlvDV4uciwNo=;
+	s=arc-20240116; t=1772480159; c=relaxed/simple;
+	bh=I5QDcEjSvGawaG6txekGRTAwT1WxyMrFYMcq5xfdwPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CF+qQxeNE24m2nic3PkYt5CN5bSLUvJyMrMohS9pFIZDiK8hRt5YZjiqpJHEj2GnDUryFhzT0yKkhwRuTsVA3GBp7OgouBN7nnxK8uYMT1y4ButlpZW8ELAWs2Y53W7ElGJUG8JXkiB8FzFkh0Wz5dfSx/DFN1D5oRL/PnyNbE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+	 MIME-Version; b=nrNFqbIwF4a5mEwleW3M5KJEL5UQXiy8pw3qyA5e+jn1Zfs2XY/aac3i+Is4vskAoIBgpWy+w+N3+l1nzS8dX6X1r/c+6PIO36f9L2UFjeEV7sIusXBq+rp3jRLkssFENJnmeYGtzFa/zizmEbrOlGSrx5CoMBkfvYVGSb/fEJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
 From: Brett A C Sheffield <bacs@librecast.net>
@@ -53,14 +53,13 @@ Cc: linux-kernel@vger.kernel.org,
 	hargar@microsoft.com,
 	broonie@kernel.org,
 	achill@achill.org,
-	sr@sladewatkins.com,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.1 000/533] 6.1.165-rc2 review
-Date: Mon,  2 Mar 2026 19:35:25 +0000
-Message-ID: <20260302193529.3276-1-bacs@librecast.net>
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/956] 6.12.75-rc2 review
+Date: Mon,  2 Mar 2026 19:35:31 +0000
+Message-ID: <20260302193545.3315-1-bacs@librecast.net>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260302160943.2522184-1-sashal@kernel.org>
-References: <20260302160943.2522184-1-sashal@kernel.org>
+In-Reply-To: <20260302160918.2520730-1-sashal@kernel.org>
+References: <20260302160918.2520730-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,44 +67,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CB96C1DEDCE
+X-Rspamd-Queue-Id: 57BFC1DEE46
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222686-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222688-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[librecast.net];
+	TO_DN_NONE(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[librecast.net];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.921];
+	NEURAL_HAM(-0.00)[-0.913];
+	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,librecast.net:mid,librecast.net:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,librecast.net:mid]
 X-Rspamd-Action: no action
 
-# Librecast Test Results
+# Librecast Test Results (FAIL)
 
 020/020 [ OK ] liblcrq
 010/010 [ OK ] libmld
 120/120 [ OK ] liblibrecast
 
-CPU/kernel: Linux auntie 6.1.165-rc2-00533-g3e17bb28624f #1 SMP PREEMPT_DYNAMIC Mon Mar  2 16:57:50 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+CPU/kernel: Linux auntie 6.12.75-rc2-gfac02d83d8b6 #1 SMP PREEMPT_DYNAMIC Mon Mar  2 17:10:35 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+Builds, boots and passes network tests.  Fails to poweroff.
+
+Appears to be caused by upstream commit 4589712e0111352973131bad975023b25569287c
+
+See bisection log for 6.6.128-rc2.
 
