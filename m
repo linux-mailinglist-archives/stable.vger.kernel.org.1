@@ -1,230 +1,257 @@
-Return-Path: <stable+bounces-222550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OkkG9RWpWmh9gUAu9opvQ
-	(envelope-from <stable+bounces-222550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:22:28 +0100
+	id 2Il/KJlYpWnj9wUAu9opvQ
+	(envelope-from <stable+bounces-222551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:30:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C1ED1D577E
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:22:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2509B1D58FA
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:30:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C5404300A25A
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 09:22:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05D193025F5D
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 09:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4E438D009;
-	Mon,  2 Mar 2026 09:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1185038F625;
+	Mon,  2 Mar 2026 09:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m9StlWFC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GoRcKCM7";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="HAQXKj1L"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A9E19E992;
-	Mon,  2 Mar 2026 09:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8973638F259
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 09:28:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772443327; cv=none; b=EeGi+0ZhgLsoaunI88JHMsQ+CTCaxb96D+9AafuiIO8PraEbnFqyCo1KjS/X3y2evDZ6yGLrlEqaUGjqyt0vl8dKG6ljH4lgaikYZyknOc7weF9PnHfRHjCul5HMN3KBmLujb6SC4DKdj9vPKVchkAuVvIm4pP4fPx7JFkiX+Ss=
+	t=1772443724; cv=none; b=Qc8XnzLKl5/lLL6Mru2fYdyAWyHvJNY+CBAAFz1NcazJyJyqlhtLAGHzlIa2+se3h8cKTqn3ThoWNeKChOIzlph7fHQEq9u/as7+heRsFiQzVlXbOrw2oV0JzXD+qJZkOCu6r+pR6K6urMiQkcxy3DByTNPpnnP3v9xHHxGDBMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772443327; c=relaxed/simple;
-	bh=+Nd0XzZ3rH/cvBvTNRRmkHy3yGtEPXKKdWv1M/SbkpQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tjm4j2HjTvd7Vi4+DTrUxIYEByIKN6fmLSRjGPhB5mYopQ69euXPWs2j4fwd+5t4gu0ZdnN3xJgbm6gOV9JH9CJsmj1N3+v3VsH2JaNF8EgvLTHbQj914UvpqM6AcrHpV60EfdoLdZDJVIrk6GHs95/LWmQjexA1dMNES5MCqTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m9StlWFC; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772443326; x=1803979326;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+Nd0XzZ3rH/cvBvTNRRmkHy3yGtEPXKKdWv1M/SbkpQ=;
-  b=m9StlWFCMESvmO25WTJwnhw0C1ZI7aRz0lFSyYIspaTUqh/3XCeu1zhD
-   /a0OMf+Sgfawg2NNGIZCy9Ir6Ha50I8vXckspIRdDQn/rk/BSpuEsDjBq
-   qsZBkeRB8OVIseCcdKsBQLhPLVompbIWWJQV68DUpz+vdZTxPrgJULefM
-   b3pHndfOKxO3gEZvoYCND2ASIfXvnQb+wOH1ABwa/yt8BBHleS6gvTqe7
-   U9C8pxRjI1ecq6M3py7rzSjdagxmuV9+yDPtTK7Ro4JPuBI+2ohWORBCM
-   5GgtuODCR3SfcMl2mh/42PN5J3cDmcvKUdK//lAtiGoyNjD2yHmp/3TIH
-   g==;
-X-CSE-ConnectionGUID: QXXnSvrgTFmF4TrQZp6d/g==
-X-CSE-MsgGUID: q1pQyluXQ8mDGy/deSuw4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="73511408"
-X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; 
-   d="scan'208";a="73511408"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 01:22:05 -0800
-X-CSE-ConnectionGUID: 1o4TvgzNQKmKGdRP9C7DPg==
-X-CSE-MsgGUID: 0TbvCP3IRqeSGCNvDHqtPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; 
-   d="scan'208";a="217619396"
-Received: from abityuts-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.89])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 01:22:03 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 2F46E11F8CF;
-	Mon, 02 Mar 2026 11:22:30 +0200 (EET)
-Date: Mon, 2 Mar 2026 11:22:30 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Cc: cy_huang@richtek.com, Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Bryan Wu <cooloney@gmail.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	roger-hy.wang@mediatek.com, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	laurent.pinchart@ideasonboard.com
-Subject: Re: [PATCH v3] media: v4l2-flash: Enter LED off state after file
- handle closed
-Message-ID: <aaVW1ukZ8pGit5Us@kekkonen.localdomain>
-References: <1106c60cb96786ade1f60c692e566c408d7d8174.1768209230.git.cy_huang@richtek.com>
- <f5980192-a878-47ed-9b38-8607fb7abdc2@gmail.com>
- <aZwhSj4jhEOUKZ3x@kekkonen.localdomain>
- <b600e509-a58c-42e4-91bc-d5222638b48f@gmail.com>
+	s=arc-20240116; t=1772443724; c=relaxed/simple;
+	bh=283ITlUTpw+pnnWf8GlTk3ilsVM0BLNnI2fU0ZTZpAs=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=oHkyrxO8uJsVysl8RM46vNNThEHJH/I/m/i3EfW5rJKATO93yAh0wQA6LZilMU7nB+i1U6pl4jlLVK7Ot+KYMdDimYdcMOuEcRI0JuWKuy3Zo5T/wHVy0EtfL6Xp2jldbWCWHezUVVLYZ+2UMgGO5k0VhfB9r7Ylgg9JgTuPlJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GoRcKCM7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=HAQXKj1L; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62294lYU1291371
+	for <stable@vger.kernel.org>; Mon, 2 Mar 2026 09:28:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ht8a1jegW8k/H9PVxZasCwKoJs5NEx57HRzB+8Y1KVo=; b=GoRcKCM7831kuUhp
+	I5iRKWUanqqzJFpMCKE4KqTqTkEiVQz8Oq4LpbM+OJtjJu9kqs+IqAq+aMB4u47h
+	irngferz5Ea6YPaLiPrYNznw33L33vSJhrzYPzWFkAcWTSi43pfFnMj2s6KhKyPB
+	VaJFxFU+CEoQpoGlVu9xQ6d8wyLzyjfL8WNDzUd1Z21CpgxFbFWwSmdso+1T8QZJ
+	5syQ7xhsSAhJkuQ1stVjxQO1+8H5+EmoE/hiGDAiXU5FeyMPvf9MYsLRUeK0utc+
+	ukYtUiRDUWhz0cYj82yh5zEG2xquF1tBGfaV3z07jNuGyAOIrFpU36Obt8ozCa0P
+	Af823Q==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cn7ku02y1-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 02 Mar 2026 09:28:42 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-35982c5940cso1055365a91.1
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 01:28:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772443721; x=1773048521; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ht8a1jegW8k/H9PVxZasCwKoJs5NEx57HRzB+8Y1KVo=;
+        b=HAQXKj1LZOf/bkOBpFO8RSxF3p1pu8TmGDm3kL12okUxlmnuF80uTwxY2M5gKNvY0X
+         +pVhCJrmkADX04+Hk9zFILjk432uE2clk2fLiIxm9aYviPcHwKkshsA0gmsqwDoQHzVU
+         d434cJmCi+Q53psdcOUMmIn7CNK+JqXcesvuKJTUIal/F8uxD2F7O/4heqsXdoTguPpc
+         FjVoqL7a/C8gU/Lzz4p9KJHgesp5CUnBxfxlBbcpyeSX8xRmeF4a2QKNMJWFEJY77Hau
+         vbcolF4tK6+p+S00PBsIoeXuwpN9aQGKqWnuCQA3siucghQdNsEMkYuHJiLrX/MDVRIH
+         Yapg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772443721; x=1773048521;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ht8a1jegW8k/H9PVxZasCwKoJs5NEx57HRzB+8Y1KVo=;
+        b=rIHqVQn2X8CgSr7URUYDK/Ltt2sioF5+vl861ApoCvsapc0LitAAXTg85gtmY6qGA5
+         Uzx/0KJf7C8Qpi2NVW3HPgYkNGAvkOBieZnoPd8VZ7uCjyEkJmzLxIkVpvEuhTHJCV0F
+         n2+pOoIUGtEGwTYhPU6a30DdNWc5Jp+9ysXzy7w4Eoht4YkyGESHOKFDnDr9ySXHgpNM
+         cdW8ZoB7V0PhsMYQuyOhzks7L3vqrwQ1K7Hq7shc0euLz7pVPtp1BzN2yzmvtWBhEl2J
+         5BsYyzv9tKhIOlUasNKZbhUiFOwtz5vvpLS+zIXLQGk0jzXYZ+X7PdULSlDf4Mng3jw1
+         z9zg==
+X-Forwarded-Encrypted: i=1; AJvYcCVSiUTMPOaGAdeHHZfHfBxJY/4AgIaJz3uG1NhqRj6fN/W8903NwfRxBFWnA5/a0+CXGdrAk9M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzM5G+K16fyvhNsoMV8fKiC+anAKwRZhPnUBU0jtyppZPu5KXEv
+	/3tqOIXUYpOCnZWBh94eD9NytnGtIdZBVAhaKR0VZLuA0pPQrJVUkOuSYMYMdVOFrNds1H8Z7si
+	7HBsOHceNpZKLN0F6bD2BKmlvk8VC+Y9njtVaAMhRrbEwUmBmCLQhqDjoHo6XbT9kD9k=
+X-Gm-Gg: ATEYQzyjJO/SuDxyyfFaS30zBk8Q+8yZZHsjKwN817Eqb+eM+UHA1tbz5Df3W4eGXLE
+	hKdgFLjud3Jrtoy3pEUk1va+5cqIMRP0KiI/+zpxYN8mFy+xzwxTcxZTnDOT/yw8vcpzDOtZHtH
+	HD7cXPyQGZw7l3fzpXrm55tFf62p/lAlMbsrol0wl0+pcwdfTFCUgDrwkSd4aRHcOcQdWfUb3+J
+	WtRPdqgJl3tklxpSDU+DHbVAGnt+weZaadFnB/bd35FguW9L4alwSGwqrh15+jiUonE+UY64VRT
+	zhTK7hEW33/RdvWglBbI10R00y/VvKEM6mIYdWRbpkg2jHWNOksPirXyH0g0e2T2A0dxWRoKAhH
+	Bo7nzp4ZrtFCC2Ib4Nul9IEIGfKqcGK4UIke6aLTVYNMuGBYAtg==
+X-Received: by 2002:a17:90a:fc4d:b0:33b:bed8:891c with SMTP id 98e67ed59e1d1-35965cc9d6amr10190642a91.23.1772443721270;
+        Mon, 02 Mar 2026 01:28:41 -0800 (PST)
+X-Received: by 2002:a17:90a:fc4d:b0:33b:bed8:891c with SMTP id 98e67ed59e1d1-35965cc9d6amr10190617a91.23.1772443720773;
+        Mon, 02 Mar 2026 01:28:40 -0800 (PST)
+Received: from [10.217.222.63] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3597dfea2e7sm6307474a91.12.2026.03.02.01.28.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Mar 2026 01:28:40 -0800 (PST)
+Subject: Re: [PATCH v3 1/4] soc: qcom: ice: Fix race between qcom_ice_probe()
+ and of_qcom_ice_get()
+To: Manivannan Sadhasivam <mani@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc: manivannan.sadhasivam@oss.qualcomm.com,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson
+ <ulf.hansson@linaro.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Abel Vesa <abelvesa@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
+        stable@vger.kernel.org
+References: <20260223-qcom-ice-fix-v3-0-6ca5846329f7@oss.qualcomm.com>
+ <20260223-qcom-ice-fix-v3-1-6ca5846329f7@oss.qualcomm.com>
+ <h2uhrsjlvovjcj7k2ckpkgrhpuwm6biun4ueq7kyzcm4hqcsjr@y3iiqx2vo6s2>
+ <lrhali5ukotcmxqp4yb2g2jvbrhlanpqc67cpvluex4l63skne@ln3j4xn6qfvx>
+From: Neeraj Soni <neeraj.soni@oss.qualcomm.com>
+Message-ID: <ea659db4-54df-1892-f04a-74a8f62c7dec@oss.qualcomm.com>
+Date: Mon, 2 Mar 2026 14:58:34 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b600e509-a58c-42e4-91bc-d5222638b48f@gmail.com>
+In-Reply-To: <lrhali5ukotcmxqp4yb2g2jvbrhlanpqc67cpvluex4l63skne@ln3j4xn6qfvx>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=V4NwEOni c=1 sm=1 tr=0 ts=69a5584a cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=xC54U6B0g8_6vy67BIAA:9 a=QEXdDO2ut3YA:10
+ a=rl5im9kqc5Lf4LNbBjHf:22
+X-Proofpoint-GUID: WlmgK_h5LY0OTCpfkKxQCbWsZaTVNSaL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAyMDA3OSBTYWx0ZWRfXz4EflHsTLwv2
+ 27+r+EW4iDbhGa/vnko1pv05U3XZA4D+CbaYe8VCvKDYhiGdOXHQgZSVGAHr/+uteYCnYZAj44q
+ knAIL353BtFpwJgS1F4JJirpxl1g5PiPYSEWLYphQs+Z4cE8PsWKofU9cEqNscjaDEefaJoVLgp
+ 1Xgw7jB+nf7GXPmOkcs6djgq9ssMqqcJ+tb245CvFQFIAkenLxwfZknyp34KHiqoXLujl6LKsmp
+ q3/Qz8ivxOHShkcGBQ3AytNe1OV+Gj/H4IqZwkUXj+1lppXroapgIIa+dmV2bpZwtNzQM8KyJjw
+ t+ZFTNKKByJbwzMd6Hkp4o7QyyqvcBclMtngZ6lUYZkXcSjoYbyP5LFpf1WCkbjjASceE+Hr8Ya
+ 0JcFsx1zl7BLJ9WQ7mKQ/tl8vkSNGyxCVq/u8j7gIc/83aGrIzApPaOjs38P53DL42QKkC4JC9w
+ CQTwU9d7dvN1wUnvYcA==
+X-Proofpoint-ORIG-GUID: WlmgK_h5LY0OTCpfkKxQCbWsZaTVNSaL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-02_02,2026-02-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603020079
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222550-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	HAS_ORG_HEADER(0.00)[];
-	FREEMAIL_CC(0.00)[richtek.com,kernel.org,gmail.com,samsung.com,mediatek.com,vger.kernel.org,ideasonboard.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-222551-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,kekkonen.localdomain:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7C1ED1D577E
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[neeraj.soni@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 2509B1D58FA
 X-Rspamd-Action: no action
 
-Hi Jacek,
 
-On Mon, Feb 23, 2026 at 07:32:16PM +0100, Jacek Anaszewski wrote:
-> Hi Sakari,
-> 
-> On 2/23/26 10:43, Sakari Ailus wrote:
-> > Hi Jacek,
-> > 
-> > On Sat, Feb 21, 2026 at 04:48:48PM +0100, Jacek Anaszewski wrote:
-> > > Hi ChiYuan,
-> > > 
-> > > On 1/12/26 10:20, cy_huang@richtek.com wrote:
-> > > > From: ChiYuan Huang <cy_huang@richtek.com>
-> > > > 
-> > > > To make sure LED enter off state after file handle is closed, initiatively
-> > > > configure LED_MODE to NONE. This can guarantee whatever the previous state
-> > > > is torch or strobe mode, the final state will be off.
-> > > > 
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 42bd6f59ae90 ("media: Add registration helpers for V4L2 flash sub-devices")
-> > > > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > > > ---
-> > > > Still cannot pass patch integration check, send v3 patch to fix all.
-> > > > 
-> > > > v3
-> > > > - Remove 'Reported-by' tag
-> > > > - Fix identation check for patch integration
-> > > > 
-> > > > v2
-> > > > - Fix commit message redudant space cause patch robot parsing error
-> > > > 
-> > > > Hi,
-> > > >     We encounter an issue. When the upper layer camera process is crashed,
-> > > > if the new process did not reinit the LED,  it will keeps the previous
-> > > > state whatever it's in torch or strobe mode
-> > > > 
-> > > > OS will handle the resource management. So when the process is crashed
-> > > > or terminated, the 'close' API will be called to release resources.
-> > > > That's why we add the initiative action to trigger LED off in file
-> > > > handle close is called.
-> > > > ---
-> > > >    drivers/media/v4l2-core/v4l2-flash-led-class.c | 6 ++++++
-> > > >    1 file changed, 6 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/media/v4l2-core/v4l2-flash-led-class.c b/drivers/media/v4l2-core/v4l2-flash-led-class.c
-> > > > index 355595a0fefa..46606f5cc192 100644
-> > > > --- a/drivers/media/v4l2-core/v4l2-flash-led-class.c
-> > > > +++ b/drivers/media/v4l2-core/v4l2-flash-led-class.c
-> > > > @@ -623,6 +623,12 @@ static int v4l2_flash_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
-> > > >    		return 0;
-> > > >    	if (led_cdev) {
-> > > > +		/* If file handle is released, make sure LED enter off state */
-> > > > +		ret = v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE],
-> > > > +				       V4L2_FLASH_LED_MODE_NONE);
-> > > > +		if (ret)
-> > > > +			return ret;
-> > > > +
-> > > >    		mutex_lock(&led_cdev->led_access);
-> > > >    		if (v4l2_flash->ctrls[STROBE_SOURCE])
-> > > > 
-> > > > base-commit: 8ac28a6642d1cc8bac0632222e66add800b027fa
-> > > 
-> > > The patch itself looks good, but while at it I started wondering
-> > > if we shouldn't move below STROBE_SOURCE access before the lock.
-> > > I don't see now, why we placed it there.
-> > > 
-> > > Adding Sakari.
-> > 
-> > Thanks for cc'ing me.
-> > 
-> > The behaviour this patch changes has been around for a decade or so. I
-> > wonder what breaks if we change it now. It works the same way as the sysfs
-> > LED API, too, and I think common behaviour between the two APIs was the
-> > reasoning back then as well.
-> 
-> The thing is that v4l2_flash_open() disables LED sysfs interface via
-> led_sysfs_disable() and v4l2_flash_close() enables it via
-> led_sysfs_enable(). led_sysfs_{enable|disable}() modify the state of
-> LED_SYSFS_DISABLE flag.
-> 
-> Therefore it is only the led_sysfs_{enable|disable}() API that needs to
-> be called under led_access lock, since the LED subsystem sysfs handlers
-> test the LED_SYSFS_DISABLE flag under the same lock, and return -EBUSY
-> in case it is set.
-> 
-> The call to v4l2_flash_close() is synchronized internally in V4L2 core
-> I believe.
-> 
-> Therefore I think that we can safely move the
-> "if (v4l2_flash->ctrls[STROBE_SOURCE])" condition before the lock.
-> 
-> Otherwise we would have to put this new v4l2_ctrl_s_ctrl() call,
-> added in this patch also under the lock because why not. It would spark
-> questions in the future asking how it is different from the above
-> "v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE]" case.
 
-My concern really is that this is not a bugfix but a change of an existing
-UAPI that's been out there for a decade. Such a change is likely to cause
-troubles to the users. Let's see what others think.
+On 2/24/2026 10:16 AM, Manivannan Sadhasivam wrote:
+> + Neeraj
+> 
+> On Mon, Feb 23, 2026 at 02:35:04PM -0600, Bjorn Andersson wrote:
+>> On Mon, Feb 23, 2026 at 01:32:52PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+>>> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+>>>
+>>> The current platform driver design causes probe ordering races with
+>>> consumers (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE
+>>> probe fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops
+>>> with -EPROBE_DEFER, leaving consumers non-functional even when ICE should
+>>> be gracefully disabled. devm_of_qcom_ice_get() doesn't know if the ICE
+>>> driver probe has failed due to above reasons or it is waiting for the SCM
+>>> driver.
+>>>
+>>> Moreover, there is no devlink dependency between ICE and consumer drivers
+>>> as 'qcom,ice' is not considered as a DT 'supplier'. So the consumer drivers
+>>> have no idea of when the ICE driver is going to probe.
+>>>
+>>> To address these issues, introduce a global ice_handle to store the valid
+>>> ICE handle pointer, and set during successful ICE driver probe. On probe
+>>> failure, set it to an error pointer and propagate the error from
+>>> of_qcom_ice_get().
+>>>
+>>> Additionally, add a global ice_mutex to synchronize qcom_ice_probe() and
+>>> of_qcom_ice_get().
+>>>
+>>> Note that this change only fixes the standalone ICE DT node bindings and
+>>> not the ones with 'ice' range embedded in the consumer nodes, where there
+>>> is no issue.
+>>>
+>>> Cc: <stable@vger.kernel.org> # 6.4
+>>> Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
+>>> Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+>>> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+>>> ---
+>>>  drivers/soc/qcom/ice.c | 44 +++++++++++++++++++++++++++-----------------
+>>>  1 file changed, 27 insertions(+), 17 deletions(-)
+>>>
+>>> diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
+>>> index b203bc685cad..3c3c189e24f9 100644
+>>> --- a/drivers/soc/qcom/ice.c
+>>> +++ b/drivers/soc/qcom/ice.c
+>>> @@ -113,6 +113,9 @@ struct qcom_ice {
+>>>  	u8 hwkm_version;
+>>>  };
+>>>  
+>>> +static DEFINE_MUTEX(ice_mutex);
+>>> +static struct qcom_ice *ice_handle;
+>>
+>> Did we get confirmation that in the UFS + SDCC case, there's only a
+>> single ICE instance per SoC?
+>>
+> 
+> Right now there is only a single instance per SoC. But Neeraj told me that
+> upcoming SoCs are going to have multiple instances. But I don't want to spend
 
--- 
-Kind regards,
+Yes and patches for same are under review here:
+https://lore.kernel.org/all/20260217052526.2335759-1-neeraj.soni@oss.qualcomm.com/
 
-Sakari Ailus
+> too much time on *upcoming* support, but rather fix the current
+> implementations.
+> 
+> Extending this to multiple instances would just require storing the ice_handle
+> with node name/address pair in xarray or in some other data structures.
+> 
+> - Mani
+> 
 
