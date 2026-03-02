@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-222596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EgzDr6RpWmREAYAu9opvQ
-	(envelope-from <stable+bounces-222596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:33:50 +0100
+	id gGrBK4uRpWmoDgYAu9opvQ
+	(envelope-from <stable+bounces-222597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:32:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939BB1D9D68
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:33:49 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441BA1D9D0F
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6191306295A
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:32:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2B2AA302525E
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED313FB061;
-	Mon,  2 Mar 2026 13:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B800D3FFAB8;
+	Mon,  2 Mar 2026 13:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OJ0ksvPW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bMuOsEER"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D890C317161
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 13:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885FF3FD12B
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 13:32:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772458340; cv=none; b=T0w3GS2KMPZbHy1wxp9+yKzJjVcy6UpFAofzEkFp9URHTtzOyF9gN25qPEi0JiMt6xuVJKSWI4fM8yIgzxmrp2DkZrZ2jCe2vj4HfQOO4gph1TgJxqXDd8PHpgSyt3hxzcPkeu1i1QHoK+GvAItgr4VQlUdbkbNmezFEWjyHJkc=
+	t=1772458343; cv=none; b=KWe2IK7CS2Jb1xfbDM+fR1vHJT5Lb/pQmLqQ9jTIyHAxLt+qWzBPVINxLaG13JlXYpspHRZmXb0xXbLBkXBzwP48t8gwXY/jbh+69/6oNVCACYSjsD7I4VyR22yXjHs0tYMyhWGzxcOfhmbFR0cGVn2J9v04Yp/3zGevn8x++1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772458340; c=relaxed/simple;
-	bh=/v9rUDNVeFCUg4ml76H2sT8dZY4AQ6D46+Mye12m2Wc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ethee814+TF/YSNYp5locSdyjcKuCbutFnjepMNBbetF6THyslhgvDWQM6z1ayfhy0wOm+1ZvWA6g8RjfhREaE8VKRFNlKEDDfSjsY6fNSsWCvsKCGYzCp0RDQqaGQaCaCWB1UGg0xTb8PqASbeFgleZN5SY9HY3ezhWN05qnak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OJ0ksvPW; arc=none smtp.client-ip=209.85.208.49
+	s=arc-20240116; t=1772458343; c=relaxed/simple;
+	bh=dyTNs9MprdyGfjoYTC7GCr6CogMkIxtooeEvuDiyWbI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Xe1dNOALM0x89xZz4S3Q/Z3WQEy7hC+hvjdKGGjaRlzlJ8mqt4iesKm4R3AIuyAcDME5vyhUg0X+00vmGpt5Kr+ZBYhcOeee1/Ot2JtjnOeGTeM/zBfo5OlPQtYG0RzCKQGcbLLY+3BEEely7dxtMOgd9KzzmzP+eOIUPsIRPcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bMuOsEER; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-65c0d2f5fe1so8894620a12.3
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 05:32:17 -0800 (PST)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-65fa79f5c98so621577a12.1
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 05:32:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1772458336; x=1773063136; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ovH8NF9OBNMsdXoNg2WPMRmni3UPoclCGTCz4c6VJFU=;
-        b=OJ0ksvPWbcy1OySYyoANO3mkzRiGUxZA9XLARWUl3iJWkybwmP5etn3JCrxQRKc8Go
-         4t4MrV25GYDQvOvBLDbYY/sBzjvxm/vvIWN3te0ouUahZWx4wRr0fTf48tOAzLxsvfJp
-         WEfqAV6Aqhi8Lctl0LXf2muGyhirpWSVDwnuMOKDY+Jqv0X5i3uznCyZ/Z8ZENoEy8Vf
-         W89ZeI7Q0fvuMpZhDARH6Ct32ht3aR5wQY2+k0et8p82Tn+zwxWQhotQVU8ZQMUU7o6O
-         yiNvDeehpDPRzE3ipBDhPnarzuntLyIF1K+bDAlEMbb6kB1zSWBhm3LiiebHGNSyYano
-         Sdbg==
+        d=linaro.org; s=google; t=1772458340; x=1773063140; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cjlHqPkPckP75emu98ViOC8jnSkyM/XQ9Lo/8u+sKmY=;
+        b=bMuOsEER8VbllsSHOl9CD/v23Onq9YEZWYMod6uNwtyvCMfLy+/GQgn6IayS/6MaT2
+         NRVHbzAFPvClqCs/bS/BIJblDv53Pr3aWZbq8JKslmXLswXhV7j+yFqbgXkhD/QMYnvN
+         DfrbBmJ2rJ2dh6ds8thDb7JJ7McN+6PyUbxGeKVnQpNsJo8ZBcHzhiAN46v4Lfd5HUVC
+         w9tDvJyNJI49HY4NiKYenvxLoWnEnQvDrMOWKDLuc8N6Yu2tz3VTk6DlidzAP+yIom5P
+         4bt9ZCm0ekiAVxsoS34rLMQgY41Jqp79qjP58UiF1U8zhuSDazgSFYQVZg2zz24uiSMd
+         3qew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772458336; x=1773063136;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ovH8NF9OBNMsdXoNg2WPMRmni3UPoclCGTCz4c6VJFU=;
-        b=lQ5noVjNsJcP7jU3oge5Nmivr5NYIRjHWj9rdqSQcCEPfFbAwVXY/okfQmnKyNM1Bv
-         EGl8KnPnYQru8uOyKSqxIVWFJE5B4jWtfZYTlHiMtVGwF6S7mvtIOaJxKi/mkFlQ5Tw5
-         SGE5leSvF1tyOsfUdBKkFw8T+Pws+jzNAvuW4FIUk5QeW2q/Qwq102D6NPeWzywV9hR6
-         Xgy28aip1iGUHP14KVME+gHU6gcVKMZLo51cdUO6/qw3bN/uWI+1XmJhDuwyjHrlGgde
-         sOMLViOHE2XMtMAVFzHSMglLZDNUYQR+tD8CXo9ywxqrP5ZIh754LnpoLytzisDRa8Lk
-         ecfw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSdg9NIDbwtveUdEqKWR5vvU5YOSbawHBkyFcAmUP5DAXA/Y5OS7qbgjFBBP1+bt4NhPkHcXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxpe4kfLYRaPxH6pkaTTSbcGKCGqKoTC6KOWRz+V6uguKthx/fJ
-	uPyoWLaN3yIn1M0aG5mfmGIgkbK/K7OE23S0gAKhWrUbsO9wKilx4l2Bv7orjF368HVcJRVnurA
-	amEf4driStg==
-X-Gm-Gg: ATEYQzw0QJKp5t448kpc55IFl99tzmQsChSPKLeGWerUImQpXDb4CatYK2Il0csPrTN
-	ZTwvye2NoibeJspNziOl+Jh59OL5BzS+cxiB0KvXqnLqLGBOuJ41p6nEZ+3duRalgiXTaQGykvD
-	bN3bQRHBGzQHSETplmHdHGoWOmbkR7+9GQr8nLqPBNtFQgV+cJCsuOupIj05G5yABA6KrDEdFhl
-	WUkr8OJuuG3qZbFrH47o8PqFaKBKS0SHWLe0OeNVx9VwYl0aTo3TtJiQwjOlIedyC/C6YHajlxB
-	PGEjzqdJ7bVfInVGhebphmVHCwunmyw2CaJDRqDyjf2mGEHO6y2nBNFEiDwpu/BLKd5Uhzhfpe5
-	Sc7AaJEBUHLv3s8gUP6MM3oSMy3A+Z+4HnbpV7rO31G/vP3ppvv/B+1auuF60dgar0aNU5n1EK9
-	V8theeIF06kbEEkYXa7tK2wUTmkXgJ4iCmT/XKZtwcLcayNop38oScj1DMDc8woa4Bw3LsWZahM
-	QjQwG0vkipyFzo=
-X-Received: by 2002:a05:6402:398b:b0:65f:a9f5:750b with SMTP id 4fb4d7f45d1cf-65fddaf6f25mr5895152a12.15.1772458335689;
-        Mon, 02 Mar 2026 05:32:15 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772458340; x=1773063140;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cjlHqPkPckP75emu98ViOC8jnSkyM/XQ9Lo/8u+sKmY=;
+        b=wM0t2MSskH3ZIBJbnB0anbal+1rN8ws/uXQmSs7zynpzeuYyBC8ezIo1HcSFkEFfAI
+         KPINgC30ioABVrQ6z5yqP/MvSjGUP2BPKaHZ58nbxu9IQTl3JbS/ALuBfTTPgb5gyCYx
+         sZNlJNjLVGmNkCrvKA2KLLjkr4rt/ymqRcEWprI8QyoO5JBH04uv2EAtcKmvoZuR0FbC
+         kjX/Q1JVwslQX07RbED35hWwuxNrY3TAXaZyF2cilXSNqEjQhK35+L1rikOfOgWxetMO
+         jvYgVc8ASHsDzuZaGfbnhRQvfyMSsL5DL/gGMvkKJfL9asVZK/A8hWqDO9hFWYBRWCZq
+         NMVg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGgfr9C+TxrRnCrOP6QSUqyYY3nTsxwSCn3IuMUDDmoS+hkaN1lq+XZId0Wd16kYF+vrVUUPA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMlxgCzY/Atr7MLBQCDuCw+xcJTBqC86kCyRL72oiHoiKcC+rL
+	ALArDDDz9B7uwGkiDdZZCbP8HC6HBSOsm6UyRnEynyI6RG5ntDzWXkipLntmXcll66w=
+X-Gm-Gg: ATEYQzz+86ELC9MEug+8H25pN+GvWGl1lfUSPGNmRa+KYvdTK9YMwyhDRE2ekH+CzXS
+	D0u7QWwaSE/vRkPWlG9bhb7EaBbHjNm++O+Y+1FANVO/tlil0e2elrV2muxA8aJmfeTQ0GKgxRM
+	J6RcT+2Dl61U7fDPw+E9Pw1Cim6qvrAwLPZ7/jET0wXoSzfEgL0GpYrIdSGcDlbVCmt69MkLB+w
+	iaLHYBltDlBqszgUt+GI1iQYUpE77okGZQKxvyoS6hvFjjDhXMtBQiiz+Rcr+4JjGDqfjIH9veR
+	3oIi5tktgqVvpyhg61Wnaw6z9nRDcrR0xDAQrZ9UMdXnLRkYhftNntgG1t2A9GtqfpkgONL38YC
+	WObP+rEdx2gclQNjNmBqoYaugZ5sjQuR8/+MSfJHqCk9CAf82bQg0R5oa9B79t2ub/XzPtzBwh8
+	mf6cyVu10AYTeTTp2ciqgG9LbCbnO2XxQqRgj3Z9VkJr6Mm7lzGA2O3inUUT0Xvzt6Tee4cwp0R
+	yrpg7ayfBnZhovaOkaFbRwblQ==
+X-Received: by 2002:a05:6402:1449:b0:658:a54c:d6f9 with SMTP id 4fb4d7f45d1cf-65fab6e90d3mr9715764a12.5.1772458339872;
+        Mon, 02 Mar 2026 05:32:19 -0800 (PST)
 Received: from puffmais2.c.googlers.com (221.210.91.34.bc.googleusercontent.com. [34.91.210.221])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65fabf6d1c6sm3282988a12.17.2026.03.02.05.32.14
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65fabf6d1c6sm3282988a12.17.2026.03.02.05.32.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 05:32:15 -0800 (PST)
+        Mon, 02 Mar 2026 05:32:19 -0800 (PST)
 From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Subject: [PATCH v3 00/11] power: supply: max17042: support Maxim MAX77759
- fuel gauge
-Date: Mon, 02 Mar 2026 13:31:59 +0000
-Message-Id: <20260302-max77759-fg-v3-0-3c5f01dbda23@linaro.org>
+Date: Mon, 02 Mar 2026 13:32:05 +0000
+Subject: [PATCH v3 06/11] power: supply: max17042: avoid overflow when
+ determining health
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,11 +89,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAFCRpWkC/23MQQ6CMBCF4auQrq2ZVqHgynsYFwVmYBKlpjUNh
- vTuFlaSuHwv+f5FBPSMQVyKRXiMHNhNeZwOhehGOw0ouc9baNAVaF3Jp52NMWUjaZBA55agVlW
- Hvcji5ZF43mq3e94jh7fzny0e1fr+70QlQRKBhdoasA1dHzxZ747OD2INRf2LzR7rjLGEFktSj
- SLY4ZTSF95xp/fkAAAA
-X-Change-ID: 20260226-max77759-fg-0f4bf0816ced
+Message-Id: <20260302-max77759-fg-v3-6-3c5f01dbda23@linaro.org>
+References: <20260302-max77759-fg-v3-0-3c5f01dbda23@linaro.org>
+In-Reply-To: <20260302-max77759-fg-v3-0-3c5f01dbda23@linaro.org>
 To: Hans de Goede <hansg@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
  Marek Szyprowski <m.szyprowski@samsung.com>, 
  Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, 
@@ -106,22 +104,22 @@ Cc: Peter Griffin <peter.griffin@linaro.org>,
  linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, 
  =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
- Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org
+ stable@vger.kernel.org
 X-Mailer: b4 0.14.3
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222596-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222597-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linaro.org:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -130,146 +128,48 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[andre.draszik@linaro.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable,dt];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uevent.name:url,sysfs.technology:url,linaro.org:mid,linaro.org:dkim,linaro.org:email,sysfs.online:url]
-X-Rspamd-Queue-Id: 939BB1D9D68
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:mid,linaro.org:dkim,linaro.org:email]
+X-Rspamd-Queue-Id: 441BA1D9D0F
 X-Rspamd-Action: no action
 
-Hi,
+If vmax has the default value of INT_MAX (e.g. because not specified in
+DT), battery health is reported as over-voltage. This is because adding
+any value to vmax (the vmax tolerance in this case) causes it to wrap
+around, making it negative and smaller than the measured battery
+voltage.
 
-This series adds support for the fuel gauge integrated into the Maxim
-MAX77759, which is a companion PMIC intended for use in mobile phones
-and tablets and is used on Google Pixel 6 and 6 Pro (oriole and raven).
+Avoid that by using size_add().
 
-Amongst others, the PMIC contains a fuel gauge employing the Maxim
-ModelGauge m5 algorithm, that is similar to the ones supported by the
-max17042 driver and binding.
-
-The Maxim ModelGauge m5 algorithm, as well as previous generations like
-m3 on max17047/max17050, requires the host to save/restore some
-register values across power cycles to maintain full accuracy.
-Extending the driver for such support is out of scope in this initial
-series.
-
-The series starts with binding updates, followed by driver updates and
-improvements in preparation for finally adding max77759 support.
-
-A DT update for Pixel 6 has been posted in
-https://lore.kernel.org/all/20260302-max77759-fg-dts-v2-1-12f1109a6fee@linaro.org/
-
-Note: While there was a previous attempt to add support for this fuel
-gauge via a new driver [1], development seems to have come to a halt,
-and extending this driver here seems more appropriate. The patches here
-are unrelated to that other attempt, other than supporting the same
-device.
-
-Test results:
-    $ ./test_power_supply_properties.sh max170xx_battery
-    TAP version 13
-    1..33
-    # Testing device max170xx_battery
-    ok 1 max170xx_battery.exists
-    ok 2 max170xx_battery.uevent.NAME
-    ok 3 max170xx_battery.sysfs.type
-    ok 4 max170xx_battery.uevent.TYPE
-    ok 5 max170xx_battery.sysfs.usb_type # SKIP
-    ok 6 max170xx_battery.sysfs.online # SKIP
-    # Reported: '1' ()
-    ok 7 max170xx_battery.sysfs.present
-    # Reported: 'Unknown'
-    ok 8 max170xx_battery.sysfs.status
-    # Reported: '92' % ()
-    ok 9 max170xx_battery.sysfs.capacity
-    ok 10 max170xx_battery.sysfs.capacity_level # SKIP
-    ok 11 max170xx_battery.sysfs.model_name # SKIP
-    ok 12 max170xx_battery.sysfs.manufacturer # SKIP
-    ok 13 max170xx_battery.sysfs.serial_number # SKIP
-    # Reported: 'Li-ion'
-    ok 14 max170xx_battery.sysfs.technology
-    # Reported: '36032' ()
-    ok 15 max170xx_battery.sysfs.cycle_count
-    # Reported: 'System'
-    ok 16 max170xx_battery.sysfs.scope
-    ok 17 max170xx_battery.sysfs.input_current_limit # SKIP
-    ok 18 max170xx_battery.sysfs.input_voltage_limit # SKIP
-    # Reported: '4323906' uV (4.32391 V)
-    ok 19 max170xx_battery.sysfs.voltage_now
-    # Reported: '3660000' uV (3.66 V)
-    ok 20 max170xx_battery.sysfs.voltage_min
-    # Reported: '4320000' uV (4.32 V)
-    ok 21 max170xx_battery.sysfs.voltage_max
-    # Reported: '3300000' uV (3.3 V)
-    ok 22 max170xx_battery.sysfs.voltage_min_design
-    ok 23 max170xx_battery.sysfs.voltage_max_design # SKIP
-    # Reported: '289687' uA (289.687 mA)
-    ok 24 max170xx_battery.sysfs.current_now
-    ok 25 max170xx_battery.sysfs.current_max # SKIP
-    # Reported: '3942000' uAh (3.942 Ah)
-    ok 26 max170xx_battery.sysfs.charge_now
-    # Reported: '4330000' uAh (4.33 Ah)
-    ok 27 max170xx_battery.sysfs.charge_full
-    # Reported: '4524000' uAh (4.524 Ah)
-    ok 28 max170xx_battery.sysfs.charge_full_design
-    ok 29 max170xx_battery.sysfs.power_now # SKIP
-    ok 30 max170xx_battery.sysfs.energy_now # SKIP
-    ok 31 max170xx_battery.sysfs.energy_full # SKIP
-    ok 32 max170xx_battery.sysfs.energy_full_design # SKIP
-    ok 33 max170xx_battery.sysfs.energy_full_design # SKIP
-    # 15 skipped test(s) detected.  Consider enabling relevant config options to improve coverage.
-    # Totals: pass:18 fail:0 xfail:0 xpass:0 skip:15 error:0
-
-Cheers,
-Andre'
-
-Link: https://lore.kernel.org/all/20250915-b4-gs101_max77759_fg-v6-0-31d08581500f@uclouvain.be/ [1]
+Fixes: edd4ab055931 ("power: max17042_battery: add HEALTH and TEMP_* properties support")
+Cc: stable@vger.kernel.org
 Signed-off-by: André Draszik <andre.draszik@linaro.org>
 ---
-Changes in v3:
-- update commit message patch 5 (dev_err_probe)
-- drop stray comment patch 6 (overflow)
-- add Fixes tag to patch 6 (overflow) (Pete)
-- collect tags
-- Link to v2: https://lore.kernel.org/r/20260227-max77759-fg-v2-0-e50be5f191f0@linaro.org
-
-Changes in v2:
-- collect tags
-- update commit message subject prefix of patch 10 to avoid duplication
-- patch 11 (time to full reporting):
-  - limit to max17055 & max77759, the datasheet for max17047 and
-    max17050 describes the register as 'reserved'. I was mislead by the
-    comment and enum ordering in max17042_battery.h
-  - report as POWER_SUPPLY_PROP_TIME_TO_FULL_NOW (not _AVG). The
-    max17050 datasheet is a bit clearer than the max77759 one on that.
-- Link to v1: https://lore.kernel.org/r/20260226-max77759-fg-v1-0-ff0a08a70a9f@linaro.org
-
+v3:
+- drop a useless comment introduced in earlier versions.
 ---
-André Draszik (11):
-      dt-bindings: power: supply: max17042: add support for max77759
-      dt-bindings: power: supply: max17042: support shunt-resistor-micro-ohms
-      dt-bindings: power: supply: max17042: drop formatting specifier |
-      power: supply: max17042: fix a comment typo (then -> than)
-      power: supply: max17042: use dev_err_probe() where appropriate
-      power: supply: max17042: avoid overflow when determining health
-      power: supply: max17042: time to empty is meaningless when charging
-      power: supply: max17042: support standard shunt-resistor-micro-ohms DT property
-      power: supply: max17042: initial support for Maxim MAX77759
-      power: supply: max17042: consider task period (max77759)
-      power: supply: max17042: report time to full (max17055 & max77759)
+ drivers/power/supply/max17042_battery.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- .../bindings/power/supply/maxim,max17042.yaml      |  21 ++--
- drivers/power/supply/max17042_battery.c            | 130 ++++++++++++++++++---
- include/linux/power/max17042_battery.h             |  25 +++-
- 3 files changed, 148 insertions(+), 28 deletions(-)
----
-base-commit: 3fa5e5702a82d259897bd7e209469bc06368bf31
-change-id: 20260226-max77759-fg-0f4bf0816ced
+diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/supply/max17042_battery.c
+index b9277f81a25d..39091fb31711 100644
+--- a/drivers/power/supply/max17042_battery.c
++++ b/drivers/power/supply/max17042_battery.c
+@@ -201,7 +201,7 @@ static int max17042_get_battery_health(struct max17042_chip *chip, int *health)
+ 		goto out;
+ 	}
+ 
+-	if (vbatt > chip->pdata->vmax + MAX17042_VMAX_TOLERANCE) {
++	if (vbatt > size_add(chip->pdata->vmax, MAX17042_VMAX_TOLERANCE)) {
+ 		*health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+ 		goto out;
+ 	}
 
-Best regards,
 -- 
-André Draszik <andre.draszik@linaro.org>
+2.53.0.473.g4a7958ca14-goog
 
 
