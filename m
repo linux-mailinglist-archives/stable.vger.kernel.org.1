@@ -1,122 +1,384 @@
-Return-Path: <stable+bounces-222575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLPQB0NrpWkaAQYAu9opvQ
-	(envelope-from <stable+bounces-222575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 11:49:39 +0100
+	id sDRZDVdupWlXAgYAu9opvQ
+	(envelope-from <stable+bounces-222576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 12:02:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B9B1D6CF7
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 11:49:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D281D71CE
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 12:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB284301BA79
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 10:44:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AA9E73028348
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 11:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3757262A;
-	Mon,  2 Mar 2026 10:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECF635F612;
+	Mon,  2 Mar 2026 11:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="IL2T4Ga/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C7Q9RUkr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A259340A51;
-	Mon,  2 Mar 2026 10:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9F735F5FC
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 11:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772448259; cv=none; b=hZZcBzoccoMF2SPMvMyxdP2eVMGBq7TeKtxTHcW7cioLbJN1TVeMIOVhnWijKrI+sRoudH9obstxV664DTdZayrnA5l8wF7ERegVXfXQB/H6wWHpUSDe8YSkuUpUEUOp8vkYz+WdxEKjfS6+RFC2NAFLKgbkPvsxXmS4W+QQG8Y=
+	t=1772449334; cv=none; b=BsNhbl9P68wmsUVjnS6SkNOX54byEmeMmKsFZ7TKmCtC5zRz+GQiz9K1bhie0pOJfyNg3qx1NS9eRllZrfiQfbdsgW6xT8eVJJ58/aglTbt75zHQog/Rq15yzGoOxLGKFTwjc0aEz/qERVqzupdcsutV0amBDPIkS3Tt8PpKMn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772448259; c=relaxed/simple;
-	bh=ysE9y8L5j651mPfz7etUcFwhGQ64pPVJAnhoqY88J/s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KDByUPMAU3G+L+Y9f8fiNtP+ZxlDkYh3a8Hkpn4AzwdhsNZpne4wj4X6VC7ApIDLB5g3TtpQqrbNdwL1rejPp4cK/qVordfKSgXfIqdG4MOSJsAkVuwiaZArkHgC4SEufwhn37wjMOrRKW7h2HeRBFe9Zs/GGOjhdcyzaYJLHNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=IL2T4Ga/; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id BE01022A47;
-	Mon,  2 Mar 2026 11:44:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1772448255;
-	bh=51ucpPcaf8pfmzUtIw4wGGaAo73/GfKlyHEWg0DqVAw=; h=From:To:Subject;
-	b=IL2T4Ga/bvIPDD5iE4ru8ANQteG3ifbamnMHKFnWVdA3/ri8q/QG7YOdEOi/jHrwn
-	 mwMcNvc8a8+42huL8R6HqcU2yqmIOxn0MVD5dfTbUYMI01+YpbOTcMJBCsK74afUwD
-	 l1j45n3fLne9RpgGJKFzubI2o4cnbSb05ATCfBnUn7mZRwnz/YAqzQ+vPO8/NFiLGq
-	 OKrJFXYcvEt5vSjvAdLT26W2CmF9IfsL61AEsp3UnNuL1Q8FdciUWfmkRTqLrv5pOt
-	 fuYfMinJyfqz/vfe4Eemt16U3OIj0Deej9oGTHXP5ai3nQDkETe41ek3+JjYBHbUUG
-	 Dvh8OPtmFit+w==
-Date: Mon, 2 Mar 2026 11:44:10 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	gregkh@linuxfoundation.org, patches@lists.linux.dev,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@nabladev.com,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 000/283] 6.6.128-rc1 review
-Message-ID: <20260302104410.GA43527@francesco-nb>
-References: <20260228180659.1583364-1-sashal@kernel.org>
+	s=arc-20240116; t=1772449334; c=relaxed/simple;
+	bh=W1WwmP5aJ1KE7cx4ZzvWX4vVJqhG08ahAHgDEbONfEQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o4B9+ERzIFhCuTf6Y08ERDTZS4SuxMkmhAJ/fdalccrDyVnol9GsuoOB8UNvRSWa4DLgRmfFPTSqxpSV+LfJalymS+4uaXtD46nrS8gATc0pMLGTlsubQthcHp41b1DVGAc3kP2WfRiI85U2SlH/mekw85WHIB6HuZrbbgORovE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C7Q9RUkr; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ae56e68216so3930105ad.2
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 03:02:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772449332; x=1773054132; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QjSDr8Fr2oepwc4Mx3IXKrXZ+k0JPB3LhIeNvnnVUws=;
+        b=C7Q9RUkrlwEwILXAxzkQw7xVz8X4843Y+cMigkk/y2Lh+PLtVrK4DA0vFrasxQe1WW
+         Ugs3zH5+hOZJ/Z8QBVhKkzpB5kdLEL3Ekmpigr3Vz+F10HL933L+WFTSFArQAeFFrFjj
+         8oSDG3Fa4J3d0KuUPlGNFh+j4pWMWJq5hyf4rI/1vZSwCMJV8MvkDJpsMktLttyomTNy
+         VXO9DDvZ5hhMinrebj14s8T0kpLaICI9fRqNeYuipYe/DeXJW+jKQHNjcVN9EOKVtioO
+         qWu/MK54vyBgZ2kfwCPpKnia/RtPhTyaumm5LwM8VUg0FUIdaIJuIBt562+0kqm1fHkY
+         Ad2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772449332; x=1773054132;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QjSDr8Fr2oepwc4Mx3IXKrXZ+k0JPB3LhIeNvnnVUws=;
+        b=ZDRgH9v/G5wPMPwEkWtEJEAz3eTgflvIH0AHzS3Fy7pmSRCsdG0qdubWskVkuIiUvq
+         E0k4krheUltxDfTmj9JclspTGaG2ZiWdqwn7mHq0mVcSpu7tm2d03afXU/Mum+srB4h7
+         dXHWRWWfdWTv5eh66w9qbbhtpz7P5NYDl9gVMdN2zO/xUa2c0f21VoN+r/kT01Y/1D4r
+         pAaxb/tcydLmbbSe6D9ejC9wSKWGv4zyRUQ1ylzKXqfZMQLK88pH3S8Ndd/NuYXEAq62
+         +WmPL9xHmW66tWvc3ylQiSEH42ckE3vpA+N9Gv4NeDUuzdFNBphVurPujkmnH2yq8sQ3
+         BYaw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNa1L8pIsUZBdjYHrvzv44FkwnAjesXGfES440bI9GbbceqGdvkAX6VgCj0lNG85wYHHjc5PI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtdHP4lreB0I2n5CTDXoV2N/SZwtixz6/NWCTJcY3+0veO1HDm
+	EHxYRRbp1qLXPe3vEKyH0yuD31qamIqSzL/4CDLpGTrntIyc9RbRonN+
+X-Gm-Gg: ATEYQzymSlXrVGaJTJ6fIXznmcYaqYrA1r2gJdwFy4WqRGTZF6TLiupIhCq3sGO3R2Y
+	0GzA2529uPA+gQTX2M3RvZh9e3opV+4tvgGMe5mgz/mHLK30OhTPZGBrOaHN2ZSuH2MCZ5XOep5
+	GAR7zWhXAxdgY/DhW4zj2Mbzt44Un1DdnqS2PqCxcCt/EqNL9x5f0UXD6c3RiPNJHyTy+rCXzOc
+	BQNIWgKieAbbj+PPn17Gf2FYqZOAUJo4mzqsQ76UA61NUJLHfWHr6ArdpiTV8XKErL5VN3hwvt7
+	PRijZOB3XoAcNEwF5NmfMmSn3f5K5uxW+htWC/19VB/39Lp987ZaPnKh/JFZVyNspCQ2TPB/5B9
+	7Uzh5qrdj9GCvbwdwpjxc1IxB2w7ICci9J6Bcva9H8HfEg/lkCDNMdiS+iEbteR9djtB1AyDJuf
+	/GfG1hAv0BViVXJGdVUuK9IKr3
+X-Received: by 2002:a17:902:f542:b0:2ae:5a28:cbac with SMTP id d9443c01a7336-2ae5a28d4c1mr8414055ad.32.1772449331692;
+        Mon, 02 Mar 2026 03:02:11 -0800 (PST)
+Received: from kernel-fuzz.. ([103.172.183.54])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5b22fesm187403355ad.2.2026.03.02.03.02.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 03:02:11 -0800 (PST)
+From: ZhengYuan Huang <gality369@gmail.com>
+To: linux-btrfs@vger.kernel.org
+Cc: clm@fb.com,
+	dsterba@suse.com,
+	josef@toxicpanda.com,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	r33s3n6@gmail.com,
+	zzzccc427@gmail.com,
+	ZhengYuan Huang <gality369@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: reject global extent/csum roots without offset 0 when extent_tree_v2 is off
+Date: Mon,  2 Mar 2026 19:02:02 +0800
+Message-ID: <20260302110202.790279-1-gality369@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260228180659.1583364-1-sashal@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
-	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222575-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[fb.com,suse.com,toxicpanda.com,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-222576-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[dolcini.it:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,toradex.com:email,dolcini.it:dkim]
-X-Rspamd-Queue-Id: 25B9B1D6CF7
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 91D281D71CE
 X-Rspamd-Action: no action
 
-On Sat, Feb 28, 2026 at 01:06:59PM -0500, Sasha Levin wrote:
-> This is the start of the stable review cycle for the 6.6.128 release.
-> There are 283 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Without EXTENT_TREE_V2, btrfs_extent_root() and btrfs_csum_root() always
+look up the global roots at offset 0. A crafted image can provide only
+non-zero offsets for the extent/csum global roots, so the offset 0 lookup
+returns NULL and later leads to a NULL dereference
+(e.g. in backup_super_roots()).
 
-Compiled and tested on
+Fix this by detecting this at mount time: when loading extent/csum
+global roots without EXTENT_TREE_V2, require that an offset 0 root item
+exists, otherwise fail the mount with -EUCLEAN.
 
- - Verdin iMX8MM
- - Colibri iMX6
- - Apalis iMX6
- - Colibri iMX6ULL
- - Colibri iMX7
+Tested with a crafted image that has only non-zero offset global roots,
+which triggers the KASAN null-ptr-deref in backup_super_roots() before
+the fix, and fails the mount with -EUCLEAN after the fix.
 
-Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Fixes: f7238e509404 ("btrfs: add support for multiple global roots")
+Cc: stable@vger.kernel.org # v5.18+
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+---
+A KASAN null-ptr-deref was triggered when mounting a crafted btrfs
+image and then doing a simple write/rename workload (e.g. moving any
+file into the mountpoint). The crash happens later during a transaction
+commit, in the super backup roots path.
+
+Root cause
+==========
+
+backup_super_roots() looks up both the extent and csum roots through
+the "global roots" rb-tree:
+
+extent_root = btrfs_extent_root(fs_info, 0);
+csum_root = btrfs_csum_root(fs_info, 0);
+
+and then unconditionally dereferences extent_root->node and
+csum_root->node.
+
+Both btrfs_extent_root() and btrfs_csum_root() build a key with:
+
+.offset = btrfs_global_root_id(fs_info, bytenr)
+
+and btrfs_global_root_id() returns 0 when the filesystem does not have
+the EXTENT_TREE_V2 incompat feature. This means that for
+non-extent_tree_v2 filesystems, the implementation assumes that there is
+always a global root item for:
+
+(BTRFS_EXTENT_TREE_OBJECTID, BTRFS_ROOT_ITEM_KEY, offset=0)
+(BTRFS_CSUM_TREE_OBJECTID, BTRFS_ROOT_ITEM_KEY, offset=0)
+
+However, an image without an offset = 0 root item can still be
+successfully mounted. The mount-time validation logic for the csum tree
+resides in load_global_roots_objectid(). Currently,
+load_global_roots_objectid() loads whatever root items exist for
+a given objectid, but it does not validate that offset = 0
+exists when EXTENT_TREE_V2 is not enabled. With a crafted image,
+the first (and only) root item for the csum tree (and similarly for
+extent) can have a large non-zero offset (e.g. 0x10000000000).
+load_global_roots_objectid() inserts that root into the rb-tree, but
+there is no entry for offset 0. Later, btrfs_csum_root(..., 0) looks up
+offset 0, returns NULL, and backup_super_roots() dereferences it,
+causing the crash.
+
+So the bug is an invariant mismatch:
+
+- lookup side (btrfs_{extent,csum}_root) assumes offset=0 exists when
+extent_tree_v2 is off
+
+- load side (load_global_roots_objectid) does not enforce that assumption
+
+Fix
+===
+Teach load_global_roots_objectid() to enforce the "offset 0 must exist"
+invariant for the extent and csum trees when EXTENT_TREE_V2 is not enabled.
+If at least one root item is found but none has offset 0, fail the mount
+with -EUCLEAN and emit an explicit error message. This prevents later
+NULL dereferences and also avoids propagating a corrupted/unsupported
+global-root layout into runtime.
+
+Note: extent_root is subject to the same assumption and is fixed by the
+same check (backup_super_roots dereferences extent_root->node as well).
+
+KASAN report
+============
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+CPU: 0 UID: 0 PID: 34 Comm: kworker/u8:1 Tainted: G           OE       6.18.0 #1 PREEMPT(voluntary)
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: events_unbound btrfs_async_reclaim_data_space
+RIP: 0010:backup_super_roots fs/btrfs/disk-io.c:1680 [inline]
+RIP: 0010:write_all_supers+0x2d56/0x4980 fs/btrfs/disk-io.c:4022
+Code: 40 38 f2 7f 08 84 d2 0f 85 72 19 00 00 49 8d 7c 24 18 41 88 9e 9a 00 00 00 48 ba 00 00 00 00 00 fc ff df 48 89 fe 48 c1 ee 03 <80> 3c 16 00 0f 85 33 19 00 00 48 ba 00 00 00 00 00 fc ff df 49 8b
+RSP: 0018:ffff88800a617758 EFLAGS: 00010216
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: dffffc0000000000 RSI: 0000000000000003 RDI: 0000000000000018
+RBP: ffff88800a617898 R08: 1ffff110023f53a8 R09: 0000000000000000
+R10: ffff8880173a8000 R11: 0000000000000001 R12: 0000000000000000
+R13: ffff888000000000 R14: ffff88800b676d23 R15: ffffea0000000000
+FS:  0000000000000000(0000) GS:ffff8880e4d3e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005baa3c26f678 CR3: 000000000e9b8000 CR4: 00000000000006f0
+Call Trace:
+<TASK>
+? __pfx_write_all_supers+0x10/0x10 fs/btrfs/disk-io.c:3980
+? btrfs_commit_transaction+0x2818/0x3d90 fs/btrfs/transaction.c:2526
+? __lock_release kernel/locking/lockdep.c:5574 [inline]
+? lock_release+0x122/0x2a0 kernel/locking/lockdep.c:5889
+btrfs_commit_transaction+0x28cc/0x3d90 fs/btrfs/transaction.c:2541
+? __pfx_btrfs_commit_transaction+0x10/0x10 fs/btrfs/transaction.c:1919
+? start_transaction+0x244/0x1740 fs/btrfs/transaction.c:780
+btrfs_commit_current_transaction+0x55/0xf0 fs/btrfs/transaction.c:2010
+flush_space+0x7d1/0xc40 fs/btrfs/space-info.c:888
+? mark_usage kernel/locking/lockdep.c:4674 [inline]
+? __lock_acquire+0x43e/0x21e0 kernel/locking/lockdep.c:5191
+? __pfx_flush_space+0x10/0x10 include/trace/events/btrfs.h:2362
+? instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
+? atomic_try_cmpxchg_acquire include/linux/atomic/atomic-instrumented.h:1301 [inline]
+? queued_spin_lock include/asm-generic/qspinlock.h:111 [inline]
+? do_raw_spin_lock+0x133/0x290 kernel/locking/spinlock_debug.c:116
+? find_held_lock+0x31/0x90 kernel/locking/lockdep.c:5350
+? spin_unlock include/linux/spinlock.h:391 [inline]
+? do_async_reclaim_data_space+0x369/0x5e0 fs/btrfs/space-info.c:1441
+? __kasan_check_read+0x11/0x20 mm/kasan/shadow.c:31
+? instrument_atomic_read include/linux/instrumented.h:68 [inline]
+? atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
+? queued_spin_is_locked include/asm-generic/qspinlock.h:57 [inline]
+? debug_spin_unlock kernel/locking/spinlock_debug.c:101 [inline]
+? do_raw_spin_unlock+0x59/0x200 kernel/locking/spinlock_debug.c:141
+do_async_reclaim_data_space+0x3c1/0x5e0 fs/btrfs/space-info.c:1410
+btrfs_async_reclaim_data_space+0x3f/0xb0 fs/btrfs/space-info.c:1458
+process_one_work+0x8e0/0x1980 kernel/workqueue.c:3263
+? __pfx_process_one_work+0x10/0x10 include/linux/list.h:226
+? move_linked_works+0x1a8/0x2c0 kernel/workqueue.c:1165
+? assign_work+0x19d/0x240 kernel/workqueue.c:1206
+? __lock_is_held kernel/locking/lockdep.c:5601 [inline]
+? lock_is_held_type+0xa3/0x130 kernel/locking/lockdep.c:5940
+process_scheduled_works kernel/workqueue.c:3346 [inline]
+worker_thread+0x683/0xf80 kernel/workqueue.c:3427
+? __pfx_worker_thread+0x10/0x10 kernel/workqueue.c:3570
+kthread+0x3f0/0x850 kernel/kthread.c:463
+? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
+? trace_hardirqs_on+0x53/0x60 kernel/trace/trace_preemptirq.c:79
+? __raw_spin_unlock_irq include/linux/spinlock_api_smp.h:159 [inline]
+? _raw_spin_unlock_irq+0x27/0x70 kernel/locking/spinlock.c:202
+? spin_unlock_irq include/linux/spinlock.h:401 [inline]
+? calculate_sigpending+0x7c/0xb0 kernel/signal.c:194
+? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
+ret_from_fork+0x50f/0x610 arch/x86/kernel/process.c:158
+? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
+ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+</TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:backup_super_roots fs/btrfs/disk-io.c:1680 [inline]
+RIP: 0010:write_all_supers+0x2d56/0x4980 fs/btrfs/disk-io.c:4022
+Code: 40 38 f2 7f 08 84 d2 0f 85 72 19 00 00 49 8d 7c 24 18 41 88 9e 9a 00 00 00 48 ba 00 00 00 00 00 fc ff df 48 89 fe 48 c1 ee 03 <80> 3c 16 00 0f 85 33 19 00 00 48 ba 00 00 00 00 00 fc ff df 49 8b
+RSP: 0018:ffff88800a617758 EFLAGS: 00010216
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: dffffc0000000000 RSI: 0000000000000003 RDI: 0000000000000018
+RBP: ffff88800a617898 R08: 1ffff110023f53a8 R09: 0000000000000000
+R10: ffff8880173a8000 R11: 0000000000000001 R12: 0000000000000000
+R13: ffff888000000000 R14: ffff88800b676d23 R15: ffffea0000000000
+FS:  0000000000000000(0000) GS:ffff8880e4d3e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005baa3c26f678 CR3: 000000000e9b8000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	40 38 f2             	cmp    %sil,%dl
+   3:	7f 08                	jg     0xd
+   5:	84 d2                	test   %dl,%dl
+   7:	0f 85 72 19 00 00    	jne    0x197f
+   d:	49 8d 7c 24 18       	lea    0x18(%r12),%rdi
+  12:	41 88 9e 9a 00 00 00 	mov    %bl,0x9a(%r14)
+  19:	48 ba 00 00 00 00 00 	movabs $0xdffffc0000000000,%rdx
+  20:	fc ff df
+  23:	48 89 fe             	mov    %rdi,%rsi
+  26:	48 c1 ee 03          	shr    $0x3,%rsi
+* 2a:	80 3c 16 00          	cmpb   $0x0,(%rsi,%rdx,1) <-- trapping instruction
+  2e:	0f 85 33 19 00 00    	jne    0x1967
+  34:	48 ba 00 00 00 00 00 	movabs $0xdffffc0000000000,%rdx
+  3b:	fc ff df
+  3e:	49                   	rex.WB
+  3f:	8b                   	.byte 0x8b
+
+Reproduction (v6.18, x86_64, KASAN)
+===================================
+1. Download the crafted image (tested with Linux v6.18 + KASAN):
+  https://drive.google.com/file/d/1xV0pjI3N-D83IzH62dphWCAD0RR-sV4U/view
+2. Attach it as a block device (example assumes it shows up as /dev/vda),
+then mount it read-write:
+  mkdir -p /mnt/btrfs
+  mount /dev/vda /mnt/btrfs
+3. Trigger any metadata update, e.g. move a file into the mountpoint:
+  echo test > /tmp/1.txt
+  mv /tmp/1.txt /mnt/btrfs/
+4. Result:
+The system hits a NULL pointer dereference in the commit path, with KASAN
+reporting the fault at backup_super_roots() (fs/btrfs/disk-io.c).
+
+Thanks,
+ZhengYuan Huang
+---
+ fs/btrfs/disk-io.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 0aa7e5d1b05f..900e462d8ea1 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2119,6 +2119,18 @@ static int load_global_roots_objectid(struct btrfs_root *tree_root,
+ 	};
+ 	bool found = false;
+ 
++	/*
++	 * Without EXTENT_TREE_V2 we only have a single global extent/csum root.
++	 * btrfs_extent_root() and btrfs_csum_root() always look it up with offset
++	 * 0 (btrfs_global_root_id() returns 0). If we load only non-zero offsets
++	 * here, later users will see NULL and can crash (e.g. when backing up
++	 * super roots during a commit).
++	 */
++	bool need_offset0 = !btrfs_fs_incompat(fs_info, EXTENT_TREE_V2) &&
++		      (objectid == BTRFS_EXTENT_TREE_OBJECTID ||
++		       objectid == BTRFS_CSUM_TREE_OBJECTID);
++	bool found_offset0 = false;
++
+ 	/* If we have IGNOREDATACSUMS skip loading these roots. */
+ 	if (objectid == BTRFS_CSUM_TREE_OBJECTID &&
+ 	    btrfs_test_opt(fs_info, IGNOREDATACSUMS)) {
+@@ -2144,6 +2156,8 @@ static int load_global_roots_objectid(struct btrfs_root *tree_root,
+ 		btrfs_item_key_to_cpu(path->nodes[0], &key, path->slots[0]);
+ 		if (key.objectid != objectid)
+ 			break;
++		if (need_offset0 && key.offset == 0)
++			found_offset0 = true;
+ 		btrfs_release_path(path);
+ 
+ 		/*
+@@ -2169,6 +2183,13 @@ static int load_global_roots_objectid(struct btrfs_root *tree_root,
+ 	}
+ 	btrfs_release_path(path);
+ 
++	if (need_offset0 && found && !found_offset0) {
++		btrfs_err(fs_info,
++			  "missing global %s root item with offset 0 (extent_tree_v2 not enabled)",
++			  name);
++		return -EUCLEAN;
++	}
++
+ 	if (objectid == BTRFS_EXTENT_TREE_OBJECTID)
+ 		fs_info->nr_global_roots = max_global_id + 1;
+ 
+-- 
+2.43.0
 
 
