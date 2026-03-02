@@ -1,178 +1,139 @@
-Return-Path: <stable+bounces-222490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222491-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id JnqDOYvXpGlytwUAu9opvQ
-	(envelope-from <stable+bounces-222490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 01:19:23 +0100
+	id kOKfJHrcpGk0ugUAu9opvQ
+	(envelope-from <stable+bounces-222491-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 01:40:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1528E1D20F8
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 01:19:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08081D2255
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 01:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F2689300E3F4
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 00:19:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 463E9301112D
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 00:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B429188713;
-	Mon,  2 Mar 2026 00:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A90E1D7E41;
+	Mon,  2 Mar 2026 00:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="fcZ/ULfD";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HmwzbWNy"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2JMlHi+h";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6egGOTus"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA158F7D;
-	Mon,  2 Mar 2026 00:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D8F10F1;
+	Mon,  2 Mar 2026 00:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772410761; cv=none; b=ab4p2zCEL0dxRXJi44k7HN7HJnk/5ujBQ1ST1D0lqb2tbQww02fiZ8id2QDOxIzec1nSz96CCipT0apv7d7DiPbZRry58qC7Lwx2hTzx/DM8g34NIsuz+C9KlNLQ+k3hGaitXaG1s1jixu1L9V9WZ/3ZIvK8cJ96HhNCE2uDGSs=
+	t=1772412008; cv=none; b=aHFDQep1xZDfWgwi3P9vSvNX4AeFkgCUtO1bRc9JM7O84y+spvB07Jq/u59vCT0PTTCS4R0WCzWiVroN6sNvgT0jkQbs9rf/7MzJTjlj/74nuKbEIYMiQjdMfQUK1z+ONYymB+xVg8bo5Hwu9Huh+VGlI0UrUHWZ6LDIDAe2dKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772410761; c=relaxed/simple;
-	bh=UrRKZ6udpjy7FRGyNBxTpigDMu3PdozIkrb8O05QVqY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ATfQatWpMWaIu/uiWEXFnztKzPm56kYFmVVIM4Y+2RUzHqApXy8aHu6ghMdr7LvAto2Zt3e5mqHQ/c1dU5oK77g/h2jFBwnsYuRuztKqiOP3+khH4UwZhihvjhCZfzRLUpJbllilLpAfCRyUEsSbybagwlQAg2EsA/cGfadBXZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=fcZ/ULfD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HmwzbWNy; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 820731400031;
-	Sun,  1 Mar 2026 19:19:17 -0500 (EST)
-Received: from phl-frontend-02 ([10.202.2.161])
-  by phl-compute-02.internal (MEProxy); Sun, 01 Mar 2026 19:19:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772410757;
-	 x=1772497157; bh=rP5iPIFV5jE9//0Ar+Id46QM7ZUghPfG/34WKULZwCY=; b=
-	fcZ/ULfDb56au45QQsNU0bUBa3jBQ5a98l5O1UVh3PzCz9ZiOign0+lHDbOrpqzV
-	9I7/sCM4G/TQsgO6y1GUAB4F8M2LiC27ncxzYtHTBXphofExWeenMJQfTHaxOUdy
-	1vOtDk6tAXxB64RxUwv1lnDj01RAtAKUKN1K62vzJW9jQrXVfCcz52V4t8CzClMj
-	e2+qXIFJ5S03qX9OpSKR/qao/trEO8VN677qp4HRSoNweNVB+5iOnQy3i3Ag8tjh
-	3MDO1o4O+JN4XvPtNU38PZqJ+L3JXh2tmfBEBf7/KyovKKvqAy40w2rzeS8pTcXG
-	bCYJQUSuUak57NFp5/Ccfg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772410757; x=
-	1772497157; bh=rP5iPIFV5jE9//0Ar+Id46QM7ZUghPfG/34WKULZwCY=; b=H
-	mwzbWNybcjUpvPvzSMW/Z17Se4BJsYUlPJ+DJCguQczih6BOs3v10BwKqNtOPzY4
-	NiAdSeCJLlNlM6JFVVNKOU96nHgDQJuGOfXEk08Nocpsdvh38m2grpvOaTpetWPX
-	8/RS586xdWzXdNhOWZfrD+2F5EB+YUf9iR5Nv2OWD4wSJLwhIyttoSp7TpuUIOY4
-	JUZmaKhZMPZDJgTPitinSmwtiJowhi7F8P4qOP4Ur4L218JJlVmHAB/2ZtReunke
-	BCM2QvsDIpMrOrs0jb5deBnVs+UXFIFJANcceO3/5E4EhcCEvdhVDNWd+HsnWXn3
-	U7lnwhCSKy5AoFWqSKLSg==
-X-ME-Sender: <xms:hNekaVuSVTysxCL_R359lu7PHO4yMt2g_uIy_I9eSiZ819SCNAsmVA>
-    <xme:hNekae3G3zGKoTarnH-booGnrS8TPNEIqpaBHzpo9kruSGzZvNgVPvP1lGaL6WaSK
-    PSlCQ0kaNscRov5w2mMTF_unt4cvboMNwBafwgm8_B76VgJ0PgzgA>
-X-ME-Received: <xmr:hNekaZ6uNrADgZIsV8bxc3tZMuTXxYHAb8diTUZVeMivSDTZCgGXlk25lLq4ySdaiTXMa-B3kIWSxKQ7gqP-0EH3ffSWlA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheeivdduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
-    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
-    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
-    ohhmpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
-    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihf
-    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrd
-    hlihhnuhigrdguvghvpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhu
-    nhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
-    grthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvght
-    pdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:hNekaYP-o8PWYXOPgRb0j1HK4GoMXb4LDT0IlXTmAroDynOoORjkvw>
-    <xmx:hNekaVEUcHkiNrSy2AMdcAkwPePn1ufHb7-u_x-Auof3nuI5ygDNgw>
-    <xmx:hNekaU0UYQp1BbP32NcOdmrHvRnZuRs_ulpt0Dym7KMyYYwa2OKVJQ>
-    <xmx:hNekaUFwtGausI3Dj0gs0iLaXW6Sz2k6GBzyPk0I9itWkBc0XFsL8A>
-    <xmx:hdekaWUTbPrPrgbuxNj55wMQhn76P0OLG8Tb9J8XkESnE9a-BrHOFVe4>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 1 Mar 2026 19:19:14 -0500 (EST)
-Message-ID: <b850e316-e13f-4bc4-996b-b4112f118bd0@pobox.com>
-Date: Sun, 1 Mar 2026 16:19:13 -0800
+	s=arc-20240116; t=1772412008; c=relaxed/simple;
+	bh=8EKEC6J5g0gtnjCmFEP0Jw99XfDddu2rBIKPE+B7JHQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I9i2lrQM7itxA2Qmt7hZiOjdEeczxCWome414qQyz+rlhg+zb9lehMEgXKzR4I117KPd4uKsZlX9C3+WDpumzj8pYFLLCtl+A4W3V0rS/RbL9Mgdb5dpJWaT05rgX583N++mrq4UBxOupCu+PEMc4RLRatvi0yWTT77jlpEW+qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2JMlHi+h; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6egGOTus; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1772411998;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7GZ2RRx7O92LjCo7RxqkMuENtOBSVFiWMFDEjbnkLX0=;
+	b=2JMlHi+h0t9Dbgdx2J7d8ObJZx1v0a4AWjeAdgTVfxQ4HfIrkiLvRZqk1RXbucQnsemDiR
+	4njdlphkHoX9JfhVOiy5rBiJMmQQkb3JNP0g+gRtjq5vvOf5/LzFFe6Vk+sqxWLyRZ6ayt
+	jkKOZMZHHPG3u9LYSzILyWVMhomccIBhxQploe/YjHXjG31LrVfL7XBxvr4LuZKqA1HWue
+	k/Zgo2Ft9cmWiuq4VFrtZv2dyrqV7DFAK1Ije9IUxpnQQF4nXD+TQROk5JHDagD7s6gp/y
+	hFlZzFQy+sQKGpcqSoxi5skEDxF1IPLYHUWf0h9WTYnNGQMi3DlKgh8EG3njpQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1772411998;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7GZ2RRx7O92LjCo7RxqkMuENtOBSVFiWMFDEjbnkLX0=;
+	b=6egGOTusrjdSyMRBH6TLMJT1V2sVbaNiavS+t9AT0IEQveMj8bV4q0UHUvU8jKZJkkPS9G
+	IyssSQRslYqulTCQ==
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] powerpc/pseries: Correct MSI allocation tracking
+Date: Mon,  2 Mar 2026 01:39:48 +0100
+Message-ID: <20260302003948.1452016-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/752] 6.18.16-rc1 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260228174736.1542240-1-sashal@kernel.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20260228174736.1542240-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-222490-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222491-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,lists.ozlabs.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[namcao@linutronix.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pobox.com:mid,pobox.com:dkim,pobox.com:email]
-X-Rspamd-Queue-Id: 1528E1D20F8
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:mid,linutronix.de:dkim,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E08081D2255
 X-Rspamd-Action: no action
 
-On 2/28/26 09:47, Sasha Levin wrote:
-> This is the start of the stable review cycle for the 6.18.16 release.
-> There are 752 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Mon Mar  2 05:47:08 PM UTC 2026.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.18.y&id2=v6.18.15
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> Thanks,
-> Sasha
+The per-device MSI allocation calculation in pseries_irq_domain_alloc()
+is clearly wrong. It can still happen to work when nr_irqs is 1.
 
-Tested on 3 systems (2 amd64, 1 arm64). Working well, no regressions
-observed.
+Correct it.
 
-Tested-by: Barry K. Nathan <barryn@pobox.com>
+Fixes: c0215e2d72de ("powerpc/pseries: Fix MSI-X allocation failure when qu=
+ota is exceeded")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+---
+ arch/powerpc/platforms/pseries/msi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
--- 
--Barry K. Nathan  <barryn@pobox.com>
+diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/=
+pseries/msi.c
+index 64ffc6476ad6..8285b9a29fbf 100644
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -605,7 +605,7 @@ static int pseries_irq_domain_alloc(struct irq_domain *=
+domain, unsigned int virq
+ 					      &pseries_msi_irq_chip, pseries_dev);
+ 	}
+=20
+-	pseries_dev->msi_used++;
++	pseries_dev->msi_used +=3D nr_irqs;
+ 	return 0;
+=20
+ out:
+--=20
+2.47.3
+
 
