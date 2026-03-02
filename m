@@ -1,188 +1,230 @@
-Return-Path: <stable+bounces-222549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222550-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LOvCudUpWnR9AUAu9opvQ
-	(envelope-from <stable+bounces-222549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:14:15 +0100
+	id 4OkkG9RWpWmh9gUAu9opvQ
+	(envelope-from <stable+bounces-222550-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:22:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ABD81D55D1
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:14:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C1ED1D577E
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 10:22:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57E3130416DB
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 09:10:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C5404300A25A
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 09:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF9238D01F;
-	Mon,  2 Mar 2026 09:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4E438D009;
+	Mon,  2 Mar 2026 09:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b="kq6yykSq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m9StlWFC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp1.tecnico.ulisboa.pt (smtp1.tecnico.ulisboa.pt [193.136.128.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC69638D009;
-	Mon,  2 Mar 2026 09:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.136.128.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A9E19E992;
+	Mon,  2 Mar 2026 09:22:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772442649; cv=none; b=sOJGPFxzG6ZFy5mNOohPBzXWmizqof4ekx596vccJdZOzqjTNU0i9HOCXYUUjqEEUVUGNJj7keeuURhrgu803q6jPFTF+0z6BxTrskqfXFBUYlddQzPHyHqIsKw2R5RnOei1/adO74MuGqtphH5QMeGfp9GdK2AFeHg1a33guvc=
+	t=1772443327; cv=none; b=EeGi+0ZhgLsoaunI88JHMsQ+CTCaxb96D+9AafuiIO8PraEbnFqyCo1KjS/X3y2evDZ6yGLrlEqaUGjqyt0vl8dKG6ljH4lgaikYZyknOc7weF9PnHfRHjCul5HMN3KBmLujb6SC4DKdj9vPKVchkAuVvIm4pP4fPx7JFkiX+Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772442649; c=relaxed/simple;
-	bh=EbiUbBamIZ6iQCnBuNSz7FJjjmgw1YlSiC2B9C7jRP4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k4o4ZljERrGKtlw+kzQrUGjSfCKKifP0cSID63+975nP/UIvPqz3HoMg+OQsMyMW+SmKq2Ww3lKZPiR2XAkboAehYTCtkoGD0A566hR4D1welXDxUIMMD/o02vbKAhFDdYP9mciA63C+uUavszCapvSeTj2P9yPTMWdYtOXOjoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt; spf=pass smtp.mailfrom=tecnico.ulisboa.pt; dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b=kq6yykSq; arc=none smtp.client-ip=193.136.128.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tecnico.ulisboa.pt
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTP id 31F2B600298F;
-	Mon,  2 Mar 2026 09:10:46 +0000 (WET)
-X-Virus-Scanned: by amavis-2.13.0 (20230106) (Debian) at tecnico.ulisboa.pt
-Received: from smtp1.tecnico.ulisboa.pt ([127.0.0.1])
- by localhost (smtp1.tecnico.ulisboa.pt [127.0.0.1]) (amavis, port 10025)
- with LMTP id 9zY3EXe9AjZ4; Mon,  2 Mar 2026 09:10:43 +0000 (WET)
-Received: from mail1.tecnico.ulisboa.pt (mail1.ist.utl.pt [IPv6:2001:690:2100:1::b3dd:b9ac])
-	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTPS id 40B36600298D;
-	Mon,  2 Mar 2026 09:10:42 +0000 (WET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tecnico.ulisboa.pt;
-	s=mail2; t=1772442643;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ALlF6/vIv/5xuYr1Gfj3RVY3fMyDzf4HKQYtSC25+Y4=;
-	b=kq6yykSqCccGOyxQkZiYYRl4InB8BhUZ8Xs18tk1CsbLkx6x53sO9TssNNE4IQhab0mX6+
-	mb3f/niCWn5KWXeAD5nzC5awUAM303Ro18H9t/o5YH1z0MZuCK+pPUcOAct8XEZBfweJ6/
-	JaPuliwJ/uWR9AkGnIhkO7AEN5brKWsABtzVwup+36oZZO+MKN9STQ6AJeRxjf2235/aaf
-	Tvs7tkK8V+ZBYxYPq4cpM8wrosSRCEkYKrXw7A2U4RMH61DqyiywtVGIWr7xu6PDJDTPwS
-	rMiYO2GxfTgSTrUCfVfRW0WGtlsN4J0d2zzg9YBFMz81nTzxt0XULAhWB7ZrSw==
-Received: from [IPV6:2001:8a0:fbec:a900:2c09:2fb0:9be7:36e0] (unknown [IPv6:2001:8a0:fbec:a900:2c09:2fb0:9be7:36e0])
-	(Authenticated sender: ist187313)
-	by mail1.tecnico.ulisboa.pt (Postfix) with ESMTPSA id D502136013D;
-	Mon,  2 Mar 2026 09:10:40 +0000 (WET)
-Message-ID: <1663dc81-0685-4de9-8cf7-6065a644e7af@tecnico.ulisboa.pt>
-Date: Mon, 2 Mar 2026 09:10:29 +0000
+	s=arc-20240116; t=1772443327; c=relaxed/simple;
+	bh=+Nd0XzZ3rH/cvBvTNRRmkHy3yGtEPXKKdWv1M/SbkpQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tjm4j2HjTvd7Vi4+DTrUxIYEByIKN6fmLSRjGPhB5mYopQ69euXPWs2j4fwd+5t4gu0ZdnN3xJgbm6gOV9JH9CJsmj1N3+v3VsH2JaNF8EgvLTHbQj914UvpqM6AcrHpV60EfdoLdZDJVIrk6GHs95/LWmQjexA1dMNES5MCqTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m9StlWFC; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772443326; x=1803979326;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+Nd0XzZ3rH/cvBvTNRRmkHy3yGtEPXKKdWv1M/SbkpQ=;
+  b=m9StlWFCMESvmO25WTJwnhw0C1ZI7aRz0lFSyYIspaTUqh/3XCeu1zhD
+   /a0OMf+Sgfawg2NNGIZCy9Ir6Ha50I8vXckspIRdDQn/rk/BSpuEsDjBq
+   qsZBkeRB8OVIseCcdKsBQLhPLVompbIWWJQV68DUpz+vdZTxPrgJULefM
+   b3pHndfOKxO3gEZvoYCND2ASIfXvnQb+wOH1ABwa/yt8BBHleS6gvTqe7
+   U9C8pxRjI1ecq6M3py7rzSjdagxmuV9+yDPtTK7Ro4JPuBI+2ohWORBCM
+   5GgtuODCR3SfcMl2mh/42PN5J3cDmcvKUdK//lAtiGoyNjD2yHmp/3TIH
+   g==;
+X-CSE-ConnectionGUID: QXXnSvrgTFmF4TrQZp6d/g==
+X-CSE-MsgGUID: q1pQyluXQ8mDGy/deSuw4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="73511408"
+X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; 
+   d="scan'208";a="73511408"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 01:22:05 -0800
+X-CSE-ConnectionGUID: 1o4TvgzNQKmKGdRP9C7DPg==
+X-CSE-MsgGUID: 0TbvCP3IRqeSGCNvDHqtPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; 
+   d="scan'208";a="217619396"
+Received: from abityuts-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.89])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 01:22:03 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 2F46E11F8CF;
+	Mon, 02 Mar 2026 11:22:30 +0200 (EET)
+Date: Mon, 2 Mar 2026 11:22:30 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Cc: cy_huang@richtek.com, Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Bryan Wu <cooloney@gmail.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	roger-hy.wang@mediatek.com, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	laurent.pinchart@ideasonboard.com
+Subject: Re: [PATCH v3] media: v4l2-flash: Enter LED off state after file
+ handle closed
+Message-ID: <aaVW1ukZ8pGit5Us@kekkonen.localdomain>
+References: <1106c60cb96786ade1f60c692e566c408d7d8174.1768209230.git.cy_huang@richtek.com>
+ <f5980192-a878-47ed-9b38-8607fb7abdc2@gmail.com>
+ <aZwhSj4jhEOUKZ3x@kekkonen.localdomain>
+ <b600e509-a58c-42e4-91bc-d5222638b48f@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] Fixes to Tegra USB role switching and phy handling
-To: Mathias Nyman <mathias.nyman@intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, JC Kuo <jckuo@nvidia.com>,
- Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>
-Cc: linux-usb@vger.kernel.org, linux-tegra@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
- devicetree@vger.kernel.org, stable@vger.kernel.org
-References: <20260127-diogo-tegra_phy-v2-0-787b9eed3ed5@tecnico.ulisboa.pt>
-Content-Language: en-US
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-In-Reply-To: <20260127-diogo-tegra_phy-v2-0-787b9eed3ed5@tecnico.ulisboa.pt>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b600e509-a58c-42e4-91bc-d5222638b48f@gmail.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[tecnico.ulisboa.pt,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[tecnico.ulisboa.pt:s=mail2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-222550-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222549-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[intel.com,linuxfoundation.org,gmail.com,nvidia.com,kernel.org,linaro.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tecnico.ulisboa.pt:mid,tecnico.ulisboa.pt:dkim,ulisboa.pt:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[diogo.ivo@tecnico.ulisboa.pt,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[tecnico.ulisboa.pt:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_CC(0.00)[richtek.com,kernel.org,gmail.com,samsung.com,mediatek.com,vger.kernel.org,ideasonboard.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 7ABD81D55D1
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-0.994];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,kekkonen.localdomain:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7C1ED1D577E
 X-Rspamd-Action: no action
 
-Hello,
+Hi Jacek,
 
-Gentle ping on this series.
+On Mon, Feb 23, 2026 at 07:32:16PM +0100, Jacek Anaszewski wrote:
+> Hi Sakari,
+> 
+> On 2/23/26 10:43, Sakari Ailus wrote:
+> > Hi Jacek,
+> > 
+> > On Sat, Feb 21, 2026 at 04:48:48PM +0100, Jacek Anaszewski wrote:
+> > > Hi ChiYuan,
+> > > 
+> > > On 1/12/26 10:20, cy_huang@richtek.com wrote:
+> > > > From: ChiYuan Huang <cy_huang@richtek.com>
+> > > > 
+> > > > To make sure LED enter off state after file handle is closed, initiatively
+> > > > configure LED_MODE to NONE. This can guarantee whatever the previous state
+> > > > is torch or strobe mode, the final state will be off.
+> > > > 
+> > > > Cc: stable@vger.kernel.org
+> > > > Fixes: 42bd6f59ae90 ("media: Add registration helpers for V4L2 flash sub-devices")
+> > > > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> > > > ---
+> > > > Still cannot pass patch integration check, send v3 patch to fix all.
+> > > > 
+> > > > v3
+> > > > - Remove 'Reported-by' tag
+> > > > - Fix identation check for patch integration
+> > > > 
+> > > > v2
+> > > > - Fix commit message redudant space cause patch robot parsing error
+> > > > 
+> > > > Hi,
+> > > >     We encounter an issue. When the upper layer camera process is crashed,
+> > > > if the new process did not reinit the LED,  it will keeps the previous
+> > > > state whatever it's in torch or strobe mode
+> > > > 
+> > > > OS will handle the resource management. So when the process is crashed
+> > > > or terminated, the 'close' API will be called to release resources.
+> > > > That's why we add the initiative action to trigger LED off in file
+> > > > handle close is called.
+> > > > ---
+> > > >    drivers/media/v4l2-core/v4l2-flash-led-class.c | 6 ++++++
+> > > >    1 file changed, 6 insertions(+)
+> > > > 
+> > > > diff --git a/drivers/media/v4l2-core/v4l2-flash-led-class.c b/drivers/media/v4l2-core/v4l2-flash-led-class.c
+> > > > index 355595a0fefa..46606f5cc192 100644
+> > > > --- a/drivers/media/v4l2-core/v4l2-flash-led-class.c
+> > > > +++ b/drivers/media/v4l2-core/v4l2-flash-led-class.c
+> > > > @@ -623,6 +623,12 @@ static int v4l2_flash_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+> > > >    		return 0;
+> > > >    	if (led_cdev) {
+> > > > +		/* If file handle is released, make sure LED enter off state */
+> > > > +		ret = v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE],
+> > > > +				       V4L2_FLASH_LED_MODE_NONE);
+> > > > +		if (ret)
+> > > > +			return ret;
+> > > > +
+> > > >    		mutex_lock(&led_cdev->led_access);
+> > > >    		if (v4l2_flash->ctrls[STROBE_SOURCE])
+> > > > 
+> > > > base-commit: 8ac28a6642d1cc8bac0632222e66add800b027fa
+> > > 
+> > > The patch itself looks good, but while at it I started wondering
+> > > if we shouldn't move below STROBE_SOURCE access before the lock.
+> > > I don't see now, why we placed it there.
+> > > 
+> > > Adding Sakari.
+> > 
+> > Thanks for cc'ing me.
+> > 
+> > The behaviour this patch changes has been around for a decade or so. I
+> > wonder what breaks if we change it now. It works the same way as the sysfs
+> > LED API, too, and I think common behaviour between the two APIs was the
+> > reasoning back then as well.
+> 
+> The thing is that v4l2_flash_open() disables LED sysfs interface via
+> led_sysfs_disable() and v4l2_flash_close() enables it via
+> led_sysfs_enable(). led_sysfs_{enable|disable}() modify the state of
+> LED_SYSFS_DISABLE flag.
+> 
+> Therefore it is only the led_sysfs_{enable|disable}() API that needs to
+> be called under led_access lock, since the LED subsystem sysfs handlers
+> test the LED_SYSFS_DISABLE flag under the same lock, and return -EBUSY
+> in case it is set.
+> 
+> The call to v4l2_flash_close() is synchronized internally in V4L2 core
+> I believe.
+> 
+> Therefore I think that we can safely move the
+> "if (v4l2_flash->ctrls[STROBE_SOURCE])" condition before the lock.
+> 
+> Otherwise we would have to put this new v4l2_ctrl_s_ctrl() call,
+> added in this patch also under the lock because why not. It would spark
+> questions in the future asking how it is different from the above
+> "v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE]" case.
 
-Best regards,
-Diogo
+My concern really is that this is not a bugfix but a change of an existing
+UAPI that's been out there for a decade. Such a change is likely to cause
+troubles to the users. Let's see what others think.
 
-On 1/27/26 15:11, Diogo Ivo wrote:
-> Hello,
-> 
-> This patch series contains fixes/improvements for USB role switching on the
-> Tegra210 and Tegra186 SoCs.
-> 
-> The first patch addresses a wrong check on the logic that disables the
-> VBUS regulator.
-> 
-> The second patch removes a redundant mutex lock when setting the PHY
-> mode.
-> 
-> The third patch guarantees proper ordering of events when switching PHY
-> roles.
-> 
-> The remaining patches are included to standardize the PHY .set_mode()
-> callback between Tegra186 and Tegra210.
-> 
-> With this patch series this feature can only be controlled from userspace,
-> by writing the desired role to sysfs as
-> 
-> echo "role" > /sys/class/usb_role/usb2-0-role-switch/role
-> 
-> with role being one of {device, host, none}.
-> 
-> Further patches will enable automatic role switching via the 'cros_ec_typec'
-> driver which is currently broken on Smaug.
-> 
-> Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-> ---
-> Changes in v2:
-> - Remove DT patches already taken to be upstreamed
-> - Add standardization between Tegra210 and Tegra186
-> - Address review comments from v1, detailed descriptions in each patch
-> - Link to v1: https://lore.kernel.org/r/20251204-diogo-tegra_phy-v1-0-51a2016d0be8@tecnico.ulisboa.pt
-> 
-> ---
-> Diogo Ivo (6):
->        phy: tegra: xusb: Fix USB2 port regulator disable logic
->        usb: xhci: tegra: Remove redundant mutex when setting phy mode
->        phy: tegra: xusb: Fix ordering issue when switching roles on USB2 ports
->        phy: tegra: xusb: Add ID override support to padctl
->        phy: tegra: xusb: Move .set_mode() to a shared location
->        phy: tegra: xusb: Move T186 .set_mode() to common implementation
-> 
->   drivers/phy/tegra/xusb-tegra186.c   | 73 +++++----------------------------
->   drivers/phy/tegra/xusb-tegra210.c   | 42 +------------------
->   drivers/phy/tegra/xusb.c            | 80 +++++++++++++++++++++++++++++++++++++
->   drivers/phy/tegra/xusb.h            |  4 ++
->   drivers/usb/gadget/udc/tegra-xudc.c |  4 ++
->   drivers/usb/host/xhci-tegra.c       | 14 ++++---
->   include/linux/phy/tegra/xusb.h      |  3 ++
->   7 files changed, 111 insertions(+), 109 deletions(-)
-> ---
-> base-commit: b02a5530af8abe0d3cd4852ba48990716e962934
-> change-id: 20251201-diogo-tegra_phy-86c89cab7377
-> 
-> Best regards,
+-- 
+Kind regards,
+
+Sakari Ailus
 
