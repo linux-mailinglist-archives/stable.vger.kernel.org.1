@@ -1,158 +1,168 @@
-Return-Path: <stable+bounces-222726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOsgLEIMpmkJJgAAu9opvQ
-	(envelope-from <stable+bounces-222726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:16:34 +0100
+	id SNHKL6gFpmkzJAAAu9opvQ
+	(envelope-from <stable+bounces-222727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:48:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A019A1E5208
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:16:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 427D21E40E0
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:48:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0C4D6309D6D4
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:39:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EA6C34AA8AE
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 21:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131E83A3312;
-	Mon,  2 Mar 2026 21:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033D83A4502;
+	Mon,  2 Mar 2026 21:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vh2nBt+3"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="BbEOyWiL"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875E5386C1D
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 21:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F523A331C
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 21:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772485704; cv=none; b=SUIi+hgSN0ZOShUcw0X64h4/8YhNDWn0049xBK5qlN66228b4CutkQz5vtby6pvJwxT0b42i9C9GYCbdRFGqAcz89bUo2Yr/qUx/iANHpw1YS+sTnOGom0aOQsktmzRH7IDGEa6CNFn48dS4PIPZdpR2WPSr4dnAVYoWPhiE6zE=
+	t=1772485719; cv=none; b=ZCavqxuIdZ2P5XfFQgoAEKVo3Gmd9q8tEjQ+9/7Y2agoIWSEtRwRZ3JScVX8HTaW71qFsZqPBS45YcLKoo4odUFh+IfjMYsbWdh1i+WCElPaI6Fzq4ycH74iEVNWuKxm7c/QhsdYLJol9UPhS5mGyQI0OtscmOod4oFlazhUy2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772485704; c=relaxed/simple;
-	bh=sdOwzxAPm5pwxrA5gG4pL0j7k+FvzYlobT6NNsTosaU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o5B5a9Z7h4kUNJVhhMSUQbsTwFiutRJXAExcgJ1PR8k2W2nzz9srZIkvv45c22WraPSSnSOrit5BdtbJbTMf5p3n7uQBqrbwBKCtss5XeaGnNyNdpAze9L0AH0tUAsC2o/1tD2u+n5l+8nxp0z0oLaeO02Q2CunBT+TrhWx9Fcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vh2nBt+3; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772485691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=H2Cir8PjWMNKOAoAekYskevFXQhEA9TnJGz6taHG0ys=;
-	b=vh2nBt+3A+Mr8CKxAum9hBKcSRfHzbir4dCXtTZt6RRSMbsUhV93o22EiqnDcixB7RFojP
-	qAmnxy7s9NLrIYG6/oTs/Hh3wBINLNO3sUZ8YTro1efK9bonsVufXfD9VuaPD1hGIJKY5N
-	aLDEiZD6rVfHhCDGr/CWRUz6lGn9G84=
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
-To: Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Cc: linux-mmc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mmc: sdhci-pci-gli: fix GL9750 DMA write corruption
-Date: Mon,  2 Mar 2026 13:07:17 -0800
-Message-ID: <20260302210717.1159159-1-matthew.schwartz@linux.dev>
+	s=arc-20240116; t=1772485719; c=relaxed/simple;
+	bh=ysqoOf9ZbQhxBgmZKS87lN56YFBpubtILCQz9oFd870=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LTW592PEq6RVocZ3K64l+Nt+gAHbizO97oC09iPJD1TjcobQ4tRpSlWFw3JBK8zAfA/sgv9IhO1MOMYFhLph51tRtSTLvYwoBdyvTZuln+IfL+rPOdHNALD2dI0dMYCWwD03a/9uqieBqVnjYzBPHTxZ/S42Uvmo2OcUk7r8tQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=BbEOyWiL; arc=none smtp.client-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-40ee196dd78so80697fac.1
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 13:08:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1772485717; x=1773090517; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ygs76HGOCOFE6AYrjp/vjGX4ajg9/UeAQcATp86xukg=;
+        b=BbEOyWiL9SXlmWDMeMM5M+soTjtWRORY/y6PFxBR8mAbyTdowDrltBKFMoPmkiuk/W
+         jvy/LH5imbkFNhPwx1RajehBEbVtqjERQT4ekeq4Bv/+MqR8mPDJ9ozhzAytxNnWxlas
+         6by3TdtcLfbfmBJ6VQfCDIsr5XMAavFGnyzcjeh477Wa1fPtKp2VnUCsl9bm92npKYki
+         AMy7XLHaWcPphN9JeIQATtBmlna9l64iLqNccb0XSNqJhdb3XTHki3hASlybup9u1xAd
+         Zm2GdEKhycX6fH+dnaGRB32KIIqgyuSSLSuOld8OI8lj8QfKjUixFV6PX1dFjcJBU+3B
+         zyyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772485717; x=1773090517;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ygs76HGOCOFE6AYrjp/vjGX4ajg9/UeAQcATp86xukg=;
+        b=PmNfn4IxwVOfwqlI0ka/0r/5SCbCzJ/UF5fnwDVf/GfkKRQJK6Yzrcq6ETZkw4lK0w
+         dKG72xsHeLtcEnBLAIomsb5mxr0xgd9nbeNumSx7eHmmzoRYKXjosvBjnva/Dx7zZe/t
+         LmCeAykgrWALOjVLQ3zni9fOxHBvpEtwbhKvE49IXE+nBBNC/DWdVZStna9N0NVqhnm1
+         XQhZ+Lf4qADx0M2s9LTh6P0fD9OnPGD9myCxBVqx0Xk1KUReB3oPhJr0gIecipGgIhmB
+         KgerID+ZDrEQzJ3fVkYPV5WBXNltaljqEzIM4q5sGEdDK5fFV645232RZDRXpKL/4urC
+         etyw==
+X-Gm-Message-State: AOJu0YykmPBdtnSUw99qC/MJTfrXRGZHqPLZduZkoNABJXWAeI/Wm3SS
+	7aJSB9xjVtadWKgQYYeo1YSZBpMQKg/wrQ8eEsJyYc5PNp73INcW0kRaNc9h7hlV/7M=
+X-Gm-Gg: ATEYQzwJKZRYogOBeJZqJ+Xy7/Vr3FzWCRqWqwIzA2N5v1N+XaqzwRWEB7SMfsWfWXx
+	tcEoCfdnSSm3+iDoZPzO4dP3xhSE9NXiQAXh6cEfHGCCqlnbrea2C05USM78+KoMtyvMsV16XEb
+	pJj7g2Sf1qgva1z3pisgp+GC6C7mDX7vb1sWDtb/lv3HCsq0xeo+rkkmUwu5Ji19hRXNeJO2ZTX
+	/ilmbD9TJBHMsMmxpCxLpNLROLZzfydSo+ZzdSv9BnBHVgfFmy1tkj3Ore3341PSVaLVUIEMUaJ
+	JI7Cz1+8Q82LAMjHZb1xa/LhG1HwbiZoMoQipNJ8kjVth0keLu1AkE5Qk/ko4a+NnXlHA163Qhx
+	Y57nee9ZXbwih1++uj/2OrG2wC9fypcCLQgB3C5RNh1bQUYT378Zsqpszl6Em+DAs25XYldY89G
+	je6dCmQDmnrdgAvoMgHcc1uZs7Q/yx8kthY5OMD5VyZFkcATiPBW/lbW8WTM7bXEDdefrTRd+I2
+	od5uinXHF+0yv/7dmto
+X-Received: by 2002:a05:6871:7c07:b0:404:1abd:9798 with SMTP id 586e51a60fabf-416277931b0mr8215565fac.11.1772485717267;
+        Mon, 02 Mar 2026 13:08:37 -0800 (PST)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4160cff1aacsm12342960fac.9.2026.03.02.13.08.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Mar 2026 13:08:36 -0800 (PST)
+Message-ID: <02f9fd38-8062-4000-9198-723b98036c29@kernel.dk>
+Date: Mon, 2 Mar 2026 14:08:34 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: A019A1E5208
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: Patch "io_uring/filetable: clamp alloc_hint to the
+ configured alloc range" failed to apply to 6.1-stable tree
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, io-uring@vger.kernel.org
+References: <20260301014717.1711200-1-sashal@kernel.org>
+ <eb41b6f9-08f4-4972-99d4-3340571830bc@kernel.dk>
+ <8e84b6c3-e62d-4aef-90b7-a7a0e63d8a17@kernel.dk> <aaX2F5LGPcqaDXum@laps>
+ <531cfe07-2a07-4bd2-be07-9cd78890e04f@kernel.dk> <aaX6AzNtFQ32exUW@laps>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <aaX6AzNtFQ32exUW@laps>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 427D21E40E0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
+	TAGGED_FROM(0.00)[bounces-222727-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222726-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.schwartz@linux.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kernel.dk];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linux.dev:dkim,linux.dev:email,linux.dev:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel-dk.20230601.gappssmtp.com:dkim,kernel.dk:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-The GL9750 SD host controller has intermittent data corruption during
-DMA write operations. The GM_BURST register's R_OSRC_Lmt field
-(bits 17:16), which limits outstanding DMA read requests from system
-memory, is not being cleared during initialization. The Windows driver
-sets R_OSRC_Lmt to zero, limiting requests to the smallest unit.
+On 3/2/26 1:58 PM, Sasha Levin wrote:
+> On Mon, Mar 02, 2026 at 01:45:51PM -0700, Jens Axboe wrote:
+>> On 3/2/26 1:41 PM, Sasha Levin wrote:
+>>> On Mon, Mar 02, 2026 at 01:38:37PM -0700, Jens Axboe wrote:
+>>>> On 3/1/26 6:15 AM, Jens Axboe wrote:
+>>>>> On 2/28/26 6:47 PM, Sasha Levin wrote:
+>>>>>> The patch below does not apply to the 6.1-stable tree.
+>>>>>> If someone wants it applied there, or to any other stable or longterm
+>>>>>> tree, then please email the backport, including the original git commit
+>>>>>> id to <stable@vger.kernel.org>.
+>>>>>
+>>>>> And this one also picks cleanly into 6.1-stable. Not sure what is
+>>>>> going on at your end?
+>>>>
+>>>> Are these and the other "FAILED" false positives getting applied or
+>>>> not? I didn't hear anything back on any of them.
+>>>
+>>> Appologies for all of this. There's an explanation of what happened here:
+>>> https://lore.kernel.org/all/aaWWE5uQqz_eG69i@laps/
+>>>
+>>> These should be part of the -rc2 I did earlier today.
+>>
+>> Gotcha, yeah it's not easy to know when you don't hear back, either
+>> as a reply or as a new "added to stable" email. For those of us that
+>> do take stable seriously, I 100% need to know if something is landing
+>> or not.
+> 
+> You're right (and thanks for all the backports!). I had a plan to
+> review all of these again after the release, but I should have sent
+> something out first.
 
-Clear R_OSRC_Lmt to match the Windows driver behavior. This eliminates
-write corruption verified with f3write/f3read tests while maintaining
-DMA performance.
+Sounds good, it was more of a note for the future, should something like
+this happen again.
 
-Cc: stable@vger.kernel.org
-Fixes: e51df6ce668a ("mmc: host: sdhci-pci: Add Genesys Logic GL975x support")
-Closes: https://lore.kernel.org/linux-mmc/33d12807-5c72-41ce-8679-57aa11831fad@linux.dev/
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
----
-Changes in v2:
-- Move GM_BURST register defines
-- Clear R_OSRC_Lmt in gli_set_9750 instead of gl9750_hw_setting to survive resets
-- Link to v1: https://lore.kernel.org/linux-mmc/20260227075909.3860183-1-matthew.schwartz@linux.dev/
-
-Changes in v1:
-- Use the proper name for the register field
-- Link to RFC: https://lore.kernel.org/linux-mmc/20260117234800.931664-1-matthew.schwartz@linux.dev/
----
- drivers/mmc/host/sdhci-pci-gli.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index b0f91cc9e40e4..6e4084407662a 100644
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -68,6 +68,9 @@
- #define   GLI_9750_MISC_TX1_DLY_VALUE    0x5
- #define   SDHCI_GLI_9750_MISC_SSC_OFF    BIT(26)
- 
-+#define SDHCI_GLI_9750_GM_BURST_SIZE		  0x510
-+#define   SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT  GENMASK(17, 16)
-+
- #define SDHCI_GLI_9750_TUNING_CONTROL	          0x540
- #define   SDHCI_GLI_9750_TUNING_CONTROL_EN          BIT(4)
- #define   GLI_9750_TUNING_CONTROL_EN_ON             0x1
-@@ -345,10 +348,16 @@ static void gli_set_9750(struct sdhci_host *host)
- 	u32 misc_value;
- 	u32 parameter_value;
- 	u32 control_value;
-+	u32 burst_value;
- 	u16 ctrl2;
- 
- 	gl9750_wt_on(host);
- 
-+	/* clear R_OSRC_Lmt to avoid DMA write corruption */
-+	burst_value = sdhci_readl(host, SDHCI_GLI_9750_GM_BURST_SIZE);
-+	burst_value &= ~SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT;
-+	sdhci_writel(host, burst_value, SDHCI_GLI_9750_GM_BURST_SIZE);
-+
- 	driving_value = sdhci_readl(host, SDHCI_GLI_9750_DRIVING);
- 	pll_value = sdhci_readl(host, SDHCI_GLI_9750_PLL);
- 	sw_ctrl_value = sdhci_readl(host, SDHCI_GLI_9750_SW_CTRL);
 -- 
-2.53.0
-
+Jens Axboe
 
