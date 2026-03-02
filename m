@@ -1,225 +1,399 @@
-Return-Path: <stable+bounces-222593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPxXNmiNpWmoDgYAu9opvQ
-	(envelope-from <stable+bounces-222593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:15:20 +0100
+	id MB6rGmKPpWmoDgYAu9opvQ
+	(envelope-from <stable+bounces-222594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:23:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6F31D998D
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:15:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41FA1D9AFA
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 14:23:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C1892301BA96
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:15:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A92E303EC04
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 13:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E193E5596;
-	Mon,  2 Mar 2026 13:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC76A3CC9F2;
+	Mon,  2 Mar 2026 13:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="b8bQfL5D";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZoIgsBQu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qLl8Jwbh"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437373E0C6C
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 13:15:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3C9361DDC
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 13:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772457313; cv=none; b=GQt2kSOACuEnAEf5mx6HtihcEwHv2jgFLBAps/FktPW3dnVR7ByWz8MlHT+bJtkWUeaK3zV1FDdSY0BecfEF6N4FasRtJ8EoV/6N9b4DEKVtdbe/nkiUc0Szu25kdYZBVzop8sTeGpz/wWLrVTOXfkfDNlzzVS43+OXZ1x7KBa4=
+	t=1772457819; cv=none; b=fPUFrmQS7nwsA6kfvBsIi6ET6CtFIOjpazpekjr0qxXfidbJrqY/UMspPzbS5czovMvCRgByD8eVL1IDYRoil7LkFst2hUiDpCqYa49j10GhZktGKdCURMxdny7U3a7U8dPGwVv37imA0jsxVkiYACVuE1T54KX+oDZSZCUBNSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772457313; c=relaxed/simple;
-	bh=e1WwWEIkznvSzsiifoe2Em8u+vsqnhXV2baukWGHgwU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OlGlpEhtee/3TzmVYlFBgkvwXgty34vCOdY5WvZr9SZvyAn4qBxvWYuUs1a7ihyXg8EZ1eKWfO97mrlRyj6+10iYOHNs5MgnonLFnLZlwkpR6HJylBhZrPP63ao20j3snhtCYnDom1EbRsHBi2FV9vR7oV4TAqba2xUN56gcfvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=b8bQfL5D; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZoIgsBQu; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62285XrE662214
-	for <stable@vger.kernel.org>; Mon, 2 Mar 2026 13:15:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=PM4arK3rnl1KKBaCYK+EZieq
-	xuWI/d1NYN/A/QOx70o=; b=b8bQfL5DhG6NXqBL9GlUBBTKOpKHd6+7/JGdxk7c
-	hBrIOAo0aqkVgVLs7NI1CZC0WZkLT+frPHsZiC22Fdo5EFiJ9h+ipnmBmXJTEZqI
-	HRT9rJBjN/m3BkZAOHZsGdHbJtSR3UQnxuknLHiL89eLvja/u3j4/l9ZE12vJxgU
-	dF5uyQm1P2FF+WxYH4mdGNHNIyZ/zNefD/ervcFifAcuhjpRef5G37bSOXr0Otuk
-	fPeeOTiIbsnqmR4xPhc+51pYfK6aCzzFg/P5hGYeEnleD3IsUPhLxovrpyBoPsnw
-	QjWqjPsBRIp8NZ+pteK/hXxJ3UAzQpDEG21/vr0bJQuEmw==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cn6r2s3vg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 02 Mar 2026 13:15:08 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8c71156fe09so3239207685a.0
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 05:15:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772457307; x=1773062107; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PM4arK3rnl1KKBaCYK+EZieqxuWI/d1NYN/A/QOx70o=;
-        b=ZoIgsBQurpeUrXnFat338TjZdLb/5s4dehw2XuG/NYug1aF0jXlVa+/j80H2OFfOYx
-         MqhdUsJVoaGsFCVV4TMRaRI4ZyS5yTyVrqWzmXTCNaihDAbGL6KRA8lw/9vQuwzvCRC0
-         MfCneGc0736b8sfEvqPfrg5dyAoWNfTWyxwRDmCVmCzKi9tuBwDfQVxSqJq8cAVvEjOq
-         ZiHWTjytNQ+RMdsKL7Gm3/fhTYd0yoyxFFxELo0qjYKzWR9VnSb/IuMsFr0t2WoHMcbp
-         J3m5dhOrOPC5TJZl+zYSwEVegLeAuoVshsgWN9GCh1FNrKe8PoCap2UVJQV/y/CPpFw5
-         QTvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772457307; x=1773062107;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PM4arK3rnl1KKBaCYK+EZieqxuWI/d1NYN/A/QOx70o=;
-        b=RPVYbGlbzxY8A5K+Plw1IGKWHosFmzZiQybUU7ph1Zc9QeijHD7lqx2Z/XcNxoW+E4
-         C2fhKYW5tk3evy/hkolhkkS1MBGljANhvbLT94BsuGzHOVuYRziXjgTSbUev7FzRQgVZ
-         uEmghiDk6OvAyvL6c+0YcdrSOYlpByvGj1V6D9lIwBxtQjKUzTw3Aq3QafK+LD1JwH/+
-         oOm02gesyCkB7Jww4kUWPR5rOykX3n6xU2/YNm4gHXFeU74qGuqC1kz5zBA8uukgtcAa
-         LPHGDCiitfPYEHV+Gy1rJkHo3e4+sIEll8PwY5/PfeGE1RyPRCbBeXay1ScFmEgSP0ns
-         2jSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWalo/mKWxF8yRDR+1BJVd/I9FGmQ8pRTkbmH+DrZzLgh+WfmmrMCImD6y9nCQnR0vcAu3/94w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOEYMrQ/k54pFGfVTZprWDNmVYMtRrnsWe4YDqcRVaFMsWqrET
-	IgYeixvLQVOq/Zm9DtgJgF605N+mZN4XjVDI93WHjO/jzJGL4DlwgE/yUW+QKNkC8pgNXJ9feKi
-	xL2S1WNoO6369B+r7C8cWuBpI7WvjijfpzFUqeXdYRZbKFD/glQoyUlvkp7Y=
-X-Gm-Gg: ATEYQzzprO+tC6IGkQg/Oa43nIMzce5IOt63yOwJ9FbiSyrPcKuMVXK0nfX03OnzN5h
-	3PyXXIrmHKE5z+e84AT7X8YMIBG5bFkNwjjLWMlVwe8UHJj/B7bkdqKTwZBm81/Zy9YOEurTLkJ
-	Y18ZN4ire6VHvI24X09APMLLDaiizX4EBfwPNkMcIssClyfLScYObfdYfkJ/ISVKqEUUAWTIftA
-	6+v2WTAfFdAcwailXau4fd0fjA6OeW4Asia5c7x8IThGOSIm5QCLAFF+CuJlyALm2yur1pjOXOm
-	WdoJQRJ6yRc/lT2rC4UbzJXEy559HKoZcaNj264zvX+eq1pYV74NCmw2bm4Qnpf4uSluJj5becE
-	En0Obq1+y4AsMCS895vJK6fBsWRLNU2+rLzfromtN02WyoawfyUrpJ7FvywgSc7Ov69bpXTdkt0
-	RW8dIRmoMxt87nZdh1Trb39y/skuFKG0NYXek=
-X-Received: by 2002:a05:620a:390a:b0:8c6:a26b:7e92 with SMTP id af79cd13be357-8cbc8d734e5mr1536604585a.15.1772457307138;
-        Mon, 02 Mar 2026 05:15:07 -0800 (PST)
-X-Received: by 2002:a05:620a:390a:b0:8c6:a26b:7e92 with SMTP id af79cd13be357-8cbc8d734e5mr1536599785a.15.1772457306659;
-        Mon, 02 Mar 2026 05:15:06 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-389f2ffdfe5sm26831661fa.22.2026.03.02.05.15.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 05:15:06 -0800 (PST)
-Date: Mon, 2 Mar 2026 15:15:04 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Cc: Rob Clark <robin.clark@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Abel Vesa <abelvesa@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] dt-bindings: display: msm: Fix reg ranges for DP
- example node
-Message-ID: <7b5fudcr6rgaey2a2t65qpyqkz5gsocmeh2jnvnx7dqzn7uq7i@aeeypfpsn7wg>
-References: <20260302-glymur-fix-dp-bindings-reg-clocks-v3-0-8fe49ac1f556@oss.qualcomm.com>
- <20260302-glymur-fix-dp-bindings-reg-clocks-v3-2-8fe49ac1f556@oss.qualcomm.com>
+	s=arc-20240116; t=1772457819; c=relaxed/simple;
+	bh=i6kS87qUnZ6mbCIR/lWF042B2JkLiPFC6Xd85F77Ur8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xo+CdEiZxeM1X+OMasMLPQ1ib0nV1+VL7ejcyh1wc+bdD5dOKaNuiMoN95RUVGazW5P+2WxdoobsicrtVyibEQgjyV4UkSo3bUd534wgtNQxnFt+IuG70CLiZyNjgZuZu/KR4DvMRpGDR/McfnI/+sGZXcz+tFrhq5c3JEED0IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qLl8Jwbh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2FEC2BCB1
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 13:23:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772457819;
+	bh=i6kS87qUnZ6mbCIR/lWF042B2JkLiPFC6Xd85F77Ur8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=qLl8Jwbh1f3JGoHnGUaxIUCKyx6rLdXSQ0w4ZbmKt6OcB2GISud/HJmNKnYG4PReT
+	 3DkYExGKaX7D6F8m7/HU9Jm/0uWbmT4zRZJwDcWBbAjh8VkYVshz61x+e+W/prNWhJ
+	 kj8K1pAItuA2czQ8aEWyoXttfTTwJsZbSThMCjxducprbz0hUexK1l+FxNJyFQzuNz
+	 MoNgEUgcYz0C9FO0RkZTo7oPh5tf3OxXO7w+IeCy5jz/XXxI2jYtSJSVeIFJtxie9d
+	 nCeM5EM7kNUBRJEFxAF0VwHxDV6nQ6aof2ZzBsPEEJZQlyxBE62KTe3xvSUdiYyTMA
+	 7iuoZO6XRqfvA==
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b932fe2e1a7so617932866b.1
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 05:23:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW9gNlJ+Fx2kj1qZqLiNAi+OcpDAiz0ux6Inau0qGav86HLxr5CQGb4Ti0fkrVzARtOyJF5cbU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoikNqId/vDZRoD89iLnb2wOZGM3RfpFgSj32mOL53o+sp6A1N
+	t4RqYQLTq3WEcoGscv0u/e9A1KVdsXPJRRdZXbbM8/ht+/ZvZAIFUYSFsByJfbLmc+f4q5c/y6H
+	CCSHhJeeYXIRxhZm7QGJa5qC5JKY0C6M=
+X-Received: by 2002:a17:907:7b8c:b0:b8f:abff:9cf2 with SMTP id
+ a640c23a62f3a-b9376378cadmr770535666b.4.1772457817202; Mon, 02 Mar 2026
+ 05:23:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302-glymur-fix-dp-bindings-reg-clocks-v3-2-8fe49ac1f556@oss.qualcomm.com>
-X-Proofpoint-GUID: fvkyl3rY6KZ1omKBl-28LnuhwhSDuPed
-X-Proofpoint-ORIG-GUID: fvkyl3rY6KZ1omKBl-28LnuhwhSDuPed
-X-Authority-Analysis: v=2.4 cv=Hpp72kTS c=1 sm=1 tr=0 ts=69a58d5c cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=B7jn6oKCbx1R8eWFqoQA:9 a=CjuIK1q_8ugA:10
- a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAyMDExMiBTYWx0ZWRfX1qI6nYryp1w6
- 7O92Dt8BCrlDqL5IZVxsz9H3MrHQV9yEquvqRo7ERPEo6dl2il8lNUmUUR7uijm3XPW7OiuOeXa
- BsLwo7NeVTxu1Mav1z8CjSbG7NujeULSafsGlR/7fKNDGnAsVVBw8XgXthwEG/82b0YTmDqlXfP
- TOHqHopmUAtF8q9hB61XTsMWYNcVTbMKzjFAdMeJJ2D8TcVr0zNnKY0okZzwqe45kw/+gfrNPbF
- ZxYZ9VlNcrzpsuYt5/WebeZS83sQf1ufihxzxVeeBO9dKDD6+Og2vJMZuAoayYs628qxnP2gJaK
- /qaIT6njGx5orUQUghE/KnEc337M2g6gEikME342qzd50GGoHYvRO1OV687TFOID5RJf/Zst8MW
- PGjufHI7NKccoegKpzoAH7my5Osj+J9dB0yykcZkDFGKe0zNqt2SAAafsOC1l540QPbvN1ws6zJ
- ZlUyrwJ8IGF3r/tAkew==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_03,2026-02-27_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 impostorscore=0 phishscore=0
- priorityscore=1501 adultscore=0 bulkscore=0 malwarescore=0 clxscore=1015
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
- definitions=main-2603020112
+References: <20260302110202.790279-1-gality369@gmail.com>
+In-Reply-To: <20260302110202.790279-1-gality369@gmail.com>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Mon, 2 Mar 2026 13:23:00 +0000
+X-Gmail-Original-Message-ID: <CAL3q7H5rGH11B7+2r6DG9N60W5X97KthYniHKPdFAXidoTaZUQ@mail.gmail.com>
+X-Gm-Features: AaiRm53fZPfnnr3g8kqNWKcnwLjXEOrRTrViwwXceKkXfayIXF4jyrQ_3DsLlpE
+Message-ID: <CAL3q7H5rGH11B7+2r6DG9N60W5X97KthYniHKPdFAXidoTaZUQ@mail.gmail.com>
+Subject: Re: [PATCH] btrfs: reject global extent/csum roots without offset 0
+ when extent_tree_v2 is off
+To: ZhengYuan Huang <gality369@gmail.com>
+Cc: linux-btrfs@vger.kernel.org, clm@fb.com, dsterba@suse.com, 
+	josef@toxicpanda.com, linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, 
+	r33s3n6@gmail.com, zzzccc427@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222593-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[24];
+	FREEMAIL_CC(0.00)[vger.kernel.org,fb.com,suse.com,toxicpanda.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-222594-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,linux.intel.com,suse.de,ffwll.ch,quicinc.com,vger.kernel.org,lists.freedesktop.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 7D6F31D998D
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.970];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: C41FA1D9AFA
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 11:58:36AM +0200, Abel Vesa wrote:
-> Add the missing p2, p3, mst2link and mst3link register blocks to the DP
-> example node. This is now necessary since the DP schema has been fixed.
-> 
-> While at it, use actual addresses from the first controller instead of
-> made-up ones. This will align it with the description from SoC devicetree.
-> 
-> Cc: <stable@vger.kernel.org> # v6.19
-> Fixes: 1aee577bbc60 ("dt-bindings: display: msm: Document the Glymur Mobile Display SubSystem")
-> Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+On Mon, Mar 2, 2026 at 11:03=E2=80=AFAM ZhengYuan Huang <gality369@gmail.co=
+m> wrote:
+>
+> Without EXTENT_TREE_V2, btrfs_extent_root() and btrfs_csum_root() always
+> look up the global roots at offset 0. A crafted image can provide only
+> non-zero offsets for the extent/csum global roots, so the offset 0 lookup
+> returns NULL and later leads to a NULL dereference
+> (e.g. in backup_super_roots()).
+>
+> Fix this by detecting this at mount time: when loading extent/csum
+> global roots without EXTENT_TREE_V2, require that an offset 0 root item
+> exists, otherwise fail the mount with -EUCLEAN.
+>
+> Tested with a crafted image that has only non-zero offset global roots,
+> which triggers the KASAN null-ptr-deref in backup_super_roots() before
+> the fix, and fails the mount with -EUCLEAN after the fix.
+>
+> Fixes: f7238e509404 ("btrfs: add support for multiple global roots")
+> Cc: stable@vger.kernel.org # v5.18+
+> Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+
+This was already fixed in for-next:
+
+https://lore.kernel.org/linux-btrfs/cover.1770580436.git.fdmanana@suse.com/
+
+Always check the github for-next branch before sending patches:
+
+https://github.com/btrfs/linux/commits/for-next/
+
+Thanks.
+
 > ---
->  .../bindings/display/msm/qcom,glymur-mdss.yaml           | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
-> 
-> -            displayport-controller@ae90000 {
-> +            displayport-controller@af54000 {
-
-Nice.
-
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-
-
-
->                  compatible = "qcom,glymur-dp";
-> -                reg = <0xae90000 0x200>,
-> -                      <0xae90200 0x200>,
-> -                      <0xae90400 0x600>,
-> -                      <0xae91000 0x400>,
-> -                      <0xae91400 0x400>;
-> +                reg = <0xaf54000 0x200>,
-
--- 
-With best wishes
-Dmitry
+> A KASAN null-ptr-deref was triggered when mounting a crafted btrfs
+> image and then doing a simple write/rename workload (e.g. moving any
+> file into the mountpoint). The crash happens later during a transaction
+> commit, in the super backup roots path.
+>
+> Root cause
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> backup_super_roots() looks up both the extent and csum roots through
+> the "global roots" rb-tree:
+>
+> extent_root =3D btrfs_extent_root(fs_info, 0);
+> csum_root =3D btrfs_csum_root(fs_info, 0);
+>
+> and then unconditionally dereferences extent_root->node and
+> csum_root->node.
+>
+> Both btrfs_extent_root() and btrfs_csum_root() build a key with:
+>
+> .offset =3D btrfs_global_root_id(fs_info, bytenr)
+>
+> and btrfs_global_root_id() returns 0 when the filesystem does not have
+> the EXTENT_TREE_V2 incompat feature. This means that for
+> non-extent_tree_v2 filesystems, the implementation assumes that there is
+> always a global root item for:
+>
+> (BTRFS_EXTENT_TREE_OBJECTID, BTRFS_ROOT_ITEM_KEY, offset=3D0)
+> (BTRFS_CSUM_TREE_OBJECTID, BTRFS_ROOT_ITEM_KEY, offset=3D0)
+>
+> However, an image without an offset =3D 0 root item can still be
+> successfully mounted. The mount-time validation logic for the csum tree
+> resides in load_global_roots_objectid(). Currently,
+> load_global_roots_objectid() loads whatever root items exist for
+> a given objectid, but it does not validate that offset =3D 0
+> exists when EXTENT_TREE_V2 is not enabled. With a crafted image,
+> the first (and only) root item for the csum tree (and similarly for
+> extent) can have a large non-zero offset (e.g. 0x10000000000).
+> load_global_roots_objectid() inserts that root into the rb-tree, but
+> there is no entry for offset 0. Later, btrfs_csum_root(..., 0) looks up
+> offset 0, returns NULL, and backup_super_roots() dereferences it,
+> causing the crash.
+>
+> So the bug is an invariant mismatch:
+>
+> - lookup side (btrfs_{extent,csum}_root) assumes offset=3D0 exists when
+> extent_tree_v2 is off
+>
+> - load side (load_global_roots_objectid) does not enforce that assumption
+>
+> Fix
+> =3D=3D=3D
+> Teach load_global_roots_objectid() to enforce the "offset 0 must exist"
+> invariant for the extent and csum trees when EXTENT_TREE_V2 is not enable=
+d.
+> If at least one root item is found but none has offset 0, fail the mount
+> with -EUCLEAN and emit an explicit error message. This prevents later
+> NULL dereferences and also avoids propagating a corrupted/unsupported
+> global-root layout into runtime.
+>
+> Note: extent_root is subject to the same assumption and is fixed by the
+> same check (backup_super_roots dereferences extent_root->node as well).
+>
+> KASAN report
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Oops: general protection fault, probably for non-canonical address 0xdfff=
+fc0000000003: 0000 [#1] SMP KASAN NOPTI
+> KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+> CPU: 0 UID: 0 PID: 34 Comm: kworker/u8:1 Tainted: G           OE       6.=
+18.0 #1 PREEMPT(voluntary)
+> Tainted: [O]=3DOOT_MODULE, [E]=3DUNSIGNED_MODULE
+> Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-de=
+bian-1.16.3-2 04/01/2014
+> Workqueue: events_unbound btrfs_async_reclaim_data_space
+> RIP: 0010:backup_super_roots fs/btrfs/disk-io.c:1680 [inline]
+> RIP: 0010:write_all_supers+0x2d56/0x4980 fs/btrfs/disk-io.c:4022
+> Code: 40 38 f2 7f 08 84 d2 0f 85 72 19 00 00 49 8d 7c 24 18 41 88 9e 9a 0=
+0 00 00 48 ba 00 00 00 00 00 fc ff df 48 89 fe 48 c1 ee 03 <80> 3c 16 00 0f=
+ 85 33 19 00 00 48 ba 00 00 00 00 00 fc ff df 49 8b
+> RSP: 0018:ffff88800a617758 EFLAGS: 00010216
+> RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+> RDX: dffffc0000000000 RSI: 0000000000000003 RDI: 0000000000000018
+> RBP: ffff88800a617898 R08: 1ffff110023f53a8 R09: 0000000000000000
+> R10: ffff8880173a8000 R11: 0000000000000001 R12: 0000000000000000
+> R13: ffff888000000000 R14: ffff88800b676d23 R15: ffffea0000000000
+> FS:  0000000000000000(0000) GS:ffff8880e4d3e000(0000) knlGS:0000000000000=
+000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00005baa3c26f678 CR3: 000000000e9b8000 CR4: 00000000000006f0
+> Call Trace:
+> <TASK>
+> ? __pfx_write_all_supers+0x10/0x10 fs/btrfs/disk-io.c:3980
+> ? btrfs_commit_transaction+0x2818/0x3d90 fs/btrfs/transaction.c:2526
+> ? __lock_release kernel/locking/lockdep.c:5574 [inline]
+> ? lock_release+0x122/0x2a0 kernel/locking/lockdep.c:5889
+> btrfs_commit_transaction+0x28cc/0x3d90 fs/btrfs/transaction.c:2541
+> ? __pfx_btrfs_commit_transaction+0x10/0x10 fs/btrfs/transaction.c:1919
+> ? start_transaction+0x244/0x1740 fs/btrfs/transaction.c:780
+> btrfs_commit_current_transaction+0x55/0xf0 fs/btrfs/transaction.c:2010
+> flush_space+0x7d1/0xc40 fs/btrfs/space-info.c:888
+> ? mark_usage kernel/locking/lockdep.c:4674 [inline]
+> ? __lock_acquire+0x43e/0x21e0 kernel/locking/lockdep.c:5191
+> ? __pfx_flush_space+0x10/0x10 include/trace/events/btrfs.h:2362
+> ? instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
+> ? atomic_try_cmpxchg_acquire include/linux/atomic/atomic-instrumented.h:1=
+301 [inline]
+> ? queued_spin_lock include/asm-generic/qspinlock.h:111 [inline]
+> ? do_raw_spin_lock+0x133/0x290 kernel/locking/spinlock_debug.c:116
+> ? find_held_lock+0x31/0x90 kernel/locking/lockdep.c:5350
+> ? spin_unlock include/linux/spinlock.h:391 [inline]
+> ? do_async_reclaim_data_space+0x369/0x5e0 fs/btrfs/space-info.c:1441
+> ? __kasan_check_read+0x11/0x20 mm/kasan/shadow.c:31
+> ? instrument_atomic_read include/linux/instrumented.h:68 [inline]
+> ? atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
+> ? queued_spin_is_locked include/asm-generic/qspinlock.h:57 [inline]
+> ? debug_spin_unlock kernel/locking/spinlock_debug.c:101 [inline]
+> ? do_raw_spin_unlock+0x59/0x200 kernel/locking/spinlock_debug.c:141
+> do_async_reclaim_data_space+0x3c1/0x5e0 fs/btrfs/space-info.c:1410
+> btrfs_async_reclaim_data_space+0x3f/0xb0 fs/btrfs/space-info.c:1458
+> process_one_work+0x8e0/0x1980 kernel/workqueue.c:3263
+> ? __pfx_process_one_work+0x10/0x10 include/linux/list.h:226
+> ? move_linked_works+0x1a8/0x2c0 kernel/workqueue.c:1165
+> ? assign_work+0x19d/0x240 kernel/workqueue.c:1206
+> ? __lock_is_held kernel/locking/lockdep.c:5601 [inline]
+> ? lock_is_held_type+0xa3/0x130 kernel/locking/lockdep.c:5940
+> process_scheduled_works kernel/workqueue.c:3346 [inline]
+> worker_thread+0x683/0xf80 kernel/workqueue.c:3427
+> ? __pfx_worker_thread+0x10/0x10 kernel/workqueue.c:3570
+> kthread+0x3f0/0x850 kernel/kthread.c:463
+> ? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
+> ? trace_hardirqs_on+0x53/0x60 kernel/trace/trace_preemptirq.c:79
+> ? __raw_spin_unlock_irq include/linux/spinlock_api_smp.h:159 [inline]
+> ? _raw_spin_unlock_irq+0x27/0x70 kernel/locking/spinlock.c:202
+> ? spin_unlock_irq include/linux/spinlock.h:401 [inline]
+> ? calculate_sigpending+0x7c/0xb0 kernel/signal.c:194
+> ? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
+> ret_from_fork+0x50f/0x610 arch/x86/kernel/process.c:158
+> ? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
+> ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+> </TASK>
+> Modules linked in:
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:backup_super_roots fs/btrfs/disk-io.c:1680 [inline]
+> RIP: 0010:write_all_supers+0x2d56/0x4980 fs/btrfs/disk-io.c:4022
+> Code: 40 38 f2 7f 08 84 d2 0f 85 72 19 00 00 49 8d 7c 24 18 41 88 9e 9a 0=
+0 00 00 48 ba 00 00 00 00 00 fc ff df 48 89 fe 48 c1 ee 03 <80> 3c 16 00 0f=
+ 85 33 19 00 00 48 ba 00 00 00 00 00 fc ff df 49 8b
+> RSP: 0018:ffff88800a617758 EFLAGS: 00010216
+> RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+> RDX: dffffc0000000000 RSI: 0000000000000003 RDI: 0000000000000018
+> RBP: ffff88800a617898 R08: 1ffff110023f53a8 R09: 0000000000000000
+> R10: ffff8880173a8000 R11: 0000000000000001 R12: 0000000000000000
+> R13: ffff888000000000 R14: ffff88800b676d23 R15: ffffea0000000000
+> FS:  0000000000000000(0000) GS:ffff8880e4d3e000(0000) knlGS:0000000000000=
+000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00005baa3c26f678 CR3: 000000000e9b8000 CR4: 00000000000006f0
+> ----------------
+> Code disassembly (best guess):
+>    0:   40 38 f2                cmp    %sil,%dl
+>    3:   7f 08                   jg     0xd
+>    5:   84 d2                   test   %dl,%dl
+>    7:   0f 85 72 19 00 00       jne    0x197f
+>    d:   49 8d 7c 24 18          lea    0x18(%r12),%rdi
+>   12:   41 88 9e 9a 00 00 00    mov    %bl,0x9a(%r14)
+>   19:   48 ba 00 00 00 00 00    movabs $0xdffffc0000000000,%rdx
+>   20:   fc ff df
+>   23:   48 89 fe                mov    %rdi,%rsi
+>   26:   48 c1 ee 03             shr    $0x3,%rsi
+> * 2a:   80 3c 16 00             cmpb   $0x0,(%rsi,%rdx,1) <-- trapping in=
+struction
+>   2e:   0f 85 33 19 00 00       jne    0x1967
+>   34:   48 ba 00 00 00 00 00    movabs $0xdffffc0000000000,%rdx
+>   3b:   fc ff df
+>   3e:   49                      rex.WB
+>   3f:   8b                      .byte 0x8b
+>
+> Reproduction (v6.18, x86_64, KASAN)
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> 1. Download the crafted image (tested with Linux v6.18 + KASAN):
+>   https://drive.google.com/file/d/1xV0pjI3N-D83IzH62dphWCAD0RR-sV4U/view
+> 2. Attach it as a block device (example assumes it shows up as /dev/vda),
+> then mount it read-write:
+>   mkdir -p /mnt/btrfs
+>   mount /dev/vda /mnt/btrfs
+> 3. Trigger any metadata update, e.g. move a file into the mountpoint:
+>   echo test > /tmp/1.txt
+>   mv /tmp/1.txt /mnt/btrfs/
+> 4. Result:
+> The system hits a NULL pointer dereference in the commit path, with KASAN
+> reporting the fault at backup_super_roots() (fs/btrfs/disk-io.c).
+>
+> Thanks,
+> ZhengYuan Huang
+> ---
+>  fs/btrfs/disk-io.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+>
+> diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+> index 0aa7e5d1b05f..900e462d8ea1 100644
+> --- a/fs/btrfs/disk-io.c
+> +++ b/fs/btrfs/disk-io.c
+> @@ -2119,6 +2119,18 @@ static int load_global_roots_objectid(struct btrfs=
+_root *tree_root,
+>         };
+>         bool found =3D false;
+>
+> +       /*
+> +        * Without EXTENT_TREE_V2 we only have a single global extent/csu=
+m root.
+> +        * btrfs_extent_root() and btrfs_csum_root() always look it up wi=
+th offset
+> +        * 0 (btrfs_global_root_id() returns 0). If we load only non-zero=
+ offsets
+> +        * here, later users will see NULL and can crash (e.g. when backi=
+ng up
+> +        * super roots during a commit).
+> +        */
+> +       bool need_offset0 =3D !btrfs_fs_incompat(fs_info, EXTENT_TREE_V2)=
+ &&
+> +                     (objectid =3D=3D BTRFS_EXTENT_TREE_OBJECTID ||
+> +                      objectid =3D=3D BTRFS_CSUM_TREE_OBJECTID);
+> +       bool found_offset0 =3D false;
+> +
+>         /* If we have IGNOREDATACSUMS skip loading these roots. */
+>         if (objectid =3D=3D BTRFS_CSUM_TREE_OBJECTID &&
+>             btrfs_test_opt(fs_info, IGNOREDATACSUMS)) {
+> @@ -2144,6 +2156,8 @@ static int load_global_roots_objectid(struct btrfs_=
+root *tree_root,
+>                 btrfs_item_key_to_cpu(path->nodes[0], &key, path->slots[0=
+]);
+>                 if (key.objectid !=3D objectid)
+>                         break;
+> +               if (need_offset0 && key.offset =3D=3D 0)
+> +                       found_offset0 =3D true;
+>                 btrfs_release_path(path);
+>
+>                 /*
+> @@ -2169,6 +2183,13 @@ static int load_global_roots_objectid(struct btrfs=
+_root *tree_root,
+>         }
+>         btrfs_release_path(path);
+>
+> +       if (need_offset0 && found && !found_offset0) {
+> +               btrfs_err(fs_info,
+> +                         "missing global %s root item with offset 0 (ext=
+ent_tree_v2 not enabled)",
+> +                         name);
+> +               return -EUCLEAN;
+> +       }
+> +
+>         if (objectid =3D=3D BTRFS_EXTENT_TREE_OBJECTID)
+>                 fs_info->nr_global_roots =3D max_global_id + 1;
+>
+> --
+> 2.43.0
+>
+>
 
