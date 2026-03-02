@@ -1,284 +1,279 @@
-Return-Path: <stable+bounces-222516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id whKIHg0rpWn64wUAu9opvQ
-	(envelope-from <stable+bounces-222516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:15:41 +0100
+	id OMBPNU8upWmj5AUAu9opvQ
+	(envelope-from <stable+bounces-222517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:29:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFCA1D3664
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:15:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B951D3721
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02D30301AB88
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 06:15:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2973E3008A7E
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 06:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52C331ED83;
-	Mon,  2 Mar 2026 06:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C453164D6;
+	Mon,  2 Mar 2026 06:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="rqAqjKqK"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FEKqQ67r"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp134-25.sina.com.cn (smtp134-25.sina.com.cn [180.149.134.25])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D62D330656
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 06:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D802D21B905
+	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 06:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772432134; cv=none; b=f2sKBiiLopMu8lUzpWVGqLWU6/AFWsTU14xIDFMQua4b2rJdJPqrdPqKDmtSCtukFw0LKbBo8YHoZl+jkvqIADl/LKPeBmuZwc1SIDBwMCAGvMyEd6LLix1ZKtJZVc5yinYBvWE/op8g6lM7mjAuBeh7tioWsgqhXN+/DFoEqmI=
+	t=1772432971; cv=none; b=cz0GuKL410poWy2ILio5k+wyIi94ujpR+tFchPW3ruRNok0oEOyfd/0vealwHzyb1nPAKd9WYEVebjSzL3c9woQN16rkZgqOphhx2Qe7gN0KzZkCZi5KY4XSbDeGUXFuYcD8sqH6Y0btoikacZgpeKC0e9ogIqbTAJ3V2xFDImE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772432134; c=relaxed/simple;
-	bh=slg8SM4ynOKms53eQv2wcJ57WnYI6guMdGs+fPU8aQo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k1hTLMoOrkdmQfr9YExniuzAxKL5HowgPQb0jFjsyUoraZkb2yKaCyXMHeOOcC40QkZSKBHNpU2Tfj/U+eIO9Af5kr7i2mcwgmyv7Nj9wWbzRCTtU4Rt+/kuOE++8qTE6s+LoFyt3wHeHylscKQBK+DUsl7ZhUCzpdtJlmu9F9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=rqAqjKqK; arc=none smtp.client-ip=180.149.134.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1772432124;
-	bh=K88WGoNKj/7zsSpUnwtuBnEb5pHhWeEyPp3270DPR6E=;
-	h=From:Subject:Date:Message-Id;
-	b=rqAqjKqKkJVFki9PvJ27drySbpQ/w9VNwXHiAteK1kCmdmMvD1dzsI7HQ/WhrWDDe
-	 RnX0yd5Uh2ZClibyxGjwPEU6Sr6QD0cJhrJga7Hp1XLDxQAm3TprJ+RbmOgdR1g70D
-	 hpxdUM3JnJc8o/05AyqpHmEP1eOfHmOs3de1eSHc=
-X-SMAIL-HELO: NTT-kernel-dev
-Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.21) with ESMTP
-	id 69A52ACB000002BE; Mon, 2 Mar 2026 14:14:37 +0800 (CST)
-X-Sender: jianqkang@sina.cn
-X-Auth-ID: jianqkang@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=jianqkang@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 6587363408595
-X-SMAIL-UIID: 94AF8027E21E4C1CBF91639DFB83F4DF-20260302-141437-1
-From: Jianqiang kang <jianqkang@sina.cn>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	aahringo@redhat.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	ccaulfie@redhat.com,
-	teigland@redhat.com,
-	cluster-devel@redhat.com
-Subject: [PATCH 5.15.y] fs: dlm: fix use after free in midcomms commit
-Date: Mon,  2 Mar 2026 14:14:35 +0800
-Message-Id: <20260302061435.2670935-1-jianqkang@sina.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1772432971; c=relaxed/simple;
+	bh=Q2EOswIlTT65Gw+A24Wdnw+0KorL9qBvjn+K5S/m6oc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=JgtMMoXtuKkuvGNqBCf2aRwEqsvrJkqy9m7/EJEqYmNzASiRzU7l6Yri6GSGDcbYzfeTY9Fy4iK6nZaFdfPe72ag23YOtQmRZGboSxTojlRencPRJ0+WEcmHeArUVr12F75qdRQh/JRpx0YBEtfxTuKZz7TnG6aQeli7OR6oRhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FEKqQ67r; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772432966;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Rym3aUWuenq1lQZSGDfzIxn3F9KxsbvCY1oHj0DwIM=;
+	b=FEKqQ67rTWOAjWtHeWhw+xjcu/h0GspbFI1MhnO/kCHpG/e6GRQDcq90EQFErEsXZ2SxbX
+	ol5CJUYmFpR6wlsWGgYcQTO3IO7dVr6CpsRGiYvagmtti2jMcWRag5REwc/MFWjyB7+tMt
+	6T/w1smcvdWXJEs/LLYEfanKAnEZTbg=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.1\))
+Subject: Re: [PATCH] mmc: sdhci-pci-gli: fix GL9750 DMA write corruption
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
+In-Reply-To: <TYZPR01MB42609CF11A0C011930B4C067D77EA@TYZPR01MB4260.apcprd01.prod.exchangelabs.com>
+Date: Sun, 1 Mar 2026 22:28:55 -0800
+Cc: Adrian Hunter <adrian.hunter@intel.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>,
+ "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <240846BF-3951-4B14-925C-1FA324161C0F@linux.dev>
+References: <20260227075909.3860183-1-matthew.schwartz@linux.dev>
+ <1e71a22b-48d5-4a5f-87d5-860a6cb9a04d@intel.com>
+ <752b26fc-45e2-4c4b-aa9b-48a1112b837a@linux.dev>
+ <TYZPR01MB42609CF11A0C011930B4C067D77EA@TYZPR01MB4260.apcprd01.prod.exchangelabs.com>
+To: =?utf-8?B?IkJlbkNodWFuZ1vojormmbrph49dIg==?= <Ben.Chuang@genesyslogic.com.tw>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222516-lists,stable=lfdr.de];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-222517-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[matthew.schwartz@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[sina.cn:+];
-	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[sina.cn];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sina.cn:mid,sina.cn:dkim,sina.cn:email]
-X-Rspamd-Queue-Id: 4BFCA1D3664
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,genesyslogic.com.tw:email,linaro.org:email,linux.dev:mid,linux.dev:dkim,linux.dev:email]
+X-Rspamd-Queue-Id: 37B951D3721
 X-Rspamd-Action: no action
 
-From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit 724b6bab0d75f1dc01fdfbf7fe8d4217a5cb90ba ]
 
-While working on processing dlm message in softirq context I experienced
-the following KASAN use-after-free warning:
+> On Mar 1, 2026, at 6:54=E2=80=AFPM, BenChuang[=E8=8E=8A=E6=99=BA=E9=87=8F=
+] <Ben.Chuang@genesyslogic.com.tw> wrote:
+>=20
+> Hi Matthew,
+>=20
+>> -----Original Message-----
+>> From: Matthew Schwartz <matthew.schwartz@linux.dev>
+>> Sent: Saturday, February 28, 2026 9:27 AM
+>> To: Adrian Hunter <adrian.hunter@intel.com>; Ulf Hansson =
+<ulf.hansson@linaro.org>; BenChuang[=E8=8E=8A=E6=99=BA=E9=87=8F]
+>> <Ben.Chuang@genesyslogic.com.tw>
+>> Cc: linux-mmc@vger.kernel.org; linux-kernel@vger.kernel.org; =
+stable@vger.kernel.org
+>> Subject: Re: [PATCH] mmc: sdhci-pci-gli: fix GL9750 DMA write =
+corruption
+>>=20
+>> On 2/27/26 1:16 AM, Adrian Hunter wrote:
+>>> On 27/02/2026 09:59, Matthew Schwartz wrote:
+>>>> The GL9750 SD host controller has intermittent data corruption =
+during
+>>>> DMA write operations. The GM_BURST register's R_OSRC_Lmt field
+>>>> (bits 17:16), which limits outstanding DMA read requests from =
+system
+>>>> memory, is not being cleared during initialization. The Windows =
+driver
+>>>> sets R_OSRC_Lmt to zero, limiting requests to the smallest unit.
+>>>>=20
+>>>> Clear R_OSRC_Lmt to match the Windows driver behavior. This =
+eliminates
+>>>> write corruption verified with f3write/f3read tests while =
+maintaining
+>>>> DMA performance.
+>>>>=20
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: e51df6ce668a ("mmc: host: sdhci-pci: Add Genesys Logic =
+GL975x support")
+>>>> Closes:
+>> https://lore.kernel.org/linux-mmc/33d12807-5c72-41c
+>> =
+e-8679-57aa11831fad%40linux.dev%2F&data=3D05%7C02%7Cben.chuang%40genesyslo=
+gic.com.tw%7Cf7d89cd3b9ef4ee8f58
+>> =
+208de76687497%7C4e753840bf6b40a19645185818deeb52%7C0%7C0%7C639078388197698=
+028%7CUnknown%7CTWFpb
+>> =
+GZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjo=
+iTWFpbCIsIldUIjoyfQ%3D%3D%7C0%
+>> =
+7C%7C%7C&sdata=3DxdnJIB74XZ4LQYBgHseMZWvDSwO1mg4x0jCNxqMMoco%3D&reserved=3D=
+0
+>>>> Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+>>>=20
+>>> Ben wrote "So I think your patch setting R_OSRC_Lmt to zero is =
+reasonable."
+>>> Can be have a Reviewed-by tag also?
+>>=20
+>> Wasn't sure about the etiquette of adding a Reviewed-by without an =
+explicit tag in an email,
+>> but happy to re-spin a v2 and add that if it's wanted.
+>>=20
+>>>=20
+>>> Nevertheless:
+>>>=20
+>>> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+>>>=20
+>>>> ---
+>>>> Link to RFC:
+>> https://lore.kernel.org/all/20260117234800.931664-1
+>> =
+-matthew.schwartz%40linux.dev%2F&data=3D05%7C02%7Cben.chuang%40genesyslogi=
+c.com.tw%7Cf7d89cd3b9ef4ee8f58208
+>> =
+de76687497%7C4e753840bf6b40a19645185818deeb52%7C0%7C0%7C639078388197757693=
+%7CUnknown%7CTWFpbGZsb
+>> =
+3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWF=
+pbCIsIldUIjoyfQ%3D%3D%7C0%7C%
+>> =
+7C%7C&sdata=3DhG%2FsvJa9fEfEPXIcB81%2FG33pbxg54SxC2SX5WuKxCZw%3D&reserved=3D=
+0
+>>>> Changes from RFC -> v1: use the proper name for the register field
+>>>> ---
+>>>> drivers/mmc/host/sdhci-pci-gli.c | 8 ++++++++
+>>>> 1 file changed, 8 insertions(+)
+>>>>=20
+>>>> diff --git a/drivers/mmc/host/sdhci-pci-gli.c =
+b/drivers/mmc/host/sdhci-pci-gli.c
+>>>> index b0f91cc9e40e4..7a7be3f7bee6b 100644
+>>>> --- a/drivers/mmc/host/sdhci-pci-gli.c
+>>>> +++ b/drivers/mmc/host/sdhci-pci-gli.c
+>>>> @@ -26,6 +26,9 @@
+>>>> #define   GLI_9750_WT_EN_ON           0x1
+>>>> #define   GLI_9750_WT_EN_OFF          0x0
+>>>>=20
+>>>> +#define SDHCI_GLI_9750_GM_BURST_SIZE                0x510
+>>>> +#define   SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT     GENMASK(17, =
+16)
+>>>> +
+>=20
+> Please move the definition of 0x510 register before the definition of =
+0x540 register.
 
-[  151.760477] ==================================================================
-[  151.761803] BUG: KASAN: use-after-free in dlm_midcomms_commit_mhandle+0x19d/0x4b0
-[  151.763414] Read of size 4 at addr ffff88811a980c60 by task lock_torture/1347
+Sure, I can move it.
 
-[  151.765284] CPU: 7 PID: 1347 Comm: lock_torture Not tainted 6.1.0-rc4+ #2828
-[  151.766778] Hardware name: Red Hat KVM/RHEL-AV, BIOS 1.16.0-3.module+el8.7.0+16134+e5908aa2 04/01/2014
-[  151.768726] Call Trace:
-[  151.769277]  <TASK>
-[  151.769748]  dump_stack_lvl+0x5b/0x86
-[  151.770556]  print_report+0x180/0x4c8
-[  151.771378]  ? kasan_complete_mode_report_info+0x7c/0x1e0
-[  151.772241]  ? dlm_midcomms_commit_mhandle+0x19d/0x4b0
-[  151.773069]  kasan_report+0x93/0x1a0
-[  151.773668]  ? dlm_midcomms_commit_mhandle+0x19d/0x4b0
-[  151.774514]  __asan_load4+0x7e/0xa0
-[  151.775089]  dlm_midcomms_commit_mhandle+0x19d/0x4b0
-[  151.775890]  ? create_message.isra.29.constprop.64+0x57/0xc0
-[  151.776770]  send_common+0x19f/0x1b0
-[  151.777342]  ? remove_from_waiters+0x60/0x60
-[  151.778017]  ? lock_downgrade+0x410/0x410
-[  151.778648]  ? __this_cpu_preempt_check+0x13/0x20
-[  151.779421]  ? rcu_lockdep_current_cpu_online+0x88/0xc0
-[  151.780292]  _convert_lock+0x46/0x150
-[  151.780893]  convert_lock+0x7b/0xc0
-[  151.781459]  dlm_lock+0x3ac/0x580
-[  151.781993]  ? 0xffffffffc0540000
-[  151.782522]  ? torture_stop+0x120/0x120 [dlm_locktorture]
-[  151.783379]  ? dlm_scan_rsbs+0xa70/0xa70
-[  151.784003]  ? preempt_count_sub+0xd6/0x130
-[  151.784661]  ? is_module_address+0x47/0x70
-[  151.785309]  ? torture_stop+0x120/0x120 [dlm_locktorture]
-[  151.786166]  ? 0xffffffffc0540000
-[  151.786693]  ? lockdep_init_map_type+0xc3/0x360
-[  151.787414]  ? 0xffffffffc0540000
-[  151.787947]  torture_dlm_lock_sync.isra.3+0xe9/0x150 [dlm_locktorture]
-[  151.789004]  ? torture_stop+0x120/0x120 [dlm_locktorture]
-[  151.789858]  ? 0xffffffffc0540000
-[  151.790392]  ? lock_torture_cleanup+0x20/0x20 [dlm_locktorture]
-[  151.791347]  ? delay_tsc+0x94/0xc0
-[  151.791898]  torture_ex_iter+0xc3/0xea [dlm_locktorture]
-[  151.792735]  ? torture_start+0x30/0x30 [dlm_locktorture]
-[  151.793606]  lock_torture+0x177/0x270 [dlm_locktorture]
-[  151.794448]  ? torture_dlm_lock_sync.isra.3+0x150/0x150 [dlm_locktorture]
-[  151.795539]  ? lock_torture_stats+0x80/0x80 [dlm_locktorture]
-[  151.796476]  ? do_raw_spin_lock+0x11e/0x1e0
-[  151.797152]  ? mark_held_locks+0x34/0xb0
-[  151.797784]  ? _raw_spin_unlock_irqrestore+0x30/0x70
-[  151.798581]  ? __kthread_parkme+0x79/0x110
-[  151.799246]  ? trace_preempt_on+0x2a/0xf0
-[  151.799902]  ? __kthread_parkme+0x79/0x110
-[  151.800579]  ? preempt_count_sub+0xd6/0x130
-[  151.801271]  ? __kasan_check_read+0x11/0x20
-[  151.801963]  ? __kthread_parkme+0xec/0x110
-[  151.802630]  ? lock_torture_stats+0x80/0x80 [dlm_locktorture]
-[  151.803569]  kthread+0x192/0x1d0
-[  151.804104]  ? kthread_complete_and_exit+0x30/0x30
-[  151.804881]  ret_from_fork+0x1f/0x30
-[  151.805480]  </TASK>
+> i.e.
+>=20
+> #define   GLI_9750_MISC_TX1_DLY_VALUE    0x5
+> #define   SDHCI_GLI_9750_MISC_SSC_OFF    BIT(26)
+>=20
+> +#define        SDHCI_GLI_9750_GM_BURST_SIZE              0x510
+> +#define          SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT   =
+GENMASK(17, 16)
+> +
+> #define SDHCI_GLI_9750_TUNING_CONTROL            0x540
+> #define   SDHCI_GLI_9750_TUNING_CONTROL_EN          BIT(4)
+> #define   GLI_9750_TUNING_CONTROL_EN_ON             0x1
+>=20
+>>>> #define SDHCI_GLI_9750_CFG2          0x848
+>>>> #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
+>>>> #define   GLI_9750_CFG2_L1DLY_VALUE    0x1F
+>>>> @@ -629,6 +632,11 @@ static void gl9750_hw_setting(struct =
+sdhci_host *host)
+>>>>=20
+>>>>   gl9750_wt_on(host);
+>>>>=20
+>>>> +  /* clear R_OSRC_Lmt to avoid DMA write corruption */
+>>>> +  value =3D sdhci_readl(host, SDHCI_GLI_9750_GM_BURST_SIZE);
+>>>> +  value &=3D ~SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT;
+>>>> +  sdhci_writel(host, value, SDHCI_GLI_9750_GM_BURST_SIZE);
+>>>> +
+>=20
+> I recall that sdhci_reset() resets the 0x510 register to its default =
+value.
+> So please test this by removing the card and reinserting the card =
+again, and
+> see if the value still matches expectations. If not, perhaps the above =
+code
+> can be added to gli_set_9750().
 
-[  151.806111] Allocated by task 1347:
-[  151.806681]  kasan_save_stack+0x26/0x50
-[  151.807308]  kasan_set_track+0x25/0x30
-[  151.807920]  kasan_save_alloc_info+0x1e/0x30
-[  151.808609]  __kasan_slab_alloc+0x63/0x80
-[  151.809263]  kmem_cache_alloc+0x1ad/0x830
-[  151.809916]  dlm_allocate_mhandle+0x17/0x20
-[  151.810590]  dlm_midcomms_get_mhandle+0x96/0x260
-[  151.811344]  _create_message+0x95/0x180
-[  151.811994]  create_message.isra.29.constprop.64+0x57/0xc0
-[  151.812880]  send_common+0x129/0x1b0
-[  151.813467]  _convert_lock+0x46/0x150
-[  151.814074]  convert_lock+0x7b/0xc0
-[  151.814648]  dlm_lock+0x3ac/0x580
-[  151.815199]  torture_dlm_lock_sync.isra.3+0xe9/0x150 [dlm_locktorture]
-[  151.816258]  torture_ex_iter+0xc3/0xea [dlm_locktorture]
-[  151.817129]  lock_torture+0x177/0x270 [dlm_locktorture]
-[  151.817986]  kthread+0x192/0x1d0
-[  151.818518]  ret_from_fork+0x1f/0x30
+I will double check this before sending out a V2 that addresses your =
+earlier comment.
 
-[  151.819369] Freed by task 1336:
-[  151.819890]  kasan_save_stack+0x26/0x50
-[  151.820514]  kasan_set_track+0x25/0x30
-[  151.821128]  kasan_save_free_info+0x2e/0x50
-[  151.821812]  __kasan_slab_free+0x107/0x1a0
-[  151.822483]  kmem_cache_free+0x204/0x5e0
-[  151.823152]  dlm_free_mhandle+0x18/0x20
-[  151.823781]  dlm_mhandle_release+0x2e/0x40
-[  151.824454]  rcu_core+0x583/0x1330
-[  151.825047]  rcu_core_si+0xe/0x20
-[  151.825594]  __do_softirq+0xf4/0x5c2
+Thanks for the review,
+Matt
 
-[  151.826450] Last potentially related work creation:
-[  151.827238]  kasan_save_stack+0x26/0x50
-[  151.827870]  __kasan_record_aux_stack+0xa2/0xc0
-[  151.828609]  kasan_record_aux_stack_noalloc+0xb/0x20
-[  151.829415]  call_rcu+0x4c/0x760
-[  151.829954]  dlm_mhandle_delete+0x97/0xb0
-[  151.830718]  dlm_process_incoming_buffer+0x2fc/0xb30
-[  151.831524]  process_dlm_messages+0x16e/0x470
-[  151.832245]  process_one_work+0x505/0xa10
-[  151.832905]  worker_thread+0x67/0x650
-[  151.833507]  kthread+0x192/0x1d0
-[  151.834046]  ret_from_fork+0x1f/0x30
+>=20
+> Best regards,
+> Ben Chuang
+>=20
+>>>>   value =3D sdhci_readl(host, SDHCI_GLI_9750_CFG2);
+>>>>   value &=3D ~SDHCI_GLI_9750_CFG2_L1DLY;
+>>>>   /* set ASPM L1 entry delay to 7.9us */
+>>>=20
+>=20
+> ________________________________
+>=20
+> Genesys Logic Email Confidentiality Notice:
+> This mail and any attachments may contain information that is =
+confidential, proprietary, privileged or otherwise protected by law. The =
+mail is intended solely for the named addressee (or a person responsible =
+for delivering it to the addressee). If you are not the intended =
+recipient of this mail, you are not authorized to read, print, copy or =
+disseminate this mail.
+>=20
+> If you have received this email in error, please notify us immediately =
+by reply email and immediately delete this message and any attachments =
+from your system. Please be noted that any unauthorized use, =
+dissemination, distribution or copying of this email is strictly =
+prohibited.
+> ________________________________
 
-[  151.834900] The buggy address belongs to the object at ffff88811a980c30
-                which belongs to the cache dlm_mhandle of size 88
-[  151.836894] The buggy address is located 48 bytes inside of
-                88-byte region [ffff88811a980c30, ffff88811a980c88)
-
-[  151.839007] The buggy address belongs to the physical page:
-[  151.839904] page:0000000076cf5d62 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x11a980
-[  151.841378] flags: 0x8000000000000200(slab|zone=2)
-[  151.842141] raw: 8000000000000200 0000000000000000 dead000000000122 ffff8881089b43c0
-[  151.843401] raw: 0000000000000000 0000000000220022 00000001ffffffff 0000000000000000
-[  151.844640] page dumped because: kasan: bad access detected
-
-[  151.845822] Memory state around the buggy address:
-[  151.846602]  ffff88811a980b00: fb fb fb fb fc fc fc fc fa fb fb fb fb fb fb fb
-[  151.847761]  ffff88811a980b80: fb fb fb fc fc fc fc fa fb fb fb fb fb fb fb fb
-[  151.848921] >ffff88811a980c00: fb fb fc fc fc fc fa fb fb fb fb fb fb fb fb fb
-[  151.850076]                                                        ^
-[  151.851085]  ffff88811a980c80: fb fc fc fc fc fa fb fb fb fb fb fb fb fb fb fb
-[  151.852269]  ffff88811a980d00: fc fc fc fc fa fb fb fb fb fb fb fb fb fb fb fc
-[  151.853428] ==================================================================
-[  151.855618] Disabling lock debugging due to kernel taint
-
-It is accessing a mhandle in dlm_midcomms_commit_mhandle() and the mhandle
-was freed by a call_rcu() call in dlm_process_incoming_buffer(),
-dlm_mhandle_delete(). It looks like it was freed because an ack of
-this message was received. There is a short race between committing the
-dlm message to be transmitted and getting an ack back. If the ack is
-faster than returning from dlm_midcomms_commit_msg_3_2(), then we run
-into a use-after free because we still need to reference the mhandle when
-calling srcu_read_unlock().
-
-To avoid that, we don't allow that mhandle to be freed between
-dlm_midcomms_commit_msg_3_2() and srcu_read_unlock() by using rcu read
-lock. We can do that because mhandle is protected by rcu handling.
-
-Cc: stable@vger.kernel.org
-Fixes: 489d8e559c65 ("fs: dlm: add reliable connection if reconnect")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-[ Minor conflict resolved. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
----
- fs/dlm/midcomms.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
-index 84a7a39fc12e..3f32f860ee9a 100644
---- a/fs/dlm/midcomms.c
-+++ b/fs/dlm/midcomms.c
-@@ -1131,8 +1131,15 @@ void dlm_midcomms_commit_mhandle(struct dlm_mhandle *mh)
- 		kfree(mh);
- 		break;
- 	case DLM_VERSION_3_2:
-+		/* held rcu read lock here, because we sending the
-+		 * dlm message out, when we do that we could receive
-+		 * an ack back which releases the mhandle and we
-+		 * get a use after free.
-+		 */
-+		rcu_read_lock();
- 		dlm_midcomms_commit_msg_3_2(mh);
- 		srcu_read_unlock(&nodes_srcu, mh->idx);
-+		rcu_read_unlock();
- 		break;
- 	default:
- 		srcu_read_unlock(&nodes_srcu, mh->idx);
--- 
-2.34.1
 
 
