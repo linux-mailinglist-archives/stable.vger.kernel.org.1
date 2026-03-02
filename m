@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-222711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gCSMGtX7pWnvIgAAu9opvQ
-	(envelope-from <stable+bounces-222711-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:06:29 +0100
+	id aEH2GbAIpmm9JAAAu9opvQ
+	(envelope-from <stable+bounces-222712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:01:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED031E1B26
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 22:06:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079921E4830
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 23:01:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6BED23042DC9
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 20:53:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B461F31214C4
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 20:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB9739151E;
-	Mon,  2 Mar 2026 20:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72EE939A07A;
+	Mon,  2 Mar 2026 20:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7H+cHSV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mG02Re/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007B439150F;
-	Mon,  2 Mar 2026 20:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3495D39A073;
+	Mon,  2 Mar 2026 20:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772483748; cv=none; b=kHjXV5IWF53vBLpEIkizlxs7yOhGH2eMDY8oXZyeyWdR4S+08oteEEHrHr3lGsG/d5nYURqJ0kDXP7wv2LObXAujX77Cx9MDJq5keEeZE3EzaU63o0HZSXZVhgLSx10rAmYCLO9mdpkP1XLWDG7XavWKaAjzniswVCaaocuNits=
+	t=1772483769; cv=none; b=X2TirDD4J7fr+Z6v+ws6+bjMj0mTq0n1BiQEk5gN27WsiqXN6U7PFm322gynTtrDIQX5Op6oUz/h2wPIUrnnAt3sqUF4qXP6XiDNjanrXmODiR6zZTik8arskRFwSCm7AXGlKusA4If+g8MS+LVn74clUC8PP+hykmEhyoRhuTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772483748; c=relaxed/simple;
-	bh=S5U+nwWUo/YnHQ0SZdVhUDJM12nU0GQ5riZpJ10XbZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mFyzMOZijhrAQQ4S3R5L5ZzwltBU8U/An1nwZdp01454Wcvs6lt4LoYh/YK19bHqFBK+1Z/4kY+gteOvAAnLqmcX7DRItuZEqiY+ZPgH1hH2synk7w1W9VEHgcVsDrcshOM0AjcqaCW9lg50bnmTJnEFPO4Q9XmNcRFYOnAkbK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7H+cHSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5390AC19423;
-	Mon,  2 Mar 2026 20:35:47 +0000 (UTC)
+	s=arc-20240116; t=1772483769; c=relaxed/simple;
+	bh=yUOzZwoaUnAI2MDcEdhdi6+VTNYTtn0k7bRlSgoxklA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ct3mI32xZXjggtCfxbSWqPNMqihmlq2zkTTYiooyurWpnxoBFYnvMeWu5u5uxqVjbX2D1pSAI3l4gZBxH/GuMU7B3xWll3jxEkj+TwGl3eK70GtET+S6D35oPByOU47zU/EhL0fg387mhCsVfawtdkNj/EzW3yImFiO2LZd7tmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mG02Re/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785DBC2BC87;
+	Mon,  2 Mar 2026 20:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772483747;
-	bh=S5U+nwWUo/YnHQ0SZdVhUDJM12nU0GQ5riZpJ10XbZc=;
+	s=k20201202; t=1772483769;
+	bh=yUOzZwoaUnAI2MDcEdhdi6+VTNYTtn0k7bRlSgoxklA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=p7H+cHSVsjHeIxOS0kYtWolV9OZyHx4WpNP8CseckZ6OI1zW/CM6vJN12OuSxt42v
-	 cqbyNQayItg/RWluGatL/h7gkrQcbHua7vvMdFlhr+tqA7v/TDoWxTTNLYS3bqmB3C
-	 Mkmt5aVQCtZNeuI7LMY/AoGKni78sQe57NTF4I3QEYjUOgWCBwL7Jv9wRzz3mVyHE9
-	 +8Fwi7JOeLbEtUj0IxR7stizRXol+axM6Idxw8mZIwYd9tV4BzgWO44HHeThLDJX/9
-	 XxDYAsKd9wV4KXEOHnUFek7etut8gykh55Vgf0XfggjMq/vMQu5xreqHWQJSXyEjYp
-	 1H/jYqbWwhcYg==
+	b=mG02Re/KaRem0x/EwCMT8L2Q4SflumAv+SIicV2DFI2ey3WfZkVwzvD+mPXEIq/0k
+	 ATgK+HxoIN9zKVw0l6JgYcK/UB0HYDG181aJ6UzdletCUp/4ofhDC+TeZlh4uZbQaW
+	 Vgj/Bjh4EZw2Y2ARsdsXMbP09Gk4+2thKOIqngS7PoExDtUmUrLQs/jFpoAf95q/fs
+	 JJvYmBc+tM023G1c26BkOyL6d7d/S1mxQp/XJA2OEXFbRUXCqvz5oJMsYahl0zgxYS
+	 bP0cnkZa2iXwIJbobyuqYBxsLxwHcS34X12wyizvJ/UYbOHFJCuvPG2/YFdl6OmwJo
+	 BA0ORNOuklxQQ==
 From: Eric Biggers <ebiggers@kernel.org>
 To: netdev@vger.kernel.org,
 	"David S . Miller" <davem@davemloft.net>,
@@ -56,10 +56,11 @@ Cc: Simon Horman <horms@kernel.org>,
 	linux-crypto@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net/tcp-md5: Fix MAC comparison to be constant-time
-Date: Mon,  2 Mar 2026 12:34:09 -0800
-Message-ID: <20260302203409.13388-1-ebiggers@kernel.org>
+	stable@vger.kernel.org,
+	Dmitry Safonov <0x7f454c46@gmail.com>
+Subject: [PATCH net] net/tcp-ao: Fix MAC comparison to be constant-time
+Date: Mon,  2 Mar 2026 12:36:00 -0800
+Message-ID: <20260302203600.13561-1-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,153 +69,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BED031E1B26
+X-Rspamd-Queue-Id: 079921E4830
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222711-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222712-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 To prevent timing attacks, MACs need to be compared in constant
 time.  Use the appropriate helper function for this.
 
-Fixes: cfb6eeb4c860 ("[TCP]: MD5 Signature Option (RFC2385) support.")
-Fixes: 658ddaaf6694 ("tcp: md5: RST: getting md5 key from listener")
+Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
 Cc: stable@vger.kernel.org
+Cc: Dmitry Safonov <0x7f454c46@gmail.com>
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- net/ipv4/Kconfig    | 1 +
- net/ipv4/tcp.c      | 3 ++-
- net/ipv4/tcp_ipv4.c | 3 ++-
- net/ipv6/tcp_ipv6.c | 3 ++-
- 4 files changed, 7 insertions(+), 3 deletions(-)
+ net/ipv4/Kconfig  | 1 +
+ net/ipv4/tcp_ao.c | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/net/ipv4/Kconfig b/net/ipv4/Kconfig
-index b71c22475c515..45f5d401460c5 100644
+index b71c22475c515..3ab6247be5853 100644
 --- a/net/ipv4/Kconfig
 +++ b/net/ipv4/Kconfig
-@@ -759,10 +759,11 @@ config TCP_AO
- 	  If unsure, say N.
+@@ -746,10 +746,11 @@ config TCP_SIGPOOL
+ 	tristate
  
- config TCP_MD5SIG
- 	bool "TCP: MD5 Signature Option support (RFC2385)"
- 	select CRYPTO_LIB_MD5
+ config TCP_AO
+ 	bool "TCP: Authentication Option (RFC5925)"
+ 	select CRYPTO
 +	select CRYPTO_LIB_UTILS
+ 	select TCP_SIGPOOL
+ 	depends on 64BIT && IPV6 != m # seq-number extension needs WRITE_ONCE(u64)
  	help
- 	  RFC2385 specifies a method of giving MD5 protection to TCP sessions.
- 	  Its main (only?) use is to protect BGP sessions between core routers
- 	  on the Internet.
- 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 8cdc26e8ad689..202a4e57a2188 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -242,10 +242,11 @@
+ 	  TCP-AO specifies the use of stronger Message Authentication Codes (MACs),
+ 	  protects against replays for long-lived TCP connections, and
+diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
+index 4980caddb0fc4..a97cdf3e6af4c 100644
+--- a/net/ipv4/tcp_ao.c
++++ b/net/ipv4/tcp_ao.c
+@@ -8,10 +8,11 @@
+  *		Salam Noureddine <noureddine@arista.com>
   */
- 
  #define pr_fmt(fmt) "TCP: " fmt
  
- #include <crypto/md5.h>
+ #include <crypto/hash.h>
 +#include <crypto/utils.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/types.h>
- #include <linux/fcntl.h>
- #include <linux/poll.h>
-@@ -4968,11 +4969,11 @@ tcp_inbound_md5_hash(const struct sock *sk, const struct sk_buff *skb,
- 	 */
- 	if (family == AF_INET)
- 		tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
- 	else
- 		tp->af_specific->calc_md5_hash(newhash, key, NULL, skb);
--	if (memcmp(hash_location, newhash, 16) != 0) {
-+	if (crypto_memneq(hash_location, newhash, 16)) {
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
- 		trace_tcp_hash_md5_mismatch(sk, skb);
- 		return SKB_DROP_REASON_TCP_MD5FAILURE;
- 	}
- 	return SKB_NOT_DROPPED_YET;
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index d53d39be291a5..910c25cb24e10 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -86,10 +86,11 @@
  #include <linux/inetdevice.h>
- #include <linux/btf_ids.h>
- #include <linux/skbuff_ref.h>
+ #include <linux/tcp.h>
  
- #include <crypto/md5.h>
-+#include <crypto/utils.h>
+ #include <net/tcp.h>
+ #include <net/ipv6.h>
+@@ -920,11 +921,11 @@ tcp_ao_verify_hash(const struct sock *sk, const struct sk_buff *skb,
+ 		return SKB_DROP_REASON_NOT_SPECIFIED;
  
- #include <trace/events/tcp.h>
- 
- #ifdef CONFIG_TCP_MD5SIG
- static void tcp_v4_md5_hash_hdr(char *md5_hash, const struct tcp_md5sig_key *key,
-@@ -837,11 +838,11 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb,
- 		key = tcp_md5_do_lookup(sk1, l3index, addr, AF_INET);
- 		if (!key)
- 			goto out;
- 
- 		tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
--		if (memcmp(md5_hash_location, newhash, 16) != 0)
-+		if (crypto_memneq(md5_hash_location, newhash, 16))
- 			goto out;
- 	}
- 
- 	if (key) {
- 		rep.opt[0] = htonl((TCPOPT_NOP << 24) |
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index e46a0efae0123..5195a46b951ea 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -66,10 +66,11 @@
- 
- #include <linux/proc_fs.h>
- #include <linux/seq_file.h>
- 
- #include <crypto/md5.h>
-+#include <crypto/utils.h>
- 
- #include <trace/events/tcp.h>
- 
- static void tcp_v6_send_reset(const struct sock *sk, struct sk_buff *skb,
- 			      enum sk_rst_reason reason);
-@@ -1046,11 +1047,11 @@ static void tcp_v6_send_reset(const struct sock *sk, struct sk_buff *skb,
- 		if (!key.md5_key)
- 			goto out;
- 		key.type = TCP_KEY_MD5;
- 
- 		tcp_v6_md5_hash_skb(newhash, key.md5_key, NULL, skb);
--		if (memcmp(md5_hash_location, newhash, 16) != 0)
-+		if (crypto_memneq(md5_hash_location, newhash, 16))
- 			goto out;
- 	}
- #endif
- 
- 	if (th->ack)
+ 	/* XXX: make it per-AF callback? */
+ 	tcp_ao_hash_skb(family, hash_buf, key, sk, skb, traffic_key,
+ 			(phash - (u8 *)th), sne);
+-	if (memcmp(phash, hash_buf, maclen)) {
++	if (crypto_memneq(phash, hash_buf, maclen)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAOBAD);
+ 		atomic64_inc(&info->counters.pkt_bad);
+ 		atomic64_inc(&key->pkt_bad);
+ 		trace_tcp_ao_mismatch(sk, skb, aoh->keyid,
+ 				      aoh->rnext_keyid, maclen);
 
 base-commit: 9439a661c2e80485406ce2c90b107ca17858382d
 -- 
