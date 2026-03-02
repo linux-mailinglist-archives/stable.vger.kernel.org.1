@@ -1,65 +1,66 @@
-Return-Path: <stable+bounces-222567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JnwCRBnpWmx+wUAu9opvQ
-	(envelope-from <stable+bounces-222567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 11:31:44 +0100
+	id AD6WCGpnpWmx+wUAu9opvQ
+	(envelope-from <stable+bounces-222568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 11:33:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F6A1D68D1
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 11:31:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DE41D6925
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 11:33:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 48FB6303B5C4
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 10:23:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C45543078386
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 10:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6837D399006;
-	Mon,  2 Mar 2026 10:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9B639B964;
+	Mon,  2 Mar 2026 10:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jQDDO2EJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KhQ1pykq"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E7E30BF70;
-	Mon,  2 Mar 2026 10:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8E439E6DE;
+	Mon,  2 Mar 2026 10:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772446988; cv=none; b=qiryrmJo8gla4VCEhTNUKW7xRolBDHUkRFT1NEde54PAD8H027Gc2DB1SymhHqDBNW+eshTNgoOx1YLb++KGwIfHVqTDFs3/BBPa4M58CwJyqwtK88PxrH1mWQbl969C6q+bYt0rQY4zxoiRXhb9SGyyM8fD5Qu9OpUMLDyP4N8=
+	t=1772446992; cv=none; b=dLnPcmAO340Bor38iWNFiX0i5dYVGgwp7pbSgZcvQ6VseFo510+zcfao1GmsLQnCTqGIitBpUOLdiGxn8ows1PWZ4IAmBtqp0mQc4NXqpcPlOr8mxD8dcr0R8hlaISxwWXrhUIASRDXCWgrfnmllhKtH4TPd7/fV/F2rApptOMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772446988; c=relaxed/simple;
-	bh=r82dLarvdLQcWAa3IW05WQHz6P7pO9UdOp6ift+s6YM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gPIYgxfPZBmmeVf1XvpXPChpZ8tLJ2omjwgUl8cRw+wbfSiIRU/pRY/QvODbvXYEQCWnSs+tn2mSNzNd/J65kBq1D1L+dgS+YMN0E92vyERBE2B+dYI4vIRPC7JqCewT/8F4QaoMeT+6g8WzSDAtWMe34XiT25RX69nhnA4+YmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jQDDO2EJ; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1772446992; c=relaxed/simple;
+	bh=/aWIE3Dcr5+hz6NBbdVqa0s6QTppmTzDdwS8/g6QuzU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xj/xWgsCZttXIraHc7xiXg01qwIvXbaLHVYHxq2NJrzTAGyNLnXdqefJSzNufvu6e/I5tmJ7udExCf5jSqXG0eTFq5wajGkVPW9YAxUla8BSvNmJ/5qGGHBzIIc/S/7f94AkObgVfpoeyLOMwCAUFteneQ+Oc/jnHJGVJRQ4Fc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KhQ1pykq; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772446987; x=1803982987;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=r82dLarvdLQcWAa3IW05WQHz6P7pO9UdOp6ift+s6YM=;
-  b=jQDDO2EJPfJrjrroCmnzIifTPtE5qpP7ZdCTy7/cpOvPQBGT8sTeQaKN
-   XVZb94Z3HDA2s48RlVmy1YBD2lge1ICX+d0PykgRYXG+rb+mzv53/EHK7
-   +ZIdYfWJdQQ/WT86tFKiHdySVHouz43DSvCTkPvlzPD4cn8sTlkApNu8Y
-   1HU/9dVKCQfQ8yQ4kz3q2lTzxUAMg9nxcKkSLn1PWqtrpH4miHPD8oNL7
-   VKEC3pgZHXlJSQ966EGns1jvxI94+quFFGUutFQwB2ndPDAkbJ54P1NKV
-   oYPbnl9tdnkUhCDplTTnaafbkpGu2ii494l4m7x/Xif+vBIwB4BguWocx
-   A==;
-X-CSE-ConnectionGUID: siTq2YrlSXS8Htd4BfIItw==
-X-CSE-MsgGUID: Ev/EXUiZTyeoNvy/1oIvzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="84543798"
+  t=1772446990; x=1803982990;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=/aWIE3Dcr5+hz6NBbdVqa0s6QTppmTzDdwS8/g6QuzU=;
+  b=KhQ1pykqcqVeBi6VrrdmbzlMrDX+5uot39guXRmq3OtSul1nRYa157vc
+   T1l+NL/U4xhN0JYXGxcW+hNJvOKw1qLz1MGhZ/zC7AJ2FVNahPXN2Pmt4
+   wypdJUqtnATbRny2JUenUnu49YPD++/RzJF93e5d+iHV4NInvD/NZSs/S
+   VuGBgxCCkzRpeoIT9NbC390k/n/GhAyoh1FRBSElmE/bRiQwj/3EZVx5Y
+   Kgw5JQ6HWmwaa2gcReiE7Cpa3fYKTMJglkza+uPPzzmZPvQ/5GdNqCSoo
+   V2xhUP606JKwHf/ATE5DJMXXtVlGrBzW+RGYycg/URd4HBz6hPqoac17w
+   g==;
+X-CSE-ConnectionGUID: r7nnCqyeQ66VRk5se1gMng==
+X-CSE-MsgGUID: psTc1ovYQnCvzvbNmNBXTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="84543804"
 X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; 
-   d="scan'208";a="84543798"
+   d="scan'208";a="84543804"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 02:23:06 -0800
-X-CSE-ConnectionGUID: we/oFInrR1qnzox1OWPylA==
-X-CSE-MsgGUID: NJaf2L9uRw2UQ7krpbFQfA==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 02:23:10 -0800
+X-CSE-ConnectionGUID: pulhv3D9ScaLQvQnmkoQRw==
+X-CSE-MsgGUID: f9uENCwuRryufeeNOPHCZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; 
-   d="scan'208";a="222583092"
+   d="scan'208";a="222583104"
 Received: from khuang2-desk.gar.corp.intel.com ([10.124.220.2])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 02:23:03 -0800
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 02:23:06 -0800
 From: Kai Huang <kai.huang@intel.com>
 To: dave.hansen@linux.intel.com,
 	pbonzini@redhat.com,
@@ -75,10 +76,12 @@ Cc: rick.p.edgecombe@intel.com,
 	Kai Huang <kai.huang@intel.com>,
 	stable@vger.kernel.org,
 	Vishal Verma <vishal.l.verma@intel.com>
-Subject: [PATCH] x86/virt/tdx: Fix lockdep assertion failure in cache flush for kexec
-Date: Mon,  2 Mar 2026 23:22:25 +1300
-Message-ID: <20260302102226.7459-1-kai.huang@intel.com>
+Subject: [PATCH v2] x86/virt/tdx: Fix lockdep assertion failure in cache flush for kexec
+Date: Mon,  2 Mar 2026 23:22:26 +1300
+Message-ID: <20260302102226.7459-2-kai.huang@intel.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260302102226.7459-1-kai.huang@intel.com>
+References: <20260302102226.7459-1-kai.huang@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,17 +96,17 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-222567-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222568-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[kai.huang@intel.com,stable@vger.kernel.org];
@@ -112,8 +115,8 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: D6F6A1D68D1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 71DE41D6925
 X-Rspamd-Action: no action
 
 TDX can leave the cache in an incoherent state for the memory it uses.
@@ -159,8 +162,8 @@ the same CPU.  It's OK that it can be preempted in the middle as long as
 it won't be rescheduled to another CPU.
 
 Remove the too strong lockdep_assert_preemption_disabled(), and change
-this_cpu_{read|write}() to __this_cpu_{read|write}() which provide the
-more proper check (when CONFIG_DEBUG_PREEMPT is true), which checks all
+this_cpu_{read|write}() to __this_cpu_{read|write}() which provide the more
+proper check (when CONFIG_DEBUG_PREEMPT is true), which checks all
 conditions that the context cannot be moved to another CPU to run in the
 middle.
 
@@ -170,6 +173,17 @@ Reported-by: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Kai Huang <kai.huang@intel.com>
 Tested-by: Vishal Verma <vishal.l.verma@intel.com>
 ---
+
+v1 -> v2:
+  - Improve changelog as discussed in v1.
+  - Also mention this can also be triggered in "error path" in changelog.
+
+Hi Rick,
+
+Are you OK with sending this patch out to public, or do you have more
+comments?
+
+-- below is for public --
 
 Hi Dave, Paolo, Sean,
 
@@ -210,7 +224,7 @@ index 8b8e165a2001..6f6be1df4b78 100644
  EXPORT_SYMBOL_FOR_KVM(tdx_cpu_flush_cache_for_kexec);
  #endif
 
-base-commit: b5425f5406ee1b4bd84720f68020ef18ce380bab
+base-commit: 7dff99b354601dd01829e1511711846e04340a69
 -- 
 2.53.0
 
