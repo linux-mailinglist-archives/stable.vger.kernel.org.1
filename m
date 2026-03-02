@@ -1,205 +1,162 @@
-Return-Path: <stable+bounces-222514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHPUILYopWla4wUAu9opvQ
-	(envelope-from <stable+bounces-222514-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:05:42 +0100
+	id uHXQC4UqpWnY4wUAu9opvQ
+	(envelope-from <stable+bounces-222515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:13:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4611D35DD
-	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:05:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2091D3625
+	for <lists+stable@lfdr.de>; Mon, 02 Mar 2026 07:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E5BF63008C9D
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 06:05:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D81B301A288
+	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 06:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535CC377017;
-	Mon,  2 Mar 2026 06:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A47377546;
+	Mon,  2 Mar 2026 06:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="F0RQofRI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QIzWzFfN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A860vboY"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4602D330B01;
-	Mon,  2 Mar 2026 06:05:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E137232ED42;
+	Mon,  2 Mar 2026 06:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772431533; cv=none; b=qfuqgShWH4OfntnHSZy7TREQNQUDTECOR4xVwbgdPMr8c+6HbU0+tlIVUHliGp2N56sKTOBciUOID6civb1c/eszJ8vbtzVl3B0vw58p9mD2Bj0nQDTbPou0AAORUBReGv57jCshtjZJ4+OCkxryQr8lfjNkP2/Pj1PB5+v+XvU=
+	t=1772431999; cv=none; b=rXyODCK9Khvxh93JoI0RQRrNYwZp2ZBVS3jMG7sBcajHhm2iGL/rS9KEt1ooW4ZdhOglsM/lor09rvYA3/es+RyCyy/RC29WAWWAuN0cFRDxxMkpzQ6NfxmvahA1CNGQLb4+5GYiVJmDadP3kaByyG6jIsasScO/iIWzSgiOGCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772431533; c=relaxed/simple;
-	bh=rP9lWDSfdZj5wBrxxX3nL7MIJ89DKeDfOiHeciej4uc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=WejF8N0FRy+9L5v5Bu9YnZxY8tiEPhdoLCuZ3cwc/TBmKuWmMtTOy0oRjPVzgvJQcJ+NnucH8MIMVLFKVbdomyMtmwcOfzNEZV3iGZ+WKiJJoA77uUG4B4cq0ksonGtHFiJbcguscJ5BoPfODIlWthm4WqpomUj14cf/7fw4B4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=F0RQofRI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QIzWzFfN; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfout.stl.internal (Postfix) with ESMTP id 8E2F11D000FD;
-	Mon,  2 Mar 2026 01:05:07 -0500 (EST)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-08.internal (MEProxy); Mon, 02 Mar 2026 01:05:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772431507;
-	 x=1772517907; bh=e56Z1pTVGA5xdeStc6vn/S/ba11TEiKfhOydGP6HJVA=; b=
-	F0RQofRIBjNSrGNklsbiV7spHrcO4523HCcQu5LZKTx51v0yVyNQdhm15fn9LX2p
-	EtZpvYOaztsz2MgI0RQhbjQzHIsT0BHUXdBubh+GihPN79PmlouwkmPiDxtHLXlb
-	1VJK6hMErgaXFW6sfkds6FQVFaFwckJ3ACzrULXCCRdqhukH0ffSEimQndBLwvM3
-	MYJmnEfcKwjLtkgxBVhQBWNIYov5/4lXIXVAKCEnA5tJeqI5EF18S/RX4mYrYNma
-	Xa+lOp0iUprQPArC6KGbx1cfX4ciN8F/tbPRKiUSwjXB/6Z0//cnydwwow86t6mZ
-	6MWHmS22AY8DvZXqaYCIVQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772431507; x=
-	1772517907; bh=e56Z1pTVGA5xdeStc6vn/S/ba11TEiKfhOydGP6HJVA=; b=Q
-	IzWzFfN8+r8quiJjhC/At/G3sOTASd1zrF0xBTUd+jIZnb0rJAlI+y1zQ2CmHOtF
-	JEYzIKgYEUw8l+byoc0RDCizY2yDHfK1nTD+w8RJ0JgEFdPb03xZpbBXAhyGqljs
-	GKQrVeJALdC1e92KFORymL31/i5jMffYX2shcgJjHrBk0Y5US8Xs6N+3JGCadRFp
-	0wn1QaqYMZm1Tn6x5R0yD1UWdeQ3hifT9LRtM8nnIRYOrt5wmVYHfnkpB5WMVt/S
-	ZeKPGAaCqykvKWA+7GoD719SFS+xh/gOH0NEMkSe91erVJQeDlhOdlIZIEMTVrUF
-	GzxJf5xL+lyXTYdKw4W3Q==
-X-ME-Sender: <xms:kiilaYnw9CIIgZED7av5VZb5__C_Tpw9FVh3QSSTpV668nea9Dzn9Q>
-    <xme:kiilaQqOa_0YqIkydn55TYIqi8AsTH9zxOBkceUfSDvtZrqz4tPtMKwVIJSzDIuyb
-    bE5tVPcpL7mveC4-F8DwAJFy1TuS5kUrf6ACoj8-oTzcXrDYPmtDSo>
-X-ME-Received: <xmr:kiilaX8ncsP2LhAOz2-rfTW_x1r4pN7vhbH7jrHXe-GgRy2AxQ5YI7ZKZ9-6qz4piQ-XbEt_mXHUd-8wkDpPvmMw7BU5OQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheeiledtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfhffuvfevfhgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
-    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeelkefgteejkeejvefgiefgheegtedufeeuvdeuvedvheejjeehvefh
-    ffffgfduteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
-    ohhmpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
-    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihf
-    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrd
-    hlihhnuhigrdguvghvpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhu
-    nhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
-    grthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvght
-    pdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:kiilaZ3vWe1tgWDiZ2LgXxoUDR6uC5CshgBzwZ-nTGWHJ40hBrVhIg>
-    <xmx:kiilaam7CZK8fw__onY0f3rp1aMYBlyvjfOfH2OntCD40sJZUzE3SQ>
-    <xmx:kiilaW1asMCJqtUEKNHi_bWrm5FBMyfsW4ZaIIoPXnGtPkpRm7sNLQ>
-    <xmx:kiilaZg1PXqiC144enFOSPepvlj41vJOiTu8Oxq8J7zyI90Ycg9vRA>
-    <xmx:kyilaequ0SfVgr3LYffQsEQXe9H9dhxWQTR75rE2Rf3b6cTdFbpOCDJy>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Mar 2026 01:05:03 -0500 (EST)
-Message-ID: <41b35d0e-bd7e-4bcd-a22c-cd96ee6c43d8@pobox.com>
-Date: Sun, 1 Mar 2026 22:05:02 -0800
+	s=arc-20240116; t=1772431999; c=relaxed/simple;
+	bh=+vgUVOQ14mfsfjADYu/tniw6hDr7GNc8NHvApPhBDTY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SQxNgSqkn4AWp/F6wL+Ul6dvPeoxhLDN6ppS13GFj4yKnRwj6i/3bny3dBlhQVa03FWSvpwNuSwfjdO64ehPpht22pREu++tpMO9CPFADxT+ahvbkvrbg48R2yMjfe/YfYKx6PtpLCmrmoXglFnw/++CNMIBFHGVliP7XC+9aEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A860vboY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF1AC19423;
+	Mon,  2 Mar 2026 06:13:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772431998;
+	bh=+vgUVOQ14mfsfjADYu/tniw6hDr7GNc8NHvApPhBDTY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A860vboYxTXkAWSEZQug+sATq0Dpeyqr36ehKptBr7lOcg61Ny1+dr1FTIGwLRDc9
+	 Bw0kFnlNzVZc4gHb2bu7CdsHj2JijVf/9zNxZUNAQW5bcJ29RW76JkqQfcgaSu44+I
+	 KBnj5TjNxNNLKCcdDIG/GjYOotiw//O55CrSqIlibtaT0FdFGxVNfkBiNUijtdDixO
+	 pnSSCKDjYNmc1EhK72T60L5zpQlY0rAptKAi3qyRXUuYD5KCBcVyoFSd3zFtnKwMgf
+	 LasyxORtXtAn9u+DiCPd7EJGNnGFTcB1XCMwW7F2+ZBbkG1ioQYrtWr2iZdPbLuMLO
+	 Rg0wWQwHJdwrw==
+Date: Mon, 2 Mar 2026 11:43:04 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Benjamin Block <bblock@linux.ibm.com>
+Cc: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>, 
+	bhelgaas@google.com, helgaas@kernel.org, sebott@linux.ibm.com, schnelle@linux.ibm.com, 
+	alifm@linux.ibm.com, julianr@linux.ibm.com, dtatulea@nvidia.com, 
+	ionut_n2001@yahoo.com, sunlightlinux@gmail.com, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/1] PCI/IOV: Add reentrant locking in
+ sriov_add_vfs/sriov_del_vfs for complete serialization
+Message-ID: <vogl77sk53qas4nnqb4jrmduofxhuhpcgipdkab5meuswd3hhr@l6rfqqndskfv>
+References: <20260228120138.51197-2-ionut.nechita@windriver.com>
+ <20260228120138.51197-4-ionut.nechita@windriver.com>
+ <mvhrbhqxnxeitx4incfykvlgtcfs2jcrlje2warhujzvbyns4e@7eyme5xdea7g>
+ <20260228163955.GH13050@p1gen4-pw042f0m>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Barry K. Nathan" <barryn@pobox.com>
-Subject: Re: [PATCH 6.12 000/385] 6.12.75-rc1 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260228180001.1567994-1-sashal@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260228180001.1567994-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260228163955.GH13050@p1gen4-pw042f0m>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-222514-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-222515-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[windriver.com,google.com,kernel.org,linux.ibm.com,nvidia.com,yahoo.com,gmail.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,messagingengine.com:dkim,pobox.com:mid,pobox.com:dkim,pobox.com:email]
-X-Rspamd-Queue-Id: 2F4611D35DD
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,windriver.com:email]
+X-Rspamd-Queue-Id: 9A2091D3625
 X-Rspamd-Action: no action
 
-On 2/28/26 10:00, Sasha Levin wrote:
-> This is the start of the stable review cycle for the 6.12.75 release.
-> There are 385 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sat, Feb 28, 2026 at 05:39:55PM +0100, Benjamin Block wrote:
+> On Sat, Feb 28, 2026 at 08:43:33PM +0530, Manivannan Sadhasivam wrote:
+> > On Sat, Feb 28, 2026 at 02:01:40PM +0200, Ionut Nechita (Wind River) wrote:
+> > > From: Ionut Nechita <ionut.nechita@windriver.com>
+> > > 
+> > > After reverting commit 05703271c3cd ("PCI/IOV: Add PCI rescan-remove
+> > > locking when enabling/disabling SR-IOV") and moving the lock to
+> > > sriov_numvfs_store(), the path through driver .remove() (e.g. rmmod,
+> > > or manual unbind) that calls pci_disable_sriov() directly remains
+> > > unprotected against concurrent hotplug events. This affects any SR-IOV
+> > > capable driver that calls pci_disable_sriov() from its .remove()
+> > > callback (i40e, ice, mlx5, bnxt, etc.).
+> > > 
+> > > On s390, platform-generated hot-unplug events for VFs can race with
+> > > sriov_del_vfs() when a PF driver is being unloaded. The platform event
+> > > handler takes pci_rescan_remove_lock, but sriov_del_vfs() does not,
+> > > leading to double removal and list corruption.
+> > > 
+> > > We cannot use a plain mutex_lock() here because sriov_del_vfs() may also
+> > > be called from paths that already hold pci_rescan_remove_lock (e.g.
+> > > remove_store -> pci_stop_and_remove_bus_device_locked, or
+> > > sriov_numvfs_store with the lock taken by the previous patch). Using
+> > > mutex_lock() in those cases would deadlock.
+> > > 
+> > > Instead, introduce owner tracking for pci_rescan_remove_lock via a new
+> > > pci_lock_rescan_remove_reentrant() helper. This function checks if the
+> > > current task already holds the lock:
+> > >  - If the lock is not held: acquires it and returns true, providing
+> > >    full serialization against concurrent hotplug events (including
+> > >    platform-generated events on s390).
+> > >  - If the lock is already held by the current task (reentrant call from
+> > >    remove_store or sriov_numvfs_store paths): returns false without
+> > >    re-acquiring, avoiding deadlock while the caller already provides
+> > >    the necessary serialization.
+> > >  - If the lock is held by another task (concurrent hotplug): blocks
+> > >    until the lock is released, then acquires it, providing complete
+> > >    serialization. This is the key improvement over a trylock approach.
+> > 
+> > Just curious. Why can't you use mutex_trylock() here?
 > 
-> Responses should be made by Mon Mar  2 05:59:55 PM UTC 2026.
-> Anything received after that time might be too late.
+> One problem with mutex_trylock() is we don't know whether we ourself or
+> someone else is holding the lock when it fails, we just know someone holds it;
+> and we can't wait for someone else to release it when there is a chance we
+> hold it ourself already. That was the problem with
+> 05703271c3cd ("PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV")
+> before it was reverted.
 > 
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.12.y&id2=v6.12.74
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> Thanks,
-> Sasha
 
-I just now noticed a sizable discrepancy between what's in the
-stable-queue and what's in -rc1, for 5.10.y through 6.12.y. (6.18.y
-and 6.19.y appear unaffected.)
+Okay, thanks for the info. I also failed to notice the mention of 'trylock' in
+the cover letter.
 
-To make sure this is an apples-to-apples comparison, I'll compare with
-the stable-queue as of commit 2370009958172f632d48973387e7b6ae116086b1
-("Drop a broken ACPI patch"); I'd expect the queue as of that commit to
-match the -rc1 patches, if I'm not mistaken.
+But I think, instead of caching the owner task struct locally, you can make use
+of mutex_get_owner() to extact the embedded owner task struct.
 
-
-                       # of patches in         # of patches in
-                       stable mailing list     stable-queue git
-                       thread                  @ 237000995817
-
-5.10.252-rc1          147                     334
-5.15.202-rc1          164                     411
-6.1.165-rc1           232                     533
-6.6.128-rc1           283                     683
-6.12.75-rc1           385                     953
-6.18.16-rc1           752                     751
-6.19.6-rc1            844                     843
-
-The off-by-one difference for 6.18.y/6.19.y is expected, since
-(unlike the stable-queue itself) the -rc1 patch and the mailing
-list thread include a Makefile patch to update the version number.
-
-For the other kernels, though, it looks to me like something
-went wrong somewhere. Of course I could be mistaken, but that's
-how it appears to me.
-
-In any case, I figured I should bring this to your attention.
+- Mani
 
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+மணிவண்ணன் சதாசிவம்
 
