@@ -1,183 +1,215 @@
-Return-Path: <stable+bounces-222803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0IrCHv6DpmlQQwAAu9opvQ
-	(envelope-from <stable+bounces-222803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 07:47:26 +0100
+	id EFTPOkuHpmkZRAAAu9opvQ
+	(envelope-from <stable+bounces-222804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 08:01:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3DE1E9C57
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 07:47:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B30E1E9EC5
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 08:01:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4E6F23025E1B
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 06:47:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B17F83046B97
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 07:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CAB32E6116;
-	Tue,  3 Mar 2026 06:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA060386428;
+	Tue,  3 Mar 2026 07:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I4ggjYGn";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bojNLc7k"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i0A5ZN2U"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8021E1E12
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 06:47:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772520443; cv=pass; b=j6uBX5ZMhy35rEig+aGL+Uc9NgRnWn2/6k+h7/u+DBDQuGopGsIBlbBpAowChT31dLhY7QKxqAkS7VEOGUfkh5T3x50LNWqwVRCHYQMdOuG2nwRGuT5JdIoeU2cwJgZrkurUUEN+svrk8QoVL+Fm73JJ/RdGOZylqC7ZV5eIdHc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772520443; c=relaxed/simple;
-	bh=jTsk5S/1xtP/Z4v1QHmNXso1IIFMkqhMifKA1YMoKu8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cFR22MHDwPTcUgfDOGNxveIY6ae4cwm6vq+Vy3PLsV6r5ivWen+w5yC3igDL0gUBeXYkrQ4ls7BubzU1IoIth3OPCDdJ/IEVU526V8+WHaIZ7fLquLImlllw3170bKdad2Bm7oq/WXB9SaZGKQFRV9I/0mPJlrZfnHRDgvwAWok=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I4ggjYGn; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bojNLc7k; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772520440;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jTsk5S/1xtP/Z4v1QHmNXso1IIFMkqhMifKA1YMoKu8=;
-	b=I4ggjYGnPK80gRLD4RutQxbQqfBgi7axjlkKw14NMjKxYBxVxwn282W3s/j6WuVUPRFPZK
-	AWmEaVyZ+1+PQsuAg8YPS9yKzpEw/gl2cAINkH4DLWjGf6F/Y0L8eIfdjq6R4+kUPs5Z+S
-	HhJix4Jei82iVmx9HnDS9LjZPVtSS48=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-oeNeBxM6Miq6cRL3IDtPfg-1; Tue, 03 Mar 2026 01:47:18 -0500
-X-MC-Unique: oeNeBxM6Miq6cRL3IDtPfg-1
-X-Mimecast-MFC-AGG-ID: oeNeBxM6Miq6cRL3IDtPfg_1772520438
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3598733bec0so12808462a91.2
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 22:47:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772520437; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TKHLb4KKNDm8xhqs3Ml1wV4vCuG33u4Pl/nUcysswI/lCjrfW6gx7F4HxhKf7cRzxD
-         sb5FwEZuFMN4hFbK/RBfoev2t01dR2keAYm84Nb2DvjBtWg457BH+DFK+0EVedLtbCxU
-         x7X4or7B7Qcma4yMEOaWV8Gfly+gC6ebuyeIDWyd8pmjMJMcWt15tWH0ShdZ/B3EHX6+
-         GW9EAjTE1k/5xr8C5KRCcNTabArp/WLnmsG4FVHEthgN6B9akGLx6dHgFz+laDqwmwsN
-         wDnjJE4dukFGwihmkgycRmCUhWfl5v+jJNO+jn1tAx7FZSeKrIcqwwxW9IHz2nXgcXC0
-         5ntg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jTsk5S/1xtP/Z4v1QHmNXso1IIFMkqhMifKA1YMoKu8=;
-        fh=NK5rPjbakndrHAZcTTR/AKC+DgRjaMco0uI3JJrA4sA=;
-        b=bjOojmiIv+WiPE1BYVNBJyYZWdtQthAf9M6hlP24ZoF0aW54tX2eY32BfGOCQr8JZy
-         h/7YrLrTAe63xHHFIK70zM+ffWcFTF3cYG07Mz8u/kPFucZiSn/A6oyypLxSZEb8Nl+G
-         Vidwlfx1GAo6f/0sF8wIy9rDiSh3bQdw7OjXqWPYOPTVju7x4aqfbB/uaQf77H8FNJL4
-         fbUMikMS7dP4PrGCQ/6a0REpxXvB9hIIxEgdXKYvcDXp5JUiivyQvTsLejOVZXpv9wuY
-         ncdTGUNd6Z5x4CmeFvPH3X8uqre6CPzHh3sziavi37V8s0nrXJ/OiMqLVVfmDBUkizE7
-         lSbg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E7738642D
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 07:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772521258; cv=none; b=Pch8YjSt6er7c6pox8M/8BUrD5fqsCraPEEgSPfSHAyiZKciRgtUFqKEIBjZQM491SlObp3Ej1X3Q8I+xYEQ/bBlm4dRxE5Lkjk0LxaI7O+Ozvjd5gdOMVEPg171+bel6dc7uVkd9IBgk/2TbWAHr/3OUmQmzX0VOKfsVQET22w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772521258; c=relaxed/simple;
+	bh=b9rnqGy35VMSCkesVvriXCdG6dEJtwn33l1f7OgUDJ0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Vx+WP8VAx5hVInISB3MDXgAK7xQn0zQ65Vr5oIFXKCEQtnrFBI11nUisy9S5q9aqtSprKnjVCPUql1REflN5EQwQUGxWK8qWGE5I1hcDZTEpTjRxc4zJJ53X3OFIHNExMY0Q4JeVi84bQsN5CN97RVNAtkGlEQObrmia8A27y7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i0A5ZN2U; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4806ce0f97bso44687275e9.0
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 23:00:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1772520437; x=1773125237; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jTsk5S/1xtP/Z4v1QHmNXso1IIFMkqhMifKA1YMoKu8=;
-        b=bojNLc7kqR4urVi0VFxILE2hTwz4HIBqD4PFfNfICV88FErskS7Kgc50zSxNgZG1BX
-         fGIeN3/v8IJrTjw5IdN4VkSoHEoVUEcHMLahKJ3h/r74WxGyBEmt7E4L2ZVhBb5KLeuz
-         TddfBkQ09/PFygE8hplszSx17Mf713WyR/ShxlPWPWkXj2obGFA+BMXslcpYSVu9Q4je
-         gr0u1kI/X19lPgP2jYVM8tvkcFQC7gAVUdcbt6Nde6LTodvF/5wBbzTtclQwOqmzswYc
-         Pj/s2NM69Dhl1cfEIRNaYZ9VwLxAy37ENrYrEyTEaES1+/KG/C2bPNclauGu1dExGU/P
-         3x6w==
+        d=gmail.com; s=20230601; t=1772521256; x=1773126056; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8WrPNsxFmfZpCyYuZIoQyAgYSLblE5qZkSbhBEShgVI=;
+        b=i0A5ZN2UlM2D0FAvZj0XmN+s/AXCNlwHYCKOgo5XUHDgq2briz4jJlTwd2aQiNJSjH
+         nQF1oYS4UWt0PuUvM9acoQa6WKeEBWazfhlvAiENT6rcrU05suZ0dG0ct04Nooo0hJBg
+         nR9pi5S6Y30PFcNYzDA/mb6DKRiLBEofRjBf+/pPVIbW1RWqJjPt3V4SKKSNUQ3KG4RG
+         9eykju5Ny5l3GhJudVdCBWbqJyJUcoSOsa+VjlmSjGwAgCRjSesuFD9K7J2VylzdX6DB
+         sD7nGZNBoG6oOimd+0dJxLhx1cuv6d1zRtnQsOh96f8eF1BDHqWTjbCluEW05zpZ9zOs
+         G1xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772520437; x=1773125237;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jTsk5S/1xtP/Z4v1QHmNXso1IIFMkqhMifKA1YMoKu8=;
-        b=H5iqe8FYPEx9iTqFuTux36eC+1xd9lmPUt7OF6nWQ8nly490Db2IexO6bOIO9h6ta/
-         NMXRrV8zPqMaO5dVEhqKRnh7SfCljEIFp9MfMneVM5VGx7ltg8ySeiD/ae2z5VxxGg1J
-         bBEhFObB1v9OLPPljYFbwBG8uglpxeSD1hOvG5HNPstJUjqZTfI7Nt7sD0JiZJZxxJH1
-         CgvoGEn/gBIOjFYQAfT9rtlg766uIV5Ood9kZ0Q/PWhfHC0O61FTUY2LWImow2n842n6
-         Qm1YFdee+/6tdRici9tPgrPcR23SafGf3mUm5Vccmtw04pj5wWc2c5zsVmeDkEh6jhPj
-         8JTQ==
-X-Gm-Message-State: AOJu0YylQZyjDFzfY436tivzUV3CCC+ss+54HqOZ4xk0gfTdnSxbiGBE
-	L/pOKJktwc7J5Xh8U7zUw2usvS9daXwXHigeMk1aS41JZLgC7eD0vGa5nxAhMvj+NNiC1ljEeAu
-	MVNnWu38I95bGrPs6jAli02aGAM3AcUS6EnBCRjRn5UBjatxNzRXAve3RxrxzvWRw3Nf8b6FHrq
-	OrdnNbZWtO114Bf7iEd5hisNQOoyXttqr5
-X-Gm-Gg: ATEYQzwNnFvurJnY2V9wDC8KdI6faeFdLAd+ZcTazNBn9IWN6z5goHkocoGPWfqQQ8w
-	sg+qr5fUFIWdxDIJtkNo56PsdOA/jP5qOI+J9dLvy68h9gfJjMfj9XRkBlOevtvWy0YppuwvGjt
-	70M/bx/OQjRi1tvJA0Shfo6q5m99FtKcfUI4Z/ZuXu4poPOlEQHgs//cykR/+rjhZgfvykM10pi
-	rM4zNjx
-X-Received: by 2002:a17:90a:dfce:b0:356:3cfd:3ee1 with SMTP id 98e67ed59e1d1-35965ceae6emr13314991a91.23.1772520437634;
-        Mon, 02 Mar 2026 22:47:17 -0800 (PST)
-X-Received: by 2002:a17:90a:dfce:b0:356:3cfd:3ee1 with SMTP id
- 98e67ed59e1d1-35965ceae6emr13314963a91.23.1772520437210; Mon, 02 Mar 2026
- 22:47:17 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772521256; x=1773126056;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8WrPNsxFmfZpCyYuZIoQyAgYSLblE5qZkSbhBEShgVI=;
+        b=ZwuSTiU6SjFQ+TfBBYDGuCBWdkol00j9gMPSVHQYRcEkj0OWlpEOzXYUES+nJU/y4U
+         TsPGYQBt1cCijUZlpBjyOCobzd5JNJUcRMZIcO5/J4+g8TF+xgeiutmZ3lLSqRYJBpDi
+         h7dPlRYLBEa10giqT8C6a/33Cyj2ko+jNM3DC6OCyCdeZ66Yy/I/koqHo2DuIz+etJzk
+         TOJtk1BOfE65Q7rs3eHhw3OC3q4KBWbOV9FBVvmqLvwgz18uyG6hugri/arUVFuJ+uiH
+         1PktgmAzmge8pooij8r6A61uk89QMzo4igm/zyZVL+AHZYTdMM9XSzx6tnn2l7UGgZrc
+         IBig==
+X-Forwarded-Encrypted: i=1; AJvYcCXgxTF1123TXhXGmlKvpL54J3HOvVfnKn7LSdhzJgNW53Lx4bqbqaWzQhemKFbaWtKAoVwldh0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYkGbx6VWpkJyFGiY0/1WFbh4r33ErsbasCJ+NBKgiS4fWDa4K
+	llnrhhhOg1waIv7ReMXWdc85+yk1uAeQdw1ySmneFpsA/3VzdFL7qk1+
+X-Gm-Gg: ATEYQzyi0UC2MIMVnLD+k4r+JDw0j2SQxrDknQ/krSBIn8yATx8HCjxpuyvci7Qy6hD
+	EbItp4w0Xgj7xmaFOqySmuw1qWAnfidRPzEb8z5z8FeH/a9vcYJL4Kn7VwEzMAakRSweAiqFNIs
+	Awe12qx2qyIsRzurKcwWmNonmRx25EkEsqCKeR1t+aZOQhykEZbcRFT5fb3h69xDkh65inZAgz8
+	EaaSc2jV+TDq8ZnocYCgSJL6mV5M3cKCS5MKprdeSzfiC26qDIPeMWnCE0PBfFP5g7XdsUUSXNX
+	IEKTAEn8KbAcScd/Ly4/H4mMboI/YRRs1qej0Rmn56zY2stp5dW4Cqtrv/aKDNGTRNZyej4r+F5
+	WOQ/yewc/6gH98PGnsD+HtN1IZOsD4dqjA/+ebQvzUrZ39oMteh8uI2qRWNqMzSxzGgTNYqulU/
+	ATbyxHQKAe9+jRVYmOwQ1Tb0kJGjHqpSSGDDi8QhcC
+X-Received: by 2002:a05:600c:4592:b0:47a:7fdd:2906 with SMTP id 5b1f17b1804b1-483c9bad6femr255088915e9.12.1772521255334;
+        Mon, 02 Mar 2026 23:00:55 -0800 (PST)
+Received: from holly.home.arpa ([2a03:ab00:1000:1b60:331a:b316:78f6:effc])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483c3b4a121sm321462435e9.8.2026.03.02.23.00.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 23:00:54 -0800 (PST)
+Message-ID: <9d110d860c0c7e110d018ea53a7666eba275da20.camel@gmail.com>
+Subject: Re: [REGRESSION] 6.19.4 stable netfilter / nftables [resolved]
+From: Jindrich Makovicka <makovick@gmail.com>
+To: Genes Lists <lists@sapience.com>, Greg KH <gregkh@linuxfoundation.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, 
+	linux-kernel@vger.kernel.org, coreteam@netfilter.org, 
+	netfilter-devel@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>, 
+	stable@vger.kernel.org, regressions@lists.linux.dev, "Kris Karas (Bug
+ Reporting)" <bugs-a21@moonlit-rail.com>
+Date: Tue, 03 Mar 2026 08:00:54 +0100
+In-Reply-To: <b231fcdb6c66a7b24dcef3ee5c35c5f612d5c1a7.camel@sapience.com>
+References: <a529a6a9a2755d45765f20b58c5c11e2f790eacb.camel@sapience.com>
+		 <45f03b0b-fe8f-4942-bad1-3fbde03d4be1@leemhuis.info>
+		 <143e1a402ad78dd7076516a6ceb637f378310b16.camel@sapience.com>
+		 <10537f2b74da2b8a5cb8dc939f723291db39ff84.camel@sapience.com>
+		 <2026022755-quail-graveyard-93e8@gregkh>
+	 <b231fcdb6c66a7b24dcef3ee5c35c5f612d5c1a7.camel@sapience.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-8 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260226152924.38790-1-evg28bur@yandex.ru>
-In-Reply-To: <20260226152924.38790-1-evg28bur@yandex.ru>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 3 Mar 2026 14:47:05 +0800
-X-Gm-Features: AaiRm53kGlh2Awdy28xoiAuCbe7shyoxelpKNPYu-3mpDcUBtvJikJBhEZg_LaM
-Message-ID: <CACGkMEtt39WgBDgAGFG9pSJe4t-vRL-0EELA3zs1dEZ7euu0bg@mail.gmail.com>
-Subject: Re: [PATCH] vdpa/ifcvf: handle dev_set_name() failure in ifcvf_vdpa_dev_add()
-To: Evgenii Burenchev <evg28bur@yandex.ru>
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	lingshan.zhu@kernel.org, mst@redhat.com, xuanzhuo@linux.alibaba.com, 
-	eperezma@redhat.com, virtualization@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1F3DE1E9C57
+X-Rspamd-Queue-Id: 5B30E1E9EC5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222803-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-222804-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[yandex.ru];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jasowang@redhat.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[makovick@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-0.993];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Thu, Feb 26, 2026 at 11:36=E2=80=AFPM Evgenii Burenchev <evg28bur@yandex=
-.ru> wrote:
->
-> dev_set_name() may fail and return an error, but its return value
-> is currently ignored and overwritten by _vdpa_register_device().
->
-> Abort device creation if dev_set_name() fails and release the
-> device reference to avoid continuing with an improperly initialized
-> struct device.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
-> ---
+On Fri, 2026-02-27 at 08:39 -0500, Genes Lists wrote:
+> On Fri, 2026-02-27 at 05:17 -0800, Greg KH wrote:
+> > On Fri, Feb 27, 2026 at 08:12:59AM -0500, Genes Lists wrote:
+> > > On Fri, 2026-02-27 at 07:23 -0500, Genes Lists wrote:
+> > > > On Fri, 2026-02-27 at 09:00 +0100, Thorsten Leemhuis wrote:
+> > > > > Lo!
+> > > > >=20
+> > > >=20
+> > > > Repeating the nft error message here for simplicity:
+> > > >=20
+> > > > =C2=A0Linux version 7.0.0-rc1-custom-1-00124-g3f4a08e64442 ...
+> > > > =C2=A0 ...
+> > > > =C2=A0 In file included from /etc/nftables.conf:134:2-44:
+> > > > =C2=A0 ./etc/nftables.d/set_filter.conf:1746:7-21: Error:
+> > > > =C2=A0 Could not process rule: File exists
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xx.xxx.xxx.x/23,
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^^^^^^
+> > > >=20
+> > >=20
+> > > Resolved by updating userspace.
+> > >=20
+> > > I can reproduce this error on non-production machine and found
+> > > this
+> > > error is resolved by re-bulding updated nftables, libmnl and
+> > > libnftnl:
+> > >=20
+> > > With these versions nft rules now load without error:
+> > >=20
+> > > =C2=A0- nftables commit de904e22faa2e450d0d4802e1d9bc22013044f93
+> > > =C2=A0- libmnl=C2=A0=C2=A0 commit 54dea548d796653534645c6e3c8577eaf7d=
+77411
+> > > =C2=A0- libnftnl commit 5c5a8385dc974ea7887119963022ae988e2a16cc
+> > >=20
+> > > All were compiled on machine running 6.19.4.
+> >=20
+> > Odd, that shouldn't be an issue, as why would the kernel version
+> > you
+> > build this on matter?
+> >=20
+> > What about trying commit f175b46d9134 ("netfilter: nf_tables: add
+> > .abort_skip_removal flag for set types")?
+> >=20
+> > thanks,
+> >=20
+> > greg k-h
+>=20
+> - all were rebuilt from git head=C2=A0
+> =C2=A0 Have not had time to explore what specific change(s)
+> =C2=A0 triggered the issue yet.
+>=20
+> - commit f175b46d9134
+> =C2=A0 I can reproduce on non-production machine - will check this and
+> report back.
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+I had a similar problem, solved by reverting the commit below. It fails
+only with a longer set. My wild guess is a closed interval with start
+address at the  end of a chunk and end address at the beginning of the
+next one gets misidentified as an open interval.
 
-Thanks
+commit 12b1681793e9b7552495290785a3570c539f409d
+Author: Pablo Neira Ayuso <pablo@netfilter.org>
+Date:   Fri Feb 6 13:33:46 2026 +0100
 
+    netfilter: nft_set_rbtree: validate open interval overlap
+
+Example set definition is here:
+
+https://bugzilla.kernel.org/show_bug.cgi?id=3D221158
+
+Using nft from Debian unstable
+
+$ ./nft --version
+nftables v1.1.6 (Commodore Bullmoose #7)
+
+Regards,
+--=20
+Jindrich Makovicka
 
