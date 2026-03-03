@@ -1,249 +1,232 @@
-Return-Path: <stable+bounces-222828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WB+TGIudpmlqRwAAu9opvQ
-	(envelope-from <stable+bounces-222828-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:36:27 +0100
+	id CCVLFAqepmlqRwAAu9opvQ
+	(envelope-from <stable+bounces-222829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:38:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2BE1EADE5
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:36:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6871EAE06
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2278E301DBBE
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 08:36:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 36948300CA1A
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 08:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133DF386449;
-	Tue,  3 Mar 2026 08:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fjWfddy0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80EF387344;
+	Tue,  3 Mar 2026 08:38:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95CA1E5205;
-	Tue,  3 Mar 2026 08:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E87329A2
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 08:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772526981; cv=none; b=dX9vNZFRjagy2/Gkpil+ctKC4aWXaayLdznqtA/xZv6KgMlRT0je+Z43p3+7bZd/OBByhzqi63S5ChKaOuOLZFKPU2PyE3/KSxpeLZYIGQ7761HxiI2u6ZGuvvAsrSU7KLPcTLPhmjxN52b2REFZYEWnSXLilmnGWVBrvX8yozw=
+	t=1772527109; cv=none; b=da5rhmZlOaPS6Fs+DFOkxbKTDO3piIBmYc5RCK4o2khI1fYsrqTmoDieAj009N2oqzp6y2lIYAWVzC5Zh+yUTjkqEgr6Z9/+SWCknXndyl86Wk5x4qyrVgDHGTPCxmjvbO/giGqYxrqgg3mKePTeiBYhjqPKwF9i0oBEpYXdsBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772526981; c=relaxed/simple;
-	bh=vhenaSsQyOvm+J1rXlSH1lVwxYoHu20sVRVTaWAKhSg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=iZd9fRlcg9t1fiqTm+eO7k1qhpbQlsYucnfFRhEtVsybfQiLsz1rznzfdnUfJFJl/B+c9DQfyYAZ+WiVDkCMAI6ZKwuQDnjGuSd1QEwQGsVR117nw0nYHeHYMZX6tcqUgdjXHzTsQQbU4TewYbCFg6d1xGXDwMJ9XoJZT5kpX3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fjWfddy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2E7C116C6;
-	Tue,  3 Mar 2026 08:36:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772526981;
-	bh=vhenaSsQyOvm+J1rXlSH1lVwxYoHu20sVRVTaWAKhSg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fjWfddy0ZF2Ml/aqImAmfDd1UsO/8W/7FdvCemv1jV7AREgqijy5s2rP112gxhTYD
-	 AKwlnRYa3dLYI0oxJVJoxpWQ657axnJLqGGt3YY1+gj64PbRRg51jMh32oN/MQ9/Cn
-	 PmW2waXRPLu4GcpjtMFePvCGb2AKwxhZLJxlmWTpdNmLovogtf6p+WrRyHAqNwZMUQ
-	 pJs4w/2qI13ixZDdFHObu8yHTCfVMnwT1zQyN7R3PjoAWZfT+3HX7/znFFIodTIgWy
-	 PTLMHEyGMFb13axo9Kny/UvXQxguk0kxV8B4kQfQfz5/AHjJzao0gK/lLyos3PJ6Ot
-	 TSCA2di6EmgAQ==
-Date: Tue, 3 Mar 2026 17:36:17 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
- <sashal@kernel.org>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
- stable@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.12.y] tracing: Fix to clear fprobe after
- unregister_fprobe() when module unloading
-Message-Id: <20260303173617.c80ba29f3be50116f688d5a0@kernel.org>
-In-Reply-To: <177177399650.99709.12415733322341955461.stgit@devnote2>
-References: <177177399650.99709.12415733322341955461.stgit@devnote2>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1772527109; c=relaxed/simple;
+	bh=FNMGAkiAf6zgRCr7SpwMEVNM6p+oIUrmBtYwdgKeuJo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qe3NJy7TjF+27R6MzFLcFCItOEke9ohyJJODfj92da7KHB9743XZ9o4rNKaLUYgsEuqRVJjwsEQGnVglTZf9G99v7+p1Vix7agjX1bHj0PkTMBD+UNy7i9MzbxUS2CSeezyMjBCZRzJaXc2ro3PbYeQP7j55/yT8DUyRC7l6/uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09E9A497;
+	Tue,  3 Mar 2026 00:38:20 -0800 (PST)
+Received: from [10.57.81.89] (unknown [10.57.81.89])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8222E3F7BD;
+	Tue,  3 Mar 2026 00:38:24 -0800 (PST)
+Message-ID: <0a10ea33-937a-4294-b9a1-9323c706434d@arm.com>
+Date: Tue, 3 Mar 2026 08:38:23 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
+ SMMU/ATS faults
+Content-Language: en-GB
+To: Piotr Jaroszynski <pjaroszynski@nvidia.com>, Will Deacon
+ <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Cc: Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
+References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BC2BE1EADE5
+X-Rspamd-Queue-Id: DE6871EAE06
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222828-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222829-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.899];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email]
 X-Rspamd-Action: no action
 
-Hi Greg and Sasha,
-
-This patch is not able to be applied to upstream because fprobe
-implementation was changed in v6.14 by commit 4346ba160409 ("fprobe:
-Rewrite fprobe on function-graph tracer"). So this is only for 6.12.y.
-
-Please tell me if I need more work for merging this fix in stable tree.
-
-Thank you,
-
-On Mon, 23 Feb 2026 00:26:36 +0900
-"Masami Hiramatsu (Google)" <mhiramat@kernel.org> wrote:
-
-> From: Masami Hiramatsu <mhiramat@kernel.org>
+On 03/03/2026 06:37, Piotr Jaroszynski wrote:
+> contpte_ptep_set_access_flags() compared the gathered ptep_get() value
+> against the requested entry to detect no-ops. ptep_get() ORs AF/dirty
+> from all sub-PTEs in the CONT block, so a dirty sibling can make the
+> target appear already-dirty. When the gathered value matches entry, the
+> function returns 0 even though the target sub-PTE still has PTE_RDONLY
+> set in hardware.
 > 
-> Clear fprobe after unregister_fprobe() for preventing double
-> unregistering fprobe.
+> For CPU page-table walks this is benign: with FEAT_HAFDBS the hardware
+> may set AF/dirty on any sub-PTE and the CPU TLB treats the gathered
+> result as authoritative for the entire range. But an SMMU without HTTU
+> (or with HA/HD disabled in CD.TCR) evaluates each descriptor
+> individually and will keep raising F_PERMISSION on the unchanged target
+> sub-PTE, causing an infinite fault loop.
+
+Ouch; thanks for the fix!
+
 > 
-> Without this fix, test.d/dynevent/add_remove_tprobe_module.tc test
-> case of ftracetest caused a kernel panic as below on 6.12.y.
+> Gathering can therefore cause false no-ops when only a sibling has been
+> updated:
+>  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
+>  - read faults:  target still lacks PTE_AF
 > 
-> This is only happens on 6.12.y because this bug was introduced by
-> commit 5ba4f58ec2de ("tracing: tprobe-events: Fix to clean up tprobe
-> correctly when module unload"). This fix expects that the new fprobe
-> implementation based on fgraph, but on 6.12.y, fprobe is still using
-> ftrace.
+> Fix by checking all sub-PTEs' access flags individually (not via the
+> gathered view) before returning no-op, and use the raw target PTE for
+> the write-bit unfold decision. The access-flag mask matches the one
+> used by __ptep_set_access_flags().
 > 
->  ------------[ cut here ]------------
->  WARNING: CPU: 0 PID: 156 at kernel/trace/ftrace.c:378 __unregister_ftrace_function+0x154/0x170
->  Modules linked in: [last unloaded: trace_events_sample]
->  CPU: 0 UID: 0 PID: 156 Comm: ftracetest Not tainted 6.12.74 #1
->  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
->  RIP: 0010:__unregister_ftrace_function+0x154/0x170
->  Code: 85 30 ff ff ff c6 05 fd d5 85 01 01 48 c7 c7 eb 8e 14 82 be 39 01 00 00 48 c7 c2 dd bd 1c 82 e8 52 12 93 00 e9 0c ff ff ff 90 <0f> 0b 90 b8 f0 ff ff ff 5b e9 be 8b 95 00 cc 66 66 66 66 2e 0f 1f
->  RSP: 0018:ffffc900005c3b48 EFLAGS: 00010246
->  RAX: 0000000000000000 RBX: ffff8880054ba818 RCX: 7a7d3ccd1e752c00
->  RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff8880054ba818
->  RBP: 0000000000000000 R08: 000000000000017b R09: 0000000000000000
->  R10: 0000000000000002 R11: 0000000000000000 R12: ffff8880048216d0
->  R13: ffff8880052f7850 R14: ffff8880054ba818 R15: ffffffff8124e160
->  FS:  000000002de743c0(0000) GS:ffff88807d800000(0000) knlGS:0000000000000000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 000000002de8b898 CR3: 0000000005b3a000 CR4: 00000000000006b0
->  Call Trace:
->   <TASK>
->   ftrace_shutdown+0x25/0x260
->   ? __pfx_dyn_event_open+0x10/0x10
->   unregister_ftrace_function+0x2a/0x140
->   ? __pfx_dyn_event_open+0x10/0x10
->   unregister_fprobe+0x57/0x90
->   trace_fprobe_release+0x56/0x150
->   dyn_event_open+0x99/0xe0
->   do_dentry_open+0x14a/0x3e0
->   vfs_open+0x2c/0xe0
->   path_openat+0xca5/0xf10
->   ? __lock_acquire+0xd38/0x2af0
->   ? __create_object+0x36/0x100
->   ? __create_object+0x36/0x100
->   do_filp_open+0xb5/0x160
->   do_sys_openat2+0x7f/0xd0
->   __x64_sys_openat+0x81/0xa0
->   do_syscall_64+0xec/0x1d0
->   ? exc_page_fault+0x92/0x110
->   entry_SYSCALL_64_after_hwframe+0x77/0x7f
->  RIP: 0033:0x4aa9cb
->  Code: 25 00 00 41 00 3d 00 00 41 00 74 4b 64 8b 04 25 18 00 00 00 85 c0 75 67 44 89 e2 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 91 00 00 00 48 8b 54 24 28 64 48 2b 14 25
->  RSP: 002b:00007ffce30daf50 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
->  RAX: ffffffffffffffda RBX: 000000002de79bd0 RCX: 00000000004aa9cb
->  RDX: 0000000000000241 RSI: 000000002deb08f0 RDI: 00000000ffffff9c
->  RBP: 000000002deb08f0 R08: 0000000000000000 R09: 0000000000000000
->  R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000241
->  R13: 000000002deb08f0 R14: 00007ffce30db3f8 R15: 0000000000000000
->   </TASK>
->  irq event stamp: 147361
->  hardirqs last  enabled at (147373): [<ffffffff81128511>] __console_unlock+0x81/0xd0
->  hardirqs last disabled at (147386): [<ffffffff811284f6>] __console_unlock+0x66/0xd0
->  softirqs last  enabled at (146866): [<ffffffff8109a74f>] handle_softirqs+0x34f/0x3b0
->  softirqs last disabled at (146861): [<ffffffff8109a956>] __irq_exit_rcu+0x66/0xd0
->  ---[ end trace 0000000000000000 ]---
->  BUG: kernel NULL pointer dereference, address: 000000000000002e
->  #PF: supervisor read access in kernel mode
->  #PF: error_code(0x0000) - not-present page
->  PGD 8000000005af0067 P4D 8000000005af0067 PUD 55d7067 PMD 0
->  Oops: Oops: 0000 [#1] PREEMPT SMP PTI
->  CPU: 0 UID: 0 PID: 156 Comm: ftracetest Tainted: G        W          6.12.74 #1
->  Tainted: [W]=WARN
->  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
->  RIP: 0010:trace_fprobe_release+0x78/0x150
->  Code: 4c 89 f7 e8 ba e2 ff ff ba f0 01 00 00 4c 89 f7 31 f6 e8 9b 64 8d 00 48 8b bb 10 02 00 00 48 85 ff 74 21 4c 8d b3 10 02 00 00 <48> 8b 77 30 31 d2 e8 8d cf f8 ff 49 c7 06 00 00 00 00 49 c7 46 08
->  RSP: 0018:ffffc900005c3be8 EFLAGS: 00010282
->  RAX: ffff8880054ba818 RBX: ffff8880054ba800 RCX: 0000000000000000
->  RDX: 0000000000000000 RSI: 0000000000000000 RDI: fffffffffffffffe
->  RBP: 00000000fffffff0 R08: 000000000000017b R09: 0000000000000000
->  R10: ffff8880054ba818 R11: 0000000000000000 R12: ffff8880048216d0
->  R13: ffff8880052f7850 R14: ffff8880054baa10 R15: ffffffff8124e160
->  FS:  000000002de743c0(0000) GS:ffff88807d800000(0000) knlGS:0000000000000000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 000000000000002e CR3: 0000000005b3a000 CR4: 00000000000006b0
->  Call Trace:
->   <TASK>
->   dyn_event_open+0x99/0xe0
->   do_dentry_open+0x14a/0x3e0
->   vfs_open+0x2c/0xe0
->   path_openat+0xca5/0xf10
->   ? __lock_acquire+0xd38/0x2af0
->   ? __create_object+0x36/0x100
->   ? __create_object+0x36/0x100
->   do_filp_open+0xb5/0x160
->   do_sys_openat2+0x7f/0xd0
->   __x64_sys_openat+0x81/0xa0
->   do_syscall_64+0xec/0x1d0
->   ? exc_page_fault+0x92/0x110
->   entry_SYSCALL_64_after_hwframe+0x77/0x7f
->  RIP: 0033:0x4aa9cb
->  Code: 25 00 00 41 00 3d 00 00 41 00 74 4b 64 8b 04 25 18 00 00 00 85 c0 75 67 44 89 e2 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 91 00 00 00 48 8b 54 24 28 64 48 2b 14 25
->  RSP: 002b:00007ffce30daf50 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
->  RAX: ffffffffffffffda RBX: 000000002de79bd0 RCX: 00000000004aa9cb
->  RDX: 0000000000000241 RSI: 000000002deb08f0 RDI: 00000000ffffff9c
->  RBP: 000000002deb08f0 R08: 0000000000000000 R09: 0000000000000000
->  R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000241
->  R13: 000000002deb08f0 R14: 00007ffce30db3f8 R15: 0000000000000000
->   </TASK>
->  Modules linked in: [last unloaded: trace_events_sample]
->  CR2: 000000000000002e
->  ---[ end trace 0000000000000000 ]---
+> Per Arm ARM (DDI 0487) D8.7.1 ("The Contiguous bit"), any sub-PTE in a CONT
+> range may become the effective cached translation and software must
+> maintain consistent attributes across the range.
 > 
-> Fixes: 5ba4f58ec2de ("tracing: tprobe-events: Fix to clean up tprobe correctly when module unload")
-> Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
+> 
+
+nit: there shouldn't be whitespace here.
+
+> Reviewed-by: Alistair Popple <apopple@nvidia.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Jason Gunthorpe <jgg@nvidia.com>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Breno Leitao <leitao@debian.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+
+This fix looks good to me:
+
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+
+
 > ---
->  kernel/trace/trace_fprobe.c |    1 +
->  1 file changed, 1 insertion(+)
+>  arch/arm64/mm/contpte.c | 47 +++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 43 insertions(+), 4 deletions(-)
 > 
-> diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
-> index 440dbfa6bbfd..2cf5036c825d 100644
-> --- a/kernel/trace/trace_fprobe.c
-> +++ b/kernel/trace/trace_fprobe.c
-> @@ -984,6 +984,7 @@ static int __tracepoint_probe_module_cb(struct notifier_block *self,
->  			}
->  		} else if (val == MODULE_STATE_GOING && tp_mod->mod == tf->mod) {
->  			unregister_fprobe(&tf->fp);
-> +			memset(&tf->fp, 0, sizeof(tf->fp));
->  			if (trace_fprobe_is_tracepoint(tf)) {
->  				tracepoint_probe_unregister(tf->tpoint,
->  					tf->tpoint->probestub, NULL);
-> 
+> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+> index bcac4f55f9c1..9868bfe4607c 100644
+> --- a/arch/arm64/mm/contpte.c
+> +++ b/arch/arm64/mm/contpte.c
+> @@ -390,6 +390,23 @@ void contpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
+>  }
+>  EXPORT_SYMBOL_GPL(contpte_clear_young_dirty_ptes);
+>  
+> +static bool contpte_all_subptes_match_access_flags(pte_t *ptep, pte_t entry)
+> +{
+> +	pte_t *cont_ptep = contpte_align_down(ptep);
+> +	const pteval_t access_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
+> +	pteval_t entry_access = pte_val(entry) & access_mask;
+> +	int i;
+> +
+> +	for (i = 0; i < CONT_PTES; i++) {
+> +		pteval_t pte_access = pte_val(__ptep_get(cont_ptep + i)) & access_mask;
+> +
+> +		if (pte_access != entry_access)
+> +			return false;
+> +	}
 
+There are 2 forms of "dirty"; HW and SW. Here you are testing that all ptes in
+the contpte block have the same form of dirty, which I think is the correct
+thing to do. You could relax to just test that every pte has one of the forms of
+dirty, But in that case, if a pte is sw-dirty but not hw-dirty, then the
+PTE_RDONLY bit remains set and the SMMU will fault, I think?
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+If my reasoning is correct, then I think arm64 hugetlb has a similar bug; See
+__cont_access_flags_changed(), which just checks for any form of dirty. So I
+guess hugetlb is buggy in the same way and should be fixed to use this more
+stringent approach?
+
+Thanks,
+Ryan
+
+> +
+> +	return true;
+> +}
+> +
+>  int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+>  					unsigned long addr, pte_t *ptep,
+>  					pte_t entry, int dirty)
+> @@ -399,13 +416,35 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+>  	int i;
+>  
+>  	/*
+> -	 * Gather the access/dirty bits for the contiguous range. If nothing has
+> -	 * changed, its a noop.
+> +	 * Check whether all sub-PTEs in the CONT block already have the
+> +	 * requested access flags, using raw per-PTE values rather than the
+> +	 * gathered ptep_get() view.
+> +	 *
+> +	 * ptep_get() gathers AF/dirty state across the whole CONT block,
+> +	 * which is correct for CPU TLB semantics: with FEAT_HAFDBS the
+> +	 * hardware may set AF/dirty on any sub-PTE and the CPU TLB treats
+> +	 * the gathered result as authoritative for the entire range. But an
+> +	 * SMMU without HTTU (or with HA/HD disabled in CD.TCR) evaluates
+> +	 * each descriptor individually and will keep faulting on the target
+> +	 * sub-PTE if its flags haven't actually been updated. Gathering can
+> +	 * therefore cause false no-ops when only a sibling has been updated:
+> +	 *  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
+> +	 *  - read faults:  target still lacks PTE_AF
+> +	 *
+> +	 * Per Arm ARM (DDI 0487) D8.7.1, any sub-PTE in a CONT range may
+> +	 * become the effective cached translation, so all entries must have
+> +	 * consistent attributes. Check the full CONT block before returning
+> +	 * no-op, and when any sub-PTE mismatches, proceed to update the whole
+> +	 * range.
+>  	 */
+> -	orig_pte = pte_mknoncont(ptep_get(ptep));
+> -	if (pte_val(orig_pte) == pte_val(entry))
+> +	if (contpte_all_subptes_match_access_flags(ptep, entry))
+>  		return 0;
+>  
+> +	/*
+> +	 * Use raw target pte (not gathered) for write-bit unfold decision.
+> +	 */
+> +	orig_pte = pte_mknoncont(__ptep_get(ptep));
+> +
+>  	/*
+>  	 * We can fix up access/dirty bits without having to unfold the contig
+>  	 * range. But if the write bit is changing, we must unfold.
+
 
