@@ -1,161 +1,158 @@
-Return-Path: <stable+bounces-222882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222883-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +D2xHSnipmlAYgAAu9opvQ
-	(envelope-from <stable+bounces-222882-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 14:29:13 +0100
+	id cPYqGdjnpmnjZAAAu9opvQ
+	(envelope-from <stable+bounces-222883-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 14:53:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C430A1F03C1
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 14:29:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9271F0CA8
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 14:53:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 553653017AB9
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 13:27:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C945630B62DC
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 13:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E7935DA71;
-	Tue,  3 Mar 2026 13:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD824318BA7;
+	Tue,  3 Mar 2026 13:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gWXFIxOF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="peDMvXcR"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A521E230E
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 13:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDBF29B8D9;
+	Tue,  3 Mar 2026 13:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772544431; cv=none; b=hXExJlc65Rlu2Sn0r+KaWL2HjMGihybJNMkjhTBvkFqJTsgbDaOcynbtN35mO20ksraqVdcgbI1YOwezPYR/gp79QD4Rx61YQk+3H4nZsKtX8Bx+TtFlwlId1PmqAeEC/G5noai3ReINxT4pQHqRzhRxhyYOJQLV7uXKbyJz7lw=
+	t=1772545404; cv=none; b=ctn2XTBwgnXBHUqKi1bFBGL8SPaHGk9y6bLC+6v49oOEVbM5MN+sQ/fe+jZCBsF5j2ldDE25BaIdJV9eaNXOdR8EBU0dvjSd8cSFZWRTJf2bbhRKyvArM94R/VxGX4hVdlTBZrv732AnRAIYFpSTOd+H7sKzcw8zkuydW7w8/Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772544431; c=relaxed/simple;
-	bh=mUMrdakD2E2fCijWUN65nGHOcPP0GmwQVunxzTqzb6U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HI0q1eQU5b4qZ2F/pjczL+cphTowkNKX+MsXzf1XvgDx4D4UKKT/htJgox/rwXHNuyQWWE416IDzc3tZHWGwO8HxR0GXs4EDkLNyzMPcZHltvfop2Xe9nlt8IpkK4ANSDv9IjB/OdXKHENL1xuM2hSzQsB/wYvXfloWf2T84tBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gWXFIxOF; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772544418;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=f0qiNaEKV3DuWlJ//lUJCPANMLZgJ3EU67P3T6dkEA4=;
-	b=gWXFIxOF5+4P5jdftt2f/L9LN0chFjJEyC4KGA12nSrTALD9os5jhQNtnLcrXMLckfrtGb
-	1VHJaxE4KeyCDzEz0/5MMlcMioIa9I2c6UvGP3/rckFsbTaqMqeS7NCxbkollbRxFJVr1Q
-	T8js4R/JReSvPr6FiYxbXzwYZPb7RXY=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Ronnie Sahlberg <lsahlber@redhat.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Steve French <stfrench@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ksmbd: Don't log keys in SMB3 signing and encryption key generation
-Date: Tue,  3 Mar 2026 14:25:53 +0100
-Message-ID: <20260303132552.65235-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1772545404; c=relaxed/simple;
+	bh=F80gOnZg8UNeAX2i8hgqbTMYPyiikA8qMzpFtb0BmHY=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=bxZ/fyx3L8Wj+NLBXkMn0+9mmu7XxPzkLgoiIvP4laGZJuFByQWgfViPaLsiWEklpewV1CbFhiWzD2fZ/9jPBi/GlrqR0TGm5+RkY/E1MucavK+7I2Fn9yradu0YFEtaOKluPf7lvHtcVtQC84lg3MwFo2r4uioK5VHUfeQe5bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=peDMvXcR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEFDC19422;
+	Tue,  3 Mar 2026 13:43:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772545404;
+	bh=F80gOnZg8UNeAX2i8hgqbTMYPyiikA8qMzpFtb0BmHY=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=peDMvXcRudFi64iepmVQDQab3sU82tjtA3v+K7PXodgSrlJUjyn9KHldEYenfMbel
+	 f04hnZlmA44lhAyHRBL3Gm+pApmpG4jgOFRvI6nVFf8y5gLsJrEh0MpY7ERUns/rZr
+	 xWmlmXFtQgjovXeHDjtsinUNJgJqLKM7qKHoMfQd8AOBr9KR/mg9BO1oNHzYNt2x8V
+	 lYKMrewG7TdIU0rkRRJw8uEwQ409uHIc5S4GgTH4n3RHdOctyaLdEKll4itFqbCKR8
+	 +m3yYsGRN56FZ4AM0a/uY4TaGACKgOG4LDmY65Jz5GY6DK2EjGMA4JE4mwcMhogTGK
+	 mXYkpwb0gLf8A==
+Content-Type: multipart/mixed; boundary="===============6513310970023974767=="
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: C430A1F03C1
+Message-Id: <10122558b739e833e2a1def0e0de2861be87f53d51b8857c7085ddb5f6057a86@mail.kernel.org>
+In-Reply-To: <20260303130208.325249-7-hbathini@linux.ibm.com>
+References: <20260303130208.325249-7-hbathini@linux.ibm.com>
+Subject: Re: [PATCH v3 6/6] powerpc64/bpf: fix kfunc call support
+From: bot+bpf-ci@kernel.org
+To: hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org
+Cc: bpf@vger.kernel.org,maddy@linux.ibm.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,skb99@linux.ibm.com,adubey@linux.ibm.com,venkat88@linux.ibm.com,stable@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue,  3 Mar 2026 13:43:22 +0000 (UTC)
+X-Rspamd-Queue-Id: 1B9271F0CA8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	CTYPE_MIXED_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222882-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,kernel.org,iogearbox.net,gmail.com,linux.dev,meta.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,chromium.org,talpey.com,redhat.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-222883-lists,stable=lfdr.de,bpf-ci];
+	MIME_TRACE(0.00)[0:+,1:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	NEURAL_HAM(-0.00)[-0.994];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NO_DN(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.kernel.org:mid]
 X-Rspamd-Action: no action
 
-When KSMBD_DEBUG_AUTH logging is enabled, generate_smb3signingkey() and
-generate_smb3encryptionkey() log the session, signing, encryption, and
-decryption key bytes. Remove the logs to avoid exposing credentials.
+--===============6513310970023974767==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 04e76440d1ad..3a6bd12eecfd 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+
+[ ... ]
+
+> +static int zero_extend(u32 *image, struct codegen_context *ctx, u32 src_reg, u32 dst_reg, u32 size)
+> +{
+> +	switch (size) {
+> +	case 1:
+> +		 /* zero-extend 8 bits into 64 bits */
+> +		EMIT(PPC_RAW_RLDICL(dst_reg, dst_reg, 0, 56));
+                                           ^^^^^^^
+Should this second dst_reg be src_reg instead?
+
+PPC_RAW_RLDICL(d, a, i, mb) takes d as the destination (RA) and a as
+the source (RS). All three cases here pass dst_reg as both the source
+and destination operand, which means the src_reg parameter is unused.
+
+The companion sign_extend() function in the same patch correctly uses
+both parameters:
+
+    EMIT(PPC_RAW_EXTSB(dst_reg, src_reg));
+
+Currently prepare_for_kfunc_call() always passes the same register for
+both src and dst, so the generated code is correct. But the function
+signature accepts src_reg without using it, which is inconsistent with
+sign_extend() and would silently produce wrong code if a future caller
+passes different registers.
+
+> +		return 0;
+> +	case 2:
+> +		 /* zero-extend 16 bits into 64 bits */
+> +		EMIT(PPC_RAW_RLDICL(dst_reg, dst_reg, 0, 48));
+> +		return 0;
+> +	case 4:
+> +		 /* zero-extend 32 bits into 64 bits */
+> +		EMIT(PPC_RAW_RLDICL(dst_reg, dst_reg, 0, 32));
+
+Same issue in cases 2 and 4.
+
+> +		fallthrough;
+> +	case 8:
+> +		/* Nothing to do */
+> +		return 0;
+> +	default:
+> +		return -1;
+> +	}
+> +}
+
+
 ---
- fs/smb/server/auth.c | 22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
-index 5fe8c667c6b1..af5f40304331 100644
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -589,12 +589,8 @@ static int generate_smb3signingkey(struct ksmbd_session *sess,
- 	if (!(conn->dialect >= SMB30_PROT_ID && signing->binding))
- 		memcpy(chann->smb3signingkey, key, SMB3_SIGN_KEY_SIZE);
- 
--	ksmbd_debug(AUTH, "dumping generated AES signing keys\n");
-+	ksmbd_debug(AUTH, "generated SMB3 signing key\n");
- 	ksmbd_debug(AUTH, "Session Id    %llu\n", sess->id);
--	ksmbd_debug(AUTH, "Session Key   %*ph\n",
--		    SMB2_NTLMV2_SESSKEY_SIZE, sess->sess_key);
--	ksmbd_debug(AUTH, "Signing Key   %*ph\n",
--		    SMB3_SIGN_KEY_SIZE, key);
- 	return 0;
- }
- 
-@@ -652,23 +648,9 @@ static void generate_smb3encryptionkey(struct ksmbd_conn *conn,
- 		     ptwin->decryption.context,
- 		     sess->smb3decryptionkey, SMB3_ENC_DEC_KEY_SIZE);
- 
--	ksmbd_debug(AUTH, "dumping generated AES encryption keys\n");
-+	ksmbd_debug(AUTH, "generated SMB3 encryption/decryption keys\n");
- 	ksmbd_debug(AUTH, "Cipher type   %d\n", conn->cipher_type);
- 	ksmbd_debug(AUTH, "Session Id    %llu\n", sess->id);
--	ksmbd_debug(AUTH, "Session Key   %*ph\n",
--		    SMB2_NTLMV2_SESSKEY_SIZE, sess->sess_key);
--	if (conn->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
--	    conn->cipher_type == SMB2_ENCRYPTION_AES256_GCM) {
--		ksmbd_debug(AUTH, "ServerIn Key  %*ph\n",
--			    SMB3_GCM256_CRYPTKEY_SIZE, sess->smb3encryptionkey);
--		ksmbd_debug(AUTH, "ServerOut Key %*ph\n",
--			    SMB3_GCM256_CRYPTKEY_SIZE, sess->smb3decryptionkey);
--	} else {
--		ksmbd_debug(AUTH, "ServerIn Key  %*ph\n",
--			    SMB3_GCM128_CRYPTKEY_SIZE, sess->smb3encryptionkey);
--		ksmbd_debug(AUTH, "ServerOut Key %*ph\n",
--			    SMB3_GCM128_CRYPTKEY_SIZE, sess->smb3decryptionkey);
--	}
- }
- 
- void ksmbd_gen_smb30_encryptionkey(struct ksmbd_conn *conn,
--- 
-Thorsten Blum <thorsten.blum@linux.dev>
-GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/22624805528
+--===============6513310970023974767==--
 
