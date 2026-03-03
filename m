@@ -1,241 +1,197 @@
-Return-Path: <stable+bounces-222793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MA6JLsZ3pmnxQAAAu9opvQ
-	(envelope-from <stable+bounces-222793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:55:18 +0100
+	id EBPvM0l4pmnxQAAAu9opvQ
+	(envelope-from <stable+bounces-222794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:57:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4B2A1E9583
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:55:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741351E95B2
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9284D301223B
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 05:55:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9C705301DF72
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 05:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59E12EE611;
-	Tue,  3 Mar 2026 05:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D653090C5;
+	Tue,  3 Mar 2026 05:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="RUFpuaxL"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF7F261B92;
-	Tue,  3 Mar 2026 05:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7D22F3C22
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 05:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772517310; cv=none; b=njVTsx3KeAD7NPj9yOeekI69aInnnWVuoJUFsWqA23J5OewWkENgJ0/kF1OlPuoOl36iRv49AaCNVR1KzTKCHM1pK+RnRNOC9ZZNqQg7z/mG8uLY+kEp6pvE+K5sufnTn92HyVJFAUHVSPT9BJ12zYtX42sPrUB5ScA2fjQDTnM=
+	t=1772517445; cv=none; b=u4H9Yoa3RrFKH4exgSMPTZRSNRT23oc5w7TLqTCkm50E/mcS86KcTFxA47nDi6aeLptc9doiginT29lCijaliRxomtXOwunPmTZ+rjwCJnhq9eGfyG0Um9r9aFtBSNs8BlJ1PKyvikybxGSTdwPae7a3YCQQcW6VBlV6goy/MY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772517310; c=relaxed/simple;
-	bh=b1n8N2wHkLpkHjTY9r0XREihtysaq3iiZxzWM951cCs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cLg8SGBu8Ms6eMCI8t0R3huhRO93aGZ299+Y6e8lgPfOk6hktB5bPAijctQvewB+19f4XVYgKsIYDoqJsBC1nkxENj2hiFR1SKGWgP5WnB5IwutEA31lb0kGxfLERdm4MstnVpQKPKdLPfuNy++MZLvSTzglohLqZP7TNxSHu1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 72B54497;
-	Mon,  2 Mar 2026 21:55:01 -0800 (PST)
-Received: from [10.164.18.51] (unknown [10.164.18.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C53633F73B;
-	Mon,  2 Mar 2026 21:55:04 -0800 (PST)
-Message-ID: <f417f7fd-1fc9-4bd8-92a0-4b7c09d5296e@arm.com>
-Date: Tue, 3 Mar 2026 11:25:01 +0530
+	s=arc-20240116; t=1772517445; c=relaxed/simple;
+	bh=YSkj7yV9fHYX5D9RDHZytf9gJrBbsOvUt8PGxk5MLUg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MjywBPBzLgcTsunbUQ/QmE3gX/G5Ny4GB3pwQ6wo+TwCCxqIOeVUpqWgIc4MFnkGAAIh1JHhXj4l9ZQYwbmV3kwiYKszy5uHz90OEEgGN+Bld1lyLeEdvBCLAsdW7GWR44fAaDF87LrQCsMhtMjzetKw9Lc3wjbis8wDBGBCp3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=RUFpuaxL; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4806ce0f97bso44348885e9.0
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 21:57:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1772517442; x=1773122242; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wbLqCT38jwoC2Nr4HKJ6p3wDiVnmqP0zGpnls7YlzMw=;
+        b=RUFpuaxLVAGezZ3hCJFeNnXLhd0wnNJGugCnqKq+7AMGlK0rJU8fsRHyXEmbAmPZ6q
+         +/71XvAcX7iUlJG0c0IDbvHLIP/gtzY83GIVc5+4PK++Xn0YfR4tCG7k0lhYGs2laaAt
+         YX667OzHxbFHah1Pj+uJPa7MoxBg5zj+RKSwEweyxba5H4MOCL1iJLPoKlT4tM/iKOvj
+         Flu3fbzCYAHzXgTJbIsU5+DFFy1fosuXQmNVpN4lDeFgnmd7QK6B3Zwfsj2frfZC4qOD
+         jq+z2C9piT7NJqHna2lGlSevoeLV/bq9ItEX/3ckt2EkVlxHh5S+jK1m6Jb4M256NpYr
+         Gcng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772517442; x=1773122242;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wbLqCT38jwoC2Nr4HKJ6p3wDiVnmqP0zGpnls7YlzMw=;
+        b=mldj6RmTkPUKQOhpUo8ZcICiYGRbkGAHHIKTpNNGdBvLHsgC2vrE5sVVstH3Tp+64+
+         0q6VIMTWKqp+57XXwVdfjHLf14NOJtH7n7OtYsI6am0KB6Rw8b208+89XBfU51H6iVcO
+         fTrRrNFMB5Fsw5g3Jmz8ikn2JM94IEsgo1m0mf5yZrzYiDj4RT4Vygw+T0FcDplyT1Fw
+         Ti3bHkk2uILhLEyXy25CBHTC4Xyu/rl4p30jFPK/ptpUbUfBRfYR0b2HCKfpQ9cGl5Pp
+         kApbcK56VJvinWaoIjbh0ib7r3EH6RaHK3jYXz/V0xcI+XWhR8al7tV/a0TzSsm25Vko
+         Z8gA==
+X-Gm-Message-State: AOJu0YzsBkhqj20lablZFNkQ0lCSBZ8w/7pLXwqWj76YXATx8he9Wm1a
+	Zb9MEy9bQ6GqRP/zaoQSiTYIMomo9aFABmdeqWLJ2TMD9LtDjCn1H5oDIuQbrtQvyThrNyN4Dbd
+	6znAy
+X-Gm-Gg: ATEYQzxvUXFJw3wF72oO8sDBUxrpCBh67H1YjfGkP4Xem9Rk7imE7R5dBCm/QnCgkdL
+	TD9JFbE8lYpPXr5M7d91OZw7PN+EUnpMAJxUuhGYTk3ENDQvj/fNefULsozPXDNLLib3YqlzfTx
+	M9FeCukiKqdDFup/6zZ8wUA0DM/QRR4JAKA4QRqQLTj3N02wSgnvFunOlru5R9LL/WnGgod7UYL
+	AUi1HnpQf47U+ENdNvPH3HmeRmwqqBqbWQGP010dJKfeyjxujm/fhF2hoKt3UWPoUzcX9Gaj9DU
+	B0Q7nlbA9HxAxxN7n5vvdw+fcLHfguN/myRmptAiNEr5nqZVkgI6rilw1X9BgMJqCHj7OXyR/oS
+	2iVqcjFS+yyTuaz0J1WN2vTDxm5sDG57u0usyCOhspuHDMUs4XCEKOFkuoMbQg5ycrx6/r9GIjU
+	4aRo8nRcy3fP2i3kERVhTbTo9duw==
+X-Received: by 2002:a05:600c:699a:b0:471:700:f281 with SMTP id 5b1f17b1804b1-483c9bf44e8mr236485065e9.25.1772517441943;
+        Mon, 02 Mar 2026 21:57:21 -0800 (PST)
+Received: from localhost ([2401:e180:88b0:32b4:4c71:af95:b813:9623])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70fa638dbcsm13598648a12.14.2026.03.02.21.57.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 21:57:21 -0800 (PST)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: stable@vger.kernel.org
+Cc: Paul Chaignon <paul.chaignon@gmail.com>,
+	syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH stable 6.6 6.1 5.15 5.10] bpf: Forget ranges when refining tnum after JSET
+Date: Tue,  3 Mar 2026 13:57:14 +0800
+Message-ID: <20260303055716.25158-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 1/2] arm64/mm: Enable batched TLB flush in
- unmap_hotplug_range()
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-arm-kernel@lists.infradead.org
-Cc: mark.rutland@arm.com, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Yang Shi <yang@os.amperecomputing.com>, Christoph Lameter <cl@gentwo.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260224062423.972404-1-anshuman.khandual@arm.com>
- <20260224062423.972404-2-anshuman.khandual@arm.com>
- <bf956adb-06bc-4b68-b846-7dddb9413867@kernel.org>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <bf956adb-06bc-4b68-b846-7dddb9413867@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B4B2A1E9583
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 741351E95B2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222793-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,syzkaller.appspotmail.com,linux.dev,kernel.org,suse.com];
 	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222794-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anshuman.khandual@arm.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.859];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:mid,arm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,infradead.org:email]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,c711ce17dd78e5d4fdcf];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.com:dkim,suse.com:email,suse.com:mid,appspotmail.com:email]
 X-Rspamd-Action: no action
 
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
+commit 6279846b9b2532e1b04559ef8bd0dec049f29383 upstream.
 
-On 02/03/26 8:58 PM, David Hildenbrand (Arm) wrote:
-> On 2/24/26 07:24, Anshuman Khandual wrote:
->> During a memory hot remove operation, both linear and vmemmap mappings for
->> the memory range being removed, get unmapped via unmap_hotplug_range() but
->> mapped pages get freed only for vmemmap mapping. This is just a sequential
->> operation where each table entry gets cleared, followed by a leaf specific
->> TLB flush, and then followed by memory free operation when applicable.
->>
->> This approach was simple and uniform both for vmemmap and linear mappings.
->> But linear mapping might contain CONT marked block memory where it becomes
->> necessary to first clear out all entire in the range before a TLB flush.
->> This is as per the architecture requirement. Hence batch all TLB flushes
->> during the table tear down walk and finally do it in unmap_hotplug_range().
->>
->> Prior to this fix, it was hypothetically possible for a speculative access
->> to a higher address in the contiguous block to fill the TLB with shattered
->> entries for the entire contiguous range after a lower address had already
->> been cleared and invalidated. Due to the table entries being shattered, the
->> subsequent TLB invalidation for the higher address would not then clear the
->> TLB entries for the lower address, meaning stale TLB entries could persist.
->>
->> Besides it also helps in improving the performance via TLBI range operation
->> along with reduced synchronization instructions. The time spent executing
->> unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
->> in KVM guest.
->>
->> This scheme is not applicable during vmemmap mapping tear down where memory
->> needs to be freed and hence a TLB flush is required after clearing out page
->> table entry.
->>
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
->> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
->> Cc: stable@vger.kernel.org
->> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
->> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>  arch/arm64/mm/mmu.c | 81 +++++++++++++++++++++++++++++++++++++--------
->>  1 file changed, 67 insertions(+), 14 deletions(-)
->>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index a6a00accf4f9..dfb61d218579 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -1458,10 +1458,32 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
->>  
->>  		WARN_ON(!pte_present(pte));
->>  		__pte_clear(&init_mm, addr, ptep);
->> -		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
->> -		if (free_mapped)
->> +		if (free_mapped) {
->> +			/*
->> +			 * If page is part of an existing contiguous
->> +			 * memory block, individual TLB invalidation
->> +			 * here would not be appropriate. Instead it
->> +			 * will require clearing all entries for the
->> +			 * memory block and subsequently a TLB flush
->> +			 * for the entire range.
->> +			 */
-> 
-> I'm not sure about repeating these longish comments a couple of times :)
-> 
-> For example, I think you can drop the ones regarding the TLB flush
-> ("TLB flush is batched in unmap_hotplug_range ...") completely.
-> unmap_hotplug_range(), the only caller, is pretty clear about that. And
-> anybody reading that code should be able to spot the "!free_mapped" case
-> easily.
-> 
-> Alternatively, just say
-> 
-> 	/* unmap_hotplug_range() flushes TLB for !free_mapped */
+Syzbot reported a kernel warning due to a range invariant violation on
+the following BPF program.
 
-Will replace as suggested.
+  0: call bpf_get_netns_cookie
+  1: if r0 == 0 goto <exit>
+  2: if r0 & Oxffffffff goto <exit>
 
-> 
-> "TLB flush is essential for freeing memory." is rather obvious when
-> freeing memory, so I would drop that as well.
-> 
-> Regarding pte_cont(), can we shorten that to
-> 
-> 	/* CONT blocks in the vmemmap are not supported. */
-> 
-> Anybody who wants to figure *why* can lookup your patch where you add
-> that comment+check.
+The issue is on the path where we fall through both jumps.
 
-Sure will drop the comment about CONT mapping TLB flush and mention that
-such mappings are not supported for vmemmap.
+That path is unreachable at runtime: after insn 1, we know r0 != 0, but
+with the sign extension on the jset, we would only fallthrough insn 2
+if r0 == 0. Unfortunately, is_branch_taken() isn't currently able to
+figure this out, so the verifier walks all branches. The verifier then
+refines the register bounds using the second condition and we end
+up with inconsistent bounds on this unreachable path:
 
-> 
-> 
-> I did not check whether people suggested to add these comments in
-> previous versions. But to me they don't add a lot of real value that
-> couldn't be had from the code already (or common sense: freeing requires
-> prior TLB flush).
+  1: if r0 == 0 goto <exit>
+    r0: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0xffffffffffffffff)
+  2: if r0 & 0xffffffff goto <exit>
+    r0 before reg_bounds_sync: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0)
+    r0 after reg_bounds_sync:  u64=[0x1, 0] var_off=(0, 0)
 
-Dropped all these comments - "TLB flush is essential for freeing memory".
+Improving the range refinement for JSET to cover all cases is tricky. We
+also don't expect many users to rely on JSET given LLVM doesn't generate
+those instructions. So instead of improving the range refinement for
+JSETs, Eduard suggested we forget the ranges whenever we're narrowing
+tnums after a JSET. This patch implements that approach.
 
-> 
->> +			WARN_ON(pte_cont(pte));
->> +
->> +			/*
->> +			 * TLB flush is essential for freeing memory.
->> +			 */
->> +			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
->>  			free_hotplug_page_range(pte_page(pte),
->>  						PAGE_SIZE, altmap);
->> +		}
-> 
-> [...]
-> 
->>  		WARN_ON(!pud_table(pud));
->> @@ -1553,6 +1597,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
->>  static void unmap_hotplug_range(unsigned long addr, unsigned long end,
->>  				bool free_mapped, struct vmem_altmap *altmap)
->>  {
->> +	unsigned long start = addr;
->>  	unsigned long next;
->>  	pgd_t *pgdp, pgd;
->>  
->> @@ -1574,6 +1619,14 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
->>  		WARN_ON(!pgd_present(pgd));
->>  		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
->>  	} while (addr = next, addr < end);
->> +
->> +	/*
->> +	 * Batched TLB flush only for linear mapping which
->> +	 * might contain CONT blocks, and does not require
->> +	 * freeing up memory as well.
->> +	 */
-> 
-> Also, here, I don't think the comment really adds value.
-> 
-> * !free_mapped -> linear mapping, no freeing of memory
-> * CONT blocks -> irrelevant, you can batch in either case
+Reported-by: syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com
+Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/9d4fd6432a095d281f815770608fdcd16028ce0b.1752171365.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[shung-hsi.yu: no detection or kernel warning for invariant violation before
+6.8, but the same umin=1,umax=0 state can occur when jset is preceed by r0 < 1.
+Changes were made to adapt to older range refinement logic before commit
+67420501e868 ("bpf: generalize reg_set_min_max() to handle non-const register
+comparisons").]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+---
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Dropped the comment.
-
-> 
->> +	if (!free_mapped)
->> +		flush_tlb_kernel_range(start, end);
->>  }
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 45b2f06de452..743c3cf6f0c2 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -14162,6 +14162,10 @@ static void reg_set_min_max(struct bpf_reg_state *true_reg,
+ 		}
+ 		break;
+ 	case BPF_JSET:
++		/* Forget the ranges before narrowing tnums, to avoid invariant
++		 * violations if we're on a dead branch.
++		 */
++		__mark_reg_unbounded(false_reg);
+ 		if (is_jmp32) {
+ 			false_32off = tnum_and(false_32off, tnum_const(~val32));
+ 			if (is_power_of_2(val32))
+-- 
+2.53.0
 
 
