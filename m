@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-222759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDrcBeUspmm/LgAAu9opvQ
-	(envelope-from <stable+bounces-222759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:35:49 +0100
+	id GABGEDUupmkrLwAAu9opvQ
+	(envelope-from <stable+bounces-222760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:41:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016B91E72DE
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:35:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79D51E7452
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:41:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9016B302EFBA
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 00:35:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 038E530BE575
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 00:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EC821A459;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A0335BDAD;
 	Tue,  3 Mar 2026 00:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bU/ZXlHP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F59rAZ17"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BCA3563FA;
-	Tue,  3 Mar 2026 00:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3A3359A68;
+	Tue,  3 Mar 2026 00:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772498076; cv=none; b=MiYY+oyAD127tQnP2PfeFNvZ6oQ99nM+e/DdHPOBNS913fNKLq3vhQfOmjMiN4o5NGcNwD5sUnqhWD26eOdk8S8nUgdtiib+BddrOd81D1npZJYVUatKAf6WZsSnkvBUDm3yXmTc715bpb7yc5Yi5gzRIbsk+fJ9ZPeHan1+YFo=
+	t=1772498077; cv=none; b=tTPBT7HNzHbsLOt8R3syPmu5l0mR9SZ1fRbLKeSrbhCEOHhHA37pE/Bmr+iVKhX/a0AvmRDzItCIWEAZhvJF1Pdw5SLlJ9upFUDhXinTRcH06E+PJrrOHUUqMZYiGnCqGaJNNLez5veKhmPztSmsdblj4+gyYwLiX2voo9a9Ad0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772498076; c=relaxed/simple;
-	bh=JRTh4d4NiavCtUAPMWBR5Q7QKAgkkv2LsY9J4Zvx6kQ=;
+	s=arc-20240116; t=1772498077; c=relaxed/simple;
+	bh=a3n687SEFo3mGCDwHQ3iI2OjGHE7+i7JTV7SzEfku0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdYHBIThpSCuuPd/VVjgAAqNmwZXEEVP9p0k/futyf/BqAnFS39yaEX/LXus19G9BXhl+tDOtDSLMslwfiyH4wN7npBewmaCuSbdc6GWP4bXgzrF8hkyzo3hhhVXOscTQiC3rdR773hSn3JmClfh+7KbZ/yOkrnildJOX38WssA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bU/ZXlHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AD7C2BC9E;
+	 MIME-Version; b=H/Ofpuxm3oghQgamsMsvDOzFdAyNJSuGF2hthWChAcQ3F/zO8THNohgzKjAbUwOeyiN2XhnD+I5J3UgF7zKd9qS5MeH1/0+I2xLcBt7ZpYkuY7rVSgt4wij5k2qXed7ZEOw8mI+9Hn/wKxLuLkfIN0acnrgGKB1Y+tj1JZAqpdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F59rAZ17; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F206C2BCB0;
 	Tue,  3 Mar 2026 00:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772498076;
-	bh=JRTh4d4NiavCtUAPMWBR5Q7QKAgkkv2LsY9J4Zvx6kQ=;
+	bh=a3n687SEFo3mGCDwHQ3iI2OjGHE7+i7JTV7SzEfku0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bU/ZXlHP8nakl9RF1pU1UgGINXnaSRtiFO6wsI8P/v9jqN2yiFiNJxlLm+L/h2lOj
-	 txCAo8NbwbZg+G/lM2MCANT2YaJkXIe6HhJ7A73k2/Y6BO3bRrR7hJScnxgNeOhf8Z
-	 izvRPr3wfz4ftZVBnBdJyKhtzJTcguT0QttCMpRjZsufEIkKlShRuKT00haP5g2vHi
-	 rpdajO4FBtmy3QbPl3LmBLZ3CcQRxf711z50Dl75jnjw+PmBadUruIy+toqiTi1Ldp
-	 NcL59UJDkEfYObxJZuNN1XpuccrDvwp6hDEaqzTTCeAx1rvoUzBpXiRyCPhNqAMPJQ
-	 HJ3vJ1P1lGBgQ==
+	b=F59rAZ17Q6OEH7RnuJro9aRtyucDsDD/JvLNkW8oeeayY4RJtmKqTLnprOXTHGOgZ
+	 l8cJuba4821MRhxf59ePMRPuExtq71IWH/4/Q7fpIjoBaMqKcPf/ZD2+agpC/UI929
+	 bHvQli9fHOnkyOPbOMxZQ7LeVJhuliV2Ri7RLNCQ46umL6wgz5VsLCYYqPeXmMhg3T
+	 /lcRxjV6ZJZSGUSHxQvCr9Y9uq7HqkBmBxk1IhemQf6QMryBZjSnic77LitQGeWzcE
+	 pCRozv4FkUuFXDvCioLCr+gWQvfbtsEamQCUbvNC1K7EFOgtj3nyqEip2ekMdJo+DL
+	 X6ngoy8pNHVCg==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -51,9 +51,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v7 12/26] KVM: nSVM: Clear tracking of L1->L2 NMI and soft IRQ on nested #VMEXIT
-Date: Tue,  3 Mar 2026 00:34:06 +0000
-Message-ID: <20260303003421.2185681-13-yosry@kernel.org>
+Subject: [PATCH v7 13/26] KVM: nSVM: Drop nested_vmcb_check_{save/control}() wrappers
+Date: Tue,  3 Mar 2026 00:34:07 +0000
+Message-ID: <20260303003421.2185681-14-yosry@kernel.org>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
 In-Reply-To: <20260303003421.2185681-1-yosry@kernel.org>
 References: <20260303003421.2185681-1-yosry@kernel.org>
@@ -64,25 +64,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 016B91E72DE
+X-Rspamd-Queue-Id: D79D51E7452
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222759-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222760-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
@@ -92,64 +92,118 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-KVM clears tracking of L1->L2 injected NMIs (i.e. nmi_l1_to_l2) and soft
-IRQs (i.e. soft_int_injected) on a synthesized #VMEXIT(INVALID) due to
-failed VMRUN. However, they are not explicitly cleared in other
-synthesized #VMEXITs.
+The wrappers provide little value and make it harder to see what KVM is
+checking in the normal flow. Drop them.
 
-soft_int_injected is always cleared after the first VMRUN of L2 when
-completing interrupts, as any re-injection is then tracked by KVM
-(instead of purely in vmcb02).
+Opportunistically fixup comments referring to the functions, adding '()'
+to make it clear it's a reference to a function.
 
-nmi_l1_to_l2 is not cleared after the first VMRUN if NMI injection
-failed, as KVM still needs to keep track that the NMI originated from L1
-to avoid blocking NMIs for L1. It is only cleared when the NMI injection
-succeeds.
+No functional change intended.
 
-KVM could synthesize a #VMEXIT to L1 before successfully injecting the
-NMI into L2 (e.g. due to a #NPF on L2's NMI handler in L1's NPTs). In
-this case, nmi_l1_to_l2 will remain true, and KVM may not correctly mask
-NMIs and intercept IRET when injecting an NMI into L1.
-
-Clear both nmi_l1_to_l2 and soft_int_injected in nested_svm_vmexit() to
-capture all #VMEXITs, except those that occur due to failed consistency
-checks, as those happen before nmi_l1_to_l2 or soft_int_injected are
-set.
-
-Fixes: 159fc6fa3b7d ("KVM: nSVM: Transparently handle L1 -> L2 NMI re-injection")
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/nested.c | 36 ++++++++++--------------------------
+ 1 file changed, 10 insertions(+), 26 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index f0ed352a3e901..b66bd9bfce9d8 100644
+index b66bd9bfce9d8..21e1a43c91879 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -1065,8 +1065,6 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
+@@ -339,8 +339,8 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
+ 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
+ }
  
- out_exit_err:
- 	svm->nested.nested_run_pending = 0;
--	svm->nmi_l1_to_l2 = false;
--	svm->soft_int_injected = false;
+-static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+-					 struct vmcb_ctrl_area_cached *control)
++static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
++				       struct vmcb_ctrl_area_cached *control)
+ {
+ 	if (CC(!vmcb12_is_intercept(control, INTERCEPT_VMRUN)))
+ 		return false;
+@@ -367,8 +367,8 @@ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ }
  
- 	svm->vmcb->control.exit_code    = SVM_EXIT_ERR;
- 	svm->vmcb->control.exit_info_1  = 0;
-@@ -1322,6 +1320,10 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
- 	if (nested_svm_load_cr3(vcpu, vmcb01->save.cr3, false, true))
- 		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+ /* Common checks that apply to both L1 and L2 state.  */
+-static bool __nested_vmcb_check_save(struct kvm_vcpu *vcpu,
+-				     struct vmcb_save_area_cached *save)
++static bool nested_vmcb_check_save(struct kvm_vcpu *vcpu,
++				   struct vmcb_save_area_cached *save)
+ {
+ 	if (CC(!(save->efer & EFER_SVME)))
+ 		return false;
+@@ -402,22 +402,6 @@ static bool __nested_vmcb_check_save(struct kvm_vcpu *vcpu,
+ 	return true;
+ }
  
-+	/* Drop tracking for L1->L2 injected NMIs and soft IRQs */
-+	svm->nmi_l1_to_l2 = false;
-+	svm->soft_int_injected = false;
-+
+-static bool nested_vmcb_check_save(struct kvm_vcpu *vcpu)
+-{
+-	struct vcpu_svm *svm = to_svm(vcpu);
+-	struct vmcb_save_area_cached *save = &svm->nested.save;
+-
+-	return __nested_vmcb_check_save(vcpu, save);
+-}
+-
+-static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu)
+-{
+-	struct vcpu_svm *svm = to_svm(vcpu);
+-	struct vmcb_ctrl_area_cached *ctl = &svm->nested.ctl;
+-
+-	return __nested_vmcb_check_controls(vcpu, ctl);
+-}
+-
+ /*
+  * If a feature is not advertised to L1, clear the corresponding vmcb12
+  * intercept.
+@@ -469,7 +453,7 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+ 	to->pause_filter_count  = from->pause_filter_count;
+ 	to->pause_filter_thresh = from->pause_filter_thresh;
+ 
+-	/* Copy asid here because nested_vmcb_check_controls will check it.  */
++	/* Copy asid here because nested_vmcb_check_controls() will check it */
+ 	to->asid           = from->asid;
+ 	to->msrpm_base_pa &= ~0x0fffULL;
+ 	to->iopm_base_pa  &= ~0x0fffULL;
+@@ -1031,8 +1015,8 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
+ 	nested_copy_vmcb_control_to_cache(svm, &vmcb12->control);
+ 	nested_copy_vmcb_save_to_cache(svm, &vmcb12->save);
+ 
+-	if (!nested_vmcb_check_save(vcpu) ||
+-	    !nested_vmcb_check_controls(vcpu)) {
++	if (!nested_vmcb_check_save(vcpu, &svm->nested.save) ||
++	    !nested_vmcb_check_controls(vcpu, &svm->nested.ctl)) {
+ 		vmcb12->control.exit_code    = SVM_EXIT_ERR;
+ 		vmcb12->control.exit_info_1  = 0;
+ 		vmcb12->control.exit_info_2  = 0;
+@@ -1878,12 +1862,12 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 
+ 	ret = -EINVAL;
+ 	__nested_copy_vmcb_control_to_cache(vcpu, &ctl_cached, ctl);
+-	if (!__nested_vmcb_check_controls(vcpu, &ctl_cached))
++	if (!nested_vmcb_check_controls(vcpu, &ctl_cached))
+ 		goto out_free;
+ 
  	/*
- 	 * Drop what we picked up for L2 via svm_complete_interrupts() so it
- 	 * doesn't end up in L1.
+ 	 * Processor state contains L2 state.  Check that it is
+-	 * valid for guest mode (see nested_vmcb_check_save).
++	 * valid for guest mode (see nested_vmcb_check_save()).
+ 	 */
+ 	cr0 = kvm_read_cr0(vcpu);
+         if (((cr0 & X86_CR0_CD) == 0) && (cr0 & X86_CR0_NW))
+@@ -1897,7 +1881,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 	if (!(save->cr0 & X86_CR0_PG) ||
+ 	    !(save->cr0 & X86_CR0_PE) ||
+ 	    (save->rflags & X86_EFLAGS_VM) ||
+-	    !__nested_vmcb_check_save(vcpu, &save_cached))
++	    !nested_vmcb_check_save(vcpu, &save_cached))
+ 		goto out_free;
+ 
+ 
 -- 
 2.53.0.473.g4a7958ca14-goog
 
