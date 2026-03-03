@@ -1,197 +1,130 @@
-Return-Path: <stable+bounces-222794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBPvM0l4pmnxQAAAu9opvQ
-	(envelope-from <stable+bounces-222794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:57:29 +0100
+	id yNB+M3OLpmnMRAAAu9opvQ
+	(envelope-from <stable+bounces-222806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 08:19:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741351E95B2
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:57:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA461EA0C2
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 08:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9C705301DF72
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 05:57:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3200B3013870
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 07:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D653090C5;
-	Tue,  3 Mar 2026 05:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1464E285C8B;
+	Tue,  3 Mar 2026 07:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="RUFpuaxL"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="gITAAnzJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7D22F3C22
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 05:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166861D86DC;
+	Tue,  3 Mar 2026 07:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772517445; cv=none; b=u4H9Yoa3RrFKH4exgSMPTZRSNRT23oc5w7TLqTCkm50E/mcS86KcTFxA47nDi6aeLptc9doiginT29lCijaliRxomtXOwunPmTZ+rjwCJnhq9eGfyG0Um9r9aFtBSNs8BlJ1PKyvikybxGSTdwPae7a3YCQQcW6VBlV6goy/MY0=
+	t=1772522352; cv=none; b=nwptHjOj51GUNKCCw4FsspP1+qRQijcEB/PcpVoQIisWTG9vj0h7F5AVVUxF4+sahkiVtAuJPDx4EZTQYO5Muibzk3Rudw9lVMJblI8prk2HnQPtQ7y9X2Ja1326H16CoVkBkV1eG7FxIDjwQbi2qC+1c1xQRfY5J6R7Uc7a+TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772517445; c=relaxed/simple;
-	bh=YSkj7yV9fHYX5D9RDHZytf9gJrBbsOvUt8PGxk5MLUg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MjywBPBzLgcTsunbUQ/QmE3gX/G5Ny4GB3pwQ6wo+TwCCxqIOeVUpqWgIc4MFnkGAAIh1JHhXj4l9ZQYwbmV3kwiYKszy5uHz90OEEgGN+Bld1lyLeEdvBCLAsdW7GWR44fAaDF87LrQCsMhtMjzetKw9Lc3wjbis8wDBGBCp3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=RUFpuaxL; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4806ce0f97bso44348885e9.0
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 21:57:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1772517442; x=1773122242; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wbLqCT38jwoC2Nr4HKJ6p3wDiVnmqP0zGpnls7YlzMw=;
-        b=RUFpuaxLVAGezZ3hCJFeNnXLhd0wnNJGugCnqKq+7AMGlK0rJU8fsRHyXEmbAmPZ6q
-         +/71XvAcX7iUlJG0c0IDbvHLIP/gtzY83GIVc5+4PK++Xn0YfR4tCG7k0lhYGs2laaAt
-         YX667OzHxbFHah1Pj+uJPa7MoxBg5zj+RKSwEweyxba5H4MOCL1iJLPoKlT4tM/iKOvj
-         Flu3fbzCYAHzXgTJbIsU5+DFFy1fosuXQmNVpN4lDeFgnmd7QK6B3Zwfsj2frfZC4qOD
-         jq+z2C9piT7NJqHna2lGlSevoeLV/bq9ItEX/3ckt2EkVlxHh5S+jK1m6Jb4M256NpYr
-         Gcng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772517442; x=1773122242;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wbLqCT38jwoC2Nr4HKJ6p3wDiVnmqP0zGpnls7YlzMw=;
-        b=mldj6RmTkPUKQOhpUo8ZcICiYGRbkGAHHIKTpNNGdBvLHsgC2vrE5sVVstH3Tp+64+
-         0q6VIMTWKqp+57XXwVdfjHLf14NOJtH7n7OtYsI6am0KB6Rw8b208+89XBfU51H6iVcO
-         fTrRrNFMB5Fsw5g3Jmz8ikn2JM94IEsgo1m0mf5yZrzYiDj4RT4Vygw+T0FcDplyT1Fw
-         Ti3bHkk2uILhLEyXy25CBHTC4Xyu/rl4p30jFPK/ptpUbUfBRfYR0b2HCKfpQ9cGl5Pp
-         kApbcK56VJvinWaoIjbh0ib7r3EH6RaHK3jYXz/V0xcI+XWhR8al7tV/a0TzSsm25Vko
-         Z8gA==
-X-Gm-Message-State: AOJu0YzsBkhqj20lablZFNkQ0lCSBZ8w/7pLXwqWj76YXATx8he9Wm1a
-	Zb9MEy9bQ6GqRP/zaoQSiTYIMomo9aFABmdeqWLJ2TMD9LtDjCn1H5oDIuQbrtQvyThrNyN4Dbd
-	6znAy
-X-Gm-Gg: ATEYQzxvUXFJw3wF72oO8sDBUxrpCBh67H1YjfGkP4Xem9Rk7imE7R5dBCm/QnCgkdL
-	TD9JFbE8lYpPXr5M7d91OZw7PN+EUnpMAJxUuhGYTk3ENDQvj/fNefULsozPXDNLLib3YqlzfTx
-	M9FeCukiKqdDFup/6zZ8wUA0DM/QRR4JAKA4QRqQLTj3N02wSgnvFunOlru5R9LL/WnGgod7UYL
-	AUi1HnpQf47U+ENdNvPH3HmeRmwqqBqbWQGP010dJKfeyjxujm/fhF2hoKt3UWPoUzcX9Gaj9DU
-	B0Q7nlbA9HxAxxN7n5vvdw+fcLHfguN/myRmptAiNEr5nqZVkgI6rilw1X9BgMJqCHj7OXyR/oS
-	2iVqcjFS+yyTuaz0J1WN2vTDxm5sDG57u0usyCOhspuHDMUs4XCEKOFkuoMbQg5ycrx6/r9GIjU
-	4aRo8nRcy3fP2i3kERVhTbTo9duw==
-X-Received: by 2002:a05:600c:699a:b0:471:700:f281 with SMTP id 5b1f17b1804b1-483c9bf44e8mr236485065e9.25.1772517441943;
-        Mon, 02 Mar 2026 21:57:21 -0800 (PST)
-Received: from localhost ([2401:e180:88b0:32b4:4c71:af95:b813:9623])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70fa638dbcsm13598648a12.14.2026.03.02.21.57.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 21:57:21 -0800 (PST)
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: stable@vger.kernel.org
-Cc: Paul Chaignon <paul.chaignon@gmail.com>,
-	syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH stable 6.6 6.1 5.15 5.10] bpf: Forget ranges when refining tnum after JSET
-Date: Tue,  3 Mar 2026 13:57:14 +0800
-Message-ID: <20260303055716.25158-1-shung-hsi.yu@suse.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1772522352; c=relaxed/simple;
+	bh=DkGv8JbAOFxr5thlBAs3MPsoSFRTjviaF8v3BxFYBF0=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=HVP/6aDyj4XrOG/95EQgf8nK+Wxlaq9O1VSUaiCKIbloLJVF6Q6KvkW4MxOweTvVeWA95Ua1A5522xek7+lLKYXaqASApaPLYKTqdBg0SgAsryh4NfqRayEtW0Pz+v/XsO6v5G+QiX3wDT2rtojQOe2niqyBJiLwrmr6a0Dg6v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=gITAAnzJ; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E793540E01A8;
+	Tue,  3 Mar 2026 07:19:08 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id UxauTnrrJHCH; Tue,  3 Mar 2026 07:19:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1772522344; bh=DkGv8JbAOFxr5thlBAs3MPsoSFRTjviaF8v3BxFYBF0=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=gITAAnzJIXVYTNb+KWUu052a/pwkEqsYCnrFXpAiMCSWw2TwNNpLQx/q142juaa3F
+	 VYiUW1EgF4ezM8EfIC75jGcoqYivdR4lSooOMO1Mq3LeGLODsSzDQyPwh3BO27LdQx
+	 Uhox+zOJIDB04CJOFfti95v16txh3f9PsqXXK3BaY0PcHcRqPIrf8D+zAWv1JsAIEi
+	 OnLWBrnEHTBgPLJ4S0YOw4bGyjq59RTS5Ln9KEaNOyKyufuitCs6sVqa5UHfQplZEH
+	 kP6MsmLcd8zkWwsgjyDvci+1MSVbIpQb8YH86ie1Mlj/23jV14LuZTusi3r6zaX0P2
+	 w3DmsP7Np1+hfH6dxt95hw5mmSHydMSPuk2iLhIzX4+FuIUqA0JOKJg0jGhFFzVR7m
+	 vaFlmRAhwwlL7+QUG14Fz2SYTmM8V8hXY61by+RQE85q4GZ7GjYs4XrAtr3iPAMLLn
+	 SbhVcSe21KD+nfr6BGQQR/JAOXLQdSKBurdFnTNYCfHYqHa8OiGI6Vir41MgwJpexp
+	 Jn3AD+vsb0GGyHqO5OtVJoHUdCZKpbFMECcMVSDK5YnRQcQuqXLPdKvSnRotyDZhuN
+	 +X86mtCS8ZLWAg6XNLHhYqmlPypueZ8SsHwDDU1iS0xzaHJwmuhne1zmuJMy2UYvC1
+	 4lpA+Bp0qJA3xyGNYxTgbhB4=
+Received: from ehlo.thunderbird.net (unknown [IPv6:2a02:3033:609:6566:99c8:926b:e70f:2e33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 42F2740E019B;
+	Tue,  3 Mar 2026 07:18:54 +0000 (UTC)
+Date: Tue, 03 Mar 2026 05:59:39 +0000
+From: Borislav Petkov <bp@alien8.de>
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+CC: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Farrah Chen <farrah.chen@intel.com>,
+ Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v8_1/3=5D_x86/cpu=3A_Clear_f?=
+ =?US-ASCII?Q?eature_bits_disabled_at_compile-time?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <aaX_EBPkvou6POYe@wieczorr-mobl1.localdomain>
+References: <cover.1772453012.git.m.wieczorretman@pm.me> <cb4c2a6a0e67320b24244658b724acc1bf9686ef.1772453012.git.m.wieczorretman@pm.me> <20260302193142.GBaaXlnu86gUtPyQG6@fat_crate.local> <aaXmP1pOU_feTVu9@wieczorr-mobl1.localdomain> <20260302202504.GIaaXyIAQnaHTdzN52@fat_crate.local> <aaXz0ENy6iq2DuxX@wieczorr-mobl1.localdomain> <20260302205947.GJaaX6Q5Qx6vJMdun0@fat_crate.local> <aaX_EBPkvou6POYe@wieczorr-mobl1.localdomain>
+Message-ID: <D5F67944-7C7B-4675-A495-E30CCCD4A606@alien8.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 741351E95B2
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4FA461EA0C2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,syzkaller.appspotmail.com,linux.dev,kernel.org,suse.com];
+	DKIM_TRACE(0.00)[alien8.de:+];
+	TAGGED_FROM(0.00)[bounces-222806-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222794-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,c711ce17dd78e5d4fdcf];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.com:dkim,suse.com:email,suse.com:mid,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,pm.me:email,alien8.de:dkim,alien8.de:mid]
 X-Rspamd-Action: no action
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+On March 2, 2026 9:22:47 PM UTC, Maciej Wieczor-Retman <m=2Ewieczorretman@p=
+m=2Eme> wrote:
+>Maybe it could fall under the 'some "oh, that's not good" issue'? :)
 
-commit 6279846b9b2532e1b04559ef8bd0dec049f29383 upstream.
+More like "no one noticed/complained until now so why are we making waves =
+and generating unnecessary work now" thing=2E=2E=2E
 
-Syzbot reported a kernel warning due to a range invariant violation on
-the following BPF program.
-
-  0: call bpf_get_netns_cookie
-  1: if r0 == 0 goto <exit>
-  2: if r0 & Oxffffffff goto <exit>
-
-The issue is on the path where we fall through both jumps.
-
-That path is unreachable at runtime: after insn 1, we know r0 != 0, but
-with the sign extension on the jset, we would only fallthrough insn 2
-if r0 == 0. Unfortunately, is_branch_taken() isn't currently able to
-figure this out, so the verifier walks all branches. The verifier then
-refines the register bounds using the second condition and we end
-up with inconsistent bounds on this unreachable path:
-
-  1: if r0 == 0 goto <exit>
-    r0: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0xffffffffffffffff)
-  2: if r0 & 0xffffffff goto <exit>
-    r0 before reg_bounds_sync: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0)
-    r0 after reg_bounds_sync:  u64=[0x1, 0] var_off=(0, 0)
-
-Improving the range refinement for JSET to cover all cases is tricky. We
-also don't expect many users to rely on JSET given LLVM doesn't generate
-those instructions. So instead of improving the range refinement for
-JSETs, Eduard suggested we forget the ranges whenever we're narrowing
-tnums after a JSET. This patch implements that approach.
-
-Reported-by: syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com
-Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/9d4fd6432a095d281f815770608fdcd16028ce0b.1752171365.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[shung-hsi.yu: no detection or kernel warning for invariant violation before
-6.8, but the same umin=1,umax=0 state can occur when jset is preceed by r0 < 1.
-Changes were made to adapt to older range refinement logic before commit
-67420501e868 ("bpf: generalize reg_set_min_max() to handle non-const register
-comparisons").]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
----
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 45b2f06de452..743c3cf6f0c2 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -14162,6 +14162,10 @@ static void reg_set_min_max(struct bpf_reg_state *true_reg,
- 		}
- 		break;
- 	case BPF_JSET:
-+		/* Forget the ranges before narrowing tnums, to avoid invariant
-+		 * violations if we're on a dead branch.
-+		 */
-+		__mark_reg_unbounded(false_reg);
- 		if (is_jmp32) {
- 			false_32off = tnum_and(false_32off, tnum_const(~val32));
- 			if (is_power_of_2(val32))
--- 
-2.53.0
-
+--=20
+Small device=2E Typos and formatting crap
 
