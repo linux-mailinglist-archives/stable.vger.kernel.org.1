@@ -1,135 +1,208 @@
-Return-Path: <stable+bounces-222953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJ0jM2pWp2lsgwAAu9opvQ
-	(envelope-from <stable+bounces-222953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 22:45:14 +0100
+	id UDlvG99ap2kThAAAu9opvQ
+	(envelope-from <stable+bounces-222954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 23:04:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781601F7B38
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 22:45:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E601F7D6D
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 23:04:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D4055303B90F
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 21:45:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CAC3B3047DCB
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 22:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB01A38F629;
-	Tue,  3 Mar 2026 21:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3B0382293;
+	Tue,  3 Mar 2026 22:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sptEF4M7"
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="n40bn0hl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9C7388E65;
-	Tue,  3 Mar 2026 21:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A0F3822B1;
+	Tue,  3 Mar 2026 22:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772574310; cv=none; b=X9fuFMUT+WFpb9wjmtMWBig0BwK19C3VNIoVNnbneCPoIMr6rsCwX3PkQsjh6MIj78SKkKCzlh9KKq+k7hmgFpjgutMeltETwDPYAFFG1lAQF4Rs9ABHHeeW/T2yA61J7Ssv1lFR2lujMwhxi0SGzPb7MDTzWdsl7wjzbTUxu4E=
+	t=1772575442; cv=none; b=lqxZ5ApganlkIuo4CTvJMNqOBgKvkDMTilMtCb+VPr713k2RZ6kD5cCLsyMNl9P1jpVlitBs34vFijHAgw28DoGs6GA+k+rJ19+gDdxVEqKDdAVy7CaBl91MtK8vuvcoMPgYrN+UKBSeZD3awRbYJvU5mwwkLg84gmzJDM6uXBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772574310; c=relaxed/simple;
-	bh=ghr6qOlHeAuYVXJ2BscI5llc52JaZccufXYc+cRf/qE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjiTDkZvr50CKN96Fo38v56G3gqDeJloEkkfTvsRzVwGZEQO0hOGbJ3kNeHSelCAtF4qqBaIu7WUiBY3ypDc9dq3+3uB9GTyx6LPDExnPKUi3uM7tD0ZGFpNLMMmaDj3wwR7WsrYpJ7LkrQhYw3arI/YvcmC+9C/e6mSVmVH8gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sptEF4M7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1338EC116C6;
-	Tue,  3 Mar 2026 21:45:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772574310;
-	bh=ghr6qOlHeAuYVXJ2BscI5llc52JaZccufXYc+cRf/qE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sptEF4M7Xgkqj0VZhajZ0zMkWV1GgedIbHJ6iAwVGhnlf8eSQg2EjpgkwqvHFq2GV
-	 ICrWZKGEYMQ187Mpp4Q+ZMdPjglruorwxtBveg5sIAdJQTBUXIIRJQUCg+22ZyNs3u
-	 xMTbXmq5H7scrQWyckWt7+hph1k+zvT8+RiB6dkhPPO538JAiJaZvY5hdk3jlIQ68V
-	 Xd8RH8t6ogPH6obbmH2P483C4tmmkEVFUFkPN3hwethhMMRsvKD0c1k9cIt2bMXsBp
-	 yYTvcV8rNt0QJg6QOc0oZT+GnLGfV8bRkioaX1b/q4dUuKOlLcRDLKx3MCX2xXMZkC
-	 dsOIpNjiVJlig==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: sashal@kernel.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	gregkh@linuxfoundation.org,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@nabladev.com,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.19 000/850] 6.19.6-rc2 review
-Date: Tue,  3 Mar 2026 22:44:56 +0100
-Message-ID: <20260303214456.112532-1-ojeda@kernel.org>
-In-Reply-To: <20260302160834.2518716-1-sashal@kernel.org>
-References: <20260302160834.2518716-1-sashal@kernel.org>
+	s=arc-20240116; t=1772575442; c=relaxed/simple;
+	bh=xtwA6GLCcCFMKT/DdYTYwvRfr6aZzu5YaMH3qVjYWqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aenLZ+Z5Kz6VpMhVoajKiskABdR8r4I2KVnJs90YijcXuiXU9kO61/qDtDt+hKTKYVAfW4cacQy36xReiWJ3RJAhtLM2l6ybxCphndx8xTUrpbqczWFHx+9JiShNJjGDMfeFcW3yKcOzfP1bLjAaR1xfg7f5fanRo+KtQN6mPG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=n40bn0hl; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id A680060177;
+	Tue,  3 Mar 2026 23:03:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1772575437;
+	bh=9Z6ZQtFQQElTncxl47d8XvLQNvddbbesnrVIvvMUFEs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n40bn0hlcGHgx6ITquW9jKZKT6oxyxZZTYSvh/wrdslJEArc9xfuWDmJvRrQfv+eq
+	 1VS54y1o82I/+SXfctTAuIIyIynSwUct2NHjJL+gjj9Ble5jPdJg6CQ7EpFOquyAM6
+	 4v5wozN31rEyJHiOT6FRerFHQZxF3Yk4SE2RyWjexv/ZGpY5SVSw3YMOd/EIV4XzpL
+	 Zn7GVDnF3+Z1sY/KsXTvMHBBzjGEK8vOcfYK8KKG7ZFodMmrpU55SPNQ4IpgCTVzSW
+	 mLshuaw+w4aKqYdtWjsgnqsnb1FE2MUPv40HUVP69IijMxWgjAF9IWlkkHH/3jSwbx
+	 qNE7lCyNdglWQ==
+Date: Tue, 3 Mar 2026 23:03:55 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Jindrich Makovicka <makovick@gmail.com>
+Cc: Genes Lists <lists@sapience.com>, Greg KH <gregkh@linuxfoundation.org>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	linux-kernel@vger.kernel.org, coreteam@netfilter.org,
+	netfilter-devel@vger.kernel.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev,
+	"Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>
+Subject: Re: [REGRESSION] 6.19.4 stable netfilter / nftables [resolved]
+Message-ID: <aaday5NR-yfCkFVb@chamomile>
+References: <a529a6a9a2755d45765f20b58c5c11e2f790eacb.camel@sapience.com>
+ <45f03b0b-fe8f-4942-bad1-3fbde03d4be1@leemhuis.info>
+ <143e1a402ad78dd7076516a6ceb637f378310b16.camel@sapience.com>
+ <10537f2b74da2b8a5cb8dc939f723291db39ff84.camel@sapience.com>
+ <2026022755-quail-graveyard-93e8@gregkh>
+ <b231fcdb6c66a7b24dcef3ee5c35c5f612d5c1a7.camel@sapience.com>
+ <9d110d860c0c7e110d018ea53a7666eba275da20.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 781601F7B38
+In-Reply-To: <9d110d860c0c7e110d018ea53a7666eba275da20.camel@gmail.com>
+X-Rspamd-Queue-Id: 16E601F7D6D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[netfilter.org:s=2025];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,linuxfoundation.org,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TAGGED_FROM(0.00)[bounces-222953-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[netfilter.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-222954-lists,stable=lfdr.de];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pablo@netfilter.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[netfilter.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:dkim,netfilter.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, 02 Mar 2026 11:08:34 -0500 Sasha Levin <sashal@kernel.org> wrote:
->
-> This is the start of the stable review cycle for the 6.19.6 release.
-> There are 850 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Mar 03, 2026 at 08:00:54AM +0100, Jindrich Makovicka wrote:
+> On Fri, 2026-02-27 at 08:39 -0500, Genes Lists wrote:
+> > On Fri, 2026-02-27 at 05:17 -0800, Greg KH wrote:
+> > > On Fri, Feb 27, 2026 at 08:12:59AM -0500, Genes Lists wrote:
+> > > > On Fri, 2026-02-27 at 07:23 -0500, Genes Lists wrote:
+> > > > > On Fri, 2026-02-27 at 09:00 +0100, Thorsten Leemhuis wrote:
+> > > > > > Lo!
+> > > > > > 
+> > > > > 
+> > > > > Repeating the nft error message here for simplicity:
+> > > > > 
+> > > > >  Linux version 7.0.0-rc1-custom-1-00124-g3f4a08e64442 ...
+> > > > >   ...
+> > > > >   In file included from /etc/nftables.conf:134:2-44:
+> > > > >   ./etc/nftables.d/set_filter.conf:1746:7-21: Error:
+> > > > >   Could not process rule: File exists
+> > > > >                  xx.xxx.xxx.x/23,
+> > > > >                  ^^^^^^^^^^^^^^^
+> > > > > 
+> > > > 
+> > > > Resolved by updating userspace.
+> > > > 
+> > > > I can reproduce this error on non-production machine and found
+> > > > this
+> > > > error is resolved by re-bulding updated nftables, libmnl and
+> > > > libnftnl:
+> > > > 
+> > > > With these versions nft rules now load without error:
+> > > > 
+> > > >  - nftables commit de904e22faa2e450d0d4802e1d9bc22013044f93
+> > > >  - libmnl   commit 54dea548d796653534645c6e3c8577eaf7d77411
+> > > >  - libnftnl commit 5c5a8385dc974ea7887119963022ae988e2a16cc
+> > > > 
+> > > > All were compiled on machine running 6.19.4.
+> > > 
+> > > Odd, that shouldn't be an issue, as why would the kernel version
+> > > you
+> > > build this on matter?
+> > > 
+> > > What about trying commit f175b46d9134 ("netfilter: nf_tables: add
+> > > .abort_skip_removal flag for set types")?
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > 
+> > - all were rebuilt from git head 
+> >   Have not had time to explore what specific change(s)
+> >   triggered the issue yet.
+> > 
+> > - commit f175b46d9134
+> >   I can reproduce on non-production machine - will check this and
+> > report back.
 > 
-> Responses should be made by Wed Mar  4 04:07:42 PM UTC 2026.
-> Anything received after that time might be too late.
+> I had a similar problem, solved by reverting the commit below. It fails
+> only with a longer set. My wild guess is a closed interval with start
+> address at the  end of a chunk and end address at the beginning of the
+> next one gets misidentified as an open interval.
 
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64:
+Yes, but such behaviour already breaks the create element, see my
+userspace fix. See:
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+commit e83e32c8d1cd228d751fb92b756306c6eb6c0759
+Author: Pablo Neira Ayuso <pablo@netfilter.org>
+Date:   Mon Jan 12 12:59:26 2026 +0100
+ 
+    mnl: restore create element command with large batches
+    
+    The rework to reduce memory consumption has introduced a bug that result
+    in spurious EEXIST with large batches.
+    
+    The code that tracks the start and end elements of the interval can add
+    the same element twice to the batch. This works with the add element
+    command, since it ignores EEXIST error, but it breaks the the create
+    element command.
+    
+    Update this codepath to ensure both sides of the interval fit into the
+    netlink message, otherwise, trim the netlink message to remove them.
+    So the next netlink message includes the elements that represent the
+    interval that could not fit.
 
-Thanks!
+> commit 12b1681793e9b7552495290785a3570c539f409d
+> Author: Pablo Neira Ayuso <pablo@netfilter.org>
+> Date:   Fri Feb 6 13:33:46 2026 +0100
+> 
+>     netfilter: nft_set_rbtree: validate open interval overlap
 
-Cheers,
-Miguel
+I guess you are testing with 7.0-rc, correct?
+
+A new userspace release with this fix is required.
+
+> Example set definition is here:
+> 
+> https://bugzilla.kernel.org/show_bug.cgi?id=221158
+> 
+> Using nft from Debian unstable
+> 
+> $ ./nft --version
+> nftables v1.1.6 (Commodore Bullmoose #7)
 
