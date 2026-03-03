@@ -1,245 +1,232 @@
-Return-Path: <stable+bounces-222767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eO01MjMypmnKMAAAu9opvQ
-	(envelope-from <stable+bounces-222767-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:58:27 +0100
+	id wH34N808pmmpMwAAu9opvQ
+	(envelope-from <stable+bounces-222769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 02:43:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514371E76F3
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:58:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9351E7C5A
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 02:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F2E0302DE36
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 00:57:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 515C430338A4
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 01:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F108A213E9C;
-	Tue,  3 Mar 2026 00:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EDF373C14;
+	Tue,  3 Mar 2026 01:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="D4lDqn9v"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JdKPqX1K";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="aRTecvAN"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00190b01.pphosted.com (mx0a-00190b01.pphosted.com [67.231.149.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7845F54654;
-	Tue,  3 Mar 2026 00:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9463633B6D4
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 01:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772499437; cv=none; b=kFSjcR8BVzzd60nGare/bF4uJcftiJ45w7gV+lM+BV/DRVqHK1kmrJ9FIVf60w0mNTzYXyNgQ1x20omFLyWs5AwISM4Oh3oHWZUKnMHXEGz1EDNGkZKPP9x4d2N/ZUscnWg9q0yLdZigFbhHmqt/Rln/WU1Id795hn6mSXZgHv0=
+	t=1772502219; cv=none; b=iunV9RS/Nno1P0fyAPbPgohp7XqcCr9P3xFeAzTZh5YV47QhtaMGu7msdkF2eoXQIIQXVAXUxj1jeI54ymBFfEC6OcxPYqGI6yyUk7e9bu2UJK2Y57zWd62+3F4lNL71m9q8r/KtkQBHhVxLXF/VE/kaHtvn4NciGUhQ7D6QLJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772499437; c=relaxed/simple;
-	bh=PtYj828HmzWP87pDmMZUpmkjR4O5W7enclaueQIa4r8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LGrbSZJCAgdKiGyeOsOm6YC5oMpD6fcPlKrXVKvVQq55pz94golYhGoSDkfD//0xLOT7Q1gLDTF2yizipR3K+e8KYicZguLNjoV93JNdFkkFRVJTIVg+QFtC2/HLtIpSnA8XLWXb5Ci1TluDil/apjgTS/POjPwOGoLcrVSeBug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=D4lDqn9v; arc=none smtp.client-ip=67.231.149.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
-Received: from pps.filterd (m0050093.ppops.net [127.0.0.1])
-	by m0050093.ppops.net-00190b01. (8.18.1.11/8.18.1.11) with ESMTP id 6229iLxs3693597;
-	Tue, 3 Mar 2026 00:56:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=jan2016.eng; bh=/BH3wh03RzKCBosuiQet
-	YyKo6+5v4tnvbpfPuSrbba0=; b=D4lDqn9vl6Z1ST+Rnw+MStUaVkMtl72g2/dl
-	M0yEM3OkudSA/3bH9+x8wFfx3jQ+aWaOhOLdmDNf+HVeAIOmMtvL9ubBWuU+A3Ds
-	wmJMRNnHwYPmoBiKlXmQTJeen/jdZuU6V8VKWjh3LBHwum1INwyPIW1TCcxApUmZ
-	lOLgSxdd5Ax9s50py07VyK7ywEzYVb3ciZm648luVdM+gcqN42biV8NEVpO9L4fq
-	gpYoZyxcHyNLDjkv//I6kefPQc01QoqQESXWkcnJJtIvuT2XlecxFJJFmij4IC2P
-	jRt93WGd3iMYdEo+mwn4fmIiWpVj4bFTTpDSHlN5SED2YYizIg==
-Received: from prod-mail-ppoint5 (prod-mail-ppoint5.akamai.com [184.51.33.60])
-	by m0050093.ppops.net-00190b01. (PPS) with ESMTPS id 4cksh8nram-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 00:56:25 +0000 (GMT)
-Received: from pps.filterd (prod-mail-ppoint5.akamai.com [127.0.0.1])
-	by prod-mail-ppoint5.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 6230nEr0004861;
-	Mon, 2 Mar 2026 16:56:24 -0800
-Received: from email.msg.corp.akamai.com ([172.27.91.40])
-	by prod-mail-ppoint5.akamai.com (PPS) with ESMTPS id 4cky7aa1q0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Mar 2026 16:56:24 -0800 (PST)
-Received: from usma1ex-exedge1.msg.corp.akamai.com (172.27.91.34) by
- usma1ex-dag5mb1.msg.corp.akamai.com (172.27.91.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 2 Mar 2026 16:56:23 -0800
-Received: from usma1ex-dag5mb2.msg.corp.akamai.com (172.27.91.41) by
- usma1ex-exedge1.msg.corp.akamai.com (172.27.91.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 2 Mar 2026 19:56:23 -0500
-Received: from bos-lhvx56.bos01.corp.akamai.com (172.28.222.78) by
- usma1ex-dag5mb2.msg.corp.akamai.com (172.27.91.41) with Microsoft SMTP Server
- id 15.2.2562.29 via Frontend Transport; Mon, 2 Mar 2026 16:56:23 -0800
-Received: by bos-lhvx56.bos01.corp.akamai.com (Postfix, from userid 30754)
-	id 7992715FB47; Mon,  2 Mar 2026 19:56:23 -0500 (EST)
-From: Josh Hunt <johunt@akamai.com>
-To: <song@kernel.org>, <yukuai@fnnas.com>, <linan122@huawei.com>,
-        <linux-raid@vger.kernel.org>
-CC: <ncroxon@redhat.com>, Josh Hunt <johunt@akamai.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v3] md/raid10: fix deadlock with check operation and nowait requests
-Date: Mon, 2 Mar 2026 19:56:19 -0500
-Message-ID: <20260303005619.1352958-1-johunt@akamai.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1772502219; c=relaxed/simple;
+	bh=i4jKsvabsQ1+RXbVYAM6h40AITuGmmIfVt7gRKhfmLA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cvIFpr7ITCezvjKmCLjEXzDDe0xje8lXSbj9rJdv3Ruvw/zah2ztEO1z89LHaqsJwKiwWsV3H7QoSa5LbHcsrYU2ISgIzseSy6TeapDgrFr96TBQ+f1r3fTwChWUhAcBkqQfVHCZlkCxsco3AAScfi+c5ZTwXxbINzGYlmRy+VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JdKPqX1K; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=aRTecvAN; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6230rNtb669661
+	for <stable@vger.kernel.org>; Tue, 3 Mar 2026 01:43:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=Wa8JYJ97vCRvUAnb2y8s1hFO
+	Xb0oIDwDms0q0c0b36w=; b=JdKPqX1K9NM9kN6DfxloxPkOSgLkwDNhsSwci01Z
+	IPnRnC2BkxwjXR1MPo1m/pYjSV5PMyzTaueRt6wEpR+2kgZDDceDDMYslCjUOz7Z
+	pryos0GeeXlRU49ghlHBTmy417PvmpHG9HEBljJw8zZI+9ZA8qYmLJg9fGseYyjx
+	k0jRmdYZIPvjQZfeSPD6552wyfWpaQRSskNbWwQYcB3issI7yRScaXLrZX+MDlK+
+	R7CjBp3l7RQUw72TCyLZuoz/TAR+7ex+buvotD8GNuk9oT2TnqAIyru+X7p9jOWi
+	Q8wPjmJkSJez46/JVKEOSlkvMvLwSqMFYsV6uXtSneeucQ==
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cnngg85ke-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 03 Mar 2026 01:43:36 +0000 (GMT)
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-45f07dad7a8so20483664b6e.0
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 17:43:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772502216; x=1773107016; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wa8JYJ97vCRvUAnb2y8s1hFOXb0oIDwDms0q0c0b36w=;
+        b=aRTecvANjB5x6SPBsSjR2uWX5Alk5Gnn6oEzpoMVlw3KOP0wFIZiZNlIsacmxOrP0+
+         YvwZ3DzIHIshblu6a8tErCMtD5aXdmF2MiHHZFJ6tVQjWwmGCZ22cKWCGt+dVYYYj5xx
+         sSDVhNmkwOGd/QBgAZHxbQvzmLcyrTGdI4HhRUaTcAU6V9lB2RnxuEwpbTdxB1d+tdLt
+         RId3jArBo70y2KySCwSn37gEJsWQ80ppxBinD15N2SOOt3XpPlaODUrHHkVQi4CertwH
+         MghK+zSa1DVqph1evqfLaujIYSMnNibmuRGB0+F0hYtemd39gq0SgTHm4Pf3UyC5nU4e
+         Ny6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772502216; x=1773107016;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wa8JYJ97vCRvUAnb2y8s1hFOXb0oIDwDms0q0c0b36w=;
+        b=m7b93RMKiAI1sjRTRnPH1XAnkeCWbOIOVYYdgA/MK/ajoOeVer7zHZF7EZRDwOnxBm
+         a9Qjz9l4j7hWESz+ui8tT87yL8M23fqi1oscwtHkL5JblffG7ON2fQq1u0DgvhCGFxGG
+         y9npyYNSMAfRioCWDoDkTOU9d07v/0LyTGM0nMXv3ebD8nnwmUgcWJnaoNuqpn5IaKdn
+         ose4Zh4/659galCxX/yTOxkkFu8Fc4sYPuQkphmayPd+1snhb/2Nnz6f37Jw31qzJ3I5
+         jXqsfLfGqJJ5v3B9vlhDXmchL7efTZp1KntFWA398wqDtj/LTk8He2U9LhOug2dF16zb
+         75Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCVcPyETs56p6s2exZ8Jrzw0XAjMwPRMgHBF0NkYx/YM/vHDcRJavUxT8VdmplfYMibS5YpjttA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxllGlcTBEQvcm7iJKqH1sFaFkpoSmXd/tKYY6i2Sajgb410s+A
+	pEHkogZcG3Fj7JGPvXaa8elJU3JmSVdnDLVrq/X0yloMmT7IHw0YyOLkRSXa3iLYz65kZNpn6UO
+	pDsDjW9/Gg7FdxpdKVklwC61igA2Gc5WnKG5gx1RK8pRYi5svAd/PIXlilw8=
+X-Gm-Gg: ATEYQzyIkk1wD6ap0ABtrNQWaRa9Emh9PQAnQjDa4pR0K7qughmgdwDMwgPZeerMIb7
+	EG8O4QHyC6NUCPsKIA97vun+N5TcB9AgkmZYwXFQt/zF8XeQ00zrVPDY2qgOFAjwsKDWcrLbzxK
+	6K3yjRztpjdH087xCSdta+DrvSI/H0F8LwenTQByaMrfmcQPCG78yc2S4Yk1IpoVMRUMOex+4oh
+	Y8SZfwKNpIlj3Esma9EiGdgm7fjuKocREgCPu3ml7bGLrUdvfA3zaO2zOAh9m2wg8jZv7Ra2HqO
+	8Q6tBHuyytt9qxOdjl3BY0MW4lEiXgIXanFE5cr5qzQi74Ms4uVvmDXBULxSkppo1MawpGETQ3X
+	93wyqZj72lMFONYEHVlPZgalDic+Q4dY40zLlkmuRahN8cGHkoDOWgmipuHM/VuzC8D21
+X-Received: by 2002:a05:6808:1b28:b0:45e:dbc8:7b18 with SMTP id 5614622812f47-464bec215c4mr8174457b6e.13.1772502215893;
+        Mon, 02 Mar 2026 17:43:35 -0800 (PST)
+X-Received: by 2002:a05:6808:1b28:b0:45e:dbc8:7b18 with SMTP id 5614622812f47-464bec215c4mr8174452b6e.13.1772502215536;
+        Mon, 02 Mar 2026 17:43:35 -0800 (PST)
+Received: from hu-qianyu-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-464bb5d0a8csm8509256b6e.14.2026.03.02.17.43.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 17:43:35 -0800 (PST)
+Date: Mon, 2 Mar 2026 17:43:33 -0800
+From: Qiang Yu <qiang.yu@oss.qualcomm.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Cc: mani@kernel.org, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Loic Poulain <loic.poulain@oss.qualcomm.com>
+Subject: Re: [PATCH] bus: mhi: host: pci_generic: Resume the device before
+ executing mhi_pci_remove()
+Message-ID: <aaY8xfPF9j83aM5X@hu-qianyu-lv.qualcomm.com>
+References: <20260302134116.18960-1-manivannan.sadhasivam@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260302134116.18960-1-manivannan.sadhasivam@oss.qualcomm.com>
+X-Authority-Analysis: v=2.4 cv=P7E3RyAu c=1 sm=1 tr=0 ts=69a63cc8 cx=c_pps
+ a=4ztaESFFfuz8Af0l9swBwA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=mZK3EA3oJS9YODrgi44A:9 a=CjuIK1q_8ugA:10
+ a=TPnrazJqx2CeVZ-ItzZ-:22
+X-Proofpoint-GUID: RqOfVdJ4za4VZ4ukmeFKfKWozAEapUUZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDAwNSBTYWx0ZWRfX6dQzfhPfq0sE
+ kv1ITpipUbTgF8GmiYv8pSKi22CJWqWMOJn8BwkyMXWBAIb+iwAG9g4GWgR6xZUeeB9wVbzzDFT
+ vddWInBNn8p4Fg0fcd0z1ZNpoanaS1ve4mfFxTS7HXOjA6DNuwIi9Zm3n+41+yA88o5dDV4XI16
+ RoUR30V5DL2tm5Op6QZjfM3Qob2dsgBRe3mZiKMDr1t0J1ZXcxkR2IVC3EDMH4FvUQDoIe6N2Ns
+ acsVNNbdD+qBHrUHP3UQgLC9S+NyLCTJfJ2t66H0//x56zY4zMak7XDt96fwz7CLeyRymGd+8Y6
+ sLvM9Cc4HcdjTpHHDFn6kDmm4SelwraWHdG37YzhZ2YO4egf4AWtxAFQP05Dc/LLZwOnBqHXoEH
+ 58/viN0cgXKhsFAWs0H/ueYLcg9Uwjz/RKIjBrpmipoggt5O7SGxt8C34wmf+YKb3qJqKZ7E0s3
+ 6mVM3UJi6WKK3x8iA2g==
+X-Proofpoint-ORIG-GUID: RqOfVdJ4za4VZ4ukmeFKfKWozAEapUUZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-02_05,2026-03-02_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 mlxlogscore=810
- mlxscore=0 phishscore=0 lowpriorityscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2602130000 definitions=main-2603030002
-X-Authority-Analysis: v=2.4 cv=RZidyltv c=1 sm=1 tr=0 ts=69a631b9 cx=c_pps
- a=NpDlK6FjLPvvy7XAFEyJFw==:117 a=NpDlK6FjLPvvy7XAFEyJFw==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Ifg-1AOnLHOf1gn6spyb:22
- a=d4nn1RXdvEacMIURMw2s:22 a=VwQbUJbxAAAA:8 a=X7Ea-ya5AAAA:8
- a=ijEJ2_E4PAzkDUWKhJIA:9
-X-Proofpoint-GUID: _Wnf0NDQyDk2O2OOYPDysZ-roVRwLsOW
-X-Proofpoint-ORIG-GUID: _Wnf0NDQyDk2O2OOYPDysZ-roVRwLsOW
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDAwMiBTYWx0ZWRfXwBLxfO9jlBsl
- sSVCKcVztlvclgDCTy+76qBSP02WbRgVR6Mp3bSTJYuuFZoJAv+a8rndKrHIXLAj7AYK49C9tMA
- soEqIg1nWLCY4YGkj5jK487Sb9irvtiil/74SuRxLPpODH0MVm7KvoAhSmeDPDF3QxaeberEyzS
- 6KHY+VTi39RlZCWhUdCdnTIeqst5KGp6cSL9wi8hfKno8b2eXOaKV86oUr0kDe8y3uEv8gbuEwo
- CxfO9Ltf4LvntB/tc9QsuSweM9LGuzlV+Ir6v/lGQpfyHLp6VF5RI344BJvtXOWWXb7eYTAhWBx
- P7z/m+cH8+igr/OkQmFap2hEuEloIo4VFZM6DfhRtnUNO7cxyh4Mk1yMHDeOq+IG8z31+eUKBpl
- Dl5lKmN8RVMxnby5I2rpO2ZuP7WAM6VaHG9+hZD9F8kHy85Mn6ynIT8RXsQgZzvfr6OZ7/K9cqw
- rEmtwfE/iEsHLXKEDug==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_05,2026-03-02_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- phishscore=0 suspectscore=0 malwarescore=0 adultscore=0 spamscore=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603030002
-X-Rspamd-Queue-Id: 514371E76F3
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 malwarescore=0 adultscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
+ definitions=main-2603030005
+X-Rspamd-Queue-Id: 5D9351E7C5A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[akamai.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[akamai.com:s=jan2016.eng];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222767-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[akamai.com:dkim,akamai.com:email,akamai.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johunt@akamai.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[akamai.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hu-qianyu-lv.qualcomm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:dkim,qualcomm.com:email];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222769-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[qiang.yu@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-When an array check is running it will raise the barrier at which point
-normal requests will become blocked and increment the nr_pending value to
-signal there is work pending inside of wait_barrier(). NOWAIT requests
-do not block and so will return immediately with an error, and additionally
-do not increment nr_pending in wait_barrier(). Upstream change
-43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request") added a
-call to raid_end_bio_io() to fix a memory leak when NOWAIT requests hit
-this condition. raid_end_bio_io() eventually calls allow_barrier() and
-it will unconditionally do an atomic_dec_and_test(&conf->nr_pending) even
-though the corresponding increment on nr_pending didn't happen in the
-NOWAIT case.
+On Mon, Mar 02, 2026 at 07:11:16PM +0530, Manivannan Sadhasivam wrote:
+> mhi_pci_remove() carries out device specific operations that requires the
+> device to be active. But pm_runtime_get_noresume() called at the end of the
+> remove() will not guarantee that.
+> 
+> So use pm_runtime_get_sync() and call it at the start of remove().
+> 
+> Cc: <stable@vger.kernel.org> # 5.13
+> Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>
+> Fixes: d3800c1dce24 ("bus: mhi: pci_generic: Add support for runtime PM")
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> ---
+>  drivers/bus/mhi/host/pci_generic.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
+> index 425362037830..fe3aefa15966 100644
+> --- a/drivers/bus/mhi/host/pci_generic.c
+> +++ b/drivers/bus/mhi/host/pci_generic.c
+> @@ -1440,6 +1440,10 @@ static void mhi_pci_remove(struct pci_dev *pdev)
+>  	struct mhi_pci_device *mhi_pdev = pci_get_drvdata(pdev);
+>  	struct mhi_controller *mhi_cntrl = &mhi_pdev->mhi_cntrl;
+>  
+> +	/* balancing probe put_noidle */
+> +	if (pci_pme_capable(pdev, PCI_D3hot))
+> +		pm_runtime_get_sync(&pdev->dev);
 
-This can be easily seen by starting a check operation while an application is
-doing nowait IO on the same array. This results in a deadlocked state due to
-nr_pending value underflowing and so the md resync thread gets stuck waiting
-for nr_pending to == 0.
+Mani, I don't think we need to resume here. See drivers/pci/pci-driver.c.
+PCI framework has called pm_runtime_get_sync before drv->remove(pci_dev);
+Is there any other thing I misunderstand?
 
-Output of r10conf state of the array when we hit this condition:
+static void pci_device_remove(struct device *dev)
+{
+        ...
+        if (drv->remove) {
+                pm_runtime_get_sync(dev);
+        ...
+                pm_runtime_barrier(dev);
+                drv->remove(pci_dev);
+                pm_runtime_put_noidle(dev);
 
-crash> struct r10conf.barrier,nr_pending,nr_waiting,nr_queued <addr of r10conf>
-	barrier = 1,
-        nr_pending = {
-          counter = -41
-        },
-        nr_waiting = 15,
-        nr_queued = 0,
-
-Example of md_sync thread stuck waiting on raise_barrier() and other requests
-stuck in wait_barrier():
-
-md1_resync
-[<0>] raise_barrier+0xce/0x1c0
-[<0>] raid10_sync_request+0x1ca/0x1ed0
-[<0>] md_do_sync+0x779/0x1110
-[<0>] md_thread+0x90/0x160
-[<0>] kthread+0xbe/0xf0
-[<0>] ret_from_fork+0x34/0x50
-[<0>] ret_from_fork_asm+0x1a/0x30
-
-kworker/u1040:2+flush-253:4
-[<0>] wait_barrier+0x1de/0x220
-[<0>] regular_request_wait+0x30/0x180
-[<0>] raid10_make_request+0x261/0x1000
-[<0>] md_handle_request+0x13b/0x230
-[<0>] __submit_bio+0x107/0x1f0
-[<0>] submit_bio_noacct_nocheck+0x16f/0x390
-[<0>] ext4_io_submit+0x24/0x40
-[<0>] ext4_do_writepages+0x254/0xc80
-[<0>] ext4_writepages+0x84/0x120
-[<0>] do_writepages+0x7a/0x260
-[<0>] __writeback_single_inode+0x3d/0x300
-[<0>] writeback_sb_inodes+0x1dd/0x470
-[<0>] __writeback_inodes_wb+0x4c/0xe0
-[<0>] wb_writeback+0x18b/0x2d0
-[<0>] wb_workfn+0x2a1/0x400
-[<0>] process_one_work+0x149/0x330
-[<0>] worker_thread+0x2d2/0x410
-[<0>] kthread+0xbe/0xf0
-[<0>] ret_from_fork+0x34/0x50
-[<0>] ret_from_fork_asm+0x1a/0x30
-
-Fixes: 43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josh Hunt <johunt@akamai.com>
----
-v3:
-  * Call free_r10bio() as per Yu Kuai's suggestion
----
- drivers/md/raid10.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 9debb20cf129..b4892c5d571c 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1184,7 +1184,7 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- 	}
- 
- 	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
--		raid_end_bio_io(r10_bio);
-+		free_r10bio(r10_bio);
- 		return;
- 	}
- 
-@@ -1372,7 +1372,7 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
- 
- 	sectors = r10_bio->sectors;
- 	if (!regular_request_wait(mddev, conf, bio, sectors)) {
--		raid_end_bio_io(r10_bio);
-+		free_r10bio(r10_bio);
- 		return;
- 	}
- 
--- 
-2.34.1
-
+- Qiang Yu
+> +
+>  	pci_disable_sriov(pdev);
+>  
+>  	if (pdev->is_physfn)
+> @@ -1451,10 +1455,6 @@ static void mhi_pci_remove(struct pci_dev *pdev)
+>  		mhi_unprepare_after_power_down(mhi_cntrl);
+>  	}
+>  
+> -	/* balancing probe put_noidle */
+> -	if (pci_pme_capable(pdev, PCI_D3hot))
+> -		pm_runtime_get_noresume(&pdev->dev);
+> -
+>  	if (mhi_pdev->reset_on_remove)
+>  		mhi_soc_reset(mhi_cntrl);
+>  
+> -- 
+> 2.51.0
+> 
 
