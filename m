@@ -1,147 +1,116 @@
-Return-Path: <stable+bounces-222904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOsSOF4Fp2k7bgAAu9opvQ
-	(envelope-from <stable+bounces-222904-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 16:59:26 +0100
+	id YMjsJtgLp2kDcgAAu9opvQ
+	(envelope-from <stable+bounces-222905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 17:27:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FFC1F31B9
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 16:59:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC831F3C42
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 17:27:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 82D9A308F8F3
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 15:56:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53250312D1BB
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 16:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E572C49251F;
-	Tue,  3 Mar 2026 15:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179734DB549;
+	Tue,  3 Mar 2026 16:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="EP9cpmpX"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411D23C2793
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 15:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBF94DA535;
+	Tue,  3 Mar 2026 16:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772553404; cv=none; b=pUUgaUkx9g3fhPXyhKPTINU14MoQKuVg6cHYrW6jKKYLR8hurud7F+clFhVg+ny28dKMPZQ2+4yiBY/HdmQJsTJxu1tYCcFGmvUi0D0yMk5IC2IZP0cu1UfHLZhHJ4XfhZzA378lPpCC12g8Q31IF+nrmPx9BiDQ7iTbKN6pAsY=
+	t=1772554990; cv=none; b=SeDVd1c0TmhfoLBdVz7c3j9Hqs3XHdmI2LuhfXJySR+ggiMnpiMuU9zRC4yxK4/U19UsHPXuff+7ra7n3bPd9veArEZfP0sBe0pXSRTMzV4uyp3YY2JVF8qtiT7CKJf2xfiSR+N9SDnV7fClqAdWIfaC5kwS6aN9uZkVupUF3es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772553404; c=relaxed/simple;
-	bh=WFUnFr4evtmCzH8JW6blMP6xP61XMvgyDaCg/e7985E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OEI55kMrDpLckb6/CTgiDhgA+bn5RQ9btCrpWxPoTZXwtdPsfe0NqnfN4HwLMf7UyUNtR/nKwgXs6QCo+FfrQCIuTSP4LqqqOTEAIDqxIpzUnZz+6qosL+FJR9t2+Am6JYwx9K5JbT9I4MdhzS1BEBUtP5UBKRC12qg/tk3pZhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6BCC5339;
-	Tue,  3 Mar 2026 07:56:36 -0800 (PST)
-Received: from [10.57.56.165] (unknown [10.57.56.165])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 862BC3F73B;
-	Tue,  3 Mar 2026 07:56:40 -0800 (PST)
-Message-ID: <ed985e72-dbfe-4d60-b5f1-581ba58e3c18@arm.com>
-Date: Tue, 3 Mar 2026 15:56:38 +0000
+	s=arc-20240116; t=1772554990; c=relaxed/simple;
+	bh=c387aLCQdXYFSYbwsR4Veo4DFnlWEejCosFk7YnqKM4=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=jSj3Se1xkJenlbQPXfqLwVeAbAFIY1q5bxHIgruGCCN+zvPaSatNeZZdDRi7ExUrfrHlyTZJQKucziXaB/hIlyBLGla8i+fVd3fdnz5LRulah+7wjMuIZl2tILAOPPjP9TMkFIR+LK39fWmzEH6XVUP3Nlp9NuHKxo5UH4+rMPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=EP9cpmpX; arc=none smtp.client-ip=143.255.12.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
+	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3XU0kehnvWrcKYHKgel0/xHOmH34b+yFHPZHUnnR7DU=; b=EP9cpmpXUdqoEKJjhaJAscQj+q
+	ERr2YdHhoZa3uZ+fkZ4HC5sqjhusS1J05lLX1QVygyQk9gXco7ygJmsDcPOfLklWdUR9OIW5MU6r3
+	GxIw66iS1OFhLrsJN0V3CpeKsQhPn0T8aroY8jr6LzMvP3ZZs/XDldL4FKAY62KZGPLV0Ojomd2d6
+	pyvMg3SrOUe8gfsOjAOKkmuI8SZ5tIun0XDD/lkU6RBaTYwaVoMyVUhKwzAvPkWjTpxTCKGzq9EQ4
+	twg25N4c/0RthJ/McjBur6DWeGMLKBBzs5ZDg9IrFiytBdvfpVWQ46r7Xan+Nc/b2GuIoGacQ8OM+
+	sVgb0O6Q==;
+Received: from pc by mx1.manguebit.org with local (Exim 4.99.1)
+	id 1vxSWS-00000000Ae6-2bOc;
+	Tue, 03 Mar 2026 13:23:00 -0300
+Message-ID: <b3b9f12347367ea4f0ab1f255e79cf35@manguebit.org>
+From: Paulo Alcantara <pc@manguebit.org>
+To: Eric Biggers <ebiggers@kernel.org>, Steve French <sfrench@samba.org>,
+ linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org, linux-crypto@vger.kernel.org, Ronnie
+ Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N
+ <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, Bharath SM
+ <bharathsm@microsoft.com>, Eric Biggers <ebiggers@kernel.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] smb: client: Compare MACs in constant time
+In-Reply-To: <20260218042702.67907-1-ebiggers@kernel.org>
+References: <20260218042702.67907-1-ebiggers@kernel.org>
+Date: Tue, 03 Mar 2026 13:23:00 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rc 1/2] iommu: Do not call drivers for empty gathers
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>,
- Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Joerg Roedel <joerg.roedel@amd.com>, Kevin Tian <kevin.tian@intel.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, patches@lists.linux.dev,
- Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org
-References: <1-v1-13a02eb0e031+a5-iommu_gather_jgg@nvidia.com>
- <13e28ac2-a4d6-466a-aef2-7b3d7d9167bd@arm.com>
- <20260303130420.GB972761@nvidia.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260303130420.GB972761@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 85FFC1F31B9
+Content-Type: text/plain
+X-Rspamd-Queue-Id: ECC831F3C42
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[manguebit.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[manguebit.org:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222904-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.samba.org,vger.kernel.org,gmail.com,microsoft.com,talpey.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222905-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[manguebit.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-0.985];
+	FROM_NEQ_ENVFROM(0.00)[pc@manguebit.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 2026-03-03 1:04 pm, Jason Gunthorpe wrote:
-> On Tue, Mar 03, 2026 at 12:53:28PM +0000, Robin Murphy wrote:
-> 
->>> Further, there are several callers that can trigger empty gathers,
->>> especially in unusual conditions. For example iommu_map_nosync() will call
->>> a 0 size unmap on some error paths. Also in VFIO, iommupt and other
->>> places.
->>
->> My instinct is still to tidy up the 0-length unmap case(s), but I guess
->> iommu_iotlb_sync() is itself also a public API where being more robust
->> against erroneous usage is no bad thing.
-> 
-> I also wanted to do that but found enough problematic cases I lost
-> confidence I could reliably catch them all..
+Eric Biggers <ebiggers@kernel.org> writes:
 
-I reckon an early "if (!size) return 0;" in iommu_unmap() would suffice 
-to cover the internal error cleanup paths and most careless external 
-users. However if we don't trust iommu_unmap_fast() users to always do 
-the right thing either then we want this check in iommu_iotlb_sync() 
-anyway, at which point the iommu_unmap() check would really only serve 
-to skip a bit more unnecessary work on error cleanup paths, and do we 
-really care about optimising errors? Hence I'm satisfied that this patch 
-does in fact seem to be the best option.
+> To prevent timing attacks, MAC comparisons need to be constant-time.
+> Replace the memcmp() with the correct function, crypto_memneq().
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+>  fs/smb/client/smb1encrypt.c   | 3 ++-
+>  fs/smb/client/smb2transport.c | 4 +++-
+>  2 files changed, 5 insertions(+), 2 deletions(-)
 
->>> -	if (domain->ops->iotlb_sync)
->>> +	if (domain->ops->iotlb_sync &&
->>> +	    likely(iotlb_gather->start < iotlb_gather->end))
->>
->> Elsewhere we just use "gather->end != 0" as the "non-empty" condition; how
->> concerned are we about defending against more-intentionally malformed
->> gathers here?
-> 
-> I choose this deliberately to protect the driver, a malformed gather
-> that is 0 sized, or negative sized looks like it will have Weird
-> Things happen in drivers.
-> 
-> We could further classify the < and WARN_ON the malformed cases, but I
-> don't want to pass negative sized gathers into drivers. We'd probably
-> also have to de-inline the function if more is added. Do you have a
-> preference?
-
-No, that's fine, I just wanted to confirm the intent - this isn't a 
-place where we should need to be concerned about micro-optimising to 
-maybe save a load and an extra ALU op or two, just that I don't think 
-it's worth doing any more than strictly necessary for our own 
-robustness. Thus there's no need to change the check in 
-iommu_iotlb_gather_is_disjoint() either, as that now just serves to skip 
-the redundant reinitialisation of an already-empty gather, which is 
-justifiably a different thing from the actual validity-of-sync condition 
-anyway.
-
-Cheers,
-Robin.
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
 
