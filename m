@@ -1,215 +1,238 @@
-Return-Path: <stable+bounces-222916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222917-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKQ2Dlcbp2m+dgAAu9opvQ
-	(envelope-from <stable+bounces-222916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 18:33:11 +0100
+	id QCt5Kj4bp2m+dgAAu9opvQ
+	(envelope-from <stable+bounces-222917-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 18:32:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC581F4A84
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 18:33:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE211F4A6F
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 18:32:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB84030A5722
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 17:31:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D09D3015D24
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 17:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0793E5EE9;
-	Tue,  3 Mar 2026 17:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E99F428499;
+	Tue,  3 Mar 2026 17:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="RhPLBTls"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PKZ7IED+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78A63E5562
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 17:31:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E833E7162
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 17:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772559117; cv=none; b=iAXPas9sVh04DmeO5KIk/ryyx57zbpu1IzCvcYbP7wIaYHlKPokunBkV7Mv4/1ee1cEVo8GfVA6k1LODfvrMKc95W0Tv00MkC1p6l5bJm0frImCq0t8SKvhBRDcYC/ekMViXA6V3iGkMdm2ezBkBlNLuJnNeHSVsWZyZv0BqyYA=
+	t=1772559163; cv=none; b=JP78lR20CGm3ZnGbiAyaxvOJpvBUCtIvtBHsjDk+MR9pupIAlm7u5cdyjeTi0SGP1BBXUBUMRSzrmIJLvV9jqmN87Qx3r9ecfp/d7Ufjz0PCjXW61Cy4X8DphCXFX7jwgDvMqULVfuAvhig+yL1EzLNYVVvclSe9ako5bIgxSQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772559117; c=relaxed/simple;
-	bh=P8LbE17hdz3CRorHbSrGxepUcNNuUq4aHR8Ri8SA8ZE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g37QEmWXbb93bpfBRQUbfZON9JG98hnobm8UV94x51WHSCJjcIhhIz7z2oCKRp4tDP+lWSsIg7x/DSGYSLVowV3UqsVujt87dH9uCUmBFwR0UCg0C025Qi9V+Hkhoq/qWmmUmDtb6eelINzs8ZjhlFvY9I+pEqTuJcL71wVO0mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=RhPLBTls; arc=none smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 6EB4B3F520
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 17:31:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1772559113;
-	bh=EDqogQ9vdpkUGgl1TT2407NR+T7P9avJNaxknb9LMUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
-	b=RhPLBTlsz6Lhrmwn2ci/kRrJurZiDw2AB4I5zbD+47SwEqCMJ6hu+FjEnlfwcSkfD
-	 r4GKAfntH54BRCF+j5LzvoDriSRp9tNoY4mDOrQGwVgv0B8imqz2CGox05XPIFZRBW
-	 T4ekCuvyrOTGzHfGl/pj30uMGsQTl0sS1Ue78E6qGhHQs4sGAPSaD3M9YCE5wzjw6h
-	 R3uQxacqZQymL7ymgIreHD/iFpbJ11IvbnXtPppjaTpplNPnH+GbnpycK1/pDpNG1T
-	 MhmV+s6cf9F8/KR79/mJPINj6XxNqo+hFPIfDee56LqNQLDzuSG++AnzRE+QQN2PoS
-	 SmipsvedWCCIHLF7R/9ojpEi19JsPtjcYprIaqC0e88mtAob7KSzY27Rd6uy/OLfb4
-	 204R3395pXR1FixnaS6y4Y8N39nFX/OYAzmig5GoAI683qoumu1hYRgVF8pNyND5AM
-	 Lc+iK6yKoIR+9/Jb34ijld+3CGSMgY2vnuTF61HmlSAMwHINUxmGsYCdrDOnaTqLr9
-	 MH56yWG0L3UlCT40ZJTzCwzx75nZSujIUgSN8etbcgxZAkY4qF8Ahw1QT9vJI+uBbO
-	 ohFjATwHaSmTabFtYnWqb1ATX4+2ttZKyRjzZT63T032oIIv1Xg5SeiDOIaVBWiAMw
-	 qnChM4xQQ9PwbZsyPNWiNPuo=
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4836cf00787so62665545e9.1
-        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 09:31:53 -0800 (PST)
+	s=arc-20240116; t=1772559163; c=relaxed/simple;
+	bh=QSLfbdC0sQ6OKC02upcBtCsQq8vNKhZu69qDiniK9ck=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fHqNbtRGGU8UanwO0ItEPh1+YXTDIoUOUPJ7hiBIc6ptrWvmA+NyN0mWtpqRHtyEnHfC90njH/I+SARIdaf0u2VlqqsQcwjCQoS9XqSndCwVYtjEq4sM06Xzb0YLcrLMZLGgvL3eFxFcf7Zkvc9CRS5YsZpi3rJarYjSSi5fF2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PKZ7IED+; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-483abed83b6so49755565e9.0
+        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 09:32:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772559160; x=1773163960; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MsWzxLM40+G5660pg9qYSB4crP9FXQmc2eGQLniMFbc=;
+        b=PKZ7IED+XFvhfCa+KHo+vDWcqJpVpkR9+TSZnfYebxicBGuut7s/Nk+gmjFsqTYvob
+         FA/NQRzJPgtp8BvtaAYX6VzINBmMCnHnYTjay/jOtncwqUy0U6FQZDS/9DzhrT+EFq/P
+         UdwsOK49zVQRjo3ZZeddvz8XLpdbJ7K4e+t1Xapz8yk8TCph/O8kq0ZHIQ5qgS8W/9/G
+         g8zstyXk9JyQaX5hVxJQ68XsIxP85Kzqenl4exflMwy4HIp68pyyy3TngzyqKGkc4fCU
+         6J0nQqRZWlPFirq/no2NTVaQ7aAvFnbmVP3gF5QSwbUN4vODeuqh/Un1erlf8erSkgxY
+         HuEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772559113; x=1773163913;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EDqogQ9vdpkUGgl1TT2407NR+T7P9avJNaxknb9LMUo=;
-        b=bMf+10Ps7JJGP8nr4A0IHqT2v53dNeVCY+oGD7PPwCcCjQDLmcHCH2KDxwwoa4p2KC
-         D8UgvAINO3OVRqj9TNXppH4oQkvVSHP4v2R/HrqCQhlog6Pk8vLC601CFtjBrmky2v7y
-         vjb/15ORbIlnhuz/UcMZhqGZLNgpUX1H/wLRLgAWGI41hHd0MfHf+D9DNlwiq+ZsGfTf
-         Ex0zx3BkOITPzNgfztidleLWY2OBsdfXWtNbr2nkB7UgvjNwaUWCWPCFGbloCcfeymmk
-         icGaR+Ei61ftBl85UYkJogNpXvPxir/6jsWJiWmb7wH4xke81GyhfnmBy+xiSP01WPrJ
-         dTlw==
-X-Gm-Message-State: AOJu0Ywzv3EWGPRX5QARbpMMzebnbTs2oMWPleiWLnV9W2saH89xyPGn
-	zPI+38xyTuCDv96pX6U14zM+XExtcgbTg1D2qAVxwFMS9HkFw7DK5YViZOqcb1Zdrj0lCNJeDFU
-	5jj0bZDL+Xl/i59AIequicUHjL4JkgpQgZ/ImLKLlz1N8eTztmjBvXRs7xKqpKhMtGvbvNatTg+
-	b15dClQA==
-X-Gm-Gg: ATEYQzxDun9NP7UJTsbdcn7OoX/pVVb8L/nUkOYFZ4BSiLjXeCkRZABatcMSzDymfyh
-	scaJYkYvBgNlsgMxxDs7+2NhE9ExW2qQa//1mTHE8Rh/s19Wc9fCd5M3EMIzdu6j6J1oqCNZjcI
-	MxoTyqGLMFnI4aF5ISsxURGMvO5aQy2M+v31QtaFunJJOJyP8N//CXW7e9Ttg8noifBUAE+nziI
-	EUz70pM9v2tasTrpTGJ0WMMRhnwdx+Al1ONOfQyJV+pLINR3KKScsE95PiKF5gkPzT7nKdzn4Wr
-	HDXSCHCjOmhG1k3kliIQRxOGAtibBMr4cHKf1jL+Ir6rUiNRWCzcO55DT5SX9bJG9zOvST7aOPC
-	WNqbfP+4VHoDYoInpoJ7wfBBk21u2Gp4cIPBQpQzBb5eU2vd6hB/P
-X-Received: by 2002:a05:600c:35c3:b0:47e:e2b8:66e6 with SMTP id 5b1f17b1804b1-48513c752cbmr57526625e9.14.1772559112562;
-        Tue, 03 Mar 2026 09:31:52 -0800 (PST)
-X-Received: by 2002:a05:600c:35c3:b0:47e:e2b8:66e6 with SMTP id 5b1f17b1804b1-48513c752cbmr57526005e9.14.1772559112121;
-        Tue, 03 Mar 2026 09:31:52 -0800 (PST)
-Received: from XPS-17-9720.han-hoki.ts.net ([213.204.117.164])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485135cf050sm18993035e9.26.2026.03.03.09.31.50
+        d=1e100.net; s=20230601; t=1772559160; x=1773163960;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MsWzxLM40+G5660pg9qYSB4crP9FXQmc2eGQLniMFbc=;
+        b=CmPERpEcGt8X4tuk0/XSiaX802oCO+RpWo8ascPdOQtQHu0CJJZ1JAHim5yEmJJw/L
+         uBSfF7hXFUhp+uuu191/F7Wtf6t7/jXg75DJ0Nu4rxZK32AiB6j3Ui/l/Al5KegvRsUz
+         WJ6PkxbA1DCJnClUcp4oBEmGvCPeE1CPAW7jBIQMiJZyA8ZPQ6cP+vvZySnIKG0rlmZO
+         uy2zcTHWGX8vK9fjHtZkqNxpV7GYCGsw9ExW6tXW7PS/wlOuhI5yQhtk5IKZKw+QySn0
+         cxt8f5+ACW6F1eXhWbCThzNQWTuPQp7BdEh3tA2C9LdCfXPJhcZOrtfuPsbcos4Ktr+Z
+         EXnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMdMCjdfOAw2cYNYOtHjQN7IZIxT3FWHLYdPSXIQq0Rks8oqI0bYOqoxnubQo/emqi49dYjI0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypcFrX56RKKSojj2ht3WgU2Lr/Yzip6NMBn7ymGU9ZL/kzA91O
+	hTQT0KOtZCaP+piwu9DYu2WS9sxXfFaWBilRjNu4nYFB3uwWcjGwwA0j
+X-Gm-Gg: ATEYQzyqXKTJbEMx2pQuK8ubcgUmxn+9pMdTTMepLJ9aRAnJhTP1U/6vxxVD48RP0Bw
+	NXOMjPZBvrxSuXYP/bmQAVckmUCnskbsxULFF+AbN39NCDsEN8tY/Osx189pky9q96l6bKZOzyT
+	UiPMzoJWqln/odJZG8pL3OBKE9WYPYskTu8Fv4tAPVAXSrNStyf1WTK36We8+XlnY98alRjQoGu
+	dGSvWjh3K1WC0o77ivmiyDjN8Cj//qCvJUKC4HH4m/idfPKdXp2nNFNQz+Ba5EYvXbgk504FoEt
+	31wRtSUH+BWF4uZbgHwRkFUmQlVrV2tOTnIOKOiQaQ0TU7TC8Vafxh6ladlQ1TvxJu4+wDNYhKP
+	voiIKphJ4avOl6HnTAz1h7W2oNVzcB5Fg8P2ge94Ryysh39Ktj1y0CJXJBLTmvrtlsYrsmJsK+1
+	4312Z62BOZDs35RIAkIinONEKdky27JnjN/X3LVGZV
+X-Received: by 2002:a05:600c:674f:b0:477:df7:b020 with SMTP id 5b1f17b1804b1-483c9bde826mr284998005e9.18.1772559160210;
+        Tue, 03 Mar 2026 09:32:40 -0800 (PST)
+Received: from holly.home.arpa ([2a03:ab00:1000:1b60:331a:b316:78f6:effc])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485133a9511sm24583545e9.17.2026.03.03.09.32.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 09:31:51 -0800 (PST)
-From: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
-To: stable@vger.kernel.org
-Cc: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
-Subject: [PATCH 6.1.y] smb/dfs_cache: Fix NULL pointer dereference on session connection failure
-Date: Tue,  3 Mar 2026 19:31:39 +0200
-Message-ID: <20260303173139.517020-1-ghadi.rahme@canonical.com>
-X-Mailer: git-send-email 2.51.0
+        Tue, 03 Mar 2026 09:32:39 -0800 (PST)
+Message-ID: <ce07b65b86473acac101c4854f6201d05597d48c.camel@gmail.com>
+Subject: Re: [REGRESSION] 6.19.4 stable netfilter / nftables [resolved]
+From: Jindrich Makovicka <makovick@gmail.com>
+To: Thorsten Leemhuis <regressions@leemhuis.info>, Genes Lists
+	 <lists@sapience.com>, Greg KH <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, coreteam@netfilter.org, 
+	netfilter-devel@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>, 
+	stable@vger.kernel.org, regressions@lists.linux.dev, "Kris Karas (Bug
+ Reporting)" <bugs-a21@moonlit-rail.com>
+Date: Tue, 03 Mar 2026 18:32:39 +0100
+In-Reply-To: <d43b9da4-99ee-4516-9bec-71a9de19618e@leemhuis.info>
+References: <a529a6a9a2755d45765f20b58c5c11e2f790eacb.camel@sapience.com>
+	 <45f03b0b-fe8f-4942-bad1-3fbde03d4be1@leemhuis.info>
+	 <143e1a402ad78dd7076516a6ceb637f378310b16.camel@sapience.com>
+	 <10537f2b74da2b8a5cb8dc939f723291db39ff84.camel@sapience.com>
+	 <2026022755-quail-graveyard-93e8@gregkh>
+	 <b231fcdb6c66a7b24dcef3ee5c35c5f612d5c1a7.camel@sapience.com>
+	 <9d110d860c0c7e110d018ea53a7666eba275da20.camel@gmail.com>
+	 <d43b9da4-99ee-4516-9bec-71a9de19618e@leemhuis.info>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-8 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8DC581F4A84
+X-Rspamd-Queue-Id: 2CE211F4A6F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[canonical.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[canonical.com:s=20251003];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222916-lists,stable=lfdr.de];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-222917-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[ghadi.rahme@canonical.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[canonical.com:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:dkim,canonical.com:email,canonical.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[makovick@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-[ Upstream commit 6916881f443f67f6893b504fa2171468c8aed915 ]
+On Tue, 2026-03-03 at 08:31 +0100, Thorsten Leemhuis wrote:
+> On 3/3/26 08:00, Jindrich Makovicka wrote:
+> > On Fri, 2026-02-27 at 08:39 -0500, Genes Lists wrote:
+> > > On Fri, 2026-02-27 at 05:17 -0800, Greg KH wrote:
+> > > > On Fri, Feb 27, 2026 at 08:12:59AM -0500, Genes Lists wrote:
+> > > > > On Fri, 2026-02-27 at 07:23 -0500, Genes Lists wrote:
+> > > > > > On Fri, 2026-02-27 at 09:00 +0100, Thorsten Leemhuis wrote:
+> > > > > > > Lo!
+> > > > > > >=20
+> > > > > >=20
+> > > > > > Repeating the nft error message here for simplicity:
+> > > > > >=20
+> > > > > > =C2=A0Linux version 7.0.0-rc1-custom-1-00124-g3f4a08e64442 ...
+> > > > > > =C2=A0 ...
+> > > > > > =C2=A0 In file included from /etc/nftables.conf:134:2-44:
+> > > > > > =C2=A0 ./etc/nftables.d/set_filter.conf:1746:7-21: Error:
+> > > > > > =C2=A0 Could not process rule: File exists
+> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xx.xxx.xxx.x/23,
+> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^^^^^^
+> > > > > >=20
+> > > > >=20
+> > > > > Resolved by updating userspace.
+> > > > >=20
+> > > > > I can reproduce this error on non-production machine and
+> > > > > found
+> > > > > this
+> > > > > error is resolved by re-bulding updated nftables, libmnl and
+> > > > > libnftnl:
+> > > > >=20
+> > > > > With these versions nft rules now load without error:
+> > > > >=20
+> > > > > =C2=A0- nftables commit de904e22faa2e450d0d4802e1d9bc22013044f93
+> > > > > =C2=A0- libmnl=C2=A0=C2=A0 commit 54dea548d796653534645c6e3c8577e=
+af7d77411
+> > > > > =C2=A0- libnftnl commit 5c5a8385dc974ea7887119963022ae988e2a16cc
+> > > > >=20
+> > > > > All were compiled on machine running 6.19.4.
+> > > >=20
+> > > > Odd, that shouldn't be an issue, as why would the kernel
+> > > > version
+> > > > you
+> > > > build this on matter?
+> > > >=20
+> > > > What about trying commit f175b46d9134 ("netfilter: nf_tables:
+> > > > add
+> > > > .abort_skip_removal flag for set types")?
+> > > >=20
+> > > > thanks,
+> > > >=20
+> > > > greg k-h
+> > >=20
+> > > - all were rebuilt from git head=C2=A0
+> > > =C2=A0 Have not had time to explore what specific change(s)
+> > > =C2=A0 triggered the issue yet.
+> > >=20
+> > > - commit f175b46d9134
+> > > =C2=A0 I can reproduce on non-production machine - will check this an=
+d
+> > > report back.
+> >=20
+> > I had a similar problem, solved by reverting the commit below. It
+> > fails
+> > only with a longer set. My wild guess is a closed interval with
+> > start
+> > address at the=C2=A0 end of a chunk and end address at the beginning of
+> > the
+> > next one gets misidentified as an open interval.
+> >=20
+> > commit 12b1681793e9b7552495290785a3570c539f409d
+> > Author: Pablo Neira Ayuso <pablo@netfilter.org>
+> > Date:=C2=A0=C2=A0 Fri Feb 6 13:33:46 2026 +0100
+> >=20
+> > =C2=A0=C2=A0=C2=A0 netfilter: nft_set_rbtree: validate open interval ov=
+erlap
+> >=20
+> > Example set definition is here:
+> >=20
+> > https://bugzilla.kernel.org/show_bug.cgi?id=3D221158
+>=20
+> Does that problem happen with 7.0-rc2 as well? This is important to
+> know
+> to determine if this is a general problem or a backporting problem.
+>=20
 
-It is possible for find_ipc_from_server_path to run while the tcon is NULL,
-resulting in a NULL pointer dereference crash when calling strcasecmp().
-This happens when the ipc connection fails freeing the tcon and setting it
-to NULL while the dfs cache worker thread was already executing.
-This issue was fixed upstream indirectly by a rewrite that removed this
-function. Although with this fix the issue can still occur, the window of
-the race is now much narrower.
-A fix that would completely fix it using mutexes was tested and
-worked fine. However the regression potential would be much higher and so
-would be the deviation from upstream.
-This is a good balance of safety while minimizing upstream deviation.
+Yes, the same problem shows up with 7.0-rc2. I updated the bugzilla
+attachment to reproduce the bug just by feeding it to nft,
 
-Stack trace:
+# uname -a
+Linux holly 7.0.0-rc2 #25 SMP PREEMPT_DYNAMIC Tue Mar  3 18:17:21 CET
+2026 x86_64 GNU/Linux
+# nft -f test-full.nft
+test-full.nft:1643:1-25: Error: Could not process rule: File exists
+12.14.179.24-12.14.179.31,
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
- BUG: kernel NULL pointer dereference, address: 0000000000000050
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 1013dc64067 P4D 10125f65067 PUD 10125f64067 PMD 0
- Oops: 0000 [#1] SMP NOPTI
- CPU: 80 PID: 3913754 Comm: kworker/u256:1 Kdump: loaded Not tainted 5.15.0-143-generic #153-Ubuntu
- Hardware name: Dell Inc. PowerEdge R760/09XV41, BIOS 2.3.5 09/10/2024
- Workqueue: cifs-dfscache refresh_cache_worker [cifs]
- RIP: 0010:strcasecmp+0x19/0x50
- Code: 01 84 c9 75 f1 c3 cc cc cc cc 0f 1f 80 00 00 00 00 49 89 f9 31 ff 41 0f b6 04 39 0f b6 c8 89 c2 83 c2 20 f6 81 e0 39 89 85  01 <0f> b6 0c 3e 0f b6 d2 0f 45 c2 89 ca 44 0f b6 c1 83 c2 20 41 f6 80
- RSP: 0018:ff4043e68aadb900 EFLAGS: 00010246
- RAX: 000000000000005c RBX: ff4043e68aadbc68 RCX: 000000000000005c
- RDX: 000000000000007c RSI: 0000000000000050 RDI: 0000000000000000
- RBP: ff4043e68aadb990 R08: 0000000000000064 R09: ff4043e68aadb91f
- R10: 0000000000000012 R11: 0000000000000000 R12: ff210c171f193c00
- R13: 0000000000000009 R14: 0000000000000008 R15: ff210d1d3f19a7c0
- FS:  0000000000000000(0000) GS:ff210d127fc00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000050 CR3: 0000011f2cc38005 CR4: 0000000000771ee0
- PKRU: 55555554
- Call Trace:
- <TASK>
- ? find_ipc_from_server_path+0xd9/0x110 [cifs]
- refresh_cache+0xf1/0x470 [cifs]
- ? in4_pton+0x7a/0x160
- ? kfree+0x1f7/0x250
- ? target_share_equal+0x198/0x210 [cifs]
- ? __refresh_tcon.isra.0+0x242/0x670 [cifs]
- ? kfree+0x1f7/0x250
- ? __refresh_tcon.isra.0+0x242/0x670 [cifs]
- ? cifs_put_tcon.part.0+0x39/0x220 [cifs]
- ? cifs_put_tcon+0x1c/0x30 [cifs]
- ? refresh_mounts+0x147/0x210 [cifs]
- refresh_cache_worker+0x1ac/0x300 [cifs]
- ? lock_timer_base+0x3b/0xd0
- process_one_work+0x228/0x3d0
- worker_thread+0x53/0x420
- ? process_one_work+0x3d0/0x3d0
- kthread+0x127/0x150
- ? set_kthread_struct+0x50/0x50
- ret_from_fork+0x1f/0x30
- </TASK>
-
-Fixes: c870a8e70e68 ("cifs: handle different charsets in dfs cache")
-Signed-off-by: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
----
- fs/smb/client/dfs_cache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/smb/client/dfs_cache.c b/fs/smb/client/dfs_cache.c
-index 3bc1d3494be3..af2177b96f2f 100644
---- a/fs/smb/client/dfs_cache.c
-+++ b/fs/smb/client/dfs_cache.c
-@@ -98,7 +98,7 @@ static struct cifs_ses *find_ipc_from_server_path(struct cifs_ses **ses, const c
-
- 	get_ipc_unc(path, unc, sizeof(unc));
- 	for (; *ses; ses++) {
--		if (!strcasecmp(unc, (*ses)->tcon_ipc->tree_name))
-+		if ((*ses)->tcon_ipc && !strcasecmp(unc, (*ses)->tcon_ipc->tree_name))
- 			return *ses;
- 	}
- 	return ERR_PTR(-ENOENT);
---
-2.51.0
-
+Regards,
+--=20
+Jindrich Makovicka
 
