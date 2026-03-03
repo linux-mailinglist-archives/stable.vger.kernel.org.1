@@ -1,90 +1,90 @@
-Return-Path: <stable+bounces-222936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PumFSk0p2k9fwAAu9opvQ
-	(envelope-from <stable+bounces-222936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 20:19:05 +0100
+	id wK0KCiY0p2k9fwAAu9opvQ
+	(envelope-from <stable+bounces-222937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 20:19:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63361F5DB6
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 20:19:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3334A1F5DAF
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 20:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1BAB312E0F5
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 19:15:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 16604303340C
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 19:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B0837C929;
-	Tue,  3 Mar 2026 19:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F617384237;
+	Tue,  3 Mar 2026 19:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUxTEg82"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NR7qM361"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0732737C904
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 19:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C596A38422D
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 19:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772565323; cv=none; b=tM9ie8XBKkMVUJKCc9A3i/r1GIezrtnNDsbbZB7nH4xt6z25Q3GHUlvici/zXUnXW77Bo0VYAAceLEnfBB77gsDfnETYuGlLWw3mYTcavBpZFZCX3MU2sYXmwZma9/NcCrdqZBzsew3LoIbnmtcmIhKTGq5SwEGotVOOe2Lbqxg=
+	t=1772565355; cv=none; b=qjTKJsx5uzs0ZOHcjQNglHNfqjHWwnwmFMeQKrlXC0RZDFA9mvR2D3xg/iAcRBzhh6hx3JgppAA+208iOXqdVVwqRIK02/2XZYiklzDZKO9ji5TNP8fKo8uA+d2zc+Oog/Bet7l/l2ITPU0qe04mjCFgOCMbxGk2EzcRqFsnlS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772565323; c=relaxed/simple;
-	bh=/rl3qigKuas4Cyi7xfTy/F7A0pzFwg0QJf91k9QOXM4=;
+	s=arc-20240116; t=1772565355; c=relaxed/simple;
+	bh=f547AEbYxu/DMI6JnUp5q81lu69/hFXLp+OhFcorB4k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ov4eb5otKHmYhwLmw/70RWG6QS7LTiN/vjyxwcqX0GqAC5E6pky1P6q/we0pq0irqemrEiqHA4IxZ5cPLvISP3spjtKUI0lhfWejLMJr5eOZNHCJGdB00qNoDP49pjR9TxCs3fucFEmyRnlOZijq3ivWOZpYI3oKF0Ua/zBKfq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUxTEg82; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF97C19425
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 19:15:22 +0000 (UTC)
+	 To:Cc:Content-Type; b=ogJKnlmHfEBBHJF0489e2QQUJi13bYmGcYOzfmy+FPP0YReCCzdHg0yoTx2+Mswrx8NAefoKg+R+xrwFzA/17FMbkCHIKIxwMn/eMVR2kyzIyTZIURCQxkVXM+iAMdLkVTNaQksNBm+zCmSxlLVG+gMwPluHS8fb4u8OCo0r1nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NR7qM361; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87612C2BC87
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 19:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772565322;
-	bh=/rl3qigKuas4Cyi7xfTy/F7A0pzFwg0QJf91k9QOXM4=;
+	s=k20201202; t=1772565355;
+	bh=f547AEbYxu/DMI6JnUp5q81lu69/hFXLp+OhFcorB4k=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ZUxTEg82+ZAGSMLMW0fLPlAcwS6FPeEBt8FGB8gyH1B8imPGrqaaMHkrYSemEHGLk
-	 i/4m8paNxZMQr5GsDKf/nrt2w0hq1EIcPoDV72vIEhPgCoaxids6bZhOyGy/rhLSvQ
-	 afdPTzyKrMfVHG2RUOsuhTDW8uV8k1ne0nt15HZEhHamIYOfLBz9n5h7HgS6f1AUO2
-	 t67kvGWX/WJUY2HAUcqtu5InASotQ5r5W68h4lxHbVVNGky1o9SyaMjOncKObFpy6O
-	 STqcZIjvsCWceqGA+Gphm+mN/wgjTlpNRbn95B32FJWHRI4l07RK94RL/O++zP3ucf
-	 cszX98qQft8gg==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b93698bb57aso353504866b.0
-        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 11:15:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW0ll68H74eQnTa4CjOXAvNcASL/YEMC90CQLeE0Iqpn1XTDwGhL2CtDy9VsB5QR6Kiwdpu7OU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCBmYX8wf05YpAOpFTX/G2R3UTZHKBBTudn8hDRFQn49aYFrPt
-	5e/tQ0cworUm2Bt80jefzPMsggEM31u41UqU0m7p7iBRPWwOtGHbiRfLi47g/wSFjIGz4+dpLml
-	ETqbnJD4Yo8OuiH7VTSAAFdkU0wc55oc=
-X-Received: by 2002:a17:906:7951:b0:b89:ec1f:40f6 with SMTP id
- a640c23a62f3a-b93d440f7d1mr212163866b.17.1772565321688; Tue, 03 Mar 2026
- 11:15:21 -0800 (PST)
+	b=NR7qM361RBDdp1Mi1r2SZaZqkfw05NkVTLcwprx5rLE00juNVN3e2qls4p2fEwGXZ
+	 XaTh5y20Bpz3arvNq8mEpvdkBIYrVrC+Gd9bbg+TmQsUxS/2flBToqEQ3KZFBxGD4/
+	 9lBjVzlNt/7oPy/lGzXqCJegJl2AbfIKkf4feFdyD2WgbXFbD7zr1v0NW7lfpxwa0J
+	 VAiKAPGp4VjBWBM1Ss9/tx23ufcvp/lAHRk0Oc5qqP47Xtm1G+ryl/SViCd83NTcg6
+	 Ae384wtW2pF1N2u2BJhCAozDVJC1VZwHjqux8Rukhm05flK5ALRONDPj1P5NO+s9K4
+	 PixlYkmfMUjvA==
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-65f771c6b89so9093331a12.3
+        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 11:15:55 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCViU83kmOuXlwHsZaezaL6sXRP66nMJOgim0molYgF/WxKaZs8LOOkIhaTRw4AQD5stKNuJyK4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQS6n3nWp9a8ztVLuKuiM/FrR/RyTwUvOgQxgvs4VjSHfLy5HC
+	g07iFxbARy/U3V/GuuFjgQvZYoC/ObGAuDxQZP6Dj72IXAsN36E0k6vePtAvK6XwMTFbAvPcSAr
+	ZwCPDmQ7BCy/nmOB7f0MX59SOmzQLLuM=
+X-Received: by 2002:a17:906:9fc5:b0:b93:6559:3148 with SMTP id
+ a640c23a62f3a-b93765defa9mr959439866b.61.1772565354381; Tue, 03 Mar 2026
+ 11:15:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260303003421.2185681-1-yosry@kernel.org> <20260303003421.2185681-10-yosry@kernel.org>
- <aacRCz2bmxbma6g4@google.com>
-In-Reply-To: <aacRCz2bmxbma6g4@google.com>
+References: <20260303003421.2185681-1-yosry@kernel.org> <20260303003421.2185681-13-yosry@kernel.org>
+ <aacRVwsI0x_kDZ0u@google.com>
+In-Reply-To: <aacRVwsI0x_kDZ0u@google.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 3 Mar 2026 11:15:08 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zO7eiugNmxtTzWe_1_Qk+YOmp_i8LRzrL8--vXuT4m-1A@mail.gmail.com>
-X-Gm-Features: AaiRm50BCHcoGgG7S6yvxaxQ9mW1R6zZPLSe1kXGrtU1BXwZmw6MEPbTGujk5FU
-Message-ID: <CAO9r8zO7eiugNmxtTzWe_1_Qk+YOmp_i8LRzrL8--vXuT4m-1A@mail.gmail.com>
-Subject: Re: [PATCH v7 09/26] KVM: nSVM: Triple fault if restore host CR3
- fails on nested #VMEXIT
+Date: Tue, 3 Mar 2026 11:15:42 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zO3vOtSpEPDagqNF7t+nW8_ZCxCgfZjyt_zKYPDf4W5TA@mail.gmail.com>
+X-Gm-Features: AaiRm51OZxT8EaALiZMjoD8WlAvgoQ7PyEMjl2-cHcFwJMcBi8hwdDPVm6vXooI
+Message-ID: <CAO9r8zO3vOtSpEPDagqNF7t+nW8_ZCxCgfZjyt_zKYPDf4W5TA@mail.gmail.com>
+Subject: Re: [PATCH v7 12/26] KVM: nSVM: Clear tracking of L1->L2 NMI and soft
+ IRQ on nested #VMEXIT
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B63361F5DB6
+X-Rspamd-Queue-Id: 3334A1F5DAF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222936-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222937-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -92,7 +92,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
@@ -101,64 +101,51 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Tue, Mar 3, 2026 at 8:49=E2=80=AFAM Sean Christopherson <seanjc@google.c=
+On Tue, Mar 3, 2026 at 8:50=E2=80=AFAM Sean Christopherson <seanjc@google.c=
 om> wrote:
 >
 > On Tue, Mar 03, 2026, Yosry Ahmed wrote:
-> > If loading L1's CR3 fails on a nested #VMEXIT, nested_svm_vmexit()
-> > returns an error code that is ignored by most callers, and continues to
-> > run L1 with corrupted state. A sane recovery is not possible in this
-> > case, and HW behavior is to cause a shutdown. Inject a triple fault
-> > ,nstead, and do not return early from nested_svm_vmexit(). Continue
->
-> s/,/i
-
-Not sure how that happened lol.
-
->
-> > cleaning up the vCPU state (e.g. clear pending exceptions), to handle
-> > the failure as gracefully as possible.
+> > KVM clears tracking of L1->L2 injected NMIs (i.e. nmi_l1_to_l2) and sof=
+t
+> > IRQs (i.e. soft_int_injected) on a synthesized #VMEXIT(INVALID) due to
+> > failed VMRUN. However, they are not explicitly cleared in other
+> > synthesized #VMEXITs.
 > >
-> > >From the APM:
-> >       Upon #VMEXIT, the processor performs the following actions in
-> >       order to return to the host execution context:
+> > soft_int_injected is always cleared after the first VMRUN of L2 when
+> > completing interrupts, as any re-injection is then tracked by KVM
+> > (instead of purely in vmcb02).
 > >
-> >       ...
-> >       if (illegal host state loaded, or exception while loading
-> >           host state)
-> >               shutdown
-> >       else
-> >               execute first host instruction following the VMRUN
->
-> Uber nit, use spaces instead of tabs in changelogs, as indenting eight ch=
-ars is
-> almost always overkill and changelogs are more likely to be viewed in a r=
-eader
-> that has tab-stops set to something other than eight.  E.g. using two spa=
-ces as
-> the margin and then manual indentation of four:
-
-Yeah I started doing that recently but I didn't go back to change old ones.
-
-[..]
+> > nmi_l1_to_l2 is not cleared after the first VMRUN if NMI injection
+> > failed, as KVM still needs to keep track that the NMI originated from L=
+1
+> > to avoid blocking NMIs for L1. It is only cleared when the NMI injectio=
+n
+> > succeeds.
 > >
-> > Fixes: d82aaef9c88a ("KVM: nSVM: use nested_svm_load_cr3() on guest->ho=
-st switch")
-> > CC: stable@vger.kernel.org
+> > KVM could synthesize a #VMEXIT to L1 before successfully injecting the
+> > NMI into L2 (e.g. due to a #NPF on L2's NMI handler in L1's NPTs). In
+> > this case, nmi_l1_to_l2 will remain true, and KVM may not correctly mas=
+k
+> > NMIs and intercept IRET when injecting an NMI into L1.
+> >
+> > Clear both nmi_l1_to_l2 and soft_int_injected in nested_svm_vmexit() to
+> > capture all #VMEXITs, except those that occur due to failed consistency
+> > checks, as those happen before nmi_l1_to_l2 or soft_int_injected are
+> > set.
 >
-> Heh, and super duper uber nit, "Cc:" is much more common than "CC:" (I'm =
-actually
-> somewhat surprised checkpatch didn't complain since it's so particular ab=
-out case
-> for other trailers).
+> This last paragraph confused me a little bit.  I read "to capture all #VM=
+EXITs"
+> as some sort of "catching" that KVM was doing.  I've got it reworded to t=
+his:
 >
-> $ git log -10000 | grep "CC:" | wc -l
-> 38
-> $ git log -10000 | grep "Cc:" | wc -l
-> 11238
+> Clear both nmi_l1_to_l2 and soft_int_injected in nested_svm_vmexit(), i.e=
+.
+> for all #VMEXITs except those that occur due to failed consistency checks=
+,
+> as those happen before nmi_l1_to_l2 or soft_int_injected are set.
 
-That was a mistake, I think I generally use Cc.
+LGTM.
 
