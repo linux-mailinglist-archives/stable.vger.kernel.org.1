@@ -1,96 +1,79 @@
-Return-Path: <stable+bounces-222839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGBpJWimpmkTSQAAu9opvQ
-	(envelope-from <stable+bounces-222839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 10:14:16 +0100
+	id GL4PBpynpmk7SgAAu9opvQ
+	(envelope-from <stable+bounces-222840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 10:19:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C351EBB03
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 10:14:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 703541EBBA2
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 10:19:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6850C3033504
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 09:14:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C245630668BB
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 09:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35DF387570;
-	Tue,  3 Mar 2026 09:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C7138C2D7;
+	Tue,  3 Mar 2026 09:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F/Rs8yJu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s7pWR2K3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2223164AA
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 09:14:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8656038C2D0;
+	Tue,  3 Mar 2026 09:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772529253; cv=none; b=HIIYaTqemYuPqotKbV3U4JC9fijAzbNGe9FWasJt6nFGwo6idu7ZL7Awm7qYQjebxBWoM9FfN0XniB4q0KZoGUjlIqCH6qhwHDoBv4rOfK1TBGWtkQLeWT0NVSAQmFqBP8TASpjIgzlP9s4uV+IuORpAB4hAiHyNfp+g6egJGIM=
+	t=1772529558; cv=none; b=DQUT8EruMWYM9mY7FnHtT5ct7faeEi3nPvIzS9+zUwclQnZPaeMqZcmvB6trgID16SfbNycesPCs6mQvepl1k7TbQRopoeKftGPW/etilI7+IUwKyQUN9WsCxEmympbXp8Mk8xM8V7uImsMksM+wRrBwIzEKmN2l3xy3+htAF5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772529253; c=relaxed/simple;
-	bh=5l2Kz22xEk2Atptg+7LjAz1lULYa/VgXF4E1315Awb8=;
+	s=arc-20240116; t=1772529558; c=relaxed/simple;
+	bh=aS0Q+f7SHHFw1yREg5BbU7Bsh0kSlyyHqmg0Lk8akx8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PNZ+KgGkwJ/Ug2mmhIPCCIdvvlBvcRNB+H4MzAdCr+c4cNVMAOHSaNfTvRoDpbNqDl49yqUD/aIShj9XFkjaY47jGm6O32Axh7DUWZC/WgqyxDMzIWBVanrLycD4VKIq6dpO9i/KcJlqlBGAc1R3mTiPYIrN8aGwRsEhcJ5Urg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F/Rs8yJu; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48378136adcso31861525e9.1
-        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 01:14:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772529251; x=1773134051; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pfdnRKMwt4rIrADe9QK97cFlPrIqJK1YbAhHvdHHa88=;
-        b=F/Rs8yJuofb4sXHSHuzg05ArbJjFka4RwLh6G/bTVBcMgAGQ5G1ftRF3H03wCI5ji+
-         kRAIH/lMyJ/Hv2rPxFLkKc0Kh2QGZtTLUq/kcjz4QYGSwJeLMEzaNZW7i6A32eVS0zMO
-         kxm90cDq4qBxXQuLxrgpEkGayTjGRDDPlYhD8v9fEHAYy1w/B9IIykgXwrkq1yd8mHnF
-         WRfzxKvhGOZD4+WdCi9dHAK05rPgdHYCUVwGfzKRNgoMXAHeBVuA3pviGIy+k6JFB0x/
-         uEUINUaOxYXM68bqV6hGFPV2B0eT7RgX/UFTG4Fu0aVeF9hEqVHYwWQHbKDgXp95DXpn
-         NSZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772529251; x=1773134051;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pfdnRKMwt4rIrADe9QK97cFlPrIqJK1YbAhHvdHHa88=;
-        b=fmiJDJ2GbvmT8PWmbfC64QdlpJ+61XC8CGWnA8sOy/+JPyjzWq6j/7fZYe19pTVNFu
-         xnzkpYacWPn+wJPW4gExzAu7g8DfSTK0ktSi5sWBYzK5uMa8X3ZIZwCywF4joIwXSCeJ
-         P69Ym4aq4acGw2V56BDXat+SgK6HpQAt1Ud+AWWlHei3V0yUFzyemPRguYa1yjkz39CS
-         Sq5aY3xjJtTP6aRWPwjpUnJfzji+xy71tBwlFuP2qGZ1UVxshkwW2FvpNnPcLXhdu9fb
-         ZkAH5YXcM0HXa/4WJbYqjENES2qpS/IY3EK1KVDYxWviyk3aAGUkgsFnED3iPsRuWloF
-         HerQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVKsHDrWaz2dhtLKWCciuhlOloopsXTV1ap9bPMB6BXpLFhgn5k8wOwBDjaAIoT696igOvmwOY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcKxdGO8YPtcHfidNX/QYKpLwpPC7OvSPOU4boSC6D1+ukDlAY
-	OfRX7sbYU1Rq+ybVUMs3FBJqm6tlr2OwbeIulykwKZoC4ShSFcY8uhWH
-X-Gm-Gg: ATEYQzy4ezYcMNpOhJoSvhrL9BbX+IEx7re83g3lqSYYXShBTYyzFgd48nqh+uGRqwv
-	UOdfcGbXKONiGd/SBjCDmHDhUTOWfTMh1AwHBnuQ5wfjl5lhGEZkJtcQquATM2H6fbk6FpLJ+vS
-	SV22xMBeLXuNgUzeygMlbfVFQtcwVm0VKMFRNu2YhE7seq2AA59C/TQgt2nCpwVzDXrNAWR2fDh
-	zEE9/Zw2pyezdzuu+olf2KG/Y+hF9kUdnMzTVs+eOzK0zNvguNhBTLSlTv9aeRAItAi0o/30Dry
-	NiYgtZEZkPPcDwwE1/JnmN2j0T8HcvoPCP7qmsvgNSShfra+aZp/K81Rys1IA/OR8sVTM1CAUgE
-	zwyDRIjAed3IJ0C2mNaKlezlz4Msf8Ez6ef5r32ptMbCUf8ozF8tlOy7G5NUmBX4zBwy/Yw5UJs
-	I2z2TeXF87tCE0y1xdT+WrKwM=
-X-Received: by 2002:a05:600c:a16:b0:46e:4a13:e6c6 with SMTP id 5b1f17b1804b1-483c9bfb2f2mr273658985e9.19.1772529250689;
-        Tue, 03 Mar 2026 01:14:10 -0800 (PST)
-Received: from eichest-laptop ([77.109.188.37])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd7030b9sm376259165e9.4.2026.03.03.01.14.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 01:14:10 -0800 (PST)
-Date: Tue, 3 Mar 2026 10:14:08 +0100
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
-	s.hauer@pengutronix.de, festevam@gmail.com,
-	stefan.eichenberger@toradex.com, francesco.dolcini@toradex.com,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] i2c: imx: ensure no clock is generated after last
- read
-Message-ID: <aaamYByn9dZEIBWb@eichest-laptop>
-References: <20260218150940.131354-1-eichest@gmail.com>
- <20260218150940.131354-3-eichest@gmail.com>
- <aZXoTGK_v3L4pc-E@lizhi-Precision-Tower-5810>
- <aZXq4gn4xhInQQlq@eichest-laptop>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FNRjo+x321LghPwaenuTiLulxBaFACgg3YhgLzMjsIOcN+HwLojQ3GUDp66kimPplKoi5JyLxkqeZTXjugKpAfu1+XBV9OfvwFILB87z8a8QEOq+yeBnzJ/Gb5YIbFiW6INzfprIC5yG3r8HVKkto/pIAYd20XuSqujyGKrBPSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s7pWR2K3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B73FC116C6;
+	Tue,  3 Mar 2026 09:19:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772529558;
+	bh=aS0Q+f7SHHFw1yREg5BbU7Bsh0kSlyyHqmg0Lk8akx8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s7pWR2K327EuFeJ9Ohh7aDaEGYyxlpKRE/AaTuyWYat61baizv83KA0zJaFa5Z5hA
+	 Ot5k0Si78cM02FbOBaEmXpeoUAw1iT4Hf30EUYt99FOe/FaNPvjzPcXSKKIG5QVoK6
+	 ehKJ02twPRa90HZ5QuGkDU4gLNVMu9j2jP+ajZCT382c6Os8YwvsUIfwc3MIPZfxQr
+	 z53ioJ1R3YnCG7aDGI0UFGJEjFdpZiZYdcMPseH3riBeMeiFvYO75XmIbw7/Hz3Mt5
+	 vlrc5496X6rjfK8lLQH5dlU+oV9m1goOjrls/YOFaHav5+wIIh0P7plqgRb6guYqcG
+	 vJDwKFU62obGw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vxLtn-000000001pU-1EF7;
+	Tue, 03 Mar 2026 10:18:39 +0100
+Date: Tue, 3 Mar 2026 10:18:39 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] dt-bindings: display: msm: Fix reg ranges and clocks
+ on Glymur
+Message-ID: <aaanbwG-icaIY_IK@hovoldconsulting.com>
+References: <20260303-glymur-fix-dp-bindings-reg-clocks-v4-1-1ebd9c7c2cee@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,67 +82,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aZXq4gn4xhInQQlq@eichest-laptop>
-X-Rspamd-Queue-Id: E9C351EBB03
+In-Reply-To: <20260303-glymur-fix-dp-bindings-reg-clocks-v4-1-1ebd9c7c2cee@oss.qualcomm.com>
+X-Rspamd-Queue-Id: 703541EBBA2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222839-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[pengutronix.de,kernel.org,gmail.com,toradex.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-222840-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,linux.intel.com,suse.de,ffwll.ch,quicinc.com,vger.kernel.org,lists.freedesktop.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[eichest@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,dt];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,hovoldconsulting.com:mid]
 X-Rspamd-Action: no action
 
-Hi Frank,
-
-On Wed, Feb 18, 2026 at 05:37:54PM +0100, Stefan Eichenberger wrote:
-> Hi Frank,
+On Tue, Mar 03, 2026 at 11:03:11AM +0200, Abel Vesa wrote:
+> The Glymur platform has four DisplayPort controllers. The hardware
+> supports four streams (MST) per controller. However, on Glymur the first
+> three controllers only have two streams wired to the display subsystem,
+> while the fourth controller operates in single-stream mode.
 > 
-> On Wed, Feb 18, 2026 at 11:26:52AM -0500, Frank Li wrote:
-> > On Wed, Feb 18, 2026 at 04:08:50PM +0100, Stefan Eichenberger wrote:
-> > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > >
-> > > When reading from the I2DR register, right after releasing the bus by
-> > > clearing MSTA and MTX, the I2C controller might still generate an
-> > > additional clock cycle which can cause devices to misbehave. Ensure to
-> > 
-> > Do you means SCL have additional toggle? You capture waveform?
-> > 
+> Add a dedicated clause for the Glymur compatible to require the register
+> ranges for all four stream blocks, while allowing either one pixel clock
+> (for the single-stream controller) or two pixel clocks (for the remaining
+> controllers).
 > 
-> Yes exactly. We were able to capture the waveform when the issue
-> happens. It doesn't always happen though, it depends on how much time
-> passes between clearing MSTA and MTX and reading from I2DR.
+> Update the Glymur MDSS schema example by adding the missing p2, p3,
+> mst2link and mst3link register blocks. Without these, the bindings
+> validation fails. Also replace the made-up register addresses with the
+> actual addresses from the first controller to match the SoC devicetree
+> description.
 > 
-> If you want to see the waveform, I uploaded it to our server:
-> https://share.toradex.com/dwnhcrl6b9toib6
-> You can see the additional clock at the right end, after "0x17 + NAK".
+> Cc: stable@vger.kernel.org # v6.19
 
-Have you had a chance to look at the waveform? Do you have any concerns
-about the proposed solution?
+No need to backport this, it's essentially just a documentation fix (not
+a bug fix).
 
-Best regards,
-Stefan
+> Fixes: 8f63bf908213 ("dt-bindings: display: msm: Document the Glymur DiplayPort controller")
+> Fixes: 1aee577bbc60 ("dt-bindings: display: msm: Document the Glymur Mobile Display SubSystem")
+> Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+
+Johan
 
