@@ -1,238 +1,230 @@
-Return-Path: <stable+bounces-222917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCt5Kj4bp2m+dgAAu9opvQ
-	(envelope-from <stable+bounces-222917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 18:32:46 +0100
+	id mG8uJOckp2mrewAAu9opvQ
+	(envelope-from <stable+bounces-222918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 19:13:59 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE211F4A6F
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 18:32:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1C31F5198
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 19:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D09D3015D24
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 17:32:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CDCA630AAC4D
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 18:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E99F428499;
-	Tue,  3 Mar 2026 17:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666903537C4;
+	Tue,  3 Mar 2026 18:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PKZ7IED+"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Zna36l6P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E833E7162
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 17:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E49381B19;
+	Tue,  3 Mar 2026 18:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772559163; cv=none; b=JP78lR20CGm3ZnGbiAyaxvOJpvBUCtIvtBHsjDk+MR9pupIAlm7u5cdyjeTi0SGP1BBXUBUMRSzrmIJLvV9jqmN87Qx3r9ecfp/d7Ufjz0PCjXW61Cy4X8DphCXFX7jwgDvMqULVfuAvhig+yL1EzLNYVVvclSe9ako5bIgxSQE=
+	t=1772561461; cv=none; b=cVZLDVcz49xReQXQ9yyhhvoiSFJ+k5lvQniEQKTowIasbkUnYQGaFqxzPrASZGzXB1cFghdi8PVudVhp/R4dGIgNgdEoBe9RFicMPir2l41Hiy5NmfreFo4dSqrQlRoQOnVZ7nqwW3LbcEm2lTwJ5xtEQTxVXc1+hboBZEjCz+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772559163; c=relaxed/simple;
-	bh=QSLfbdC0sQ6OKC02upcBtCsQq8vNKhZu69qDiniK9ck=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fHqNbtRGGU8UanwO0ItEPh1+YXTDIoUOUPJ7hiBIc6ptrWvmA+NyN0mWtpqRHtyEnHfC90njH/I+SARIdaf0u2VlqqsQcwjCQoS9XqSndCwVYtjEq4sM06Xzb0YLcrLMZLGgvL3eFxFcf7Zkvc9CRS5YsZpi3rJarYjSSi5fF2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PKZ7IED+; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-483abed83b6so49755565e9.0
-        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 09:32:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772559160; x=1773163960; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MsWzxLM40+G5660pg9qYSB4crP9FXQmc2eGQLniMFbc=;
-        b=PKZ7IED+XFvhfCa+KHo+vDWcqJpVpkR9+TSZnfYebxicBGuut7s/Nk+gmjFsqTYvob
-         FA/NQRzJPgtp8BvtaAYX6VzINBmMCnHnYTjay/jOtncwqUy0U6FQZDS/9DzhrT+EFq/P
-         UdwsOK49zVQRjo3ZZeddvz8XLpdbJ7K4e+t1Xapz8yk8TCph/O8kq0ZHIQ5qgS8W/9/G
-         g8zstyXk9JyQaX5hVxJQ68XsIxP85Kzqenl4exflMwy4HIp68pyyy3TngzyqKGkc4fCU
-         6J0nQqRZWlPFirq/no2NTVaQ7aAvFnbmVP3gF5QSwbUN4vODeuqh/Un1erlf8erSkgxY
-         HuEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772559160; x=1773163960;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MsWzxLM40+G5660pg9qYSB4crP9FXQmc2eGQLniMFbc=;
-        b=CmPERpEcGt8X4tuk0/XSiaX802oCO+RpWo8ascPdOQtQHu0CJJZ1JAHim5yEmJJw/L
-         uBSfF7hXFUhp+uuu191/F7Wtf6t7/jXg75DJ0Nu4rxZK32AiB6j3Ui/l/Al5KegvRsUz
-         WJ6PkxbA1DCJnClUcp4oBEmGvCPeE1CPAW7jBIQMiJZyA8ZPQ6cP+vvZySnIKG0rlmZO
-         uy2zcTHWGX8vK9fjHtZkqNxpV7GYCGsw9ExW6tXW7PS/wlOuhI5yQhtk5IKZKw+QySn0
-         cxt8f5+ACW6F1eXhWbCThzNQWTuPQp7BdEh3tA2C9LdCfXPJhcZOrtfuPsbcos4Ktr+Z
-         EXnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMdMCjdfOAw2cYNYOtHjQN7IZIxT3FWHLYdPSXIQq0Rks8oqI0bYOqoxnubQo/emqi49dYjI0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypcFrX56RKKSojj2ht3WgU2Lr/Yzip6NMBn7ymGU9ZL/kzA91O
-	hTQT0KOtZCaP+piwu9DYu2WS9sxXfFaWBilRjNu4nYFB3uwWcjGwwA0j
-X-Gm-Gg: ATEYQzyqXKTJbEMx2pQuK8ubcgUmxn+9pMdTTMepLJ9aRAnJhTP1U/6vxxVD48RP0Bw
-	NXOMjPZBvrxSuXYP/bmQAVckmUCnskbsxULFF+AbN39NCDsEN8tY/Osx189pky9q96l6bKZOzyT
-	UiPMzoJWqln/odJZG8pL3OBKE9WYPYskTu8Fv4tAPVAXSrNStyf1WTK36We8+XlnY98alRjQoGu
-	dGSvWjh3K1WC0o77ivmiyDjN8Cj//qCvJUKC4HH4m/idfPKdXp2nNFNQz+Ba5EYvXbgk504FoEt
-	31wRtSUH+BWF4uZbgHwRkFUmQlVrV2tOTnIOKOiQaQ0TU7TC8Vafxh6ladlQ1TvxJu4+wDNYhKP
-	voiIKphJ4avOl6HnTAz1h7W2oNVzcB5Fg8P2ge94Ryysh39Ktj1y0CJXJBLTmvrtlsYrsmJsK+1
-	4312Z62BOZDs35RIAkIinONEKdky27JnjN/X3LVGZV
-X-Received: by 2002:a05:600c:674f:b0:477:df7:b020 with SMTP id 5b1f17b1804b1-483c9bde826mr284998005e9.18.1772559160210;
-        Tue, 03 Mar 2026 09:32:40 -0800 (PST)
-Received: from holly.home.arpa ([2a03:ab00:1000:1b60:331a:b316:78f6:effc])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485133a9511sm24583545e9.17.2026.03.03.09.32.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 09:32:39 -0800 (PST)
-Message-ID: <ce07b65b86473acac101c4854f6201d05597d48c.camel@gmail.com>
-Subject: Re: [REGRESSION] 6.19.4 stable netfilter / nftables [resolved]
-From: Jindrich Makovicka <makovick@gmail.com>
-To: Thorsten Leemhuis <regressions@leemhuis.info>, Genes Lists
-	 <lists@sapience.com>, Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, coreteam@netfilter.org, 
-	netfilter-devel@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>, 
-	stable@vger.kernel.org, regressions@lists.linux.dev, "Kris Karas (Bug
- Reporting)" <bugs-a21@moonlit-rail.com>
-Date: Tue, 03 Mar 2026 18:32:39 +0100
-In-Reply-To: <d43b9da4-99ee-4516-9bec-71a9de19618e@leemhuis.info>
-References: <a529a6a9a2755d45765f20b58c5c11e2f790eacb.camel@sapience.com>
-	 <45f03b0b-fe8f-4942-bad1-3fbde03d4be1@leemhuis.info>
-	 <143e1a402ad78dd7076516a6ceb637f378310b16.camel@sapience.com>
-	 <10537f2b74da2b8a5cb8dc939f723291db39ff84.camel@sapience.com>
-	 <2026022755-quail-graveyard-93e8@gregkh>
-	 <b231fcdb6c66a7b24dcef3ee5c35c5f612d5c1a7.camel@sapience.com>
-	 <9d110d860c0c7e110d018ea53a7666eba275da20.camel@gmail.com>
-	 <d43b9da4-99ee-4516-9bec-71a9de19618e@leemhuis.info>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-8 
+	s=arc-20240116; t=1772561461; c=relaxed/simple;
+	bh=53i/XZAjHGA24741EyVUcWYyfZWJmWGjQJI796laGzQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=As76VZraSq864dxAw9R71e3RO9WgMA5Hykt0xkeXR9SJrTMv3r4LhjLqNgaftBwbb6Zf6sbBALxvAW+DGbkbTiCdciom/I2ytWuoF081Tmr2ZkSWEaG54I5gNtHEnzOOYUKEtujNEMtwlrQZCaNu6retB6PLK6GH4XSwoxpAoSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Zna36l6P; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 623HoAqb2195050;
+	Tue, 3 Mar 2026 18:10:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=L2LHrsemULEsqnbGy
+	qiLNGsmzhpvsmzpfw3jM+jbaB8=; b=Zna36l6Pcik9HfgaLe/QhRRQZNxzvYRzy
+	z1bCDf5TCirSzvxPNPd6B+TBGcsPz4n5H0WBjPp72vLLmEB7uBMyV/VzhJLdvHty
+	flJKZRyzWTO77CY/TxUWjfKTjfaAqo33YpExSVm0ebuzi0oUIe9w2REsqEfK84Ql
+	oYiLO/wB/q+8YS5UUsI/I1z7EiGXQ1c5m1X2ET7kIzibkmh1EaIB5XugbguPoYXL
+	F1r6SWpndvAfjLwGIHPBTa0PVZcnq0P9RCan2VnohU7dJCo8gkg+AWxzgBSMf1go
+	KdBPcQoFLDrHqJB9sVfDj0azOBaxrhNNEnmqmDzI+MK2jxzD0+zUQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksk3v080-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Mar 2026 18:10:41 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 623HiAju003200;
+	Tue, 3 Mar 2026 18:10:40 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cmb2y3m64-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Mar 2026 18:10:40 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 623IAamp43974930
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 3 Mar 2026 18:10:36 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA68120043;
+	Tue,  3 Mar 2026 18:10:36 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8880220040;
+	Tue,  3 Mar 2026 18:10:34 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.53.81])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  3 Mar 2026 18:10:34 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: bpf@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+        Abhishek Dubey <adubey@linux.ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>, stable@vger.kernel.org
+Subject: [PATCH v4 1/6] powerpc64/bpf: do not increment tailcall count when prog is NULL
+Date: Tue,  3 Mar 2026 23:40:25 +0530
+Message-ID: <20260303181031.390073-2-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260303181031.390073-1-hbathini@linux.ibm.com>
+References: <20260303181031.390073-1-hbathini@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 2CE211F4A6F
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AJWLkOaVvh5g-7a2itJhQB3zYnvKYhv7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDE0NiBTYWx0ZWRfX3nunO8qMLZW8
+ JEle+hp9fUKe9WyUUqyQw/J4OpYv/kA1FmT0TBrTvowaua8503adQ0YvJOdwdx/aWRG7kcT5BQy
+ UCiR/av+P708ndW+bsuEYXpi7gF0EErLRLIo3w1hkTnZ2+RoG3XLSukEkLFyCq8ufhbyrBUd95O
+ GgGYtqfRiSMBroDlk8P/+xY2FdKfar8dBj1Fc97Uhjpul7mUL42zt6PawmbF3trxDAMxaAkqDnp
+ XqJ9moFHtn7bcffsEkiEoFsRm9L00UT7VXh5zlEvniwuEzqaTbX/Q2oZluPku807wXjSlDk7rqR
+ /xGM8Ub8kRq/XbaniSZ6vwkArVodj5quvas2P7hWC0ySPKvytm1WdR9gMhP3we4at1hdRzjx58B
+ oTVJM2zvY0Oln09za32H+dZlkmdYz5+lraAAIsp/TmTVQheARoAJMhC9IWzSvN8ALOoXsobh5Qi
+ 8AjVEY6yyUj8Np7f7ug==
+X-Authority-Analysis: v=2.4 cv=csCWUl4i c=1 sm=1 tr=0 ts=69a72421 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=Soa85jDk8zDDq4EPMLkA:9
+X-Proofpoint-GUID: AJWLkOaVvh5g-7a2itJhQB3zYnvKYhv7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-03_02,2026-03-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 bulkscore=0 phishscore=0 spamscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603030146
+X-Rspamd-Queue-Id: 3C1C31F5198
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-222917-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222918-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hbathini@linux.ibm.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[makovick@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Action: no action
 
-On Tue, 2026-03-03 at 08:31 +0100, Thorsten Leemhuis wrote:
-> On 3/3/26 08:00, Jindrich Makovicka wrote:
-> > On Fri, 2026-02-27 at 08:39 -0500, Genes Lists wrote:
-> > > On Fri, 2026-02-27 at 05:17 -0800, Greg KH wrote:
-> > > > On Fri, Feb 27, 2026 at 08:12:59AM -0500, Genes Lists wrote:
-> > > > > On Fri, 2026-02-27 at 07:23 -0500, Genes Lists wrote:
-> > > > > > On Fri, 2026-02-27 at 09:00 +0100, Thorsten Leemhuis wrote:
-> > > > > > > Lo!
-> > > > > > >=20
-> > > > > >=20
-> > > > > > Repeating the nft error message here for simplicity:
-> > > > > >=20
-> > > > > > =C2=A0Linux version 7.0.0-rc1-custom-1-00124-g3f4a08e64442 ...
-> > > > > > =C2=A0 ...
-> > > > > > =C2=A0 In file included from /etc/nftables.conf:134:2-44:
-> > > > > > =C2=A0 ./etc/nftables.d/set_filter.conf:1746:7-21: Error:
-> > > > > > =C2=A0 Could not process rule: File exists
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xx.xxx.xxx.x/23,
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^^^^^^
-> > > > > >=20
-> > > > >=20
-> > > > > Resolved by updating userspace.
-> > > > >=20
-> > > > > I can reproduce this error on non-production machine and
-> > > > > found
-> > > > > this
-> > > > > error is resolved by re-bulding updated nftables, libmnl and
-> > > > > libnftnl:
-> > > > >=20
-> > > > > With these versions nft rules now load without error:
-> > > > >=20
-> > > > > =C2=A0- nftables commit de904e22faa2e450d0d4802e1d9bc22013044f93
-> > > > > =C2=A0- libmnl=C2=A0=C2=A0 commit 54dea548d796653534645c6e3c8577e=
-af7d77411
-> > > > > =C2=A0- libnftnl commit 5c5a8385dc974ea7887119963022ae988e2a16cc
-> > > > >=20
-> > > > > All were compiled on machine running 6.19.4.
-> > > >=20
-> > > > Odd, that shouldn't be an issue, as why would the kernel
-> > > > version
-> > > > you
-> > > > build this on matter?
-> > > >=20
-> > > > What about trying commit f175b46d9134 ("netfilter: nf_tables:
-> > > > add
-> > > > .abort_skip_removal flag for set types")?
-> > > >=20
-> > > > thanks,
-> > > >=20
-> > > > greg k-h
-> > >=20
-> > > - all were rebuilt from git head=C2=A0
-> > > =C2=A0 Have not had time to explore what specific change(s)
-> > > =C2=A0 triggered the issue yet.
-> > >=20
-> > > - commit f175b46d9134
-> > > =C2=A0 I can reproduce on non-production machine - will check this an=
-d
-> > > report back.
-> >=20
-> > I had a similar problem, solved by reverting the commit below. It
-> > fails
-> > only with a longer set. My wild guess is a closed interval with
-> > start
-> > address at the=C2=A0 end of a chunk and end address at the beginning of
-> > the
-> > next one gets misidentified as an open interval.
-> >=20
-> > commit 12b1681793e9b7552495290785a3570c539f409d
-> > Author: Pablo Neira Ayuso <pablo@netfilter.org>
-> > Date:=C2=A0=C2=A0 Fri Feb 6 13:33:46 2026 +0100
-> >=20
-> > =C2=A0=C2=A0=C2=A0 netfilter: nft_set_rbtree: validate open interval ov=
-erlap
-> >=20
-> > Example set definition is here:
-> >=20
-> > https://bugzilla.kernel.org/show_bug.cgi?id=3D221158
->=20
-> Does that problem happen with 7.0-rc2 as well? This is important to
-> know
-> to determine if this is a general problem or a backporting problem.
->=20
+Do not increment tailcall count, if tailcall did not succeed due to
+missing BPF program.
 
-Yes, the same problem shows up with 7.0-rc2. I updated the bugzilla
-attachment to reproduce the bug just by feeding it to nft,
+Fixes: ce0761419fae ("powerpc/bpf: Implement support for tail calls")
+Cc: stable@vger.kernel.org
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+---
 
-# uname -a
-Linux holly 7.0.0-rc2 #25 SMP PREEMPT_DYNAMIC Tue Mar  3 18:17:21 CET
-2026 x86_64 GNU/Linux
-# nft -f test-full.nft
-test-full.nft:1643:1-25: Error: Could not process rule: File exists
-12.14.179.24-12.14.179.31,
-^^^^^^^^^^^^^^^^^^^^^^^^^
+* No changes in v4.
 
-Regards,
---=20
-Jindrich Makovicka
+Changes in v3:
+- Added Tested-by tag from Venkat.
+
+
+ arch/powerpc/net/bpf_jit_comp64.c | 39 +++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 18 deletions(-)
+
+diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+index b1a3945ccc9f..44ce8a8783f9 100644
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -522,9 +522,30 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
+ 
+ 	/*
+ 	 * tail_call_info++; <- Actual value of tcc here
++	 * Writeback this updated value only if tailcall succeeds.
+ 	 */
+ 	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), 1));
+ 
++	/* prog = array->ptrs[index]; */
++	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_2), b2p_index, 8));
++	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2), b2p_bpf_array));
++	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			offsetof(struct bpf_array, ptrs)));
++
++	/*
++	 * if (prog == NULL)
++	 *   goto out;
++	 */
++	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_2), 0));
++	PPC_BCC_SHORT(COND_EQ, out);
++
++	/* goto *(prog->bpf_func + prologue_size); */
++	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			offsetof(struct bpf_prog, bpf_func)));
++	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			  FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
++	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_2)));
++
+ 	/*
+ 	 * Before writing updated tail_call_info, distinguish if current frame
+ 	 * is storing a reference to tail_call_info or actual tcc value in
+@@ -539,24 +560,6 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
+ 	/* Writeback updated value to tail_call_info */
+ 	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_2), 0));
+ 
+-	/* prog = array->ptrs[index]; */
+-	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_1), b2p_index, 8));
+-	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), b2p_bpf_array));
+-	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_array, ptrs)));
+-
+-	/*
+-	 * if (prog == NULL)
+-	 *   goto out;
+-	 */
+-	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_1), 0));
+-	PPC_BCC_SHORT(COND_EQ, out);
+-
+-	/* goto *(prog->bpf_func + prologue_size); */
+-	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_prog, bpf_func)));
+-	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1),
+-			FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
+-	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_1)));
+-
+ 	/* tear down stack, restore NVRs, ... */
+ 	bpf_jit_emit_common_epilogue(image, ctx);
+ 
+-- 
+2.53.0
+
 
