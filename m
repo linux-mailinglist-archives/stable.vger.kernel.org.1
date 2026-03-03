@@ -1,132 +1,331 @@
-Return-Path: <stable+bounces-222928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222929-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aORDGrQvp2mbfgAAu9opvQ
-	(envelope-from <stable+bounces-222928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 20:00:04 +0100
+	id SJuwIDwwp2mbfgAAu9opvQ
+	(envelope-from <stable+bounces-222929-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 20:02:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F421F5924
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 20:00:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE7E1F597E
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 20:02:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 173BB3015BA0
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 19:00:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AD99D3016161
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 19:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99CF372686;
-	Tue,  3 Mar 2026 18:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D71B3EB81E;
+	Tue,  3 Mar 2026 19:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="W3709tWX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMxWhasc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F6E372660
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 18:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D81370D59;
+	Tue,  3 Mar 2026 19:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772564398; cv=none; b=bCl4D4qP6bb3GIyESrc1Bzh1QS0UpCjeJ23top/jTelBjns2aQ8ySQXcDhVgVAirv5U4UYlBZ7ETqwWO7GcNLuZjwUtkoTWCQbkYnre2dMrpIVhsc8y4HTUzmxy5CejcjM6o/DyoWjzhbX056hEucqljSr1DeG/iMu3AnL/5SQ4=
+	t=1772564533; cv=none; b=uYmomBX6GM20KNAzwl0hFYAstsTkHlXhes+n0VGY6e/43ZzGZraSBTkPbEJzuLuKfXF6RDP0mS+4WEU6WlkUQOsLW2lZONyjhEx7Z5J/9vSytSdXAccvQMLgI2pCXdhAO5gwHh1fqUw1m3Ccq7B8pxiqCoMR1/TBqK85cgCguk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772564398; c=relaxed/simple;
-	bh=BfFrU8BLbRUEeBUOMlyhEeh7so913/pxTD5+6n1SOvs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lqlu8pCX6Wm1xvTPnZrSlticC1+MIxV3nqyYx1McUYJUpDrCfCUAqSGyh+1uqzZKSmVax+W6pF2GOJEJ/xl/9HjWmbSooPlKw+Wuc+cIXw00cIaRZDKRv1qnnMRoJh0QTkOk787OF6ETzQhBimRHVMpD/Che2r7glBIMM9GNkSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=W3709tWX; arc=none smtp.client-ip=157.90.84.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
-Received: from wse-pc.fritz.box (i5C75F679.versanet.de [92.117.246.121])
-	(Authenticated sender: wse@tuxedocomputers.com)
-	by mail.tuxedocomputers.com (Postfix) with ESMTPA id 7B6C72FC004D;
-	Tue,  3 Mar 2026 19:59:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
-	s=default; t=1772564386;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bW42MD6vGYDjr/KZYupD2d9rhpFef+425fwIxaBxD2Y=;
-	b=W3709tWX741d+wKnzuMTbiFAWGsb1pOIfOMByZo8iVNNQHBIJUGkJD8jnU0OkhoyaieJm7
-	m1uY8HCjFYMakhavYF9r26eeQtZy6rR7xt7u1JRybrxjatmXefDf24nUO6jF+Kb7XkT7OH
-	FG/7WFvjoU15wCdPj/snyezc/VijezU=
-Authentication-Results: mail.tuxedocomputers.com;
-	auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
-From: Werner Sembach <wse@tuxedocomputers.com>
-To: stable@vger.kernel.org
-Cc: Aaron Erhardt <aer@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>
-Subject: [PATCH] ALSA: hda/hdmi: Add quirk for TUXEDO IBS14G6
-Date: Tue,  3 Mar 2026 19:56:28 +0100
-Message-ID: <20260303185944.48669-1-wse@tuxedocomputers.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1772564533; c=relaxed/simple;
+	bh=8lrEYpDqphagbOWRYcKc9v3Ts+2jzwCXe6rtOfOgP+Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ohcq0rD5Ifv4ylu06L1BvO5/8+Fw077dkjOQCpcPW+edt6AvAUChEc5/hdH6g3Ro54addKNprCdf1lRQabBCMy1b8zNz8ZuZzk33WXTmJQYATlrCn+5AnCBdXY5Zk0eyMn4+QnFb9ZL30MfqJjx6joTqL97J4UDXFgzkzuk0u1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMxWhasc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D61C116C6;
+	Tue,  3 Mar 2026 19:02:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772564533;
+	bh=8lrEYpDqphagbOWRYcKc9v3Ts+2jzwCXe6rtOfOgP+Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=SMxWhascs3z9BbBS5JcQ8eDSG+recMumEhSKFV11mxcZXtw68I7LqGZSXZyv4EHQl
+	 Qd7tu13yjkmfZhPFf0vzXsETfRhWcY+qkukjjaRSpWC8REHZfFNGgwH2XITJ+4HSGN
+	 5oSl3r4k5idKu+gb6ALcBmY51uL3oeXHs3fpIGCBaSl4WfzKlZF9ifNL+tmX/Zp8oD
+	 /WNm4IMkZYgXOEeQOXTqfrxYTRyLhuztuJprMIB0oyb9FY/iaJt/0/6cSvo6DezhQv
+	 fT2rw4ccRZQm8XofeXLMfBEY31kMPFA5CjgpWYKT02LGqOo8nah9rxJouVgANaGxVA
+	 UKnjVlUnA6VZA==
+Date: Tue, 3 Mar 2026 13:02:11 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Chengwen Feng <fengchengwen@huawei.com>
+Cc: linux-pci@vger.kernel.org, bhelgaas@google.com,
+	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+	wei.huang2@amd.com, Eric.VanTassell@amd.com,
+	jonathan.cameron@huawei.com, wangzhou1@hisilicon.com,
+	wanghuiqiang@huawei.com, liuyonglong@huawei.com,
+	stable@vger.kernel.org, Jeremy Linton <jeremy.linton@arm.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Sunil V L <sunilvl@oss.qualcomm.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Liupu Wang <wangliupu@loongson.cn>
+Subject: Re: [PATCH] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
+Message-ID: <20260303190211.GA4059782@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 65F421F5924
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303003625.39035-1-fengchengwen@huawei.com>
+X-Rspamd-Queue-Id: 8EE7E1F597E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[tuxedocomputers.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[tuxedocomputers.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222928-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wse@tuxedocomputers.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-222929-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[tuxedocomputers.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,tuxedocomputers.com:dkim,tuxedocomputers.com:email,tuxedocomputers.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,huawei.com:email]
 X-Rspamd-Action: no action
 
-From: Aaron Erhardt <aer@tuxedocomputers.com>
+[+cc Jeremy, Sunil, Huacai, Liupu, authors of get_acpi_id_for_cpu()
+for arm64, riscv, loongson]
 
-[ Upstream commit d649c58bcad8fb9b749e3837136a201632fa109d ]
+On Tue, Mar 03, 2026 at 08:36:25AM +0800, Chengwen Feng wrote:
+> Currently the pcie_tph_get_cpu_st() has a problem on ARM64 platform:
+> 1. The pcie_tph_get_cpu_st() function directly uses cpu_uid as the input
+>    parameter to call the PCI ACPI DSM method. According to the DSM
+>    definition, the input value should be the ACPI Processor UID. For
+>    details, please see [1].
+>
+> 2. In the Broadcom driver implementation [2] (which invoke
+>    pcie_tph_get_cpu_st()), cpu_uid is obtained based on
+>    cpumask_first(irq->cpu_mask), that is the logical ID of a CPU core,
+>    which is generated and managed by the kernel. For example, [0,255]
+>    if the system has 256 logical CPU cores.
+> 3. Unfortunately, on ARM64 platform, ACPI assigns Processor UID to the
+>    core which listed in the MADT table, the Processor UID may not equal
+>    the logical ID of a CPU core in the kernel. So the current
+>    implementation cannot obtain the cpu's real steer-tag in such case.
+> 4. The reason why it can run on the AMD platform is that the mapping
+>    between the logical ID and ACPI Processor UID is similar.
+> 
+> This commit fixes it by:
+> 1. Introduce config ARCH_HAS_GET_CPU_ACPI_ID_API and its corresponding
+>    API acpi_get_cpu_acpi_id() to obtain the ACPI Processor UID of a CPU
+>    core. This API invokes get_acpi_id_for_cpu() to obtain the UID on
+>    ARM64 platform.
+> 2. Because using the logical ID as the ACPI Processor UID directly on
+>    X86 platform is not standard. This commit uses cpu_acpi_id() to
+>    obtain the UID.
+> 3. At the same time, the input parameter cpu_uid of
+>    pcie_tph_get_cpu_st() is renamed to cpu for clarity.
 
-Depending on the timing during boot, the BIOS might report wrong pin
-capabilities, which can lead to HDMI audio being disabled. Therefore,
-force HDMI audio connection on TUXEDO InfinityBook S 14 Gen6.
+Thanks for raising this issue!
 
-Signed-off-by: Aaron Erhardt <aer@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260218213234.429686-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
----
-Change from upstream commit: The file was renamed sometime after v6.12.
-There is already a pending patch for 6.18.y and 6.19.y. This is for all
-stable released including 6.12.y and before with the old filename.
+TLP Processing Hints (TPH) and Steering Tags are generic PCIe features
+that we should support for both ACPI and non-ACPI systems.
 
- sound/pci/hda/patch_hdmi.c | 1 +
- 1 file changed, 1 insertion(+)
+The current implementation of pcie_tph_get_cpu_st() only supports
+ACPI, and it assumes the cpu_uid parameter is an ACPI CPU UID that can
+be passed directly to the _DSM.  But since we want this to be a
+generic interface, I think the "cpu" parameter should be the Linux
+logical CPU ID, not an ACPI UID, as you point out.
 
-diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
-index 70a90117361c5..a5ebd2a9a1116 100644
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -1999,6 +1999,7 @@ static const struct snd_pci_quirk force_connect_list[] = {
- 	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
- 	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
- 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
-+	SND_PCI_QUIRK(0x1558, 0x14a1, "TUXEDO InfinityBook S 14 Gen6", 1),
- 	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
- 	{}
--- 
-2.43.0
+> [1] According to the _DSM ECN, the input is defined as: "If the target
+>     is a processor, then this field represents the ACPI Processor
+>     UID of the processor as specified in the MADT. If the target is
+>     a processor container, then this field represents the ACPI
+>     Processor UID of the processor container as specified in the
+>     PPTT."
 
+This needs a specific spec citation for the _DSM function.  Ideally it
+would be "PCI Firmware spec r3.3, sec xx", but I don't think there's a
+revision of the spec that includes this ECN.  But we can at least
+include the actual name and URL for the approved ECN.
+
+> [2] commit c214410c47d6e ("bnxt_en: Add TPH support in BNXT driver")
+> 
+> Fixes: d2e8a34876ce ("PCI/TPH: Add Steering Tag support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+> ---
+>  Documentation/PCI/tph.rst     |  4 ++--
+>  drivers/acpi/Kconfig          |  8 ++++++++
+>  drivers/acpi/processor_core.c | 13 +++++++++++++
+>  drivers/pci/tph.c             | 13 +++++++------
+>  include/linux/acpi.h          |  4 ++++
+>  include/linux/pci-tph.h       |  4 ++--
+>  6 files changed, 36 insertions(+), 10 deletions(-)
+> 
+> diff --git a/Documentation/PCI/tph.rst b/Documentation/PCI/tph.rst
+> index e8993be64fd6..b6cf22b9bd90 100644
+> --- a/Documentation/PCI/tph.rst
+> +++ b/Documentation/PCI/tph.rst
+> @@ -79,10 +79,10 @@ To retrieve a Steering Tag for a target memory associated with a specific
+>  CPU, use the following function::
+>  
+>    int pcie_tph_get_cpu_st(struct pci_dev *pdev, enum tph_mem_type type,
+> -                          unsigned int cpu_uid, u16 *tag);
+> +                          unsigned int cpu, u16 *tag);
+>  
+>  The `type` argument is used to specify the memory type, either volatile
+> -or persistent, of the target memory. The `cpu_uid` argument specifies the
+> +or persistent, of the target memory. The `cpu` argument specifies the
+>  CPU where the memory is associated to.
+>  
+>  After the ST value is retrieved, the device driver can use the following
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index df0ff0764d0d..9d851a017cd1 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -606,6 +606,14 @@ config ACPI_PRMT
+>  	  substantially increase computational overhead related to the
+>  	  initialization of some server systems.
+>  
+> +config ARCH_HAS_GET_CPU_ACPI_ID_API
+> +	bool "Architecture supports get cpu's ACPI Processor UID"
+> +	depends on (X86 || ARM64)
+> +	default y
+> +	help
+> +	  This config indicates whether the architecture provides a standard
+> +	  API to get ACPI Processor UID of a cpu from MADT table.
+> +
+>  endif	# ACPI
+>  
+>  config X86_PM_TIMER
+> diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
+> index a4498357bd16..6150f5bdb62e 100644
+> --- a/drivers/acpi/processor_core.c
+> +++ b/drivers/acpi/processor_core.c
+> @@ -335,6 +335,19 @@ int acpi_get_cpuid(acpi_handle handle, int type, u32 acpi_id)
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_get_cpuid);
+>  
+> +#ifdef CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API
+> +unsigned int acpi_get_cpu_acpi_id(unsigned int cpu)
+> +{
+> +	if (cpu >= nr_cpu_ids)
+> +		return 0;
+> +#ifdef CONFIG_X86
+> +	return cpu_acpi_id(cpu);
+> +#elif CONFIG_ARM64
+> +	return get_acpi_id_for_cpu(cpu);
+> +#endif
+> +}
+> +#endif /* CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API */
+> +
+>  #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
+>  static int get_ioapic_id(struct acpi_subtable_header *entry, u32 gsi_base,
+>  			 u64 *phys_addr, int *ioapic_id)
+> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> index ca4f97be7538..a47c2fbb6148 100644
+> --- a/drivers/pci/tph.c
+> +++ b/drivers/pci/tph.c
+> @@ -236,18 +236,19 @@ static int write_tag_to_st_table(struct pci_dev *pdev, int index, u16 tag)
+>   * with a specific CPU
+>   * @pdev: PCI device
+>   * @mem_type: target memory type (volatile or persistent RAM)
+> - * @cpu_uid: associated CPU id
+> + * @cpu: associated CPU id
+>   * @tag: Steering Tag to be returned
+>   *
+>   * Return the Steering Tag for a target memory that is associated with a
+> - * specific CPU as indicated by cpu_uid.
+> + * specific CPU as indicated by cpu.
+>   *
+>   * Return: 0 if success, otherwise negative value (-errno)
+>   */
+>  int pcie_tph_get_cpu_st(struct pci_dev *pdev, enum tph_mem_type mem_type,
+> -			unsigned int cpu_uid, u16 *tag)
+> +			unsigned int cpu, u16 *tag)
+>  {
+> -#ifdef CONFIG_ACPI
+> +#ifdef CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API
+> +	unsigned int cpu_uid = acpi_get_cpu_acpi_id(cpu);
+
+Any required conversion between Linux logical CPU and ACPI CPU UID
+should be internal to pcie_tph_get_cpu_st(), as you're doing here.
+
+But rather than adding CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API and the
+ifdefs in acpi_get_cpu_acpi_id(), I think there should be a generic
+ACPI interface that converts logical CPU ID to ACPI UID, and every
+arch supporting ACPI should have to implement it.
+
+We already have get_acpi_id_for_cpu(), implemented for arm64, riscv,
+and loongarch:
+
+  30d87bfacbee ("arm64/acpi: Create arch specific cpu to acpi id helper")
+  f99561199470 ("RISC-V: ACPI: Cache and retrieve the RINTC structure")
+  f6f0c9a74a48 ("LoongArch: Add SMT (Simultaneous Multi-Threading) support")
+
+What if we just implemented it for x86 as well and moved it to
+include/linux/acpi.h or similar?
+
+>  	struct pci_dev *rp;
+>  	acpi_handle rp_acpi_handle;
+>  	union st_info info;
+> @@ -265,9 +266,9 @@ int pcie_tph_get_cpu_st(struct pci_dev *pdev, enum tph_mem_type mem_type,
+>  
+>  	*tag = tph_extract_tag(mem_type, pdev->tph_req_type, &info);
+>  
+> -	pci_dbg(pdev, "get steering tag: mem_type=%s, cpu_uid=%d, tag=%#04x\n",
+> +	pci_dbg(pdev, "get steering tag: mem_type=%s, cpu=%d, tag=%#04x\n",
+>  		(mem_type == TPH_MEM_TYPE_VM) ? "volatile" : "persistent",
+> -		cpu_uid, *tag);
+> +		cpu, *tag);
+>  
+>  	return 0;
+>  #else
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 4d2f0bed7a06..789bfcb8e0f3 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -324,6 +324,10 @@ int acpi_unmap_cpu(int cpu);
+>  
+>  acpi_handle acpi_get_processor_handle(int cpu);
+>  
+> +#ifdef CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API
+> +unsigned int acpi_get_cpu_acpi_id(unsigned int cpu);
+> +#endif
+> +
+>  #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
+>  int acpi_get_ioapic_id(acpi_handle handle, u32 gsi_base, u64 *phys_addr);
+>  #endif
+> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+> index ba28140ce670..be68cd17f2f8 100644
+> --- a/include/linux/pci-tph.h
+> +++ b/include/linux/pci-tph.h
+> @@ -25,7 +25,7 @@ int pcie_tph_set_st_entry(struct pci_dev *pdev,
+>  			  unsigned int index, u16 tag);
+>  int pcie_tph_get_cpu_st(struct pci_dev *dev,
+>  			enum tph_mem_type mem_type,
+> -			unsigned int cpu_uid, u16 *tag);
+> +			unsigned int cpu, u16 *tag);
+>  void pcie_disable_tph(struct pci_dev *pdev);
+>  int pcie_enable_tph(struct pci_dev *pdev, int mode);
+>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+> @@ -36,7 +36,7 @@ static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
+>  { return -EINVAL; }
+>  static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
+>  				      enum tph_mem_type mem_type,
+> -				      unsigned int cpu_uid, u16 *tag)
+> +				      unsigned int cpu, u16 *tag)
+>  { return -EINVAL; }
+>  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
+>  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
+> -- 
+> 2.17.1
+> 
 
