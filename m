@@ -1,336 +1,249 @@
-Return-Path: <stable+bounces-222827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHvAGdmcpmlqRwAAu9opvQ
-	(envelope-from <stable+bounces-222827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:33:29 +0100
+	id WB+TGIudpmlqRwAAu9opvQ
+	(envelope-from <stable+bounces-222828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:36:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FFA1EAD5F
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:33:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2BE1EADE5
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B6D03024454
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 08:33:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2278E301DBBE
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 08:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BE538552F;
-	Tue,  3 Mar 2026 08:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133DF386449;
+	Tue,  3 Mar 2026 08:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="QSpth2Ew"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fjWfddy0"
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D123631716B;
-	Tue,  3 Mar 2026 08:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95CA1E5205;
+	Tue,  3 Mar 2026 08:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772526804; cv=none; b=gCQ0efDM4XOgr8CBIxeNXK/NkovJRrro11A7GUPtxK9FiQc5Jnx1ayBbqQuGtF43i9xqHT1HQyVAAIFlKZtz9zn/6P7n61aFfhIxMhvAmhlJCcKzBoYi8lN07a52FsCVJ0q0miq/TscLpbH63Hd8SRjOhpE0bykXHkNo4ccrLgk=
+	t=1772526981; cv=none; b=dX9vNZFRjagy2/Gkpil+ctKC4aWXaayLdznqtA/xZv6KgMlRT0je+Z43p3+7bZd/OBByhzqi63S5ChKaOuOLZFKPU2PyE3/KSxpeLZYIGQ7761HxiI2u6ZGuvvAsrSU7KLPcTLPhmjxN52b2REFZYEWnSXLilmnGWVBrvX8yozw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772526804; c=relaxed/simple;
-	bh=K7uRyUn/m0s5FMTXG48hrxNnmaoHPRiIuADnDuTZbsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZZzfMy/LdiuTKhqdgQqjwW1U/+sC/uyia0jAnxX3jXsPs4PVafjg74M+2U3ofjhx9rrBlEAlYaXllHGCaG3gNUqSZ0g5qjhSoXs19p2r4qdODtNBI99E+YRbAMFTauD8NyfILHj7GPaauZ0ZeHF25FTAt8a310IL+YNzfKxb7m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=QSpth2Ew; arc=none smtp.client-ip=89.208.246.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
-	s=default; t=1772526793;
-	bh=xF97roPctHZnLD2rCQPN6qIo2wFyTHqYmxzPCTCKw/I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=QSpth2Ew/XnhRu2EbSMVM2MifrEIrwSrD8LDHBGxves6tegesNY5k68yIJm7G2QGO
-	 cS3Ff02jrQZ9My8Gd4PQcS/pcnYruBzJ8F/fmTu1Y32ttCMtRWUsvdmJXfvbFz5CBt
-	 eqGWj6qZ6QAVV/s3BTvTp5d5fNGu80ysBOvxUP60=
-Received: from stargazer (unknown [IPv6:2409:8a4c:e11:4510:818c:b334:624:49f8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 28277674A2;
-	Tue,  3 Mar 2026 03:33:03 -0500 (EST)
-From: Xi Ruoyao <xry111@xry111.site>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Jinyang He <hejinyang@loongson.cn>
-Cc: WANG Rui <wangrui@loongson.cn>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Zixing Liu <liushuyu@aosc.io>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	stable@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Hanlu Li <lihanlu@loongson.cn>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Xi Ruoyao <xry111@xry111.site>
-Subject: [PATCH v3] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
-Date: Tue,  3 Mar 2026 16:32:47 +0800
-Message-ID: <20260303083248.567185-1-xry111@xry111.site>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1772526981; c=relaxed/simple;
+	bh=vhenaSsQyOvm+J1rXlSH1lVwxYoHu20sVRVTaWAKhSg=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=iZd9fRlcg9t1fiqTm+eO7k1qhpbQlsYucnfFRhEtVsybfQiLsz1rznzfdnUfJFJl/B+c9DQfyYAZ+WiVDkCMAI6ZKwuQDnjGuSd1QEwQGsVR117nw0nYHeHYMZX6tcqUgdjXHzTsQQbU4TewYbCFg6d1xGXDwMJ9XoJZT5kpX3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fjWfddy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2E7C116C6;
+	Tue,  3 Mar 2026 08:36:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772526981;
+	bh=vhenaSsQyOvm+J1rXlSH1lVwxYoHu20sVRVTaWAKhSg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fjWfddy0ZF2Ml/aqImAmfDd1UsO/8W/7FdvCemv1jV7AREgqijy5s2rP112gxhTYD
+	 AKwlnRYa3dLYI0oxJVJoxpWQ657axnJLqGGt3YY1+gj64PbRRg51jMh32oN/MQ9/Cn
+	 PmW2waXRPLu4GcpjtMFePvCGb2AKwxhZLJxlmWTpdNmLovogtf6p+WrRyHAqNwZMUQ
+	 pJs4w/2qI13ixZDdFHObu8yHTCfVMnwT1zQyN7R3PjoAWZfT+3HX7/znFFIodTIgWy
+	 PTLMHEyGMFb13axo9Kny/UvXQxguk0kxV8B4kQfQfz5/AHjJzao0gK/lLyos3PJ6Ot
+	 TSCA2di6EmgAQ==
+Date: Tue, 3 Mar 2026 17:36:17 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
+ <sashal@kernel.org>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ stable@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.12.y] tracing: Fix to clear fprobe after
+ unregister_fprobe() when module unloading
+Message-Id: <20260303173617.c80ba29f3be50116f688d5a0@kernel.org>
+In-Reply-To: <177177399650.99709.12415733322341955461.stgit@devnote2>
+References: <177177399650.99709.12415733322341955461.stgit@devnote2>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C4FFA1EAD5F
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: BC2BE1EADE5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[loongson.cn,aosc.io,zytor.com,vger.kernel.org,infradead.org,gmail.com,kernel.org,flygoat.com,uniontech.com,lists.linux.dev,xry111.site];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-222827-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222828-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[xry111.site:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gnu.org:url]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
-of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
-empty.  This is not valid, as the current DWARF specification mandates
-the first byte of the EH frame to be the version number 1.  It causes
-some unwinders to complain, for example the ClickHouse query profiler
-spams the log with messages:
+Hi Greg and Sasha,
 
-    clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
-    version: 127 at 7ffffffb0000
+This patch is not able to be applied to upstream because fprobe
+implementation was changed in v6.14 by commit 4346ba160409 ("fprobe:
+Rewrite fprobe on function-graph tracer"). So this is only for 6.12.y.
 
-Here "127" is just the byte located at the p_vaddr (0, i.e. the
-beginning of the vDSO) of the empty GNU_EH_FRAME segment.
-Cross-checking with /proc/365854/maps has also proven 7ffffffb0000 is
-the start of vDSO in the process VM image.
+Please tell me if I need more work for merging this fix in stable tree.
 
-In LoongArch the -fno-asynchronous-unwind-tables option seems just a
-MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
-"genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
-use -fno-asynchronous-unwind-tables").  IIRC it indicates some inherent
-limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
-we can simply flip it over to -fasynchronous-unwind-tables and pass
---eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
-stack for statistics even if the sample point is taken when the PC is in
-the vDSO.
+Thank you,
 
-However simply adjusting the options above would exploit an issue: when
-the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
-falled back to a machine-specific routine to match the code pattern of
-rt_sigreturn and extract the registers saved in the sigframe if the code
-pattern is matched.  As unwinding from signal handlers is vital for
-libgcc to support pthread cancellation etc., the fall-back routine had
-been silently keeping the LoongArch Linux systems functioning since
-Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
-format, fall-back routine will no longer be used and libgcc will fail
-to unwind the sigframe, and unwinding from signal handlers will no
-longer work, causing dozens of glibc test failures.  To make it possible
-to unwind from signal handlers again, it's necessary to code the unwind
-info in __vdso_rt_sigreturn via .cfi_* directives.
+On Mon, 23 Feb 2026 00:26:36 +0900
+"Masami Hiramatsu (Google)" <mhiramat@kernel.org> wrote:
 
-The offsets in the .cfi_* directives depend on the layout of struct
-sigframe, notably the offset of sigcontect in the sigframe.  To use the
-offset in the assembly file, factor out struct sigframe into a header to
-allow asm-offsets.c to output the offset for assembly.
+> From: Masami Hiramatsu <mhiramat@kernel.org>
+> 
+> Clear fprobe after unregister_fprobe() for preventing double
+> unregistering fprobe.
+> 
+> Without this fix, test.d/dynevent/add_remove_tprobe_module.tc test
+> case of ftracetest caused a kernel panic as below on 6.12.y.
+> 
+> This is only happens on 6.12.y because this bug was introduced by
+> commit 5ba4f58ec2de ("tracing: tprobe-events: Fix to clean up tprobe
+> correctly when module unload"). This fix expects that the new fprobe
+> implementation based on fgraph, but on 6.12.y, fprobe is still using
+> ftrace.
+> 
+>  ------------[ cut here ]------------
+>  WARNING: CPU: 0 PID: 156 at kernel/trace/ftrace.c:378 __unregister_ftrace_function+0x154/0x170
+>  Modules linked in: [last unloaded: trace_events_sample]
+>  CPU: 0 UID: 0 PID: 156 Comm: ftracetest Not tainted 6.12.74 #1
+>  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+>  RIP: 0010:__unregister_ftrace_function+0x154/0x170
+>  Code: 85 30 ff ff ff c6 05 fd d5 85 01 01 48 c7 c7 eb 8e 14 82 be 39 01 00 00 48 c7 c2 dd bd 1c 82 e8 52 12 93 00 e9 0c ff ff ff 90 <0f> 0b 90 b8 f0 ff ff ff 5b e9 be 8b 95 00 cc 66 66 66 66 2e 0f 1f
+>  RSP: 0018:ffffc900005c3b48 EFLAGS: 00010246
+>  RAX: 0000000000000000 RBX: ffff8880054ba818 RCX: 7a7d3ccd1e752c00
+>  RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff8880054ba818
+>  RBP: 0000000000000000 R08: 000000000000017b R09: 0000000000000000
+>  R10: 0000000000000002 R11: 0000000000000000 R12: ffff8880048216d0
+>  R13: ffff8880052f7850 R14: ffff8880054ba818 R15: ffffffff8124e160
+>  FS:  000000002de743c0(0000) GS:ffff88807d800000(0000) knlGS:0000000000000000
+>  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>  CR2: 000000002de8b898 CR3: 0000000005b3a000 CR4: 00000000000006b0
+>  Call Trace:
+>   <TASK>
+>   ftrace_shutdown+0x25/0x260
+>   ? __pfx_dyn_event_open+0x10/0x10
+>   unregister_ftrace_function+0x2a/0x140
+>   ? __pfx_dyn_event_open+0x10/0x10
+>   unregister_fprobe+0x57/0x90
+>   trace_fprobe_release+0x56/0x150
+>   dyn_event_open+0x99/0xe0
+>   do_dentry_open+0x14a/0x3e0
+>   vfs_open+0x2c/0xe0
+>   path_openat+0xca5/0xf10
+>   ? __lock_acquire+0xd38/0x2af0
+>   ? __create_object+0x36/0x100
+>   ? __create_object+0x36/0x100
+>   do_filp_open+0xb5/0x160
+>   do_sys_openat2+0x7f/0xd0
+>   __x64_sys_openat+0x81/0xa0
+>   do_syscall_64+0xec/0x1d0
+>   ? exc_page_fault+0x92/0x110
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>  RIP: 0033:0x4aa9cb
+>  Code: 25 00 00 41 00 3d 00 00 41 00 74 4b 64 8b 04 25 18 00 00 00 85 c0 75 67 44 89 e2 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 91 00 00 00 48 8b 54 24 28 64 48 2b 14 25
+>  RSP: 002b:00007ffce30daf50 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+>  RAX: ffffffffffffffda RBX: 000000002de79bd0 RCX: 00000000004aa9cb
+>  RDX: 0000000000000241 RSI: 000000002deb08f0 RDI: 00000000ffffff9c
+>  RBP: 000000002deb08f0 R08: 0000000000000000 R09: 0000000000000000
+>  R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000241
+>  R13: 000000002deb08f0 R14: 00007ffce30db3f8 R15: 0000000000000000
+>   </TASK>
+>  irq event stamp: 147361
+>  hardirqs last  enabled at (147373): [<ffffffff81128511>] __console_unlock+0x81/0xd0
+>  hardirqs last disabled at (147386): [<ffffffff811284f6>] __console_unlock+0x66/0xd0
+>  softirqs last  enabled at (146866): [<ffffffff8109a74f>] handle_softirqs+0x34f/0x3b0
+>  softirqs last disabled at (146861): [<ffffffff8109a956>] __irq_exit_rcu+0x66/0xd0
+>  ---[ end trace 0000000000000000 ]---
+>  BUG: kernel NULL pointer dereference, address: 000000000000002e
+>  #PF: supervisor read access in kernel mode
+>  #PF: error_code(0x0000) - not-present page
+>  PGD 8000000005af0067 P4D 8000000005af0067 PUD 55d7067 PMD 0
+>  Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+>  CPU: 0 UID: 0 PID: 156 Comm: ftracetest Tainted: G        W          6.12.74 #1
+>  Tainted: [W]=WARN
+>  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+>  RIP: 0010:trace_fprobe_release+0x78/0x150
+>  Code: 4c 89 f7 e8 ba e2 ff ff ba f0 01 00 00 4c 89 f7 31 f6 e8 9b 64 8d 00 48 8b bb 10 02 00 00 48 85 ff 74 21 4c 8d b3 10 02 00 00 <48> 8b 77 30 31 d2 e8 8d cf f8 ff 49 c7 06 00 00 00 00 49 c7 46 08
+>  RSP: 0018:ffffc900005c3be8 EFLAGS: 00010282
+>  RAX: ffff8880054ba818 RBX: ffff8880054ba800 RCX: 0000000000000000
+>  RDX: 0000000000000000 RSI: 0000000000000000 RDI: fffffffffffffffe
+>  RBP: 00000000fffffff0 R08: 000000000000017b R09: 0000000000000000
+>  R10: ffff8880054ba818 R11: 0000000000000000 R12: ffff8880048216d0
+>  R13: ffff8880052f7850 R14: ffff8880054baa10 R15: ffffffff8124e160
+>  FS:  000000002de743c0(0000) GS:ffff88807d800000(0000) knlGS:0000000000000000
+>  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>  CR2: 000000000000002e CR3: 0000000005b3a000 CR4: 00000000000006b0
+>  Call Trace:
+>   <TASK>
+>   dyn_event_open+0x99/0xe0
+>   do_dentry_open+0x14a/0x3e0
+>   vfs_open+0x2c/0xe0
+>   path_openat+0xca5/0xf10
+>   ? __lock_acquire+0xd38/0x2af0
+>   ? __create_object+0x36/0x100
+>   ? __create_object+0x36/0x100
+>   do_filp_open+0xb5/0x160
+>   do_sys_openat2+0x7f/0xd0
+>   __x64_sys_openat+0x81/0xa0
+>   do_syscall_64+0xec/0x1d0
+>   ? exc_page_fault+0x92/0x110
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>  RIP: 0033:0x4aa9cb
+>  Code: 25 00 00 41 00 3d 00 00 41 00 74 4b 64 8b 04 25 18 00 00 00 85 c0 75 67 44 89 e2 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 91 00 00 00 48 8b 54 24 28 64 48 2b 14 25
+>  RSP: 002b:00007ffce30daf50 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+>  RAX: ffffffffffffffda RBX: 000000002de79bd0 RCX: 00000000004aa9cb
+>  RDX: 0000000000000241 RSI: 000000002deb08f0 RDI: 00000000ffffff9c
+>  RBP: 000000002deb08f0 R08: 0000000000000000 R09: 0000000000000000
+>  R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000241
+>  R13: 000000002deb08f0 R14: 00007ffce30db3f8 R15: 0000000000000000
+>   </TASK>
+>  Modules linked in: [last unloaded: trace_events_sample]
+>  CR2: 000000000000002e
+>  ---[ end trace 0000000000000000 ]---
+> 
+> Fixes: 5ba4f58ec2de ("tracing: tprobe-events: Fix to clean up tprobe correctly when module unload")
+> Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> ---
+>  kernel/trace/trace_fprobe.c |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
+> index 440dbfa6bbfd..2cf5036c825d 100644
+> --- a/kernel/trace/trace_fprobe.c
+> +++ b/kernel/trace/trace_fprobe.c
+> @@ -984,6 +984,7 @@ static int __tracepoint_probe_module_cb(struct notifier_block *self,
+>  			}
+>  		} else if (val == MODULE_STATE_GOING && tp_mod->mod == tf->mod) {
+>  			unregister_fprobe(&tf->fp);
+> +			memset(&tf->fp, 0, sizeof(tf->fp));
+>  			if (trace_fprobe_is_tracepoint(tf)) {
+>  				tracepoint_probe_unregister(tf->tpoint,
+>  					tf->tpoint->probestub, NULL);
+> 
 
-To work around a long-term issue in the libgcc unwinder (the pc is
-unconditionally substracted by 1: doing so is technically incorrect for
-a signal frame), a nop instruction is included with the two real
-instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
-hack has been used on x86 for a long time.
 
-Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
----
-
-Changes from [v2]:
-- Wrap .cfi_* for signal trampoline in SYM_SIGFUNC_START.
-- Remove comment lines in sigframe.h not so meaningful.
-
-Changes from [v1] to v2:
-- Use DWARF column 0 instead of the libgcc-specific column 72.
-- Style change to sigframe.h.
-
-[v1]: https://lore.kernel.org/20260225104607.3803060-1-xry111@xry111.site
-
- arch/loongarch/include/asm/linkage.h  | 34 +++++++++++++++++++++++++++
- arch/loongarch/include/asm/sigframe.h |  9 +++++++
- arch/loongarch/kernel/asm-offsets.c   |  2 ++
- arch/loongarch/kernel/signal.c        |  6 +----
- arch/loongarch/vdso/Makefile          |  4 ++--
- arch/loongarch/vdso/sigreturn.S       | 10 +++-----
- 6 files changed, 51 insertions(+), 14 deletions(-)
- create mode 100644 arch/loongarch/include/asm/sigframe.h
-
-diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/include/asm/linkage.h
-index e2eca1a25b4e..db465036385f 100644
---- a/arch/loongarch/include/asm/linkage.h
-+++ b/arch/loongarch/include/asm/linkage.h
-@@ -42,3 +42,37 @@
- 	SYM_END(name, SYM_T_NONE)
- 
- #endif
-+
-+/*
-+ * This is for the signal handler trampoline, which is used as the return
-+ * address of the signal handlers in userspace instead of called normally.
-+ * The long standing libgcc bug https://gcc.gnu.org/PR124050 requires a
-+ * nop between .cfi_startproc and the actual address of the trampoline, so
-+ * we cannot simply use SYM_FUNC_START.
-+ *
-+ * This wrapper also contains all the .cfi_* directives for recovering
-+ * the content of the GPRs and the "return address" (where the rt_sigreturn
-+ * syscall will jump to), assuming there is a struct rt_sigframe (where
-+ * a struct sigcontext containing those information we need to recover) at
-+ * $sp.  The "DWARF for the LoongArch(TM) Architecture" manual states
-+ * column 0 is for $zero, but it does not make too much sense to
-+ * save/restore the hardware zero register.  Repurpose this column here
-+ * for the return address (here it's not the content of $ra we cannot use
-+ * the default column 3).
-+ */
-+#define SYM_SIGFUNC_START(name)				\
-+	.cfi_startproc;					\
-+	.cfi_signal_frame;				\
-+	.cfi_def_cfa 3, RT_SIGFRAME_SC;			\
-+	.cfi_return_column 0;				\
-+	.cfi_offset 0, SC_PC;				\
-+	.irp	num, 1, 2, 3, 4, 5, 6, 7, 8, 		\
-+		     9, 10, 11, 12, 13, 14, 15, 16,	\
-+		     17, 18, 19, 20, 21, 22, 23, 24,	\
-+		     25, 26, 27, 28, 29, 30, 31;	\
-+	.cfi_offset \num, SC_REGS + \num * SZREG;	\
-+	.endr;						\
-+	nop;						\
-+	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
-+
-+#define SYM_SIGFUNC_END(name) SYM_FUNC_END(name)
-diff --git a/arch/loongarch/include/asm/sigframe.h b/arch/loongarch/include/asm/sigframe.h
-new file mode 100644
-index 000000000000..109298b8d7e0
---- /dev/null
-+++ b/arch/loongarch/include/asm/sigframe.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+
-+#include <asm/siginfo.h>
-+#include <asm/ucontext.h>
-+
-+struct rt_sigframe {
-+	struct siginfo rs_info;
-+	struct ucontext rs_uctx;
-+};
-diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
-index 3017c7157600..2cc953f113ac 100644
---- a/arch/loongarch/kernel/asm-offsets.c
-+++ b/arch/loongarch/kernel/asm-offsets.c
-@@ -16,6 +16,7 @@
- #include <asm/ptrace.h>
- #include <asm/processor.h>
- #include <asm/ftrace.h>
-+#include <asm/sigframe.h>
- #include <vdso/datapage.h>
- 
- static void __used output_ptreg_defines(void)
-@@ -220,6 +221,7 @@ static void __used output_sc_defines(void)
- 	COMMENT("Linux sigcontext offsets.");
- 	OFFSET(SC_REGS, sigcontext, sc_regs);
- 	OFFSET(SC_PC, sigcontext, sc_pc);
-+	OFFSET(RT_SIGFRAME_SC, rt_sigframe, rs_uctx.uc_mcontext);
- 	BLANK();
- }
- 
-diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.c
-index c9f7ca778364..e297d54ea638 100644
---- a/arch/loongarch/kernel/signal.c
-+++ b/arch/loongarch/kernel/signal.c
-@@ -37,6 +37,7 @@
- #include <asm/lbt.h>
- #include <asm/ucontext.h>
- #include <asm/vdso.h>
-+#include <asm/sigframe.h>
- 
- #ifdef DEBUG_SIG
- #  define DEBUGP(fmt, args...) printk("%s: " fmt, __func__, ##args)
-@@ -51,11 +52,6 @@
- #define lock_lbt_owner()	({ preempt_disable(); pagefault_disable(); })
- #define unlock_lbt_owner()	({ pagefault_enable(); preempt_enable(); })
- 
--struct rt_sigframe {
--	struct siginfo rs_info;
--	struct ucontext rs_uctx;
--};
--
- struct _ctx_layout {
- 	struct sctx_info *addr;
- 	unsigned int size;
-diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-index 520f1513f07d..294c16b9517f 100644
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -26,7 +26,7 @@ cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
- 	-std=gnu11 -fms-extensions -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
--	$(call cc-option, -fno-asynchronous-unwind-tables) \
-+	$(call cc-option, -fasynchronous-unwind-tables) \
- 	$(call cc-option, -fno-stack-protector)
- aflags-vdso := $(ccflags-vdso) \
- 	-D__ASSEMBLY__ -Wa,-gdwarf-2
-@@ -41,7 +41,7 @@ endif
- 
- # VDSO linker flags.
- ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
--	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
-+	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id --eh-frame-hdr -T
- 
- #
- # Shared build commands.
-diff --git a/arch/loongarch/vdso/sigreturn.S b/arch/loongarch/vdso/sigreturn.S
-index 9cb3c58fad03..e40bf4186f29 100644
---- a/arch/loongarch/vdso/sigreturn.S
-+++ b/arch/loongarch/vdso/sigreturn.S
-@@ -12,13 +12,9 @@
- 
- #include <asm/regdef.h>
- #include <asm/asm.h>
-+#include <asm/asm-offsets.h>
- 
--	.section	.text
--	.cfi_sections	.debug_frame
--
--SYM_FUNC_START(__vdso_rt_sigreturn)
--
-+SYM_SIGFUNC_START(__vdso_rt_sigreturn)
- 	li.w	a7, __NR_rt_sigreturn
- 	syscall	0
--
--SYM_FUNC_END(__vdso_rt_sigreturn)
-+SYM_SIGFUNC_END(__vdso_rt_sigreturn)
 -- 
-2.53.0
-
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
