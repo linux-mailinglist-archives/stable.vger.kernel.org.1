@@ -1,374 +1,218 @@
-Return-Path: <stable+bounces-222907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kN+GCTEOp2k0cwAAu9opvQ
-	(envelope-from <stable+bounces-222907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 17:37:05 +0100
+	id WMs7FDAOp2k0cwAAu9opvQ
+	(envelope-from <stable+bounces-222908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 17:37:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C4D1F3E91
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 17:37:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134B61F3E8A
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 17:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C63C3095243
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 16:31:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3CADA301DA72
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 16:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F1E4F796D;
-	Tue,  3 Mar 2026 16:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AC24F796D;
+	Tue,  3 Mar 2026 16:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MtFBb+O1"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ShGOIDRv"
 X-Original-To: stable@vger.kernel.org
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011009.outbound.protection.outlook.com [52.101.62.9])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010047.outbound.protection.outlook.com [52.101.193.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7764DC54A;
-	Tue,  3 Mar 2026 16:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8514F7971;
+	Tue,  3 Mar 2026 16:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772555509; cv=fail; b=ieOSaMdq63/D6vavGYbasazOHm27w6n4NpUW8fQBkZcgf3JWD0IUptZ6xz+/a0HPxg4q9XlnGVuFT+myEp3vTMLMP/kG/lF10yvNRAV78nomw3PIbNTbrU2dSWCUf0zQafmxYIUzZF6i3TH09iqI9o+dUqhRQpv52ylXE4CGScw=
+	t=1772555804; cv=fail; b=X5yeSnxlHnXETNMpLE49IebXiKwiMdGlULBMKWhw5RiA5rtxrv3c1HrZ3TvVz3ajZ8c39zkSTfvNVxcSeB0Mzwf4GagfT+hzqEIsRZbd58zQSXU1+JpPf3kfAF86OgTgT/JNF4N3mys2hB3w1Lfe9wXW7knqiiJ7oqBRWsIf7ew=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772555509; c=relaxed/simple;
-	bh=iBfTZo+P77hmnLZMcN2MuW5+MIDVOgjmQ2moWSjniHo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GWPbNr8Ha+6DlazAQ+T16e8XsAEQs3cFyanSM3e6aQzh6xPL8ud8mgUsdplkvkR+codVDZY+jbl91JBOy9tajZ6uJaNLeUBzbEz/d7Hw8zG0nfkSNcn3s+QgXBLRvxB47yl98MgEcvDjZVf4oLGMzqBozI+l4noVKIrfBwWrGkA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MtFBb+O1; arc=fail smtp.client-ip=52.101.62.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1772555804; c=relaxed/simple;
+	bh=ydWkXqBppfgzi2ybWs8bp7HA3HYrmX4QaOOv1lNsQqw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=BxQYl0IxRbmrpTJCK2lmt0s2BcLZI8eTzkhdTYcAdHcoSK2cvOxp9MkWIsD0OdGPwoARnA3rsrcQwS+UfDrgBxyWL+mx2dvzsfwzZt5jzS7GTgVssuqgOVzUOfuiRZSiwedKLyuj0t9/A+5lNbkadZHcgUzbQQPbhr0Y70VBdS8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ShGOIDRv; arc=fail smtp.client-ip=52.101.193.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m9sWlA5SOTtIDaNXa6weJEYwlqO8fZTbzhhVJH/z+sENKSBTy0a98yKZABQuHkvDZHuENnjbf2m/LKQAVw/4JgYYlkbuxMXjx90wkAcaMY9tzSWGT25F7lNqV3/ve6hLQhRYTJCJ7mEMpFQHC81Sy/PTYB7gMLCaXpLa/DepHkeCgI/MmU+oukL5X6ooATiQDg2VSjhwXmvcnQXoZSBAD6L3VOGv8TxD8c0NGb4IiSVo1MkpnEQ4QSkIfu8Z5BjSrDY4jEz4Sw+2d/qB1Tnrnw6nVF11MfaJDJv950TX7xB5YMewLnDoFVQjEeVQmwhOxojMeDRFbgJsEWKC+WfOBw==
+ b=aTBVt7uX4+8FTmApvZZ81uss4jYI4fWrqmjDziBsdszcs9qo68QxkIgPKxjXI04CxfQGcqWeoc5eLurJbr2qaFS15Kddil5WRmpjgIP4jvHEvBBQae5CLmfIj6SOsuALw3idEwgId7vjpkDbTrluaFP07Cy59vuEIN0SASRN0CL/nBxG/EpBu7BNIUEJ981bufkS/G9vnGt75MLRLSlLko5lCA/8yuLkYPAfOKDAmyy9RrxzkH9ugDHqHMmIgBJqFFeIGLD2Hgm9hDj3zEf7cDHqOL4wYpWMKz+Hr7U5WDSY2gTniQQAcTc7F7DSw6SeUmykMz+HkP2GlnIhUGa5dQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tVjK5SINOhgOlrRRjppNtwlxFvqzetymBkRsuXH636Y=;
- b=KRjhtsdw6ccd1mGXXbgQmbt6nOJ1SOAsY+HLh9YQbazqOaDhJOF6hi+olY7FfKb5ZYoQ3XM/+2SGe5NMpPZLTrTSpg69LlzCL0vr8IvaWZZ7b2TtlM+EV+ekEh+PafiaDds7tjfDvEmtzAzMYwlmWpZuOox+MgGJ3YBEvFdMHotFblnj0VBtYHZj/J1g16TH0s64edwEXVvrL0g+xPZGeYKovTFXQ6iRddY02FxBULeTbTiRmHzjuJZGUFb8F/2/IdqNHz/hXvi+oGjelarFjok1QFK0WAGshhO+Qw2TWS6E3rDL818UP4+6iv9xa70k5LIns4hFJLmnmYPCZV21nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=tSJ/LqL9F7vLzB7f0vJCbvix4YPeTSl77YE7feAOTFE=;
+ b=E9bfXUvcymp1tWWHzjtTlBRAlgWn2O8xM2Gpk6hloJ9YpMWZAqmeeF+/KUseP+WbDKU0acykiAHOMDbzs54R3RuEadMrprwCGafoZ5YfsXy5BtmIh7vrF3kxk2zTZeOQ/w1hiSXyFKK2qjIttoBDJ4DROWUArq2cj52OmaFPfbzhiLxo9gavgjNUwB3A8s/9pUxgTYjCUnHR3SslSiCpUQa+7a5ShPYI6z4CMRUJLh1rhwSH76lElXefcJQDP/gb2jsBnMw1LM5or1xpzCOyATO706hnTeTCBaxgzQ9aJypU/QA5dAtq2rqhQgWrpO+mtRwQ6VRyjsVKLmU+R9kfuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tVjK5SINOhgOlrRRjppNtwlxFvqzetymBkRsuXH636Y=;
- b=MtFBb+O1CyaduX9NO30+occ3gLxWRCtpPEWisWbyuOf0I+PQjiamjH/c1WFen1h5EmuSSuCfdiVbiMT3ueHTTFQeiv4UUSuwlugoJxPhUhHw042fobaSB1OTPrU49HRB5r7MzFQCkfmonNVq1iSApKKNttfjhpcvPv/PcOm7l10I9eYHJBpIIrNMqnH+2ERfaqeq4Dm8S/76V0LHfvRWMa1mx5ldJTKk5e4i/qfqw1XgxMp8XLYTs6rLxvbbAA+8It5UrtJSJjyRVFt884QUTQu9eLGgS602Icv1YZwtogtjRu+j7bAamykBg8VgpOvxMBkdJkpHLbFtLHF6bPoYjw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SA3PR12MB7830.namprd12.prod.outlook.com (2603:10b6:806:315::15) with
+ bh=tSJ/LqL9F7vLzB7f0vJCbvix4YPeTSl77YE7feAOTFE=;
+ b=ShGOIDRvN3HE6RVWnLIhXgPNiO5fqQf7zOCrC7eRIWfICpUA7hw28v78pK2mvC2sf1eOh6RxTnGVBGliMveUjMt95dR25gloO+auAdsgvPHQ9Nv05ErAMaALY80Yx5IoLtzuNruH0Kabq7LSY4KNR+XzQzutpUXuglhHSk1AcYE=
+Received: from CH5PR05CA0024.namprd05.prod.outlook.com (2603:10b6:610:1f0::29)
+ by BY5PR10MB4371.namprd10.prod.outlook.com (2603:10b6:a03:210::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 16:31:35 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9654.020; Tue, 3 Mar 2026
- 16:31:35 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>,
- Eero Kelly <eero.kelly@dfinity.org>,
- Andrew Battat <andrew.battat@dfinity.org>,
- Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/huge_memory: fix a folio_split() race condition
- with folio_try_get()
-Date: Tue, 03 Mar 2026 11:31:31 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <5C9FA053-A4C6-4615-BE05-74E47A6462B3@nvidia.com>
-In-Reply-To: <56a23a23-cbed-4ace-acef-3ada41bc182d@kernel.org>
-References: <20260302203159.3208341-1-ziy@nvidia.com>
- <56a23a23-cbed-4ace-acef-3ada41bc182d@kernel.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BLAPR05CA0032.namprd05.prod.outlook.com
- (2603:10b6:208:335::13) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+ 2026 16:36:39 +0000
+Received: from DS2PEPF000061C4.namprd02.prod.outlook.com
+ (2603:10b6:610:1f0:cafe::f) by CH5PR05CA0024.outlook.office365.com
+ (2603:10b6:610:1f0::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.22 via Frontend Transport; Tue,
+ 3 Mar 2026 16:36:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ DS2PEPF000061C4.mail.protection.outlook.com (10.167.23.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9654.16 via Frontend Transport; Tue, 3 Mar 2026 16:36:36 +0000
+Received: from DFLE201.ent.ti.com (10.64.6.59) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 3 Mar
+ 2026 10:36:35 -0600
+Received: from DFLE202.ent.ti.com (10.64.6.60) by DFLE201.ent.ti.com
+ (10.64.6.59) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 3 Mar
+ 2026 10:36:34 -0600
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE202.ent.ti.com
+ (10.64.6.60) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Tue, 3 Mar 2026 10:36:34 -0600
+Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105] (may be forged))
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 623GaYaC2453259;
+	Tue, 3 Mar 2026 10:36:34 -0600
+Message-ID: <0633e48a-27a3-456a-8b9b-32e88d417560@ti.com>
+Date: Tue, 3 Mar 2026 10:36:34 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: ti: k3-am62a7-sk: Fix pinmux for pin M19 used
+ by sdhci1
+To: Siddharth Vadapalli <s-vadapalli@ti.com>, <nm@ti.com>, <vigneshr@ti.com>,
+	<kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>
+CC: <stable@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<srk@ti.com>
+References: <20260212130843.1054100-1-s-vadapalli@ti.com>
+Content-Language: en-US
+From: Judith Mendez <jm@ti.com>
+In-Reply-To: <20260212130843.1054100-1-s-vadapalli@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA3PR12MB7830:EE_
-X-MS-Office365-Filtering-Correlation-Id: aa44f576-f003-4feb-d7d8-08de79425654
+X-MS-TrafficTypeDiagnostic: DS2PEPF000061C4:EE_|BY5PR10MB4371:EE_
+X-MS-Office365-Filtering-Correlation-Id: 904ea5ae-6dfe-467e-4e1e-08de794309e6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|10070799003|366016;
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013|34020700016;
 X-Microsoft-Antispam-Message-Info:
-	q8iqYuhY2IQlIH5Tl1qFxMz1IwvsrualH5290e6V/FuJUiNI2lk4HoowE06Q5Lb4ewhrEKSVIrtCLC88a9nDVVAUX5xYrHa0GTedmnwem+tCJNrwcVMeMNSk/Juj/f3VW2z9vqcVUa7fpcMFZy6+82vNBmwrGrfd2LyJzocYjqPsZT+ymVUybpE7YhQL8tK4Hf1p7t38226nOQlsC4pzP0KhabriFtO32N8XJpYlPp1xK3jOL2tSecmPbTRuygnBpvr2VarUI8Ci5ifQFXY66kAf6DWEyiP1BO0quy3yqwZUWijk/QJAslqFvuOyrp7d4MX+5mkM6xevcMJAG7ysEMLAmMEfjXHjh83hYmL++z3QhnUQSFTbG9FKjbB8919/7xsQVkgAVwFFAfGBoac/Em6/KTT4hncNodNnL/WC6tFetF7wzqDrRKb5/0Ku8Z/MdXwUBOAT6ENUlnRptascR1DuTSYv/3CDHtTd8v+3pkFEkBkGgH8bFtDqKOunchJyDIKzY7/FN4MrM3TCjhfXbKOHPoXEh/aavuhcrHbRShoptYoNJeqY7L8Sywwfkblict5xCF2U9IkLPwXXXU//IzIC8uJ7Q95eCBh5pmDkv1+Mg/gEvjkQat/FjbLP4TFvCQliNFjspJ9US6nb23/3V72XSU2eRxfY3sKGM962mnNTejU/cEXRzjFcAq48J4vAiEc0UJiF0zUFfpGZUImGQGGnDdiP5HpzmPuz+mA1+/8=
+	US6jwP98kDl570g+5KBRUiQPNGas3UnPdYroqChYaAKiEshYLHzKAODM3ydp5M33pAkDE7MOdM8JNaMG8eku9LPr0hyS51BSQLkoJOFdbmVhCrm8WR0lbR2zi8R+x6rMzT5uajt2/HxxaJCqG4Ia/0ABh7i/NEko9HcGdjP7xFYGgcBqk7B4t1JaHt7rQh+/GPGLe6owSNZ3y44r4gM7/ZsoCjMg2EPHmL6IXqS8UKiJPdVluJz6pZRo3VPedLdt+Lyw7GLY72w+wk9G12h+YFSe4NMkrMIAAQTn8asWeim1+G2351XwwtS4pVtfV9ll26kuyaKNunJzgfBwRgeyA8Xb73/MKpYdu+KMFsgAwzRnI+UNu5zC4ur9fZReXBqbF+piZyHe9TcWtrePg2FNGkuRTPxKoVFy474i//+R0NqijLs50xJkjdQaqpaGW6HiAimBVXLUH+gEzg0GxrfNSrW3h9IJVPP9DEwLsCGZMHfzmFuQfy0cNuGKd4uR/mNo7dTYEOm/xlJEDlctDsajM4c66tTb75PqMhMLfE3o293KTuHJwkCbnLwJohHVIW7b6I5nCkfPBzhJDva4cajF4P82OUs8P5GKFAv7G9uckdlk30WKduO6Kf0U7o4JPQvLRSuLC+RjmHhQxwT18vQFgQ/aGV3S8zG/wzWA+cEM0txSh7H4gmfuawAqXk5O6zhbvpuU5MWx6Knw/YTn85XQvukKYQAaQ6z0mW8E0tSkR4VgADy302ruSxXxHxVjjA7DEh8BNUgdRo/IdGEmcgP8O3MNXoQw1GanN7Kg1+gJqoH/kXObnQAnhvdRkXFMjJPfcDoJUGRbzaDDkQuhhOQwEA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(10070799003)(366016);DIR:OUT;SFP:1101;
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013)(34020700016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dg1JaRNcMYqac3Kz+JPPnFaeecbH1mPUH0OSPRHDqJBMBbGHaSaX03XucQba?=
- =?us-ascii?Q?cnVKRpcbVYaGweBW4wWnhpUo3PA6RBm6CreIyWIAhoHTcVuMRKjhfoUBdbvB?=
- =?us-ascii?Q?wPIqnMX9yWOIUf+i5L5tUheTGTFrQmzz5zQHwPy1II3DTbCEAS0Giqe23W/F?=
- =?us-ascii?Q?+ZmYvQmAn0Ut8seQ8ca7EMpUR1P//q2gtbY6msH34AMcGl2tOMJdF/vDWuK+?=
- =?us-ascii?Q?vMu0H2qlu+Gl/QYfR/KJp13dNj0nSzZu5MCt6CbkJAsozvsBR3oskXRxM+Il?=
- =?us-ascii?Q?ZHZt3yRjLxRTctKTFA6OJY9Z50cfJUN0Hd8Qp7dfM7lizl5fhMc3zD6CTfSm?=
- =?us-ascii?Q?jDU4Du0zkxVEUPuZC3PCFphRTfqb7nZ5tQ1z99blAPuDjsFh6OZxylIXdicS?=
- =?us-ascii?Q?GZaF41XVT3iLEKNaMHlw2dD7AicpHm+E9bzOTi2rRH3E8MLn6G+JY6EJsfmr?=
- =?us-ascii?Q?a0vHiNBYRFoPcZKWud3EraQJDxTNmAR61d/fKLb1u1nz0E/66V75DZeMDoDo?=
- =?us-ascii?Q?Rin58g4r6FQMAV5/NBxUPRum9q+Tsm4IVgWCQMLQs8rfsppoIdzhritQ8Dpv?=
- =?us-ascii?Q?d0WzXyZBxMoGtWOey9AA2k+NnB/SB1HnSlUs8kK4BSy40Nthem5/UbbaxfBv?=
- =?us-ascii?Q?IIxQbixVfz0mqd5/ePM62RsX2omMqd4P3FlvBOmMrwq6XR7GR7AvuYDi1UDD?=
- =?us-ascii?Q?WpGvn7D5u5f7n9XQxXx5C2v7rlfN5j8hX3HyTT150/gHnAEzEjD88uJdjuyz?=
- =?us-ascii?Q?W6uwiPBidJmvJgY52rpyoPSwoJ5X+FDFruyF2T/V4S9Re/U9LMzDBdnLuHPe?=
- =?us-ascii?Q?Z38ZFeCvUC8ILP8Y9yU2O0QHN0omUWOWR1ibgl4fw925MQ+4Mne37XrjvQaH?=
- =?us-ascii?Q?BRwQ+gr6mjxbDSVZTyCyeLGMULEuf4NtENE+B4OAZF+nClh+RxB+p1R+5YP2?=
- =?us-ascii?Q?uthIO+bZ5SUhZrN2F9B+/l2zLZmZM6ckvZnMlHnE982MofQCIDWUfbLhoSEe?=
- =?us-ascii?Q?Ur1+L5fZFl4ZJxdang4MqPbddCKNvrsv1nuc/yX+LkyW4EHwGSTMVehsdg34?=
- =?us-ascii?Q?CQ/LqtNANf7iksqkvAiz5SWKY8rdI55qbAgsni41QnZ6T6eDIUT1hi6OsX5z?=
- =?us-ascii?Q?x/GxGIRzIZSgFb2vRlVDGYJnvcpfEbkIJ9epn6V6/uH6I29YiBcfOWdAN7EP?=
- =?us-ascii?Q?QN9wuXOTEogfOq8dNOwA+ZQYuje4RjpnjDzxqZkI3G9zCeQfON7CUv65to3S?=
- =?us-ascii?Q?k9KYTF/IjHN/woe7KelfJ/rF6nrNl3a/bqhjiI28JWUpXon2HBkhk29KICVS?=
- =?us-ascii?Q?Utam2XCRERsnesspn229fbipW8k3aDcunG7mxwJgKCGqCFyvmAxpfOvJy6N8?=
- =?us-ascii?Q?JiFlhqmqhOlvkyCcxTwL8+bO8E1l36i576e54ro3TFSD7sc/wLwoJdByZ+Et?=
- =?us-ascii?Q?G6aS6boR09YEhynMKwRDhXJcsLdXfAkVxamwwUzyAkcKGQV14D9fcNHwtQox?=
- =?us-ascii?Q?B6m7N/fh+8P/eq5aCKVzYyiKLQG9kEpxKgaePeBRY49AnwO+tCpZGX4Xar3g?=
- =?us-ascii?Q?0rIAr/QG+r1C9mjbXXXwcTU6gaM60s5Z/WGKlG1QymQXM4CnXCdwX8i5Je+5?=
- =?us-ascii?Q?KGF/K6Oe9hFAljqKCc3Re2BePivFUQbkoXRqt2pckDy5LXuLwUWTJqQTA6dC?=
- =?us-ascii?Q?qsMtaU/YGCKgZDtuE2fR5pP3fxopR5AaJpTuxZsJoZiEtdEW955HEMJba45T?=
- =?us-ascii?Q?xUB/YkmJxlUk7XyG3zF/3AwGmcqJdvzlJ+quXDtJV5hfE99OqEgG?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aa44f576-f003-4feb-d7d8-08de79425654
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 16:31:35.7644
+	ka526NF0zwRpJbOC1qf1C0EQoay8lfI33Sh81m8q7pUIqN5PqWOBtIUp0Mi+wWWwxF6Eh9fqw/ZROpN9n85BKbBCbYDnwcbo9Es+6aMdiizKfE39niNdd4u/uT6r9GXEnUmmHaBfdIduMaQ1cZVtOXCRiy7kF6yFlGHYno38WBAvA7F+ALOqcATNXI+9BtqAnM7c92RvReGVF2Z2AJsMP27IhmmMp3g8awt8VoHzWrMSmZ1mUALFq+2DdjShGXIrpqKvCX0OPnY99Awqx5MYc8S5Ivmcscu95BrkueftQz3ccVtEv7gQ5XQ9fenGVQanPHVrC7bAhVR5TYZRvYx6EJr+fTPSHTMG+bEx6fV68TBObKG3Fm8Bc4y382bqFCUt8Xj/rjYUfsXR0Sks0VJqAEazLUmgTXeZSFojYdm+CkmBKW3nrcOAKrhUhDk3Hvo1
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 16:36:36.8282
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ftw2Aw7kzPOQs7uiD7p6+Qmk8sReBIRaJexNI0EAXLr6wPjaE0mV2vfDoPxFeVai
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7830
-X-Rspamd-Queue-Id: 74C4D1F3E91
+X-MS-Exchange-CrossTenant-Network-Message-Id: 904ea5ae-6dfe-467e-4e1e-08de794309e6
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF000061C4.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR10MB4371
+X-Rspamd-Queue-Id: 134B61F3E8A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	DMARC_POLICY_ALLOW(-0.50)[ti.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[ti.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222908-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222907-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[ti.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ziy@nvidia.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jm@ti.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,dfinity.org:email]
+	TAGGED_RCPT(0.00)[stable,dt];
+	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Action: no action
 
-On 3 Mar 2026, at 3:48, David Hildenbrand (Arm) wrote:
+Hi Siddharth,
 
-> On 3/2/26 21:31, Zi Yan wrote:
->> During a pagecache folio split, the values in the related xarray shoul=
-d not
->> be changed from the original folio at xarray split time until all
->> after-split folios are well formed and stored in the xarray. Current u=
-se
->> of xas_try_split() in __split_unmapped_folio() lets some after-split f=
-olios
->> show up at wrong indices in the xarray. When these misplaced after-spl=
-it
->> folios are unfrozen, before correct folios are stored via __xa_store()=
-, and
->> grabbed by folio_try_get(), they are returned to userspace at wrong fi=
-le
->> indices, causing data corruption. More detailed explanation is at the
->> bottom.
->>
->> The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
->> It
->> 1. creates a memfd,
->> 2. forks,
->> 3. in the child process, maps the file with large folios (via shmem co=
-de
->>    path) and reads the mapped file continuously with 16 threads,
->> 4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in =
-the
->>    large folio.
->>
->> Data corruption can be observed without the fix. Basically, data from =
-a
->> wrong page->index is returned.
->>
->> Fix it by using the original folio in xas_try_split() calls, so that
->> folio_try_get() can get the right after-split folios after the origina=
-l
->> folio is unfrozen.
->>
->> Uniform split, split_huge_page*(), is not affected, since it uses
->> xas_split_alloc() and xas_split() only once and stores the original fo=
-lio
->> in the xarray. Change xas_split() used in uniform split branch to use
->> the original folio to avoid confusion.
->>
->> Fixes below points to the commit introduces the code, but folio_split(=
-) is
->> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() =
-in
->> truncate operation").
->>
->> More details:
->>
->> For example, a folio f is split non-uniformly into f, f2, f3, f4 like
->> below:
->> +----------------+---------+----+----+
->> |       f        |    f2   | f3 | f4 |
->> +----------------+---------+----+----+
->> but the xarray would look like below after __split_unmapped_folio() is=
+On 2/12/26 7:06 AM, Siddharth Vadapalli wrote:
+> According to the datasheet for the AM62Ax SoC [0], pin M19 has the address
+> 0x000F40A8. Therefore, the offset to be passed to the AM62AX_IOPAD macro is
+> 0xa8 and not 0x07c. With the existing incorrect offset, the following error
+> is seen when Linux boots:
+> 	fa00000.mmc: deferred probe pending: platform: supplier regulator-5 not ready
+> with the SD Card being unusable and the boot process halting due to the root
+> filesystem in the SD Card being inaccessible.
+> 
+> Hence, fix it.
+> 
+> [0]: https://www.ti.com/lit/ds/symlink/am62a7.pdf
+> 
+> Fixes: 8f023012eb4a ("arm64: dts: ti: k3-am62a: Enable UHS mode support for SD cards")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+> ---
+> 
+> Hello,
+> 
+> This patch is based on commit
+> 37a93dd5c49b Merge tag 'net-next-7.0' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+> of Mainline Linux.
+> 
+> Regards,
+> Siddharth.
+> 
+>   arch/arm64/boot/dts/ti/k3-am62a7-sk.dts | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+> index e99bdbc2e0cb..9cfe7e7b317b 100644
+> --- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+> +++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+> @@ -398,7 +398,7 @@ AM62AX_IOPAD(0x01d4, PIN_INPUT, 7) /* (C15) UART0_RTSn.GPIO1_23 */
+>   
+>   	vddshv_sdio_pins_default: vddshv-sdio-default-pins {
+>   		pinctrl-single,pins = <
+> -			AM62AX_IOPAD(0x07c, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO0_31 */
+> +			AM62AX_IOPAD(0x0a8, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO0_31 */
 
->> done:
->> +----------------+---------+----+----+
->> |       f        |    f2   | f3 | f3 |
->> +----------------+---------+----+----+
->>
->> After __split_unmapped_folio(), the code changes the xarray and unfree=
-zes
->> after-split folios:
->>
->> 1. unfreezes f2, __xa_store(f2)
->> 2. unfreezes f3, __xa_store(f3)
->> 3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.=
+What! I don't think this is right.
 
->> 4. unfreezes f.
->>
->> Meanwhile, a parallel filemap_get_entry() can read the second f3 from =
-the
->> xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Th=
-en,
->> f3 is wrongly returned to user.
->>
->> After the fix, the xarray looks like below after __split_unmapped_foli=
-o():
->> +----------------+---------+----+----+
->> |       f        |    f    | f  | f  |
->> +----------------+---------+----+----+
->> so that the race window no longer exists.
->>
->> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) func=
-tions for folio_split()")
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> Reported-by: Bas van Dijk <bas@dfinity.org>
->> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OL=
-umWJdiWXv+C9Yct0w@mail.gmail.com/
->> Tested-by: Lance Yang <lance.yang@linux.dev>
->> Cc: <stable@vger.kernel.org>
->> ---
->>  mm/huge_memory.c | 15 +++++++++++----
->>  1 file changed, 11 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 56db54fa48181..f0bdac3f270b5 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3647,6 +3647,7 @@ static int __split_unmapped_folio(struct folio *=
-folio, int new_order,
->>  	const bool is_anon =3D folio_test_anon(folio);
->>  	int old_order =3D folio_order(folio);
->>  	int start_order =3D split_type =3D=3D SPLIT_TYPE_UNIFORM ? new_order=
- : old_order - 1;
->> +	struct folio *old_folio =3D folio;
->>  	int split_order;
->>
->>  	/*
->> @@ -3668,11 +3669,17 @@ static int __split_unmapped_folio(struct folio=
- *folio, int new_order,
->>  			 * irq is disabled to allocate enough memory, whereas
->>  			 * non-uniform split can handle ENOMEM.
->>  			 */
->> -			if (split_type =3D=3D SPLIT_TYPE_UNIFORM)
->> -				xas_split(xas, folio, old_order);
->> -			else {
->
-> Just wondering whether we should no move the comment over here now, so
-> it just covers both cases.
->
->> +			if (split_type =3D=3D SPLIT_TYPE_UNIFORM) {
->> +				xas_split(xas, old_folio, old_order);
->> +			} else {
->>  				xas_set_order(xas, folio->index, split_order);
->> -				xas_try_split(xas, folio, old_order);
->> +				/*
->> +				 * use the to-be-split folio, so that a parallel
->> +				 * folio_try_get() waits on it until xarray is
->> +				 * updated with after-split folios and
->> +				 * the original one is unfrozen.
->> +				 */
->> +				xas_try_split(xas, old_folio, old_order);
->>  				if (xas_error(xas))
->>  					return xas_error(xas);
->>  			}
-Sure.
+Looking at device tree, regulator-5 is using main_gpio0 31 to control SD
+ENA with PMIC. Which is GPMC0_CLK (N22 pad) and VSEL_SD_SOC. Which is
+0x000F407C address in the device datasheet. So as far as I can see, the
+original address is correct and just the (M19) name is wrong. Did you
+test this patch to see if that fixed the failure?
 
-Hi Andrew,
-
-Do you mind applying the fixup below? Thanks.
-
-=46rom fe94203b814a7fb11035c5b720a5e798ec2bcbb5 Mon Sep 17 00:00:00 2001
-From: Zi Yan <ziy@nvidia.com>
-Date: Tue, 3 Mar 2026 11:26:41 -0500
-Subject: [PATCH] move the comment.
-
-Signed-off-by: Zi Yan <ziy@nvidia.com>
----
- mm/huge_memory.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index f0bdac3f270b5..6d3bdde334126 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3668,17 +3668,16 @@ static int __split_unmapped_folio(struct folio *f=
-olio, int new_order,
- 			 * uniform split has xas_split_alloc() called before
- 			 * irq is disabled to allocate enough memory, whereas
- 			 * non-uniform split can handle ENOMEM.
-+			 *
-+			 * use the to-be-split folio in xas_split() or
-+			 * xas_try_split(), so that a parallel folio_try_get()
-+			 * waits on it until xarray is updated with after-split
-+			 * folios and the original one is unfrozen.
- 			 */
- 			if (split_type =3D=3D SPLIT_TYPE_UNIFORM) {
- 				xas_split(xas, old_folio, old_order);
- 			} else {
- 				xas_set_order(xas, folio->index, split_order);
--				/*
--				 * use the to-be-split folio, so that a parallel
--				 * folio_try_get() waits on it until xarray is
--				 * updated with after-split folios and
--				 * the original one is unfrozen.
--				 */
- 				xas_try_split(xas, old_folio, old_order);
- 				if (xas_error(xas))
- 					return xas_error(xas);
--- =
-
-2.51.0
-
-
-
---
-Best Regards,
-Yan, Zi
+~ Judith
 
