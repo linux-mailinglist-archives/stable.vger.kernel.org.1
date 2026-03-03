@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-222854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPoHOBC/pmlDTQAAu9opvQ
-	(envelope-from <stable+bounces-222854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 11:59:28 +0100
+	id YCMoLJTApmlDTQAAu9opvQ
+	(envelope-from <stable+bounces-222855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 12:05:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B891ED37A
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 11:59:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F731ED5C2
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 12:05:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 774FE30383C6
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 10:58:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B65D3110C1E
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 10:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202483CA482;
-	Tue,  3 Mar 2026 10:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B473CF674;
+	Tue,  3 Mar 2026 10:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ieoaLqkm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijI8TL7p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50B63CD8B4;
-	Tue,  3 Mar 2026 10:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC4B3CB2FC;
+	Tue,  3 Mar 2026 10:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772535398; cv=none; b=JN96FUytStICyVptPjmMVfxic45OZmdtVyfsiz2Yv3n1YddPBaSx7ma9/fjcF5O+cdmkKqC277Na5NDxMoS+7kQyvm0NRD+lQt7RuftApUQpYY2DFGhELFfYDmIHdNDrOjPcrsfTpnFQ+1DNKQTUIdkK89GCooRQBIUJpg2obWA=
+	t=1772535401; cv=none; b=lW2bBg3rz3gZ3t6YEKUfXO1nMf+2eOAA5wf8LNIz99KErFohDrk/LdACc8mnT9qWMuH7SDvS4G1dbCYgTawbJOx0UIAcmv8qJRgMMZCu0HLMqDphhaxfv1D0XUvZ/WgKQ5LaWGy8eVJhF3SirWtEpXpXzWLraRoTUF3HpYjchcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772535398; c=relaxed/simple;
-	bh=UsDZdbqrdtQSAlydqaqVZ55wtdSN6p2vnSmREhIxL64=;
+	s=arc-20240116; t=1772535401; c=relaxed/simple;
+	bh=3hIjxPBplMqBbUMZCyZ/eh+tqQIDphwx8R8DneO0OWM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mkulTxv1CiZZRxn3Iivme3yDScMf768XGR9Dza6G577y1kG4nORN5C4QpuEgiobF9k9fmIqprXt5pzbsLnnF64ZYMEbw3ZD9Z5tv+b0NYyIo70+Avkq7Nz1nszymhyOUTFBAE0oHkZM94prC1w/pWE0ixWQ55CEFR2allnd8KkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ieoaLqkm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDDDC4AF0D;
-	Tue,  3 Mar 2026 10:56:35 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=ueWqp3o4XxLURBtUPB4SsrmFxe8TR7JRNHdMiYrNS4A/m+iiML5KbDUal9khK6YZlI4j+1NwARUUsbtsV6TzyjDjEI+JaM8Y1FvjCtj6+IbqEL30iYtEfs6nYHHHvJpNYpAa688TVXwLLcDRPhmYcuzal8602g3PWcXmTTT3kOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijI8TL7p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1FBC2BCB3;
+	Tue,  3 Mar 2026 10:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772535398;
-	bh=UsDZdbqrdtQSAlydqaqVZ55wtdSN6p2vnSmREhIxL64=;
+	s=k20201202; t=1772535400;
+	bh=3hIjxPBplMqBbUMZCyZ/eh+tqQIDphwx8R8DneO0OWM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ieoaLqkmfq0CvfSV2BUGOqWtN7/Q/rthq6Ca784kmG0eO21RpKqd3d2iIW9Kc4iPP
-	 K0u8SVj09iZ91tgQWEHnTbLF5cv3yYp9aDe9IC12G9wa971ZCyl1UKFIgQRmo5Rsry
-	 IvPGOR71Zwpie53kZg0dV4tRMBmNyTUFPmvP/XILGS7Z2Vm6DrMkIxi5e5utyGrOFV
-	 wD1zzIp3lnOImkI14L0tHmonqkyzQDr2e2vZ1N/cwduzL04xa3EpEk2o8DgjvEnVVZ
-	 gVonbjVzjDJZb1nhV/RTU9l5PlEwzWeezC1NnQu43fopmXahj/wh3abuaC6l1Fg5LJ
-	 CWERu8MhJvBNQ==
+	b=ijI8TL7pvMYOQTZ8/vo8iKSNIrmdB8c86WQoRavcdg/i6s7431YJlcWsCGvykFpHa
+	 kF8MWIDUIgW55B1t0rzM69RvzPAiI/uBQ06HpLEFU4F7Lc5nmh7v0fNzYPww0pB+M0
+	 gKtoPN5ePGcTYQ0ush4kWGXCU2XHqoyD/STCVCA4I/kpng6wrLJoX8pploFx3j3OTw
+	 y2JzY8/fUSye0nl3zfVR6gtWnV8z0bKHtjhLm+e+V7i/aFRN7To9xm1cGVkq2GLZSw
+	 NmGb8Xsk6JzjUTcMlQiJGCMGDazaz0tR74m1lD0JzaASkgIeU+stqW+6z82ffD5JL9
+	 8Awc5tiTINXLQ==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 03 Mar 2026 11:56:05 +0100
-Subject: [PATCH net 4/5] mptcp: pm: in-kernel: always mark signal+subflow
- endp as used
+Date: Tue, 03 Mar 2026 11:56:06 +0100
+Subject: [PATCH net 5/5] selftests: mptcp: join: check removing
+ signal+subflow endp
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260303-net-mptcp-misc-fixes-7-0-rc2-v1-4-4b5462b6f016@kernel.org>
+Message-Id: <20260303-net-mptcp-misc-fixes-7-0-rc2-v1-5-4b5462b6f016@kernel.org>
 References: <20260303-net-mptcp-misc-fixes-7-0-rc2-v1-0-4b5462b6f016@kernel.org>
 In-Reply-To: <20260303-net-mptcp-misc-fixes-7-0-rc2-v1-0-4b5462b6f016@kernel.org>
 To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
@@ -67,33 +67,33 @@ Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
  linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
  "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6091; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=UsDZdbqrdtQSAlydqaqVZ55wtdSN6p2vnSmREhIxL64=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKX7QuvYJFeMk2cbSt7ukJq2kN/rq/aZ99ZGC9bt0Pr+
- svrr7WndJSyMIhxMciKKbJIt0Xmz3xexVvi5WcBM4eVCWQIAxenAEykjInhD8/sqwsD1MQ5PjzI
- fzBPpuAVQ47pxN8/Tma9C2opkzKKdWBkOCNSuN+l6uCv7eE5stJmG1TTvig0G6gKi6zMurls66c
- GNgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1902; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=3hIjxPBplMqBbUMZCyZ/eh+tqQIDphwx8R8DneO0OWM=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKX7YtIPrYwQoSLc4cS/6TlEkmGB64u9X/9paTsy/76p
+ pdR05PLOkpZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACYim83I8CaE/5RiQrtaYt/E
+ 0h7P3E9T3gZM/f34oFmAVqX/zNvatYwM66YdScp3PrzKcPLyBSL2Qg4LJ196cvnIXd7ErbP07oj
+ 84gIA
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-X-Rspamd-Queue-Id: A7B891ED37A
+X-Rspamd-Queue-Id: 11F731ED5C2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222854-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222855-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[14];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
@@ -102,119 +102,56 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[addr.id:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Syzkaller managed to find a combination of actions that was generating
-this warning:
+This validates the previous commit: endpoints with both the signal and
+subflow flags should always be marked as used even if it was not
+possible to create new subflows due to the MPTCP PM limits.
 
-  msk->pm.local_addr_used == 0
-  WARNING: net/mptcp/pm_kernel.c:1071 at __mark_subflow_endp_available net/mptcp/pm_kernel.c:1071 [inline], CPU#1: syz.2.17/961
-  WARNING: net/mptcp/pm_kernel.c:1071 at mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_kernel.c:1103 [inline], CPU#1: syz.2.17/961
-  WARNING: net/mptcp/pm_kernel.c:1071 at mptcp_pm_nl_del_addr_doit+0x81d/0x8f0 net/mptcp/pm_kernel.c:1210, CPU#1: syz.2.17/961
-  Modules linked in:
-  CPU: 1 UID: 0 PID: 961 Comm: syz.2.17 Not tainted 6.19.0-08368-gfafda3b4b06b #22 PREEMPT(full)
-  Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.17.0-debian-1.17.0-1build1 04/01/2014
-  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_kernel.c:1071 [inline]
-  RIP: 0010:mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_kernel.c:1103 [inline]
-  RIP: 0010:mptcp_pm_nl_del_addr_doit+0x81d/0x8f0 net/mptcp/pm_kernel.c:1210
-  Code: 89 c5 e8 46 30 6f fe e9 21 fd ff ff 49 83 ed 80 e8 38 30 6f fe 4c 89 ef be 03 00 00 00 e8 db 49 df fe eb ac e8 24 30 6f fe 90 <0f> 0b 90 e9 1d ff ff ff e8 16 30 6f fe eb 05 e8 0f 30 6f fe e8 9a
-  RSP: 0018:ffffc90001663880 EFLAGS: 00010293
-  RAX: ffffffff82de1a6c RBX: 0000000000000000 RCX: ffff88800722b500
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: ffff8880158b22d0 R08: 0000000000010425 R09: ffffffffffffffff
-  R10: ffffffff82de18ba R11: 0000000000000000 R12: ffff88800641a640
-  R13: ffff8880158b1880 R14: ffff88801ec3c900 R15: ffff88800641a650
-  FS:  00005555722c3500(0000) GS:ffff8880f909d000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f66346e0f60 CR3: 000000001607c000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   genl_family_rcv_msg_doit+0x117/0x180 net/netlink/genetlink.c:1115
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0x3a8/0x3f0 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x16d/0x240 net/netlink/af_netlink.c:2550
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
-   netlink_unicast+0x3e9/0x4c0 net/netlink/af_netlink.c:1344
-   netlink_sendmsg+0x4aa/0x5b0 net/netlink/af_netlink.c:1894
-   sock_sendmsg_nosec net/socket.c:727 [inline]
-   __sock_sendmsg+0xc9/0xf0 net/socket.c:742
-   ____sys_sendmsg+0x272/0x3b0 net/socket.c:2592
-   ___sys_sendmsg+0x2de/0x320 net/socket.c:2646
-   __sys_sendmsg net/socket.c:2678 [inline]
-   __do_sys_sendmsg net/socket.c:2683 [inline]
-   __se_sys_sendmsg net/socket.c:2681 [inline]
-   __x64_sys_sendmsg+0x110/0x1a0 net/socket.c:2681
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0x143/0x440 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f66346f826d
-  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007ffc83d8bdc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-  RAX: ffffffffffffffda RBX: 00007f6634985fa0 RCX: 00007f66346f826d
-  RDX: 00000000040000b0 RSI: 0000200000000740 RDI: 0000000000000007
-  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 00007f6634985fa8
-  R13: 00007f6634985fac R14: 0000000000000000 R15: 0000000000001770
-   </TASK>
+For this test, an extra endpoint is created with both the signal and the
+subflow flags, and limits are set not to create extra subflows. In this
+case, an ADD_ADDR is sent, but no subflows are created. Still, the local
+endpoint is marked as used, and no warning is fired when removing the
+endpoint, after having sent a RM_ADDR.
 
-The actions that caused that seem to be:
-
- - Set the MPTCP subflows limit to 0
- - Create an MPTCP endpoint with both the 'signal' and 'subflow' flags
- - Create a new MPTCP connection from a different address: an ADD_ADDR
-   linked to the MPTCP endpoint will be sent ('signal' flag), but no
-   subflows is initiated ('subflow' flag)
- - Remove the MPTCP endpoint
-
-In this case, msk->pm.local_addr_used has been kept to 0 -- because no
-subflows have been created -- but the corresponding bit in
-msk->pm.id_avail_bitmap has been cleared when the ADD_ADDR has been
-sent. This later causes a splat when removing the MPTCP endpoint because
-msk->pm.local_addr_used has been kept to 0.
-
-Now, if an endpoint has both the signal and subflow flags, but it is not
-possible to create subflows because of the limits or the c-flag case,
-then the local endpoint counter is still incremented: the endpoint is
-used at the end. This avoids issues later when removing the endpoint and
-calling __mark_subflow_endp_available(), which expects
-msk->pm.local_addr_used to have been previously incremented if the
-endpoint was marked as used according to msk->pm.id_avail_bitmap.
-
-Note that signal_and_subflow variable is reset to false when the limits
-and the c-flag case allows subflows creation. Also, local_addr_used is
-only incremented for non ID0 subflows.
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
 Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/613
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/pm_kernel.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
-index b5316a6c7d1b..b2b9df43960e 100644
---- a/net/mptcp/pm_kernel.c
-+++ b/net/mptcp/pm_kernel.c
-@@ -418,6 +418,15 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 	}
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 058ad5a13d24..a3144d7298a5 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2626,6 +2626,19 @@ remove_tests()
+ 		chk_rst_nr 0 0
+ 	fi
  
- exit:
-+	/* If an endpoint has both the signal and subflow flags, but it is not
-+	 * possible to create subflows -- the 'while' loop body above never
-+	 * executed --  then still mark the endp as used, which is somehow the
-+	 * case. This avoids issues later when removing the endpoint and calling
-+	 * __mark_subflow_endp_available(), which expects the increment here.
-+	 */
-+	if (signal_and_subflow && local.addr.id != msk->mpc_endpoint_id)
-+		msk->pm.local_addr_used++;
++	# signal+subflow with limits, remove
++	if reset "remove signal+subflow with limits"; then
++		pm_nl_set_limits $ns1 0 0
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,subflow
++		pm_nl_set_limits $ns2 0 0
++		addr_nr_ns1=-1 speed=slow \
++			run_tests $ns1 $ns2 10.0.1.1
++		chk_join_nr 0 0 0
++		chk_add_nr 1 1
++		chk_rm_nr 1 0 invert
++		chk_rst_nr 0 0
++	fi
 +
- 	mptcp_pm_nl_check_work_pending(msk);
- }
- 
+ 	# addresses remove
+ 	if reset "remove addresses"; then
+ 		pm_nl_set_limits $ns1 3 3
 
 -- 
 2.51.0
