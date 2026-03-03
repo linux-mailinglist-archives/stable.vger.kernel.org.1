@@ -1,164 +1,160 @@
-Return-Path: <stable+bounces-222744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222745-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCeIF5UjpmlrLAAAu9opvQ
-	(envelope-from <stable+bounces-222744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:56:05 +0100
+	id iADbHrgkpmlrLAAAu9opvQ
+	(envelope-from <stable+bounces-222745-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:00:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2421E6DE1
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 00:56:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FAD1E6E4E
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:00:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C38B305DAB6
-	for <lists+stable@lfdr.de>; Mon,  2 Mar 2026 23:56:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9757030300FE
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 00:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76934359A83;
-	Mon,  2 Mar 2026 23:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B7435BDC9;
+	Tue,  3 Mar 2026 00:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="hyA0+O8C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nttgjt/7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D1E282F05
-	for <stable@vger.kernel.org>; Mon,  2 Mar 2026 23:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5562F339863
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 00:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772495760; cv=none; b=e2KwRFh4u2d9GcMkc0F8rr7p4v81CIV+29Uhb1gcFCXNFuWNKLkBX9g7D/JrzvGS40dAdDN6Akte4k/Fqovnd5fjDCbHyl2rpQbSIu8CEelRSxSl517yhN4R46pdbNMBZ5pt6k0pMAiFw8/dXQskWOgc5Gra70RKycTVIw/cDRE=
+	t=1772496051; cv=none; b=U9y/cfuLaPx6scFlaK41DJ/O0AVxWdu9Tv5Np9gsr0atd+jLnpeWridw/ezLY35PiIyAdqWD/vktMiXuToS9kjv6cYmsTmqOk/2giRUhXtOV7edwMZ8U8rIBfMuuoAuVLWAB2/ZWwB6fT+FAf1UGdd3ld8cAx6jDuvwcPXcFd8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772495760; c=relaxed/simple;
-	bh=FCf7Dkpi8cnZTKK+jHl+AKVpHFnuufe5M9zYul4nTBc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nA8EduO5bOYb130QG9697uR/kk67rx5eoMdXpaDpSnLwTvDvh9M7oGEG0fpygv9ecED5v2y4Mq9CQ+vE1ghgXo28NViUYux8/4AcDyIHseqKrC+wbTUfQCfq41r7cjFcqf+51PYgdGopBGSlkl/k2Ju5rDtDwxxiTF6fDaGsBWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=hyA0+O8C; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso43200195e9.1
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 15:55:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1772495757; x=1773100557; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=++LctVCNk1Uw/H5oAQpRvLtdGEwkmdXKLvnmKGe4Ffg=;
-        b=hyA0+O8CQBF9VuQ3c6w7pzptb0szjAqii6EIxHBg14vPn6RPIWQAQmuqM1L65eADdA
-         qXyxxZjLq9q3ZVkL87QprCbpCl1Fcv6kMosVNMIM2G+/m0bpkGlxDYNN7t61aTfCOgvE
-         uy8yFJoiNaG04x/jilNJHssHIDiEa+0+KPDHekIqCkzARipCbhgVVP4AYeTqnWDSMfpd
-         wq0tSjSv1jC7blZl16p1uAo4TyynmSREIwkuCjS+KVcV/bIY5N3n0zsgDD/bnE9lOjRQ
-         A4Wy99xXjFa123CNuF2vfYgcIS8Aqk9AGsCxE9b7fuVURtDwIGFPaABzfRVPHNLMKI90
-         /TkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772495757; x=1773100557;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=++LctVCNk1Uw/H5oAQpRvLtdGEwkmdXKLvnmKGe4Ffg=;
-        b=gAw0qgn2pRWG5lv78PG14Bcpk3WyhOyLe8zgiyj84wEDqUeVwJUFD9Q3NXx7Nzz6Za
-         fCOzTJXlpJXFj54Som8DM7yZ3hGFAcMzrEyDO2aase5kUZP8T4gaMD4jYovvA/EVNGER
-         zOch0luzpLMdFuoHQ8V3vs9KKAoIpY8BGnJf/A5ryy3EzeLFUJQJkbB+2aaRPUGlDSbO
-         DAYwbw8L7tMxAuDXZE3v5Jr5B2gsp9DuLsllVbkBqqi4NSFJs7aX9zpFZLbyVJcIlFu6
-         JKGLnQzr8bp11CInGp7b3C5Yl4ABETWz5LICIiiVcfADxV4J1lPbqojBJ1ltRW6shFnL
-         e3eA==
-X-Forwarded-Encrypted: i=1; AJvYcCURtJ20yDkWSLWjZT/1Gd0CYEXr5JCMuHSSRecQyjKm3k9EVy9o4Axid8pCJm+dBF+xkbrcK6Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzssveHlYG63wRziwOZNsWUeX8wqlAS883+bBbe6zcV3HLn9Akw
-	J1W5Lr7AJJIRZ8vGP0A8phgPZ6nGEhVDjgPFXMJFJg2y03haRmHcGEI=
-X-Gm-Gg: ATEYQzxYx2Ko651ROGCl8cYRfmCG/umjlSGf7cK+8WKT7JdWPulQzHgCJkDlAh/DzOt
-	qkz+79Y9Nh4esVyrE5dCR1fywFBq4WPrQGSRCO9DmzHiam8mT3ByGpn3PBWiiD7YrN5rWmo+igb
-	lGLVrzoQ27h0/gEBZo+0FJGdqfjgCZdupBwoJuSV72sn7BIdKaZcyIZ8wUczNVapJKEMHGt01yc
-	R/gmBVcITflE/NWHzyIceMEvMhGxooHBMlVUfGMKBbne1xxrjOXSnltZjKwC/nUk2QJJTJzjp9A
-	UjxFn6dQoHnsAZURPt1VYIL7mDrXBKueSxuANM9BYq/mbmEaGrx5EgQSNK6S8k31R4kO20RO9Dl
-	QwmsLB4T7Kov1gAbBMTMDRnLevcsrOf/1iiqzGM6zYuevy9vmMJDwivdRokZHAUkdRr9H1Y1GX7
-	mCMCQ6QNGpq/mBzqWVc0SLnaoqDULihBQOrQDw7iRYT+M8XzAmBCXlBVTxlvW8vW/2ME5b+1qYO
-	Q==
-X-Received: by 2002:a05:600c:4fc8:b0:47b:e2a9:2bd7 with SMTP id 5b1f17b1804b1-483c9beaca0mr294617855e9.19.1772495757381;
-        Mon, 02 Mar 2026 15:55:57 -0800 (PST)
-Received: from [192.168.1.3] (p5b2b433d.dip0.t-ipconnect.de. [91.43.67.61])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd7507adsm470843425e9.9.2026.03.02.15.55.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Mar 2026 15:55:57 -0800 (PST)
-Message-ID: <46b36e3a-5999-42a9-911d-3396f4b324a5@googlemail.com>
-Date: Tue, 3 Mar 2026 00:55:56 +0100
+	s=arc-20240116; t=1772496051; c=relaxed/simple;
+	bh=8gutTDMbmAenwHt802DdfYXUh9ZUon2s2k6aFeOwWUA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OGrMcYinbrHQjCPWJpLsHrcH8kEsOlPz07ZjZ2ckpvA5QXBbFwy9GCvr4XI2pvtc8kwbz+MuZPDSFTV/vvINaqLpdViq9tUAa32nldVkiwmiLOI+rDl0VwlGc6iRVczlGPJBqnI9amsoVS5jA6XCmJHaueNNeiPqt8AGfBnqftk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nttgjt/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211FAC2BC86
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 00:00:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772496051;
+	bh=8gutTDMbmAenwHt802DdfYXUh9ZUon2s2k6aFeOwWUA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nttgjt/74EdUVYMBmuvX8HNXKDMKW5Urp4Nqgvcpx/4vokgbl5jvtGTGUIOL4/p0a
+	 zrR4LAiG8d+0GF1kwpMvDBdKnkDJEdgLUIje/8jgGOIezj7a2m5LOB5VUf+18VsUsw
+	 xIHV+kqIctiJanzdsYOISqRPWLnMCvCzlt3ttwWecIqO84PQl55MYUhTEwKY/lbWHF
+	 KGWnwAZP4yBr84GvKzEYT1EV5yNuOXGFiSpm+y+XzD4PXMWMjrKjkyX9z5YicXn9um
+	 ijIRHFfhridCpT6pSybdcUBZkrsrgTYm7cc+d12qWcK1RnxZyQ1b8/yBUFQROFNH5g
+	 meKdxWrAdObWw==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b93695f7cdcso586896766b.3
+        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 16:00:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUugtPSOMFcafExkOEFFQqfS9Z8Mfv9rOlFrZTJg8+0lI7CpRHfGMgdbazetf/KB4YlyMJ9zcA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVHjAm70EH+cmGL4Sjiuli+Hh1Wbae1OAlVxeIQRB7g7xXB9U+
+	CvgbxOexGgdgtFL1J4hUCG9iri85LvcDhcFCnTB4Hdki9CpAdE8wVo58+JhpQq8hLa/dJtBBxG7
+	zTBKB8qiFbtw1ym81Qj+8QcwAVopJynQ=
+X-Received: by 2002:a17:907:60d6:b0:b8f:e46f:8079 with SMTP id
+ a640c23a62f3a-b93763ab9bcmr911776166b.22.1772496049922; Mon, 02 Mar 2026
+ 16:00:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.18 000/757] 6.18.16-rc2 review
-Content-Language: de-DE
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260302160853.2519610-1-sashal@kernel.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20260302160853.2519610-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AF2421E6DE1
+References: <20260224223405.3270433-1-yosry@kernel.org> <20260224223405.3270433-21-yosry@kernel.org>
+In-Reply-To: <20260224223405.3270433-21-yosry@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 2 Mar 2026 16:00:38 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zP1udHX3kNQX+VP2kHXtBhxUrJRrD+mOYG-OsBHWj-xyQ@mail.gmail.com>
+X-Gm-Features: AaiRm52gxKMf8IrxCa4fvtCp9j1xhO24gObIeU54LAS2psAUkSqNABFhU0O_LwM
+Message-ID: <CAO9r8zP1udHX3kNQX+VP2kHXtBhxUrJRrD+mOYG-OsBHWj-xyQ@mail.gmail.com>
+Subject: Re: [PATCH v6 20/31] KVM: nSVM: Add missing consistency check for
+ hCR0.PG and NP_ENABLE
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: D8FAD1E6E4E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222744-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[googlemail.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-222745-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mailvelope.com:url,googlemail.com:dkim,googlemail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Am 02.03.2026 um 17:08 schrieb Sasha Levin:
-> 
-> This is the start of the stable review cycle for the 6.18.16 release.
-> There are 757 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 752dd9eb98a84..6fffb6ae6b88b 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -342,7 +342,8 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
+>  }
+>
+>  static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+> -                                      struct vmcb_ctrl_area_cached *control)
+> +                                      struct vmcb_ctrl_area_cached *control,
+> +                                      unsigned long l1_cr0)
+>  {
+>         if (CC(!vmcb12_is_intercept(control, INTERCEPT_VMRUN)))
+>                 return false;
+> @@ -353,6 +354,8 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+>         if (control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) {
+>                 if (CC(!kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3)))
+>                         return false;
+> +               if (CC(!(l1_cr0 & X86_CR0_PG)))
+> +                       return false;
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+This is already checked by nested_svm_check_permissions() -> is_paging().
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+>         }
+>
+>         if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
+> @@ -952,7 +955,8 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
+>         enter_guest_mode(vcpu);
+>
+>         if (!nested_vmcb_check_save(vcpu, &svm->nested.save) ||
+> -           !nested_vmcb_check_controls(vcpu, &svm->nested.ctl))
+> +           !nested_vmcb_check_controls(vcpu, &svm->nested.ctl,
+> +                                       svm->vmcb01.ptr->save.cr0))
+>                 return -EINVAL;
+>
+>         if (nested_npt_enabled(svm))
+> @@ -1888,7 +1892,8 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+>
+>         ret = -EINVAL;
+>         __nested_copy_vmcb_control_to_cache(vcpu, &ctl_cached, ctl);
+> -       if (!nested_vmcb_check_controls(vcpu, &ctl_cached))
+> +       /* 'save' contains L1 state saved from before VMRUN */
+> +       if (!nested_vmcb_check_controls(vcpu, &ctl_cached, save->cr0))
 
+..and this is checked slightly below.
 
-Beste Grüße,
-Peter Schneider
+I will drop this patch.
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+>                 goto out_free;
+>
+>         /*
+> --
+> 2.53.0.414.gf7e9f6c205-goog
+>
+>
 
