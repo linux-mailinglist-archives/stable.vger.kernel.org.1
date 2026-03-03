@@ -1,195 +1,152 @@
-Return-Path: <stable+bounces-222884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222885-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ChwHgHppmnjZgAAu9opvQ
-	(envelope-from <stable+bounces-222884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 14:58:25 +0100
+	id UJSpNS3rpmnjZgAAu9opvQ
+	(envelope-from <stable+bounces-222885-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 15:07:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3272E1F0E16
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 14:58:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01291F10F0
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 15:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6081C304EEFD
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 13:52:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4F4B9302CBFD
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 14:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAB6359A8F;
-	Tue,  3 Mar 2026 13:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD01536405D;
+	Tue,  3 Mar 2026 14:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hkv2aCae"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="dfFGKV/W";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="dfFGKV/W"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A694035CB73;
-	Tue,  3 Mar 2026 13:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7692D37105D
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 14:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772545822; cv=none; b=enKzDRx9fdvkz70HqdTYlpAbggzOOHtm28i1cxdlKwMFx0JAcge2LUVY6w3T2auPmezY91X4M00ubrWXyj3FAvgPwfBRg2yQysqTwQTORiuKxDTiu0nLnrrz1GoFal6tPC8BgW73hcXCigweOnt5ctOS1v4QulsIk68jPXVH55A=
+	t=1772546759; cv=none; b=Tvq19zaIXND9t9ozWyIZ8OnptVR0ex0WxHLLOj06upXjMTZktNsTIxey+hiE8REUpd/DjzcMVhk3eGTwrPVfUEYpNkky9JhdxXuochN8bNyiSMXZNUfUaxsdz9qnp5CBY5FzoPJlB4Tva67wmodMz9ieihDugvFEVrdGrQFao+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772545822; c=relaxed/simple;
-	bh=7CQZ0r0KImlVLax4lFhiuRg7PH0AL7/ldOTa0vc0XGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jFSD9W0ZutTrLV3na1rsxSsXUZYaQpvoVqjXLWHmaiy3SUR/eQbO5NMCtjNFG4I9ntqeXYDcQoCluQX/BLe+k0VL9hCJqSdFU4D5uNtFCyW3Hi9wG8CHQv6DEvBMz6gKWRXF2EzWovaqGTgJKQ98gX0LdEqa/i2XeFuxfP5gBy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hkv2aCae; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 622NYJMW1047037;
-	Tue, 3 Mar 2026 13:49:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:to; s=pp1; bh=Aqi1zJHEgCxD93XVPis4S
-	JOY5QYTjxnzzWZE8TZunjU=; b=hkv2aCaeAy2ufry4ujbJ72bCpgGA86tRFf5om
-	47bBg0BTmWZ+nayLCOAhP0PRnZEtVWHaQTpyDBU5mJEoTXSTpaKpaU8jmmSG3Sy7
-	66MmaJ0sCSQ/awtgVds6x8UtGqXF4vPxmsaw3jmOg+aN/DsjcqP0OWbUM+3MYvNN
-	cr1T3VYkBWP8rtJJMfN8gdk4nic1YpnPSDNqvtO5UFanCXsONtC2828gCc26qux2
-	W1CRTezO86SqcROhA8pKbmB4K4HK3OMV6ApWgheiV+ea/3spQ8/TCc6AaIdJ52mp
-	0LC3MBDtx2cpLac4Z0Q+XD9u+drfRVM1o7YWk8q0DLeIClHPQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ckssmjxmr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 13:49:52 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 623AZ409010284;
-	Tue, 3 Mar 2026 13:49:52 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cmc6k2e99-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 13:49:52 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 623DnmVl15663444
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Mar 2026 13:49:48 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 27E3A20049;
-	Tue,  3 Mar 2026 13:49:48 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C41E20040;
-	Tue,  3 Mar 2026 13:49:46 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.124.212.179])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  3 Mar 2026 13:49:45 +0000 (GMT)
-Date: Tue, 3 Mar 2026 19:19:43 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: Nam Cao <namcao@linutronix.de>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <chleroy@kernel.org>,
-        Nilay Shroff <nilay@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] powerpc/pseries: Correct MSI allocation tracking
-Message-ID: <aabh_084Q94oaiYl@linux.ibm.com>
-Reply-To: mahesh@linux.ibm.com
-References: <20260302003948.1452016-1-namcao@linutronix.de>
+	s=arc-20240116; t=1772546759; c=relaxed/simple;
+	bh=LQND7J8+2ZBFcRB5Zjr0bxaVWhfHBAfE4LB1WVwVC/A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I42VQ4Ce39CG8PdZBQdg3QQA5NjyvC6ThIixx7UlhVUqeOkpFWcmIyETpt8jxL2Z1MlSGEShWqz8TysqxT/khkPmJ2K3sMoaObvieUU5Hu6V5I5l9q/iUwnk6HwsHZV5Py8h+2MgIM48g8vRIebfy/mekQlMA7liKptZipRGIHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=dfFGKV/W; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=dfFGKV/W; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A21755BE06;
+	Tue,  3 Mar 2026 14:05:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1772546756; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=kQ1/rdj9rZoOX1Odh9tqQ+jU6G3mgipvCPL1b30fPwY=;
+	b=dfFGKV/WvxFAmdnMAJzUpqptWDjQuMTzr4hc9SXeubvfNfTynYUzRGjdHhDgUC4HcftxpM
+	Wn8Hp8YN/y0YKM4pv/ZfcTY2xnBH8CbQSdRedEdEIh5gtlZ97muKUKxm5i13dXWr5d8Uke
+	JIgvwY0Sa279J2swDimZplmCcWV5m2o=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b="dfFGKV/W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1772546756; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=kQ1/rdj9rZoOX1Odh9tqQ+jU6G3mgipvCPL1b30fPwY=;
+	b=dfFGKV/WvxFAmdnMAJzUpqptWDjQuMTzr4hc9SXeubvfNfTynYUzRGjdHhDgUC4HcftxpM
+	Wn8Hp8YN/y0YKM4pv/ZfcTY2xnBH8CbQSdRedEdEIh5gtlZ97muKUKxm5i13dXWr5d8Uke
+	JIgvwY0Sa279J2swDimZplmCcWV5m2o=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8AE1F3EA69;
+	Tue,  3 Mar 2026 14:05:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id cwPOIMTqpmlMdwAAD6G6ig
+	(envelope-from <oneukum@suse.com>); Tue, 03 Mar 2026 14:05:56 +0000
+From: Oliver Neukum <oneukum@suse.com>
+To: stable@vger.kernel.org
+Cc: Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH] HID: hid-pl: handle probe errors
+Date: Tue,  3 Mar 2026 15:05:31 +0100
+Message-ID: <20260303140548.1313133-1-oneukum@suse.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302003948.1452016-1-namcao@linutronix.de>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDEwOCBTYWx0ZWRfX59b61R1itBWJ
- Rxpso5b+0OJZungNvbhBV4onTYBMe+4qeDEDOqVVHAp/uwqAME2zKnU3AF1vETHjH1/4PlPVavf
- Ga3Bt2sAJ+ZMozpSk+8EeNl1iYLrXrYrau1kmPrFG+jfoWLdFPOVngxup3juBE3k4e6vRIiCzyX
- uT3e1ms3qwY+wZzFi/FcTkLP2Hagf3YdRx7AbCfvOSFbsRXujrgv1VGU0Yrqp1+SKaJaLPdB4j8
- K9d3gXSD14MTtevu/vbkn8iB1QXEoP85avh5AD6OtFDpH9HTvzJswOY1Nhde4ryUbq8L7rGaPE4
- Y1oLAKvKAHCrYi5kQjYYyJY6813rfjkg6slNYGtN7BoVWbyGeeYS+d3UMRBiN3ooSO0m75WLt1K
- jfGU5ExIgAfVat1R8f0BUP4ZspTx58K85w+H9QwIJnrRZzGgXv7kHxpByv0JoKHfLho9lxbdFMf
- vsU495rsqObAxSQGAvA==
-X-Proofpoint-ORIG-GUID: wdaNAXr0V-udE02jb_k--k8s7YfGLu7h
-X-Proofpoint-GUID: pqrVKaEsROHD71BvKXjX-paaCxtw4-LW
-X-Authority-Analysis: v=2.4 cv=AobjHe9P c=1 sm=1 tr=0 ts=69a6e701 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=LPlfM72s0PfGJSQ53tEA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0 malwarescore=0
- spamscore=0 clxscore=1011 suspectscore=0 adultscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603030108
-X-Rspamd-Queue-Id: 3272E1F0E16
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Queue-Id: E01291F10F0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,lists.ozlabs.org,vger.kernel.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linutronix.de:email];
 	RCVD_TLS_LAST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222884-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-222885-lists,stable=lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	HAS_REPLYTO(0.00)[mahesh@linux.ibm.com];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mahesh@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[oneukum@suse.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[suse.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,suse.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 2026-03-02 01:39:48 Mon, Nam Cao wrote:
-> The per-device MSI allocation calculation in pseries_irq_domain_alloc()
-> is clearly wrong. It can still happen to work when nr_irqs is 1.
-> 
-> Correct it.
-> 
-> Fixes: c0215e2d72de ("powerpc/pseries: Fix MSI-X allocation failure when quota is exceeded")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> ---
->  arch/powerpc/platforms/pseries/msi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
-> index 64ffc6476ad6..8285b9a29fbf 100644
-> --- a/arch/powerpc/platforms/pseries/msi.c
-> +++ b/arch/powerpc/platforms/pseries/msi.c
-> @@ -605,7 +605,7 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
->  					      &pseries_msi_irq_chip, pseries_dev);
->  	}
->  
-> -	pseries_dev->msi_used++;
-> +	pseries_dev->msi_used += nr_irqs;
+Commit 3756a272d2cf356d2203da8474d173257f5f8521 upstream.
 
-Yeah, msi_used was wronlgy incremented only once while allocating
-nr_irqs interrupts from parent domain. Looks good to me.
+Errors in init must be reported back or we'll
+follow a NULL pointer the first time FF is used.
 
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Fixes: 20eb127906709 ("hid: force feedback driver for PantherLord USB/PS2 2in1 Adapter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+---
+ drivers/hid/hid-pl.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Thanks,
--Mahesh.
-
->  	return 0;
->  
->  out:
-> -- 
-> 2.47.3
-> 
-
+diff --git a/drivers/hid/hid-pl.c b/drivers/hid/hid-pl.c
+index 3c8827081dea..dc11d5322fc0 100644
+--- a/drivers/hid/hid-pl.c
++++ b/drivers/hid/hid-pl.c
+@@ -194,9 +194,14 @@ static int pl_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		goto err;
+ 	}
+ 
+-	plff_init(hdev);
++	ret = plff_init(hdev);
++	if (ret)
++		goto stop;
+ 
+ 	return 0;
++
++stop:
++	hid_hw_stop(hdev);
+ err:
+ 	return ret;
+ }
 -- 
-Mahesh J Salgaonkar
+2.53.0
+
 
