@@ -1,223 +1,400 @@
-Return-Path: <stable+bounces-222796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEkpHVx5pmnxQAAAu9opvQ
-	(envelope-from <stable+bounces-222796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 07:02:04 +0100
+	id EEsoIiF3pmnxQAAAu9opvQ
+	(envelope-from <stable+bounces-222792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:52:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF911E9627
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 07:02:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A481E9512
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:52:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7955D303DD3F
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 06:01:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A7FA130292C9
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 05:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BF430BBB8;
-	Tue,  3 Mar 2026 06:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1572F156C6A;
+	Tue,  3 Mar 2026 05:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="FmdSp+nW"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lIMuLjJ+"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62D129994B;
-	Tue,  3 Mar 2026 06:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.61.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D7029A2;
+	Tue,  3 Mar 2026 05:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772517689; cv=none; b=RPbwuB1Qr63MKJZ7+CkaItvJ8lCms2/JN8PeeHJy0tCKSuTjrQSFYk+cMx73vAlIdH/0wOtXKt79K4uz87en/EItAulxgFGqa/ichRf6+C+VDanxQcCmzQTjrmvV6tYwoqR9ByYXtAP+XztIMWDiLjc7XYUQ70uZhOYyaY3Qkvw=
+	t=1772517149; cv=none; b=GtkVnYwxdgvunD9G2qziF4wJR8GGgG5hm/b+bZsZOvrbpl970bKjmRAIQKg+1wZlQPA359Youm7JvGbY7rg1zeZc4JMXcUDYerUE3gsOANkspLlx/Au7uUYk/b5xvcOGCH/Y5URthdRlfTmZVWesR3B7x7RDo+I7Ilkl2IqgaVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772517689; c=relaxed/simple;
-	bh=qe9P40hHio4C5Hd2euN7jv8j1geM24aYm7G61d59zd0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F+4qjVZzAZjfpmPHJ85MMipIIVv6rHOqQRIlayi2i/ui1XorYxzH5H+KZ+PgqKX8F4MQZcaJZNhKy9Tkf57R+PaSO2n6KS1XjTbFwfouEU1rYQmb8nvLYUT7I8yMqddYiX7MiNBVcON8IatBUGD6aTTYe8OMQm4Fe7e+auqKwKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=FmdSp+nW; arc=none smtp.client-ip=188.68.61.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4fQ4ft5NNpz8CMm;
-	Tue,  3 Mar 2026 06:51:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1772517078;
-	bh=qe9P40hHio4C5Hd2euN7jv8j1geM24aYm7G61d59zd0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FmdSp+nWBMqwAvWybt2drjghQRkFHY6ReZTNUDWjFaG3cnK5ijNRa2j83bCtlbrSl
-	 L6uuCyt5sUXgt8ARK2CkBkq6CrWl1GGfpYJDAYfDNXK2BSDHBYSIjlDDlu/meOdztr
-	 PqYL8gtQ4YFmdcFf14xCUQqdTCTGPJTUAn476qiZt1aQ4wYf8ttiini2dmFjfWJIp5
-	 4SnWyRaLRwF6UbZ1Y5CURK299WtXcHMyyeJBWP5ZC/AT1dMXB/cx9JkA5nKXEuzYhP
-	 HCH9hwkrRryXN1tu6fTVCJUUWyFiFWg8zjeFvDh+AHALZ5shq1uRTvvmJmE6YhvUJU
-	 144srrwel468A==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4fQ4ft4gJQz8CMl;
-	Tue,  3 Mar 2026 06:51:18 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.898
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4fQ4fr5rMyz8t4J;
-	Tue,  3 Mar 2026 06:51:15 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id CACDA6329E;
-	Tue,  3 Mar 2026 06:51:14 +0100 (CET)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <d2fedf99-cae3-4071-b781-d100662a445a@leemhuis.info>
-Date: Tue, 3 Mar 2026 06:51:14 +0100
+	s=arc-20240116; t=1772517149; c=relaxed/simple;
+	bh=srsGL27ODkb32v+jJnRQHGZJU3/SbDJAk4aL/3CdEAQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QILFVf2A55Us50IsBKfbPhoMA6sZXYiO7TZXJwDKY5OKsV/jsfwGYr7VaQmfR5fAXQEKnqIaxa0IMBMd3+rpaVdXvrPX7fogegwNR6bjpKFwZ2rgQs4mZVyAU+kPs3tAx0XOlFk5e3jc3JmyT4J9yb16YN6xWds6nado4ZFb/jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lIMuLjJ+; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=9j
+	neQjI3DzzG0MEdCPF569r0V3d6StOOexg2c0rY+3M=; b=lIMuLjJ+FfznC1uk5y
+	++eDeP0uTPAmap6S9FO4Aqmyay1nA4H18oID3yG9Cr0ZVraBHKp0DL+BPNplPNmZ
+	MV4N50kjTeJzLaR20ZLq0P0UtpLV73BFJK211xYR+AM0ZunMXgil0ZjB9ulB+M2k
+	f5/vftsmJK3KWIs4h9qTUjgWM=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgA3CNnXdqZpLe3SRA--.197S2;
+	Tue, 03 Mar 2026 13:51:23 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Robert Garcia <rob_garcia@163.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.12.y] net: dsa: properly keep track of conduit reference
+Date: Tue,  3 Mar 2026 13:51:20 +0800
+Message-Id: <20260303055120.2111614-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: -next build error due to "kbuild: Leave objtool binary around
- with 'make clean'"
-To: Nathan Chancellor <nathan@kernel.org>, =?UTF-8?Q?Michal_Such=C3=A1nek?=
- <msuchanek@suse.de>
-Cc: Nicolas Schier <nsc@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Rainer Fiebig <jrf@mailbox.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>
-References: 
- <20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org>
- <03045f41-fe4c-44ff-b01c-6e325d82255a@leemhuis.info>
- <aaXofbe_5QGYYuMB@kitsune.suse.cz> <20260302204903.GA2007498@ax162>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 MEK4
-In-Reply-To: <20260302204903.GA2007498@ax162>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <177251707521.2147633.2558930100194810901@mxe9fb.netcup.net>
-X-NC-CID: 3KNLM+Upkk88ekiWwqt0aw1s4gKdNnbM4Me96bjrHwSdo85vu0M=
-X-Rspamd-Queue-Id: CDF911E9627
+X-CM-TRANSID:PigvCgA3CNnXdqZpLe3SRA--.197S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWfGF4rtr15Aw4xCF4furWkCrg_yoWkAw4xpF
+	43Ga43t3ykG3y7Grs8Wa1UuFyrAw4Fyay3G34UK34furn8Gry0yry8KFZa9345CrZ3GF9x
+	XFZ8Za4rCFZ8ZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UxnYwUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAR3YRGmmdt3QvgAA3K
+X-Rspamd-Queue-Id: 06A481E9512
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	TAGGED_FROM(0.00)[bounces-222796-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[leemhuis.info:dkim,leemhuis.info:mid];
-	DMARC_NA(0.00)[leemhuis.info];
+	TAGGED_FROM(0.00)[bounces-222792-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[163.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[linux@leemhuis.info,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[163.com:+];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[redhat.com,iscas.ac.cn,163.com,gmail.com,davemloft.net,google.com,kernel.org,armlinux.org.uk,vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,iscas.ac.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 3/2/26 21:49, Nathan Chancellor wrote:
-> On Mon, Mar 02, 2026 at 08:43:57PM +0100, Michal Suchánek wrote:
->> On Mon, Mar 02, 2026 at 08:18:17PM +0100, Thorsten Leemhuis wrote:
->>> On 2/28/26 06:40, Nathan Chancellor wrote:
->>>> The difference between 'make clean' and 'make mrproper' is documented in
->>>> 'make help' as:
->>> [...]
->>> Thx for fixing this regression, sadly this caused my daily -next rpm
->>> builds for Fedora to fail on x86_64 during a "make mrproper":
->>>
->>> ""
->>> kernel.spec:2485: InitBuildVars: Copy files
->>> + /usr/bin/make -s 'HOSTCFLAGS=-O2  -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -m64 -march=x86-64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -mtls-dialect=gnu2   ' 'HOSTLDFLAGS=-Wl,-z,relro -Wl,--as-needed  -Wl,-z,pack-relative-relocs -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -Wl,--build-id=sha1 -specs=/usr/lib/rpm/redhat/redhat-package-notes ' -j32 mrproper
->>> find: cannot delete ‘/builddir/build/BUILD/kernel-7.0.0-build/kernel-next-20260302/linux-7.0.0-0.0.next.20260302.121.vanilla.fc42.x86_64/tools/objtool/.check.o.cmd’: No such file or directory
->>> find: cannot delete ‘/builddir/build/BUILD/kernel-7.0.0-build/kernel-next-20260302/linux-7.0.0-0.0.next.20260302.121.vanilla.fc42.x86_64/tools/objtool/.elf.o.cmd’: No such file or directory
->>> [and many more like these]
->>> ""
->>> For the full build log, see:
->>> https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-42-x86_64/10183736-next-next-all/builder-live.log.gz
-> [...]
->> Or does the objtool_clean run multiple times in parallel, once through
->> the clean target, and once as dependency of the mrproper target?
-> 
-> More than likely this based on my reading of the submake processes from
-> the build log. For what it's worth, I cannot reproduce this error on
-> either a really fast or really slow build machine but it should not be
-> hard to avoid by using 'xargs rm -f' like the rest of Kbuild does for
-> removing things, which should suppress the error if the file does not
-> exist. Thorsten, could you see if this diff makes a difference for you?
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-Yeah, that makes things work again, thx!
+[ Upstream commit 06e219f6a706c367c93051f408ac61417643d2f9 ]
 
-> If so, I'll squash it in with a note.
+Problem description
+-------------------
 
-Great, thx!
+DSA has a mumbo-jumbo of reference handling of the conduit net device
+and its kobject which, sadly, is just wrong and doesn't make sense.
 
-Ciao, Thorsten
+There are two distinct problems.
 
-> diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-> index 50d3e38e6137..76bcd4e85de3 100644
-> --- a/tools/objtool/Makefile
-> +++ b/tools/objtool/Makefile
-> @@ -142,7 +142,7 @@ $(LIBSUBCMD)-clean:
->  	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
->  
->  clean: $(LIBSUBCMD)-clean
-> -	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
-> +	$(Q)find $(OUTPUT) \( -name '*.o' -o -name '\.*.cmd' -o -name '\.*.d' \) -type f -print | xargs $(RM)
->  	$(Q)$(RM) $(OUTPUT)arch/x86/lib/cpu-feature-names.c $(OUTPUT)fixdep
->  	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
->  	$(Q)$(RM) -- $(OUTPUT)FEATURE-DUMP.objtool
+1. The OF path, which uses of_find_net_device_by_node(), never releases
+   the elevated refcount on the conduit's kobject. Nominally, the OF and
+   non-OF paths should result in objects having identical reference
+   counts taken, and it is already suspicious that
+   dsa_dev_to_net_device() has a put_device() call which is missing in
+   dsa_port_parse_of(), but we can actually even verify that an issue
+   exists. With CONFIG_DEBUG_KOBJECT_RELEASE=y, if we run this command
+   "before" and "after" applying this patch:
+
+(unbind the conduit driver for net device eno2)
+echo 0000:00:00.2 > /sys/bus/pci/drivers/fsl_enetc/unbind
+
+we see these lines in the output diff which appear only with the patch
+applied:
+
+kobject: 'eno2' (ffff002009a3a6b8): kobject_release, parent 0000000000000000 (delayed 1000)
+kobject: '109' (ffff0020099d59a0): kobject_release, parent 0000000000000000 (delayed 1000)
+
+2. After we find the conduit interface one way (OF) or another (non-OF),
+   it can get unregistered at any time, and DSA remains with a long-lived,
+   but in this case stale, cpu_dp->conduit pointer. Holding the net
+   device's underlying kobject isn't actually of much help, it just
+   prevents it from being freed (but we never need that kobject
+   directly). What helps us to prevent the net device from being
+   unregistered is the parallel netdev reference mechanism (dev_hold()
+   and dev_put()).
+
+Actually we actually use that netdev tracker mechanism implicitly on
+user ports since commit 2f1e8ea726e9 ("net: dsa: link interfaces with
+the DSA master to get rid of lockdep warnings"), via netdev_upper_dev_link().
+But time still passes at DSA switch probe time between the initial
+of_find_net_device_by_node() code and the user port creation time, time
+during which the conduit could unregister itself and DSA wouldn't know
+about it.
+
+So we have to run of_find_net_device_by_node() under rtnl_lock() to
+prevent that from happening, and release the lock only with the netdev
+tracker having acquired the reference.
+
+Do we need to keep the reference until dsa_unregister_switch() /
+dsa_switch_shutdown()?
+1: Maybe yes. A switch device will still be registered even if all user
+   ports failed to probe, see commit 86f8b1c01a0a ("net: dsa: Do not
+   make user port errors fatal"), and the cpu_dp->conduit pointers
+   remain valid.  I haven't audited all call paths to see whether they
+   will actually use the conduit in lack of any user port, but if they
+   do, it seems safer to not rely on user ports for that reference.
+2. Definitely yes. We support changing the conduit which a user port is
+   associated to, and we can get into a situation where we've moved all
+   user ports away from a conduit, thus no longer hold any reference to
+   it via the net device tracker. But we shouldn't let it go nonetheless
+   - see the next change in relation to dsa_tree_find_first_conduit()
+   and LAG conduits which disappear.
+   We have to be prepared to return to the physical conduit, so the CPU
+   port must explicitly keep another reference to it. This is also to
+   say: the user ports and their CPU ports may not always keep a
+   reference to the same conduit net device, and both are needed.
+
+As for the conduit's kobject for the /sys/class/net/ entry, we don't
+care about it, we can release it as soon as we hold the net device
+object itself.
+
+History and blame attribution
+-----------------------------
+
+The code has been refactored so many times, it is very difficult to
+follow and properly attribute a blame, but I'll try to make a short
+history which I hope to be correct.
+
+We have two distinct probing paths:
+- one for OF, introduced in 2016 in commit 83c0afaec7b7 ("net: dsa: Add
+  new binding implementation")
+- one for non-OF, introduced in 2017 in commit 71e0bbde0d88 ("net: dsa:
+  Add support for platform data")
+
+These are both complete rewrites of the original probing paths (which
+used struct dsa_switch_driver and other weird stuff, instead of regular
+devices on their respective buses for register access, like MDIO, SPI,
+I2C etc):
+- one for OF, introduced in 2013 in commit 5e95329b701c ("dsa: add
+  device tree bindings to register DSA switches")
+- one for non-OF, introduced in 2008 in commit 91da11f870f0 ("net:
+  Distributed Switch Architecture protocol support")
+
+except for tiny bits and pieces like dsa_dev_to_net_device() which were
+seemingly carried over since the original commit, and used to this day.
+
+The point is that the original probing paths received a fix in 2015 in
+the form of commit 679fb46c5785 ("net: dsa: Add missing master netdev
+dev_put() calls"), but the fix never made it into the "new" (dsa2)
+probing paths that can still be traced to today, and the fixed probing
+path was later deleted in 2019 in commit 93e86b3bc842 ("net: dsa: Remove
+legacy probing support").
+
+That is to say, the new probing paths were never quite correct in this
+area.
+
+The existence of the legacy probing support which was deleted in 2019
+explains why dsa_dev_to_net_device() returns a conduit with elevated
+refcount (because it was supposed to be released during
+dsa_remove_dst()). After the removal of the legacy code, the only user
+of dsa_dev_to_net_device() calls dev_put(conduit) immediately after this
+function returns. This pattern makes no sense today, and can only be
+interpreted historically to understand why dev_hold() was there in the
+first place.
+
+Change details
+--------------
+
+Today we have a better netdev tracking infrastructure which we should
+use. Logically netdev_hold() belongs in common code
+(dsa_port_parse_cpu(), where dp->conduit is assigned), but there is a
+tradeoff to be made with the rtnl_lock() section which would become a
+bit too long if we did that - dsa_port_parse_cpu() also calls
+request_module(). So we duplicate a bit of logic in order for the
+callers of dsa_port_parse_cpu() to be the ones responsible of holding
+the conduit reference and releasing it on error. This shortens the
+rtnl_lock() section significantly.
+
+In the dsa_switch_probe() error path, dsa_switch_release_ports() will be
+called in a number of situations, one being where dsa_port_parse_cpu()
+maybe didn't get the chance to run at all (a different port failed
+earlier, etc). So we have to test for the conduit being NULL prior to
+calling netdev_put().
+
+There have still been so many transformations to the code since the
+blamed commits (rename master -> conduit, commit 0650bf52b31f ("net:
+dsa: be compatible with masters which unregister on shutdown")), that it
+only makes sense to fix the code using the best methods available today
+and see how it can be backported to stable later. I suspect the fix
+cannot even be backported to kernels which lack dsa_switch_shutdown(),
+and I suspect this is also maybe why the long-lived conduit reference
+didn't make it into the new DSA probing paths at the time (problems
+during shutdown).
+
+Because dsa_dev_to_net_device() has a single call site and has to be
+changed anyway, the logic was just absorbed into the non-OF
+dsa_port_parse().
+
+Tested on the ocelot/felix switch and on dsa_loop, both on the NXP
+LS1028A with CONFIG_DEBUG_KOBJECT_RELEASE=y.
+
+Reported-by: Ma Ke <make24@iscas.ac.cn>
+Closes: https://lore.kernel.org/netdev/20251214131204.4684-1-make24@iscas.ac.cn/
+Fixes: 83c0afaec7b7 ("net: dsa: Add new binding implementation")
+Fixes: 71e0bbde0d88 ("net: dsa: Add support for platform data")
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20251215150236.3931670-1-vladimir.oltean@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ include/net/dsa.h |  1 +
+ net/dsa/dsa.c     | 59 +++++++++++++++++++++++++++--------------------
+ 2 files changed, 35 insertions(+), 25 deletions(-)
+
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 877f9b270cf6..a1f730d9f01b 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -296,6 +296,7 @@ struct dsa_port {
+ 	struct devlink_port	devlink_port;
+ 	struct phylink		*pl;
+ 	struct phylink_config	pl_config;
++	netdevice_tracker	conduit_tracker;
+ 	struct dsa_lag		*lag;
+ 	struct net_device	*hsr_dev;
+ 
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index 76a086e846c4..95f87e1f90af 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -1246,14 +1246,25 @@ static int dsa_port_parse_of(struct dsa_port *dp, struct device_node *dn)
+ 	if (ethernet) {
+ 		struct net_device *conduit;
+ 		const char *user_protocol;
++		int err;
+ 
++		rtnl_lock();
+ 		conduit = of_find_net_device_by_node(ethernet);
+ 		of_node_put(ethernet);
+-		if (!conduit)
++		if (!conduit) {
++			rtnl_unlock();
+ 			return -EPROBE_DEFER;
++		}
++
++		netdev_hold(conduit, &dp->conduit_tracker, GFP_KERNEL);
++		put_device(&conduit->dev);
++		rtnl_unlock();
+ 
+ 		user_protocol = of_get_property(dn, "dsa-tag-protocol", NULL);
+-		return dsa_port_parse_cpu(dp, conduit, user_protocol);
++		err = dsa_port_parse_cpu(dp, conduit, user_protocol);
++		if (err)
++			netdev_put(conduit, &dp->conduit_tracker);
++		return err;
+ 	}
+ 
+ 	if (link)
+@@ -1386,37 +1397,30 @@ static struct device *dev_find_class(struct device *parent, char *class)
+ 	return device_find_child(parent, class, dev_is_class);
+ }
+ 
+-static struct net_device *dsa_dev_to_net_device(struct device *dev)
+-{
+-	struct device *d;
+-
+-	d = dev_find_class(dev, "net");
+-	if (d != NULL) {
+-		struct net_device *nd;
+-
+-		nd = to_net_dev(d);
+-		dev_hold(nd);
+-		put_device(d);
+-
+-		return nd;
+-	}
+-
+-	return NULL;
+-}
+-
+ static int dsa_port_parse(struct dsa_port *dp, const char *name,
+ 			  struct device *dev)
+ {
+ 	if (!strcmp(name, "cpu")) {
+ 		struct net_device *conduit;
++		struct device *d;
++		int err;
+ 
+-		conduit = dsa_dev_to_net_device(dev);
+-		if (!conduit)
++		rtnl_lock();
++		d = dev_find_class(dev, "net");
++		if (!d) {
++			rtnl_unlock();
+ 			return -EPROBE_DEFER;
++		}
+ 
+-		dev_put(conduit);
++		conduit = to_net_dev(d);
++		netdev_hold(conduit, &dp->conduit_tracker, GFP_KERNEL);
++		put_device(d);
++		rtnl_unlock();
+ 
+-		return dsa_port_parse_cpu(dp, conduit, NULL);
++		err = dsa_port_parse_cpu(dp, conduit, NULL);
++		if (err)
++			netdev_put(conduit, &dp->conduit_tracker);
++		return err;
+ 	}
+ 
+ 	if (!strcmp(name, "dsa"))
+@@ -1484,6 +1488,9 @@ static void dsa_switch_release_ports(struct dsa_switch *ds)
+ 	struct dsa_vlan *v, *n;
+ 
+ 	dsa_switch_for_each_port_safe(dp, next, ds) {
++		if (dsa_port_is_cpu(dp) && dp->conduit)
++			netdev_put(dp->conduit, &dp->conduit_tracker);
++
+ 		/* These are either entries that upper layers lost track of
+ 		 * (probably due to bugs), or installed through interfaces
+ 		 * where one does not necessarily have to remove them, like
+@@ -1636,8 +1643,10 @@ void dsa_switch_shutdown(struct dsa_switch *ds)
+ 	/* Disconnect from further netdevice notifiers on the conduit,
+ 	 * since netdev_uses_dsa() will now return false.
+ 	 */
+-	dsa_switch_for_each_cpu_port(dp, ds)
++	dsa_switch_for_each_cpu_port(dp, ds) {
+ 		dp->conduit->dsa_ptr = NULL;
++		netdev_put(dp->conduit, &dp->conduit_tracker);
++	}
+ 
+ 	rtnl_unlock();
+ out:
+-- 
+2.34.1
 
 
